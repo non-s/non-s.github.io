@@ -1,85 +1,68 @@
-# ============================================================
-# .github/workflows/youtube-bot.yml
-# Gera e publica vídeos no YouTube automaticamente
-# Roda 3x por dia: 9h, 13h e 19h UTC
-# ============================================================
-
-name: "🎬 YouTube Bot"
+name: "YouTube Bot"
 
 on:
   schedule:
-    - cron: "0 9  * * *"   # 9h UTC
-    - cron: "0 13 * * *"   # 13h UTC
-    - cron: "0 19 * * *"   # 19h UTC
-
-  workflow_dispatch:        # Permite rodar manualmente
+    - cron: "0 9 * * *"
+    - cron: "0 13 * * *"
+    - cron: "0 19 * * *"
+  workflow_dispatch:
 
 jobs:
   generate-and-upload:
-    name: "Gerar vídeos e publicar"
+    name: "Gerar videos e publicar"
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
+      id-token: write
 
     steps:
-
-      - name: "📥 Checkout"
+      - name: "Checkout"
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: "🐍 Python 3.11"
+      - name: "Python 3.11"
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
-      - name: "🔧 Instalar FFmpeg"
+      - name: "Instalar FFmpeg"
         run: sudo apt-get install -y ffmpeg fonts-dejavu-core
 
-      - name: "📦 Instalar dependências Python"
+      - name: "Instalar dependencias Python"
         run: |
           pip install --upgrade pip
-          pip install \
-            feedparser requests \
-            google-auth google-auth-oauthlib google-api-python-client \
-            edge-tts Pillow
+          pip install feedparser requests google-auth google-auth-oauthlib google-api-python-client edge-tts Pillow
 
-      - name: "🔑 Restaurar token do YouTube"
+      - name: "Restaurar token do YouTube"
         run: |
           echo '${{ secrets.YOUTUBE_TOKEN }}' > token.json
-          echo "Token restaurado."
 
-      - name: "🎬 Gerar vídeos"
+      - name: "Gerar videos"
         run: python generate_video.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "📤 Upload para YouTube"
+      - name: "Upload para YouTube"
         run: python upload_youtube.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "💾 Salvar token atualizado"
-        run: |
-          if [ -f token.json ]; then
-            TOKEN=$(cat token.json)
-            echo "Token atualizado preservado para próxima execução."
-          fi
-
-      - name: "🔄 Atualizar token no repositório (via API)"
+      - name: "Atualizar YOUTUBE_TOKEN secret"
         if: always()
         run: |
-          # Atualiza o secret YOUTUBE_TOKEN automaticamente se o token foi renovado
           if [ -f token.json ]; then
-            echo "Token disponível para próximo run."
+            gh secret set YOUTUBE_TOKEN < token.json
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "📋 Log de execução"
+      - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v4
         with:
