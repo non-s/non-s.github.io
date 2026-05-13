@@ -3,33 +3,34 @@
 """
 generate_video.py — Gera vídeos de notícias para o YouTube
 ============================================================
-Usa: edge-tts (voz), Pillow (imagens), FFmpeg (vídeo)
-Não precisa de API paga — 100% gratuito.
+Design profissional estilo telejornal: gradiente tech, lower-thirds,
+barra de progresso animada, thumbnail otimizado para CTR.
 """
 
-import os, re, json, asyncio, textwrap, subprocess, logging, hashlib
+import os, re, json, asyncio, textwrap, subprocess, logging, hashlib, math
 from pathlib import Path
 from datetime import datetime, timezone
 
 import feedparser
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 # ── Config ─────────────────────────────────────────────────────
-VIDEOS_DIR   = Path("_videos")        # vídeos gerados aguardando upload
-ASSETS_DIR   = Path("assets/yt")      # fontes e assets
+VIDEOS_DIR   = Path("_videos")
 LOG_FILE     = "generate_video.log"
-VOICE        = "en-US-AriaNeural"     # edge-tts voice
-MAX_PER_RUN  = 3                      # máx vídeos por execução
-VIDEO_W, VIDEO_H = 1920, 1080         # resolução Full HD
-FONT_DIR     = Path("/usr/share/fonts/truetype")
+VOICE        = "en-US-AriaNeural"
+MAX_PER_RUN  = 1                      # 1 por hora = 24/dia
+VIDEO_W, VIDEO_H = 1920, 1080
 
-# Cores do canal
-BG_COLOR     = (10, 10, 20)          # fundo escuro
-ACCENT       = (0, 180, 255)         # azul tech
-TEXT_COLOR   = (240, 240, 240)
-SUBTEXT      = (160, 160, 180)
-OVERLAY_BG   = (10, 10, 20, 200)     # semi-transparente
+# Paleta de cores — identidade TechBR
+BG_DARK      = (8, 8, 18)
+BG_MID       = (14, 14, 28)
+ACCENT_BLUE  = (0, 195, 255)
+ACCENT_CYAN  = (0, 240, 200)
+RED_LIVE     = (220, 50, 50)
+TEXT_WHITE   = (245, 245, 255)
+TEXT_GRAY    = (160, 165, 190)
+TEXT_DIM     = (90, 95, 115)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -42,57 +43,100 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Fontes ─────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False):
-    """Busca fonte disponível no sistema."""
-    candidates = []
-    if bold:
-        candidates = [
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-            "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-            "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-        ]
-    else:
-        candidates = [
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-            "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-            "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-        ]
-    for path in candidates:
+def get_font(size: int, bold: bool = False, italic: bool = False):
+    candidates_bold = [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
+    ]
+    candidates_reg = [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
+    ]
+    pool = candidates_bold if bold else candidates_reg
+    for path in pool:
         if Path(path).exists():
             return ImageFont.truetype(path, size)
     return ImageFont.load_default()
 
-# ── Gera script de narração ────────────────────────────────────
-def build_script(title: str, description: str, source: str) -> str:
-    """Monta roteiro de ~60-90 segundos."""
-    clean_desc = re.sub(r'<[^>]+>', '', description).strip()
-    clean_desc = re.sub(r'\s+', ' ', clean_desc)[:500]
+# ── Utilitários de desenho ─────────────────────────────────────
+def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
+    x0, y0, x1, y1 = xy
+    draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
+                            outline=outline, width=outline_width)
 
-    script = f"""Welcome to TechBR News. Here's what's happening in tech today.
+def draw_gradient_rect(img, x0, y0, x1, y1, color_top, color_bot):
+    draw = ImageDraw.Draw(img)
+    for i in range(y1 - y0):
+        t = i / max(y1 - y0 - 1, 1)
+        r = int(color_top[0] + (color_bot[0] - color_top[0]) * t)
+        g = int(color_top[1] + (color_bot[1] - color_top[1]) * t)
+        b = int(color_top[2] + (color_bot[2] - color_top[2]) * t)
+        draw.line([(x0, y0 + i), (x1, y0 + i)], fill=(r, g, b))
 
-{title}.
+def draw_tech_grid(img, alpha=18):
+    """Desenha grid de pontos tech no fundo."""
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(overlay)
+    spacing = 48
+    for x in range(0, VIDEO_W, spacing):
+        for y in range(0, VIDEO_H, spacing):
+            d.ellipse([x-1, y-1, x+1, y+1], fill=(0, 195, 255, alpha))
+    return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
 
-{clean_desc}
+def draw_glow_line(draw, x0, y0, x1, y1, color, width=3):
+    """Linha com efeito glow (3 camadas)."""
+    r, g, b = color
+    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 60), width=width + 4)
+    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 130), width=width + 2)
+    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 255), width=width)
 
-This story comes from {source}. For the full article and more tech news, visit TechBR News at non-s.github.io.
+def wrap_text(draw, text, font, max_width):
+    words = text.split()
+    lines, line = [], []
+    for word in words:
+        test = ' '.join(line + [word])
+        bbox = draw.textbbox((0, 0), test, font=font)
+        if bbox[2] > max_width and line:
+            lines.append(' '.join(line))
+            line = [word]
+        else:
+            line.append(word)
+    if line:
+        lines.append(' '.join(line))
+    return lines
 
-Don't forget to like this video and subscribe for daily tech updates. See you in the next one."""
-    return script
+# ── Script de narração ─────────────────────────────────────────
+def build_script(title: str, description: str, source: str, tags: list) -> str:
+    clean = re.sub(r'<[^>]+>', '', description).strip()
+    clean = re.sub(r'\s+', ' ', clean)[:600]
+    tag_str = ', '.join(tags[:3]) if tags else 'technology'
 
-# ── TTS com edge-tts ───────────────────────────────────────────
+    return f"""Welcome to TechBR News — your source for the latest in {tag_str}.
+
+Today's story: {title}.
+
+{clean}
+
+This report comes to you from {source}. You can read the original article and find more tech coverage on TechBR News at our website, linked in the description.
+
+If you found this useful, please hit like and subscribe — we publish new tech stories every single hour, so you'll never miss what's happening in the world of technology.
+
+Stay informed. Stay ahead. This is TechBR News."""
+
+# ── TTS ────────────────────────────────────────────────────────
 async def text_to_speech(text: str, output_path: Path):
-    """Converte texto em áudio MP3 usando edge-tts."""
     import edge_tts
-    communicate = edge_tts.Communicate(text, VOICE)
+    communicate = edge_tts.Communicate(text, VOICE, rate="+8%")
     await communicate.save(str(output_path))
 
 # ── Download de imagem ─────────────────────────────────────────
 def download_image(url: str, dest: Path) -> bool:
-    """Baixa imagem da URL."""
     try:
-        r = requests.get(url, timeout=10, headers={
-            "User-Agent": "TechBR-Bot/1.0"
-        })
+        r = requests.get(url, timeout=10, headers={"User-Agent": "TechBR-Bot/1.0"})
         if r.status_code == 200 and len(r.content) > 1000:
             dest.write_bytes(r.content)
             return True
@@ -100,144 +144,250 @@ def download_image(url: str, dest: Path) -> bool:
         log.debug(f"Image download failed: {e}")
     return False
 
-# ── Cria frame de vídeo ────────────────────────────────────────
+# ── Frame de vídeo — design profissional ──────────────────────
 def create_video_frame(title: str, source: str, image_path: Path | None,
-                       frame_num: int, total_frames: int) -> Image.Image:
-    """Cria um frame do vídeo com design profissional."""
-    img = Image.new("RGB", (VIDEO_W, VIDEO_H), BG_COLOR)
-    draw = ImageDraw.Draw(img)
-
-    # Fundo com gradiente simulado (faixas)
-    for i in range(VIDEO_H):
-        ratio = i / VIDEO_H
-        r = int(BG_COLOR[0] + (20 - BG_COLOR[0]) * ratio)
-        g = int(BG_COLOR[1] + (15 - BG_COLOR[1]) * ratio)
-        b = int(BG_COLOR[2] + (40 - BG_COLOR[2]) * ratio)
-        draw.line([(0, i), (VIDEO_W, i)], fill=(r, g, b))
-
-    # Imagem de fundo (se disponível)
-    if image_path and image_path.exists():
-        try:
-            bg = Image.open(image_path).convert("RGB")
-            bg = bg.resize((VIDEO_W, VIDEO_H), Image.LANCZOS)
-            # Overlay escuro para legibilidade
-            overlay = Image.new("RGBA", (VIDEO_W, VIDEO_H), (0, 0, 0, 160))
-            img = Image.alpha_composite(bg.convert("RGBA"), overlay).convert("RGB")
-            draw = ImageDraw.Draw(img)
-        except Exception:
-            pass
-
-    # Barra superior — branding
-    draw.rectangle([(0, 0), (VIDEO_W, 90)], fill=(0, 0, 0, 200))
-    font_brand = get_font(42, bold=True)
-    draw.text((50, 22), "⚡ TECHBR NEWS", font=font_brand, fill=ACCENT)
-    draw.text((VIDEO_W - 300, 22), datetime.now().strftime("%B %d, %Y"),
-              font=get_font(32), fill=SUBTEXT)
-
-    # Barra de progresso
-    progress = frame_num / max(total_frames, 1)
-    draw.rectangle([(0, 85), (VIDEO_W, 90)], fill=(40, 40, 60))
-    draw.rectangle([(0, 85), (int(VIDEO_W * progress), 90)], fill=ACCENT)
-
-    # Caixa do título (bottom third)
-    box_y = VIDEO_H - 320
-    draw.rectangle([(0, box_y), (VIDEO_W, VIDEO_H)], fill=(0, 0, 0, 210))
-    draw.rectangle([(0, box_y), (8, VIDEO_H)], fill=ACCENT)
-
-    # Título com quebra de linha automática
-    font_title = get_font(58, bold=True)
-    font_source = get_font(34)
-    font_cta = get_font(30)
-
-    # Wrap título
-    words = title.split()
-    lines, line = [], []
-    for word in words:
-        test = ' '.join(line + [word])
-        bbox = draw.textbbox((0, 0), test, font=font_title)
-        if bbox[2] > VIDEO_W - 120 and line:
-            lines.append(' '.join(line))
-            line = [word]
-        else:
-            line.append(word)
-    if line:
-        lines.append(' '.join(line))
-
-    y = box_y + 30
-    for l in lines[:3]:
-        draw.text((60, y), l, font=font_title, fill=TEXT_COLOR)
-        y += 70
-
-    # Fonte
-    draw.text((60, VIDEO_H - 90), f"📰 Source: {source}", font=font_source, fill=SUBTEXT)
-    draw.text((VIDEO_W - 500, VIDEO_H - 90), "non-s.github.io", font=font_cta, fill=ACCENT)
-
-    # Watermark
-    draw.text((60, VIDEO_H - 50), "🔔 Subscribe for daily tech news",
-              font=get_font(26), fill=(120, 120, 140))
-
-    return img
-
-# ── Gera thumbnail ─────────────────────────────────────────────
-def create_thumbnail(title: str, image_path: Path | None, output: Path):
-    """Cria thumbnail YouTube 1280x720."""
-    img = Image.new("RGB", (1280, 720), BG_COLOR)
-    draw = ImageDraw.Draw(img)
+                       frame_num: int, total_frames: int,
+                       category: str = "TECH") -> Image.Image:
+    """Frame estilo telejornal profissional."""
+    # Base escura
+    img = Image.new("RGBA", (VIDEO_W, VIDEO_H), (*BG_DARK, 255))
 
     # Gradiente de fundo
-    for i in range(720):
-        r = int(5 + 25 * (i/720))
-        draw.line([(0,i),(1280,i)], fill=(r, 5, 30))
+    draw_gradient_rect(img, 0, 0, VIDEO_W, VIDEO_H,
+                       BG_DARK, (12, 10, 35))
 
-    # Imagem de fundo
+    # Grid de pontos (sutil)
+    img = draw_tech_grid(img, alpha=12)
+
+    # ── Imagem de background ──
     if image_path and image_path.exists():
         try:
             bg = Image.open(image_path).convert("RGB")
-            bg = bg.resize((1280, 720), Image.LANCZOS)
-            overlay = Image.new("RGBA", (1280, 720), (0, 0, 0, 140))
-            img = Image.alpha_composite(bg.convert("RGBA"), overlay).convert("RGB")
-            draw = ImageDraw.Draw(img)
+            # Crop inteligente — foco no centro
+            bw, bh = bg.size
+            target_ratio = VIDEO_W / VIDEO_H
+            current_ratio = bw / bh
+            if current_ratio > target_ratio:
+                new_w = int(bh * target_ratio)
+                offset = (bw - new_w) // 2
+                bg = bg.crop((offset, 0, offset + new_w, bh))
+            else:
+                new_h = int(bw / target_ratio)
+                offset = (bh - new_h) // 2
+                bg = bg.crop((0, offset, bw, offset + new_h))
+            bg = bg.resize((VIDEO_W, VIDEO_H), Image.LANCZOS)
+            # Overlay gradiente escuro (mais leve no topo, mais escuro na base)
+            overlay = Image.new("RGBA", (VIDEO_W, VIDEO_H), (0, 0, 0, 0))
+            ov_draw = ImageDraw.Draw(overlay)
+            for i in range(VIDEO_H):
+                alpha = int(100 + 130 * (i / VIDEO_H))
+                ov_draw.line([(0, i), (VIDEO_W, i)], fill=(0, 0, 10, alpha))
+            img = Image.alpha_composite(bg.convert("RGBA"), overlay)
+            img = img.convert("RGB")
         except Exception:
             pass
 
-    # Barra lateral esquerda colorida
-    draw.rectangle([(0, 0), (18, 720)], fill=ACCENT)
+    draw = ImageDraw.Draw(img)
 
-    # Badge "TECH NEWS"
-    draw.rounded_rectangle([(40, 30), (260, 90)], radius=8, fill=ACCENT)
-    draw.text((55, 42), "⚡ TECH NEWS", font=get_font(34, bold=True), fill=(0,0,0))
+    # ── TOP BAR ──────────────────────────────────────────────
+    # Fundo da barra superior
+    draw.rectangle([(0, 0), (VIDEO_W, 88)], fill=(0, 0, 0, 210))
 
-    # Título
-    font_t = get_font(68, bold=True)
-    words = title.split()
-    lines, line = [], []
-    for w in words:
-        test = ' '.join(line + [w])
-        bbox = draw.textbbox((0,0), test, font=font_t)
-        if bbox[2] > 1160 and line:
-            lines.append(' '.join(line))
-            line = [w]
-        else:
-            line.append(w)
-    if line:
-        lines.append(' '.join(line))
+    # Linha de brilho na base da barra
+    for i in range(3):
+        alpha = 80 - i * 25
+        draw.line([(0, 88 + i), (VIDEO_W, 88 + i)],
+                  fill=(*ACCENT_BLUE, alpha))
 
-    y = 130
-    for l in lines[:4]:
-        draw.text((40, y), l, font=font_t, fill=TEXT_COLOR)
-        y += 80
+    # Logo "⚡ TECHBR NEWS"
+    font_logo = get_font(44, bold=True)
+    draw.text((50, 20), "TECHBR", font=font_logo, fill=ACCENT_BLUE)
+    draw.text((222, 20), "NEWS", font=font_logo, fill=TEXT_WHITE)
 
-    # Logo bottom
-    draw.text((40, 655), "TechBR News • non-s.github.io",
-              font=get_font(32), fill=SUBTEXT)
+    # Separador vertical
+    draw.rectangle([(210, 22), (213, 66)], fill=(*ACCENT_BLUE, 180))
 
-    img.save(str(output), "JPEG", quality=95)
+    # Badge LIVE / categoria
+    badge_x = 340
+    draw_rounded_rect(draw, (badge_x, 24, badge_x + 120, 64),
+                      radius=6, fill=RED_LIVE)
+    draw.text((badge_x + 14, 32), "● LIVE", font=get_font(26, bold=True),
+              fill=TEXT_WHITE)
+
+    # Data e hora
+    now_str = datetime.now().strftime("%b %d, %Y  %H:%M")
+    font_date = get_font(28)
+    bbox = draw.textbbox((0, 0), now_str, font=font_date)
+    draw.text((VIDEO_W - bbox[2] - 50, 30), now_str,
+              font=font_date, fill=TEXT_GRAY)
+
+    # ── PROGRESS BAR ─────────────────────────────────────────
+    progress = frame_num / max(total_frames - 1, 1)
+    bar_y = 88
+    draw.rectangle([(0, bar_y), (VIDEO_W, bar_y + 5)], fill=(25, 25, 45))
+    prog_w = int(VIDEO_W * progress)
+    if prog_w > 0:
+        # Gradiente na barra de progresso
+        for px in range(prog_w):
+            t = px / VIDEO_W
+            r = int(ACCENT_BLUE[0] + (ACCENT_CYAN[0] - ACCENT_BLUE[0]) * t)
+            g = int(ACCENT_BLUE[1] + (ACCENT_CYAN[1] - ACCENT_BLUE[1]) * t)
+            b = int(ACCENT_BLUE[2] + (ACCENT_CYAN[2] - ACCENT_BLUE[2]) * t)
+            draw.line([(px, bar_y), (px, bar_y + 4)], fill=(r, g, b))
+        # Ponto brilhante no final da barra
+        px = prog_w - 1
+        draw.ellipse([(px - 5, bar_y - 3), (px + 5, bar_y + 7)],
+                     fill=TEXT_WHITE)
+
+    # ── LOWER THIRD (área de conteúdo) ───────────────────────
+    lt_y = VIDEO_H - 310
+    lt_h = 280
+
+    # Fundo semitransparente com gradiente
+    for i in range(lt_h):
+        t = 1 - (i / lt_h) ** 0.5
+        alpha = int(220 * t)
+        draw.line([(0, lt_y + i), (VIDEO_W, lt_y + i)],
+                  fill=(0, 0, 8, alpha))
+
+    # Barra vertical de acento (esquerda)
+    for i in range(3):
+        alpha = 255 - i * 60
+        draw.rectangle([(i * 3, lt_y), (i * 3 + 2, VIDEO_H - 50)],
+                       fill=(*ACCENT_BLUE, alpha))
+
+    # Badge de categoria
+    cat_x, cat_y = 30, lt_y + 12
+    cat_text = category.upper()
+    cat_font = get_font(26, bold=True)
+    cat_bbox = draw.textbbox((0, 0), cat_text, font=cat_font)
+    cat_w = cat_bbox[2] + 20
+    draw_rounded_rect(draw, (cat_x, cat_y, cat_x + cat_w, cat_y + 38),
+                      radius=5, fill=ACCENT_BLUE)
+    draw.text((cat_x + 10, cat_y + 6), cat_text, font=cat_font,
+              fill=(0, 0, 0))
+
+    # Título principal
+    font_title = get_font(62, bold=True)
+    title_lines = wrap_text(draw, title, font_title, VIDEO_W - 120)
+    ty = lt_y + 62
+    for line in title_lines[:3]:
+        draw.text((30, ty), line, font=font_title, fill=TEXT_WHITE)
+        ty += 74
+
+    # Linha separadora
+    sep_y = VIDEO_H - 95
+    draw.line([(30, sep_y), (VIDEO_W - 30, sep_y)],
+              fill=(*ACCENT_BLUE, 60), width=1)
+
+    # Rodapé: fonte e URL
+    font_footer = get_font(30)
+    draw.text((30, sep_y + 12), f"📰  {source}",
+              font=font_footer, fill=TEXT_GRAY)
+
+    font_url = get_font(28, bold=True)
+    url_text = "non-s.github.io  |  Subscribe ↑"
+    bbox_url = draw.textbbox((0, 0), url_text, font=font_url)
+    draw.text((VIDEO_W - bbox_url[2] - 30, sep_y + 14),
+              url_text, font=font_url, fill=ACCENT_CYAN)
+
+    return img.convert("RGB")
+
+# ── Thumbnail profissional ─────────────────────────────────────
+def create_thumbnail(title: str, image_path: Path | None, output: Path,
+                     category: str = "TECH NEWS"):
+    """Thumbnail 1280×720 otimizado para CTR do YouTube."""
+    W, H = 1280, 720
+    img = Image.new("RGB", (W, H), BG_DARK)
+
+    # Gradiente de fundo
+    for i in range(H):
+        t = i / H
+        r = int(BG_DARK[0] * (1 - t) + 20 * t)
+        g = int(BG_DARK[1] * (1 - t) + 8 * t)
+        b = int(BG_DARK[2] * (1 - t) + 55 * t)
+        img_draw_temp = ImageDraw.Draw(img)
+        img_draw_temp.line([(0, i), (W, i)], fill=(r, g, b))
+
+    # Imagem de fundo (lado direito, 60% da largura)
+    if image_path and image_path.exists():
+        try:
+            bg = Image.open(image_path).convert("RGB")
+            bg = bg.resize((W, H), Image.LANCZOS)
+            # Mask gradiente: opaco à direita, transparente à esquerda
+            mask = Image.new("L", (W, H), 0)
+            mask_draw = ImageDraw.Draw(mask)
+            for x in range(W):
+                t = max(0, (x - W * 0.25) / (W * 0.75))
+                t = min(1, t)
+                alpha = int(185 * t)
+                mask_draw.line([(x, 0), (x, H)], fill=alpha)
+            img.paste(bg, (0, 0), mask)
+        except Exception:
+            pass
+
+    draw = ImageDraw.Draw(img)
+
+    # Overlay escuro no lado esquerdo para legibilidade
+    for x in range(int(W * 0.7)):
+        t = 1 - x / (W * 0.7)
+        alpha = int(160 * t ** 0.5)
+        draw.line([(x, 0), (x, H)], fill=(0, 0, 10, alpha))
+
+    # Faixa lateral esquerda colorida
+    for i in range(10):
+        alpha = 255 - i * 22
+        draw.rectangle([(i * 2, 0), (i * 2 + 1, H)],
+                       fill=(*ACCENT_BLUE, alpha))
+
+    # Badge categoria (topo esquerdo)
+    badge_font = get_font(30, bold=True)
+    badge_bbox = draw.textbbox((0, 0), category, font=badge_font)
+    bw = badge_bbox[2] + 24
+    draw_rounded_rect(draw, (28, 28, 28 + bw, 72), radius=8, fill=RED_LIVE)
+    draw.text((40, 36), category, font=badge_font, fill=TEXT_WHITE)
+
+    # Título principal — grande e impactante
+    font_t = get_font(80, bold=True)
+    font_t_small = get_font(68, bold=True)
+    title_lines = wrap_text(draw, title, font_t, int(W * 0.68))
+    # Se muito longo, usa fonte menor
+    if len(title_lines) > 3:
+        title_lines = wrap_text(draw, title, font_t_small, int(W * 0.68))
+        font_used = font_t_small
+        line_h = 82
+    else:
+        font_used = font_t
+        line_h = 96
+
+    ty = 100
+    for line in title_lines[:4]:
+        # Sombra do texto
+        draw.text((32, ty + 3), line, font=font_used,
+                  fill=(0, 0, 0))
+        draw.text((30, ty), line, font=font_used, fill=TEXT_WHITE)
+        ty += line_h
+
+    # Linha separadora
+    draw.rectangle([(28, H - 110), (int(W * 0.65), H - 107)],
+                   fill=ACCENT_BLUE)
+
+    # Branding TechBR na base
+    font_brand = get_font(36, bold=True)
+    draw.text((28, H - 92), "TECHBR", font=font_brand, fill=ACCENT_BLUE)
+    draw.text((168, H - 92), "NEWS", font=font_brand, fill=TEXT_WHITE)
+
+    font_sub = get_font(26)
+    draw.text((28, H - 48), "non-s.github.io  •  Tech every hour",
+              font=font_sub, fill=TEXT_GRAY)
+
+    img.save(str(output), "JPEG", quality=95, optimize=True)
     log.info(f"  🖼  Thumbnail: {output.name}")
 
-# ── Cria vídeo com FFmpeg ──────────────────────────────────────
+# ── Monta vídeo com FFmpeg ─────────────────────────────────────
 def create_video(title: str, source: str, image_path: Path | None,
-                 audio_path: Path, output_path: Path) -> bool:
-    """Monta o vídeo final com FFmpeg."""
+                 audio_path: Path, output_path: Path,
+                 category: str = "TECH") -> bool:
     tmp_dir = output_path.parent / f"tmp_{output_path.stem}"
     tmp_dir.mkdir(exist_ok=True)
 
@@ -256,85 +406,84 @@ def create_video(title: str, source: str, image_path: Path | None,
     total_frames = int(duration * fps)
     log.info(f"  🎬 Gerando {total_frames} frames ({duration:.1f}s)...")
 
-    # Gera frames-chave (apenas 2: início e fim — FFmpeg interpola)
-    frames_to_render = min(total_frames, 48)  # máx 48 frames reais
-    for i in range(frames_to_render):
+    # Gera frames (keyframes com interpolação)
+    n_render = min(total_frames, 60)  # max 60 frames renderizados
+    for i in range(n_render):
+        frame_num = int(i * total_frames / n_render)
         frame = create_video_frame(title, source, image_path,
-                                   i, frames_to_render)
+                                   frame_num, total_frames, category)
         frame.save(str(tmp_dir / f"frame_{i:05d}.png"))
 
-    # Lista de frames com timestamps para FFmpeg
+    # Concat list
     concat_file = tmp_dir / "frames.txt"
     with open(concat_file, "w") as f:
-        for i in range(frames_to_render):
+        dur_each = duration / n_render
+        for i in range(n_render):
             f.write(f"file 'frame_{i:05d}.png'\n")
-            f.write(f"duration {duration / frames_to_render:.4f}\n")
+            f.write(f"duration {dur_each:.4f}\n")
 
-    # FFmpeg: frames + áudio → mp4
     cmd = [
         "ffmpeg", "-y",
-        "-f", "concat", "-safe", "0", "-i", concat_file.name,  # use filename only since cwd=tmp_dir
+        "-f", "concat", "-safe", "0", "-i", concat_file.name,
         "-i", str(audio_path.resolve()),
         "-vf", f"scale={VIDEO_W}:{VIDEO_H},fps={fps}",
-        "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-        "-c:a", "aac", "-b:a", "128k",
+        "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+        "-c:a", "aac", "-b:a", "192k",
         "-pix_fmt", "yuv420p",
         "-movflags", "+faststart",
         "-shortest",
-        str(output_path.resolve())
+        str(output_path.resolve()),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True,
                             cwd=str(tmp_dir))
     if result.returncode != 0:
-        log.error(f"FFmpeg error: {result.stderr[-500:]}")
+        log.error(f"FFmpeg error: {result.stderr[-600:]}")
         return False
 
-    # Limpa frames temporários
     import shutil
     shutil.rmtree(tmp_dir, ignore_errors=True)
     log.info(f"  ✅ Vídeo gerado: {output_path.name}")
     return True
 
-# ── Salva metadados para upload ────────────────────────────────
-def save_metadata(slug: str, title: str, description: str,
-                  source: str, source_url: str, tags: list,
-                  thumbnail: Path, video: Path):
-    """Salva JSON com metadados SEO para o upload."""
-    # Título otimizado para SEO (max 100 chars)
-    yt_title = f"{title[:85]} | TechBR News" if len(title) < 85 else title[:97] + "..."
+# ── Metadados SEO ──────────────────────────────────────────────
+def save_metadata(slug, title, description, source, source_url, tags,
+                  thumbnail, video):
+    yt_title = f"{title[:82]} | TechBR News" if len(title) <= 82 else title[:94] + "..."
 
-    # Descrição SEO rica
-    yt_desc = f"""{description[:400]}
+    yt_desc = f"""{description[:500]}
 
-🔗 Read the full article: {source_url}
-📰 Source: {source}
+🔗 Fonte original: {source_url}
+📰 Publicado por: {source}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🌐 TechBR News — Daily Tech Updates
-Website: https://non-s.github.io
-Subscribe for the latest in AI, gadgets, cybersecurity, and startups.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 TechBR News — Tecnologia toda hora
+📡 Publicamos notícias de tech automaticamente, 24 horas por dia.
+🔔 Inscreva-se para não perder nada: https://youtube.com/@techbrnews
 
-⏱️ CHAPTERS
-0:00 Introduction
-0:15 Main Story
-{f"0:{int(len(description.split())/3):02d} Details"}
-1:00 Wrap Up
+━━━━━━━━━━━━━━━━━━━━━━━━
+⏱️ CAPÍTULOS
+0:00 Introdução
+0:12 Notícia principal
+1:00 Detalhes e contexto
+1:45 Encerramento
 
-🏷️ TAGS
-#TechNews #Technology #AI #Gadgets #TechBR
+━━━━━━━━━━━━━━━━━━━━━━━━
+🏷️ {' '.join('#' + t.replace(' ', '') for t in (tags + ['TechNews', 'Tecnologia', 'AI', 'TechBR'])[:10])}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📧 Contact: sourcenaiomiocc@gmail.com
-© TechBR News {datetime.now().year} — All rights to original articles belong to their respective sources.
+━━━━━━━━━━━━━━━━━━━━━━━━
+© {datetime.now().year} TechBR News. Os direitos dos artigos originais pertencem às suas respectivas fontes.
+📧 Contato: sourcenaiomiocc@gmail.com
 """
 
     metadata = {
         "title": yt_title,
         "description": yt_desc,
-        "tags": tags + ["tech news", "technology", "TechBR", "latest tech",
-                        "AI news", "gadgets", "startup news", "cybersecurity"],
-        "category_id": "28",  # Science & Technology
+        "tags": list(set(tags + [
+            "tech news", "technology", "TechBR", "tecnologia",
+            "AI", "inteligência artificial", "gadgets", "inovação",
+            "startup", "programação", "silicon valley",
+        ]))[:30],
+        "category_id": "28",
         "privacy": "public",
         "thumbnail": str(thumbnail),
         "video": str(video),
@@ -345,22 +494,33 @@ Subscribe for the latest in AI, gadgets, cybersecurity, and startups.
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False))
     return metadata
 
-# ── Verifica se vídeo já foi gerado ───────────────────────────
+# ── Utilitários ────────────────────────────────────────────────
 def video_exists(slug: str) -> bool:
     return (VIDEOS_DIR / f"{slug}.mp4").exists() or \
            (VIDEOS_DIR / f"{slug}.done").exists()
 
+def guess_category(tags: list, title: str) -> str:
+    text = (title + " ".join(tags)).lower()
+    if any(w in text for w in ["ai", "artificial", "machine learning", "gpt", "llm"]):
+        return "AI"
+    if any(w in text for w in ["security", "hack", "cyber", "breach", "malware"]):
+        return "SECURITY"
+    if any(w in text for w in ["startup", "funding", "ipo", "acquisition", "billion"]):
+        return "BUSINESS"
+    if any(w in text for w in ["apple", "google", "microsoft", "meta", "amazon"]):
+        return "BIG TECH"
+    if any(w in text for w in ["phone", "iphone", "android", "hardware", "chip"]):
+        return "HARDWARE"
+    return "TECH"
+
 # ── Principal ──────────────────────────────────────────────────
 def main():
     VIDEOS_DIR.mkdir(exist_ok=True)
-
-    # Lê posts Jekyll existentes para encontrar notícias novas
     posts_dir = Path("_posts")
     if not posts_dir.exists():
         log.error("_posts/ não encontrado")
         return
 
-    # Ordena por data (mais recentes primeiro)
     posts = sorted(posts_dir.glob("*.md"), reverse=True)
     generated = 0
 
@@ -372,7 +532,6 @@ def main():
         if video_exists(slug):
             continue
 
-        # Lê frontmatter do post
         content = post_file.read_text(encoding="utf-8")
         fm = {}
         if content.startswith("---"):
@@ -394,7 +553,8 @@ def main():
         except Exception:
             tags = ["tech", "technology"]
 
-        log.info(f"📹 Gerando vídeo: {title[:60]}...")
+        category = guess_category(tags, title)
+        log.info(f"📹 [{category}] Gerando: {title[:60]}...")
 
         tmp = Path(f"/tmp/yt_{slug}")
         tmp.mkdir(exist_ok=True)
@@ -407,7 +567,7 @@ def main():
                 img_path = img_dest
 
         # TTS
-        script   = build_script(title, description, source)
+        script = build_script(title, description, source, tags)
         mp3_path = tmp / "narration.mp3"
         try:
             asyncio.run(text_to_speech(script, mp3_path))
@@ -418,19 +578,18 @@ def main():
 
         # Thumbnail
         thumb_path = VIDEOS_DIR / f"{slug}_thumb.jpg"
-        create_thumbnail(title, img_path, thumb_path)
+        create_thumbnail(title, img_path, thumb_path, category)
 
         # Vídeo
         video_path = VIDEOS_DIR / f"{slug}.mp4"
-        ok = create_video(title, source, img_path, mp3_path, video_path)
+        ok = create_video(title, source, img_path, mp3_path, video_path, category)
         if not ok:
             continue
 
-        # Metadados SEO
+        # Metadados
         save_metadata(slug, title, description, source, source_url,
                       tags, thumb_path, video_path)
 
-        # Marca como gerado
         import shutil
         shutil.rmtree(tmp, ignore_errors=True)
         generated += 1
