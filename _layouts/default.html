@@ -2,65 +2,54 @@
 <html lang="pt-BR">
 <head>
   {% include head.html %}
+  <!-- Google Fonts pré-carregado -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
 
-  <!-- ============================================================
-       NAVBAR / HEADER
-       ============================================================ -->
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
     <div class="container">
 
-      <!-- Logo / Brand -->
       <a class="navbar-brand" href="{{ '/' | relative_url }}">
-        <i class="bi bi-cpu-fill me-2"></i>Tech<span>BR</span> News
+        <span class="brand-icon">⚡</span>
+        Tech<span>BR</span> News
       </a>
 
-      <!-- Toggle mobile -->
-      <button class="navbar-toggler" type="button"
+      <button class="navbar-toggler border-0" type="button"
               data-bs-toggle="collapse" data-bs-target="#mainNav"
               aria-controls="mainNav" aria-expanded="false"
-              aria-label="Abrir menu">
-        <span class="navbar-toggler-icon"></span>
+              aria-label="Menu"
+              style="color:rgba(255,255,255,.6);">
+        <i class="bi bi-list" style="font-size:1.4rem;"></i>
       </button>
 
-      <!-- Links -->
       <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2">
           <li class="nav-item">
             <a class="nav-link {% if page.url == '/' %}active{% endif %}"
-               href="{{ '/' | relative_url }}">
-              <i class="bi bi-house me-1"></i>Início
-            </a>
+               href="{{ '/' | relative_url }}">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/tecnologia/' | relative_url }}">
-              <i class="bi bi-laptop me-1"></i>Tecnologia
-            </a>
+            <a class="nav-link" href="{{ '/tecnologia/' | relative_url }}">Tecnologia</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/gadgets/' | relative_url }}">
-              <i class="bi bi-phone me-1"></i>Gadgets
-            </a>
+            <a class="nav-link" href="{{ '/gadgets/' | relative_url }}">Gadgets</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/ia/' | relative_url }}">
-              <i class="bi bi-robot me-1"></i>IA
-            </a>
+            <a class="nav-link" href="{{ '/ia/' | relative_url }}">IA</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/startups/' | relative_url }}">
-              <i class="bi bi-rocket me-1"></i>Startups
-            </a>
+            <a class="nav-link" href="{{ '/startups/' | relative_url }}">Startups</a>
           </li>
         </ul>
 
-        <!-- Busca (placeholder) -->
-        <form class="d-flex" role="search" action="{{ '/search/' | relative_url }}" method="get">
-          <input class="form-control form-control-sm me-2" type="search"
-                 name="q" placeholder="Buscar notícias…" aria-label="Buscar"
-                 style="width:200px; background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2); color:#fff;">
-          <button class="btn btn-sm btn-outline-light" type="submit">
+        <form class="d-flex gap-2" role="search"
+              action="{{ '/search/' | relative_url }}" method="get">
+          <input class="form-control search-input" type="search"
+                 name="q" placeholder="Buscar notícias…" aria-label="Buscar">
+          <button class="btn search-btn" type="submit">
             <i class="bi bi-search"></i>
           </button>
         </form>
@@ -68,146 +57,128 @@
     </div>
   </nav>
 
-  <!-- ============================================================
-       GOOGLE ADSENSE — Leaderboard (728×90) — Topo da página
-       Para ativar: substitua os comentários pelo código real do AdSense
-       ============================================================ -->
-  <!--
-  <div class="container my-2 text-center">
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:728px;height:90px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-  -->
+  <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
+  <main>{{ content }}</main>
 
-  <!-- ============================================================
-       CONTEÚDO PRINCIPAL
-       ============================================================ -->
-  <main>
-    {{ content }}
-  </main>
-
-  <!-- ============================================================
-       GOOGLE ADSENSE — Rectangle (300×250) — Antes do footer
-       ============================================================ -->
-  <!--
-  <div class="container my-3 text-center">
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:300px;height:250px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-  -->
-
-  <!-- ============================================================
-       FOOTER
-       ============================================================ -->
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer class="techbr-footer">
     <div class="container">
       <div class="row g-4">
 
-        <!-- Sobre o blog -->
+        <!-- Sobre -->
         <div class="col-lg-4 col-md-6">
-          <h5><i class="bi bi-cpu-fill me-2"></i>TechBR News</h5>
-          <p style="font-size:.9rem; line-height:1.6;">
-            Seu portal de notícias de tecnologia, gadgets, inteligência artificial
-            e inovação. Atualizado automaticamente com as melhores fontes do Brasil.
+          <div class="footer-brand">
+            <span style="background:linear-gradient(135deg,#f97316,#ef4444);width:28px;height:28px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;">⚡</span>
+            Tech<span class="brand-dot">BR</span> News
+          </div>
+          <p class="footer-desc">
+            Portal de notícias de tecnologia mantido por
+            <strong style="color:rgba(255,255,255,.7);">Julio</strong>,
+            atualizado automaticamente com as melhores fontes de tech do Brasil.
           </p>
-          <div class="d-flex gap-2 mt-3">
+          <div class="footer-social">
             <a href="https://twitter.com/techbrnews" target="_blank" rel="noopener"
-               class="btn btn-sm btn-outline-light rounded-circle p-2">
+               class="social-btn" title="Twitter">
               <i class="bi bi-twitter-x"></i>
             </a>
-            <a href="{{ '/feed.xml' | relative_url }}"
-               class="btn btn-sm btn-outline-light rounded-circle p-2">
+            <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed">
               <i class="bi bi-rss-fill"></i>
+            </a>
+            <a href="https://github.com/non-s" target="_blank" rel="noopener"
+               class="social-btn" title="GitHub">
+              <i class="bi bi-github"></i>
             </a>
           </div>
         </div>
 
         <!-- Categorias -->
         <div class="col-lg-2 col-md-3 col-6">
-          <h5>Categorias</h5>
-          <a href="{{ '/tecnologia/' | relative_url }}">Tecnologia</a>
-          <a href="{{ '/gadgets/' | relative_url }}">Gadgets</a>
-          <a href="{{ '/ia/' | relative_url }}">Inteligência Artificial</a>
-          <a href="{{ '/startups/' | relative_url }}">Startups</a>
-          <a href="{{ '/mobile/' | relative_url }}">Mobile</a>
-          <a href="{{ '/seguranca/' | relative_url }}">Segurança Digital</a>
+          <p class="footer-heading">Categorias</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/tecnologia/' | relative_url }}">Tecnologia</a></li>
+            <li><a href="{{ '/gadgets/' | relative_url }}">Gadgets</a></li>
+            <li><a href="{{ '/ia/' | relative_url }}">Inteligência Artificial</a></li>
+            <li><a href="{{ '/startups/' | relative_url }}">Startups</a></li>
+            <li><a href="{{ '/mobile/' | relative_url }}">Mobile</a></li>
+            <li><a href="{{ '/seguranca/' | relative_url }}">Segurança</a></li>
+          </ul>
         </div>
 
-        <!-- Links úteis -->
+        <!-- Links -->
         <div class="col-lg-2 col-md-3 col-6">
-          <h5>Links</h5>
-          <a href="{{ '/about/' | relative_url }}">Sobre</a>
-          <a href="{{ '/contact/' | relative_url }}">Contato</a>
-          <a href="{{ '/privacy/' | relative_url }}">Privacidade</a>
-          <a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a>
-          <a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a>
+          <p class="footer-heading">Links</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/about/' | relative_url }}">Sobre</a></li>
+            <li><a href="{{ '/contact/' | relative_url }}">Contato</a></li>
+            <li><a href="{{ '/privacy/' | relative_url }}">Privacidade</a></li>
+            <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
+            <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
+          </ul>
         </div>
 
-        <!-- Parceiros / Afiliados Amazon -->
+        <!-- Afiliados Amazon -->
         <div class="col-lg-4 col-md-6">
-          <h5><i class="bi bi-star-fill me-1" style="color:#ffc107"></i>Produtos em Destaque</h5>
-          <!-- ══ BLOCO AFILIADO AMAZON ══════════════════════════════
-               Para ativar links de afiliado:
-               1. Cadastre-se em associados.amazon.com.br
-               2. Substitua os links pelos seus links de afiliado
-               3. Sua tag de afiliado: ?tag=SUA-TAG-AQUI
-               ════════════════════════════════════════════════════ -->
-          <div class="affiliate-block">
-            <div class="affiliate-title mb-2">
-              <i class="bi bi-bag-check-fill text-warning me-1"></i>
-              Compre com desconto na Amazon
+          <p class="footer-heading">🛒 Tech em Destaque</p>
+          <!--
+          ══ LINKS DE AFILIADO AMAZON ══════════════════════════
+          Substitua os links PLACEHOLDER pelos seus links com tag
+          de afiliado: ?tag=SUA-TAG-AQUI
+          ═════════════════════════════════════════════════════ -->
+          <div class="affiliate-widget">
+            <div class="aff-title">
+              <span>🛒</span> Melhores preços na Amazon
             </div>
-            <div class="d-flex flex-column gap-2" style="font-size:.82rem;">
-              <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
-                 class="text-decoration-none" style="color:#ff9900;">
-                🎧 Fones de ouvido premium
-              </a>
-              <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
-                 class="text-decoration-none" style="color:#ff9900;">
-                💻 Notebooks mais vendidos
-              </a>
-              <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
-                 class="text-decoration-none" style="color:#ff9900;">
-                📱 Smartphones em oferta
-              </a>
-            </div>
-            <small class="d-block mt-2" style="color:rgba(0,0,0,.45); font-size:.72rem;">
-              *Links de afiliado — comprando por aqui você apoia o blog sem custo extra.
-            </small>
+            <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
+               class="aff-link">
+              <span class="aff-emoji">🎧</span> Fones de ouvido premium
+            </a>
+            <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
+               class="aff-link">
+              <span class="aff-emoji">💻</span> Notebooks mais vendidos
+            </a>
+            <a href="https://amzn.to/PLACEHOLDER" target="_blank" rel="noopener sponsored"
+               class="aff-link">
+              <span class="aff-emoji">📱</span> Smartphones em oferta
+            </a>
+            <a href="https://www.amazon.com.br/?tag=techbrnews-20"
+               target="_blank" rel="noopener sponsored" class="btn-amazon">
+              Ver mais na Amazon →
+            </a>
+            <p style="font-size:.68rem;color:rgba(255,255,255,.2);margin-top:.5rem;margin-bottom:0;">
+              *Links de afiliado — sem custo extra para você
+            </p>
           </div>
         </div>
 
-      </div><!-- /row -->
+      </div>
+
+      <hr class="footer-divider">
 
       <div class="footer-bottom">
-        <p class="mb-1">
-          © {{ 'now' | date: "%Y" }} <strong>TechBR News</strong> —
-          Mantido por <a href="https://github.com/non-s">Julio (non-s)</a>
-        </p>
-        <p class="mb-0" style="font-size:.78rem;">
-          Conteúdo baseado em feeds públicos de notícias.
-          Os direitos dos artigos originais pertencem aos seus respectivos autores.
-          Feito com ❤️ e Jekyll + GitHub Pages.
-        </p>
+        <span>
+          © {{ 'now' | date: "%Y" }} <strong style="color:rgba(255,255,255,.5);">TechBR News</strong>
+          — Mantido por <a href="https://github.com/non-s">Julio (non-s)</a>
+        </span>
+        <span>
+          Conteúdo curado de feeds públicos. Direitos dos artigos pertencem aos autores originais.
+          Feito com ❤️ e Jekyll.
+        </span>
       </div>
+
     </div>
   </footer>
 
-  <!-- Bootstrap 5 JS Bundle (com Popper) -->
+  <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmGGmFMqgGxT1GvE+LLWcmIFJ5m"
           crossorigin="anonymous"></script>
 
-  <!-- ══ Google AdSense script global (descomente após aprovação) ══
+  <!--
+  ══ GOOGLE ADSENSE — descomente após aprovação ══════════════
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX"
           crossorigin="anonymous"></script>
-  ══ -->
+  ═══════════════════════════════════════════════════════════ -->
 
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
