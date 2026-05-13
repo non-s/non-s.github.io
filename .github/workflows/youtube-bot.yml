@@ -2,9 +2,7 @@ name: "YouTube Bot"
 
 on:
   schedule:
-    - cron: "0 9 * * *"
-    - cron: "0 13 * * *"
-    - cron: "0 19 * * *"
+    - cron: "0 * * * *"   # Every hour
   workflow_dispatch:
 
 jobs:
@@ -30,7 +28,7 @@ jobs:
           cache: "pip"
 
       - name: "Instalar FFmpeg"
-        run: sudo apt-get install -y ffmpeg fonts-dejavu-core
+        run: sudo apt-get install -y ffmpeg fonts-dejavu-core fonts-liberation
 
       - name: "Instalar dependencias Python"
         run: |
