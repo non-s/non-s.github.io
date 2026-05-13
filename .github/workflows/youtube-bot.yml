@@ -55,6 +55,7 @@ jobs:
 
       - name: "Atualizar YOUTUBE_TOKEN secret"
         if: always()
+        continue-on-error: true
         run: |
           if [ -f token.json ]; then
             gh secret set YOUTUBE_TOKEN < token.json
