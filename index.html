@@ -1,0 +1,305 @@
+---
+layout: default
+title: "TechBR News — Últimas notícias de tecnologia"
+description: "Portal de notícias de tecnologia, gadgets, IA e inovação. Atualizado automaticamente com as melhores fontes do Brasil."
+---
+
+<!-- ============================================================
+     HERO / DESTAQUE
+     ============================================================ -->
+{% assign featured = site.posts | first %}
+{% if featured %}
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center g-4">
+
+      <!-- Texto do destaque -->
+      <div class="col-lg-7">
+        {% for cat in featured.categories limit:1 %}
+        <span class="badge-category mb-2 d-inline-block">{{ cat | upcase }}</span>
+        {% endfor %}
+        <h1 class="mb-3">
+          <a href="{{ featured.url | relative_url }}"
+             class="text-white text-decoration-none stretched-link-custom">
+            {{ featured.title }}
+          </a>
+        </h1>
+        <p class="mb-3" style="color:rgba(255,255,255,.8); font-size:1.05rem;">
+          {{ featured.description | default: featured.excerpt | strip_html | truncate: 160 }}
+        </p>
+        <div class="d-flex align-items-center gap-3" style="font-size:.85rem; color:rgba(255,255,255,.65);">
+          <span><i class="bi bi-calendar3 me-1"></i>{{ featured.date | date: "%d/%m/%Y" }}</span>
+          <span><i class="bi bi-person me-1"></i>{{ featured.author | default: site.author.name }}</span>
+        </div>
+        <a href="{{ featured.url | relative_url }}"
+           class="btn btn-light mt-3 fw-bold">
+          Ler notícia completa <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+      <!-- Imagem do destaque -->
+      <div class="col-lg-5 text-center">
+        {% if featured.image %}
+          <img src="{{ featured.image | relative_url }}"
+               alt="{{ featured.title | escape }}"
+               class="img-fluid rounded-3"
+               style="max-height:300px; width:100%; object-fit:cover; box-shadow: 0 8px 32px rgba(0,0,0,.4);">
+        {% else %}
+          <div class="rounded-3 d-flex align-items-center justify-content-center"
+               style="height:260px; background:rgba(255,255,255,.08);">
+            <i class="bi bi-newspaper" style="font-size:6rem; color:rgba(255,255,255,.3);"></i>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+<!-- ============================================================
+     CORPO — GRID DE NOTÍCIAS + SIDEBAR
+     ============================================================ -->
+<div class="container my-4">
+  <div class="row g-4">
+
+    <!-- ── Coluna de notícias ── -->
+    <div class="col-lg-8">
+
+      <!-- ══ ADSENSE — Banner antes das notícias ════════════════════
+      <div class="adsense-placeholder mb-3">
+        <small>⬛ Espaço para Anúncio Google AdSense — 728×90</small>
+        <!-- Código real:
+        <ins class="adsbygoogle" style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"
+             data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+      ══ -->
+
+      <!-- Título da seção -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 fw-bold mb-0">
+          <i class="bi bi-clock-history me-2 text-primary"></i>Notícias Recentes
+        </h2>
+        <a href="{{ '/feed.xml' | relative_url }}"
+           class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-rss me-1"></i>RSS
+        </a>
+      </div>
+
+      <!-- Grid de posts -->
+      <div class="row g-3">
+        {% assign posts_to_show = site.posts | offset: 1 %}
+        {% for post in posts_to_show limit: 9 %}
+        <div class="col-md-6 col-lg-4">
+          <div class="news-card">
+
+            <!-- Imagem -->
+            {% if post.image %}
+            <div class="card-img-wrapper">
+              <a href="{{ post.url | relative_url }}">
+                <img src="{{ post.image | relative_url }}"
+                     alt="{{ post.title | escape }}"
+                     loading="lazy">
+              </a>
+            </div>
+            {% endif %}
+
+            <div class="card-body">
+              <!-- Categoria -->
+              {% for cat in post.categories limit:1 %}
+              <div class="card-category">{{ cat }}</div>
+              {% endfor %}
+
+              <!-- Título -->
+              <h3 class="card-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h3>
+
+              <!-- Resumo -->
+              <p class="card-excerpt">
+                {{ post.description | default: post.excerpt | strip_html | truncate: 120 }}
+              </p>
+
+              <!-- Meta + botão -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-meta">
+                  <i class="bi bi-calendar3"></i>
+                  {{ post.date | date: "%d/%m/%Y" }}
+                </div>
+                <a href="{{ post.url | relative_url }}"
+                   class="btn btn-primary btn-sm read-more-btn">
+                  Ler <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ADSENSE a cada 6 posts (dentro do grid) -->
+        {% if forloop.index == 6 %}
+        </div>
+        <!--
+        <div class="adsense-placeholder my-3">
+          <small>⬛ AdSense — In-Feed (após 6 posts)</small>
+        </div>
+        -->
+        <div class="row g-3">
+        {% endif %}
+
+        {% endfor %}
+      </div><!-- /grid -->
+
+      <!-- ── Paginação Jekyll ── -->
+      {% if paginator.total_pages > 1 %}
+      <nav aria-label="Paginação" class="mt-4">
+        <ul class="pagination pagination-nav justify-content-center flex-wrap">
+
+          {% if paginator.previous_page %}
+          <li class="page-item">
+            <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">
+              <i class="bi bi-chevron-left"></i> Anterior
+            </a>
+          </li>
+          {% endif %}
+
+          {% for page in (1..paginator.total_pages) %}
+          <li class="page-item {% if page == paginator.page %}active{% endif %}">
+            {% if page == 1 %}
+              <a class="page-link" href="{{ '/' | relative_url }}">{{ page }}</a>
+            {% else %}
+              <a class="page-link" href="{{ site.paginate_path | replace: ':num', page | relative_url }}">{{ page }}</a>
+            {% endif %}
+          </li>
+          {% endfor %}
+
+          {% if paginator.next_page %}
+          <li class="page-item">
+            <a class="page-link" href="{{ paginator.next_page_path | relative_url }}">
+              Próxima <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </nav>
+      {% endif %}
+
+    </div>
+    <!-- /coluna notícias -->
+
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="col-lg-4">
+
+      <!-- Box de destaque / novidades -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-fire me-1" style="color:#ff6b2b;"></i>Mais Lidas</h5>
+        {% for post in site.posts limit:5 %}
+        <div class="d-flex gap-2 mb-3 align-items-start {% unless forloop.last %}border-bottom pb-3{% endunless %}">
+          <span class="fw-bold text-muted" style="font-size:1.5rem; line-height:1; width:28px; flex-shrink:0;">
+            {{ forloop.index }}
+          </span>
+          <div>
+            <a href="{{ post.url | relative_url }}"
+               class="text-decoration-none fw-semibold"
+               style="font-size:.88rem; color:#212529; line-height:1.35; display:block;">
+              {{ post.title | truncate: 65 }}
+            </a>
+            <small class="text-muted">{{ post.date | date: "%d/%m/%Y" }}</small>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- ══ BLOCO AFILIADO AMAZON ════════════════════════════════ -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-bag-fill me-1" style="color:#ff9900;"></i>Ofertas Tech</h5>
+        <div class="affiliate-block">
+          <div class="affiliate-title mb-2">🛒 Melhores preços na Amazon</div>
+          <div class="d-flex flex-column gap-2" style="font-size:.82rem;">
+            <a href="https://www.amazon.com.br/s?k=notebook&tag=techbrnews-20"
+               target="_blank" rel="noopener sponsored"
+               class="text-decoration-none p-2 border rounded-2"
+               style="color:#212529;">
+              💻 Notebooks em oferta
+            </a>
+            <a href="https://www.amazon.com.br/s?k=smartphone&tag=techbrnews-20"
+               target="_blank" rel="noopener sponsored"
+               class="text-decoration-none p-2 border rounded-2"
+               style="color:#212529;">
+              📱 Smartphones
+            </a>
+            <a href="https://www.amazon.com.br/s?k=fone+de+ouvido+bluetooth&tag=techbrnews-20"
+               target="_blank" rel="noopener sponsored"
+               class="text-decoration-none p-2 border rounded-2"
+               style="color:#212529;">
+              🎧 Fones de ouvido
+            </a>
+            <a href="https://www.amazon.com.br/s?k=smartwatch&tag=techbrnews-20"
+               target="_blank" rel="noopener sponsored"
+               class="text-decoration-none p-2 border rounded-2"
+               style="color:#212529;">
+              ⌚ Smartwatches
+            </a>
+          </div>
+          <small class="d-block mt-2" style="font-size:.7rem; color:#adb5bd;">
+            *Links de afiliado — sem custo extra para você
+          </small>
+        </div>
+      </div>
+
+      <!-- ══ ADSENSE — Sidebar 300×250 ═════════════════════════
+      <div class="sidebar-section p-2 text-center">
+        <div class="adsense-placeholder">
+          <small>⬛ AdSense 300×250</small>
+        </div>
+        <!-- Código real:
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:300px;height:250px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+      ══ -->
+
+      <!-- Sobre o blog -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-info-circle me-1 text-primary"></i>Sobre o Blog</h5>
+        <p style="font-size:.88rem; line-height:1.6;">
+          O <strong>TechBR News</strong> é um portal de notícias de tecnologia
+          mantido por <strong>Julio</strong> e atualizado automaticamente com
+          conteúdo curado dos melhores veículos de tech do Brasil.
+        </p>
+        <a href="{{ '/feed.xml' | relative_url }}"
+           class="btn btn-sm btn-outline-primary w-100">
+          <i class="bi bi-rss me-1"></i>Assinar feed RSS
+        </a>
+      </div>
+
+      <!-- Tags populares -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-tags me-1 text-primary"></i>Tags Populares</h5>
+        {% assign all_tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        <div class="d-flex flex-wrap gap-1">
+          {% for tag in all_tags limit:20 %}
+            {% if tag != '' %}
+            <a href="{{ '/tag/' | append: tag | strip | relative_url }}"
+               class="badge bg-light text-dark border text-decoration-none"
+               style="font-size:.75rem;">#{{ tag | strip }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </aside>
+    <!-- /sidebar -->
+
+  </div><!-- /row -->
+</div>

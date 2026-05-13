@@ -1,0 +1,385 @@
+---
+layout: default
+---
+
+<!-- ============================================================
+     POST INDIVIDUAL — Layout completo com SEO, compartilhamento
+     e seção "Veja também"
+     ============================================================ -->
+
+<!-- ── Breadcrumb ── -->
+<div class="bg-light border-bottom py-2">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0" style="font-size:.85rem;">
+        <li class="breadcrumb-item">
+          <a href="{{ '/' | relative_url }}" class="text-decoration-none">
+            <i class="bi bi-house me-1"></i>Início
+          </a>
+        </li>
+        {% for category in page.categories limit:1 %}
+        <li class="breadcrumb-item">
+          <a href="{{ '/' | append: category | relative_url }}" class="text-decoration-none">
+            {{ category | capitalize }}
+          </a>
+        </li>
+        {% endfor %}
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ page.title | truncate: 50 }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- ── Header do post ── -->
+<header class="post-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+
+        <!-- Categorias -->
+        <div class="mb-3">
+          {% for category in page.categories %}
+            <span class="badge badge-cat {{ category | downcase }} me-1">{{ category }}</span>
+          {% endfor %}
+          {% for tag in page.tags limit:3 %}
+            <span class="badge bg-secondary bg-opacity-50 me-1" style="font-size:.7rem;">
+              #{{ tag }}
+            </span>
+          {% endfor %}
+        </div>
+
+        <!-- Título -->
+        <h1 class="mb-3">{{ page.title }}</h1>
+
+        <!-- Meta informações -->
+        <div class="post-meta-bar">
+          <span class="meta-item">
+            <i class="bi bi-person-fill"></i>
+            {{ page.author | default: site.author.name }}
+          </span>
+          <span class="meta-item">
+            <i class="bi bi-calendar3"></i>
+            <time datetime="{{ page.date | date_to_xmlschema }}">
+              {{ page.date | date: "%d/%m/%Y" }}
+            </time>
+          </span>
+          <span class="meta-item">
+            <i class="bi bi-clock"></i>
+            {% assign words = content | strip_html | number_of_words %}
+            {% assign read_time = words | divided_by: 200 | plus: 1 %}
+            {{ read_time }} min de leitura
+          </span>
+          {% if page.source_name %}
+          <span class="meta-item">
+            <i class="bi bi-newspaper"></i>
+            Fonte: {{ page.source_name }}
+          </span>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     CORPO DO POST + SIDEBAR
+     ============================================================ -->
+<div class="container my-4">
+  <div class="row g-4">
+
+    <!-- ── Coluna principal ── -->
+    <div class="col-lg-8">
+
+      <!-- Imagem de destaque -->
+      {% if page.image %}
+      <div class="mb-4">
+        <img src="{{ page.image | relative_url }}"
+             alt="{{ page.title | escape }}"
+             class="img-fluid rounded-3 w-100"
+             style="max-height:420px; object-fit:cover;">
+      </div>
+      {% endif %}
+
+      <!-- ══ ADSENSE — In-article (antes do conteúdo) ══════════════
+      <div class="adsense-placeholder mb-4">
+        <small>⬛ Espaço para Anúncio Google AdSense — In-Article</small>
+        <!-- Após aprovação, substitua pelo código real:
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-layout="in-article"
+             data-ad-format="fluid"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+      ══ -->
+
+      <!-- Conteúdo do post -->
+      <article class="post-content">
+        {{ content }}
+      </article>
+
+      <!-- ── Caixa de fonte original ── -->
+      {% if page.source_url %}
+      <div class="source-link-box my-4">
+        <p class="mb-1">
+          <i class="bi bi-link-45deg me-1 text-primary"></i>
+          <strong>Fonte original:</strong>
+        </p>
+        <a href="{{ page.source_url }}" target="_blank" rel="noopener noreferrer"
+           class="text-break">
+          {{ page.source_url }}
+        </a>
+        <p class="mb-0 mt-2" style="font-size:.8rem; color:#6c757d;">
+          ℹ️ Este post é um resumo/curadoria. Leia o artigo completo no veículo original clicando no link acima.
+          Os direitos do conteúdo pertencem ao(s) autor(es) original(is).
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- ── Tags ── -->
+      {% if page.tags.size > 0 %}
+      <div class="my-3">
+        <strong style="font-size:.85rem;">Tags:</strong>
+        {% for tag in page.tags %}
+          <a href="{{ '/tag/' | append: tag | relative_url }}"
+             class="badge bg-light text-dark border me-1 text-decoration-none"
+             style="font-size:.78rem;">#{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- ── Compartilhamento ── -->
+      <div class="card border-0 bg-light rounded-3 p-3 my-4">
+        <p class="mb-2 fw-bold" style="font-size:.95rem;">
+          <i class="bi bi-share-fill me-2 text-primary"></i>Gostou? Compartilhe!
+        </p>
+        <div class="share-buttons">
+
+          <!-- Twitter / X -->
+          <a class="share-btn twitter"
+             href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ page.url | absolute_url | uri_escape }}&via=techbrnews"
+             target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-twitter-x"></i> Twitter/X
+          </a>
+
+          <!-- WhatsApp -->
+          <a class="share-btn whatsapp"
+             href="https://api.whatsapp.com/send?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}"
+             target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </a>
+
+          <!-- Facebook -->
+          <a class="share-btn facebook"
+             href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}"
+             target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-facebook"></i> Facebook
+          </a>
+
+          <!-- Copiar link -->
+          <button class="share-btn"
+                  style="background:#6c757d; cursor:pointer; border:none;"
+                  onclick="navigator.clipboard.writeText('{{ page.url | absolute_url }}').then(()=>alert('Link copiado!'))">
+            <i class="bi bi-clipboard"></i> Copiar link
+          </button>
+
+        </div>
+      </div>
+
+      <!-- ══ ADSENSE — Banner após conteúdo ════════════════════════
+      <div class="adsense-placeholder my-4">
+        <small>⬛ Espaço para Anúncio Google AdSense — 728×90 / Responsivo</small>
+        <!-- Código real:
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+      ══ -->
+
+      <!-- ── Navegação anterior / próximo ── -->
+      <nav class="d-flex justify-content-between my-4">
+        {% if page.previous.url %}
+        <a href="{{ page.previous.url | relative_url }}"
+           class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-arrow-left me-1"></i>
+          {{ page.previous.title | truncate: 35 }}
+        </a>
+        {% else %}
+        <span></span>
+        {% endif %}
+
+        {% if page.next.url %}
+        <a href="{{ page.next.url | relative_url }}"
+           class="btn btn-outline-primary btn-sm text-end">
+          {{ page.next.title | truncate: 35 }}
+          <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+        {% endif %}
+      </nav>
+
+    </div>
+    <!-- /coluna principal -->
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="col-lg-4">
+
+      <!-- Últimas notícias -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-lightning-charge-fill me-1 text-warning"></i>Últimas Notícias</h5>
+        {% assign recent = site.posts | limit: 6 %}
+        {% for post in recent %}
+          {% unless post.url == page.url %}
+          <div class="mb-3 pb-3 {% unless forloop.last %}border-bottom{% endunless %}">
+            <div class="d-flex gap-2 align-items-start">
+              {% if post.image %}
+              <img src="{{ post.image | relative_url }}" alt=""
+                   style="width:60px; height:45px; object-fit:cover; border-radius:6px; flex-shrink:0;">
+              {% endif %}
+              <div>
+                <a href="{{ post.url | relative_url }}"
+                   class="text-decoration-none text-dark"
+                   style="font-size:.85rem; font-weight:600; line-height:1.3;">
+                  {{ post.title | truncate: 65 }}
+                </a>
+                <div style="font-size:.75rem; color:#6c757d; margin-top:.2rem;">
+                  {{ post.date | date: "%d/%m/%Y" }}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endunless %}
+        {% endfor %}
+      </div>
+
+      <!-- ══ BLOCO AFILIADO AMAZON — Sidebar ════════════════════════
+           Substitua os links de PLACEHOLDER pelos seus links de afiliado
+           ═══════════════════════════════════════════════════════════ -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-bag-fill me-1" style="color:#ff9900;"></i>Tech na Amazon</h5>
+        <div class="affiliate-block">
+          <div class="affiliate-title mb-3">Produtos recomendados</div>
+
+          <!-- Produto 1 -->
+          <a href="https://amzn.to/PLACEHOLDER?tag=techbrnews-20"
+             target="_blank" rel="noopener sponsored"
+             class="d-block text-decoration-none border rounded-3 p-2 mb-2"
+             style="font-size:.82rem; color:#212529;">
+            📦 <strong>Produto em Destaque</strong><br>
+            <span style="color:#6c757d;">A partir de R$ XX,00</span>
+          </a>
+
+          <!-- Produto 2 -->
+          <a href="https://amzn.to/PLACEHOLDER?tag=techbrnews-20"
+             target="_blank" rel="noopener sponsored"
+             class="d-block text-decoration-none border rounded-3 p-2 mb-2"
+             style="font-size:.82rem; color:#212529;">
+            📦 <strong>Outro Produto Tech</strong><br>
+            <span style="color:#6c757d;">A partir de R$ XX,00</span>
+          </a>
+
+          <a href="https://www.amazon.com.br/?tag=techbrnews-20"
+             target="_blank" rel="noopener sponsored"
+             class="btn btn-sm w-100 mt-1"
+             style="background:#ff9900; color:#fff; font-size:.8rem;">
+            Ver mais na Amazon →
+          </a>
+          <small class="d-block mt-2" style="font-size:.7rem; color:#adb5bd;">
+            *Links de afiliado Amazon
+          </small>
+        </div>
+      </div>
+
+      <!-- ══ ADSENSE — Sidebar (300×250) ══════════════════════════
+      <div class="sidebar-section p-0">
+        <div class="adsense-placeholder">
+          <small>⬛ AdSense — 300×250</small>
+        </div>
+        <!-- Código real:
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:300px;height:250px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+      </div>
+      ══ -->
+
+      <!-- Categorias populares -->
+      <div class="sidebar-section">
+        <h5><i class="bi bi-tags-fill me-1 text-primary"></i>Categorias</h5>
+        {% assign all_categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+        <div class="d-flex flex-wrap gap-2">
+          {% for category in all_categories %}
+            {% if category != '' %}
+            <a href="{{ '/' | append: category | relative_url }}"
+               class="badge badge-cat {{ category | downcase | strip }} text-decoration-none">
+              {{ category | capitalize | strip }}
+            </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </aside>
+    <!-- /sidebar -->
+
+  </div><!-- /row -->
+</div>
+
+<!-- ============================================================
+     SEÇÃO "VEJA TAMBÉM" — Posts relacionados
+     ============================================================ -->
+{% assign page_cats = page.categories %}
+{% assign related_posts = site.posts | where_exp: "p", "p.url != page.url" %}
+{% assign matching = "" | split: "" %}
+
+{% for p in related_posts %}
+  {% for cat in p.categories %}
+    {% if page_cats contains cat %}
+      {% unless matching contains p %}
+        {% assign matching = matching | push: p %}
+      {% endunless %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% assign related_limit = matching | limit: 3 %}
+{% if related_limit.size > 0 %}
+<section class="bg-light py-4">
+  <div class="container">
+    <h3 class="fw-bold mb-4" style="font-size:1.3rem;">
+      <i class="bi bi-collection-play-fill me-2 text-primary"></i>Veja também
+    </h3>
+    <div class="row g-3 related-posts">
+      {% for post in related_limit %}
+      <div class="col-md-4">
+        <a href="{{ post.url | relative_url }}" class="related-card">
+          {% if post.image %}
+          <img src="{{ post.image | relative_url }}" alt=""
+               class="img-fluid rounded-2 mb-2 w-100"
+               style="height:130px; object-fit:cover;">
+          {% endif %}
+          <div>
+            {% for cat in post.categories limit:1 %}
+            <span class="badge badge-cat {{ cat | downcase }} mb-1">{{ cat }}</span>
+            {% endfor %}
+          </div>
+          <h6>{{ post.title | truncate: 75 }}</h6>
+          <small class="text-muted">{{ post.date | date: "%d/%m/%Y" }}</small>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

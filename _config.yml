@@ -1,0 +1,130 @@
+# ============================================================
+# TechBR News — Configuração Jekyll para GitHub Pages
+# Repositório: https://github.com/non-s/non-s.github.io
+# ============================================================
+
+# --- Informações básicas do site ---
+title: "TechBR News"
+tagline: "Últimas notícias de tecnologia, gadgets e inovação"
+description: "TechBR News traz as últimas notícias de tecnologia, gadgets, inteligência artificial, startups e inovação do Brasil e do mundo."
+author:
+  name: "Julio"
+  email: ""
+  github: "non-s"
+
+# --- URL e baseurl ---
+url: "https://non-s.github.io"
+baseurl: ""
+
+# --- Tema ---
+theme: minima
+
+# --- Idioma e timezone ---
+lang: "pt-BR"
+timezone: "America/Sao_Paulo"
+locale: "pt_BR"
+
+# --- Plugins ---
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-paginate
+
+# --- Paginação ---
+paginate: 10
+paginate_path: "/page/:num/"
+
+# --- Feed RSS ---
+feed:
+  title: "TechBR News — Tecnologia e Inovação"
+  subtitle: "Últimas notícias de tecnologia, gadgets e inovação"
+  path: "feed.xml"
+  categories:
+    - tecnologia
+    - gadgets
+    - ia
+    - startups
+
+# --- SEO Tags (jekyll-seo-tag) ---
+twitter:
+  username: techbrnews
+  card: summary_large_image
+
+social:
+  name: "TechBR News"
+  links:
+    - https://twitter.com/techbrnews
+
+logo: "/assets/images/logo.png"
+
+# --- Sitemap ---
+sitemap:
+  file: "/sitemap.xml"
+  exclude:
+    - "/404.html"
+
+# --- Posts ---
+permalink: /:categories/:year/:month/:day/:title/
+show_excerpts: true
+excerpt_separator: "<!--more-->"
+
+# --- Markdown ---
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: "highlight"
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+
+# --- Defaults ---
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Julio"
+      image: "/assets/images/default-post.jpg"
+      comments: true
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# --- Categorias padrão ---
+categories_label: "Categorias"
+tags_label: "Tags"
+
+# --- Exclusões do build ---
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - fetch_news.py
+  - fetch_news.log
+  - README.md
+  - COMO_PUBLICAR.md
+  - .github
+  - requirements.txt
+
+# --- Sass ---
+sass:
+  style: compressed
+  sass_dir: assets/css
+
+# --- Google Analytics (descomente e adicione seu ID) ---
+# google_analytics: "G-XXXXXXXXXX"
+
+# --- Google AdSense (adicione seu publisher ID) ---
+# adsense_publisher_id: "ca-pub-XXXXXXXXXXXXXXXXX"
+
+# --- Amazon Afiliados (adicione sua tag) ---
+# amazon_affiliate_tag: "techbrnews-20"
