@@ -35,24 +35,25 @@ from time import sleep
 
 POSTS_DIR   = Path("_posts")          # Diretório de posts Jekyll
 LOG_FILE    = "fetch_news.log"        # Arquivo de log
-MAX_PER_FEED = 5                      # Máximo de posts por feed por execução
+MAX_PER_FEED = 3                      # Máximo de posts por feed por execução
 REQUEST_TIMEOUT = 15                  # Timeout em segundos para requests HTTP
 SLEEP_BETWEEN_FEEDS = 2               # Pausa entre feeds (evitar bloqueio)
 
 # Feeds RSS configurados
 FEEDS = [
+    # ── Brasil ────────────────────────────────────────────────
     {
         "name":     "G1 Tecnologia",
         "url":      "https://g1.globo.com/rss/g1/tecnologia/",
         "category": "tecnologia",
         "tags":     ["g1", "globo", "tecnologia"],
-        "source":   "G1 — O Portal de Notícias da Globo",
+        "source":   "G1",
     },
     {
         "name":     "TecMundo",
         "url":      "https://rss.tecmundo.com.br/feed",
         "category": "tecnologia",
-        "tags":     ["tecmundo", "tecnologia", "gadgets"],
+        "tags":     ["tecmundo", "tecnologia"],
         "source":   "TecMundo",
     },
     {
@@ -66,8 +67,100 @@ FEEDS = [
         "name":     "Olhar Digital",
         "url":      "https://olhardigital.com.br/feed/",
         "category": "tecnologia",
-        "tags":     ["olhardigital", "tecnologia", "inovacao"],
+        "tags":     ["olhardigital", "tecnologia"],
         "source":   "Olhar Digital",
+    },
+    {
+        "name":     "Canaltech",
+        "url":      "https://canaltech.com.br/rss/",
+        "category": "tecnologia",
+        "tags":     ["canaltech", "tecnologia", "brasil"],
+        "source":   "Canaltech",
+    },
+    {
+        "name":     "Canaltech IA",
+        "url":      "https://canaltech.com.br/inteligencia-artificial/rss/",
+        "category": "ia",
+        "tags":     ["canaltech", "ia", "inteligencia-artificial"],
+        "source":   "Canaltech",
+    },
+    {
+        "name":     "Canaltech Gadgets",
+        "url":      "https://canaltech.com.br/gadgets/rss/",
+        "category": "gadgets",
+        "tags":     ["canaltech", "gadgets"],
+        "source":   "Canaltech",
+    },
+    {
+        "name":     "Canaltech Segurança",
+        "url":      "https://canaltech.com.br/seguranca/rss/",
+        "category": "seguranca",
+        "tags":     ["canaltech", "seguranca", "privacidade"],
+        "source":   "Canaltech",
+    },
+    {
+        "name":     "Startups.com.br",
+        "url":      "https://startups.com.br/feed/",
+        "category": "startups",
+        "tags":     ["startups", "empreendedorismo", "brasil"],
+        "source":   "Startups.com.br",
+    },
+    {
+        "name":     "Convergência Digital",
+        "url":      "https://www.convergenciadigital.com.br/rss.xml",
+        "category": "tecnologia",
+        "tags":     ["convergenciadigital", "telecom", "tecnologia"],
+        "source":   "Convergência Digital",
+    },
+    # ── Internacional ─────────────────────────────────────────
+    {
+        "name":     "TechCrunch",
+        "url":      "https://techcrunch.com/feed/",
+        "category": "tecnologia",
+        "tags":     ["techcrunch", "startups", "internacional"],
+        "source":   "TechCrunch",
+    },
+    {
+        "name":     "TechCrunch AI",
+        "url":      "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "category": "ia",
+        "tags":     ["techcrunch", "ia", "inteligencia-artificial"],
+        "source":   "TechCrunch",
+    },
+    {
+        "name":     "The Verge",
+        "url":      "https://www.theverge.com/rss/index.xml",
+        "category": "tecnologia",
+        "tags":     ["theverge", "gadgets", "reviews"],
+        "source":   "The Verge",
+    },
+    {
+        "name":     "Wired",
+        "url":      "https://www.wired.com/feed/rss",
+        "category": "tecnologia",
+        "tags":     ["wired", "tecnologia", "ciencia"],
+        "source":   "Wired",
+    },
+    {
+        "name":     "Ars Technica",
+        "url":      "https://feeds.arstechnica.com/arstechnica/index",
+        "category": "tecnologia",
+        "tags":     ["arstechnica", "tecnologia", "ciencia"],
+        "source":   "Ars Technica",
+    },
+    {
+        "name":     "MIT Technology Review",
+        "url":      "https://www.technologyreview.com/feed/",
+        "category": "ia",
+        "tags":     ["mit", "inovacao", "pesquisa"],
+        "source":   "MIT Technology Review",
+    },
+    {
+        "name":     "Hacker News (Top)",
+        "url":      "https://hnrss.org/frontpage",
+        "category": "tecnologia",
+        "tags":     ["hackernews", "programacao", "tech"],
+        "source":   "Hacker News",
     },
 ]
 
