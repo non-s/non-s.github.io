@@ -153,6 +153,60 @@ FEEDS = [
     },
 ]
 
+
+# ============================================================
+# KEYWORD → CATEGORY / TAG MAPPING
+# ============================================================
+
+KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
+    # AI / Machine Learning
+    "artificial intelligence": ("ai",        ["ai", "machine-learning"]),
+    "machine learning":        ("ai",        ["ai", "machine-learning"]),
+    "deep learning":           ("ai",        ["ai", "deep-learning"]),
+    "neural network":          ("ai",        ["ai", "neural-networks"]),
+    "large language model":    ("ai",        ["ai", "llm"]),
+    " llm ":                   ("ai",        ["ai", "llm"]),
+    "chatgpt":                 ("ai",        ["ai", "chatgpt", "openai"]),
+    "openai":                  ("ai",        ["ai", "openai"]),
+    "anthropic":               ("ai",        ["ai", "anthropic"]),
+    "gemini":                  ("ai",        ["ai", "google", "gemini"]),
+    "copilot":                 ("ai",        ["ai", "microsoft", "copilot"]),
+    "generative ai":           ("ai",        ["ai", "generative-ai"]),
+
+    # Security
+    "cybersecurity":           ("security",  ["security", "cybersecurity"]),
+    "ransomware":              ("security",  ["security", "ransomware"]),
+    "malware":                 ("security",  ["security", "malware"]),
+    "data breach":             ("security",  ["security", "data-breach"]),
+    "vulnerability":           ("security",  ["security", "vulnerability"]),
+    "hacker":                  ("security",  ["security", "hacking"]),
+    "zero-day":                ("security",  ["security", "zero-day"]),
+    "phishing":                ("security",  ["security", "phishing"]),
+
+    # Mobile
+    "iphone":                  ("mobile",    ["mobile", "apple", "iphone"]),
+    "android":                 ("mobile",    ["mobile", "android"]),
+    "smartphone":              ("mobile",    ["mobile", "smartphone"]),
+    "samsung galaxy":          ("mobile",    ["mobile", "samsung"]),
+    "pixel phone":             ("mobile",    ["mobile", "google", "pixel"]),
+
+    # Gadgets
+    "smartwatch":              ("gadgets",   ["gadgets", "wearables"]),
+    "headphones":              ("gadgets",   ["gadgets", "audio"]),
+    "laptop":                  ("gadgets",   ["gadgets", "laptop"]),
+    "graphics card":           ("gadgets",   ["gadgets", "gpu"]),
+    "electric vehicle":        ("gadgets",   ["gadgets", "ev", "electric-vehicle"]),
+
+    # Startups
+    "startup":                 ("startups",  ["startups"]),
+    "venture capital":         ("startups",  ["startups", "venture-capital"]),
+    "series a":                ("startups",  ["startups", "funding"]),
+    "series b":                ("startups",  ["startups", "funding"]),
+    "ipo":                     ("startups",  ["startups", "ipo"]),
+    "unicorn":                 ("startups",  ["startups", "unicorn"]),
+    "funding round":           ("startups",  ["startups", "funding"]),
+}
+
 # ============================================================
 # LOGGING
 # ============================================================
