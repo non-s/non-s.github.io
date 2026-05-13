@@ -170,11 +170,7 @@ layout: default
         </div>
       </div>
 
-      <div class="sidebar-widget sidebar-rss">
-        <i class="bi bi-rss-fill sidebar-rss-icon"></i>
-        <p class="sidebar-rss-text">Stay updated with every new article</p>
-        <a href="{{ '/feed.xml' | relative_url }}" class="sidebar-rss-btn">Subscribe via RSS</a>
-      </div>
+      {% include subscribe.html %}
 
     </aside>
 

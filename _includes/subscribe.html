@@ -1,0 +1,29 @@
+<!-- ── Email Subscribe Widget ── -->
+<!-- follow.it: https://follow.it — register your RSS feed and replace FOLLOWIT_FORM_ID -->
+<div class="subscribe-widget">
+  <div class="subscribe-icon">
+    <i class="bi bi-envelope-paper-fill"></i>
+  </div>
+  <h3 class="subscribe-title">Get new articles by email</h3>
+  <p class="subscribe-desc">
+    Every time a new article is published, you'll get it straight to your inbox. No spam, ever.
+  </p>
+  <form class="subscribe-form"
+        action="https://api.follow.it/subscription-form/FOLLOWIT_FORM_ID/8"
+        method="post"
+        target="_blank">
+    <input type="email"
+           name="email"
+           class="subscribe-input"
+           placeholder="your@email.com"
+           required
+           autocomplete="email">
+    <button type="submit" class="subscribe-btn">
+      Subscribe <i class="bi bi-arrow-right"></i>
+    </button>
+  </form>
+  <p class="subscribe-note">
+    <i class="bi bi-shield-check"></i>
+    Free · Unsubscribe anytime · Powered by <a href="https://follow.it" target="_blank" rel="noopener">follow.it</a>
+  </p>
+</div>

@@ -60,6 +60,15 @@
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main>{{ content }}</main>
 
+  <!-- ── EMAIL SUBSCRIBE ─────────────────────────────────── -->
+  {% unless page.hide_subscribe %}
+  <section class="subscribe-section">
+    <div class="container">
+      {% include subscribe.html %}
+    </div>
+  </section>
+  {% endunless %}
+
   <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer class="techbr-footer">
     <div class="container">
