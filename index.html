@@ -5,7 +5,7 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
 ---
 
 <!-- ============================================================
-     HERO — Post em destaque
+     HERO — Post featured
      ============================================================ -->
 {% assign featured = site.posts | first %}
 {% if featured %}
@@ -33,7 +33,7 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
         <div class="hero-meta">
           <span class="meta-item">
             <i class="bi bi-calendar3"></i>
-            {{ featured.date | date: "%d/%m/%Y" }}
+            {{ featured.date | date: "%B %d, %Y" }}
           </span>
           <span class="meta-divider"></span>
           <span class="meta-item">
@@ -50,7 +50,7 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
         </div>
 
         <a href="{{ featured.url | relative_url }}" class="btn-hero">
-          Ler notícia completa
+          Read full article
           <span class="arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
       </div>
@@ -148,7 +148,7 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
                 <div class="card-footer-row">
                   <span class="card-date">
                     <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
-                    {{ post.date | date: "%d/%m/%Y" }}
+                    {{ post.date | date: "%B %d, %Y" }}
                   </span>
                   <a href="{{ post.url | relative_url }}" class="btn-read">
                     Ler <i class="bi bi-arrow-right"></i>
@@ -220,7 +220,7 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
             <div class="wpl-num">{{ forloop.index }}</div>
             <div class="wpl-title">
               <a href="{{ post.url | relative_url }}">{{ post.title | truncate: 65 }}</a>
-              <div class="wpl-date">{{ post.date | date: "%d/%m/%Y" }}</div>
+              <div class="wpl-date">{{ post.date | date: "%B %d, %Y" }}</div>
             </div>
           </div>
           {% endfor %}
@@ -257,11 +257,11 @@ description: "Technology news portal, gadgets, IA e inovação. Atualizado autom
         </div>
       </div>
 
-      <!-- Sobre -->
+      <!-- About -->
       <div class="sidebar-widget">
         <p class="widget-title">
           <span class="wt-icon" style="background:rgba(59,130,246,.15);">ℹ️</span>
-          Sobre o Blog
+          About o Blog
         </p>
         <p style="font-size:.875rem;color:var(--c-muted);line-height:1.65;margin-bottom:1rem;">
           O <strong style="color:rgba(255,255,255,.7);">TechBR News</strong> é curado
