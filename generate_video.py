@@ -274,14 +274,14 @@ def create_video(title: str, source: str, image_path: Path | None,
     cmd = [
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0", "-i", concat_file.name,  # use filename only since cwd=tmp_dir
-        "-i", str(audio_path),
+        "-i", str(audio_path.resolve()),
         "-vf", f"scale={VIDEO_W}:{VIDEO_H},fps={fps}",
         "-c:v", "libx264", "-preset", "fast", "-crf", "23",
         "-c:a", "aac", "-b:a", "128k",
         "-pix_fmt", "yuv420p",
         "-movflags", "+faststart",
         "-shortest",
-        str(output_path)
+        str(output_path.resolve())
     ]
     result = subprocess.run(cmd, capture_output=True, text=True,
                             cwd=str(tmp_dir))
