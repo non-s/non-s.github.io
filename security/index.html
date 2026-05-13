@@ -1,21 +1,21 @@
 ---
 layout: default
-title: "Tecnologia — TechBR News"
-description: "Computadores, software, hardware e tudo sobre o mundo digital."
-permalink: /tecnologia/
+title: "Security — TechBR News"
+description: "Cybersecurity, privacy and data protection."
+permalink: /security/
 ---
 
 <section class="container py-4">
   <div class="row mb-4">
     <div class="col">
-      <h1 class="section-title">Tecnologia</h1>
-      <p class="text-muted">Computadores, software, hardware e tudo sobre o mundo digital.</p>
+      <h1 class="section-title">Security</h1>
+      <p class="text-muted">Cybersecurity, privacy and data protection.</p>
       <hr class="section-divider">
     </div>
   </div>
 
   <div class="row g-4">
-    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'tecnologia'" %}
+    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'security'" %}
     {% if cat_posts.size > 0 %}
       {% for post in cat_posts %}
       <div class="col-md-6 col-lg-4">
@@ -30,9 +30,9 @@ permalink: /tecnologia/
           <div class="card-body-inner">
             <div class="card-meta">
               <time datetime="{{ post.date | date_to_xmlschema }}">
-                {{ post.date | date: "%d/%m/%Y" }}
+                {{ post.date | date: "%B %d, %Y" }}
               </time>
-              {% if post.source %}<span class="card-source">{{ post.source }}</span>{% endif %}
+              {% if post.source_name %}<span class="card-source">{{ post.source_name }}</span>{% endif %}
             </div>
             <h2 class="card-headline">
               <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
@@ -41,7 +41,7 @@ permalink: /tecnologia/
           </div>
           <div class="card-footer-row">
             <a href="{{ post.url | relative_url }}" class="btn-read-more">
-              Ler mais <i class="bi bi-arrow-right"></i>
+              Read more <i class="bi bi-arrow-right"></i>
             </a>
           </div>
         </article>
@@ -50,7 +50,7 @@ permalink: /tecnologia/
     {% else %}
       <div class="col-12 text-center py-5">
         <i class="bi bi-newspaper" style="font-size:3rem;opacity:.3;"></i>
-        <p class="mt-3 text-muted">Nenhuma postagem em <strong>Tecnologia</strong> ainda.<br>Novas notícias serão publicadas em breve!</p>
+        <p class="mt-3 text-muted">No posts in <strong>Security</strong> yet.<br>New articles will be published soon!</p>
       </div>
     {% endif %}
   </div>

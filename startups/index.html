@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Startups — TechBR News"
-description: "Empreendedorismo, venture capital e novos negócios de tech."
+description: "Entrepreneurship, venture capital and new tech businesses."
 permalink: /startups/
 ---
 
@@ -9,7 +9,7 @@ permalink: /startups/
   <div class="row mb-4">
     <div class="col">
       <h1 class="section-title">Startups</h1>
-      <p class="text-muted">Empreendedorismo, venture capital e novos negócios de tech.</p>
+      <p class="text-muted">Entrepreneurship, venture capital and new tech businesses.</p>
       <hr class="section-divider">
     </div>
   </div>
@@ -30,9 +30,9 @@ permalink: /startups/
           <div class="card-body-inner">
             <div class="card-meta">
               <time datetime="{{ post.date | date_to_xmlschema }}">
-                {{ post.date | date: "%d/%m/%Y" }}
+                {{ post.date | date: "%B %d, %Y" }}
               </time>
-              {% if post.source %}<span class="card-source">{{ post.source }}</span>{% endif %}
+              {% if post.source_name %}<span class="card-source">{{ post.source_name }}</span>{% endif %}
             </div>
             <h2 class="card-headline">
               <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
@@ -41,7 +41,7 @@ permalink: /startups/
           </div>
           <div class="card-footer-row">
             <a href="{{ post.url | relative_url }}" class="btn-read-more">
-              Ler mais <i class="bi bi-arrow-right"></i>
+              Read more <i class="bi bi-arrow-right"></i>
             </a>
           </div>
         </article>
@@ -50,7 +50,7 @@ permalink: /startups/
     {% else %}
       <div class="col-12 text-center py-5">
         <i class="bi bi-newspaper" style="font-size:3rem;opacity:.3;"></i>
-        <p class="mt-3 text-muted">Nenhuma postagem em <strong>Startups</strong> ainda.<br>Novas notícias serão publicadas em breve!</p>
+        <p class="mt-3 text-muted">No posts in <strong>Startups</strong> yet.<br>New articles will be published soon!</p>
       </div>
     {% endif %}
   </div>

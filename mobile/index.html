@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Mobile — TechBR News"
-description: "Smartphones, tablets, apps e sistemas operacionais."
+description: "Smartphones, tablets, apps and operating systems."
 permalink: /mobile/
 ---
 
@@ -9,7 +9,7 @@ permalink: /mobile/
   <div class="row mb-4">
     <div class="col">
       <h1 class="section-title">Mobile</h1>
-      <p class="text-muted">Smartphones, tablets, apps e sistemas operacionais.</p>
+      <p class="text-muted">Smartphones, tablets, apps and operating systems.</p>
       <hr class="section-divider">
     </div>
   </div>
@@ -30,9 +30,9 @@ permalink: /mobile/
           <div class="card-body-inner">
             <div class="card-meta">
               <time datetime="{{ post.date | date_to_xmlschema }}">
-                {{ post.date | date: "%d/%m/%Y" }}
+                {{ post.date | date: "%B %d, %Y" }}
               </time>
-              {% if post.source %}<span class="card-source">{{ post.source }}</span>{% endif %}
+              {% if post.source_name %}<span class="card-source">{{ post.source_name }}</span>{% endif %}
             </div>
             <h2 class="card-headline">
               <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
@@ -41,7 +41,7 @@ permalink: /mobile/
           </div>
           <div class="card-footer-row">
             <a href="{{ post.url | relative_url }}" class="btn-read-more">
-              Ler mais <i class="bi bi-arrow-right"></i>
+              Read more <i class="bi bi-arrow-right"></i>
             </a>
           </div>
         </article>
@@ -50,7 +50,7 @@ permalink: /mobile/
     {% else %}
       <div class="col-12 text-center py-5">
         <i class="bi bi-newspaper" style="font-size:3rem;opacity:.3;"></i>
-        <p class="mt-3 text-muted">Nenhuma postagem em <strong>Mobile</strong> ainda.<br>Novas notícias serão publicadas em breve!</p>
+        <p class="mt-3 text-muted">No posts in <strong>Mobile</strong> yet.<br>New articles will be published soon!</p>
       </div>
     {% endif %}
   </div>

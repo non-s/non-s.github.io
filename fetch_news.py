@@ -41,12 +41,119 @@ SLEEP_BETWEEN_FEEDS = 2               # Pausa entre feeds (evitar bloqueio)
 
 # Feeds RSS configurados
 FEEDS = [
-    # ── Brasil ────────────────────────────────────────────────
+    # ── Technology ────────────────────────────────────────────
     {
-        "name":     "G1 Tecnologia",
-        "url":      "https://g1.globo.com/rss/g1/tecnologia/",
-        "category": "tecnologia",
-        "tags":     ["g1", "globo", "tecnologia"],
+        "name":     "TechCrunch",
+        "url":      "https://techcrunch.com/feed/",
+        "category": "technology",
+        "tags":     ["techcrunch", "startups", "tech"],
+        "source":   "TechCrunch",
+    },
+    {
+        "name":     "The Verge",
+        "url":      "https://www.theverge.com/rss/index.xml",
+        "category": "technology",
+        "tags":     ["theverge", "gadgets", "reviews"],
+        "source":   "The Verge",
+    },
+    {
+        "name":     "Wired",
+        "url":      "https://www.wired.com/feed/rss",
+        "category": "technology",
+        "tags":     ["wired", "tech", "science"],
+        "source":   "Wired",
+    },
+    {
+        "name":     "Ars Technica",
+        "url":      "https://feeds.arstechnica.com/arstechnica/index",
+        "category": "technology",
+        "tags":     ["arstechnica", "tech", "science"],
+        "source":   "Ars Technica",
+    },
+    {
+        "name":     "Engadget",
+        "url":      "https://www.engadget.com/rss.xml",
+        "category": "gadgets",
+        "tags":     ["engadget", "gadgets", "reviews"],
+        "source":   "Engadget",
+    },
+    {
+        "name":     "CNET",
+        "url":      "https://www.cnet.com/rss/news/",
+        "category": "technology",
+        "tags":     ["cnet", "tech", "reviews"],
+        "source":   "CNET",
+    },
+    # ── AI ────────────────────────────────────────────────────
+    {
+        "name":     "TechCrunch AI",
+        "url":      "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "category": "ai",
+        "tags":     ["techcrunch", "ai", "machine-learning"],
+        "source":   "TechCrunch",
+    },
+    {
+        "name":     "MIT Technology Review",
+        "url":      "https://www.technologyreview.com/feed/",
+        "category": "ai",
+        "tags":     ["mit", "ai", "research"],
+        "source":   "MIT Technology Review",
+    },
+    {
+        "name":     "VentureBeat AI",
+        "url":      "https://venturebeat.com/category/ai/feed/",
+        "category": "ai",
+        "tags":     ["venturebeat", "ai", "enterprise"],
+        "source":   "VentureBeat",
+    },
+    # ── Startups ──────────────────────────────────────────────
+    {
+        "name":     "TechCrunch Startups",
+        "url":      "https://techcrunch.com/category/startups/feed/",
+        "category": "startups",
+        "tags":     ["techcrunch", "startups", "venture-capital"],
+        "source":   "TechCrunch",
+    },
+    {
+        "name":     "VentureBeat",
+        "url":      "https://venturebeat.com/feed/",
+        "category": "startups",
+        "tags":     ["venturebeat", "startups", "enterprise"],
+        "source":   "VentureBeat",
+    },
+    # ── Security ──────────────────────────────────────────────
+    {
+        "name":     "Krebs on Security",
+        "url":      "https://krebsonsecurity.com/feed/",
+        "category": "security",
+        "tags":     ["krebs", "security", "cybersecurity"],
+        "source":   "Krebs on Security",
+    },
+    {
+        "name":     "The Hacker News",
+        "url":      "https://feeds.feedburner.com/TheHackersNews",
+        "category": "security",
+        "tags":     ["hackernews", "security", "vulnerabilities"],
+        "source":   "The Hacker News",
+    },
+    # ── Developer / General ───────────────────────────────────
+    {
+        "name":     "Hacker News (Top)",
+        "url":      "https://hnrss.org/frontpage",
+        "category": "technology",
+        "tags":     ["hackernews", "programming", "tech"],
+        "source":   "Hacker News",
+    },
+    {
+        "name":     "The Register",
+        "url":      "https://www.theregister.com/headlines.atom",
+        "category": "technology",
+        "tags":     ["theregister", "tech", "enterprise"],
+        "source":   "The Register",
+    },
+]
+
+],
         "source":   "G1",
     },
     {
@@ -95,7 +202,7 @@ FEEDS = [
         "name":     "Canaltech Segurança",
         "url":      "https://canaltech.com.br/seguranca/rss/",
         "category": "seguranca",
-        "tags":     ["canaltech", "seguranca", "privacidade"],
+        "tags":     ["canaltech", "security", "privacy"],
         "source":   "Canaltech",
     },
     {
@@ -166,16 +273,16 @@ FEEDS = [
 
 # Mapeamento de palavras-chave para categorias/tags extras
 KEYWORD_CATEGORIES = {
-    "inteligência artificial": ("ia", ["ia", "inteligencia-artificial"]),
-    "machine learning":        ("ia", ["ia", "machine-learning"]),
-    "chatgpt":                 ("ia", ["ia", "chatgpt", "openai"]),
-    "gemini":                  ("ia", ["ia", "google", "gemini"]),
+    "artificial intelligence": ("ai", ["ia", "inteligencia-artificial"]),
+    "machine learning":        ("ai", ["ia", "machine-learning"]),
+    "chatgpt":                 ("ai", ["ia", "chatgpt", "openai"]),
+    "gemini":                  ("ai", ["ia", "google", "gemini"]),
     "smartphone":              ("mobile", ["mobile", "smartphone"]),
     "iphone":                  ("mobile", ["mobile", "iphone", "apple"]),
     "android":                 ("mobile", ["mobile", "android"]),
     "startup":                 ("startups", ["startups", "empreendedorismo"]),
-    "cibersegurança":          ("segurança", ["seguranca", "privacidade"]),
-    "ciberataque":             ("segurança", ["seguranca", "ciberataque"]),
+    "cybersecurity":           ("security", ["security", "privacy"]),
+    "cyberattack":             ("security", ["security", "cyberattack"]),
     "bitcoin":                 ("criptomoedas", ["bitcoin", "criptomoedas"]),
     "crypto":                  ("criptomoedas", ["cripto", "blockchain"]),
 }
@@ -338,22 +445,22 @@ def build_content(
     date:        datetime,
 ) -> str:
     """Monta o conteúdo Markdown do post."""
-    date_br = date.strftime("%d/%m/%Y às %H:%M")
+    date_br = date.strftime("%B %d, %Y at %H:%M UTC")
     content = f"""{description}
 
 <!--more-->
 
-## Sobre esta notícia
+## About this article
 
-Esta publicação é um resumo automático de curadoria baseado no feed RSS de **{source_name}**.
+This post is an automated summary curated from the RSS feed of **{source_name}**.
 
-> 📰 **Leia o artigo completo** em [{source_name}]({source_url})
+> 📰 **Read the full article** at [{source_name}]({source_url})
 
-O conteúdo original foi publicado em {date_br}. Todos os direitos pertencem ao(s) respectivo(s) autor(es) e ao veículo **{source_name}**.
+The original content was published on {date_br}. All rights belong to the respective author(s) and **{source_name}**.
 
 ---
 
-*Notícia coletada automaticamente pelo [TechBR News](https://non-s.github.io). [Veja a fonte original]({source_url}).*
+*Automatically curated by [TechBR News](https://non-s.github.io). [View original source]({source_url}).*
 """
     return content
 
@@ -431,7 +538,7 @@ def fetch_feed(feed_config: dict) -> int:
                 date        = pub_date,
                 categories  = categories,
                 tags        = all_tags,
-                author      = "TechBR News Bot",
+                author      = "TechBR News",
                 description = description,
                 source_url  = link,
                 source_name = source,
