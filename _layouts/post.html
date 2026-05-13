@@ -2,364 +2,217 @@
 layout: default
 ---
 
-<!-- ============================================================
-     POST INDIVIDUAL — Layout completo com SEO, compartilhamento
-     e seção "Veja também"
-     ============================================================ -->
-
-<!-- ── Breadcrumb ── -->
-<div class="bg-light border-bottom py-2">
+<!-- Breadcrumb -->
+<div class="post-breadcrumb">
   <div class="container">
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-0" style="font-size:.85rem;">
+      <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item">
-          <a href="{{ '/' | relative_url }}" class="text-decoration-none">
-            <i class="bi bi-house me-1"></i>Início
-          </a>
+          <a href="{{ '/' | relative_url }}"><i class="bi bi-house"></i> Home</a>
         </li>
         {% for category in page.categories limit:1 %}
         <li class="breadcrumb-item">
-          <a href="{{ '/' | append: category | relative_url }}" class="text-decoration-none">
-            {{ category | capitalize }}
-          </a>
+          <a href="{{ '/' | append: category | relative_url }}">{{ category | capitalize }}</a>
         </li>
         {% endfor %}
-        <li class="breadcrumb-item active" aria-current="page">
-          {{ page.title | truncate: 50 }}
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page.title | truncate: 55 }}</li>
       </ol>
     </nav>
   </div>
 </div>
 
-<!-- ── BreadcrumbList Schema.org ── -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Início",
-      "item": "{{ site.url }}/"
-    }{% for category in page.categories limit:1 %},
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ category | capitalize }}",
-      "item": "{{ site.url }}/{{ category }}/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ page.title | strip_html | escape }}",
-      "item": "{{ page.url | absolute_url }}"
-    }{% endfor %}
-  ]
-}
-</script>
-
-<!-- ── Header do post ── -->
+<!-- Post Header -->
 <header class="post-header">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-10 mx-auto">
+    <div class="col-lg-9 mx-auto">
 
-        <!-- Categorias -->
-        <div class="mb-3">
-          {% for category in page.categories %}
-            <span class="badge badge-cat {{ category | downcase }} me-1">{{ category }}</span>
-          {% endfor %}
-          {% for tag in page.tags limit:3 %}
-            <span class="badge bg-secondary bg-opacity-50 me-1" style="font-size:.7rem;">
-              #{{ tag }}
-            </span>
-          {% endfor %}
-        </div>
-
-        <!-- Título -->
-        <h1 class="mb-3">{{ page.title }}</h1>
-
-        <!-- Meta informações -->
-        <div class="post-meta-bar">
-          <span class="meta-item">
-            <i class="bi bi-person-fill"></i>
-            {{ page.author | default: site.author.name }}
-          </span>
-          <span class="meta-item">
-            <i class="bi bi-calendar3"></i>
-            <time datetime="{{ page.date | date_to_xmlschema }}">
-              {{ page.date | date: "%d/%m/%Y" }}
-            </time>
-          </span>
-          <span class="meta-item">
-            <i class="bi bi-clock"></i>
-            {% assign words = content | strip_html | number_of_words %}
-            {% assign read_time = words | divided_by: 200 | plus: 1 %}
-            {{ read_time }} min read
-          </span>
-          {% if page.source_name %}
-          <span class="meta-item">
-            <i class="bi bi-newspaper"></i>
-            Fonte: {{ page.source_name }}
-          </span>
-          {% endif %}
-        </div>
-
+      <div class="post-cats mb-3">
+        {% for category in page.categories %}
+          <a href="{{ '/' | append: category | relative_url }}" class="post-cat-badge">{{ category | upcase }}</a>
+        {% endfor %}
       </div>
+
+      <h1 class="post-title">{{ page.title }}</h1>
+
+      {% if page.description %}
+      <p class="post-deck">{{ page.description }}</p>
+      {% endif %}
+
+      <div class="post-meta">
+        <span><i class="bi bi-calendar3"></i>
+          <time datetime="{{ page.date | date_to_xmlschema }}">
+            {{ page.date | date: "%B %d, %Y" }}
+          </time>
+        </span>
+        <span><i class="bi bi-clock"></i>
+          {% assign words = content | strip_html | number_of_words %}
+          {% assign mins = words | divided_by: 200 | plus: 1 %}
+          {{ mins }} min read
+        </span>
+        {% if page.source_name %}
+        <span><i class="bi bi-newspaper"></i> {{ page.source_name }}</span>
+        {% endif %}
+      </div>
+
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     CORPO DO POST + SIDEBAR
-     ============================================================ -->
-<div class="container my-4">
-  <div class="row g-4">
+<!-- Post Body -->
+<div class="container post-body">
+  <div class="row g-5">
 
-    <!-- ── Coluna principal ── -->
+    <!-- Main Content -->
     <div class="col-lg-8">
 
-      <!-- Imagem de destaque -->
       {% if page.image %}
-      <div class="mb-4">
-        <img src="{{ page.image | relative_url }}"
-             alt="{{ page.title | escape }}"
-             class="img-fluid rounded-3 w-100"
-             style="max-height:420px; object-fit:cover;">
-      </div>
+      <figure class="post-hero-img">
+        <img src="{{ page.image }}" alt="{{ page.title | escape }}" loading="eager">
+      </figure>
       {% endif %}
 
-      <!-- ══ ADSENSE — In-article (antes do conteúdo) ══════════════
-      <div class="adsense-placeholder mb-4">
-        <small>⬛ Espaço para Anúncio Google AdSense — In-Article</small>
-        <!-- Após aprovação, substitua pelo código real:
-        <ins class="adsbygoogle"
-             style="display:block; text-align:center;"
-             data-ad-layout="in-article"
-             data-ad-format="fluid"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-             data-ad-slot="XXXXXXXXXX"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        -->
-      </div>
-      ══ -->
-
-      <!-- Conteúdo do post -->
       <article class="post-content">
         {{ content }}
       </article>
 
-      <!-- ── Caixa de fonte original ── -->
+      <!-- Source Box -->
       {% if page.source_url %}
-      <div class="source-link-box my-4">
-        <p class="mb-1">
-          <i class="bi bi-link-45deg me-1 text-primary"></i>
-          <strong>Original source:</strong>
-        </p>
-        <a href="{{ page.source_url }}" target="_blank" rel="noopener noreferrer"
-           class="text-break">
-          {{ page.source_url }}
+      <div class="source-box">
+        <div class="source-box-label">
+          <i class="bi bi-box-arrow-up-right"></i> Original Source
+        </div>
+        <p class="source-box-name">{{ page.source_name }}</p>
+        <a href="{{ page.source_url }}" target="_blank" rel="noopener noreferrer" class="source-box-link">
+          Read full article at {{ page.source_name }} →
         </a>
-        <p class="mb-0 mt-2" style="font-size:.8rem; color:#6c757d;">
-          ℹ️ Este post é um resumo/curadoria. Read full article no veículo original clicando no link acima.
-          Os direitos do conteúdo pertencem ao(s) autor(es) original(is).
+        <p class="source-box-note">
+          This post is a curated summary. All rights belong to the original author(s) and {{ page.source_name }}.
         </p>
       </div>
       {% endif %}
 
-      <!-- ── Tags ── -->
+      <!-- Tags -->
       {% if page.tags.size > 0 %}
-      <div class="my-3">
-        <strong style="font-size:.85rem;">Tags:</strong>
+      <div class="post-tags">
         {% for tag in page.tags %}
-          <a href="{{ '/tag/' | append: tag | relative_url }}"
-             class="badge bg-light text-dark border me-1 text-decoration-none"
-             style="font-size:.78rem;">#{{ tag }}</a>
+          <span class="post-tag">#{{ tag }}</span>
         {% endfor %}
       </div>
       {% endif %}
 
-      <!-- ── Compartilhamento ── -->
-      <div class="card border-0 bg-light rounded-3 p-3 my-4">
-        <p class="mb-2 fw-bold" style="font-size:.95rem;">
-          <i class="bi bi-share-fill me-2 text-primary"></i>Enjoyed this? Share it!
-        </p>
-        <div class="share-buttons">
-
-          <!-- WhatsApp -->
-          <a class="share-btn whatsapp"
-             href="https://api.whatsapp.com/send?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}"
-             target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-whatsapp"></i> WhatsApp
-          </a>
-
-          <!-- Facebook -->
-          <a class="share-btn facebook"
-             href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}"
-             target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-facebook"></i> Facebook
-          </a>
-
-          <!-- Copy link -->
-          <button class="share-btn"
-                  style="background:#6c757d; cursor:pointer; border:none;"
-                  onclick="navigator.clipboard.writeText('{{ page.url | absolute_url }}').then(()=>alert('Link copied!'))">
-            <i class="bi bi-clipboard"></i> Copy link
-          </button>
-
-        </div>
-      </div>
-
-      <!-- ══ ADSENSE — Banner após conteúdo ════════════════════════
-      <div class="adsense-placeholder my-4">
-        <small>⬛ Espaço para Anúncio Google AdSense — 728×90 / Responsivo</small>
-        <!-- Código real:
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-             data-ad-slot="XXXXXXXXXX"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        -->
-      </div>
-      ══ -->
-
-      <!-- ── Navegação anterior / próximo ── -->
-      <nav class="d-flex justify-content-between my-4">
-        {% if page.previous.url %}
-        <a href="{{ page.previous.url | relative_url }}"
-           class="btn btn-outline-primary btn-sm">
-          <i class="bi bi-arrow-left me-1"></i>
-          {{ page.previous.title | truncate: 35 }}
+      <!-- Share -->
+      <div class="post-share">
+        <span class="post-share-label">Share</span>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}"
+           target="_blank" rel="noopener" class="share-pill facebook">
+          <i class="bi bi-facebook"></i> Facebook
         </a>
-        {% else %}
-        <span></span>
-        {% endif %}
+        <a href="https://api.whatsapp.com/send?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}"
+           target="_blank" rel="noopener" class="share-pill whatsapp">
+          <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
+        <button class="share-pill copy"
+                onclick="navigator.clipboard.writeText('{{ page.url | absolute_url }}');this.innerHTML='<i class=\'bi bi-check2\'></i> Copied'">
+          <i class="bi bi-link-45deg"></i> Copy link
+        </button>
+      </div>
 
+      <!-- Prev / Next -->
+      <nav class="post-nav">
         {% if page.next.url %}
-        <a href="{{ page.next.url | relative_url }}"
-           class="btn btn-outline-primary btn-sm text-end">
-          {{ page.next.title | truncate: 35 }}
-          <i class="bi bi-arrow-right ms-1"></i>
+        <a href="{{ page.next.url | relative_url }}" class="post-nav-item prev">
+          <span class="post-nav-dir"><i class="bi bi-arrow-left"></i> Previous</span>
+          <span class="post-nav-title">{{ page.next.title | truncate: 55 }}</span>
         </a>
-        {% endif %}
+        {% else %}<span></span>{% endif %}
+
+        {% if page.previous.url %}
+        <a href="{{ page.previous.url | relative_url }}" class="post-nav-item next">
+          <span class="post-nav-dir">Next <i class="bi bi-arrow-right"></i></span>
+          <span class="post-nav-title">{{ page.previous.title | truncate: 55 }}</span>
+        </a>
+        {% else %}<span></span>{% endif %}
       </nav>
 
     </div>
-    <!-- /coluna principal -->
+    <!-- /main -->
 
-    <!-- ── SIDEBAR ── -->
+    <!-- Sidebar -->
     <aside class="col-lg-4">
 
-      <!-- Últimas notícias -->
-      <div class="sidebar-section">
-        <h5><i class="bi bi-lightning-charge-fill me-1 text-warning"></i>Últimas Notícias</h5>
-        {% assign recent = site.posts | limit: 6 %}
+      <div class="sidebar-widget">
+        <h6 class="sidebar-widget-title">Latest News</h6>
+        {% assign recent = site.posts | limit: 7 %}
         {% for post in recent %}
           {% unless post.url == page.url %}
-          <div class="mb-3 pb-3 {% unless forloop.last %}border-bottom{% endunless %}">
-            <div class="d-flex gap-2 align-items-start">
-              {% if post.image %}
-              <img src="{{ post.image | relative_url }}" alt=""
-                   width="60" height="45"
-                   style="width:60px; height:45px; object-fit:cover; border-radius:6px; flex-shrink:0;">
-              {% endif %}
-              <div>
-                <a href="{{ post.url | relative_url }}"
-                   class="text-decoration-none text-dark"
-                   style="font-size:.85rem; font-weight:600; line-height:1.3;">
-                  {{ post.title | truncate: 65 }}
-                </a>
-                <div style="font-size:.75rem; color:#6c757d; margin-top:.2rem;">
-                  {{ post.date | date: "%d/%m/%Y" }}
-                </div>
-              </div>
+          <a href="{{ post.url | relative_url }}" class="sidebar-post">
+            {% if post.image %}
+            <img src="{{ post.image }}" alt="" loading="lazy" class="sidebar-post-img">
+            {% endif %}
+            <div class="sidebar-post-info">
+              <span class="sidebar-post-title">{{ post.title | truncate: 65 }}</span>
+              <span class="sidebar-post-date">{{ post.date | date: "%b %d, %Y" }}</span>
             </div>
-          </div>
+          </a>
           {% endunless %}
         {% endfor %}
       </div>
-      <!-- ══ ADSENSE — Sidebar (300×250) ══════════════════════════
-      <div class="sidebar-section p-0">
-        <div class="adsense-placeholder">
-          <small>⬛ AdSense — 300×250</small>
-        </div>
-        <!-- Código real:
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:300px;height:250px"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-             data-ad-slot="XXXXXXXXXX"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        -->
-      </div>
-      ══ -->
 
-      <!-- Categorias populares -->
-      <div class="sidebar-section">
-        <h5><i class="bi bi-tags-fill me-1 text-primary"></i>Categorias</h5>
-        {% assign all_categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
-        <div class="d-flex flex-wrap gap-2">
-          {% for category in all_categories %}
-            {% if category != '' %}
-            <a href="{{ '/' | append: category | relative_url }}"
-               class="badge badge-cat {{ category | downcase | strip }} text-decoration-none">
-              {{ category | capitalize | strip }}
-            </a>
-            {% endif %}
-          {% endfor %}
+      <div class="sidebar-widget">
+        <h6 class="sidebar-widget-title">Categories</h6>
+        <div class="sidebar-cats">
+          <a href="{{ '/technology/' | relative_url }}" class="sidebar-cat">Technology</a>
+          <a href="{{ '/ai/' | relative_url }}" class="sidebar-cat">AI</a>
+          <a href="{{ '/gadgets/' | relative_url }}" class="sidebar-cat">Gadgets</a>
+          <a href="{{ '/startups/' | relative_url }}" class="sidebar-cat">Startups</a>
+          <a href="{{ '/security/' | relative_url }}" class="sidebar-cat">Security</a>
+          <a href="{{ '/mobile/' | relative_url }}" class="sidebar-cat">Mobile</a>
         </div>
+      </div>
+
+      <div class="sidebar-widget sidebar-rss">
+        <i class="bi bi-rss-fill sidebar-rss-icon"></i>
+        <p class="sidebar-rss-text">Stay updated with every new article</p>
+        <a href="{{ '/feed.xml' | relative_url }}" class="sidebar-rss-btn">Subscribe via RSS</a>
       </div>
 
     </aside>
-    <!-- /sidebar -->
 
-  </div><!-- /row -->
+  </div>
 </div>
 
-<!-- ============================================================
-     SEÇÃO "VEJA TAMBÉM" — Posts relacionados
-     ============================================================ -->
-{% assign page_cats = page.categories %}
-{% assign related_posts = site.posts | where_exp: "p", "p.url != page.url" %}
-{% assign matching = "" | split: "" %}
-
-{% for p in related_posts %}
+<!-- Related Posts -->
+{% assign related = site.posts | where_exp: "p", "p.url != page.url" %}
+{% assign matched = "" | split: "" %}
+{% for p in related %}
   {% for cat in p.categories %}
-    {% if page_cats contains cat %}
-      {% unless matching contains p %}
-        {% assign matching = matching | push: p %}
+    {% if page.categories contains cat %}
+      {% unless matched contains p %}
+        {% assign matched = matched | push: p %}
       {% endunless %}
     {% endif %}
   {% endfor %}
 {% endfor %}
-
-{% assign related_limit = matching | limit: 3 %}
-{% if related_limit.size > 0 %}
-<section class="bg-light py-4">
+{% if matched.size > 0 %}
+<section class="related-section">
   <div class="container">
-    <h3 class="fw-bold mb-4" style="font-size:1.3rem;">
-      <i class="bi bi-collection-play-fill me-2 text-primary"></i>Veja também
-    </h3>
-    <div class="row g-3 related-posts">
-      {% for post in related_limit %}
+    <h3 class="related-title">Related Articles</h3>
+    <div class="row g-4">
+      {% for post in matched limit:3 %}
       <div class="col-md-4">
-        <a href="{{ post.url | relative_url }}" class="related-card">
+        <a href="{{ post.url | relative_url }}" class="news-card related-card-item h-100">
           {% if post.image %}
-          <img src="{{ post.image | relative_url }}" alt=""
-               width="400" height="130"
-               class="img-fluid rounded-2 mb-2 w-100"
-               style="height:130px; object-fit:cover;">
-          {% endif %}
-          <div>
-            {% for cat in post.categories limit:1 %}
-            <span class="badge badge-cat {{ cat | downcase }} mb-1">{{ cat }}</span>
-            {% endfor %}
+          <div class="card-img-wrap">
+            <img src="{{ post.image }}" alt="{{ post.title | escape }}" loading="lazy" class="card-img">
           </div>
-          <h6>{{ post.title | truncate: 75 }}</h6>
-          <small class="text-muted">{{ post.date | date: "%d/%m/%Y" }}</small>
+          {% endif %}
+          <div class="card-body-inner">
+            <div class="card-meta">
+              <time>{{ post.date | date: "%B %d, %Y" }}</time>
+              {% if post.source_name %}<span class="card-source">{{ post.source_name }}</span>{% endif %}
+            </div>
+            <h2 class="card-headline">{{ post.title | truncate: 80 }}</h2>
+          </div>
         </a>
       </div>
       {% endfor %}
