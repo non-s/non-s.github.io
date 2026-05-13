@@ -273,7 +273,7 @@ def create_video(title: str, source: str, image_path: Path | None,
     # FFmpeg: frames + áudio → mp4
     cmd = [
         "ffmpeg", "-y",
-        "-f", "concat", "-safe", "0", "-i", str(concat_file),
+        "-f", "concat", "-safe", "0", "-i", concat_file.name,  # use filename only since cwd=tmp_dir
         "-i", str(audio_path),
         "-vf", f"scale={VIDEO_W}:{VIDEO_H},fps={fps}",
         "-c:v", "libx264", "-preset", "fast", "-crf", "23",
