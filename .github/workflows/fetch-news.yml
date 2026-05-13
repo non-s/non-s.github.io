@@ -1,118 +1,93 @@
 # ============================================================
 # .github/workflows/fetch-news.yml
-# GitHub Actions — Coleta automática de notícias
+# GitHub Actions — Auto news fetcher
 #
-# Executa às 8h, 12h e 18h (horário de Brasília = UTC-3)
-# → No cron do GitHub Actions (UTC): 11h, 15h e 21h
-#
-# Não precisa configurar nenhum secret adicional —
-# o GITHUB_TOKEN é fornecido automaticamente.
+# Runs every hour. Only commits if there are new posts.
+# Duplicate detection is handled by fetch_news.py itself
+# (checks existing filenames before creating new ones).
 # ============================================================
 
 name: "📰 Fetch News RSS"
 
 on:
-  # Agendamento automático (horário UTC — BRT = UTC-3)
   schedule:
-    - cron: "0 11 * * *"   # 08:00 BRT
-    - cron: "0 15 * * *"   # 12:00 BRT
-    - cron: "0 21 * * *"   # 18:00 BRT
+    - cron: "0 * * * *"   # Every hour, on the hour (UTC)
 
-  # Permite executar manualmente pelo GitHub UI
   workflow_dispatch:
     inputs:
       debug:
-        description: "Ativar log de debug?"
+        description: "Enable debug log?"
         required: false
         default: "false"
         type: boolean
 
 jobs:
   fetch-and-publish:
-    name: "Coletar notícias e publicar"
+    name: "Fetch & publish news"
     runs-on: ubuntu-latest
 
-    # Permissões necessárias para commit e push
     permissions:
       contents: write
 
     steps:
 
-      # ── 1. Checkout do repositório ──────────────────────────────
-      - name: "📥 Checkout do repositório"
+      - name: "📥 Checkout repository"
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0   # Histórico completo (necessário para o push)
+          fetch-depth: 0
 
-      # ── 2. Configura Python ─────────────────────────────────────
-      - name: "🐍 Configurar Python 3.11"
+      - name: "🐍 Set up Python 3.11"
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
-      # ── 3. Instala dependências Python ──────────────────────────
-      - name: "📦 Instalar dependências"
+      - name: "📦 Install dependencies"
         run: |
           python -m pip install --upgrade pip
           pip install feedparser requests
 
-      # ── 4. Executa o script de coleta ───────────────────────────
-      - name: "📡 Executar fetch_news.py"
-        run: |
-          python fetch_news.py
+      - name: "📡 Run fetch_news.py"
+        run: python fetch_news.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      # ── 5. Verifica se há novos posts ───────────────────────────
-      - name: "🔍 Verificar novos posts"
+      - name: "🔍 Check for new posts"
         id: check_changes
         run: |
-          git status --porcelain _posts/
           CHANGED=$(git status --porcelain _posts/ | wc -l | tr -d ' ')
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
-          echo "Posts novos encontrados: $CHANGED"
+          echo "New posts found: $CHANGED"
 
-      # ── 6. Commit e push (só se houver novidades) ───────────────
-      - name: "💾 Commit e push dos novos posts"
+      - name: "💾 Commit & push new posts"
         if: steps.check_changes.outputs.changed != '0'
         run: |
-          # Configura identidade do bot
           git config user.name  "TechBR News Bot"
-          git config user.email "bot@non-s.github.io"
+          git config user.email "bot@techbrnews.com"
 
-          # Adiciona apenas arquivos de posts e log
           git add _posts/
           git add fetch_news.log || true
 
-          # Conta posts adicionados
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
 
-          # Commit com mensagem descritiva
-          TIMESTAMP=$(TZ="America/Sao_Paulo" date +"%d/%m/%Y %H:%M")
-          git commit -m "🤖 Auto: +${ADDED} post(s) — ${TIMESTAMP} BRT
+          git commit -m "🤖 +${ADDED} post(s) — ${TIMESTAMP}
 
-          Coletado automaticamente via fetch_news.py
-          Feeds: G1 Tecnologia, TecMundo, TechTudo, Olhar Digital
+          Auto-fetched via fetch_news.py
           Workflow: ${{ github.workflow }} #${{ github.run_number }}"
 
-          # Push para a branch principal
           git push origin HEAD
-
-          echo "✅ $ADDED post(s) publicado(s) com sucesso!"
+          echo "✅ $ADDED post(s) published!"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── 7. Nenhuma novidade (informativo) ──────────────────────
-      - name: "ℹ️ Nenhuma novidade"
+      - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
-        run: |
-          echo "✨ Nenhum post novo nesta execução."
+        run: echo "✨ No new posts this run — skipping commit."
 
-      # ── 8. Upload do log como artefato ─────────────────────────
-      - name: "📋 Salvar log de execução"
+      - name: "📋 Save execution log"
         if: always()
         uses: actions/upload-artifact@v4
         with:

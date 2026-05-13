@@ -35,7 +35,7 @@ from time import sleep
 
 POSTS_DIR   = Path("_posts")          # Diretório de posts Jekyll
 LOG_FILE    = "fetch_news.log"        # Arquivo de log
-MAX_PER_FEED = 3                      # Máximo de posts por feed por execução
+MAX_PER_FEED = 2                      # Max posts per feed per run (hourly schedule)
 REQUEST_TIMEOUT = 15                  # Timeout em segundos para requests HTTP
 SLEEP_BETWEEN_FEEDS = 2               # Pausa entre feeds (evitar bloqueio)
 
@@ -153,140 +153,6 @@ FEEDS = [
     },
 ]
 
-],
-        "source":   "G1",
-    },
-    {
-        "name":     "TecMundo",
-        "url":      "https://rss.tecmundo.com.br/feed",
-        "category": "tecnologia",
-        "tags":     ["tecmundo", "tecnologia"],
-        "source":   "TecMundo",
-    },
-    {
-        "name":     "TechTudo",
-        "url":      "https://www.techtudo.com.br/rss/all.xml",
-        "category": "gadgets",
-        "tags":     ["techtudo", "gadgets", "reviews"],
-        "source":   "TechTudo",
-    },
-    {
-        "name":     "Olhar Digital",
-        "url":      "https://olhardigital.com.br/feed/",
-        "category": "tecnologia",
-        "tags":     ["olhardigital", "tecnologia"],
-        "source":   "Olhar Digital",
-    },
-    {
-        "name":     "Canaltech",
-        "url":      "https://canaltech.com.br/rss/",
-        "category": "tecnologia",
-        "tags":     ["canaltech", "tecnologia", "brasil"],
-        "source":   "Canaltech",
-    },
-    {
-        "name":     "Canaltech IA",
-        "url":      "https://canaltech.com.br/inteligencia-artificial/rss/",
-        "category": "ia",
-        "tags":     ["canaltech", "ia", "inteligencia-artificial"],
-        "source":   "Canaltech",
-    },
-    {
-        "name":     "Canaltech Gadgets",
-        "url":      "https://canaltech.com.br/gadgets/rss/",
-        "category": "gadgets",
-        "tags":     ["canaltech", "gadgets"],
-        "source":   "Canaltech",
-    },
-    {
-        "name":     "Canaltech Segurança",
-        "url":      "https://canaltech.com.br/seguranca/rss/",
-        "category": "seguranca",
-        "tags":     ["canaltech", "security", "privacy"],
-        "source":   "Canaltech",
-    },
-    {
-        "name":     "Startups.com.br",
-        "url":      "https://startups.com.br/feed/",
-        "category": "startups",
-        "tags":     ["startups", "empreendedorismo", "brasil"],
-        "source":   "Startups.com.br",
-    },
-    {
-        "name":     "Convergência Digital",
-        "url":      "https://www.convergenciadigital.com.br/rss.xml",
-        "category": "tecnologia",
-        "tags":     ["convergenciadigital", "telecom", "tecnologia"],
-        "source":   "Convergência Digital",
-    },
-    # ── Internacional ─────────────────────────────────────────
-    {
-        "name":     "TechCrunch",
-        "url":      "https://techcrunch.com/feed/",
-        "category": "tecnologia",
-        "tags":     ["techcrunch", "startups", "internacional"],
-        "source":   "TechCrunch",
-    },
-    {
-        "name":     "TechCrunch AI",
-        "url":      "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "category": "ia",
-        "tags":     ["techcrunch", "ia", "inteligencia-artificial"],
-        "source":   "TechCrunch",
-    },
-    {
-        "name":     "The Verge",
-        "url":      "https://www.theverge.com/rss/index.xml",
-        "category": "tecnologia",
-        "tags":     ["theverge", "gadgets", "reviews"],
-        "source":   "The Verge",
-    },
-    {
-        "name":     "Wired",
-        "url":      "https://www.wired.com/feed/rss",
-        "category": "tecnologia",
-        "tags":     ["wired", "tecnologia", "ciencia"],
-        "source":   "Wired",
-    },
-    {
-        "name":     "Ars Technica",
-        "url":      "https://feeds.arstechnica.com/arstechnica/index",
-        "category": "tecnologia",
-        "tags":     ["arstechnica", "tecnologia", "ciencia"],
-        "source":   "Ars Technica",
-    },
-    {
-        "name":     "MIT Technology Review",
-        "url":      "https://www.technologyreview.com/feed/",
-        "category": "ia",
-        "tags":     ["mit", "inovacao", "pesquisa"],
-        "source":   "MIT Technology Review",
-    },
-    {
-        "name":     "Hacker News (Top)",
-        "url":      "https://hnrss.org/frontpage",
-        "category": "tecnologia",
-        "tags":     ["hackernews", "programacao", "tech"],
-        "source":   "Hacker News",
-    },
-]
-
-# Mapeamento de palavras-chave para categorias/tags extras
-KEYWORD_CATEGORIES = {
-    "artificial intelligence": ("ai", ["ia", "inteligencia-artificial"]),
-    "machine learning":        ("ai", ["ia", "machine-learning"]),
-    "chatgpt":                 ("ai", ["ia", "chatgpt", "openai"]),
-    "gemini":                  ("ai", ["ia", "google", "gemini"]),
-    "smartphone":              ("mobile", ["mobile", "smartphone"]),
-    "iphone":                  ("mobile", ["mobile", "iphone", "apple"]),
-    "android":                 ("mobile", ["mobile", "android"]),
-    "startup":                 ("startups", ["startups", "empreendedorismo"]),
-    "cybersecurity":           ("security", ["security", "privacy"]),
-    "cyberattack":             ("security", ["security", "cyberattack"]),
-    "bitcoin":                 ("criptomoedas", ["bitcoin", "criptomoedas"]),
-    "crypto":                  ("criptomoedas", ["cripto", "blockchain"]),
-}
-
 # ============================================================
 # LOGGING
 # ============================================================
@@ -399,9 +265,35 @@ def post_filename(date: datetime, slug: str) -> str:
     return f"{date.strftime('%Y-%m-%d')}-{slug}.md"
 
 
-def post_exists(filename: str) -> bool:
-    """Verifica se o post já existe (evita duplicatas)."""
-    return (POSTS_DIR / filename).exists()
+# Cache of known source URLs (built once per run)
+_known_urls: set | None = None
+
+def _load_known_urls() -> set:
+    """Scan existing posts and collect all source_url values."""
+    global _known_urls
+    if _known_urls is not None:
+        return _known_urls
+    _known_urls = set()
+    for f in POSTS_DIR.glob("*.md"):
+        try:
+            text = f.read_text(encoding="utf-8")
+            for line in text.splitlines():
+                if line.startswith("source_url:"):
+                    url = line.split("source_url:", 1)[1].strip().strip('"')
+                    if url:
+                        _known_urls.add(url)
+                    break
+        except Exception:
+            pass
+    return _known_urls
+
+def post_exists(filename: str, source_url: str = "") -> bool:
+    """Returns True if post already exists (by filename OR by source URL)."""
+    if (POSTS_DIR / filename).exists():
+        return True
+    if source_url:
+        return source_url in _load_known_urls()
+    return False
 
 
 def build_frontmatter(
@@ -527,8 +419,8 @@ def fetch_feed(feed_config: dict) -> int:
             slug     = slugify(title)
             filename = post_filename(pub_date, slug)
 
-            # Verifica duplicata
-            if post_exists(filename):
+            # Verifica duplicata (por filename e por URL fonte)
+            if post_exists(filename, link):
                 log.debug(f"  ⏭  Post já existe: {filename}")
                 continue
 
@@ -557,6 +449,8 @@ def fetch_feed(feed_config: dict) -> int:
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
             log.info(f"  ✅ Post criado: {filename}")
+            # Register URL so duplicates in the same run are also caught
+            _load_known_urls().add(link)
             created_count += 1
 
         except Exception as e:

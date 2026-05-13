@@ -227,21 +227,6 @@ description: "TechBR News — Latest technology news, AI, gadgets and startups f
         </div>
       </div>
 
-      <!-- About -->
-      <div class="sidebar-widget">
-        <p class="widget-title">
-          <span class="wt-icon" style="background:rgba(59,130,246,.15);">ℹ️</span>
-          About
-        </p>
-        <p style="font-size:.875rem;color:var(--c-muted);line-height:1.65;margin-bottom:1rem;">
-          O <strong style="color:rgba(255,255,255,.7);">TechBR News</strong> is automatically updated with the best global tech sources — TechCrunch, The Verge, Wired and more.
-        </p>
-        <a href="{{ '/feed.xml' | relative_url }}"
-           class="btn-read w-100 justify-content-center" style="display:flex;">
-          <i class="bi bi-rss me-1"></i> Subscribe RSS
-        </a>
-      </div>
-
       <!-- Tags -->
       {% assign all_tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
       {% if all_tags.size > 0 %}
