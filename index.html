@@ -60,6 +60,7 @@ description: "Portal de notícias de tecnologia, gadgets, IA e inovação. Atual
         {% if featured.image %}
           <img src="{{ featured.image | relative_url }}"
                alt="{{ featured.title | escape }}"
+               width="600" height="290"
                class="img-fluid rounded-3"
                style="width:100%;height:290px;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.5);">
         {% else %}
@@ -110,6 +111,7 @@ description: "Portal de notícias de tecnologia, gadgets, IA e inovação. Atual
                   <a href="{{ post.url | relative_url }}">
                     <img src="{{ post.image | relative_url }}"
                          alt="{{ post.title | escape }}"
+                         width="400" height="225"
                          loading="lazy">
                   </a>
                 {% else %}
