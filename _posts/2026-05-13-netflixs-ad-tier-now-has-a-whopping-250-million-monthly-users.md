@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Netflix's ad tier now has a whopping 250 million monthly users"
-date: 2026-05-13 21:21:27 +0000 -0300
+date: 2026-05-13 21:21:27 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
 author: "TechBR News"

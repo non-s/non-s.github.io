@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Everyone at the Musk v. Altman Trial Is Using Fancy Butt Cushions"
-date: 2026-05-13 21:58:47 +0000 -0300
+date: 2026-05-13 21:58:47 +0000
 categories: [technology]
 tags: [wired, tech, science]
 author: "TechBR News"

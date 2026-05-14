@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Anthropic’s Cat Wu says that, in the future, AI will anticipate your needs before you know what they are"
-date: 2026-05-13 19:28:06 +0000 -0300
+date: 2026-05-13 19:28:06 +0000
 categories: [technology, ai]
 tags: [techcrunch, startups, tech, ai, anthropic]
 author: "TechBR News"

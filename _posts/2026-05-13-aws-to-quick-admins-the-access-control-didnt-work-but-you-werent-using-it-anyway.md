@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AWS to Quick admins: The access control didn't work, but you weren't using it anyway, so what's the problem?"
-date: 2026-05-13 22:56:41 +0000 -0300
+date: 2026-05-13 22:56:41 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Apple may open up the App Store to agentic AI"
-date: 2026-05-13 20:28:01 +0000 -0300
+date: 2026-05-13 20:28:01 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
 author: "TechBR News"

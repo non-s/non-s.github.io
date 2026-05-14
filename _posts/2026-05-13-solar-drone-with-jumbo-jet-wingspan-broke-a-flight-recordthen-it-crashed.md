@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Solar drone with jumbo jet wingspan broke a flight record—then it crashed"
-date: 2026-05-13 21:48:27 +0000 -0300
+date: 2026-05-13 21:48:27 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
 author: "TechBR News"

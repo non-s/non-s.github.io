@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "20% Off Sephora Promo Code | May 2026"
-date: 2026-05-14 05:00:00 +0000 -0300
+date: 2026-05-14 05:00:00 +0000
 categories: [technology]
 tags: [wired, tech, science]
 author: "TechBR News"

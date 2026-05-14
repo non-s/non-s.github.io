@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Claude Code costs up to $200 a month. Goose does the same thing for free."
-date: 2026-01-19 14:00:00 +0000 -0300
+date: 2026-01-19 14:00:00 +0000
 categories: [ai]
 tags: [venturebeat, ai, enterprise, machine-learning]
 author: "TechBR News"

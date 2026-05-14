@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Microsoft is retiring Copilot Mode on Edge, because everything is Copilot Mode now"
-date: 2026-05-14 03:57:54 +0000 -0300
+date: 2026-05-14 03:57:54 +0000
 categories: [gadgets, ai]
 tags: [engadget, gadgets, reviews, ai, microsoft, copilot]
 author: "TechBR News"

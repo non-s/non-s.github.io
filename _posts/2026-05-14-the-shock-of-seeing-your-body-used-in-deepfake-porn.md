@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The shock of seeing your body used in deepfake porn"
-date: 2026-05-14 09:00:00 +0000 -0300
+date: 2026-05-14 09:00:00 +0000
 categories: [ai]
 tags: [mit, ai, research]
 author: "TechBR News"

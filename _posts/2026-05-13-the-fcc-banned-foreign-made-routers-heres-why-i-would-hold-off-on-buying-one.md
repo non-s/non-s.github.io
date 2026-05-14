@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The FCC Banned Foreign-Made Routers. Here’s Why I Would Hold Off On Buying One"
-date: 2026-05-13 20:55:00 +0000 -0300
+date: 2026-05-13 20:55:00 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Calling the cops just got extra AI as police seek to add tech to contact systems"
-date: 2026-05-14 09:15:00 +0000 -0300
+date: 2026-05-14 09:15:00 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
 author: "TechBR News"

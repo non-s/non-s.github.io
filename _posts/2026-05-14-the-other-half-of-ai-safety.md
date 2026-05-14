@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The Other Half of AI Safety"
-date: 2026-05-14 00:27:20 +0000 -0300
+date: 2026-05-14 00:27:20 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
 author: "TechBR News"

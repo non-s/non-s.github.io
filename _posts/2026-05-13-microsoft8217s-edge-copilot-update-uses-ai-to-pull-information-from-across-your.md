@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Microsoft&#8217;s Edge Copilot update uses AI to pull information from across your tabs"
-date: 2026-05-13 22:04:28 +0000 -0300
+date: 2026-05-13 22:04:28 +0000
 categories: [technology, ai]
 tags: [theverge, gadgets, reviews, ai, microsoft, copilot]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AI IQ is here: a new site scores frontier AI models on the human IQ scale. The results are already dividing tech."
-date: 2026-05-13 23:47:24 +0000 -0300
+date: 2026-05-13 23:47:24 +0000
 categories: [startups, ai]
 tags: [venturebeat, startups, enterprise, ai, machine-learning]
 author: "TechBR News"

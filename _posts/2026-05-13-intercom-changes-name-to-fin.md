@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Intercom changes name to Fin"
-date: 2026-05-13 23:10:19 +0000 -0300
+date: 2026-05-13 23:10:19 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
 author: "TechBR News"

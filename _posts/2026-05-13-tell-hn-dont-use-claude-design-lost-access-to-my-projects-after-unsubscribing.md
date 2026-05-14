@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tell HN: Dont use Claude Design, lost access to my projects after unsubscribing"
-date: 2026-05-13 21:40:18 +0000 -0300
+date: 2026-05-13 21:40:18 +0000
 categories: [technology, ai]
 tags: [hackernews, programming, tech, ai, llm]
 author: "TechBR News"

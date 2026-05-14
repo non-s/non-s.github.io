@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AMD&#8217;s best CPU tech for gamers is coming to workstations too"
-date: 2026-05-13 20:38:16 +0000 -0300
+date: 2026-05-13 20:38:16 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Microsoft's MDASH AI System Finds 16 Windows Flaws Fixed in Patch Tuesday"
-date: 2026-05-13 13:46:02 +0000 -0300
+date: 2026-05-13 13:46:02 +0000
 categories: [security, ai]
 tags: [hackernews, security, vulnerabilities, ai, machine-learning]
 author: "TechBR News"

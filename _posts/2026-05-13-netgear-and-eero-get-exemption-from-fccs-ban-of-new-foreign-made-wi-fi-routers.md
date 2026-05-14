@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Netgear and Eero Get Exemption From FCC's Ban of New Foreign-Made Wi-Fi Routers"
-date: 2026-05-13 22:07:00 +0000 -0300
+date: 2026-05-13 22:07:00 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
 author: "TechBR News"

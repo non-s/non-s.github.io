@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Canvas Breach Disrupts Schools & Colleges Nationwide"
-date: 2026-05-08 02:58:46 +0000 -0300
+date: 2026-05-08 02:58:46 +0000
 categories: [security]
 tags: [krebs, security, cybersecurity]
 author: "TechBR News"

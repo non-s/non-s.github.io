@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Protein in Homo erectus teeth suggests Denisovans gave us some of their DNA"
-date: 2026-05-13 20:27:54 +0000 -0300
+date: 2026-05-13 20:27:54 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
 author: "TechBR News"
