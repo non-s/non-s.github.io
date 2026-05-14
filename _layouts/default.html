@@ -105,7 +105,7 @@
         {% include weather-widget.html %}
 
         {% if site.onesignal_app_id %}
-        <button id="onesignal-notify-btn" class="onesignal-notify-btn" aria-label="Enable push notifications" title="Enable Notifications">
+        <button id="onesignal-notify-btn" class="onesignal-notify-btn" title="Enable notifications" aria-label="Enable push notifications">
           <i class="bi bi-bell"></i>
         </button>
         {% endif %}
@@ -137,6 +137,24 @@
   })();
   </script>
 
+  {% if site.onesignal_app_id %}
+  <script>
+  (function(){
+    var btn = document.getElementById('onesignal-notify-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      if (window.OneSignal) {
+        window.OneSignal.Slidedown.promptPush();
+      } else if (window.OneSignalDeferred) {
+        window.OneSignalDeferred.push(function(OneSignal) {
+          OneSignal.Slidedown.promptPush();
+        });
+      }
+    });
+  })();
+  </script>
+  {% endif %}
+
   <!-- ── CRYPTO TICKER ────────────────────────────────────── -->
   {% include crypto-ticker.html %}
 
@@ -165,6 +183,9 @@
       </div>
     </div>
   </div>
+
+  <!-- ── CRYPTO TICKER ─────────────────────────────────────── -->
+  {% include crypto-ticker.html %}
 
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main id="main-content">{{ content }}</main>
@@ -432,20 +453,13 @@
   })();
   </script>
 
-  {% if site.onesignal_app_id %}
-  <!-- ── OneSignal Notify Button JS ───────────────────────── -->
-  <script>
-  (function(){
-    var btn = document.getElementById('onesignal-notify-btn');
-    if (!btn) return;
-    btn.addEventListener('click', function(){
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal){
-        OneSignal.Slidedown.promptPush();
-      });
-    });
-  })();
-  </script>
+  <!-- ── KO-FI DONATION BUTTON ─────────────────────────────── -->
+  {% if site.kofi_id %}
+  <div class="kofi-widget-container">
+    <a href="https://ko-fi.com/{{ site.kofi_id }}" target="_blank" rel="noopener" class="kofi-btn" title="Support us on Ko-fi">
+      <img src="https://storage.ko-fi.com/cdn/kofi2.png?v=3" alt="Buy Me a Coffee at ko-fi.com" height="36">
+    </a>
+  </div>
   {% endif %}
 
 </body>

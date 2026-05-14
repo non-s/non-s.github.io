@@ -2772,4 +2772,139 @@ body.reader-mode #reader-mode-btn {
   align-items: center;
   gap: .35rem;
 }
+
+/* ============================================================
+   CRYPTO TICKER WIDGET
+   ============================================================ */
+.crypto-ticker {
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  padding: .4rem 0;
+  overflow: hidden;
+  font-size: .8rem;
+}
+.crypto-ticker-inner {
+  display: flex;
+  gap: 2rem;
+  padding: 0 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+.ticker-item { white-space: nowrap; }
+.ticker-chg.up   { color: #22c55e; }
+.ticker-chg.down { color: #ef4444; }
+
+/* ============================================================
+   WEATHER WIDGET
+   ============================================================ */
+.weather-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .82rem;
+  color: var(--c-muted);
+  margin-left: .5rem;
+  white-space: nowrap;
+}
+.weather-city  { font-weight: 600; color: var(--c-text); }
+.weather-temp  { font-weight: 700; color: var(--c-accent); }
+.weather-desc  { color: var(--c-muted); text-transform: capitalize; }
+
+/* ============================================================
+   STOCK TICKER WIDGET
+   ============================================================ */
+.stock-ticker-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  padding: .4rem 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  font-size: .8rem;
+  &::-webkit-scrollbar { display: none; }
+}
+.stock-ticker-label {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.stock-items {
+  display: flex;
+  gap: 1.5rem;
+}
+.stock-item { white-space: nowrap; }
+
+/* ============================================================
+   KO-FI DONATION BUTTON
+   ============================================================ */
+.kofi-widget-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 999;
+  padding: 0;
+}
+.kofi-btn {
+  display: block;
+  opacity: .9;
+  transition: opacity .2s, transform .2s;
+  &:hover { opacity: 1; transform: translateY(-2px); }
+  img { border-radius: var(--r-sm); box-shadow: var(--shadow-md); height: 36px; width: auto; }
+}
+
+/* ============================================================
+   AD UNIT
+   ============================================================ */
+.ad-unit {
+  margin: 1.5rem auto;
+  text-align: center;
+  max-width: 728px;
+}
+.ad-unit-article { margin: 1.5rem 0; }
+
+/* ============================================================
+   COMMENTS SECTION (Giscus / Utterances)
+   ============================================================ */
+.comments-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--c-border);
+}
+.comments-section .h5 {
+  font-weight: 700;
+  color: var(--c-text);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* ============================================================
+   ONESIGNAL NOTIFY BUTTON (navbar)
+   ============================================================ */
+.onesignal-notify-btn {
+  background: transparent;
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-xs);
+  color: var(--c-muted);
+  padding: .3rem .5rem;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  display: inline-flex;
+  align-items: center;
+  margin-left: .25rem;
+  &:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+}
 .counter-item i { color: var(--c-accent); }
