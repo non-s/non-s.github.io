@@ -147,6 +147,11 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         <span class="counter-item"><i class="bi bi-clock"></i> Updated every 5 min</span>
       </div>
 
+      <!-- Next-update countdown  (UX feat 8) -->
+      <div class="next-update mb-2" id="next-update">
+        <i class="bi bi-clock"></i> Next update in <span id="update-countdown">5:00</span>
+      </div>
+
       <!-- Category Filter (Task 2) -->
       <div class="filter-bar" id="cat-filter-bar">
         <button class="filter-btn active" data-cat="all">All</button>
@@ -168,15 +173,37 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         <button class="filter-btn" data-sent="negative">😔 Negative</button>
       </div>
 
+      <!-- Date Period Filter  (UX feat 4) -->
+      <div class="filter-bar" id="period-filter-bar">
+        <button class="filter-btn active" data-period="all">All time</button>
+        <button class="filter-btn" data-period="today">Today</button>
+        <button class="filter-btn" data-period="week">This week</button>
+      </div>
+
+      <!-- Skeleton loader  (UX feat 1) -->
+      <div class="skeleton-grid mb-3" id="skeleton-grid">
+        {% for i in (1..6) %}
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
       {% assign posts_to_show = site.posts | offset: 1 %}
 
       {% if posts_to_show.size > 0 %}
-        <div class="row g-3">
+        <div class="row g-3" id="posts-grid" style="display:none">
           {% for post in posts_to_show limit: 9 %}
           <div class="col-md-6 col-lg-4"
                data-category="{{ post.categories | first | downcase }}"
-               data-sentiment="{{ post.sentiment | default: 'neutral' | downcase }}">
-            <div class="news-card">
+               data-sentiment="{{ post.sentiment | default: 'neutral' | downcase }}"
+               data-pubdate="{{ post.date | date_to_xmlschema }}">
+            <article class="news-card h-100" data-pubdate="{{ post.date | date_to_xmlschema }}">
 
               <!-- Imagem -->
               <div class="card-img-wrapper">
@@ -208,7 +235,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                 {% endfor %}
 
                 <!-- Título -->
-                <h3 class="card-title">
+                <h3 class="card-title card-headline">
                   <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                 </h3>
 
@@ -236,7 +263,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                 </div>
               </div>
 
-            </div>
+            </article>
           </div>
           {% endfor %}
         </div>
@@ -285,20 +312,78 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
     <!-- /col principal -->
 
-    <!-- Category & Sentiment Filter JS (Tasks 2 & 3) -->
+    <!-- Index page JS: skeleton, fade-in, badge NEW, date filter, countdown -->
     <script>
     (function(){
-      var cards = document.querySelectorAll('.row.g-3 > [data-category]');
-      var activeCat = 'all';
+
+      /* ── 1. Skeleton: show posts after 400ms ─────────────────── */
+      var skeleton  = document.getElementById('skeleton-grid');
+      var postsGrid = document.getElementById('posts-grid');
+      if (skeleton && postsGrid) {
+        setTimeout(function(){
+          skeleton.style.display  = 'none';
+          postsGrid.style.display = '';
+          initObserver();
+          addBadges();
+        }, 400);
+      } else {
+        initObserver();
+        addBadges();
+      }
+
+      /* ── 2. IntersectionObserver fade-in ─────────────────────── */
+      function initObserver() {
+        if (!window.IntersectionObserver) {
+          document.querySelectorAll('.news-card').forEach(function(c){
+            c.classList.add('visible');
+          });
+          return;
+        }
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.news-card').forEach(function(c){ obs.observe(c); });
+      }
+
+      /* ── 3. Badge NEW (posts published in the last 2 hours) ──── */
+      function addBadges() {
+        document.querySelectorAll('.news-card[data-pubdate]').forEach(function(card){
+          var pub = new Date(card.dataset.pubdate);
+          if (Date.now() - pub.getTime() < 7200000) {
+            var badge = document.createElement('span');
+            badge.className = 'badge-new';
+            badge.textContent = 'NEW';
+            var headline = card.querySelector('.card-headline');
+            if (headline) headline.prepend(badge);
+          }
+        });
+      }
+
+      /* ── 4. Category & Sentiment & Period filters ────────────── */
+      var cards      = document.querySelectorAll('#posts-grid > [data-category]');
+      var activeCat  = 'all';
       var activeSent = 'all';
+      var activePer  = 'all';
 
       function applyFilters() {
+        var now = Date.now();
+        var todayStart = new Date(); todayStart.setHours(0,0,0,0);
+        var weekStart  = new Date(now - 7 * 24 * 3600 * 1000);
         cards.forEach(function(card){
-          var cat = (card.getAttribute('data-category') || '').toLowerCase();
+          var cat  = (card.getAttribute('data-category') || '').toLowerCase();
           var sent = (card.getAttribute('data-sentiment') || '').toLowerCase();
-          var catOk = activeCat === 'all' || cat === activeCat;
+          var pub  = card.getAttribute('data-pubdate') ? new Date(card.getAttribute('data-pubdate')) : null;
+          var catOk  = activeCat  === 'all' || cat  === activeCat;
           var sentOk = activeSent === 'all' || sent === activeSent;
-          card.style.display = (catOk && sentOk) ? '' : 'none';
+          var perOk  = true;
+          if (pub && activePer === 'today') perOk = pub >= todayStart;
+          if (pub && activePer === 'week')  perOk = pub >= weekStart;
+          card.style.display = (catOk && sentOk && perOk) ? '' : 'none';
         });
       }
 
@@ -310,7 +395,6 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           applyFilters();
         });
       });
-
       document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(btn){
         btn.addEventListener('click', function(){
           document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -319,6 +403,30 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           applyFilters();
         });
       });
+      document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          activePer = btn.getAttribute('data-period');
+          applyFilters();
+        });
+      });
+
+      /* ── 8. Next-update countdown ────────────────────────────── */
+      function updateCountdown() {
+        var now        = new Date();
+        var nextUpdate = new Date(now);
+        nextUpdate.setSeconds(0, 0);
+        nextUpdate.setMinutes(Math.ceil((now.getMinutes() + 1) / 5) * 5);
+        if (nextUpdate <= now) nextUpdate.setMinutes(nextUpdate.getMinutes() + 5);
+        var diff = Math.max(0, Math.floor((nextUpdate - now) / 1000));
+        var m = Math.floor(diff / 60), s = diff % 60;
+        var el = document.getElementById('update-countdown');
+        if (el) el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
     })();
     </script>
 
