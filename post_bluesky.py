@@ -3,17 +3,18 @@
 post_bluesky.py
 Auto-posts new articles to Bluesky using the AT Protocol HTTP API.
 
-Reads _posts/ for files modified in the last 2 hours, builds their permalink,
-and creates a post on Bluesky with title + URL + category tag.
+Reads _posts/ for files added in the last commit (git diff HEAD~1 --name-only),
+builds their permalink, and creates an engaging post on Bluesky with emoji,
+description excerpt, link, and relevant hashtags.
 
 Env vars required:
   BLUESKY_HANDLE       — your handle, e.g. globalbrnews.bsky.social
   BLUESKY_APP_PASSWORD — App Password from Settings → App Passwords
 """
 
-import json
 import logging
 import os
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -31,11 +32,39 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-POSTS_DIR    = Path(__file__).parent / "_posts"
-SITE_BASE    = "https://non-s.github.io"
-BSKY_API     = "https://bsky.social/xrpc"
-LOOKBACK_H   = 2
-MAX_POSTS    = 5
+POSTS_DIR  = Path(__file__).parent / "_posts"
+SITE_BASE  = "https://non-s.github.io"
+BSKY_API   = "https://bsky.social/xrpc"
+LOOKBACK_H = 2
+MAX_POSTS  = 5
+
+CATEGORY_EMOJIS = {
+    "world": "🌍", "politics": "🏛️", "war": "⚔️", "business": "💼",
+    "technology": "💻", "science": "🔬", "health": "🏥", "sports": "⚽",
+    "food": "🍕", "entertainment": "🎬", "environment": "🌱",
+    "travel": "✈️", "ai": "🤖", "security": "🔒",
+    "gadgets": "📱", "startups": "🚀", "mobile": "📲",
+}
+
+CATEGORY_HASHTAGS = {
+    "world": ["#WorldNews", "#BreakingNews"],
+    "politics": ["#Politics", "#GlobalPolitics"],
+    "war": ["#War", "#Conflict", "#BreakingNews"],
+    "business": ["#Business", "#Economy", "#Markets"],
+    "technology": ["#Tech", "#Technology"],
+    "science": ["#Science", "#Research"],
+    "health": ["#Health", "#Medicine"],
+    "sports": ["#Sports"],
+    "food": ["#Food", "#FoodNews"],
+    "entertainment": ["#Entertainment", "#Culture"],
+    "environment": ["#Climate", "#Environment"],
+    "travel": ["#Travel"],
+    "ai": ["#AI", "#ArtificialIntelligence", "#Tech"],
+    "security": ["#CyberSecurity", "#Security", "#Tech"],
+    "gadgets": ["#Gadgets", "#Tech"],
+    "startups": ["#Startups", "#Tech"],
+    "mobile": ["#Mobile", "#Tech"],
+}
 
 
 def parse_frontmatter(text: str) -> dict:
@@ -70,8 +99,41 @@ def build_post_url(filename: str, fm: dict) -> str:
 
 
 def find_new_posts() -> list[dict]:
-    cutoff  = time.time() - LOOKBACK_H * 3600
+    """
+    Finds new posts by diffing the last commit (git diff HEAD~1 --name-only).
+    Falls back to mtime-based detection if git is unavailable or the repo has
+    only one commit.
+    """
     results = []
+
+    # ── Git-based detection (reliable in CI) ─────────────────────
+    try:
+        proc = subprocess.run(
+            ["git", "diff", "HEAD~1", "--name-only", "--diff-filter=A"],
+            cwd=str(POSTS_DIR.parent),
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        if proc.returncode == 0 and proc.stdout.strip():
+            changed_files = set(proc.stdout.strip().splitlines())
+            for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+                # Match both "_posts/filename.md" and "filename.md" formats
+                rel = f"_posts/{path.name}"
+                if rel in changed_files or path.name in changed_files:
+                    text = path.read_text(encoding="utf-8", errors="replace")
+                    fm   = parse_frontmatter(text)
+                    url  = build_post_url(path.name, fm)
+                    results.append({"filename": path.name, "url": url, "fm": fm})
+                    if len(results) >= MAX_POSTS:
+                        break
+            if results:
+                return results
+    except Exception as exc:
+        log.debug("git diff detection failed (%s), falling back to mtime", exc)
+
+    # ── mtime fallback ────────────────────────────────────────────
+    cutoff = time.time() - LOOKBACK_H * 3600
     for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
         if path.stat().st_mtime < cutoff:
             continue
@@ -94,7 +156,7 @@ def get_session(handle: str, password: str) -> dict:
     return resp.json()
 
 
-def create_post(session: dict, text: str, url: str, title: str) -> bool:
+def create_post(session: dict, text: str, url: str, title: str, description: str = "") -> bool:
     """Create a Bluesky post with an embedded link card."""
     did   = session["did"]
     token = session["accessJwt"]
@@ -120,13 +182,14 @@ def create_post(session: dict, text: str, url: str, title: str) -> bool:
     if facets:
         record["facets"] = facets
 
-    # Embed external link card
+    # Embed external link card — use frontmatter description for richer preview
+    card_description = description[:300] if description else ""
     record["embed"] = {
         "$type": "app.bsky.embed.external",
         "external": {
             "uri":         url,
             "title":       title[:300],
-            "description": "",
+            "description": card_description,
         },
     }
 
@@ -148,19 +211,83 @@ def create_post(session: dict, text: str, url: str, title: str) -> bool:
 
 
 def build_post_text(post: dict) -> str:
-    fm       = post["fm"]
-    title    = fm.get("title", "").strip('"').strip("'") or "New Article"
-    cats     = fm.get("categories", [])
-    category = (cats[0] if isinstance(cats, list) and cats else "news").strip()
-    url      = post["url"]
+    """
+    Builds an engaging Bluesky post text with emoji, description excerpt,
+    link, and relevant hashtags. Fits within the 300-grapheme limit.
+    """
+    fm          = post["fm"]
+    title       = fm.get("title", "").strip('"').strip("'") or "New Article"
+    cats        = fm.get("categories", [])
+    category    = (cats[0] if isinstance(cats, list) and cats else "news").strip().lower()
+    url         = post["url"]
+    description = fm.get("description", "").strip('"').strip("'").strip()
+    tags_fm     = fm.get("tags", [])
+    key_points  = fm.get("key_points", [])
 
-    tag  = f"#{category.replace(' ', '')}"
-    text = f"{title}\n\n{url}\n\n{tag} #GlobalBRNews #news"
+    emoji = CATEGORY_EMOJIS.get(category, "📰")
 
-    # Bluesky limit: 300 graphemes
+    # ── Hashtags ──────────────────────────────────────────────────
+    cat_tags = CATEGORY_HASHTAGS.get(category, [f"#{category.replace(' ', '')}"])
+    # Pick short post tags (≤15 chars as hashtag, no spaces, no duplicates)
+    post_tags = []
+    seen_lower = {t.lstrip("#").lower() for t in cat_tags}
+    for t in (tags_fm if isinstance(tags_fm, list) else []):
+        ht = "#" + t.replace("-", "").replace(" ", "")
+        if len(ht) <= 15 and ht.lstrip("#").lower() not in seen_lower:
+            post_tags.append(ht)
+            seen_lower.add(ht.lstrip("#").lower())
+        if len(post_tags) >= 3:
+            break
+    hashtags = " ".join(cat_tags + post_tags + ["#GlobalBRNews"])
+
+    # ── Description excerpt (~120 chars) ─────────────────────────
+    desc_excerpt = ""
+    if description:
+        desc_excerpt = description[:120]
+        if len(description) > 120:
+            # truncate at last space to avoid mid-word cut
+            last_space = desc_excerpt.rfind(" ")
+            if last_space > 80:
+                desc_excerpt = desc_excerpt[:last_space] + "…"
+            else:
+                desc_excerpt = desc_excerpt + "…"
+
+    # If no description, try the first key_point as a highlight
+    if not desc_excerpt and key_points and isinstance(key_points, list) and key_points:
+        first_kp = str(key_points[0]).strip().strip('"').strip("'")
+        if first_kp:
+            desc_excerpt = first_kp[:120]
+
+    # ── Assemble post ─────────────────────────────────────────────
+    def _assemble(title_text: str, desc_text: str) -> str:
+        parts = [f"{emoji} {title_text}"]
+        if desc_text:
+            parts.append(f"\n{desc_text}")
+        parts.append(f"\n🔗 {url}")
+        parts.append(f"\n{hashtags}")
+        return "\n".join(parts)
+
+    text = _assemble(title, desc_excerpt)
+
+    # ── Trim to 300 graphemes ─────────────────────────────────────
     if len(text) > 300:
-        max_title = 300 - len(f"\n\n{url}\n\n{tag} #GlobalBRNews #news") - 3
-        text = f"{title[:max_title]}…\n\n{url}\n\n{tag} #GlobalBRNews #news"
+        # First reduce description
+        if desc_excerpt:
+            budget = 300 - len(_assemble(title, "").replace("\n\n", "\n"))
+            if budget > 20:
+                desc_excerpt = desc_excerpt[:budget - 1] + "…"
+            else:
+                desc_excerpt = ""
+            text = _assemble(title, desc_excerpt)
+
+    if len(text) > 300:
+        # Then trim title
+        overhead = len(text) - len(title)
+        max_title = 300 - overhead - 3
+        if max_title > 10:
+            title = title[:max_title] + "…"
+        text = _assemble(title, "")
+
     return text
 
 
@@ -188,9 +315,10 @@ def main() -> None:
 
     ok = 0
     for post in posts:
-        text  = build_post_text(post)
-        title = post["fm"].get("title", "").strip('"').strip("'")
-        if create_post(session, text, post["url"], title):
+        text        = build_post_text(post)
+        title       = post["fm"].get("title", "").strip('"').strip("'")
+        description = post["fm"].get("description", "").strip('"').strip("'")
+        if create_post(session, text, post["url"], title, description):
             ok += 1
         time.sleep(2)  # be polite to the API
 
