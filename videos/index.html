@@ -1,0 +1,39 @@
+---
+layout: default
+title: "Videos"
+permalink: /videos/
+---
+<div class="container" style="padding:3rem 0;">
+  <h1 style="font-size:2rem;font-weight:800;margin-bottom:.5rem;">Videos</h1>
+  <p style="color:var(--c-muted);margin-bottom:2rem;">Daily news roundups and video reports from GlobalBR News.</p>
+  <div class="row g-4">
+    {% assign roundup_posts = site.posts | where_exp: "p", "p.categories contains 'roundup'" %}
+    {% for post in roundup_posts limit:12 %}
+    <div class="col-md-6 col-lg-4">
+      <a href="{{ post.url | relative_url }}" class="news-card h-100">
+        {% if post.youtube_id %}
+        <div class="card-img-wrap" style="position:relative;">
+          <img src="https://img.youtube.com/vi/{{ post.youtube_id }}/maxresdefault.jpg" alt="{{ post.title | escape }}" loading="lazy" class="card-img">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:48px;height:48px;background:rgba(255,0,0,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <i class="bi bi-play-fill" style="color:#fff;font-size:1.3rem;margin-left:3px;"></i>
+            </div>
+          </div>
+        </div>
+        {% elsif post.image %}
+        <div class="card-img-wrap"><img src="{{ post.image }}" alt="" loading="lazy" class="card-img"></div>
+        {% endif %}
+        <div class="card-body-inner">
+          <time style="font-size:.75rem;color:var(--c-muted);">{{ post.date | date: "%B %d, %Y" }}</time>
+          <h2 class="card-headline">{{ post.title | truncate: 80 }}</h2>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    {% if roundup_posts.size == 0 %}
+    <div class="col-12">
+      <p style="color:var(--c-muted);">Videos will appear here as they are published. Subscribe to our <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener" style="color:var(--c-accent);">YouTube channel</a> to stay updated.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
