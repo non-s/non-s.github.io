@@ -3321,3 +3321,26 @@ body.font-serif #post-article {
     border: 0;
   }
 }
+
+// Reading List page
+.saved-article-card {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: .75rem; padding: .85rem 1rem;
+  transition: border-color .15s;
+  &:hover { border-color: var(--c-accent); }
+}
+.saved-article-img { width: 72px; height: 50px; object-fit: cover; border-radius: .4rem; flex-shrink: 0; }
+.saved-article-info { flex: 1; min-width: 0; }
+.saved-article-title { color: var(--c-text); font-size: .9rem; font-weight: 600; text-decoration: none; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; &:hover { color: var(--c-accent); } }
+.saved-article-date { color: var(--c-muted); font-size: .75rem; }
+.saved-article-remove { background: none; border: none; color: var(--c-muted); cursor: pointer; padding: .25rem; &:hover { color: #ef4444; } }
+
+// Category stats bar
+.category-stats-bar {
+  display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
+  padding: .6rem 1rem; background: var(--c-surface);
+  border-radius: .6rem; border: 1px solid var(--c-border);
+}
+.cat-stat { color: var(--c-muted); font-size: .82rem; display: flex; align-items: center; gap: .3rem; }
+.cat-stat-link { color: var(--c-accent); text-decoration: none; &:hover { text-decoration: underline; } }

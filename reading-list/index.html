@@ -1,38 +1,88 @@
 ---
 layout: default
-title: "Reading List"
+title: "Reading List — GlobalBR News"
+description: "Your saved articles on GlobalBR News — read anytime, even offline."
 permalink: /reading-list/
 ---
-<div class="container" style="padding:3rem 0;">
-  <h1 style="font-size:2rem;font-weight:800;margin-bottom:.5rem;">Reading List</h1>
-  <p style="color:var(--c-muted);margin-bottom:2rem;">Articles you saved for later.</p>
-  <div id="reading-list-container">
-    <p style="color:var(--c-muted);">Loading...</p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="section-title mb-0">
+          <i class="bi bi-bookmark-fill text-accent"></i> Reading List
+        </h1>
+        <button class="btn btn-sm btn-outline-danger" id="clear-list-btn" style="display:none;">
+          <i class="bi bi-trash"></i> Clear all
+        </button>
+      </div>
+
+      <p class="text-muted mb-4" style="font-size:.9rem;">Articles you've saved. Stored locally on your device.</p>
+
+      <div id="reading-list-container">
+        <div class="text-center py-5 text-muted" id="empty-state">
+          <i class="bi bi-bookmark" style="font-size:3rem;opacity:.3;display:block;margin-bottom:1rem;"></i>
+          <p>No saved articles yet.</p>
+          <p style="font-size:.85rem;">Click the <i class="bi bi-bookmark"></i> button on any article to save it here.</p>
+        </div>
+        <div id="saved-articles" class="row g-3"></div>
+      </div>
+
+    </div>
   </div>
 </div>
+
 <script>
-(function(){
-  var container = document.getElementById('reading-list-container');
-  var saved;
-  try { saved = JSON.parse(localStorage.getItem('gb-saved') || '[]'); } catch(e) { saved = []; }
-  if (saved.length === 0) {
-    container.innerHTML = '<p style="color:var(--c-muted);">No saved articles yet. Click the <i class="bi bi-bookmark"></i> Save button on any article.</p>';
-    return;
+(function() {
+  var container = document.getElementById('saved-articles');
+  var empty     = document.getElementById('empty-state');
+  var clearBtn  = document.getElementById('clear-list-btn');
+
+  function getList() {
+    try { return JSON.parse(localStorage.getItem('gb-reading-list') || '[]'); }
+    catch(e) { return []; }
   }
-  var html = '<div class="row g-4">' + saved.map(function(item) {
-    var safeUrl = String(item.url || '').replace(/'/g, '%27');
-    return '<div class="col-md-6 col-lg-4"><div class="news-card h-100" style="cursor:default;">' +
-      (item.image ? '<div class="card-img-wrap"><img src="' + item.image + '" alt="" loading="lazy" class="card-img"></div>' : '') +
-      '<div class="card-body-inner"><div class="card-meta"><time>' + (item.date||'') + '</time></div>' +
-      '<h2 class="card-headline"><a href="' + item.url + '" style="color:inherit;text-decoration:none;">' + item.title + '</a></h2>' +
-      '<button onclick="removeSaved(\'' + safeUrl + '\',this.closest(\'.col-md-6\'))" style="background:none;border:none;color:var(--c-muted);font-size:.8rem;cursor:pointer;padding:0;margin-top:.5rem;"><i class="bi bi-trash"></i> Remove</button>' +
-      '</div></div></div>';
-  }).join('') + '</div>';
-  container.innerHTML = html;
-  window.removeSaved = function(url, el) {
-    var arr = JSON.parse(localStorage.getItem('gb-saved')||'[]').filter(function(x){return x.url!==url;});
-    localStorage.setItem('gb-saved', JSON.stringify(arr));
-    if(el) el.remove();
-  };
+
+  function removeItem(url) {
+    var list = getList().filter(function(a) { return a.url !== url; });
+    localStorage.setItem('gb-reading-list', JSON.stringify(list));
+    render();
+  }
+
+  function clearAll() {
+    if (confirm('Remove all saved articles?')) {
+      localStorage.removeItem('gb-reading-list');
+      render();
+    }
+  }
+
+  function render() {
+    var list = getList();
+    container.innerHTML = '';
+    if (!list.length) {
+      empty.style.display = '';
+      clearBtn.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    clearBtn.style.display = '';
+    list.slice().reverse().forEach(function(item) {
+      var col = document.createElement('div');
+      col.className = 'col-12';
+      col.innerHTML = '<div class="saved-article-card">' +
+        (item.image ? '<img src="' + item.image + '" alt="" class="saved-article-img" onerror="this.style.display=\'none\'">' : '') +
+        '<div class="saved-article-info">' +
+          '<a href="' + item.url + '" class="saved-article-title">' + (item.title || 'Article') + '</a>' +
+          '<span class="saved-article-date">' + (item.date || '') + '</span>' +
+        '</div>' +
+        '<button class="saved-article-remove" onclick="removeItem(\'' + item.url.replace(/'/g,"\\'") + '\')" title="Remove"><i class="bi bi-x-lg"></i></button>' +
+      '</div>';
+      container.appendChild(col);
+    });
+  }
+
+  window.removeItem = removeItem;
+  clearBtn.addEventListener('click', clearAll);
+  render();
 })();
 </script>
