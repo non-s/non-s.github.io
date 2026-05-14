@@ -1,0 +1,28 @@
+name: "🧹 Cleanup Old Branches"
+on:
+  schedule:
+    - cron: "0 4 * * 0"  # Sundays 4h UTC
+  workflow_dispatch:
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "🧹 Delete merged branches"
+        run: |
+          git fetch --prune
+          # Delete remote branches that have been merged to main (except main, master, HEAD)
+          MERGED=$(git branch -r --merged origin/main | grep -v 'origin/main\|origin/master\|HEAD' | sed 's/origin\///')
+          COUNT=0
+          for branch in $MERGED; do
+            # Only delete claude/* worktree/* fix/* branches (our bot branches)
+            if echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
+              git push origin --delete "$branch" 2>/dev/null && COUNT=$((COUNT+1)) || true
+            fi
+          done
+          echo "✅ Deleted $COUNT merged branches"
