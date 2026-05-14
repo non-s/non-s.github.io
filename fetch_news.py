@@ -2303,6 +2303,8 @@ def create_daily_roundup() -> None:
     date_display = datetime.now(timezone.utc).strftime("%B %d, %Y")
     bullet_list = "\n".join(f"- [{t}]({u})" for t, u in today_posts)
 
+    roundup_image = _generate_og_image(f"Daily News Roundup — {date_display}", "roundup", f"{today}-daily-roundup")
+
     frontmatter = f"""---
 layout: post
 title: "Daily News Roundup — {date_display}"
@@ -2311,6 +2313,7 @@ categories: [roundup]
 tags: [daily, news, roundup]
 author: "GlobalBR News"
 description: "Your daily roundup of the top {len(today_posts)} news stories for {date_display}."
+image: "{roundup_image}"
 sentiment: "neutral"
 ---
 """
