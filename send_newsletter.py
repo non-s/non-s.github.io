@@ -13,14 +13,14 @@ Env vars required:
                           API key suffix when omitted, e.g. key ending in "-us15")
 """
 
-import os
-import sys
 import json
 import logging
-import re
-import requests
+import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+import requests
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -40,31 +40,30 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 POSTS_DIR = Path(__file__).parent / "_posts"
 SITE_BASE_URL = "https://non-s.github.io"
+MIN_POSTS = 3    # minimum posts required to send a newsletter
+MAX_POSTS = 10   # maximum posts per newsletter
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Frontmatter parser
 # ---------------------------------------------------------------------------
 
 def parse_frontmatter(text: str) -> dict:
-    """Very small YAML frontmatter parser — no external deps."""
+    """Minimal YAML frontmatter parser — no external deps."""
     if not text.startswith("---"):
         return {}
     parts = text.split("---", 2)
     if len(parts) < 3:
         return {}
-    raw = parts[1]
     data: dict = {}
-    for line in raw.splitlines():
+    for line in parts[1].splitlines():
         if ":" not in line:
             continue
         key, _, val = line.partition(":")
         key = key.strip()
         val = val.strip().strip('"').strip("'")
-        # Handle list-style categories: [war] or [war, politics]
         if val.startswith("[") and val.endswith("]"):
-            items = [v.strip().strip('"').strip("'") for v in val[1:-1].split(",")]
-            data[key] = items
+            data[key] = [v.strip().strip('"').strip("'") for v in val[1:-1].split(",")]
         else:
             data[key] = val
     return data
@@ -121,10 +120,9 @@ def select_top5(posts: list[dict]) -> list[dict]:
 
 
 def build_post_url(post: dict) -> str:
-    """Build the permalink for a post."""
-    filename = post["_filename"]          # e.g. 2026-05-13-some-slug.md
-    stem = filename.removesuffix(".md")   # 2026-05-13-some-slug
-    parts = stem.split("-", 3)            # ['2026', '05', '13', 'some-slug']
+    filename = post["_filename"]
+    stem = filename.removesuffix(".md")
+    parts = stem.split("-", 3)
     if len(parts) < 4:
         return SITE_BASE_URL
     year, month, day, slug = parts[0], parts[1], parts[2], parts[3]
@@ -133,7 +131,7 @@ def build_post_url(post: dict) -> str:
     return f"{SITE_BASE_URL}/{category}/{year}/{month}/{day}/{slug}/"
 
 
-def truncate(text: str, limit: int = 100) -> str:
+def truncate(text: str, limit: int = 150) -> str:
     if len(text) <= limit:
         return text
     return text[:limit].rstrip() + "…"
@@ -146,10 +144,10 @@ def truncate(text: str, limit: int = 100) -> str:
 def build_html(posts: list[dict], today: str) -> str:
     story_blocks = []
     for post in posts:
-        title = post.get("title", "Untitled")
-        description = truncate(post.get("description", ""), 100)
-        image_url = post.get("image", "")
-        source_url = post.get("source_url", "#")
+        title = post.get("title", "Untitled").strip('"').strip("'")
+        description = truncate(post.get("description", "").strip('"').strip("'"), 150)
+        image_url = post.get("image", "").strip('"').strip("'")
+        source_url = post.get("source_url", "#").strip('"').strip("'")
         post_url = build_post_url(post)
         cats = post.get("categories", [])
         category = (cats[0] if isinstance(cats, list) and cats else "News").upper()
@@ -159,7 +157,8 @@ def build_html(posts: list[dict], today: str) -> str:
             img_block = f"""
             <a href="{post_url}" style="display:block;text-decoration:none;">
               <img src="{image_url}" alt="{title}"
-                   style="width:100%;max-height:220px;object-fit:cover;border-radius:6px;display:block;margin-bottom:12px;" />
+                   style="width:100%;max-height:220px;object-fit:cover;border-radius:6px;
+                          display:block;margin-bottom:12px;" />
             </a>"""
 
         story_blocks.append(f"""
@@ -207,7 +206,7 @@ def build_html(posts: list[dict], today: str) -> str:
           <tr>
             <td style="background:#080c17;padding:28px 32px;border-bottom:2px solid #f97316;text-align:center;">
               <h1 style="margin:0 0 6px;font-size:26px;color:#f97316;letter-spacing:-0.5px;">
-                🌍 GlobalBR News
+                GlobalBR News
               </h1>
               <p style="margin:0;color:#64748b;font-size:13px;letter-spacing:1px;text-transform:uppercase;">
                 Daily Digest &mdash; {today}
@@ -248,7 +247,7 @@ def build_html(posts: list[dict], today: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Mailchimp API
+# Mailchimp API client
 # ---------------------------------------------------------------------------
 
 class MailchimpClient:
@@ -263,18 +262,17 @@ class MailchimpClient:
         self.session.headers.update({"Content-Type": "application/json"})
 
     def _post(self, path: str, payload: dict) -> dict:
-        url = self.base + path
-        resp = self.session.post(url, data=json.dumps(payload), timeout=30)
+        resp = self.session.post(self.base + path, data=json.dumps(payload), timeout=30)
         resp.raise_for_status()
         return resp.json()
 
     def _put(self, path: str, payload: dict) -> dict:
-        url = self.base + path
-        resp = self.session.put(url, data=json.dumps(payload), timeout=30)
+        resp = self.session.put(self.base + path, data=json.dumps(payload), timeout=30)
         resp.raise_for_status()
         return resp.json()
 
     def create_campaign(self, subject: str, from_name: str, reply_to: str) -> str:
+        """Step 1 — POST /campaigns."""
         payload = {
             "type": "regular",
             "recipients": {"list_id": self.audience_id},
@@ -290,10 +288,12 @@ class MailchimpClient:
         return campaign_id
 
     def set_content(self, campaign_id: str, html: str) -> None:
+        """Step 2 — PUT /campaigns/{id}/content."""
         self._put(f"/campaigns/{campaign_id}/content", {"html": html})
         log.info("Campaign content set — id=%s", campaign_id)
 
     def send(self, campaign_id: str) -> None:
+        """Step 3 — POST /campaigns/{id}/actions/send."""
         self._post(f"/campaigns/{campaign_id}/actions/send", {})
         log.info("Campaign sent — id=%s", campaign_id)
 
@@ -305,47 +305,60 @@ class MailchimpClient:
 def main() -> None:
     api_key = os.environ.get("MAILCHIMP_API_KEY", "").strip()
     audience_id = os.environ.get("MAILCHIMP_AUDIENCE_ID", "").strip()
+    server = os.environ.get("MAILCHIMP_SERVER", "").strip()
 
-    if not api_key or not audience_id:
+    if not api_key or not audience_id or not server:
         log.warning(
-            "MAILCHIMP_API_KEY and/or MAILCHIMP_AUDIENCE_ID not set — skipping newsletter."
+            "MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID or MAILCHIMP_SERVER not set — "
+            "skipping newsletter."
         )
         sys.exit(0)
 
-    today = datetime.now(timezone.utc).strftime("%B %d, %Y")
-    today_short = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    now = datetime.now(timezone.utc)
+    today_prefix = now.strftime("%Y-%m-%d")   # e.g. "2026-05-14"
+    today_display = now.strftime("%B %d, %Y") # e.g. "May 14, 2026"
 
-    log.info("Loading posts from %s", POSTS_DIR)
-    posts = load_recent_posts(10)
-    log.info("Loaded %d posts", len(posts))
+    log.info("Looking for posts from %s in %s", today_prefix, POSTS_DIR)
+    posts = load_todays_posts(today_prefix)
+    log.info("Found %d post(s) for today.", len(posts))
 
-    top5 = select_top5(posts)
-    if not top5:
-        log.warning("No posts with all required fields found — skipping newsletter.")
+    if len(posts) < MIN_POSTS:
+        log.info(
+            "Only %d post(s) found today (minimum is %d) — skipping newsletter.",
+            len(posts), MIN_POSTS,
+        )
         sys.exit(0)
 
-    top_headline = top5[0].get("title", "Top World News")
-    subject = f"🌍 {top_headline} — GlobalBR News {today_short}"
-
-    log.info("Selected %d posts for newsletter", len(top5))
-    for p in top5:
+    for p in posts:
         log.info("  • %s", p.get("title", p["_filename"]))
 
-    html = build_html(top5, today)
+    top_headline = posts[0].get("title", "Top World News").strip('"').strip("'")
+    subject = f"GlobalBR News — {today_display}"
 
-    client = MailchimpClient(api_key, audience_id)
+    html = build_html(posts, today_display)
+
+    client = MailchimpClient(api_key, audience_id, server)
 
     try:
         campaign_id = client.create_campaign(
             subject=subject,
             from_name="GlobalBR News",
-            reply_to="noreply@non-s.github.io",
+            reply_to="noreply@globalbrnews.com",
         )
         client.set_content(campaign_id, html)
         client.send(campaign_id)
-        log.info("Newsletter dispatched successfully — campaign_id=%s", campaign_id)
+        log.info(
+            "Newsletter dispatched successfully — campaign_id=%s, posts=%d",
+            campaign_id, len(posts),
+        )
     except requests.HTTPError as exc:
-        log.error("Mailchimp API error: %s — %s", exc.response.status_code, exc.response.text)
+        log.error(
+            "Mailchimp API error: HTTP %s — %s",
+            exc.response.status_code, exc.response.text[:500],
+        )
+        sys.exit(1)
+    except Exception as exc:
+        log.error("Unexpected error: %s", exc)
         sys.exit(1)
 
 
