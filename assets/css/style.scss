@@ -2224,3 +2224,205 @@ img { max-width: 100%; display: block; }
 .fact-developing{ background: rgba(234,179,8,.15);  color: #eab308; border: 1px solid rgba(234,179,8,.3); }
 .fact-opinion   { background: rgba(139,92,246,.15); color: #8b5cf6; border: 1px solid rgba(139,92,246,.3); }
 .fact-satire    { background: rgba(236,72,153,.15); color: #ec4899; border: 1px solid rgba(236,72,153,.3); }
+
+/* ============================================================
+   BACK TO TOP BUTTON  (Task 1)
+   ============================================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  border: none;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .25s, transform .25s;
+  z-index: 1050;
+  box-shadow: 0 4px 16px rgba(249,115,22,.4);
+}
+#back-to-top.visible { opacity: 1; transform: translateY(0); }
+#back-to-top:hover { background: #ea6c0a; }
+
+/* ============================================================
+   CATEGORY & SENTIMENT FILTER TABS  (Tasks 2 & 3)
+   ============================================================ */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: 1.25rem;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-muted);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .3rem .8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.filter-btn:hover {
+  background: rgba(249,115,22,.1);
+  border-color: rgba(249,115,22,.3);
+  color: var(--c-accent);
+}
+.filter-btn.active {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(249,115,22,.3);
+}
+.filter-row-sep {
+  width: 1px;
+  background: var(--c-border);
+  margin: 0 .3rem;
+  align-self: stretch;
+}
+
+/* ============================================================
+   STICKY SIDEBAR  (Task 4)
+   ============================================================ */
+.post-sidebar-sticky {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* ============================================================
+   IMAGE LIGHTBOX  (Task 5)
+   ============================================================ */
+#lb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.92);
+  z-index: 9998;
+  align-items: center;
+  justify-content: center;
+}
+#lb-overlay.active { display: flex; }
+#lb-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+#lb-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ============================================================
+   FONT SIZE TOGGLE  (Task 6)
+   ============================================================ */
+.font-size-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-left: .5rem;
+}
+.font-size-label {
+  font-size: .75rem;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+.fs-btn {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-muted);
+  font-size: .78rem;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  padding: 0;
+  line-height: 1;
+}
+.fs-btn:hover {
+  background: rgba(249,115,22,.15);
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+/* ============================================================
+   COPY SUMMARY BUTTON  (Task 7)
+   ============================================================ */
+.copy-summary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  color: var(--c-muted);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .35rem .85rem;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all .2s;
+  margin-bottom: 1.25rem;
+}
+.copy-summary-btn:hover {
+  background: rgba(249,115,22,.1);
+  border-color: rgba(249,115,22,.3);
+  color: var(--c-accent);
+}
+
+/* ============================================================
+   SELECTION SHARE BUTTON  (Task 9)
+   ============================================================ */
+#selection-share {
+  position: absolute;
+  display: none;
+  background: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: .3rem .8rem;
+  font-size: .8rem;
+  cursor: pointer;
+  z-index: 9997;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+/* ============================================================
+   PRINT STYLESHEET  (Task 8)
+   ============================================================ */
+@media print {
+  .navbar, .breaking-bar, .post-share, .post-nav, .comments-section,
+  .sidebar-widget, .related-section, .subscribe-section, .techbr-footer,
+  #back-to-top, .toc-box, #read-progress, .theme-toggle-btn,
+  .adsense-wrap, .faq-section { display: none !important; }
+
+  body { background: #fff !important; color: #000 !important; font-size: 12pt; }
+  .post-content { max-width: 100% !important; }
+  a { color: #000 !important; text-decoration: underline; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+  .post-hero-img img { max-width: 100%; page-break-inside: avoid; }
+  h1, h2, h3 { page-break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+}

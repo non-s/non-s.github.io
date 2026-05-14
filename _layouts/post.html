@@ -60,6 +60,12 @@ layout: default
         {% if page.source_name %}
         <span><i class="bi bi-newspaper"></i> {{ page.source_name }}</span>
         {% endif %}
+        <!-- Font Size Toggle (Task 6) -->
+        <div class="font-size-ctrl">
+          <span class="font-size-label">Text size:</span>
+          <button class="fs-btn" id="fs-down" aria-label="Smaller text">A−</button>
+          <button class="fs-btn" id="fs-up" aria-label="Larger text">A+</button>
+        </div>
       </div>
 
     </div>
@@ -68,7 +74,7 @@ layout: default
 
 <!-- Post Body -->
 <div class="container post-body">
-  <div class="row g-5">
+  <div class="row g-5" style="align-items:flex-start;">
 
     <!-- Main Content -->
     <div class="col-lg-8">
@@ -91,6 +97,15 @@ layout: default
           {% endfor %}
         </ul>
       </div>
+      {% endif %}
+
+      <!-- Copy Summary Button (Task 7) -->
+      {% if page.description %}
+      <button class="copy-summary-btn"
+              onclick="navigator.clipboard.writeText('{{ page.description | escape }}').then(function(){this.textContent='✓ Copied!';var self=this;setTimeout(function(){self.innerHTML='<i class=\'bi bi-clipboard\'></i> Copy summary'},2000)}.bind(this))"
+              aria-label="Copy article summary">
+        <i class="bi bi-clipboard"></i> Copy summary
+      </button>
       {% endif %}
 
       <!-- Table of Contents -->
@@ -209,7 +224,7 @@ layout: default
     <!-- /main -->
 
     <!-- Sidebar -->
-    <aside class="col-lg-4">
+    <aside class="col-lg-4 post-sidebar-sticky">
 
       <div class="sidebar-widget">
         <h6 class="sidebar-widget-title">Latest News</h6>
@@ -334,6 +349,73 @@ layout: default
   }
   {% endif %}
 }
+</script>
+
+<!-- Image Lightbox (Task 5) -->
+<script>
+(function(){
+  var img = document.querySelector('.post-hero-img img');
+  if (!img) return;
+  var overlay = document.createElement('div');
+  overlay.id = 'lb-overlay';
+  overlay.innerHTML = '<img id="lb-img" src="" alt=""><button id="lb-close" aria-label="Close">\xd7</button>';
+  document.body.appendChild(overlay);
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', function(){
+    document.getElementById('lb-img').src = img.src;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+  function close(){overlay.classList.remove('active');document.body.style.overflow='';}
+  document.getElementById('lb-close').addEventListener('click', close);
+  overlay.addEventListener('click', function(e){if(e.target===overlay)close();});
+  document.addEventListener('keydown', function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- Font Size Toggle JS (Task 6) -->
+<script>
+(function(){
+  var sizes = [14,15,16,17,18,20];
+  var article = document.getElementById('post-article');
+  if (!article) return;
+  var idx = parseInt(localStorage.getItem('gb-font-idx') || '2');
+  function apply(i){ article.style.fontSize = sizes[i]+'px'; localStorage.setItem('gb-font-idx', i); idx=i; }
+  apply(idx);
+  var up = document.getElementById('fs-up');
+  var down = document.getElementById('fs-down');
+  if(up) up.addEventListener('click', function(){ if(idx<sizes.length-1) apply(idx+1); });
+  if(down) down.addEventListener('click', function(){ if(idx>0) apply(idx-1); });
+})();
+</script>
+
+<!-- Selection Share (Task 9) -->
+<script>
+(function(){
+  var article = document.getElementById('post-article');
+  if (!article) return;
+  var btn = document.createElement('button');
+  btn.id = 'selection-share';
+  btn.innerHTML = '<i class="bi bi-quote"></i> Tweet quote';
+  document.body.appendChild(btn);
+  document.addEventListener('mouseup', function(){
+    var sel = window.getSelection();
+    var text = sel ? sel.toString().trim() : '';
+    if (text.length > 10 && text.length < 200 && article.contains(sel.anchorNode)) {
+      var range = sel.getRangeAt(0).getBoundingClientRect();
+      btn.style.display = 'block';
+      btn.style.top = (range.bottom + window.scrollY + 8) + 'px';
+      btn.style.left = (range.left + range.width/2 - 60) + 'px';
+      btn.onclick = function(){
+        var url = encodeURIComponent(window.location.href);
+        var quote = encodeURIComponent('"' + text + '" — {{ page.title | escape }}');
+        window.open('https://twitter.com/intent/tweet?text='+quote+'&url='+url, '_blank');
+      };
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+})();
 </script>
 
 <!-- Reading Progress Bar -->
