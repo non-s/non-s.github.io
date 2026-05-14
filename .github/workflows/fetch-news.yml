@@ -96,7 +96,7 @@ jobs:
         continue-on-error: true
         run: python google_index.py
         env:
-          GSC_CREDENTIALS: ${{ secrets.GSC_CREDENTIALS }}
+          GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
 
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'

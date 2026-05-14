@@ -7,7 +7,7 @@ Reads _posts/ for files modified in the last 2 hours, builds their permalink,
 and POSTs each URL to the Google Indexing API using a service account.
 
 Env vars required:
-  GSC_CREDENTIALS — JSON string of the Google service account key
+  GOOGLE_INDEXING_CREDENTIALS — JSON string of the Google service account key
 """
 
 import json
@@ -154,6 +154,14 @@ def submit_url(url: str, headers: dict) -> bool:
         if resp.status_code == 200:
             log.info("Indexed — %s", url)
             return True
+        elif resp.status_code == 403:
+            log.warning(
+                "403 Forbidden — service account not verified as owner of this site. "
+                "Fix: go to search.google.com/search-console → Settings → Users and permissions "
+                "→ Add user → %s (Owner). Skipping URL submission.",
+                "globalbr-news@techbr-youtube-bot.iam.gserviceaccount.com",
+            )
+            return False
         else:
             log.warning(
                 "Failed to index %s — HTTP %s: %s",
@@ -172,10 +180,10 @@ def submit_url(url: str, headers: dict) -> bool:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    credentials_json = os.environ.get("GSC_CREDENTIALS", "").strip()
+    credentials_json = os.environ.get("GOOGLE_INDEXING_CREDENTIALS", "").strip()
 
     if not credentials_json:
-        log.warning("GSC_CREDENTIALS not set — skipping Google indexing.")
+        log.warning("GOOGLE_INDEXING_CREDENTIALS not set — skipping Google indexing.")
         sys.exit(0)
 
     log.info(
