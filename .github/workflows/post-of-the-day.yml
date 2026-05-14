@@ -1,0 +1,30 @@
+name: "⭐ Post of the Day — Bluesky"
+
+on:
+  schedule:
+    - cron: "0 18 * * *"  # 18h UTC daily
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install requests
+
+      - name: "⭐ Post best article of the day"
+        run: python post_best_of_day.py
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
