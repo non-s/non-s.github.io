@@ -46,7 +46,7 @@ jobs:
       - name: "📦 Install dependencies"
         run: |
           python -m pip install --upgrade pip
-          pip install feedparser requests google-auth
+          pip install feedparser requests google-auth Pillow
 
       - name: "📡 Run fetch_news.py"
         run: python fetch_news.py
@@ -59,7 +59,7 @@ jobs:
       - name: "🔍 Check for new posts"
         id: check_changes
         run: |
-          CHANGED=$(git status --porcelain _posts/ | wc -l | tr -d ' ')
+          CHANGED=$(git status --porcelain _posts/ assets/images/posts/ | wc -l | tr -d ' ')
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           echo "New posts found: $CHANGED"
 
@@ -70,6 +70,7 @@ jobs:
           git config user.email "bot@globalbrnews.com"
 
           git add _posts/
+          git add assets/images/posts/ || true
           git add fetch_news.log || true
 
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
