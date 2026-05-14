@@ -454,10 +454,177 @@ def _quality_check(title: str, description: str) -> tuple[bool, str]:
     return True, ""
 
 
+def _fetch_wikipedia_summary(query: str) -> str:
+    """Fetches a short Wikipedia extract for the given query (EN). Returns up to 500 chars."""
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
+        r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
+        if r.status_code == 200:
+            data = r.json()
+            return data.get("extract", "")[:500]
+    except Exception:
+        pass
+    return ""
+
+
+def _fact_check_api(claim_text: str) -> str | None:
+    """
+    Calls Google Fact Check Tools API to verify a claim.
+    Returns 'false', 'verified', 'developing', or None if unavailable.
+    Requires GOOGLE_FACT_CHECK_API_KEY env var.
+    """
+    key = os.getenv("GOOGLE_FACT_CHECK_API_KEY")
+    if not key:
+        return None
+    url = (
+        f"https://factchecktools.googleapis.com/v1alpha1/claims:search"
+        f"?key={key}&query={requests.utils.quote(claim_text[:200])}&languageCode=en"
+    )
+    try:
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            claims = data.get("claims", [])
+            if claims:
+                rating = claims[0].get("claimReview", [{}])[0].get("textualRating", "")
+                rating_lc = rating.lower()
+                if any(w in rating_lc for w in ["false", "pants on fire", "mostly false"]):
+                    return "false"
+                elif any(w in rating_lc for w in ["true", "mostly true", "correct"]):
+                    return "verified"
+                return "developing"
+    except Exception:
+        pass
+    return None
+
+
+def _translate_to_ptbr(text: str, api_key: str) -> str | None:
+    """Translate text to PT-BR using DeepL free API. Returns translated string or None."""
+    if not api_key or not text:
+        return None
+    try:
+        r = requests.post(
+            "https://api-free.deepl.com/v2/translate",
+            data={"auth_key": api_key, "text": text, "target_lang": "PT-BR"},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json()["translations"][0]["text"]
+    except Exception:
+        pass
+    return None
+
+
+def _get_cohere_embedding(text: str, api_key: str) -> list | None:
+    """Returns an embedding vector from Cohere or None on failure."""
+    try:
+        r = requests.post(
+            "https://api.cohere.ai/v1/embed",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "texts": [text[:512]],
+                "model": "embed-english-v3.0",
+                "input_type": "search_document",
+            },
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json()["embeddings"][0]
+    except Exception:
+        pass
+    return None
+
+
+# ── Embeddings cache ──────────────────────────────────────────
+_EMBEDDINGS_PATH = Path("_data/embeddings.json")
+_embeddings_cache: dict | None = None
+
+
+def _load_embeddings() -> dict:
+    global _embeddings_cache
+    if _embeddings_cache is not None:
+        return _embeddings_cache
+    try:
+        if _EMBEDDINGS_PATH.exists():
+            _embeddings_cache = json.loads(_EMBEDDINGS_PATH.read_text(encoding="utf-8"))
+        else:
+            _embeddings_cache = {}
+    except Exception:
+        _embeddings_cache = {}
+    return _embeddings_cache
+
+
+def _save_embeddings(data: dict) -> None:
+    try:
+        _EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _EMBEDDINGS_PATH.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    except Exception as exc:
+        log.debug(f"Failed to save embeddings: {exc}")
+
+
+def _cosine_similarity(a: list, b: list) -> float:
+    """Compute cosine similarity between two equal-length vectors."""
+    try:
+        dot = sum(x * y for x, y in zip(a, b))
+        mag_a = sum(x * x for x in a) ** 0.5
+        mag_b = sum(x * x for x in b) ** 0.5
+        if mag_a == 0 or mag_b == 0:
+            return 0.0
+        return dot / (mag_a * mag_b)
+    except Exception:
+        return 0.0
+
+
+def _fetch_crypto_prices() -> dict:
+    """Fetches current USD prices and 24h change for major cryptocurrencies from CoinGecko."""
+    try:
+        r = requests.get(
+            "https://api.coingecko.com/api/v3/simple/price"
+            "?ids=bitcoin,ethereum,ripple,cardano,solana"
+            "&vs_currencies=usd&include_24hr_change=true",
+            timeout=10,
+            headers={"User-Agent": "GlobalBRNews/1.0"},
+        )
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return {}
+
+
+# ── Crypto prices cache (fetched once per run) ─────────────────
+_crypto_prices_cache: dict | None = None
+_CRYPTO_PRICES_PATH = Path("_data/crypto_prices.json")
+_CRYPTO_KEYWORDS = {"bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency", "ripple", "xrp", "cardano", "solana"}
+
+
+def _get_crypto_prices() -> dict:
+    """Returns cached crypto prices, fetching once per run if not yet loaded."""
+    global _crypto_prices_cache
+    if _crypto_prices_cache is not None:
+        return _crypto_prices_cache
+    _crypto_prices_cache = _fetch_crypto_prices()
+    if _crypto_prices_cache:
+        try:
+            _CRYPTO_PRICES_PATH.parent.mkdir(parents=True, exist_ok=True)
+            _CRYPTO_PRICES_PATH.write_text(
+                json.dumps(_crypto_prices_cache, ensure_ascii=False),
+                encoding="utf-8",
+            )
+            log.info(f"CoinGecko prices saved to {_CRYPTO_PRICES_PATH}")
+        except Exception as exc:
+            log.debug(f"Failed to save crypto prices: {exc}")
+    return _crypto_prices_cache
+
+
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
     """
     Gera conteúdo SEO-otimizado por artigo via AI.
     Retorna dict com: seo_title, meta_description, article_body, faq, keywords, key_points.
+    Also fetches Wikipedia summary and stores it under 'wikipedia_summary'.
     """
     combined = f"{description}\n\n{body}".strip()[:2000]
     cat = category.capitalize()
@@ -479,16 +646,22 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
     )
     raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
-    if not raw:
-        return {}
-    try:
-        clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
-        m = re.search(r'\{.*\}', clean, re.DOTALL)
-        if m:
-            return json.loads(m.group())
-    except Exception as e:
-        log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
-    return {}
+    result = {}
+    if raw:
+        try:
+            clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
+            m = re.search(r'\{.*\}', clean, re.DOTALL)
+            if m:
+                result = json.loads(m.group())
+        except Exception as e:
+            log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
+
+    # ── Wikipedia enrichment ──────────────────────────────────
+    wiki_summary = _fetch_wikipedia_summary(title)
+    if wiki_summary:
+        result["wikipedia_summary"] = wiki_summary
+
+    return result
 
 # ============================================================
 # CONFIGURAÇÕES
@@ -955,6 +1128,231 @@ FEEDS = [
         "source":   "The Register",
     },
 ]
+
+
+# ============================================================
+# EXTRA SOURCES — HackerNews, DEV.to, Reddit
+# ============================================================
+
+def fetch_hackernews(max_items: int = 20, min_score: int = 100) -> list[dict]:
+    """
+    Fetches HackerNews top stories via the official Firebase API.
+    Returns a list of article dicts compatible with the post pipeline.
+    No API key required.
+    """
+    items = []
+    try:
+        r = requests.get(
+            "https://hacker-news.firebaseio.com/v0/topstories.json",
+            timeout=15,
+            headers={"User-Agent": "GlobalBRNews/1.0"},
+        )
+        if r.status_code != 200:
+            return items
+        story_ids = r.json()[:50]  # fetch first 50, filter by score below
+    except Exception as exc:
+        log.warning(f"HackerNews topstories fetch failed: {exc}")
+        return items
+
+    fetched = 0
+    for story_id in story_ids:
+        if fetched >= max_items:
+            break
+        try:
+            ri = requests.get(
+                f"https://hacker-news.firebaseio.com/v0/item/{story_id}.json",
+                timeout=10,
+                headers={"User-Agent": "GlobalBRNews/1.0"},
+            )
+            if ri.status_code != 200:
+                continue
+            data = ri.json()
+            if not data or data.get("type") != "story":
+                continue
+            score = data.get("score", 0)
+            if score < min_score:
+                continue
+            title = sanitize_text(data.get("title", ""))
+            url = data.get("url", "")
+            if not title or not url:
+                continue
+            pub_date = datetime.fromtimestamp(data.get("time", 0), tz=timezone.utc)
+            items.append({
+                "title": title,
+                "link": url,
+                "description": f"HackerNews score: {score}. {title}",
+                "pub_date": pub_date,
+                "image_url": "",
+                "category": "technology",
+                "tags": ["hackernews", "programming", "tech"],
+                "source": "Hacker News",
+                "hn_score": score,
+            })
+            fetched += 1
+        except Exception as exc:
+            log.debug(f"HackerNews item {story_id} fetch failed: {exc}")
+            continue
+    log.info(f"HackerNews: {len(items)} stories fetched (min_score={min_score})")
+    return items
+
+
+def fetch_devto(tags: list | None = None, per_page: int = 20) -> list[dict]:
+    """
+    Fetches articles from DEV.to API.
+    Uses DEV_TO_API_KEY if available; works without it too.
+    Returns list of article dicts compatible with the post pipeline.
+    """
+    if tags is None:
+        tags = ["programming", "webdev", "javascript", "python", "ai"]
+    api_key = os.getenv("DEV_TO_API_KEY", "")
+    headers = {"User-Agent": "GlobalBRNews/1.0"}
+    if api_key:
+        headers["api-key"] = api_key
+
+    items = []
+    seen_links: set = set()
+
+    for tag in tags:
+        try:
+            r = requests.get(
+                f"https://dev.to/api/articles?per_page={per_page}&tag={requests.utils.quote(tag)}",
+                headers=headers,
+                timeout=15,
+            )
+            if r.status_code != 200:
+                log.debug(f"DEV.to tag '{tag}' returned HTTP {r.status_code}")
+                continue
+            articles = r.json()
+            for art in articles:
+                link = art.get("url", "")
+                if not link or link in seen_links:
+                    continue
+                seen_links.add(link)
+                title = sanitize_text(art.get("title", ""))
+                description = sanitize_text((art.get("description") or art.get("title", ""))[:400])
+                if not title or not link:
+                    continue
+                pub_str = art.get("published_at", "")
+                try:
+                    pub_date = datetime.fromisoformat(pub_str.replace("Z", "+00:00"))
+                except Exception:
+                    pub_date = datetime.now(timezone.utc)
+                image_url = art.get("cover_image") or art.get("social_image") or ""
+                art_tags = ["devto", "programming", tag]
+                devto_tags = art.get("tag_list", [])
+                if devto_tags:
+                    art_tags += [t.lower() for t in devto_tags[:3]]
+                items.append({
+                    "title": title,
+                    "link": link,
+                    "description": description,
+                    "pub_date": pub_date,
+                    "image_url": image_url,
+                    "category": "technology",
+                    "tags": list(dict.fromkeys(art_tags)),
+                    "source": "DEV.to",
+                })
+        except Exception as exc:
+            log.warning(f"DEV.to tag '{tag}' fetch error: {exc}")
+            continue
+
+    log.info(f"DEV.to: {len(items)} articles fetched across {len(tags)} tags")
+    return items
+
+
+_REDDIT_SUBREDDITS: dict[str, str] = {
+    "worldnews":  "world",
+    "technology": "technology",
+    "science":    "science",
+    "geopolitics": "politics",
+    "economics":  "business",
+}
+
+
+def _get_reddit_token(client_id: str, client_secret: str) -> str | None:
+    """Obtains a Reddit OAuth2 client-credentials access token."""
+    try:
+        r = requests.post(
+            "https://www.reddit.com/api/v1/access_token",
+            auth=(client_id, client_secret),
+            data={"grant_type": "client_credentials"},
+            headers={"User-Agent": "GlobalBRNews/1.0 by non-s"},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json().get("access_token")
+    except Exception as exc:
+        log.warning(f"Reddit OAuth2 token fetch failed: {exc}")
+    return None
+
+
+def fetch_reddit(max_per_sub: int = 5) -> list[dict]:
+    """
+    Fetches top posts from configured subreddits using Reddit OAuth2.
+    Requires REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET env vars.
+    Returns list of article dicts compatible with the post pipeline.
+    """
+    client_id = os.getenv("REDDIT_CLIENT_ID", "")
+    client_secret = os.getenv("REDDIT_CLIENT_SECRET", "")
+    if not client_id or not client_secret:
+        return []
+
+    token = _get_reddit_token(client_id, client_secret)
+    if not token:
+        log.warning("Reddit: could not obtain access token — skipping.")
+        return []
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "User-Agent": "GlobalBRNews/1.0 by non-s",
+    }
+    items = []
+    seen_links: set = set()
+
+    for subreddit, category in _REDDIT_SUBREDDITS.items():
+        try:
+            r = requests.get(
+                f"https://oauth.reddit.com/r/{subreddit}/top.json?limit={max_per_sub}&t=day",
+                headers=headers,
+                timeout=15,
+            )
+            if r.status_code != 200:
+                log.debug(f"Reddit r/{subreddit} returned HTTP {r.status_code}")
+                continue
+            posts = r.json().get("data", {}).get("children", [])
+            for post in posts:
+                d = post.get("data", {})
+                if d.get("is_self") or d.get("stickied"):
+                    continue
+                link = d.get("url", "")
+                if not link or link in seen_links or link.startswith("https://www.reddit.com"):
+                    continue
+                seen_links.add(link)
+                title = sanitize_text(d.get("title", ""))
+                description = sanitize_text((d.get("selftext") or d.get("title", ""))[:400])
+                if not title:
+                    continue
+                pub_date = datetime.fromtimestamp(d.get("created_utc", 0), tz=timezone.utc)
+                image_url = ""
+                if d.get("thumbnail", "").startswith("http"):
+                    image_url = d["thumbnail"]
+                subreddit_tags = ["reddit", f"r-{subreddit}", category]
+                items.append({
+                    "title": title,
+                    "link": link,
+                    "description": description if len(description) >= 50 else title,
+                    "pub_date": pub_date,
+                    "image_url": image_url,
+                    "category": category,
+                    "tags": subreddit_tags,
+                    "source": f"Reddit r/{subreddit}",
+                })
+        except Exception as exc:
+            log.warning(f"Reddit r/{subreddit} fetch error: {exc}")
+            continue
+
+    log.info(f"Reddit: {len(items)} posts fetched across {len(_REDDIT_SUBREDDITS)} subreddits")
+    return items
 
 
 # ============================================================
@@ -1452,27 +1850,35 @@ def _load_known_titles() -> list:
 
 
 def build_frontmatter(
-    title:         str,
-    date:          datetime,
-    categories:    list,
-    tags:          list,
-    author:        str,
-    description:   str,
-    source_url:    str,
-    source_name:   str,
-    image:         str,
-    keywords:      list | None = None,
-    faq:           list | None = None,
-    sentiment:     str  = "neutral",
-    key_points:    list | None = None,
-    fact_check:    str | None = None,
-    image_caption: str | None = None,
-    last_updated:  str  = "",
+    title:             str,
+    date:              datetime,
+    categories:        list,
+    tags:              list,
+    author:            str,
+    description:       str,
+    source_url:        str,
+    source_name:       str,
+    image:             str,
+    keywords:          list | None = None,
+    faq:               list | None = None,
+    sentiment:         str  = "neutral",
+    key_points:        list | None = None,
+    fact_check:        str | None = None,
+    image_caption:     str | None = None,
+    last_updated:      str  = "",
+    wikipedia_summary: str  = "",
+    description_ptbr:  str  = "",
+    crypto_prices:     dict | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
     cats_yaml = "[" + ", ".join(categories) + "]"
     tags_yaml = "[" + ", ".join(t for t in tags if t) + "]"
+
+    # ── Google Fact Check API (priority) then heuristic ───────────
+    if fact_check is None:
+        fact_check = _fact_check_api(title)
+    # If still None, fall through — caller already called _fact_check_score
 
     front = f"""---
 layout: post
@@ -1513,6 +1919,19 @@ lang: "en"
             a = sanitize_text(str(item.get("a", ""))).replace('"', "'")
             if q and a:
                 front += f'  - q: "{q}"\n    a: "{a}"\n'
+    if wikipedia_summary:
+        front += f'wikipedia_summary: "{sanitize_text(wikipedia_summary[:500])}"\n'
+    if description_ptbr:
+        front += f'description_ptbr: "{sanitize_text(description_ptbr[:300])}"\n'
+    if crypto_prices:
+        # Embed a concise snapshot: e.g. bitcoin_usd: 68000
+        for coin, data in crypto_prices.items():
+            usd = data.get("usd")
+            change = data.get("usd_24h_change")
+            if usd is not None:
+                front += f'crypto_{coin}_usd: {usd}\n'
+            if change is not None:
+                front += f'crypto_{coin}_24h_change: {round(change, 2)}\n'
     front += "---\n"
     return front
 
@@ -1709,10 +2128,47 @@ _PT_STOPWORDS = {
 def _find_related_story(title: str, tags: list, category: str) -> str:
     """
     Scans the last 20 posts in the same category.
-    If a previous post shares 2+ key nouns with the current title,
-    returns a Markdown 'Continuing coverage' link to prepend to article body.
-    Returns empty string if no related story found.
+    Uses Cohere embeddings (cosine similarity) when available;
+    otherwise falls back to keyword overlap (2+ shared nouns).
+    Returns a Markdown 'Continuing coverage' link or empty string.
     """
+    # ── Cohere semantic search (if embeddings exist) ──────────────
+    try:
+        cohere_key = os.getenv("COHERE_API_KEY", "")
+        if cohere_key:
+            current_emb = _get_cohere_embedding(title, cohere_key)
+            if current_emb:
+                embeddings = _load_embeddings()
+                best_title = None
+                best_score = 0.0
+                for stored_title, stored_emb in embeddings.items():
+                    if stored_title == title:
+                        continue
+                    sim = _cosine_similarity(current_emb, stored_emb)
+                    if sim > best_score:
+                        best_score = sim
+                        best_title = stored_title
+                if best_title and best_score > 0.85:
+                    # Try to find the file for best_title
+                    for post_path in sorted(POSTS_DIR.glob("*.md"), reverse=True)[:40]:
+                        try:
+                            text = post_path.read_text(encoding="utf-8")
+                            for line in text.splitlines():
+                                if line.startswith("title:"):
+                                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                                    if m and m.group(1).strip() == best_title:
+                                        stem = post_path.stem
+                                        mm = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', stem)
+                                        if mm:
+                                            yr, mo, dy, sl = mm.group(1), mm.group(2), mm.group(3), mm.group(4)
+                                            url = f"/{category}/{yr}/{mo}/{dy}/{sl}/"
+                                            return f"> 📰 **Continuing coverage:** [{best_title}]({url})\n\n"
+                        except Exception:
+                            continue
+    except Exception:
+        pass
+
+    # ── Keyword-based fallback ────────────────────────────────────
     try:
         key_nouns = {
             w.lower() for w in title.split()
@@ -2131,29 +2587,60 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug(f"  🖼  Using source image: {image_url[:60]}")
 
             sentiment   = _sentiment_score(f"{title} {description}")
+            # Heuristic fact-check (API override happens inside build_frontmatter)
             fact_check  = _fact_check_score(title, description)
+
+            # ── DeepL translation PT-BR ───────────────────────────
+            deepl_key = os.getenv("DEEPL_API_KEY", "")
+            description_ptbr = ""
+            if deepl_key:
+                description_ptbr = _translate_to_ptbr(description[:500], deepl_key) or ""
+                if description_ptbr:
+                    log.debug(f"  🌍 DeepL PT-BR description translated")
+
+            # ── Cohere embeddings ─────────────────────────────────
+            cohere_key = os.getenv("COHERE_API_KEY", "")
+            if cohere_key:
+                emb = _get_cohere_embedding(f"{title} {description}", cohere_key)
+                if emb:
+                    embeddings = _load_embeddings()
+                    embeddings[title] = emb
+                    _save_embeddings(embeddings)
+                    log.debug(f"  🔢 Cohere embedding saved for: {title[:50]}")
+
+            # ── Crypto prices for business posts ─────────────────
+            crypto_prices_for_post: dict | None = None
+            if category == "business":
+                combined_text = (title + " " + description).lower()
+                if any(kw in combined_text for kw in _CRYPTO_KEYWORDS):
+                    crypto_prices_for_post = _get_crypto_prices() or None
+                    if crypto_prices_for_post:
+                        log.debug(f"  💰 Crypto prices attached to business post")
 
             # ── Story continuation detection ──────────────────────
             continuation = _find_related_story(title, all_tags, category)
             last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
 
             frontmatter = build_frontmatter(
-                title         = title,
-                date          = pub_date,
-                categories    = categories,
-                tags          = all_tags,
-                author        = "GlobalBR News",
-                description   = description,
-                source_url    = link,
-                source_name   = source,
-                image         = image_url,
-                keywords      = ai.get("keywords", []),
-                faq           = ai.get("faq", []),
-                sentiment     = sentiment,
-                key_points    = ai.get("key_points", []),
-                fact_check    = fact_check,
-                image_caption = ai.get("image_caption", ""),
-                last_updated  = last_updated_val,
+                title             = title,
+                date              = pub_date,
+                categories        = categories,
+                tags              = all_tags,
+                author            = "GlobalBR News",
+                description       = description,
+                source_url        = link,
+                source_name       = source,
+                image             = image_url,
+                keywords          = ai.get("keywords", []),
+                faq               = ai.get("faq", []),
+                sentiment         = sentiment,
+                key_points        = ai.get("key_points", []),
+                fact_check        = fact_check,
+                image_caption     = ai.get("image_caption", ""),
+                last_updated      = last_updated_val,
+                wikipedia_summary = ai.get("wikipedia_summary", ""),
+                description_ptbr  = description_ptbr,
+                crypto_prices     = crypto_prices_for_post,
             )
 
             post_content = build_content(
@@ -2179,6 +2666,50 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
+            # ── DeepL: create PT post file if translation available ─
+            if deepl_key and description_ptbr:
+                try:
+                    pt_dir = POSTS_DIR / "pt"
+                    pt_dir.mkdir(parents=True, exist_ok=True)
+                    pt_title = _translate_to_ptbr(title, deepl_key) or title
+                    pt_fm = build_frontmatter(
+                        title             = pt_title,
+                        date              = pub_date,
+                        categories        = categories,
+                        tags              = all_tags,
+                        author            = "GlobalBR News",
+                        description       = description_ptbr[:160],
+                        source_url        = link,
+                        source_name       = source,
+                        image             = image_url,
+                        keywords          = ai.get("keywords", []),
+                        faq               = ai.get("faq", []),
+                        sentiment         = sentiment,
+                        key_points        = ai.get("key_points", []),
+                        fact_check        = fact_check,
+                        image_caption     = ai.get("image_caption", ""),
+                        last_updated      = last_updated_val,
+                        wikipedia_summary = ai.get("wikipedia_summary", ""),
+                    )
+                    # Replace lang field for PT post
+                    pt_fm = pt_fm.replace('lang: "en"', 'lang: "pt-BR"')
+                    pt_content = build_content(
+                        title       = pt_title,
+                        description = description_ptbr,
+                        source_url  = link,
+                        source_name = source,
+                        date        = pub_date,
+                        categories  = categories,
+                        tags        = all_tags,
+                        body        = og.get("body", ""),
+                        ai_body     = ai.get("article_body", ""),
+                    )
+                    pt_path = pt_dir / filename
+                    pt_path.write_text(pt_fm + "\n" + pt_content, encoding="utf-8")
+                    log.info(f"  🇧🇷 PT post created: pt/{filename}")
+                except Exception as pt_exc:
+                    log.debug(f"  DeepL PT post creation failed: {pt_exc}")
+
             log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
             _load_known_urls().add(link)
             _load_known_titles().insert(0, (title, filename))
@@ -2195,6 +2726,193 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
     log.info(f"  📝 {created_count} posts criados para {name}")
     return created_count
+
+
+def _process_article_dict(item: dict, max_override: int | None = None) -> int:
+    """
+    Processes a single article dict (from HackerNews / DEV.to / Reddit) through
+    the same quality, dedup, AI-enhance, and post-creation pipeline used by fetch_feed.
+    Returns 1 if a post was created, 0 otherwise.
+    """
+    title       = item.get("title", "")
+    link        = item.get("link", "")
+    description = item.get("description", "")
+    pub_date    = item.get("pub_date", datetime.now(timezone.utc))
+    image_url   = item.get("image_url", "")
+    category    = item.get("category", "technology")
+    base_tags   = item.get("tags", [])
+    source      = item.get("source", "Unknown")
+
+    if not title or not link:
+        return 0
+
+    if not _check_source_url(link):
+        log.warning(f"  ⚠️  Source URL returned error (skipping): {link[:80]}")
+        return 0
+
+    if len(description) < MIN_DESCRIPTION_LEN:
+        log.info(f"  ⏭  Descrição muito curta ({len(description)} chars): {title[:60]}")
+        return 0
+
+    ok, reason = _quality_check(title, description)
+    if not ok:
+        log.info(f"  ⏭  Quality check failed ({reason}): {title[:60]}")
+        return 0
+
+    if is_blacklisted(title, description):
+        log.info(f"  🚫 Conteúdo filtrado (blacklist): {title[:60]}")
+        return 0
+
+    og = fetch_og_metadata(link)
+    if og["description"] and len(og["description"]) > len(description):
+        description = og["description"]
+    if og["image"] and not image_url:
+        image_url = og["image"]
+
+    extra_cat, extra_tags = get_extra_tags(title, description)
+    categories = [category]
+    if extra_cat and extra_cat not in categories:
+        categories.append(extra_cat)
+    all_tags = list(dict.fromkeys(base_tags + extra_tags))
+
+    slug     = slugify(title)
+    filename = post_filename(pub_date, slug)
+
+    if post_exists(filename, link):
+        log.debug(f"  ⏭  Post já existe: {filename}")
+        return 0
+
+    for existing_title, existing_file in _load_known_titles():
+        if _title_similarity(title, existing_title) > 0.6:
+            log.info(f"  ⏭  Título similar a '{existing_file}': {title[:60]}")
+            return 0
+
+    ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
+    if ai.get("seo_title") and 10 < len(ai["seo_title"]) <= 70:
+        title = ai["seo_title"]
+    if ai.get("meta_description") and len(ai["meta_description"]) > 50:
+        description = ai["meta_description"][:160]
+    if ai.get("keywords"):
+        all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
+
+    if not image_url:
+        image_url = _generate_og_image(title, category, slug)
+
+    sentiment  = _sentiment_score(f"{title} {description}")
+    fact_check = _fact_check_score(title, description)
+
+    deepl_key = os.getenv("DEEPL_API_KEY", "")
+    description_ptbr = ""
+    if deepl_key:
+        description_ptbr = _translate_to_ptbr(description[:500], deepl_key) or ""
+
+    cohere_key = os.getenv("COHERE_API_KEY", "")
+    if cohere_key:
+        emb = _get_cohere_embedding(f"{title} {description}", cohere_key)
+        if emb:
+            embeddings = _load_embeddings()
+            embeddings[title] = emb
+            _save_embeddings(embeddings)
+
+    crypto_prices_for_post: dict | None = None
+    if category == "business":
+        combined_text = (title + " " + description).lower()
+        if any(kw in combined_text for kw in _CRYPTO_KEYWORDS):
+            crypto_prices_for_post = _get_crypto_prices() or None
+
+    continuation = _find_related_story(title, all_tags, category)
+    last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
+
+    frontmatter = build_frontmatter(
+        title             = title,
+        date              = pub_date,
+        categories        = categories,
+        tags              = all_tags,
+        author            = "GlobalBR News",
+        description       = description,
+        source_url        = link,
+        source_name       = source,
+        image             = image_url,
+        keywords          = ai.get("keywords", []),
+        faq               = ai.get("faq", []),
+        sentiment         = sentiment,
+        key_points        = ai.get("key_points", []),
+        fact_check        = fact_check,
+        image_caption     = ai.get("image_caption", ""),
+        last_updated      = last_updated_val,
+        wikipedia_summary = ai.get("wikipedia_summary", ""),
+        description_ptbr  = description_ptbr,
+        crypto_prices     = crypto_prices_for_post,
+    )
+
+    post_content = build_content(
+        title       = title,
+        description = description,
+        source_url  = link,
+        source_name = source,
+        date        = pub_date,
+        categories  = categories,
+        tags        = all_tags,
+        body        = og.get("body", ""),
+        ai_body     = ai.get("article_body", ""),
+    )
+    if continuation:
+        post_content = continuation + post_content
+    post_content = _add_internal_links(post_content, category, Path(filename).stem)
+    pt_section = _add_pt_summary(title, description, category)
+    post_content += pt_section
+
+    post_path = POSTS_DIR / filename
+    post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
+
+    if deepl_key and description_ptbr:
+        try:
+            pt_dir = POSTS_DIR / "pt"
+            pt_dir.mkdir(parents=True, exist_ok=True)
+            pt_title = _translate_to_ptbr(title, deepl_key) or title
+            pt_fm = build_frontmatter(
+                title             = pt_title,
+                date              = pub_date,
+                categories        = categories,
+                tags              = all_tags,
+                author            = "GlobalBR News",
+                description       = description_ptbr[:160],
+                source_url        = link,
+                source_name       = source,
+                image             = image_url,
+                keywords          = ai.get("keywords", []),
+                faq               = ai.get("faq", []),
+                sentiment         = sentiment,
+                key_points        = ai.get("key_points", []),
+                fact_check        = fact_check,
+                image_caption     = ai.get("image_caption", ""),
+                last_updated      = last_updated_val,
+                wikipedia_summary = ai.get("wikipedia_summary", ""),
+            )
+            pt_fm = pt_fm.replace('lang: "en"', 'lang: "pt-BR"')
+            pt_content = build_content(
+                title       = pt_title,
+                description = description_ptbr,
+                source_url  = link,
+                source_name = source,
+                date        = pub_date,
+                categories  = categories,
+                tags        = all_tags,
+                body        = og.get("body", ""),
+                ai_body     = ai.get("article_body", ""),
+            )
+            (pt_dir / filename).write_text(pt_fm + "\n" + pt_content, encoding="utf-8")
+            log.info(f"  🇧🇷 PT post created: pt/{filename}")
+        except Exception as pt_exc:
+            log.debug(f"  DeepL PT post creation failed: {pt_exc}")
+
+    log.info(f"  ✅ Post criado [{source}]: {filename}")
+    _load_known_urls().add(link)
+    _load_known_titles().insert(0, (title, filename))
+    if not hasattr(fetch_feed, "_source_counts"):
+        fetch_feed._source_counts = {}
+    fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
+    return 1
 
 
 def main():
@@ -2221,6 +2939,12 @@ def main():
     if trending:
         log.info(f"🔥 Trending keywords loaded: {len(trending)} terms")
 
+    # ── Pre-fetch crypto prices once per run ──────────────────────
+    try:
+        _get_crypto_prices()
+    except Exception as exc:
+        log.debug(f"Crypto prices pre-fetch failed: {exc}")
+
     for i, feed in enumerate(FEEDS):
         if total_created >= MAX_POSTS_PER_RUN:
             log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
@@ -2240,6 +2964,45 @@ def main():
         if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
             log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")
             sleep(SLEEP_BETWEEN_FEEDS)
+
+    # ── HackerNews extra source ───────────────────────────────────
+    if total_created < MAX_POSTS_PER_RUN:
+        log.info("📡 Fetching HackerNews top stories...")
+        try:
+            hn_items = fetch_hackernews(max_items=20, min_score=100)
+            for item in hn_items:
+                if total_created >= MAX_POSTS_PER_RUN:
+                    break
+                total_created += _process_article_dict(item)
+                sleep(1)
+        except Exception as exc:
+            log.warning(f"HackerNews processing failed: {exc}")
+
+    # ── DEV.to extra source ───────────────────────────────────────
+    if total_created < MAX_POSTS_PER_RUN:
+        log.info("📡 Fetching DEV.to articles...")
+        try:
+            devto_items = fetch_devto()
+            for item in devto_items:
+                if total_created >= MAX_POSTS_PER_RUN:
+                    break
+                total_created += _process_article_dict(item)
+                sleep(1)
+        except Exception as exc:
+            log.warning(f"DEV.to processing failed: {exc}")
+
+    # ── Reddit extra source (only if credentials available) ───────
+    if total_created < MAX_POSTS_PER_RUN and os.getenv("REDDIT_CLIENT_ID"):
+        log.info("📡 Fetching Reddit top posts...")
+        try:
+            reddit_items = fetch_reddit(max_per_sub=5)
+            for item in reddit_items:
+                if total_created >= MAX_POSTS_PER_RUN:
+                    break
+                total_created += _process_article_dict(item)
+                sleep(1)
+        except Exception as exc:
+            log.warning(f"Reddit processing failed: {exc}")
 
     # ── Source diversity check ────────────────────────────────────
     source_counts = getattr(fetch_feed, "_source_counts", {})
