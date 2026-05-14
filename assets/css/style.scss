@@ -1978,3 +1978,55 @@ img { max-width: 100%; display: block; }
   line-height: 1.6;
   margin: 0;
 }
+
+/* ============================================================
+   COMMENTS (Utterances)
+   ============================================================ */
+.comments-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--c-border2);
+}
+.comments-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.utterances {
+  max-width: 100% !important;
+}
+.utterances-frame {
+  border-radius: var(--r-md);
+}
+
+/* ============================================================
+   SHARE — Bluesky + X/Twitter buttons
+   ============================================================ */
+.share-pill.bluesky {
+  background: rgba(0,133,255,.12);
+  color: #0085ff;
+  border-color: rgba(0,133,255,.3);
+}
+.share-pill.bluesky:hover {
+  background: rgba(0,133,255,.22);
+}
+.share-pill.twitter {
+  background: rgba(255,255,255,.08);
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,.18);
+}
+.share-pill.twitter:hover {
+  background: rgba(255,255,255,.14);
+}
+
+/* ============================================================
+   PWA install prompt (shown by browser native)
+   ============================================================ */
+@media (display-mode: standalone) {
+  .navbar { padding-top: env(safe-area-inset-top); }
+  body    { padding-bottom: env(safe-area-inset-bottom); }
+}

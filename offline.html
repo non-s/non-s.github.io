@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline — GlobalBR News</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080c17;
+      color: #dde4f0;
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .wrap { max-width: 480px; }
+    .icon { font-size: 4rem; margin-bottom: 1.5rem; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: .75rem; }
+    p  { color: #7e8fa8; line-height: 1.6; margin-bottom: 1.5rem; }
+    a  {
+      display: inline-block;
+      background: #f97316;
+      color: #fff;
+      padding: .65rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="icon">📡</div>
+    <h1>You're offline</h1>
+    <p>Looks like you lost your internet connection. Check your network and try again.</p>
+    <a href="/" onclick="location.reload()">Try again</a>
+  </div>
+</body>
+</html>

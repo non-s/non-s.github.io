@@ -118,9 +118,49 @@
       title="{{ site.title }}"
       href="{{ '/feed.xml' | absolute_url }}">
 
+<!-- ── Podcast RSS ── -->
+<link rel="alternate" type="application/rss+xml"
+      title="{{ site.title }} — Podcast"
+      href="{{ '/podcast.xml' | absolute_url }}">
+
 <!-- ── Favicon ── -->
 <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" type="image/x-icon">
 <link rel="apple-touch-icon" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">
+
+<!-- ── PWA Manifest ── -->
+<link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
+<meta name="theme-color" content="#080c17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GlobalBR News">
+
+<!-- ── Service Worker Registration ── -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  });
+}
+</script>
+
+{% if site.onesignal_app_id %}
+<!-- ── OneSignal Web Push ── -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "{{ site.onesignal_app_id }}",
+      notifyButton: { enable: true, size: 'medium', position: 'bottom-right' },
+      welcomeNotification: {
+        title: "GlobalBR News",
+        message: "Thanks for subscribing to breaking news alerts!"
+      }
+    });
+  });
+</script>
+{% endif %}
 
 {% if site.google_analytics %}
 <!-- Google Analytics -->
