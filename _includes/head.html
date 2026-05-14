@@ -112,6 +112,29 @@
   {% endif %}
 }
 </script>
+
+{% if page.youtube_id %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "{{ page.title | strip_html | escape }}",
+  "description": "{{ page.description | default: page.excerpt | strip_html | truncate: 300 | escape }}",
+  "thumbnailUrl": "https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg",
+  "uploadDate": "{{ page.date | date_to_xmlschema }}",
+  "contentUrl": "{{ page.youtube_url }}",
+  "embedUrl": "https://www.youtube.com/embed/{{ page.youtube_id }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.title }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.logo | absolute_url }}"
+    }
+  }
+}
+</script>
+{% endif %}
 {% else %}
 <script type="application/ld+json">
 {

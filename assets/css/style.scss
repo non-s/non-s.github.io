@@ -3322,25 +3322,17 @@ body.font-serif #post-article {
   }
 }
 
-// Reading List page
-.saved-article-card {
-  display: flex; align-items: center; gap: 1rem;
+// Prev/Next article navigation
+.post-prevnext { margin: 2.5rem 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); }
+.prevnext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.prevnext-card {
+  display: flex; flex-direction: column; gap: .35rem;
   background: var(--c-surface); border: 1px solid var(--c-border);
-  border-radius: .75rem; padding: .85rem 1rem;
-  transition: border-color .15s;
-  &:hover { border-color: var(--c-accent); }
+  border-radius: .75rem; padding: .9rem 1.1rem;
+  text-decoration: none; transition: border-color .15s, background .15s;
+  &:hover { border-color: var(--c-accent); background: rgba(249,115,22,.06); }
 }
-.saved-article-img { width: 72px; height: 50px; object-fit: cover; border-radius: .4rem; flex-shrink: 0; }
-.saved-article-info { flex: 1; min-width: 0; }
-.saved-article-title { color: var(--c-text); font-size: .9rem; font-weight: 600; text-decoration: none; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; &:hover { color: var(--c-accent); } }
-.saved-article-date { color: var(--c-muted); font-size: .75rem; }
-.saved-article-remove { background: none; border: none; color: var(--c-muted); cursor: pointer; padding: .25rem; &:hover { color: #ef4444; } }
-
-// Category stats bar
-.category-stats-bar {
-  display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
-  padding: .6rem 1rem; background: var(--c-surface);
-  border-radius: .6rem; border: 1px solid var(--c-border);
-}
-.cat-stat { color: var(--c-muted); font-size: .82rem; display: flex; align-items: center; gap: .3rem; }
-.cat-stat-link { color: var(--c-accent); text-decoration: none; &:hover { text-decoration: underline; } }
+.prevnext-next { text-align: right; }
+.prevnext-label { font-size: .72rem; color: var(--c-accent); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.prevnext-title { font-size: .85rem; color: var(--c-text); line-height: 1.4; font-weight: 500; }
+@media (max-width: 576px) { .prevnext-grid { grid-template-columns: 1fr; } }
