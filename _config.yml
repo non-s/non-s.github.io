@@ -120,6 +120,9 @@ exclude:
   - vendor
   - fetch_news.py
   - fetch_news.log
+  - algolia_index.py
+  - fetch_analytics.py
+  - translate_posts.py
   - README.md
   - COMO_PUBLICAR.md
   - .github
@@ -143,3 +146,11 @@ google_analytics: "G-ZSQXRQJ6WC"
 
 # --- Amazon Afiliados (adicione sua tag) ---
 # amazon_affiliate_tag: "techbrnews-20"
+
+# --- Algolia search (optional — replaces manual search when configured) ---
+# algolia_app_id: ""
+# algolia_search_key: ""  # public search-only key
+# algolia_index_name: "globalbr_news"
+
+# --- Stripe donation (optional — enable donate page card payment) ---
+# stripe_public_key: "pk_live_XXXXXX"

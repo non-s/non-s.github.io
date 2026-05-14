@@ -222,6 +222,36 @@ _CAT_COLORS = {
 }
 
 
+def _upload_to_cloudinary(local_path, public_id=None):
+    """Upload image to Cloudinary and return CDN URL. Returns None if not configured or on error."""
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME")
+    api_key = os.getenv("CLOUDINARY_API_KEY")
+    api_secret = os.getenv("CLOUDINARY_API_SECRET")
+    if not all([cloud_name, api_key, api_secret]):
+        return None
+    try:
+        import hashlib, time as _time
+        timestamp = str(int(_time.time()))
+        params = f"timestamp={timestamp}"
+        if public_id:
+            params = f"public_id={public_id}&{params}"
+        signature = hashlib.sha1(f"{params}{api_secret}".encode()).hexdigest()
+        with open(local_path, "rb") as f:
+            files = {"file": f}
+            data = {"api_key": api_key, "timestamp": timestamp, "signature": signature}
+            if public_id:
+                data["public_id"] = public_id
+            r = requests.post(
+                f"https://api.cloudinary.com/v1_1/{cloud_name}/image/upload",
+                files=files, data=data, timeout=30
+            )
+        if r.status_code == 200:
+            return r.json().get("secure_url")
+    except Exception as e:
+        logging.warning(f"Cloudinary upload failed: {e}")
+    return None
+
+
 def _to_webp(img_path: "Path") -> "Path | None":
     """Convert an image file to WebP quality=82, method=6. Returns new .webp path or None on failure."""
     try:
@@ -344,11 +374,16 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         bg_img.save(str(jpg_path), "JPEG", quality=82, optimize=True)
 
         webp_path = _to_webp(jpg_path)
-        if webp_path and webp_path.exists():
-            return f"/assets/images/posts/{slug}.webp"
-        elif jpg_path.exists():
-            return f"/assets/images/posts/{slug}.jpg"
-        return fallback
+        final_local = str(webp_path) if (webp_path and webp_path.exists()) else (str(jpg_path) if jpg_path.exists() else None)
+        local_url = f"/assets/images/posts/{slug}.webp" if (webp_path and webp_path.exists()) else (f"/assets/images/posts/{slug}.jpg" if jpg_path.exists() else fallback)
+
+        # ── Cloudinary CDN upload (optional) ────────────────────
+        if final_local:
+            cdn_url = _upload_to_cloudinary(final_local, public_id=f"globalbr/{slug}")
+            if cdn_url:
+                return cdn_url
+
+        return local_url
 
     except ImportError:
         log.debug("Pillow not available — using Pollinations URL for OG image")

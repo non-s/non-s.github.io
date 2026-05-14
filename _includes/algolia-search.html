@@ -1,0 +1,37 @@
+{% if site.algolia_app_id %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8/themes/satellite-min.css">
+<div id="searchbox"></div>
+<div id="hits"></div>
+<div id="pagination"></div>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
+<script>
+const searchClient = algoliasearch('{{ site.algolia_app_id }}', '{{ site.algolia_search_key }}');
+const search = instantsearch({
+  indexName: '{{ site.algolia_index_name | default: "globalbr_news" }}',
+  searchClient,
+  routing: true,
+});
+search.addWidgets([
+  instantsearch.widgets.searchBox({ container: '#searchbox', placeholder: 'Search news...' }),
+  instantsearch.widgets.hits({
+    container: '#hits',
+    templates: {
+      item(hit) {
+        return `<article class="news-card">
+          ${hit.image ? `<img src="${hit.image}" alt="${hit.title}" loading="lazy" class="card-img" style="width:100%;height:160px;object-fit:cover">` : ''}
+          <div class="card-body-inner">
+            <div class="card-meta"><time>${hit.date}</time> ${hit.source_name ? `<span class="card-source">${hit.source_name}</span>` : ''}</div>
+            <h2 class="card-headline"><a href="${hit.url}">${instantsearch.highlight({ attribute: 'title', hit })}</a></h2>
+            <p class="card-excerpt">${hit.description?.substring(0, 120)}</p>
+          </div>
+        </article>`;
+      },
+      empty: '<p class="text-center text-muted py-5">No results found.</p>'
+    }
+  }),
+  instantsearch.widgets.pagination({ container: '#pagination' }),
+]);
+search.start();
+</script>
+{% endif %}

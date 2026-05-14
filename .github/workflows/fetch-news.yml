@@ -55,6 +55,9 @@ jobs:
           PYTHONUNBUFFERED: "1"
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
 
       - name: "🔍 Check for new posts"
         id: check_changes
@@ -87,6 +90,39 @@ jobs:
 
           git push origin HEAD
           echo "✅ $ADDED post(s) published!"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🔍 Algolia — reindexar posts"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python algolia_index.py
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+
+      - name: "📊 Google Analytics — atualizar stats"
+        continue-on-error: true
+        run: |
+          pip install cryptography -q
+          python fetch_analytics.py
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
+
+      - name: "💾 Commit analytics data"
+        continue-on-error: true
+        run: |
+          if git diff --quiet _data/analytics.json 2>/dev/null && ! git ls-files --others --exclude-standard _data/analytics.json | grep -q .; then
+            echo "ℹ️ No analytics changes to commit"
+          else
+            git config user.name  "GlobalBR News Bot"
+            git config user.email "bot@globalbrnews.com"
+            git add _data/analytics.json || true
+            git diff --cached --quiet || git commit -m "📊 analytics — $(date -u +'%Y-%m-%d')"
+            git push origin HEAD || true
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
