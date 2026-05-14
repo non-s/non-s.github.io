@@ -59,9 +59,13 @@ jobs:
       - name: "🔍 Check for new posts"
         id: check_changes
         run: |
-          CHANGED=$(git status --porcelain _posts/ assets/images/posts/ | wc -l | tr -d ' ')
+          CHANGED=$(git status --porcelain _posts/ | wc -l | tr -d ' ')
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           echo "New posts found: $CHANGED"
+          if [ "$CHANGED" -gt "0" ]; then
+            echo "New posts:"
+            git status --porcelain _posts/ | head -20
+          fi
 
       - name: "💾 Commit & push new posts"
         if: steps.check_changes.outputs.changed != '0'

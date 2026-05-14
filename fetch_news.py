@@ -121,6 +121,55 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
 # Alias para compatibilidade interna
 _pollinations_text = _ai_text
 
+def _check_source_url(url: str, timeout: int = 5) -> bool:
+    """
+    Makes a HEAD request to the source URL.
+    Returns True if HTTP status < 400.
+    Returns False on 4xx/5xx errors.
+    Returns True on timeout/connection error (don't block on slow servers).
+    """
+    try:
+        r = _session.head(url, timeout=timeout, allow_redirects=True)
+        return r.status_code < 400
+    except requests.exceptions.Timeout:
+        return True   # slow server — don't block the run
+    except Exception:
+        return True   # network error — don't block the run
+
+
+def cleanup_old_posts(max_age_days: int = 90) -> int:
+    """
+    Scans _posts/ for .md files older than max_age_days.
+    Skips roundup/digest files. Deletes old posts and returns count deleted.
+    """
+    from datetime import timedelta
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    deleted = 0
+    for post_path in POSTS_DIR.glob("*.md"):
+        filename = post_path.name
+        # Skip roundup and digest files
+        if "roundup" in filename or "digest" in filename:
+            continue
+        # Parse date from YYYY-MM-DD prefix
+        m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-', filename)
+        if not m:
+            continue
+        try:
+            post_date = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                                 tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if post_date < cutoff:
+            try:
+                post_path.unlink()
+                deleted += 1
+                log.debug(f"  🗑  Deleted old post: {filename}")
+            except Exception as exc:
+                log.warning(f"  ⚠️  Failed to delete {filename}: {exc}")
+    log.info(f"🗑  Cleanup: {deleted} post(s) older than {max_age_days} days deleted.")
+    return deleted
+
+
 _ARTICLE_SCENES = {
     "world":         "globe earth world connections editorial journalism photo",
     "politics":      "government parliament building political official press conference",
@@ -174,13 +223,16 @@ _CAT_COLORS = {
 
 
 def _to_webp(img_path: "Path") -> "Path | None":
-    """Convert an image file to WebP quality=85. Returns new .webp path or None on failure."""
+    """Convert an image file to WebP quality=82, method=6. Returns new .webp path or None on failure."""
     try:
         from PIL import Image as _PILImage
         webp_path = img_path.with_suffix(".webp")
         with _PILImage.open(img_path) as im:
             im = im.convert("RGB")
-            im.save(str(webp_path), "WEBP", quality=85, method=4)
+            # Only resize if image is at least 400px wide; cap at 1200x630
+            if im.width >= 400:
+                im.thumbnail((1200, 630), _PILImage.LANCZOS)
+            im.save(str(webp_path), "WEBP", quality=82, method=6)
         # Remove original jpg if conversion succeeded and they differ
         if webp_path != img_path and img_path.exists():
             img_path.unlink()
@@ -283,9 +335,13 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         draw.text((48, 630 - 52), "GlobalBR News", font=font_brand,
                   fill=(180, 180, 180), stroke_width=1, stroke_fill=(0, 0, 0))
 
+        # ── Resize to max 1200x630 before saving (only if >= 400px wide) ─
+        if bg_img.width >= 400:
+            bg_img.thumbnail((1200, 630), Image.LANCZOS)
+
         # ── Save as JPG first, then convert to WebP ──────────────
         jpg_path = out_dir / f"{slug}.jpg"
-        bg_img.save(str(jpg_path), "JPEG", quality=90)
+        bg_img.save(str(jpg_path), "JPEG", quality=82, optimize=True)
 
         webp_path = _to_webp(jpg_path)
         if webp_path and webp_path.exists():
@@ -1411,6 +1467,7 @@ def build_frontmatter(
     key_points:    list | None = None,
     fact_check:    str | None = None,
     image_caption: str | None = None,
+    last_updated:  str  = "",
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1428,7 +1485,10 @@ description: "{sanitize_text(description[:160])}"
 source_url: "{source_url}"
 source_name: "{source_name}"
 sentiment: "{sentiment}"
+lang: "en"
 """
+    if last_updated:
+        front += f'last_updated: "{last_updated}"\n'
     if image:
         front += f'image: "{image}"\n'
         alt = sanitize_text(title[:100])
@@ -1996,6 +2056,11 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug("  ⏭  Item sem título ou link, pulando.")
                 continue
 
+            # ── Link checker — skip dead source URLs ──────────────
+            if not _check_source_url(link):
+                log.warning(f"  ⚠️  Source URL returned error (skipping): {link[:80]}")
+                continue
+
             # Filtro de descrição mínima
             if len(description) < MIN_DESCRIPTION_LEN:
                 log.info(f"  ⏭  Descrição muito curta ({len(description)} chars): {title[:60]}")
@@ -2068,6 +2133,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             sentiment   = _sentiment_score(f"{title} {description}")
             fact_check  = _fact_check_score(title, description)
 
+            # ── Story continuation detection ──────────────────────
+            continuation = _find_related_story(title, all_tags, category)
+            last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
+
             frontmatter = build_frontmatter(
                 title         = title,
                 date          = pub_date,
@@ -2084,10 +2153,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 key_points    = ai.get("key_points", []),
                 fact_check    = fact_check,
                 image_caption = ai.get("image_caption", ""),
+                last_updated  = last_updated_val,
             )
-
-            # ── Story continuation detection ──────────────────────
-            continuation = _find_related_story(title, all_tags, category)
 
             post_content = build_content(
                 title       = title,
@@ -2136,6 +2203,13 @@ def main():
     log.info("=" * 60)
 
     POSTS_DIR.mkdir(exist_ok=True)
+
+    # ── Cleanup old posts ─────────────────────────────────────────
+    try:
+        max_age = int(os.environ.get("POST_MAX_AGE_DAYS", "90"))
+        cleanup_old_posts(max_age_days=max_age)
+    except Exception as exc:
+        log.warning(f"Cleanup failed: {exc}")
 
     # Reset per-run source tracking
     if hasattr(fetch_feed, "_source_counts"):
