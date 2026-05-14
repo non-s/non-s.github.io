@@ -149,6 +149,157 @@ def _news_image_url(title: str, category: str) -> str:
     seed = abs(hash(title + category)) % 99999
     return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed}&model=flux"
 
+
+# ── Category accent colours for OG image gradient ────────────
+_CAT_COLORS = {
+    "world":         ((8, 12, 23),   (13, 26, 58)),
+    "politics":      ((20, 10, 40),  (45, 15, 80)),
+    "war":           ((30, 10, 10),  (70, 20, 20)),
+    "business":      ((5, 20, 40),   (10, 40, 80)),
+    "science":       ((5, 30, 45),   (10, 60, 90)),
+    "health":        ((5, 35, 25),   (10, 70, 50)),
+    "food":          ((40, 20, 5),   (80, 45, 10)),
+    "sports":        ((10, 25, 5),   (20, 55, 10)),
+    "entertainment": ((40, 10, 35),  (80, 20, 70)),
+    "environment":   ((5, 35, 10),   (10, 70, 20)),
+    "travel":        ((5, 25, 40),   (10, 55, 80)),
+    "technology":    ((5, 15, 40),   (10, 30, 80)),
+    "ai":            ((10, 5, 50),   (20, 10, 100)),
+    "security":      ((5, 20, 30),   (10, 40, 60)),
+    "gadgets":       ((10, 20, 30),  (20, 45, 65)),
+    "startups":      ((30, 15, 5),   (65, 35, 10)),
+    "mobile":        ((5, 20, 35),   (10, 45, 70)),
+}
+
+
+def _to_webp(img_path: "Path") -> "Path | None":
+    """Convert an image file to WebP quality=85. Returns new .webp path or None on failure."""
+    try:
+        from PIL import Image as _PILImage
+        webp_path = img_path.with_suffix(".webp")
+        with _PILImage.open(img_path) as im:
+            im = im.convert("RGB")
+            im.save(str(webp_path), "WEBP", quality=85, method=4)
+        # Remove original jpg if conversion succeeded and they differ
+        if webp_path != img_path and img_path.exists():
+            img_path.unlink()
+        return webp_path
+    except Exception as exc:
+        log.debug(f"WebP conversion failed: {exc}")
+        return None
+
+
+def _generate_og_image(title: str, category: str, slug: str) -> str:
+    """
+    Generates a local OG image for the post using Pillow.
+    Downloads background from Pollinations, overlays title + branding.
+    Saves as WebP to assets/images/posts/SLUG.webp.
+    Returns relative path /assets/images/posts/SLUG.webp, or falls back to Pollinations URL.
+    """
+    fallback = _news_image_url(title, category)
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+        import io
+
+        out_dir = Path("assets/images/posts")
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        # ── Download background image from Pollinations ──────────
+        bg_img = None
+        try:
+            r = _session.get(fallback, timeout=20, stream=True)
+            r.raise_for_status()
+            raw = b"".join(r.iter_content(chunk_size=16384))
+            bg_img = Image.open(io.BytesIO(raw)).convert("RGB")
+            bg_img = bg_img.resize((1200, 630), Image.LANCZOS)
+        except Exception:
+            pass
+
+        if bg_img is None:
+            # Gradient fallback
+            bg_img = Image.new("RGB", (1200, 630))
+            draw_bg = ImageDraw.Draw(bg_img)
+            c1, c2 = _CAT_COLORS.get(category, ((8, 12, 23), (13, 26, 58)))
+            for y in range(630):
+                t = y / 630
+                r_c = int(c1[0] + (c2[0] - c1[0]) * t)
+                g_c = int(c1[1] + (c2[1] - c1[1]) * t)
+                b_c = int(c1[2] + (c2[2] - c1[2]) * t)
+                draw_bg.line([(0, y), (1200, y)], fill=(r_c, g_c, b_c))
+
+        draw = ImageDraw.Draw(bg_img)
+
+        # ── Dark overlay for readability ─────────────────────────
+        overlay = Image.new("RGBA", (1200, 630), (0, 0, 0, 0))
+        ov_draw = ImageDraw.Draw(overlay)
+        ov_draw.rectangle([(0, 0), (1200, 630)], fill=(0, 0, 0, 140))
+        bg_img = bg_img.convert("RGBA")
+        bg_img = Image.alpha_composite(bg_img, overlay).convert("RGB")
+        draw = ImageDraw.Draw(bg_img)
+
+        # ── Fonts ────────────────────────────────────────────────
+        try:
+            font_title = ImageFont.load_default(size=52)
+            font_cat   = ImageFont.load_default(size=24)
+            font_brand = ImageFont.load_default(size=22)
+        except TypeError:
+            # Older Pillow without size param
+            font_title = ImageFont.load_default()
+            font_cat   = ImageFont.load_default()
+            font_brand = ImageFont.load_default()
+
+        # ── Category label (top-left) ────────────────────────────
+        cat_text = category.upper()
+        draw.text((48, 36), cat_text, font=font_cat, fill=(249, 115, 22),
+                  stroke_width=1, stroke_fill=(0, 0, 0))
+
+        # ── Title (wrapped, centred vertically) ──────────────────
+        max_w = 1200 - 96
+        words = title.split()
+        lines = []
+        current = ""
+        for word in words:
+            test = (current + " " + word).strip()
+            # Estimate width: ~30px per char for size-52 default font
+            if len(test) * 30 > max_w and current:
+                lines.append(current)
+                current = word
+            else:
+                current = test
+        if current:
+            lines.append(current)
+        lines = lines[:4]  # max 4 lines
+
+        line_h = 64
+        total_h = len(lines) * line_h
+        y_start = (630 - total_h) // 2 - 20
+        for line in lines:
+            draw.text((48, y_start), line, font=font_title, fill=(255, 255, 255),
+                      stroke_width=2, stroke_fill=(0, 0, 0))
+            y_start += line_h
+
+        # ── Branding (bottom-left) ───────────────────────────────
+        draw.text((48, 630 - 52), "GlobalBR News", font=font_brand,
+                  fill=(180, 180, 180), stroke_width=1, stroke_fill=(0, 0, 0))
+
+        # ── Save as JPG first, then convert to WebP ──────────────
+        jpg_path = out_dir / f"{slug}.jpg"
+        bg_img.save(str(jpg_path), "JPEG", quality=90)
+
+        webp_path = _to_webp(jpg_path)
+        if webp_path and webp_path.exists():
+            return f"/assets/images/posts/{slug}.webp"
+        elif jpg_path.exists():
+            return f"/assets/images/posts/{slug}.jpg"
+        return fallback
+
+    except ImportError:
+        log.debug("Pillow not available — using Pollinations URL for OG image")
+        return fallback
+    except Exception as exc:
+        log.warning(f"OG image generation failed ({exc}) — falling back to Pollinations URL")
+        return fallback
+
 _POSITIVE_WORDS = {
     "breakthrough", "success", "discover", "innovation", "growth", "record",
     "victory", "achieve", "advance", "cure", "save", "improve", "rise",
@@ -173,6 +324,77 @@ def _sentiment_score(text: str) -> str:
     if pos > neg:
         return "positive"
     return "neutral"
+
+
+_FACT_VERIFIED_PHRASES = {
+    "officials confirmed", "according to", "announced", "reported by",
+    "confirmed by", "published by", "data shows", "study found",
+    "research shows", "percent", "million", "billion", "january",
+    "february", "march", "april", "may", "june", "july", "august",
+    "september", "october", "november", "december", "2024", "2025", "2026",
+}
+_FACT_DEVELOPING_PHRASES = {
+    "reportedly", "sources say", "unconfirmed", "alleged", "claims",
+    "rumored", "believed to", "said to be", "may have", "might have",
+    "anonymous source", "sources close", "could be",
+}
+_FACT_OPINION_PHRASES = {
+    "opinion", "analysis", "commentary", "editorial", "think",
+    "perspective", "column", "op-ed", "viewpoint", "argue",
+    "believe we should", "it is time to",
+}
+_FACT_SATIRE_PHRASES = {
+    "satire", "parody", "humor", "humour", "spoof", "onion",
+    "satirical", "comedic take",
+}
+
+
+def _fact_check_score(title: str, description: str) -> str | None:
+    """
+    Returns fact-check badge label: 'verified', 'developing', 'opinion', 'satire', or None.
+    Checks title + description against known phrase sets.
+    """
+    combined = (title + " " + description).lower()
+    for phrase in _FACT_SATIRE_PHRASES:
+        if phrase in combined:
+            return "satire"
+    for phrase in _FACT_OPINION_PHRASES:
+        if phrase in combined:
+            return "opinion"
+    for phrase in _FACT_DEVELOPING_PHRASES:
+        if phrase in combined:
+            return "developing"
+    for phrase in _FACT_VERIFIED_PHRASES:
+        if phrase in combined:
+            return "verified"
+    return None
+
+
+_SPAM_PATTERNS = re.compile(
+    r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
+    re.IGNORECASE,
+)
+
+
+def _quality_check(title: str, description: str) -> tuple[bool, str]:
+    """
+    Returns (ok, reason). Posts failing quality check should be skipped.
+    Checks:
+    - Title too short (< 15 chars)
+    - Description too short (< 50 chars)
+    - Spam title patterns
+    - All-caps title (> 80% uppercase letters)
+    """
+    if len(title) < 15:
+        return False, f"title too short ({len(title)} chars)"
+    if len(description) < 50:
+        return False, f"description too short ({len(description)} chars)"
+    if _SPAM_PATTERNS.search(title):
+        return False, "spam pattern in title"
+    letters = [c for c in title if c.isalpha()]
+    if letters and sum(1 for c in letters if c.isupper()) / len(letters) > 0.80:
+        return False, "title is ALL CAPS"
+    return True, ""
 
 
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
@@ -1141,6 +1363,7 @@ def build_frontmatter(
     faq:         list | None = None,
     sentiment:   str  = "neutral",
     key_points:  list | None = None,
+    fact_check:  str | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1161,6 +1384,10 @@ sentiment: "{sentiment}"
 """
     if image:
         front += f'image: "{image}"\n'
+        alt = sanitize_text(title[:100])
+        front += f'image_alt: "{alt}"\n'
+    if fact_check:
+        front += f'fact_check: "{fact_check}"\n'
     if keywords:
         kw_yaml = "[" + ", ".join(f'"{k}"' for k in keywords[:8] if k and len(k) > 1) + "]"
         front += f"keywords: {kw_yaml}\n"
@@ -1311,25 +1538,333 @@ def _add_internal_links(content: str, category: str, current_stem: str) -> str:
 # ============================================================
 
 def _add_pt_summary(title: str, description: str, category: str) -> str:
-    """Generates a Portuguese (PT-BR) summary section using AI."""
+    """Generates a rich Portuguese (PT-BR) summary section using AI."""
     try:
+        cat_pt = {
+            "world": "mundo", "politics": "política", "war": "conflito/defesa",
+            "business": "economia", "science": "ciência", "health": "saúde",
+            "food": "gastronomia", "sports": "esportes", "entertainment": "entretenimento",
+            "environment": "meio ambiente", "travel": "viagens", "technology": "tecnologia",
+            "ai": "inteligência artificial", "security": "segurança digital",
+            "gadgets": "gadgets", "startups": "startups", "mobile": "celulares",
+        }.get(category, "notícias")
+
         prompt = (
-            f"Translate and summarize the following news article into Brazilian Portuguese (PT-BR). "
-            f"Write only a 2-3 sentence plain text summary — no JSON, no bullet points, no headings.\n\n"
-            f"Title: {title}\nDescription: {description}"
+            f"Você é um jornalista brasileiro experiente da área de {cat_pt}. "
+            f"Escreva um resumo em português do Brasil (PT-BR) sobre a notícia abaixo. "
+            f"O resumo deve ter EXATAMENTE 2 a 3 parágrafos em texto corrido:\n"
+            f"1. Uma frase de abertura envolvente que contextualize o fato principal de forma atraente para o leitor brasileiro.\n"
+            f"2. Um parágrafo explicando o contexto e a relevância desta notícia para o Brasil e os leitores de língua portuguesa.\n"
+            f"3. Uma frase ou parágrafo de fechamento com implicações ou próximos passos.\n\n"
+            f"Use linguagem jornalística natural, clara e acessível. "
+            f"Não use bullet points, JSON, títulos ou formatação especial — apenas parágrafos corridos.\n\n"
+            f"Título: {title}\nDescrição: {description}"
         )
-        pt_text = _ai_text(prompt, system="Você é um jornalista profissional. Responda apenas em português do Brasil.")
+        pt_text = _ai_text(
+            prompt,
+            system=(
+                "Você é um jornalista profissional brasileiro. "
+                "Escreva sempre em português do Brasil (PT-BR), com linguagem natural e fluente. "
+                "Nunca use inglês. Responda apenas com o texto do resumo, sem introduções como 'Aqui está...'."
+            ),
+        )
         if not pt_text:
             return ""
-        lines = [l.strip() for l in pt_text.strip().splitlines() if l.strip()]
-        pt_title = lines[0] if lines else title
-        pt_summary = " ".join(lines[1:]) if len(lines) > 1 else lines[0] if lines else ""
-        if not pt_summary:
-            pt_summary = pt_title
-            pt_title = title
-        return f"\n\n---\n\n## 🇧🇷 Resumo em Português\n\n**{pt_title}**\n\n{pt_summary}\n"
+        pt_text = pt_text.strip()
+        # Strip any accidental leading label like "Resumo:" the AI might add
+        pt_text = re.sub(r'^(resumo\s*:|aqui está[^:]*:|resultado:)\s*', '', pt_text, flags=re.IGNORECASE)
+        if len(pt_text) < 60:
+            return ""
+        return f"\n\n---\n\n## 🇧🇷 Resumo em Português\n\n{pt_text}\n"
     except Exception:
         return ""
+
+
+# ============================================================
+# STORY CONTINUATION DETECTION
+# ============================================================
+
+_PT_STOPWORDS = {
+    "about", "after", "again", "along", "among", "around", "before",
+    "being", "between", "could", "during", "every", "first", "found",
+    "great", "group", "house", "large", "later", "light", "might",
+    "never", "night", "often", "other", "place", "right", "small",
+    "still", "their", "there", "these", "thing", "think", "those",
+    "three", "through", "today", "under", "until", "using", "where",
+    "which", "while", "world", "would", "years", "their", "since",
+    "after", "major", "report", "shows", "ahead", "calls", "backs",
+    "says", "says",
+}
+
+
+def _find_related_story(title: str, tags: list, category: str) -> str:
+    """
+    Scans the last 20 posts in the same category.
+    If a previous post shares 2+ key nouns with the current title,
+    returns a Markdown 'Continuing coverage' link to prepend to article body.
+    Returns empty string if no related story found.
+    """
+    try:
+        key_nouns = {
+            w.lower() for w in title.split()
+            if len(w) > 5 and w.lower() not in _PT_STOPWORDS and w.isalpha()
+        }
+        if len(key_nouns) < 2:
+            return ""
+
+        all_posts = sorted(POSTS_DIR.glob("*.md"), key=lambda p: p.name, reverse=True)
+        checked = 0
+        for post_path in all_posts:
+            if checked >= 20:
+                break
+            try:
+                text = post_path.read_text(encoding="utf-8")
+                post_category = ""
+                post_title = ""
+                for line in text.splitlines():
+                    if line.startswith("categories:") and not post_category:
+                        m = re.search(r'\[([^\]]+)\]', line)
+                        if m:
+                            parts = [p.strip() for p in m.group(1).split(",")]
+                            post_category = parts[0] if parts else ""
+                    if line.startswith("title:") and not post_title:
+                        m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                        if m:
+                            post_title = m.group(1).strip()
+                    if post_category and post_title:
+                        break
+                if post_category != category:
+                    continue
+                checked += 1
+                existing_nouns = {
+                    w.lower() for w in post_title.split()
+                    if len(w) > 5 and w.lower() not in _PT_STOPWORDS and w.isalpha()
+                }
+                shared = key_nouns & existing_nouns
+                if len(shared) >= 2:
+                    stem = post_path.stem
+                    m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', stem)
+                    if m:
+                        yr, mo, dy, sl = m.group(1), m.group(2), m.group(3), m.group(4)
+                        url = f"/{category}/{yr}/{mo}/{dy}/{sl}/"
+                        return (
+                            f"> 📰 **Continuing coverage:** [{post_title}]({url})\n\n"
+                        )
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return ""
+
+
+# ============================================================
+# SOURCE DIVERSITY CHECK
+# ============================================================
+
+def _check_source_diversity(created_today: dict) -> None:
+    """Logs a warning if any single source accounts for > 30% of today's posts."""
+    total = sum(created_today.values())
+    if total == 0:
+        return
+    for source, count in created_today.items():
+        pct = count / total * 100
+        if pct > 30:
+            log.warning(
+                f"Source diversity alert: {source} = {pct:.0f}% of today's posts ({count}/{total})"
+            )
+
+
+# ============================================================
+# DAILY ROUNDUP
+# ============================================================
+
+def create_daily_roundup() -> None:
+    """
+    Creates a daily roundup post if >= 5 posts were published today.
+    Skips if the roundup already exists.
+    """
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    roundup_filename = f"{today}-daily-roundup.md"
+    roundup_path = POSTS_DIR / roundup_filename
+
+    if roundup_path.exists():
+        log.info("Daily roundup already exists — skipping.")
+        return
+
+    today_posts = []
+    for f in sorted(POSTS_DIR.glob(f"{today}-*.md")):
+        if "roundup" in f.stem or "digest" in f.stem:
+            continue
+        try:
+            text = f.read_text(encoding="utf-8")
+            post_title = ""
+            post_cat = ""
+            for line in text.splitlines():
+                if line.startswith("title:") and not post_title:
+                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                    if m:
+                        post_title = m.group(1).strip()
+                if line.startswith("categories:") and not post_cat:
+                    m = re.search(r'\[([^\]]+)\]', line)
+                    if m:
+                        parts = [p.strip() for p in m.group(1).split(",")]
+                        post_cat = parts[0] if parts else ""
+                if post_title and post_cat:
+                    break
+            if post_title:
+                stem = f.stem
+                m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', stem)
+                if m and post_cat:
+                    yr, mo, dy, sl = m.group(1), m.group(2), m.group(3), m.group(4)
+                    url = f"/{post_cat}/{yr}/{mo}/{dy}/{sl}/"
+                    today_posts.append((post_title, url))
+        except Exception:
+            continue
+
+    if len(today_posts) < 5:
+        log.info(f"Not enough posts today ({len(today_posts)}) for daily roundup — skipping.")
+        return
+
+    log.info(f"Creating daily roundup for {today} ({len(today_posts)} posts)...")
+
+    headlines = "\n".join(f"- {t}" for t, _ in today_posts)
+    ai_prompt = (
+        f"Write a 2-3 paragraph editorial summary of today's top news stories for GlobalBR News. "
+        f"Be engaging and journalistic. Summarize the main themes and significance of today's coverage. "
+        f"Do not use bullet points — write flowing paragraphs only.\n\n"
+        f"Today's headlines:\n{headlines}"
+    )
+    ai_intro = _ai_text(ai_prompt, system="You are a professional news editor writing a daily digest.")
+    if not ai_intro:
+        ai_intro = f"Here is a roundup of today's top {len(today_posts)} stories from GlobalBR News."
+
+    date_display = datetime.now(timezone.utc).strftime("%B %d, %Y")
+    bullet_list = "\n".join(f"- [{t}]({u})" for t, u in today_posts)
+
+    frontmatter = f"""---
+layout: post
+title: "Daily News Roundup — {date_display}"
+date: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S +0000")}
+categories: [roundup]
+tags: [daily, news, roundup]
+author: "GlobalBR News"
+description: "Your daily roundup of the top {len(today_posts)} news stories for {date_display}."
+sentiment: "neutral"
+---
+"""
+    content = (
+        f"{ai_intro}\n\n<!--more-->\n\n"
+        f"## Today's Top Stories\n\n"
+        f"{bullet_list}\n\n"
+        f"---\n\n"
+        f"*Curated by [GlobalBR News](https://non-s.github.io) · {date_display}*\n"
+    )
+    roundup_path.write_text(frontmatter + "\n" + content, encoding="utf-8")
+    log.info(f"Daily roundup created: {roundup_filename}")
+
+
+# ============================================================
+# WEEKLY DIGEST
+# ============================================================
+
+def create_weekly_digest() -> None:
+    """
+    Creates a 'Best of the Week' digest post every Sunday.
+    Skips if not Sunday or if the digest already exists.
+    """
+    if datetime.now().weekday() != 6:  # 6 = Sunday
+        return
+
+    today = datetime.now(timezone.utc)
+    digest_filename = f"{today.strftime('%Y-%m-%d')}-weekly-digest.md"
+    digest_path = POSTS_DIR / digest_filename
+
+    if digest_path.exists():
+        log.info("Weekly digest already exists for this week — skipping.")
+        return
+
+    from datetime import timedelta
+    cutoff = today - timedelta(days=7)
+    week_posts = []
+
+    for f in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+        if "roundup" in f.stem or "digest" in f.stem:
+            continue
+        try:
+            m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', f.stem)
+            if not m:
+                continue
+            yr, mo, dy, sl = m.group(1), m.group(2), m.group(3), m.group(4)
+            post_date = datetime(int(yr), int(mo), int(dy), tzinfo=timezone.utc)
+            if post_date < cutoff:
+                break  # files are sorted newest-first, so we can stop early
+            text = f.read_text(encoding="utf-8")
+            post_title = ""
+            post_cat = ""
+            post_source = ""
+            for line in text.splitlines():
+                if line.startswith("title:") and not post_title:
+                    mm = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                    if mm:
+                        post_title = mm.group(1).strip()
+                if line.startswith("categories:") and not post_cat:
+                    mm = re.search(r'\[([^\]]+)\]', line)
+                    if mm:
+                        parts = [p.strip() for p in mm.group(1).split(",")]
+                        post_cat = parts[0] if parts else ""
+                if line.startswith("source_name:") and not post_source:
+                    post_source = line.split("source_name:", 1)[1].strip().strip('"')
+                if post_title and post_cat and post_source:
+                    break
+            if post_title and post_cat:
+                url = f"/{post_cat}/{yr}/{mo}/{dy}/{sl}/"
+                week_posts.append((post_title, url, post_source))
+        except Exception:
+            continue
+
+    if len(week_posts) < 3:
+        log.info(f"Not enough posts this week ({len(week_posts)}) for weekly digest — skipping.")
+        return
+
+    log.info(f"Creating weekly digest ({len(week_posts)} posts this week)...")
+
+    top5 = week_posts[:5]
+    headlines = "\n".join(f"- {t} ({s})" for t, _, s in top5)
+    ai_prompt = (
+        f"Write a 'Best of the Week' editorial for GlobalBR News covering the top stories of the past 7 days. "
+        f"Structure: 1) engaging opening paragraph about this week's major themes, "
+        f"2) highlight the top 5 stories and why they matter, "
+        f"3) brief closing paragraph. "
+        f"Use journalistic prose, no bullet points in the intro/closing.\n\n"
+        f"This week's top stories:\n{headlines}"
+    )
+    ai_body = _ai_text(ai_prompt, system="You are a senior editor writing a weekly news digest.")
+    if not ai_body:
+        ai_body = f"Here is a look at the most important stories from the past week on GlobalBR News."
+
+    date_display = today.strftime("%B %d, %Y")
+    top5_list = "\n".join(f"- [{t}]({u})" for t, u, _ in top5)
+
+    frontmatter = f"""---
+layout: post
+title: "Best of the Week — {date_display}"
+date: {today.strftime("%Y-%m-%d %H:%M:%S +0000")}
+categories: [digest]
+tags: [weekly, roundup, digest]
+author: "GlobalBR News"
+description: "The most important stories of the week, curated by GlobalBR News — {date_display}."
+sentiment: "neutral"
+---
+"""
+    content = (
+        f"{ai_body}\n\n<!--more-->\n\n"
+        f"## Top Stories This Week\n\n"
+        f"{top5_list}\n\n"
+        f"---\n\n"
+        f"*Weekly digest by [GlobalBR News](https://non-s.github.io) · {date_display}*\n"
+    )
+    digest_path.write_text(frontmatter + "\n" + content, encoding="utf-8")
+    log.info(f"Weekly digest created: {digest_filename}")
 
 
 # ============================================================
@@ -1417,6 +1952,12 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.info(f"  ⏭  Descrição muito curta ({len(description)} chars): {title[:60]}")
                 continue
 
+            # Filtro de qualidade avançado
+            ok, reason = _quality_check(title, description)
+            if not ok:
+                log.info(f"  ⏭  Quality check failed ({reason}): {title[:60]}")
+                continue
+
             # Filtro de qualidade / relevância
             if is_blacklisted(title, description):
                 log.info(f"  🚫 Conteúdo filtrado (blacklist): {title[:60]}")
@@ -1455,12 +1996,15 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if ai.get("keywords"):
                 all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
 
-            # ── Imagem: OG > AI gerada > fallback ────────────────
+            # ── Imagem: OG > gerada localmente (Pillow+WebP) > Pollinations URL ─
             if not image_url:
-                image_url = _news_image_url(title, category)
-                log.info(f"  🎨 AI image: {title[:50]}")
+                image_url = _generate_og_image(title, category, slug)
+                log.info(f"  🎨 Generated OG image: {image_url}")
+            else:
+                log.debug(f"  🖼  Using source image: {image_url[:60]}")
 
             sentiment   = _sentiment_score(f"{title} {description}")
+            fact_check  = _fact_check_score(title, description)
 
             frontmatter = build_frontmatter(
                 title       = title,
@@ -1476,7 +2020,12 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 faq         = ai.get("faq", []),
                 sentiment   = sentiment,
                 key_points  = ai.get("key_points", []),
+                fact_check  = fact_check,
             )
+
+            # ── Story continuation detection ──────────────────────
+            continuation = _find_related_story(title, all_tags, category)
+
             post_content = build_content(
                 title       = title,
                 description = description,
@@ -1489,6 +2038,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 ai_body     = ai.get("article_body", ""),
             )
 
+            # Prepend continuation link if found
+            if continuation:
+                post_content = continuation + post_content
+
             post_content = _add_internal_links(post_content, category, Path(filename).stem)
             pt_section = _add_pt_summary(title, description, category)
             post_content += pt_section
@@ -1496,9 +2049,14 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
-            log.info(f"  ✅ Post criado: {filename}")
+            log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
             _load_known_urls().add(link)
             created_count += 1
+
+            # Track source for diversity check (passed via return value extension below)
+            if not hasattr(fetch_feed, "_source_counts"):
+                fetch_feed._source_counts = {}
+            fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
 
         except Exception as e:
             log.error(f"  ❌ Erro ao processar item '{getattr(entry, 'title', '?')}': {e}")
@@ -1514,6 +2072,10 @@ def main():
     log.info("=" * 60)
 
     POSTS_DIR.mkdir(exist_ok=True)
+
+    # Reset per-run source tracking
+    if hasattr(fetch_feed, "_source_counts"):
+        fetch_feed._source_counts = {}
 
     total_created = 0
 
@@ -1540,6 +2102,23 @@ def main():
         if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
             log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")
             sleep(SLEEP_BETWEEN_FEEDS)
+
+    # ── Source diversity check ────────────────────────────────────
+    source_counts = getattr(fetch_feed, "_source_counts", {})
+    if source_counts:
+        _check_source_diversity(source_counts)
+
+    # ── Daily roundup ─────────────────────────────────────────────
+    try:
+        create_daily_roundup()
+    except Exception as exc:
+        log.warning(f"Daily roundup failed: {exc}")
+
+    # ── Weekly digest (Sundays only) ──────────────────────────────
+    try:
+        create_weekly_digest()
+    except Exception as exc:
+        log.warning(f"Weekly digest failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")
