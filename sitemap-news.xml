@@ -15,6 +15,13 @@ layout: null
       <news:publication_date>{{ post.date | date_to_xmlschema }}</news:publication_date>
       <news:title>{{ post.title | xml_escape }}</news:title>
       {% if post.keywords %}<news:keywords>{{ post.keywords | join: ', ' | xml_escape }}</news:keywords>{% endif %}
+      {% if post.content_type == 'opinion' %}
+      <news:genres>Opinion</news:genres>
+      {% elsif post.content_type == 'analysis' %}
+      <news:genres>Blog</news:genres>
+      {% elsif post.content_type == 'explainer' %}
+      <news:genres>Blog</news:genres>
+      {% endif %}
     </news:news>
   </url>
   {% endfor %}

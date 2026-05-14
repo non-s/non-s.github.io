@@ -3226,3 +3226,80 @@ body.font-serif #post-article {
     padding-bottom: 4pt; margin-bottom: 12pt;
   }
 }
+
+// TL;DR box
+.tl-dr-box {
+  background: var(--c-accent);
+  border-radius: .75rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+}
+.tl-dr-label {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: .35rem;
+  padding: .15rem .5rem;
+  white-space: nowrap;
+  margin-top: .1rem;
+}
+.tl-dr-text {
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+}
+
+// Lead paragraph
+.post-lead {
+  font-size: 1.05rem;
+  color: var(--c-text);
+  font-weight: 400;
+  line-height: 1.7;
+  border-left: 3px solid var(--c-accent);
+  padding-left: 1rem;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
+// Entity chips
+.post-entities {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--c-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+.entities-label {
+  color: var(--c-muted);
+  font-size: .8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.entity-chip {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  border-radius: 2rem;
+  padding: .2rem .75rem;
+  font-size: .78rem;
+  text-decoration: none;
+  transition: background .15s;
+  &:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+}
+
+.editorial-section {
+  h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: .75rem; color: var(--c-text); }
+  p, li { color: var(--c-muted); line-height: 1.8; font-size: .95rem; }
+  ul { padding-left: 1.25rem; }
+}
