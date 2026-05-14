@@ -27,6 +27,7 @@ import json
 import logging
 import hashlib
 import unicodedata
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
@@ -120,6 +121,203 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
 
 # Alias para compatibilidade interna
 _pollinations_text = _ai_text
+
+
+# ============================================================
+# WIKIPEDIA API — Enriquecimento de artigos
+# ============================================================
+
+def _fetch_wikipedia_summary(query: str) -> str:
+    """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars."""
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
+        r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
+        if r.status_code == 200:
+            data = r.json()
+            return data.get("extract", "")[:500]
+    except Exception:
+        pass
+    return ""
+
+
+# ============================================================
+# GOOGLE FACT CHECK TOOLS API
+# ============================================================
+
+def _fact_check_api(claim_text: str):
+    """
+    Consulta Google Fact Check Tools API. Retorna 'false', 'verified', 'developing' ou None.
+    Só funciona se GOOGLE_FACT_CHECK_API_KEY estiver definida.
+    """
+    key = os.getenv("GOOGLE_FACT_CHECK_API_KEY")
+    if not key:
+        return None
+    url = (
+        f"https://factchecktools.googleapis.com/v1alpha1/claims:search"
+        f"?key={key}&query={requests.utils.quote(claim_text[:200])}&languageCode=en"
+    )
+    try:
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            claims = data.get("claims", [])
+            if claims:
+                rating = claims[0].get("claimReview", [{}])[0].get("textualRating", "")
+                rating_lower = rating.lower()
+                if any(w in rating_lower for w in ["false", "pants on fire", "mostly false"]):
+                    return "false"
+                elif any(w in rating_lower for w in ["true", "mostly true", "correct"]):
+                    return "verified"
+                return "developing"
+    except Exception:
+        pass
+    return None
+
+
+# ============================================================
+# DEEPL — Tradução PT-BR
+# ============================================================
+
+def _translate_to_ptbr(text: str, api_key: str):
+    """Traduz texto para PT-BR usando DeepL API Free. Retorna None em caso de falha."""
+    if not api_key or not text:
+        return None
+    try:
+        r = requests.post(
+            "https://api-free.deepl.com/v2/translate",
+            data={"auth_key": api_key, "text": text, "target_lang": "PT-BR"},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json()["translations"][0]["text"]
+    except Exception:
+        pass
+    return None
+
+
+# ============================================================
+# COHERE — Embeddings semânticos para artigos relacionados
+# ============================================================
+
+_EMBEDDINGS_FILE = Path("_data/embeddings.json")
+
+def _get_cohere_embedding(text: str, api_key: str):
+    """Gera embedding via Cohere embed-english-v3.0. Retorna lista de floats ou None."""
+    try:
+        r = requests.post(
+            "https://api.cohere.ai/v1/embed",
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            json={
+                "texts": [text[:512]],
+                "model": "embed-english-v3.0",
+                "input_type": "search_document",
+            },
+            timeout=15,
+        )
+        if r.status_code == 200:
+            return r.json()["embeddings"][0]
+    except Exception:
+        pass
+    return None
+
+
+def _cosine_similarity(a: list, b: list) -> float:
+    """Calcula similaridade de cosseno entre dois vetores."""
+    dot = sum(x * y for x, y in zip(a, b))
+    norm_a = math.sqrt(sum(x * x for x in a))
+    norm_b = math.sqrt(sum(x * x for x in b))
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return dot / (norm_a * norm_b)
+
+
+def _load_embeddings() -> dict:
+    """Carrega embeddings do arquivo _data/embeddings.json."""
+    try:
+        if _EMBEDDINGS_FILE.exists():
+            return json.loads(_EMBEDDINGS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    return {}
+
+
+def _save_embeddings(data: dict) -> None:
+    """Salva embeddings em _data/embeddings.json."""
+    try:
+        _EMBEDDINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _EMBEDDINGS_FILE.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    except Exception as exc:
+        log.debug(f"Failed to save embeddings: {exc}")
+
+
+def _store_cohere_embedding(title: str, text: str) -> None:
+    """Gera e persiste embedding para o título dado, se COHERE_API_KEY existir."""
+    api_key = os.getenv("COHERE_API_KEY")
+    if not api_key:
+        return
+    try:
+        embedding = _get_cohere_embedding(text, api_key)
+        if embedding:
+            data = _load_embeddings()
+            data[title] = embedding
+            _save_embeddings(data)
+    except Exception:
+        pass
+
+
+# ============================================================
+# COINGECKO — Preços de criptomoedas
+# ============================================================
+
+_CRYPTO_PRICES_FILE = Path("_data/crypto_prices.json")
+_crypto_prices_cache: dict | None = None
+
+_CRYPTO_KEYWORDS = {
+    "bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency",
+    "ripple", "xrp", "cardano", "ada", "solana", "sol", "blockchain",
+    "defi", "nft", "web3", "altcoin", "stablecoin",
+}
+
+
+def _fetch_crypto_prices() -> dict:
+    """Busca preços de cripto via CoinGecko (sem key). Retorna dict vazio em falha."""
+    try:
+        r = requests.get(
+            "https://api.coingecko.com/api/v3/simple/price"
+            "?ids=bitcoin,ethereum,ripple,cardano,solana"
+            "&vs_currencies=usd&include_24hr_change=true",
+            timeout=10,
+            headers={"User-Agent": "GlobalBRNews/1.0"},
+        )
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return {}
+
+
+def _get_crypto_prices_cached() -> dict:
+    """Retorna preços de cripto cacheados para o run atual."""
+    global _crypto_prices_cache
+    if _crypto_prices_cache is None:
+        _crypto_prices_cache = _fetch_crypto_prices()
+        try:
+            if _crypto_prices_cache:
+                _CRYPTO_PRICES_FILE.parent.mkdir(parents=True, exist_ok=True)
+                _CRYPTO_PRICES_FILE.write_text(
+                    json.dumps(_crypto_prices_cache, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+        except Exception:
+            pass
+    return _crypto_prices_cache
+
+
+def _post_is_crypto_related(title: str, description: str) -> bool:
+    """Retorna True se o post menciona palavras-chave de cripto."""
+    combined = (title + " " + description).lower()
+    return any(kw in combined for kw in _CRYPTO_KEYWORDS)
+
 
 def _check_source_url(url: str, timeout: int = 5) -> bool:
     """
@@ -953,6 +1151,79 @@ FEEDS = [
         "category": "technology",
         "tags":     ["theregister", "tech", "enterprise"],
         "source":   "The Register",
+    },
+    # ── DEV.to (API nativa, sem chave obrigatória) ────────────
+    {
+        "name":     "DEV.to Programming",
+        "url":      "__devto__programming",
+        "category": "technology",
+        "tags":     ["devto", "programming", "development"],
+        "source":   "DEV.to",
+    },
+    {
+        "name":     "DEV.to WebDev",
+        "url":      "__devto__webdev",
+        "category": "technology",
+        "tags":     ["devto", "webdev", "javascript"],
+        "source":   "DEV.to",
+    },
+    {
+        "name":     "DEV.to Python",
+        "url":      "__devto__python",
+        "category": "technology",
+        "tags":     ["devto", "python", "programming"],
+        "source":   "DEV.to",
+    },
+    {
+        "name":     "DEV.to AI",
+        "url":      "__devto__ai",
+        "category": "ai",
+        "tags":     ["devto", "ai", "machine-learning"],
+        "source":   "DEV.to",
+    },
+    # ── HackerNews (API nativa, sem chave) ───────────────────
+    {
+        "name":     "Hacker News API",
+        "url":      "__hackernews__",
+        "category": "technology",
+        "tags":     ["hackernews", "tech", "programming"],
+        "source":   "Hacker News",
+    },
+    # ── Reddit (OAuth2, requer REDDIT_CLIENT_ID) ─────────────
+    {
+        "name":     "Reddit worldnews",
+        "url":      "__reddit__worldnews",
+        "category": "world",
+        "tags":     ["reddit", "worldnews", "international"],
+        "source":   "Reddit",
+    },
+    {
+        "name":     "Reddit technology",
+        "url":      "__reddit__technology",
+        "category": "technology",
+        "tags":     ["reddit", "technology", "tech"],
+        "source":   "Reddit",
+    },
+    {
+        "name":     "Reddit science",
+        "url":      "__reddit__science",
+        "category": "science",
+        "tags":     ["reddit", "science", "research"],
+        "source":   "Reddit",
+    },
+    {
+        "name":     "Reddit geopolitics",
+        "url":      "__reddit__geopolitics",
+        "category": "world",
+        "tags":     ["reddit", "geopolitics", "politics"],
+        "source":   "Reddit",
+    },
+    {
+        "name":     "Reddit economics",
+        "url":      "__reddit__economics",
+        "category": "business",
+        "tags":     ["reddit", "economics", "finance"],
+        "source":   "Reddit",
     },
 ]
 
