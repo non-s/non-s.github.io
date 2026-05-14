@@ -3336,3 +3336,58 @@ body.font-serif #post-article {
 .prevnext-label { font-size: .72rem; color: var(--c-accent); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
 .prevnext-title { font-size: .85rem; color: var(--c-text); line-height: 1.4; font-weight: 500; }
 @media (max-width: 576px) { .prevnext-grid { grid-template-columns: 1fr; } }
+
+// ============================================================
+// UX INTERACT: Share Buttons (Telegram + copy link styles)
+// ============================================================
+.btn-share { font-size: .8rem; border-radius: 2rem; font-weight: 500; }
+.btn-whatsapp { background: #25d366; color: #fff; border: none; &:hover { background: #1da851; color: #fff; } }
+.btn-telegram { background: #0088cc; color: #fff; border: none; &:hover { background: #006fa8; color: #fff; } }
+.btn-copy { background: var(--c-surface); color: var(--c-text); border: 1px solid var(--c-border); &:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); } }
+
+// Telegram share pill (in existing share section)
+.share-pill.telegram {
+  background: #0088cc;
+  color: #fff;
+  &:hover { background: #006fa8; }
+}
+
+// ============================================================
+// UX INTERACT: Article Feedback
+// ============================================================
+.article-feedback {
+  .feedback-btn { transition: opacity .15s; }
+  .feedback-btn:disabled { opacity: .6; cursor: default; }
+  .feedback-thanks { color: var(--c-muted); }
+}
+
+// ============================================================
+// UX INTERACT: post-toc (Table of Contents nav)
+// ============================================================
+.post-toc {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: .5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  .toc-title { font-weight: 700; margin-bottom: .5rem; color: var(--c-accent); }
+  ul { margin: 0; padding-left: 1.25rem; list-style: none; }
+  li { margin: .2rem 0; }
+  li a { color: var(--c-text); text-decoration: none; font-size: .9rem; &:hover { color: var(--c-accent); } }
+  .toc-sub { padding-left: 1rem; font-size: .85rem; }
+}
+
+// ============================================================
+// UX INTERACT: Light theme additions
+// ============================================================
+[data-theme="light"] {
+  --c-bg: #f8f9fa;
+  --c-surface: #ffffff;
+  --c-text: #212529;
+  --c-muted: #6c757d;
+  --c-border: #dee2e6;
+  --c-accent: #f97316;
+  .navbar { background: #fff !important; border-bottom: 1px solid var(--c-border); }
+  .card { background: var(--c-surface); }
+  pre, code { background: #f1f3f5; color: #212529; }
+}
