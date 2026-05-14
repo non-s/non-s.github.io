@@ -89,6 +89,34 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 {% endif %}
 
 <!-- ============================================================
+     FEATURED POST
+     ============================================================ -->
+{% assign featured = site.posts | where: "featured", true | limit: 1 %}
+{% if featured.size > 0 %}
+{% assign f = featured[0] %}
+<section class="featured-post">
+  <div class="container">
+    <div class="featured-inner">
+      {% if f.image %}
+      <div class="featured-img-wrap">
+        <img src="{{ f.image }}" alt="{{ f.title | escape }}" loading="eager" class="featured-img">
+      </div>
+      {% endif %}
+      <div class="featured-content">
+        <span class="featured-badge">Featured</span>
+        {% for cat in f.categories limit:1 %}
+        <a href="{{ '/' | append: cat | relative_url }}" class="post-cat-badge">{{ cat | upcase }}</a>
+        {% endfor %}
+        <h2 class="featured-title"><a href="{{ f.url | relative_url }}">{{ f.title }}</a></h2>
+        <p class="featured-desc">{{ f.description | truncate: 200 }}</p>
+        <a href="{{ f.url | relative_url }}" class="btn-read-more">Read story &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ============================================================
      CORPO — GRID + SIDEBAR
      ============================================================ -->
 <div class="container" style="padding-top:2.5rem;padding-bottom:1rem;">
@@ -104,6 +132,19 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
            class="tag-pill" style="font-size:.72rem;">
           <i class="bi bi-rss"></i> RSS
         </a>
+      </div>
+
+      <!-- Post Counter -->
+      {% assign today_str = site.time | date: "%Y-%m-%d" %}
+      {% assign today_count = 0 %}
+      {% for p in site.posts %}
+        {% assign p_date = p.date | date: "%Y-%m-%d" %}
+        {% if p_date == today_str %}{% assign today_count = today_count | plus: 1 %}{% endif %}
+      {% endfor %}
+      <div class="post-counter">
+        <span class="counter-item"><i class="bi bi-file-text"></i> {{ site.posts | size }} total posts</span>
+        <span class="counter-item"><i class="bi bi-calendar-check"></i> {{ today_count }} today</span>
+        <span class="counter-item"><i class="bi bi-clock"></i> Updated every 5 min</span>
       </div>
 
       <!-- Category Filter (Task 2) -->
