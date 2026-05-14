@@ -7,14 +7,15 @@ Uso:
     python fetch_news.py
 
 Dependências:
-    pip install feedparser requestsh
+    pip install feedparser requests
 
 O script:
   1. Lê feeds RSS configurados em FEEDS
   2. Para cada notícia (até MAX_PER_FEED por feed):
-     - Gera slug único
-     - Verifica duplicatas (arquivo já existe?)
-     - Cria arquivo .md em _posts/ com frontmatter Jekyll
+     - Filtra conteúdo irrelevante por blacklist
+     - Filtra por qualidade mínima (tamanho, relevância)
+     - Gera slug único e verifica duplicatas
+     - Cria arquivo .md em _posts/ com frontmatter e corpo rico
   3. Registra log em fetch_news.log
 """
 
@@ -33,11 +34,12 @@ from time import sleep
 # CONFIGURAÇÕES
 # ============================================================
 
-POSTS_DIR   = Path("_posts")          # Diretório de posts Jekyll
-LOG_FILE    = "fetch_news.log"        # Arquivo de log
-MAX_PER_FEED = 2                      # Max posts per feed per run (hourly schedule)
-REQUEST_TIMEOUT = 15                  # Timeout em segundos para requests HTTP
-SLEEP_BETWEEN_FEEDS = 2               # Pausa entre feeds (evitar bloqueio)
+POSTS_DIR        = Path("_posts")
+LOG_FILE         = "fetch_news.log"
+MAX_PER_FEED     = 3                   # Max posts por feed por execução
+REQUEST_TIMEOUT  = 15
+SLEEP_BETWEEN_FEEDS = 2
+MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
 
 # Feeds RSS configurados
 FEEDS = [
@@ -172,6 +174,9 @@ KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
     "gemini":                  ("ai",        ["ai", "google", "gemini"]),
     "copilot":                 ("ai",        ["ai", "microsoft", "copilot"]),
     "generative ai":           ("ai",        ["ai", "generative-ai"]),
+    "claude":                  ("ai",        ["ai", "anthropic", "claude"]),
+    "grok":                    ("ai",        ["ai", "xai", "grok"]),
+    "mistral":                 ("ai",        ["ai", "mistral"]),
 
     # Security
     "cybersecurity":           ("security",  ["security", "cybersecurity"]),
@@ -182,6 +187,8 @@ KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
     "hacker":                  ("security",  ["security", "hacking"]),
     "zero-day":                ("security",  ["security", "zero-day"]),
     "phishing":                ("security",  ["security", "phishing"]),
+    "exploit":                 ("security",  ["security", "exploit"]),
+    "spyware":                 ("security",  ["security", "spyware"]),
 
     # Mobile
     "iphone":                  ("mobile",    ["mobile", "apple", "iphone"]),
@@ -189,6 +196,8 @@ KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
     "smartphone":              ("mobile",    ["mobile", "smartphone"]),
     "samsung galaxy":          ("mobile",    ["mobile", "samsung"]),
     "pixel phone":             ("mobile",    ["mobile", "google", "pixel"]),
+    "ios 18":                  ("mobile",    ["mobile", "apple", "ios"]),
+    "android 15":              ("mobile",    ["mobile", "android", "google"]),
 
     # Gadgets
     "smartwatch":              ("gadgets",   ["gadgets", "wearables"]),
@@ -196,16 +205,56 @@ KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
     "laptop":                  ("gadgets",   ["gadgets", "laptop"]),
     "graphics card":           ("gadgets",   ["gadgets", "gpu"]),
     "electric vehicle":        ("gadgets",   ["gadgets", "ev", "electric-vehicle"]),
+    "gpu":                     ("gadgets",   ["gadgets", "gpu", "nvidia"]),
+    "processor":               ("gadgets",   ["gadgets", "processor", "chip"]),
 
     # Startups
     "startup":                 ("startups",  ["startups"]),
     "venture capital":         ("startups",  ["startups", "venture-capital"]),
     "series a":                ("startups",  ["startups", "funding"]),
     "series b":                ("startups",  ["startups", "funding"]),
+    "series c":                ("startups",  ["startups", "funding"]),
     "ipo":                     ("startups",  ["startups", "ipo"]),
     "unicorn":                 ("startups",  ["startups", "unicorn"]),
     "funding round":           ("startups",  ["startups", "funding"]),
+    "raised":                  ("startups",  ["startups", "funding"]),
+    "acquisition":             ("startups",  ["startups", "acquisition"]),
 }
+
+# ============================================================
+# FILTRO DE QUALIDADE — BLACKLIST
+# Termos que indicam conteúdo irrelevante para um blog de tecnologia
+# ============================================================
+
+BLACKLIST_PHRASES = [
+    # Entretenimento/lifestyle sem relação com tech
+    "crossword", "crossword answers", "wordle", "mini crossword",
+    "horoscope", "zodiac", "astrology",
+    "recipe", "cooking", "restaurant",
+    "discount code", "coupon", "promo code", "deals up to",
+    "best deals", "sale ends", "limited time offer",
+    "sex toy", "vibrator", "we-vibe", "adult toy",
+    "deepfake porn", "deepfake nude", "nonconsensual",
+    "celebrity gossip", "celebrity news",
+    "reality tv", "reality show",
+    "sports score", "game score", "nfl", "nba", "mlb", "nhl",
+    # Artigos de baixa qualidade
+    "sponsored", "advertisement", "buy now",
+    "click here to win", "giveaway",
+]
+
+BLACKLIST_TITLE_PATTERNS = [
+    r"^today['']s .{0,30} answers",
+    r"^best .{0,30} deals",
+    r"\bdiscount codes?\b",
+    r"\bcoupon\b",
+    r"\bpromo code\b",
+    r"\bhoroscope\b",
+    r"\bcrossword\b",
+    r"\bwordle\b",
+    r"\brecipe\b",
+]
+
 
 # ============================================================
 # LOGGING
@@ -229,14 +278,10 @@ log = logging.getLogger(__name__)
 def slugify(text: str) -> str:
     """Converte texto em slug URL-amigável."""
     text = text.lower().strip()
-    # Normaliza acentos → ASCII
     text = unicodedata.normalize("NFD", text)
     text = "".join(c for c in text if unicodedata.category(c) != "Mn")
-    # Remove caracteres inválidos
     text = re.sub(r"[^\w\s-]", "", text)
-    # Substitui espaços e underscores por hifens
     text = re.sub(r"[\s_]+", "-", text)
-    # Remove hifens múltiplos
     text = re.sub(r"-{2,}", "-", text)
     return text[:80].strip("-")
 
@@ -245,46 +290,60 @@ def sanitize_text(text: str) -> str:
     """Remove caracteres problemáticos para YAML/Markdown."""
     if not text:
         return ""
-    # Remove aspas duplas (problemas no frontmatter YAML)
     text = text.replace('"', "'").replace("\n", " ").replace("\r", " ")
-    # Remove caracteres de controle
     text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
     return text.strip()
 
 
 def extract_description(entry) -> str:
-    """Extrai descrição/resumo do item RSS."""
-    desc = ""
+    """Extrai descrição/resumo do item RSS, priorizando conteúdo mais longo."""
+    candidates = []
+
+    # Coleta todos os candidatos disponíveis
+    if hasattr(entry, "content"):
+        for c in entry.content:
+            val = c.get("value", "")
+            if val:
+                candidates.append(val)
+
     if hasattr(entry, "summary"):
-        desc = entry.summary
-    elif hasattr(entry, "description"):
-        desc = entry.description
-    # Remove tags HTML
-    desc = re.sub(r"<[^>]+>", "", desc)
-    desc = re.sub(r"&[a-z]+;", " ", desc)
-    desc = re.sub(r"\s+", " ", desc).strip()
-    return sanitize_text(desc[:500])
+        candidates.append(entry.summary)
+
+    if hasattr(entry, "description"):
+        candidates.append(entry.description)
+
+    # Limpa HTML e escolhe o mais longo
+    best = ""
+    for raw in candidates:
+        clean = re.sub(r"<[^>]+>", " ", raw)
+        clean = re.sub(r"&[a-z]+;", " ", clean)
+        clean = re.sub(r"&#\d+;", " ", clean)
+        clean = re.sub(r"\s+", " ", clean).strip()
+        if len(clean) > len(best):
+            best = clean
+
+    return sanitize_text(best[:800])
 
 
 def extract_image(entry) -> str:
     """Tenta extrair URL de imagem do item RSS."""
-    # 1. Media content
     if hasattr(entry, "media_content"):
         for m in entry.media_content:
             if m.get("type", "").startswith("image"):
-                return m.get("url", "")
-    # 2. Media thumbnail
+                url = m.get("url", "")
+                if url:
+                    return url
     if hasattr(entry, "media_thumbnail"):
         for t in entry.media_thumbnail:
             url = t.get("url", "")
             if url:
                 return url
-    # 3. Enclosures
     if hasattr(entry, "enclosures"):
         for e in entry.enclosures:
             if e.get("type", "").startswith("image"):
-                return e.get("href", "")
-    # 4. Procura img src no conteúdo HTML
+                url = e.get("href", "")
+                if url:
+                    return url
     content = ""
     if hasattr(entry, "content"):
         content = entry.content[0].get("value", "")
@@ -305,6 +364,21 @@ def parse_date(entry) -> datetime:
     return datetime.now(timezone.utc)
 
 
+def is_blacklisted(title: str, description: str) -> bool:
+    """Verifica se o conteúdo deve ser filtrado por baixa qualidade/irrelevância."""
+    combined = (title + " " + description).lower()
+
+    for phrase in BLACKLIST_PHRASES:
+        if phrase.lower() in combined:
+            return True
+
+    for pattern in BLACKLIST_TITLE_PATTERNS:
+        if re.search(pattern, title, re.IGNORECASE):
+            return True
+
+    return False
+
+
 def get_extra_tags(title: str, description: str) -> tuple[str, list]:
     """Detecta categoria e tags extras a partir do conteúdo."""
     combined = (title + " " + description).lower()
@@ -319,11 +393,11 @@ def post_filename(date: datetime, slug: str) -> str:
     return f"{date.strftime('%Y-%m-%d')}-{slug}.md"
 
 
-# Cache of known source URLs (built once per run)
+# Cache de URLs conhecidas (construído uma vez por execução)
 _known_urls: set | None = None
 
 def _load_known_urls() -> set:
-    """Scan existing posts and collect all source_url values."""
+    """Lê posts existentes e coleta todas as source_url."""
     global _known_urls
     if _known_urls is not None:
         return _known_urls
@@ -341,8 +415,9 @@ def _load_known_urls() -> set:
             pass
     return _known_urls
 
+
 def post_exists(filename: str, source_url: str = "") -> bool:
-    """Returns True if post already exists (by filename OR by source URL)."""
+    """Retorna True se o post já existe (por filename OU por source URL)."""
     if (POSTS_DIR / filename).exists():
         return True
     if source_url:
@@ -363,7 +438,7 @@ def build_frontmatter(
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
-    cats_yaml = "[" + ", ".join(cats for cats in categories) + "]"
+    cats_yaml = "[" + ", ".join(categories) + "]"
     tags_yaml = "[" + ", ".join(t for t in tags if t) + "]"
 
     front = f"""---
@@ -389,25 +464,64 @@ def build_content(
     source_url:  str,
     source_name: str,
     date:        datetime,
+    categories:  list,
+    tags:        list,
 ) -> str:
-    """Monta o conteúdo Markdown do post."""
-    date_br = date.strftime("%B %d, %Y at %H:%M UTC")
-    content = f"""{description}
+    """Monta o conteúdo Markdown do post com estrutura rica."""
+    date_str = date.strftime("%B %d, %Y")
+    time_str = date.strftime("%H:%M UTC")
+    category_label = categories[0].upper() if categories else "TECH"
+
+    # Divide descrição em até 2 parágrafos para melhor leitura
+    sentences = re.split(r'(?<=[.!?])\s+', description.strip())
+    if len(sentences) > 3:
+        para1 = " ".join(sentences[:3])
+        para2 = " ".join(sentences[3:])
+    else:
+        para1 = description.strip()
+        para2 = ""
+
+    # Tags relevantes para "Read more" section
+    related_tags = [f"`{t}`" for t in tags[:5] if len(t) > 2]
+    tags_line = "  ".join(related_tags) if related_tags else ""
+
+    content = f"""{para1}
 
 <!--more-->
+"""
 
-## About this article
+    if para2:
+        content += f"""
+{para2}
+"""
 
-This post is an automated summary curated from the RSS feed of **{source_name}**.
+    content += f"""
+## What You Need to Know
 
-> 📰 **Read the full article** at [{source_name}]({source_url})
+- **Source:** {source_name}
+- **Published:** {date_str} at {time_str}
+- **Category:** {category_label}
+- **Read time:** ~2 min
 
-The original content was published on {date_br}. All rights belong to the respective author(s) and **{source_name}**.
+## Full Story
+
+This is a curated summary. For complete coverage, in-depth analysis, and all supporting details, read the original article:
+
+> **[Read the full story on {source_name} →]({source_url})**
+
+*Original reporting and all rights belong to the respective author(s) at **{source_name}**.*
 
 ---
-
-*Automatically curated by [TechBR News](https://non-s.github.io). [View original source]({source_url}).*
 """
+
+    if tags_line:
+        content += f"""
+**Related topics:** {tags_line}
+
+"""
+
+    content += f"*Curated by [TechBR News](https://non-s.github.io) · {date_str}*\n"
+
     return content
 
 
@@ -420,11 +534,11 @@ def fetch_feed(feed_config: dict) -> int:
     Processa um feed RSS e cria posts novos.
     Retorna o número de posts criados.
     """
-    name     = feed_config["name"]
-    url      = feed_config["url"]
-    category = feed_config["category"]
+    name      = feed_config["name"]
+    url       = feed_config["url"]
+    category  = feed_config["category"]
     base_tags = feed_config["tags"]
-    source   = feed_config["source"]
+    source    = feed_config["source"]
 
     log.info(f"📡 Processando feed: {name} ({url})")
 
@@ -448,21 +562,34 @@ def fetch_feed(feed_config: dict) -> int:
 
     created_count = 0
 
-    for entry in entries[:MAX_PER_FEED]:
+    for entry in entries:
+        if created_count >= MAX_PER_FEED:
+            break
+
         try:
-            # Extrai dados do item
-            title       = sanitize_text(getattr(entry, "title", "Sem título"))
+            title       = sanitize_text(getattr(entry, "title", ""))
             link        = getattr(entry, "link", "")
             description = extract_description(entry)
             pub_date    = parse_date(entry)
             image_url   = extract_image(entry)
 
-            if not image_url:
-                log.info(f"  ⏭  Post sem imagem, pulando: {title[:50]}")
+            if not title or not link:
+                log.debug("  ⏭  Item sem título ou link, pulando.")
                 continue
 
-            if not title or not link:
-                log.debug(f"  ⏭  Item sem título ou link, pulando.")
+            # Filtro de imagem obrigatória
+            if not image_url:
+                log.info(f"  ⏭  Sem imagem: {title[:60]}")
+                continue
+
+            # Filtro de descrição mínima
+            if len(description) < MIN_DESCRIPTION_LEN:
+                log.info(f"  ⏭  Descrição muito curta ({len(description)} chars): {title[:60]}")
+                continue
+
+            # Filtro de qualidade / relevância
+            if is_blacklisted(title, description):
+                log.info(f"  🚫 Conteúdo filtrado (blacklist): {title[:60]}")
                 continue
 
             # Detecta categoria e tags extras por palavra-chave
@@ -471,18 +598,15 @@ def fetch_feed(feed_config: dict) -> int:
             if extra_cat and extra_cat not in categories:
                 categories.append(extra_cat)
 
-            all_tags = list(dict.fromkeys(base_tags + extra_tags))  # dedup preservando ordem
+            all_tags = list(dict.fromkeys(base_tags + extra_tags))
 
-            # Gera slug e nome do arquivo
             slug     = slugify(title)
             filename = post_filename(pub_date, slug)
 
-            # Verifica duplicata (por filename e por URL fonte)
             if post_exists(filename, link):
                 log.debug(f"  ⏭  Post já existe: {filename}")
                 continue
 
-            # Monta o post
             frontmatter = build_frontmatter(
                 title       = title,
                 date        = pub_date,
@@ -500,14 +624,14 @@ def fetch_feed(feed_config: dict) -> int:
                 source_url  = link,
                 source_name = source,
                 date        = pub_date,
+                categories  = categories,
+                tags        = all_tags,
             )
 
-            # Escreve o arquivo
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
             log.info(f"  ✅ Post criado: {filename}")
-            # Register URL so duplicates in the same run are also caught
             _load_known_urls().add(link)
             created_count += 1
 
@@ -524,7 +648,6 @@ def main():
     log.info(f"🚀 TechBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     log.info("=" * 60)
 
-    # Garante que o diretório _posts existe
     POSTS_DIR.mkdir(exist_ok=True)
 
     total_created = 0
