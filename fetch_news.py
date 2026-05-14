@@ -44,7 +44,7 @@ GROQ_MODEL            = "llama-3.3-70b-versatile"
 GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
 
-def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) -> str:
+def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> str:
     """
     Gera texto via:
     1. Groq (Llama 3.3 70B — rápido, gratuito com chave)
@@ -66,7 +66,7 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) ->
                         {"role": "user",   "content": prompt},
                     ],
                     "temperature": 0.7,
-                    "max_tokens": 1500,
+                    "max_tokens": 2500,
                 },
                 headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                 timeout=timeout,
@@ -84,7 +84,7 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) ->
                 f"{GEMINI_API_URL}?key={gemini_key}",
                 json={
                     "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1500},
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2000},
                 },
                 timeout=timeout,
             )
@@ -102,9 +102,10 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) ->
                     {"role": "system", "content": sys_msg},
                     {"role": "user",   "content": prompt},
                 ],
-                "model":   "openai",
-                "seed":    seed or abs(hash(prompt)) % 9999,
-                "private": True,
+                "model":      "openai",
+                "seed":       seed or abs(hash(prompt)) % 9999,
+                "private":    True,
+                "max_tokens": 2500,
             },
             timeout=timeout,
         )
@@ -409,12 +410,16 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'Respond ONLY with valid JSON, no markdown, no code blocks, no extra text.\n\n'
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
         f'Required JSON:\n'
-        f'{{"seo_title":"<65 chars with main keyword>","meta_description":"<150-155 chars ending with period>",'
+        f'{{"seo_title":"Compelling SEO headline under 65 chars: use numbers when relevant (e.g. \'5 Countries...\'), ask a question, or create urgency. No clickbait. Must be accurate.","meta_description":"<150-155 chars ending with period>",'
         f'"key_points":["concise point 1","concise point 2","concise point 3"],'
         f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. '
         f'For key people/places/organizations add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). No bullet points.",'
-        f'"faq":[{{"q":"specific question about this news?","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"second relevant question?","a":"clear 1-2 sentence answer."}}],'
+        f'"image_caption":"One sentence caption describing what the image likely shows, relevant to the article topic",'
+        f'"faq":[{{"q":"question 1","a":"clear 1-2 sentence answer."}},'
+        f'{{"q":"question 2","a":"clear 1-2 sentence answer."}},'
+        f'{{"q":"question 3","a":"clear 1-2 sentence answer."}},'
+        f'{{"q":"question 4","a":"clear 1-2 sentence answer."}},'
+        f'{{"q":"question 5","a":"clear 1-2 sentence answer."}}],'
         f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
     )
     raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
@@ -1349,21 +1354,63 @@ def post_exists(filename: str, source_url: str = "") -> bool:
     return False
 
 
+def _title_similarity(t1: str, t2: str) -> float:
+    """Returns 0.0-1.0 similarity between two titles using Jaccard on non-stopword words."""
+    w1 = set(re.sub(r'[^\w\s]', '', t1.lower()).split())
+    w2 = set(re.sub(r'[^\w\s]', '', t2.lower()).split())
+    stops = {
+        'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or',
+        'but', 'is', 'was', 'are', 'were', 'be', 'been', 'by', 'from', 'with',
+        'this', 'that', 'it',
+    }
+    w1 -= stops
+    w2 -= stops
+    if not w1 or not w2:
+        return 0.0
+    intersection = w1 & w2
+    union = w1 | w2
+    return len(intersection) / len(union)
+
+
+# Cache of known titles (built once per run)
+_known_titles: list | None = None
+
+def _load_known_titles() -> list:
+    """Reads existing posts and returns list of (title, filename) tuples (last 100 posts)."""
+    global _known_titles
+    if _known_titles is not None:
+        return _known_titles
+    _known_titles = []
+    all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
+    for f in all_posts:
+        try:
+            for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
+                if line.startswith("title:"):
+                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                    if m:
+                        _known_titles.append((m.group(1).strip(), f.name))
+                    break
+        except Exception:
+            pass
+    return _known_titles
+
+
 def build_frontmatter(
-    title:       str,
-    date:        datetime,
-    categories:  list,
-    tags:        list,
-    author:      str,
-    description: str,
-    source_url:  str,
-    source_name: str,
-    image:       str,
-    keywords:    list | None = None,
-    faq:         list | None = None,
-    sentiment:   str  = "neutral",
-    key_points:  list | None = None,
-    fact_check:  str | None = None,
+    title:         str,
+    date:          datetime,
+    categories:    list,
+    tags:          list,
+    author:        str,
+    description:   str,
+    source_url:    str,
+    source_name:   str,
+    image:         str,
+    keywords:      list | None = None,
+    faq:           list | None = None,
+    sentiment:     str  = "neutral",
+    key_points:    list | None = None,
+    fact_check:    str | None = None,
+    image_caption: str | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1386,6 +1433,8 @@ sentiment: "{sentiment}"
         front += f'image: "{image}"\n'
         alt = sanitize_text(title[:100])
         front += f'image_alt: "{alt}"\n'
+    if image_caption:
+        front += f'image_caption: "{sanitize_text(image_caption[:120])}"\n'
     if fact_check:
         front += f'fact_check: "{fact_check}"\n'
     if keywords:
@@ -1399,7 +1448,7 @@ sentiment: "{sentiment}"
                 front += f'  - "{pt_clean}"\n'
     if faq:
         front += "faq:\n"
-        for item in faq[:3]:
+        for item in faq[:5]:
             q = sanitize_text(str(item.get("q", ""))).replace('"', "'")
             a = sanitize_text(str(item.get("a", ""))).replace('"', "'")
             if q and a:
@@ -1986,6 +2035,19 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug(f"  ⏭  Post já existe: {filename}")
                 continue
 
+            # ── Title similarity deduplication ────────────────────
+            similar_found = False
+            for existing_title, existing_file in _load_known_titles():
+                sim = _title_similarity(title, existing_title)
+                if sim > 0.6:
+                    log.info(
+                        f"  ⏭  Título similar ({sim:.2f}) a '{existing_file}': {title[:60]}"
+                    )
+                    similar_found = True
+                    break
+            if similar_found:
+                continue
+
             # ── AI Enhancement (Pollinations — gratuito) ─────────
             ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
             if ai.get("seo_title") and 10 < len(ai["seo_title"]) <= 70:
@@ -2007,20 +2069,21 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             fact_check  = _fact_check_score(title, description)
 
             frontmatter = build_frontmatter(
-                title       = title,
-                date        = pub_date,
-                categories  = categories,
-                tags        = all_tags,
-                author      = "GlobalBR News",
-                description = description,
-                source_url  = link,
-                source_name = source,
-                image       = image_url,
-                keywords    = ai.get("keywords", []),
-                faq         = ai.get("faq", []),
-                sentiment   = sentiment,
-                key_points  = ai.get("key_points", []),
-                fact_check  = fact_check,
+                title         = title,
+                date          = pub_date,
+                categories    = categories,
+                tags          = all_tags,
+                author        = "GlobalBR News",
+                description   = description,
+                source_url    = link,
+                source_name   = source,
+                image         = image_url,
+                keywords      = ai.get("keywords", []),
+                faq           = ai.get("faq", []),
+                sentiment     = sentiment,
+                key_points    = ai.get("key_points", []),
+                fact_check    = fact_check,
+                image_caption = ai.get("image_caption", ""),
             )
 
             # ── Story continuation detection ──────────────────────
@@ -2051,6 +2114,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
             log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
             _load_known_urls().add(link)
+            _load_known_titles().insert(0, (title, filename))
             created_count += 1
 
             # Track source for diversity check (passed via return value extension below)

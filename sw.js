@@ -1,93 +1,118 @@
-// GlobalBR News — Service Worker
-// Caches shell assets for offline access; always fetches fresh news from network.
+// GlobalBR News — Service Worker v3
+// Stale-while-revalidate for article pages, cache-first for assets,
+// offline fallback with cached articles list.
 
-const CACHE    = "globalbr-v1";
-const OFFLINE  = "/offline.html";
+const CACHE_NAME     = 'globalbr-v3';
+const ARTICLE_CACHE  = 'globalbr-articles-v3';
+const OFFLINE        = '/offline.html';
+const MAX_ARTICLE_CACHE = 20;
 
-// Assets to cache on install
-const SHELL = [
-  "/",
-  "/assets/css/style.css",
-  "/assets/images/logo.png",
-  "/favicon.ico",
+const STATIC_ASSETS = [
+  '/',
   OFFLINE,
+  '/assets/css/style.css',
+  '/manifest.json',
 ];
 
-self.addEventListener("install", (e) => {
-  self.skipWaiting();
+// ── Install: pre-cache static shell ──────────────────────────
+self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(SHELL).catch(() => {}))
+    caches.open(CACHE_NAME)
+      .then(c => c.addAll(STATIC_ASSETS).catch(() => {}))
+      .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", (e) => {
+// ── Activate: clean up old caches ────────────────────────────
+self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME && k !== ARTICLE_CACHE)
+          .map(k => caches.delete(k))
+      )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", (e) => {
-  const { request } = e;
-  const url = new URL(request.url);
+// ── Fetch ─────────────────────────────────────────────────────
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
 
   // Only handle same-origin GET requests
-  if (request.method !== "GET" || url.origin !== self.location.origin) return;
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // News pages: network-first, fall back to cache, then offline page
-  if (url.pathname.match(/\/\d{4}\/\d{2}\/\d{2}\//)) {
+  // Static assets: cache-first
+  if (url.pathname.startsWith('/assets/') || url.pathname === '/manifest.json') {
     e.respondWith(
-      fetch(request)
-        .then((res) => {
-          const clone = res.clone();
-          caches.open(CACHE).then((c) => c.put(request, clone));
-          return res;
-        })
-        .catch(() =>
-          caches.match(request).then((cached) => cached || caches.match(OFFLINE))
-        )
+      caches.match(e.request).then(r => r || fetch(e.request).then(resp => {
+        if (resp.ok) {
+          caches.open(CACHE_NAME).then(c => c.put(e.request, resp.clone()));
+        }
+        return resp;
+      }))
     );
     return;
   }
 
-  // Static assets: cache-first
-  e.respondWith(
-    caches.match(request).then(
-      (cached) =>
-        cached ||
-        fetch(request).then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE).then((c) => c.put(request, clone));
+  // Article pages: stale-while-revalidate
+  if (url.pathname.match(/\/\w[\w-]*\/\d{4}\/\d{2}\/\d{2}\//)) {
+    e.respondWith(
+      caches.open(ARTICLE_CACHE).then(async cache => {
+        const cached = await cache.match(e.request);
+        const fetchPromise = fetch(e.request).then(resp => {
+          if (resp.ok) {
+            cache.put(e.request, resp.clone());
+            // Trim cache to MAX_ARTICLE_CACHE entries
+            cache.keys().then(keys => {
+              if (keys.length > MAX_ARTICLE_CACHE) {
+                cache.delete(keys[0]);
+              }
+            });
           }
-          return res;
-        })
-    )
+          return resp;
+        }).catch(() => cached || caches.match(OFFLINE));
+        // Serve cached version immediately; update in background
+        return cached || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // Default: network-first with offline fallback
+  e.respondWith(
+    fetch(e.request)
+      .then(resp => {
+        if (resp.ok) {
+          caches.open(CACHE_NAME).then(c => c.put(e.request, resp.clone()));
+        }
+        return resp;
+      })
+      .catch(() => caches.match(e.request).then(r => r || caches.match(OFFLINE)))
   );
 });
 
-// Push notification handler
-self.addEventListener("push", (e) => {
+// ── Push notifications ────────────────────────────────────────
+self.addEventListener('push', e => {
   if (!e.data) return;
-  const data = e.data.json().catch(() => ({ title: "GlobalBR News", body: e.data.text() }));
+  const data = e.data.json().catch(() => ({ title: 'GlobalBR News', body: e.data.text() }));
   e.waitUntil(
-    data.then((d) =>
-      self.registration.showNotification(d.title || "GlobalBR News", {
-        body:    d.body  || "New article published",
-        icon:    "/assets/images/logo.png",
-        badge:   "/assets/images/logo.png",
-        tag:     "globalbr-news",
-        data:    { url: d.url || "/" },
-        actions: [{ action: "open", title: "Read now" }],
+    data.then(d =>
+      self.registration.showNotification(d.title || 'GlobalBR News', {
+        body:    d.body  || 'New article published',
+        icon:    '/assets/images/logo.png',
+        badge:   '/assets/images/logo.png',
+        tag:     'globalbr-news',
+        data:    { url: d.url || '/' },
+        actions: [{ action: 'open', title: 'Read now' }],
       })
     )
   );
 });
 
-self.addEventListener("notificationclick", (e) => {
+self.addEventListener('notificationclick', e => {
   e.notification.close();
-  const target = e.notification.data?.url || "/";
+  const target = e.notification.data?.url || '/';
   e.waitUntil(clients.openWindow(target));
 });
