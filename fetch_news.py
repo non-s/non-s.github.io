@@ -1932,11 +1932,19 @@ source_name: "{source_name}"
 sentiment: "{sentiment}"
 lang: "en"
 """
+    # Auto-generate OG image if none provided
+    if not image:
+        import urllib.parse
+        prompt = urllib.parse.quote(f"{title[:60]} news editorial dark background", safe='')
+        seed = abs(hash(title)) % 100000
+        image = f"https://image.pollinations.ai/prompt/{prompt}?width=1200&height=630&nologo=true&seed={seed}&model=flux"
     if last_updated:
         front += f'last_updated: "{last_updated}"\n'
     if image:
         front += f'image: "{image}"\n'
         alt = sanitize_text(title[:100])
+        if not alt:
+            alt = sanitize_text(title[:100])
         front += f'image_alt: "{alt}"\n'
     if image_caption:
         front += f'image_caption: "{sanitize_text(image_caption[:120])}"\n'
@@ -1972,9 +1980,10 @@ lang: "en"
             if change is not None:
                 front += f'crypto_{coin}_24h_change: {round(change, 2)}\n'
     # ── Breaking news flags ───────────────────────────────────────
-    if _is_breaking_news(title, description):
+    breaking = _is_breaking_news(title, description)
+    if breaking:
         front += 'featured: true\n'
-        front += 'breaking: true\n'
+    front += f'breaking: {str(breaking).lower()}\n'
     # ── Journalistic hook ─────────────────────────────────────────
     if hook:
         front += f'hook: "{sanitize_text(hook[:120])}"\n'
