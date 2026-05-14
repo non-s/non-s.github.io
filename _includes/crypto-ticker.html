@@ -1,0 +1,47 @@
+<div id="crypto-ticker" class="crypto-ticker" style="display:none">
+  <div class="crypto-ticker-inner" id="crypto-ticker-items"></div>
+</div>
+<script>
+(function(){
+  var CACHE_KEY = 'gb_crypto_data';
+  var CACHE_TS_KEY = 'gb_crypto_ts';
+  var CACHE_TTL = 300000; // 5 minutes
+
+  function renderTicker(data) {
+    var names = {bitcoin:'BTC', ethereum:'ETH', solana:'SOL', cardano:'ADA', ripple:'XRP'};
+    var items = Object.entries(data).map(function(entry) {
+      var id = entry[0], v = entry[1];
+      var chg = v.usd_24h_change != null ? v.usd_24h_change.toFixed(2) : '0.00';
+      var cls = parseFloat(chg) >= 0 ? 'up' : 'down';
+      var sign = parseFloat(chg) >= 0 ? '+' : '';
+      return '<span class="ticker-item"><strong>' + (names[id] || id) + '</strong> $' +
+        v.usd.toLocaleString() +
+        ' <span class="ticker-chg ' + cls + '">' + sign + chg + '%</span></span>';
+    }).join('');
+    var el = document.getElementById('crypto-ticker-items');
+    var wrap = document.getElementById('crypto-ticker');
+    if (el) el.innerHTML = items;
+    if (wrap) wrap.style.display = 'block';
+  }
+
+  try {
+    var cached = sessionStorage.getItem(CACHE_KEY);
+    var ts = sessionStorage.getItem(CACHE_TS_KEY);
+    if (cached && ts && (Date.now() - parseInt(ts)) < CACHE_TTL) {
+      renderTicker(JSON.parse(cached));
+      return;
+    }
+  } catch(e) {}
+
+  fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,cardano,ripple&vs_currencies=usd&include_24hr_change=true')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        sessionStorage.setItem(CACHE_TS_KEY, String(Date.now()));
+      } catch(e) {}
+      renderTicker(data);
+    })
+    .catch(function() {});
+})();
+</script>
