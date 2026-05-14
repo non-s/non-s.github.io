@@ -41,7 +41,6 @@ hide_subscribe: true
       </div>
       <div id="search-default" class="row g-4">
         <p class="text-muted" style="font-size:.9rem;">Type above to search. Popular topics:</p>
-        {% assign popular_tags = site.posts | map: "tags" | flatten | group_by: "name" | sort: "size" | reverse %}
         <div class="d-flex flex-wrap gap-2 mb-4">
           {% assign all_tags = "" | split: "" %}
           {% for post in site.posts %}
