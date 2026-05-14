@@ -765,7 +765,7 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
                       radius=6, fill=(*stripe_color, 230))
     draw.text((cx + 10, 38), cat_text, font=cfont, fill=(0, 0, 0))
 
-    # ── 5. Título principal — grande, branco, sombra ─────────────
+    # ── 5. Título principal — grande, branco, outline+sombra para CTR ──
     main_title = stories[0]["title"] if stories else "World News Roundup"
     tfont = get_font(82, bold=True)
     max_w = int(W * 0.68)
@@ -779,9 +779,13 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
 
     ty = 100
     for line in tlines[:3]:
-        # Sombra
-        draw.text((34, ty + 4), line, font=tfont, fill=(0, 0, 0))
-        draw.text((32, ty + 2), line, font=tfont, fill=(0, 0, 0))
+        # Outline espesso (stroke) — legível em qualquer fundo
+        for dx in range(-3, 4):
+            for dy in range(-3, 4):
+                if dx != 0 or dy != 0:
+                    draw.text((30 + dx, ty + dy), line, font=tfont, fill=(0, 0, 0))
+        # Sombra suave
+        draw.text((34, ty + 5), line, font=tfont, fill=(0, 0, 0, 180))
         # Texto branco
         draw.text((30, ty), line, font=tfont, fill=TEXT_WHITE)
         ty += lh
@@ -802,7 +806,7 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
     draw.rectangle([(22, H - 108), (int(W * 0.55), H - 105)], fill=stripe_color)
     draw.text((22, H - 96), "GLOBAL", font=get_font(40, bold=True), fill=stripe_color)
     draw.text((190, H - 96), "BR NEWS", font=get_font(40, bold=True), fill=TEXT_WHITE)
-    now_str = datetime.now().strftime("%b %d, %Y  •  Hourly World Roundup")
+    now_str = datetime.now().strftime("%b %d, %Y  •  Daily World Roundup")
     draw.text((22, H - 46), now_str, font=get_font(26), fill=TEXT_GRAY)
 
     img.save(str(output), "JPEG", quality=95, optimize=True)
