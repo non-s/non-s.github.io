@@ -40,7 +40,8 @@ _session.headers.update({"User-Agent": "TechBR-News-Bot/2.0 (+https://non-s.gith
 
 POSTS_DIR        = Path("_posts")
 LOG_FILE         = "fetch_news.log"
-MAX_PER_FEED     = 3                   # Max posts por feed por execução
+MAX_PER_FEED     = 2                   # Max posts por feed por execução
+MAX_POSTS_PER_RUN = 5                 # Limite global por execução (cadência horária controlada)
 REQUEST_TIMEOUT  = 15
 SLEEP_BETWEEN_FEEDS = 2
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
@@ -586,16 +587,18 @@ This is a curated summary. For complete coverage, in-depth analysis, and all sup
 # FUNÇÃO PRINCIPAL
 # ============================================================
 
-def fetch_feed(feed_config: dict) -> int:
+def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     """
     Processa um feed RSS e cria posts novos.
     Retorna o número de posts criados.
+    max_override limita a criação abaixo de MAX_PER_FEED (usado pelo limite global).
     """
     name      = feed_config["name"]
     url       = feed_config["url"]
     category  = feed_config["category"]
     base_tags = feed_config["tags"]
     source    = feed_config["source"]
+    limit     = min(MAX_PER_FEED, max_override) if max_override is not None else MAX_PER_FEED
 
     log.info(f"📡 Processando feed: {name} ({url})")
 
@@ -620,7 +623,7 @@ def fetch_feed(feed_config: dict) -> int:
     created_count = 0
 
     for entry in entries:
-        if created_count >= MAX_PER_FEED:
+        if created_count >= limit:
             break
 
         try:
@@ -723,14 +726,18 @@ def main():
     total_created = 0
 
     for i, feed in enumerate(FEEDS):
-        created = fetch_feed(feed)
+        if total_created >= MAX_POSTS_PER_RUN:
+            log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
+            break
+        remaining = MAX_POSTS_PER_RUN - total_created
+        created = fetch_feed(feed, max_override=remaining)
         total_created += created
-        if i < len(FEEDS) - 1:
+        if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
             log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")
             sleep(SLEEP_BETWEEN_FEEDS)
 
     log.info("=" * 60)
-    log.info(f"✨ Concluído! Total de posts criados: {total_created}")
+    log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")
     log.info("=" * 60)
 
 
