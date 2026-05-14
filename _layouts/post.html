@@ -75,6 +75,18 @@ layout: default
         {{ content }}
       </article>
 
+      {% if site.adsense_publisher_id %}
+      <div class="adsense-wrap">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.adsense_publisher_id }}"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      {% endif %}
+
       <!-- Source Box -->
       {% if page.source_url %}
       <div class="source-box">

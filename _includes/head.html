@@ -172,3 +172,9 @@ if ('serviceWorker' in navigator) {
   gtag('config', '{{ site.google_analytics }}');
 </script>
 {% endif %}
+
+{% if site.adsense_publisher_id %}
+<!-- Google AdSense — Auto Ads -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_publisher_id }}"
+        crossorigin="anonymous"></script>
+{% endif %}
