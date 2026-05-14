@@ -106,22 +106,6 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
-      - name: "📌 Pinterest — pinar posts novos"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python post_pinterest.py
-        env:
-          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
-          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
-
-      - name: "🐘 Mastodon — toar posts novos"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python post_mastodon.py
-        env:
-          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
-          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
-
       - name: "🔵 Bing — submeter URLs novas para indexação"
         if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true
