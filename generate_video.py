@@ -127,71 +127,157 @@ def clean_text(text: str, max_chars: int = 500) -> str:
 def build_roundup_script(stories: list[dict]) -> str:
     """
     Script jornalístico para roundup de múltiplas histórias.
-    ~90 palavras por história → ~45s por história a 120 wpm.
-    6 histórias + intro/outro ≈ 10-12 minutos.
+    Alvo: ~1.500 palavras → ~10-12 min de narração a 130 wpm.
+    Estrutura por história: apresentação + conteúdo + contexto + transição.
     """
     n = len(stories)
-    # Determinar voz/tema dominante do roundup
     cats = [s["category"] for s in stories]
     dominant = max(set(cats), key=cats.count)
 
     cat_label = {
-        "AI": "artificial intelligence",
+        "AI":       "artificial intelligence",
         "SECURITY": "cybersecurity",
         "BUSINESS": "tech business and startups",
         "BIG TECH": "big tech",
         "HARDWARE": "hardware and devices",
-        "TECH": "technology",
+        "TECH":     "technology",
     }.get(dominant, "technology")
 
-    now = datetime.now()
+    now      = datetime.now()
     date_str = now.strftime("%B %d, %Y")
     hour_str = now.strftime("%I %p").lstrip("0")
 
+    # ── INTRO (~180 words) ────────────────────────────────────────
     script = f"""Welcome to TechBR News — your hourly technology roundup.
 
-I'm bringing you {n} of the most important tech stories right now, on {date_str} at {hour_str}.
+It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now in {cat_label} and across the technology world.
 
-Stay with me through all {n} stories — each one has something worth knowing. Let's dive in.
+Whether you are commuting, working out, or just keeping up with the latest developments, you are in the right place. We publish one of these roundups every single hour — so you always have a trusted, up-to-date source for what matters in tech.
+
+Technology moves fast. Things that were announced this morning can change the direction of entire industries by the afternoon. That is exactly why we are here — to make sure you never fall behind.
+
+Before we begin, a quick reminder: every story we cover today has a direct link in the description below, so you can read the full article straight from the original source. We always credit the journalists and publications doing the important reporting that keeps us all informed.
+
+If you find this roundup useful, the best thing you can do is hit that subscribe button right now — so you never miss a story.
+
+Now, let us get into today's {n} stories. Here we go.
 
 """
 
-    for i, story in enumerate(stories):
-        ordinal = ORDINALS[i] if i < len(ORDINALS) else f"number {i + 1}"
-        title   = story["title"]
-        desc    = clean_text(story["description"], 450)
-        source  = story["source"]
-        cat     = story["category"].lower()
+    # ── HISTÓRIAS (~200 words cada) ───────────────────────────────
+    cat_context = {
+        "AI": [
+            "Artificial intelligence continues to reshape the technology landscape at an extraordinary pace.",
+            "The race to develop more capable AI systems is intensifying, with major implications for businesses and consumers alike.",
+            "This development is part of a broader trend of rapid advancement in AI capabilities that is transforming industries worldwide.",
+            "As AI systems become more powerful, questions around safety, regulation, and responsible deployment are increasingly at the forefront of public debate.",
+        ],
+        "SECURITY": [
+            "Cybersecurity threats continue to evolve in sophistication, making this development particularly noteworthy for organizations and individuals.",
+            "This incident highlights the growing importance of robust cybersecurity practices in an increasingly digital world.",
+            "Security researchers are closely monitoring this situation, as it could have wider implications for how we protect digital systems.",
+            "Experts recommend that affected users take immediate steps to secure their accounts and monitor for suspicious activity.",
+        ],
+        "BUSINESS": [
+            "The startup ecosystem remains highly active, with investors continuing to back innovative companies despite broader economic uncertainty.",
+            "This development reflects the ongoing transformation of the technology industry and the growing appetite for disruptive new solutions.",
+            "Analysts will be watching closely to see how this plays out in the coming months, as the competitive landscape continues to shift.",
+            "This move signals growing confidence in the sector and could attract further investment and attention from major players.",
+        ],
+        "BIG TECH": [
+            "Big tech companies continue to make moves that will shape the digital experiences of billions of people around the world.",
+            "This announcement is likely to have significant ripple effects across the technology industry and related sectors.",
+            "The major technology companies are in a constant race to innovate, and this latest development is a clear signal of where the industry is heading.",
+            "Consumers and businesses alike will be paying close attention to how this unfolds over the coming weeks.",
+        ],
+        "HARDWARE": [
+            "Hardware innovation continues to push the boundaries of what is possible for consumers and professionals alike.",
+            "Advances in hardware technology have a direct impact on the software and services we rely on every day.",
+            "This product development reflects the ongoing competition among manufacturers to deliver better performance and value.",
+            "Technology enthusiasts and professionals have been eagerly anticipating this kind of advancement.",
+        ],
+        "TECH": [
+            "This is the kind of development that reminds us just how quickly the technology world can change.",
+            "Software and digital technology continue to transform the way we work, communicate, and access information.",
+            "The broader implications of this story are still unfolding, but it is already generating significant discussion in the tech community.",
+            "This development is worth watching closely, as it could influence decisions made by companies and policymakers in the months ahead.",
+        ],
+    }
 
-        # Quebra descrição em intro + detalhe
+    transitions = [
+        "Moving on to our next story.",
+        "Let us keep the momentum going with story number {next}.",
+        "Now, here is a story you will want to pay attention to.",
+        "Our next headline takes us in a different direction.",
+        "And now, story number {next}.",
+        "Here is what else is making headlines right now.",
+    ]
+
+    for i, story in enumerate(stories):
+        ordinal  = ORDINALS[i] if i < len(ORDINALS) else f"number {i + 1}"
+        title    = story["title"]
+        desc     = clean_text(story["description"], 600)
+        source   = story["source"]
+        category = story["category"]
+
         sentences = re.split(r'(?<=[.!?])\s+', desc)
-        intro  = " ".join(sentences[:2]) if len(sentences) >= 2 else desc
-        detail = " ".join(sentences[2:5]) if len(sentences) > 2 else ""
+        opening   = " ".join(sentences[:2]) if len(sentences) >= 2 else desc
+        body      = " ".join(sentences[2:6]) if len(sentences) > 2 else ""
+
+        # Contexto adicional baseado na categoria
+        ctx_pool = cat_context.get(category, cat_context["TECH"])
+        context1 = ctx_pool[i % len(ctx_pool)]
+        context2 = ctx_pool[(i + 1) % len(ctx_pool)]
 
         script += f"""Story {ordinal}: {title}.
 
-{intro}"""
+{opening}
 
-        if detail:
-            script += f"""
+{context1}
 
-{detail}"""
-
-        script += f"""
-
-This report comes from {source}. The full article link is in the description below — definitely worth reading if this caught your attention.
+"""
+        if body:
+            script += f"""{body}
 
 """
 
-    script += f"""And those were today's top {n} stories on TechBR News.
+        script += f"""{context2}
 
-Every single hour we bring you a fresh roundup just like this one — covering artificial intelligence, cybersecurity, startups, gadgets, and everything happening in the world of technology.
+This story was reported by {source}, which is one of the most respected publications covering this space. If you want the complete picture — the quotes, the data, the analysis — the link to the full article is waiting for you in the description below. We strongly encourage you to support the original journalists doing this important work.
 
-If you found value in this video, please like it and subscribe to the channel right now. Hit the notification bell so you get every new roundup the moment it drops.
+"""
+        # Transição entre histórias (exceto na última)
+        if i < n - 1:
+            next_ordinal = ORDINALS[i + 1] if (i + 1) < len(ORDINALS) else f"number {i + 2}"
+            trans = transitions[i % len(transitions)].format(next=next_ordinal)
+            script += f"""{trans}
 
-Share this video with anyone who wants to stay ahead in tech.
+"""
 
-This has been TechBR News. Stay curious. Stay informed. See you in one hour."""
+    # ── OUTRO (~220 words) ────────────────────────────────────────
+    script += f"""And that wraps up this hour's TechBR News Roundup — {n} stories covering the most important developments in technology happening right now.
+
+Let us do a quick recap of what we covered today.
+
+We talked about {stories[0]['title'] if stories else 'our top story'}.
+
+{"We also covered " + stories[1]['title'] + "." if len(stories) > 1 else ""}
+
+{"And " + str(len(stories) - 2) + " more stories to keep you fully up to date." if len(stories) > 2 else ""}
+
+Every single one of those stories has a link in the description below, along with timestamps so you can jump to the section that interests you most.
+
+We want to hear from you — which story caught your attention today? Drop a comment below. We read every single one, and your feedback genuinely helps us improve.
+
+If you are not subscribed yet, please do it right now. It is completely free. Hit that subscribe button and the notification bell, and you will get a brand new roundup like this one every hour — {date_str}, tomorrow, and every day after that. You will always be the first to know.
+
+We also publish everything on our website at non-s dot github dot io — a great place to search all our past stories and stay on top of the topics that matter to you.
+
+Share this video with someone who needs to stay ahead in tech. It takes two seconds and it really helps us grow.
+
+Thank you so much for watching. This has been TechBR News.
+
+Stay curious. Stay informed. We will see you in exactly one hour."""
 
     return script
 
@@ -625,21 +711,29 @@ def mark_posts_as_used(post_slugs: list[str]):
         (VIDEOS_DIR / f"{slug}.roundup").touch()
 
 def guess_category(tags: list, title: str) -> str:
-    text = (title + " ".join(tags)).lower()
-    if any(w in text for w in ["ai", "artificial intelligence", "machine learning",
-                                "gpt", "llm", "openai", "anthropic", "gemini", "claude"]):
+    text = (title + " " + " ".join(tags)).lower()
+    # Use word boundary check for short keywords to avoid substring false positives
+    # e.g. "raises" contains "ai", "hackernews" contains "hack"
+    if (re.search(r'\bai\b', text) or
+            any(w in text for w in ["artificial intelligence", "machine learning",
+                                     "gpt", "llm", "openai", "anthropic",
+                                     "gemini", "claude", "deepmind", "mistral"])):
         return "AI"
-    if any(w in text for w in ["security", "hack", "cyber", "breach", "malware",
-                                "ransomware", "vulnerability", "exploit"]):
+    if any(w in text for w in ["cybersecurity", "cyber attack", "cyberattack",
+                                "data breach", "malware", "ransomware",
+                                "vulnerability", "zero-day", "phishing",
+                                "exploit", "hacking", "hacked", "spyware",
+                                "krebs", "the hacker news"]):
         return "SECURITY"
-    if any(w in text for w in ["startup", "funding", "ipo", "acquisition",
-                                "billion", "venture", "raised"]):
+    if any(w in text for w in ["startup", "funding", "series a", "series b",
+                                "series c", "ipo", "acquisition", "billion",
+                                "venture capital", "unicorn"]):
         return "BUSINESS"
     if any(w in text for w in ["apple", "google", "microsoft", "meta",
-                                "amazon", "nvidia", "tesla"]):
+                                "amazon", "nvidia", "tesla", "samsung"]):
         return "BIG TECH"
     if any(w in text for w in ["phone", "iphone", "android", "hardware",
-                                "chip", "gpu", "laptop", "processor"]):
+                                "chip", "gpu", "laptop", "processor", "display"]):
         return "HARDWARE"
     return "TECH"
 
