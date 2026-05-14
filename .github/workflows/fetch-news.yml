@@ -148,6 +148,29 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
+      - name: "📱 Telegram — compartilhar posts novos"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python post_telegram.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+
+      - name: "🎮 Discord — compartilhar posts novos"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python post_discord.py
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: "📌 Pinterest — compartilhar posts novos"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python post_pinterest.py
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
+
       - name: "🔵 Bing — submeter URLs novas para indexação"
         if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true

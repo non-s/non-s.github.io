@@ -182,7 +182,21 @@ if ('serviceWorker' in navigator) {
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "{{ site.onesignal_app_id }}",
+      {% if site.onesignal_safari_web_id %}safari_web_id: "{{ site.onesignal_safari_web_id }}",{% endif %}
       notifyButton: { enable: true, size: 'medium', position: 'bottom-right' },
+      promptOptions: {
+        slidedown: {
+          prompts: [{
+            type: "push",
+            autoPrompt: false,
+            text: {
+              actionMessage: "Get notified when breaking news is published",
+              acceptButton: "Allow",
+              cancelButton: "Later"
+            }
+          }]
+        }
+      },
       welcomeNotification: {
         title: "GlobalBR News",
         message: "Thanks for subscribing to breaking news alerts!"
