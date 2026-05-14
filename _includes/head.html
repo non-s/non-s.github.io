@@ -22,7 +22,7 @@
 <!-- ── hreflang: English content, x-default to canonical ── -->
 <link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}">
 <link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ site.baseurl }}/">
-{% if page.layout == 'post' %}
+{% if page.layout == 'post' or page.url == '/' %}
 <link rel="alternate" hreflang="pt-BR" href="{{ page.url | absolute_url }}">
 {% endif %}
 
@@ -70,25 +70,45 @@
   "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
   "author": {
     "@type": "Person",
-    "name": "{{ page.author | default: site.author.name }}"
+    "name": "{{ page.author | default: site.author.name }}",
+    "url": "{{ site.url }}/about/",
+    "jobTitle": "News Editor"
   },
   "publisher": {
     "@type": "Organization",
     "name": "{{ site.title }}",
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ site.logo | absolute_url }}"
+      "url": "{{ site.logo | absolute_url }}",
+      "width": 600,
+      "height": 60
     }
   },
   "url": "{{ page.url | absolute_url }}",
-  "mainEntityOfPage": "{{ page.url | absolute_url }}"
-  {% if page.image %}
-  ,"image": {
-    "@type": "ImageObject",
-    "url": "{{ page.image | absolute_url }}",
-    "width": 1200,
-    "height": 630
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "isAccessibleForFree": true,
+  "inLanguage": "en-US",
+  "articleSection": "{{ page.categories | first | capitalize }}"
+  {% if page.content_type %},"genre": "{{ page.content_type }}"{% endif %}
+  {% if page.word_count %},"wordCount": {{ page.word_count }}{% endif %}
+  {% if page.keywords %},"keywords": "{{ page.keywords | join: ', ' }}"{% endif %}
+  {% if page.tl_dr %},"abstract": "{{ page.tl_dr | escape }}"{% endif %}
+  ,"speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".post-title", ".post-deck"]
   }
+  {% if page.image %}
+  ,"image": [
+    {
+      "@type": "ImageObject",
+      "url": "{% if page.image contains 'http' %}{{ page.image }}{% else %}{{ page.image | absolute_url }}{% endif %}",
+      "width": 1200,
+      "height": 630
+    }
+  ]
   {% endif %}
 }
 </script>
@@ -238,6 +258,47 @@ if (navigator.onLine) {
       "item": "{{ page.url | absolute_url }}"
     }
   ]
+}
+</script>
+{% endif %}
+
+{% if page.fact_check == 'verified' or page.fact_check == 'developing' or page.fact_check == 'opinion' %}
+<!-- ClaimReview JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClaimReview",
+  "url": "{{ page.url | absolute_url }}",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+  "claimReviewed": "{{ page.title | truncate: 75 | escape }}",
+  "itemReviewed": {
+    "@type": "Claim",
+    "datePublished": "{{ page.date | date: '%Y-%m-%d' }}"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}"
+  },
+  "reviewRating": {
+    "@type": "Rating",
+    {% if page.fact_check == 'verified' %}
+    "ratingValue": "5",
+    "bestRating": "5",
+    "worstRating": "1",
+    "alternateName": "True"
+    {% elsif page.fact_check == 'developing' %}
+    "ratingValue": "3",
+    "bestRating": "5",
+    "worstRating": "1",
+    "alternateName": "Developing Story"
+    {% elsif page.fact_check == 'opinion' %}
+    "ratingValue": "0",
+    "bestRating": "5",
+    "worstRating": "0",
+    "alternateName": "Opinion"
+    {% endif %}
+  }
 }
 </script>
 {% endif %}
