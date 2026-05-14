@@ -549,7 +549,7 @@ if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode'
 })();
 </script>
 
-<!-- Table of Contents builder -->
+<!-- Table of Contents builder + active section highlight -->
 <script>
 (function(){
   var article = document.getElementById('post-article');
@@ -573,6 +573,20 @@ if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode'
   });
   nav.appendChild(fragment);
   container.style.display = 'block';
+
+  /* Highlight active TOC section via IntersectionObserver */
+  if (!window.IntersectionObserver) return;
+  var tocLinks = nav.querySelectorAll('a');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        tocLinks.forEach(function(l){ l.classList.remove('active'); });
+        var active = nav.querySelector('a[href="#' + e.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  headings.forEach(function(h){ if (h.id) observer.observe(h); });
 })();
 </script>
 
