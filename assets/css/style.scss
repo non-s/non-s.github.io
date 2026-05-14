@@ -2887,3 +2887,145 @@ body.reader-mode #reader-mode-btn {
   }
 }
 .counter-item i { color: var(--c-accent); }
+
+/* ============================================================
+   SKELETON LOADING  (UX Item 1)
+   ============================================================ */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+@keyframes shimmer-load {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton-card {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--c-surface);
+}
+.skeleton-img {
+  height: 180px;
+  background: linear-gradient(90deg, var(--c-border) 25%, var(--c-surface) 50%, var(--c-border) 75%);
+  background-size: 200%;
+  animation: shimmer-load 1.5s infinite;
+}
+.skeleton-body { padding: 1rem; }
+.skeleton-line {
+  height: 14px;
+  border-radius: 4px;
+  margin-bottom: .6rem;
+  background: linear-gradient(90deg, var(--c-border) 25%, var(--c-surface) 50%, var(--c-border) 75%);
+  background-size: 200%;
+  animation: shimmer-load 1.5s infinite;
+}
+.skeleton-line.short  { width: 40%; }
+.skeleton-line.medium { width: 70%; }
+
+/* ============================================================
+   BADGE "NEW" ON RECENT POSTS  (UX Item 3)
+   ============================================================ */
+.badge-new {
+  display: inline-block;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 700;
+  padding: .1rem .35rem;
+  border-radius: 3px;
+  margin-right: .4rem;
+  vertical-align: middle;
+  letter-spacing: .05em;
+  animation: badge-pulse 2s infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .7; }
+}
+
+/* ============================================================
+   NEWS CARD FADE-IN ON SCROLL  (UX Item 2)
+   ============================================================ */
+.news-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.news-card.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   CIRCULAR BACK-TO-TOP WITH PROGRESS  (UX Item 5)
+   ============================================================ */
+#back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+  padding: 0;
+  z-index: 999;
+  box-shadow: 0 4px 16px rgba(249,115,22,.4);
+}
+#back-top.visible { opacity: 1; visibility: visible; }
+#back-top:hover { background: #ea6c0a; }
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 46px;
+  transform: rotate(-90deg);
+}
+.ring-bg   { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 3; }
+.ring-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-dasharray: 94.2;
+  stroke-dashoffset: 94.2;
+  transition: stroke-dashoffset .1s linear;
+}
+#back-top i { position: relative; z-index: 1; font-size: 1rem; }
+
+/* ============================================================
+   NEXT UPDATE COUNTDOWN  (UX Item 8)
+   ============================================================ */
+.next-update {
+  font-size: .75rem;
+  color: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.next-update i { color: var(--c-accent); }
+
+/* ============================================================
+   TOC ACTIVE HIGHLIGHT  (UX Item 6)
+   ============================================================ */
+#toc-nav a.active {
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+/* ============================================================
+   PRINT: hide new back-top  (keep print rules clean)
+   ============================================================ */
+@media print {
+  #back-top { display: none !important; }
+}
