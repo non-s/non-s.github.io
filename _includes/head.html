@@ -113,6 +113,11 @@
 </script>
 {% endif %}
 
+{% if page.url == "/" %}
+<!-- Auto-refresh homepage every 5 min -->
+<meta http-equiv="refresh" content="300">
+{% endif %}
+
 <!-- ── DNS Prefetch for CDNs ── -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">

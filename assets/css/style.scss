@@ -3029,3 +3029,70 @@ body.reader-mode #reader-mode-btn {
 @media print {
   #back-top { display: none !important; }
 }
+
+/* ============================================================
+   FEATURE: VIEW TOGGLE (Grid / List) — category pages
+   ============================================================ */
+.view-btn { background: var(--c-surface); border: 1px solid var(--c-border); color: var(--c-muted); padding: .35rem .6rem; border-radius: var(--r-sm); cursor: pointer; transition: all .2s; }
+.view-btn.active { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+.row.g-4.list-view { display: flex; flex-direction: column; }
+.row.g-4.list-view > [class*="col-"] { width: 100% !important; max-width: 100%; }
+.row.g-4.list-view .news-card { flex-direction: row; max-height: 130px; }
+.row.g-4.list-view .card-img-wrap { width: 180px; min-width: 180px; max-height: 130px; flex-shrink: 0; }
+.row.g-4.list-view .card-img-wrap img { height: 130px; width: 180px; object-fit: cover; }
+.row.g-4.list-view .card-footer-row { display: none; }
+
+/* ============================================================
+   FEATURE: CONTINUE READING BANNER — post.html
+   ============================================================ */
+.continue-reading-banner {
+  position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+  background: var(--c-accent); color: #fff; padding: .6rem 1.2rem;
+  border-radius: 2rem; font-size: .85rem; z-index: 1000;
+  display: flex; align-items: center; gap: .75rem; box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  animation: slideUp .3s ease;
+  button { background: rgba(255,255,255,.25); border: none; color: #fff; border-radius: 1rem; padding: .2rem .6rem; cursor: pointer; font-size: .8rem; }
+}
+@keyframes slideUp { from { transform: translateX(-50%) translateY(20px); opacity:0; } to { transform: translateX(-50%) translateY(0); opacity:1; } }
+
+/* ============================================================
+   FEATURE: NEW POSTS NOTIFICATION BANNER — default.html
+   ============================================================ */
+.new-posts-banner {
+  position: fixed; top: 4.5rem; left: 50%; transform: translateX(-50%);
+  background: #1a73e8; color: #fff; padding: .6rem 1.2rem;
+  border-radius: 2rem; font-size: .85rem; z-index: 1050;
+  display: flex; align-items: center; gap: .75rem; box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  transition: opacity .5s; white-space: nowrap;
+  a { color: #fff; font-weight: 600; }
+  button { background: rgba(255,255,255,.25); border: none; color: #fff; border-radius: 1rem; padding: .15rem .5rem; cursor: pointer; }
+}
+
+/* ============================================================
+   FEATURE: FONT TOGGLE (serif/sans) — post.html
+   ============================================================ */
+body.font-serif #post-article {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.1rem;
+  line-height: 1.9;
+}
+
+/* ============================================================
+   FEATURE: RELATED STORY BANNER — post.html
+   ============================================================ */
+.related-story-banner {
+  background: rgba(249,115,22,.1); border-left: 3px solid var(--c-accent);
+  padding: .6rem 1rem; border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  margin-bottom: 1rem; font-size: .9rem;
+  a { color: var(--c-accent); font-weight: 500; }
+}
+
+/* ============================================================
+   FEATURE: COPY LINK BUTTON — index.html cards
+   ============================================================ */
+.btn-copy-link {
+  background: none; border: 1px solid var(--c-border); color: var(--c-muted);
+  border-radius: var(--r-sm); padding: .2rem .45rem; cursor: pointer;
+  font-size: .8rem; transition: all .2s; line-height: 1;
+  &:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+}

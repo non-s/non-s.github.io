@@ -40,6 +40,15 @@ permalink: /world/
     </div>
   </div>
 
+  <div class="view-toggle mb-3 d-flex gap-2 justify-content-end">
+    <button class="view-btn active" data-view="grid" title="Grid view" aria-label="Grid view">
+      <i class="bi bi-grid-3x3-gap"></i>
+    </button>
+    <button class="view-btn" data-view="list" title="List view" aria-label="List view">
+      <i class="bi bi-list-ul"></i>
+    </button>
+  </div>
+
   <div class="row g-4">
     {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'world'" %}
     {% if cat_posts.size > 0 %}
@@ -81,3 +90,18 @@ permalink: /world/
     {% endif %}
   </div>
 </section>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.view-btn');
+  var grid = document.querySelector('.row.g-4');
+  var saved = localStorage.getItem('gb-view') || 'grid';
+  function setView(v){
+    localStorage.setItem('gb-view', v);
+    btns.forEach(function(b){ b.classList.toggle('active', b.dataset.view === v); });
+    if(grid) grid.classList.toggle('list-view', v === 'list');
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setView(b.dataset.view); }); });
+  setView(saved);
+})();
+</script>

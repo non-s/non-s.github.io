@@ -68,6 +68,9 @@ layout: default
           <button id="reader-mode-btn" class="fs-btn" onclick="toggleReaderMode()" aria-label="Reader mode" title="Reader mode">
             <i class="bi bi-book"></i>
           </button>
+          <button id="font-toggle-btn" class="fs-btn" onclick="toggleFont()" title="Toggle font family" aria-label="Toggle font family">
+            <i class="bi bi-fonts"></i>
+          </button>
         </div>
         <!-- Save for later button -->
         <button class="save-btn" id="save-article-btn"
@@ -100,6 +103,14 @@ layout: default
         <figcaption class="post-img-caption">{{ page.image_caption }}</figcaption>
         {% endif %}
       </figure>
+      {% endif %}
+
+      <!-- Related Story Banner (shown when post has related_post frontmatter) -->
+      {% if page.related_post %}
+      <div class="related-story-banner">
+        <i class="bi bi-link-45deg"></i> Related:
+        <a href="{{ page.related_post }}">{{ page.related_post_title | default: "Previous story" }}</a>
+      </div>
       {% endif %}
 
       <!-- Key Points Box -->
@@ -462,6 +473,55 @@ function toggleReaderMode() {
   localStorage.setItem('gb-reader', active ? '1' : '');
 }
 if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode');
+</script>
+
+<!-- Font Toggle JS -->
+<script>
+function toggleFont() {
+  var body = document.body;
+  var serif = body.classList.toggle('font-serif');
+  localStorage.setItem('gb-font', serif ? 'serif' : 'sans');
+}
+// Restore font preference
+(function(){
+  if(localStorage.getItem('gb-font') === 'serif') document.body.classList.add('font-serif');
+})();
+</script>
+
+<!-- Reading Progress / Continue Reading JS -->
+<script>
+(function(){
+  var key = 'gb-pos-' + window.location.pathname;
+  var article = document.getElementById('post-article');
+  if(!article) return;
+
+  // Restore position after 500ms (let page render)
+  var saved = localStorage.getItem(key);
+  if(saved && parseInt(saved) > 200) {
+    setTimeout(function(){ window.scrollTo(0, parseInt(saved)); }, 500);
+  }
+
+  // Save position on scroll (throttled)
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      requestAnimationFrame(function(){
+        localStorage.setItem(key, window.scrollY);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Show "Continue reading" banner if returning
+  if(saved && parseInt(saved) > 500) {
+    var banner = document.createElement('div');
+    banner.className = 'continue-reading-banner';
+    banner.innerHTML = '<i class="bi bi-bookmark-check"></i> Continue where you left off <button onclick="window.scrollTo(0,'+saved+');this.parentElement.remove()">Jump &#8595;</button> <button onclick="this.parentElement.remove()">&#x2715;</button>';
+    document.body.appendChild(banner);
+    setTimeout(function(){ if(banner.parentElement) banner.remove(); }, 5000);
+  }
+})();
 </script>
 
 <!-- Image Lightbox (Task 5) -->
