@@ -17,6 +17,45 @@ permalink: /stats/
     </div>
   </div>
 
+  <!-- Google Analytics 4 live stats (populated by fetch_analytics.py) -->
+  {% if site.data.analytics %}
+  <div class="row g-3 mb-4">
+    <div class="col-sm-4">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:var(--c-accent);font-family:var(--font-head);">{{ site.data.analytics.totals.active_users_30d | default: "—" }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Active Users (30d)</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:#34d399;font-family:var(--font-head);">{{ site.data.analytics.totals.pageviews_30d | default: "—" }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Page Views (30d)</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:#f59e0b;font-family:var(--font-head);">{{ site.data.analytics.totals.sessions_30d | default: "—" }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Sessions (30d)</div>
+      </div>
+    </div>
+  </div>
+  {% if site.data.analytics.top_pages %}
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.5rem;margin-bottom:2rem;">
+    <h2 class="section-title" style="margin-bottom:1rem;">Top Articles (Last 7 Days)</h2>
+    <div class="list-group">
+      {% for page in site.data.analytics.top_pages %}
+      <a href="{{ page.path }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+         style="background:transparent;border-color:var(--c-border);color:var(--c-text);">
+        <span style="font-size:.86rem;">{{ page.title | truncate: 60 }}</span>
+        <span style="background:rgba(249,115,22,.15);color:var(--c-accent);padding:.15rem .6rem;border-radius:50px;font-size:.75rem;font-weight:700;white-space:nowrap;">{{ page.views }} views</span>
+      </a>
+      {% endfor %}
+    </div>
+    <p style="font-size:.75rem;color:var(--c-muted);margin-top:.75rem;">Last updated: {{ site.data.analytics.last_updated }}</p>
+  </div>
+  {% endif %}
+  {% endif %}
+
   <!-- Summary cards -->
   <div class="row g-3 mb-5">
     <div class="col-6 col-md-3">
