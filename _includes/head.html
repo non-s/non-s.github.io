@@ -5,6 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- ── Preload hero image (performance) ── -->
+{% if page.image %}
+<link rel="preload" as="image" href="{{ page.image }}">
+{% endif %}
+
+<!-- ── og:audio for Podcast ── -->
+{% if page.podcast_audio %}
+<meta property="og:audio" content="{{ page.podcast_audio }}">
+<meta property="og:audio:type" content="audio/mpeg">
+{% endif %}
+
 <!-- ── Meta robots (custom — jekyll-seo-tag não define max-snippet) ── -->
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
@@ -85,14 +96,25 @@
   "name": "{{ site.title }}",
   "description": "{{ site.description }}",
   "url": "{{ site.url }}",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "{{ site.url }}/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+  "potentialAction": [
+    {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "{{ site.url }}/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  ]
 }
 </script>
 {% endif %}
+
+<!-- ── DNS Prefetch for CDNs ── -->
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://pollinations.ai">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
 <!-- ── Preconnect para Google Fonts (performance) ── -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,6 +232,46 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 {% endif %}
+
+<!-- Author Schema (Person) — posts only -->
+{% if page.layout == 'post' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Julio",
+  "url": "https://github.com/non-s",
+  "sameAs": [
+    "https://github.com/non-s",
+    "https://bsky.app/profile/non-s97.bsky.social"
+  ],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "GlobalBR News",
+    "url": "https://non-s.github.io"
+  }
+}
+</script>
+{% endif %}
+
+<!-- Organization Schema — all pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "GlobalBR News",
+  "url": "https://non-s.github.io",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "{{ '/assets/images/logo.png' | absolute_url }}"
+  },
+  "sameAs": [
+    "https://github.com/non-s",
+    "https://bsky.app/profile/non-s97.bsky.social",
+    "https://youtube.com/@globalbrnews"
+  ]
+}
+</script>
 
 {% if site.clarity_project_id %}
 <!-- Microsoft Clarity -->

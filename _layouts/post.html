@@ -81,7 +81,7 @@ layout: default
 
       {% if page.image %}
       <figure class="post-hero-img">
-        <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager">
+        <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager" width="1200" height="630" style="width:100%;height:auto;">
         {% if page.image_caption %}
         <figcaption class="post-img-caption">{{ page.image_caption }}</figcaption>
         {% endif %}
@@ -353,6 +353,30 @@ layout: default
   {% endif %}
 }
 </script>
+
+<!-- VideoObject JSON-LD — shown when post has youtube_id -->
+{% if page.youtube_id %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | jsonify }},
+  "thumbnailUrl": "https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg",
+  "uploadDate": "{{ page.date | date_to_xmlschema }}",
+  "embedUrl": "https://www.youtube.com/embed/{{ page.youtube_id }}",
+  "url": "https://www.youtube.com/watch?v={{ page.youtube_id }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "GlobalBR News",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ '/assets/images/logo.png' | absolute_url }}"
+    }
+  }
+}
+</script>
+{% endif %}
 
 <!-- Image Lightbox (Task 5) -->
 <script>

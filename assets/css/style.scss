@@ -1391,6 +1391,7 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   padding: .22rem .65rem;
   border-radius: 4px;
+  border: 1px solid transparent;
   background: var(--c-accent);
   color: white;
   text-decoration: none;
@@ -2434,3 +2435,189 @@ img { max-width: 100%; display: block; }
   h1, h2, h3 { page-break-after: avoid; }
   p, li { orphans: 3; widows: 3; }
 }
+
+/* ============================================================
+   SKIP TO CONTENT  (Task: Accessibility)
+   ============================================================ */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--c-accent);
+  color: #fff;
+  padding: .5rem 1rem;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  font-weight: 700;
+  font-size: .9rem;
+  z-index: 10000;
+  transition: top .15s;
+  text-decoration: none;
+}
+.skip-to-content:focus {
+  top: 0;
+  outline: 3px solid #fff;
+}
+
+/* ============================================================
+   KEYBOARD SHORTCUTS MODAL
+   ============================================================ */
+.kb-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.kb-modal.active { display: flex; }
+.kb-modal-inner {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+  max-width: 360px;
+  width: 90%;
+  position: relative;
+}
+.kb-modal-title { font-size: 1.1rem; font-weight: 700; color: var(--c-text); margin-bottom: 1rem; }
+.kb-modal-close {
+  position: absolute;
+  top: .75rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--c-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.kb-table { width: 100%; border-collapse: collapse; }
+.kb-table td { padding: .4rem .5rem; color: var(--c-muted); font-size: .9rem; }
+.kb-table td:first-child { width: 60px; }
+kbd {
+  display: inline-block;
+  background: var(--c-surface3);
+  border: 1px solid var(--c-border2);
+  border-radius: 4px;
+  padding: .1rem .4rem;
+  font-family: monospace;
+  font-size: .8rem;
+  color: var(--c-text);
+}
+
+/* ============================================================
+   CATEGORY COLOR CODING
+   ============================================================ */
+.post-cat-badge[href*="/world/"]         { background: rgba(59,130,246,.15); color: #3b82f6; border-color: rgba(59,130,246,.3); }
+.post-cat-badge[href*="/politics/"]      { background: rgba(168,85,247,.15); color: #a855f7; border-color: rgba(168,85,247,.3); }
+.post-cat-badge[href*="/war/"]           { background: rgba(239,68,68,.15);  color: #ef4444; border-color: rgba(239,68,68,.3); }
+.post-cat-badge[href*="/business/"]      { background: rgba(234,179,8,.15);  color: #eab308; border-color: rgba(234,179,8,.3); }
+.post-cat-badge[href*="/science/"]       { background: rgba(20,184,166,.15); color: #14b8a6; border-color: rgba(20,184,166,.3); }
+.post-cat-badge[href*="/health/"]        { background: rgba(34,197,94,.15);  color: #22c55e; border-color: rgba(34,197,94,.3); }
+.post-cat-badge[href*="/sports/"]        { background: rgba(249,115,22,.15); color: #f97316; border-color: rgba(249,115,22,.3); }
+.post-cat-badge[href*="/entertainment/"] { background: rgba(236,72,153,.15); color: #ec4899; border-color: rgba(236,72,153,.3); }
+.post-cat-badge[href*="/technology/"]    { background: rgba(99,102,241,.15); color: #6366f1; border-color: rgba(99,102,241,.3); }
+.post-cat-badge[href*="/ai/"]            { background: rgba(6,182,212,.15);  color: #06b6d4; border-color: rgba(6,182,212,.3); }
+.post-cat-badge[href*="/environment/"]   { background: rgba(132,204,22,.15); color: #84cc16; border-color: rgba(132,204,22,.3); }
+.post-cat-badge[href*="/security/"]      { background: rgba(239,68,68,.15);  color: #ef4444; border-color: rgba(239,68,68,.3); }
+.post-cat-badge[href*="/food/"]          { background: rgba(251,146,60,.15); color: #fb923c; border-color: rgba(251,146,60,.3); }
+
+/* Sidebar category colors */
+.sidebar-cat[href*="/world/"]         { border-left: 3px solid #3b82f6; padding-left: .6rem; }
+.sidebar-cat[href*="/politics/"]      { border-left: 3px solid #a855f7; padding-left: .6rem; }
+.sidebar-cat[href*="/war/"]           { border-left: 3px solid #ef4444; padding-left: .6rem; }
+.sidebar-cat[href*="/business/"]      { border-left: 3px solid #eab308; padding-left: .6rem; }
+.sidebar-cat[href*="/science/"]       { border-left: 3px solid #14b8a6; padding-left: .6rem; }
+.sidebar-cat[href*="/health/"]        { border-left: 3px solid #22c55e; padding-left: .6rem; }
+.sidebar-cat[href*="/sports/"]        { border-left: 3px solid #f97316; padding-left: .6rem; }
+.sidebar-cat[href*="/entertainment/"] { border-left: 3px solid #ec4899; padding-left: .6rem; }
+.sidebar-cat[href*="/environment/"]   { border-left: 3px solid #84cc16; padding-left: .6rem; }
+.sidebar-cat[href*="/technology/"]    { border-left: 3px solid #6366f1; padding-left: .6rem; }
+.sidebar-cat[href*="/ai/"]            { border-left: 3px solid #06b6d4; padding-left: .6rem; }
+.sidebar-cat[href*="/security/"]      { border-left: 3px solid #ef4444; padding-left: .6rem; }
+
+/* ============================================================
+   FOCUS INDICATORS
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.navbar a:focus-visible { outline-color: #fff; }
+
+/* ============================================================
+   SEARCH RESULT MARK HIGHLIGHTING
+   ============================================================ */
+mark {
+  background: rgba(249,115,22,.25);
+  color: var(--c-text);
+  border-radius: 2px;
+  padding: 0 .15em;
+}
+
+/* ============================================================
+   BREAKING NEWS — NEW BADGE
+   ============================================================ */
+.breaking-item--new { color: #fff; font-weight: 600; }
+.breaking-new-badge {
+  display: inline-block;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 800;
+  padding: .1rem .4rem;
+  border-radius: 4px;
+  margin-right: .3rem;
+  letter-spacing: .05em;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   NEWSLETTER CTA IMPROVEMENTS
+   ============================================================ */
+.subscribe-social-proof {
+  font-weight: 600;
+  color: var(--c-accent);
+}
+.subscribe-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem .9rem;
+  font-size: .82rem;
+  color: var(--c-muted);
+  justify-content: center;
+}
+.sidebar-widget .subscribe-benefits {
+  justify-content: flex-start;
+}
+.subscribe-btn--lg {
+  font-size: .95rem;
+  padding: .75rem 1.5rem;
+}
+
+/* ============================================================
+   SENTIMENT INDICATORS
+   ============================================================ */
+.sentiment-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: .4rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.sentiment-indicator.positive { background: #22c55e; }
+.sentiment-indicator.negative { background: #ef4444; }
+.sentiment-indicator.neutral  { background: #6b7280; }
