@@ -7,7 +7,7 @@ Formato: 1 vídeo por hora cobrindo 6 histórias → ~10-12 minutos.
 Vídeos longos habilitam mid-roll ads (mínimo 8 min), maximizando receita.
 
 Estrutura do vídeo:
-  Intro       ~30s   "Welcome to TechBR News Hourly Roundup"
+  Intro       ~30s   "Welcome to GlobalBR News Hourly Roundup"
   História 1  ~90s   Título + descrição + fonte
   História 2  ~90s   ...
   …até 6 histórias…
@@ -31,7 +31,7 @@ MIN_STORIES       = 3      # mínimo para gerar (evita vídeos muito curtos)
 MAX_PER_RUN       = 1      # 1 roundup por execução
 VIDEO_W, VIDEO_H  = 1920, 1080
 
-# Paleta de cores — identidade TechBR
+# Paleta de cores — identidade GlobalBR
 BG_DARK     = (8, 8, 18)
 ACCENT_BLUE = (0, 195, 255)
 ACCENT_CYAN = (0, 240, 200)
@@ -148,13 +148,13 @@ def build_roundup_script(stories: list[dict]) -> str:
     hour_str = now.strftime("%I %p").lstrip("0")
 
     # ── INTRO (~180 words) ────────────────────────────────────────
-    script = f"""Welcome to TechBR News — your hourly technology roundup.
+    script = f"""Welcome to GlobalBR News — your hourly world news roundup.
 
-It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now in {cat_label} and across the technology world.
+It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now — covering {cat_label} and more from around the globe.
 
-Whether you are commuting, working out, or just keeping up with the latest developments, you are in the right place. We publish one of these roundups every single hour — so you always have a trusted, up-to-date source for what matters in tech.
+Whether you are commuting, working out, or just keeping up with the latest developments, you are in the right place. We publish one of these roundups every single hour — so you always have a trusted, up-to-date source for what matters in the world.
 
-Technology moves fast. Things that were announced this morning can change the direction of entire industries by the afternoon. That is exactly why we are here — to make sure you never fall behind.
+The world moves fast. Things that were announced this morning can change the direction of entire industries, governments, and communities by the afternoon. That is exactly why we are here — to make sure you never fall behind.
 
 Before we begin, a quick reminder: every story we cover today has a direct link in the description below, so you can read the full article straight from the original source. We always credit the journalists and publications doing the important reporting that keeps us all informed.
 
@@ -255,7 +255,7 @@ This story was reported by {source}, which is one of the most respected publicat
 """
 
     # ── OUTRO (~220 words) ────────────────────────────────────────
-    script += f"""And that wraps up this hour's TechBR News Roundup — {n} stories covering the most important developments in technology happening right now.
+    script += f"""And that wraps up this hour's GlobalBR News Roundup — {n} stories covering the most important developments happening around the world right now.
 
 Let us do a quick recap of what we covered today.
 
@@ -273,9 +273,9 @@ If you are not subscribed yet, please do it right now. It is completely free. Hi
 
 We also publish everything on our website at non-s dot github dot io — a great place to search all our past stories and stay on top of the topics that matter to you.
 
-Share this video with someone who needs to stay ahead in tech. It takes two seconds and it really helps us grow.
+Share this video with someone who wants to stay informed about the world. It takes two seconds and it really helps us grow.
 
-Thank you so much for watching. This has been TechBR News.
+Thank you so much for watching. This has been GlobalBR News.
 
 Stay curious. Stay informed. We will see you in exactly one hour."""
 
@@ -291,7 +291,7 @@ async def text_to_speech(text: str, output_path: Path, voice: str):
 def download_image(url: str, dest: Path) -> bool:
     try:
         r = requests.get(url, timeout=10,
-                         headers={"User-Agent": "TechBR-Bot/2.0"})
+                         headers={"User-Agent": "GlobalBR-Bot/2.0"})
         if r.status_code == 200 and len(r.content) > 2000:
             dest.write_bytes(r.content)
             return True
@@ -618,7 +618,7 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     year = datetime.now().year
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    yt_title = f"Tech News Roundup — Top {n} Stories | {date_str} | TechBR News"
+    yt_title = f"World News Roundup — Top {n} Stories | {date_str} | GlobalBR News"
 
     # Descrição com capítulos estimados
     intro_s   = 0
@@ -641,7 +641,7 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     )
 
     yt_desc = (
-        f"In this hour's TechBR News Roundup we cover {n} stories:\n\n"
+        f"In this hour's GlobalBR News World Roundup we cover {n} stories:\n\n"
         f"{stories_summary}\n\n"
         "━" * 28 + "\n"
         f"\U0001f310 Sources:\n" +
@@ -650,18 +650,18 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         "━" * 28 + "\n"
         f"{chapters}\n\n"
         "━" * 28 + "\n"
-        "\U0001f514 SUBSCRIBE for hourly tech news → https://youtube.com/@techbrnews\n"
+        "\U0001f514 SUBSCRIBE for hourly tech news → https://youtube.com/@globalbrnews\n"
         "\U0001f4f0 Read more at → https://non-s.github.io\n\n"
         "━" * 28 + "\n"
-        f"© {year} TechBR News. Original articles belong to their respective sources.\n"
-        "#TechNews #TechRoundup #Technology #TechBRNews #AINews #Startups"
+        f"© {year} GlobalBR News. Original articles belong to their respective sources.\n"
+        "#WorldNews #NewsRoundup #GlobalNews #GlobalBRNews #BreakingNews #Politics #Science #Sports #Technology"
     )
 
     # Tags combinadas de todas as histórias
     base_tags = [
-        "tech news", "technology news", "TechBR News", f"tech news {year}",
-        "tech roundup", "hourly tech news", "breaking tech", "latest technology",
-        "tech news today", "technology today",
+        "world news", "global news", "GlobalBR News", f"news {year}",
+        "news roundup", "hourly news", "breaking news", "latest news",
+        "news today", "top stories today", "technology news", "politics news",
     ]
     story_tags = []
     for s in stories:
@@ -775,7 +775,7 @@ def main():
 
         title    = fm.get("title", post_file.stem.replace("-", " ").title())
         desc     = fm.get("description", "")
-        source   = fm.get("source_name", "TechBR News")
+        source   = fm.get("source_name", "GlobalBR News")
         src_url  = fm.get("source_url", "https://non-s.github.io")
         img_url  = fm.get("image", "")
         tags_raw = fm.get("tags", "[]")
