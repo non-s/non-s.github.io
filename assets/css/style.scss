@@ -2041,3 +2041,166 @@ img { max-width: 100%; display: block; }
   border-radius: var(--r-sm);
   overflow: hidden;
 }
+
+/* ============================================================
+   KEY POINTS BOX
+   ============================================================ */
+.key-points-box {
+  background: linear-gradient(135deg, rgba(249,115,22,.08) 0%, rgba(59,130,246,.06) 100%);
+  border: 1px solid rgba(249,115,22,.25);
+  border-radius: var(--r-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+}
+.key-points-header {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--c-accent);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.key-points-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+.key-points-list li {
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: .9rem;
+  color: var(--c-text);
+  line-height: 1.5;
+}
+.key-points-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--c-accent);
+  font-size: .75rem;
+  top: .15em;
+}
+
+/* ============================================================
+   TABLE OF CONTENTS
+   ============================================================ */
+.toc-box {
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+}
+.toc-header {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .6rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.toc-toggle {
+  background: none;
+  border: none;
+  color: var(--c-muted);
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 .2rem;
+  font-size: .95rem;
+  line-height: 1;
+  &:hover { color: var(--c-text); }
+}
+.toc-nav {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.toc-link {
+  display: block;
+  font-size: .85rem;
+  color: var(--c-muted);
+  text-decoration: none;
+  padding: .2rem 0;
+  transition: color .15s;
+  &:hover { color: var(--c-accent); }
+}
+.toc-h3 { padding-left: 1rem; font-size: .8rem; }
+
+/* ============================================================
+   DARK / LIGHT MODE TOGGLE
+   ============================================================ */
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.6);
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+  margin-left: .5rem;
+  &:hover {
+    background: rgba(249,115,22,.15);
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+}
+
+/* Light mode overrides */
+[data-theme="light"] {
+  --c-bg:       #f3f4f6;
+  --c-surface:  #ffffff;
+  --c-surface2: #f9fafb;
+  --c-surface3: #e5e7eb;
+  --c-border:   rgba(0,0,0,.08);
+  --c-border2:  rgba(0,0,0,.14);
+  --c-text:     #1a202c;
+  --c-muted:    #6b7280;
+  --c-white:    #1a202c;
+  --shadow-card: 0 4px 20px rgba(0,0,0,.08), 0 1px 0 rgba(255,255,255,.8) inset;
+  --grad-hero:  linear-gradient(135deg,#f3f4f6 0%,#e8edf5 55%,#ede9f5 100%);
+  --grad-card:  linear-gradient(160deg,#ffffff 0%,#f9fafb 100%);
+}
+[data-theme="light"] body {
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+[data-theme="light"] .techbr-navbar {
+  background: rgba(255,255,255,.95) !important;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+[data-theme="light"] .nav-link {
+  color: #374151 !important;
+}
+[data-theme="light"] .breaking-bar {
+  background: #1a202c;
+}
+[data-theme="light"] .news-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,.09);
+}
+[data-theme="light"] .post-content {
+  color: #1a202c;
+}
+[data-theme="light"] .toc-box,
+[data-theme="light"] .key-points-box {
+  background: #fff;
+}
+[data-theme="light"] .theme-toggle-btn {
+  border-color: rgba(0,0,0,.2);
+  color: #374151;
+  &:hover { color: var(--c-accent); }
+}

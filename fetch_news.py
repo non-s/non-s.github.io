@@ -36,59 +36,85 @@ _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
 # ============================================================
-# AI TEXT — Groq (primário, rápido) + Pollinations (fallback gratuito)
+# AI TEXT — Groq (primário) + Gemini Flash (secundário) + Pollinations (fallback)
 # ============================================================
 
 GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL            = "llama-3.3-70b-versatile"
+GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
 
 def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) -> str:
     """
-    Gera texto via Groq (Llama 3.3 70B — rápido, gratuito com chave).
-    Fallback automático para Pollinations.ai se Groq não estiver configurado ou falhar.
+    Gera texto via:
+    1. Groq (Llama 3.3 70B — rápido, gratuito com chave)
+    2. Google Gemini 1.5 Flash (15 req/min, 1M tokens/dia — gratuito com chave)
+    3. Pollinations.ai (sem chave, sem limites)
     """
+    sys_msg = system or "You are a professional journalist and SEO expert. Be concise and accurate."
+
+    # ── 1. Groq ──────────────────────────────────────────────
     groq_key = os.environ.get("GROQ_API_KEY", "")
     if groq_key:
         try:
-            headers = {
-                "Authorization": f"Bearer {groq_key}",
-                "Content-Type": "application/json",
-            }
-            payload = {
-                "model": GROQ_MODEL,
-                "messages": [
-                    {"role": "system", "content": system or "You are a professional journalist and SEO expert. Be concise and accurate."},
-                    {"role": "user",   "content": prompt},
-                ],
-                "temperature": 0.7,
-                "max_tokens": 1500,
-            }
-            r = _session.post(GROQ_API_URL, json=payload, headers=headers, timeout=timeout)
+            r = _session.post(
+                GROQ_API_URL,
+                json={
+                    "model": GROQ_MODEL,
+                    "messages": [
+                        {"role": "system", "content": sys_msg},
+                        {"role": "user",   "content": prompt},
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 1500,
+                },
+                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+                timeout=timeout,
+            )
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"].strip()
         except Exception as exc:
-            log.warning(f"Groq API error (falling back to Pollinations): {exc}")
+            log.warning(f"Groq error (tentando Gemini): {exc}")
 
-    # Fallback: Pollinations.ai — sem chave, gratuito
+    # ── 2. Gemini 1.5 Flash ───────────────────────────────────
+    gemini_key = os.environ.get("GEMINI_API_KEY", "")
+    if gemini_key:
+        try:
+            r = _session.post(
+                f"{GEMINI_API_URL}?key={gemini_key}",
+                json={
+                    "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1500},
+                },
+                timeout=timeout,
+            )
+            r.raise_for_status()
+            return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as exc:
+            log.warning(f"Gemini error (tentando Pollinations): {exc}")
+
+    # ── 3. Pollinations.ai — sem chave, gratuito ─────────────
     try:
-        payload = {
-            "messages": [
-                {"role": "system", "content": system or "You are a professional journalist and SEO expert. Be concise and accurate."},
-                {"role": "user",   "content": prompt},
-            ],
-            "model":   "openai",
-            "seed":    seed or abs(hash(prompt)) % 9999,
-            "private": True,
-        }
-        r = _session.post(POLLINATIONS_TEXT_URL, json=payload, timeout=timeout)
+        r = _session.post(
+            POLLINATIONS_TEXT_URL,
+            json={
+                "messages": [
+                    {"role": "system", "content": sys_msg},
+                    {"role": "user",   "content": prompt},
+                ],
+                "model":   "openai",
+                "seed":    seed or abs(hash(prompt)) % 9999,
+                "private": True,
+            },
+            timeout=timeout,
+        )
         r.raise_for_status()
         data = r.json()
         if isinstance(data, dict) and "choices" in data:
             return data["choices"][0]["message"]["content"].strip()
         return str(data).strip()
     except Exception as exc:
-        log.warning(f"Pollinations fallback error: {exc}")
+        log.warning(f"Pollinations error: {exc}")
         return ""
 
 # Alias para compatibilidade interna
@@ -151,9 +177,8 @@ def _sentiment_score(text: str) -> str:
 
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
     """
-    Usa Pollinations AI para gerar conteúdo SEO-otimizado por artigo.
-    Retorna dict com: seo_title, meta_description, article_body, faq, keywords.
-    Retorna {} em caso de falha — o caller usa template como fallback.
+    Gera conteúdo SEO-otimizado por artigo via AI.
+    Retorna dict com: seo_title, meta_description, article_body, faq, keywords, key_points.
     """
     combined = f"{description}\n\n{body}".strip()[:2000]
     cat = category.capitalize()
@@ -163,12 +188,14 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
         f'Required JSON:\n'
         f'{{"seo_title":"<65 chars with main keyword>","meta_description":"<150-155 chars ending with period>",'
-        f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. No bullet points.",'
+        f'"key_points":["concise point 1","concise point 2","concise point 3"],'
+        f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. '
+        f'For key people/places/organizations add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). No bullet points.",'
         f'"faq":[{{"q":"specific question about this news?","a":"clear 1-2 sentence answer."}},'
         f'{{"q":"second relevant question?","a":"clear 1-2 sentence answer."}}],'
         f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
     )
-    raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=22)
+    raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
     if not raw:
         return {}
     try:
@@ -1113,6 +1140,7 @@ def build_frontmatter(
     keywords:    list | None = None,
     faq:         list | None = None,
     sentiment:   str  = "neutral",
+    key_points:  list | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1136,6 +1164,12 @@ sentiment: "{sentiment}"
     if keywords:
         kw_yaml = "[" + ", ".join(f'"{k}"' for k in keywords[:8] if k and len(k) > 1) + "]"
         front += f"keywords: {kw_yaml}\n"
+    if key_points:
+        front += "key_points:\n"
+        for pt in key_points[:3]:
+            pt_clean = sanitize_text(str(pt)).replace('"', "'")
+            if pt_clean:
+                front += f'  - "{pt_clean}"\n'
     if faq:
         front += "faq:\n"
         for item in faq[:3]:
@@ -1441,6 +1475,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 keywords    = ai.get("keywords", []),
                 faq         = ai.get("faq", []),
                 sentiment   = sentiment,
+                key_points  = ai.get("key_points", []),
             )
             post_content = build_content(
                 title       = title,

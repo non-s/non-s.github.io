@@ -71,7 +71,32 @@ layout: default
       </figure>
       {% endif %}
 
-      <article class="post-content">
+      <!-- Key Points Box -->
+      {% if page.key_points %}
+      <div class="key-points-box">
+        <div class="key-points-header">
+          <i class="bi bi-lightning-charge-fill"></i> Key Points
+        </div>
+        <ul class="key-points-list">
+          {% for point in page.key_points %}
+          <li>{{ point }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <!-- Table of Contents -->
+      <div id="toc-container" class="toc-box" style="display:none">
+        <div class="toc-header">
+          <i class="bi bi-list-ul"></i> Contents
+          <button class="toc-toggle" onclick="document.getElementById('toc-container').style.display='none'" aria-label="Close TOC">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <nav id="toc-nav" class="toc-nav"></nav>
+      </div>
+
+      <article class="post-content" id="post-article">
         {{ content }}
       </article>
 
@@ -301,6 +326,50 @@ layout: default
   }
   {% endif %}
 }
+</script>
+
+<!-- Reading Progress Bar -->
+<div id="read-progress" style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,#f97316,#fb923c);z-index:9999;transition:width .1s linear;pointer-events:none;"></div>
+<script>
+(function(){
+  var bar = document.getElementById('read-progress');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var scrolled = doc.scrollTop || document.body.scrollTop;
+    var total = doc.scrollHeight - doc.clientHeight;
+    bar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
+  }
+  window.addEventListener('scroll', update, {passive: true});
+  update();
+})();
+</script>
+
+<!-- Table of Contents builder -->
+<script>
+(function(){
+  var article = document.getElementById('post-article');
+  var nav = document.getElementById('toc-nav');
+  var container = document.getElementById('toc-container');
+  if (!article || !nav || !container) return;
+  var headings = article.querySelectorAll('h2, h3');
+  if (headings.length < 2) return;
+  var fragment = document.createDocumentFragment();
+  headings.forEach(function(h, i) {
+    if (!h.id) h.id = 'toc-' + i;
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    a.className = 'toc-link toc-' + h.tagName.toLowerCase();
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById(h.id).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    fragment.appendChild(a);
+  });
+  nav.appendChild(fragment);
+  container.style.display = 'block';
+})();
 </script>
 
 <!-- Related Posts -->

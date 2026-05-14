@@ -54,6 +54,7 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: "🔍 Check for new posts"
         id: check_changes
@@ -125,6 +126,37 @@ jobs:
             echo "✅ Bing URLs submetidas"
           else
             echo "ℹ️ BING_API_KEY não configurada ou sem URLs — pulando"
+          fi
+
+      - name: "⚡ IndexNow — notify Bing & Yandex instantly"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: |
+          if [ -z "${{ secrets.INDEXNOW_KEY }}" ]; then
+            echo "ℹ️ INDEXNOW_KEY não configurada — pulando"
+            exit 0
+          fi
+          URLS=$(git diff HEAD~1 --name-only 2>/dev/null | grep "^_posts/" | head -10 | while read f; do
+            stem=$(basename "$f" .md)
+            # extract category from frontmatter
+            cat=$(grep -m1 "^categories:" "$f" 2>/dev/null | sed 's/categories: \[//;s/\].*//' | tr -d ' ' | cut -d',' -f1)
+            # build URL: /category/YYYY/MM/DD/slug/
+            year=$(echo $stem | cut -c1-4)
+            month=$(echo $stem | cut -c6-7)
+            day=$(echo $stem | cut -c9-10)
+            slug=$(echo $stem | cut -c12-)
+            echo "https://non-s.github.io/${cat}/${year}/${month}/${day}/${slug}/"
+          done | jq -R . | jq -cs .)
+          if [ -n "$URLS" ] && [ "$URLS" != "[]" ]; then
+            # Submit to Bing IndexNow
+            curl -s -X POST "https://api.indexnow.org/indexnow" \
+              -H "Content-Type: application/json; charset=utf-8" \
+              -d "{\"host\":\"non-s.github.io\",\"key\":\"${{ secrets.INDEXNOW_KEY }}\",\"keyLocation\":\"https://non-s.github.io/${{ secrets.INDEXNOW_KEY }}.txt\",\"urlList\":$URLS}" || true
+            # Submit to Yandex IndexNow
+            curl -s -X POST "https://yandex.com/indexnow" \
+              -H "Content-Type: application/json; charset=utf-8" \
+              -d "{\"host\":\"non-s.github.io\",\"key\":\"${{ secrets.INDEXNOW_KEY }}\",\"keyLocation\":\"https://non-s.github.io/${{ secrets.INDEXNOW_KEY }}.txt\",\"urlList\":$URLS}" || true
+            echo "✅ IndexNow notificado: $URLS"
           fi
 
       - name: "ℹ️ No new posts"
