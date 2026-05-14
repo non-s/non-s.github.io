@@ -1,0 +1,70 @@
+---
+layout: default
+---
+
+<div class="post-breadcrumb">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{{ '/' | relative_url }}"><i class="bi bi-house"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ '/tags/' | relative_url }}">All Tags</a></li>
+        <li class="breadcrumb-item active">{{ page.tag }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="container py-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="section-title">Posts tagged '{{ page.tag }}'</h1>
+      {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
+      <p class="text-muted">{{ tag_posts | size }} article{% if tag_posts.size != 1 %}s{% endif %} found</p>
+      <hr class="section-divider">
+      <a href="{{ '/tags/' | relative_url }}" class="btn btn-sm" style="background:var(--c-surface);color:var(--c-muted);border:1px solid var(--c-border);border-radius:var(--r-sm);">
+        <i class="bi bi-arrow-left"></i> All tags
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
+    {% if tag_posts.size > 0 %}
+      {% for post in tag_posts %}
+      <div class="col-md-6 col-lg-4">
+        <article class="news-card h-100">
+          {% if post.image %}
+          <div class="card-img-wrap">
+            <a href="{{ post.url | relative_url }}">
+              <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy" class="card-img">
+            </a>
+          </div>
+          {% endif %}
+          <div class="card-body-inner">
+            <div class="card-meta">
+              <time datetime="{{ post.date | date_to_xmlschema }}">
+                {{ post.date | date: "%B %d, %Y" }}
+              </time>
+              {% if post.source_name %}<span class="card-source">{{ post.source_name }}</span>{% endif %}
+            </div>
+            <h2 class="card-headline">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h2>
+            <p class="card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+          </div>
+          <div class="card-footer-row">
+            <a href="{{ post.url | relative_url }}" class="btn-read-more">
+              Read more <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </article>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-tag" style="font-size:3rem;opacity:.3;"></i>
+        <p class="mt-3 text-muted">No posts tagged <strong>{{ page.tag }}</strong> yet.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
