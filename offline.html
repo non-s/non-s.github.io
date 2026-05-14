@@ -10,18 +10,18 @@
       background: #080c17;
       color: #dde4f0;
       font-family: 'Inter', system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3rem 2rem;
     }
-    .wrap { max-width: 480px; }
-    .icon { font-size: 4rem; margin-bottom: 1.5rem; }
-    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: .75rem; }
-    p  { color: #7e8fa8; line-height: 1.6; margin-bottom: 1.5rem; }
-    a  {
+    .wrap { max-width: 560px; width: 100%; }
+    .icon { font-size: 3.5rem; margin-bottom: 1.25rem; text-align: center; }
+    h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: .5rem; text-align: center; }
+    .subtitle { color: #7e8fa8; line-height: 1.6; margin-bottom: 2rem; text-align: center; }
+    .btn {
       display: inline-block;
       background: #f97316;
       color: #fff;
@@ -29,15 +29,83 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
     }
+    .btn-wrap { text-align: center; margin-bottom: 2.5rem; }
+    .cached-section { margin-top: 1rem; }
+    .cached-section h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #7e8fa8;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      padding-bottom: .5rem;
+    }
+    #cached-list { list-style: none; padding: 0; }
+    #cached-list li {
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: .7rem 0;
+    }
+    #cached-list li a {
+      color: #dde4f0;
+      text-decoration: none;
+      font-size: .95rem;
+      line-height: 1.4;
+      display: block;
+    }
+    #cached-list li a:hover { color: #f97316; }
+    #cached-list p { color: #7e8fa8; font-size: .9rem; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="icon">📡</div>
     <h1>You're offline</h1>
-    <p>Looks like you lost your internet connection. Check your network and try again.</p>
-    <a href="/" onclick="location.reload()">Try again</a>
+    <p class="subtitle">No internet connection detected. Check your network and try again, or read one of the articles saved below.</p>
+    <div class="btn-wrap">
+      <button class="btn" onclick="location.reload()">Try again</button>
+    </div>
+
+    <div class="cached-section">
+      <h2>Articles saved for offline reading</h2>
+      <ul id="cached-list">
+        <li><p>Loading cached articles…</p></li>
+      </ul>
+    </div>
   </div>
+
+  <script>
+    async function loadCachedArticles() {
+      var list = document.getElementById('cached-list');
+      if (!list) return;
+      if (!('caches' in window)) {
+        list.innerHTML = '<li><p>Your browser does not support offline caching.</p></li>';
+        return;
+      }
+      try {
+        var cache = await caches.open('globalbr-articles-v3');
+        var keys = await cache.keys();
+        if (keys.length === 0) {
+          list.innerHTML = '<li><p>No articles cached yet. Visit some articles while online.</p></li>';
+          return;
+        }
+        list.innerHTML = keys.slice(0, 10).map(function(r) {
+          var parts = r.url.split('/').filter(Boolean);
+          var slug = parts.pop() || parts.pop() || '';
+          var label = decodeURIComponent(slug).replace(/-/g, ' ');
+          // Capitalize first letter
+          label = label.charAt(0).toUpperCase() + label.slice(1);
+          return '<li><a href="' + r.url + '">' + label + '</a></li>';
+        }).join('');
+      } catch (err) {
+        list.innerHTML = '<li><p>Could not load cached articles.</p></li>';
+      }
+    }
+    loadCachedArticles();
+  </script>
 </body>
 </html>

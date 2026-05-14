@@ -278,7 +278,6 @@ def main() -> None:
 
     today = datetime.now(timezone.utc).strftime("%B %d, %Y")
     today_short = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    subject = f"🌍 GlobalBR News — Top 5 Stories | {today_short}"
 
     log.info("Loading posts from %s", POSTS_DIR)
     posts = load_recent_posts(10)
@@ -288,6 +287,9 @@ def main() -> None:
     if not top5:
         log.warning("No posts with all required fields found — skipping newsletter.")
         sys.exit(0)
+
+    top_headline = top5[0].get("title", "Top World News")
+    subject = f"🌍 {top_headline} — GlobalBR News {today_short}"
 
     log.info("Selected %d posts for newsletter", len(top5))
     for p in top5:
