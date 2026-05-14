@@ -2623,6 +2623,35 @@ mark {
 .sentiment-indicator.neutral  { background: #6b7280; }
 
 /* ============================================================
+   CATEGORY HEADER
+   ============================================================ */
+.cat-header { padding: 2rem 0 1rem; background: var(--c-surface); border-bottom: 1px solid var(--c-border); margin-bottom: 2rem; }
+.cat-header-inner { display: flex; align-items: center; gap: 1.25rem; }
+.cat-header-icon { font-size: 2.5rem; line-height: 1; }
+.cat-header-title { font-size: 1.6rem; font-weight: 800; color: var(--c-text); margin: 0 0 .25rem; }
+.cat-header-desc { color: var(--c-muted); font-size: .9rem; margin: 0; }
+
+/* ============================================================
+   CODE COPY BUTTON
+   ============================================================ */
+.code-copy-btn {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  background: var(--c-surface3);
+  border: 1px solid var(--c-border2);
+  color: var(--c-muted);
+  border-radius: var(--r-xs);
+  padding: .2rem .6rem;
+  font-size: .72rem;
+  cursor: pointer;
+  transition: all .15s;
+  opacity: 0;
+}
+pre:hover .code-copy-btn { opacity: 1; }
+.code-copy-btn:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+
+/* ============================================================
    SAVE FOR LATER BUTTON (Reading List)
    ============================================================ */
 .save-btn {
