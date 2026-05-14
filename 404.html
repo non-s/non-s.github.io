@@ -1,0 +1,91 @@
+---
+layout: default
+title: "Page Not Found — GlobalBR News"
+description: "The page you're looking for doesn't exist."
+permalink: /404.html
+hide_subscribe: true
+---
+
+<section style="background:var(--grad-hero);padding:4rem 0 3rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;text-align:center;">
+    <div style="font-size:7rem;font-weight:900;font-family:var(--font-head);background:var(--grad-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.5rem;">404</div>
+    <h1 style="font-family:var(--font-head);font-size:1.75rem;font-weight:800;color:var(--c-white);margin-bottom:.75rem;">Page Not Found</h1>
+    <p style="color:var(--c-muted);font-size:1rem;max-width:440px;margin:0 auto 2rem;line-height:1.65;">
+      Oops! The article or page you're looking for has moved, been removed, or never existed.
+    </p>
+
+    <!-- Search box -->
+    <form class="d-flex gap-2 justify-content-center" role="search"
+          action="{{ '/search/' | relative_url }}" method="get"
+          style="max-width:460px;margin:0 auto 2rem;">
+      <input class="form-control search-input" type="search"
+             name="q" placeholder="Search GlobalBR News…" aria-label="Search"
+             style="flex:1;">
+      <button class="btn search-btn" type="submit">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </form>
+
+    <a href="{{ '/' | relative_url }}" class="btn-hero" style="display:inline-flex;text-decoration:none;">
+      <i class="bi bi-house-fill"></i> Back to Home
+    </a>
+  </div>
+</section>
+
+<!-- Latest posts -->
+<section class="container py-5">
+  <div class="row mb-3">
+    <div class="col">
+      <h2 class="section-title">Latest Articles</h2>
+    </div>
+  </div>
+  <div class="row g-4">
+    {% for post in site.posts limit:6 %}
+    <div class="col-md-6 col-lg-4">
+      <article class="news-card h-100">
+        {% if post.image %}
+        <div class="card-img-wrap" style="height:150px;overflow:hidden;background:var(--c-surface3);">
+          <a href="{{ post.url | relative_url }}">
+            <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy"
+                 style="width:100%;height:100%;object-fit:cover;">
+          </a>
+        </div>
+        {% endif %}
+        <div style="padding:1rem 1.1rem;flex:1;display:flex;flex-direction:column;">
+          <div style="font-size:.72rem;color:var(--c-muted);margin-bottom:.35rem;">
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+            {% if post.source_name %} · {{ post.source_name }}{% endif %}
+          </div>
+          <h3 style="font-family:var(--font-head);font-size:.9rem;font-weight:700;line-height:1.35;color:var(--c-white);flex:1;margin-bottom:.4rem;">
+            <a href="{{ post.url | relative_url }}" style="color:inherit;" onmouseover="this.style.color='var(--c-accent)'" onmouseout="this.style.color='inherit'">{{ post.title | truncate: 80 }}</a>
+          </h3>
+        </div>
+        <div style="padding:.6rem 1.1rem;border-top:1px solid var(--c-border);">
+          <a href="{{ post.url | relative_url }}" class="btn-read">Read more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </article>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="container pb-5">
+  <div class="row">
+    <div class="col">
+      <h2 class="section-title" style="margin-bottom:1.25rem;">Browse Categories</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+        {% assign cats = "world,politics,war,business,science,health,sports,food,entertainment,environment,travel,technology,ai,security,gadgets,startups,mobile" | split: "," %}
+        {% for cat in cats %}
+        <a href="{{ '/' | append: cat | append: '/' | relative_url }}"
+           style="display:inline-flex;align-items:center;padding:.45rem 1rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:50px;font-size:.82rem;font-weight:600;color:var(--c-muted);text-decoration:none;transition:all .2s;text-transform:capitalize;"
+           onmouseover="this.style.color='var(--c-accent)';this.style.borderColor='rgba(249,115,22,.3)';this.style.background='rgba(249,115,22,.08)'"
+           onmouseout="this.style.color='var(--c-muted)';this.style.borderColor='var(--c-border)';this.style.background='var(--c-surface)'">
+          {{ cat }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
