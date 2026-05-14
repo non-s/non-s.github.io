@@ -11,7 +11,7 @@ name: "📰 Fetch News RSS"
 
 on:
   schedule:
-    - cron: "0 * * * *"   # Every hour at :00 — blog posts first
+    - cron: "*/10 * * * *"   # Every 10 minutes
 
   workflow_dispatch:
     inputs:
@@ -64,8 +64,8 @@ jobs:
       - name: "💾 Commit & push new posts"
         if: steps.check_changes.outputs.changed != '0'
         run: |
-          git config user.name  "TechBR News Bot"
-          git config user.email "bot@techbrnews.com"
+          git config user.name  "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
 
           git add _posts/
           git add fetch_news.log || true

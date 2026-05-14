@@ -2,7 +2,7 @@ name: "YouTube Bot"
 
 on:
   schedule:
-    - cron: "20 * * * *"  # Every hour at :20 — after blog posts are committed at :00
+    - cron: "*/30 * * * *"  # Every 30 minutes
   workflow_dispatch:
 
 jobs:
