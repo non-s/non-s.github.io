@@ -3321,3 +3321,18 @@ body.font-serif #post-article {
     border: 0;
   }
 }
+
+// Prev/Next article navigation
+.post-prevnext { margin: 2.5rem 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); }
+.prevnext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.prevnext-card {
+  display: flex; flex-direction: column; gap: .35rem;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: .75rem; padding: .9rem 1.1rem;
+  text-decoration: none; transition: border-color .15s, background .15s;
+  &:hover { border-color: var(--c-accent); background: rgba(249,115,22,.06); }
+}
+.prevnext-next { text-align: right; }
+.prevnext-label { font-size: .72rem; color: var(--c-accent); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.prevnext-title { font-size: .85rem; color: var(--c-text); line-height: 1.4; font-weight: 500; }
+@media (max-width: 576px) { .prevnext-grid { grid-template-columns: 1fr; } }
