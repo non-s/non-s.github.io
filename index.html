@@ -181,6 +181,13 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                   <span class="card-date">
                     <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
                     {{ post.date | date: "%B %d, %Y" }}
+                    {% if post.sentiment == 'positive' %}
+                    <span class="sentiment-indicator positive" title="Positive news"></span>
+                    {% elsif post.sentiment == 'negative' %}
+                    <span class="sentiment-indicator negative" title="Negative news"></span>
+                    {% else %}
+                    <span class="sentiment-indicator neutral" title="Neutral news"></span>
+                    {% endif %}
                   </span>
                   <a href="{{ post.url | relative_url }}" class="btn-read">
                     Ler <i class="bi bi-arrow-right"></i>

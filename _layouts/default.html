@@ -4,6 +4,7 @@
   {% include head.html %}
 </head>
 <body>
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
 
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
@@ -131,14 +132,16 @@
       <div class="breaking-track">
         {% assign ticker_posts = site.posts | limit: 8 %}
         {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item">
+          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
             <span class="breaking-dot">●</span>
+            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
             {{ post.title | truncate: 90 }}
           </a>
         {% endfor %}
         {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item">
+          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
             <span class="breaking-dot">●</span>
+            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
             {{ post.title | truncate: 90 }}
           </a>
         {% endfor %}
@@ -147,7 +150,7 @@
   </div>
 
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
-  <main>{{ content }}</main>
+  <main id="main-content">{{ content }}</main>
 
   <!-- ── EMAIL SUBSCRIBE ─────────────────────────────────── -->
   {% unless page.hide_subscribe %}
@@ -300,6 +303,64 @@
           .catch(function(){ loading = false; nextLink = null; });
       }
     }, {passive:true});
+  })();
+  </script>
+
+  <!-- ── KEYBOARD SHORTCUTS MODAL ────────────────────────── -->
+  <div id="kb-shortcuts-modal" class="kb-modal" role="dialog" aria-label="Keyboard shortcuts" aria-hidden="true">
+    <div class="kb-modal-inner">
+      <button class="kb-modal-close" onclick="document.getElementById('kb-shortcuts-modal').classList.remove('active')" aria-label="Close">×</button>
+      <h3 class="kb-modal-title">⌨️ Keyboard Shortcuts</h3>
+      <table class="kb-table">
+        <tr><td><kbd>/</kbd></td><td>Focus search</td></tr>
+        <tr><td><kbd>j</kbd></td><td>Next post</td></tr>
+        <tr><td><kbd>k</kbd></td><td>Previous post</td></tr>
+        <tr><td><kbd>h</kbd></td><td>Go home</td></tr>
+        <tr><td><kbd>?</kbd></td><td>Show this help</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── KEYBOARD SHORTCUTS JS ─────────────────────────── -->
+  <script>
+  (function(){
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger in inputs/textareas
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      var key = e.key;
+
+      // "/" — focus search
+      if (key === '/') {
+        e.preventDefault();
+        var search = document.querySelector('.search-input');
+        if (search) { search.focus(); search.select(); }
+      }
+
+      // "j" — next post (post pages only)
+      if (key === 'j') {
+        var next = document.querySelector('.post-nav-item.prev a, a[rel="prev"]');
+        if (next) window.location.href = next.href;
+      }
+
+      // "k" — previous post
+      if (key === 'k') {
+        var prev = document.querySelector('.post-nav-item.next a, a[rel="next"]');
+        if (prev) window.location.href = prev.href;
+      }
+
+      // "h" — go home
+      if (key === 'h') {
+        window.location.href = '/';
+      }
+
+      // "?" — show keyboard shortcuts
+      if (key === '?') {
+        var modal = document.getElementById('kb-shortcuts-modal');
+        if (modal) modal.classList.toggle('active');
+      }
+    });
   })();
   </script>
 
