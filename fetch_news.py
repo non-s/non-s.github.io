@@ -23,6 +23,7 @@ import feedparser
 import requests
 import os
 import re
+import json
 import logging
 import hashlib
 import unicodedata
@@ -33,6 +34,125 @@ from time import sleep
 # HTTP session reutilizável (melhor performance)
 _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
+
+# ============================================================
+# AI TEXT — Groq (primário, rápido) + Pollinations (fallback gratuito)
+# ============================================================
+
+GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL            = "llama-3.3-70b-versatile"
+POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
+
+def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) -> str:
+    """
+    Gera texto via Groq (Llama 3.3 70B — rápido, gratuito com chave).
+    Fallback automático para Pollinations.ai se Groq não estiver configurado ou falhar.
+    """
+    groq_key = os.environ.get("GROQ_API_KEY", "")
+    if groq_key:
+        try:
+            headers = {
+                "Authorization": f"Bearer {groq_key}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "model": GROQ_MODEL,
+                "messages": [
+                    {"role": "system", "content": system or "You are a professional journalist and SEO expert. Be concise and accurate."},
+                    {"role": "user",   "content": prompt},
+                ],
+                "temperature": 0.7,
+                "max_tokens": 1500,
+            }
+            r = _session.post(GROQ_API_URL, json=payload, headers=headers, timeout=timeout)
+            r.raise_for_status()
+            return r.json()["choices"][0]["message"]["content"].strip()
+        except Exception as exc:
+            log.warning(f"Groq API error (falling back to Pollinations): {exc}")
+
+    # Fallback: Pollinations.ai — sem chave, gratuito
+    try:
+        payload = {
+            "messages": [
+                {"role": "system", "content": system or "You are a professional journalist and SEO expert. Be concise and accurate."},
+                {"role": "user",   "content": prompt},
+            ],
+            "model":   "openai",
+            "seed":    seed or abs(hash(prompt)) % 9999,
+            "private": True,
+        }
+        r = _session.post(POLLINATIONS_TEXT_URL, json=payload, timeout=timeout)
+        r.raise_for_status()
+        data = r.json()
+        if isinstance(data, dict) and "choices" in data:
+            return data["choices"][0]["message"]["content"].strip()
+        return str(data).strip()
+    except Exception as exc:
+        log.warning(f"Pollinations fallback error: {exc}")
+        return ""
+
+# Alias para compatibilidade interna
+_pollinations_text = _ai_text
+
+_ARTICLE_SCENES = {
+    "world":         "globe earth world connections editorial journalism photo",
+    "politics":      "government parliament building political official press conference",
+    "war":           "military helicopter dramatic conflict zone editorial war journalism",
+    "business":      "city financial district stock market trading floor professional",
+    "science":       "laboratory research scientist microscope discovery breakthrough",
+    "health":        "modern hospital medical professional doctor healthcare clean",
+    "food":          "gourmet dish professional food photography restaurant kitchen",
+    "sports":        "packed stadium dramatic lighting athletic competition action",
+    "entertainment": "hollywood film set awards show glamour photography entertainment",
+    "environment":   "lush forest climate change renewable energy solar panels nature",
+    "travel":        "exotic destination architecture landmark golden hour travel",
+    "technology":    "futuristic circuit boards digital interface blue neon tech lab",
+    "ai":            "artificial intelligence neural network data center futuristic",
+    "security":      "cybersecurity shield digital lock binary code dark blue room",
+    "gadgets":       "modern smartphone flat lay tech product photography minimal",
+    "startups":      "modern startup office collaborative workspace innovation hub",
+    "mobile":        "smartphone close-up mobile app interface modern device",
+}
+
+def _news_image_url(title: str, category: str) -> str:
+    """URL de imagem Pollinations Flux única por artigo — sem download, hospedada no CDN deles."""
+    scene = _ARTICLE_SCENES.get(category, "professional editorial news photography journalism")
+    keywords = " ".join(w for w in title.split()[:5] if len(w) > 3)
+    prompt = f"photorealistic editorial photo {keywords} {scene} 16:9 widescreen no text no words high quality"
+    encoded = requests.utils.quote(prompt)
+    seed = abs(hash(title + category)) % 99999
+    return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed}&model=flux"
+
+def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
+    """
+    Usa Pollinations AI para gerar conteúdo SEO-otimizado por artigo.
+    Retorna dict com: seo_title, meta_description, article_body, faq, keywords.
+    Retorna {} em caso de falha — o caller usa template como fallback.
+    """
+    combined = f"{description}\n\n{body}".strip()[:2000]
+    cat = category.capitalize()
+    prompt = (
+        f'You are a world-class SEO journalist. Enhance this news article. '
+        f'Respond ONLY with valid JSON, no markdown, no code blocks, no extra text.\n\n'
+        f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
+        f'Required JSON:\n'
+        f'{{"seo_title":"<65 chars with main keyword>","meta_description":"<150-155 chars ending with period>",'
+        f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. No bullet points.",'
+        f'"faq":[{{"q":"specific question about this news?","a":"clear 1-2 sentence answer."}},'
+        f'{{"q":"second relevant question?","a":"clear 1-2 sentence answer."}}],'
+        f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
+    )
+    raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=22)
+    if not raw:
+        return {}
+    try:
+        clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
+        m = re.search(r'\{.*\}', clean, re.DOTALL)
+        if m:
+            return json.loads(m.group())
+    except Exception as e:
+        log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
+    return {}
 
 # ============================================================
 # CONFIGURAÇÕES
@@ -964,6 +1084,8 @@ def build_frontmatter(
     source_url:  str,
     source_name: str,
     image:       str,
+    keywords:    list | None = None,
+    faq:         list | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -983,6 +1105,16 @@ source_name: "{source_name}"
 """
     if image:
         front += f'image: "{image}"\n'
+    if keywords:
+        kw_yaml = "[" + ", ".join(f'"{k}"' for k in keywords[:8] if k and len(k) > 1) + "]"
+        front += f"keywords: {kw_yaml}\n"
+    if faq:
+        front += "faq:\n"
+        for item in faq[:3]:
+            q = sanitize_text(str(item.get("q", ""))).replace('"', "'")
+            a = sanitize_text(str(item.get("a", ""))).replace('"', "'")
+            if q and a:
+                front += f'  - q: "{q}"\n    a: "{a}"\n'
     front += "---\n"
     return front
 
@@ -996,48 +1128,44 @@ def build_content(
     categories:  list,
     tags:        list,
     body:        str = "",
+    ai_body:     str = "",
 ) -> str:
-    """Builds rich Markdown post content (350-500 words) for better SEO."""
+    """Builds rich Markdown post content for SEO. Uses AI body when available."""
     date_str       = date.strftime("%B %d, %Y")
     time_str       = date.strftime("%H:%M UTC")
-    category_label = categories[0].capitalize() if categories else "Technology"
+    category_label = categories[0].capitalize() if categories else "News"
+    tag_links      = [f"#{t}" for t in tags[:6] if len(t) > 2]
+    tags_line      = " · ".join(tag_links) if tag_links else ""
 
-    # ── Opening paragraph (description) ──────────────────────
-    sentences = re.split(r'(?<=[.!?])\s+', description.strip())
-    para1 = " ".join(sentences[:3]) if len(sentences) >= 3 else description.strip()
-    para2 = " ".join(sentences[3:6]) if len(sentences) > 3 else ""
+    if ai_body and len(ai_body) > 200:
+        # ── AI-generated content (high quality SEO) ──────────
+        content = f"{ai_body}\n\n<!--more-->\n\n"
+    else:
+        # ── Template-based fallback ───────────────────────────
+        sentences = re.split(r'(?<=[.!?])\s+', description.strip())
+        para1 = " ".join(sentences[:3]) if len(sentences) >= 3 else description.strip()
+        para2 = " ".join(sentences[3:6]) if len(sentences) > 3 else ""
 
-    # ── Body paragraphs from article ─────────────────────────
-    body_sections = []
-    if body:
-        body_sentences = re.split(r'(?<=[.!?])\s+', body.strip())
-        # Skip sentences already in description to avoid repetition
-        desc_lower = description.lower()
-        unique = [s for s in body_sentences if s.lower()[:40] not in desc_lower]
-        if unique:
-            chunk1 = " ".join(unique[:4])
-            chunk2 = " ".join(unique[4:8]) if len(unique) > 4 else ""
-            if len(chunk1) > 80:
-                body_sections.append(chunk1)
-            if len(chunk2) > 80:
-                body_sections.append(chunk2)
+        body_sections = []
+        if body:
+            body_sentences = re.split(r'(?<=[.!?])\s+', body.strip())
+            desc_lower = description.lower()
+            unique = [s for s in body_sentences if s.lower()[:40] not in desc_lower]
+            if unique:
+                chunk1 = " ".join(unique[:4])
+                chunk2 = " ".join(unique[4:8]) if len(unique) > 4 else ""
+                if len(chunk1) > 80:
+                    body_sections.append(chunk1)
+                if len(chunk2) > 80:
+                    body_sections.append(chunk2)
 
-    # ── Key tags ──────────────────────────────────────────────
-    tag_links = [f"#{t}" for t in tags[:6] if len(t) > 2]
-    tags_line = " · ".join(tag_links) if tag_links else ""
-
-    # ── Assemble content ──────────────────────────────────────
-    content = f"""{para1}
-
-<!--more-->
-"""
-    if para2:
-        content += f"\n{para2}\n"
-
-    if body_sections:
-        content += f"\n{body_sections[0]}\n"
-        if len(body_sections) > 1:
-            content += f"\n{body_sections[1]}\n"
+        content = f"{para1}\n\n<!--more-->\n"
+        if para2:
+            content += f"\n{para2}\n"
+        if body_sections:
+            content += f"\n{body_sections[0]}\n"
+            if len(body_sections) > 1:
+                content += f"\n{body_sections[1]}\n"
 
     content += f"""
 ## What You Need to Know
@@ -1046,7 +1174,6 @@ def build_content(
 - **Published:** {date_str} at {time_str}
 - **Category:** {category_label}
 """
-
     if tag_links:
         content += f"- **Topics:** {tags_line}\n"
 
@@ -1138,11 +1265,6 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if og["image"] and not image_url:
                 image_url = og["image"]
 
-            # Fallback: use default thumbnail so no article is silently dropped
-            if not image_url:
-                image_url = "/assets/images/og-default.jpg"
-                log.info(f"  🖼️  Sem imagem — usando fallback: {title[:60]}")
-
             # Detecta categoria e tags extras por palavra-chave
             extra_cat, extra_tags = get_extra_tags(title, description)
             categories = [category]
@@ -1158,6 +1280,21 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug(f"  ⏭  Post já existe: {filename}")
                 continue
 
+            # ── AI Enhancement (Pollinations — gratuito) ─────────
+            ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
+            if ai.get("seo_title") and 10 < len(ai["seo_title"]) <= 70:
+                log.info(f"  🤖 AI title: {ai['seo_title'][:60]}")
+                title = ai["seo_title"]
+            if ai.get("meta_description") and len(ai["meta_description"]) > 50:
+                description = ai["meta_description"][:160]
+            if ai.get("keywords"):
+                all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
+
+            # ── Imagem: OG > AI gerada > fallback ────────────────
+            if not image_url:
+                image_url = _news_image_url(title, category)
+                log.info(f"  🎨 AI image: {title[:50]}")
+
             frontmatter = build_frontmatter(
                 title       = title,
                 date        = pub_date,
@@ -1168,6 +1305,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 source_url  = link,
                 source_name = source,
                 image       = image_url,
+                keywords    = ai.get("keywords", []),
+                faq         = ai.get("faq", []),
             )
             post_content = build_content(
                 title       = title,
@@ -1178,6 +1317,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 categories  = categories,
                 tags        = all_tags,
                 body        = og.get("body", ""),
+                ai_body     = ai.get("article_body", ""),
             )
 
             post_path = POSTS_DIR / filename
