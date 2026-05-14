@@ -354,58 +354,70 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
 
         draw = ImageDraw.Draw(bg_img)
 
-        # ── Dark overlay for readability ─────────────────────────
-        overlay = Image.new("RGBA", (1200, 630), (0, 0, 0, 0))
+        # ── Fonts: try DejaVu (common on Linux/CI), fall back to Pillow default ─
+        try:
+            font_title = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 36)
+            font_cat   = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 22)
+            font_brand = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        except Exception:
+            try:
+                font_title = ImageFont.load_default(size=36)
+                font_cat   = ImageFont.load_default(size=22)
+                font_brand = ImageFont.load_default(size=18)
+            except TypeError:
+                font_title = ImageFont.load_default()
+                font_cat   = font_title
+                font_brand = font_title
+
+        # ── Logo "GlobalBR News" — top-left corner ───────────────
+        draw.text((20, 18), "GlobalBR News", font=font_brand,
+                  fill=(255, 255, 255), stroke_width=1, stroke_fill=(0, 0, 0))
+
+        # ── Semi-transparent overlay on bottom 40% only ──────────
+        overlay_top = int(bg_img.height * 6 // 10)
+        overlay = Image.new("RGBA", bg_img.size, (0, 0, 0, 0))
         ov_draw = ImageDraw.Draw(overlay)
-        ov_draw.rectangle([(0, 0), (1200, 630)], fill=(0, 0, 0, 140))
-        bg_img = bg_img.convert("RGBA")
-        bg_img = Image.alpha_composite(bg_img, overlay).convert("RGB")
+        ov_draw.rectangle(
+            [(0, overlay_top), (bg_img.width, bg_img.height)],
+            fill=(0, 0, 0, 160),
+        )
+        bg_img = Image.alpha_composite(bg_img.convert("RGBA"), overlay).convert("RGB")
         draw = ImageDraw.Draw(bg_img)
 
-        # ── Fonts ────────────────────────────────────────────────
-        try:
-            font_title = ImageFont.load_default(size=52)
-            font_cat   = ImageFont.load_default(size=24)
-            font_brand = ImageFont.load_default(size=22)
-        except TypeError:
-            # Older Pillow without size param
-            font_title = ImageFont.load_default()
-            font_cat   = ImageFont.load_default()
-            font_brand = ImageFont.load_default()
-
-        # ── Category label (top-left) ────────────────────────────
+        # ── Category label above the title ───────────────────────
         cat_text = category.upper()
-        draw.text((48, 36), cat_text, font=font_cat, fill=(249, 115, 22),
+        cat_y = overlay_top + 14
+        draw.text((20, cat_y), cat_text, font=font_cat, fill=(249, 115, 22),
                   stroke_width=1, stroke_fill=(0, 0, 0))
 
-        # ── Title (wrapped, centred vertically) ──────────────────
-        max_w = 1200 - 96
+        # ── Title text wrapped, max 2 lines ──────────────────────
+        max_w = bg_img.width - 40
         words = title.split()
-        lines = []
-        current = ""
+        lines: list = []
+        current_line: list = []
         for word in words:
-            test = (current + " " + word).strip()
-            # Estimate width: ~30px per char for size-52 default font
-            if len(test) * 30 > max_w and current:
-                lines.append(current)
-                current = word
+            test = " ".join(current_line + [word])
+            try:
+                w = draw.textlength(test, font=font_title)
+            except AttributeError:
+                w = len(test) * 20  # rough fallback for older Pillow
+            if w > max_w and current_line:
+                lines.append(" ".join(current_line))
+                current_line = [word]
             else:
-                current = test
-        if current:
-            lines.append(current)
-        lines = lines[:4]  # max 4 lines
+                current_line.append(word)
+        if current_line:
+            lines.append(" ".join(current_line))
+        lines = lines[-2:]  # max 2 lines
 
-        line_h = 64
-        total_h = len(lines) * line_h
-        y_start = (630 - total_h) // 2 - 20
-        for line in lines:
-            draw.text((48, y_start), line, font=font_title, fill=(255, 255, 255),
+        y = bg_img.height - 85
+        for ln in lines:
+            draw.text((20, y), ln, font=font_title, fill=(255, 255, 255),
                       stroke_width=2, stroke_fill=(0, 0, 0))
-            y_start += line_h
-
-        # ── Branding (bottom-left) ───────────────────────────────
-        draw.text((48, 630 - 52), "GlobalBR News", font=font_brand,
-                  fill=(180, 180, 180), stroke_width=1, stroke_fill=(0, 0, 0))
+            y += 42
 
         # ── Resize to max 1200x630 before saving (only if >= 400px wide) ─
         if bg_img.width >= 400:
@@ -2292,6 +2304,163 @@ sentiment: "neutral"
 
 
 # ============================================================
+# WEEKLY STATS POST
+# ============================================================
+
+def _generate_weekly_stats_post() -> None:
+    """
+    Creates a 'Week in Review' stats post every Sunday alongside the digest.
+    Counts posts by category, calculates average sentiment, and finds the most-used tag.
+    Skips if not Sunday or if the stats post already exists today.
+    """
+    if datetime.now().weekday() != 6:  # 6 = Sunday
+        return
+
+    today = datetime.now(timezone.utc)
+    stats_filename = f"{today.strftime('%Y-%m-%d')}-week-in-review-stats.md"
+    stats_path = POSTS_DIR / stats_filename
+
+    if stats_path.exists():
+        log.info("Weekly stats post already exists for this week — skipping.")
+        return
+
+    from datetime import timedelta
+    cutoff = today - timedelta(days=7)
+
+    # ── Collect posts from the past 7 days ───────────────────────
+    category_counts: dict[str, int] = {}
+    sentiment_values: list[str] = []
+    tag_counts: dict[str, int] = {}
+    total_posts = 0
+
+    for f in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+        if "roundup" in f.stem or "digest" in f.stem or "stats" in f.stem:
+            continue
+        m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', f.stem)
+        if not m:
+            continue
+        try:
+            post_date = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                                 tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if post_date < cutoff:
+            break  # sorted newest-first, can stop early
+        try:
+            text = f.read_text(encoding="utf-8", errors="replace")
+            post_cat = ""
+            post_sentiment = ""
+            post_tags: list[str] = []
+            for line in text.splitlines():
+                if line.startswith("categories:") and not post_cat:
+                    mm = re.search(r'\[([^\]]+)\]', line)
+                    if mm:
+                        parts = [p.strip() for p in mm.group(1).split(",")]
+                        post_cat = parts[0] if parts else ""
+                if line.startswith("sentiment:") and not post_sentiment:
+                    post_sentiment = line.split("sentiment:", 1)[1].strip().strip('"')
+                if line.startswith("tags:") and not post_tags:
+                    mm = re.search(r'\[([^\]]+)\]', line)
+                    if mm:
+                        post_tags = [t.strip().strip('"').strip("'")
+                                     for t in mm.group(1).split(",")]
+                if line == "---" and post_cat:
+                    break  # end of frontmatter
+            if post_cat and post_cat not in ("roundup", "digest"):
+                category_counts[post_cat] = category_counts.get(post_cat, 0) + 1
+                total_posts += 1
+            if post_sentiment:
+                sentiment_values.append(post_sentiment)
+            for tag in post_tags:
+                if tag:
+                    tag_counts[tag] = tag_counts.get(tag, 0) + 1
+        except Exception:
+            continue
+
+    if total_posts < 3:
+        log.info(f"Not enough posts this week ({total_posts}) for stats post — skipping.")
+        return
+
+    # ── Compute stats ────────────────────────────────────────────
+    top_category = max(category_counts, key=lambda k: category_counts[k]) \
+        if category_counts else "world"
+    top_category_count = category_counts.get(top_category, 0)
+
+    sentiment_map = {"positive": 1, "neutral": 0, "negative": -1}
+    if sentiment_values:
+        avg_val = sum(sentiment_map.get(s, 0) for s in sentiment_values) / len(sentiment_values)
+        avg_sentiment = "positive" if avg_val > 0.2 else ("negative" if avg_val < -0.2 else "neutral")
+    else:
+        avg_sentiment = "neutral"
+
+    # Exclude generic tags from "top tag" ranking
+    _exclude_tags = {
+        "globalbrnews", "news", "roundup", "digest", "daily", "weekly",
+        "world-news", "breaking", "international",
+    }
+    filtered_tags = {t: c for t, c in tag_counts.items()
+                     if t.lower() not in _exclude_tags}
+    top_tag = max(filtered_tags, key=lambda k: filtered_tags[k]) \
+        if filtered_tags else ""
+    top_tag_count = filtered_tags.get(top_tag, 0)
+
+    # ── Build category breakdown table ───────────────────────────
+    sorted_cats = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
+    cat_rows = "\n".join(
+        f"| {cat.capitalize()} | {cnt} |"
+        for cat, cnt in sorted_cats
+    )
+    cat_table = (
+        "| Category | Posts |\n"
+        "|----------|-------|\n"
+        + cat_rows
+    )
+
+    date_display = today.strftime("%B %d, %Y")
+    week_start = (today - timedelta(days=6)).strftime("%B %d")
+    week_range = f"{week_start}–{today.strftime('%B %d, %Y')}"
+
+    top_tag_line = f"- **Most-used tag:** `{top_tag}` ({top_tag_count} posts)\n" \
+        if top_tag else ""
+
+    content = (
+        f"A quick look at what GlobalBR News covered this week "
+        f"({week_range}): **{total_posts} articles** across "
+        f"**{len(category_counts)} categories**, with the spotlight on "
+        f"**{top_category.capitalize()}** ({top_category_count} posts).\n\n"
+        f"<!--more-->\n\n"
+        f"## By the Numbers\n\n"
+        f"- **Total articles:** {total_posts}\n"
+        f"- **Top category:** {top_category.capitalize()} ({top_category_count} posts)\n"
+        f"- **Overall sentiment:** {avg_sentiment.capitalize()}\n"
+        + top_tag_line +
+        f"\n## Category Breakdown\n\n"
+        f"{cat_table}\n\n"
+        f"---\n\n"
+        f"*Weekly stats by [GlobalBR News](https://non-s.github.io) · {date_display}*\n"
+    )
+
+    frontmatter = (
+        f"---\n"
+        f'layout: post\n'
+        f'title: "Week in Review: {total_posts} articles, top category {top_category.capitalize()}"\n'
+        f'date: {today.strftime("%Y-%m-%d %H:%M:%S +0000")}\n'
+        f'categories: [roundup]\n'
+        f'tags: [weekly, stats, roundup]\n'
+        f'author: "GlobalBR News"\n'
+        f'description: "GlobalBR News weekly stats: {total_posts} articles published '
+        f'({week_range}), top category {top_category.capitalize()}, '
+        f'sentiment {avg_sentiment}."\n'
+        f'sentiment: "{avg_sentiment}"\n'
+        f'featured: true\n'
+        f"---\n"
+    )
+
+    stats_path.write_text(frontmatter + "\n" + content, encoding="utf-8")
+    log.info(f"Weekly stats post created: {stats_filename}")
+
+
+# ============================================================
 # TRENDING KEYWORDS — Google Trends RSS
 # ============================================================
 
@@ -2753,6 +2922,12 @@ def main():
         create_weekly_digest()
     except Exception as exc:
         log.warning(f"Weekly digest failed: {exc}")
+
+    # ── Weekly stats post (Sundays only) ──────────────────────────
+    try:
+        _generate_weekly_stats_post()
+    except Exception as exc:
+        log.warning(f"Weekly stats post failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")

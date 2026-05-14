@@ -259,18 +259,31 @@
           crossorigin="anonymous"
           defer></script>
 
-  <!-- ── BACK TO TOP  (Task 1) ─────────────────────────────── -->
-  <button id="back-to-top" aria-label="Back to top" title="Back to top">
-    <i class="bi bi-arrow-up-short"></i>
+  <!-- ── BACK TO TOP with circular progress  (UX feat 5) ──── -->
+  <button id="back-top" aria-label="Back to top">
+    <svg viewBox="0 0 36 36" class="progress-ring" aria-hidden="true">
+      <circle cx="18" cy="18" r="15" class="ring-bg"/>
+      <circle cx="18" cy="18" r="15" class="ring-fill" id="ring-progress"/>
+    </svg>
+    <i class="bi bi-arrow-up"></i>
   </button>
   <script>
   (function(){
-    var btn = document.getElementById('back-to-top');
+    var btn  = document.getElementById('back-top');
+    var ring = document.getElementById('ring-progress');
+    var circ = 2 * Math.PI * 15; // ≈ 94.25
+    ring.style.strokeDasharray  = circ;
+    ring.style.strokeDashoffset = circ;
     window.addEventListener('scroll', function(){
-      btn.classList.toggle('visible', window.scrollY > 300);
-    }, {passive:true});
+      var doc    = document.documentElement;
+      var scrolled = doc.scrollTop || document.body.scrollTop;
+      var total    = doc.scrollHeight - doc.clientHeight;
+      var pct      = total > 0 ? scrolled / total : 0;
+      ring.style.strokeDashoffset = circ * (1 - pct);
+      btn.classList.toggle('visible', scrolled > 300);
+    }, {passive: true});
     btn.addEventListener('click', function(){
-      window.scrollTo({top:0, behavior:'smooth'});
+      window.scrollTo({top: 0, behavior: 'smooth'});
     });
   })();
   </script>

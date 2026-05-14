@@ -2235,31 +2235,10 @@ img { max-width: 100%; display: block; }
 .fact-satire    { background: rgba(236,72,153,.15); color: #ec4899; border: 1px solid rgba(236,72,153,.3); }
 
 /* ============================================================
-   BACK TO TOP BUTTON  (Task 1)
+   BACK TO TOP BUTTON — replaced by circular #back-top (UX feat 5)
+   Legacy #back-to-top hidden; new button styles live at bottom.
    ============================================================ */
-#back-to-top {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--c-accent);
-  color: #fff;
-  border: none;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .25s, transform .25s;
-  z-index: 1050;
-  box-shadow: 0 4px 16px rgba(249,115,22,.4);
-}
-#back-to-top.visible { opacity: 1; transform: translateY(0); }
-#back-to-top:hover { background: #ea6c0a; }
+#back-to-top { display: none; }
 
 /* ============================================================
    CATEGORY & SENTIMENT FILTER TABS  (Tasks 2 & 3)
@@ -2424,7 +2403,7 @@ img { max-width: 100%; display: block; }
 @media print {
   .navbar, .breaking-bar, .post-share, .post-nav, .comments-section,
   .sidebar-widget, .related-section, .subscribe-section, .techbr-footer,
-  #back-to-top, .toc-box, #read-progress, .theme-toggle-btn,
+  #back-to-top, #back-top, .toc-box, #read-progress, .theme-toggle-btn,
   .adsense-wrap, .faq-section { display: none !important; }
 
   body { background: #fff !important; color: #000 !important; font-size: 12pt; }
