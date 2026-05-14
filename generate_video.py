@@ -23,6 +23,78 @@ from datetime import datetime, timezone
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
+# ── Pollinations AI — gratuito, sem API key ─────────────────────
+_http = requests.Session()
+_http.headers.update({"User-Agent": "GlobalBR-VideoBot/2.0"})
+POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
+
+def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 25) -> str:
+    """Gera texto via Pollinations.ai — gratuito, sem chave."""
+    try:
+        payload = {
+            "messages": [
+                {"role": "system", "content": system or "You are a professional broadcast journalist and YouTube SEO expert."},
+                {"role": "user",   "content": prompt},
+            ],
+            "model":   "openai",
+            "seed":    seed or abs(hash(prompt)) % 9999,
+            "private": True,
+        }
+        r = _http.post(POLLINATIONS_TEXT_URL, json=payload, timeout=timeout)
+        r.raise_for_status()
+        data = r.json()
+        if isinstance(data, dict) and "choices" in data:
+            return data["choices"][0]["message"]["content"].strip()
+        return str(data).strip()
+    except Exception as e:
+        log.warning(f"Pollinations text: {e}")
+        return ""
+
+def _ai_youtube_meta(stories: list[dict], n: int, date_str: str) -> dict:
+    """
+    Gera título, descrição e tags do YouTube via AI para máximo SEO.
+    Retorna dict com title, description, tags. Retorna {} em falha.
+    """
+    cats = [s.get("category", "news").upper() for s in stories]
+    dominant = max(set(cats), key=cats.count) if cats else "NEWS"
+    headlines = "\n".join(f"- {s['title']}" for s in stories[:8])
+    prompt = (
+        f"Generate YouTube SEO metadata for a news roundup video. "
+        f"Respond ONLY as valid JSON, no markdown.\n\n"
+        f"Date: {date_str}\nDominant category: {dominant}\n"
+        f"Headlines:\n{headlines}\n\n"
+        f'JSON: {{"title":"<70 chars, include date and category, clickbait but accurate>",'
+        f'"description":"<800-1000 chars SEO description with keywords, include what viewers will learn, end with subscribe CTA>",'
+        f'"tags":["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8","tag9","tag10"]}}'
+    )
+    raw = _ai_text(prompt, seed=abs(hash(date_str)) % 9999, timeout=22)
+    if not raw:
+        return {}
+    try:
+        clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
+        m = re.search(r'\{.*\}', clean, re.DOTALL)
+        if m:
+            return json.loads(m.group())
+    except Exception as e:
+        log.warning(f"AI YouTube meta parse error: {e}")
+    return {}
+
+def _ai_video_hook(stories: list[dict], dominant_cat: str) -> str:
+    """
+    Gera um gancho de abertura poderoso para os primeiros 15 segundos do vídeo.
+    Retorna string vazia em falha — o template padrão é usado como fallback.
+    """
+    headlines = "\n".join(f"- {s['title']}" for s in stories[:6])
+    prompt = (
+        f"Write a powerful 15-second opening hook for a YouTube news video. "
+        f"Category: {dominant_cat}. "
+        f"Today's top stories:\n{headlines}\n\n"
+        f"The hook must: start with an attention-grabbing fact or question, "
+        f"tease the biggest story, make viewers want to stay. "
+        f"Maximum 60 words. No intro like 'Here is the hook:'. Just the hook text."
+    )
+    return _ai_text(prompt, seed=42, timeout=18)
+
 # ── Config ─────────────────────────────────────────────────────
 VIDEOS_DIR        = Path("_videos")
 LOG_FILE          = "generate_video.log"
@@ -126,29 +198,51 @@ def clean_text(text: str, max_chars: int = 500) -> str:
 
 def build_roundup_script(stories: list[dict]) -> str:
     """
-    Script jornalístico para roundup de múltiplas histórias.
+    Script jornalístico com gancho AI + corpo template.
     Alvo: ~1.500 palavras → ~10-12 min de narração a 130 wpm.
-    Estrutura por história: apresentação + conteúdo + contexto + transição.
     """
     n = len(stories)
     cats = [s["category"] for s in stories]
     dominant = max(set(cats), key=cats.count)
 
-    cat_label = {
-        "AI":       "artificial intelligence",
-        "SECURITY": "cybersecurity",
-        "BUSINESS": "tech business and startups",
-        "BIG TECH": "big tech",
-        "HARDWARE": "hardware and devices",
-        "TECH":     "technology",
-    }.get(dominant, "technology")
+    cat_label_map = {
+        "AI":          "artificial intelligence",
+        "SECURITY":    "cybersecurity",
+        "BUSINESS":    "business and economy",
+        "BIG TECH":    "big tech",
+        "HARDWARE":    "hardware and devices",
+        "TECH":        "technology",
+        "WORLD":       "world affairs",
+        "POLITICS":    "politics",
+        "WAR":         "conflict and defense",
+        "SCIENCE":     "science and discovery",
+        "HEALTH":      "health and medicine",
+        "SPORTS":      "sports",
+        "FOOD":        "food and culture",
+        "ENVIRONMENT": "environment and climate",
+        "TRAVEL":      "travel",
+        "ENTERTAINMENT": "entertainment",
+    }
+    cat_label = cat_label_map.get(dominant.upper(), "global news")
 
     now      = datetime.now()
     date_str = now.strftime("%B %d, %Y")
     hour_str = now.strftime("%I %p").lstrip("0")
 
-    # ── INTRO (~180 words) ────────────────────────────────────────
-    script = f"""Welcome to GlobalBR News — your hourly world news roundup.
+    # ── AI HOOK (primeiros 15 segundos — crucial para retenção) ──
+    ai_hook = _ai_video_hook(stories, cat_label)
+
+    # ── INTRO ─────────────────────────────────────────────────────
+    if ai_hook:
+        script = f"""{ai_hook}
+
+Welcome to GlobalBR News — your world news roundup for {date_str}.
+
+I am bringing you {n} of the most important stories right now, covering {cat_label} and more from around the globe. We publish every hour — so you always have a trusted, up-to-date source for what matters.
+
+Before we begin: every story has a direct link in the description below so you can read the full article from the original source. We always credit the journalists doing the important reporting."""
+    else:
+        script = f"""Welcome to GlobalBR News — your hourly world news roundup.
 
 It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now — covering {cat_label} and more from around the globe.
 
@@ -718,7 +812,7 @@ def create_roundup_video(stories: list[dict], image_paths: list[Path | None],
     log.info(f"  ✅ Vídeo gerado: {output_path.name}")
     return True
 
-# ── Metadados SEO com capítulos ─────────────────────────────────
+# ── Metadados SEO com capítulos + AI ───────────────────────────
 def build_metadata(roundup_slug: str, stories: list[dict],
                    thumbnail: Path, video: Path,
                    duration_estimate: float) -> dict:
@@ -726,18 +820,16 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     year = datetime.now().year
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    yt_title = f"World News Roundup — Top {n} Stories | {date_str} | GlobalBR News"
-
-    # Descrição com capítulos estimados
-    intro_s   = 0
-    story_dur = int((duration_estimate * 0.76) / n)
-    outro_s   = int(duration_estimate * 0.80)
-
+    # Capítulos com timestamps estimados
     def fmt_time(s: int) -> str:
         return f"{s // 60}:{s % 60:02d}"
 
+    intro_s   = 0
+    story_dur = max(1, int((duration_estimate * 0.76) / n))
+    outro_s   = int(duration_estimate * 0.80)
+
     chapters = f"⏱ CHAPTERS\n{fmt_time(intro_s)} Introduction\n"
-    t = 30   # intro ~30s
+    t = 30
     for i, story in enumerate(stories, 1):
         short = story["title"][:60] + ("…" if len(story["title"]) > 60 else "")
         chapters += f"{fmt_time(t)} Story {i}: {short}\n"
@@ -747,45 +839,52 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     stories_summary = "\n".join(
         f"  {i}. {s['title'][:80]}" for i, s in enumerate(stories, 1)
     )
+    sources_block = "\n".join(
+        f"  • Story {i}: {s['source_url']}" for i, s in enumerate(stories, 1)
+    )
+
+    # ── AI-generated title + description (Pollinations — gratuito) ──
+    ai_meta = _ai_youtube_meta(stories, n, date_str)
+
+    if ai_meta.get("title") and 10 < len(ai_meta["title"]) <= 100:
+        yt_title = ai_meta["title"]
+        log.info(f"  🤖 AI YouTube title: {yt_title[:60]}")
+    else:
+        yt_title = f"World News Roundup — Top {n} Stories | {date_str} | GlobalBR News"
+
+    if ai_meta.get("description") and len(ai_meta["description"]) > 100:
+        ai_intro = ai_meta["description"][:900]
+        log.info(f"  🤖 AI YouTube description ({len(ai_intro)} chars)")
+    else:
+        ai_intro = f"In this GlobalBR News World Roundup we cover {n} top stories from around the globe."
 
     yt_desc = (
-        f"In this hour's GlobalBR News World Roundup we cover {n} stories:\n\n"
-        f"{stories_summary}\n\n"
+        f"{ai_intro}\n\n"
+        f"📰 In this video:\n{stories_summary}\n\n"
         "━" * 28 + "\n"
-        f"\U0001f310 Sources:\n" +
-        "\n".join(f"  • Story {i}: {s['source_url']}"
-                  for i, s in enumerate(stories, 1)) + "\n\n"
+        f"🌐 Sources:\n{sources_block}\n\n"
         "━" * 28 + "\n"
         f"{chapters}\n\n"
         "━" * 28 + "\n"
-        "\U0001f514 SUBSCRIBE for hourly tech news → https://youtube.com/@globalbrnews\n"
-        "\U0001f4f0 Read more at → https://non-s.github.io\n\n"
+        "🔔 SUBSCRIBE for world news every hour → https://youtube.com/@globalbrnews\n"
+        "📰 Read more at → https://non-s.github.io\n\n"
         "━" * 28 + "\n"
         f"© {year} GlobalBR News. Original articles belong to their respective sources.\n"
-        "#WorldNews #NewsRoundup #GlobalNews #GlobalBRNews #BreakingNews #Politics #Science #Sports #Technology"
+        "#WorldNews #NewsRoundup #GlobalNews #GlobalBRNews #BreakingNews"
     )
 
-    # Tags combinadas de todas as histórias
+    # Tags: AI > fallback template
     base_tags = [
         "world news", "global news", "GlobalBR News", f"news {year}",
-        "news roundup", "hourly news", "breaking news", "latest news",
-        "news today", "top stories today", "technology news", "politics news",
+        "news roundup", "breaking news", "latest news", "news today",
+        "top stories", "international news",
     ]
-    story_tags = []
-    for s in stories:
-        story_tags.extend(s.get("tags", []))
-    cat_tags = {
-        "AI":       ["artificial intelligence", "ChatGPT", "LLM", "OpenAI", "AI news"],
-        "SECURITY": ["cybersecurity", "data breach", "hacking", "malware"],
-        "BUSINESS": ["startup funding", "IPO", "acquisition", "venture capital"],
-        "BIG TECH": ["Apple", "Google", "Microsoft", "Meta", "Amazon", "Nvidia"],
-        "HARDWARE": ["smartphone", "laptop", "GPU", "processor", "chip"],
-        "TECH":     ["software", "internet", "programming", "digital"],
-    }
-    dominant_cat = max(set(s["category"] for s in stories),
-                       key=lambda c: sum(1 for s in stories if s["category"] == c))
-    extra = cat_tags.get(dominant_cat, cat_tags["TECH"])
-    all_tags = list(dict.fromkeys(base_tags + extra + story_tags))[:30]
+    story_tags = [t for s in stories for t in s.get("tags", [])]
+    if ai_meta.get("tags") and isinstance(ai_meta["tags"], list):
+        all_tags = list(dict.fromkeys(ai_meta["tags"] + base_tags + story_tags))[:40]
+        log.info(f"  🤖 AI YouTube tags: {len(ai_meta['tags'])} tags")
+    else:
+        all_tags = list(dict.fromkeys(base_tags + story_tags))[:30]
 
     metadata = {
         "title":       yt_title,
