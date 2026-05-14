@@ -1,11 +1,13 @@
-// GlobalBR News — Service Worker v3
+// GlobalBR News — Service Worker v4
 // Stale-while-revalidate for article pages, cache-first for assets,
-// offline fallback with cached articles list.
+// cache-then-network for homepage, offline fallback with cached articles by category,
+// background sync for saving offline reads.
 
-const CACHE_NAME     = 'globalbr-v3';
-const ARTICLE_CACHE  = 'globalbr-articles-v3';
-const OFFLINE        = '/offline.html';
-const MAX_ARTICLE_CACHE = 20;
+const CACHE_NAME        = 'globalbr-v4';
+const ARTICLE_CACHE     = 'globalbr-articles-v4';
+const OFFLINE           = '/offline.html';
+const MAX_ARTICLE_CACHE = 50;
+const SYNC_TAG          = 'globalbr-offline-reads';
 
 const STATIC_ASSETS = [
   '/',
@@ -36,6 +38,27 @@ self.addEventListener('activate', e => {
   );
 });
 
+// ── Helpers ───────────────────────────────────────────────────
+
+// Broadcast last-online timestamp to all window clients
+function broadcastLastOnline() {
+  self.clients.matchAll({ type: 'window' }).then(clients => {
+    clients.forEach(client => {
+      client.postMessage({ type: 'LAST_ONLINE', ts: Date.now() });
+    });
+  });
+}
+
+function trimArticleCache(cache) {
+  cache.keys().then(keys => {
+    if (keys.length > MAX_ARTICLE_CACHE) {
+      // Delete oldest entries (FIFO) until within limit
+      const toDelete = keys.slice(0, keys.length - MAX_ARTICLE_CACHE);
+      toDelete.forEach(k => cache.delete(k));
+    }
+  });
+}
+
 // ── Fetch ─────────────────────────────────────────────────────
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
@@ -56,6 +79,22 @@ self.addEventListener('fetch', e => {
     return;
   }
 
+  // Homepage (/): cache-then-network — serve cache instantly, update in background
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    e.respondWith(
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(e.request);
+        const networkFetch = fetch(e.request).then(resp => {
+          if (resp.ok) { cache.put(e.request, resp.clone()); broadcastLastOnline(); }
+          return resp;
+        }).catch(() => cached || caches.match(OFFLINE));
+        // Return cached version immediately if available, else wait for network
+        return cached || networkFetch;
+      })
+    );
+    return;
+  }
+
   // Article pages: stale-while-revalidate
   if (url.pathname.match(/\/\w[\w-]*\/\d{4}\/\d{2}\/\d{2}\//)) {
     e.respondWith(
@@ -64,12 +103,7 @@ self.addEventListener('fetch', e => {
         const fetchPromise = fetch(e.request).then(resp => {
           if (resp.ok) {
             cache.put(e.request, resp.clone());
-            // Trim cache to MAX_ARTICLE_CACHE entries
-            cache.keys().then(keys => {
-              if (keys.length > MAX_ARTICLE_CACHE) {
-                cache.delete(keys[0]);
-              }
-            });
+            trimArticleCache(cache);
           }
           return resp;
         }).catch(() => cached || caches.match(OFFLINE));
@@ -92,6 +126,21 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match(e.request).then(r => r || caches.match(OFFLINE)))
   );
 });
+
+// ── Background Sync: save offline reads ───────────────────────
+self.addEventListener('sync', e => {
+  if (e.tag === SYNC_TAG) {
+    e.waitUntil(flushOfflineReads());
+  }
+});
+
+async function flushOfflineReads() {
+  // Notify all clients that connectivity has been restored
+  const allClients = await self.clients.matchAll({ type: 'window' });
+  allClients.forEach(client => {
+    client.postMessage({ type: 'SYNC_COMPLETE', tag: SYNC_TAG });
+  });
+}
 
 // ── Push notifications ────────────────────────────────────────
 self.addEventListener('push', e => {
