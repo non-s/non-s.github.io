@@ -1,21 +1,21 @@
 ---
 layout: default
-title: "Artificial Intelligence — GlobalBR News"
-description: "Machine learning, large language models and AI breakthroughs."
-permalink: /ai/
+title: "World News — GlobalBR News"
+description: "Global coverage from BBC, Reuters, Al Jazeera, DW and more."
+permalink: /world/
 ---
 
 <section class="container py-4">
   <div class="row mb-4">
     <div class="col">
-      <h1 class="section-title">Artificial Intelligence</h1>
-      <p class="text-muted">Machine learning, large language models and AI breakthroughs.</p>
+      <h1 class="section-title">World News</h1>
+      <p class="text-muted">Global coverage from BBC, Reuters, Al Jazeera, DW and more.</p>
       <hr class="section-divider">
     </div>
   </div>
 
   <div class="row g-4">
-    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'ai'" %}
+    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'world'" %}
     {% if cat_posts.size > 0 %}
       {% for post in cat_posts %}
       <div class="col-md-6 col-lg-4">
@@ -50,7 +50,7 @@ permalink: /ai/
     {% else %}
       <div class="col-12 text-center py-5">
         <i class="bi bi-newspaper" style="font-size:3rem;opacity:.3;"></i>
-        <p class="mt-3 text-muted">No posts in <strong>Artificial Intelligence</strong> yet.<br>New articles will be published soon!</p>
+        <p class="mt-3 text-muted">No posts in <strong>World News</strong> yet.<br>New articles will be published soon!</p>
       </div>
     {% endif %}
   </div>
