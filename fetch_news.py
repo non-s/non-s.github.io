@@ -7,7 +7,7 @@ Uso:
     python fetch_news.py
 
 Dependências:
-    pip install feedparser requests
+    pip install feedparser requestsh
 
 O script:
   1. Lê feeds RSS configurados em FEEDS
@@ -456,6 +456,10 @@ def fetch_feed(feed_config: dict) -> int:
             description = extract_description(entry)
             pub_date    = parse_date(entry)
             image_url   = extract_image(entry)
+
+            if not image_url:
+                log.info(f"  ⏭  Post sem imagem, pulando: {title[:50]}")
+                continue
 
             if not title or not link:
                 log.debug(f"  ⏭  Item sem título ou link, pulando.")
