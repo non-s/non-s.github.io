@@ -445,44 +445,100 @@ def create_video(title: str, source: str, image_path: Path | None,
     log.info(f"  ✅ Vídeo gerado: {output_path.name}")
     return True
 
-# ── Metadados SEO ──────────────────────────────────────────────
+# ── English title builder ────────────────────────────────────────
+def build_english_title(title: str, category: str) -> str:
+    """Generate SEO-optimized English YouTube title."""
+    pt_en = [
+        ("inteligência artificial", "artificial intelligence"),
+        ("aprendizado de máquina", "machine learning"),
+        ("código aberto", "open source"),
+        ("lançamento", "launch"), ("lança", "launches"), ("lançou", "launched"),
+        ("atualização", "update"), ("atualiza", "updates"), ("atualizou", "updated"),
+        ("anúncio", "announcement"), ("anuncia", "announces"), ("anunciou", "announced"),
+        ("revelação", "reveal"), ("revela", "reveals"), ("revelou", "revealed"),
+        ("crescimento", "growth"), ("cresce", "grows"), ("cresceu", "grew"),
+        ("investimento", "investment"), ("investe", "invests"),
+        ("aquisição", "acquisition"), ("adquire", "acquires"), ("adquiriu", "acquired"),
+        ("parceria", "partnership"), ("acordo", "deal"),
+        ("empresa", "company"), ("empresas", "companies"),
+        ("governo", "government"), ("governos", "governments"),
+        ("usuários", "users"), ("usuário", "user"),
+        ("bilhões", "billion"), ("milhões", "million"), ("milhares", "thousands"),
+        ("segurança", "security"), ("privacidade", "privacy"),
+        ("vazamento", "leak"), ("ataque", "attack"), ("ataques", "attacks"),
+        ("tecnologia", "technology"), ("tecnologias", "technologies"),
+        ("celular", "smartphone"), ("computador", "computer"),
+        ("tela", "screen"), ("processador", "processor"), ("bateria", "battery"),
+        ("novo", "new"), ("nova", "new"), ("novos", "new"), ("novas", "new"),
+        ("primeiro", "first"), ("primeira", "first"),
+        ("último", "latest"), ("última", "latest"),
+        ("próximo", "next"), ("próxima", "next"),
+        ("gratuito", "free"), ("grátis", "free"), ("pago", "paid"),
+        ("preço", "price"), ("mercado", "market"), ("vendas", "sales"),
+        ("recorde", "record"), ("histórico", "historic"),
+        ("mundo", "world"), ("Brasil", "Brazil"), ("EUA", "USA"),
+        ("robô", "robot"), ("elétrico", "electric"),
+        ("aprovado", "approved"), ("bloqueado", "blocked"), ("banido", "banned"),
+        ("fusão", "merger"), ("dados", "data"), ("nuvem", "cloud"),
+        ("queda", "drop"), ("caiu", "fell"), ("subiu", "rose"),
+    ]
+    result = title
+    for pt, en in pt_en:
+        result = re.sub(r'\\b' + re.escape(pt) + r'\\b', en, result, flags=re.IGNORECASE)
+    clean = result.strip()
+    if len(clean) > 82:
+        clean = clean[:79] + "..."
+    return f"[{category}] {clean} | TechBR News"
+
+# ── YouTube SEO Metadata ────────────────────────────────────────
 def save_metadata(slug, title, description, source, source_url, tags,
                   thumbnail, video):
-    yt_title = f"{title[:82]} | TechBR News" if len(title) <= 82 else title[:94] + "..."
+    category = guess_category(tags, title)
+    yt_title = build_english_title(title, category)
 
-    yt_desc = f"""{description[:500]}
+    clean_desc = re.sub(r'<[^>]+>', '', description).strip()
+    clean_desc = re.sub(r'\\s+', ' ', clean_desc)[:400]
+    year = datetime.now().year
 
-🔗 Fonte original: {source_url}
-📰 Publicado por: {source}
+    yt_desc = (
+        f"{clean_desc}\n\n"
+        "━" * 24 + "\n"
+        f"U0001F4F0 FULL STORY → {source_url}\n"
+        f"U0001F310 Source: {source}\n\n"
+        "━" * 24 + "\n"
+        "U0001F514 SUBSCRIBE for hourly tech news → https://youtube.com/@techbrnews\n"
+        "U0001F30D TechBR News — Breaking tech stories, 24 hours a day\n\n"
+        "━" * 24 + "\n"
+        "⏱ CHAPTERS\n"
+        "0:00 Introduction\n"
+        "0:12 Main story\n"
+        "1:00 Details & context\n"
+        "1:45 Wrap-up\n\n"
+        "━" * 24 + "\n"
+        f"© {year} TechBR News. Original articles belong to their respective sources.\n"
+    )
 
-━━━━━━━━━━━━━━━━━━━━━━━━
-🌐 TechBR News — Tecnologia toda hora
-📡 Publicamos notícias de tech automaticamente, 24 horas por dia.
-🔔 Inscreva-se para não perder nada: https://youtube.com/@techbrnews
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-⏱️ CAPÍTULOS
-0:00 Introdução
-0:12 Notícia principal
-1:00 Detalhes e contexto
-1:45 Encerramento
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-🏷️ {' '.join('#' + t.replace(' ', '') for t in (tags + ['TechNews', 'Tecnologia', 'AI', 'TechBR'])[:10])}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-© {datetime.now().year} TechBR News. Os direitos dos artigos originais pertencem às suas respectivas fontes.
-📧 Contato: sourcenaiomiocc@gmail.com
-"""
+    cat_tags = {
+        "AI": ["machine learning", "ChatGPT", "LLM", "OpenAI", "Google AI", "AI tools", "artificial intelligence news"],
+        "SECURITY": ["cybersecurity", "data breach", "hacking news", "privacy", "malware", "cyber attack"],
+        "BUSINESS": ["tech business", "startup funding", "IPO", "tech stocks", "acquisition", "venture capital"],
+        "BIG TECH": ["Apple news", "Google news", "Microsoft", "Meta", "Amazon", "big tech"],
+        "HARDWARE": ["smartphone news", "iPhone", "Android", "laptop", "processor", "chip news"],
+        "TECH": ["technology news", "software", "internet", "digital", "programming", "developer"],
+    }
+    base_tags = [
+        "tech news", "technology news", "TechBR News", "breaking tech",
+        f"tech news {year}", "latest technology", "innovation",
+        "digital world", "technology today",
+    ]
+    extra_tags = cat_tags.get(category, cat_tags["TECH"])
+    post_tags = [t.replace(' ', '').lower() for t in tags if t and len(t) > 2]
+    all_tags = list(dict.fromkeys(base_tags + extra_tags + post_tags))[:30]
 
     metadata = {
         "title": yt_title,
         "description": yt_desc,
-        "tags": list(set(tags + [
-            "tech news", "technology", "TechBR", "tecnologia",
-            "AI", "inteligência artificial", "gadgets", "inovação",
-            "startup", "programação", "silicon valley",
-        ]))[:30],
+        "tags": all_tags,
         "category_id": "28",
         "privacy": "public",
         "thumbnail": str(thumbnail),
@@ -493,7 +549,6 @@ def save_metadata(slug, title, description, source, source_url, tags,
     meta_path = video.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False))
     return metadata
-
 # ── Utilitários ────────────────────────────────────────────────
 def video_exists(slug: str) -> bool:
     return (VIDEOS_DIR / f"{slug}.mp4").exists() or \
