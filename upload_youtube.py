@@ -60,8 +60,8 @@ def upload_video(youtube, meta: dict) -> str | None:
 
     body = {
         "snippet": {
-            "title":       meta["title"],
-            "description": meta["description"],
+            "title":       meta["title"][:100],   # YouTube limit: 100 chars
+            "description": meta["description"][:5000],  # YouTube limit: 5000 chars
             "tags":        meta["tags"][:500],   # YouTube limit
             "categoryId":  meta.get("category_id", "28"),
             "defaultLanguage": "en",
