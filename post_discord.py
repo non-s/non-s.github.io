@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
 post_discord.py
-Auto-posts new articles to a Discord channel via Webhook.
+Auto-posts new articles to a Discord channel via webhook.
 
 Reads _posts/ for files added in the last commit (git diff HEAD~1),
-then sends a rich Embed for each article.
+builds their permalink, and sends a Discord Embed for each post.
 
-Env var required:
-  DISCORD_WEBHOOK_URL — Full webhook URL from Discord channel settings
+Env vars required:
+  DISCORD_WEBHOOK_URL — full webhook URL from Discord channel settings
 """
 
+import json
 import logging
 import os
 import subprocess
@@ -32,11 +33,11 @@ log = logging.getLogger(__name__)
 POSTS_DIR = Path(__file__).parent / "_posts"
 SITE_BASE = "https://non-s.github.io"
 MAX_POSTS = 5
-EMBED_COLOR = 0x1A73E8  # Google blue — change as desired
+EMBED_COLOR = 0x1A73E8  # Google-blue, consistent brand color
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Frontmatter / URL helpers (same pattern as post_bluesky.py)
 # ---------------------------------------------------------------------------
 
 def parse_frontmatter(text: str) -> dict:
@@ -71,69 +72,64 @@ def build_post_url(filename: str, fm: dict) -> str:
 
 
 def find_new_posts() -> list[dict]:
-    """Return posts added in the most recent commit, up to MAX_POSTS."""
+    """Return posts added in the last commit."""
     try:
         result = subprocess.run(
-            ["git", "diff", "HEAD~1", "--name-only", "--diff-filter=A", "_posts/"],
-            capture_output=True, text=True, check=True,
-            cwd=POSTS_DIR.parent,
+            ["git", "diff", "HEAD~1", "--name-only", "_posts/"],
+            capture_output=True,
+            text=True,
+            cwd=Path(__file__).parent,
+            timeout=30,
         )
         filenames = [
-            line.strip() for line in result.stdout.splitlines()
+            line.strip()
+            for line in result.stdout.splitlines()
             if line.strip().endswith(".md")
         ]
-    except subprocess.CalledProcessError as exc:
-        log.warning("git diff failed: %s — falling back to mtime scan", exc)
+    except Exception as exc:
+        log.warning("git diff failed: %s", exc)
         filenames = []
 
     posts = []
-
-    if filenames:
-        for rel in filenames[:MAX_POSTS]:
-            path = POSTS_DIR.parent / rel
-            if not path.exists():
-                continue
+    for rel in filenames[:MAX_POSTS]:
+        path = Path(__file__).parent / rel
+        if not path.exists():
+            continue
+        try:
             text = path.read_text(encoding="utf-8", errors="replace")
             fm = parse_frontmatter(text)
             url = build_post_url(path.name, fm)
             posts.append({"filename": path.name, "url": url, "fm": fm})
-    else:
-        import time as _time
-        cutoff = _time.time() - 2 * 3600
-        for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
-            if path.stat().st_mtime < cutoff:
-                continue
-            text = path.read_text(encoding="utf-8", errors="replace")
-            fm = parse_frontmatter(text)
-            url = build_post_url(path.name, fm)
-            posts.append({"filename": path.name, "url": url, "fm": fm})
-            if len(posts) >= MAX_POSTS:
-                break
+        except Exception as exc:
+            log.warning("Could not read %s: %s", path, exc)
 
     return posts
 
 
+# ---------------------------------------------------------------------------
+# Discord webhook helper
+# ---------------------------------------------------------------------------
+
 def build_embed(post: dict) -> dict:
     fm = post["fm"]
-    title = fm.get("title", "New Article").strip('"').strip("'")
+    title = fm.get("title", "").strip('"').strip("'") or "New Article"
     description = fm.get("description", "").strip('"').strip("'")
     url = post["url"]
     image_url = fm.get("image", "").strip('"').strip("'")
-    cats = fm.get("categories", [])
-    category = (cats[0] if isinstance(cats, list) and cats else "news").strip().title()
 
-    # Discord embed description limit: 4096 chars; keep it short
+    # Discord embed description limit is 4096 chars; keep it readable
     if len(description) > 300:
-        description = description[:297] + "…"
+        description = description[:300].rstrip() + "…"
 
     embed: dict = {
-        "title": title[:256],
-        "description": description,
+        "title": title[:256],  # Discord title limit
         "url": url,
         "color": EMBED_COLOR,
         "footer": {"text": "GlobalBR News"},
-        "author": {"name": category},
     }
+
+    if description:
+        embed["description"] = description
 
     if image_url:
         embed["image"] = {"url": image_url}
@@ -141,22 +137,29 @@ def build_embed(post: dict) -> dict:
     return embed
 
 
-def send_embed(webhook_url: str, embed: dict) -> bool:
+def send_to_discord(webhook_url: str, post: dict) -> bool:
+    embed = build_embed(post)
     payload = {"embeds": [embed]}
+
     try:
         resp = requests.post(
             webhook_url,
-            json=payload,
+            data=json.dumps(payload),
             headers={"Content-Type": "application/json"},
             timeout=30,
         )
         # Discord returns 204 No Content on success
         if resp.status_code in (200, 204):
+            log.info("Posted to Discord — %s", post["url"])
             return True
-        log.warning("Discord webhook HTTP %s: %s", resp.status_code, resp.text[:300])
+        log.warning(
+            "Discord webhook failed (HTTP %s): %s",
+            resp.status_code,
+            resp.text[:200],
+        )
         return False
     except Exception as exc:
-        log.error("Discord webhook exception: %s", exc)
+        log.warning("Discord post exception: %s", exc)
         return False
 
 
@@ -180,13 +183,12 @@ def main() -> None:
 
     ok = 0
     for post in posts:
-        embed = build_embed(post)
-        if send_embed(webhook_url, embed):
-            log.info("Posted to Discord — %s", post["url"])
-            ok += 1
-        else:
-            log.error("Failed to post to Discord — %s", post["url"])
-        time.sleep(2)  # Discord rate-limit: 5 req/s per webhook, be conservative
+        try:
+            if send_to_discord(webhook_url, post):
+                ok += 1
+        except Exception as exc:
+            log.error("Unexpected error posting %s: %s", post.get("url"), exc)
+        time.sleep(1)  # Discord rate-limit: 5 requests / 2 seconds per webhook
 
     log.info("Done — %d/%d post(s) shared on Discord.", ok, len(posts))
 

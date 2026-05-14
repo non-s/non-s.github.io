@@ -1,0 +1,21 @@
+{% if site.openweather_api_key %}
+<div id="weather-widget" class="weather-widget" style="display:none"></div>
+<script>
+(function(){
+  if (!navigator.geolocation) { return; }
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude, lon = pos.coords.longitude;
+    fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=metric&appid={{ site.openweather_api_key }}')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var w = document.getElementById('weather-widget');
+        if (w && d.main) {
+          w.innerHTML = '<i class="bi bi-thermometer-half"></i> <span class="weather-city">' + d.name + '</span> <span class="weather-temp">' + Math.round(d.main.temp) + '°C</span> <span class="weather-desc">' + d.weather[0].description + '</span>';
+          w.style.display = 'inline-flex';
+        }
+      })
+      .catch(function(){});
+  }, function(){});
+})();
+</script>
+{% endif %}

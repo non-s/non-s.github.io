@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
 post_pinterest.py
-Auto-posts new articles to Pinterest as Pins.
+Auto-pins new articles to a Pinterest board using the Pinterest API v5.
 
 Reads _posts/ for files added in the last commit (git diff HEAD~1),
-then creates a Pin for each article using the Pinterest API v5.
+builds their permalink, and creates a Pin for each post that has an image.
 
 Env vars required:
-  PINTEREST_ACCESS_TOKEN — OAuth2 Bearer token
-  PINTEREST_BOARD_ID     — ID of the target board (numeric string)
+  PINTEREST_ACCESS_TOKEN — OAuth2 bearer token (from Pinterest Developer portal)
+  PINTEREST_BOARD_ID     — board ID to pin to (e.g. "1234567890123456789")
 """
 
+import json
 import logging
 import os
 import subprocess
@@ -32,12 +33,12 @@ log = logging.getLogger(__name__)
 
 POSTS_DIR = Path(__file__).parent / "_posts"
 SITE_BASE = "https://non-s.github.io"
-PINTEREST_API = "https://api.pinterest.com/v5"
 MAX_POSTS = 5
+PINTEREST_API = "https://api.pinterest.com/v5"
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Frontmatter / URL helpers (same pattern as post_bluesky.py)
 # ---------------------------------------------------------------------------
 
 def parse_frontmatter(text: str) -> dict:
@@ -72,54 +73,54 @@ def build_post_url(filename: str, fm: dict) -> str:
 
 
 def find_new_posts() -> list[dict]:
-    """Return posts added in the most recent commit, up to MAX_POSTS."""
+    """Return posts added in the last commit."""
     try:
         result = subprocess.run(
-            ["git", "diff", "HEAD~1", "--name-only", "--diff-filter=A", "_posts/"],
-            capture_output=True, text=True, check=True,
-            cwd=POSTS_DIR.parent,
+            ["git", "diff", "HEAD~1", "--name-only", "_posts/"],
+            capture_output=True,
+            text=True,
+            cwd=Path(__file__).parent,
+            timeout=30,
         )
         filenames = [
-            line.strip() for line in result.stdout.splitlines()
+            line.strip()
+            for line in result.stdout.splitlines()
             if line.strip().endswith(".md")
         ]
-    except subprocess.CalledProcessError as exc:
-        log.warning("git diff failed: %s — falling back to mtime scan", exc)
+    except Exception as exc:
+        log.warning("git diff failed: %s", exc)
         filenames = []
 
     posts = []
-
-    if filenames:
-        for rel in filenames[:MAX_POSTS]:
-            path = POSTS_DIR.parent / rel
-            if not path.exists():
-                continue
+    for rel in filenames[:MAX_POSTS]:
+        path = Path(__file__).parent / rel
+        if not path.exists():
+            continue
+        try:
             text = path.read_text(encoding="utf-8", errors="replace")
             fm = parse_frontmatter(text)
             url = build_post_url(path.name, fm)
             posts.append({"filename": path.name, "url": url, "fm": fm})
-    else:
-        import time as _time
-        cutoff = _time.time() - 2 * 3600
-        for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
-            if path.stat().st_mtime < cutoff:
-                continue
-            text = path.read_text(encoding="utf-8", errors="replace")
-            fm = parse_frontmatter(text)
-            url = build_post_url(path.name, fm)
-            posts.append({"filename": path.name, "url": url, "fm": fm})
-            if len(posts) >= MAX_POSTS:
-                break
+        except Exception as exc:
+            log.warning("Could not read %s: %s", path, exc)
 
     return posts
 
 
-def create_pin(access_token: str, board_id: str, post: dict) -> bool:
+# ---------------------------------------------------------------------------
+# Pinterest API helper
+# ---------------------------------------------------------------------------
+
+def create_pin(token: str, board_id: str, post: dict) -> bool:
     fm = post["fm"]
-    title = fm.get("title", "New Article").strip('"').strip("'")
+    title = fm.get("title", "").strip('"').strip("'") or "New Article"
     description = fm.get("description", "").strip('"').strip("'")
-    link = post["url"]
+    url = post["url"]
     image_url = fm.get("image", "").strip('"').strip("'")
+
+    if not image_url:
+        log.info("Skipping %s — no image URL (Pinterest requires an image).", post["filename"])
+        return False
 
     # Pinterest title limit: 100 chars; description: 500 chars
     if len(title) > 100:
@@ -130,38 +131,37 @@ def create_pin(access_token: str, board_id: str, post: dict) -> bool:
     payload: dict = {
         "board_id": board_id,
         "title": title,
-        "description": description,
-        "link": link,
-    }
-
-    if image_url:
-        payload["media_source"] = {
+        "link": url,
+        "media_source": {
             "source_type": "image_url",
             "url": image_url,
-        }
-    else:
-        # Pinterest requires a media source; skip if no image
-        log.warning("No image for %s — skipping Pinterest pin.", post["filename"])
-        return False
+        },
+    }
+    if description:
+        payload["description"] = description
 
     try:
         resp = requests.post(
             f"{PINTEREST_API}/pins",
-            json=payload,
             headers={
-                "Authorization": f"Bearer {access_token}",
+                "Authorization": f"Bearer {token}",
                 "Content-Type": "application/json",
             },
+            data=json.dumps(payload),
             timeout=30,
         )
         if resp.status_code in (200, 201):
             pin_id = resp.json().get("id", "unknown")
-            log.info("Created Pinterest pin %s — %s", pin_id, link)
+            log.info("Pin created (id=%s) — %s", pin_id, url)
             return True
-        log.warning("Pinterest API HTTP %s: %s", resp.status_code, resp.text[:300])
+        log.warning(
+            "Pinterest API failed (HTTP %s): %s",
+            resp.status_code,
+            resp.text[:300],
+        )
         return False
     except Exception as exc:
-        log.error("Pinterest API exception: %s", exc)
+        log.warning("Pinterest post exception: %s", exc)
         return False
 
 
@@ -170,25 +170,28 @@ def create_pin(access_token: str, board_id: str, post: dict) -> bool:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    access_token = os.environ.get("PINTEREST_ACCESS_TOKEN", "").strip()
+    token = os.environ.get("PINTEREST_ACCESS_TOKEN", "").strip()
     board_id = os.environ.get("PINTEREST_BOARD_ID", "").strip()
 
-    if not access_token or not board_id:
+    if not token or not board_id:
         log.warning("PINTEREST_ACCESS_TOKEN or PINTEREST_BOARD_ID not set — skipping.")
         sys.exit(0)
 
     posts = find_new_posts()
     if not posts:
-        log.info("No new posts found — nothing to share on Pinterest.")
+        log.info("No new posts found — nothing to pin on Pinterest.")
         sys.exit(0)
 
-    log.info("Found %d new post(s) to share on Pinterest.", len(posts))
+    log.info("Found %d new post(s) to pin on Pinterest.", len(posts))
 
     ok = 0
     for post in posts:
-        if create_pin(access_token, board_id, post):
-            ok += 1
-        time.sleep(3)  # Pinterest rate-limit: be polite
+        try:
+            if create_pin(token, board_id, post):
+                ok += 1
+        except Exception as exc:
+            log.error("Unexpected error pinning %s: %s", post.get("url"), exc)
+        time.sleep(2)  # Pinterest rate-limit buffer
 
     log.info("Done — %d/%d post(s) pinned on Pinterest.", ok, len(posts))
 
