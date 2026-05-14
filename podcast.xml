@@ -1,0 +1,82 @@
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+
+  <channel>
+    <title>GlobalBR News — Daily World Briefing</title>
+    <link>{{ site.url }}</link>
+    <language>en-us</language>
+    <description>Daily world news briefings powered by AI — politics, science, business, technology and more. Produced automatically from top global sources.</description>
+    <copyright>© {{ 'now' | date: '%Y' }} GlobalBR News</copyright>
+    <managingEditor>bot@globalbrnews.com (GlobalBR News Bot)</managingEditor>
+    <webMaster>bot@globalbrnews.com (GlobalBR News Bot)</webMaster>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    <ttl>60</ttl>
+
+    <image>
+      <url>{{ '/assets/images/logo.png' | absolute_url }}</url>
+      <title>GlobalBR News</title>
+      <link>{{ site.url }}</link>
+      <width>144</width>
+      <height>144</height>
+    </image>
+
+    <!-- iTunes / Spotify metadata -->
+    <itunes:author>GlobalBR News</itunes:author>
+    <itunes:summary>Daily world news briefings — politics, science, business, technology and more.</itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    <itunes:category text="News">
+      <itunes:category text="Daily News"/>
+    </itunes:category>
+    <itunes:image href="{{ '/assets/images/logo.png' | absolute_url }}"/>
+    <itunes:owner>
+      <itunes:name>GlobalBR News</itunes:name>
+      <itunes:email>bot@globalbrnews.com</itunes:email>
+    </itunes:owner>
+
+    <atom:link href="{{ '/podcast.xml' | absolute_url }}" rel="self" type="application/rss+xml"/>
+
+    <!-- Episodes: one per day (group posts from the same date) -->
+    {% assign grouped = site.posts | group_by_exp: "post", "post.date | date: '%Y-%m-%d'" %}
+    {% for day in grouped limit:30 %}
+    {% assign ep_date = day.name %}
+    {% assign ep_posts = day.items %}
+    {% assign ep_num   = forloop.rindex %}
+    <item>
+      <title>{{ ep_date }} — World News Briefing ({{ ep_posts.size }} stories)</title>
+      <link>{{ site.url }}</link>
+      <guid isPermaLink="false">globalbr-briefing-{{ ep_date }}</guid>
+      <pubDate>{{ ep_posts.first.date | date_to_rfc822 }}</pubDate>
+      <description><![CDATA[
+        <p>Today's top stories from GlobalBR News:</p>
+        <ul>
+        {% for post in ep_posts limit:10 %}
+          <li><a href="{{ post.url | absolute_url }}">{{ post.title }}</a></li>
+        {% endfor %}
+        </ul>
+        <p>Listen to our full video briefing on <a href="https://youtube.com/@globalbrnews">YouTube @globalbrnews</a>.</p>
+      ]]></description>
+      <content:encoded><![CDATA[
+        {% for post in ep_posts limit:10 %}
+        <h3><a href="{{ post.url | absolute_url }}">{{ post.title }}</a></h3>
+        <p>{{ post.description | default: post.excerpt | strip_html | truncate: 300 }}</p>
+        {% endfor %}
+        <p><strong>Watch the full video briefing:</strong> <a href="https://youtube.com/@globalbrnews">youtube.com/@globalbrnews</a></p>
+      ]]></content:encoded>
+      <itunes:title>{{ ep_date }} — World News Briefing</itunes:title>
+      <itunes:episode>{{ ep_num }}</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:summary>{{ ep_posts.size }} stories from {{ ep_date }}: {% for post in ep_posts limit:5 %}{{ post.title | truncate: 60 }}{% unless forloop.last %}, {% endunless %}{% endfor %}.</itunes:summary>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    {% endfor %}
+
+  </channel>
+</rss>
