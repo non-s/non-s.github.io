@@ -1120,11 +1120,6 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug("  ⏭  Item sem título ou link, pulando.")
                 continue
 
-            # Filtro de imagem obrigatória
-            if not image_url:
-                log.info(f"  ⏭  Sem imagem: {title[:60]}")
-                continue
-
             # Filtro de descrição mínima
             if len(description) < MIN_DESCRIPTION_LEN:
                 log.info(f"  ⏭  Descrição muito curta ({len(description)} chars): {title[:60]}")
@@ -1143,10 +1138,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if og["image"] and not image_url:
                 image_url = og["image"]
 
-            # Re-verificar imagem após OG
+            # Fallback: use default thumbnail so no article is silently dropped
             if not image_url:
-                log.info(f"  ⏭  Sem imagem mesmo após OG: {title[:60]}")
-                continue
+                image_url = "/assets/images/og-default.jpg"
+                log.info(f"  🖼️  Sem imagem — usando fallback: {title[:60]}")
 
             # Detecta categoria e tags extras por palavra-chave
             extra_cat, extra_tags = get_extra_tags(title, description)
