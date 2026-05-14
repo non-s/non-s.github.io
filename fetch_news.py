@@ -32,7 +32,7 @@ from time import sleep
 
 # HTTP session reutilizável (melhor performance)
 _session = requests.Session()
-_session.headers.update({"User-Agent": "TechBR-News-Bot/2.0 (+https://non-s.github.io)"})
+_session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
 # ============================================================
 # CONFIGURAÇÕES
@@ -41,13 +41,353 @@ _session.headers.update({"User-Agent": "TechBR-News-Bot/2.0 (+https://non-s.gith
 POSTS_DIR        = Path("_posts")
 LOG_FILE         = "fetch_news.log"
 MAX_PER_FEED     = 2                   # Max posts por feed por execução
-MAX_POSTS_PER_RUN = 5                 # Limite global por execução (cadência horária controlada)
+MAX_POSTS_PER_RUN = 20                # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
 SLEEP_BETWEEN_FEEDS = 2
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
 
 # Feeds RSS configurados
 FEEDS = [
+    # ── World News ────────────────────────────────────────────
+    {
+        "name":     "BBC News World",
+        "url":      "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "category": "world",
+        "tags":     ["bbc", "world-news", "international"],
+        "source":   "BBC News",
+    },
+    {
+        "name":     "Al Jazeera",
+        "url":      "https://www.aljazeera.com/xml/rss/all.xml",
+        "category": "world",
+        "tags":     ["aljazeera", "world-news", "middle-east"],
+        "source":   "Al Jazeera",
+    },
+    {
+        "name":     "The Guardian World",
+        "url":      "https://www.theguardian.com/world/rss",
+        "category": "world",
+        "tags":     ["guardian", "world-news", "international"],
+        "source":   "The Guardian",
+    },
+    {
+        "name":     "Deutsche Welle",
+        "url":      "https://rss.dw.com/rdf/rss-en-all",
+        "category": "world",
+        "tags":     ["dw", "europe", "world-news"],
+        "source":   "Deutsche Welle",
+    },
+    {
+        "name":     "France 24",
+        "url":      "https://www.france24.com/en/rss",
+        "category": "world",
+        "tags":     ["france24", "world-news", "europe"],
+        "source":   "France 24",
+    },
+    {
+        "name":     "Reuters",
+        "url":      "https://feeds.reuters.com/reuters/topNews",
+        "category": "world",
+        "tags":     ["reuters", "world-news", "breaking"],
+        "source":   "Reuters",
+    },
+    {
+        "name":     "NPR News",
+        "url":      "https://feeds.npr.org/1001/rss.xml",
+        "category": "world",
+        "tags":     ["npr", "usa", "world-news"],
+        "source":   "NPR",
+    },
+    {
+        "name":     "Euronews",
+        "url":      "https://feeds.feedburner.com/euronews/en/news",
+        "category": "world",
+        "tags":     ["euronews", "europe", "world-news"],
+        "source":   "Euronews",
+    },
+    # ── Politics ──────────────────────────────────────────────
+    {
+        "name":     "The Guardian Politics",
+        "url":      "https://www.theguardian.com/politics/rss",
+        "category": "politics",
+        "tags":     ["guardian", "politics", "uk"],
+        "source":   "The Guardian",
+    },
+    {
+        "name":     "Foreign Policy",
+        "url":      "https://foreignpolicy.com/feed/",
+        "category": "politics",
+        "tags":     ["foreign-policy", "geopolitics", "diplomacy"],
+        "source":   "Foreign Policy",
+    },
+    {
+        "name":     "Politico",
+        "url":      "https://rss.politico.com/politics-news.xml",
+        "category": "politics",
+        "tags":     ["politico", "politics", "usa"],
+        "source":   "Politico",
+    },
+    {
+        "name":     "BBC Politics",
+        "url":      "https://feeds.bbci.co.uk/news/politics/rss.xml",
+        "category": "politics",
+        "tags":     ["bbc", "politics", "uk"],
+        "source":   "BBC News",
+    },
+    # ── War / Defense / Conflict ──────────────────────────────
+    {
+        "name":     "War on the Rocks",
+        "url":      "https://warontherocks.com/feed/",
+        "category": "war",
+        "tags":     ["defense", "military", "geopolitics"],
+        "source":   "War on the Rocks",
+    },
+    {
+        "name":     "Defense News",
+        "url":      "https://www.defensenews.com/arc/outboundfeeds/rss/",
+        "category": "war",
+        "tags":     ["defense", "military", "pentagon"],
+        "source":   "Defense News",
+    },
+    {
+        "name":     "The Drive — War Zone",
+        "url":      "https://www.thedrive.com/the-war-zone/rss",
+        "category": "war",
+        "tags":     ["military", "weapons", "conflict"],
+        "source":   "The Drive",
+    },
+    {
+        "name":     "Al Jazeera Conflicts",
+        "url":      "https://www.aljazeera.com/xml/rss/all.xml",
+        "category": "war",
+        "tags":     ["conflict", "war", "aljazeera"],
+        "source":   "Al Jazeera",
+    },
+    # ── Business / Finance ────────────────────────────────────
+    {
+        "name":     "CNBC",
+        "url":      "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+        "category": "business",
+        "tags":     ["cnbc", "finance", "economy"],
+        "source":   "CNBC",
+    },
+    {
+        "name":     "MarketWatch",
+        "url":      "https://feeds.marketwatch.com/marketwatch/topstories/",
+        "category": "business",
+        "tags":     ["marketwatch", "stocks", "finance"],
+        "source":   "MarketWatch",
+    },
+    {
+        "name":     "Fortune",
+        "url":      "https://fortune.com/feed/",
+        "category": "business",
+        "tags":     ["fortune", "business", "economy"],
+        "source":   "Fortune",
+    },
+    {
+        "name":     "The Guardian Business",
+        "url":      "https://www.theguardian.com/business/rss",
+        "category": "business",
+        "tags":     ["guardian", "business", "economy"],
+        "source":   "The Guardian",
+    },
+    {
+        "name":     "BBC Business",
+        "url":      "https://feeds.bbci.co.uk/news/business/rss.xml",
+        "category": "business",
+        "tags":     ["bbc", "business", "economy"],
+        "source":   "BBC News",
+    },
+    # ── Science ───────────────────────────────────────────────
+    {
+        "name":     "NASA News",
+        "url":      "https://www.nasa.gov/feed/",
+        "category": "science",
+        "tags":     ["nasa", "space", "science"],
+        "source":   "NASA",
+    },
+    {
+        "name":     "Scientific American",
+        "url":      "https://www.scientificamerican.com/feed/rss/",
+        "category": "science",
+        "tags":     ["science", "research", "discovery"],
+        "source":   "Scientific American",
+    },
+    {
+        "name":     "New Scientist",
+        "url":      "https://www.newscientist.com/feed/",
+        "category": "science",
+        "tags":     ["science", "research", "physics"],
+        "source":   "New Scientist",
+    },
+    {
+        "name":     "Space.com",
+        "url":      "https://www.space.com/feeds/all",
+        "category": "science",
+        "tags":     ["space", "astronomy", "nasa"],
+        "source":   "Space.com",
+    },
+    {
+        "name":     "ScienceAlert",
+        "url":      "https://www.sciencealert.com/feed",
+        "category": "science",
+        "tags":     ["science", "biology", "chemistry"],
+        "source":   "ScienceAlert",
+    },
+    # ── Health ────────────────────────────────────────────────
+    {
+        "name":     "Medical News Today",
+        "url":      "https://www.medicalnewstoday.com/rss",
+        "category": "health",
+        "tags":     ["health", "medicine", "medical"],
+        "source":   "Medical News Today",
+    },
+    {
+        "name":     "Healthline",
+        "url":      "https://www.healthline.com/rss/health-news",
+        "category": "health",
+        "tags":     ["health", "wellness", "medicine"],
+        "source":   "Healthline",
+    },
+    {
+        "name":     "BBC Health",
+        "url":      "https://feeds.bbci.co.uk/news/health/rss.xml",
+        "category": "health",
+        "tags":     ["bbc", "health", "medicine"],
+        "source":   "BBC News",
+    },
+    {
+        "name":     "WHO News",
+        "url":      "https://www.who.int/feeds/entity/news/en/rss.xml",
+        "category": "health",
+        "tags":     ["who", "global-health", "pandemic"],
+        "source":   "WHO",
+    },
+    # ── Food / Cooking ────────────────────────────────────────
+    {
+        "name":     "Serious Eats",
+        "url":      "https://www.seriouseats.com/feeds/all",
+        "category": "food",
+        "tags":     ["food", "cooking", "recipes"],
+        "source":   "Serious Eats",
+    },
+    {
+        "name":     "Eater",
+        "url":      "https://www.eater.com/rss/index.xml",
+        "category": "food",
+        "tags":     ["food", "restaurants", "cuisine"],
+        "source":   "Eater",
+    },
+    {
+        "name":     "Food52",
+        "url":      "https://food52.com/blog.rss",
+        "category": "food",
+        "tags":     ["food", "cooking", "recipes"],
+        "source":   "Food52",
+    },
+    {
+        "name":     "Bon Appétit",
+        "url":      "https://www.bonappetit.com/feed/rss",
+        "category": "food",
+        "tags":     ["food", "cooking", "recipes"],
+        "source":   "Bon Appétit",
+    },
+    # ── Sports ────────────────────────────────────────────────
+    {
+        "name":     "ESPN",
+        "url":      "https://www.espn.com/espn/rss/news",
+        "category": "sports",
+        "tags":     ["espn", "sports", "nfl"],
+        "source":   "ESPN",
+    },
+    {
+        "name":     "BBC Sport",
+        "url":      "https://feeds.bbci.co.uk/sport/rss.xml",
+        "category": "sports",
+        "tags":     ["bbc", "sports", "football"],
+        "source":   "BBC Sport",
+    },
+    {
+        "name":     "Sky Sports",
+        "url":      "https://www.skysports.com/rss/12040",
+        "category": "sports",
+        "tags":     ["sky-sports", "football", "premier-league"],
+        "source":   "Sky Sports",
+    },
+    {
+        "name":     "Goal.com",
+        "url":      "https://www.goal.com/feeds/en/news",
+        "category": "sports",
+        "tags":     ["football", "soccer", "transfers"],
+        "source":   "Goal.com",
+    },
+    # ── Entertainment ─────────────────────────────────────────
+    {
+        "name":     "Variety",
+        "url":      "https://variety.com/feed/",
+        "category": "entertainment",
+        "tags":     ["variety", "movies", "hollywood"],
+        "source":   "Variety",
+    },
+    {
+        "name":     "Hollywood Reporter",
+        "url":      "https://www.hollywoodreporter.com/feed/",
+        "category": "entertainment",
+        "tags":     ["hollywood", "movies", "tv"],
+        "source":   "Hollywood Reporter",
+    },
+    {
+        "name":     "Rolling Stone",
+        "url":      "https://www.rollingstone.com/feed/",
+        "category": "entertainment",
+        "tags":     ["music", "rolling-stone", "culture"],
+        "source":   "Rolling Stone",
+    },
+    {
+        "name":     "IGN",
+        "url":      "https://www.ign.com/rss/articles",
+        "category": "entertainment",
+        "tags":     ["gaming", "ign", "movies"],
+        "source":   "IGN",
+    },
+    # ── Environment / Climate ─────────────────────────────────
+    {
+        "name":     "The Guardian Environment",
+        "url":      "https://www.theguardian.com/environment/rss",
+        "category": "environment",
+        "tags":     ["guardian", "climate", "environment"],
+        "source":   "The Guardian",
+    },
+    {
+        "name":     "Yale Environment 360",
+        "url":      "https://e360.yale.edu/feeds/all",
+        "category": "environment",
+        "tags":     ["climate", "environment", "sustainability"],
+        "source":   "Yale Environment 360",
+    },
+    {
+        "name":     "BBC Science & Environment",
+        "url":      "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+        "category": "environment",
+        "tags":     ["bbc", "environment", "climate"],
+        "source":   "BBC News",
+    },
+    # ── Travel ────────────────────────────────────────────────
+    {
+        "name":     "Lonely Planet",
+        "url":      "https://www.lonelyplanet.com/feeds/latest",
+        "category": "travel",
+        "tags":     ["travel", "destinations", "tourism"],
+        "source":   "Lonely Planet",
+    },
+    {
+        "name":     "Travel + Leisure",
+        "url":      "https://www.travelandleisure.com/feeds/all",
+        "category": "travel",
+        "tags":     ["travel", "luxury", "destinations"],
+        "source":   "Travel + Leisure",
+    },
     # ── Technology ────────────────────────────────────────────
     {
         "name":     "TechCrunch",
@@ -143,7 +483,7 @@ FEEDS = [
         "tags":     ["hackernews", "security", "vulnerabilities"],
         "source":   "The Hacker News",
     },
-    # ── Developer / General ───────────────────────────────────
+    # ── Developer / General Tech ──────────────────────────────
     {
         "name":     "Hacker News (Top)",
         "url":      "https://hnrss.org/frontpage",
@@ -167,63 +507,181 @@ FEEDS = [
 
 KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
     # AI / Machine Learning
-    "artificial intelligence": ("ai",        ["ai", "machine-learning"]),
-    "machine learning":        ("ai",        ["ai", "machine-learning"]),
-    "deep learning":           ("ai",        ["ai", "deep-learning"]),
-    "neural network":          ("ai",        ["ai", "neural-networks"]),
-    "large language model":    ("ai",        ["ai", "llm"]),
-    " llm ":                   ("ai",        ["ai", "llm"]),
-    "chatgpt":                 ("ai",        ["ai", "chatgpt", "openai"]),
-    "openai":                  ("ai",        ["ai", "openai"]),
-    "anthropic":               ("ai",        ["ai", "anthropic"]),
-    "gemini":                  ("ai",        ["ai", "google", "gemini"]),
-    "copilot":                 ("ai",        ["ai", "microsoft", "copilot"]),
-    "generative ai":           ("ai",        ["ai", "generative-ai"]),
-    "claude":                  ("ai",        ["ai", "anthropic", "claude"]),
-    "grok":                    ("ai",        ["ai", "xai", "grok"]),
-    "mistral":                 ("ai",        ["ai", "mistral"]),
+    "artificial intelligence": ("ai",          ["ai", "machine-learning"]),
+    "machine learning":        ("ai",          ["ai", "machine-learning"]),
+    "deep learning":           ("ai",          ["ai", "deep-learning"]),
+    "neural network":          ("ai",          ["ai", "neural-networks"]),
+    "large language model":    ("ai",          ["ai", "llm"]),
+    " llm ":                   ("ai",          ["ai", "llm"]),
+    "chatgpt":                 ("ai",          ["ai", "chatgpt", "openai"]),
+    "openai":                  ("ai",          ["ai", "openai"]),
+    "anthropic":               ("ai",          ["ai", "anthropic"]),
+    "gemini":                  ("ai",          ["ai", "google", "gemini"]),
+    "copilot":                 ("ai",          ["ai", "microsoft", "copilot"]),
+    "generative ai":           ("ai",          ["ai", "generative-ai"]),
+    "claude":                  ("ai",          ["ai", "anthropic", "claude"]),
+    "grok":                    ("ai",          ["ai", "xai", "grok"]),
+    "mistral":                 ("ai",          ["ai", "mistral"]),
 
     # Security
-    "cybersecurity":           ("security",  ["security", "cybersecurity"]),
-    "ransomware":              ("security",  ["security", "ransomware"]),
-    "malware":                 ("security",  ["security", "malware"]),
-    "data breach":             ("security",  ["security", "data-breach"]),
-    "vulnerability":           ("security",  ["security", "vulnerability"]),
-    "hacker":                  ("security",  ["security", "hacking"]),
-    "zero-day":                ("security",  ["security", "zero-day"]),
-    "phishing":                ("security",  ["security", "phishing"]),
-    "exploit":                 ("security",  ["security", "exploit"]),
-    "spyware":                 ("security",  ["security", "spyware"]),
+    "cybersecurity":           ("security",    ["security", "cybersecurity"]),
+    "ransomware":              ("security",    ["security", "ransomware"]),
+    "malware":                 ("security",    ["security", "malware"]),
+    "data breach":             ("security",    ["security", "data-breach"]),
+    "vulnerability":           ("security",    ["security", "vulnerability"]),
+    "hacker":                  ("security",    ["security", "hacking"]),
+    "zero-day":                ("security",    ["security", "zero-day"]),
+    "phishing":                ("security",    ["security", "phishing"]),
+    "exploit":                 ("security",    ["security", "exploit"]),
+    "spyware":                 ("security",    ["security", "spyware"]),
 
     # Mobile
-    "iphone":                  ("mobile",    ["mobile", "apple", "iphone"]),
-    "android":                 ("mobile",    ["mobile", "android"]),
-    "smartphone":              ("mobile",    ["mobile", "smartphone"]),
-    "samsung galaxy":          ("mobile",    ["mobile", "samsung"]),
-    "pixel phone":             ("mobile",    ["mobile", "google", "pixel"]),
-    "ios 18":                  ("mobile",    ["mobile", "apple", "ios"]),
-    "android 15":              ("mobile",    ["mobile", "android", "google"]),
+    "iphone":                  ("mobile",      ["mobile", "apple", "iphone"]),
+    "android":                 ("mobile",      ["mobile", "android"]),
+    "smartphone":              ("mobile",      ["mobile", "smartphone"]),
+    "samsung galaxy":          ("mobile",      ["mobile", "samsung"]),
+    "pixel phone":             ("mobile",      ["mobile", "google", "pixel"]),
 
     # Gadgets
-    "smartwatch":              ("gadgets",   ["gadgets", "wearables"]),
-    "headphones":              ("gadgets",   ["gadgets", "audio"]),
-    "laptop":                  ("gadgets",   ["gadgets", "laptop"]),
-    "graphics card":           ("gadgets",   ["gadgets", "gpu"]),
-    "electric vehicle":        ("gadgets",   ["gadgets", "ev", "electric-vehicle"]),
-    "gpu":                     ("gadgets",   ["gadgets", "gpu", "nvidia"]),
-    "processor":               ("gadgets",   ["gadgets", "processor", "chip"]),
+    "smartwatch":              ("gadgets",     ["gadgets", "wearables"]),
+    "headphones":              ("gadgets",     ["gadgets", "audio"]),
+    "laptop":                  ("gadgets",     ["gadgets", "laptop"]),
+    "graphics card":           ("gadgets",     ["gadgets", "gpu"]),
+    "electric vehicle":        ("gadgets",     ["gadgets", "ev", "electric-vehicle"]),
+    "gpu":                     ("gadgets",     ["gadgets", "gpu", "nvidia"]),
+    "processor":               ("gadgets",     ["gadgets", "processor", "chip"]),
 
     # Startups
-    "startup":                 ("startups",  ["startups"]),
-    "venture capital":         ("startups",  ["startups", "venture-capital"]),
-    "series a":                ("startups",  ["startups", "funding"]),
-    "series b":                ("startups",  ["startups", "funding"]),
-    "series c":                ("startups",  ["startups", "funding"]),
-    "ipo":                     ("startups",  ["startups", "ipo"]),
-    "unicorn":                 ("startups",  ["startups", "unicorn"]),
-    "funding round":           ("startups",  ["startups", "funding"]),
-    "raised":                  ("startups",  ["startups", "funding"]),
-    "acquisition":             ("startups",  ["startups", "acquisition"]),
+    "startup":                 ("startups",    ["startups"]),
+    "venture capital":         ("startups",    ["startups", "venture-capital"]),
+    "series a":                ("startups",    ["startups", "funding"]),
+    "series b":                ("startups",    ["startups", "funding"]),
+    "series c":                ("startups",    ["startups", "funding"]),
+    "ipo":                     ("startups",    ["startups", "ipo"]),
+    "unicorn":                 ("startups",    ["startups", "unicorn"]),
+    "funding round":           ("startups",    ["startups", "funding"]),
+    "acquisition":             ("startups",    ["startups", "acquisition"]),
+
+    # War / Conflict / Defense
+    "war":                     ("war",         ["war", "conflict"]),
+    "military":                ("war",         ["war", "military", "defense"]),
+    "troops":                  ("war",         ["war", "military"]),
+    "missile":                 ("war",         ["war", "weapons", "military"]),
+    "airstrike":               ("war",         ["war", "conflict", "military"]),
+    "ceasefire":               ("war",         ["war", "conflict", "diplomacy"]),
+    "nato":                    ("war",         ["war", "nato", "military"]),
+    "ukraine":                 ("war",         ["war", "ukraine", "russia"]),
+    "gaza":                    ("war",         ["war", "gaza", "middle-east"]),
+    "pentagon":                ("war",         ["war", "usa", "military"]),
+    "drone strike":            ("war",         ["war", "drones", "military"]),
+    "nuclear":                 ("war",         ["war", "nuclear", "weapons"]),
+
+    # Politics
+    "election":                ("politics",    ["politics", "election"]),
+    "president":               ("politics",    ["politics", "government"]),
+    "congress":                ("politics",    ["politics", "usa", "congress"]),
+    "senate":                  ("politics",    ["politics", "usa", "senate"]),
+    "parliament":              ("politics",    ["politics", "government"]),
+    "white house":             ("politics",    ["politics", "usa", "white-house"]),
+    "prime minister":          ("politics",    ["politics", "government"]),
+    "democrat":                ("politics",    ["politics", "usa", "democrats"]),
+    "republican":              ("politics",    ["politics", "usa", "republicans"]),
+    "legislation":             ("politics",    ["politics", "law"]),
+    "geopolitics":             ("politics",    ["politics", "geopolitics"]),
+    "sanctions":               ("politics",    ["politics", "diplomacy"]),
+
+    # Business / Economy
+    "stock market":            ("business",    ["business", "stocks", "finance"]),
+    "economy":                 ("business",    ["business", "economy"]),
+    "inflation":               ("business",    ["business", "economy", "inflation"]),
+    "interest rate":           ("business",    ["business", "economy", "fed"]),
+    "federal reserve":         ("business",    ["business", "fed", "economy"]),
+    "earnings":                ("business",    ["business", "earnings", "stocks"]),
+    "recession":               ("business",    ["business", "economy", "recession"]),
+    "wall street":             ("business",    ["business", "wall-street", "finance"]),
+    "gdp":                     ("business",    ["business", "economy", "gdp"]),
+    "trade war":               ("business",    ["business", "trade", "economy"]),
+    "tariff":                  ("business",    ["business", "trade", "economy"]),
+    "cryptocurrency":          ("business",    ["business", "crypto", "bitcoin"]),
+    "bitcoin":                 ("business",    ["business", "bitcoin", "crypto"]),
+
+    # Science
+    "nasa":                    ("science",     ["science", "space", "nasa"]),
+    "space":                   ("science",     ["science", "space"]),
+    "climate change":          ("environment", ["environment", "climate", "global-warming"]),
+    "global warming":          ("environment", ["environment", "climate"]),
+    "renewable energy":        ("environment", ["environment", "energy", "sustainability"]),
+    "research study":          ("science",     ["science", "research"]),
+    "black hole":              ("science",     ["science", "space", "astronomy"]),
+    "planet":                  ("science",     ["science", "space", "astronomy"]),
+    "gene":                    ("science",     ["science", "biology", "genetics"]),
+    "physics":                 ("science",     ["science", "physics"]),
+
+    # Health / Medicine
+    "vaccine":                 ("health",      ["health", "vaccine", "medicine"]),
+    "cancer":                  ("health",      ["health", "cancer", "medicine"]),
+    "pandemic":                ("health",      ["health", "pandemic", "disease"]),
+    "mental health":           ("health",      ["health", "mental-health"]),
+    "fda":                     ("health",      ["health", "fda", "medicine"]),
+    "clinical trial":          ("health",      ["health", "research", "medicine"]),
+    "antibiotic":              ("health",      ["health", "medicine"]),
+    "obesity":                 ("health",      ["health", "obesity", "nutrition"]),
+    "diabetes":                ("health",      ["health", "diabetes", "medicine"]),
+    "virus":                   ("health",      ["health", "virus", "disease"]),
+
+    # Food / Cooking
+    "recipe":                  ("food",        ["food", "cooking", "recipe"]),
+    "restaurant":              ("food",        ["food", "restaurant", "dining"]),
+    "chef":                    ("food",        ["food", "chef", "cuisine"]),
+    "cuisine":                 ("food",        ["food", "cuisine"]),
+    "ingredient":              ("food",        ["food", "cooking"]),
+    "michelin":                ("food",        ["food", "restaurant", "michelin"]),
+    "food festival":           ("food",        ["food", "festival"]),
+    "street food":             ("food",        ["food", "street-food"]),
+
+    # Sports
+    "nfl":                     ("sports",      ["sports", "nfl", "american-football"]),
+    "nba":                     ("sports",      ["sports", "nba", "basketball"]),
+    "nhl":                     ("sports",      ["sports", "nhl", "hockey"]),
+    "mlb":                     ("sports",      ["sports", "mlb", "baseball"]),
+    "premier league":          ("sports",      ["sports", "football", "premier-league"]),
+    "champions league":        ("sports",      ["sports", "football", "champions-league"]),
+    "world cup":               ("sports",      ["sports", "football", "world-cup"]),
+    "olympic":                 ("sports",      ["sports", "olympics"]),
+    "formula 1":               ("sports",      ["sports", "f1", "motorsport"]),
+    " f1 ":                    ("sports",      ["sports", "f1", "motorsport"]),
+    "tennis":                  ("sports",      ["sports", "tennis"]),
+    "golf":                    ("sports",      ["sports", "golf"]),
+    "ufc":                     ("sports",      ["sports", "ufc", "mma"]),
+    "transfer":                ("sports",      ["sports", "football", "transfers"]),
+
+    # Entertainment
+    "movie":                   ("entertainment", ["entertainment", "movies"]),
+    "film":                    ("entertainment", ["entertainment", "movies"]),
+    "netflix":                 ("entertainment", ["entertainment", "streaming", "netflix"]),
+    "oscar":                   ("entertainment", ["entertainment", "oscars", "movies"]),
+    "grammy":                  ("entertainment", ["entertainment", "music", "grammy"]),
+    "album":                   ("entertainment", ["entertainment", "music"]),
+    "box office":              ("entertainment", ["entertainment", "movies", "box-office"]),
+    "streaming":               ("entertainment", ["entertainment", "streaming"]),
+    "video game":              ("entertainment", ["entertainment", "gaming"]),
+    "tv show":                 ("entertainment", ["entertainment", "tv"]),
+
+    # Environment
+    "carbon emissions":        ("environment",  ["environment", "climate", "emissions"]),
+    "deforestation":           ("environment",  ["environment", "deforestation"]),
+    "biodiversity":            ("environment",  ["environment", "biodiversity"]),
+    "wildfire":                ("environment",  ["environment", "wildfire", "climate"]),
+    "flood":                   ("environment",  ["environment", "flood", "climate"]),
+    "drought":                 ("environment",  ["environment", "drought", "climate"]),
+    "solar energy":            ("environment",  ["environment", "solar", "energy"]),
+
+    # Travel
+    "travel":                  ("travel",       ["travel", "destinations"]),
+    "tourism":                 ("travel",       ["travel", "tourism"]),
+    "airline":                 ("travel",       ["travel", "airline", "flight"]),
+    "hotel":                   ("travel",       ["travel", "hotel"]),
+    "visa":                    ("travel",       ["travel", "visa"]),
 }
 
 # ============================================================
@@ -232,20 +690,17 @@ KEYWORD_CATEGORIES: dict[str, tuple[str, list]] = {
 # ============================================================
 
 BLACKLIST_PHRASES = [
-    # Entretenimento/lifestyle sem relação com tech
+    # Puzzles / games (não é notícia)
     "crossword", "crossword answers", "wordle", "mini crossword",
     "horoscope", "zodiac", "astrology",
-    "recipe", "cooking", "restaurant",
+    # Spam / ads
     "discount code", "coupon", "promo code", "deals up to",
     "best deals", "sale ends", "limited time offer",
+    "click here to win", "giveaway",
+    "sponsored content", "advertisement",
+    # Adult / harmful content
     "sex toy", "vibrator", "we-vibe", "adult toy",
     "deepfake porn", "deepfake nude", "nonconsensual",
-    "celebrity gossip", "celebrity news",
-    "reality tv", "reality show",
-    "sports score", "game score", "nfl", "nba", "mlb", "nhl",
-    # Artigos de baixa qualidade
-    "sponsored", "advertisement", "buy now",
-    "click here to win", "giveaway",
 ]
 
 BLACKLIST_TITLE_PATTERNS = [
@@ -257,7 +712,6 @@ BLACKLIST_TITLE_PATTERNS = [
     r"\bhoroscope\b",
     r"\bcrossword\b",
     r"\bwordle\b",
-    r"\brecipe\b",
 ]
 
 
@@ -603,11 +1057,11 @@ This is a curated summary. For the complete article, original data, quotes and f
 
 > **[Read the full story on {source_name} →]({source_url})**
 
-*All reporting rights belong to the respective author(s) at **{source_name}**. TechBR News summarizes publicly available content to help readers discover relevant technology news.*
+*All reporting rights belong to the respective author(s) at **{source_name}**. GlobalBR News summarizes publicly available content to help readers discover the most relevant global news.*
 
 ---
 
-*Curated by [TechBR News](https://non-s.github.io) · {date_str}*
+*Curated by [GlobalBR News](https://non-s.github.io) · {date_str}*
 """
     return content
 
@@ -633,7 +1087,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
     try:
         parsed = feedparser.parse(url, request_headers={
-            "User-Agent": "TechBR-News-Bot/1.0 (+https://non-s.github.io)"
+            "User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"
         })
     except Exception as e:
         log.error(f"  ❌ Erro ao ler feed {name}: {e}")
@@ -714,7 +1168,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 date        = pub_date,
                 categories  = categories,
                 tags        = all_tags,
-                author      = "TechBR News",
+                author      = "GlobalBR News",
                 description = description,
                 source_url  = link,
                 source_name = source,
@@ -748,7 +1202,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
 def main():
     log.info("=" * 60)
-    log.info(f"🚀 TechBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     log.info("=" * 60)
 
     POSTS_DIR.mkdir(exist_ok=True)
