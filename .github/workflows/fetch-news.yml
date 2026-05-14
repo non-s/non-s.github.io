@@ -171,6 +171,21 @@ jobs:
             echo "✅ IndexNow notificado: $URLS"
           fi
 
+      - name: "💚 Health check — post stats to Bluesky (weekly)"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: |
+          # Only post health stats on Mondays
+          DOW=$(date -u +%u)
+          if [ "$DOW" = "1" ]; then
+            python post_audit_bluesky.py
+          else
+            echo "ℹ️ Not Monday — skipping weekly health post"
+          fi
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
         run: echo "✨ No new posts this run — skipping commit."
