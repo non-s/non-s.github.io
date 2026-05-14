@@ -41,22 +41,50 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ '/business/' | relative_url }}">Business</a>
           </li>
-          <li class="nav-item gb-dropdown">
-            <a class="nav-link gb-dropdown-toggle" href="#" tabindex="0">More <i class="bi bi-chevron-down" style="font-size:.65rem;"></i></a>
-            <ul class="gb-dropdown-menu">
-              <li><a href="{{ '/science/' | relative_url }}">🔬 Science</a></li>
-              <li><a href="{{ '/health/' | relative_url }}">🏥 Health</a></li>
-              <li><a href="{{ '/sports/' | relative_url }}">⚽ Sports</a></li>
-              <li><a href="{{ '/food/' | relative_url }}">🍕 Food</a></li>
-              <li><a href="{{ '/entertainment/' | relative_url }}">🎬 Entertainment</a></li>
-              <li><a href="{{ '/environment/' | relative_url }}">🌱 Environment</a></li>
-              <li><a href="{{ '/travel/' | relative_url }}">✈️ Travel</a></li>
-              <li style="border-top:1px solid rgba(255,255,255,.08);margin:.3rem 0;list-style:none;"></li>
-              <li><a href="{{ '/technology/' | relative_url }}">💻 Technology</a></li>
-              <li><a href="{{ '/ai/' | relative_url }}">🤖 AI</a></li>
-              <li><a href="{{ '/security/' | relative_url }}">🔒 Security</a></li>
+          <li style="position:relative;list-style:none;">
+            <a class="nav-link" href="#" id="gbMoreBtn"
+               style="cursor:pointer;display:flex;align-items:center;gap:.3rem;">
+              More <i class="bi bi-chevron-down" style="font-size:.6rem;transition:transform .2s;"></i>
+            </a>
+            <ul id="gbMoreMenu"
+                style="display:none;position:absolute;top:calc(100% + 6px);left:0;
+                       background:rgba(8,12,23,.99);border:1px solid rgba(255,255,255,.15);
+                       border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.75);
+                       padding:.4rem 0;min-width:200px;z-index:9999;
+                       list-style:none !important;margin:0;">
+              <li style="list-style:none;"><a href="{{ '/science/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔬 Science</a></li>
+              <li style="list-style:none;"><a href="{{ '/health/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🏥 Health</a></li>
+              <li style="list-style:none;"><a href="{{ '/sports/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">⚽ Sports</a></li>
+              <li style="list-style:none;"><a href="{{ '/food/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🍕 Food</a></li>
+              <li style="list-style:none;"><a href="{{ '/entertainment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🎬 Entertainment</a></li>
+              <li style="list-style:none;"><a href="{{ '/environment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🌱 Environment</a></li>
+              <li style="list-style:none;"><a href="{{ '/travel/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">✈️ Travel</a></li>
+              <li style="list-style:none;border-top:1px solid rgba(255,255,255,.1);margin:.3rem 0;"></li>
+              <li style="list-style:none;"><a href="{{ '/technology/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">💻 Technology</a></li>
+              <li style="list-style:none;"><a href="{{ '/ai/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🤖 AI</a></li>
+              <li style="list-style:none;"><a href="{{ '/security/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔒 Security</a></li>
             </ul>
           </li>
+          <script>
+          (function(){
+            var btn = document.getElementById('gbMoreBtn');
+            var menu = document.getElementById('gbMoreMenu');
+            var icon = btn ? btn.querySelector('i') : null;
+            if (!btn || !menu) return;
+            btn.addEventListener('click', function(e){
+              e.preventDefault();
+              var open = menu.style.display === 'block';
+              menu.style.display = open ? 'none' : 'block';
+              if (icon) icon.style.transform = open ? '' : 'rotate(180deg)';
+            });
+            document.addEventListener('click', function(e){
+              if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+                if (icon) icon.style.transform = '';
+              }
+            });
+          })();
+          </script>
         </ul>
 
         <form class="d-flex gap-2" role="search"
