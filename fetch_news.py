@@ -2158,6 +2158,51 @@ def _add_pt_summary(title: str, description: str, category: str) -> str:
 
 
 # ============================================================
+# SPANISH SUMMARY
+# ============================================================
+
+def _add_es_summary(title: str, description: str, category: str) -> str:
+    """Generates a rich Spanish (ES) summary section using AI."""
+    try:
+        cat_es = {
+            "world": "mundo", "politics": "política", "war": "conflicto/defensa",
+            "business": "economía", "science": "ciencia", "health": "salud",
+            "food": "gastronomía", "sports": "deportes", "entertainment": "entretenimiento",
+            "environment": "medio ambiente", "travel": "viajes", "technology": "tecnología",
+            "ai": "inteligencia artificial", "security": "ciberseguridad",
+            "gadgets": "gadgets", "startups": "startups", "mobile": "móviles",
+        }.get(category, "noticias")
+
+        prompt = (
+            f"Eres un periodista español experimentado en {cat_es}. "
+            f"Escribe un resumen en español (ES) sobre la noticia siguiente. "
+            f"El resumen debe tener EXACTAMENTE 2 párrafos en prosa:\n"
+            f"1. Una frase de apertura que contextualice el hecho principal de forma atractiva.\n"
+            f"2. Un párrafo que explique el contexto, la relevancia y las implicaciones para los lectores hispanohablantes.\n\n"
+            f"Usa lenguaje periodístico natural, claro y accesible. "
+            f"Sin bullet points, sin JSON, sin títulos — solo párrafos en prosa.\n\n"
+            f"Título: {title}\nDescripción: {description}"
+        )
+        es_text = _ai_text(
+            prompt,
+            system=(
+                "Eres un periodista profesional hispanohablante. "
+                "Escribe siempre en español estándar, con lenguaje natural y fluido. "
+                "Nunca uses inglés. Responde solo con el texto del resumen."
+            ),
+        )
+        if not es_text:
+            return ""
+        es_text = es_text.strip()
+        es_text = re.sub(r'^(resumen\s*:|aquí está[^:]*:|resultado:)\s*', '', es_text, flags=re.IGNORECASE)
+        if len(es_text) < 60:
+            return ""
+        return f"\n\n---\n\n## 🇪🇸 Resumen en Español\n\n{es_text}\n"
+    except Exception:
+        return ""
+
+
+# ============================================================
 # STORY CONTINUATION DETECTION
 # ============================================================
 
@@ -2829,6 +2874,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_content = _add_internal_links(post_content, category, Path(filename).stem)
             pt_section = _add_pt_summary(title, description, category)
             post_content += pt_section
+            # Spanish summary — top 3 categories by global readership
+            if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
+                es_section = _add_es_summary(title, description, category)
+                post_content += es_section
 
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
@@ -2984,6 +3033,10 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     post_content = _add_internal_links(post_content, category, Path(filename).stem)
     pt_section = _add_pt_summary(title, description, category)
     post_content += pt_section
+    # Spanish summary — top 3 categories by global readership
+    if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
+        es_section = _add_es_summary(title, description, category)
+        post_content += es_section
 
     post_path = POSTS_DIR / filename
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
