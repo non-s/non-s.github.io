@@ -456,6 +456,27 @@
   })();
   </script>
 
+  <!-- ── Freshness indicators — "2 hours ago", "3 days ago" ── -->
+  <script>
+  (function() {
+    function timeAgo(iso) {
+      var d = new Date(iso), now = new Date();
+      var s = Math.floor((now - d) / 1000);
+      if (s < 60)   return 'Just now';
+      var m = Math.floor(s / 60);
+      if (m < 60)   return m + 'm ago';
+      var h = Math.floor(m / 60);
+      if (h < 24)   return h + 'h ago';
+      var day = Math.floor(h / 24);
+      if (day < 7)  return day + 'd ago';
+      return d.toLocaleDateString('en', {month:'short', day:'numeric'});
+    }
+    document.querySelectorAll('.post-date[data-pubdate]').forEach(function(el) {
+      el.textContent = timeAgo(el.dataset.pubdate);
+    });
+  })();
+  </script>
+
   <!-- ── Navbar Search Autocomplete ─────────────────────── -->
   <script>
   (function(){

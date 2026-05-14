@@ -158,6 +158,17 @@ layout: default
         <nav id="toc-nav" class="toc-nav"></nav>
       </div>
 
+      {% if site.adsense_publisher_id %}
+      <!-- AdSense In-Article Ad -->
+      <ins class="adsbygoogle"
+           style="display:block;text-align:center;margin:1.5rem 0;"
+           data-ad-layout="in-article"
+           data-ad-format="fluid"
+           data-ad-client="{{ site.adsense_publisher_id }}"
+           data-ad-slot="AUTO"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      {% endif %}
+
       <article class="post-content" id="post-article">
         {{ content }}
       </article>
@@ -239,6 +250,45 @@ layout: default
       </div>
       {% endif %}
 
+      {% comment %}Prev/Next navigation within same category{% endcomment %}
+      {% assign cat = page.categories | first %}
+      {% assign cat_posts = site.posts | where_exp: "p", "p.categories contains cat" %}
+      {% assign post_count = cat_posts | size %}
+
+      {% if post_count > 1 %}
+      {% assign current_index = 0 %}
+      {% for p in cat_posts %}
+        {% if p.url == page.url %}
+          {% assign current_index = forloop.index0 %}
+        {% endif %}
+      {% endfor %}
+
+      {% assign prev_index = current_index | minus: 1 %}
+      {% assign next_index = current_index | plus: 1 %}
+
+      <nav class="post-prevnext" aria-label="Article navigation">
+        <div class="prevnext-grid">
+          {% if prev_index >= 0 %}
+          {% assign prev_post = cat_posts[prev_index] %}
+          <a href="{{ prev_post.url | relative_url }}" class="prevnext-card prevnext-prev">
+            <span class="prevnext-label"><i class="bi bi-arrow-left"></i> Previous</span>
+            <span class="prevnext-title">{{ prev_post.title | truncate: 70 }}</span>
+          </a>
+          {% else %}
+          <div></div>
+          {% endif %}
+
+          {% if next_index < post_count %}
+          {% assign next_post = cat_posts[next_index] %}
+          <a href="{{ next_post.url | relative_url }}" class="prevnext-card prevnext-next">
+            <span class="prevnext-label">Next <i class="bi bi-arrow-right"></i></span>
+            <span class="prevnext-title">{{ next_post.title | truncate: 70 }}</span>
+          </a>
+          {% endif %}
+        </div>
+      </nav>
+      {% endif %}
+
       <!-- Comments — Giscus (GitHub Discussions) preferred, fallback Utterances -->
       {% if site.giscus_repo %}
       <div class="comments-section mt-5 pt-4 border-top">
@@ -299,6 +349,18 @@ layout: default
           {% endunless %}
         {% endfor %}
       </div>
+
+      {% if site.adsense_publisher_id %}
+      <div class="sidebar-widget mt-3">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.adsense_publisher_id }}"
+             data-ad-slot="AUTO"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      {% endif %}
 
       <div class="sidebar-widget">
         <h6 class="sidebar-widget-title">Categories</h6>
