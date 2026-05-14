@@ -118,6 +118,60 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
+/* Scrolling ticker (marquee) */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.breaking-bar {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.breaking-label {
+  background: rgba(0,0,0,.35);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: .15rem .7rem;
+  border-radius: 3px;
+  margin: 0 .75rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+}
+.breaking-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 2%, #000 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 2%, #000 98%, transparent 100%);
+}
+.breaking-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  animation: ticker-scroll 60s linear infinite;
+}
+.breaking-track:hover { animation-play-state: paused; }
+.breaking-item {
+  color: rgba(255,255,255,.92);
+  font-size: .78rem;
+  font-weight: 500;
+  padding: 0 1.2rem;
+  white-space: nowrap;
+  transition: color .2s;
+  text-decoration: none !important;
+}
+.breaking-item:hover { color: #fde68a; }
+.breaking-dot {
+  color: rgba(255,255,255,.4);
+  margin-right: .5rem;
+  font-size: .5rem;
+}
+
 /* ============================================================
    NAVBAR
    ============================================================ */

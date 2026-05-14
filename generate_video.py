@@ -1,36 +1,54 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-generate_video.py — Gera vídeos de notícias para o YouTube
-============================================================
-Design profissional estilo telejornal: gradiente tech, lower-thirds,
-barra de progresso animada, thumbnail otimizado para CTR.
+generate_video.py — Gera vídeo roundup horário para o YouTube
+==============================================================
+Formato: 1 vídeo por hora cobrindo 6 histórias → ~10-12 minutos.
+Vídeos longos habilitam mid-roll ads (mínimo 8 min), maximizando receita.
+
+Estrutura do vídeo:
+  Intro       ~30s   "Welcome to TechBR News Hourly Roundup"
+  História 1  ~90s   Título + descrição + fonte
+  História 2  ~90s   ...
+  …até 6 histórias…
+  Outro       ~60s   CTA de inscrição
+
+Total estimado: 6 × 90s + 30s + 60s ≈ 10.5 minutos
 """
 
-import os, re, json, asyncio, textwrap, subprocess, logging, hashlib, math
+import os, re, json, asyncio, subprocess, logging, shutil
 from pathlib import Path
 from datetime import datetime, timezone
 
-import feedparser
 import requests
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
 # ── Config ─────────────────────────────────────────────────────
-VIDEOS_DIR   = Path("_videos")
-LOG_FILE     = "generate_video.log"
-VOICE        = "en-US-AriaNeural"
-MAX_PER_RUN  = 1                      # 1 por hora = 24/dia
-VIDEO_W, VIDEO_H = 1920, 1080
+VIDEOS_DIR        = Path("_videos")
+LOG_FILE          = "generate_video.log"
+STORIES_PER_VIDEO = 6      # histórias por roundup (~10 min)
+MIN_STORIES       = 3      # mínimo para gerar (evita vídeos muito curtos)
+MAX_PER_RUN       = 1      # 1 roundup por execução
+VIDEO_W, VIDEO_H  = 1920, 1080
 
 # Paleta de cores — identidade TechBR
-BG_DARK      = (8, 8, 18)
-BG_MID       = (14, 14, 28)
-ACCENT_BLUE  = (0, 195, 255)
-ACCENT_CYAN  = (0, 240, 200)
-RED_LIVE     = (220, 50, 50)
-TEXT_WHITE   = (245, 245, 255)
-TEXT_GRAY    = (160, 165, 190)
-TEXT_DIM     = (90, 95, 115)
+BG_DARK     = (8, 8, 18)
+ACCENT_BLUE = (0, 195, 255)
+ACCENT_CYAN = (0, 240, 200)
+RED_LIVE    = (220, 50, 50)
+TEXT_WHITE  = (245, 245, 255)
+TEXT_GRAY   = (160, 165, 190)
+
+# Voz por categoria
+VOICE_BY_CATEGORY = {
+    "AI":       "en-US-AriaNeural",
+    "SECURITY": "en-US-GuyNeural",
+    "BUSINESS": "en-US-JennyNeural",
+    "BIG TECH": "en-US-DavisNeural",
+    "HARDWARE": "en-US-TonyNeural",
+    "TECH":     "en-US-AriaNeural",
+}
+VOICE_DEFAULT = "en-US-AriaNeural"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,21 +61,20 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Fontes ─────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False, italic: bool = False):
+def get_font(size: int, bold: bool = False):
     candidates_bold = [
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
         "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
     ]
     candidates_reg = [
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
         "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
-    pool = candidates_bold if bold else candidates_reg
-    for path in pool:
+    for path in (candidates_bold if bold else candidates_reg):
         if Path(path).exists():
             return ImageFont.truetype(path, size)
     return ImageFont.load_default()
@@ -68,39 +85,29 @@ def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
     draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
                             outline=outline, width=outline_width)
 
-def draw_gradient_rect(img, x0, y0, x1, y1, color_top, color_bot):
+def draw_gradient_bg(img, color_top, color_bot):
     draw = ImageDraw.Draw(img)
-    for i in range(y1 - y0):
-        t = i / max(y1 - y0 - 1, 1)
+    for i in range(VIDEO_H):
+        t = i / max(VIDEO_H - 1, 1)
         r = int(color_top[0] + (color_bot[0] - color_top[0]) * t)
         g = int(color_top[1] + (color_bot[1] - color_top[1]) * t)
         b = int(color_top[2] + (color_bot[2] - color_top[2]) * t)
-        draw.line([(x0, y0 + i), (x1, y0 + i)], fill=(r, g, b))
+        draw.line([(0, i), (VIDEO_W, i)], fill=(r, g, b))
 
-def draw_tech_grid(img, alpha=18):
-    """Desenha grid de pontos tech no fundo."""
+def draw_tech_grid(img, alpha=12):
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(overlay)
-    spacing = 48
-    for x in range(0, VIDEO_W, spacing):
-        for y in range(0, VIDEO_H, spacing):
+    for x in range(0, VIDEO_W, 48):
+        for y in range(0, VIDEO_H, 48):
             d.ellipse([x-1, y-1, x+1, y+1], fill=(0, 195, 255, alpha))
     return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
-
-def draw_glow_line(draw, x0, y0, x1, y1, color, width=3):
-    """Linha com efeito glow (3 camadas)."""
-    r, g, b = color
-    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 60), width=width + 4)
-    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 130), width=width + 2)
-    draw.line([(x0, y0), (x1, y1)], fill=(r, g, b, 255), width=width)
 
 def wrap_text(draw, text, font, max_width):
     words = text.split()
     lines, line = [], []
     for word in words:
         test = ' '.join(line + [word])
-        bbox = draw.textbbox((0, 0), test, font=font)
-        if bbox[2] > max_width and line:
+        if draw.textbbox((0, 0), test, font=font)[2] > max_width and line:
             lines.append(' '.join(line))
             line = [word]
         else:
@@ -109,285 +116,416 @@ def wrap_text(draw, text, font, max_width):
         lines.append(' '.join(line))
     return lines
 
-# ── Script de narração ─────────────────────────────────────────
-def build_script(title: str, description: str, source: str, tags: list) -> str:
-    clean = re.sub(r'<[^>]+>', '', description).strip()
-    clean = re.sub(r'\s+', ' ', clean)[:600]
-    tag_str = ', '.join(tags[:3]) if tags else 'technology'
+# ── Script de narração roundup ──────────────────────────────────
+ORDINALS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
-    return f"""Welcome to TechBR News — your source for the latest in {tag_str}.
+def clean_text(text: str, max_chars: int = 500) -> str:
+    t = re.sub(r'<[^>]+>', ' ', text)
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t[:max_chars]
 
-Today's story: {title}.
+def build_roundup_script(stories: list[dict]) -> str:
+    """
+    Script jornalístico para roundup de múltiplas histórias.
+    Alvo: ~1.500 palavras → ~10-12 min de narração a 130 wpm.
+    Estrutura por história: apresentação + conteúdo + contexto + transição.
+    """
+    n = len(stories)
+    cats = [s["category"] for s in stories]
+    dominant = max(set(cats), key=cats.count)
 
-{clean}
+    cat_label = {
+        "AI":       "artificial intelligence",
+        "SECURITY": "cybersecurity",
+        "BUSINESS": "tech business and startups",
+        "BIG TECH": "big tech",
+        "HARDWARE": "hardware and devices",
+        "TECH":     "technology",
+    }.get(dominant, "technology")
 
-This report comes to you from {source}. You can read the original article and find more tech coverage on TechBR News at our website, linked in the description.
+    now      = datetime.now()
+    date_str = now.strftime("%B %d, %Y")
+    hour_str = now.strftime("%I %p").lstrip("0")
 
-If you found this useful, please hit like and subscribe — we publish new tech stories every single hour, so you'll never miss what's happening in the world of technology.
+    # ── INTRO (~180 words) ────────────────────────────────────────
+    script = f"""Welcome to TechBR News — your hourly technology roundup.
 
-Stay informed. Stay ahead. This is TechBR News."""
+It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now in {cat_label} and across the technology world.
+
+Whether you are commuting, working out, or just keeping up with the latest developments, you are in the right place. We publish one of these roundups every single hour — so you always have a trusted, up-to-date source for what matters in tech.
+
+Technology moves fast. Things that were announced this morning can change the direction of entire industries by the afternoon. That is exactly why we are here — to make sure you never fall behind.
+
+Before we begin, a quick reminder: every story we cover today has a direct link in the description below, so you can read the full article straight from the original source. We always credit the journalists and publications doing the important reporting that keeps us all informed.
+
+If you find this roundup useful, the best thing you can do is hit that subscribe button right now — so you never miss a story.
+
+Now, let us get into today's {n} stories. Here we go.
+
+"""
+
+    # ── HISTÓRIAS (~200 words cada) ───────────────────────────────
+    cat_context = {
+        "AI": [
+            "Artificial intelligence continues to reshape the technology landscape at an extraordinary pace.",
+            "The race to develop more capable AI systems is intensifying, with major implications for businesses and consumers alike.",
+            "This development is part of a broader trend of rapid advancement in AI capabilities that is transforming industries worldwide.",
+            "As AI systems become more powerful, questions around safety, regulation, and responsible deployment are increasingly at the forefront of public debate.",
+        ],
+        "SECURITY": [
+            "Cybersecurity threats continue to evolve in sophistication, making this development particularly noteworthy for organizations and individuals.",
+            "This incident highlights the growing importance of robust cybersecurity practices in an increasingly digital world.",
+            "Security researchers are closely monitoring this situation, as it could have wider implications for how we protect digital systems.",
+            "Experts recommend that affected users take immediate steps to secure their accounts and monitor for suspicious activity.",
+        ],
+        "BUSINESS": [
+            "The startup ecosystem remains highly active, with investors continuing to back innovative companies despite broader economic uncertainty.",
+            "This development reflects the ongoing transformation of the technology industry and the growing appetite for disruptive new solutions.",
+            "Analysts will be watching closely to see how this plays out in the coming months, as the competitive landscape continues to shift.",
+            "This move signals growing confidence in the sector and could attract further investment and attention from major players.",
+        ],
+        "BIG TECH": [
+            "Big tech companies continue to make moves that will shape the digital experiences of billions of people around the world.",
+            "This announcement is likely to have significant ripple effects across the technology industry and related sectors.",
+            "The major technology companies are in a constant race to innovate, and this latest development is a clear signal of where the industry is heading.",
+            "Consumers and businesses alike will be paying close attention to how this unfolds over the coming weeks.",
+        ],
+        "HARDWARE": [
+            "Hardware innovation continues to push the boundaries of what is possible for consumers and professionals alike.",
+            "Advances in hardware technology have a direct impact on the software and services we rely on every day.",
+            "This product development reflects the ongoing competition among manufacturers to deliver better performance and value.",
+            "Technology enthusiasts and professionals have been eagerly anticipating this kind of advancement.",
+        ],
+        "TECH": [
+            "This is the kind of development that reminds us just how quickly the technology world can change.",
+            "Software and digital technology continue to transform the way we work, communicate, and access information.",
+            "The broader implications of this story are still unfolding, but it is already generating significant discussion in the tech community.",
+            "This development is worth watching closely, as it could influence decisions made by companies and policymakers in the months ahead.",
+        ],
+    }
+
+    transitions = [
+        "Moving on to our next story.",
+        "Let us keep the momentum going with story number {next}.",
+        "Now, here is a story you will want to pay attention to.",
+        "Our next headline takes us in a different direction.",
+        "And now, story number {next}.",
+        "Here is what else is making headlines right now.",
+    ]
+
+    for i, story in enumerate(stories):
+        ordinal  = ORDINALS[i] if i < len(ORDINALS) else f"number {i + 1}"
+        title    = story["title"]
+        desc     = clean_text(story["description"], 600)
+        source   = story["source"]
+        category = story["category"]
+
+        sentences = re.split(r'(?<=[.!?])\s+', desc)
+        opening   = " ".join(sentences[:2]) if len(sentences) >= 2 else desc
+        body      = " ".join(sentences[2:6]) if len(sentences) > 2 else ""
+
+        # Contexto adicional baseado na categoria
+        ctx_pool = cat_context.get(category, cat_context["TECH"])
+        context1 = ctx_pool[i % len(ctx_pool)]
+        context2 = ctx_pool[(i + 1) % len(ctx_pool)]
+
+        script += f"""Story {ordinal}: {title}.
+
+{opening}
+
+{context1}
+
+"""
+        if body:
+            script += f"""{body}
+
+"""
+
+        script += f"""{context2}
+
+This story was reported by {source}, which is one of the most respected publications covering this space. If you want the complete picture — the quotes, the data, the analysis — the link to the full article is waiting for you in the description below. We strongly encourage you to support the original journalists doing this important work.
+
+"""
+        # Transição entre histórias (exceto na última)
+        if i < n - 1:
+            next_ordinal = ORDINALS[i + 1] if (i + 1) < len(ORDINALS) else f"number {i + 2}"
+            trans = transitions[i % len(transitions)].format(next=next_ordinal)
+            script += f"""{trans}
+
+"""
+
+    # ── OUTRO (~220 words) ────────────────────────────────────────
+    script += f"""And that wraps up this hour's TechBR News Roundup — {n} stories covering the most important developments in technology happening right now.
+
+Let us do a quick recap of what we covered today.
+
+We talked about {stories[0]['title'] if stories else 'our top story'}.
+
+{"We also covered " + stories[1]['title'] + "." if len(stories) > 1 else ""}
+
+{"And " + str(len(stories) - 2) + " more stories to keep you fully up to date." if len(stories) > 2 else ""}
+
+Every single one of those stories has a link in the description below, along with timestamps so you can jump to the section that interests you most.
+
+We want to hear from you — which story caught your attention today? Drop a comment below. We read every single one, and your feedback genuinely helps us improve.
+
+If you are not subscribed yet, please do it right now. It is completely free. Hit that subscribe button and the notification bell, and you will get a brand new roundup like this one every hour — {date_str}, tomorrow, and every day after that. You will always be the first to know.
+
+We also publish everything on our website at non-s dot github dot io — a great place to search all our past stories and stay on top of the topics that matter to you.
+
+Share this video with someone who needs to stay ahead in tech. It takes two seconds and it really helps us grow.
+
+Thank you so much for watching. This has been TechBR News.
+
+Stay curious. Stay informed. We will see you in exactly one hour."""
+
+    return script
 
 # ── TTS ────────────────────────────────────────────────────────
-async def text_to_speech(text: str, output_path: Path):
+async def text_to_speech(text: str, output_path: Path, voice: str):
     import edge_tts
-    communicate = edge_tts.Communicate(text, VOICE, rate="+8%")
+    communicate = edge_tts.Communicate(text, voice, rate="+5%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
 # ── Download de imagem ─────────────────────────────────────────
 def download_image(url: str, dest: Path) -> bool:
     try:
-        r = requests.get(url, timeout=10, headers={"User-Agent": "TechBR-Bot/1.0"})
-        if r.status_code == 200 and len(r.content) > 1000:
+        r = requests.get(url, timeout=10,
+                         headers={"User-Agent": "TechBR-Bot/2.0"})
+        if r.status_code == 200 and len(r.content) > 2000:
             dest.write_bytes(r.content)
             return True
     except Exception as e:
         log.debug(f"Image download failed: {e}")
     return False
 
-# ── Frame de vídeo — design profissional ──────────────────────
+# ── Frame de vídeo ─────────────────────────────────────────────
 def create_video_frame(title: str, source: str, image_path: Path | None,
                        frame_num: int, total_frames: int,
-                       category: str = "TECH") -> Image.Image:
-    """Frame estilo telejornal profissional."""
-    # Base escura
+                       category: str, story_num: int, total_stories: int) -> Image.Image:
+    """Frame com indicador de história X/Y no lower third."""
     img = Image.new("RGBA", (VIDEO_W, VIDEO_H), (*BG_DARK, 255))
-
-    # Gradiente de fundo
-    draw_gradient_rect(img, 0, 0, VIDEO_W, VIDEO_H,
-                       BG_DARK, (12, 10, 35))
-
-    # Grid de pontos (sutil)
+    draw_gradient_bg(img, BG_DARK, (12, 10, 35))
     img = draw_tech_grid(img, alpha=12)
 
-    # ── Imagem de background ──
+    # Background image
     if image_path and image_path.exists():
         try:
             bg = Image.open(image_path).convert("RGB")
-            # Crop inteligente — foco no centro
             bw, bh = bg.size
-            target_ratio = VIDEO_W / VIDEO_H
-            current_ratio = bw / bh
-            if current_ratio > target_ratio:
-                new_w = int(bh * target_ratio)
-                offset = (bw - new_w) // 2
-                bg = bg.crop((offset, 0, offset + new_w, bh))
+            tr = VIDEO_W / VIDEO_H
+            cr = bw / bh
+            if cr > tr:
+                nw = int(bh * tr); off = (bw - nw) // 2
+                bg = bg.crop((off, 0, off + nw, bh))
             else:
-                new_h = int(bw / target_ratio)
-                offset = (bh - new_h) // 2
-                bg = bg.crop((0, offset, bw, offset + new_h))
+                nh = int(bw / tr); off = (bh - nh) // 2
+                bg = bg.crop((0, off, bw, off + nh))
             bg = bg.resize((VIDEO_W, VIDEO_H), Image.LANCZOS)
-            # Overlay gradiente escuro (mais leve no topo, mais escuro na base)
-            overlay = Image.new("RGBA", (VIDEO_W, VIDEO_H), (0, 0, 0, 0))
-            ov_draw = ImageDraw.Draw(overlay)
+            ov = Image.new("RGBA", (VIDEO_W, VIDEO_H), (0, 0, 0, 0))
+            od = ImageDraw.Draw(ov)
             for i in range(VIDEO_H):
-                alpha = int(100 + 130 * (i / VIDEO_H))
-                ov_draw.line([(0, i), (VIDEO_W, i)], fill=(0, 0, 10, alpha))
-            img = Image.alpha_composite(bg.convert("RGBA"), overlay)
-            img = img.convert("RGB")
+                alpha = int(90 + 145 * (i / VIDEO_H))
+                od.line([(0, i), (VIDEO_W, i)], fill=(0, 0, 10, alpha))
+            img = Image.alpha_composite(bg.convert("RGBA"), ov).convert("RGB")
         except Exception:
             pass
 
     draw = ImageDraw.Draw(img)
 
-    # ── TOP BAR ──────────────────────────────────────────────
-    # Fundo da barra superior
+    # ── TOP BAR ───────────────────────────────────────────────
     draw.rectangle([(0, 0), (VIDEO_W, 88)], fill=(0, 0, 0, 210))
-
-    # Linha de brilho na base da barra
     for i in range(3):
-        alpha = 80 - i * 25
         draw.line([(0, 88 + i), (VIDEO_W, 88 + i)],
-                  fill=(*ACCENT_BLUE, alpha))
+                  fill=(*ACCENT_BLUE, 80 - i * 25))
 
-    # Logo "⚡ TECHBR NEWS"
-    font_logo = get_font(44, bold=True)
-    draw.text((50, 20), "TECHBR", font=font_logo, fill=ACCENT_BLUE)
-    draw.text((222, 20), "NEWS", font=font_logo, fill=TEXT_WHITE)
-
-    # Separador vertical
+    # Logo
+    draw.text((50, 20), "TECHBR", font=get_font(44, bold=True), fill=ACCENT_BLUE)
+    draw.text((222, 20), "NEWS", font=get_font(44, bold=True), fill=TEXT_WHITE)
     draw.rectangle([(210, 22), (213, 66)], fill=(*ACCENT_BLUE, 180))
 
-    # Badge LIVE / categoria
-    badge_x = 340
-    draw_rounded_rect(draw, (badge_x, 24, badge_x + 120, 64),
-                      radius=6, fill=RED_LIVE)
-    draw.text((badge_x + 14, 32), "● LIVE", font=get_font(26, bold=True),
-              fill=TEXT_WHITE)
+    # Badge LIVE
+    draw_rounded_rect(draw, (340, 24, 460, 64), radius=6, fill=RED_LIVE)
+    draw.text((354, 32), "● LIVE", font=get_font(26, bold=True), fill=TEXT_WHITE)
 
-    # Data e hora
+    # Story counter (topo direito)
+    if total_stories > 1:
+        counter_text = f"STORY {story_num} / {total_stories}"
+        cfont = get_font(26, bold=True)
+        cbbox = draw.textbbox((0, 0), counter_text, font=cfont)
+        cx = VIDEO_W - cbbox[2] - 50
+        draw_rounded_rect(draw, (cx - 12, 24, cx + cbbox[2] + 12, 64),
+                          radius=6, fill=(20, 20, 40))
+        draw.text((cx, 32), counter_text, font=cfont, fill=ACCENT_CYAN)
+
+    # Data/hora (centro)
     now_str = datetime.now().strftime("%b %d, %Y  %H:%M")
-    font_date = get_font(28)
-    bbox = draw.textbbox((0, 0), now_str, font=font_date)
-    draw.text((VIDEO_W - bbox[2] - 50, 30), now_str,
-              font=font_date, fill=TEXT_GRAY)
+    dfont = get_font(26)
+    dbbox = draw.textbbox((0, 0), now_str, font=dfont)
+    draw.text(((VIDEO_W - dbbox[2]) // 2, 30), now_str, font=dfont, fill=TEXT_GRAY)
 
     # ── PROGRESS BAR ─────────────────────────────────────────
     progress = frame_num / max(total_frames - 1, 1)
     bar_y = 88
     draw.rectangle([(0, bar_y), (VIDEO_W, bar_y + 5)], fill=(25, 25, 45))
     prog_w = int(VIDEO_W * progress)
+    for px in range(prog_w):
+        t = px / VIDEO_W
+        r = int(ACCENT_BLUE[0] + (ACCENT_CYAN[0] - ACCENT_BLUE[0]) * t)
+        g = int(ACCENT_BLUE[1] + (ACCENT_CYAN[1] - ACCENT_BLUE[1]) * t)
+        b = int(ACCENT_BLUE[2] + (ACCENT_CYAN[2] - ACCENT_BLUE[2]) * t)
+        draw.line([(px, bar_y), (px, bar_y + 4)], fill=(r, g, b))
     if prog_w > 0:
-        # Gradiente na barra de progresso
-        for px in range(prog_w):
-            t = px / VIDEO_W
-            r = int(ACCENT_BLUE[0] + (ACCENT_CYAN[0] - ACCENT_BLUE[0]) * t)
-            g = int(ACCENT_BLUE[1] + (ACCENT_CYAN[1] - ACCENT_BLUE[1]) * t)
-            b = int(ACCENT_BLUE[2] + (ACCENT_CYAN[2] - ACCENT_BLUE[2]) * t)
-            draw.line([(px, bar_y), (px, bar_y + 4)], fill=(r, g, b))
-        # Ponto brilhante no final da barra
         px = prog_w - 1
-        draw.ellipse([(px - 5, bar_y - 3), (px + 5, bar_y + 7)],
-                     fill=TEXT_WHITE)
+        draw.ellipse([(px - 5, bar_y - 3), (px + 5, bar_y + 7)], fill=TEXT_WHITE)
 
-    # ── LOWER THIRD (área de conteúdo) ───────────────────────
+    # ── STORY PROGRESS DOTS ───────────────────────────────────
+    if total_stories > 1:
+        dot_r = 5
+        total_w = total_stories * (dot_r * 2 + 8) - 8
+        start_x = (VIDEO_W - total_w) // 2
+        dot_y = 110
+        for d in range(total_stories):
+            dx = start_x + d * (dot_r * 2 + 8)
+            color = ACCENT_BLUE if d < story_num else (40, 40, 60)
+            draw.ellipse([(dx, dot_y), (dx + dot_r * 2, dot_y + dot_r * 2)],
+                         fill=color)
+
+    # ── LOWER THIRD ───────────────────────────────────────────
     lt_y = VIDEO_H - 310
     lt_h = 280
-
-    # Fundo semitransparente com gradiente
     for i in range(lt_h):
         t = 1 - (i / lt_h) ** 0.5
-        alpha = int(220 * t)
-        draw.line([(0, lt_y + i), (VIDEO_W, lt_y + i)],
-                  fill=(0, 0, 8, alpha))
+        alpha = int(230 * t)
+        draw.line([(0, lt_y + i), (VIDEO_W, lt_y + i)], fill=(0, 0, 8, alpha))
 
-    # Barra vertical de acento (esquerda)
+    # Barra lateral
     for i in range(3):
-        alpha = 255 - i * 60
         draw.rectangle([(i * 3, lt_y), (i * 3 + 2, VIDEO_H - 50)],
-                       fill=(*ACCENT_BLUE, alpha))
+                       fill=(*ACCENT_BLUE, 255 - i * 60))
 
-    # Badge de categoria
-    cat_x, cat_y = 30, lt_y + 12
+    # Badge categoria
     cat_text = category.upper()
-    cat_font = get_font(26, bold=True)
-    cat_bbox = draw.textbbox((0, 0), cat_text, font=cat_font)
-    cat_w = cat_bbox[2] + 20
-    draw_rounded_rect(draw, (cat_x, cat_y, cat_x + cat_w, cat_y + 38),
+    cfont = get_font(26, bold=True)
+    cbbox = draw.textbbox((0, 0), cat_text, font=cfont)
+    draw_rounded_rect(draw, (30, lt_y + 12, 30 + cbbox[2] + 20, lt_y + 50),
                       radius=5, fill=ACCENT_BLUE)
-    draw.text((cat_x + 10, cat_y + 6), cat_text, font=cat_font,
-              fill=(0, 0, 0))
+    draw.text((40, lt_y + 18), cat_text, font=cfont, fill=(0, 0, 0))
 
-    # Título principal
-    font_title = get_font(62, bold=True)
-    title_lines = wrap_text(draw, title, font_title, VIDEO_W - 120)
+    # Título
+    title_font = get_font(60, bold=True)
+    title_lines = wrap_text(draw, title, title_font, VIDEO_W - 120)
     ty = lt_y + 62
     for line in title_lines[:3]:
-        draw.text((30, ty), line, font=font_title, fill=TEXT_WHITE)
-        ty += 74
+        draw.text((30, ty), line, font=title_font, fill=TEXT_WHITE)
+        ty += 72
 
-    # Linha separadora
+    # Rodapé
     sep_y = VIDEO_H - 95
-    draw.line([(30, sep_y), (VIDEO_W - 30, sep_y)],
-              fill=(*ACCENT_BLUE, 60), width=1)
-
-    # Rodapé: fonte e URL
-    font_footer = get_font(30)
-    draw.text((30, sep_y + 12), f"📰  {source}",
-              font=font_footer, fill=TEXT_GRAY)
-
-    font_url = get_font(28, bold=True)
+    draw.line([(30, sep_y), (VIDEO_W - 30, sep_y)], fill=(*ACCENT_BLUE, 60), width=1)
+    draw.text((30, sep_y + 12), f"\U0001f4f0  {source}",
+              font=get_font(30), fill=TEXT_GRAY)
     url_text = "non-s.github.io  |  Subscribe ↑"
-    bbox_url = draw.textbbox((0, 0), url_text, font=font_url)
-    draw.text((VIDEO_W - bbox_url[2] - 30, sep_y + 14),
-              url_text, font=font_url, fill=ACCENT_CYAN)
+    ubbox = draw.textbbox((0, 0), url_text, font=get_font(28, bold=True))
+    draw.text((VIDEO_W - ubbox[2] - 30, sep_y + 14), url_text,
+              font=get_font(28, bold=True), fill=ACCENT_CYAN)
 
     return img.convert("RGB")
 
-# ── Thumbnail profissional ─────────────────────────────────────
-def create_thumbnail(title: str, image_path: Path | None, output: Path,
-                     category: str = "TECH NEWS"):
-    """Thumbnail 1280×720 otimizado para CTR do YouTube."""
+# ── Thumbnail roundup ───────────────────────────────────────────
+def create_roundup_thumbnail(stories: list[dict], image_paths: list,
+                             output: Path):
+    """Thumbnail 1280×720 estilo 'Top N Stories'."""
     W, H = 1280, 720
     img = Image.new("RGB", (W, H), BG_DARK)
 
     # Gradiente de fundo
+    draw = ImageDraw.Draw(img)
     for i in range(H):
         t = i / H
-        r = int(BG_DARK[0] * (1 - t) + 20 * t)
-        g = int(BG_DARK[1] * (1 - t) + 8 * t)
-        b = int(BG_DARK[2] * (1 - t) + 55 * t)
-        img_draw_temp = ImageDraw.Draw(img)
-        img_draw_temp.line([(0, i), (W, i)], fill=(r, g, b))
+        r = int(8 * (1 - t) + 20 * t)
+        g = int(8 * (1 - t) + 8 * t)
+        b = int(18 * (1 - t) + 55 * t)
+        draw.line([(0, i), (W, i)], fill=(r, g, b))
 
-    # Imagem de fundo (lado direito, 60% da largura)
-    if image_path and image_path.exists():
-        try:
-            bg = Image.open(image_path).convert("RGB")
-            bg = bg.resize((W, H), Image.LANCZOS)
-            # Mask gradiente: opaco à direita, transparente à esquerda
-            mask = Image.new("L", (W, H), 0)
-            mask_draw = ImageDraw.Draw(mask)
-            for x in range(W):
-                t = max(0, (x - W * 0.25) / (W * 0.75))
-                t = min(1, t)
-                alpha = int(185 * t)
-                mask_draw.line([(x, 0), (x, H)], fill=alpha)
-            img.paste(bg, (0, 0), mask)
-        except Exception:
-            pass
+    # Imagem de fundo (primeira história com imagem)
+    for ip in image_paths:
+        if ip and ip.exists():
+            try:
+                bg = Image.open(ip).convert("RGB").resize((W, H), Image.LANCZOS)
+                mask = Image.new("L", (W, H), 0)
+                md = ImageDraw.Draw(mask)
+                for x in range(W):
+                    t = max(0, (x - W * 0.2) / (W * 0.8))
+                    md.line([(x, 0), (x, H)], fill=int(min(1, t) * 170))
+                img.paste(bg, (0, 0), mask)
+            except Exception:
+                pass
+            break
 
     draw = ImageDraw.Draw(img)
 
-    # Overlay escuro no lado esquerdo para legibilidade
-    for x in range(int(W * 0.7)):
-        t = 1 - x / (W * 0.7)
-        alpha = int(160 * t ** 0.5)
-        draw.line([(x, 0), (x, H)], fill=(0, 0, 10, alpha))
+    # Overlay esquerdo para legibilidade
+    for x in range(int(W * 0.72)):
+        t = 1 - x / (W * 0.72)
+        draw.line([(x, 0), (x, H)], fill=(0, 0, 10, int(165 * t ** 0.5)))
 
-    # Faixa lateral esquerda colorida
+    # Faixa lateral azul
     for i in range(10):
-        alpha = 255 - i * 22
         draw.rectangle([(i * 2, 0), (i * 2 + 1, H)],
-                       fill=(*ACCENT_BLUE, alpha))
+                       fill=(*ACCENT_BLUE, 255 - i * 22))
 
-    # Badge categoria (topo esquerdo)
-    badge_font = get_font(30, bold=True)
-    badge_bbox = draw.textbbox((0, 0), category, font=badge_font)
-    bw = badge_bbox[2] + 24
-    draw_rounded_rect(draw, (28, 28, 28 + bw, 72), radius=8, fill=RED_LIVE)
-    draw.text((40, 36), category, font=badge_font, fill=TEXT_WHITE)
+    n = len(stories)
 
-    # Título principal — grande e impactante
-    font_t = get_font(80, bold=True)
-    font_t_small = get_font(68, bold=True)
-    title_lines = wrap_text(draw, title, font_t, int(W * 0.68))
-    # Se muito longo, usa fonte menor
-    if len(title_lines) > 3:
-        title_lines = wrap_text(draw, title, font_t_small, int(W * 0.68))
-        font_used = font_t_small
-        line_h = 82
+    # Badge TOP N STORIES
+    badge_text = f"TOP {n} STORIES"
+    bfont = get_font(32, bold=True)
+    bbbox = draw.textbbox((0, 0), badge_text, font=bfont)
+    draw_rounded_rect(draw, (28, 28, 28 + bbbox[2] + 24, 76), radius=8, fill=RED_LIVE)
+    draw.text((40, 38), badge_text, font=bfont, fill=TEXT_WHITE)
+
+    # Título principal (história 1)
+    main_title = stories[0]["title"] if stories else "Tech News Roundup"
+    tfont = get_font(76, bold=True)
+    tlines = wrap_text(draw, main_title, tfont, int(W * 0.67))
+    if len(tlines) > 3:
+        tfont = get_font(62, bold=True)
+        tlines = wrap_text(draw, main_title, tfont, int(W * 0.67))
+        lh = 78
     else:
-        font_used = font_t
-        line_h = 96
+        lh = 92
 
     ty = 100
-    for line in title_lines[:4]:
-        # Sombra do texto
-        draw.text((32, ty + 3), line, font=font_used,
-                  fill=(0, 0, 0))
-        draw.text((30, ty), line, font=font_used, fill=TEXT_WHITE)
-        ty += line_h
+    for line in tlines[:3]:
+        draw.text((32, ty + 3), line, font=tfont, fill=(0, 0, 0))
+        draw.text((30, ty), line, font=tfont, fill=TEXT_WHITE)
+        ty += lh
 
-    # Linha separadora
-    draw.rectangle([(28, H - 110), (int(W * 0.65), H - 107)],
-                   fill=ACCENT_BLUE)
+    # Mini lista das histórias seguintes
+    if len(stories) > 1:
+        list_y = ty + 12
+        lfont = get_font(26)
+        for i, s in enumerate(stories[1:4], start=2):
+            short = s["title"][:55] + ("…" if len(s["title"]) > 55 else "")
+            draw.text((30, list_y), f"  {i}.  {short}", font=lfont,
+                      fill=(200, 210, 230))
+            list_y += 34
 
-    # Branding TechBR na base
-    font_brand = get_font(36, bold=True)
-    draw.text((28, H - 92), "TECHBR", font=font_brand, fill=ACCENT_BLUE)
-    draw.text((168, H - 92), "NEWS", font=font_brand, fill=TEXT_WHITE)
+    # Separador
+    draw.rectangle([(28, H - 110), (int(W * 0.66), H - 107)], fill=ACCENT_BLUE)
 
-    font_sub = get_font(26)
-    draw.text((28, H - 48), "non-s.github.io  •  Tech every hour",
-              font=font_sub, fill=TEXT_GRAY)
+    # Branding
+    draw.text((28, H - 92), "TECHBR", font=get_font(36, bold=True), fill=ACCENT_BLUE)
+    draw.text((168, H - 92), "NEWS", font=get_font(36, bold=True), fill=TEXT_WHITE)
+    now_str = datetime.now().strftime("%b %d, %Y — Hourly Roundup")
+    draw.text((28, H - 48), now_str, font=get_font(24), fill=TEXT_GRAY)
 
     img.save(str(output), "JPEG", quality=95, optimize=True)
-    log.info(f"  🖼  Thumbnail: {output.name}")
+    log.info(f"  \U0001f5bc  Thumbnail: {output.name}")
 
-# ── Monta vídeo com FFmpeg ─────────────────────────────────────
-def create_video(title: str, source: str, image_path: Path | None,
-                 audio_path: Path, output_path: Path,
-                 category: str = "TECH") -> bool:
+# ── Gera vídeo com FFmpeg ───────────────────────────────────────
+def create_roundup_video(stories: list[dict], image_paths: list[Path | None],
+                         audio_path: Path, output_path: Path) -> bool:
     tmp_dir = output_path.parent / f"tmp_{output_path.stem}"
     tmp_dir.mkdir(exist_ok=True)
 
@@ -395,29 +533,57 @@ def create_video(title: str, source: str, image_path: Path | None,
     result = subprocess.run(
         ["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
          "-of", "csv=p=0", str(audio_path)],
-        capture_output=True, text=True
+        capture_output=True, text=True,
     )
     try:
         duration = float(result.stdout.strip())
     except Exception:
-        duration = 60.0
+        duration = 600.0   # fallback 10 min
 
     fps = 24
     total_frames = int(duration * fps)
-    log.info(f"  🎬 Gerando {total_frames} frames ({duration:.1f}s)...")
+    n = len(stories)
 
-    # Gera frames (keyframes com interpolação)
-    n_render = min(total_frames, 60)  # max 60 frames renderizados
+    # Distribuição de frames por segmento
+    # Intro: 4%, cada história: 76%/n, outro: 20%
+    intro_end   = int(total_frames * 0.04)
+    outro_start = int(total_frames * 0.80)
+    story_span  = outro_start - intro_end
+    frames_per_story = story_span // n
+
+    log.info(f"  \U0001f3ac {total_frames} frames ({duration:.0f}s) — {n} histórias")
+
+    n_render = min(total_frames, 120)   # até 120 keyframes renderizados
     for i in range(n_render):
         frame_num = int(i * total_frames / n_render)
-        frame = create_video_frame(title, source, image_path,
-                                   frame_num, total_frames, category)
+
+        # Determina qual história exibir neste frame
+        if frame_num < intro_end:
+            story_idx = 0
+        elif frame_num >= outro_start:
+            story_idx = n - 1
+        else:
+            story_idx = min((frame_num - intro_end) // frames_per_story, n - 1)
+
+        story = stories[story_idx]
+        img_path = image_paths[story_idx] if story_idx < len(image_paths) else None
+
+        frame = create_video_frame(
+            title         = story["title"],
+            source        = story["source"],
+            image_path    = img_path,
+            frame_num     = frame_num,
+            total_frames  = total_frames,
+            category      = story["category"],
+            story_num     = story_idx + 1,
+            total_stories = n,
+        )
         frame.save(str(tmp_dir / f"frame_{i:05d}.png"))
 
     # Concat list
     concat_file = tmp_dir / "frames.txt"
+    dur_each = duration / n_render
     with open(concat_file, "w") as f:
-        dur_each = duration / n_render
         for i in range(n_render):
             f.write(f"file 'frame_{i:05d}.png'\n")
             f.write(f"duration {dur_each:.4f}\n")
@@ -434,141 +600,144 @@ def create_video(title: str, source: str, image_path: Path | None,
         "-shortest",
         str(output_path.resolve()),
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True,
-                            cwd=str(tmp_dir))
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(tmp_dir))
+    shutil.rmtree(tmp_dir, ignore_errors=True)
+
     if result.returncode != 0:
-        log.error(f"FFmpeg error: {result.stderr[-600:]}")
+        log.error(f"FFmpeg error: {result.stderr[-800:]}")
         return False
 
-    import shutil
-    shutil.rmtree(tmp_dir, ignore_errors=True)
     log.info(f"  ✅ Vídeo gerado: {output_path.name}")
     return True
 
-# ── English title builder ────────────────────────────────────────
-def build_english_title(title: str, category: str) -> str:
-    """Generate SEO-optimized English YouTube title."""
-    pt_en = [
-        ("inteligência artificial", "artificial intelligence"),
-        ("aprendizado de máquina", "machine learning"),
-        ("código aberto", "open source"),
-        ("lançamento", "launch"), ("lança", "launches"), ("lançou", "launched"),
-        ("atualização", "update"), ("atualiza", "updates"), ("atualizou", "updated"),
-        ("anúncio", "announcement"), ("anuncia", "announces"), ("anunciou", "announced"),
-        ("revelação", "reveal"), ("revela", "reveals"), ("revelou", "revealed"),
-        ("crescimento", "growth"), ("cresce", "grows"), ("cresceu", "grew"),
-        ("investimento", "investment"), ("investe", "invests"),
-        ("aquisição", "acquisition"), ("adquire", "acquires"), ("adquiriu", "acquired"),
-        ("parceria", "partnership"), ("acordo", "deal"),
-        ("empresa", "company"), ("empresas", "companies"),
-        ("governo", "government"), ("governos", "governments"),
-        ("usuários", "users"), ("usuário", "user"),
-        ("bilhões", "billion"), ("milhões", "million"), ("milhares", "thousands"),
-        ("segurança", "security"), ("privacidade", "privacy"),
-        ("vazamento", "leak"), ("ataque", "attack"), ("ataques", "attacks"),
-        ("tecnologia", "technology"), ("tecnologias", "technologies"),
-        ("celular", "smartphone"), ("computador", "computer"),
-        ("tela", "screen"), ("processador", "processor"), ("bateria", "battery"),
-        ("novo", "new"), ("nova", "new"), ("novos", "new"), ("novas", "new"),
-        ("primeiro", "first"), ("primeira", "first"),
-        ("último", "latest"), ("última", "latest"),
-        ("próximo", "next"), ("próxima", "next"),
-        ("gratuito", "free"), ("grátis", "free"), ("pago", "paid"),
-        ("preço", "price"), ("mercado", "market"), ("vendas", "sales"),
-        ("recorde", "record"), ("histórico", "historic"),
-        ("mundo", "world"), ("Brasil", "Brazil"), ("EUA", "USA"),
-        ("robô", "robot"), ("elétrico", "electric"),
-        ("aprovado", "approved"), ("bloqueado", "blocked"), ("banido", "banned"),
-        ("fusão", "merger"), ("dados", "data"), ("nuvem", "cloud"),
-        ("queda", "drop"), ("caiu", "fell"), ("subiu", "rose"),
-    ]
-    result = title
-    for pt, en in pt_en:
-        result = re.sub(r'\\b' + re.escape(pt) + r'\\b', en, result, flags=re.IGNORECASE)
-    clean = result.strip()
-    if len(clean) > 82:
-        clean = clean[:79] + "..."
-    return f"[{category}] {clean} | TechBR News"
-
-# ── YouTube SEO Metadata ────────────────────────────────────────
-def save_metadata(slug, title, description, source, source_url, tags,
-                  thumbnail, video):
-    category = guess_category(tags, title)
-    yt_title = build_english_title(title, category)
-
-    clean_desc = re.sub(r'<[^>]+>', '', description).strip()
-    clean_desc = re.sub(r'\\s+', ' ', clean_desc)[:400]
+# ── Metadados SEO com capítulos ─────────────────────────────────
+def build_metadata(roundup_slug: str, stories: list[dict],
+                   thumbnail: Path, video: Path,
+                   duration_estimate: float) -> dict:
+    n = len(stories)
     year = datetime.now().year
+    date_str = datetime.now().strftime("%B %d, %Y")
 
-    yt_desc = (
-        f"{clean_desc}\n\n"
-        "━" * 24 + "\n"
-        f"U0001F4F0 FULL STORY → {source_url}\n"
-        f"U0001F310 Source: {source}\n\n"
-        "━" * 24 + "\n"
-        "U0001F514 SUBSCRIBE for hourly tech news → https://youtube.com/@techbrnews\n"
-        "U0001F30D TechBR News — Breaking tech stories, 24 hours a day\n\n"
-        "━" * 24 + "\n"
-        "⏱ CHAPTERS\n"
-        "0:00 Introduction\n"
-        "0:12 Main story\n"
-        "1:00 Details & context\n"
-        "1:45 Wrap-up\n\n"
-        "━" * 24 + "\n"
-        f"© {year} TechBR News. Original articles belong to their respective sources.\n"
+    yt_title = f"Tech News Roundup — Top {n} Stories | {date_str} | TechBR News"
+
+    # Descrição com capítulos estimados
+    intro_s   = 0
+    story_dur = int((duration_estimate * 0.76) / n)
+    outro_s   = int(duration_estimate * 0.80)
+
+    def fmt_time(s: int) -> str:
+        return f"{s // 60}:{s % 60:02d}"
+
+    chapters = f"⏱ CHAPTERS\n{fmt_time(intro_s)} Introduction\n"
+    t = 30   # intro ~30s
+    for i, story in enumerate(stories, 1):
+        short = story["title"][:60] + ("…" if len(story["title"]) > 60 else "")
+        chapters += f"{fmt_time(t)} Story {i}: {short}\n"
+        t += story_dur
+    chapters += f"{fmt_time(outro_s)} Wrap-up & Subscribe"
+
+    stories_summary = "\n".join(
+        f"  {i}. {s['title'][:80]}" for i, s in enumerate(stories, 1)
     )
 
-    cat_tags = {
-        "AI": ["machine learning", "ChatGPT", "LLM", "OpenAI", "Google AI", "AI tools", "artificial intelligence news"],
-        "SECURITY": ["cybersecurity", "data breach", "hacking news", "privacy", "malware", "cyber attack"],
-        "BUSINESS": ["tech business", "startup funding", "IPO", "tech stocks", "acquisition", "venture capital"],
-        "BIG TECH": ["Apple news", "Google news", "Microsoft", "Meta", "Amazon", "big tech"],
-        "HARDWARE": ["smartphone news", "iPhone", "Android", "laptop", "processor", "chip news"],
-        "TECH": ["technology news", "software", "internet", "digital", "programming", "developer"],
-    }
+    yt_desc = (
+        f"In this hour's TechBR News Roundup we cover {n} stories:\n\n"
+        f"{stories_summary}\n\n"
+        "━" * 28 + "\n"
+        f"\U0001f310 Sources:\n" +
+        "\n".join(f"  • Story {i}: {s['source_url']}"
+                  for i, s in enumerate(stories, 1)) + "\n\n"
+        "━" * 28 + "\n"
+        f"{chapters}\n\n"
+        "━" * 28 + "\n"
+        "\U0001f514 SUBSCRIBE for hourly tech news → https://youtube.com/@techbrnews\n"
+        "\U0001f4f0 Read more at → https://non-s.github.io\n\n"
+        "━" * 28 + "\n"
+        f"© {year} TechBR News. Original articles belong to their respective sources.\n"
+        "#TechNews #TechRoundup #Technology #TechBRNews #AINews #Startups"
+    )
+
+    # Tags combinadas de todas as histórias
     base_tags = [
-        "tech news", "technology news", "TechBR News", "breaking tech",
-        f"tech news {year}", "latest technology", "innovation",
-        "digital world", "technology today",
+        "tech news", "technology news", "TechBR News", f"tech news {year}",
+        "tech roundup", "hourly tech news", "breaking tech", "latest technology",
+        "tech news today", "technology today",
     ]
-    extra_tags = cat_tags.get(category, cat_tags["TECH"])
-    post_tags = [t.replace(' ', '').lower() for t in tags if t and len(t) > 2]
-    all_tags = list(dict.fromkeys(base_tags + extra_tags + post_tags))[:30]
+    story_tags = []
+    for s in stories:
+        story_tags.extend(s.get("tags", []))
+    cat_tags = {
+        "AI":       ["artificial intelligence", "ChatGPT", "LLM", "OpenAI", "AI news"],
+        "SECURITY": ["cybersecurity", "data breach", "hacking", "malware"],
+        "BUSINESS": ["startup funding", "IPO", "acquisition", "venture capital"],
+        "BIG TECH": ["Apple", "Google", "Microsoft", "Meta", "Amazon", "Nvidia"],
+        "HARDWARE": ["smartphone", "laptop", "GPU", "processor", "chip"],
+        "TECH":     ["software", "internet", "programming", "digital"],
+    }
+    dominant_cat = max(set(s["category"] for s in stories),
+                       key=lambda c: sum(1 for s in stories if s["category"] == c))
+    extra = cat_tags.get(dominant_cat, cat_tags["TECH"])
+    all_tags = list(dict.fromkeys(base_tags + extra + story_tags))[:30]
 
     metadata = {
-        "title": yt_title,
+        "title":       yt_title,
         "description": yt_desc,
-        "tags": all_tags,
+        "tags":        all_tags,
         "category_id": "28",
-        "privacy": "public",
-        "thumbnail": str(thumbnail),
-        "video": str(video),
-        "source_url": source_url,
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "privacy":     "public",
+        "thumbnail":   str(thumbnail),
+        "video":       str(video),
+        "stories":     [s["slug"] for s in stories],
+        "created_at":  datetime.now(timezone.utc).isoformat(),
     }
     meta_path = video.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False))
     return metadata
-# ── Utilitários ────────────────────────────────────────────────
-def video_exists(slug: str) -> bool:
+
+# ── Utilitários ─────────────────────────────────────────────────
+def roundup_slug() -> str:
+    return datetime.now().strftime("roundup-%Y-%m-%d-%H")
+
+def roundup_done(slug: str) -> bool:
     return (VIDEOS_DIR / f"{slug}.mp4").exists() or \
-           (VIDEOS_DIR / f"{slug}.done").exists()
+           (VIDEOS_DIR / f"{slug}.done").exists() or \
+           (VIDEOS_DIR / f"{slug}.json").exists()
+
+def post_has_roundup(post_slug: str) -> bool:
+    return (VIDEOS_DIR / f"{post_slug}.roundup").exists()
+
+def mark_posts_as_used(post_slugs: list[str]):
+    for slug in post_slugs:
+        (VIDEOS_DIR / f"{slug}.roundup").touch()
 
 def guess_category(tags: list, title: str) -> str:
-    text = (title + " ".join(tags)).lower()
-    if any(w in text for w in ["ai", "artificial", "machine learning", "gpt", "llm"]):
+    text = (title + " " + " ".join(tags)).lower()
+    # Use word boundary check for short keywords to avoid substring false positives
+    # e.g. "raises" contains "ai", "hackernews" contains "hack"
+    if (re.search(r'\bai\b', text) or
+            any(w in text for w in ["artificial intelligence", "machine learning",
+                                     "gpt", "llm", "openai", "anthropic",
+                                     "gemini", "claude", "deepmind", "mistral"])):
         return "AI"
-    if any(w in text for w in ["security", "hack", "cyber", "breach", "malware"]):
+    if any(w in text for w in ["cybersecurity", "cyber attack", "cyberattack",
+                                "data breach", "malware", "ransomware",
+                                "vulnerability", "zero-day", "phishing",
+                                "exploit", "hacking", "hacked", "spyware",
+                                "krebs", "the hacker news"]):
         return "SECURITY"
-    if any(w in text for w in ["startup", "funding", "ipo", "acquisition", "billion"]):
+    if any(w in text for w in ["startup", "funding", "series a", "series b",
+                                "series c", "ipo", "acquisition", "billion",
+                                "venture capital", "unicorn"]):
         return "BUSINESS"
-    if any(w in text for w in ["apple", "google", "microsoft", "meta", "amazon"]):
+    if any(w in text for w in ["apple", "google", "microsoft", "meta",
+                                "amazon", "nvidia", "tesla", "samsung"]):
         return "BIG TECH"
-    if any(w in text for w in ["phone", "iphone", "android", "hardware", "chip"]):
+    if any(w in text for w in ["phone", "iphone", "android", "hardware",
+                                "chip", "gpu", "laptop", "processor", "display"]):
         return "HARDWARE"
     return "TECH"
 
-# ── Principal ──────────────────────────────────────────────────
+# ── Principal ───────────────────────────────────────────────────
 def main():
     VIDEOS_DIR.mkdir(exist_ok=True)
     posts_dir = Path("_posts")
@@ -576,81 +745,128 @@ def main():
         log.error("_posts/ não encontrado")
         return
 
+    slug = roundup_slug()
+    if roundup_done(slug):
+        log.info(f"Roundup desta hora já existe: {slug}. Nada a fazer.")
+        return
+
+    # Coleta posts sem roundup (mais recentes primeiro)
     posts = sorted(posts_dir.glob("*.md"), reverse=True)
-    generated = 0
+    candidates = [p for p in posts if not post_has_roundup(p.stem)]
 
-    for post_file in posts:
-        if generated >= MAX_PER_RUN:
-            break
+    if len(candidates) < MIN_STORIES:
+        log.info(f"Apenas {len(candidates)} post(s) disponível(is) — mínimo {MIN_STORIES}. Aguardando.")
+        return
 
-        slug = post_file.stem
-        if video_exists(slug):
-            continue
+    # Seleciona até STORIES_PER_VIDEO histórias
+    selected = candidates[:STORIES_PER_VIDEO]
+    stories  = []
 
-        content = post_file.read_text(encoding="utf-8")
-        fm = {}
-        if content.startswith("---"):
-            end = content.find("---", 3)
+    for post_file in selected:
+        raw = post_file.read_text(encoding="utf-8")
+        fm  = {}
+        if raw.startswith("---"):
+            end = raw.find("---", 3)
             if end > 0:
-                for line in content[3:end].splitlines():
+                for line in raw[3:end].splitlines():
                     if ": " in line:
                         k, v = line.split(": ", 1)
                         fm[k.strip()] = v.strip().strip('"')
 
-        title       = fm.get("title", slug.replace("-", " ").title())
-        description = fm.get("description", "")
-        source      = fm.get("source_name", "TechBR News")
-        source_url  = fm.get("source_url", "https://non-s.github.io")
-        image_url   = fm.get("image", "")
-        tags_raw    = fm.get("tags", "[]")
+        title    = fm.get("title", post_file.stem.replace("-", " ").title())
+        desc     = fm.get("description", "")
+        source   = fm.get("source_name", "TechBR News")
+        src_url  = fm.get("source_url", "https://non-s.github.io")
+        img_url  = fm.get("image", "")
+        tags_raw = fm.get("tags", "[]")
         try:
             tags = json.loads(tags_raw.replace("'", '"'))
         except Exception:
-            tags = ["tech", "technology"]
+            tags = ["tech"]
 
-        category = guess_category(tags, title)
-        log.info(f"📹 [{category}] Gerando: {title[:60]}...")
+        stories.append({
+            "slug":       post_file.stem,
+            "title":      title,
+            "description": desc,
+            "source":     source,
+            "source_url": src_url,
+            "image_url":  img_url,
+            "tags":       tags,
+            "category":   guess_category(tags, title),
+        })
 
-        tmp = Path(f"/tmp/yt_{slug}")
-        tmp.mkdir(exist_ok=True)
+    if len(stories) < MIN_STORIES:
+        log.info(f"Stories insuficientes após parsing ({len(stories)}). Aguardando.")
+        return
 
-        # Download da imagem
-        img_path = None
-        if image_url:
-            img_dest = tmp / "cover.jpg"
-            if download_image(image_url, img_dest):
-                img_path = img_dest
+    log.info(f"\U0001f4f9 Roundup '{slug}' — {len(stories)} histórias:")
+    for i, s in enumerate(stories, 1):
+        log.info(f"  {i}. [{s['category']}] {s['title'][:70]}")
 
-        # TTS
-        script = build_script(title, description, source, tags)
-        mp3_path = tmp / "narration.mp3"
-        try:
-            asyncio.run(text_to_speech(script, mp3_path))
-            log.info(f"  🎙️  TTS gerado: {mp3_path.stat().st_size/1024:.0f} KB")
-        except Exception as e:
-            log.error(f"  ❌ TTS falhou: {e}")
-            continue
+    tmp = Path(f"/tmp/yt_{slug}")
+    tmp.mkdir(exist_ok=True)
 
-        # Thumbnail
-        thumb_path = VIDEOS_DIR / f"{slug}_thumb.jpg"
-        create_thumbnail(title, img_path, thumb_path, category)
+    # Download de imagens
+    image_paths: list[Path | None] = []
+    for i, story in enumerate(stories):
+        if story["image_url"]:
+            dest = tmp / f"img_{i}.jpg"
+            image_paths.append(dest if download_image(story["image_url"], dest) else None)
+        else:
+            image_paths.append(None)
 
-        # Vídeo
-        video_path = VIDEOS_DIR / f"{slug}.mp4"
-        ok = create_video(title, source, img_path, mp3_path, video_path, category)
-        if not ok:
-            continue
+    # Voz dominante para TTS
+    cats = [s["category"] for s in stories]
+    dominant_cat = max(set(cats), key=cats.count)
+    voice = VOICE_BY_CATEGORY.get(dominant_cat, VOICE_DEFAULT)
 
-        # Metadados
-        save_metadata(slug, title, description, source, source_url,
-                      tags, thumb_path, video_path)
-
-        import shutil
+    # TTS
+    script   = build_roundup_script(stories)
+    mp3_path = tmp / "narration.mp3"
+    try:
+        asyncio.run(text_to_speech(script, mp3_path, voice))
+        size_kb = mp3_path.stat().st_size / 1024
+        log.info(f"  \U0001f399  TTS gerado ({voice}): {size_kb:.0f} KB")
+    except Exception as e:
+        log.error(f"  ❌ TTS falhou: {e}")
         shutil.rmtree(tmp, ignore_errors=True)
-        generated += 1
-        log.info(f"  ✅ {generated}/{MAX_PER_RUN} concluído: {slug}")
+        return
 
-    log.info(f"\n🏁 {generated} vídeo(s) gerado(s).")
+    # Duração estimada do áudio
+    res = subprocess.run(
+        ["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
+         "-of", "csv=p=0", str(mp3_path)],
+        capture_output=True, text=True,
+    )
+    try:
+        duration = float(res.stdout.strip())
+    except Exception:
+        duration = 630.0
+
+    log.info(f"  ⏱  Duração estimada: {duration/60:.1f} min")
+    if duration < 6 * 60:
+        log.warning(f"  ⚠️  Vídeo abaixo de 6 minutos ({duration/60:.1f} min) — verifique o script")
+
+    # Thumbnail
+    thumb_path = VIDEOS_DIR / f"{slug}_thumb.jpg"
+    create_roundup_thumbnail(stories, image_paths, thumb_path)
+
+    # Vídeo
+    video_path = VIDEOS_DIR / f"{slug}.mp4"
+    ok = create_roundup_video(stories, image_paths, mp3_path, video_path)
+    if not ok:
+        shutil.rmtree(tmp, ignore_errors=True)
+        return
+
+    # Metadados SEO com capítulos
+    build_metadata(slug, stories, thumb_path, video_path, duration)
+
+    # Marca posts como usados (não serão incluídos em próximo roundup)
+    mark_posts_as_used([s["slug"] for s in stories])
+
+    shutil.rmtree(tmp, ignore_errors=True)
+    log.info(f"\n\U0001f3c1 Roundup concluído: {slug} ({len(stories)} histórias, ~{duration/60:.1f} min)")
+
 
 if __name__ == "__main__":
     main()

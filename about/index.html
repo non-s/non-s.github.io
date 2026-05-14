@@ -1,17 +1,130 @@
 ---
 layout: default
 title: "About — TechBR News"
-description: "Learn about TechBR News, a global tech news portal maintained by Julio."
+description: "TechBR News is a fully automated technology news portal, publishing breaking tech stories every hour from the world's top sources."
 permalink: /about/
 ---
-<section class="container py-5" style="max-width:760px">
+
+<div class="container py-5" style="max-width:860px">
+
   <h1 class="section-title">About TechBR News</h1>
   <hr class="section-divider">
-  <p><strong>TechBR News</strong> is a technology news portal maintained by <strong>Julio</strong>, automatically updated with the best global tech sources around the clock.</p>
-  <p>The site is built with <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> and hosted on <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>. A Python script collects news from trusted RSS feeds and publishes posts automatically via GitHub Actions — no manual writing required.</p>
-  <h2 class="mt-4" style="font-size:1.3rem;">News Sources</h2>
-  <p>We aggregate content from public sources including TechCrunch, The Verge, Wired, Ars Technica, MIT Technology Review, Hacker News and more.</p>
-  <p>All rights belong to the original authors and publications. TechBR News only aggregates summaries and links back to the original source.</p>
-  <h2 class="mt-4" style="font-size:1.3rem;">Contact</h2>
-  <p>Questions or suggestions? Visit the <a href="/contact/">contact page</a>.</p>
-</section>
+
+  <p style="font-size:1.05rem;line-height:1.8;">
+    <strong>TechBR News</strong> is a fully automated technology news portal maintained by
+    <strong><a href="https://github.com/non-s" target="_blank" rel="noopener">Julio (non-s)</a></strong>.
+    We publish breaking tech stories <strong>every hour</strong>, 24 hours a day — completely automatically,
+    with zero manual intervention.
+  </p>
+
+  <!-- Stats -->
+  <div class="row g-3 my-4">
+    <div class="col-6 col-md-3">
+      <div class="text-center p-3" style="background:var(--c-surface);border:1px solid var(--c-border2);border-radius:var(--r-md);">
+        <div style="font-size:1.8rem;font-weight:800;color:var(--c-accent);font-family:var(--font-head);">24/7</div>
+        <div style="font-size:.78rem;color:var(--c-muted);margin-top:.2rem;">Always on</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="text-center p-3" style="background:var(--c-surface);border:1px solid var(--c-border2);border-radius:var(--r-md);">
+        <div style="font-size:1.8rem;font-weight:800;color:var(--c-accent2);font-family:var(--font-head);">15+</div>
+        <div style="font-size:.78rem;color:var(--c-muted);margin-top:.2rem;">News sources</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="text-center p-3" style="background:var(--c-surface);border:1px solid var(--c-border2);border-radius:var(--r-md);">
+        <div style="font-size:1.8rem;font-weight:800;color:#10b981;font-family:var(--font-head);">{{ site.posts | size }}+</div>
+        <div style="font-size:.78rem;color:var(--c-muted);margin-top:.2rem;">Articles published</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="text-center p-3" style="background:var(--c-surface);border:1px solid var(--c-border2);border-radius:var(--r-md);">
+        <div style="font-size:1.8rem;font-weight:800;color:#8b5cf6;font-family:var(--font-head);">6</div>
+        <div style="font-size:.78rem;color:var(--c-muted);margin-top:.2rem;">Categories</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <h2 class="mt-5 mb-3" style="font-size:1.3rem;font-family:var(--font-head);">How It Works</h2>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="p-3 h-100" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);">
+        <div style="color:var(--c-accent);font-size:1.4rem;margin-bottom:.5rem;">① Collect</div>
+        <p style="font-size:.88rem;color:var(--c-muted);margin:0;">
+          Every hour, a Python script fetches the latest articles from 15+ trusted RSS feeds.
+          Each story is filtered for quality and relevance before publishing.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-3 h-100" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);">
+        <div style="color:var(--c-accent2);font-size:1.4rem;margin-bottom:.5rem;">② Publish</div>
+        <p style="font-size:.88rem;color:var(--c-muted);margin:0;">
+          Approved stories are automatically formatted and committed to GitHub.
+          GitHub Actions rebuilds the site in minutes via GitHub Pages.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-3 h-100" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);">
+        <div style="color:#10b981;font-size:1.4rem;margin-bottom:.5rem;">③ Broadcast</div>
+        <p style="font-size:.88rem;color:var(--c-muted);margin:0;">
+          Each story is also narrated with AI text-to-speech and published as a
+          video on our <a href="https://youtube.com/@techbrnews" target="_blank" rel="noopener">YouTube channel</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech stack -->
+  <h2 class="mt-5 mb-3" style="font-size:1.3rem;font-family:var(--font-head);">Tech Stack</h2>
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <span class="post-tag">Jekyll</span>
+    <span class="post-tag">GitHub Pages</span>
+    <span class="post-tag">GitHub Actions</span>
+    <span class="post-tag">Python 3.11</span>
+    <span class="post-tag">feedparser</span>
+    <span class="post-tag">edge-tts</span>
+    <span class="post-tag">FFmpeg</span>
+    <span class="post-tag">Pillow</span>
+    <span class="post-tag">YouTube Data API v3</span>
+    <span class="post-tag">Bootstrap 5</span>
+  </div>
+
+  <!-- Sources -->
+  <h2 class="mt-5 mb-3" style="font-size:1.3rem;font-family:var(--font-head);">News Sources</h2>
+  <p style="font-size:.9rem;color:var(--c-muted);">
+    We aggregate curated summaries from the world's most trusted technology publications:
+  </p>
+  <div class="row g-2 mb-4">
+    {% assign sources = "TechCrunch,The Verge,Wired,Ars Technica,Engadget,CNET,MIT Technology Review,VentureBeat,Krebs on Security,The Hacker News,Hacker News,The Register" | split: "," %}
+    {% for src in sources %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="d-flex align-items-center gap-2 p-2" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-sm);">
+        <i class="bi bi-newspaper" style="color:var(--c-accent);font-size:.85rem;"></i>
+        <span style="font-size:.83rem;font-weight:500;">{{ src }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Rights -->
+  <div class="mt-5 p-4" style="background:var(--c-surface);border-left:3px solid var(--c-accent);border-radius:0 var(--r-sm) var(--r-sm) 0;">
+    <h3 style="font-size:1rem;margin-bottom:.5rem;font-family:var(--font-head);">Content Rights</h3>
+    <p style="font-size:.88rem;color:var(--c-muted);margin:0;">
+      TechBR News aggregates curated summaries from public RSS feeds and always links back to the
+      original source. All intellectual property belongs to the respective authors and publications.
+      We do not reproduce full articles.
+    </p>
+  </div>
+
+  <!-- Contact -->
+  <h2 class="mt-5 mb-2" style="font-size:1.3rem;font-family:var(--font-head);">Contact</h2>
+  <p style="font-size:.9rem;">
+    Questions, suggestions, or partnership inquiries?
+    Visit the <a href="/contact/">contact page</a> or open an issue on
+    <a href="https://github.com/non-s/non-s.github.io" target="_blank" rel="noopener">GitHub</a>.
+  </p>
+
+</div>
