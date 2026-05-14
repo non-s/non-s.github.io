@@ -41,21 +41,20 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ '/business/' | relative_url }}">Business</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">More</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ '/science/' | relative_url }}">Science</a></li>
-              <li><a class="dropdown-item" href="{{ '/health/' | relative_url }}">Health</a></li>
-              <li><a class="dropdown-item" href="{{ '/sports/' | relative_url }}">Sports</a></li>
-              <li><a class="dropdown-item" href="{{ '/food/' | relative_url }}">Food</a></li>
-              <li><a class="dropdown-item" href="{{ '/entertainment/' | relative_url }}">Entertainment</a></li>
-              <li><a class="dropdown-item" href="{{ '/environment/' | relative_url }}">Environment</a></li>
-              <li><a class="dropdown-item" href="{{ '/travel/' | relative_url }}">Travel</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{{ '/technology/' | relative_url }}">Technology</a></li>
-              <li><a class="dropdown-item" href="{{ '/ai/' | relative_url }}">AI</a></li>
-              <li><a class="dropdown-item" href="{{ '/security/' | relative_url }}">Security</a></li>
+          <li class="nav-item gb-dropdown">
+            <a class="nav-link gb-dropdown-toggle" href="#" tabindex="0">More <i class="bi bi-chevron-down" style="font-size:.65rem;"></i></a>
+            <ul class="gb-dropdown-menu">
+              <li><a href="{{ '/science/' | relative_url }}">🔬 Science</a></li>
+              <li><a href="{{ '/health/' | relative_url }}">🏥 Health</a></li>
+              <li><a href="{{ '/sports/' | relative_url }}">⚽ Sports</a></li>
+              <li><a href="{{ '/food/' | relative_url }}">🍕 Food</a></li>
+              <li><a href="{{ '/entertainment/' | relative_url }}">🎬 Entertainment</a></li>
+              <li><a href="{{ '/environment/' | relative_url }}">🌱 Environment</a></li>
+              <li><a href="{{ '/travel/' | relative_url }}">✈️ Travel</a></li>
+              <li class="gb-divider"></li>
+              <li><a href="{{ '/technology/' | relative_url }}">💻 Technology</a></li>
+              <li><a href="{{ '/ai/' | relative_url }}">🤖 AI</a></li>
+              <li><a href="{{ '/security/' | relative_url }}">🔒 Security</a></li>
             </ul>
           </li>
         </ul>
