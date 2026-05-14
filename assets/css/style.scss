@@ -3303,3 +3303,21 @@ body.font-serif #post-article {
   p, li { color: var(--c-muted); line-height: 1.8; font-size: .95rem; }
   ul { padding-left: 1.25rem; }
 }
+
+// YouTube video embed in blog posts
+.video-embed-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: .75rem;
+  margin: 1.5rem 0;
+  background: #000;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+}

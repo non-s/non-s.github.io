@@ -134,13 +134,18 @@ def main():
 
         video_id = upload_video(youtube, meta)
         if video_id:
-            # Marca como enviado
+            # Marca como enviado com metadados completos para cross-posting
             done_file = meta_file.with_suffix(".done")
             done_file.write_text(json.dumps({
-                "video_id":   video_id,
-                "url":        f"https://youtube.com/watch?v={video_id}",
+                "video_id":    video_id,
+                "url":         f"https://youtube.com/watch?v={video_id}",
                 "uploaded_at": datetime.now(timezone.utc).isoformat(),
-                "title":      meta["title"],
+                "title":       meta["title"],
+                "description": meta.get("description", ""),
+                "tags":        meta.get("tags", []),
+                "thumbnail":   meta.get("thumbnail", ""),
+                "category":    meta.get("category", ""),
+                "is_short":    meta.get("is_short", False),
             }, indent=2))
             meta_file.unlink()   # remove metadata original
             uploaded += 1
