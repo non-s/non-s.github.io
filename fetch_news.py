@@ -51,7 +51,13 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
     2. Google Gemini 1.5 Flash (15 req/min, 1M tokens/dia — gratuito com chave)
     3. Pollinations.ai (sem chave, sem limites)
     """
-    sys_msg = system or "You are a professional journalist and SEO expert. Be concise and accurate."
+    sys_msg = system or (
+        "You are a world-class AP-style journalist and SEO expert. "
+        "Write in plain, direct news style. Never use: 'crucial', 'vital', 'pivotal', "
+        "'delve', 'It is worth noting', 'It is important to', 'landscape', 'game-changer', "
+        "'revolutionary', 'groundbreaking'. Always start with the most important fact. "
+        "Be concise and factually accurate."
+    )
 
     # ── 1. Groq ──────────────────────────────────────────────
     groq_key = os.environ.get("GROQ_API_KEY", "")
@@ -66,7 +72,7 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
                         {"role": "user",   "content": prompt},
                     ],
                     "temperature": 0.7,
-                    "max_tokens": 2500,
+                    "max_tokens": 3000,
                 },
                 headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                 timeout=timeout,
@@ -123,7 +129,7 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
                 "model":      "openai",
                 "seed":       seed or abs(hash(prompt)) % 9999,
                 "private":    True,
-                "max_tokens": 2500,
+                "max_tokens": 3000,
             },
             timeout=timeout,
         )
@@ -637,22 +643,30 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
     combined = f"{description}\n\n{body}".strip()[:2000]
     cat = category.capitalize()
     prompt = (
-        f'You are a world-class SEO journalist. Enhance this news article. '
-        f'Respond ONLY with valid JSON, no markdown, no code blocks, no extra text.\n\n'
+        f'You are a world-class AP-style SEO journalist. Enhance this news article for maximum search visibility and reader engagement. '
+        f'Respond ONLY with valid JSON. No markdown, no code blocks, no extra text.\n\n'
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
-        f'Required JSON:\n'
-        f'{{"seo_title":"Informative headline max 65 chars. Use numbers when helpful (e.g. \'5 Countries...\'), hint at surprising findings, or create mild intrigue — but NEVER use \'You Won\'t Believe\' or similar bait. Must be factually accurate and searchable.","meta_description":"<150-155 chars ending with period>",'
-        f'"key_points":["Action-verb sentence max 12 words, e.g. \'EU imposes new sanctions on Russia\'","Action-verb sentence max 12 words describing key fact 2","Action-verb sentence max 12 words describing key fact 3"],'
-        f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. '
-        f'For key people/places/organizations add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). No bullet points.",'
-        f'"image_caption":"One sentence caption describing what the image likely shows, relevant to the article topic",'
-        f'"faq":[{{"q":"question 1","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 2","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 3","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 4","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 5","a":"clear 1-2 sentence answer."}}],'
-        f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"],'
-        f'"hook":"One punchy sentence (max 20 words) that makes someone want to read this — journalistic hook, no clickbait"}}'
+        f'Return this exact JSON structure:\n'
+        f'{{'
+        f'"seo_title": "Informative headline max 65 chars. Use numbers when helpful. Create mild intrigue but stay factual. NEVER use clickbait. Must be searchable and match search intent.",'
+        f'"meta_description": "150-160 chars. Start with the main fact or benefit. Include the primary keyword naturally. End with a period. Sound human, not robotic. AVOID: In this article, Learn how, Explore. EXAMPLE: Scientists confirm new drug cuts dementia risk by 40% in landmark UK 10-year trial of 40000 patients.",'
+        f'"lead": "One tight paragraph 40-50 words answering Who What When Where Why — classic journalistic inverted pyramid lead. Include the single most important fact.",'
+        f'"tl_dr": "One sentence max 25 words starting with an active verb — perfect for featured snippets. EXAMPLE: UK scientists confirm new drug halves dementia risk in 10-year trial of 40000 patients.",'
+        f'"content_type": "one of: news|breaking|analysis|explainer|opinion|feature",'
+        f'"key_points": ["Action-verb sentence max 12 words key fact 1", "Action-verb sentence max 12 words key fact 2", "Action-verb sentence max 12 words key fact 3"],'
+        f'"article_body": "Write 5-7 journalistic paragraphs, 550-700 words total. Follow inverted pyramid: most critical facts first. Add an ## H2 heading every 2 paragraphs. For key people/organizations/places add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). Final paragraph: what happens next or broader implications. AP style. No bullet points.",'
+        f'"image_caption": "One descriptive sentence about what the article image likely shows. Relevant, specific, mentions key person or location if applicable.",'
+        f'"faq": ['
+        f'{{"q": "Question starting with What/Why/How/When/Who — mirrors Google People Also Ask format", "a": "Direct answer 40-60 words plain prose."}},'
+        f'{{"q": "Second PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Third PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Fourth PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Fifth PAA-style question", "a": "Direct answer 40-60 words."}}'
+        f'],'
+        f'"keywords": ["primary keyword matching title", "second primary keyword", "LSI term 1", "LSI term 2", "LSI term 3", "long tail phrase 4-6 words", "second long tail phrase", "third long tail phrase"],'
+        f'"entities": ["Person Name or Organization or Place 1", "Entity 2", "Entity 3"],'
+        f'"hook": "One punchy sentence max 20 words — journalistic hook, creates curiosity without clickbait"'
+        f'}}'
     )
     raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
     result = {}
@@ -678,8 +692,8 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
 
 POSTS_DIR        = Path("_posts")
 LOG_FILE         = "fetch_news.log"
-MAX_PER_FEED     = 2                   # Max posts por feed por execução
-MAX_POSTS_PER_RUN = 20                # Limite global por execução (muitos feeds agora)
+MAX_PER_FEED     = 3                   # Max posts por feed por execução
+MAX_POSTS_PER_RUN = 30                # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
 SLEEP_BETWEEN_FEEDS = 2
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar

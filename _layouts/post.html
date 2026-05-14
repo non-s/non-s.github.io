@@ -46,6 +46,10 @@ layout: default
       <p class="post-deck">{{ page.description }}</p>
       {% endif %}
 
+      {% if page.lead and page.lead != page.description %}
+      <p class="post-lead">{{ page.lead }}</p>
+      {% endif %}
+
       <div class="post-meta">
         <span><i class="bi bi-calendar3"></i>
           <time datetime="{{ page.date | date_to_xmlschema }}">
@@ -95,6 +99,13 @@ layout: default
 
     <!-- Main Content -->
     <div class="col-lg-8">
+
+      {% if page.tl_dr %}
+      <div class="tl-dr-box">
+        <span class="tl-dr-label">TL;DR</span>
+        <p class="tl-dr-text">{{ page.tl_dr }}</p>
+      </div>
+      {% endif %}
 
       {% if page.image %}
       <figure class="post-hero-img">
@@ -218,6 +229,15 @@ layout: default
         </a>
         {% else %}<span></span>{% endif %}
       </nav>
+
+      {% if page.entities %}
+      <div class="post-entities">
+        <span class="entities-label">Key Topics:</span>
+        {% for entity in page.entities %}
+        <a href="{{ '/search/?q=' | relative_url }}{{ entity | uri_escape }}" class="entity-chip">{{ entity }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
 
       <!-- Comments — Giscus (GitHub Discussions) preferred, fallback Utterances -->
       {% if site.giscus_repo %}
