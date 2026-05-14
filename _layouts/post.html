@@ -378,6 +378,27 @@ layout: default
 </script>
 {% endif %}
 
+<!-- Code Copy Button -->
+<script>
+(function(){
+  var blocks = document.querySelectorAll('#post-article pre');
+  blocks.forEach(function(pre) {
+    var btn = document.createElement('button');
+    btn.className = 'code-copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function() {
+      var code = pre.querySelector('code');
+      navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(function() {
+        btn.textContent = '✓ Copied';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    });
+    pre.style.position = 'relative';
+    pre.appendChild(btn);
+  });
+})();
+</script>
+
 <!-- Image Lightbox (Task 5) -->
 <script>
 (function(){

@@ -365,5 +365,44 @@
   })();
   </script>
 
+  <!-- ── Navbar Search Autocomplete ─────────────────────── -->
+  <script>
+  (function(){
+    var searchData = [];
+    fetch('/search-index.json').then(function(r){ return r.json(); }).then(function(data){ searchData = data; });
+
+    var input = document.querySelector('form[action*="search"] .search-input');
+    if (!input) return;
+    var wrapper = input.closest('form');
+    if (!wrapper) return;
+    wrapper.style.position = 'relative';
+
+    var dropdown = document.createElement('div');
+    dropdown.id = 'nav-autocomplete-dropdown';
+    dropdown.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--c-surface);border:1px solid var(--c-border2);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:9999;max-height:300px;overflow-y:auto;display:none;min-width:280px;';
+    wrapper.appendChild(dropdown);
+
+    input.addEventListener('input', function() {
+      var q = this.value.trim().toLowerCase();
+      if (q.length < 3) { dropdown.style.display = 'none'; return; }
+      var matches = searchData.filter(function(p) {
+        return p.title.toLowerCase().includes(q);
+      }).slice(0, 8);
+      if (matches.length === 0) { dropdown.style.display = 'none'; return; }
+      dropdown.innerHTML = matches.map(function(p) {
+        return '<a href="' + p.url + '" style="display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;color:var(--c-text);text-decoration:none;border-bottom:1px solid var(--c-border);font-size:.85rem;" onmouseover="this.style.background=\'var(--c-surface2)\'" onmouseout="this.style.background=\'\'">' +
+          '<span style="flex:1;">' + p.title + '</span>' +
+          '<span style="color:var(--c-muted);font-size:.75rem;">' + (p.category||'') + '</span>' +
+          '</a>';
+      }).join('');
+      dropdown.style.display = 'block';
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!wrapper.contains(e.target)) dropdown.style.display = 'none';
+    });
+  })();
+  </script>
+
 </body>
 </html>
