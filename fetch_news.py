@@ -123,6 +123,32 @@ def _news_image_url(title: str, category: str) -> str:
     seed = abs(hash(title + category)) % 99999
     return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed}&model=flux"
 
+_POSITIVE_WORDS = {
+    "breakthrough", "success", "discover", "innovation", "growth", "record",
+    "victory", "achieve", "advance", "cure", "save", "improve", "rise",
+    "hope", "peace", "agreement", "award", "celebrate", "launch", "win",
+    "boom", "rally", "recover", "benefit", "progress", "surge", "historic",
+}
+_NEGATIVE_WORDS = {
+    "war", "attack", "kill", "death", "dead", "crisis", "disaster", "collapse",
+    "crash", "fall", "fail", "worst", "threat", "danger", "flood", "fire",
+    "earthquake", "explosion", "shooting", "murder", "arrest", "ban", "loss",
+    "decline", "drop", "recession", "conflict", "violence", "protest", "riot",
+    "scandal", "corrupt", "terror", "bomb", "casualt", "injur", "evacuate",
+}
+
+def _sentiment_score(text: str) -> str:
+    """Returns 'positive', 'negative', or 'neutral' based on keyword presence."""
+    words = re.findall(r'\b\w+\b', text.lower())
+    pos = sum(1 for w in words if any(w.startswith(p) for p in _POSITIVE_WORDS))
+    neg = sum(1 for w in words if any(w.startswith(p) for p in _NEGATIVE_WORDS))
+    if neg > pos:
+        return "negative"
+    if pos > neg:
+        return "positive"
+    return "neutral"
+
+
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
     """
     Usa Pollinations AI para gerar conteúdo SEO-otimizado por artigo.
@@ -1086,6 +1112,7 @@ def build_frontmatter(
     image:       str,
     keywords:    list | None = None,
     faq:         list | None = None,
+    sentiment:   str  = "neutral",
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1102,6 +1129,7 @@ author: "{author}"
 description: "{sanitize_text(description[:160])}"
 source_url: "{source_url}"
 source_name: "{source_name}"
+sentiment: "{sentiment}"
 """
     if image:
         front += f'image: "{image}"\n'
@@ -1398,6 +1426,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 image_url = _news_image_url(title, category)
                 log.info(f"  🎨 AI image: {title[:50]}")
 
+            sentiment   = _sentiment_score(f"{title} {description}")
+
             frontmatter = build_frontmatter(
                 title       = title,
                 date        = pub_date,
@@ -1410,6 +1440,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 image       = image_url,
                 keywords    = ai.get("keywords", []),
                 faq         = ai.get("faq", []),
+                sentiment   = sentiment,
             )
             post_content = build_content(
                 title       = title,

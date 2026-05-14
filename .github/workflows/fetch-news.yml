@@ -98,6 +98,24 @@ jobs:
         env:
           GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
 
+      - name: "🦋 Bluesky — compartilhar posts novos"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python post_bluesky.py
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
+      - name: "🤖 Reddit — compartilhar posts novos"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python post_reddit.py
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
         run: echo "✨ No new posts this run — skipping commit."
