@@ -502,7 +502,7 @@ def build_frontmatter(
     front = f"""---
 layout: post
 title: "{sanitize_text(title)}"
-date: {date_str if date_str else date.strftime("%Y-%m-%d %H:%M:%S")} -0300
+date: {date_str if date_str else date.strftime("%Y-%m-%d %H:%M:%S +0000")}
 categories: {cats_yaml}
 tags: {tags_yaml}
 author: "{author}"

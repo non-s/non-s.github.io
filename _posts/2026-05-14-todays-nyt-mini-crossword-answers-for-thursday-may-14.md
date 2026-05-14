@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Today's NYT Mini Crossword Answers for Thursday, May 14"
-date: 2026-05-14 06:46:57 +0000 -0300
+date: 2026-05-14 06:46:57 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "YouTube is courting creators — and sponsors — with streaming shows"
-date: 2026-05-13 21:30:00 +0000 -0300
+date: 2026-05-13 21:30:00 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "What Will Be Running Inside the New Googlebook Laptops? What We Know So Far"
-date: 2026-05-14 02:30:40 +0000 -0300
+date: 2026-05-14 02:30:40 +0000
 categories: [technology, gadgets]
 tags: [cnet, tech, reviews, gadgets, laptop]
 author: "TechBR News"

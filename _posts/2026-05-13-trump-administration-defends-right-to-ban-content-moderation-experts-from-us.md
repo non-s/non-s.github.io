@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Trump administration defends right to ban content moderation experts from US"
-date: 2026-05-13 21:58:44 +0000 -0300
+date: 2026-05-13 21:58:44 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
 author: "TechBR News"

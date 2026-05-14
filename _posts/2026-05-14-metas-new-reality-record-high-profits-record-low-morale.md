@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Meta’s New Reality: Record High Profits. Record Low Morale"
-date: 2026-05-14 09:00:00 +0000 -0300
+date: 2026-05-14 09:00:00 +0000
 categories: [technology]
 tags: [wired, tech, science]
 author: "TechBR News"

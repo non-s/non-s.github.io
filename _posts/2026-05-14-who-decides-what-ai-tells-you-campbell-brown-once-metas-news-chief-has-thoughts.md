@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Who decides what AI tells you? Campbell Brown, once Meta’s news chief, has thoughts"
-date: 2026-05-14 06:05:31 +0000 -0300
+date: 2026-05-14 06:05:31 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
 author: "TechBR News"

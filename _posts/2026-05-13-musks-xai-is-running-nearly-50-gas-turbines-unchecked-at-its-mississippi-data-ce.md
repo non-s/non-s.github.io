@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Musk’s xAI is running nearly 50 gas turbines unchecked at its Mississippi data center"
-date: 2026-05-13 19:49:42 +0000 -0300
+date: 2026-05-13 19:49:42 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
 author: "TechBR News"

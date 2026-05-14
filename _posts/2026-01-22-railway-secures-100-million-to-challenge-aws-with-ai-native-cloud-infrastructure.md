@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Railway secures $100 million to challenge AWS with AI-native cloud infrastructure"
-date: 2026-01-22 14:00:00 +0000 -0300
+date: 2026-01-22 14:00:00 +0000
 categories: [ai]
 tags: [venturebeat, ai, enterprise, machine-learning]
 author: "TechBR News"

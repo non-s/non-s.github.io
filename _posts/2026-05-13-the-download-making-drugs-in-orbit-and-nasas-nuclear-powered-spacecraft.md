@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The Download: making drugs in orbit and NASA’s nuclear-powered spacecraft"
-date: 2026-05-13 12:10:00 +0000 -0300
+date: 2026-05-13 12:10:00 +0000
 categories: [ai, startups]
 tags: [mit, ai, research, startups]
 author: "TechBR News"

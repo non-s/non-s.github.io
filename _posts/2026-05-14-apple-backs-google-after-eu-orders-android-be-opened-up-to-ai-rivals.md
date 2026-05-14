@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Apple backs Google after EU orders Android be opened up to AI rivals"
-date: 2026-05-14 07:03:16 +0000 -0300
+date: 2026-05-14 07:03:16 +0000
 categories: [gadgets, mobile]
 tags: [engadget, gadgets, reviews, mobile, android]
 author: "TechBR News"

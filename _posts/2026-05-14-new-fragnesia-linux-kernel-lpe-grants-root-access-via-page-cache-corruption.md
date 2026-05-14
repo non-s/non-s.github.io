@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "New Fragnesia Linux Kernel LPE Grants Root Access via Page Cache Corruption"
-date: 2026-05-14 07:06:15 +0000 -0300
+date: 2026-05-14 07:06:15 +0000
 categories: [security]
 tags: [hackernews, security, vulnerabilities, vulnerability]
 author: "TechBR News"

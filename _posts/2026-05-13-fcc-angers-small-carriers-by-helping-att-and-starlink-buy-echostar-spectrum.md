@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "FCC angers small carriers by helping AT&T and Starlink buy EchoStar spectrum"
-date: 2026-05-13 20:44:38 +0000 -0300
+date: 2026-05-13 20:44:38 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
 author: "TechBR News"

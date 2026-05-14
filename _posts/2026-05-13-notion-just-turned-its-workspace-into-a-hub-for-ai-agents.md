@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Notion just turned its workspace into a hub for AI agents"
-date: 2026-05-13 21:45:09 +0000 -0300
+date: 2026-05-13 21:45:09 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
 author: "TechBR News"
