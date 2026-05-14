@@ -46,7 +46,7 @@ jobs:
       - name: "📦 Install dependencies"
         run: |
           python -m pip install --upgrade pip
-          pip install feedparser requests
+          pip install feedparser requests google-auth
 
       - name: "📡 Run fetch_news.py"
         run: python fetch_news.py
@@ -90,6 +90,13 @@ jobs:
           curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
           curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
           echo "✅ Search engines notified"
+
+      - name: "🔎 Google Search Console — indexar URLs novas"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python google_index.py
+        env:
+          GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
 
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'

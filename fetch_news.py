@@ -1271,6 +1271,32 @@ def _add_pt_summary(title: str, description: str, category: str) -> str:
 
 
 # ============================================================
+# TRENDING KEYWORDS — Google Trends RSS
+# ============================================================
+
+def _get_trending_keywords() -> set:
+    """
+    Fetches Google Trends daily RSS for the US and returns a set of lowercase
+    keywords extracted from trending titles. Returns empty set on any failure.
+    """
+    try:
+        parsed = feedparser.parse(
+            "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
+            request_headers={"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"},
+        )
+        keywords: set = set()
+        for entry in parsed.get("entries", []):
+            title = getattr(entry, "title", "")
+            for word in title.split():
+                word = word.lower().strip(".,!?\"'")
+                if len(word) > 4:
+                    keywords.add(word)
+        return keywords
+    except Exception:
+        return set()
+
+
+# ============================================================
 # FUNÇÃO PRINCIPAL
 # ============================================================
 
@@ -1425,12 +1451,25 @@ def main():
 
     total_created = 0
 
+    trending = _get_trending_keywords()
+    if trending:
+        log.info(f"🔥 Trending keywords loaded: {len(trending)} terms")
+
     for i, feed in enumerate(FEEDS):
         if total_created >= MAX_POSTS_PER_RUN:
             log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
             break
         remaining = MAX_POSTS_PER_RUN - total_created
-        created = fetch_feed(feed, max_override=remaining)
+
+        # Trending boost: fetch one extra article from feeds matching a trending keyword
+        feed_words = set((feed["name"] + " " + feed.get("category", "")).lower().split())
+        if trending and feed_words & trending:
+            log.info(f"🔥 Trending boost: {feed['name']}")
+            max_override = min(remaining, MAX_PER_FEED + 1)
+        else:
+            max_override = remaining
+
+        created = fetch_feed(feed, max_override=max_override)
         total_created += created
         if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
             log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")

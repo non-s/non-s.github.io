@@ -216,6 +216,67 @@ def wrap_text(draw, text, font, max_width):
         lines.append(' '.join(line))
     return lines
 
+# ── Tradução PT-BR ────────────────────────────────────────────
+def _translate_script_pt(script: str) -> str:
+    """Translate an English video script to Brazilian Portuguese via AI."""
+    try:
+        prompt = (
+            f"Translate this news video script to Brazilian Portuguese (PT-BR). "
+            f"Keep the same structure and tone. Return ONLY the translated script, no commentary:\n\n"
+            f"{script[:3000]}"
+        )
+        return _ai_text(prompt)
+    except Exception as e:
+        log.warning(f"PT translation error: {e}")
+        return ""
+
+
+def create_pt_video(stories: list[dict], script_en: str, output_dir: Path):
+    """
+    Cria versão PT-BR do vídeo roundup usando as mesmas imagens do EN.
+    Retorna Path do vídeo gerado, ou None em falha.
+    """
+    slug = roundup_slug()
+    pt_video_path = output_dir / f"{slug}-pt.mp4"
+
+    script_pt = _translate_script_pt(script_en)
+    if len(script_pt) <= 200:
+        log.warning("PT translation too short or failed — skipping PT video.")
+        return None
+
+    tmp = Path(f"/tmp/yt_{slug}_pt")
+    tmp.mkdir(exist_ok=True)
+
+    # Download images (same as EN flow)
+    image_paths: list[Path | None] = []
+    for i, story in enumerate(stories):
+        if story["image_url"]:
+            dest = tmp / f"img_{i}.jpg"
+            image_paths.append(dest if download_image(story["image_url"], dest) else None)
+        else:
+            image_paths.append(None)
+
+    # TTS — voz PT-BR
+    mp3_pt = tmp / "narration_pt.mp3"
+    try:
+        asyncio.run(text_to_speech(script_pt, mp3_pt, "pt-BR-FranciscaNeural"))
+        log.info(f"  🇧🇷 TTS PT-BR gerado: {mp3_pt.stat().st_size // 1024} KB")
+    except Exception as e:
+        log.error(f"  ❌ TTS PT-BR falhou: {e}")
+        shutil.rmtree(tmp, ignore_errors=True)
+        return None
+
+    # Vídeo PT com mesmas imagens
+    ok = create_roundup_video(stories, image_paths, mp3_pt, pt_video_path)
+    shutil.rmtree(tmp, ignore_errors=True)
+
+    if not ok:
+        return None
+
+    log.info(f"  ✅ Vídeo PT-BR gerado: {pt_video_path.name}")
+    return pt_video_path
+
+
 # ── Script de narração roundup ──────────────────────────────────
 ORDINALS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
@@ -1095,6 +1156,31 @@ def main():
 
     # Metadados SEO com capítulos
     build_metadata(slug, stories, thumb_path, video_path, duration)
+
+    # ── Versão PT-BR ─────────────────────────────────────────────
+    pt_video = create_pt_video(stories, script, VIDEOS_DIR)
+    if pt_video:
+        # Traduz título e descrição para PT via Groq
+        pt_title_raw = _ai_text(
+            f"Translate this YouTube video title to Brazilian Portuguese (PT-BR). "
+            f"Return ONLY the translated title, no commentary:\n\n{slug.replace('-', ' ').title()}"
+        )
+        pt_desc_raw = _ai_text(
+            f"Translate this to Brazilian Portuguese (PT-BR). "
+            f"Return ONLY the translated text:\n\nWorld news roundup with {len(stories)} top stories."
+        )
+        base_tags = [s for s in stories for s in s.get("tags", [])]
+        pt_meta = {
+            "title":       pt_title_raw or f"Resumo de Notícias Mundiais | {slug}",
+            "description": pt_desc_raw or "Principais notícias do mundo em português.",
+            "tags":        list(dict.fromkeys(base_tags + ["pt-br", "noticias", "mundo"])),
+            "category_id": "28",
+            "privacy":     "public",
+            "video":       str(pt_video),
+        }
+        pt_meta_path = VIDEOS_DIR / f"{slug}-pt.json"
+        pt_meta_path.write_text(json.dumps(pt_meta, indent=2, ensure_ascii=False))
+        log.info(f"  📄 Metadados PT-BR salvos: {pt_meta_path.name}")
 
     # Marca posts como usados (não serão incluídos em próximo roundup)
     mark_posts_as_used([s["slug"] for s in stories])
