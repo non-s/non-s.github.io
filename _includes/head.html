@@ -44,6 +44,7 @@
 {% if page.image %}
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ page.image_alt | default: page.title | escape }}">
 {% endif %}
 {% if page.layout == 'post' %}
   {% for category in page.categories %}
@@ -272,6 +273,7 @@ if (navigator.onLine) {
   "sameAs": [
     "https://github.com/non-s",
     "https://bsky.app/profile/non-s97.bsky.social",
+    "https://bsky.app/profile/globalbrnews.bsky.social",
     "https://youtube.com/@globalbrnews"
   ]
 }
@@ -298,6 +300,24 @@ if (navigator.onLine) {
       "name": "{{ item.question | escape }}",
       "acceptedAnswer": { "@type": "Answer", "text": "{{ item.answer | escape }}" }
     }
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+
+{% if page.how_to_steps %}
+<!-- HowTo Schema (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "{{ page.title | escape }}",
+  "description": "{{ page.description | escape }}",
+  "step": [
+    {% for step in page.how_to_steps %}
+    {% unless forloop.first %},{% endunless %}
+    {"@type": "HowToStep", "text": "{{ step | escape }}"}
     {% endfor %}
   ]
 }
