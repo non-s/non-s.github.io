@@ -102,14 +102,6 @@
             <i class="bi bi-search"></i>
           </button>
         </form>
-        {% include weather-widget.html %}
-
-        {% if site.onesignal_app_id %}
-        <button id="onesignal-notify-btn" class="onesignal-notify-btn" title="Enable notifications" aria-label="Enable push notifications">
-          <i class="bi bi-bell"></i>
-        </button>
-        {% endif %}
-
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
           <i class="bi bi-moon-fill" id="theme-icon"></i>
         </button>
@@ -136,24 +128,6 @@
     }
   })();
   </script>
-
-  {% if site.onesignal_app_id %}
-  <script>
-  (function(){
-    var btn = document.getElementById('onesignal-notify-btn');
-    if (!btn) return;
-    btn.addEventListener('click', function() {
-      if (window.OneSignal) {
-        window.OneSignal.Slidedown.promptPush();
-      } else if (window.OneSignalDeferred) {
-        window.OneSignalDeferred.push(function(OneSignal) {
-          OneSignal.Slidedown.promptPush();
-        });
-      }
-    });
-  })();
-  </script>
-  {% endif %}
 
   <!-- ── CRYPTO TICKER ────────────────────────────────────── -->
   {% include crypto-ticker.html %}
@@ -183,9 +157,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ── CRYPTO TICKER ─────────────────────────────────────── -->
-  {% include crypto-ticker.html %}
 
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main id="main-content">{{ content }}</main>
@@ -288,8 +259,8 @@
           crossorigin="anonymous"
           defer></script>
 
-  <!-- ── BACK TO TOP (circular with scroll progress) ──────── -->
-  <button id="back-top" aria-label="Back to top" title="Back to top">
+  <!-- ── BACK TO TOP with circular progress  (UX feat 5) ──── -->
+  <button id="back-top" aria-label="Back to top">
     <svg viewBox="0 0 36 36" class="progress-ring" aria-hidden="true">
       <circle cx="18" cy="18" r="15" class="ring-bg"/>
       <circle cx="18" cy="18" r="15" class="ring-fill" id="ring-progress"/>
@@ -300,18 +271,20 @@
   (function(){
     var btn  = document.getElementById('back-top');
     var ring = document.getElementById('ring-progress');
-    var circumference = 2 * Math.PI * 15; // ~94.25
-    function update() {
-      var doc     = document.documentElement;
+    var circ = 2 * Math.PI * 15; // ≈ 94.25
+    ring.style.strokeDasharray  = circ;
+    ring.style.strokeDashoffset = circ;
+    window.addEventListener('scroll', function(){
+      var doc    = document.documentElement;
       var scrolled = doc.scrollTop || document.body.scrollTop;
       var total    = doc.scrollHeight - doc.clientHeight;
       var pct      = total > 0 ? scrolled / total : 0;
-      if (ring) ring.style.strokeDashoffset = circumference * (1 - pct);
+      ring.style.strokeDashoffset = circ * (1 - pct);
       btn.classList.toggle('visible', scrolled > 300);
-    }
-    window.addEventListener('scroll', update, {passive: true});
-    btn.addEventListener('click', function(){ window.scrollTo({top: 0, behavior: 'smooth'}); });
-    update();
+    }, {passive: true});
+    btn.addEventListener('click', function(){
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
   })();
   </script>
 
@@ -465,14 +438,6 @@
   })();
   </script>
 
-  <!-- ── KO-FI DONATION BUTTON ─────────────────────────────── -->
-  {% if site.kofi_id %}
-  <div class="kofi-widget-container">
-    <a href="https://ko-fi.com/{{ site.kofi_id }}" target="_blank" rel="noopener" class="kofi-btn" title="Support us on Ko-fi">
-      <img src="https://storage.ko-fi.com/cdn/kofi2.png?v=3" alt="Buy Me a Coffee at ko-fi.com" height="36">
-    </a>
-  </div>
-  {% endif %}
 
 </body>
 </html>

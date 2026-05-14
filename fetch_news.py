@@ -27,7 +27,6 @@ import json
 import logging
 import hashlib
 import unicodedata
-import math
 from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
@@ -138,131 +137,6 @@ def _fetch_wikipedia_summary(query: str) -> str:
     except Exception:
         pass
     return ""
-
-
-# ============================================================
-# GOOGLE FACT CHECK TOOLS API
-# ============================================================
-
-def _fact_check_api(claim_text: str):
-    """
-    Consulta Google Fact Check Tools API. Retorna 'false', 'verified', 'developing' ou None.
-    Só funciona se GOOGLE_FACT_CHECK_API_KEY estiver definida.
-    """
-    key = os.getenv("GOOGLE_FACT_CHECK_API_KEY")
-    if not key:
-        return None
-    url = (
-        f"https://factchecktools.googleapis.com/v1alpha1/claims:search"
-        f"?key={key}&query={requests.utils.quote(claim_text[:200])}&languageCode=en"
-    )
-    try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            claims = data.get("claims", [])
-            if claims:
-                rating = claims[0].get("claimReview", [{}])[0].get("textualRating", "")
-                rating_lower = rating.lower()
-                if any(w in rating_lower for w in ["false", "pants on fire", "mostly false"]):
-                    return "false"
-                elif any(w in rating_lower for w in ["true", "mostly true", "correct"]):
-                    return "verified"
-                return "developing"
-    except Exception:
-        pass
-    return None
-
-
-# ============================================================
-# DEEPL — Tradução PT-BR
-# ============================================================
-
-def _translate_to_ptbr(text: str, api_key: str):
-    """Traduz texto para PT-BR usando DeepL API Free. Retorna None em caso de falha."""
-    if not api_key or not text:
-        return None
-    try:
-        r = requests.post(
-            "https://api-free.deepl.com/v2/translate",
-            data={"auth_key": api_key, "text": text, "target_lang": "PT-BR"},
-            timeout=15,
-        )
-        if r.status_code == 200:
-            return r.json()["translations"][0]["text"]
-    except Exception:
-        pass
-    return None
-
-
-# ============================================================
-# COHERE — Embeddings semânticos para artigos relacionados
-# ============================================================
-
-_EMBEDDINGS_FILE = Path("_data/embeddings.json")
-
-def _get_cohere_embedding(text: str, api_key: str):
-    """Gera embedding via Cohere embed-english-v3.0. Retorna lista de floats ou None."""
-    try:
-        r = requests.post(
-            "https://api.cohere.ai/v1/embed",
-            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-            json={
-                "texts": [text[:512]],
-                "model": "embed-english-v3.0",
-                "input_type": "search_document",
-            },
-            timeout=15,
-        )
-        if r.status_code == 200:
-            return r.json()["embeddings"][0]
-    except Exception:
-        pass
-    return None
-
-
-def _cosine_similarity(a: list, b: list) -> float:
-    """Calcula similaridade de cosseno entre dois vetores."""
-    dot = sum(x * y for x, y in zip(a, b))
-    norm_a = math.sqrt(sum(x * x for x in a))
-    norm_b = math.sqrt(sum(x * x for x in b))
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return dot / (norm_a * norm_b)
-
-
-def _load_embeddings() -> dict:
-    """Carrega embeddings do arquivo _data/embeddings.json."""
-    try:
-        if _EMBEDDINGS_FILE.exists():
-            return json.loads(_EMBEDDINGS_FILE.read_text(encoding="utf-8"))
-    except Exception:
-        pass
-    return {}
-
-
-def _save_embeddings(data: dict) -> None:
-    """Salva embeddings em _data/embeddings.json."""
-    try:
-        _EMBEDDINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        _EMBEDDINGS_FILE.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    except Exception as exc:
-        log.debug(f"Failed to save embeddings: {exc}")
-
-
-def _store_cohere_embedding(title: str, text: str) -> None:
-    """Gera e persiste embedding para o título dado, se COHERE_API_KEY existir."""
-    api_key = os.getenv("COHERE_API_KEY")
-    if not api_key:
-        return
-    try:
-        embedding = _get_cohere_embedding(text, api_key)
-        if embedding:
-            data = _load_embeddings()
-            data[title] = embedding
-            _save_embeddings(data)
-    except Exception:
-        pass
 
 
 # ============================================================
@@ -420,36 +294,6 @@ _CAT_COLORS = {
 }
 
 
-def _upload_to_cloudinary(local_path, public_id=None):
-    """Upload image to Cloudinary and return CDN URL. Returns None if not configured or on error."""
-    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME")
-    api_key = os.getenv("CLOUDINARY_API_KEY")
-    api_secret = os.getenv("CLOUDINARY_API_SECRET")
-    if not all([cloud_name, api_key, api_secret]):
-        return None
-    try:
-        import hashlib, time as _time
-        timestamp = str(int(_time.time()))
-        params = f"timestamp={timestamp}"
-        if public_id:
-            params = f"public_id={public_id}&{params}"
-        signature = hashlib.sha1(f"{params}{api_secret}".encode()).hexdigest()
-        with open(local_path, "rb") as f:
-            files = {"file": f}
-            data = {"api_key": api_key, "timestamp": timestamp, "signature": signature}
-            if public_id:
-                data["public_id"] = public_id
-            r = requests.post(
-                f"https://api.cloudinary.com/v1_1/{cloud_name}/image/upload",
-                files=files, data=data, timeout=30
-            )
-        if r.status_code == 200:
-            return r.json().get("secure_url")
-    except Exception as e:
-        logging.warning(f"Cloudinary upload failed: {e}")
-    return None
-
-
 def _to_webp(img_path: "Path") -> "Path | None":
     """Convert an image file to WebP quality=82, method=6. Returns new .webp path or None on failure."""
     try:
@@ -510,58 +354,70 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
 
         draw = ImageDraw.Draw(bg_img)
 
-        # ── Dark overlay for readability ─────────────────────────
-        overlay = Image.new("RGBA", (1200, 630), (0, 0, 0, 0))
+        # ── Fonts: try DejaVu (common on Linux/CI), fall back to Pillow default ─
+        try:
+            font_title = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 36)
+            font_cat   = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 22)
+            font_brand = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        except Exception:
+            try:
+                font_title = ImageFont.load_default(size=36)
+                font_cat   = ImageFont.load_default(size=22)
+                font_brand = ImageFont.load_default(size=18)
+            except TypeError:
+                font_title = ImageFont.load_default()
+                font_cat   = font_title
+                font_brand = font_title
+
+        # ── Logo "GlobalBR News" — top-left corner ───────────────
+        draw.text((20, 18), "GlobalBR News", font=font_brand,
+                  fill=(255, 255, 255), stroke_width=1, stroke_fill=(0, 0, 0))
+
+        # ── Semi-transparent overlay on bottom 40% only ──────────
+        overlay_top = int(bg_img.height * 6 // 10)
+        overlay = Image.new("RGBA", bg_img.size, (0, 0, 0, 0))
         ov_draw = ImageDraw.Draw(overlay)
-        ov_draw.rectangle([(0, 0), (1200, 630)], fill=(0, 0, 0, 140))
-        bg_img = bg_img.convert("RGBA")
-        bg_img = Image.alpha_composite(bg_img, overlay).convert("RGB")
+        ov_draw.rectangle(
+            [(0, overlay_top), (bg_img.width, bg_img.height)],
+            fill=(0, 0, 0, 160),
+        )
+        bg_img = Image.alpha_composite(bg_img.convert("RGBA"), overlay).convert("RGB")
         draw = ImageDraw.Draw(bg_img)
 
-        # ── Fonts ────────────────────────────────────────────────
-        try:
-            font_title = ImageFont.load_default(size=52)
-            font_cat   = ImageFont.load_default(size=24)
-            font_brand = ImageFont.load_default(size=22)
-        except TypeError:
-            # Older Pillow without size param
-            font_title = ImageFont.load_default()
-            font_cat   = ImageFont.load_default()
-            font_brand = ImageFont.load_default()
-
-        # ── Category label (top-left) ────────────────────────────
+        # ── Category label above the title ───────────────────────
         cat_text = category.upper()
-        draw.text((48, 36), cat_text, font=font_cat, fill=(249, 115, 22),
+        cat_y = overlay_top + 14
+        draw.text((20, cat_y), cat_text, font=font_cat, fill=(249, 115, 22),
                   stroke_width=1, stroke_fill=(0, 0, 0))
 
-        # ── Title (wrapped, centred vertically) ──────────────────
-        max_w = 1200 - 96
+        # ── Title text wrapped, max 2 lines ──────────────────────
+        max_w = bg_img.width - 40
         words = title.split()
-        lines = []
-        current = ""
+        lines: list = []
+        current_line: list = []
         for word in words:
-            test = (current + " " + word).strip()
-            # Estimate width: ~30px per char for size-52 default font
-            if len(test) * 30 > max_w and current:
-                lines.append(current)
-                current = word
+            test = " ".join(current_line + [word])
+            try:
+                w = draw.textlength(test, font=font_title)
+            except AttributeError:
+                w = len(test) * 20  # rough fallback for older Pillow
+            if w > max_w and current_line:
+                lines.append(" ".join(current_line))
+                current_line = [word]
             else:
-                current = test
-        if current:
-            lines.append(current)
-        lines = lines[:4]  # max 4 lines
+                current_line.append(word)
+        if current_line:
+            lines.append(" ".join(current_line))
+        lines = lines[-2:]  # max 2 lines
 
-        line_h = 64
-        total_h = len(lines) * line_h
-        y_start = (630 - total_h) // 2 - 20
-        for line in lines:
-            draw.text((48, y_start), line, font=font_title, fill=(255, 255, 255),
+        y = bg_img.height - 85
+        for ln in lines:
+            draw.text((20, y), ln, font=font_title, fill=(255, 255, 255),
                       stroke_width=2, stroke_fill=(0, 0, 0))
-            y_start += line_h
-
-        # ── Branding (bottom-left) ───────────────────────────────
-        draw.text((48, 630 - 52), "GlobalBR News", font=font_brand,
-                  fill=(180, 180, 180), stroke_width=1, stroke_fill=(0, 0, 0))
+            y += 42
 
         # ── Resize to max 1200x630 before saving (only if >= 400px wide) ─
         if bg_img.width >= 400:
@@ -574,12 +430,6 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         webp_path = _to_webp(jpg_path)
         final_local = str(webp_path) if (webp_path and webp_path.exists()) else (str(jpg_path) if jpg_path.exists() else None)
         local_url = f"/assets/images/posts/{slug}.webp" if (webp_path and webp_path.exists()) else (f"/assets/images/posts/{slug}.jpg" if jpg_path.exists() else fallback)
-
-        # ── Cloudinary CDN upload (optional) ────────────────────
-        if final_local:
-            cdn_url = _upload_to_cloudinary(final_local, public_id=f"globalbr/{slug}")
-            if cdn_url:
-                return cdn_url
 
         return local_url
 
@@ -698,117 +548,6 @@ def _fetch_wikipedia_summary(query: str) -> str:
     except Exception:
         pass
     return ""
-
-
-def _fact_check_api(claim_text: str) -> str | None:
-    """
-    Calls Google Fact Check Tools API to verify a claim.
-    Returns 'false', 'verified', 'developing', or None if unavailable.
-    Requires GOOGLE_FACT_CHECK_API_KEY env var.
-    """
-    key = os.getenv("GOOGLE_FACT_CHECK_API_KEY")
-    if not key:
-        return None
-    url = (
-        f"https://factchecktools.googleapis.com/v1alpha1/claims:search"
-        f"?key={key}&query={requests.utils.quote(claim_text[:200])}&languageCode=en"
-    )
-    try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            claims = data.get("claims", [])
-            if claims:
-                rating = claims[0].get("claimReview", [{}])[0].get("textualRating", "")
-                rating_lc = rating.lower()
-                if any(w in rating_lc for w in ["false", "pants on fire", "mostly false"]):
-                    return "false"
-                elif any(w in rating_lc for w in ["true", "mostly true", "correct"]):
-                    return "verified"
-                return "developing"
-    except Exception:
-        pass
-    return None
-
-
-def _translate_to_ptbr(text: str, api_key: str) -> str | None:
-    """Translate text to PT-BR using DeepL free API. Returns translated string or None."""
-    if not api_key or not text:
-        return None
-    try:
-        r = requests.post(
-            "https://api-free.deepl.com/v2/translate",
-            data={"auth_key": api_key, "text": text, "target_lang": "PT-BR"},
-            timeout=15,
-        )
-        if r.status_code == 200:
-            return r.json()["translations"][0]["text"]
-    except Exception:
-        pass
-    return None
-
-
-def _get_cohere_embedding(text: str, api_key: str) -> list | None:
-    """Returns an embedding vector from Cohere or None on failure."""
-    try:
-        r = requests.post(
-            "https://api.cohere.ai/v1/embed",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "texts": [text[:512]],
-                "model": "embed-english-v3.0",
-                "input_type": "search_document",
-            },
-            timeout=15,
-        )
-        if r.status_code == 200:
-            return r.json()["embeddings"][0]
-    except Exception:
-        pass
-    return None
-
-
-# ── Embeddings cache ──────────────────────────────────────────
-_EMBEDDINGS_PATH = Path("_data/embeddings.json")
-_embeddings_cache: dict | None = None
-
-
-def _load_embeddings() -> dict:
-    global _embeddings_cache
-    if _embeddings_cache is not None:
-        return _embeddings_cache
-    try:
-        if _EMBEDDINGS_PATH.exists():
-            _embeddings_cache = json.loads(_EMBEDDINGS_PATH.read_text(encoding="utf-8"))
-        else:
-            _embeddings_cache = {}
-    except Exception:
-        _embeddings_cache = {}
-    return _embeddings_cache
-
-
-def _save_embeddings(data: dict) -> None:
-    try:
-        _EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        _EMBEDDINGS_PATH.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    except Exception as exc:
-        log.debug(f"Failed to save embeddings: {exc}")
-
-
-def _cosine_similarity(a: list, b: list) -> float:
-    """Compute cosine similarity between two equal-length vectors."""
-    try:
-        dot = sum(x * y for x, y in zip(a, b))
-        mag_a = sum(x * x for x in a) ** 0.5
-        mag_b = sum(x * x for x in b) ** 0.5
-        if mag_a == 0 or mag_b == 0:
-            return 0.0
-        return dot / (mag_a * mag_b)
-    except Exception:
-        return 0.0
 
 
 def _fetch_crypto_prices() -> dict:
@@ -1397,47 +1136,11 @@ FEEDS = [
         "tags":     ["hackernews", "tech", "programming"],
         "source":   "Hacker News",
     },
-    # ── Reddit (OAuth2, requer REDDIT_CLIENT_ID) ─────────────
-    {
-        "name":     "Reddit worldnews",
-        "url":      "__reddit__worldnews",
-        "category": "world",
-        "tags":     ["reddit", "worldnews", "international"],
-        "source":   "Reddit",
-    },
-    {
-        "name":     "Reddit technology",
-        "url":      "__reddit__technology",
-        "category": "technology",
-        "tags":     ["reddit", "technology", "tech"],
-        "source":   "Reddit",
-    },
-    {
-        "name":     "Reddit science",
-        "url":      "__reddit__science",
-        "category": "science",
-        "tags":     ["reddit", "science", "research"],
-        "source":   "Reddit",
-    },
-    {
-        "name":     "Reddit geopolitics",
-        "url":      "__reddit__geopolitics",
-        "category": "world",
-        "tags":     ["reddit", "geopolitics", "politics"],
-        "source":   "Reddit",
-    },
-    {
-        "name":     "Reddit economics",
-        "url":      "__reddit__economics",
-        "category": "business",
-        "tags":     ["reddit", "economics", "finance"],
-        "source":   "Reddit",
-    },
 ]
 
 
 # ============================================================
-# EXTRA SOURCES — HackerNews, DEV.to, Reddit
+# EXTRA SOURCES — HackerNews, DEV.to
 # ============================================================
 
 def fetch_hackernews(max_items: int = 20, min_score: int = 100) -> list[dict]:
@@ -1563,101 +1266,6 @@ def fetch_devto(tags: list | None = None, per_page: int = 20) -> list[dict]:
             continue
 
     log.info(f"DEV.to: {len(items)} articles fetched across {len(tags)} tags")
-    return items
-
-
-_REDDIT_SUBREDDITS: dict[str, str] = {
-    "worldnews":  "world",
-    "technology": "technology",
-    "science":    "science",
-    "geopolitics": "politics",
-    "economics":  "business",
-}
-
-
-def _get_reddit_token(client_id: str, client_secret: str) -> str | None:
-    """Obtains a Reddit OAuth2 client-credentials access token."""
-    try:
-        r = requests.post(
-            "https://www.reddit.com/api/v1/access_token",
-            auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"},
-            headers={"User-Agent": "GlobalBRNews/1.0 by non-s"},
-            timeout=15,
-        )
-        if r.status_code == 200:
-            return r.json().get("access_token")
-    except Exception as exc:
-        log.warning(f"Reddit OAuth2 token fetch failed: {exc}")
-    return None
-
-
-def fetch_reddit(max_per_sub: int = 5) -> list[dict]:
-    """
-    Fetches top posts from configured subreddits using Reddit OAuth2.
-    Requires REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET env vars.
-    Returns list of article dicts compatible with the post pipeline.
-    """
-    client_id = os.getenv("REDDIT_CLIENT_ID", "")
-    client_secret = os.getenv("REDDIT_CLIENT_SECRET", "")
-    if not client_id or not client_secret:
-        return []
-
-    token = _get_reddit_token(client_id, client_secret)
-    if not token:
-        log.warning("Reddit: could not obtain access token — skipping.")
-        return []
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "User-Agent": "GlobalBRNews/1.0 by non-s",
-    }
-    items = []
-    seen_links: set = set()
-
-    for subreddit, category in _REDDIT_SUBREDDITS.items():
-        try:
-            r = requests.get(
-                f"https://oauth.reddit.com/r/{subreddit}/top.json?limit={max_per_sub}&t=day",
-                headers=headers,
-                timeout=15,
-            )
-            if r.status_code != 200:
-                log.debug(f"Reddit r/{subreddit} returned HTTP {r.status_code}")
-                continue
-            posts = r.json().get("data", {}).get("children", [])
-            for post in posts:
-                d = post.get("data", {})
-                if d.get("is_self") or d.get("stickied"):
-                    continue
-                link = d.get("url", "")
-                if not link or link in seen_links or link.startswith("https://www.reddit.com"):
-                    continue
-                seen_links.add(link)
-                title = sanitize_text(d.get("title", ""))
-                description = sanitize_text((d.get("selftext") or d.get("title", ""))[:400])
-                if not title:
-                    continue
-                pub_date = datetime.fromtimestamp(d.get("created_utc", 0), tz=timezone.utc)
-                image_url = ""
-                if d.get("thumbnail", "").startswith("http"):
-                    image_url = d["thumbnail"]
-                subreddit_tags = ["reddit", f"r-{subreddit}", category]
-                items.append({
-                    "title": title,
-                    "link": link,
-                    "description": description if len(description) >= 50 else title,
-                    "pub_date": pub_date,
-                    "image_url": image_url,
-                    "category": category,
-                    "tags": subreddit_tags,
-                    "source": f"Reddit r/{subreddit}",
-                })
-        except Exception as exc:
-            log.warning(f"Reddit r/{subreddit} fetch error: {exc}")
-            continue
-
-    log.info(f"Reddit: {len(items)} posts fetched across {len(_REDDIT_SUBREDDITS)} subreddits")
     return items
 
 
@@ -2181,11 +1789,6 @@ def build_frontmatter(
     cats_yaml = "[" + ", ".join(categories) + "]"
     tags_yaml = "[" + ", ".join(t for t in tags if t) + "]"
 
-    # ── Google Fact Check API (priority) then heuristic ───────────
-    if fact_check is None:
-        fact_check = _fact_check_api(title)
-    # If still None, fall through — caller already called _fact_check_score
-
     front = f"""---
 layout: post
 title: "{sanitize_text(title)}"
@@ -2433,48 +2036,10 @@ _PT_STOPWORDS = {
 
 def _find_related_story(title: str, tags: list, category: str) -> str:
     """
-    Scans the last 20 posts in the same category.
-    Uses Cohere embeddings (cosine similarity) when available;
-    otherwise falls back to keyword overlap (2+ shared nouns).
+    Scans the last 20 posts in the same category using keyword overlap (2+ shared nouns).
     Returns a Markdown 'Continuing coverage' link or empty string.
     """
-    # ── Cohere semantic search (if embeddings exist) ──────────────
-    try:
-        cohere_key = os.getenv("COHERE_API_KEY", "")
-        if cohere_key:
-            current_emb = _get_cohere_embedding(title, cohere_key)
-            if current_emb:
-                embeddings = _load_embeddings()
-                best_title = None
-                best_score = 0.0
-                for stored_title, stored_emb in embeddings.items():
-                    if stored_title == title:
-                        continue
-                    sim = _cosine_similarity(current_emb, stored_emb)
-                    if sim > best_score:
-                        best_score = sim
-                        best_title = stored_title
-                if best_title and best_score > 0.85:
-                    # Try to find the file for best_title
-                    for post_path in sorted(POSTS_DIR.glob("*.md"), reverse=True)[:40]:
-                        try:
-                            text = post_path.read_text(encoding="utf-8")
-                            for line in text.splitlines():
-                                if line.startswith("title:"):
-                                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
-                                    if m and m.group(1).strip() == best_title:
-                                        stem = post_path.stem
-                                        mm = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', stem)
-                                        if mm:
-                                            yr, mo, dy, sl = mm.group(1), mm.group(2), mm.group(3), mm.group(4)
-                                            url = f"/{category}/{yr}/{mo}/{dy}/{sl}/"
-                                            return f"> 📰 **Continuing coverage:** [{best_title}]({url})\n\n"
-                        except Exception:
-                            continue
-    except Exception:
-        pass
-
-    # ── Keyword-based fallback ────────────────────────────────────
+    # ── Keyword-based search ──────────────────────────────────────
     try:
         key_nouns = {
             w.lower() for w in title.split()
@@ -2739,6 +2304,163 @@ sentiment: "neutral"
 
 
 # ============================================================
+# WEEKLY STATS POST
+# ============================================================
+
+def _generate_weekly_stats_post() -> None:
+    """
+    Creates a 'Week in Review' stats post every Sunday alongside the digest.
+    Counts posts by category, calculates average sentiment, and finds the most-used tag.
+    Skips if not Sunday or if the stats post already exists today.
+    """
+    if datetime.now().weekday() != 6:  # 6 = Sunday
+        return
+
+    today = datetime.now(timezone.utc)
+    stats_filename = f"{today.strftime('%Y-%m-%d')}-week-in-review-stats.md"
+    stats_path = POSTS_DIR / stats_filename
+
+    if stats_path.exists():
+        log.info("Weekly stats post already exists for this week — skipping.")
+        return
+
+    from datetime import timedelta
+    cutoff = today - timedelta(days=7)
+
+    # ── Collect posts from the past 7 days ───────────────────────
+    category_counts: dict[str, int] = {}
+    sentiment_values: list[str] = []
+    tag_counts: dict[str, int] = {}
+    total_posts = 0
+
+    for f in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+        if "roundup" in f.stem or "digest" in f.stem or "stats" in f.stem:
+            continue
+        m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', f.stem)
+        if not m:
+            continue
+        try:
+            post_date = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                                 tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if post_date < cutoff:
+            break  # sorted newest-first, can stop early
+        try:
+            text = f.read_text(encoding="utf-8", errors="replace")
+            post_cat = ""
+            post_sentiment = ""
+            post_tags: list[str] = []
+            for line in text.splitlines():
+                if line.startswith("categories:") and not post_cat:
+                    mm = re.search(r'\[([^\]]+)\]', line)
+                    if mm:
+                        parts = [p.strip() for p in mm.group(1).split(",")]
+                        post_cat = parts[0] if parts else ""
+                if line.startswith("sentiment:") and not post_sentiment:
+                    post_sentiment = line.split("sentiment:", 1)[1].strip().strip('"')
+                if line.startswith("tags:") and not post_tags:
+                    mm = re.search(r'\[([^\]]+)\]', line)
+                    if mm:
+                        post_tags = [t.strip().strip('"').strip("'")
+                                     for t in mm.group(1).split(",")]
+                if line == "---" and post_cat:
+                    break  # end of frontmatter
+            if post_cat and post_cat not in ("roundup", "digest"):
+                category_counts[post_cat] = category_counts.get(post_cat, 0) + 1
+                total_posts += 1
+            if post_sentiment:
+                sentiment_values.append(post_sentiment)
+            for tag in post_tags:
+                if tag:
+                    tag_counts[tag] = tag_counts.get(tag, 0) + 1
+        except Exception:
+            continue
+
+    if total_posts < 3:
+        log.info(f"Not enough posts this week ({total_posts}) for stats post — skipping.")
+        return
+
+    # ── Compute stats ────────────────────────────────────────────
+    top_category = max(category_counts, key=lambda k: category_counts[k]) \
+        if category_counts else "world"
+    top_category_count = category_counts.get(top_category, 0)
+
+    sentiment_map = {"positive": 1, "neutral": 0, "negative": -1}
+    if sentiment_values:
+        avg_val = sum(sentiment_map.get(s, 0) for s in sentiment_values) / len(sentiment_values)
+        avg_sentiment = "positive" if avg_val > 0.2 else ("negative" if avg_val < -0.2 else "neutral")
+    else:
+        avg_sentiment = "neutral"
+
+    # Exclude generic tags from "top tag" ranking
+    _exclude_tags = {
+        "globalbrnews", "news", "roundup", "digest", "daily", "weekly",
+        "world-news", "breaking", "international",
+    }
+    filtered_tags = {t: c for t, c in tag_counts.items()
+                     if t.lower() not in _exclude_tags}
+    top_tag = max(filtered_tags, key=lambda k: filtered_tags[k]) \
+        if filtered_tags else ""
+    top_tag_count = filtered_tags.get(top_tag, 0)
+
+    # ── Build category breakdown table ───────────────────────────
+    sorted_cats = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
+    cat_rows = "\n".join(
+        f"| {cat.capitalize()} | {cnt} |"
+        for cat, cnt in sorted_cats
+    )
+    cat_table = (
+        "| Category | Posts |\n"
+        "|----------|-------|\n"
+        + cat_rows
+    )
+
+    date_display = today.strftime("%B %d, %Y")
+    week_start = (today - timedelta(days=6)).strftime("%B %d")
+    week_range = f"{week_start}–{today.strftime('%B %d, %Y')}"
+
+    top_tag_line = f"- **Most-used tag:** `{top_tag}` ({top_tag_count} posts)\n" \
+        if top_tag else ""
+
+    content = (
+        f"A quick look at what GlobalBR News covered this week "
+        f"({week_range}): **{total_posts} articles** across "
+        f"**{len(category_counts)} categories**, with the spotlight on "
+        f"**{top_category.capitalize()}** ({top_category_count} posts).\n\n"
+        f"<!--more-->\n\n"
+        f"## By the Numbers\n\n"
+        f"- **Total articles:** {total_posts}\n"
+        f"- **Top category:** {top_category.capitalize()} ({top_category_count} posts)\n"
+        f"- **Overall sentiment:** {avg_sentiment.capitalize()}\n"
+        + top_tag_line +
+        f"\n## Category Breakdown\n\n"
+        f"{cat_table}\n\n"
+        f"---\n\n"
+        f"*Weekly stats by [GlobalBR News](https://non-s.github.io) · {date_display}*\n"
+    )
+
+    frontmatter = (
+        f"---\n"
+        f'layout: post\n'
+        f'title: "Week in Review: {total_posts} articles, top category {top_category.capitalize()}"\n'
+        f'date: {today.strftime("%Y-%m-%d %H:%M:%S +0000")}\n'
+        f'categories: [roundup]\n'
+        f'tags: [weekly, stats, roundup]\n'
+        f'author: "GlobalBR News"\n'
+        f'description: "GlobalBR News weekly stats: {total_posts} articles published '
+        f'({week_range}), top category {top_category.capitalize()}, '
+        f'sentiment {avg_sentiment}."\n'
+        f'sentiment: "{avg_sentiment}"\n'
+        f'featured: true\n'
+        f"---\n"
+    )
+
+    stats_path.write_text(frontmatter + "\n" + content, encoding="utf-8")
+    log.info(f"Weekly stats post created: {stats_filename}")
+
+
+# ============================================================
 # TRENDING KEYWORDS — Google Trends RSS
 # ============================================================
 
@@ -2893,26 +2615,9 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.debug(f"  🖼  Using source image: {image_url[:60]}")
 
             sentiment   = _sentiment_score(f"{title} {description}")
-            # Heuristic fact-check (API override happens inside build_frontmatter)
             fact_check  = _fact_check_score(title, description)
 
-            # ── DeepL translation PT-BR ───────────────────────────
-            deepl_key = os.getenv("DEEPL_API_KEY", "")
             description_ptbr = ""
-            if deepl_key:
-                description_ptbr = _translate_to_ptbr(description[:500], deepl_key) or ""
-                if description_ptbr:
-                    log.debug(f"  🌍 DeepL PT-BR description translated")
-
-            # ── Cohere embeddings ─────────────────────────────────
-            cohere_key = os.getenv("COHERE_API_KEY", "")
-            if cohere_key:
-                emb = _get_cohere_embedding(f"{title} {description}", cohere_key)
-                if emb:
-                    embeddings = _load_embeddings()
-                    embeddings[title] = emb
-                    _save_embeddings(embeddings)
-                    log.debug(f"  🔢 Cohere embedding saved for: {title[:50]}")
 
             # ── Crypto prices for business posts ─────────────────
             crypto_prices_for_post: dict | None = None
@@ -2972,50 +2677,6 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
-            # ── DeepL: create PT post file if translation available ─
-            if deepl_key and description_ptbr:
-                try:
-                    pt_dir = POSTS_DIR / "pt"
-                    pt_dir.mkdir(parents=True, exist_ok=True)
-                    pt_title = _translate_to_ptbr(title, deepl_key) or title
-                    pt_fm = build_frontmatter(
-                        title             = pt_title,
-                        date              = pub_date,
-                        categories        = categories,
-                        tags              = all_tags,
-                        author            = "GlobalBR News",
-                        description       = description_ptbr[:160],
-                        source_url        = link,
-                        source_name       = source,
-                        image             = image_url,
-                        keywords          = ai.get("keywords", []),
-                        faq               = ai.get("faq", []),
-                        sentiment         = sentiment,
-                        key_points        = ai.get("key_points", []),
-                        fact_check        = fact_check,
-                        image_caption     = ai.get("image_caption", ""),
-                        last_updated      = last_updated_val,
-                        wikipedia_summary = ai.get("wikipedia_summary", ""),
-                    )
-                    # Replace lang field for PT post
-                    pt_fm = pt_fm.replace('lang: "en"', 'lang: "pt-BR"')
-                    pt_content = build_content(
-                        title       = pt_title,
-                        description = description_ptbr,
-                        source_url  = link,
-                        source_name = source,
-                        date        = pub_date,
-                        categories  = categories,
-                        tags        = all_tags,
-                        body        = og.get("body", ""),
-                        ai_body     = ai.get("article_body", ""),
-                    )
-                    pt_path = pt_dir / filename
-                    pt_path.write_text(pt_fm + "\n" + pt_content, encoding="utf-8")
-                    log.info(f"  🇧🇷 PT post created: pt/{filename}")
-                except Exception as pt_exc:
-                    log.debug(f"  DeepL PT post creation failed: {pt_exc}")
-
             log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
             _load_known_urls().add(link)
             _load_known_titles().insert(0, (title, filename))
@@ -3036,7 +2697,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
 def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     """
-    Processes a single article dict (from HackerNews / DEV.to / Reddit) through
+    Processes a single article dict (from HackerNews / DEV.to) through
     the same quality, dedup, AI-enhance, and post-creation pipeline used by fetch_feed.
     Returns 1 if a post was created, 0 otherwise.
     """
@@ -3107,18 +2768,7 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     sentiment  = _sentiment_score(f"{title} {description}")
     fact_check = _fact_check_score(title, description)
 
-    deepl_key = os.getenv("DEEPL_API_KEY", "")
     description_ptbr = ""
-    if deepl_key:
-        description_ptbr = _translate_to_ptbr(description[:500], deepl_key) or ""
-
-    cohere_key = os.getenv("COHERE_API_KEY", "")
-    if cohere_key:
-        emb = _get_cohere_embedding(f"{title} {description}", cohere_key)
-        if emb:
-            embeddings = _load_embeddings()
-            embeddings[title] = emb
-            _save_embeddings(embeddings)
 
     crypto_prices_for_post: dict | None = None
     if category == "business":
@@ -3170,47 +2820,6 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
 
     post_path = POSTS_DIR / filename
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
-
-    if deepl_key and description_ptbr:
-        try:
-            pt_dir = POSTS_DIR / "pt"
-            pt_dir.mkdir(parents=True, exist_ok=True)
-            pt_title = _translate_to_ptbr(title, deepl_key) or title
-            pt_fm = build_frontmatter(
-                title             = pt_title,
-                date              = pub_date,
-                categories        = categories,
-                tags              = all_tags,
-                author            = "GlobalBR News",
-                description       = description_ptbr[:160],
-                source_url        = link,
-                source_name       = source,
-                image             = image_url,
-                keywords          = ai.get("keywords", []),
-                faq               = ai.get("faq", []),
-                sentiment         = sentiment,
-                key_points        = ai.get("key_points", []),
-                fact_check        = fact_check,
-                image_caption     = ai.get("image_caption", ""),
-                last_updated      = last_updated_val,
-                wikipedia_summary = ai.get("wikipedia_summary", ""),
-            )
-            pt_fm = pt_fm.replace('lang: "en"', 'lang: "pt-BR"')
-            pt_content = build_content(
-                title       = pt_title,
-                description = description_ptbr,
-                source_url  = link,
-                source_name = source,
-                date        = pub_date,
-                categories  = categories,
-                tags        = all_tags,
-                body        = og.get("body", ""),
-                ai_body     = ai.get("article_body", ""),
-            )
-            (pt_dir / filename).write_text(pt_fm + "\n" + pt_content, encoding="utf-8")
-            log.info(f"  🇧🇷 PT post created: pt/{filename}")
-        except Exception as pt_exc:
-            log.debug(f"  DeepL PT post creation failed: {pt_exc}")
 
     log.info(f"  ✅ Post criado [{source}]: {filename}")
     _load_known_urls().add(link)
@@ -3297,19 +2906,6 @@ def main():
         except Exception as exc:
             log.warning(f"DEV.to processing failed: {exc}")
 
-    # ── Reddit extra source (only if credentials available) ───────
-    if total_created < MAX_POSTS_PER_RUN and os.getenv("REDDIT_CLIENT_ID"):
-        log.info("📡 Fetching Reddit top posts...")
-        try:
-            reddit_items = fetch_reddit(max_per_sub=5)
-            for item in reddit_items:
-                if total_created >= MAX_POSTS_PER_RUN:
-                    break
-                total_created += _process_article_dict(item)
-                sleep(1)
-        except Exception as exc:
-            log.warning(f"Reddit processing failed: {exc}")
-
     # ── Source diversity check ────────────────────────────────────
     source_counts = getattr(fetch_feed, "_source_counts", {})
     if source_counts:
@@ -3326,6 +2922,12 @@ def main():
         create_weekly_digest()
     except Exception as exc:
         log.warning(f"Weekly digest failed: {exc}")
+
+    # ── Weekly stats post (Sundays only) ──────────────────────────
+    try:
+        _generate_weekly_stats_post()
+    except Exception as exc:
+        log.warning(f"Weekly stats post failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")

@@ -150,6 +150,11 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </span>
       </div>
 
+      <!-- Next-update countdown  (UX feat 8) -->
+      <div class="next-update mb-2" id="next-update">
+        <i class="bi bi-clock"></i> Next update in <span id="update-countdown">5:00</span>
+      </div>
+
       <!-- Category Filter (Task 2) -->
       <div class="filter-bar" id="cat-filter-bar">
         <button class="filter-btn active" data-cat="all">All</button>
@@ -171,38 +176,37 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         <button class="filter-btn" data-sent="negative">😔 Negative</button>
       </div>
 
-      <!-- Date Period Filter (UX Item 4) -->
+      <!-- Date Period Filter  (UX feat 4) -->
       <div class="filter-bar" id="period-filter-bar">
         <button class="filter-btn active" data-period="all">All time</button>
         <button class="filter-btn" data-period="today">Today</button>
         <button class="filter-btn" data-period="week">This week</button>
       </div>
 
+      <!-- Skeleton loader  (UX feat 1) -->
+      <div class="skeleton-grid mb-3" id="skeleton-grid">
+        {% for i in (1..6) %}
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
       {% assign posts_to_show = site.posts | offset: 1 %}
 
       {% if posts_to_show.size > 0 %}
-
-        <!-- Skeleton loader (hidden after JS runs) -->
-        <div class="skeleton-grid" id="skeleton-grid" aria-hidden="true">
-          {% for i in (1..6) %}
-          <div class="skeleton-card">
-            <div class="skeleton-img"></div>
-            <div class="skeleton-body">
-              <div class="skeleton-line short"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line medium"></div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div class="row g-3" id="posts-grid" style="display:none;">
+        <div class="row g-3" id="posts-grid" style="display:none">
           {% for post in posts_to_show limit: 9 %}
           <div class="col-md-6 col-lg-4"
                data-category="{{ post.categories | first | downcase }}"
                data-sentiment="{{ post.sentiment | default: 'neutral' | downcase }}"
                data-pubdate="{{ post.date | date_to_xmlschema }}">
-            <article class="news-card" data-pubdate="{{ post.date | date_to_xmlschema }}">
+            <article class="news-card h-100" data-pubdate="{{ post.date | date_to_xmlschema }}">
 
               <!-- Imagem -->
               <div class="card-img-wrapper">
@@ -311,35 +315,46 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
     <!-- /col principal -->
 
-    <!-- Filters + Skeleton + Fade-in + Badge NEW + Countdown JS -->
+    <!-- Index page JS: skeleton, fade-in, badge NEW, date filter, countdown -->
     <script>
     (function(){
-      /* ── Skeleton loader ── */
+
+      /* ── 1. Skeleton: show posts after 400ms ─────────────────── */
       var skeleton  = document.getElementById('skeleton-grid');
       var postsGrid = document.getElementById('posts-grid');
-      setTimeout(function(){
-        if (skeleton)  skeleton.style.display  = 'none';
-        if (postsGrid) postsGrid.style.display  = '';
+      if (skeleton && postsGrid) {
+        setTimeout(function(){
+          skeleton.style.display  = 'none';
+          postsGrid.style.display = '';
+          initObserver();
+          addBadges();
+        }, 400);
+      } else {
         initObserver();
-        initBadgeNew();
-      }, 400);
+        addBadges();
+      }
 
-      /* ── Fade-in on scroll via IntersectionObserver ── */
+      /* ── 2. IntersectionObserver fade-in ─────────────────────── */
       function initObserver() {
         if (!window.IntersectionObserver) {
-          document.querySelectorAll('.news-card').forEach(function(c){ c.classList.add('visible'); });
+          document.querySelectorAll('.news-card').forEach(function(c){
+            c.classList.add('visible');
+          });
           return;
         }
         var obs = new IntersectionObserver(function(entries){
           entries.forEach(function(e){
-            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              obs.unobserve(e.target);
+            }
           });
         }, { threshold: 0.1 });
         document.querySelectorAll('.news-card').forEach(function(c){ obs.observe(c); });
       }
 
-      /* ── Badge "NEW" on posts published within last 2 hours ── */
-      function initBadgeNew() {
+      /* ── 3. Badge NEW (posts published in the last 2 hours) ──── */
+      function addBadges() {
         document.querySelectorAll('.news-card[data-pubdate]').forEach(function(card){
           var pub = new Date(card.dataset.pubdate);
           if (Date.now() - pub.getTime() < 7200000) {
@@ -352,27 +367,26 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         });
       }
 
-      /* ── Category / Sentiment / Period filters ── */
-      var colCards = document.querySelectorAll('#posts-grid > [data-category]');
-      var activeCat    = 'all';
-      var activeSent   = 'all';
-      var activePeriod = 'all';
+      /* ── 4. Category & Sentiment & Period filters ────────────── */
+      var cards      = document.querySelectorAll('#posts-grid > [data-category]');
+      var activeCat  = 'all';
+      var activeSent = 'all';
+      var activePer  = 'all';
 
       function applyFilters() {
         var now = Date.now();
-        var dayMs  = 86400000;
-        var weekMs = 7 * dayMs;
-        colCards.forEach(function(card){
-          var cat  = (card.getAttribute('data-category')  || '').toLowerCase();
+        var todayStart = new Date(); todayStart.setHours(0,0,0,0);
+        var weekStart  = new Date(now - 7 * 24 * 3600 * 1000);
+        cards.forEach(function(card){
+          var cat  = (card.getAttribute('data-category') || '').toLowerCase();
           var sent = (card.getAttribute('data-sentiment') || '').toLowerCase();
-          var pub  = new Date(card.getAttribute('data-pubdate') || 0).getTime();
-          var age  = now - pub;
-          var catOk    = activeCat    === 'all' || cat  === activeCat;
-          var sentOk   = activeSent   === 'all' || sent === activeSent;
-          var periodOk = activePeriod === 'all' ||
-                         (activePeriod === 'today' && age < dayMs) ||
-                         (activePeriod === 'week'  && age < weekMs);
-          card.style.display = (catOk && sentOk && periodOk) ? '' : 'none';
+          var pub  = card.getAttribute('data-pubdate') ? new Date(card.getAttribute('data-pubdate')) : null;
+          var catOk  = activeCat  === 'all' || cat  === activeCat;
+          var sentOk = activeSent === 'all' || sent === activeSent;
+          var perOk  = true;
+          if (pub && activePer === 'today') perOk = pub >= todayStart;
+          if (pub && activePer === 'week')  perOk = pub >= weekStart;
+          card.style.display = (catOk && sentOk && perOk) ? '' : 'none';
         });
       }
 
@@ -384,7 +398,6 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           applyFilters();
         });
       });
-
       document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(btn){
         btn.addEventListener('click', function(){
           document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -393,30 +406,30 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           applyFilters();
         });
       });
-
       document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(btn){
         btn.addEventListener('click', function(){
           document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
           btn.classList.add('active');
-          activePeriod = btn.getAttribute('data-period');
+          activePer = btn.getAttribute('data-period');
           applyFilters();
         });
       });
 
-      /* ── Next update countdown ── */
+      /* ── 8. Next-update countdown ────────────────────────────── */
       function updateCountdown() {
-        var now = new Date();
-        var next = new Date(now);
-        next.setSeconds(0, 0);
-        next.setMinutes(Math.ceil((now.getMinutes() + 1) / 5) * 5);
-        if (next <= now) next.setMinutes(next.getMinutes() + 5);
-        var diff = Math.max(0, Math.floor((next - now) / 1000));
+        var now        = new Date();
+        var nextUpdate = new Date(now);
+        nextUpdate.setSeconds(0, 0);
+        nextUpdate.setMinutes(Math.ceil((now.getMinutes() + 1) / 5) * 5);
+        if (nextUpdate <= now) nextUpdate.setMinutes(nextUpdate.getMinutes() + 5);
+        var diff = Math.max(0, Math.floor((nextUpdate - now) / 1000));
         var m = Math.floor(diff / 60), s = diff % 60;
         var el = document.getElementById('update-countdown');
         if (el) el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
       }
       setInterval(updateCountdown, 1000);
       updateCountdown();
+
     })();
     </script>
 
