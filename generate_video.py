@@ -88,12 +88,13 @@ def _ai_youtube_meta(stories: list[dict], n: int, date_str: str) -> dict:
     headlines = "\n".join(f"- {s['title']}" for s in stories[:8])
     prompt = (
         f"Generate YouTube SEO metadata for a news roundup video. "
-        f"Respond ONLY as valid JSON, no markdown.\n\n"
+        f"Respond ONLY as valid JSON, no markdown, no code blocks.\n\n"
         f"Date: {date_str}\nDominant category: {dominant}\n"
         f"Headlines:\n{headlines}\n\n"
-        f'JSON: {{"title":"<70 chars, include date and category, clickbait but accurate>",'
-        f'"description":"<800-1000 chars SEO description with keywords, include what viewers will learn, end with subscribe CTA>",'
-        f'"tags":["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8","tag9","tag10"]}}'
+        f'Return this exact JSON:\n'
+        f'{{"title":"Max 70 chars. Start with the date or category (e.g. \'May 14 World News Roundup\' or \'AI & Tech: Top Stories Today\'). Accurate, not clickbait. Optimize for YouTube search.",'
+        f'"description":"900-1000 chars. First 2 sentences must summarize the top 3 stories (these show in search results). Then list what viewers will learn. Include 5-8 keywords naturally. End with: Subscribe for hourly world news updates → https://youtube.com/@globalbrnews",'
+        f'"tags":["primary keyword","secondary keyword","world news today","breaking news","news roundup","globalbr news","top stories","news {date_str[:4]}","category-specific tag","international news"]}}'
     )
     raw = _ai_text(prompt, seed=abs(hash(date_str)) % 9999, timeout=22)
     if not raw:
