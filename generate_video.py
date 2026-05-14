@@ -340,9 +340,9 @@ def create_video_frame(title: str, source: str, image_path: Path | None,
                   fill=(*ACCENT_BLUE, 80 - i * 25))
 
     # Logo
-    draw.text((50, 20), "TECHBR", font=get_font(44, bold=True), fill=ACCENT_BLUE)
-    draw.text((222, 20), "NEWS", font=get_font(44, bold=True), fill=TEXT_WHITE)
-    draw.rectangle([(210, 22), (213, 66)], fill=(*ACCENT_BLUE, 180))
+    draw.text((50, 20), "GLOBAL", font=get_font(44, bold=True), fill=ACCENT_BLUE)
+    draw.text((244, 20), "BR NEWS", font=get_font(44, bold=True), fill=TEXT_WHITE)
+    draw.rectangle([(234, 22), (237, 66)], fill=(*ACCENT_BLUE, 180))
 
     # Badge LIVE
     draw_rounded_rect(draw, (340, 24, 460, 64), radius=6, fill=RED_LIVE)
@@ -433,95 +433,203 @@ def create_video_frame(title: str, source: str, image_path: Path | None,
     return img.convert("RGB")
 
 # ── Thumbnail roundup ───────────────────────────────────────────
+def _build_thumbnail_prompt(stories: list[dict]) -> str:
+    """Build a cinematic Pollinations prompt based on story categories."""
+    cats = [s.get("category", "").upper() for s in stories]
+    dominant = max(set(cats), key=cats.count) if cats else "TECH"
+
+    base_style = (
+        "ultra-high quality YouTube thumbnail, cinematic dramatic lighting, "
+        "vivid saturated colors, photorealistic, 4K, sharp focus, "
+        "professional news broadcast aesthetic, bold visual impact"
+    )
+
+    scene_map = {
+        "WORLD":         "dramatic globe earth from space, city skyline at night with lights, epic scale",
+        "WAR":           "dramatic military scene, intense smoke and fire, helicopter silhouette, golden hour",
+        "POLITICS":      "government building columns with dramatic sky, powerful political atmosphere",
+        "BUSINESS":      "futuristic city financial district, glowing skyscrapers, stock market data streams",
+        "SCIENCE":       "stunning NASA space view, galaxy nebula, astronaut floating, cosmic colors",
+        "HEALTH":        "futuristic medical lab glowing blue, DNA helix, microscope, clean white light",
+        "FOOD":          "stunning gourmet dish close-up, rich colors, steam rising, Michelin star plating",
+        "SPORTS":        "stadium packed with fans, dramatic action shot, explosive energy, motion blur",
+        "ENTERTAINMENT": "Hollywood movie set glowing lights, red carpet, cinematic marquee, star-studded",
+        "ENVIRONMENT":   "dramatic nature landscape, stormy sky over ocean, forest fire glow, earth crisis",
+        "TRAVEL":        "breathtaking aerial view of exotic destination, crystal ocean, golden sunset",
+        "AI":            "futuristic neural network visualization, glowing circuit brain, blue neon tech",
+        "SECURITY":      "dark cyber hacker atmosphere, glowing code streams, ominous red and blue",
+        "GADGETS":       "sleek tech devices glowing, product reveal lighting, modern minimalist",
+        "STARTUPS":      "startup office at night, glowing monitors, modern coworking space, success energy",
+        "TECHNOLOGY":    "futuristic smart city, holographic displays, neon blue tech atmosphere, innovation",
+    }
+
+    scene = scene_map.get(dominant, scene_map["TECHNOLOGY"])
+    top_title = stories[0]["title"][:60] if stories else "World News"
+
+    return f"{scene}, {base_style}, inspired by headline: {top_title}"
+
+
+def generate_ai_thumbnail_bg(prompt: str, dest: Path, width: int = 1280, height: int = 720) -> bool:
+    """Download AI-generated background from Pollinations.ai (free, no API key)."""
+    import urllib.parse
+    encoded = urllib.parse.quote(prompt)
+    seed = abs(hash(prompt)) % 999999
+    url = (
+        f"https://image.pollinations.ai/prompt/{encoded}"
+        f"?width={width}&height={height}&nologo=true&seed={seed}&model=flux"
+    )
+    try:
+        log.info(f"  🎨 Generating AI thumbnail background via Pollinations.ai…")
+        r = requests.get(url, timeout=60, headers={"User-Agent": "GlobalBR-Bot/3.0"})
+        r.raise_for_status()
+        dest.write_bytes(r.content)
+        log.info(f"  ✅ AI background saved ({len(r.content) // 1024} KB)")
+        return True
+    except Exception as e:
+        log.warning(f"  ⚠️  Pollinations failed ({e}), using fallback background")
+        return False
+
+
 def create_roundup_thumbnail(stories: list[dict], image_paths: list,
                              output: Path):
-    """Thumbnail 1280×720 estilo 'Top N Stories'."""
+    """
+    Thumbnail 1280×720 com fundo gerado por IA (Pollinations/Flux) e
+    texto em negrito sobreposto via PIL — estilo YouTube de alto CTR.
+    """
     W, H = 1280, 720
+
+    # ── 1. Tenta gerar fundo com IA ──────────────────────────────
+    ai_bg_path = output.with_name(output.stem + "_aibg.jpg")
+    prompt = _build_thumbnail_prompt(stories)
+    ai_ok = generate_ai_thumbnail_bg(prompt, ai_bg_path, W, H)
+
     img = Image.new("RGB", (W, H), BG_DARK)
 
-    # Gradiente de fundo
+    if ai_ok and ai_bg_path.exists():
+        try:
+            bg = Image.open(ai_bg_path).convert("RGB").resize((W, H), Image.LANCZOS)
+            img.paste(bg)
+        except Exception:
+            ai_ok = False
+
+    if not ai_ok:
+        # Fallback: gradiente escuro + foto da notícia
+        draw = ImageDraw.Draw(img)
+        for i in range(H):
+            t = i / H
+            r = int(8 * (1 - t) + 20 * t)
+            g = int(8 * (1 - t) + 8 * t)
+            b = int(18 * (1 - t) + 55 * t)
+            draw.line([(0, i), (W, i)], fill=(r, g, b))
+        for ip in image_paths:
+            if ip and ip.exists():
+                try:
+                    bg = Image.open(ip).convert("RGB").resize((W, H), Image.LANCZOS)
+                    mask = Image.new("L", (W, H), 0)
+                    md = ImageDraw.Draw(mask)
+                    for x in range(W):
+                        t = max(0, (x - W * 0.2) / (W * 0.8))
+                        md.line([(x, 0), (x, H)], fill=int(min(1, t) * 170))
+                    img.paste(bg, (0, 0), mask)
+                except Exception:
+                    pass
+                break
+
+    # ── 2. Overlay escuro semitransparente para legibilidade ─────
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    # Gradiente horizontal: escuro à esquerda, transparente à direita
+    for x in range(W):
+        t = max(0, 1 - x / (W * 0.75))
+        alpha = int(210 * (t ** 0.6))
+        od.line([(x, 0), (x, H)], fill=(0, 0, 8, alpha))
+    # Faixa inferior sólida para branding
+    od.rectangle([(0, H - 120), (W, H)], fill=(0, 0, 8, 200))
+    img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+
     draw = ImageDraw.Draw(img)
-    for i in range(H):
-        t = i / H
-        r = int(8 * (1 - t) + 20 * t)
-        g = int(8 * (1 - t) + 8 * t)
-        b = int(18 * (1 - t) + 55 * t)
-        draw.line([(0, i), (W, i)], fill=(r, g, b))
 
-    # Imagem de fundo (primeira história com imagem)
-    for ip in image_paths:
-        if ip and ip.exists():
-            try:
-                bg = Image.open(ip).convert("RGB").resize((W, H), Image.LANCZOS)
-                mask = Image.new("L", (W, H), 0)
-                md = ImageDraw.Draw(mask)
-                for x in range(W):
-                    t = max(0, (x - W * 0.2) / (W * 0.8))
-                    md.line([(x, 0), (x, H)], fill=int(min(1, t) * 170))
-                img.paste(bg, (0, 0), mask)
-            except Exception:
-                pass
-            break
+    # ── 3. Faixa lateral colorida (identidade GlobalBR) ──────────
+    cats = [s.get("category", "").upper() for s in stories]
+    dominant_cat = max(set(cats), key=cats.count) if cats else "TECH"
+    stripe_color = {
+        "WAR": (220, 50, 50), "SPORTS": (255, 140, 0), "FOOD": (255, 180, 0),
+        "ENTERTAINMENT": (180, 0, 220), "HEALTH": (0, 200, 120),
+        "SCIENCE": (0, 180, 255), "ENVIRONMENT": (0, 200, 80),
+    }.get(dominant_cat, ACCENT_BLUE)
 
-    draw = ImageDraw.Draw(img)
-
-    # Overlay esquerdo para legibilidade
-    for x in range(int(W * 0.72)):
-        t = 1 - x / (W * 0.72)
-        draw.line([(x, 0), (x, H)], fill=(0, 0, 10, int(165 * t ** 0.5)))
-
-    # Faixa lateral azul
-    for i in range(10):
+    for i in range(8):
+        alpha_val = 255 - i * 28
         draw.rectangle([(i * 2, 0), (i * 2 + 1, H)],
-                       fill=(*ACCENT_BLUE, 255 - i * 22))
+                       fill=(*stripe_color, alpha_val))
 
     n = len(stories)
 
-    # Badge TOP N STORIES
+    # ── 4. Badge categoria + número de histórias ─────────────────
     badge_text = f"TOP {n} STORIES"
-    bfont = get_font(32, bold=True)
+    bfont = get_font(34, bold=True)
     bbbox = draw.textbbox((0, 0), badge_text, font=bfont)
-    draw_rounded_rect(draw, (28, 28, 28 + bbbox[2] + 24, 76), radius=8, fill=RED_LIVE)
-    draw.text((40, 38), badge_text, font=bfont, fill=TEXT_WHITE)
+    draw_rounded_rect(draw, (28, 28, 28 + bbbox[2] + 28, 78),
+                      radius=8, fill=RED_LIVE)
+    draw.text((42, 36), badge_text, font=bfont, fill=TEXT_WHITE)
 
-    # Título principal (história 1)
-    main_title = stories[0]["title"] if stories else "Tech News Roundup"
-    tfont = get_font(76, bold=True)
-    tlines = wrap_text(draw, main_title, tfont, int(W * 0.67))
+    # Category label
+    cat_text = dominant_cat
+    cfont = get_font(28, bold=True)
+    cx = 28 + bbbox[2] + 28 + 16
+    cbbox = draw.textbbox((0, 0), cat_text, font=cfont)
+    draw_rounded_rect(draw, (cx, 32, cx + cbbox[2] + 20, 74),
+                      radius=6, fill=(*stripe_color, 230))
+    draw.text((cx + 10, 38), cat_text, font=cfont, fill=(0, 0, 0))
+
+    # ── 5. Título principal — grande, branco, sombra ─────────────
+    main_title = stories[0]["title"] if stories else "World News Roundup"
+    tfont = get_font(82, bold=True)
+    max_w = int(W * 0.68)
+    tlines = wrap_text(draw, main_title, tfont, max_w)
     if len(tlines) > 3:
-        tfont = get_font(62, bold=True)
-        tlines = wrap_text(draw, main_title, tfont, int(W * 0.67))
-        lh = 78
+        tfont = get_font(66, bold=True)
+        tlines = wrap_text(draw, main_title, tfont, max_w)
+        lh = 82
     else:
-        lh = 92
+        lh = 98
 
     ty = 100
     for line in tlines[:3]:
-        draw.text((32, ty + 3), line, font=tfont, fill=(0, 0, 0))
+        # Sombra
+        draw.text((34, ty + 4), line, font=tfont, fill=(0, 0, 0))
+        draw.text((32, ty + 2), line, font=tfont, fill=(0, 0, 0))
+        # Texto branco
         draw.text((30, ty), line, font=tfont, fill=TEXT_WHITE)
         ty += lh
 
-    # Mini lista das histórias seguintes
+    # ── 6. Lista das outras histórias ────────────────────────────
     if len(stories) > 1:
-        list_y = ty + 12
-        lfont = get_font(26)
+        list_y = max(ty + 10, H - 200)
+        lfont = get_font(27)
         for i, s in enumerate(stories[1:4], start=2):
-            short = s["title"][:55] + ("…" if len(s["title"]) > 55 else "")
-            draw.text((30, list_y), f"  {i}.  {short}", font=lfont,
-                      fill=(200, 210, 230))
-            list_y += 34
+            short = s["title"][:58] + ("…" if len(s["title"]) > 58 else "")
+            # Bullet colorido
+            draw.text((28, list_y), "▶", font=get_font(20, bold=True),
+                      fill=stripe_color)
+            draw.text((52, list_y + 2), short, font=lfont, fill=(220, 225, 240))
+            list_y += 36
 
-    # Separador
-    draw.rectangle([(28, H - 110), (int(W * 0.66), H - 107)], fill=ACCENT_BLUE)
-
-    # Branding
-    draw.text((28, H - 92), "TECHBR", font=get_font(36, bold=True), fill=ACCENT_BLUE)
-    draw.text((168, H - 92), "NEWS", font=get_font(36, bold=True), fill=TEXT_WHITE)
-    now_str = datetime.now().strftime("%b %d, %Y — Hourly Roundup")
-    draw.text((28, H - 48), now_str, font=get_font(24), fill=TEXT_GRAY)
+    # ── 7. Branding na base ───────────────────────────────────────
+    draw.rectangle([(22, H - 108), (int(W * 0.55), H - 105)], fill=stripe_color)
+    draw.text((22, H - 96), "GLOBAL", font=get_font(40, bold=True), fill=stripe_color)
+    draw.text((190, H - 96), "BR NEWS", font=get_font(40, bold=True), fill=TEXT_WHITE)
+    now_str = datetime.now().strftime("%b %d, %Y  •  Hourly World Roundup")
+    draw.text((22, H - 46), now_str, font=get_font(26), fill=TEXT_GRAY)
 
     img.save(str(output), "JPEG", quality=95, optimize=True)
-    log.info(f"  \U0001f5bc  Thumbnail: {output.name}")
+
+    # Limpa bg temporário
+    if ai_bg_path.exists():
+        ai_bg_path.unlink()
+
+    log.info(f"  🖼  Thumbnail salva: {output.name}")
+
 
 # ── Gera vídeo com FFmpeg ───────────────────────────────────────
 def create_roundup_video(stories: list[dict], image_paths: list[Path | None],
