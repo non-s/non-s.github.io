@@ -254,7 +254,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                 <div class="card-footer-row">
                   <span class="card-date">
                     <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
-                    {{ post.date | date: "%B %d, %Y" }}
+                    <span class="post-date" data-pubdate="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d" }}</span>
                     {% if post.sentiment == 'positive' %}
                     <span class="sentiment-indicator positive" title="Positive news"></span>
                     {% elsif post.sentiment == 'negative' %}

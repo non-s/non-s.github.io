@@ -49,8 +49,17 @@ permalink: /world/
     </button>
   </div>
 
+  {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'world'" %}
+  <div class="category-stats-bar mb-4">
+    <span class="cat-stat"><i class="bi bi-newspaper"></i> {{ cat_posts | size }} articles</span>
+    {% assign latest = cat_posts | first %}
+    {% if latest %}
+    <span class="cat-stat"><i class="bi bi-clock"></i> Updated {{ latest.date | date: "%b %d" }}</span>
+    {% endif %}
+    <a href="{{ '/tags/' | relative_url }}" class="cat-stat cat-stat-link"><i class="bi bi-tags"></i> Browse tags</a>
+  </div>
+
   <div class="row g-4">
-    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'world'" %}
     {% if cat_posts.size > 0 %}
       {% for post in cat_posts %}
       <div class="col-md-6 col-lg-4">
