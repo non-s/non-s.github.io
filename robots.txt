@@ -1,8 +1,20 @@
 User-agent: *
 Allow: /
-Disallow: /assets/
-Disallow: /_data/
+Disallow: /search?
+Disallow: /_
+Crawl-delay: 1
+
+# Block AI scrapers
+User-agent: GPTBot
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: anthropic-ai
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: Omgilibot
+Disallow: /
 
 Sitemap: https://non-s.github.io/sitemap.xml
 Sitemap: https://non-s.github.io/sitemap-news.xml
-Sitemap: https://non-s.github.io/sitemap-custom.xml
