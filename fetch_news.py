@@ -36,13 +36,41 @@ _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
 # ============================================================
-# POLLINATIONS AI — texto e imagem gratuitos, sem API key
+# AI TEXT — Groq (primário, rápido) + Pollinations (fallback gratuito)
 # ============================================================
 
+GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL            = "llama-3.3-70b-versatile"
 POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
 
-def _pollinations_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) -> str:
-    """Gera texto via Pollinations.ai — gratuito, sem chave de API."""
+def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 22) -> str:
+    """
+    Gera texto via Groq (Llama 3.3 70B — rápido, gratuito com chave).
+    Fallback automático para Pollinations.ai se Groq não estiver configurado ou falhar.
+    """
+    groq_key = os.environ.get("GROQ_API_KEY", "")
+    if groq_key:
+        try:
+            headers = {
+                "Authorization": f"Bearer {groq_key}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "model": GROQ_MODEL,
+                "messages": [
+                    {"role": "system", "content": system or "You are a professional journalist and SEO expert. Be concise and accurate."},
+                    {"role": "user",   "content": prompt},
+                ],
+                "temperature": 0.7,
+                "max_tokens": 1500,
+            }
+            r = _session.post(GROQ_API_URL, json=payload, headers=headers, timeout=timeout)
+            r.raise_for_status()
+            return r.json()["choices"][0]["message"]["content"].strip()
+        except Exception as exc:
+            log.warning(f"Groq API error (falling back to Pollinations): {exc}")
+
+    # Fallback: Pollinations.ai — sem chave, gratuito
     try:
         payload = {
             "messages": [
@@ -60,8 +88,11 @@ def _pollinations_text(prompt: str, system: str = "", seed: int = 0, timeout: in
             return data["choices"][0]["message"]["content"].strip()
         return str(data).strip()
     except Exception as exc:
-        log.warning(f"Pollinations text: {exc}")
+        log.warning(f"Pollinations fallback error: {exc}")
         return ""
+
+# Alias para compatibilidade interna
+_pollinations_text = _ai_text
 
 _ARTICLE_SCENES = {
     "world":         "globe earth world connections editorial journalism photo",
