@@ -263,6 +263,10 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                   <a href="{{ post.url | relative_url }}" class="btn-read">
                     Ler <i class="bi bi-arrow-right"></i>
                   </a>
+                  <button class="btn-copy-link" data-url="{{ post.url | absolute_url }}"
+                          onclick="copyCardLink(this)" title="Copy link" aria-label="Copy article link">
+                    <i class="bi bi-link-45deg"></i>
+                  </button>
                 </div>
               </div>
 
@@ -314,6 +318,17 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 
     </div>
     <!-- /col principal -->
+
+    <!-- Copy link JS -->
+    <script>
+    function copyCardLink(btn) {
+      var url = btn.dataset.url;
+      navigator.clipboard.writeText(url).then(function(){
+        btn.innerHTML = '<i class="bi bi-check2"></i>';
+        setTimeout(function(){ btn.innerHTML = '<i class="bi bi-link-45deg"></i>'; }, 2000);
+      });
+    }
+    </script>
 
     <!-- Index page JS: skeleton, fade-in, badge NEW, date filter, countdown -->
     <script>

@@ -3,7 +3,7 @@
 <head>
   {% include head.html %}
 </head>
-<body>
+<body{% if page.layout == 'post' %} class="layout-post"{% endif %}>
 <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
@@ -398,6 +398,42 @@
     </a>
   </div>
   {% endif %}
+
+  <!-- ── New Posts Polling Notification ─────────────────── -->
+  <script>
+  (function(){
+    var POLL_INTERVAL = 5 * 60 * 1000;
+    var lastCheck = Date.now();
+    var notified = false;
+
+    function checkForNewPosts() {
+      if(notified) return;
+      fetch('/search-index.json?t=' + Date.now(), {cache: 'no-store'})
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if(!data || !data.length) return;
+          var latest = new Date(data[0].date);
+          if(latest.getTime() > lastCheck) {
+            showNewPostsBanner(data[0]);
+            notified = true;
+          }
+        }).catch(function(){});
+    }
+
+    function showNewPostsBanner(post) {
+      var banner = document.createElement('div');
+      banner.className = 'new-posts-banner';
+      banner.innerHTML = '<i class="bi bi-arrow-up-circle"></i> New article: <strong>' + (post.title||'').substring(0,50) + '</strong> <a href="' + (post.url||'/') + '">Read &rarr;</a> <button onclick="this.parentElement.remove()">&#x2715;</button>';
+      document.body.appendChild(banner);
+      setTimeout(function(){ if(banner.parentElement) banner.style.opacity='0'; }, 10000);
+      setTimeout(function(){ if(banner.parentElement) banner.remove(); }, 10500);
+    }
+
+    if(!document.body.classList.contains('layout-post')) {
+      setTimeout(function poll(){ checkForNewPosts(); setTimeout(poll, POLL_INTERVAL); }, POLL_INTERVAL);
+    }
+  })();
+  </script>
 
   <!-- ── Navbar Search Autocomplete ─────────────────────── -->
   <script>
