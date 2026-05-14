@@ -65,7 +65,21 @@ layout: default
           <span class="font-size-label">Text size:</span>
           <button class="fs-btn" id="fs-down" aria-label="Smaller text">A−</button>
           <button class="fs-btn" id="fs-up" aria-label="Larger text">A+</button>
+          <button id="reader-mode-btn" class="fs-btn" onclick="toggleReaderMode()" aria-label="Reader mode" title="Reader mode">
+            <i class="bi bi-book"></i>
+          </button>
         </div>
+        <!-- Save for later button -->
+        <button class="save-btn" id="save-article-btn"
+                data-url="{{ page.url | absolute_url }}"
+                data-title="{{ page.title | escape }}"
+                data-image="{{ page.image }}"
+                data-date="{{ page.date | date: '%B %d, %Y' }}"
+                onclick="toggleSave(this)"
+                aria-label="Save for later">
+          <i class="bi bi-bookmark" id="save-icon"></i>
+          <span id="save-label">Save</span>
+        </button>
       </div>
 
     </div>
@@ -397,6 +411,49 @@ layout: default
     pre.appendChild(btn);
   });
 })();
+</script>
+
+<!-- Save for later JS -->
+<script>
+function getSaved() { try { return JSON.parse(localStorage.getItem('gb-saved') || '[]'); } catch(e) { return []; } }
+function setSaved(arr) { localStorage.setItem('gb-saved', JSON.stringify(arr)); }
+function toggleSave(btn) {
+  var url = btn.dataset.url;
+  var saved = getSaved();
+  var idx = saved.findIndex(function(x){ return x.url === url; });
+  if (idx >= 0) {
+    saved.splice(idx, 1);
+    document.getElementById('save-icon').className = 'bi bi-bookmark';
+    document.getElementById('save-label').textContent = 'Save';
+  } else {
+    saved.unshift({ url: url, title: btn.dataset.title, image: btn.dataset.image, date: btn.dataset.date, savedAt: new Date().toISOString() });
+    if (saved.length > 50) saved = saved.slice(0, 50);
+    document.getElementById('save-icon').className = 'bi bi-bookmark-fill';
+    document.getElementById('save-label').textContent = 'Saved';
+  }
+  setSaved(saved);
+}
+(function(){
+  var btn = document.getElementById('save-article-btn');
+  if (!btn) return;
+  var saved = getSaved();
+  if (saved.some(function(x){ return x.url === btn.dataset.url; })) {
+    document.getElementById('save-icon').className = 'bi bi-bookmark-fill';
+    document.getElementById('save-label').textContent = 'Saved';
+  }
+})();
+</script>
+
+<!-- Reader Mode JS -->
+<script>
+function toggleReaderMode() {
+  var body = document.body;
+  var btn = document.getElementById('reader-mode-btn');
+  var active = body.classList.toggle('reader-mode');
+  btn.innerHTML = active ? '<i class="bi bi-book-fill"></i>' : '<i class="bi bi-book"></i>';
+  localStorage.setItem('gb-reader', active ? '1' : '');
+}
+if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode');
 </script>
 
 <!-- Image Lightbox (Task 5) -->

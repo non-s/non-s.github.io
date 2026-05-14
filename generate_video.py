@@ -913,21 +913,19 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     year = datetime.now().year
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    # Capítulos com timestamps estimados
-    def fmt_time(s: int) -> str:
-        return f"{s // 60}:{s % 60:02d}"
+    # Capítulos com timestamps estimados (15s intro + 75s por história)
+    chapters_list = ["0:00 Introduction"]
+    for i, story in enumerate(stories):
+        seconds = 15 + i * 75
+        mins = seconds // 60
+        secs = seconds % 60
+        title_short = story["title"][:50]
+        chapters_list.append(f"{mins}:{secs:02d} {title_short}")
+    # Outro timestamp
+    outro_secs = 15 + len(stories) * 75
+    chapters_list.append(f"{outro_secs // 60}:{outro_secs % 60:02d} Stay informed")
 
-    intro_s   = 0
-    story_dur = max(1, int((duration_estimate * 0.76) / n))
-    outro_s   = int(duration_estimate * 0.80)
-
-    chapters = f"⏱ CHAPTERS\n{fmt_time(intro_s)} Introduction\n"
-    t = 30
-    for i, story in enumerate(stories, 1):
-        short = story["title"][:60] + ("…" if len(story["title"]) > 60 else "")
-        chapters += f"{fmt_time(t)} Story {i}: {short}\n"
-        t += story_dur
-    chapters += f"{fmt_time(outro_s)} Wrap-up & Subscribe"
+    chapters = "⏱ CHAPTERS\n" + "\n".join(chapters_list)
 
     stories_summary = "\n".join(
         f"  {i}. {s['title'][:80]}" for i, s in enumerate(stories, 1)

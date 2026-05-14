@@ -5,6 +5,17 @@ description: "Global coverage from BBC, Reuters, Al Jazeera, DW and more."
 permalink: /world/
 ---
 
+<div class="post-breadcrumb">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{{ '/' | relative_url }}"><i class="bi bi-house"></i> Home</a></li>
+        <li class="breadcrumb-item active">{{ page.title | default: "Category" }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
 {% assign cat_data = site.data.categories.world %}
 {% if cat_data %}
 <div class="cat-header">
