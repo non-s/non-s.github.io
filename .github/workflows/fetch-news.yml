@@ -79,8 +79,15 @@ jobs:
 
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          CATEGORIES=$(git diff --cached --name-only | grep "_posts/" | head -5 | xargs -I{} grep -m1 "^categories:" {} 2>/dev/null | sed 's/categories: \[//;s/\].*//' | tr -d ' ' | cut -d',' -f1 | sort -u | head -3 | tr '\n' ',' | sed 's/,$//')
 
-          git commit -m "🤖 +${ADDED} post(s) — ${TIMESTAMP}
+          if [ -n "$CATEGORIES" ]; then
+            MSG="🤖 +${ADDED} post(s) [${CATEGORIES}] — ${TIMESTAMP}"
+          else
+            MSG="🤖 +${ADDED} post(s) — ${TIMESTAMP}"
+          fi
+
+          git commit -m "$MSG
 
           Auto-fetched via fetch_news.py
           Workflow: ${{ github.workflow }} #${{ github.run_number }}"

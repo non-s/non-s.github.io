@@ -1,0 +1,40 @@
+name: "🔍 Weekly Site Audit"
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"  # Monday 8h UTC
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install requests
+
+      - name: "🔍 Run site audit"
+        run: python audit_site.py
+
+      - name: "💾 Commit audit report"
+        run: |
+          git config user.name "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _data/audit_report.json
+          git diff --cached --quiet || git commit -m "📊 Weekly audit report — $(date -u +'%Y-%m-%d')"
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🦋 Post audit summary to Bluesky"
+        continue-on-error: true
+        run: python post_audit_bluesky.py
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
