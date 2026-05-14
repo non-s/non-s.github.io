@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """
 send_newsletter.py
-Daily email newsletter — sends the top 5 posts to Mailchimp subscribers.
+Daily email newsletter — sends the top posts of the day to Mailchimp subscribers.
+
+Reads _posts/ for files dated today, builds a digest email, and sends it via Mailchimp.
+Only sends if at least 3 posts were published today.
 
 Env vars required:
-  MAILCHIMP_API_KEY   — format: <key>-<dc>  e.g. abc123-us21
+  MAILCHIMP_API_KEY     — Mailchimp API key
   MAILCHIMP_AUDIENCE_ID — Mailchimp list / audience ID
+  MAILCHIMP_SERVER      — datacenter prefix, e.g. "us15" (optional; derived from
+                          API key suffix when omitted, e.g. key ending in "-us15")
 """
 
 import os
@@ -65,25 +70,54 @@ def parse_frontmatter(text: str) -> dict:
     return data
 
 
-def load_recent_posts(n: int = 10) -> list[dict]:
-    """Return the n most-recently-dated posts with full frontmatter."""
+def load_todays_posts(n: int = 10) -> list[dict]:
+    """Return up to n posts published today (filename prefix matches today's date)."""
+    today_prefix = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     posts = []
-    for path in sorted(POSTS_DIR.glob("*.md"), reverse=True)[:n]:
-        text = path.read_text(encoding="utf-8", errors="replace")
-        fm = parse_frontmatter(text)
-        if not fm:
-            continue
-        fm["_path"] = path
-        fm["_filename"] = path.name
-        posts.append(fm)
+    for path in sorted(POSTS_DIR.glob(f"{today_prefix}-*.md"), reverse=True)[:n]:
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+            fm = parse_frontmatter(text)
+            if not fm:
+                continue
+            fm["_path"] = path
+            fm["_filename"] = path.name
+            posts.append(fm)
+        except Exception as exc:
+            log.warning("Could not read %s: %s", path, exc)
     return posts
 
 
-def select_top5(posts: list[dict]) -> list[dict]:
-    """Keep only posts that have the required fields, return the first 5."""
+def load_recent_posts(n: int = 10) -> list[dict]:
+    """Return the n most-recently-dated posts with full frontmatter (fallback)."""
+    posts = []
+    for path in sorted(POSTS_DIR.glob("*.md"), reverse=True)[:n]:
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+            fm = parse_frontmatter(text)
+            if not fm:
+                continue
+            fm["_path"] = path
+            fm["_filename"] = path.name
+            posts.append(fm)
+        except Exception as exc:
+            log.warning("Could not read %s: %s", path, exc)
+    return posts
+
+
+MIN_POSTS = 3  # Minimum posts required before sending newsletter
+
+
+def select_top_posts(posts: list[dict], limit: int = 10) -> list[dict]:
+    """Keep only posts that have the required fields, return up to `limit`."""
     required = ("title", "description", "source_url", "image")
     filtered = [p for p in posts if all(p.get(f) for f in required)]
-    return filtered[:5]
+    return filtered[:limit]
+
+
+def select_top5(posts: list[dict]) -> list[dict]:
+    """Backwards-compatible wrapper — returns up to 5 qualifying posts."""
+    return select_top_posts(posts, limit=5)
 
 
 def build_post_url(post: dict) -> str:
@@ -218,8 +252,10 @@ def build_html(posts: list[dict], today: str) -> str:
 # ---------------------------------------------------------------------------
 
 class MailchimpClient:
-    def __init__(self, api_key: str, audience_id: str):
-        dc = api_key.split("-")[-1]   # e.g. "us21"
+    def __init__(self, api_key: str, audience_id: str, server: str = ""):
+        # server can be passed explicitly (MAILCHIMP_SERVER env var) or derived
+        # from the API key suffix (format: <key>-<dc>, e.g. abc123-us15)
+        dc = server.strip() or api_key.split("-")[-1]
         self.base = f"https://{dc}.api.mailchimp.com/3.0"
         self.audience_id = audience_id
         self.session = requests.Session()

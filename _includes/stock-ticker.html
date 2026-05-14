@@ -1,0 +1,66 @@
+{% if site.alpha_vantage_key %}
+<div id="stock-ticker" class="stock-ticker-wrap" style="display:none">
+  <div class="stock-ticker-label"><i class="bi bi-graph-up"></i> Markets</div>
+  <div id="stock-items" class="stock-items"></div>
+</div>
+<script>
+(function(){
+  var CACHE_KEY = 'gb_stock_data';
+  var CACHE_TS_KEY = 'gb_stock_data_ts';
+  var CACHE_TTL = 300000; // 5 minutes
+
+  function renderStocks(data) {
+    var el = document.getElementById('stock-items');
+    var wrap = document.getElementById('stock-ticker');
+    if (!el || !wrap) return;
+    var html = Object.entries(data).map(function(entry){
+      var sym = entry[0], v = entry[1];
+      var chg = parseFloat(v.change);
+      var cls = chg >= 0 ? 'up' : 'down';
+      return '<span class="stock-item"><strong>' + sym + '</strong> $' + v.price + ' <span class="ticker-chg ' + cls + '">' + (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%</span></span>';
+    }).join('');
+    el.innerHTML = html;
+    wrap.style.display = 'flex';
+  }
+
+  try {
+    var cached = sessionStorage.getItem(CACHE_KEY);
+    var ts = sessionStorage.getItem(CACHE_TS_KEY);
+    if (cached && ts && (Date.now() - parseInt(ts)) < CACHE_TTL) {
+      renderStocks(JSON.parse(cached));
+      return;
+    }
+  } catch(e) {}
+
+  var symbols = ['SPY', 'QQQ', 'DIA'];
+  var results = {};
+  var done = 0;
+
+  symbols.forEach(function(sym){
+    fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + sym + '&apikey={{ site.alpha_vantage_key }}')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var q = d['Global Quote'];
+        if (q) {
+          results[sym] = {
+            price: parseFloat(q['05. price']).toFixed(2),
+            change: parseFloat(q['10. change percent'].replace('%', ''))
+          };
+        }
+        done++;
+        if (done === symbols.length) {
+          try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify(results));
+            sessionStorage.setItem(CACHE_TS_KEY, Date.now().toString());
+          } catch(e) {}
+          renderStocks(results);
+        }
+      })
+      .catch(function(){
+        done++;
+        if (done === symbols.length) renderStocks(results);
+      });
+  });
+})();
+</script>
+{% endif %}
