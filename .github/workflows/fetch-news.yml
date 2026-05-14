@@ -84,6 +84,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: "🔔 Ping Google & Bing to re-crawl sitemap"
+        if: steps.check_changes.outputs.changed != '0'
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          echo "✅ Search engines notified"
+
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
         run: echo "✨ No new posts this run — skipping commit."

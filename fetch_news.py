@@ -1194,6 +1194,83 @@ This is a curated summary. For the complete article, original data, quotes and f
 
 
 # ============================================================
+# INTERNAL LINKING
+# ============================================================
+
+def _add_internal_links(content: str, category: str, current_stem: str) -> str:
+    """Scans the last 40 posts and injects a 'Related Articles' section."""
+    try:
+        all_posts = sorted(POSTS_DIR.glob("*.md"), key=lambda p: p.name, reverse=True)[:40]
+        related = []
+        for post_path in all_posts:
+            stem = post_path.stem
+            if stem == current_stem:
+                continue
+            try:
+                text = post_path.read_text(encoding="utf-8")
+                post_category = ""
+                post_title = ""
+                for line in text.splitlines():
+                    if line.startswith("categories:") and not post_category:
+                        m = re.search(r'\[([^\]]+)\]', line)
+                        if m:
+                            parts = [p.strip() for p in m.group(1).split(",")]
+                            post_category = parts[0] if parts else ""
+                    if line.startswith("title:") and not post_title:
+                        m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                        if m:
+                            post_title = m.group(1).strip()
+                    if post_category and post_title:
+                        break
+                if post_category != category or not post_title:
+                    continue
+                # Build URL from stem: YYYY-MM-DD-slug
+                m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)$', stem)
+                if not m:
+                    continue
+                year, month, day, slug = m.group(1), m.group(2), m.group(3), m.group(4)
+                url = f"/{category}/{year}/{month}/{day}/{slug}/"
+                related.append((post_title, url))
+                if len(related) >= 3:
+                    break
+            except Exception:
+                continue
+        if not related:
+            return content
+        links_md = "\n".join(f"- [{title}]({url})" for title, url in related)
+        section = f"\n\n---\n\n## Related Articles\n\n{links_md}\n"
+        return content + section
+    except Exception:
+        return content
+
+
+# ============================================================
+# PORTUGUESE SUMMARY
+# ============================================================
+
+def _add_pt_summary(title: str, description: str, category: str) -> str:
+    """Generates a Portuguese (PT-BR) summary section using AI."""
+    try:
+        prompt = (
+            f"Translate and summarize the following news article into Brazilian Portuguese (PT-BR). "
+            f"Write only a 2-3 sentence plain text summary — no JSON, no bullet points, no headings.\n\n"
+            f"Title: {title}\nDescription: {description}"
+        )
+        pt_text = _ai_text(prompt, system="Você é um jornalista profissional. Responda apenas em português do Brasil.")
+        if not pt_text:
+            return ""
+        lines = [l.strip() for l in pt_text.strip().splitlines() if l.strip()]
+        pt_title = lines[0] if lines else title
+        pt_summary = " ".join(lines[1:]) if len(lines) > 1 else lines[0] if lines else ""
+        if not pt_summary:
+            pt_summary = pt_title
+            pt_title = title
+        return f"\n\n---\n\n## 🇧🇷 Resumo em Português\n\n**{pt_title}**\n\n{pt_summary}\n"
+    except Exception:
+        return ""
+
+
+# ============================================================
 # FUNÇÃO PRINCIPAL
 # ============================================================
 
@@ -1319,6 +1396,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 body        = og.get("body", ""),
                 ai_body     = ai.get("article_body", ""),
             )
+
+            post_content = _add_internal_links(post_content, category, Path(filename).stem)
+            pt_section = _add_pt_summary(title, description, category)
+            post_content += pt_section
 
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
