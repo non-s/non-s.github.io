@@ -73,7 +73,8 @@ hide_subscribe: true
       "tags": {{ post.tags | jsonify }},
       "source": {{ post.source_name | default: "" | jsonify }},
       "date": "{{ post.date | date: '%B %d, %Y' }}",
-      "image": {{ post.image | default: "" | jsonify }}
+      "image": {{ post.image | default: "" | jsonify }},
+      "content": {{ post.content | strip_html | truncate: 500 | jsonify }}
     }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];
@@ -140,7 +141,7 @@ hide_subscribe: true
 
     const tokens = q.split(/\s+/);
     const found = posts.filter(p => {
-      const hay = [p.title, p.description, ...p.categories, ...p.tags, p.source].join(' ').toLowerCase();
+      const hay = [p.title, p.description, p.content || '', ...p.categories, ...p.tags, p.source].join(' ').toLowerCase();
       return tokens.every(t => hay.includes(t));
     });
 
