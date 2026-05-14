@@ -30,6 +30,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
 
+# HTTP session reutilizável (melhor performance)
+_session = requests.Session()
+_session.headers.update({"User-Agent": "TechBR-News-Bot/2.0 (+https://non-s.github.io)"})
+
 # ============================================================
 # CONFIGURAÇÕES
 # ============================================================
@@ -364,6 +368,59 @@ def parse_date(entry) -> datetime:
     return datetime.now(timezone.utc)
 
 
+def fetch_og_metadata(url: str, timeout: int = 8) -> dict:
+    """
+    Faz uma requisição parcial à URL do artigo e extrai metadados OG.
+    Retorna dict com 'description' e 'image' se encontrados.
+    Usa stream=True e lê apenas os primeiros 32 KB para eficiência.
+    """
+    result = {"description": "", "image": ""}
+    try:
+        resp = _session.get(url, timeout=timeout, stream=True,
+                            headers={"Accept": "text/html"})
+        resp.raise_for_status()
+        # Lê apenas os primeiros 32 KB (suficiente para a <head>)
+        chunk = b""
+        for data in resp.iter_content(chunk_size=8192):
+            chunk += data
+            if len(chunk) >= 32768:
+                break
+        resp.close()
+        html = chunk.decode("utf-8", errors="ignore")
+    except Exception:
+        return result
+
+    # og:description
+    og_desc = re.search(
+        r'<meta[^>]+property=["\']og:description["\'][^>]+content=["\']([^"\']{20,})["\']',
+        html, re.IGNORECASE
+    )
+    if not og_desc:
+        og_desc = re.search(
+            r'<meta[^>]+content=["\']([^"\']{20,})["\'][^>]+property=["\']og:description["\']',
+            html, re.IGNORECASE
+        )
+    if og_desc:
+        result["description"] = sanitize_text(re.sub(r"\s+", " ", og_desc.group(1)).strip()[:800])
+
+    # og:image
+    og_img = re.search(
+        r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+        html, re.IGNORECASE
+    )
+    if not og_img:
+        og_img = re.search(
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+            html, re.IGNORECASE
+        )
+    if og_img:
+        url_candidate = og_img.group(1).strip()
+        if url_candidate.startswith("http"):
+            result["image"] = url_candidate
+
+    return result
+
+
 def is_blacklisted(title: str, description: str) -> bool:
     """Verifica se o conteúdo deve ser filtrado por baixa qualidade/irrelevância."""
     combined = (title + " " + description).lower()
@@ -590,6 +647,19 @@ def fetch_feed(feed_config: dict) -> int:
             # Filtro de qualidade / relevância
             if is_blacklisted(title, description):
                 log.info(f"  🚫 Conteúdo filtrado (blacklist): {title[:60]}")
+                continue
+
+            # Enriquece com metadados OG do artigo original
+            og = fetch_og_metadata(link)
+            if og["description"] and len(og["description"]) > len(description):
+                log.debug(f"  📈 OG desc ({len(og['description'])} chars) > RSS desc ({len(description)} chars)")
+                description = og["description"]
+            if og["image"] and not image_url:
+                image_url = og["image"]
+
+            # Re-verificar imagem após OG
+            if not image_url:
+                log.info(f"  ⏭  Sem imagem mesmo após OG: {title[:60]}")
                 continue
 
             # Detecta categoria e tags extras por palavra-chave

@@ -57,6 +57,30 @@
     </div>
   </nav>
 
+  <!-- ── BREAKING NEWS TICKER ─────────────────────────────── -->
+  <div class="breaking-bar">
+    <span class="breaking-label">
+      <i class="bi bi-lightning-charge-fill"></i> BREAKING
+    </span>
+    <div class="breaking-track-wrap">
+      <div class="breaking-track">
+        {% assign ticker_posts = site.posts | limit: 8 %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item">
+            <span class="breaking-dot">●</span>
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item">
+            <span class="breaking-dot">●</span>
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main>{{ content }}</main>
 
@@ -92,6 +116,10 @@
             <a href="https://github.com/non-s" target="_blank" rel="noopener"
                class="social-btn" title="GitHub">
               <i class="bi bi-github"></i>
+            </a>
+            <a href="https://youtube.com/@techbrnews" target="_blank" rel="noopener"
+               class="social-btn" title="YouTube">
+              <i class="bi bi-youtube"></i>
             </a>
           </div>
         </div>

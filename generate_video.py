@@ -18,8 +18,18 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 # ── Config ─────────────────────────────────────────────────────
 VIDEOS_DIR   = Path("_videos")
 LOG_FILE     = "generate_video.log"
-VOICE        = "en-US-AriaNeural"
 MAX_PER_RUN  = 1                      # 1 por hora = 24/dia
+
+# Voz diferente por categoria — narração mais variada e profissional
+VOICE_BY_CATEGORY = {
+    "AI":       "en-US-AriaNeural",       # Feminina, moderna
+    "SECURITY": "en-US-GuyNeural",        # Masculina, séria
+    "BUSINESS": "en-US-JennyNeural",      # Feminina, profissional
+    "BIG TECH": "en-US-DavisNeural",      # Masculina, confiante
+    "HARDWARE": "en-US-TonyNeural",       # Masculina, energética
+    "TECH":     "en-US-AriaNeural",       # Feminina, apresentadora
+}
+VOICE_DEFAULT = "en-US-AriaNeural"
 VIDEO_W, VIDEO_H = 1920, 1080
 
 # Paleta de cores — identidade TechBR
@@ -162,9 +172,10 @@ This has been TechBR News. Stay curious. Stay informed."""
 
 
 # ── TTS ────────────────────────────────────────────────────────
-async def text_to_speech(text: str, output_path: Path):
+async def text_to_speech(text: str, output_path: Path, category: str = "TECH"):
     import edge_tts
-    communicate = edge_tts.Communicate(text, VOICE, rate="+5%", pitch="+0Hz")
+    voice = VOICE_BY_CATEGORY.get(category, VOICE_DEFAULT)
+    communicate = edge_tts.Communicate(text, voice, rate="+5%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
 # ── Download de imagem ─────────────────────────────────────────
@@ -608,11 +619,11 @@ def main():
             if download_image(image_url, img_dest):
                 img_path = img_dest
 
-        # TTS com narração melhorada
+        # TTS com narração melhorada e voz específica da categoria
         script = build_script(title, description, source, tags, category)
         mp3_path = tmp / "narration.mp3"
         try:
-            asyncio.run(text_to_speech(script, mp3_path))
+            asyncio.run(text_to_speech(script, mp3_path, category))
             log.info(f"  \U0001f399️  TTS gerado: {mp3_path.stat().st_size/1024:.0f} KB")
         except Exception as e:
             log.error(f"  ❌ TTS falhou: {e}")
