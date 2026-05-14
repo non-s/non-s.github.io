@@ -510,6 +510,24 @@ def _fact_check_score(title: str, description: str) -> str | None:
     return None
 
 
+# ============================================================
+# BREAKING NEWS DETECTION
+# ============================================================
+
+BREAKING_KEYWORDS = [
+    "breaking", "urgent", "alert", "just in", "developing",
+    "just announced", "breaking news", "emergency", "exclusive",
+    "war declared", "killed", "attack", "explosion", "crash",
+    "earthquake", "tsunami", "coup", "assassination", "outbreak",
+]
+
+
+def _is_breaking_news(title: str, description: str = "") -> bool:
+    """Return True if the article appears to be breaking/urgent news."""
+    text = (title + " " + description).lower()
+    return any(kw in text for kw in BREAKING_KEYWORDS)
+
+
 _SPAM_PATTERNS = re.compile(
     r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
     re.IGNORECASE,
@@ -615,7 +633,8 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'{{"q":"question 3","a":"clear 1-2 sentence answer."}},'
         f'{{"q":"question 4","a":"clear 1-2 sentence answer."}},'
         f'{{"q":"question 5","a":"clear 1-2 sentence answer."}}],'
-        f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
+        f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"],'
+        f'"hook":"One punchy sentence (max 20 words) that makes someone want to read this — journalistic hook, no clickbait"}}'
     )
     raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
     result = {}
@@ -1722,6 +1741,37 @@ def post_exists(filename: str, source_url: str = "") -> bool:
     return False
 
 
+def _levenshtein(s1: str, s2: str) -> int:
+    """Compute Levenshtein edit distance between two strings (no external deps)."""
+    if len(s1) < len(s2):
+        return _levenshtein(s2, s1)
+    if len(s2) == 0:
+        return len(s1)
+    prev = list(range(len(s2) + 1))
+    for i, c1 in enumerate(s1):
+        curr = [i + 1]
+        for j, c2 in enumerate(s2):
+            curr.append(min(prev[j + 1] + 1, curr[j] + 1, prev[j] + (c1 != c2)))
+        prev = curr
+    return prev[-1]
+
+
+def _titles_too_similar(t1: str, t2: str) -> bool:
+    """Return True if two titles are too similar (Levenshtein or Jaccard)."""
+    t1, t2 = t1.lower().strip(), t2.lower().strip()
+    # Jaccard
+    w1, w2 = set(t1.split()), set(t2.split())
+    if w1 and w2 and len(w1 & w2) / len(w1 | w2) > 0.6:
+        return True
+    # Levenshtein for short titles
+    if max(len(t1), len(t2)) < 80:
+        distance = _levenshtein(t1[:60], t2[:60])
+        similarity = 1 - distance / max(len(t1[:60]), len(t2[:60]), 1)
+        if similarity > 0.75:
+            return True
+    return False
+
+
 def _title_similarity(t1: str, t2: str) -> float:
     """Returns 0.0-1.0 similarity between two titles using Jaccard on non-stopword words."""
     w1 = set(re.sub(r'[^\w\s]', '', t1.lower()).split())
@@ -1738,6 +1788,52 @@ def _title_similarity(t1: str, t2: str) -> float:
     intersection = w1 & w2
     union = w1 | w2
     return len(intersection) / len(union)
+
+
+# ============================================================
+# ENTITY EXTRACTION — improved auto-tagging
+# ============================================================
+
+def _extract_entities(title: str, description: str = "") -> list:
+    """Extract proper nouns as additional tags using simple heuristics."""
+    text = title + " " + description
+    # Capitalized words (likely proper nouns) not at sentence start
+    words = re.findall(
+        r'(?<!\. )(?<!\n)(?<!["\'])([A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,}){0,2})',
+        text,
+    )
+    STOPWORDS = {
+        "The", "This", "That", "These", "Those", "When", "Where", "What",
+        "After", "Before", "During", "While", "How", "Why", "New", "United",
+        "American", "European", "Global", "World", "International",
+    }
+    entities = []
+    for w in words:
+        parts = w.split()
+        if not any(p in STOPWORDS for p in parts) and len(w) > 3:
+            tag = w.lower().replace(" ", "-")
+            if len(tag) < 30:
+                entities.append(tag)
+    return list(dict.fromkeys(entities))[:5]  # dedup, max 5
+
+
+# ============================================================
+# STORY CONTINUATION — find related post filename for linking
+# ============================================================
+
+def _find_continuation(title: str, known_posts: list) -> str | None:
+    """Find a related post filename for internal linking (Jaccard on 4+ letter words)."""
+    title_words = set(re.findall(r'\b[a-zA-Z]{4,}\b', title.lower()))
+    best_match, best_score = None, 0
+    for post_file, post_title in known_posts[-50:]:  # check last 50
+        post_words = set(re.findall(r'\b[a-zA-Z]{4,}\b', post_title.lower()))
+        if not title_words or not post_words:
+            continue
+        score = len(title_words & post_words) / len(title_words | post_words)
+        if score > 0.35 and score > best_score:
+            best_score = score
+            best_match = post_file
+    return best_match
 
 
 # Cache of known titles (built once per run)
@@ -1783,6 +1879,8 @@ def build_frontmatter(
     wikipedia_summary: str  = "",
     description_ptbr:  str  = "",
     crypto_prices:     dict | None = None,
+    hook:              str  = "",
+    related_post:      str  = "",
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1841,6 +1939,16 @@ lang: "en"
                 front += f'crypto_{coin}_usd: {usd}\n'
             if change is not None:
                 front += f'crypto_{coin}_24h_change: {round(change, 2)}\n'
+    # ── Breaking news flags ───────────────────────────────────────
+    if _is_breaking_news(title, description):
+        front += 'featured: true\n'
+        front += 'breaking: true\n'
+    # ── Journalistic hook ─────────────────────────────────────────
+    if hook:
+        front += f'hook: "{sanitize_text(hook[:120])}"\n'
+    # ── Related post for cross-linking ───────────────────────────
+    if related_post:
+        front += f'related_post: "{related_post}"\n'
     front += "---\n"
     return front
 
@@ -2575,7 +2683,9 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if extra_cat and extra_cat not in categories:
                 categories.append(extra_cat)
 
-            all_tags = list(dict.fromkeys(base_tags + extra_tags))
+            # ── Entity extraction → extra tags ────────────────────
+            entity_tags = _extract_entities(title, description)
+            all_tags = list(dict.fromkeys(base_tags + extra_tags + entity_tags))
 
             slug     = slugify(title)
             filename = post_filename(pub_date, slug)
@@ -2587,10 +2697,9 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             # ── Title similarity deduplication ────────────────────
             similar_found = False
             for existing_title, existing_file in _load_known_titles():
-                sim = _title_similarity(title, existing_title)
-                if sim > 0.6:
+                if _titles_too_similar(title, existing_title):
                     log.info(
-                        f"  ⏭  Título similar ({sim:.2f}) a '{existing_file}': {title[:60]}"
+                        f"  ⏭  Título similar (Levenshtein/Jaccard) a '{existing_file}': {title[:60]}"
                     )
                     similar_found = True
                     break
@@ -2632,6 +2741,16 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             continuation = _find_related_story(title, all_tags, category)
             last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
 
+            # ── Find related/continuation post for cross-linking ──
+            known_posts_list = [(fn, t) for t, fn in _load_known_titles()]
+            related_post_path = _find_continuation(title, known_posts_list)
+            related_post_url = ""
+            if related_post_path:
+                m_rp = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$', related_post_path)
+                if m_rp:
+                    rp_cat = category
+                    related_post_url = f"/{rp_cat}/{m_rp.group(1)}/{m_rp.group(2)}/{m_rp.group(3)}/{m_rp.group(4)}/"
+
             frontmatter = build_frontmatter(
                 title             = title,
                 date              = pub_date,
@@ -2652,6 +2771,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 wikipedia_summary = ai.get("wikipedia_summary", ""),
                 description_ptbr  = description_ptbr,
                 crypto_prices     = crypto_prices_for_post,
+                hook              = ai.get("hook", ""),
+                related_post      = related_post_url,
             )
 
             post_content = build_content(
@@ -2750,8 +2871,8 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         return 0
 
     for existing_title, existing_file in _load_known_titles():
-        if _title_similarity(title, existing_title) > 0.6:
-            log.info(f"  ⏭  Título similar a '{existing_file}': {title[:60]}")
+        if _titles_too_similar(title, existing_title):
+            log.info(f"  ⏭  Título similar (Levenshtein/Jaccard) a '{existing_file}': {title[:60]}")
             return 0
 
     ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
@@ -2779,6 +2900,15 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     continuation = _find_related_story(title, all_tags, category)
     last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
 
+    # ── Find related/continuation post for cross-linking ──────────
+    known_posts_list = [(fn, t) for t, fn in _load_known_titles()]
+    related_post_path = _find_continuation(title, known_posts_list)
+    related_post_url = ""
+    if related_post_path:
+        m_rp = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$', related_post_path)
+        if m_rp:
+            related_post_url = f"/{category}/{m_rp.group(1)}/{m_rp.group(2)}/{m_rp.group(3)}/{m_rp.group(4)}/"
+
     frontmatter = build_frontmatter(
         title             = title,
         date              = pub_date,
@@ -2799,6 +2929,8 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         wikipedia_summary = ai.get("wikipedia_summary", ""),
         description_ptbr  = description_ptbr,
         crypto_prices     = crypto_prices_for_post,
+        hook              = ai.get("hook", ""),
+        related_post      = related_post_url,
     )
 
     post_content = build_content(
@@ -2828,6 +2960,65 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         fetch_feed._source_counts = {}
     fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
     return 1
+
+
+# ============================================================
+# MILESTONE POSTS
+# ============================================================
+
+def _check_milestones(new_posts_count: int) -> None:
+    """Create a milestone post when a category hits 100/250/500/1000 posts."""
+    if new_posts_count == 0:
+        return
+    import glob as _glob
+
+    cat_counts: dict[str, int] = {}
+    for f in _glob.glob("_posts/*.md"):
+        try:
+            with open(f, encoding="utf-8") as fp:
+                content = fp.read()
+            m = re.search(r'^categories:\s*\[([^\]]+)\]', content, re.MULTILINE)
+            if m:
+                cats = [c.strip() for c in m.group(1).split(",")]
+                for cat in cats:
+                    if cat and cat not in ("roundup", "digest"):
+                        cat_counts[cat] = cat_counts.get(cat, 0) + 1
+        except Exception:
+            pass
+
+    MILESTONES = [100, 250, 500, 1000]
+    for cat, count in cat_counts.items():
+        for milestone in MILESTONES:
+            milestone_marker = f"_posts/milestone-{cat}-{milestone}.md"
+            if count >= milestone and not Path(milestone_marker).exists():
+                date_str = datetime.now().strftime("%Y-%m-%d")
+                slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
+                filepath = f"_posts/{slug}.md"
+                if not Path(filepath).exists():
+                    milestone_content = f"""---
+title: "🎉 {milestone} Articles in {cat.capitalize()}!"
+date: {datetime.now(timezone.utc).isoformat()}
+categories: [{cat}]
+tags: [milestone, {cat}]
+description: "GlobalBR News has published {milestone} articles in the {cat.capitalize()} category."
+featured: true
+sentiment: "positive"
+---
+
+We've reached a milestone: **{milestone} articles** published in the **{cat.capitalize()}** category!
+
+Thank you for reading GlobalBR News.
+"""
+                    try:
+                        with open(filepath, "w", encoding="utf-8") as mf:
+                            mf.write(milestone_content)
+                        # Create marker file so we don't recreate
+                        with open(milestone_marker, "w", encoding="utf-8") as mk:
+                            mk.write(f"milestone: {milestone} posts in {cat}\n")
+                        log.info(f"🎉 Milestone post created: {filepath}")
+                    except Exception as exc:
+                        log.warning(f"Milestone post creation failed: {exc}")
+                break  # Only one milestone per cat per run
 
 
 def main():
@@ -2928,6 +3119,12 @@ def main():
         _generate_weekly_stats_post()
     except Exception as exc:
         log.warning(f"Weekly stats post failed: {exc}")
+
+    # ── Milestone posts ───────────────────────────────────────────
+    try:
+        _check_milestones(total_created)
+    except Exception as exc:
+        log.warning(f"Milestone check failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")
