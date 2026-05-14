@@ -1,0 +1,91 @@
+# ============================================================
+# .github/workflows/weekly-digest.yml
+# GitHub Actions — Weekly Digest
+#
+# Runs every Sunday at 15:00 UTC.
+# The weekly digest logic lives inside fetch_news.py
+# (create_weekly_digest() is called from main()).
+# This workflow ensures the digest is created even if the
+# every-5-minute cron did not run exactly on Sunday noon.
+# ============================================================
+
+name: "📅 Weekly Digest"
+
+on:
+  schedule:
+    - cron: "0 15 * * 0"   # Every Sunday at 15:00 UTC
+
+  workflow_dispatch: {}
+
+jobs:
+  weekly-digest:
+    name: "Create weekly digest post"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: "🐍 Set up Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "📦 Install dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install feedparser requests google-auth Pillow
+
+      - name: "📡 Run fetch_news.py (includes weekly digest)"
+        run: python fetch_news.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: "🔍 Check for new digest"
+        id: check_changes
+        run: |
+          CHANGED=$(git status --porcelain _posts/ assets/images/posts/ | wc -l | tr -d ' ')
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          echo "Changes found: $CHANGED"
+
+      - name: "💾 Commit & push weekly digest"
+        if: steps.check_changes.outputs.changed != '0'
+        run: |
+          git config user.name  "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+
+          git add _posts/
+          git add assets/images/posts/ || true
+          git add fetch_news.log || true
+
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          git commit -m "📅 Weekly digest — ${TIMESTAMP}
+
+          Auto-generated via weekly-digest.yml
+          Workflow: ${{ github.workflow }} #${{ github.run_number }}"
+
+          git push origin HEAD
+          echo "✅ Weekly digest published!"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🔔 Ping search engines"
+        if: steps.check_changes.outputs.changed != '0'
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+
+      - name: "ℹ️ No changes"
+        if: steps.check_changes.outputs.changed == '0'
+        run: echo "✨ No changes this run."

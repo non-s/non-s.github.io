@@ -30,6 +30,14 @@ layout: default
         {% for category in page.categories %}
           <a href="{{ '/' | append: category | relative_url }}" class="post-cat-badge">{{ category | upcase }}</a>
         {% endfor %}
+        {% if page.fact_check %}
+        <span class="fact-badge fact-{{ page.fact_check }}">
+          {% if page.fact_check == 'verified' %}✓ Verified{% endif %}
+          {% if page.fact_check == 'developing' %}⟳ Developing{% endif %}
+          {% if page.fact_check == 'opinion' %}💬 Opinion{% endif %}
+          {% if page.fact_check == 'satire' %}😄 Satire{% endif %}
+        </span>
+        {% endif %}
       </div>
 
       <h1 class="post-title">{{ page.title }}</h1>
@@ -67,7 +75,7 @@ layout: default
 
       {% if page.image %}
       <figure class="post-hero-img">
-        <img src="{{ page.image }}" alt="{{ page.title | escape }}" loading="eager">
+        <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager">
       </figure>
       {% endif %}
 
