@@ -116,15 +116,6 @@ layout: default
       </div>
       {% endif %}
 
-      <!-- In-Article AdSense Unit -->
-      {% if site.adsense_pub_id %}
-      <div class="ad-unit ad-unit-article">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_pub_id }}" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="{{ site.adsense_pub_id }}" data-ad-slot="{{ site.adsense_slot_id }}"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
-      {% endif %}
-
       <!-- Copy Summary Button (Task 7) -->
       {% if page.description %}
       <button class="copy-summary-btn"
@@ -148,27 +139,6 @@ layout: default
       <article class="post-content" id="post-article">
         {{ content }}
       </article>
-
-      {% if site.adsense_pub_id %}
-      <!-- In-article AdSense unit -->
-      <div class="ad-unit ad-unit-article">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_pub_id }}" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="{{ site.adsense_pub_id }}" data-ad-slot="{{ site.adsense_slot_id }}"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
-      {% endif %}
-
-      {% if site.adsense_publisher_id %}
-      <div class="adsense-wrap">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="{{ site.adsense_publisher_id }}"
-             data-ad-slot="auto"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
-      {% endif %}
 
       <!-- Source Box -->
       {% if page.source_url %}
