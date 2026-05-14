@@ -1,0 +1,37 @@
+name: "Translate Posts to PT-BR"
+on:
+  schedule:
+    - cron: "0 20 * * *"  # 20h UTC daily
+  workflow_dispatch:
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: "Traduzir posts para PT-BR"
+        run: python translate_posts.py
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - name: "Commit translations"
+        run: |
+          git config user.name "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _posts/pt/ || true
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+          if [ "$CHANGED" -gt "0" ]; then
+            git commit -m "PT-BR +${CHANGED} post(s) traduzido(s) — $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push origin HEAD
+            echo "${CHANGED} post(s) traduzido(s)"
+          else
+            echo "Sem posts novos para traduzir"
+          fi
