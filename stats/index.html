@@ -1,0 +1,187 @@
+---
+layout: default
+title: "Site Stats — GlobalBR News"
+description: "Statistics and insights about GlobalBR News posts, categories, and topics."
+permalink: /stats/
+---
+
+{% assign total_posts = site.posts.size %}
+{% assign all_cats = "world,politics,war,business,science,health,sports,food,entertainment,environment,travel,technology,ai,security,gadgets,startups,mobile" | split: "," %}
+
+<section class="container py-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="section-title">Site Statistics</h1>
+      <p class="text-muted">Live stats computed from <strong style="color:var(--c-accent);">{{ total_posts }}</strong> published articles.</p>
+      <hr style="border-color:var(--c-border);margin:1rem 0;">
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="row g-3 mb-5">
+    <div class="col-6 col-md-3">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:var(--c-accent);font-family:var(--font-head);">{{ total_posts }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Total Posts</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        {% assign all_tags_flat = site.posts | map: "tags" | join: "," | split: "," | uniq %}
+        <div style="font-size:2rem;font-weight:900;color:var(--c-accent2);font-family:var(--font-head);">{{ all_tags_flat.size }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Unique Tags</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        {% assign all_sources = site.posts | map: "source_name" | uniq | compact %}
+        <div style="font-size:2rem;font-weight:900;color:#34d399;font-family:var(--font-head);">{{ all_sources.size }}</div>
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">News Sources</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;text-align:center;">
+        {% if site.posts.size > 0 %}
+          {% assign first_post = site.posts | last %}
+          {% assign last_post = site.posts | first %}
+          {% assign first_ts = first_post.date | date: "%s" | plus: 0 %}
+          {% assign last_ts = last_post.date | date: "%s" | plus: 0 %}
+          {% assign diff_secs = last_ts | minus: first_ts %}
+          {% assign diff_days = diff_secs | divided_by: 86400 | plus: 1 %}
+          {% assign avg_per_day = total_posts | times: 10 | divided_by: diff_days %}
+          <div style="font-size:2rem;font-weight:900;color:#f59e0b;font-family:var(--font-head);">{{ avg_per_day | divided_by: 10 }}.{{ avg_per_day | modulo: 10 }}</div>
+        {% else %}
+          <div style="font-size:2rem;font-weight:900;color:#f59e0b;font-family:var(--font-head);">0</div>
+        {% endif %}
+        <div style="font-size:.78rem;color:var(--c-muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem;">Avg Posts/Day</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts by Category -->
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.5rem;">
+        <h2 class="section-title" style="margin-bottom:1.25rem;">Posts by Category</h2>
+        {% for cat in all_cats %}
+          {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains cat" %}
+          {% if total_posts > 0 %}
+            {% assign pct = cat_posts.size | times: 100 | divided_by: total_posts %}
+          {% else %}
+            {% assign pct = 0 %}
+          {% endif %}
+          <div style="margin-bottom:.85rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;">
+              <a href="{{ '/' | append: cat | append: '/' | relative_url }}"
+                 style="font-size:.84rem;font-weight:600;color:var(--c-text);text-transform:capitalize;transition:color .2s;"
+                 onmouseover="this.style.color='var(--c-accent)'" onmouseout="this.style.color='var(--c-text)'">{{ cat }}</a>
+              <span style="font-size:.78rem;color:var(--c-muted);">{{ cat_posts.size }}</span>
+            </div>
+            <div style="background:var(--c-surface3);border-radius:50px;height:6px;overflow:hidden;">
+              <div style="width:{{ pct }}%;background:var(--grad-accent);height:100%;border-radius:50px;transition:width .4s ease;min-width:{{ cat_posts.size | at_least: 0 | at_most: 1 | times: 2 }}px;"></div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Sentiment distribution -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.5rem;">
+        <h2 class="section-title" style="margin-bottom:1.25rem;">Sentiment</h2>
+        {% assign pos_posts = site.posts | where: "sentiment", "positive" %}
+        {% assign neg_posts = site.posts | where: "sentiment", "negative" %}
+        {% assign neu_posts = site.posts | where: "sentiment", "neutral" %}
+        {% assign sentiments = "positive,neutral,negative" | split: "," %}
+        {% for sent in sentiments %}
+          {% if sent == "positive" %}
+            {% assign s_count = pos_posts.size %}
+            {% assign s_color = "#34d399" %}
+            {% assign s_icon = "bi-emoji-smile-fill" %}
+          {% elsif sent == "negative" %}
+            {% assign s_count = neg_posts.size %}
+            {% assign s_color = "#f87171" %}
+            {% assign s_icon = "bi-emoji-frown-fill" %}
+          {% else %}
+            {% assign s_count = neu_posts.size %}
+            {% assign s_color = "#94a3b8" %}
+            {% assign s_icon = "bi-emoji-neutral-fill" %}
+          {% endif %}
+          {% if total_posts > 0 %}
+            {% assign s_pct = s_count | times: 100 | divided_by: total_posts %}
+          {% else %}
+            {% assign s_pct = 0 %}
+          {% endif %}
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;">
+              <span style="font-size:.84rem;font-weight:600;color:var(--c-text);display:flex;align-items:center;gap:.4rem;">
+                <i class="bi {{ s_icon }}" style="color:{{ s_color }};"></i>
+                {{ sent | capitalize }}
+              </span>
+              <span style="font-size:.78rem;color:var(--c-muted);">{{ s_count }} ({{ s_pct }}%)</span>
+            </div>
+            <div style="background:var(--c-surface3);border-radius:50px;height:8px;overflow:hidden;">
+              <div style="width:{{ s_pct }}%;background:{{ s_color }};height:100%;border-radius:50px;"></div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Top Sources -->
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.5rem;margin-top:1rem;">
+        <h2 class="section-title" style="margin-bottom:1.25rem;">Top Sources</h2>
+        {% assign sources_grouped = site.posts | group_by: "source_name" | sort: "size" | reverse %}
+        {% for src in sources_grouped limit:10 %}
+          {% if src.name != "" and src.name %}
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--c-border);">
+            <span style="font-size:.83rem;color:var(--c-text);">{{ src.name }}</span>
+            <span style="font-size:.75rem;font-weight:700;color:var(--c-accent);background:rgba(249,115,22,.1);padding:.15rem .5rem;border-radius:50px;">{{ src.items.size }}</span>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Top 10 Tags -->
+  <div class="row mb-5">
+    <div class="col">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.5rem;">
+        <h2 class="section-title" style="margin-bottom:1.25rem;">Top Tags</h2>
+        {% assign all_tags_list = "" | split: "" %}
+        {% for post in site.posts %}
+          {% for tag in post.tags %}
+            {% assign all_tags_list = all_tags_list | push: tag %}
+          {% endfor %}
+        {% endfor %}
+        {% assign unique_tags = all_tags_list | uniq | sort %}
+        {% assign tag_data = "" | split: "" %}
+        {% for tag in unique_tags %}
+          {% if tag != "" %}
+            {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+            {% assign tag_entry = tag | append: ":::" | append: tag_posts.size %}
+            {% assign tag_data = tag_data | push: tag_entry %}
+          {% endif %}
+        {% endfor %}
+        {% assign tag_data_sorted = tag_data | sort | reverse %}
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+          {% for entry in tag_data_sorted limit:20 %}
+            {% assign parts = entry | split: ":::" %}
+            {% assign t_name = parts[0] %}
+            {% assign t_count = parts[1] | plus: 0 %}
+            {% if t_count > 0 %}
+            <a href="{{ '/tags/#tag-' | append: t_name | slugify | relative_url }}"
+               style="display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .85rem;background:rgba(255,255,255,.04);border:1px solid var(--c-border);border-radius:50px;font-size:.8rem;font-weight:600;color:var(--c-muted);text-decoration:none;transition:all .2s;"
+               onmouseover="this.style.color='var(--c-accent)';this.style.borderColor='rgba(249,115,22,.3)';this.style.background='rgba(249,115,22,.08)'"
+               onmouseout="this.style.color='var(--c-muted)';this.style.borderColor='var(--c-border)';this.style.background='rgba(255,255,255,.04)'">
+              {{ t_name }}
+              <span style="font-size:.68rem;background:rgba(249,115,22,.15);color:var(--c-accent);padding:.1rem .35rem;border-radius:50px;">{{ t_count }}</span>
+            </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

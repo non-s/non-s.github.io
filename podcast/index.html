@@ -1,0 +1,139 @@
+---
+layout: default
+title: "Podcast — GlobalBR News"
+description: "Listen to GlobalBR News podcast episodes and subscribe on Apple Podcasts, Spotify, and RSS."
+permalink: /podcast/
+hide_subscribe: true
+---
+
+<!-- Hero -->
+<section style="background:var(--grad-hero);padding:3rem 0 2.5rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.28);color:var(--c-accent);font-size:.7rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;padding:.32rem .85rem;border-radius:50px;margin-bottom:1rem;">
+          <i class="bi bi-mic-fill"></i> Podcast
+        </div>
+        <h1 style="font-family:var(--font-head);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;color:var(--c-white);margin-bottom:.75rem;">GlobalBR News Podcast</h1>
+        <p style="color:var(--c-muted);font-size:1rem;max-width:520px;line-height:1.65;margin-bottom:1.75rem;">
+          Daily news summaries and in-depth analysis of the world's biggest stories — from politics and war to science, tech, and more.
+        </p>
+
+        <!-- Subscribe links -->
+        <div style="display:flex;flex-wrap:wrap;gap:.65rem;">
+          <a href="{{ '/podcast.xml' | relative_url }}"
+             style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);color:var(--c-accent);font-weight:700;font-size:.84rem;padding:.6rem 1.1rem;border-radius:var(--r-sm);text-decoration:none;transition:all .2s;"
+             onmouseover="this.style.background='var(--c-accent)';this.style.color='white'" onmouseout="this.style.background='rgba(249,115,22,.12)';this.style.color='var(--c-accent)'">
+            <i class="bi bi-rss-fill"></i> RSS Feed
+          </a>
+          <a href="https://podcasts.apple.com/"
+             style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.06);border:1px solid var(--c-border);color:var(--c-text);font-weight:700;font-size:.84rem;padding:.6rem 1.1rem;border-radius:var(--r-sm);text-decoration:none;transition:all .2s;"
+             onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'"
+             target="_blank" rel="noopener">
+            <i class="bi bi-apple"></i> Apple Podcasts
+          </a>
+          <a href="https://open.spotify.com/"
+             style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(29,185,84,.12);border:1px solid rgba(29,185,84,.3);color:#1db954;font-weight:700;font-size:.84rem;padding:.6rem 1.1rem;border-radius:var(--r-sm);text-decoration:none;transition:all .2s;"
+             onmouseover="this.style.background='rgba(29,185,84,.2)'" onmouseout="this.style.background='rgba(29,185,84,.12)'"
+             target="_blank" rel="noopener">
+            <i class="bi bi-spotify"></i> Spotify
+          </a>
+        </div>
+      </div>
+
+      <!-- Podcast cover art placeholder -->
+      <div class="col-lg-4 d-none d-lg-block ms-auto">
+        <div style="width:220px;height:220px;background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(239,68,68,.1));border:1px solid rgba(249,115,22,.2);border-radius:var(--r-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;margin:0 auto;">
+          <i class="bi bi-mic-fill" style="font-size:4rem;color:var(--c-accent);"></i>
+          <span style="font-family:var(--font-head);font-size:.95rem;font-weight:800;color:var(--c-white);text-align:center;padding:0 1rem;line-height:1.3;">GlobalBR<br>News Podcast</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Episode list grouped by day -->
+<section class="container py-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h2 class="section-title">Episodes</h2>
+      <p class="text-muted" style="font-size:.88rem;margin-top:.5rem;">Each day's top stories as a podcast episode.</p>
+    </div>
+  </div>
+
+  {% assign posts_by_day = site.posts | group_by_exp: "post", "post.date | date: '%Y-%m-%d'" %}
+
+  {% for day_group in posts_by_day limit:30 %}
+  {% assign day_posts = day_group.items %}
+  {% assign ep_num = forloop.index %}
+  {% assign first_post = day_posts | first %}
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;margin-bottom:1rem;transition:border-color .2s;"
+       onmouseover="this.style.borderColor='rgba(249,115,22,.2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+    <div style="display:flex;align-items:flex-start;gap:1rem;">
+      <!-- Episode number -->
+      <div style="width:48px;height:48px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;">
+        <span style="font-size:.55rem;font-weight:700;color:var(--c-accent);text-transform:uppercase;letter-spacing:.5px;">Ep.</span>
+        <span style="font-size:1.1rem;font-weight:900;color:var(--c-accent);font-family:var(--font-head);line-height:1;">{{ ep_num }}</span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:.72rem;color:var(--c-muted);margin-bottom:.25rem;">
+          <i class="bi bi-calendar3" style="color:var(--c-accent);"></i>
+          {{ first_post.date | date: "%B %d, %Y" }}
+          · <span style="color:var(--c-muted);">{{ day_posts.size }} stor{% if day_posts.size == 1 %}y{% else %}ies{% endif %}</span>
+        </div>
+        <h3 style="font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--c-white);margin-bottom:.5rem;">
+          Daily Briefing — {{ first_post.date | date: "%B %d, %Y" }}
+        </h3>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+          {% for post in day_posts limit:4 %}
+          <a href="{{ post.url | relative_url }}"
+             style="font-size:.75rem;color:var(--c-muted);background:var(--c-surface2);border:1px solid var(--c-border);padding:.2rem .55rem;border-radius:50px;text-decoration:none;transition:all .2s;"
+             onmouseover="this.style.color='var(--c-accent)';this.style.borderColor='rgba(249,115,22,.3)'" onmouseout="this.style.color='var(--c-muted)';this.style.borderColor='var(--c-border)'">
+            {{ post.title | truncate: 50 }}
+          </a>
+          {% endfor %}
+          {% if day_posts.size > 4 %}
+          <span style="font-size:.75rem;color:var(--c-muted);padding:.2rem .55rem;">+{{ day_posts.size | minus: 4 }} more</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% if site.posts.size == 0 %}
+  <div class="text-center py-5">
+    <i class="bi bi-mic" style="font-size:3rem;opacity:.3;"></i>
+    <p class="mt-3 text-muted">No episodes yet. Subscribe to get notified when episodes drop!</p>
+  </div>
+  {% endif %}
+</section>
+
+<!-- How to subscribe -->
+<section style="background:var(--c-surface);border-top:1px solid var(--c-border);padding:3rem 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <h2 class="section-title">How to Subscribe</h2>
+      </div>
+      {% assign platforms = "RSS Feed,Apple Podcasts,Spotify" | split: "," %}
+      {% assign icons = "bi-rss-fill,bi-apple,bi-spotify" | split: "," %}
+      {% assign descs = "Add our podcast RSS feed to any podcast app you use.,Search 'GlobalBR News' on Apple Podcasts and hit subscribe.,Find us on Spotify and follow to get new episodes." | split: "," %}
+      {% assign links = "/podcast.xml,https://podcasts.apple.com/,https://open.spotify.com/" | split: "," %}
+      {% for platform in platforms %}
+      <div class="col-md-4 mb-3">
+        <div style="background:var(--c-surface2);border:1px solid var(--c-border);border-radius:var(--r-md);padding:1.25rem;height:100%;">
+          <i class="bi {{ icons[forloop.index0] }}" style="font-size:1.5rem;color:var(--c-accent);display:block;margin-bottom:.65rem;"></i>
+          <h4 style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--c-white);margin-bottom:.4rem;">{{ platform }}</h4>
+          <p style="font-size:.82rem;color:var(--c-muted);line-height:1.55;margin-bottom:.75rem;">{{ descs[forloop.index0] }}</p>
+          <a href="{{ links[forloop.index0] | relative_url }}"
+             style="font-size:.8rem;font-weight:700;color:var(--c-accent);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;">
+            Subscribe <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

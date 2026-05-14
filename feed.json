@@ -1,0 +1,23 @@
+---
+layout: null
+---
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": {{ site.title | jsonify }},
+  "home_page_url": "{{ site.url }}/",
+  "feed_url": "{{ '/feed.json' | absolute_url }}",
+  "description": {{ site.description | jsonify }},
+  "items": [
+    {% for post in site.posts limit:20 %}
+    {
+      "id": "{{ post.url | absolute_url }}",
+      "url": "{{ post.url | absolute_url }}",
+      "title": {{ post.title | jsonify }},
+      "summary": {{ post.description | jsonify }},
+      "date_published": "{{ post.date | date_to_xmlschema }}",
+      {% if post.image %}"image": "{{ post.image }}",{% endif %}
+      "tags": {{ post.tags | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
