@@ -9,37 +9,10 @@ permalink: /donate/
       <h1 class="mb-3"><i class="bi bi-heart-fill text-danger"></i> Support Us</h1>
       <p class="lead text-muted mb-4">GlobalBR News is free and independent. Your support helps us keep it that way.</p>
 
-      {% if site.stripe_public_key %}
-      <div class="donation-tiers mb-4">
-        <button class="btn btn-outline-primary me-2" onclick="setAmount(5)">$5</button>
-        <button class="btn btn-outline-primary me-2" onclick="setAmount(10)">$10</button>
-        <button class="btn btn-outline-primary me-2" onclick="setAmount(25)">$25</button>
-        <button class="btn btn-outline-primary" onclick="setAmount(50)">$50</button>
+      <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+        <a href="https://ko-fi.com" class="btn btn-warning btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-cup-hot me-2"></i> Ko-fi</a>
+        <a href="https://paypal.com/donate" class="btn btn-primary btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-paypal me-2"></i> PayPal</a>
       </div>
-      <div class="mb-4">
-        <label class="form-label">Custom amount ($)</label>
-        <input type="number" id="donation-amount" class="form-control text-center" value="10" min="1" max="999" style="max-width:200px;margin:auto">
-      </div>
-      <button id="donate-btn" class="btn btn-primary btn-lg px-5" onclick="handleDonate()">
-        <i class="bi bi-credit-card me-2"></i> Donate with Card
-      </button>
-      <script src="https://js.stripe.com/v3/"></script>
-      <script>
-        var stripe = Stripe('{{ site.stripe_public_key }}');
-        function setAmount(n){ document.getElementById('donation-amount').value = n; }
-        function handleDonate(){
-          var amount = parseInt(document.getElementById('donation-amount').value) || 10;
-          // Redirect to Stripe Checkout (requires backend or Payment Links)
-          alert('Stripe integration requires a Payment Link or backend. Set up at dashboard.stripe.com/payment-links');
-        }
-      </script>
-      {% else %}
-      <div class="alert alert-info">
-        <p>Stripe payment not configured yet. You can support us via:</p>
-        <a href="https://ko-fi.com" class="btn btn-warning me-2"><i class="bi bi-cup-hot"></i> Ko-fi</a>
-        <a href="https://paypal.com/donate" class="btn btn-primary"><i class="bi bi-paypal"></i> PayPal</a>
-      </div>
-      {% endif %}
 
       <hr class="my-5">
       <h3 class="mb-3">Other ways to support</h3>
