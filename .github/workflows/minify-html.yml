@@ -1,0 +1,44 @@
+name: "⚡ Minify HTML Output"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 0"  # Sundays 3h UTC (after weekly digest)
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install minify-html
+      - name: "⚡ Add Jekyll HTML compression config"
+        run: |
+          python - << 'EOF'
+import os
+
+compress_html = """---
+# Based on: https://jch.penibelst.de/
+---
+{%- capture _LINE_FEED -%}
+{% endcapture %}{%- if site.compress_html.ignore.envs contains jekyll.environment -%}{{ content }}{%- else -%}{%- assign _src = content -%}{%- assign _blocks = "script,pre,textarea,style" | split: "," -%}{%- for _block in _blocks -%}{%- assign _bStart = "<" | append: _block -%}{%- assign _bEnd = "</" | append: _block | append: ">" -%}{%- assign _parts = _src | split: _bStart -%}{%- assign _src = "" -%}{%- for _part in _parts -%}{%- if forloop.first -%}{%- assign _src = _src | append: _part -%}{%- else -%}{%- assign _inner = _part | split: ">" -%}{%- assign _src = _src | append: _bStart | append: _inner[0] | append: ">" -%}{%- assign _inner = _inner | shift -%}{%- assign _src = _src | append: _inner | join: ">" -%}{%- endif -%}{%- endfor -%}{%- endfor -%}{%- assign _lines = _src | split: _LINE_FEED -%}{%- for _line in _lines -%}{%- assign _trimmed = _line | split: " " | join: " " -%}{%- if _trimmed.size > 0 -%}{{ _trimmed }}{% unless forloop.last %} {% endunless %}{%- endif -%}{%- endfor -%}{%- endif -%}
+"""
+
+if not os.path.exists('_layouts/compress.html'):
+    with open('_layouts/compress.html', 'w') as f:
+        f.write(compress_html)
+    print("Created _layouts/compress.html")
+else:
+    print("compress.html already exists")
+EOF
+      - name: "💾 Commit compress layout"
+        run: |
+          git config user.name "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _layouts/compress.html || true
+          git diff --cached --quiet || git commit -m "⚡ Add Jekyll HTML compress layout"
+          git push origin HEAD || true
