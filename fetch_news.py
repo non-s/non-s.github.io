@@ -369,22 +369,21 @@ def parse_date(entry) -> datetime:
     return datetime.now(timezone.utc)
 
 
-def fetch_og_metadata(url: str, timeout: int = 8) -> dict:
+def fetch_og_metadata(url: str, timeout: int = 10) -> dict:
     """
-    Faz uma requisição parcial à URL do artigo e extrai metadados OG.
-    Retorna dict com 'description' e 'image' se encontrados.
-    Usa stream=True e lê apenas os primeiros 32 KB para eficiência.
+    Fetches OG metadata AND article body text in a single request.
+    Reads up to 64 KB to capture both <head> tags and initial body paragraphs.
+    Returns dict with 'description', 'image', and 'body' keys.
     """
-    result = {"description": "", "image": ""}
+    result = {"description": "", "image": "", "body": ""}
     try:
         resp = _session.get(url, timeout=timeout, stream=True,
                             headers={"Accept": "text/html"})
         resp.raise_for_status()
-        # Lê apenas os primeiros 32 KB (suficiente para a <head>)
         chunk = b""
         for data in resp.iter_content(chunk_size=8192):
             chunk += data
-            if len(chunk) >= 32768:
+            if len(chunk) >= 65536:  # 64 KB
                 break
         resp.close()
         html = chunk.decode("utf-8", errors="ignore")
@@ -418,6 +417,24 @@ def fetch_og_metadata(url: str, timeout: int = 8) -> dict:
         url_candidate = og_img.group(1).strip()
         if url_candidate.startswith("http"):
             result["image"] = url_candidate
+
+    # Extract body paragraphs for richer post content
+    raw_paragraphs = re.findall(r'<p[^>]{0,100}>(.*?)</p>', html, re.IGNORECASE | re.DOTALL)
+    body_parts = []
+    total_chars = 0
+    for p in raw_paragraphs:
+        clean = re.sub(r'<[^>]+>', ' ', p)
+        clean = re.sub(r'&[a-zA-Z]+;', ' ', clean)
+        clean = re.sub(r'&#\d+;', ' ', clean)
+        clean = re.sub(r'\s+', ' ', clean).strip()
+        # Skip nav/footer noise: very short or all-caps
+        if len(clean) < 60 or clean.isupper():
+            continue
+        body_parts.append(clean)
+        total_chars += len(clean)
+        if total_chars >= 2500:
+            break
+    result["body"] = sanitize_text(" ".join(body_parts)[:2500])
 
     return result
 
@@ -524,62 +541,74 @@ def build_content(
     date:        datetime,
     categories:  list,
     tags:        list,
+    body:        str = "",
 ) -> str:
-    """Monta o conteúdo Markdown do post com estrutura rica."""
-    date_str = date.strftime("%B %d, %Y")
-    time_str = date.strftime("%H:%M UTC")
-    category_label = categories[0].upper() if categories else "TECH"
+    """Builds rich Markdown post content (350-500 words) for better SEO."""
+    date_str       = date.strftime("%B %d, %Y")
+    time_str       = date.strftime("%H:%M UTC")
+    category_label = categories[0].capitalize() if categories else "Technology"
 
-    # Divide descrição em até 2 parágrafos para melhor leitura
+    # ── Opening paragraph (description) ──────────────────────
     sentences = re.split(r'(?<=[.!?])\s+', description.strip())
-    if len(sentences) > 3:
-        para1 = " ".join(sentences[:3])
-        para2 = " ".join(sentences[3:])
-    else:
-        para1 = description.strip()
-        para2 = ""
+    para1 = " ".join(sentences[:3]) if len(sentences) >= 3 else description.strip()
+    para2 = " ".join(sentences[3:6]) if len(sentences) > 3 else ""
 
-    # Tags relevantes para "Read more" section
-    related_tags = [f"`{t}`" for t in tags[:5] if len(t) > 2]
-    tags_line = "  ".join(related_tags) if related_tags else ""
+    # ── Body paragraphs from article ─────────────────────────
+    body_sections = []
+    if body:
+        body_sentences = re.split(r'(?<=[.!?])\s+', body.strip())
+        # Skip sentences already in description to avoid repetition
+        desc_lower = description.lower()
+        unique = [s for s in body_sentences if s.lower()[:40] not in desc_lower]
+        if unique:
+            chunk1 = " ".join(unique[:4])
+            chunk2 = " ".join(unique[4:8]) if len(unique) > 4 else ""
+            if len(chunk1) > 80:
+                body_sections.append(chunk1)
+            if len(chunk2) > 80:
+                body_sections.append(chunk2)
 
+    # ── Key tags ──────────────────────────────────────────────
+    tag_links = [f"#{t}" for t in tags[:6] if len(t) > 2]
+    tags_line = " · ".join(tag_links) if tag_links else ""
+
+    # ── Assemble content ──────────────────────────────────────
     content = f"""{para1}
 
 <!--more-->
 """
-
     if para2:
-        content += f"""
-{para2}
-"""
+        content += f"\n{para2}\n"
+
+    if body_sections:
+        content += f"\n{body_sections[0]}\n"
+        if len(body_sections) > 1:
+            content += f"\n{body_sections[1]}\n"
 
     content += f"""
 ## What You Need to Know
 
-- **Source:** {source_name}
+- **Source:** [{source_name}]({source_url})
 - **Published:** {date_str} at {time_str}
 - **Category:** {category_label}
-- **Read time:** ~2 min
+"""
 
-## Full Story
+    if tag_links:
+        content += f"- **Topics:** {tags_line}\n"
 
-This is a curated summary. For complete coverage, in-depth analysis, and all supporting details, read the original article:
+    content += f"""
+## Read the Full Story
+
+This is a curated summary. For the complete article, original data, quotes and full analysis:
 
 > **[Read the full story on {source_name} →]({source_url})**
 
-*Original reporting and all rights belong to the respective author(s) at **{source_name}**.*
+*All reporting rights belong to the respective author(s) at **{source_name}**. TechBR News summarizes publicly available content to help readers discover relevant technology news.*
 
 ---
+
+*Curated by [TechBR News](https://non-s.github.io) · {date_str}*
 """
-
-    if tags_line:
-        content += f"""
-**Related topics:** {tags_line}
-
-"""
-
-    content += f"*Curated by [TechBR News](https://non-s.github.io) · {date_str}*\n"
-
     return content
 
 
@@ -699,6 +728,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 date        = pub_date,
                 categories  = categories,
                 tags        = all_tags,
+                body        = og.get("body", ""),
             )
 
             post_path = POSTS_DIR / filename
