@@ -106,12 +106,35 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </a>
       </div>
 
+      <!-- Category Filter (Task 2) -->
+      <div class="filter-bar" id="cat-filter-bar">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="world">World</button>
+        <button class="filter-btn" data-cat="technology">Technology</button>
+        <button class="filter-btn" data-cat="politics">Politics</button>
+        <button class="filter-btn" data-cat="war">War</button>
+        <button class="filter-btn" data-cat="science">Science</button>
+        <button class="filter-btn" data-cat="business">Business</button>
+        <button class="filter-btn" data-cat="health">Health</button>
+        <button class="filter-btn" data-cat="sports">Sports</button>
+      </div>
+
+      <!-- Sentiment Filter (Task 3) -->
+      <div class="filter-bar" id="sent-filter-bar">
+        <button class="filter-btn active" data-sent="all">All</button>
+        <button class="filter-btn" data-sent="positive">😊 Positive</button>
+        <button class="filter-btn" data-sent="neutral">😐 Neutral</button>
+        <button class="filter-btn" data-sent="negative">😔 Negative</button>
+      </div>
+
       {% assign posts_to_show = site.posts | offset: 1 %}
 
       {% if posts_to_show.size > 0 %}
         <div class="row g-3">
           {% for post in posts_to_show limit: 9 %}
-          <div class="col-md-6 col-lg-4">
+          <div class="col-md-6 col-lg-4"
+               data-category="{{ post.categories | first | downcase }}"
+               data-sentiment="{{ post.sentiment | default: 'neutral' | downcase }}">
             <div class="news-card">
 
               <!-- Imagem -->
@@ -213,6 +236,43 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 
     </div>
     <!-- /col principal -->
+
+    <!-- Category & Sentiment Filter JS (Tasks 2 & 3) -->
+    <script>
+    (function(){
+      var cards = document.querySelectorAll('.row.g-3 > [data-category]');
+      var activeCat = 'all';
+      var activeSent = 'all';
+
+      function applyFilters() {
+        cards.forEach(function(card){
+          var cat = (card.getAttribute('data-category') || '').toLowerCase();
+          var sent = (card.getAttribute('data-sentiment') || '').toLowerCase();
+          var catOk = activeCat === 'all' || cat === activeCat;
+          var sentOk = activeSent === 'all' || sent === activeSent;
+          card.style.display = (catOk && sentOk) ? '' : 'none';
+        });
+      }
+
+      document.querySelectorAll('#cat-filter-bar .filter-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('#cat-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeCat = btn.getAttribute('data-cat');
+          applyFilters();
+        });
+      });
+
+      document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeSent = btn.getAttribute('data-sent');
+          applyFilters();
+        });
+      });
+    })();
+    </script>
 
     <!-- ── SIDEBAR ────────────────────────────────────────── -->
     <aside class="col-lg-4">

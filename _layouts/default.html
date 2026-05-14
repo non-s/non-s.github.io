@@ -243,5 +243,65 @@
           integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmGGmFMqgGxT1GvE+LLWcmIFJ5m"
           crossorigin="anonymous"></script>
 
+  <!-- ── BACK TO TOP  (Task 1) ─────────────────────────────── -->
+  <button id="back-to-top" aria-label="Back to top" title="Back to top">
+    <i class="bi bi-arrow-up-short"></i>
+  </button>
+  <script>
+  (function(){
+    var btn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', function(){
+      btn.classList.toggle('visible', window.scrollY > 300);
+    }, {passive:true});
+    btn.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  })();
+  </script>
+
+  <!-- ── INFINITE SCROLL  (Task 10) ───────────────────────── -->
+  <script>
+  (function(){
+    var nextLink = document.querySelector('a[rel="next"], .pagination-wrap .page-chip[href*="page"]');
+    /* Use the paginator next chevron if present */
+    var paginationWrap = document.querySelector('.pagination-wrap');
+    if (paginationWrap) {
+      var chips = paginationWrap.querySelectorAll('a.page-chip');
+      chips.forEach(function(chip){
+        if (chip.querySelector('.bi-chevron-right')) nextLink = chip;
+      });
+    }
+    if (!nextLink) return;
+    var loading = false;
+    var grid = document.querySelector('.row.g-3');
+    if (!grid) return;
+    window.addEventListener('scroll', function(){
+      if (loading || !nextLink) return;
+      if (window.scrollY + window.innerHeight > document.body.offsetHeight - 600) {
+        loading = true;
+        var href = nextLink.href;
+        fetch(href)
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var cards = doc.querySelectorAll('.row.g-3 > [class*="col-"]');
+            cards.forEach(function(c){ grid.appendChild(c.cloneNode(true)); });
+            /* find next page link in loaded page */
+            nextLink = null;
+            var newPagination = doc.querySelector('.pagination-wrap');
+            if (newPagination) {
+              var newChips = newPagination.querySelectorAll('a.page-chip');
+              newChips.forEach(function(chip){
+                if (chip.querySelector('.bi-chevron-right')) nextLink = {href: chip.href};
+              });
+            }
+            loading = false;
+          })
+          .catch(function(){ loading = false; nextLink = null; });
+      }
+    }, {passive:true});
+  })();
+  </script>
+
 </body>
 </html>
