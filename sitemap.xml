@@ -1,0 +1,66 @@
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>{{ site.url }}/</loc>
+    <changefreq>always</changefreq>
+    <priority>1.0</priority>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+  </url>
+
+  <!-- Category pages -->
+  {% assign categories = "world,politics,war,business,science,health,food,sports,entertainment,environment,travel,technology,ai,security" | split: "," %}
+  {% for cat in categories %}
+  <url>
+    <loc>{{ site.url }}/{{ cat }}/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+  </url>
+  {% endfor %}
+
+  <!-- Posts (newest = highest priority) -->
+  {% assign total = site.posts.size | minus: 1 %}
+  {% for post in site.posts %}
+    {% assign rank = forloop.index0 | times: 100 | divided_by: total %}
+    {% if forloop.index <= 10 %}
+      {% assign priority = "0.9" %}
+    {% elsif forloop.index <= 50 %}
+      {% assign priority = "0.7" %}
+    {% else %}
+      {% assign priority = "0.5" %}
+    {% endif %}
+  <url>
+    <loc>{{ post.url | absolute_url }}</loc>
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>never</changefreq>
+    <priority>{{ priority }}</priority>
+    {% if post.image %}
+    <image:image>
+      <image:loc>{% if post.image contains 'http' %}{{ post.image }}{% else %}{{ post.image | absolute_url }}{% endif %}</image:loc>
+      <image:title>{{ post.title | escape }}</image:title>
+    </image:image>
+    {% endif %}
+    <news:news>
+      <news:publication>
+        <news:name>{{ site.title }}</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>{{ post.date | date_to_xmlschema }}</news:publication_date>
+      <news:title>{{ post.title | escape }}</news:title>
+      {% if post.keywords %}
+      <news:keywords>{{ post.keywords | join: ", " }}</news:keywords>
+      {% elsif post.tags.size > 0 %}
+      <news:keywords>{{ post.tags | join: ", " }}</news:keywords>
+      {% endif %}
+    </news:news>
+  </url>
+  {% endfor %}
+
+</urlset>
