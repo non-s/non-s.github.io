@@ -3177,17 +3177,52 @@ body.font-serif #post-article {
 }
 
 /* ============================================================
-   FEATURE: TAG BADGES — tags/index.html & _layouts/tag.html
+   FEATURE: READING TIME — cards & post header
    ============================================================ */
-.badge-tag {
-  display: inline-flex; align-items: center; gap: .35rem;
-  background: var(--c-surface); color: var(--c-text);
-  border: 1px solid var(--c-border); border-radius: 2rem;
-  padding: .3rem .75rem; font-size: .8rem; text-decoration: none;
-  transition: background .15s;
-  &:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
-}
-.badge-count {
-  background: var(--c-border); color: var(--c-muted);
-  border-radius: 1rem; padding: 0 .4rem; font-size: .7rem;
+.read-time { color: var(--c-muted); font-size: .75rem; }
+.post-meta-item { color: var(--c-muted); font-size: .85rem; margin-right: .75rem; i { margin-right: .2rem; } }
+
+/* ============================================================
+   PRINT STYLESHEET — comprehensive
+   ============================================================ */
+@media print {
+  /* Hide non-content elements */
+  nav, .navbar, footer, .sidebar, #back-top, #back-to-top,
+  .share-section, .post-share, .comment-section, .giscus,
+  .toc-box, #read-progress, .continue-reading-banner,
+  .new-posts-banner, .breaking-bar, .crypto-ticker-wrap,
+  .btn, button, .subscribe-section, .related-posts,
+  .ad-slot, [class*="adsense"], .cookie-banner { display: none !important; }
+
+  /* Layout */
+  body { background: #fff !important; color: #000 !important; font-size: 12pt; }
+  .container { max-width: 100% !important; padding: 0 !important; }
+  .col-lg-8, .col-md-8 { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; }
+
+  /* Typography */
+  h1 { font-size: 22pt; }
+  h2 { font-size: 16pt; }
+  p, li { line-height: 1.6; orphans: 3; widows: 3; }
+  a { color: #000 !important; text-decoration: none !important; }
+
+  /* Show URL after links in article body */
+  article a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+
+  /* Images */
+  img { max-width: 100% !important; page-break-inside: avoid; }
+  .post-hero-img { max-height: 300px; object-fit: cover; }
+
+  /* Page breaks */
+  h2, h3 { page-break-after: avoid; }
+  p, blockquote { page-break-inside: avoid; }
+
+  /* Show source URL */
+  .post-source-url::after { content: " Source: " attr(data-url); display: block; font-size: 9pt; color: #555; }
+
+  /* Print header with site name and date */
+  body::before {
+    content: "GlobalBR News \2014 globalbrnews.github.io \2014 Printed " attr(data-print-date);
+    display: block; font-size: 9pt; color: #555; border-bottom: 1pt solid #ccc;
+    padding-bottom: 4pt; margin-bottom: 12pt;
+  }
 }
