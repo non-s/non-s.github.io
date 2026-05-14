@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cisco to fire 4,000 staff and generously give them free training – on Cisco"
-date: 2026-05-14 03:32:53 +0000 -0300
+date: 2026-05-14 03:32:53 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
 author: "TechBR News"

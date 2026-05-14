@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Patch Tuesday, May 2026 Edition"
-date: 2026-05-12 21:46:45 +0000 -0300
+date: 2026-05-12 21:46:45 +0000
 categories: [security, ai]
 tags: [krebs, security, cybersecurity, ai, machine-learning]
 author: "TechBR News"

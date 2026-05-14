@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Claude for Small Business"
-date: 2026-05-14 03:59:35 +0000 -0300
+date: 2026-05-14 03:59:35 +0000
 categories: [technology, ai]
 tags: [hackernews, programming, tech, ai, anthropic]
 author: "TechBR News"

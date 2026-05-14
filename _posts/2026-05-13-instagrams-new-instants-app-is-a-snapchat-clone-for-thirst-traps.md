@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Instagram’s New Instants App Is a Snapchat Clone for Thirst Traps"
-date: 2026-05-13 20:49:17 +0000 -0300
+date: 2026-05-13 20:49:17 +0000
 categories: [technology]
 tags: [wired, tech, science]
 author: "TechBR News"

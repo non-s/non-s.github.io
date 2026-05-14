@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "PGA Championship 2026: TV Schedule, How to Watch, Stream All the Golf From Anywhere"
-date: 2026-05-14 00:00:42 +0000 -0300
+date: 2026-05-14 00:00:42 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
 author: "TechBR News"

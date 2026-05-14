@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Anthropic reinstates OpenClaw and third-party agent usage on Claude subscriptions — with a catch"
-date: 2026-05-13 22:15:00 +0000 -0300
+date: 2026-05-13 22:15:00 +0000
 categories: [startups, ai]
 tags: [venturebeat, startups, enterprise, ai, anthropic]
 author: "TechBR News"

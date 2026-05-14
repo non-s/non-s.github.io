@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Arena AI Model ELO History"
-date: 2026-05-14 03:19:05 +0000 -0300
+date: 2026-05-14 03:19:05 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
 author: "TechBR News"

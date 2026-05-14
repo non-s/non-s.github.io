@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "KitchenAid launches its first smart thermometer"
-date: 2026-05-13 22:22:37 +0000 -0300
+date: 2026-05-13 22:22:37 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
 author: "TechBR News"

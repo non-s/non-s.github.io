@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Introducing the 6 stages at TechCrunch Disrupt 2026 — built for today’s tougher startup market"
-date: 2026-05-13 14:00:00 +0000 -0300
+date: 2026-05-13 14:00:00 +0000
 categories: [startups]
 tags: [techcrunch, startups, venture-capital]
 author: "TechBR News"

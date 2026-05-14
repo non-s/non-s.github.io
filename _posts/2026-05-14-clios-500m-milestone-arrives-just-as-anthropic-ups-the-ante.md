@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Clio’s $500M milestone arrives just as Anthropic ups the ante"
-date: 2026-05-14 05:24:39 +0000 -0300
+date: 2026-05-14 05:24:39 +0000
 categories: [technology, ai]
 tags: [techcrunch, startups, tech, ai, anthropic]
 author: "TechBR News"

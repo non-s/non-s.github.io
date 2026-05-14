@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Trump Phone Will Finally Ship This Week, CEO Says"
-date: 2026-05-13 20:41:28 +0000 -0300
+date: 2026-05-13 20:41:28 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Anduril raises $5B, doubles valuation to $61B"
-date: 2026-05-13 14:44:25 +0000 -0300
+date: 2026-05-13 14:44:25 +0000
 categories: [startups]
 tags: [techcrunch, startups, venture-capital]
 author: "TechBR News"

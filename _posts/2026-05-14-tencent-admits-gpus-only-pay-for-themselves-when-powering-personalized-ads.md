@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tencent admits GPUs only pay for themselves when powering personalized ads"
-date: 2026-05-14 04:40:43 +0000 -0300
+date: 2026-05-14 04:40:43 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
 author: "TechBR News"

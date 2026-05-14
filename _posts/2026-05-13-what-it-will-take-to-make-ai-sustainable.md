@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "What It Will Take to Make AI Sustainable"
-date: 2026-05-13 19:15:59 +0000 -0300
+date: 2026-05-13 19:15:59 +0000
 categories: [technology]
 tags: [wired, tech, science]
 author: "TechBR News"

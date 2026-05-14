@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "18-Year-Old NGINX Rewrite Module Flaw Enables Unauthenticated RCE"
-date: 2026-05-14 06:00:09 +0000 -0300
+date: 2026-05-14 06:00:09 +0000
 categories: [security]
 tags: [hackernews, security, vulnerabilities, cybersecurity]
 author: "TechBR News"

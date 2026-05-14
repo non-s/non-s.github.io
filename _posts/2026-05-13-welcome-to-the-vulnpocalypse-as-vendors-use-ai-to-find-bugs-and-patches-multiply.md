@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Welcome to the vulnpocalypse, as vendors use AI to find bugs and patches multiply like rabbits"
-date: 2026-05-13 23:27:50 +0000 -0300
+date: 2026-05-13 23:27:50 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
 author: "TechBR News"

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AI chatbots are giving out people’s real phone numbers"
-date: 2026-05-13 18:09:03 +0000 -0300
+date: 2026-05-13 18:09:03 +0000
 categories: [ai]
 tags: [mit, ai, research]
 author: "TechBR News"

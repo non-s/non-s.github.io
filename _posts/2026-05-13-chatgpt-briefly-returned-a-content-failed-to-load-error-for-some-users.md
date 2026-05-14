@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "ChatGPT Briefly Returned a 'Content Failed to Load' Error for Some Users"
-date: 2026-05-13 23:55:34 +0000 -0300
+date: 2026-05-13 23:55:34 +0000
 categories: [technology, ai]
 tags: [cnet, tech, reviews, ai, chatgpt, openai]
 author: "TechBR News"

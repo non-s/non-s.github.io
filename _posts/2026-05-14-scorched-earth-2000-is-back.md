@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Scorched Earth 2000 is back"
-date: 2026-05-14 00:41:29 +0000 -0300
+date: 2026-05-14 00:41:29 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
 author: "TechBR News"
