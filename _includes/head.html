@@ -174,38 +174,6 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-{% if site.onesignal_app_id %}
-<!-- ── OneSignal Web Push ── -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "{{ site.onesignal_app_id }}",
-      {% if site.onesignal_safari_web_id %}safari_web_id: "{{ site.onesignal_safari_web_id }}",{% endif %}
-      notifyButton: { enable: true, size: 'medium', position: 'bottom-right' },
-      promptOptions: {
-        slidedown: {
-          prompts: [{
-            type: "push",
-            autoPrompt: false,
-            text: {
-              actionMessage: "Get notified when breaking news is published",
-              acceptButton: "Allow",
-              cancelButton: "Later"
-            }
-          }]
-        }
-      },
-      welcomeNotification: {
-        title: "GlobalBR News",
-        message: "Thanks for subscribing to breaking news alerts!"
-      }
-    });
-  });
-</script>
-{% endif %}
-
 {% if site.google_analytics %}
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
