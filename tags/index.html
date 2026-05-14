@@ -1,0 +1,136 @@
+---
+layout: default
+title: "All Tags — GlobalBR News"
+description: "Browse all topics and tags covered by GlobalBR News."
+permalink: /tags/
+---
+
+<section class="container py-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="section-title">All Tags</h1>
+      <p class="text-muted">Browse all topics covered across GlobalBR News. Click a tag to filter posts.</p>
+      <hr style="border-color:var(--c-border);margin:1rem 0;">
+    </div>
+  </div>
+
+  <!-- Tag filter input -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="d-flex gap-2">
+        <input type="text" id="tag-filter" class="form-control search-input" placeholder="Filter tags…" oninput="filterTags(this.value)" style="width:100%;max-width:400px;">
+      </div>
+    </div>
+    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+      <span class="text-muted" style="font-size:.85rem;">
+        <i class="bi bi-tags-fill" style="color:var(--c-accent);"></i>
+        {% assign all_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort %}
+        <strong style="color:var(--c-text);">{{ all_tags.size }}</strong> unique tags
+      </span>
+    </div>
+  </div>
+
+  <!-- Tag cloud / index -->
+  {% assign all_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort %}
+  <div class="row mb-5">
+    <div class="col">
+      <div class="tags-cloud" id="tag-cloud">
+        {% for tag in all_tags %}
+          {% if tag != "" %}
+          {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+          <a href="#tag-{{ tag | slugify }}" class="tag-pill tag-cloud-item" data-tag="{{ tag | downcase }}">
+            {{ tag }}
+            <span style="background:rgba(249,115,22,.15);color:var(--c-accent);font-size:.65rem;padding:.1rem .35rem;border-radius:50px;margin-left:.2rem;">{{ tag_posts.size }}</span>
+          </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts grouped by tag -->
+  <div id="tag-sections">
+    {% for tag in all_tags %}
+      {% if tag != "" %}
+      {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+      <div class="tag-section mb-5" id="tag-{{ tag | slugify }}" data-tag="{{ tag | downcase }}">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="bi bi-tag-fill" style="color:var(--c-accent);font-size:.75rem;"></i>
+            {{ tag }}
+          </h2>
+          <span class="text-muted" style="font-size:.8rem;">{{ tag_posts.size }} post{% if tag_posts.size != 1 %}s{% endif %}</span>
+        </div>
+        <div class="row g-3">
+          {% for post in tag_posts limit: 6 %}
+          <div class="col-md-6 col-lg-4">
+            <article class="news-card h-100">
+              {% if post.image %}
+              <div class="card-img-wrap" style="height:140px;overflow:hidden;background:var(--c-surface3);">
+                <a href="{{ post.url | relative_url }}">
+                  <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy"
+                       style="width:100%;height:100%;object-fit:cover;">
+                </a>
+              </div>
+              {% endif %}
+              <div class="card-body-inner" style="padding:1rem 1.1rem;flex:1;display:flex;flex-direction:column;">
+                <div class="card-meta" style="font-size:.75rem;color:var(--c-muted);margin-bottom:.4rem;display:flex;gap:.6rem;align-items:center;">
+                  <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+                  {% if post.source_name %}<span class="card-source">· {{ post.source_name }}</span>{% endif %}
+                </div>
+                <h3 class="card-headline" style="font-family:var(--font-head);font-size:.9rem;font-weight:700;line-height:1.35;color:var(--c-white);margin-bottom:.4rem;flex:1;">
+                  <a href="{{ post.url | relative_url }}" style="color:inherit;transition:color .2s;" onmouseover="this.style.color='var(--c-accent)'" onmouseout="this.style.color='inherit'">{{ post.title | truncate: 80 }}</a>
+                </h3>
+              </div>
+              <div class="card-footer-row" style="padding:.6rem 1.1rem;border-top:1px solid var(--c-border);">
+                <a href="{{ post.url | relative_url }}" class="btn-read">Read more <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </article>
+          </div>
+          {% endfor %}
+        </div>
+        {% if tag_posts.size > 6 %}
+        <p class="mt-2" style="font-size:.82rem;color:var(--c-muted);">
+          Showing 6 of {{ tag_posts.size }} posts tagged <strong style="color:var(--c-accent);">{{ tag }}</strong>.
+        </p>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div id="no-results" style="display:none;" class="text-center py-5">
+    <i class="bi bi-search" style="font-size:3rem;opacity:.3;"></i>
+    <p class="mt-3 text-muted">No tags match your filter.</p>
+  </div>
+</section>
+
+<script>
+function filterTags(query) {
+  var q = query.toLowerCase().trim();
+  var items = document.querySelectorAll('.tag-cloud-item');
+  var sections = document.querySelectorAll('.tag-section');
+  var anyVisible = false;
+
+  items.forEach(function(item) {
+    var tag = item.getAttribute('data-tag') || '';
+    if (!q || tag.indexOf(q) !== -1) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  sections.forEach(function(section) {
+    var tag = section.getAttribute('data-tag') || '';
+    if (!q || tag.indexOf(q) !== -1) {
+      section.style.display = '';
+      anyVisible = true;
+    } else {
+      section.style.display = 'none';
+    }
+  });
+
+  document.getElementById('no-results').style.display = anyVisible || !q ? 'none' : 'block';
+}
+</script>
