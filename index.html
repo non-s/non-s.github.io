@@ -73,6 +73,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                width="600" height="290"
                class="img-fluid rounded-3"
                loading="lazy"
+               onerror="this.parentElement.innerHTML='<div class=hero-img-placeholder><div class=placeholder-icon>⚡</div></div>'"
                style="width:100%;height:290px;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.5);">
         {% else %}
           <div class="hero-img-placeholder">
