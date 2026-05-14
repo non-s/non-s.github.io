@@ -95,9 +95,32 @@
             <i class="bi bi-search"></i>
           </button>
         </form>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <i class="bi bi-moon-fill" id="theme-icon"></i>
+        </button>
       </div>
     </div>
   </nav>
+  <script>
+  (function(){
+    var toggle = document.getElementById('theme-toggle');
+    var icon   = document.getElementById('theme-icon');
+    var stored = localStorage.getItem('gb-theme') || 'dark';
+    function apply(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      if (icon) {
+        icon.className = theme === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+      }
+      localStorage.setItem('gb-theme', theme);
+    }
+    apply(stored);
+    if (toggle) {
+      toggle.addEventListener('click', function(){
+        apply(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    }
+  })();
+  </script>
 
   <!-- ── BREAKING NEWS TICKER ─────────────────────────────── -->
   <div class="breaking-bar">
