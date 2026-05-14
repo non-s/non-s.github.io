@@ -73,6 +73,15 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
             )
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"].strip()
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            if status == 429:
+                log.warning("Groq rate limited (429) — waiting 30s before Gemini fallback")
+                sleep(30)
+            elif status >= 500:
+                log.warning(f"Groq server error {status} — trying Gemini")
+            else:
+                log.warning(f"Groq HTTP error {status} — trying Gemini")
         except Exception as exc:
             log.warning(f"Groq error (tentando Gemini): {exc}")
 
@@ -90,6 +99,15 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
             )
             r.raise_for_status()
             return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            if status == 429:
+                log.warning("Gemini rate limited (429) — waiting 30s before Pollinations fallback")
+                sleep(30)
+            elif status >= 500:
+                log.warning(f"Gemini server error {status} — trying Pollinations")
+            else:
+                log.warning(f"Gemini HTTP error {status} — trying Pollinations")
         except Exception as exc:
             log.warning(f"Gemini error (tentando Pollinations): {exc}")
 

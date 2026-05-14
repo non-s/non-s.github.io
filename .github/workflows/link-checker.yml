@@ -1,0 +1,26 @@
+name: "🔗 Weekly Link Checker"
+on:
+  schedule:
+    - cron: "0 6 * * 3"  # Wednesday 6h UTC
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: "🔗 Check source URLs"
+        run: python check_links.py
+        timeout-minutes: 10
+      - name: "💾 Commit link report"
+        run: |
+          git config user.name "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _data/link_report.json || true
+          git diff --cached --quiet || git commit -m "🔗 Weekly link check — $(date -u +'%Y-%m-%d')"
+          git push origin HEAD || true
