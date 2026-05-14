@@ -155,6 +155,9 @@
   </script>
   {% endif %}
 
+  <!-- ── CRYPTO TICKER ────────────────────────────────────── -->
+  {% include crypto-ticker.html %}
+
   <!-- ── BREAKING NEWS TICKER ─────────────────────────────── -->
   <div class="breaking-bar">
     <span class="breaking-label">
@@ -401,6 +404,15 @@
     });
   })();
   </script>
+
+  <!-- ── KO-FI DONATION BUTTON ────────────────────────────── -->
+  {% if site.kofi_id %}
+  <div class="kofi-widget-container">
+    <a href="https://ko-fi.com/{{ site.kofi_id }}" target="_blank" rel="noopener" class="kofi-btn" aria-label="Support us on Ko-fi">
+      <img src="https://storage.ko-fi.com/cdn/kofi2.png?v=3" alt="Buy Me a Coffee at ko-fi.com" height="36">
+    </a>
+  </div>
+  {% endif %}
 
   <!-- ── Navbar Search Autocomplete ─────────────────────── -->
   <script>

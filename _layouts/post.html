@@ -149,6 +149,15 @@ layout: default
         {{ content }}
       </article>
 
+      {% if site.adsense_pub_id %}
+      <!-- In-article AdSense unit -->
+      <div class="ad-unit ad-unit-article">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_pub_id }}" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="{{ site.adsense_pub_id }}" data-ad-slot="{{ site.adsense_slot_id }}"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      {% endif %}
+
       {% if site.adsense_publisher_id %}
       <div class="adsense-wrap">
         <ins class="adsbygoogle"
@@ -230,7 +239,6 @@ layout: default
       </nav>
 
       <!-- Comments — Giscus (GitHub Discussions) preferred, fallback Utterances -->
-      {% if page.comments != false %}
       {% if site.giscus_repo %}
       <div class="comments-section mt-5 pt-4 border-top">
         <h3 class="h5 mb-3"><i class="bi bi-chat-dots"></i> Discussion</h3>
@@ -250,7 +258,8 @@ layout: default
           async>
         </script>
       </div>
-      {% else %}
+      {% elsif page.comments != false %}
+      <!-- Comments (Utterances — GitHub Issues backend) — fallback when Giscus not configured -->
       <div class="comments-section">
         <h3 class="comments-title">
           <i class="bi bi-chat-dots"></i> Discussion
