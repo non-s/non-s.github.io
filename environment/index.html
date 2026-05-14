@@ -16,6 +16,21 @@ permalink: /environment/
   </div>
 </div>
 
+{% assign cat_data = site.data.categories.environment %}
+{% if cat_data %}
+<div class="cat-header">
+  <div class="container">
+    <div class="cat-header-inner">
+      <span class="cat-header-icon">{{ cat_data.icon }}</span>
+      <div>
+        <h1 class="cat-header-title">{{ cat_data.title }}</h1>
+        <p class="cat-header-desc">{{ cat_data.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <section class="container py-4">
   <div class="row mb-4">
     <div class="col">
