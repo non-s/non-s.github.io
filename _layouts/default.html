@@ -234,7 +234,12 @@
     var icon = btn ? btn.querySelector('i.bi-chevron-down') : null;
     var wrap = btn ? btn.closest('.gb-mega-wrap') : null;
     if (!btn || !menu || !wrap) return;
+    var nav = document.querySelector('nav.techbr-navbar');
     function setOpen(open){
+      if (open && nav) {
+        var bottom = nav.getBoundingClientRect().bottom;
+        document.documentElement.style.setProperty('--gb-mega-top', bottom + 'px');
+      }
       wrap.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       menu.setAttribute('aria-hidden', open ? 'false' : 'true');
