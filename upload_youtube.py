@@ -154,20 +154,36 @@ def get_youtube_client():
 
 def upload_video(youtube, meta: dict) -> str | None:
     """Faz upload de um vídeo com thumbnail e metadados SEO."""
-    video_path = Path(meta["video"])
-    thumb_path = Path(meta["thumbnail"])
+    video_field = meta.get("video")
+    if not video_field:
+        log.error("Metadata sem campo 'video' — pulando.")
+        return None
+    video_path = Path(video_field)
+    # Thumbnail is optional — older metadata (e.g. the PT-BR variant) may
+    # omit it. We just skip thumbnail upload in that case.
+    thumb_field = meta.get("thumbnail") or ""
+    thumb_path = Path(thumb_field) if thumb_field else None
 
     if not video_path.exists():
         log.error(f"Vídeo não encontrado: {video_path}")
         return None
 
-    log.info(f"📤 Uploading: {meta['title'][:60]}...")
+    title = (meta.get("title") or "").strip()
+    if not title:
+        log.error("Metadata sem 'title' — YouTube exige um título.")
+        return None
+    description = (meta.get("description") or "").strip()
+    tags = meta.get("tags") or []
+    if isinstance(tags, str):
+        tags = [tags]
+
+    log.info(f"📤 Uploading: {title[:60]}...")
 
     body = {
         "snippet": {
-            "title":       meta["title"][:100],   # YouTube limit: 100 chars
-            "description": meta["description"][:5000],  # YouTube limit: 5000 chars
-            "tags":        meta["tags"][:500],   # YouTube limit
+            "title":       title[:100],   # YouTube limit: 100 chars
+            "description": description[:5000],  # YouTube limit: 5000 chars
+            "tags":        tags[:500],   # YouTube limit
             "categoryId":  meta.get("category_id", "28"),
             "defaultLanguage": "en",
             "defaultAudioLanguage": "en",
@@ -230,7 +246,7 @@ def upload_video(youtube, meta: dict) -> str | None:
     log.info(f"  ✅ Publicado: {yt_url}")
 
     # Faz upload da thumbnail (não-crítico — vídeo já foi publicado)
-    if thumb_path.exists():
+    if thumb_path and thumb_path.exists():
         try:
             youtube.thumbnails().set(
                 videoId=video_id,
@@ -239,6 +255,8 @@ def upload_video(youtube, meta: dict) -> str | None:
             log.info(f"  🖼  Thumbnail aplicada")
         except HttpError as e:
             log.warning(f"  ⚠️ Não foi possível aplicar thumbnail: HTTP {e.resp.status}")
+    else:
+        log.info("  ℹ️ Sem thumbnail — pulando upload de thumbnail.")
 
     # Add to category playlist
     try:
@@ -286,7 +304,7 @@ def main():
                 "video_id":    video_id,
                 "url":         f"https://youtube.com/watch?v={video_id}",
                 "uploaded_at": datetime.now(timezone.utc).isoformat(),
-                "title":       meta["title"],
+                "title":       meta.get("title", ""),
                 "description": meta.get("description", ""),
                 "tags":        meta.get("tags", []),
                 "thumbnail":   meta.get("thumbnail", ""),
