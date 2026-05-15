@@ -399,6 +399,43 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         return fallback
 
 
+def _validate_image_url(url: str) -> bool:
+    """
+    Return True iff `url` actually serves a usable image (≥5KB, image/* MIME,
+    HTTP 200). For local /assets/... paths we trust the disk write that
+    produced them. Used by the post pipeline to refuse publishing without a
+    real cover — better to drop the post than ship a thumbnail-less card.
+    """
+    if not url:
+        return False
+    if url.startswith("/assets/"):
+        # Local-on-disk path was just written by _generate_og_image — trust it.
+        p = Path("." + url) if url.startswith("/") else Path(url)
+        try:
+            return p.exists() and p.stat().st_size >= 5 * 1024
+        except OSError:
+            return False
+    if not url.startswith(("http://", "https://")):
+        return False
+    try:
+        # HEAD first — most CDNs honour it and we don't want to pull MB.
+        r = _session.head(url, timeout=10, allow_redirects=True)
+        if r.status_code == 405 or r.status_code in (403, 401):
+            # Some hosts reject HEAD; try GET with stream.
+            r = _session.get(url, timeout=10, stream=True)
+        if r.status_code != 200:
+            return False
+        ctype = (r.headers.get("Content-Type") or "").lower()
+        if "image/" not in ctype and "octet-stream" not in ctype:
+            return False
+        clen = r.headers.get("Content-Length")
+        if clen and clen.isdigit() and int(clen) < 5 * 1024:
+            return False
+        return True
+    except Exception:
+        return False
+
+
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
     """
     Gera conteúdo SEO-otimizado por artigo via AI.
@@ -2731,6 +2768,19 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 log.info(f"  🎨 Generated OG image: {image_url}")
             else:
                 log.debug(f"  🖼  Using source image: {image_url[:60]}")
+            # Hard requirement: every published post must have a usable cover image.
+            if not _validate_image_url(image_url):
+                # Last-ditch: try the Pollinations fallback.
+                fallback = _news_image_url(title, category)
+                if _validate_image_url(fallback):
+                    image_url = fallback
+                    log.info(f"  🎨 Fallback Pollinations OK: {fallback[:60]}")
+                else:
+                    log.warning(
+                        f"  ⏭  Skipping post — no usable image (source, OG, "
+                        f"fallback all failed): {title[:80]}"
+                    )
+                    continue
 
             sentiment   = _sentiment_score(f"{title} {description}")
             fact_check  = _fact_check_score(title, description)
@@ -2906,6 +2956,15 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
 
     if not image_url:
         image_url = _generate_og_image(title, category, slug)
+    if not _validate_image_url(image_url):
+        fallback = _news_image_url(title, category)
+        if _validate_image_url(fallback):
+            image_url = fallback
+        else:
+            log.warning(
+                f"  ⏭  Skipping post — no usable image: {title[:80]}"
+            )
+            return 0
 
     sentiment  = _sentiment_score(f"{title} {description}")
     fact_check = _fact_check_score(title, description)
@@ -3058,10 +3117,29 @@ def _check_milestones(new_posts_count: int) -> None:
             if filepath.exists():
                 markers.add(marker_key)
                 continue
-            milestone_img = _news_image_url(
-                f"{milestone} articles milestone {cat} news celebration",
-                cat,
+            # Generate a real OG image (Pillow + WebP, on-disk) instead of
+            # relying on the bare Pollinations URL. The milestone Short last
+            # week shipped with a grey thumbnail because the Pollinations CDN
+            # returned 500 at upload time and the post had no on-disk image.
+            milestone_slug = (
+                f"{date_str}-{cat}-{milestone}-articles-milestone"
             )
+            milestone_img = _generate_og_image(
+                f"🎉 {milestone} articles published in {cat}",
+                cat,
+                milestone_slug,
+            )
+            if not _validate_image_url(milestone_img):
+                milestone_img = _news_image_url(
+                    f"{milestone} articles milestone {cat} news celebration",
+                    cat,
+                )
+            if not _validate_image_url(milestone_img):
+                log.warning(
+                    f"⏭  Skipping milestone post — no usable image: "
+                    f"{cat}-{milestone}"
+                )
+                continue
             milestone_content = f"""---
 title: "🎉 {milestone} Articles in {cat.capitalize()}!"
 date: {datetime.now(timezone.utc).isoformat()}

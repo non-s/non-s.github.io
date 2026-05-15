@@ -73,6 +73,37 @@ CATEGORY_HASHTAGS = {
 }
 
 
+def _image_url_usable(url: str) -> bool:
+    """
+    Return True iff `url` looks like a serveable image (≥3KB, image/* MIME).
+    Used to skip Bluesky posts that would otherwise ship with broken cards.
+    Same-origin paths (/assets/images/...) are absolute-URL'd before HEAD.
+    Tolerates HEAD-blocking hosts with a streaming GET fallback.
+    """
+    if not url:
+        return False
+    if url.startswith("/"):
+        url = SITE_BASE + url
+    if not url.startswith(("http://", "https://")):
+        return False
+    try:
+        r = requests.head(url, timeout=10, allow_redirects=True)
+        if r.status_code in (401, 403, 405):
+            r = requests.get(url, timeout=10, stream=True)
+            r.close()
+        if r.status_code != 200:
+            return False
+        ctype = (r.headers.get("Content-Type") or "").lower()
+        if "image/" not in ctype and "octet-stream" not in ctype:
+            return False
+        clen = r.headers.get("Content-Length")
+        if clen and clen.isdigit() and int(clen) < 3 * 1024:
+            return False
+        return True
+    except Exception:
+        return False
+
+
 def build_post_url(filename: str, fm: dict, lang: str = "en") -> str:
     stem  = filename.removesuffix(".md")
     parts = stem.split("-", 3)
@@ -406,6 +437,12 @@ def main() -> None:
         title       = get_str(post["fm"], "title")
         description = get_str(post["fm"], "description")
         image_url   = get_str(post["fm"], "image")
+        # Validate the cover image actually serves a usable file. Posts
+        # without a working thumbnail produce ugly link cards on Bluesky.
+        if not image_url or not _image_url_usable(image_url):
+            log.warning("Skipping — no usable cover image for %s", post_url)
+            skipped += 1
+            continue
         if create_post(session, text, post_url, title, description, image_url, lang=lang):
             ok += 1
         else:
