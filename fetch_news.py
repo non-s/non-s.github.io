@@ -2830,6 +2830,10 @@ def _check_milestones(new_posts_count: int) -> None:
                 slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
                 filepath = f"_posts/{slug}.md"
                 if not Path(filepath).exists():
+                    milestone_img = _news_image_url(
+                        f"{milestone} articles milestone {cat} news celebration",
+                        cat,
+                    )
                     milestone_content = f"""---
 title: "🎉 {milestone} Articles in {cat.capitalize()}!"
 date: {datetime.now(timezone.utc).isoformat()}
@@ -2838,6 +2842,8 @@ tags: [milestone, {cat}]
 description: "GlobalBR News has published {milestone} articles in the {cat.capitalize()} category."
 featured: true
 sentiment: "positive"
+image: "{milestone_img}"
+image_alt: "GlobalBR News {milestone} articles milestone in {cat} category"
 ---
 
 We've reached a milestone: **{milestone} articles** published in the **{cat.capitalize()}** category!

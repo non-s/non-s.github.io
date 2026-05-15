@@ -156,8 +156,36 @@ def get_session(handle: str, password: str) -> dict:
     return resp.json()
 
 
-def create_post(session: dict, text: str, url: str, title: str, description: str = "") -> bool:
-    """Create a Bluesky post with an embedded link card."""
+def upload_image_blob(token: str, image_url: str) -> dict | None:
+    """Download image_url and upload as a Bluesky blob. Returns blob ref dict or None."""
+    try:
+        r = requests.get(image_url, timeout=20, stream=True)
+        r.raise_for_status()
+        content_type = r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
+        if not content_type.startswith("image/"):
+            content_type = "image/jpeg"
+        data = r.content
+        if len(data) < 100:
+            return None
+        resp = requests.post(
+            f"{BSKY_API}/com.atproto.repo.uploadBlob",
+            headers={
+                "Authorization":  f"Bearer {token}",
+                "Content-Type":   content_type,
+            },
+            data=data,
+            timeout=30,
+        )
+        if resp.status_code == 200:
+            return resp.json().get("blob")
+        log.debug("Blob upload failed HTTP %s", resp.status_code)
+    except Exception as exc:
+        log.debug("Image upload skipped (%s)", exc)
+    return None
+
+
+def create_post(session: dict, text: str, url: str, title: str, description: str = "", image_url: str = "") -> bool:
+    """Create a Bluesky post with an embedded link card and optional thumbnail."""
     did   = session["did"]
     token = session["accessJwt"]
 
@@ -182,15 +210,23 @@ def create_post(session: dict, text: str, url: str, title: str, description: str
     if facets:
         record["facets"] = facets
 
-    # Embed external link card — use frontmatter description for richer preview
+    # Upload thumbnail if we have an image URL
+    thumb_blob = None
+    if image_url:
+        thumb_blob = upload_image_blob(token, image_url)
+
+    # Embed external link card with optional thumbnail
     card_description = description[:300] if description else ""
+    external: dict = {
+        "uri":         url,
+        "title":       title[:300],
+        "description": card_description,
+    }
+    if thumb_blob:
+        external["thumb"] = thumb_blob
     record["embed"] = {
-        "$type": "app.bsky.embed.external",
-        "external": {
-            "uri":         url,
-            "title":       title[:300],
-            "description": card_description,
-        },
+        "$type":    "app.bsky.embed.external",
+        "external": external,
     }
 
     resp = requests.post(
@@ -318,7 +354,8 @@ def main() -> None:
         text        = build_post_text(post)
         title       = post["fm"].get("title", "").strip('"').strip("'")
         description = post["fm"].get("description", "").strip('"').strip("'")
-        if create_post(session, text, post["url"], title, description):
+        image_url   = post["fm"].get("image", "").strip('"').strip("'")
+        if create_post(session, text, post["url"], title, description, image_url):
             ok += 1
         time.sleep(2)  # be polite to the API
 
