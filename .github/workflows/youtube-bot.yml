@@ -49,8 +49,22 @@ jobs:
           pip install -r requirements.txt
 
       - name: "Restaurar token do YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
         run: |
-          echo '${{ secrets.YOUTUBE_TOKEN }}' > token.json
+          if [ -z "$YOUTUBE_TOKEN" ]; then
+            echo "❌ YOUTUBE_TOKEN secret não está configurado."
+            echo "   Rode auth_youtube.py localmente e cole o conteúdo de token.json"
+            echo "   em Settings → Secrets → Actions → YOUTUBE_TOKEN"
+            exit 1
+          fi
+          printf '%s' "$YOUTUBE_TOKEN" > token.json
+          # Sanity check: confirm it parses as JSON.
+          if ! python -c "import json,sys; json.load(open('token.json'))"; then
+            echo "❌ YOUTUBE_TOKEN secret não é JSON válido."
+            exit 1
+          fi
+          echo "✅ token.json restaurado"
 
       - name: "Restaurar marcadores de videos processados"
         run: |
@@ -125,15 +139,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Atualizar YOUTUBE_TOKEN secret"
-        if: always()
-        continue-on-error: true
-        run: |
-          if [ -f token.json ]; then
-            gh secret set YOUTUBE_TOKEN < token.json
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Note: we don't try to push token.json back to the YOUTUBE_TOKEN
+      # secret here — the default GITHUB_TOKEN can't modify repository
+      # secrets, so the previous `gh secret set` step always failed
+      # silently. Google's refresh_token doesn't normally expire, so a
+      # one-time setup of the secret is enough. If you ever need to
+      # rotate it: run `python auth_youtube.py` locally and paste the
+      # contents of token.json into the YOUTUBE_TOKEN repo secret.
 
       - name: "Log de execucao"
         if: always()

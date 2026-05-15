@@ -1706,6 +1706,10 @@ def build_frontmatter(
     crypto_prices:     dict | None = None,
     hook:              str  = "",
     related_post:      str  = "",
+    tl_dr:             str  = "",
+    lead:              str  = "",
+    content_type:      str  = "",
+    entities:          list | None = None,
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1783,6 +1787,24 @@ lang: "en"
     # ── Related post for cross-linking ───────────────────────────
     if related_post:
         front += f'related_post: "{related_post}"\n'
+    # ── TL;DR (renders in tl-dr-box on post page) ────────────────
+    if tl_dr:
+        front += f'tl_dr: "{sanitize_text(tl_dr[:280])}"\n'
+    # ── Lead paragraph (post.html post-lead) ─────────────────────
+    if lead:
+        front += f'lead: "{sanitize_text(lead[:400])}"\n'
+    # ── Article content type (drives news:genres in sitemap) ─────
+    valid_types = {"news", "breaking", "analysis", "explainer", "opinion", "feature"}
+    if content_type and content_type.strip().lower() in valid_types:
+        front += f'content_type: "{content_type.strip().lower()}"\n'
+    # ── Named entities (renders as entity chips on post page) ────
+    if entities:
+        clean = [sanitize_text(str(e))[:60] for e in entities[:8] if e]
+        clean = [e for e in clean if e]
+        if clean:
+            front += "entities:\n"
+            for e in clean:
+                front += f'  - "{e.replace(chr(34), chr(39))}"\n'
     front += "---\n"
     return front
 
@@ -2687,6 +2709,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 crypto_prices     = crypto_prices_for_post,
                 hook              = ai.get("hook", ""),
                 related_post      = related_post_url,
+                tl_dr             = ai.get("tl_dr", ""),
+                lead              = ai.get("lead", ""),
+                content_type      = ai.get("content_type", ""),
+                entities          = ai.get("entities", []),
             )
 
             post_content = build_content(
@@ -2853,6 +2879,10 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         crypto_prices     = crypto_prices_for_post,
         hook              = ai.get("hook", ""),
         related_post      = related_post_url,
+        tl_dr             = ai.get("tl_dr", ""),
+        lead              = ai.get("lead", ""),
+        content_type      = ai.get("content_type", ""),
+        entities          = ai.get("entities", []),
     )
 
     post_content = build_content(
