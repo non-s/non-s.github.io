@@ -24,53 +24,7 @@ from datetime import datetime, timezone
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-# ── AI Text — Groq (primary) + Pollinations (free fallback) ──────
-_http = requests.Session()
-_http.headers.update({"User-Agent": "GlobalBR-VideoBot/2.0"})
-GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL            = "llama-3.3-70b-versatile"
-POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
-
-def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 25) -> str:
-    groq_key = os.environ.get("GROQ_API_KEY", "")
-    if groq_key:
-        try:
-            r = _http.post(
-                GROQ_API_URL,
-                json={
-                    "model": GROQ_MODEL,
-                    "messages": [
-                        {"role": "system", "content": system or "You are a professional broadcast journalist and YouTube SEO expert."},
-                        {"role": "user",   "content": prompt},
-                    ],
-                    "temperature": 0.7,
-                    "max_tokens": 400,
-                },
-                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
-                timeout=timeout,
-            )
-            r.raise_for_status()
-            return r.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
-            pass
-    try:
-        payload = {
-            "messages": [
-                {"role": "system", "content": system or "You are a professional broadcast journalist and YouTube SEO expert."},
-                {"role": "user",   "content": prompt},
-            ],
-            "model": "openai",
-            "seed":  seed or abs(hash(prompt)) % 9999,
-            "private": True,
-        }
-        r = _http.post(POLLINATIONS_TEXT_URL, json=payload, timeout=timeout)
-        r.raise_for_status()
-        data = r.json()
-        if isinstance(data, dict) and "choices" in data:
-            return data["choices"][0]["message"]["content"].strip()
-        return str(data).strip()
-    except Exception:
-        return ""
+from utils.ai_helper import ai_text as _ai_text
 
 # ── Config ────────────────────────────────────────────────────────
 VIDEOS_DIR      = Path("_videos")

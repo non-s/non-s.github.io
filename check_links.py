@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import re
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -20,9 +21,11 @@ POSTS_DIR   = Path("_posts")
 DATA_DIR    = Path("_data")
 REPORT_FILE = DATA_DIR / "link_report.json"
 CACHE_FILE  = DATA_DIR / "link_cache.json"
-LOOKBACK_DAYS = 14   # check posts up to 2 weeks old
-MAX_POSTS     = 100
-TIMEOUT       = 12
+LOOKBACK_DAYS  = 14    # check posts up to 2 weeks old
+CACHE_TTL_DAYS = 30   # re-test URLs older than this
+MAX_POSTS      = 100
+TIMEOUT        = 12
+REQUEST_DELAY  = 0.3  # seconds between requests to avoid rate limiting
 
 _USER_AGENTS = [
     "Mozilla/5.0 (compatible; GlobalBRNews/1.0; +https://non-s.github.io)",
@@ -32,10 +35,12 @@ _USER_AGENTS = [
 
 
 def _load_cache() -> dict[str, dict]:
-    """Load previously checked URLs. Keys are URLs, values are {status, date}."""
+    """Load previously checked URLs, dropping entries older than CACHE_TTL_DAYS."""
     try:
         if CACHE_FILE.exists():
-            return json.loads(CACHE_FILE.read_text(encoding="utf-8"))
+            raw   = json.loads(CACHE_FILE.read_text(encoding="utf-8"))
+            cutoff = (date.today() - timedelta(days=CACHE_TTL_DAYS)).isoformat()
+            return {url: v for url, v in raw.items() if v.get("date", "") >= cutoff}
     except Exception:
         pass
     return {}
@@ -90,13 +95,13 @@ def main() -> None:
             if not url.startswith("http"):
                 continue
 
-            # Cache hit — skip re-check if checked today and was OK
             if url in cache:
                 cached = cache[url]
                 if cached.get("date") == today_str and cached.get("status", 0) < 400:
                     cached_ok.append({"file": fname, "url": url, "status": cached["status"]})
                     continue
 
+            time.sleep(REQUEST_DELAY)
             status = _check_url(url)
             cache[url] = {"status": status, "date": today_str}
 
