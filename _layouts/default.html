@@ -33,14 +33,28 @@
     </div>
   </div>
 
+  <!-- ── DATELINE BAR ──────────────────────────────────────── -->
+  <div class="dateline-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="dateline-date">{{ 'now' | date: "%A, %B %-d, %Y" }}</span>
+      <span class="dateline-meta">
+        <a href="{{ '/feed.xml' | relative_url }}" class="dateline-link"><i class="bi bi-rss-fill"></i> RSS</a>
+        <span class="dateline-sep">·</span>
+        <a href="{{ '/about/' | relative_url }}" class="dateline-link">About</a>
+        <span class="dateline-sep">·</span>
+        <a href="{{ '/contact/' | relative_url }}" class="dateline-link">Contact</a>
+      </span>
+    </div>
+  </div>
+
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
     <div class="container">
 
       <a class="navbar-brand" href="{{ '/' | relative_url }}">
         <img src="{{ '/assets/images/logo.png' | relative_url }}"
-             alt="GlobalBR News" height="36"
-             style="height:36px;width:auto;object-fit:contain;">
+             alt="GlobalBR News" height="40"
+             style="height:40px;width:auto;object-fit:contain;">
       </a>
 
       <button class="navbar-toggler border-0" type="button"
@@ -52,97 +66,106 @@
       </button>
 
       <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2 gb-mainnav">
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/' %}active{% endif %}"
-               href="{{ '/' | relative_url }}">Home</a>
+            <a class="nav-link {% if page.url == '/world/' %}active{% endif %}" href="{{ '/world/' | relative_url }}">World</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/world/' | relative_url }}">World</a>
+            <a class="nav-link {% if page.url == '/politics/' %}active{% endif %}" href="{{ '/politics/' | relative_url }}">Politics</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/politics/' | relative_url }}">Politics</a>
+            <a class="nav-link {% if page.url == '/business/' %}active{% endif %}" href="{{ '/business/' | relative_url }}">Business</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/war/' | relative_url }}">War</a>
+            <a class="nav-link {% if page.url == '/technology/' %}active{% endif %}" href="{{ '/technology/' | relative_url }}">Tech</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/business/' | relative_url }}">Business</a>
+            <a class="nav-link {% if page.url == '/science/' %}active{% endif %}" href="{{ '/science/' | relative_url }}">Science</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/videos/' | relative_url }}">Videos</a>
+            <a class="nav-link {% if page.url == '/sports/' %}active{% endif %}" href="{{ '/sports/' | relative_url }}">Sports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/reading-list/' | relative_url }}"><i class="bi bi-bookmark"></i> Saved</a>
+            <a class="nav-link {% if page.url == '/videos/' %}active{% endif %}" href="{{ '/videos/' | relative_url }}">Videos</a>
           </li>
-          <li style="position:relative;list-style:none;">
-            <a class="nav-link" href="#" id="gbMoreBtn"
-               style="cursor:pointer;display:flex;align-items:center;gap:.3rem;">
-              More <i class="bi bi-chevron-down" style="font-size:.6rem;transition:transform .2s;"></i>
+          <li class="nav-item gb-mega-wrap">
+            <a class="nav-link" href="#" id="gbMoreBtn" aria-haspopup="true" aria-expanded="false">
+              Sections <i class="bi bi-chevron-down" style="font-size:.6rem;transition:transform .2s;"></i>
             </a>
-            <ul id="gbMoreMenu"
-                style="display:none;position:absolute;top:calc(100% + 6px);left:0;
-                       background:rgba(8,12,23,.99);border:1px solid rgba(255,255,255,.15);
-                       border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.75);
-                       padding:.4rem 0;min-width:200px;z-index:9999;
-                       list-style:none !important;margin:0;">
-              <li style="list-style:none;"><a href="{{ '/science/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔬 Science</a></li>
-              <li style="list-style:none;"><a href="{{ '/health/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🏥 Health</a></li>
-              <li style="list-style:none;"><a href="{{ '/sports/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">⚽ Sports</a></li>
-              <li style="list-style:none;"><a href="{{ '/food/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🍕 Food</a></li>
-              <li style="list-style:none;"><a href="{{ '/entertainment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🎬 Entertainment</a></li>
-              <li style="list-style:none;"><a href="{{ '/environment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🌱 Environment</a></li>
-              <li style="list-style:none;"><a href="{{ '/travel/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">✈️ Travel</a></li>
-              <li style="list-style:none;border-top:1px solid rgba(255,255,255,.1);margin:.3rem 0;"></li>
-              <li style="list-style:none;"><a href="{{ '/technology/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">💻 Technology</a></li>
-              <li style="list-style:none;"><a href="{{ '/ai/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🤖 AI</a></li>
-              <li style="list-style:none;"><a href="{{ '/security/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔒 Security</a></li>
-              <li style="list-style:none;border-top:1px solid rgba(255,255,255,.1);margin:.3rem 0;"></li>
-              <li style="list-style:none;"><a href="{{ '/series/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📚 Series</a></li>
-              <li style="list-style:none;"><a href="{{ '/popular/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">⭐ Popular</a></li>
-              <li style="list-style:none;"><a href="{{ '/tags/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🏷️ Tags</a></li>
-              <li style="list-style:none;"><a href="{{ '/contact/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">✉️ Contact</a></li>
-              <li style="list-style:none;"><a href="{{ '/editorial-policy/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📋 Editorial Policy</a></li>
-              <li style="list-style:none;"><a href="{{ '/archive/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📅 Archive</a></li>
-            </ul>
+            <div id="gbMegaMenu" class="gb-mega-menu" aria-hidden="true">
+              <div class="gb-mega-grid">
+                {% assign mega_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security" | split: "," %}
+                {% for cat in mega_cats %}
+                  {% assign cat_meta = site.data.categories[cat] %}
+                  {% assign cat_latest = site.posts | where_exp: "p", "p.categories contains cat" | limit: 1 %}
+                  <div class="gb-mega-col">
+                    <a href="/{{ cat }}/" class="gb-mega-cat">
+                      <span class="gb-mega-icon">{{ cat_meta.icon }}</span>
+                      <span class="gb-mega-name">{{ cat_meta.title | default: cat | capitalize }}</span>
+                    </a>
+                    {% if cat_latest.size > 0 %}
+                      {% assign lp = cat_latest[0] %}
+                      <a href="{{ lp.url | relative_url }}" class="gb-mega-lead">
+                        {{ lp.title | truncate: 65 }}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="gb-mega-footer">
+                <a href="{{ '/series/' | relative_url }}">📚 Series</a>
+                <a href="{{ '/popular/' | relative_url }}">⭐ Most Popular</a>
+                <a href="{{ '/tags/' | relative_url }}">🏷️ Topics</a>
+                <a href="{{ '/archive/' | relative_url }}">📅 Archive</a>
+                <a href="{{ '/editorial-policy/' | relative_url }}">📋 Editorial Policy</a>
+                <a href="{{ '/food/' | relative_url }}">🍕 Food</a>
+              </div>
+            </div>
           </li>
-          <script>
-          (function(){
-            var btn = document.getElementById('gbMoreBtn');
-            var menu = document.getElementById('gbMoreMenu');
-            var icon = btn ? btn.querySelector('i') : null;
-            if (!btn || !menu) return;
-            btn.addEventListener('click', function(e){
-              e.preventDefault();
-              var open = menu.style.display === 'block';
-              menu.style.display = open ? 'none' : 'block';
-              if (icon) icon.style.transform = open ? '' : 'rotate(180deg)';
-            });
-            document.addEventListener('click', function(e){
-              if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.style.display = 'none';
-                if (icon) icon.style.transform = '';
-              }
-            });
-          })();
-          </script>
         </ul>
 
-        <a class="nav-link me-1" href="{{ '/search/' | relative_url }}" aria-label="Search">🔍 Search</a>
-        <form class="d-flex gap-2" role="search"
+        <form class="d-flex gap-2 gb-nav-search" role="search"
               action="{{ '/search/' | relative_url }}" method="get">
           <input class="form-control search-input" type="search"
-                 name="q" placeholder="Search news…" aria-label="Search">
-          <button class="btn search-btn" type="submit">
+                 name="q" placeholder="Search…" aria-label="Search news">
+          <button class="btn search-btn" type="submit" aria-label="Submit search">
             <i class="bi bi-search"></i>
           </button>
         </form>
+        <a class="nav-link gb-saved-link" href="{{ '/reading-list/' | relative_url }}" aria-label="Reading list" title="Saved articles">
+          <i class="bi bi-bookmark"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
           <i class="bi bi-moon-fill" id="theme-icon"></i>
         </button>
       </div>
     </div>
   </nav>
+  <script>
+  (function(){
+    var btn = document.getElementById('gbMoreBtn');
+    var menu = document.getElementById('gbMegaMenu');
+    var icon = btn ? btn.querySelector('i.bi-chevron-down') : null;
+    var wrap = btn ? btn.closest('.gb-mega-wrap') : null;
+    if (!btn || !menu || !wrap) return;
+    function setOpen(open){
+      wrap.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (icon) icon.style.transform = open ? 'rotate(180deg)' : '';
+    }
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      setOpen(!wrap.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e){
+      if (!wrap.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') setOpen(false);
+    });
+  })();
+  </script>
   <script>
   (function(){
     var toggle = document.getElementById('theme-toggle');
