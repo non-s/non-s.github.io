@@ -201,80 +201,129 @@
 
   <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer class="techbr-footer">
-    <div class="container">
+
+    <!-- Trust strip -->
+    <div class="footer-trust-strip">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <i class="bi bi-shield-check"></i>
+            <div>
+              <strong>Editorial Standards</strong>
+              <span>All stories fact-checked &amp; sourced</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-globe-americas"></i>
+            <div>
+              <strong>13 Categories · 241+ Stories</strong>
+              <span>World news, every hour</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-rss-fill"></i>
+            <div>
+              <strong>Updated 5× Daily</strong>
+              <span>6h · 10h · 14h · 18h · 22h UTC</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-people-fill"></i>
+            <div>
+              <strong>5,000+ Subscribers</strong>
+              <span>Join the daily briefing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-main">
       <div class="row g-4">
 
         <!-- About -->
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-12">
           <div class="footer-brand">
             <img src="{{ '/assets/images/logo.png' | relative_url }}"
-                 alt="GlobalBR News" height="40"
-                 style="height:40px;width:auto;object-fit:contain;filter:brightness(1.1);">
+                 alt="GlobalBR News" height="44"
+                 style="height:44px;width:auto;object-fit:contain;filter:brightness(1.1);">
           </div>
           <p class="footer-desc">
             World news portal maintained by
-            <strong style="color:rgba(255,255,255,.7);">Julio</strong>,
-            automatically updated 5× per day with the biggest global news sources.
+            <strong style="color:rgba(255,255,255,.78);">Julio (non-s)</strong>,
+            automatically curated 5× per day from the biggest global news sources.
           </p>
           <div class="footer-social">
-            <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed">
+            <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed" aria-label="RSS Feed">
               <i class="bi bi-rss-fill"></i>
             </a>
             <a href="https://github.com/non-s" target="_blank" rel="noopener"
-               class="social-btn" title="GitHub">
+               class="social-btn" title="GitHub" aria-label="GitHub">
               <i class="bi bi-github"></i>
             </a>
             <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener"
-               class="social-btn" title="YouTube">
+               class="social-btn" title="YouTube" aria-label="YouTube">
               <i class="bi bi-youtube"></i>
+            </a>
+            <a href="https://bsky.app/profile/globalbrnews.bsky.social" target="_blank" rel="noopener"
+               class="social-btn" title="Bluesky" aria-label="Bluesky">
+              <i class="bi bi-cloud"></i>
             </a>
           </div>
         </div>
 
-        <!-- Categories -->
+        <!-- Sections -->
         <div class="col-lg-2 col-md-3 col-6">
-          <p class="footer-heading">Categories</p>
+          <p class="footer-heading">Sections</p>
           <ul class="footer-links">
             <li><a href="{{ '/world/' | relative_url }}">World</a></li>
             <li><a href="{{ '/politics/' | relative_url }}">Politics</a></li>
-            <li><a href="{{ '/war/' | relative_url }}">War</a></li>
             <li><a href="{{ '/business/' | relative_url }}">Business</a></li>
-            <li><a href="{{ '/science/' | relative_url }}">Science</a></li>
-            <li><a href="{{ '/health/' | relative_url }}">Health</a></li>
-            <li><a href="{{ '/sports/' | relative_url }}">Sports</a></li>
-            <li><a href="{{ '/food/' | relative_url }}">Food</a></li>
-            <li><a href="{{ '/entertainment/' | relative_url }}">Entertainment</a></li>
             <li><a href="{{ '/technology/' | relative_url }}">Technology</a></li>
-            <li><a href="{{ '/ai/' | relative_url }}">AI</a></li>
-            <li><a href="{{ '/security/' | relative_url }}">Security</a></li>
+            <li><a href="{{ '/science/' | relative_url }}">Science</a></li>
+            <li><a href="{{ '/sports/' | relative_url }}">Sports</a></li>
+            <li><a href="{{ '/health/' | relative_url }}">Health</a></li>
           </ul>
         </div>
 
-        <!-- Links -->
-        <div class="col-lg-2 col-md-3 col-6">
-          <p class="footer-heading">Links</p>
-          <ul class="footer-links">
-            <li><a href="{{ '/about/' | relative_url }}">About</a></li>
-            <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
-            <li><a href="{{ '/privacy/' | relative_url }}">Privacy</a></li>
-            <li><a href="{{ '/editorial-policy/' | relative_url }}">Editorial Policy</a></li>
-            <li><a href="{{ '/corrections/' | relative_url }}">Corrections</a></li>
-            <li><a href="{{ '/donate/' | relative_url }}">Support Us</a></li>
-            <li><a href="{{ '/videos/' | relative_url }}">Videos</a></li>
-            <li><a href="{{ '/reading-list/' | relative_url }}">Reading List</a></li>
-            <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
-            <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
-          </ul>
-        </div>
-
-        <!-- More -->
+        <!-- More Sections -->
         <div class="col-lg-2 col-md-3 col-6">
           <p class="footer-heading">More</p>
           <ul class="footer-links">
-            <li><a href="{{ '/series/' | relative_url }}">Series</a></li>
-            <li><a href="{{ '/popular/' | relative_url }}">Popular</a></li>
-            <li><a href="{{ '/advertise/' | relative_url }}">Advertise</a></li>
+            <li><a href="{{ '/war/' | relative_url }}">War &amp; Conflict</a></li>
+            <li><a href="{{ '/ai/' | relative_url }}">AI</a></li>
+            <li><a href="{{ '/security/' | relative_url }}">Cybersecurity</a></li>
+            <li><a href="{{ '/environment/' | relative_url }}">Environment</a></li>
+            <li><a href="{{ '/food/' | relative_url }}">Food &amp; Culture</a></li>
+            <li><a href="{{ '/entertainment/' | relative_url }}">Entertainment</a></li>
+            <li><a href="{{ '/videos/' | relative_url }}">Videos</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="col-lg-2 col-md-3 col-6">
+          <p class="footer-heading">Company</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/about/' | relative_url }}">About</a></li>
+            <li><a href="{{ '/editorial-policy/' | relative_url }}">Editorial Policy</a></li>
+            <li><a href="{{ '/corrections/' | relative_url }}">Corrections</a></li>
             <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
+            <li><a href="{{ '/advertise/' | relative_url }}">Advertise</a></li>
+            <li><a href="{{ '/donate/' | relative_url }}">Support Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div class="col-lg-2 col-md-3 col-6">
+          <p class="footer-heading">Resources</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
+            <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
+            <li><a href="{{ '/reading-list/' | relative_url }}">Reading List</a></li>
+            <li><a href="{{ '/popular/' | relative_url }}">Most Popular</a></li>
+            <li><a href="{{ '/archive/' | relative_url }}">Archive</a></li>
+            <li><a href="{{ '/tags/' | relative_url }}">Topics</a></li>
+            <li><a href="{{ '/privacy/' | relative_url }}">Privacy</a></li>
           </ul>
         </div>
       </div>
@@ -282,14 +331,18 @@
       <hr class="footer-divider">
 
       <div class="footer-bottom">
-        <span>
-          © {{ 'now' | date: "%Y" }} <strong style="color:rgba(255,255,255,.5);">GlobalBR News</strong>
-          — Maintained by <a href="https://github.com/non-s">Julio (non-s)</a>
-        </span>
-        <span>
-          Content curated from public RSS feeds. All rights belong to original authors.
-          Made with ❤️ and Jekyll.
-        </span>
+        <div class="footer-bottom-left">
+          <span>© {{ 'now' | date: "%Y" }} <strong>GlobalBR News</strong>. All rights reserved.</span>
+          <span class="footer-bottom-sep">·</span>
+          <span>Curated from public RSS feeds. Original copyright belongs to source authors.</span>
+        </div>
+        <div class="footer-bottom-right">
+          <a href="{{ '/privacy/' | relative_url }}">Privacy</a>
+          <span class="footer-bottom-sep">·</span>
+          <a href="{{ '/editorial-policy/' | relative_url }}">Terms</a>
+          <span class="footer-bottom-sep">·</span>
+          <a href="https://github.com/non-s">@non-s</a>
+        </div>
       </div>
 
     </div>
