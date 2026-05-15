@@ -42,6 +42,10 @@ layout: default
 
       <h1 class="post-title">{{ page.title }}</h1>
 
+      {% if page.breaking %}
+      <div class="breaking-badge">🔴 BREAKING</div>
+      {% endif %}
+
       {% if page.description %}
       <p class="post-deck">{{ page.description }}</p>
       {% endif %}
