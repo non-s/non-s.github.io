@@ -4,86 +4,102 @@ title: "GlobalBR News — World News Every Hour"
 description: "GlobalBR News — World news every hour covering politics, war, science, health, sports, food, entertainment and technology."
 ---
 
+{% if paginator.page == 1 %}
 <!-- ============================================================
      SITE BANNER
      ============================================================ -->
-<div style="width:100%;background:#000a14;line-height:0;">
+<div class="site-banner">
   <img src="{{ '/assets/images/banner.jpg' | relative_url }}"
        alt="GlobalBR News — World News Every Hour"
-       loading="lazy"
-       style="width:100%;max-height:320px;object-fit:cover;object-position:center;display:block;">
+       loading="lazy">
 </div>
+{% endif %}
 
 <!-- ============================================================
-     HERO — Post featured
+     TOP STORIES — Hero (left) + 4 cards (right)
+     NYT/CNN-style above-the-fold layout
      ============================================================ -->
-{% assign featured = paginator.posts | first %}
-{% if featured %}
-<section class="hero-section">
+{% assign hero_post = paginator.posts | first %}
+{% assign top_stories = paginator.posts | offset: 1 | limit: 4 %}
+{% if hero_post %}
+<section class="top-stories-section">
   <div class="container">
-    <div class="row align-items-center g-5">
+    <div class="top-stories-header">
+      <span class="section-title">Top Stories</span>
+      <span class="top-stories-time">
+        <i class="bi bi-clock"></i>
+        Updated {{ 'now' | date: "%H:%M UTC" }}
+      </span>
+    </div>
 
-      <div class="col-lg-7">
-        <!-- Eyebrow badge -->
-        <div class="hero-eyebrow">
-          {% for cat in featured.categories limit:1 %}{{ cat | upcase }}{% endfor %}
-        </div>
+    <div class="top-stories-grid">
 
-        <!-- Título -->
-        <h1>
-          <a href="{{ featured.url | relative_url }}">{{ featured.title }}</a>
-        </h1>
-
-        <!-- Excerpt -->
-        <p class="hero-excerpt">
-          {{ featured.description | default: featured.excerpt | strip_html | truncate: 160 }}
-        </p>
-
-        <!-- Meta -->
-        <div class="hero-meta">
-          <span class="meta-item">
-            <i class="bi bi-calendar3"></i>
-            {{ featured.date | date: "%B %d, %Y" }}
-          </span>
-          <span class="meta-divider"></span>
-          <span class="meta-item">
-            <i class="bi bi-person"></i>
-            {{ featured.author | default: site.author.name }}
-          </span>
-          {% assign words = featured.content | strip_html | number_of_words %}
-          {% assign rt = words | divided_by: 200 | plus: 1 %}
-          <span class="meta-divider"></span>
-          <span class="meta-item">
-            <i class="bi bi-clock"></i>
-            {{ rt }} min
-          </span>
-        </div>
-
-        <a href="{{ featured.url | relative_url }}" class="btn-hero">
-          Read full article
-          <span class="arrow"><i class="bi bi-arrow-right"></i></span>
-        </a>
-      </div>
-
-      <!-- Imagem ou placeholder visual -->
-      <div class="col-lg-5 d-none d-lg-block">
-        {% if featured.image %}
-          <img src="{{ featured.image | relative_url }}"
-               alt="{{ featured.title | escape }}"
-               width="600" height="290"
-               class="img-fluid rounded-3"
-               loading="lazy"
-               onerror="this.parentElement.innerHTML='<div class=hero-img-placeholder><div class=placeholder-icon>⚡</div></div>'"
-               style="width:100%;height:290px;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.5);">
-        {% else %}
-          <div class="hero-img-placeholder">
-            <div class="placeholder-icon">⚡</div>
-            <div style="text-align:center;">
-              <p style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.4);margin:0;">GlobalBR News</p>
-              <p style="font-size:.78rem;color:rgba(255,255,255,.2);margin:0;">Featured Technology</p>
+      <!-- HERO STORY (left) -->
+      <article class="top-hero">
+        <a href="{{ hero_post.url | relative_url }}" class="top-hero-imglink">
+          {% if hero_post.image %}
+            <img src="{{ hero_post.image | relative_url }}"
+                 alt="{{ hero_post.image_alt | default: hero_post.title | escape }}"
+                 width="800" height="500"
+                 loading="eager"
+                 class="top-hero-img">
+          {% else %}
+            <div class="top-hero-img top-hero-img--placeholder">
+              <div class="placeholder-icon">⚡</div>
             </div>
+          {% endif %}
+          {% if hero_post.breaking %}<span class="top-hero-breaking">● BREAKING</span>{% endif %}
+        </a>
+        <div class="top-hero-body">
+          {% for cat in hero_post.categories limit:1 %}
+            <a href="/{{ cat }}/" class="top-hero-eyebrow">{{ cat | upcase }}</a>
+          {% endfor %}
+          <h1 class="top-hero-title">
+            <a href="{{ hero_post.url | relative_url }}">{{ hero_post.title }}</a>
+          </h1>
+          <p class="top-hero-deck">
+            {{ hero_post.description | default: hero_post.excerpt | strip_html | truncate: 200 }}
+          </p>
+          <div class="top-hero-meta">
+            <span><i class="bi bi-person-circle"></i> {{ hero_post.author | default: site.author.name }}</span>
+            <span class="meta-divider"></span>
+            <time datetime="{{ hero_post.date | date_to_xmlschema }}">
+              {{ hero_post.date | date: "%b %-d, %Y" }}
+            </time>
+            {% assign words = hero_post.content | strip_html | number_of_words %}
+            {% assign rt = words | divided_by: 200 | plus: 1 %}
+            <span class="meta-divider"></span>
+            <span>{{ rt }} min read</span>
           </div>
-        {% endif %}
+        </div>
+      </article>
+
+      <!-- 4 SECONDARY STORIES (right column, stacked) -->
+      <div class="top-secondary">
+        {% for p in top_stories %}
+        <article class="top-sec-card">
+          <a href="{{ p.url | relative_url }}" class="top-sec-imglink">
+            {% if p.image %}
+              <img src="{{ p.image | relative_url }}"
+                   alt="{{ p.image_alt | default: p.title | escape }}"
+                   width="220" height="140" loading="lazy">
+            {% else %}
+              <div class="top-sec-img-placeholder">📰</div>
+            {% endif %}
+          </a>
+          <div class="top-sec-body">
+            {% for cat in p.categories limit:1 %}
+              <a href="/{{ cat }}/" class="top-sec-cat">{{ cat | upcase }}</a>
+            {% endfor %}
+            <h3 class="top-sec-title">
+              <a href="{{ p.url | relative_url }}">{{ p.title | truncate: 110 }}</a>
+            </h3>
+            <time class="top-sec-time" datetime="{{ p.date | date_to_xmlschema }}">
+              {{ p.date | date: "%b %-d" }}
+            </time>
+          </div>
+        </article>
+        {% endfor %}
       </div>
 
     </div>
@@ -91,22 +107,23 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 </section>
 {% endif %}
 
+{% if paginator.page == 1 %}
 <!-- ============================================================
-     FEATURED POST
+     FEATURED EDITOR'S PICK (sticky featured post)
      ============================================================ -->
-{% if paginator.page == 1 %}{% assign featured = site.posts | where: "featured", true | limit: 1 %}{% else %}{% assign featured = "" | split: "" %}{% endif %}
-{% if featured.size > 0 %}
-{% assign f = featured[0] %}
+{% assign featured_list = site.posts | where: "featured", true | limit: 1 %}
+{% if featured_list.size > 0 %}
+{% assign f = featured_list[0] %}
 <section class="featured-post">
   <div class="container">
     <div class="featured-inner">
       {% if f.image %}
       <div class="featured-img-wrap">
-        <img src="{{ f.image }}" alt="{{ f.title | escape }}" loading="eager" class="featured-img">
+        <img src="{{ f.image }}" alt="{{ f.title | escape }}" loading="lazy" class="featured-img">
       </div>
       {% endif %}
       <div class="featured-content">
-        <span class="featured-badge">Featured</span>
+        <span class="featured-badge">Editor's Pick</span>
         {% for cat in f.categories limit:1 %}
         <a href="{{ '/' | append: cat | relative_url }}" class="post-cat-badge">{{ cat | upcase }}</a>
         {% endfor %}
@@ -124,11 +141,12 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
      ============================================================ -->
 {% assign today = 'now' | date: '%Y-%m-%d' %}
 {% assign categories_list = "world,technology,politics,business,science,health,sports,entertainment,environment,ai" | split: "," %}
-
-{% if paginator.page == 1 %}
 <section class="trending-section py-3 mb-4">
   <div class="container">
-    <h2 class="trending-title">🔥 Trending Today</h2>
+    <div class="trending-head">
+      <span class="trending-pulse"></span>
+      <h2 class="trending-title">Trending Today</h2>
+    </div>
     <div class="trending-pills d-flex flex-wrap gap-2">
       {% for cat in categories_list %}
         {% assign cat_posts_today = site.posts | where_exp: "p", "p.categories contains cat" | where_exp: "p", "p.date contains today" %}
@@ -142,27 +160,111 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
   </div>
 </section>
-{% endif %}
 
 <!-- ============================================================
-     CORPO — GRID + SIDEBAR
+     CATEGORY SECTION ROWS — World, Technology, Business, Science
      ============================================================ -->
-<div class="container" style="padding-top:2.5rem;padding-bottom:1rem;">
+{% assign section_cats = "world,technology,business,science" | split: "," %}
+{% for sec_cat in section_cats %}
+  {% assign sec_meta = site.data.categories[sec_cat] %}
+  {% assign sec_posts = site.posts | where_exp: "p", "p.categories contains sec_cat" | limit: 4 %}
+  {% if sec_posts.size >= 3 %}
+  <section class="cat-section">
+    <div class="container">
+      <div class="cat-section-header">
+        <h2 class="cat-section-title">
+          <span class="cat-section-icon">{{ sec_meta.icon }}</span>
+          {{ sec_meta.title | default: sec_cat | capitalize }}
+        </h2>
+        <a href="/{{ sec_cat }}/" class="cat-section-link">
+          See all {{ sec_cat | capitalize }} <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+      <div class="cat-section-grid">
+        {% for p in sec_posts %}
+        <article class="cat-card">
+          <a href="{{ p.url | relative_url }}" class="cat-card-imglink">
+            {% if p.image %}
+              <img src="{{ p.image | relative_url }}"
+                   alt="{{ p.image_alt | default: p.title | escape }}"
+                   loading="lazy" width="320" height="200">
+            {% else %}
+              <div class="cat-card-img-placeholder">{{ sec_meta.icon }}</div>
+            {% endif %}
+          </a>
+          <div class="cat-card-body">
+            <h3 class="cat-card-title">
+              <a href="{{ p.url | relative_url }}">{{ p.title | truncate: 90 }}</a>
+            </h3>
+            <time class="cat-card-time" datetime="{{ p.date | date_to_xmlschema }}">
+              {{ p.date | date: "%b %-d" }}
+            </time>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+{% endfor %}
+
+<!-- ============================================================
+     LATEST VIDEOS (carousel)
+     ============================================================ -->
+{% assign video_posts = site.posts | where_exp: "p", "p.youtube_id" | limit: 6 %}
+{% if video_posts.size >= 3 %}
+<section class="cat-section videos-section">
+  <div class="container">
+    <div class="cat-section-header">
+      <h2 class="cat-section-title">
+        <span class="cat-section-icon">🎬</span>
+        Latest Videos
+      </h2>
+      <a href="{{ '/videos/' | relative_url }}" class="cat-section-link">
+        All videos <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+    <div class="videos-grid">
+      {% for v in video_posts %}
+      <article class="video-card">
+        <a href="{{ v.url | relative_url }}" class="video-thumb">
+          <img src="https://img.youtube.com/vi/{{ v.youtube_id }}/hqdefault.jpg"
+               alt="{{ v.title | escape }}"
+               loading="lazy" width="320" height="180">
+          <span class="video-play-overlay"><i class="bi bi-play-fill"></i></span>
+        </a>
+        <h3 class="video-card-title">
+          <a href="{{ v.url | relative_url }}">{{ v.title | truncate: 80 }}</a>
+        </h3>
+        <time class="video-card-time">{{ v.date | date: "%b %-d" }}</time>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endif %}{% comment %} end page==1 conditional sections {% endcomment %}
+
+<!-- ============================================================
+     RECENT NEWS — Paginated grid + Sidebar
+     ============================================================ -->
+<div class="container recent-news-container">
   <div class="row g-4">
 
-    <!-- ── Coluna principal ───────────────────────────────── -->
+    <!-- Main column -->
     <div class="col-lg-8">
 
-      <!-- Cabeçalho da seção -->
       <div class="section-header">
-        <h2 class="section-title">Recent News{% if paginator.page > 1 %} — Page {{ paginator.page }}{% endif %}</h2>
-        <a href="{{ '/feed.xml' | relative_url }}"
-           class="tag-pill" style="font-size:.72rem;">
+        <h2 class="section-title">
+          {% if paginator.page == 1 %}Recent News{% else %}Page {{ paginator.page }} of {{ paginator.total_pages }}{% endif %}
+        </h2>
+        <a href="{{ '/feed.xml' | relative_url }}" class="tag-pill" style="font-size:.72rem;">
           <i class="bi bi-rss"></i> RSS
         </a>
       </div>
 
-      <!-- Post Counter -->
+      {% if paginator.page == 1 %}
+      <!-- Post Counter (only on page 1) -->
       {% assign today_str = site.time | date: "%Y-%m-%d" %}
       {% assign today_count = 0 %}
       {% for p in site.posts %}
@@ -178,7 +280,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </span>
       </div>
 
-      <!-- Category Filter (Task 2) -->
+      <!-- Category Filter -->
       <div class="filter-bar" id="cat-filter-bar">
         <button class="filter-btn active" data-cat="all">All</button>
         <button class="filter-btn" data-cat="world">World</button>
@@ -191,7 +293,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         <button class="filter-btn" data-cat="sports">Sports</button>
       </div>
 
-      <!-- Sentiment Filter (Task 3) -->
+      <!-- Sentiment Filter -->
       <div class="filter-bar" id="sent-filter-bar">
         <button class="filter-btn active" data-sent="all">All</button>
         <button class="filter-btn" data-sent="positive">😊 Positive</button>
@@ -199,14 +301,14 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         <button class="filter-btn" data-sent="negative">😔 Negative</button>
       </div>
 
-      <!-- Date Period Filter  (UX feat 4) -->
+      <!-- Date Period Filter -->
       <div class="filter-bar" id="period-filter-bar">
         <button class="filter-btn active" data-period="all">All time</button>
         <button class="filter-btn" data-period="today">Today</button>
         <button class="filter-btn" data-period="week">This week</button>
       </div>
 
-      <!-- Skeleton loader  (UX feat 1) -->
+      <!-- Skeleton loader -->
       <div class="skeleton-grid mb-3" id="skeleton-grid">
         {% for i in (1..6) %}
         <div class="skeleton-card">
@@ -219,15 +321,17 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </div>
         {% endfor %}
       </div>
+      {% endif %}
 
       {% if paginator.page == 1 %}
-        {% assign posts_to_show = paginator.posts | offset: 1 %}
+        {% comment %} On page 1 we already showed hero + 4 secondary in Top Stories; skip those here {% endcomment %}
+        {% assign posts_to_show = paginator.posts | offset: 5 %}
       {% else %}
         {% assign posts_to_show = paginator.posts %}
       {% endif %}
 
       {% if posts_to_show.size > 0 %}
-        <div class="row g-3" id="posts-grid" style="display:none">
+        <div class="row g-3" id="posts-grid"{% if paginator.page == 1 %} style="display:none"{% endif %}>
           {% for post in posts_to_show %}
           <div class="col-md-6 col-lg-4"
                data-category="{{ post.categories | first | downcase }}"
@@ -235,46 +339,45 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                data-pubdate="{{ post.date | date_to_xmlschema }}">
             <article class="news-card h-100" data-pubdate="{{ post.date | date_to_xmlschema }}">
 
-              <!-- Imagem -->
               <div class="card-img-wrapper">
                 {% if post.image %}
                   <a href="{{ post.url | relative_url }}">
                     <img src="{{ post.image | relative_url }}"
-                         alt="{{ post.title | escape }}"
+                         alt="{{ post.image_alt | default: post.title | escape }}"
                          width="400" height="225"
                          loading="lazy">
                   </a>
                 {% else %}
                   <a href="{{ post.url | relative_url }}" class="card-img-placeholder">
                     {% for cat in post.categories limit:1 %}
-                      {% if cat == 'ia' %}🤖
-                      {% elsif cat == 'gadgets' %}📱
-                      {% elsif cat == 'startups' %}🚀
-                      {% elsif cat == 'mobile' %}📲
-                      {% elsif cat == 'seguranca' %}🔐
-                      {% else %}💻{% endif %}
+                      {% if cat == 'ia' or cat == 'ai' %}🤖
+                      {% elsif cat == 'technology' %}💻
+                      {% elsif cat == 'world' %}🌍
+                      {% elsif cat == 'politics' %}🏛️
+                      {% elsif cat == 'war' %}⚔️
+                      {% elsif cat == 'business' %}💼
+                      {% elsif cat == 'science' %}🔬
+                      {% elsif cat == 'health' %}🏥
+                      {% elsif cat == 'sports' %}⚽
+                      {% else %}📰{% endif %}
                     {% endfor %}
                   </a>
                 {% endif %}
               </div>
 
               <div class="card-body">
-                <!-- Categoria -->
                 {% for cat in post.categories limit:1 %}
                   <div class="card-category">{{ cat }}</div>
                 {% endfor %}
 
-                <!-- Título -->
                 <h3 class="card-title card-headline">
                   <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                 </h3>
 
-                <!-- Excerpt -->
                 <p class="card-excerpt">
                   {{ post.description | default: post.excerpt | strip_html | truncate: 100 }}
                 </p>
 
-                <!-- Footer -->
                 <div class="card-footer-row">
                   <span class="card-date">
                     <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
@@ -289,7 +392,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                   </span>
                   <span class="read-time" data-words="{{ post.content | number_of_words }}">· {{ post.content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
                   <a href="{{ post.url | relative_url }}" class="btn-read">
-                    Ler <i class="bi bi-arrow-right"></i>
+                    Read <i class="bi bi-arrow-right"></i>
                   </a>
                   <button class="btn-copy-link" data-url="{{ post.url | absolute_url }}"
                           onclick="copyCardLink(this)" title="Copy link" aria-label="Copy article link">
@@ -304,40 +407,35 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </div>
 
       {% else %}
-        <!-- EMPTY STATE — Aparece enquanto não há mais posts -->
         <div class="empty-state">
           <div class="empty-icon">📡</div>
-          <h4>Aguardando novas notícias</h4>
+          <h4>Awaiting new stories</h4>
           <p style="font-size:.9rem;max-width:380px;margin:.5rem auto 1.5rem;">
-            O robô de notícias roda automaticamente às <strong style="color:rgba(255,255,255,.6);">6h, 10h, 14h, 18h e 22h UTC</strong>.
-            Em breve este espaço estará cheio de notícias de tecnologia!
+            The news bot runs automatically at <strong style="color:rgba(255,255,255,.6);">6h, 10h, 14h, 18h and 22h UTC</strong>.
           </p>
-          <a href="{{ '/feed.xml' | relative_url }}"
-             class="btn-read" style="display:inline-flex;">
-            <i class="bi bi-rss me-1"></i> Assinar Feed RSS
+          <a href="{{ '/feed.xml' | relative_url }}" class="btn-read" style="display:inline-flex;">
+            <i class="bi bi-rss me-1"></i> Subscribe RSS
           </a>
         </div>
       {% endif %}
 
-      <!-- Paginação -->
+      <!-- Pagination -->
       {% if paginator.total_pages > 1 %}
       <div class="pagination-wrap mt-4">
         {% if paginator.previous_page %}
-          <a href="{{ paginator.previous_page_path | relative_url }}" class="page-chip">
+          <a href="{{ paginator.previous_page_path | relative_url }}" class="page-chip" aria-label="Previous page">
             <i class="bi bi-chevron-left"></i>
           </a>
         {% endif %}
         {% for p in (1..paginator.total_pages) %}
           {% if p == 1 %}
-            <a href="{{ '/' | relative_url }}"
-               class="page-chip {% if p == paginator.page %}active{% endif %}">{{ p }}</a>
+            <a href="{{ '/' | relative_url }}" class="page-chip {% if p == paginator.page %}active{% endif %}">{{ p }}</a>
           {% else %}
-            <a href="{{ site.paginate_path | replace: ':num', p | relative_url }}"
-               class="page-chip {% if p == paginator.page %}active{% endif %}">{{ p }}</a>
+            <a href="{{ site.paginate_path | replace: ':num', p | relative_url }}" class="page-chip {% if p == paginator.page %}active{% endif %}">{{ p }}</a>
           {% endif %}
         {% endfor %}
         {% if paginator.next_page %}
-          <a href="{{ paginator.next_page_path | relative_url }}" class="page-chip">
+          <a href="{{ paginator.next_page_path | relative_url }}" class="page-chip" aria-label="Next page">
             <i class="bi bi-chevron-right"></i>
           </a>
         {% endif %}
@@ -345,17 +443,16 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
       {% endif %}
 
     </div>
-    <!-- /col principal -->
 
     <script src="{{ '/assets/js/index.js' | relative_url }}" defer></script>
 
-    <!-- ── SIDEBAR ────────────────────────────────────────── -->
+    <!-- SIDEBAR -->
     <aside class="col-lg-4">
 
       <!-- Most Read -->
       <div class="sidebar-widget">
         <p class="widget-title">
-          <span class="wt-icon" style="background:rgba(249,115,22,.15);">🔥</span>
+          <span class="wt-icon">🔥</span>
           Most Read
         </p>
         <div class="widget-post-list">
@@ -376,15 +473,14 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
       {% if all_tags.size > 0 %}
       <div class="sidebar-widget">
         <p class="widget-title">
-          <span class="wt-icon" style="background:rgba(168,85,247,.15);">🏷️</span>
-          Tags
+          <span class="wt-icon">🏷️</span>
+          Topics
         </p>
         <div class="tags-cloud">
           {% for tag in all_tags limit:20 %}
             {% assign tag_clean = tag | strip %}
             {% if tag_clean != '' %}
-              <a href="{{ '/tag/' | append: tag_clean | relative_url }}"
-                 class="tag-pill">#{{ tag_clean }}</a>
+              <a href="{{ '/tag/' | append: tag_clean | relative_url }}" class="tag-pill">#{{ tag_clean }}</a>
             {% endif %}
           {% endfor %}
         </div>
@@ -395,4 +491,3 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 
   </div>
 </div>
-                                                                                                                                                                                                                                                                                                                                     
