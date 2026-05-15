@@ -212,11 +212,19 @@
 
 <!-- ── PWA Manifest ── -->
 <link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
-<meta name="theme-color" content="#080c17">
+<meta name="theme-color" content="#f97316">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GlobalBR News">
+
+<!-- ── Canonical URL ── -->
+<link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+
+<!-- ── Preconnect for performance ── -->
+<link rel="preconnect" href="https://img.youtube.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
 <!-- ── Service Worker Registration ── -->
 <script>

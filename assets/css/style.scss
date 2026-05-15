@@ -3337,37 +3337,24 @@ body.font-serif #post-article {
 .prevnext-title { font-size: .85rem; color: var(--c-text); line-height: 1.4; font-weight: 500; }
 @media (max-width: 576px) { .prevnext-grid { grid-template-columns: 1fr; } }
 
-// ── Breaking Badge ─────────────────────────────────────────────
-.breaking-badge {
-  display: inline-block;
-  background: #dc2626;
+// Skip to content (alias for .skip-link)
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--c-accent);
   color: #fff;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  padding: .2rem .6rem;
-  border-radius: .25rem;
-  margin-bottom: .75rem;
-  animation: pulse-red 1.5s ease-in-out infinite;
-}
-@keyframes pulse-red {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .7; }
+  padding: .5rem 1rem;
+  border-radius: 0 0 .5rem .5rem;
+  font-weight: 600;
+  z-index: 9999;
+  text-decoration: none;
+  &:focus { top: 0; }
 }
 
-// ── Trending Section ───────────────────────────────────────────
-.trending-section { border-bottom: 1px solid var(--c-border); }
-.trending-title { font-size: 1rem; font-weight: 700; color: var(--c-accent); margin-bottom: .75rem; }
-.trending-pill {
-  display: inline-flex; align-items: center; gap: .4rem;
-  background: var(--c-surface); border: 1px solid var(--c-border);
-  color: var(--c-text); text-decoration: none;
-  padding: .3rem .75rem; border-radius: 2rem; font-size: .85rem; font-weight: 500;
-  transition: all .2s;
-  &:hover { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
-}
-.trending-count {
-  background: var(--c-accent); color: #fff;
-  font-size: .7rem; font-weight: 700;
-  padding: .1rem .35rem; border-radius: 1rem;
+// Lazy image fade-in
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity .3s;
+  &.loaded { opacity: 1; }
 }
