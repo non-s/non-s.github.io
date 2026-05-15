@@ -173,6 +173,17 @@ layout: default
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       {% endif %}
 
+      <!-- Share Buttons (top, before article) -->
+      <div class="share-buttons my-3 d-flex gap-2 flex-wrap">
+        <span class="share-label text-muted small me-1">Share:</span>
+        <a href="https://wa.me/?text={{ page.title | url_encode }}%20{{ site.url }}{{ page.url | url_encode }}" target="_blank" rel="noopener" class="btn btn-sm btn-share btn-whatsapp">WhatsApp</a>
+        <a href="https://t.me/share/url?url={{ site.url }}{{ page.url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="btn btn-sm btn-share btn-telegram">Telegram</a>
+        <button class="btn btn-sm btn-share btn-copy" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='✓ Copied!';setTimeout(()=>{this.textContent='Copy link'},2000)})">Copy link</button>
+      </div>
+
+      <!-- Table of Contents (spec: post-toc class) -->
+      <nav id="toc" class="post-toc" aria-label="Table of contents" style="display:none"></nav>
+
       <article class="post-content" id="post-article">
         {{ content }}
       </article>
@@ -212,6 +223,10 @@ layout: default
         <a href="https://api.whatsapp.com/send?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}"
            target="_blank" rel="noopener" class="share-pill whatsapp">
           <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
+        <a href="https://t.me/share/url?url={{ page.url | absolute_url | uri_escape }}&text={{ page.title | uri_escape }}"
+           target="_blank" rel="noopener" class="share-pill telegram">
+          <i class="bi bi-telegram"></i> Telegram
         </a>
         <a href="https://bsky.app/intent/compose?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}%20%23GlobalBRNews"
            target="_blank" rel="noopener" class="share-pill bluesky">
@@ -292,6 +307,14 @@ layout: default
         </div>
       </nav>
       {% endif %}
+
+      <!-- Article Feedback -->
+      <div class="article-feedback my-4 p-3 rounded" style="background:var(--c-surface);border:1px solid var(--c-border);text-align:center;">
+        <p class="mb-2 text-muted small">Was this article helpful?</p>
+        <button class="btn btn-sm btn-outline-success me-2 feedback-btn" data-val="up" onclick="gbFeedback(this,'up')">👍 Yes</button>
+        <button class="btn btn-sm btn-outline-danger feedback-btn" data-val="down" onclick="gbFeedback(this,'down')">👎 No</button>
+        <p class="feedback-thanks mt-2 small text-muted" style="display:none">Thanks for your feedback!</p>
+      </div>
 
       <!-- Comments — Giscus (GitHub Discussions) preferred, fallback Utterances -->
       {% if site.giscus_repo %}
@@ -497,6 +520,25 @@ layout: default
 </script>
 {% endif %}
 
+<!-- TOC builder for #toc.post-toc (spec implementation) -->
+<script>
+(function() {
+  var headings = document.querySelectorAll('.post-content h2, .post-content h3');
+  if (headings.length < 3) return;
+  var toc = document.getElementById('toc');
+  if (!toc) return;
+  var html = '<p class="toc-title">Contents</p><ul>';
+  headings.forEach(function(h, i) {
+    if (!h.id) h.id = 'h-' + i;
+    var level = h.tagName === 'H2' ? '' : 'toc-sub';
+    html += '<li class="' + level + '"><a href="#' + h.id + '">' + h.textContent + '</a></li>';
+  });
+  html += '</ul>';
+  toc.innerHTML = html;
+  toc.style.display = 'block';
+})();
+</script>
+
 <!-- Code Copy Button -->
 <script>
 (function(){
@@ -646,6 +688,17 @@ function toggleFont() {
   if(up) up.addEventListener('click', function(){ if(idx<sizes.length-1) apply(idx+1); });
   if(down) down.addEventListener('click', function(){ if(idx>0) apply(idx-1); });
 })();
+</script>
+
+<!-- Article Feedback JS -->
+<script>
+function gbFeedback(btn, val) {
+  var key = 'gb-fb-' + window.location.pathname;
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, val);
+  btn.closest('.article-feedback').querySelectorAll('.feedback-btn').forEach(function(b) { b.disabled = true; });
+  btn.closest('.article-feedback').querySelector('.feedback-thanks').style.display = 'block';
+}
 </script>
 
 <!-- Selection Share (Task 9) -->
