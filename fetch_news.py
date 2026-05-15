@@ -923,6 +923,147 @@ FEEDS = [
         "tags":     ["hackernews", "tech", "programming"],
         "source":   "Hacker News",
     },
+    # ── Additional World / International ─────────────────────
+    {
+        "name":     "AP News Top Stories",
+        "url":      "https://rsshub.app/apnews/topics/apf-topnews",
+        "category": "world",
+        "tags":     ["ap-news", "world-news", "breaking"],
+        "source":   "AP News",
+    },
+    {
+        "name":     "RFI English",
+        "url":      "https://www.rfi.fr/en/rss",
+        "category": "world",
+        "tags":     ["rfi", "france", "world-news"],
+        "source":   "RFI",
+    },
+    {
+        "name":     "South China Morning Post",
+        "url":      "https://www.scmp.com/rss/91/feed",
+        "category": "world",
+        "tags":     ["scmp", "asia", "china", "world-news"],
+        "source":   "SCMP",
+    },
+    {
+        "name":     "Times of India — World",
+        "url":      "https://timesofindia.indiatimes.com/rssfeeds/296589292.cms",
+        "category": "world",
+        "tags":     ["india", "asia", "world-news"],
+        "source":   "Times of India",
+    },
+    # ── Additional Business ───────────────────────────────────
+    {
+        "name":     "MarketWatch",
+        "url":      "https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines",
+        "category": "business",
+        "tags":     ["marketwatch", "finance", "markets"],
+        "source":   "MarketWatch",
+    },
+    {
+        "name":     "Financial Times (Free)",
+        "url":      "https://www.ft.com/rss/home",
+        "category": "business",
+        "tags":     ["ft", "finance", "economy"],
+        "source":   "Financial Times",
+    },
+    # ── Additional Science ────────────────────────────────────
+    {
+        "name":     "Phys.org",
+        "url":      "https://phys.org/rss-feed/",
+        "category": "science",
+        "tags":     ["physics", "science", "research"],
+        "source":   "Phys.org",
+    },
+    {
+        "name":     "EurekAlert",
+        "url":      "https://www.eurekalert.org/rss.xml",
+        "category": "science",
+        "tags":     ["science", "research", "discovery"],
+        "source":   "EurekAlert",
+    },
+    # ── Additional Health ─────────────────────────────────────
+    {
+        "name":     "MedPage Today",
+        "url":      "https://www.medpagetoday.com/rss/headlines.xml",
+        "category": "health",
+        "tags":     ["medicine", "health", "clinical"],
+        "source":   "MedPage Today",
+    },
+    # ── Additional Environment ────────────────────────────────
+    {
+        "name":     "Carbon Brief",
+        "url":      "https://www.carbonbrief.org/feed",
+        "category": "environment",
+        "tags":     ["climate", "environment", "carbon"],
+        "source":   "Carbon Brief",
+    },
+    {
+        "name":     "Inside Climate News",
+        "url":      "https://insideclimatenews.org/feed/",
+        "category": "environment",
+        "tags":     ["climate", "environment", "energy"],
+        "source":   "Inside Climate News",
+    },
+    # ── Additional AI ─────────────────────────────────────────
+    {
+        "name":     "OpenAI Blog",
+        "url":      "https://openai.com/blog/rss.xml",
+        "category": "ai",
+        "tags":     ["openai", "ai", "gpt"],
+        "source":   "OpenAI",
+    },
+    {
+        "name":     "Google DeepMind Blog",
+        "url":      "https://deepmind.google/blog/rss.xml",
+        "category": "ai",
+        "tags":     ["deepmind", "ai", "research"],
+        "source":   "Google DeepMind",
+    },
+    {
+        "name":     "Import AI (Jack Clark)",
+        "url":      "https://importai.substack.com/feed",
+        "category": "ai",
+        "tags":     ["ai", "newsletter", "research"],
+        "source":   "Import AI",
+    },
+    # ── Additional Sports ─────────────────────────────────────
+    {
+        "name":     "BBC Sport",
+        "url":      "https://feeds.bbci.co.uk/sport/rss.xml",
+        "category": "sports",
+        "tags":     ["bbc", "sports", "football"],
+        "source":   "BBC Sport",
+    },
+    {
+        "name":     "Sky Sports",
+        "url":      "https://www.skysports.com/rss/12040",
+        "category": "sports",
+        "tags":     ["sky-sports", "football", "sports"],
+        "source":   "Sky Sports",
+    },
+    # ── Security ──────────────────────────────────────────────
+    {
+        "name":     "Dark Reading",
+        "url":      "https://www.darkreading.com/rss.xml",
+        "category": "security",
+        "tags":     ["cybersecurity", "hacking", "infosec"],
+        "source":   "Dark Reading",
+    },
+    {
+        "name":     "Krebs on Security",
+        "url":      "https://krebsonsecurity.com/feed/",
+        "category": "security",
+        "tags":     ["cybersecurity", "krebs", "infosec"],
+        "source":   "Krebs on Security",
+    },
+    {
+        "name":     "The Hacker News",
+        "url":      "https://feeds.feedburner.com/TheHackersNews",
+        "category": "security",
+        "tags":     ["cybersecurity", "hacking", "vulnerability"],
+        "source":   "The Hacker News",
+    },
 ]
 
 

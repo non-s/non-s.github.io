@@ -1,0 +1,217 @@
+---
+layout: default
+---
+
+<!-- Breadcrumb -->
+<div class="post-breadcrumb">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{{ '/' | relative_url }}"><i class="bi bi-house"></i> Home</a></li>
+        <li class="breadcrumb-item active">{{ page.title | capitalize }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+{% assign cat_posts = site.posts | where_exp: "p", "p.categories contains page.category" %}
+{% assign cat_name  = page.category | capitalize %}
+
+<!-- Category Header -->
+<section style="background:var(--grad-hero);padding:3rem 0 2.5rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="post-cats mb-3">
+      <span class="post-cat-badge">{{ page.category | upcase }}</span>
+    </div>
+    <h1 style="font-family:var(--font-head);font-size:2.2rem;font-weight:900;color:var(--c-white);margin-bottom:.5rem;">
+      {{ cat_name }} News
+    </h1>
+    <p style="color:var(--c-muted);font-size:.95rem;margin:0;">
+      {{ cat_posts | size }} article{% if cat_posts.size != 1 %}s{% endif %} ·
+      latest: {{ cat_posts | first | map: "date" | first | date: "%B %d, %Y" }}
+    </p>
+
+    <!-- Category stats row -->
+    {% assign pos_count  = cat_posts | where: "sentiment", "positive"  | size %}
+    {% assign neg_count  = cat_posts | where: "sentiment", "negative"  | size %}
+    {% assign brk_count  = cat_posts | where: "breaking",  true        | size %}
+    {% if cat_posts.size > 0 %}
+    <div style="display:flex;gap:1.25rem;margin-top:1.25rem;flex-wrap:wrap;">
+      {% if pos_count > 0 %}
+      <span style="font-size:.8rem;color:#22c55e;"><i class="bi bi-arrow-up-circle-fill"></i> {{ pos_count }} positive</span>
+      {% endif %}
+      {% if neg_count > 0 %}
+      <span style="font-size:.8rem;color:#ef4444;"><i class="bi bi-arrow-down-circle-fill"></i> {{ neg_count }} negative</span>
+      {% endif %}
+      {% if brk_count > 0 %}
+      <span style="font-size:.8rem;color:#f97316;"><i class="bi bi-broadcast-pin"></i> {{ brk_count }} breaking</span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Main content -->
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- Posts grid -->
+    <div class="col-lg-8">
+
+      <!-- Filter bar -->
+      <div class="filter-bar mb-3" id="sent-filter">
+        <button class="filter-btn active" data-sent="all">All</button>
+        <button class="filter-btn" data-sent="positive">😊 Positive</button>
+        <button class="filter-btn" data-sent="neutral">😐 Neutral</button>
+        <button class="filter-btn" data-sent="negative">😔 Negative</button>
+      </div>
+
+      {% if cat_posts.size > 0 %}
+      <div class="row g-3" id="cat-posts-grid">
+        {% for post in cat_posts limit: 24 %}
+        <div class="col-md-6" data-sent="{{ post.sentiment | default: 'neutral' | downcase }}">
+          <article class="news-card h-100 visible">
+            {% if post.image %}
+            <div class="card-img-wrapper">
+              <a href="{{ post.url | relative_url }}">
+                <img src="{{ post.image }}" alt="{{ post.title | escape }}" loading="lazy" width="400" height="225">
+              </a>
+            </div>
+            {% endif %}
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem;">
+                {% if post.breaking %}
+                <span style="font-size:.65rem;font-weight:800;color:#f97316;background:rgba(249,115,22,.12);padding:.1rem .5rem;border-radius:50px;">🔴 BREAKING</span>
+                {% endif %}
+                {% if post.fact_check %}
+                <span class="fact-badge fact-{{ post.fact_check }}" style="font-size:.65rem;">
+                  {% if post.fact_check == 'verified' %}✓ Verified{% endif %}
+                  {% if post.fact_check == 'developing' %}⟳ Developing{% endif %}
+                  {% if post.fact_check == 'opinion' %}💬 Opinion{% endif %}
+                </span>
+                {% endif %}
+              </div>
+              <h3 class="card-title card-headline">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h3>
+              <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncate: 120 }}</p>
+              <div class="card-footer-row">
+                <span class="card-date">
+                  <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
+                  {{ post.date | date: "%b %d, %Y" }}
+                  {% if post.sentiment == 'positive' %}
+                  <span class="sentiment-indicator positive"></span>
+                  {% elsif post.sentiment == 'negative' %}
+                  <span class="sentiment-indicator negative"></span>
+                  {% else %}
+                  <span class="sentiment-indicator neutral"></span>
+                  {% endif %}
+                </span>
+                {% if post.source_name %}
+                <span style="font-size:.72rem;color:var(--c-muted);">{{ post.source_name }}</span>
+                {% endif %}
+                <a href="{{ post.url | relative_url }}" class="btn-read ms-auto">Read <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if cat_posts.size > 24 %}
+      <p style="text-align:center;margin-top:1.5rem;color:var(--c-muted);font-size:.85rem;">
+        Showing 24 of {{ cat_posts.size }} articles. <a href="{{ '/feed.xml' | relative_url }}" style="color:var(--c-accent);">Subscribe to RSS</a> for all updates.
+      </p>
+      {% endif %}
+
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">📡</div>
+        <h4>No {{ cat_name }} articles yet</h4>
+        <p style="font-size:.9rem;max-width:380px;margin:.5rem auto 1.5rem;">New articles are published 5× per day. Check back soon.</p>
+        <a href="{{ '/' | relative_url }}" class="btn-read" style="display:inline-flex;">
+          <i class="bi bi-house me-1"></i> Back to Home
+        </a>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="col-lg-4">
+
+      <!-- Other categories -->
+      <div class="sidebar-widget">
+        <h6 class="sidebar-widget-title">Other Categories</h6>
+        <div class="sidebar-cats">
+          {% assign all_cats = "world,politics,war,business,science,health,sports,food,entertainment,environment,technology,ai,security" | split: "," %}
+          {% for cat in all_cats %}
+            {% unless cat == page.category %}
+            <a href="{{ '/' | append: cat | append: '/' | relative_url }}" class="sidebar-cat">{{ cat | capitalize }}</a>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Latest in this category -->
+      {% if cat_posts.size > 0 %}
+      <div class="sidebar-widget">
+        <h6 class="sidebar-widget-title">Latest {{ cat_name }}</h6>
+        {% for post in cat_posts limit: 5 %}
+        <a href="{{ post.url | relative_url }}" class="sidebar-post">
+          {% if post.image %}<img src="{{ post.image }}" alt="" loading="lazy" class="sidebar-post-img">{% endif %}
+          <div class="sidebar-post-info">
+            <span class="sidebar-post-title">{{ post.title | truncate: 60 }}</span>
+            <span class="sidebar-post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% include subscribe.html %}
+
+    </aside>
+
+  </div>
+</div>
+
+<!-- Sentiment filter JS -->
+<script>
+(function(){
+  var cards = document.querySelectorAll('#cat-posts-grid > [data-sent]');
+  document.querySelectorAll('#sent-filter .filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#sent-filter .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var f = btn.dataset.sent;
+      cards.forEach(function(c){
+        c.style.display = (f === 'all' || c.dataset.sent === f) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+
+<!-- Category Schema.org BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ site.url }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ cat_name }}",
+      "item": "{{ page.url | absolute_url }}"
+    }
+  ]
+}
+</script>
