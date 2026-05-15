@@ -3336,3 +3336,25 @@ body.font-serif #post-article {
 .prevnext-label { font-size: .72rem; color: var(--c-accent); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
 .prevnext-title { font-size: .85rem; color: var(--c-text); line-height: 1.4; font-weight: 500; }
 @media (max-width: 576px) { .prevnext-grid { grid-template-columns: 1fr; } }
+
+// Skip to content (alias for .skip-link)
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--c-accent);
+  color: #fff;
+  padding: .5rem 1rem;
+  border-radius: 0 0 .5rem .5rem;
+  font-weight: 600;
+  z-index: 9999;
+  text-decoration: none;
+  &:focus { top: 0; }
+}
+
+// Lazy image fade-in
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity .3s;
+  &.loaded { opacity: 1; }
+}
