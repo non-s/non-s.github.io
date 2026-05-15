@@ -46,3 +46,10 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
+      - name: "🔔 Ping sitemaps após auditoria"
+        continue-on-error: true
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          echo "✅ Sitemaps notificados"
+

@@ -6,14 +6,19 @@ import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+import os
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 POSTS_DIR = Path("_posts")
-DATA_DIR = Path("_data")
+DATA_DIR  = Path("_data")
 OUTPUT_FILE = DATA_DIR / "audit_report.json"
-OLD_POST_DAYS = 90
-SHORT_TITLE_CHARS = 20
-MIN_POSTS_PER_CATEGORY = 3
+
+# Configurable via environment variables
+OLD_POST_DAYS          = int(os.environ.get("AUDIT_MAX_AGE_DAYS",       "90"))
+SHORT_TITLE_CHARS      = int(os.environ.get("AUDIT_MIN_TITLE_CHARS",    "20"))
+MIN_POSTS_PER_CATEGORY = int(os.environ.get("AUDIT_MIN_POSTS_PER_CAT",  "3"))
+SHORT_DESC_CHARS       = int(os.environ.get("AUDIT_MIN_DESC_CHARS",     "50"))
 
 FRONT_MATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 
@@ -66,7 +71,8 @@ def main() -> None:
             posts_without_image.append(slug)
 
         # --- description ---
-        if not fm.get("description"):
+        desc = fm.get("description", "")
+        if not desc or len(desc) < SHORT_DESC_CHARS:
             posts_without_description.append(slug)
 
         # --- tags ---

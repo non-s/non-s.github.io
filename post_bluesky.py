@@ -365,11 +365,22 @@ def main() -> None:
 
     ok = 0
     for post in posts:
+        post_url = post["url"]
+
+        # Validate the post URL is reachable before sharing
+        try:
+            check = requests.head(post_url, timeout=10, allow_redirects=True)
+            if check.status_code >= 400:
+                log.warning("Skipping — URL returned %d: %s", check.status_code, post_url)
+                continue
+        except requests.exceptions.RequestException:
+            pass  # network error — still try to post (GitHub Pages may not be live yet)
+
         text        = build_post_text(post)
         title       = post["fm"].get("title", "").strip('"').strip("'")
         description = post["fm"].get("description", "").strip('"').strip("'")
         image_url   = post["fm"].get("image", "").strip('"').strip("'")
-        if create_post(session, text, post["url"], title, description, image_url):
+        if create_post(session, text, post_url, title, description, image_url):
             ok += 1
         time.sleep(2)  # be polite to the API
 
