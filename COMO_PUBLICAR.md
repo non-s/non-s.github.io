@@ -1,4 +1,4 @@
-# 🚀 Guia Completo — Como Publicar o TechBR News no GitHub Pages
+# 🚀 Guia Completo — Como Publicar o GlobalBR News no GitHub Pages
 
 **Repositório:** `non-s.github.io`  
 **URL final:** `https://non-s.github.io`  
@@ -44,7 +44,7 @@
    .github/
    ```
    > ⚠️ Atenção: a pasta `.github` pode estar oculta no Windows. Ative "Mostrar arquivos ocultos" no Explorer.
-3. No campo "Commit changes", escreva: `🎉 Publicação inicial do TechBR News`
+3. No campo "Commit changes", escreva: `🎉 Publicação inicial do GlobalBR News`
 4. Clique em **Commit changes**
 
 ### Opção B — Via Git no terminal (recomendado para atualizações futuras)
@@ -53,7 +53,7 @@
 # Na pasta onde estão os arquivos do blog:
 git init
 git add .
-git commit -m "🎉 Publicação inicial do TechBR News"
+git commit -m "🎉 Publicação inicial do GlobalBR News"
 git branch -M main
 git remote add origin https://github.com/non-s/non-s.github.io.git
 git push -u origin main
@@ -237,4 +237,4 @@ non-s.github.io/
 
 ---
 
-*Criado com ❤️ para Julio — TechBR News (non-s.github.io)*
+*Criado com ❤️ para Julio — GlobalBR News (non-s.github.io)*
