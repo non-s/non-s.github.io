@@ -54,8 +54,18 @@ _pollinations_text = _ai_text  # legacy alias for internal compatibility
 # WIKIPEDIA API — Enriquecimento de artigos
 # ============================================================
 
+_WIKI_CACHE: dict[str, str] = {}
+
+
 def _fetch_wikipedia_summary(query: str) -> str:
-    """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars."""
+    """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars.
+
+    Cached per-process: titles that recur within a single run (common when
+    multiple articles reference the same entity) only hit Wikipedia once.
+    """
+    if query in _WIKI_CACHE:
+        return _WIKI_CACHE[query]
+
     def _do_fetch():
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
         r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
@@ -64,7 +74,9 @@ def _fetch_wikipedia_summary(query: str) -> str:
         r.raise_for_status()
         return r.json().get("extract", "")[:500]
     result = retry_call(_do_fetch, max_attempts=2, base_delay=2.0, default="")
-    return result or ""
+    out = result or ""
+    _WIKI_CACHE[query] = out
+    return out
 
 
 # ============================================================
@@ -498,9 +510,14 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
     # ── Wikipedia enrichment ──────────────────────────────────
-    wiki_summary = _fetch_wikipedia_summary(title)
-    if wiki_summary:
-        result["wikipedia_summary"] = wiki_summary
+    # Skip the Wikipedia round-trip when the AI already produced a
+    # rich body — Wikipedia exists to backfill thin posts, not to
+    # duplicate a 600-word article. Costs ~2-3s per skip.
+    ai_body = result.get("article_body") or ""
+    if not isinstance(ai_body, str) or len(ai_body) < 500:
+        wiki_summary = _fetch_wikipedia_summary(title)
+        if wiki_summary:
+            result["wikipedia_summary"] = wiki_summary
 
     return result
 
@@ -513,7 +530,14 @@ LOG_FILE         = "fetch_news.log"
 MAX_PER_FEED     = int(os.environ.get("FETCH_MAX_PER_FEED", "4"))     # Max posts por feed por execução
 MAX_POSTS_PER_RUN = int(os.environ.get("FETCH_MAX_PER_RUN", "50"))   # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
-SLEEP_BETWEEN_FEEDS = 2
+# Sleep was 2s × 135 feeds = 270s of pure waiting per run. Dropped
+# to 0 — feeds are now processed in parallel (see fetch_feeds_concurrent),
+# and the per-host rate-limiting is handled implicitly by requests.Session
+# connection pool. Override with FETCH_SLEEP_BETWEEN_FEEDS=2 if needed.
+SLEEP_BETWEEN_FEEDS = float(os.environ.get("FETCH_SLEEP_BETWEEN_FEEDS", "0"))
+# Cap on concurrent feeds. 10 is a polite default: most CDNs allow it
+# without throttling and we still cut total fetch time by ~7×.
+FEED_WORKERS = int(os.environ.get("FETCH_FEED_WORKERS", "10"))
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
 
 # Feeds RSS configurados
@@ -2781,12 +2805,16 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 )
                 continue
 
-            # ── Imagem: OG > gerada localmente (Pillow+WebP) > Pollinations URL ─
-            if not image_url:
+            # ── Imagem: source image (lazy — skip OG gen if usable) ───
+            # Check the source image first. If it's usable, skip the
+            # Pollinations + Pillow + WebP pipeline entirely — that
+            # saves ~3-5s per post in the common case.
+            if image_url and _validate_image_url(image_url):
+                log.debug(f"  🖼  Using source image: {image_url[:60]}")
+            else:
+                # Source missing/broken: synthesise an OG image locally.
                 image_url = _generate_og_image(title, category, slug)
                 log.info(f"  🎨 Generated OG image: {image_url}")
-            else:
-                log.debug(f"  🖼  Using source image: {image_url[:60]}")
             # Hard requirement: every published post must have a usable cover image.
             if not _validate_image_url(image_url):
                 # Last-ditch: try the Pollinations fallback.
@@ -2987,7 +3015,11 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         )
         return 0
 
-    if not image_url:
+    # Lazy OG generation: skip the local Pillow render if the source
+    # already has a usable image.
+    if image_url and _validate_image_url(image_url):
+        pass
+    else:
         image_url = _generate_og_image(title, category, slug)
     if not _validate_image_url(image_url):
         fallback = _news_image_url(title, category)
