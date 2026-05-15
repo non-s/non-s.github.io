@@ -4,6 +4,14 @@ Pure functions, no global state, no external deps.
 """
 import re
 
+# Precompiled — used in every title_similarity call
+_NON_WORD_RE = re.compile(r'[^\w\s]')
+_STOP_WORDS = frozenset({
+    'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or',
+    'but', 'is', 'was', 'are', 'were', 'be', 'been', 'by', 'from', 'with',
+    'this', 'that', 'it',
+})
+
 
 def levenshtein(s1: str, s2: str) -> int:
     """Compute Levenshtein edit distance between two strings."""
@@ -24,7 +32,7 @@ def titles_too_similar(t1: str, t2: str) -> bool:
     """Return True if two titles are too similar (Jaccard or Levenshtein)."""
     t1, t2 = t1.lower().strip(), t2.lower().strip()
     w1, w2 = set(t1.split()), set(t2.split())
-    if w1 and w2 and len(w1 & w2) / len(w1 | w2) > 0.6:
+    if w1 and w2 and len(w1 & w2) / len(w1 | w2) > 0.65:
         return True
     if max(len(t1), len(t2)) < 80:
         distance = levenshtein(t1[:60], t2[:60])
@@ -36,13 +44,8 @@ def titles_too_similar(t1: str, t2: str) -> bool:
 
 def title_similarity(t1: str, t2: str) -> float:
     """Returns 0.0-1.0 Jaccard similarity ignoring stopwords."""
-    _STOPS = {
-        'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or',
-        'but', 'is', 'was', 'are', 'were', 'be', 'been', 'by', 'from', 'with',
-        'this', 'that', 'it',
-    }
-    w1 = set(re.sub(r'[^\w\s]', '', t1.lower()).split()) - _STOPS
-    w2 = set(re.sub(r'[^\w\s]', '', t2.lower()).split()) - _STOPS
+    w1 = set(_NON_WORD_RE.sub('', t1.lower()).split()) - _STOP_WORDS
+    w2 = set(_NON_WORD_RE.sub('', t2.lower()).split()) - _STOP_WORDS
     if not w1 or not w2:
         return 0.0
     return len(w1 & w2) / len(w1 | w2)
