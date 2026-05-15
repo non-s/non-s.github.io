@@ -3292,28 +3292,71 @@ def main():
     except Exception as exc:
         log.debug(f"Crypto prices pre-fetch failed: {exc}")
 
-    for i, feed in enumerate(FEEDS):
-        if total_created >= MAX_POSTS_PER_RUN:
-            log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
-            break
+    # ── Parallel feed fetch ───────────────────────────────────────
+    # 135 feeds × ~10s each was the dominant cost (>20 min/run). Running
+    # 10 in parallel cuts that to ~2-3 min without changing each feed's
+    # internal dedup/AI pipeline. A Lock around `total_created` keeps
+    # the global cap honest across threads.
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    from threading import Lock as _Lock
+
+    counter_lock = _Lock()
+    counter = {"created": 0}
+
+    def _budget_left() -> int:
+        with counter_lock:
+            return MAX_POSTS_PER_RUN - counter["created"]
+
+    def _process_one(feed: dict) -> int:
+        # Each worker rechecks the global budget + timeout before starting
+        # so we don't burn AI quota when other workers already filled the
+        # bucket.
+        if _budget_left() <= 0:
+            return 0
         if _time.time() - _run_start > _RUN_TIMEOUT:
-            log.warning(f"  ⏰ Timeout global atingido ({_RUN_TIMEOUT}s). Parando fetch de feeds.")
-            break
-        remaining = MAX_POSTS_PER_RUN - total_created
-
-        # Trending boost: fetch one extra article from feeds matching a trending keyword
+            return 0
         feed_words = set((feed["name"] + " " + feed.get("category", "")).lower().split())
+        budget = _budget_left()
         if trending and feed_words & trending:
-            log.info(f"🔥 Trending boost: {feed['name']}")
-            max_override = min(remaining, MAX_PER_FEED + 1)
+            override = min(budget, MAX_PER_FEED + 1)
         else:
-            max_override = remaining
-
-        created = fetch_feed(feed, max_override=max_override)
-        total_created += created
-        if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
-            log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")
+            override = min(budget, MAX_PER_FEED)
+        try:
+            n = fetch_feed(feed, max_override=override)
+        except Exception as exc:
+            log.warning(f"  ⚠️ feed {feed['name']} crashed: {exc}")
+            n = 0
+        if n:
+            with counter_lock:
+                counter["created"] += n
+        if SLEEP_BETWEEN_FEEDS > 0:
             sleep(SLEEP_BETWEEN_FEEDS)
+        return n
+
+    log.info(f"📡 Processing {len(FEEDS)} feeds with {FEED_WORKERS} workers")
+    with ThreadPoolExecutor(max_workers=FEED_WORKERS) as executor:
+        futures = [executor.submit(_process_one, feed) for feed in FEEDS]
+        for fut in as_completed(futures):
+            # We don't strictly need fut.result() — the worker already
+            # updated the counter. But pulling it surfaces unexpected
+            # exceptions in the log.
+            try:
+                fut.result()
+            except Exception as exc:
+                log.debug(f"feed worker exception: {exc}")
+            if counter["created"] >= MAX_POSTS_PER_RUN:
+                # Cancel pending futures we can; the running ones will
+                # honour their own budget check above.
+                for f in futures:
+                    f.cancel()
+                break
+            if _time.time() - _run_start > _RUN_TIMEOUT:
+                for f in futures:
+                    f.cancel()
+                break
+
+    total_created = counter["created"]
+    log.info(f"📊 Feeds done — {total_created}/{MAX_POSTS_PER_RUN} posts created")
 
     # ── HackerNews extra source ───────────────────────────────────
     if total_created < MAX_POSTS_PER_RUN:
