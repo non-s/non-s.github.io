@@ -2956,10 +2956,40 @@ Thank you for reading GlobalBR News.
                 break  # Only one milestone per cat per run
 
 
+def _save_last_run(total_created: int, start_time: float) -> None:
+    """Write _data/last_run.json with run summary for health dashboards."""
+    import time as _time
+    dead_feeds = [name for name, fails in _feed_failures.items() if fails >= _DEAD_FEED_THRESHOLD]
+    data: dict = {
+        "timestamp":     datetime.now(timezone.utc).isoformat(),
+        "duration_s":    round(_time.time() - start_time, 1),
+        "posts_created": total_created,
+        "feeds_total":   len(FEEDS),
+        "feeds_dead":    len(dead_feeds),
+        "dead_feed_names": dead_feeds,
+    }
+    try:
+        dead_path = Path("_data/dead_feeds.json")
+        dead_path.parent.mkdir(exist_ok=True)
+        dead_path.write_text(
+            json.dumps({"updated": data["timestamp"], "dead": dead_feeds}, indent=2),
+            encoding="utf-8",
+        )
+        Path("_data/last_run.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning(f"Could not write run summary: {exc}")
+
+
 def main():
+    import time as _time
+    _run_start = _time.time()
+
     log.info("=" * 60)
     log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     log.info("=" * 60)
+
+    # Global timeout — bail out after 55 min so CI job stays within 60 min limit
+    _RUN_TIMEOUT = int(os.environ.get("FETCH_TIMEOUT_S", "3300"))
 
     POSTS_DIR.mkdir(exist_ok=True)
 
@@ -2989,6 +3019,9 @@ def main():
     for i, feed in enumerate(FEEDS):
         if total_created >= MAX_POSTS_PER_RUN:
             log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
+            break
+        if _time.time() - _run_start > _RUN_TIMEOUT:
+            log.warning(f"  ⏰ Timeout global atingido ({_RUN_TIMEOUT}s). Parando fetch de feeds.")
             break
         remaining = MAX_POSTS_PER_RUN - total_created
 
@@ -3060,6 +3093,12 @@ def main():
         _check_milestones(total_created)
     except Exception as exc:
         log.warning(f"Milestone check failed: {exc}")
+
+    # ── Save run summary ──────────────────────────────────────────
+    try:
+        _save_last_run(total_created, _run_start)
+    except Exception as exc:
+        log.warning(f"Run summary failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")
