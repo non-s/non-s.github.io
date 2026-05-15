@@ -3422,3 +3422,174 @@ img[loading="lazy"] {
   transition: opacity .3s;
   &.loaded { opacity: 1; }
 }
+
+/* ============================================================
+   ROUND 2 — DATELINE + MEGA MENU + REFINED NAV
+   ============================================================ */
+
+/* Dateline bar (above navbar) */
+.dateline-bar {
+  background: #050810;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  padding: .35rem 0;
+  font-family: var(--font-ui);
+  font-size: .72rem;
+  color: var(--c-muted);
+  letter-spacing: .3px;
+}
+.dateline-date {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--c-muted2);
+  font-size: .68rem;
+}
+.dateline-meta {
+  display: flex; align-items: center; gap: .55rem;
+}
+.dateline-link {
+  color: var(--c-muted);
+  font-weight: 500;
+  transition: color .15s;
+}
+.dateline-link:hover { color: var(--c-accent); }
+.dateline-sep {
+  color: rgba(255,255,255,.15);
+}
+
+/* Main nav links — tighter, more journalistic */
+.gb-mainnav .nav-link {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .3px;
+  padding: .5rem .7rem !important;
+  text-transform: uppercase;
+  color: var(--c-text) !important;
+  position: relative;
+  transition: color .15s;
+}
+.gb-mainnav .nav-link:hover { color: var(--c-accent) !important; }
+.gb-mainnav .nav-link.active {
+  color: var(--c-accent) !important;
+}
+.gb-mainnav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: .7rem; right: .7rem; bottom: .15rem;
+  height: 2px;
+  background: var(--c-accent);
+}
+
+/* Saved icon link & theme toggle alignment */
+.gb-saved-link {
+  font-size: 1.1rem;
+  padding: .5rem .55rem !important;
+  color: var(--c-muted) !important;
+  transition: color .15s;
+}
+.gb-saved-link:hover { color: var(--c-accent) !important; }
+
+.gb-nav-search { margin-right: .5rem; }
+
+/* Mega menu */
+.gb-mega-wrap { position: relative; list-style: none; }
+.gb-mega-menu {
+  position: fixed;
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  margin-top: 0;
+  width: min(1100px, calc(100vw - 32px));
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  background: rgba(10,14,24,.99);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-md);
+  box-shadow: 0 24px 60px rgba(0,0,0,.65);
+  padding: 1.4rem 1.6rem;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+}
+.gb-mega-wrap.open .gb-mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear 0s;
+}
+.gb-mega-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem 1.6rem;
+  margin-bottom: 1rem;
+}
+.gb-mega-col {
+  border-top: 2px solid rgba(255,255,255,.08);
+  padding-top: .65rem;
+}
+.gb-mega-cat {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--c-text);
+  transition: color .15s;
+  margin-bottom: .35rem;
+}
+.gb-mega-cat:hover { color: var(--c-accent); }
+.gb-mega-icon { font-size: .9rem; }
+.gb-mega-lead {
+  display: block;
+  font-family: var(--font-head);
+  font-size: .92rem;
+  line-height: 1.32;
+  font-weight: 600;
+  color: var(--c-muted2);
+  transition: color .15s;
+}
+.gb-mega-lead:hover { color: var(--c-accent); }
+.gb-mega-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+  font-family: var(--font-ui);
+  font-size: .78rem;
+}
+.gb-mega-footer a {
+  color: var(--c-muted);
+  font-weight: 500;
+  transition: color .15s;
+}
+.gb-mega-footer a:hover { color: var(--c-accent); }
+
+@media (max-width: 991.98px) {
+  .gb-mega-menu {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-height: none;
+    margin-top: .5rem;
+    padding: 1rem;
+  }
+  .gb-mega-grid { grid-template-columns: repeat(2, 1fr); gap: .9rem 1rem; }
+  .gb-mega-footer { gap: .8rem; }
+  .gb-mainnav .nav-link.active::after { display: none; }
+  .gb-mainnav .nav-link {
+    padding: .55rem .25rem !important;
+    font-size: .95rem;
+  }
+  .dateline-bar { font-size: .65rem; padding: .25rem 0; }
+  .dateline-meta { gap: .35rem; }
+}
+
+/* Hide old crypto ticker if still referenced anywhere */
+.crypto-ticker-wrap { display: none !important; }
