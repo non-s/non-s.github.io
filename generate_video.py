@@ -1209,6 +1209,12 @@ def main():
             "category_id": "28",
             "privacy":     "public",
             "video":       str(pt_video),
+            # Reuse the EN thumbnail — the visual is identical and saves
+            # an extra Pollinations call. upload_youtube.py treats this
+            # as optional anyway.
+            "thumbnail":   str(thumb_path),
+            "category":    "roundup",
+            "is_short":    False,
         }
         pt_meta_path = VIDEOS_DIR / f"{slug}-pt.json"
         pt_meta_path.write_text(json.dumps(pt_meta, indent=2, ensure_ascii=False))
