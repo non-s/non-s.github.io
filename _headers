@@ -4,4 +4,29 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src https://www.youtube.com; connect-src 'self' https://www.google-analytics.com;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' https:; connect-src 'self' https://www.google-analytics.com https://api.coingecko.com https://hacker-news.firebaseio.com;
+
+/assets/audio/*
+  Content-Type: audio/mpeg
+  Cache-Control: public, max-age=2592000, immutable
+
+/assets/css/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/assets/images/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/sitemap*.xml
+  Cache-Control: public, max-age=3600
+
+/feed*.xml
+  Cache-Control: public, max-age=600
+
+/feed.json
+  Cache-Control: public, max-age=600
+
+/search-index.json
+  Cache-Control: public, max-age=600

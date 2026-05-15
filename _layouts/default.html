@@ -181,7 +181,8 @@
       {% assign drawer_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security,food" | split: "," %}
       {% for cat in drawer_cats %}
         {% assign cat_meta = site.data.categories[cat] %}
-        <a href="/{{ cat }}/" class="gb-drawer-link gb-drawer-cat-link {% if page.url == '/' | append: cat | append: '/' %}active{% endif %}">
+        {% assign cat_url = '/' | append: cat | append: '/' %}
+        <a href="{{ cat_url }}" class="gb-drawer-link gb-drawer-cat-link {% if page.url == cat_url %}active{% endif %}">
           <span class="gb-drawer-icon">{{ cat_meta.icon }}</span>
           {{ cat_meta.title | default: cat | capitalize }}
         </a>

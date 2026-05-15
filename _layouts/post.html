@@ -72,8 +72,9 @@ layout: default
             <time datetime="{{ page.date | date_to_xmlschema }}" class="byline-published">
               {{ page.date | date: "%B %-d, %Y" }}
             </time>
-            {% if page.date | date: "%H:%M" %}
-              <span class="byline-time">at {{ page.date | date: "%-I:%M %p UTC" }}</span>
+            {% assign byline_time = page.date | date: "%-I:%M %p UTC" %}
+            {% if byline_time %}
+              <span class="byline-time">at {{ byline_time }}</span>
             {% endif %}
             {% if page.updated %}
               <span class="byline-updated">
@@ -131,6 +132,21 @@ layout: default
         <span class="tl-dr-label">TL;DR</span>
         <p class="tl-dr-text">{{ page.tl_dr }}</p>
       </div>
+      {% endif %}
+
+      {% if page.audio %}
+      <figure class="post-audio" aria-label="Listen to this article">
+        <figcaption style="font-size:.78rem;color:var(--c-muted);margin-bottom:.4rem;">
+          <i class="bi bi-headphones"></i> Listen to this article
+          {% if page.audio_duration %}
+            · <span>{{ page.audio_duration | divided_by: 60 }}m {{ page.audio_duration | modulo: 60 }}s</span>
+          {% endif %}
+        </figcaption>
+        <audio controls preload="none" style="width:100%;border-radius:.5rem;">
+          <source src="{{ page.audio | relative_url }}" type="audio/mpeg">
+          Your browser doesn't support inline audio. <a href="{{ page.audio | relative_url }}">Download MP3</a>.
+        </audio>
+      </figure>
       {% endif %}
 
       {% if page.image %}

@@ -1,0 +1,120 @@
+---
+layout: default
+title: "GlobalBR News — Notícias do mundo a cada hora"
+description: "Notícias internacionais atualizadas a cada hora: política, guerra, ciência, saúde, esportes, gastronomia, entretenimento, negócios e tecnologia."
+permalink: /pt/
+lang: "pt-br"
+---
+
+<section class="top-stories-section">
+  <div class="container">
+    <div class="top-stories-header">
+      <span class="section-title">Últimas notícias</span>
+      <span class="top-stories-time">
+        <i class="bi bi-clock"></i>
+        Atualizado {{ 'now' | date: "%H:%M UTC" }}
+      </span>
+    </div>
+  </div>
+</section>
+
+{% assign pt_posts = site.posts | where_exp: "p", "p.lang == 'pt-br'" %}
+
+<div class="container recent-news-container">
+  <div class="row g-4">
+
+    <div class="col-lg-8">
+      <div class="section-header">
+        <h2 class="section-title">Notícias recentes</h2>
+        <span style="font-size:.78rem;color:var(--c-muted);">
+          {{ pt_posts | size }} artigo{% if pt_posts.size != 1 %}s{% endif %} em português
+        </span>
+      </div>
+
+      {% if pt_posts.size > 0 %}
+      <div class="row g-3" id="posts-grid">
+        {% for post in pt_posts limit: 30 %}
+        <div class="col-md-6 col-lg-4" data-category="{{ post.categories | first | downcase }}">
+          <article class="news-card h-100">
+            <div class="card-img-wrapper">
+              {% if post.image %}
+              <a href="{{ post.url | relative_url }}">
+                <img src="{{ post.image }}"
+                     alt="{{ post.image_alt | default: post.title | escape }}"
+                     width="400" height="225"
+                     loading="lazy">
+              </a>
+              {% else %}
+              <a href="{{ post.url | relative_url }}" class="card-img-placeholder">📰</a>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              {% for cat in post.categories limit:1 %}
+                <div class="card-category">{{ cat }}</div>
+              {% endfor %}
+              <h3 class="card-title card-headline">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h3>
+              <p class="card-excerpt">
+                {{ post.description | strip_html | truncate: 100 }}
+              </p>
+              <div class="card-footer-row">
+                <span class="card-date">
+                  <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
+                  {{ post.date | date: "%-d de %b" }}
+                </span>
+                <a href="{{ post.url | relative_url }}" class="btn-read">
+                  Ler <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">🇧🇷</div>
+        <h4>Nenhuma tradução publicada ainda</h4>
+        <p style="font-size:.9rem;max-width:380px;margin:.5rem auto 1.5rem;">
+          O robô traduz as principais matérias do dia automaticamente.
+          Volte em breve!
+        </p>
+        <a href="{{ '/' | relative_url }}" class="btn-read" style="display:inline-flex;">
+          <i class="bi bi-globe me-1"></i> Ver versão em inglês
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <aside class="col-lg-4">
+      <div class="sidebar-widget">
+        <p class="widget-title">
+          <span class="wt-icon">🇧🇷</span>
+          Sobre esta página
+        </p>
+        <p style="font-size:.85rem;color:var(--c-muted);line-height:1.55;">
+          Tradução automática das principais notícias do GlobalBR News para
+          português brasileiro. As matérias originais em inglês ficam em
+          <a href="{{ '/' | relative_url }}" style="color:var(--c-accent);">non-s.github.io</a>.
+        </p>
+      </div>
+
+      <div class="sidebar-widget">
+        <p class="widget-title">
+          <span class="wt-icon">📰</span>
+          Categorias
+        </p>
+        <div class="sidebar-cats">
+          {% assign pt_cats = "world,politics,war,business,technology,ai,science,health,sports" | split: "," %}
+          {% for cat in pt_cats %}
+          <a href="/{{ cat }}/" class="sidebar-cat">{{ cat | capitalize }}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% include subscribe.html %}
+    </aside>
+
+  </div>
+</div>

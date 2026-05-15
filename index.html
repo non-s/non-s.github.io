@@ -473,6 +473,26 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         </div>
       </div>
 
+      <!-- Your trending (populated client-side from local view history) -->
+      <div class="sidebar-widget" id="gb-trending-mine-widget" style="display:none">
+        <p class="widget-title">
+          <span class="wt-icon">📊</span>
+          Your most viewed
+        </p>
+        <div class="widget-post-list" id="gb-trending-mine"></div>
+      </div>
+      <script>
+      // Reveal the widget only if the user has any view history.
+      (function(){
+        try {
+          var v = JSON.parse(localStorage.getItem('gb-views') || '{}');
+          if (Object.keys(v).length > 0) {
+            document.getElementById('gb-trending-mine-widget').style.display = '';
+          }
+        } catch(_) {}
+      })();
+      </script>
+
       <!-- Tags -->
       {% assign all_tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
       {% if all_tags.size > 0 %}
