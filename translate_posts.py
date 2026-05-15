@@ -200,11 +200,18 @@ def main() -> None:
             pt_permalink = f"/pt/{cat}/{year}/{month}/{day}/{slug}/"
             new_fm = re.sub(r'^permalink:.*$', f'permalink: "{pt_permalink}"', new_fm, flags=re.MULTILINE)
             if "permalink:" not in new_fm:
-                new_fm += f'\npermalink: "{pt_permalink}"'
+                new_fm = new_fm.rstrip("\n") + f'\npermalink: "{pt_permalink}"\n'
 
             # Tag the translation so consumers (sitemap, Bluesky) can filter.
             if "translated_from:" not in new_fm:
-                new_fm += f'\ntranslated_from: "{fname}"'
+                new_fm = new_fm.rstrip("\n") + f'\ntranslated_from: "{fname}"\n'
+
+            # Guarantee the closing --- starts on its own line, otherwise
+            # Jekyll's YAML parser dies on "value"--- and the post never
+            # ships. (This is what blew up the pages-build-deployment for
+            # the entire PT batch on 2026-05-15.)
+            if not new_fm.endswith("\n"):
+                new_fm += "\n"
 
             pt_content = f"---{new_fm}---\n\n{pt_body}\n"
             pt_path.write_text(pt_content, encoding="utf-8")

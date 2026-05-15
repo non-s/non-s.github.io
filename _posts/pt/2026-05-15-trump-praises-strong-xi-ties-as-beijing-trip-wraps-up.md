@@ -15,7 +15,8 @@ image_alt: "Trump praises strong Xi ties as Beijing trip wraps up"
 breaking: false
 
 permalink: "/pt/world/2026/05/15/trump-praises-strong-xi-ties-as-beijing-trip-wraps-up/"
-translated_from: "2026-05-15-trump-praises-strong-xi-ties-as-beijing-trip-wraps-up.md"---
+translated_from: "2026-05-15-trump-praises-strong-xi-ties-as-beijing-trip-wraps-up.md"
+---
 
 US President Donald Trump stressed his &quot;good relationship&quot; to China&#x27;s leader Xi Jinping despite deep differences on Iran and Taiwan. Follow DW for more.
 
