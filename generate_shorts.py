@@ -680,7 +680,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
-    # ── 1. AI background image ────────────────────────────────────
+    # ── 1. Background image (REQUIRED) ────────────────────────────
+    # We skip Shorts that can't acquire a real background. Without one
+    # the auto-generated thumbnail looks like a grey placeholder on
+    # YouTube — terrible CTR and indistinguishable from broken uploads.
     bg_path = tmp_dir / f"bg_{slug}.jpg"
 
     # Try story's own image first, then Pollinations
@@ -692,7 +695,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not img_ok:
         img_ok = generate_ai_background(title, category, bg_path)
 
-    bg_path_final = bg_path if img_ok else None
+    # Hard requirement: skip Shorts without a usable background image.
+    if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
+        log.warning(
+            "  ⏭  Skipping Short — no valid background image (story image and "
+            "Pollinations fallback both failed): %s", title[:80],
+        )
+        return None
+
+    bg_path_final = bg_path
 
     # ── 2. Extract key points ─────────────────────────────────────
     points = extract_key_points(story["description"])
@@ -741,6 +752,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 7. Thumbnail ──────────────────────────────────────────────
     create_short_thumbnail(frame, thumb_path)
+    # YouTube refuses thumbnails < 2KB and won't show meaningful content
+    # for greyscale/empty frames. If the generated frame ended up too
+    # small (background failed and renderer produced a tiny image), bail.
+    if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
+        log.warning(
+            "  ⏭  Skipping Short — thumbnail too small to be visually useful: %s",
+            title[:80],
+        )
+        return None
 
     # ── 8. FFmpeg: combine image + audio → video ──────────────────
     ok = create_short_video(frame_path, audio_path, video_path)
