@@ -8,6 +8,31 @@
 <body{% if page.layout == 'post' %} class="layout-post"{% endif %}>
 <a href="#main-content" class="skip-link skip-to-content">Skip to main content</a>
 
+  <!-- ── BREAKING NEWS TICKER (top of page) ───────────────── -->
+  <div class="breaking-bar">
+    <span class="breaking-label">
+      <i class="bi bi-lightning-charge-fill"></i> BREAKING
+    </span>
+    <div class="breaking-track-wrap">
+      <div class="breaking-track">
+        {% assign ticker_posts = site.posts | limit: 8 %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
+            <span class="breaking-dot">●</span>
+            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item">
+            <span class="breaking-dot">●</span>
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
     <div class="container">
@@ -138,35 +163,6 @@
     }
   })();
   </script>
-
-  <!-- ── CRYPTO TICKER ────────────────────────────────────── -->
-  {% include crypto-ticker.html %}
-
-  <!-- ── BREAKING NEWS TICKER ─────────────────────────────── -->
-  <div class="breaking-bar">
-    <span class="breaking-label">
-      <i class="bi bi-lightning-charge-fill"></i> BREAKING
-    </span>
-    <div class="breaking-track-wrap">
-      <div class="breaking-track">
-        {% assign ticker_posts = site.posts | limit: 8 %}
-        {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
-            <span class="breaking-dot">●</span>
-            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
-            {{ post.title | truncate: 90 }}
-          </a>
-        {% endfor %}
-        {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
-            <span class="breaking-dot">●</span>
-            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
-            {{ post.title | truncate: 90 }}
-          </a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
 
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main id="main-content">{{ content }}</main>
