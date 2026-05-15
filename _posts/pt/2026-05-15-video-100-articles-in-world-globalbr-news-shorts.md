@@ -17,7 +17,8 @@ youtube_url: "https://youtube.com/watch?v=PXxP-wfX60E"
 lang: "pt-br"
 
 permalink: "/pt/video/2026/05/15/video-100-articles-in-world-globalbr-news-shorts/"
-translated_from: "2026-05-15-video-100-articles-in-world-globalbr-news-shorts.md"---
+translated_from: "2026-05-15-video-100-articles-in-world-globalbr-news-shorts.md"
+---
 
 Breaking tech news from GlobalBR News — May 15, 2026.
 

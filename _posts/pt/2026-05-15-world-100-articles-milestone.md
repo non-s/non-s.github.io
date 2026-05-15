@@ -11,7 +11,8 @@ image_alt: "GlobalBR News 100 articles milestone in world category"
 
 lang: "pt-br"
 permalink: "/pt/world/2026/05/15/world-100-articles-milestone/"
-translated_from: "2026-05-15-world-100-articles-milestone.md"---
+translated_from: "2026-05-15-world-100-articles-milestone.md"
+---
 
 We've reached a milestone: **100 articles** published in the **World** category!
 

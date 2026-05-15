@@ -15,7 +15,8 @@ image_alt: "What happens to those who say no to fighting wars?"
 breaking: false
 
 permalink: "/pt/world/2026/05/15/what-happens-to-those-who-say-no-to-fighting-wars/"
-translated_from: "2026-05-15-what-happens-to-those-who-say-no-to-fighting-wars.md"---
+translated_from: "2026-05-15-what-happens-to-those-who-say-no-to-fighting-wars.md"
+---
 
 Al Jazeera’s @avawarrinerr explains what it means for people who object to fighting in wars today.
 
