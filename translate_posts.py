@@ -185,6 +185,27 @@ def main() -> None:
             if "lang:" not in new_fm:
                 new_fm += '\nlang: "pt-br"'
 
+            # Force a unique /pt/ permalink so Jekyll doesn't overwrite the
+            # English post's URL. Without this, _posts/pt/...md collides
+            # with _posts/...md at the same /:categories/:year/:month/:day/
+            # slot and only one wins.
+            cat_m = re.search(r'^categories:\s*\[([^\]]+)\]', new_fm, re.MULTILINE)
+            cat = "news"
+            if cat_m:
+                first = cat_m.group(1).split(",")[0].strip().strip('"').strip("'")
+                if first:
+                    cat = first
+            year, month, day = fname.split("-")[:3]
+            slug = fname.removesuffix(".md").split("-", 3)[3] if fname.count("-") >= 3 else fname.removesuffix(".md")
+            pt_permalink = f"/pt/{cat}/{year}/{month}/{day}/{slug}/"
+            new_fm = re.sub(r'^permalink:.*$', f'permalink: "{pt_permalink}"', new_fm, flags=re.MULTILINE)
+            if "permalink:" not in new_fm:
+                new_fm += f'\npermalink: "{pt_permalink}"'
+
+            # Tag the translation so consumers (sitemap, Bluesky) can filter.
+            if "translated_from:" not in new_fm:
+                new_fm += f'\ntranslated_from: "{fname}"'
+
             pt_content = f"---{new_fm}---\n\n{pt_body}\n"
             pt_path.write_text(pt_content, encoding="utf-8")
 

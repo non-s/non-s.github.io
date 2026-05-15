@@ -256,3 +256,83 @@ document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
     if (!wrapper.contains(e.target)) dropdown.style.display = 'none';
   });
 })();
+
+/* ── Local view tracker + trending widget ─────────────────────
+   Maintains a per-device count of which posts the user opens.
+   Used to:
+     • Populate the "Trending" sidebar widget with the user's own
+       most-visited posts (purely client-side, no analytics service).
+     • Show a "viewed N times" badge on bookmarked / recent items.
+   Stored under `gb-views` as { "/url/": {count, last} }. Capped at 200
+   entries via LRU eviction on `last`.
+*/
+(function(){
+  var KEY = 'gb-views';
+  var MAX = 200;
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
+    catch(_) { return {}; }
+  }
+  function write(v) {
+    try {
+      var entries = Object.entries(v);
+      if (entries.length > MAX) {
+        entries.sort(function(a,b){ return (b[1].last||0) - (a[1].last||0); });
+        v = Object.fromEntries(entries.slice(0, MAX));
+      }
+      localStorage.setItem(KEY, JSON.stringify(v));
+    } catch(_) {}
+  }
+  // Record current page view if it's an article URL.
+  if (/\/\w[\w-]*\/\d{4}\/\d{2}\/\d{2}\//.test(window.location.pathname)) {
+    var v = read();
+    var key = window.location.pathname;
+    var e = v[key] || { count: 0 };
+    e.count = (e.count || 0) + 1;
+    e.last = Date.now();
+    v[key] = e;
+    write(v);
+  }
+  // Render "your trending" widget into #gb-trending-mine if present.
+  window.gbRenderUserTrending = function(targetEl, limit) {
+    targetEl = targetEl || document.getElementById('gb-trending-mine');
+    if (!targetEl) return;
+    var v = read();
+    var entries = Object.entries(v);
+    if (!entries.length) { targetEl.style.display = 'none'; return; }
+    entries.sort(function(a,b){ return (b[1].count||0) - (a[1].count||0); });
+    var top = entries.slice(0, limit || 5);
+    targetEl.style.display = '';
+    targetEl.innerHTML = '';
+    top.forEach(function(pair, i){
+      var url = pair[0];
+      var meta = pair[1] || {};
+      var row = document.createElement('a');
+      row.href = url;
+      row.className = 'wpl-item';
+      row.style.textDecoration = 'none';
+      // Reconstruct a readable title from the slug.
+      var slug = url.replace(/\/$/, '').split('/').pop() || '';
+      var title = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+      var num = document.createElement('div');
+      num.className = 'wpl-num';
+      num.textContent = String(i + 1);
+      var info = document.createElement('div');
+      info.className = 'wpl-title';
+      info.textContent = title;
+      var badge = document.createElement('div');
+      badge.className = 'wpl-date';
+      badge.textContent = (meta.count || 1) + ' view' + ((meta.count || 1) === 1 ? '' : 's');
+      info.appendChild(document.createElement('br'));
+      info.appendChild(badge);
+      row.appendChild(num);
+      row.appendChild(info);
+      targetEl.appendChild(row);
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ window.gbRenderUserTrending(); });
+  } else {
+    window.gbRenderUserTrending();
+  }
+})();

@@ -11,7 +11,9 @@ name: "📰 Fetch News RSS"
 
 on:
   schedule:
-    - cron: "0 6,10,14,18,22 * * *"    # 5x per day — stays within GitHub free tier (2000 min/month)
+    # 12 runs/day (every 2h) — still inside the GitHub Actions free
+    # tier (2000 min/month). Each run is typically ~5-10 min.
+    - cron: "0 */2 * * *"
 
   workflow_dispatch:
     inputs:
@@ -125,6 +127,65 @@ jobs:
       - name: Generate search index
         if: steps.check_changes.outputs.changed != '0'
         run: python generate_search_index.py
+
+      - name: "🇧🇷 Translate posts to PT-BR"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python translate_posts.py
+        env:
+          PYTHONIOENCODING: utf-8
+          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEEPL_API_KEY:  ${{ secrets.DEEPL_API_KEY }}
+
+      - name: "📰 Daily Briefing (original editorial roundup)"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python create_daily_briefing.py
+        env:
+          PYTHONIOENCODING: utf-8
+          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: "🗓️ Weekly Wrap-up (Fridays only)"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python create_weekly_wrapup.py
+        env:
+          PYTHONIOENCODING: utf-8
+          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: "🔊 Generate audio narration (edge-tts)"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python generate_audio.py
+        env:
+          PYTHONIOENCODING: utf-8
+
+      - name: "🏛️ Generate category pillar pages"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: python generate_pillar_pages.py
+
+      - name: "💾 Commit derived artefacts (translations, briefings, audio, search index)"
+        if: steps.check_changes.outputs.changed != '0'
+        continue-on-error: true
+        run: |
+          git add _posts/pt/ search-index.json _tags/ 2>/dev/null || true
+          git add _posts/*-daily-briefing.md _posts/*-weekly-wrapup.md 2>/dev/null || true
+          # generate_audio.py writes back into _posts/ frontmatter + drops MP3s in assets/audio/
+          git add assets/audio/posts/ _posts/*.md 2>/dev/null || true
+          # Pillar pages live under {category}/pillar.html
+          git add */pillar.html 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "ℹ️ No derived artefact changes."
+          else
+            git commit -m "🤖 derived artefacts — $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push origin HEAD || echo "⚠️ push failed, will retry next run"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "🦋 Bluesky — compartilhar posts novos"
         if: steps.check_changes.outputs.changed != '0'
