@@ -8,116 +8,250 @@
 <body{% if page.layout == 'post' %} class="layout-post"{% endif %}>
 <a href="#main-content" class="skip-link skip-to-content">Skip to main content</a>
 
+  <!-- ── BREAKING NEWS TICKER (top of page) ───────────────── -->
+  <div class="breaking-bar">
+    <span class="breaking-label">
+      <i class="bi bi-lightning-charge-fill"></i> BREAKING
+    </span>
+    <div class="breaking-track-wrap">
+      <div class="breaking-track">
+        {% assign ticker_posts = site.posts | limit: 8 %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
+            <span class="breaking-dot">●</span>
+            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+        {% for post in ticker_posts %}
+          <a href="{{ post.url | relative_url }}" class="breaking-item">
+            <span class="breaking-dot">●</span>
+            {{ post.title | truncate: 90 }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DATELINE BAR ──────────────────────────────────────── -->
+  <div class="dateline-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="dateline-date">{{ 'now' | date: "%A, %B %-d, %Y" }}</span>
+      <span class="dateline-meta">
+        <a href="{{ '/feed.xml' | relative_url }}" class="dateline-link"><i class="bi bi-rss-fill"></i> RSS</a>
+        <span class="dateline-sep">·</span>
+        <a href="{{ '/about/' | relative_url }}" class="dateline-link">About</a>
+        <span class="dateline-sep">·</span>
+        <a href="{{ '/contact/' | relative_url }}" class="dateline-link">Contact</a>
+      </span>
+    </div>
+  </div>
+
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
     <div class="container">
 
       <a class="navbar-brand" href="{{ '/' | relative_url }}">
         <img src="{{ '/assets/images/logo.png' | relative_url }}"
-             alt="GlobalBR News" height="36"
-             style="height:36px;width:auto;object-fit:contain;">
+             alt="GlobalBR News" height="40"
+             style="height:40px;width:auto;object-fit:contain;">
       </a>
 
-      <button class="navbar-toggler border-0" type="button"
-              data-bs-toggle="collapse" data-bs-target="#mainNav"
-              aria-controls="mainNav" aria-expanded="false"
-              aria-label="Menu"
-              style="color:rgba(255,255,255,.6);">
-        <i class="bi bi-list" style="font-size:1.4rem;"></i>
+      <button class="navbar-toggler border-0 gb-mobile-toggle" type="button"
+              aria-controls="gbMobileDrawer" aria-expanded="false"
+              aria-label="Open menu"
+              onclick="gbOpenDrawer()">
+        <i class="bi bi-list" style="font-size:1.5rem;"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2 gb-mainnav">
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/' %}active{% endif %}"
-               href="{{ '/' | relative_url }}">Home</a>
+            <a class="nav-link {% if page.url == '/world/' %}active{% endif %}" href="{{ '/world/' | relative_url }}">World</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/world/' | relative_url }}">World</a>
+            <a class="nav-link {% if page.url == '/politics/' %}active{% endif %}" href="{{ '/politics/' | relative_url }}">Politics</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/politics/' | relative_url }}">Politics</a>
+            <a class="nav-link {% if page.url == '/business/' %}active{% endif %}" href="{{ '/business/' | relative_url }}">Business</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/war/' | relative_url }}">War</a>
+            <a class="nav-link {% if page.url == '/technology/' %}active{% endif %}" href="{{ '/technology/' | relative_url }}">Tech</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/business/' | relative_url }}">Business</a>
+            <a class="nav-link {% if page.url == '/science/' %}active{% endif %}" href="{{ '/science/' | relative_url }}">Science</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/videos/' | relative_url }}">Videos</a>
+            <a class="nav-link {% if page.url == '/sports/' %}active{% endif %}" href="{{ '/sports/' | relative_url }}">Sports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ '/reading-list/' | relative_url }}"><i class="bi bi-bookmark"></i> Saved</a>
+            <a class="nav-link {% if page.url == '/videos/' %}active{% endif %}" href="{{ '/videos/' | relative_url }}">Videos</a>
           </li>
-          <li style="position:relative;list-style:none;">
-            <a class="nav-link" href="#" id="gbMoreBtn"
-               style="cursor:pointer;display:flex;align-items:center;gap:.3rem;">
-              More <i class="bi bi-chevron-down" style="font-size:.6rem;transition:transform .2s;"></i>
+          <li class="nav-item gb-mega-wrap">
+            <a class="nav-link" href="#" id="gbMoreBtn" aria-haspopup="true" aria-expanded="false">
+              Sections <i class="bi bi-chevron-down" style="font-size:.6rem;transition:transform .2s;"></i>
             </a>
-            <ul id="gbMoreMenu"
-                style="display:none;position:absolute;top:calc(100% + 6px);left:0;
-                       background:rgba(8,12,23,.99);border:1px solid rgba(255,255,255,.15);
-                       border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.75);
-                       padding:.4rem 0;min-width:200px;z-index:9999;
-                       list-style:none !important;margin:0;">
-              <li style="list-style:none;"><a href="{{ '/science/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔬 Science</a></li>
-              <li style="list-style:none;"><a href="{{ '/health/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🏥 Health</a></li>
-              <li style="list-style:none;"><a href="{{ '/sports/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">⚽ Sports</a></li>
-              <li style="list-style:none;"><a href="{{ '/food/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🍕 Food</a></li>
-              <li style="list-style:none;"><a href="{{ '/entertainment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🎬 Entertainment</a></li>
-              <li style="list-style:none;"><a href="{{ '/environment/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🌱 Environment</a></li>
-              <li style="list-style:none;"><a href="{{ '/travel/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">✈️ Travel</a></li>
-              <li style="list-style:none;border-top:1px solid rgba(255,255,255,.1);margin:.3rem 0;"></li>
-              <li style="list-style:none;"><a href="{{ '/technology/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">💻 Technology</a></li>
-              <li style="list-style:none;"><a href="{{ '/ai/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🤖 AI</a></li>
-              <li style="list-style:none;"><a href="{{ '/security/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🔒 Security</a></li>
-              <li style="list-style:none;border-top:1px solid rgba(255,255,255,.1);margin:.3rem 0;"></li>
-              <li style="list-style:none;"><a href="{{ '/series/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📚 Series</a></li>
-              <li style="list-style:none;"><a href="{{ '/popular/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">⭐ Popular</a></li>
-              <li style="list-style:none;"><a href="{{ '/tags/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">🏷️ Tags</a></li>
-              <li style="list-style:none;"><a href="{{ '/contact/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">✉️ Contact</a></li>
-              <li style="list-style:none;"><a href="{{ '/editorial-policy/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📋 Editorial Policy</a></li>
-              <li style="list-style:none;"><a href="{{ '/archive/' | relative_url }}" style="display:block;padding:.5rem 1.1rem;color:#7e8fa8;font-size:.85rem;text-decoration:none;" onmouseover="this.style.background='rgba(249,115,22,.12)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#7e8fa8'">📅 Archive</a></li>
-            </ul>
+            <div id="gbMegaMenu" class="gb-mega-menu" aria-hidden="true">
+              <div class="gb-mega-grid">
+                {% assign mega_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security" | split: "," %}
+                {% for cat in mega_cats %}
+                  {% assign cat_meta = site.data.categories[cat] %}
+                  {% assign cat_latest = site.posts | where_exp: "p", "p.categories contains cat" | limit: 1 %}
+                  <div class="gb-mega-col">
+                    <a href="/{{ cat }}/" class="gb-mega-cat">
+                      <span class="gb-mega-icon">{{ cat_meta.icon }}</span>
+                      <span class="gb-mega-name">{{ cat_meta.title | default: cat | capitalize }}</span>
+                    </a>
+                    {% if cat_latest.size > 0 %}
+                      {% assign lp = cat_latest[0] %}
+                      <a href="{{ lp.url | relative_url }}" class="gb-mega-lead">
+                        {{ lp.title | truncate: 65 }}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="gb-mega-footer">
+                <a href="{{ '/series/' | relative_url }}">📚 Series</a>
+                <a href="{{ '/popular/' | relative_url }}">⭐ Most Popular</a>
+                <a href="{{ '/tags/' | relative_url }}">🏷️ Topics</a>
+                <a href="{{ '/archive/' | relative_url }}">📅 Archive</a>
+                <a href="{{ '/editorial-policy/' | relative_url }}">📋 Editorial Policy</a>
+                <a href="{{ '/food/' | relative_url }}">🍕 Food</a>
+              </div>
+            </div>
           </li>
-          <script>
-          (function(){
-            var btn = document.getElementById('gbMoreBtn');
-            var menu = document.getElementById('gbMoreMenu');
-            var icon = btn ? btn.querySelector('i') : null;
-            if (!btn || !menu) return;
-            btn.addEventListener('click', function(e){
-              e.preventDefault();
-              var open = menu.style.display === 'block';
-              menu.style.display = open ? 'none' : 'block';
-              if (icon) icon.style.transform = open ? '' : 'rotate(180deg)';
-            });
-            document.addEventListener('click', function(e){
-              if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.style.display = 'none';
-                if (icon) icon.style.transform = '';
-              }
-            });
-          })();
-          </script>
         </ul>
 
-        <a class="nav-link me-1" href="{{ '/search/' | relative_url }}" aria-label="Search">🔍 Search</a>
-        <form class="d-flex gap-2" role="search"
+        <form class="d-flex gap-2 gb-nav-search" role="search"
               action="{{ '/search/' | relative_url }}" method="get">
           <input class="form-control search-input" type="search"
-                 name="q" placeholder="Search news…" aria-label="Search">
-          <button class="btn search-btn" type="submit">
+                 name="q" placeholder="Search…" aria-label="Search news">
+          <button class="btn search-btn" type="submit" aria-label="Submit search">
             <i class="bi bi-search"></i>
           </button>
         </form>
+        <a class="nav-link gb-saved-link" href="{{ '/reading-list/' | relative_url }}" aria-label="Reading list" title="Saved articles">
+          <i class="bi bi-bookmark"></i>
+        </a>
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
           <i class="bi bi-moon-fill" id="theme-icon"></i>
         </button>
       </div>
     </div>
   </nav>
+
+  <!-- ── MOBILE DRAWER (custom, replaces Bootstrap collapse on mobile) ── -->
+  <div class="gb-drawer-overlay" id="gbDrawerOverlay" onclick="gbCloseDrawer()" aria-hidden="true"></div>
+  <aside class="gb-drawer" id="gbMobileDrawer" aria-hidden="true" aria-label="Mobile navigation">
+    <div class="gb-drawer-header">
+      <div class="gb-drawer-brand">
+        <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="GlobalBR News" height="32"
+             style="height:32px;width:auto;object-fit:contain;">
+      </div>
+      <button class="gb-drawer-close" onclick="gbCloseDrawer()" aria-label="Close menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <form class="gb-drawer-search" role="search"
+          action="{{ '/search/' | relative_url }}" method="get">
+      <i class="bi bi-search"></i>
+      <input type="search" name="q" placeholder="Search news…" aria-label="Search news">
+    </form>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">Browse</p>
+      <a href="{{ '/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-house"></i> Home
+      </a>
+      <a href="{{ '/reading-list/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-bookmark"></i> Reading List
+      </a>
+      <a href="{{ '/videos/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-play-btn"></i> Videos
+      </a>
+      <a href="{{ '/search/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-search"></i> Search
+      </a>
+    </div>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">Sections</p>
+      {% assign drawer_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security,food" | split: "," %}
+      {% for cat in drawer_cats %}
+        {% assign cat_meta = site.data.categories[cat] %}
+        <a href="/{{ cat }}/" class="gb-drawer-link gb-drawer-cat-link {% if page.url == '/' | append: cat | append: '/' %}active{% endif %}">
+          <span class="gb-drawer-icon">{{ cat_meta.icon }}</span>
+          {{ cat_meta.title | default: cat | capitalize }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">More</p>
+      <a href="{{ '/popular/' | relative_url }}" class="gb-drawer-link">⭐ Most Popular</a>
+      <a href="{{ '/series/' | relative_url }}" class="gb-drawer-link">📚 Series</a>
+      <a href="{{ '/tags/' | relative_url }}" class="gb-drawer-link">🏷️ Topics</a>
+      <a href="{{ '/archive/' | relative_url }}" class="gb-drawer-link">📅 Archive</a>
+      <a href="{{ '/feed.xml' | relative_url }}" class="gb-drawer-link">📡 RSS Feed</a>
+    </div>
+
+    <div class="gb-drawer-section gb-drawer-section--last">
+      <p class="gb-drawer-section-title">About</p>
+      <a href="{{ '/about/' | relative_url }}" class="gb-drawer-link">About GlobalBR News</a>
+      <a href="{{ '/editorial-policy/' | relative_url }}" class="gb-drawer-link">Editorial Policy</a>
+      <a href="{{ '/contact/' | relative_url }}" class="gb-drawer-link">Contact</a>
+      <a href="{{ '/privacy/' | relative_url }}" class="gb-drawer-link">Privacy</a>
+    </div>
+
+    <div class="gb-drawer-footer">
+      <span class="gb-drawer-footer-date">{{ 'now' | date: "%a, %b %-d, %Y" }}</span>
+      <span class="gb-drawer-footer-meta">© {{ 'now' | date: "%Y" }} GlobalBR News</span>
+    </div>
+  </aside>
+
+  <script>
+  window.gbOpenDrawer = function() {
+    document.getElementById('gbMobileDrawer').classList.add('open');
+    document.getElementById('gbDrawerOverlay').classList.add('open');
+    document.getElementById('gbMobileDrawer').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  window.gbCloseDrawer = function() {
+    document.getElementById('gbMobileDrawer').classList.remove('open');
+    document.getElementById('gbDrawerOverlay').classList.remove('open');
+    document.getElementById('gbMobileDrawer').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') gbCloseDrawer(); });
+  </script>
+
+  <script>
+  (function(){
+    var btn = document.getElementById('gbMoreBtn');
+    var menu = document.getElementById('gbMegaMenu');
+    var icon = btn ? btn.querySelector('i.bi-chevron-down') : null;
+    var wrap = btn ? btn.closest('.gb-mega-wrap') : null;
+    if (!btn || !menu || !wrap) return;
+    function setOpen(open){
+      wrap.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (icon) icon.style.transform = open ? 'rotate(180deg)' : '';
+    }
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      setOpen(!wrap.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e){
+      if (!wrap.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') setOpen(false);
+    });
+  })();
+  </script>
   <script>
   (function(){
     var toggle = document.getElementById('theme-toggle');
@@ -139,35 +273,6 @@
   })();
   </script>
 
-  <!-- ── CRYPTO TICKER ────────────────────────────────────── -->
-  {% include crypto-ticker.html %}
-
-  <!-- ── BREAKING NEWS TICKER ─────────────────────────────── -->
-  <div class="breaking-bar">
-    <span class="breaking-label">
-      <i class="bi bi-lightning-charge-fill"></i> BREAKING
-    </span>
-    <div class="breaking-track-wrap">
-      <div class="breaking-track">
-        {% assign ticker_posts = site.posts | limit: 8 %}
-        {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
-            <span class="breaking-dot">●</span>
-            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
-            {{ post.title | truncate: 90 }}
-          </a>
-        {% endfor %}
-        {% for post in ticker_posts %}
-          <a href="{{ post.url | relative_url }}" class="breaking-item{% if forloop.first %} breaking-item--new{% endif %}">
-            <span class="breaking-dot">●</span>
-            {% if forloop.first %}<span class="breaking-new-badge">NEW</span>{% endif %}
-            {{ post.title | truncate: 90 }}
-          </a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
   <!-- ── CONTEÚDO ───────────────────────────────────────────── -->
   <main id="main-content">{{ content }}</main>
 
@@ -182,80 +287,129 @@
 
   <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer class="techbr-footer">
-    <div class="container">
+
+    <!-- Trust strip -->
+    <div class="footer-trust-strip">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <i class="bi bi-shield-check"></i>
+            <div>
+              <strong>Editorial Standards</strong>
+              <span>All stories fact-checked &amp; sourced</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-globe-americas"></i>
+            <div>
+              <strong>13 Categories · 241+ Stories</strong>
+              <span>World news, every hour</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-rss-fill"></i>
+            <div>
+              <strong>Updated 5× Daily</strong>
+              <span>6h · 10h · 14h · 18h · 22h UTC</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-people-fill"></i>
+            <div>
+              <strong>5,000+ Subscribers</strong>
+              <span>Join the daily briefing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-main">
       <div class="row g-4">
 
         <!-- About -->
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-12">
           <div class="footer-brand">
             <img src="{{ '/assets/images/logo.png' | relative_url }}"
-                 alt="GlobalBR News" height="40"
-                 style="height:40px;width:auto;object-fit:contain;filter:brightness(1.1);">
+                 alt="GlobalBR News" height="44"
+                 style="height:44px;width:auto;object-fit:contain;filter:brightness(1.1);">
           </div>
           <p class="footer-desc">
             World news portal maintained by
-            <strong style="color:rgba(255,255,255,.7);">Julio</strong>,
-            automatically updated 5× per day with the biggest global news sources.
+            <strong style="color:rgba(255,255,255,.78);">Julio (non-s)</strong>,
+            automatically curated 5× per day from the biggest global news sources.
           </p>
           <div class="footer-social">
-            <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed">
+            <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed" aria-label="RSS Feed">
               <i class="bi bi-rss-fill"></i>
             </a>
             <a href="https://github.com/non-s" target="_blank" rel="noopener"
-               class="social-btn" title="GitHub">
+               class="social-btn" title="GitHub" aria-label="GitHub">
               <i class="bi bi-github"></i>
             </a>
             <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener"
-               class="social-btn" title="YouTube">
+               class="social-btn" title="YouTube" aria-label="YouTube">
               <i class="bi bi-youtube"></i>
+            </a>
+            <a href="https://bsky.app/profile/globalbrnews.bsky.social" target="_blank" rel="noopener"
+               class="social-btn" title="Bluesky" aria-label="Bluesky">
+              <i class="bi bi-cloud"></i>
             </a>
           </div>
         </div>
 
-        <!-- Categories -->
+        <!-- Sections -->
         <div class="col-lg-2 col-md-3 col-6">
-          <p class="footer-heading">Categories</p>
+          <p class="footer-heading">Sections</p>
           <ul class="footer-links">
             <li><a href="{{ '/world/' | relative_url }}">World</a></li>
             <li><a href="{{ '/politics/' | relative_url }}">Politics</a></li>
-            <li><a href="{{ '/war/' | relative_url }}">War</a></li>
             <li><a href="{{ '/business/' | relative_url }}">Business</a></li>
-            <li><a href="{{ '/science/' | relative_url }}">Science</a></li>
-            <li><a href="{{ '/health/' | relative_url }}">Health</a></li>
-            <li><a href="{{ '/sports/' | relative_url }}">Sports</a></li>
-            <li><a href="{{ '/food/' | relative_url }}">Food</a></li>
-            <li><a href="{{ '/entertainment/' | relative_url }}">Entertainment</a></li>
             <li><a href="{{ '/technology/' | relative_url }}">Technology</a></li>
-            <li><a href="{{ '/ai/' | relative_url }}">AI</a></li>
-            <li><a href="{{ '/security/' | relative_url }}">Security</a></li>
+            <li><a href="{{ '/science/' | relative_url }}">Science</a></li>
+            <li><a href="{{ '/sports/' | relative_url }}">Sports</a></li>
+            <li><a href="{{ '/health/' | relative_url }}">Health</a></li>
           </ul>
         </div>
 
-        <!-- Links -->
-        <div class="col-lg-2 col-md-3 col-6">
-          <p class="footer-heading">Links</p>
-          <ul class="footer-links">
-            <li><a href="{{ '/about/' | relative_url }}">About</a></li>
-            <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
-            <li><a href="{{ '/privacy/' | relative_url }}">Privacy</a></li>
-            <li><a href="{{ '/editorial-policy/' | relative_url }}">Editorial Policy</a></li>
-            <li><a href="{{ '/corrections/' | relative_url }}">Corrections</a></li>
-            <li><a href="{{ '/donate/' | relative_url }}">Support Us</a></li>
-            <li><a href="{{ '/videos/' | relative_url }}">Videos</a></li>
-            <li><a href="{{ '/reading-list/' | relative_url }}">Reading List</a></li>
-            <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
-            <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
-          </ul>
-        </div>
-
-        <!-- More -->
+        <!-- More Sections -->
         <div class="col-lg-2 col-md-3 col-6">
           <p class="footer-heading">More</p>
           <ul class="footer-links">
-            <li><a href="{{ '/series/' | relative_url }}">Series</a></li>
-            <li><a href="{{ '/popular/' | relative_url }}">Popular</a></li>
-            <li><a href="{{ '/advertise/' | relative_url }}">Advertise</a></li>
+            <li><a href="{{ '/war/' | relative_url }}">War &amp; Conflict</a></li>
+            <li><a href="{{ '/ai/' | relative_url }}">AI</a></li>
+            <li><a href="{{ '/security/' | relative_url }}">Cybersecurity</a></li>
+            <li><a href="{{ '/environment/' | relative_url }}">Environment</a></li>
+            <li><a href="{{ '/food/' | relative_url }}">Food &amp; Culture</a></li>
+            <li><a href="{{ '/entertainment/' | relative_url }}">Entertainment</a></li>
+            <li><a href="{{ '/videos/' | relative_url }}">Videos</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="col-lg-2 col-md-3 col-6">
+          <p class="footer-heading">Company</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/about/' | relative_url }}">About</a></li>
+            <li><a href="{{ '/editorial-policy/' | relative_url }}">Editorial Policy</a></li>
+            <li><a href="{{ '/corrections/' | relative_url }}">Corrections</a></li>
             <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
+            <li><a href="{{ '/advertise/' | relative_url }}">Advertise</a></li>
+            <li><a href="{{ '/donate/' | relative_url }}">Support Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div class="col-lg-2 col-md-3 col-6">
+          <p class="footer-heading">Resources</p>
+          <ul class="footer-links">
+            <li><a href="{{ '/feed.xml' | relative_url }}">RSS Feed</a></li>
+            <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
+            <li><a href="{{ '/reading-list/' | relative_url }}">Reading List</a></li>
+            <li><a href="{{ '/popular/' | relative_url }}">Most Popular</a></li>
+            <li><a href="{{ '/archive/' | relative_url }}">Archive</a></li>
+            <li><a href="{{ '/tags/' | relative_url }}">Topics</a></li>
+            <li><a href="{{ '/privacy/' | relative_url }}">Privacy</a></li>
           </ul>
         </div>
       </div>
@@ -263,18 +417,120 @@
       <hr class="footer-divider">
 
       <div class="footer-bottom">
-        <span>
-          © {{ 'now' | date: "%Y" }} <strong style="color:rgba(255,255,255,.5);">GlobalBR News</strong>
-          — Maintained by <a href="https://github.com/non-s">Julio (non-s)</a>
-        </span>
-        <span>
-          Content curated from public RSS feeds. All rights belong to original authors.
-          Made with ❤️ and Jekyll.
-        </span>
+        <div class="footer-bottom-left">
+          <span>© {{ 'now' | date: "%Y" }} <strong>GlobalBR News</strong>. All rights reserved.</span>
+          <span class="footer-bottom-sep">·</span>
+          <span>Curated from public RSS feeds. Original copyright belongs to source authors.</span>
+        </div>
+        <div class="footer-bottom-right">
+          <a href="{{ '/privacy/' | relative_url }}">Privacy</a>
+          <span class="footer-bottom-sep">·</span>
+          <a href="{{ '/editorial-policy/' | relative_url }}">Terms</a>
+          <span class="footer-bottom-sep">·</span>
+          <a href="https://github.com/non-s">@non-s</a>
+        </div>
       </div>
 
     </div>
   </footer>
+
+  <!-- ── PHOTO LIGHTBOX (used by .gb-zoomable and post galleries) ── -->
+  <div class="gb-lightbox" id="gbLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
+    <button class="gb-lightbox-close" onclick="gbCloseLightbox()" aria-label="Close photo viewer">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <button class="gb-lightbox-prev" onclick="gbLightboxNav(-1)" aria-label="Previous photo">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+    <button class="gb-lightbox-next" onclick="gbLightboxNav(1)" aria-label="Next photo">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+    <figure class="gb-lightbox-stage">
+      <img id="gbLightboxImg" alt="">
+      <figcaption class="gb-lightbox-caption">
+        <span id="gbLightboxCaption"></span>
+        <span class="gb-lightbox-counter" id="gbLightboxCounter"></span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script>
+  (function(){
+    var gallery = [];
+    var current = 0;
+    var lb  = document.getElementById('gbLightbox');
+    var img = document.getElementById('gbLightboxImg');
+    var cap = document.getElementById('gbLightboxCaption');
+    var cnt = document.getElementById('gbLightboxCounter');
+
+    function loadGallery() {
+      var dataEl = document.getElementById('gb-gallery-data');
+      if (dataEl) {
+        try { gallery = JSON.parse(dataEl.textContent); } catch(e) { gallery = []; }
+      }
+    }
+
+    function show(i) {
+      if (!gallery.length) return;
+      current = (i + gallery.length) % gallery.length;
+      var item = gallery[current];
+      img.src = item.src;
+      img.alt = item.alt || '';
+      cap.textContent = item.caption || item.alt || '';
+      cnt.textContent = (current + 1) + ' / ' + gallery.length;
+    }
+
+    window.gbOpenLightbox = function(index) {
+      loadGallery();
+      if (!gallery.length) return;
+      show(index || 0);
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.gbCloseLightbox = function() {
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    window.gbLightboxNav = function(dir) {
+      show(current + dir);
+    };
+
+    /* Single-image zoom (for .gb-zoomable images) */
+    document.addEventListener('click', function(e){
+      var t = e.target;
+      if (t.classList && t.classList.contains('gb-zoomable')) {
+        e.preventDefault();
+        gallery = [{ src: t.currentSrc || t.src, alt: t.alt, caption: t.dataset.caption || '' }];
+        show(0);
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      } else if (t === lb) {
+        gbCloseLightbox();
+      }
+    });
+
+    /* Keyboard */
+    document.addEventListener('keydown', function(e){
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')      gbCloseLightbox();
+      else if (e.key === 'ArrowLeft')  gbLightboxNav(-1);
+      else if (e.key === 'ArrowRight') gbLightboxNav(1);
+    });
+
+    /* Touch swipe */
+    var touchStartX = 0;
+    lb.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+    lb.addEventListener('touchend', function(e){
+      var diff = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(diff) > 50) gbLightboxNav(diff > 0 ? -1 : 1);
+    });
+  })();
+  </script>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
