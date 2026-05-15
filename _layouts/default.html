@@ -57,12 +57,11 @@
              style="height:40px;width:auto;object-fit:contain;">
       </a>
 
-      <button class="navbar-toggler border-0" type="button"
-              data-bs-toggle="collapse" data-bs-target="#mainNav"
-              aria-controls="mainNav" aria-expanded="false"
-              aria-label="Menu"
-              style="color:rgba(255,255,255,.6);">
-        <i class="bi bi-list" style="font-size:1.4rem;"></i>
+      <button class="navbar-toggler border-0 gb-mobile-toggle" type="button"
+              aria-controls="gbMobileDrawer" aria-expanded="false"
+              aria-label="Open menu"
+              onclick="gbOpenDrawer()">
+        <i class="bi bi-list" style="font-size:1.5rem;"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="mainNav">
@@ -141,6 +140,93 @@
       </div>
     </div>
   </nav>
+
+  <!-- ── MOBILE DRAWER (custom, replaces Bootstrap collapse on mobile) ── -->
+  <div class="gb-drawer-overlay" id="gbDrawerOverlay" onclick="gbCloseDrawer()" aria-hidden="true"></div>
+  <aside class="gb-drawer" id="gbMobileDrawer" aria-hidden="true" aria-label="Mobile navigation">
+    <div class="gb-drawer-header">
+      <div class="gb-drawer-brand">
+        <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="GlobalBR News" height="32"
+             style="height:32px;width:auto;object-fit:contain;">
+      </div>
+      <button class="gb-drawer-close" onclick="gbCloseDrawer()" aria-label="Close menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <form class="gb-drawer-search" role="search"
+          action="{{ '/search/' | relative_url }}" method="get">
+      <i class="bi bi-search"></i>
+      <input type="search" name="q" placeholder="Search news…" aria-label="Search news">
+    </form>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">Browse</p>
+      <a href="{{ '/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-house"></i> Home
+      </a>
+      <a href="{{ '/reading-list/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-bookmark"></i> Reading List
+      </a>
+      <a href="{{ '/videos/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-play-btn"></i> Videos
+      </a>
+      <a href="{{ '/search/' | relative_url }}" class="gb-drawer-link">
+        <i class="bi bi-search"></i> Search
+      </a>
+    </div>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">Sections</p>
+      {% assign drawer_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security,food" | split: "," %}
+      {% for cat in drawer_cats %}
+        {% assign cat_meta = site.data.categories[cat] %}
+        <a href="/{{ cat }}/" class="gb-drawer-link gb-drawer-cat-link {% if page.url == '/' | append: cat | append: '/' %}active{% endif %}">
+          <span class="gb-drawer-icon">{{ cat_meta.icon }}</span>
+          {{ cat_meta.title | default: cat | capitalize }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="gb-drawer-section">
+      <p class="gb-drawer-section-title">More</p>
+      <a href="{{ '/popular/' | relative_url }}" class="gb-drawer-link">⭐ Most Popular</a>
+      <a href="{{ '/series/' | relative_url }}" class="gb-drawer-link">📚 Series</a>
+      <a href="{{ '/tags/' | relative_url }}" class="gb-drawer-link">🏷️ Topics</a>
+      <a href="{{ '/archive/' | relative_url }}" class="gb-drawer-link">📅 Archive</a>
+      <a href="{{ '/feed.xml' | relative_url }}" class="gb-drawer-link">📡 RSS Feed</a>
+    </div>
+
+    <div class="gb-drawer-section gb-drawer-section--last">
+      <p class="gb-drawer-section-title">About</p>
+      <a href="{{ '/about/' | relative_url }}" class="gb-drawer-link">About GlobalBR News</a>
+      <a href="{{ '/editorial-policy/' | relative_url }}" class="gb-drawer-link">Editorial Policy</a>
+      <a href="{{ '/contact/' | relative_url }}" class="gb-drawer-link">Contact</a>
+      <a href="{{ '/privacy/' | relative_url }}" class="gb-drawer-link">Privacy</a>
+    </div>
+
+    <div class="gb-drawer-footer">
+      <span class="gb-drawer-footer-date">{{ 'now' | date: "%a, %b %-d, %Y" }}</span>
+      <span class="gb-drawer-footer-meta">© {{ 'now' | date: "%Y" }} GlobalBR News</span>
+    </div>
+  </aside>
+
+  <script>
+  window.gbOpenDrawer = function() {
+    document.getElementById('gbMobileDrawer').classList.add('open');
+    document.getElementById('gbDrawerOverlay').classList.add('open');
+    document.getElementById('gbMobileDrawer').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  window.gbCloseDrawer = function() {
+    document.getElementById('gbMobileDrawer').classList.remove('open');
+    document.getElementById('gbDrawerOverlay').classList.remove('open');
+    document.getElementById('gbMobileDrawer').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') gbCloseDrawer(); });
+  </script>
+
   <script>
   (function(){
     var btn = document.getElementById('gbMoreBtn');
