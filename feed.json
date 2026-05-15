@@ -7,15 +7,22 @@ layout: null
   "home_page_url": "{{ site.url }}/",
   "feed_url": "{{ '/feed.json' | absolute_url }}",
   "description": {{ site.description | jsonify }},
+  "language": "en",
+  "icon": "{{ '/assets/images/logo.png' | absolute_url }}",
+  "favicon": "{{ '/favicon.ico' | absolute_url }}",
+  "authors": [
+    { "name": {{ site.author.name | default: 'GlobalBR News' | jsonify }} }
+  ],
   "items": [
     {% for post in site.posts limit:20 %}
     {
-      "id": "{{ post.url | absolute_url }}",
-      "url": "{{ post.url | absolute_url }}",
+      "id": {{ post.url | absolute_url | jsonify }},
+      "url": {{ post.url | absolute_url | jsonify }},
       "title": {{ post.title | jsonify }},
-      "summary": {{ post.description | jsonify }},
+      "summary": {{ post.description | default: post.excerpt | strip_html | truncate: 280 | jsonify }},
       "date_published": "{{ post.date | date_to_xmlschema }}",
-      {% if post.image %}"image": "{{ post.image }}",{% endif %}
+      {% if post.image %}"image": {{ post.image | jsonify }},{% endif %}
+      {% if post.categories.size > 0 %}"_category": {{ post.categories.first | jsonify }},{% endif %}
       "tags": {{ post.tags | jsonify }}
     }{% unless forloop.last %},{% endunless %}
     {% endfor %}

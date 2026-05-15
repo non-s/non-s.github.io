@@ -13,17 +13,34 @@ Env vars required:
 """
 from __future__ import annotations
 
+import html
 import json
 import logging
 import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote, urlparse
 
 import requests
 
 from utils.frontmatter import parse, get_str, get_list
 from utils.retry import retry_call
+
+
+def _safe_url(raw: str, fallback: str = "#") -> str:
+    """Allow only http(s) URLs; anything else collapses to fallback."""
+    if not raw:
+        return fallback
+    parsed = urlparse(raw)
+    if parsed.scheme in ("http", "https") and parsed.netloc:
+        return raw
+    return fallback
+
+
+def _esc(text: str) -> str:
+    """HTML-escape user-controlled content before inlining into the email body."""
+    return html.escape(text or "", quote=True)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -80,18 +97,18 @@ def truncate(text: str, limit: int = 150) -> str:
 def build_html(posts: list[dict], today: str) -> str:
     story_blocks = []
     for post in posts:
-        title       = get_str(post, "title", "Untitled")
-        description = truncate(get_str(post, "description"), 150)
-        image_url   = get_str(post, "image")
-        source_url  = get_str(post, "source_url", "#")
-        post_url    = build_post_url(post)
-        category    = get_str(post, "categories", "News").upper()
+        title       = _esc(get_str(post, "title", "Untitled"))
+        description = _esc(truncate(get_str(post, "description"), 150))
+        image_url   = _safe_url(get_str(post, "image"), "")
+        source_url  = _safe_url(get_str(post, "source_url"), "#")
+        post_url    = _safe_url(build_post_url(post), SITE_BASE_URL)
+        category    = _esc(get_str(post, "categories", "News").upper())
 
         img_block = ""
         if image_url:
             img_block = (
-                f'<a href="{post_url}" style="display:block;text-decoration:none;">'
-                f'<img src="{image_url}" alt="{title}" '
+                f'<a href="{_esc(post_url)}" style="display:block;text-decoration:none;">'
+                f'<img src="{_esc(image_url)}" alt="{title}" '
                 f'style="width:100%;max-height:220px;object-fit:cover;border-radius:6px;'
                 f'display:block;margin-bottom:12px;" /></a>'
             )
@@ -105,10 +122,10 @@ def build_html(posts: list[dict], today: str) -> str:
                          font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:3px;
                          margin-bottom:8px;">{category}</span>
             <h2 style="margin:8px 0 6px;font-size:18px;line-height:1.35;">
-              <a href="{post_url}" style="color:#f1f5f9;text-decoration:none;">{title}</a>
+              <a href="{_esc(post_url)}" style="color:#f1f5f9;text-decoration:none;">{title}</a>
             </h2>
             <p style="margin:0 0 12px;color:#94a3b8;font-size:14px;line-height:1.6;">{description}</p>
-            <a href="{source_url}"
+            <a href="{_esc(source_url)}"
                style="display:inline-block;background:#f97316;color:#fff;font-size:13px;
                       font-weight:600;padding:8px 18px;border-radius:4px;text-decoration:none;">
               Read more →

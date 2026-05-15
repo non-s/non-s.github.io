@@ -28,8 +28,10 @@ layout: default
       {{ cat_name }} News
     </h1>
     <p style="color:var(--c-muted);font-size:.95rem;margin:0;">
-      {{ cat_posts | size }} article{% if cat_posts.size != 1 %}s{% endif %} ·
-      latest: {{ cat_posts | first | map: "date" | first | date: "%B %d, %Y" }}
+      {{ cat_posts | size }} article{% if cat_posts.size != 1 %}s{% endif %}
+      {% if cat_posts.size > 0 %}·
+      latest: {{ cat_posts.first.date | date: "%B %d, %Y" }}
+      {% endif %}
     </p>
 
     <!-- Category stats row -->

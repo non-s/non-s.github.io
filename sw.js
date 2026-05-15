@@ -150,23 +150,26 @@ async function flushOfflineReads() {
 // ── Push notifications ────────────────────────────────────────
 self.addEventListener('push', e => {
   if (!e.data) return;
-  const data = e.data.json().catch(() => ({ title: 'GlobalBR News', body: e.data.text() }));
+  let d;
+  try {
+    d = e.data.json();
+  } catch (_) {
+    d = { title: 'GlobalBR News', body: e.data.text() };
+  }
   e.waitUntil(
-    data.then(d =>
-      self.registration.showNotification(d.title || 'GlobalBR News', {
-        body:    d.body  || 'New article published',
-        icon:    '/assets/images/logo.png',
-        badge:   '/assets/images/logo.png',
-        tag:     'globalbr-news',
-        data:    { url: d.url || '/' },
-        actions: [{ action: 'open', title: 'Read now' }],
-      })
-    )
+    self.registration.showNotification(d.title || 'GlobalBR News', {
+      body:    d.body  || 'New article published',
+      icon:    '/assets/images/logo.png',
+      badge:   '/assets/images/logo.png',
+      tag:     'globalbr-news',
+      data:    { url: d.url || '/' },
+      actions: [{ action: 'open', title: 'Read now' }],
+    })
   );
 });
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  const target = e.notification.data?.url || '/';
-  e.waitUntil(clients.openWindow(target));
+  const target = (e.notification.data && e.notification.data.url) || '/';
+  e.waitUntil(self.clients.openWindow(target));
 });

@@ -13,20 +13,19 @@ Uso:
     python auth_youtube.py
 """
 
-import json
 from pathlib import Path
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.oauth2.credentials import Credentials
 
-SCOPES         = [
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+SCOPES        = [
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube",
 ]
-CLIENT_SECRET  = Path("client_secret.json")
-TOKEN_FILE     = Path("token.json")
+CLIENT_SECRET = Path("client_secret.json")
+TOKEN_FILE    = Path("token.json")
 
 
-def main():
+def main() -> None:
     if not CLIENT_SECRET.exists():
         print("\n❌ ERRO: client_secret.json não encontrado!")
         print("   Coloque o arquivo JSON baixado do Google Cloud nesta pasta")
@@ -35,10 +34,10 @@ def main():
 
     print("\n🔐 Iniciando autenticação OAuth do YouTube...")
     print("   Uma janela do navegador vai abrir.")
-    print("   Faça login com: sourcenaiomiocc@gmail.com")
+    print("   Faça login com a conta do YouTube vinculada ao canal.")
     print("   Clique em 'Continuar' mesmo que apareça aviso de app não verificado.\n")
 
-    flow = InstalledAppFlow.from_client_secrets_file(str(CLIENT_SECRET), SCOPES)
+    flow  = InstalledAppFlow.from_client_secrets_file(str(CLIENT_SECRET), SCOPES)
     creds = flow.run_local_server(port=0, open_browser=True)
 
     TOKEN_FILE.write_text(creds.to_json())
@@ -46,8 +45,6 @@ def main():
     print("\n📋 PRÓXIMO PASSO:")
     print("   Copie o conteúdo de token.json e salve como")
     print("   GitHub Secret com o nome: YOUTUBE_TOKEN\n")
-    print("   Conteúdo do token.json:")
-    print("   " + TOKEN_FILE.read_text()[:100] + "...\n")
 
 
 if __name__ == "__main__":

@@ -22,7 +22,7 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - run: pip install requests
+      - run: pip install -r requirements.txt
 
       - name: "⭐ Post best article of the day"
         run: python post_best_of_day.py

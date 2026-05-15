@@ -12,13 +12,14 @@ Env vars:
 """
 import logging
 import os
-import re
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 import requests
+
+from utils.frontmatter import parse, get_list
 
 logging.basicConfig(
     level=logging.INFO,
@@ -65,17 +66,12 @@ def build_url(path: Path) -> str | None:
     year, month, day, slug = parts
     if not (year.isdigit() and month.isdigit() and day.isdigit()):
         return None
-    # Read category from frontmatter
     category = "news"
     try:
-        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
-            if line.startswith("categories:"):
-                m = re.search(r'\[([^\]]+)\]', line)
-                if m:
-                    cats = [c.strip().strip('"').strip("'") for c in m.group(1).split(",")]
-                    if cats:
-                        category = cats[0]
-                break
+        fm = parse(path.read_text(encoding="utf-8", errors="replace"))
+        cats = get_list(fm, "categories")
+        if cats and cats[0].strip():
+            category = cats[0].strip()
     except Exception:
         pass
     return f"{SITE_URL}/{category}/{year}/{month}/{day}/{slug}/"
