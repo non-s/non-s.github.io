@@ -25,122 +25,27 @@ import os
 import re
 import json
 import logging
-import hashlib
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
 
+from utils.text import slugify, sanitize_text, extract_description, extract_image, parse_date
+from utils.dedup import levenshtein as _levenshtein, titles_too_similar as _titles_too_similar, title_similarity as _title_similarity
+from utils.ai_helper import (
+    ai_text as _ai_text,
+    sentiment_score as _sentiment_score,
+    fact_check_score as _fact_check_score,
+    is_breaking_news as _is_breaking_news,
+    quality_check as _quality_check,
+    BREAKING_KEYWORDS,
+)
+
 # HTTP session reutilizável (melhor performance)
 _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
-# ============================================================
-# AI TEXT — Groq (primário) + Gemini Flash (secundário) + Pollinations (fallback)
-# ============================================================
-
-GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL            = "llama-3.3-70b-versatile"
-GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
-
-def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> str:
-    """
-    Gera texto via:
-    1. Groq (Llama 3.3 70B — rápido, gratuito com chave)
-    2. Google Gemini 1.5 Flash (15 req/min, 1M tokens/dia — gratuito com chave)
-    3. Pollinations.ai (sem chave, sem limites)
-    """
-    sys_msg = system or (
-        "You are a world-class AP-style journalist and SEO expert. "
-        "Write in plain, direct news style. Never use: 'crucial', 'vital', 'pivotal', "
-        "'delve', 'It is worth noting', 'It is important to', 'landscape', 'game-changer', "
-        "'revolutionary', 'groundbreaking'. Always start with the most important fact. "
-        "Be concise and factually accurate."
-    )
-
-    # ── 1. Groq ──────────────────────────────────────────────
-    groq_key = os.environ.get("GROQ_API_KEY", "")
-    if groq_key:
-        try:
-            r = _session.post(
-                GROQ_API_URL,
-                json={
-                    "model": GROQ_MODEL,
-                    "messages": [
-                        {"role": "system", "content": sys_msg},
-                        {"role": "user",   "content": prompt},
-                    ],
-                    "temperature": 0.7,
-                    "max_tokens": 3000,
-                },
-                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
-                timeout=timeout,
-            )
-            r.raise_for_status()
-            return r.json()["choices"][0]["message"]["content"].strip()
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 0
-            if status == 429:
-                log.warning("Groq rate limited (429) — waiting 30s before Gemini fallback")
-                sleep(30)
-            elif status >= 500:
-                log.warning(f"Groq server error {status} — trying Gemini")
-            else:
-                log.warning(f"Groq HTTP error {status} — trying Gemini")
-        except Exception as exc:
-            log.warning(f"Groq error (tentando Gemini): {exc}")
-
-    # ── 2. Gemini 1.5 Flash ───────────────────────────────────
-    gemini_key = os.environ.get("GEMINI_API_KEY", "")
-    if gemini_key:
-        try:
-            r = _session.post(
-                f"{GEMINI_API_URL}?key={gemini_key}",
-                json={
-                    "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2000},
-                },
-                timeout=timeout,
-            )
-            r.raise_for_status()
-            return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 0
-            if status == 429:
-                log.warning("Gemini rate limited (429) — waiting 30s before Pollinations fallback")
-                sleep(30)
-            elif status >= 500:
-                log.warning(f"Gemini server error {status} — trying Pollinations")
-            else:
-                log.warning(f"Gemini HTTP error {status} — trying Pollinations")
-        except Exception as exc:
-            log.warning(f"Gemini error (tentando Pollinations): {exc}")
-
-    # ── 3. Pollinations.ai — sem chave, gratuito ─────────────
-    try:
-        r = _session.post(
-            POLLINATIONS_TEXT_URL,
-            json={
-                "messages": [
-                    {"role": "system", "content": sys_msg},
-                    {"role": "user",   "content": prompt},
-                ],
-                "model":      "openai",
-                "seed":       seed or abs(hash(prompt)) % 9999,
-                "private":    True,
-                "max_tokens": 3000,
-            },
-            timeout=timeout,
-        )
-        r.raise_for_status()
-        data = r.json()
-        if isinstance(data, dict) and "choices" in data:
-            return data["choices"][0]["message"]["content"].strip()
-        return str(data).strip()
-    except Exception as exc:
-        log.warning(f"Pollinations error: {exc}")
-        return ""
+_pollinations_text = _ai_text  # alias interno
 
 # Alias para compatibilidade interna
 _pollinations_text = _ai_text
@@ -463,175 +368,6 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
     except Exception as exc:
         log.warning(f"OG image generation failed ({exc}) — falling back to Pollinations URL")
         return fallback
-
-_POSITIVE_WORDS = {
-    "breakthrough", "success", "discover", "innovation", "growth", "record",
-    "victory", "achieve", "advance", "cure", "save", "improve", "rise",
-    "hope", "peace", "agreement", "award", "celebrate", "launch", "win",
-    "boom", "rally", "recover", "benefit", "progress", "surge", "historic",
-}
-_NEGATIVE_WORDS = {
-    "war", "attack", "kill", "death", "dead", "crisis", "disaster", "collapse",
-    "crash", "fall", "fail", "worst", "threat", "danger", "flood", "fire",
-    "earthquake", "explosion", "shooting", "murder", "arrest", "ban", "loss",
-    "decline", "drop", "recession", "conflict", "violence", "protest", "riot",
-    "scandal", "corrupt", "terror", "bomb", "casualt", "injur", "evacuate",
-}
-
-def _sentiment_score(text: str) -> str:
-    """Returns 'positive', 'negative', or 'neutral' based on keyword presence."""
-    words = re.findall(r'\b\w+\b', text.lower())
-    pos = sum(1 for w in words if any(w.startswith(p) for p in _POSITIVE_WORDS))
-    neg = sum(1 for w in words if any(w.startswith(p) for p in _NEGATIVE_WORDS))
-    if neg > pos:
-        return "negative"
-    if pos > neg:
-        return "positive"
-    return "neutral"
-
-
-_FACT_VERIFIED_PHRASES = {
-    "officials confirmed", "according to", "announced", "reported by",
-    "confirmed by", "published by", "data shows", "study found",
-    "research shows", "percent", "million", "billion", "january",
-    "february", "march", "april", "may", "june", "july", "august",
-    "september", "october", "november", "december", "2024", "2025", "2026",
-}
-_FACT_DEVELOPING_PHRASES = {
-    "reportedly", "sources say", "unconfirmed", "alleged", "claims",
-    "rumored", "believed to", "said to be", "may have", "might have",
-    "anonymous source", "sources close", "could be",
-}
-_FACT_OPINION_PHRASES = {
-    "opinion", "analysis", "commentary", "editorial", "think",
-    "perspective", "column", "op-ed", "viewpoint", "argue",
-    "believe we should", "it is time to",
-}
-_FACT_SATIRE_PHRASES = {
-    "satire", "parody", "humor", "humour", "spoof", "onion",
-    "satirical", "comedic take",
-}
-
-
-def _fact_check_score(title: str, description: str) -> str | None:
-    """
-    Returns fact-check badge label: 'verified', 'developing', 'opinion', 'satire', or None.
-    Checks title + description against known phrase sets.
-    """
-    combined = (title + " " + description).lower()
-    for phrase in _FACT_SATIRE_PHRASES:
-        if phrase in combined:
-            return "satire"
-    for phrase in _FACT_OPINION_PHRASES:
-        if phrase in combined:
-            return "opinion"
-    for phrase in _FACT_DEVELOPING_PHRASES:
-        if phrase in combined:
-            return "developing"
-    for phrase in _FACT_VERIFIED_PHRASES:
-        if phrase in combined:
-            return "verified"
-    return None
-
-
-# ============================================================
-# BREAKING NEWS DETECTION
-# ============================================================
-
-BREAKING_KEYWORDS = [
-    "breaking", "urgent", "alert", "just in", "developing",
-    "just announced", "breaking news", "emergency", "exclusive",
-    "war declared", "killed", "attack", "explosion", "crash",
-    "earthquake", "tsunami", "coup", "assassination", "outbreak",
-]
-
-
-def _is_breaking_news(title: str, description: str = "") -> bool:
-    """Return True if the article appears to be breaking/urgent news."""
-    text = (title + " " + description).lower()
-    return any(kw in text for kw in BREAKING_KEYWORDS)
-
-
-_SPAM_PATTERNS = re.compile(
-    r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
-    re.IGNORECASE,
-)
-
-
-def _quality_check(title: str, description: str) -> tuple[bool, str]:
-    """
-    Returns (ok, reason). Posts failing quality check should be skipped.
-    Checks:
-    - Title too short (< 15 chars)
-    - Description too short (< 50 chars)
-    - Spam title patterns
-    - All-caps title (> 80% uppercase letters)
-    """
-    if len(title) < 15:
-        return False, f"title too short ({len(title)} chars)"
-    if len(description) < 50:
-        return False, f"description too short ({len(description)} chars)"
-    if _SPAM_PATTERNS.search(title):
-        return False, "spam pattern in title"
-    letters = [c for c in title if c.isalpha()]
-    if letters and sum(1 for c in letters if c.isupper()) / len(letters) > 0.80:
-        return False, "title is ALL CAPS"
-    return True, ""
-
-
-def _fetch_wikipedia_summary(query: str) -> str:
-    """Fetches a short Wikipedia extract for the given query (EN). Returns up to 500 chars."""
-    try:
-        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
-        r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
-        if r.status_code == 200:
-            data = r.json()
-            return data.get("extract", "")[:500]
-    except Exception:
-        pass
-    return ""
-
-
-def _fetch_crypto_prices() -> dict:
-    """Fetches current USD prices and 24h change for major cryptocurrencies from CoinGecko."""
-    try:
-        r = requests.get(
-            "https://api.coingecko.com/api/v3/simple/price"
-            "?ids=bitcoin,ethereum,ripple,cardano,solana"
-            "&vs_currencies=usd&include_24hr_change=true",
-            timeout=10,
-            headers={"User-Agent": "GlobalBRNews/1.0"},
-        )
-        if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
-    return {}
-
-
-# ── Crypto prices cache (fetched once per run) ─────────────────
-_crypto_prices_cache: dict | None = None
-_CRYPTO_PRICES_PATH = Path("_data/crypto_prices.json")
-_CRYPTO_KEYWORDS = {"bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency", "ripple", "xrp", "cardano", "solana"}
-
-
-def _get_crypto_prices() -> dict:
-    """Returns cached crypto prices, fetching once per run if not yet loaded."""
-    global _crypto_prices_cache
-    if _crypto_prices_cache is not None:
-        return _crypto_prices_cache
-    _crypto_prices_cache = _fetch_crypto_prices()
-    if _crypto_prices_cache:
-        try:
-            _CRYPTO_PRICES_PATH.parent.mkdir(parents=True, exist_ok=True)
-            _CRYPTO_PRICES_PATH.write_text(
-                json.dumps(_crypto_prices_cache, ensure_ascii=False),
-                encoding="utf-8",
-            )
-            log.info(f"CoinGecko prices saved to {_CRYPTO_PRICES_PATH}")
-        except Exception as exc:
-            log.debug(f"Failed to save crypto prices: {exc}")
-    return _crypto_prices_cache
 
 
 def _ai_enhance_post(title: str, description: str, body: str, category: str, source_name: str) -> dict:
@@ -1553,95 +1289,6 @@ log = logging.getLogger(__name__)
 # FUNÇÕES AUXILIARES
 # ============================================================
 
-def slugify(text: str) -> str:
-    """Converte texto em slug URL-amigável."""
-    text = text.lower().strip()
-    text = unicodedata.normalize("NFD", text)
-    text = "".join(c for c in text if unicodedata.category(c) != "Mn")
-    text = re.sub(r"[^\w\s-]", "", text)
-    text = re.sub(r"[\s_]+", "-", text)
-    text = re.sub(r"-{2,}", "-", text)
-    return text[:80].strip("-")
-
-
-def sanitize_text(text: str) -> str:
-    """Remove caracteres problemáticos para YAML/Markdown."""
-    if not text:
-        return ""
-    text = text.replace('"', "'").replace("\n", " ").replace("\r", " ")
-    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
-    return text.strip()
-
-
-def extract_description(entry) -> str:
-    """Extrai descrição/resumo do item RSS, priorizando conteúdo mais longo."""
-    candidates = []
-
-    # Coleta todos os candidatos disponíveis
-    if hasattr(entry, "content"):
-        for c in entry.content:
-            val = c.get("value", "")
-            if val:
-                candidates.append(val)
-
-    if hasattr(entry, "summary"):
-        candidates.append(entry.summary)
-
-    if hasattr(entry, "description"):
-        candidates.append(entry.description)
-
-    # Limpa HTML e escolhe o mais longo
-    best = ""
-    for raw in candidates:
-        clean = re.sub(r"<[^>]+>", " ", raw)
-        clean = re.sub(r"&[a-z]+;", " ", clean)
-        clean = re.sub(r"&#\d+;", " ", clean)
-        clean = re.sub(r"\s+", " ", clean).strip()
-        if len(clean) > len(best):
-            best = clean
-
-    return sanitize_text(best[:800])
-
-
-def extract_image(entry) -> str:
-    """Tenta extrair URL de imagem do item RSS."""
-    if hasattr(entry, "media_content"):
-        for m in entry.media_content:
-            if m.get("type", "").startswith("image"):
-                url = m.get("url", "")
-                if url:
-                    return url
-    if hasattr(entry, "media_thumbnail"):
-        for t in entry.media_thumbnail:
-            url = t.get("url", "")
-            if url:
-                return url
-    if hasattr(entry, "enclosures"):
-        for e in entry.enclosures:
-            if e.get("type", "").startswith("image"):
-                url = e.get("href", "")
-                if url:
-                    return url
-    content = ""
-    if hasattr(entry, "content"):
-        content = entry.content[0].get("value", "")
-    elif hasattr(entry, "summary"):
-        content = entry.summary
-    match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content)
-    if match:
-        return match.group(1)
-    return ""
-
-
-def parse_date(entry) -> datetime:
-    """Extrai data do item RSS como objeto datetime."""
-    if hasattr(entry, "published_parsed") and entry.published_parsed:
-        return datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
-    if hasattr(entry, "updated_parsed") and entry.updated_parsed:
-        return datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)
-    return datetime.now(timezone.utc)
-
-
 def fetch_og_metadata(url: str, timeout: int = 10) -> dict:
     """
     Fetches OG metadata AND article body text in a single request.
@@ -1773,56 +1420,6 @@ def post_exists(filename: str, source_url: str = "") -> bool:
     return False
 
 
-def _levenshtein(s1: str, s2: str) -> int:
-    """Compute Levenshtein edit distance between two strings (no external deps)."""
-    if len(s1) < len(s2):
-        return _levenshtein(s2, s1)
-    if len(s2) == 0:
-        return len(s1)
-    prev = list(range(len(s2) + 1))
-    for i, c1 in enumerate(s1):
-        curr = [i + 1]
-        for j, c2 in enumerate(s2):
-            curr.append(min(prev[j + 1] + 1, curr[j] + 1, prev[j] + (c1 != c2)))
-        prev = curr
-    return prev[-1]
-
-
-def _titles_too_similar(t1: str, t2: str) -> bool:
-    """Return True if two titles are too similar (Levenshtein or Jaccard)."""
-    t1, t2 = t1.lower().strip(), t2.lower().strip()
-    # Jaccard
-    w1, w2 = set(t1.split()), set(t2.split())
-    if w1 and w2 and len(w1 & w2) / len(w1 | w2) > 0.6:
-        return True
-    # Levenshtein for short titles
-    if max(len(t1), len(t2)) < 80:
-        distance = _levenshtein(t1[:60], t2[:60])
-        similarity = 1 - distance / max(len(t1[:60]), len(t2[:60]), 1)
-        if similarity > 0.75:
-            return True
-    return False
-
-
-def _title_similarity(t1: str, t2: str) -> float:
-    """Returns 0.0-1.0 similarity between two titles using Jaccard on non-stopword words."""
-    w1 = set(re.sub(r'[^\w\s]', '', t1.lower()).split())
-    w2 = set(re.sub(r'[^\w\s]', '', t2.lower()).split())
-    stops = {
-        'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or',
-        'but', 'is', 'was', 'are', 'were', 'be', 'been', 'by', 'from', 'with',
-        'this', 'that', 'it',
-    }
-    w1 -= stops
-    w2 -= stops
-    if not w1 or not w2:
-        return 0.0
-    intersection = w1 & w2
-    union = w1 | w2
-    return len(intersection) / len(union)
-
-
-# ============================================================
 # ENTITY EXTRACTION — improved auto-tagging
 # ============================================================
 

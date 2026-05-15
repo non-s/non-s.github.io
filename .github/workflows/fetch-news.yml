@@ -2,7 +2,7 @@
 # .github/workflows/fetch-news.yml
 # GitHub Actions — Auto news fetcher
 #
-# Runs every hour. Only commits if there are new posts.
+# Runs 5x per day (6h, 10h, 14h, 18h, 22h UTC). Only commits if there are new posts.
 # Duplicate detection is handled by fetch_news.py itself
 # (checks existing filenames before creating new ones).
 # ============================================================
@@ -11,7 +11,7 @@ name: "📰 Fetch News RSS"
 
 on:
   schedule:
-    - cron: "*/5 * * * *"    # Every 5 minutes (GitHub Actions minimum — real-time)
+    - cron: "0 6,10,14,18,22 * * *"    # 5x per day — stays within GitHub free tier (2000 min/month)
 
   workflow_dispatch:
     inputs:
