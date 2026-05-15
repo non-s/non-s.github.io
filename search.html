@@ -45,20 +45,34 @@ permalink: /search/
 <div class="container py-4">
 
   <!-- Filter chips -->
-  <div id="search-filters" style="display:none;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;">
-    <span style="font-size:.75rem;color:var(--c-muted);margin-right:.2rem;">Filter:</span>
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="world">World</button>
-    <button class="filter-btn" data-filter="politics">Politics</button>
-    <button class="filter-btn" data-filter="war">War</button>
-    <button class="filter-btn" data-filter="business">Business</button>
-    <button class="filter-btn" data-filter="science">Science</button>
-    <button class="filter-btn" data-filter="health">Health</button>
-    <button class="filter-btn" data-filter="technology">Technology</button>
-    <button class="filter-btn" data-filter="ai">AI</button>
-    <button class="filter-btn" data-filter="sports">Sports</button>
-    <button class="filter-btn" data-filter="entertainment">Entertainment</button>
-    <button class="filter-btn" data-filter="environment">Environment</button>
+  <div id="search-filters" style="display:none;">
+    <div class="search-filter-row">
+      <span class="search-filter-label">Category</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="world">World</button>
+      <button class="filter-btn" data-filter="politics">Politics</button>
+      <button class="filter-btn" data-filter="war">War</button>
+      <button class="filter-btn" data-filter="business">Business</button>
+      <button class="filter-btn" data-filter="technology">Technology</button>
+      <button class="filter-btn" data-filter="ai">AI</button>
+      <button class="filter-btn" data-filter="science">Science</button>
+      <button class="filter-btn" data-filter="health">Health</button>
+      <button class="filter-btn" data-filter="sports">Sports</button>
+      <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+      <button class="filter-btn" data-filter="environment">Environment</button>
+    </div>
+    <div class="search-filter-row">
+      <span class="search-filter-label">When</span>
+      <button class="filter-btn active" data-date="all">Any time</button>
+      <button class="filter-btn" data-date="24h">Past 24h</button>
+      <button class="filter-btn" data-date="week">Past week</button>
+      <button class="filter-btn" data-date="month">Past month</button>
+    </div>
+    <div class="search-filter-row">
+      <span class="search-filter-label">Sort</span>
+      <button class="filter-btn active" data-sort="relevance">Most relevant</button>
+      <button class="filter-btn" data-sort="newest">Newest first</button>
+    </div>
   </div>
 
   <!-- Stats bar -->
@@ -117,6 +131,8 @@ permalink: /search/
   var stats      = document.getElementById('search-stats');
   var filters    = document.getElementById('search-filters');
   var activeFilter = 'all';
+  var activeDate   = 'all';
+  var activeSort   = 'relevance';
   var currentQuery = '';
 
   /* ── Suggestions (tag pills) ── */
@@ -127,15 +143,20 @@ permalink: /search/
     });
   });
 
-  /* ── Filter chips ── */
-  document.querySelectorAll('#search-filters .filter-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('#search-filters .filter-btn').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      run(currentQuery);
+  /* ── Filter chips — category, date, sort ── */
+  function bindFilterRow(attr, setter) {
+    document.querySelectorAll('#search-filters .filter-btn[data-' + attr + ']').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('#search-filters .filter-btn[data-' + attr + ']').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        setter(btn.dataset[attr]);
+        run(currentQuery);
+      });
     });
-  });
+  }
+  bindFilterRow('filter', function(v){ activeFilter = v; });
+  bindFilterRow('date',   function(v){ activeDate = v; });
+  bindFilterRow('sort',   function(v){ activeSort = v; });
 
   /* ── Form submit ── */
   form.addEventListener('submit', function(e){
@@ -179,7 +200,7 @@ permalink: /search/
     terms.forEach(function(t){
       if (!t) return;
       var re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-      safe = safe.replace(re, '<mark style="background:rgba(249,115,22,.3);color:inherit;border-radius:3px;padding:0 2px;">$1</mark>');
+      safe = safe.replace(re, '<mark style="background:rgba(225,29,72,.25);color:inherit;border-radius:0;padding:0 3px;font-weight:600;">$1</mark>');
     });
     return safe;
   }
@@ -205,16 +226,31 @@ permalink: /search/
 
     var terms = q.toLowerCase().split(/\s+/).filter(Boolean);
 
+    var now = Date.now();
+    var dateCutoff = activeDate === '24h' ? now - 24*3600*1000
+                   : activeDate === 'week' ? now - 7*24*3600*1000
+                   : activeDate === 'month' ? now - 30*24*3600*1000
+                   : 0;
+
     var scored = index
       .filter(function(item){
         if (activeFilter !== 'all') {
           var cats = (item.cats || []).map(function(c){ return c.toLowerCase(); });
           if (!cats.includes(activeFilter)) return false;
         }
+        if (dateCutoff > 0) {
+          var itemTime = new Date(item.date).getTime();
+          if (isNaN(itemTime) || itemTime < dateCutoff) return false;
+        }
         return score(item, terms) > 0;
       })
       .map(function(item){ return { item: item, s: score(item, terms) }; })
-      .sort(function(a, b){ return b.s - a.s; })
+      .sort(function(a, b){
+        if (activeSort === 'newest') {
+          return new Date(b.item.date).getTime() - new Date(a.item.date).getTime();
+        }
+        return b.s - a.s;
+      })
       .slice(0, 40);
 
     stats.style.display = '';

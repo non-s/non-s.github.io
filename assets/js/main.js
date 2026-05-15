@@ -2,8 +2,28 @@
  * Loaded on every page via default.html
  * Covers: back-to-top, infinite scroll, keyboard shortcuts,
  *         reading progress, new-posts polling, freshness labels,
- *         lazy-image fade-in, navbar search autocomplete.
+ *         lazy-image fade-in, navbar search autocomplete, toasts.
  */
+
+/* ── Global toast notification (used across the site) ────── */
+window.gbToast = function gbToast(msg, opts) {
+  opts = opts || {};
+  var icon = opts.icon || 'bi-check-circle-fill';
+  var cls  = opts.success === false ? '' : 'gb-toast--success';
+  var existing = document.querySelector('.gb-toast');
+  if (existing) existing.remove();
+  var el = document.createElement('div');
+  el.className = 'gb-toast ' + cls;
+  el.setAttribute('role', 'status');
+  el.setAttribute('aria-live', 'polite');
+  el.innerHTML = '<i class="bi ' + icon + '"></i><span>' + msg + '</span>';
+  document.body.appendChild(el);
+  requestAnimationFrame(function(){ el.classList.add('show'); });
+  setTimeout(function(){
+    el.classList.remove('show');
+    setTimeout(function(){ el.remove(); }, 350);
+  }, 2400);
+};
 
 /* ── Back-to-top with circular progress ──────────────────── */
 (function(){

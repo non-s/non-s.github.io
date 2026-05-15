@@ -10,6 +10,7 @@ function copyCardLink(btn) {
   navigator.clipboard.writeText(url).then(function(){
     btn.innerHTML = '<i class="bi bi-check2"></i>';
     setTimeout(function(){ btn.innerHTML = '<i class="bi bi-link-45deg"></i>'; }, 2000);
+    if (typeof gbToast === 'function') gbToast('Link copied to clipboard', { icon: 'bi-link-45deg' });
   });
 }
 

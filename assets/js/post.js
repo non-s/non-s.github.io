@@ -77,6 +77,8 @@
   });
 })();
 
+/* gbToast is defined in main.js (loaded globally) */
+
 /* ── Save for later (global functions used by HTML onclick) ─ */
 function getSaved() { try { return JSON.parse(localStorage.getItem('gb-saved') || '[]'); } catch(e) { return []; } }
 function setSaved(arr) { localStorage.setItem('gb-saved', JSON.stringify(arr)); }
@@ -88,11 +90,13 @@ function toggleSave(btn) {
     saved.splice(idx, 1);
     document.getElementById('save-icon').className = 'bi bi-bookmark';
     document.getElementById('save-label').textContent = 'Save';
+    if (window.gbToast) gbToast('Removed from Reading List', { icon: 'bi-bookmark-x' });
   } else {
     saved.unshift({ url: url, title: btn.dataset.title, image: btn.dataset.image, date: btn.dataset.date, savedAt: new Date().toISOString() });
     if (saved.length > 50) saved = saved.slice(0, 50);
     document.getElementById('save-icon').className = 'bi bi-bookmark-fill';
     document.getElementById('save-label').textContent = 'Saved';
+    if (window.gbToast) gbToast('Saved to Reading List', { icon: 'bi-bookmark-check-fill' });
   }
   setSaved(saved);
 }

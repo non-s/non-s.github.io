@@ -54,20 +54,42 @@ layout: default
       <p class="post-lead">{{ page.lead }}</p>
       {% endif %}
 
+      <!-- Byline (NYT/CNN/G1-style author line) -->
+      {% assign byline_author = page.author | default: site.author.name | default: "GlobalBR News" %}
+      <div class="post-byline">
+        <div class="byline-avatar" aria-hidden="true">
+          {% assign initial = byline_author | slice: 0, 1 | upcase %}
+          {{ initial }}
+        </div>
+        <div class="byline-info">
+          <div class="byline-name">
+            By <span class="byline-author">{{ byline_author }}</span>
+            {% if page.source_name %}
+              <span class="byline-source"> · via {{ page.source_name }}</span>
+            {% endif %}
+          </div>
+          <div class="byline-dates">
+            <time datetime="{{ page.date | date_to_xmlschema }}" class="byline-published">
+              {{ page.date | date: "%B %-d, %Y" }}
+            </time>
+            {% if page.date | date: "%H:%M" %}
+              <span class="byline-time">at {{ page.date | date: "%-I:%M %p UTC" }}</span>
+            {% endif %}
+            {% if page.updated %}
+              <span class="byline-updated">
+                · Updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%b %-d, %-I:%M %p" }}</time>
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
       <div class="post-meta">
-        <span><i class="bi bi-calendar3"></i>
-          <time datetime="{{ page.date | date_to_xmlschema }}">
-            {{ page.date | date: "%B %d, %Y" }}
-          </time>
-        </span>
         <span><i class="bi bi-clock"></i>
           {% assign words = content | strip_html | number_of_words %}
           {% assign mins = words | divided_by: 200 | plus: 1 %}
           {{ mins }} min read
         </span>
-        {% if page.source_name %}
-        <span><i class="bi bi-newspaper"></i> {{ page.source_name }}</span>
-        {% endif %}
         <!-- Font Size Toggle (Task 6) -->
         <div class="font-size-ctrl">
           <span class="font-size-label">Text size:</span>
@@ -113,11 +135,56 @@ layout: default
 
       {% if page.image %}
       <figure class="post-hero-img">
-        <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager" width="1200" height="630" style="width:100%;height:auto;">
+        <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager" width="1200" height="630" style="width:100%;height:auto;"
+             class="gb-zoomable" data-caption="{{ page.image_caption | default: page.title | escape }}">
         {% if page.image_caption %}
         <figcaption class="post-img-caption">{{ page.image_caption }}</figcaption>
         {% endif %}
       </figure>
+      {% endif %}
+
+      {% if page.gallery and page.gallery.size > 0 %}
+      <!-- Photo Gallery (set gallery: [{src, alt, caption}] in frontmatter) -->
+      <section class="post-gallery" aria-label="Photo gallery">
+        <header class="post-gallery-header">
+          <span class="post-gallery-eyebrow">Photo essay</span>
+          <h2 class="post-gallery-title">
+            {{ page.gallery_title | default: page.title }}
+          </h2>
+          <span class="post-gallery-count">{{ page.gallery | size }} photos</span>
+        </header>
+        <div class="post-gallery-grid">
+          {% for img in page.gallery %}
+          <figure class="post-gallery-item" data-index="{{ forloop.index0 }}">
+            <button class="post-gallery-trigger"
+                    onclick="gbOpenLightbox({{ forloop.index0 }})"
+                    aria-label="Open photo {{ forloop.index }}{% if img.caption %}: {{ img.caption | escape }}{% endif %}">
+              <img src="{{ img.src }}"
+                   alt="{{ img.alt | default: img.caption | default: 'Photo' | escape }}"
+                   loading="lazy"
+                   width="600" height="400">
+              <span class="post-gallery-num">{{ forloop.index }} / {{ page.gallery | size }}</span>
+            </button>
+            {% if img.caption %}
+            <figcaption class="post-gallery-caption">{{ img.caption }}</figcaption>
+            {% endif %}
+          </figure>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Embed gallery JSON for the lightbox -->
+      <script id="gb-gallery-data" type="application/json">
+      [
+        {% for img in page.gallery %}
+        {
+          "src": {{ img.src | jsonify }},
+          "alt": {{ img.alt | default: img.caption | default: "" | jsonify }},
+          "caption": {{ img.caption | default: "" | jsonify }}
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+      </script>
       {% endif %}
 
       <!-- Related Story Banner (shown when post has related_post frontmatter) -->
