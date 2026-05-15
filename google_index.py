@@ -20,6 +20,8 @@ from pathlib import Path
 
 import requests
 
+from utils.retry import retry_call
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -139,12 +141,10 @@ def get_auth_headers(credentials_json: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def submit_url(url: str, headers: dict) -> bool:
-    """
-    Submit a single URL to the Google Indexing API.
-    Returns True on success, False on failure.
-    """
+    """Submit a single URL to the Google Indexing API with retry. Returns True on success."""
     payload = {"url": url, "type": "URL_UPDATED"}
-    try:
+
+    def _do_submit() -> bool:
         resp = requests.post(
             INDEXING_ENDPOINT,
             headers=headers,
@@ -154,25 +154,20 @@ def submit_url(url: str, headers: dict) -> bool:
         if resp.status_code == 200:
             log.info("Indexed — %s", url)
             return True
-        elif resp.status_code == 403:
+        if resp.status_code == 403:
             log.warning(
-                "403 Forbidden — service account not verified as owner of this site. "
-                "Fix: go to search.google.com/search-console → Settings → Users and permissions "
-                "→ Add user → %s (Owner). Skipping URL submission.",
-                "globalbr-news@techbr-youtube-bot.iam.gserviceaccount.com",
+                "403 Forbidden — service account not verified as owner. "
+                "Fix via search.google.com/search-console → Settings → Users → Add owner."
             )
             return False
-        else:
-            log.warning(
-                "Failed to index %s — HTTP %s: %s",
-                url,
-                resp.status_code,
-                resp.text[:200],
-            )
-            return False
-    except requests.RequestException as exc:
-        log.error("Request error for %s: %s", url, exc)
+        if resp.status_code == 429:
+            log.warning("Google Indexing rate limited (429) for %s", url)
+            raise requests.HTTPError("429", response=resp)
+        log.warning("Failed to index %s — HTTP %s: %s", url, resp.status_code, resp.text[:200])
         return False
+
+    result = retry_call(_do_submit, max_attempts=3, base_delay=5.0, default=False)
+    return bool(result)
 
 
 # ---------------------------------------------------------------------------

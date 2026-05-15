@@ -37,3 +37,10 @@ jobs:
           git push origin HEAD
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🔔 Ping sitemaps após roundup"
+        continue-on-error: true
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
+          echo "✅ Sitemaps notificados"

@@ -3,8 +3,34 @@ on:
   pull_request:
     branches: [main]
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "🔎 Lint workflows YAML"
+        run: |
+          pip install yamllint --quiet
+          yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" .github/workflows/
+          echo "✅ Workflow YAML OK"
+
+      - name: "🐍 Validate Python syntax"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: |
+          python -m py_compile fetch_news.py generate_search_index.py \
+            post_bluesky.py post_audit_bluesky.py submit_urls.py \
+            check_links.py audit_site.py translate_posts.py \
+            generate_tag_pages.py google_index.py \
+            utils/text.py utils/dedup.py utils/ai_helper.py \
+            utils/retry.py utils/frontmatter.py
+          echo "✅ Python syntax OK"
+
   build:
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

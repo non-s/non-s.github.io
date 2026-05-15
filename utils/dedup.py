@@ -2,6 +2,8 @@
 utils/dedup.py — Title deduplication utilities for GlobalBR News.
 Pure functions, no global state, no external deps.
 """
+from __future__ import annotations
+
 import re
 
 # Precompiled — used in every title_similarity call
