@@ -15,7 +15,8 @@ image_alt: "UK borrowing costs rise and pound falls as leadership drama continue
 breaking: false
 
 permalink: "/pt/politics/2026/05/15/uk-borrowing-costs-rise-and-pound-falls-as-leadership-drama-continues/"
-translated_from: "2026-05-15-uk-borrowing-costs-rise-and-pound-falls-as-leadership-drama-continues.md"---
+translated_from: "2026-05-15-uk-borrowing-costs-rise-and-pound-falls-as-leadership-drama-continues.md"
+---
 
 Analysts say the moves have been fuelled by concerns a Burnham-led government would increase government borrowing.
 

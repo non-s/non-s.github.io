@@ -17,7 +17,8 @@ youtube_url: "https://youtube.com/watch?v=3yoraLDJRDs"
 lang: "pt-br"
 
 permalink: "/pt/video/2026/05/15/video-xi-gives-trump-private-tour-of-secret-garden-in-beijing-globalbr-news-shorts/"
-translated_from: "2026-05-15-video-xi-gives-trump-private-tour-of-secret-garden-in-beijing-globalbr-news-shorts.md"---
+translated_from: "2026-05-15-video-xi-gives-trump-private-tour-of-secret-garden-in-beijing-globalbr-news-shorts.md"
+---
 
 Xi gives Trump private tour of secret garden in Beijing
 

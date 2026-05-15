@@ -16,7 +16,8 @@ fact_check: "opinion"
 breaking: false
 
 permalink: "/pt/world/2026/05/15/uk-in-political-turmoil-labour-mps-openly-question-whether-labour-will-survive-a/"
-translated_from: "2026-05-15-uk-in-political-turmoil-labour-mps-openly-question-whether-labour-will-survive-a.md"---
+translated_from: "2026-05-15-uk-in-political-turmoil-labour-mps-openly-question-whether-labour-will-survive-a.md"
+---
 
 At a moment of profound instability in British politics, with the Labour Party engulfed by internal revolt, François Picard welcomes Owen Jones, British author, Guardian columnist and political commentator. He offers an unsparing diagnosis of a political movement at a crossroads. “The country is in political turmoil,” Jones declares at the outset.
 

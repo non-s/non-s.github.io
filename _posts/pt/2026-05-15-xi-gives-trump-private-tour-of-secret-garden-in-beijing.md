@@ -15,7 +15,8 @@ image_alt: "Xi gives Trump private tour of secret garden in Beijing"
 breaking: false
 
 permalink: "/pt/world/2026/05/15/xi-gives-trump-private-tour-of-secret-garden-in-beijing/"
-translated_from: "2026-05-15-xi-gives-trump-private-tour-of-secret-garden-in-beijing.md"---
+translated_from: "2026-05-15-xi-gives-trump-private-tour-of-secret-garden-in-beijing.md"
+---
 
 Video. Chinese President Xi Jinping accompanies US counterpart Donald Trump on a walk through the gardens of Zhongnanhai, a central leadership compound next to Beijing&#039;s Forbidden City.
 

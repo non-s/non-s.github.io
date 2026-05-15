@@ -17,7 +17,8 @@ youtube_url: "https://youtube.com/watch?v=bSxOtt5ncf8"
 lang: "pt-br"
 
 permalink: "/pt/video/2026/05/15/video-world-news-roundup-top-6-stories-may-15-2026-globalbr-news/"
-translated_from: "2026-05-15-video-world-news-roundup-top-6-stories-may-15-2026-globalbr-news.md"---
+translated_from: "2026-05-15-video-world-news-roundup-top-6-stories-may-15-2026-globalbr-news.md"
+---
 
 In this GlobalBR News World Roundup we cover 6 top stories from around the globe.
 

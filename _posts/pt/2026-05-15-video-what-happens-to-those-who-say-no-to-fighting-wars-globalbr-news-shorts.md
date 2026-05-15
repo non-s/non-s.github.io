@@ -17,7 +17,8 @@ youtube_url: "https://youtube.com/watch?v=LYVaWoaqeks"
 lang: "pt-br"
 
 permalink: "/pt/video/2026/05/15/video-what-happens-to-those-who-say-no-to-fighting-wars-globalbr-news-shorts/"
-translated_from: "2026-05-15-video-what-happens-to-those-who-say-no-to-fighting-wars-globalbr-news-shorts.md"---
+translated_from: "2026-05-15-video-what-happens-to-those-who-say-no-to-fighting-wars-globalbr-news-shorts.md"
+---
 
 What happens to those who say no to fighting wars?
 
