@@ -8,6 +8,7 @@ on:
 jobs:
   optimize:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
     steps:
@@ -16,11 +17,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - run: pip install Pillow
 
       - name: "🖼️ Convert images to WebP"
         run: python optimize_images.py
+        env:
+          IMAGE_WEBP_QUALITY: "82"
 
       - name: "💾 Commit optimized images"
         run: |
