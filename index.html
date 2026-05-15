@@ -17,7 +17,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 <!-- ============================================================
      HERO — Post featured
      ============================================================ -->
-{% assign featured = site.posts | first %}
+{% assign featured = paginator.posts | first %}
 {% if featured %}
 <section class="hero-section">
   <div class="container">
@@ -94,7 +94,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 <!-- ============================================================
      FEATURED POST
      ============================================================ -->
-{% assign featured = site.posts | where: "featured", true | limit: 1 %}
+{% if paginator.page == 1 %}{% assign featured = site.posts | where: "featured", true | limit: 1 %}{% else %}{% assign featured = "" | split: "" %}{% endif %}
 {% if featured.size > 0 %}
 {% assign f = featured[0] %}
 <section class="featured-post">
@@ -125,6 +125,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 {% assign today = 'now' | date: '%Y-%m-%d' %}
 {% assign categories_list = "world,technology,politics,business,science,health,sports,entertainment,environment,ai" | split: "," %}
 
+{% if paginator.page == 1 %}
 <section class="trending-section py-3 mb-4">
   <div class="container">
     <h2 class="trending-title">🔥 Trending Today</h2>
@@ -141,6 +142,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
   </div>
 </section>
+{% endif %}
 
 <!-- ============================================================
      CORPO — GRID + SIDEBAR
@@ -153,7 +155,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 
       <!-- Cabeçalho da seção -->
       <div class="section-header">
-        <h2 class="section-title">Recent News</h2>
+        <h2 class="section-title">Recent News{% if paginator.page > 1 %} — Page {{ paginator.page }}{% endif %}</h2>
         <a href="{{ '/feed.xml' | relative_url }}"
            class="tag-pill" style="font-size:.72rem;">
           <i class="bi bi-rss"></i> RSS
@@ -218,11 +220,15 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
         {% endfor %}
       </div>
 
-      {% assign posts_to_show = site.posts | offset: 1 %}
+      {% if paginator.page == 1 %}
+        {% assign posts_to_show = paginator.posts | offset: 1 %}
+      {% else %}
+        {% assign posts_to_show = paginator.posts %}
+      {% endif %}
 
       {% if posts_to_show.size > 0 %}
         <div class="row g-3" id="posts-grid" style="display:none">
-          {% for post in posts_to_show limit: 9 %}
+          {% for post in posts_to_show %}
           <div class="col-md-6 col-lg-4"
                data-category="{{ post.categories | first | downcase }}"
                data-sentiment="{{ post.sentiment | default: 'neutral' | downcase }}"
