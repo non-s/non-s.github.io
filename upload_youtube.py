@@ -10,6 +10,8 @@ import os, json, logging
 from pathlib import Path
 from datetime import datetime, timezone
 
+PLAYLIST_DATA_FILE = Path("_data/yt_playlists.json")
+
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
@@ -31,6 +33,79 @@ logging.basicConfig(
     ],
 )
 log = logging.getLogger(__name__)
+
+
+def _load_playlist_ids() -> dict:
+    if PLAYLIST_DATA_FILE.exists():
+        try:
+            return json.loads(PLAYLIST_DATA_FILE.read_text())
+        except Exception:
+            pass
+    return {}
+
+
+def _save_playlist_ids(data: dict) -> None:
+    PLAYLIST_DATA_FILE.parent.mkdir(exist_ok=True)
+    PLAYLIST_DATA_FILE.write_text(json.dumps(data, indent=2))
+
+
+def _get_or_create_playlist(youtube, category: str, playlist_ids: dict) -> str | None:
+    """Get existing playlist ID or create a new one for the category."""
+    key = category.lower() if category else "general"
+    if key in playlist_ids:
+        return playlist_ids[key]
+
+    title_map = {
+        "world": "🌍 World News — GlobalBR News",
+        "technology": "💻 Tech News — GlobalBR News",
+        "politics": "🏛️ Politics — GlobalBR News",
+        "business": "💼 Business & Economy — GlobalBR News",
+        "science": "🔬 Science — GlobalBR News",
+        "health": "🏥 Health — GlobalBR News",
+        "environment": "🌱 Environment — GlobalBR News",
+        "ai": "🤖 AI & Machine Learning — GlobalBR News",
+        "sports": "⚽ Sports — GlobalBR News",
+        "roundup": "📰 News Roundups — GlobalBR News",
+        "shorts": "⚡ News Shorts — GlobalBR News",
+    }
+    playlist_title = title_map.get(key, f"📺 {category.capitalize()} — GlobalBR News")
+
+    try:
+        resp = youtube.playlists().insert(
+            part="snippet,status",
+            body={
+                "snippet": {
+                    "title": playlist_title,
+                    "description": f"Latest {category} news from GlobalBR News — world news every hour.\n\n🌐 https://non-s.github.io",
+                    "defaultLanguage": "en",
+                },
+                "status": {"privacyStatus": "public"},
+            }
+        ).execute()
+        pid = resp["id"]
+        playlist_ids[key] = pid
+        _save_playlist_ids(playlist_ids)
+        log.info(f"  📋 Created playlist '{playlist_title}': {pid}")
+        return pid
+    except Exception as e:
+        log.warning(f"  Could not create playlist for {category}: {e}")
+        return None
+
+
+def _add_to_playlist(youtube, video_id: str, playlist_id: str) -> None:
+    try:
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                }
+            }
+        ).execute()
+        log.info(f"  📋 Added to playlist")
+    except Exception as e:
+        log.warning(f"  Could not add to playlist: {e}")
 
 
 def get_youtube_client():
@@ -106,6 +181,13 @@ def upload_video(youtube, meta: dict) -> str | None:
             ).execute()
             log.info(f"  🖼  Thumbnail aplicada")
 
+        # Add to category playlist
+        playlist_ids = _load_playlist_ids()
+        category = meta.get("category", "roundup")
+        playlist_id = _get_or_create_playlist(youtube, category, playlist_ids)
+        if playlist_id:
+            _add_to_playlist(youtube, video_id, playlist_id)
+
         return video_id
 
     except HttpError as e:
@@ -134,13 +216,18 @@ def main():
 
         video_id = upload_video(youtube, meta)
         if video_id:
-            # Marca como enviado
+            # Marca como enviado com metadados completos para cross-posting
             done_file = meta_file.with_suffix(".done")
             done_file.write_text(json.dumps({
-                "video_id":   video_id,
-                "url":        f"https://youtube.com/watch?v={video_id}",
+                "video_id":    video_id,
+                "url":         f"https://youtube.com/watch?v={video_id}",
                 "uploaded_at": datetime.now(timezone.utc).isoformat(),
-                "title":      meta["title"],
+                "title":       meta["title"],
+                "description": meta.get("description", ""),
+                "tags":        meta.get("tags", []),
+                "thumbnail":   meta.get("thumbnail", ""),
+                "category":    meta.get("category", ""),
+                "is_short":    meta.get("is_short", False),
             }, indent=2))
             meta_file.unlink()   # remove metadata original
             uploaded += 1

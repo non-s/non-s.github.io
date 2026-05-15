@@ -1,0 +1,112 @@
+---
+---
+<!doctype html>
+<html ⚡ lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>{{ page.title | escape }} — {{ site.title }}</title>
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-youtube" src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"></script>
+
+  <!-- AMP boilerplate — do not modify -->
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style>
+  <noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "{{ page.title | strip_html | escape }}",
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+    "author": {"@type": "Person", "name": "{{ page.author | default: site.author.name }}"},
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site.title }}",
+      "logo": {"@type": "ImageObject", "url": "{{ site.logo | absolute_url }}", "width": 600, "height": 60}
+    }
+    {% if page.image %},"image": {"@type": "ImageObject", "url": "{% if page.image contains 'http' %}{{ page.image }}{% else %}{{ page.image | absolute_url }}{% endif %}", "width": 1200, "height": 630}{% endif %}
+  }
+  </script>
+
+  <style amp-custom>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #080c17; color: #e2e8f0; margin: 0; padding: 0; }
+    .amp-header { background: #0d1224; border-bottom: 1px solid #1e2a3a; padding: .75rem 1rem; display: flex; align-items: center; gap: .75rem; }
+    .amp-logo { font-size: 1.1rem; font-weight: 800; color: #f97316; text-decoration: none; }
+    .amp-container { max-width: 720px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+    .amp-category { display: inline-block; background: #f97316; color: #fff; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; border-radius: .25rem; padding: .2rem .5rem; margin-bottom: .75rem; }
+    h1 { font-size: 1.6rem; font-weight: 800; line-height: 1.25; color: #f1f5f9; margin: 0 0 .75rem; }
+    .amp-deck { font-size: 1rem; color: #94a3b8; line-height: 1.6; margin-bottom: 1rem; }
+    .amp-meta { font-size: .78rem; color: #64748b; margin-bottom: 1.5rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+    .amp-image { border-radius: .5rem; overflow: hidden; margin-bottom: 1.5rem; }
+    .amp-body { font-size: .97rem; line-height: 1.8; color: #cbd5e1; }
+    .amp-body h2 { font-size: 1.15rem; font-weight: 700; color: #f1f5f9; margin: 1.5rem 0 .5rem; }
+    .amp-body p { margin: 0 0 1rem; }
+    .amp-body a { color: #f97316; }
+    .amp-source { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #1e2a3a; font-size: .8rem; color: #64748b; }
+    .amp-source a { color: #f97316; }
+    .amp-cta { display: block; text-align: center; background: #f97316; color: #fff; border-radius: .5rem; padding: .75rem 1.5rem; text-decoration: none; font-weight: 700; margin-top: 2rem; }
+    .amp-key-points { background: #0d1224; border-left: 3px solid #f97316; border-radius: 0 .5rem .5rem 0; padding: 1rem 1rem 1rem 1.25rem; margin: 1.25rem 0; }
+    .amp-key-points ul { margin: 0; padding-left: 1.25rem; }
+    .amp-key-points li { font-size: .9rem; color: #94a3b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header class="amp-header">
+  <a href="{{ '/' | absolute_url }}" class="amp-logo">⚡ {{ site.title }}</a>
+</header>
+
+<div class="amp-container">
+
+  {% for cat in page.categories limit:1 %}
+  <span class="amp-category">{{ cat }}</span>
+  {% endfor %}
+
+  <h1>{{ page.title }}</h1>
+
+  {% if page.description %}
+  <p class="amp-deck">{{ page.description }}</p>
+  {% endif %}
+
+  <div class="amp-meta">
+    <span>{{ page.date | date: "%B %d, %Y" }}</span>
+    {% if page.source_name %}<span>{{ page.source_name }}</span>{% endif %}
+    {% if page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
+  </div>
+
+  {% if page.image %}
+  <div class="amp-image">
+    <amp-img src="{% if page.image contains 'http' %}{{ page.image }}{% else %}{{ page.image | absolute_url }}{% endif %}"
+             alt="{{ page.image_alt | default: page.title | escape }}"
+             width="1200" height="630"
+             layout="responsive"></amp-img>
+  </div>
+  {% endif %}
+
+  {% if page.key_points %}
+  <div class="amp-key-points">
+    <ul>
+      {% for pt in page.key_points %}<li>{{ pt }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="amp-body">
+    {{ content }}
+  </div>
+
+  {% if page.source_url %}
+  <div class="amp-source">
+    Source: <a href="{{ page.source_url }}" rel="nofollow noopener">{{ page.source_name | default: page.source_url }}</a>
+  </div>
+  {% endif %}
+
+  <a href="{{ page.url | absolute_url }}" class="amp-cta">Read full article →</a>
+
+</div>
+
+</body>
+</html>

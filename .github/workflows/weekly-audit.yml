@@ -3,6 +3,7 @@ name: "🔍 Weekly Site Audit"
 on:
   schedule:
     - cron: "0 8 * * 1"  # Monday 8h UTC
+    - cron: "0 15 1 * *"  # 1st of each month
   workflow_dispatch:
 
 jobs:
@@ -39,17 +40,16 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
-      - name: "📊 Post Top 5 semanal no Bluesky"
-        run: python post_weekly_bluesky.py
+      - name: "📊 Gerar infográfico semanal"
+        run: python generate_weekly_infographic.py
         continue-on-error: true
         env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
-      - name: "🔍 Monitor saúde dos feeds RSS"
-        run: python monitor_feeds.py
+      - name: "📅 Criar roundup mensal"
+        if: ${{ github.event_name == 'schedule' && (github.event.schedule == '0 15 1 * *' || startsWith(github.event.schedule, '0 15 1')) }}
+        run: python create_monthly_roundup.py
         continue-on-error: true
         env:
           PYTHONIOENCODING: utf-8

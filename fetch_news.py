@@ -51,7 +51,13 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
     2. Google Gemini 1.5 Flash (15 req/min, 1M tokens/dia — gratuito com chave)
     3. Pollinations.ai (sem chave, sem limites)
     """
-    sys_msg = system or "You are a professional journalist and SEO expert. Be concise and accurate."
+    sys_msg = system or (
+        "You are a world-class AP-style journalist and SEO expert. "
+        "Write in plain, direct news style. Never use: 'crucial', 'vital', 'pivotal', "
+        "'delve', 'It is worth noting', 'It is important to', 'landscape', 'game-changer', "
+        "'revolutionary', 'groundbreaking'. Always start with the most important fact. "
+        "Be concise and factually accurate."
+    )
 
     # ── 1. Groq ──────────────────────────────────────────────
     groq_key = os.environ.get("GROQ_API_KEY", "")
@@ -66,13 +72,22 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
                         {"role": "user",   "content": prompt},
                     ],
                     "temperature": 0.7,
-                    "max_tokens": 2500,
+                    "max_tokens": 3000,
                 },
                 headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                 timeout=timeout,
             )
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"].strip()
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            if status == 429:
+                log.warning("Groq rate limited (429) — waiting 30s before Gemini fallback")
+                sleep(30)
+            elif status >= 500:
+                log.warning(f"Groq server error {status} — trying Gemini")
+            else:
+                log.warning(f"Groq HTTP error {status} — trying Gemini")
         except Exception as exc:
             log.warning(f"Groq error (tentando Gemini): {exc}")
 
@@ -90,6 +105,15 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
             )
             r.raise_for_status()
             return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            if status == 429:
+                log.warning("Gemini rate limited (429) — waiting 30s before Pollinations fallback")
+                sleep(30)
+            elif status >= 500:
+                log.warning(f"Gemini server error {status} — trying Pollinations")
+            else:
+                log.warning(f"Gemini HTTP error {status} — trying Pollinations")
         except Exception as exc:
             log.warning(f"Gemini error (tentando Pollinations): {exc}")
 
@@ -105,7 +129,7 @@ def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) ->
                 "model":      "openai",
                 "seed":       seed or abs(hash(prompt)) % 9999,
                 "private":    True,
-                "max_tokens": 2500,
+                "max_tokens": 3000,
             },
             timeout=timeout,
         )
@@ -510,6 +534,24 @@ def _fact_check_score(title: str, description: str) -> str | None:
     return None
 
 
+# ============================================================
+# BREAKING NEWS DETECTION
+# ============================================================
+
+BREAKING_KEYWORDS = [
+    "breaking", "urgent", "alert", "just in", "developing",
+    "just announced", "breaking news", "emergency", "exclusive",
+    "war declared", "killed", "attack", "explosion", "crash",
+    "earthquake", "tsunami", "coup", "assassination", "outbreak",
+]
+
+
+def _is_breaking_news(title: str, description: str = "") -> bool:
+    """Return True if the article appears to be breaking/urgent news."""
+    text = (title + " " + description).lower()
+    return any(kw in text for kw in BREAKING_KEYWORDS)
+
+
 _SPAM_PATTERNS = re.compile(
     r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
     re.IGNORECASE,
@@ -601,21 +643,30 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
     combined = f"{description}\n\n{body}".strip()[:2000]
     cat = category.capitalize()
     prompt = (
-        f'You are a world-class SEO journalist. Enhance this news article. '
-        f'Respond ONLY with valid JSON, no markdown, no code blocks, no extra text.\n\n'
+        f'You are a world-class AP-style SEO journalist. Enhance this news article for maximum search visibility and reader engagement. '
+        f'Respond ONLY with valid JSON. No markdown, no code blocks, no extra text.\n\n'
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
-        f'Required JSON:\n'
-        f'{{"seo_title":"Informative headline max 65 chars. Use numbers when helpful (e.g. \'5 Countries...\'), hint at surprising findings, or create mild intrigue — but NEVER use \'You Won\'t Believe\' or similar bait. Must be factually accurate and searchable.","meta_description":"<150-155 chars ending with period>",'
-        f'"key_points":["Action-verb sentence max 12 words, e.g. \'EU imposes new sanctions on Russia\'","Action-verb sentence max 12 words describing key fact 2","Action-verb sentence max 12 words describing key fact 3"],'
-        f'"article_body":"3 journalistic paragraphs 300-400 words total. Add ## H2 heading before each paragraph. '
-        f'For key people/places/organizations add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). No bullet points.",'
-        f'"image_caption":"One sentence caption describing what the image likely shows, relevant to the article topic",'
-        f'"faq":[{{"q":"question 1","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 2","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 3","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 4","a":"clear 1-2 sentence answer."}},'
-        f'{{"q":"question 5","a":"clear 1-2 sentence answer."}}],'
-        f'"keywords":["primary keyword","secondary keyword","long tail phrase","topic","subtopic"]}}'
+        f'Return this exact JSON structure:\n'
+        f'{{'
+        f'"seo_title": "Informative headline max 65 chars. Use numbers when helpful. Create mild intrigue but stay factual. NEVER use clickbait. Must be searchable and match search intent.",'
+        f'"meta_description": "150-160 chars. Start with the main fact or benefit. Include the primary keyword naturally. End with a period. Sound human, not robotic. AVOID: In this article, Learn how, Explore. EXAMPLE: Scientists confirm new drug cuts dementia risk by 40% in landmark UK 10-year trial of 40000 patients.",'
+        f'"lead": "One tight paragraph 40-50 words answering Who What When Where Why — classic journalistic inverted pyramid lead. Include the single most important fact.",'
+        f'"tl_dr": "One sentence max 25 words starting with an active verb — perfect for featured snippets. EXAMPLE: UK scientists confirm new drug halves dementia risk in 10-year trial of 40000 patients.",'
+        f'"content_type": "one of: news|breaking|analysis|explainer|opinion|feature",'
+        f'"key_points": ["Action-verb sentence max 12 words key fact 1", "Action-verb sentence max 12 words key fact 2", "Action-verb sentence max 12 words key fact 3"],'
+        f'"article_body": "Write 5-7 journalistic paragraphs, 550-700 words total. Follow inverted pyramid: most critical facts first. Add an ## H2 heading every 2 paragraphs. For key people/organizations/places add Wikipedia links: [Name](https://en.wikipedia.org/wiki/Name). Final paragraph: what happens next or broader implications. AP style. No bullet points.",'
+        f'"image_caption": "One descriptive sentence about what the article image likely shows. Relevant, specific, mentions key person or location if applicable.",'
+        f'"faq": ['
+        f'{{"q": "Question starting with What/Why/How/When/Who — mirrors Google People Also Ask format", "a": "Direct answer 40-60 words plain prose."}},'
+        f'{{"q": "Second PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Third PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Fourth PAA-style question", "a": "Direct answer 40-60 words."}},'
+        f'{{"q": "Fifth PAA-style question", "a": "Direct answer 40-60 words."}}'
+        f'],'
+        f'"keywords": ["primary keyword matching title", "second primary keyword", "LSI term 1", "LSI term 2", "LSI term 3", "long tail phrase 4-6 words", "second long tail phrase", "third long tail phrase"],'
+        f'"entities": ["Person Name or Organization or Place 1", "Entity 2", "Entity 3"],'
+        f'"hook": "One punchy sentence max 20 words — journalistic hook, creates curiosity without clickbait"'
+        f'}}'
     )
     raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
     result = {}
@@ -641,8 +692,8 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
 
 POSTS_DIR        = Path("_posts")
 LOG_FILE         = "fetch_news.log"
-MAX_PER_FEED     = 2                   # Max posts por feed por execução
-MAX_POSTS_PER_RUN = 20                # Limite global por execução (muitos feeds agora)
+MAX_PER_FEED     = 3                   # Max posts por feed por execução
+MAX_POSTS_PER_RUN = 30                # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
 SLEEP_BETWEEN_FEEDS = 2
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
@@ -1722,6 +1773,37 @@ def post_exists(filename: str, source_url: str = "") -> bool:
     return False
 
 
+def _levenshtein(s1: str, s2: str) -> int:
+    """Compute Levenshtein edit distance between two strings (no external deps)."""
+    if len(s1) < len(s2):
+        return _levenshtein(s2, s1)
+    if len(s2) == 0:
+        return len(s1)
+    prev = list(range(len(s2) + 1))
+    for i, c1 in enumerate(s1):
+        curr = [i + 1]
+        for j, c2 in enumerate(s2):
+            curr.append(min(prev[j + 1] + 1, curr[j] + 1, prev[j] + (c1 != c2)))
+        prev = curr
+    return prev[-1]
+
+
+def _titles_too_similar(t1: str, t2: str) -> bool:
+    """Return True if two titles are too similar (Levenshtein or Jaccard)."""
+    t1, t2 = t1.lower().strip(), t2.lower().strip()
+    # Jaccard
+    w1, w2 = set(t1.split()), set(t2.split())
+    if w1 and w2 and len(w1 & w2) / len(w1 | w2) > 0.6:
+        return True
+    # Levenshtein for short titles
+    if max(len(t1), len(t2)) < 80:
+        distance = _levenshtein(t1[:60], t2[:60])
+        similarity = 1 - distance / max(len(t1[:60]), len(t2[:60]), 1)
+        if similarity > 0.75:
+            return True
+    return False
+
+
 def _title_similarity(t1: str, t2: str) -> float:
     """Returns 0.0-1.0 similarity between two titles using Jaccard on non-stopword words."""
     w1 = set(re.sub(r'[^\w\s]', '', t1.lower()).split())
@@ -1738,6 +1820,52 @@ def _title_similarity(t1: str, t2: str) -> float:
     intersection = w1 & w2
     union = w1 | w2
     return len(intersection) / len(union)
+
+
+# ============================================================
+# ENTITY EXTRACTION — improved auto-tagging
+# ============================================================
+
+def _extract_entities(title: str, description: str = "") -> list:
+    """Extract proper nouns as additional tags using simple heuristics."""
+    text = title + " " + description
+    # Capitalized words (likely proper nouns) not at sentence start
+    words = re.findall(
+        r'(?<!\. )(?<!\n)(?<!["\'])([A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,}){0,2})',
+        text,
+    )
+    STOPWORDS = {
+        "The", "This", "That", "These", "Those", "When", "Where", "What",
+        "After", "Before", "During", "While", "How", "Why", "New", "United",
+        "American", "European", "Global", "World", "International",
+    }
+    entities = []
+    for w in words:
+        parts = w.split()
+        if not any(p in STOPWORDS for p in parts) and len(w) > 3:
+            tag = w.lower().replace(" ", "-")
+            if len(tag) < 30:
+                entities.append(tag)
+    return list(dict.fromkeys(entities))[:5]  # dedup, max 5
+
+
+# ============================================================
+# STORY CONTINUATION — find related post filename for linking
+# ============================================================
+
+def _find_continuation(title: str, known_posts: list) -> str | None:
+    """Find a related post filename for internal linking (Jaccard on 4+ letter words)."""
+    title_words = set(re.findall(r'\b[a-zA-Z]{4,}\b', title.lower()))
+    best_match, best_score = None, 0
+    for post_file, post_title in known_posts[-50:]:  # check last 50
+        post_words = set(re.findall(r'\b[a-zA-Z]{4,}\b', post_title.lower()))
+        if not title_words or not post_words:
+            continue
+        score = len(title_words & post_words) / len(title_words | post_words)
+        if score > 0.35 and score > best_score:
+            best_score = score
+            best_match = post_file
+    return best_match
 
 
 # Cache of known titles (built once per run)
@@ -1783,6 +1911,8 @@ def build_frontmatter(
     wikipedia_summary: str  = "",
     description_ptbr:  str  = "",
     crypto_prices:     dict | None = None,
+    hook:              str  = "",
+    related_post:      str  = "",
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
@@ -1802,11 +1932,19 @@ source_name: "{source_name}"
 sentiment: "{sentiment}"
 lang: "en"
 """
+    # Auto-generate OG image if none provided
+    if not image:
+        import urllib.parse
+        prompt = urllib.parse.quote(f"{title[:60]} news editorial dark background", safe='')
+        seed = abs(hash(title)) % 100000
+        image = f"https://image.pollinations.ai/prompt/{prompt}?width=1200&height=630&nologo=true&seed={seed}&model=flux"
     if last_updated:
         front += f'last_updated: "{last_updated}"\n'
     if image:
         front += f'image: "{image}"\n'
         alt = sanitize_text(title[:100])
+        if not alt:
+            alt = sanitize_text(title[:100])
         front += f'image_alt: "{alt}"\n'
     if image_caption:
         front += f'image_caption: "{sanitize_text(image_caption[:120])}"\n'
@@ -1841,6 +1979,17 @@ lang: "en"
                 front += f'crypto_{coin}_usd: {usd}\n'
             if change is not None:
                 front += f'crypto_{coin}_24h_change: {round(change, 2)}\n'
+    # ── Breaking news flags ───────────────────────────────────────
+    breaking = _is_breaking_news(title, description)
+    if breaking:
+        front += 'featured: true\n'
+    front += f'breaking: {str(breaking).lower()}\n'
+    # ── Journalistic hook ─────────────────────────────────────────
+    if hook:
+        front += f'hook: "{sanitize_text(hook[:120])}"\n'
+    # ── Related post for cross-linking ───────────────────────────
+    if related_post:
+        front += f'related_post: "{related_post}"\n'
     front += "---\n"
     return front
 
@@ -2018,6 +2167,51 @@ def _add_pt_summary(title: str, description: str, category: str) -> str:
 
 
 # ============================================================
+# SPANISH SUMMARY
+# ============================================================
+
+def _add_es_summary(title: str, description: str, category: str) -> str:
+    """Generates a rich Spanish (ES) summary section using AI."""
+    try:
+        cat_es = {
+            "world": "mundo", "politics": "política", "war": "conflicto/defensa",
+            "business": "economía", "science": "ciencia", "health": "salud",
+            "food": "gastronomía", "sports": "deportes", "entertainment": "entretenimiento",
+            "environment": "medio ambiente", "travel": "viajes", "technology": "tecnología",
+            "ai": "inteligencia artificial", "security": "ciberseguridad",
+            "gadgets": "gadgets", "startups": "startups", "mobile": "móviles",
+        }.get(category, "noticias")
+
+        prompt = (
+            f"Eres un periodista español experimentado en {cat_es}. "
+            f"Escribe un resumen en español (ES) sobre la noticia siguiente. "
+            f"El resumen debe tener EXACTAMENTE 2 párrafos en prosa:\n"
+            f"1. Una frase de apertura que contextualice el hecho principal de forma atractiva.\n"
+            f"2. Un párrafo que explique el contexto, la relevancia y las implicaciones para los lectores hispanohablantes.\n\n"
+            f"Usa lenguaje periodístico natural, claro y accesible. "
+            f"Sin bullet points, sin JSON, sin títulos — solo párrafos en prosa.\n\n"
+            f"Título: {title}\nDescripción: {description}"
+        )
+        es_text = _ai_text(
+            prompt,
+            system=(
+                "Eres un periodista profesional hispanohablante. "
+                "Escribe siempre en español estándar, con lenguaje natural y fluido. "
+                "Nunca uses inglés. Responde solo con el texto del resumen."
+            ),
+        )
+        if not es_text:
+            return ""
+        es_text = es_text.strip()
+        es_text = re.sub(r'^(resumen\s*:|aquí está[^:]*:|resultado:)\s*', '', es_text, flags=re.IGNORECASE)
+        if len(es_text) < 60:
+            return ""
+        return f"\n\n---\n\n## 🇪🇸 Resumen en Español\n\n{es_text}\n"
+    except Exception:
+        return ""
+
+
+# ============================================================
 # STORY CONTINUATION DETECTION
 # ============================================================
 
@@ -2177,6 +2371,8 @@ def create_daily_roundup() -> None:
     date_display = datetime.now(timezone.utc).strftime("%B %d, %Y")
     bullet_list = "\n".join(f"- [{t}]({u})" for t, u in today_posts)
 
+    roundup_image = _generate_og_image(f"Daily News Roundup — {date_display}", "roundup", f"{today}-daily-roundup")
+
     frontmatter = f"""---
 layout: post
 title: "Daily News Roundup — {date_display}"
@@ -2185,6 +2381,7 @@ categories: [roundup]
 tags: [daily, news, roundup]
 author: "GlobalBR News"
 description: "Your daily roundup of the top {len(today_posts)} news stories for {date_display}."
+image: "{roundup_image}"
 sentiment: "neutral"
 ---
 """
@@ -2575,7 +2772,9 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if extra_cat and extra_cat not in categories:
                 categories.append(extra_cat)
 
-            all_tags = list(dict.fromkeys(base_tags + extra_tags))
+            # ── Entity extraction → extra tags ────────────────────
+            entity_tags = _extract_entities(title, description)
+            all_tags = list(dict.fromkeys(base_tags + extra_tags + entity_tags))
 
             slug     = slugify(title)
             filename = post_filename(pub_date, slug)
@@ -2587,10 +2786,9 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             # ── Title similarity deduplication ────────────────────
             similar_found = False
             for existing_title, existing_file in _load_known_titles():
-                sim = _title_similarity(title, existing_title)
-                if sim > 0.6:
+                if _titles_too_similar(title, existing_title):
                     log.info(
-                        f"  ⏭  Título similar ({sim:.2f}) a '{existing_file}': {title[:60]}"
+                        f"  ⏭  Título similar (Levenshtein/Jaccard) a '{existing_file}': {title[:60]}"
                     )
                     similar_found = True
                     break
@@ -2632,6 +2830,16 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             continuation = _find_related_story(title, all_tags, category)
             last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
 
+            # ── Find related/continuation post for cross-linking ──
+            known_posts_list = [(fn, t) for t, fn in _load_known_titles()]
+            related_post_path = _find_continuation(title, known_posts_list)
+            related_post_url = ""
+            if related_post_path:
+                m_rp = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$', related_post_path)
+                if m_rp:
+                    rp_cat = category
+                    related_post_url = f"/{rp_cat}/{m_rp.group(1)}/{m_rp.group(2)}/{m_rp.group(3)}/{m_rp.group(4)}/"
+
             frontmatter = build_frontmatter(
                 title             = title,
                 date              = pub_date,
@@ -2652,6 +2860,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 wikipedia_summary = ai.get("wikipedia_summary", ""),
                 description_ptbr  = description_ptbr,
                 crypto_prices     = crypto_prices_for_post,
+                hook              = ai.get("hook", ""),
+                related_post      = related_post_url,
             )
 
             post_content = build_content(
@@ -2673,6 +2883,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_content = _add_internal_links(post_content, category, Path(filename).stem)
             pt_section = _add_pt_summary(title, description, category)
             post_content += pt_section
+            # Spanish summary — top 3 categories by global readership
+            if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
+                es_section = _add_es_summary(title, description, category)
+                post_content += es_section
 
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
@@ -2750,8 +2964,8 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         return 0
 
     for existing_title, existing_file in _load_known_titles():
-        if _title_similarity(title, existing_title) > 0.6:
-            log.info(f"  ⏭  Título similar a '{existing_file}': {title[:60]}")
+        if _titles_too_similar(title, existing_title):
+            log.info(f"  ⏭  Título similar (Levenshtein/Jaccard) a '{existing_file}': {title[:60]}")
             return 0
 
     ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
@@ -2779,6 +2993,15 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     continuation = _find_related_story(title, all_tags, category)
     last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
 
+    # ── Find related/continuation post for cross-linking ──────────
+    known_posts_list = [(fn, t) for t, fn in _load_known_titles()]
+    related_post_path = _find_continuation(title, known_posts_list)
+    related_post_url = ""
+    if related_post_path:
+        m_rp = re.match(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$', related_post_path)
+        if m_rp:
+            related_post_url = f"/{category}/{m_rp.group(1)}/{m_rp.group(2)}/{m_rp.group(3)}/{m_rp.group(4)}/"
+
     frontmatter = build_frontmatter(
         title             = title,
         date              = pub_date,
@@ -2799,6 +3022,8 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         wikipedia_summary = ai.get("wikipedia_summary", ""),
         description_ptbr  = description_ptbr,
         crypto_prices     = crypto_prices_for_post,
+        hook              = ai.get("hook", ""),
+        related_post      = related_post_url,
     )
 
     post_content = build_content(
@@ -2817,6 +3042,10 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     post_content = _add_internal_links(post_content, category, Path(filename).stem)
     pt_section = _add_pt_summary(title, description, category)
     post_content += pt_section
+    # Spanish summary — top 3 categories by global readership
+    if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
+        es_section = _add_es_summary(title, description, category)
+        post_content += es_section
 
     post_path = POSTS_DIR / filename
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
@@ -2828,6 +3057,65 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         fetch_feed._source_counts = {}
     fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
     return 1
+
+
+# ============================================================
+# MILESTONE POSTS
+# ============================================================
+
+def _check_milestones(new_posts_count: int) -> None:
+    """Create a milestone post when a category hits 100/250/500/1000 posts."""
+    if new_posts_count == 0:
+        return
+    import glob as _glob
+
+    cat_counts: dict[str, int] = {}
+    for f in _glob.glob("_posts/*.md"):
+        try:
+            with open(f, encoding="utf-8") as fp:
+                content = fp.read()
+            m = re.search(r'^categories:\s*\[([^\]]+)\]', content, re.MULTILINE)
+            if m:
+                cats = [c.strip() for c in m.group(1).split(",")]
+                for cat in cats:
+                    if cat and cat not in ("roundup", "digest"):
+                        cat_counts[cat] = cat_counts.get(cat, 0) + 1
+        except Exception:
+            pass
+
+    MILESTONES = [100, 250, 500, 1000]
+    for cat, count in cat_counts.items():
+        for milestone in MILESTONES:
+            milestone_marker = f"_posts/milestone-{cat}-{milestone}.md"
+            if count >= milestone and not Path(milestone_marker).exists():
+                date_str = datetime.now().strftime("%Y-%m-%d")
+                slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
+                filepath = f"_posts/{slug}.md"
+                if not Path(filepath).exists():
+                    milestone_content = f"""---
+title: "🎉 {milestone} Articles in {cat.capitalize()}!"
+date: {datetime.now(timezone.utc).isoformat()}
+categories: [{cat}]
+tags: [milestone, {cat}]
+description: "GlobalBR News has published {milestone} articles in the {cat.capitalize()} category."
+featured: true
+sentiment: "positive"
+---
+
+We've reached a milestone: **{milestone} articles** published in the **{cat.capitalize()}** category!
+
+Thank you for reading GlobalBR News.
+"""
+                    try:
+                        with open(filepath, "w", encoding="utf-8") as mf:
+                            mf.write(milestone_content)
+                        # Create marker file so we don't recreate
+                        with open(milestone_marker, "w", encoding="utf-8") as mk:
+                            mk.write(f"milestone: {milestone} posts in {cat}\n")
+                        log.info(f"🎉 Milestone post created: {filepath}")
+                    except Exception as exc:
+                        log.warning(f"Milestone post creation failed: {exc}")
+                break  # Only one milestone per cat per run
 
 
 def main():
@@ -2928,6 +3216,12 @@ def main():
         _generate_weekly_stats_post()
     except Exception as exc:
         log.warning(f"Weekly stats post failed: {exc}")
+
+    # ── Milestone posts ───────────────────────────────────────────
+    try:
+        _check_milestones(total_created)
+    except Exception as exc:
+        log.warning(f"Milestone check failed: {exc}")
 
     log.info("=" * 60)
     log.info(f"✨ Concluído! Total de posts criados: {total_created}/{MAX_POSTS_PER_RUN}")

@@ -1,0 +1,39 @@
+name: "📅 Monthly Roundup"
+
+on:
+  schedule:
+    - cron: "0 10 1 * *"  # 1st of each month at 10h UTC
+  workflow_dispatch:
+
+jobs:
+  roundup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install requests
+
+      - name: "📅 Generate monthly roundup"
+        run: python create_monthly_roundup.py
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: "💾 Commit roundup"
+        run: |
+          git config user.name "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _posts/
+          git diff --cached --quiet || git commit -m "📅 Monthly roundup — $(date -u +'%B %Y')"
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

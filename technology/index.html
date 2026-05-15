@@ -40,8 +40,26 @@ permalink: /technology/
     </div>
   </div>
 
+  <div class="view-toggle mb-3 d-flex gap-2 justify-content-end">
+    <button class="view-btn active" data-view="grid" title="Grid view" aria-label="Grid view">
+      <i class="bi bi-grid-3x3-gap"></i>
+    </button>
+    <button class="view-btn" data-view="list" title="List view" aria-label="List view">
+      <i class="bi bi-list-ul"></i>
+    </button>
+  </div>
+
+  {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'technology'" %}
+  <div class="category-stats-bar mb-4">
+    <span class="cat-stat"><i class="bi bi-newspaper"></i> {{ cat_posts | size }} articles</span>
+    {% assign latest = cat_posts | first %}
+    {% if latest %}
+    <span class="cat-stat"><i class="bi bi-clock"></i> Updated {{ latest.date | date: "%b %d" }}</span>
+    {% endif %}
+    <a href="{{ '/tags/' | relative_url }}" class="cat-stat cat-stat-link"><i class="bi bi-tags"></i> Browse tags</a>
+  </div>
+
   <div class="row g-4">
-    {% assign cat_posts = site.posts | where_exp: "post", "post.categories contains 'technology'" %}
     {% if cat_posts.size > 0 %}
       {% for post in cat_posts %}
       <div class="col-md-6 col-lg-4">
@@ -81,3 +99,17 @@ permalink: /technology/
     {% endif %}
   </div>
 </section>
+<script>
+(function(){
+  var btns = document.querySelectorAll('.view-btn');
+  var grid = document.querySelector('.row.g-4');
+  var saved = localStorage.getItem('gb-view') || 'grid';
+  function setView(v){
+    localStorage.setItem('gb-view', v);
+    btns.forEach(function(b){ b.classList.toggle('active', b.dataset.view === v); });
+    if(grid) grid.classList.toggle('list-view', v === 'list');
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setView(b.dataset.view); }); });
+  setView(saved);
+})();
+</script>

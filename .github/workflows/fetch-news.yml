@@ -74,8 +74,10 @@ jobs:
           git config user.email "bot@globalbrnews.com"
 
           git add _posts/
+          git add _tags/ || true
           git add assets/images/posts/ || true
           git add fetch_news.log || true
+          git add search-index.json || true
 
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
@@ -110,6 +112,14 @@ jobs:
         run: python google_index.py
         env:
           GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
+
+      - name: Generate tag pages
+        if: steps.check_changes.outputs.changed != '0'
+        run: python generate_tag_pages.py
+
+      - name: Generate search index
+        if: steps.check_changes.outputs.changed != '0'
+        run: python generate_search_index.py
 
       - name: "🦋 Bluesky — compartilhar posts novos"
         if: steps.check_changes.outputs.changed != '0'
@@ -171,12 +181,18 @@ jobs:
             echo "✅ IndexNow notificado: $URLS"
           fi
 
-      - name: "🦋 Postar roundup diário no Bluesky (thread)"
-        run: python post_roundup_thread_bluesky.py
+      - name: "💚 Health check — post stats to Bluesky (weekly)"
+        if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true
+        run: |
+          # Only post health stats on Mondays
+          DOW=$(date -u +%u)
+          if [ "$DOW" = "1" ]; then
+            python post_audit_bluesky.py
+          else
+            echo "ℹ️ Not Monday — skipping weekly health post"
+          fi
         env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 

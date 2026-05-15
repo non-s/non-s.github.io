@@ -88,20 +88,38 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "💾 Salvar marcadores no git"
+      - name: "📝 Criar posts no blog para os vídeos"
+        run: python create_video_blog_post.py
+        continue-on-error: true
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+
+      - name: "🦋 Postar vídeos no Bluesky"
+        run: python post_video_bluesky.py
+        continue-on-error: true
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
+      - name: "💾 Salvar marcadores e posts no git"
         run: |
           git config user.name  "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
 
-          # Só commita arquivos pequenos de marcação, nunca os mp4/mp3
+          # Marcadores de vídeo
           git add _videos/*.done   2>/dev/null || true
           git add _videos/*.roundup 2>/dev/null || true
           git add _videos/*.json   2>/dev/null || true
+          # Posts do blog criados para os vídeos
+          git add _posts/*-video-*.md 2>/dev/null || true
 
           if git diff --cached --quiet; then
-            echo "✅ Nenhum marcador novo para salvar."
+            echo "✅ Nenhum arquivo novo para salvar."
           else
-            git commit -m "🎬 Marcadores de vídeo — $(date -u +'%Y-%m-%d')"
+            git commit -m "🎬 Vídeos + posts — $(date -u +'%Y-%m-%d')"
             git push origin HEAD
           fi
         env:

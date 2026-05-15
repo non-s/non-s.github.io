@@ -24,6 +24,54 @@ from datetime import datetime, timezone
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
+# ── AI Text — Groq (primary) + Pollinations (free fallback) ──────
+_http = requests.Session()
+_http.headers.update({"User-Agent": "GlobalBR-VideoBot/2.0"})
+GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL            = "llama-3.3-70b-versatile"
+POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
+
+def _ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 25) -> str:
+    groq_key = os.environ.get("GROQ_API_KEY", "")
+    if groq_key:
+        try:
+            r = _http.post(
+                GROQ_API_URL,
+                json={
+                    "model": GROQ_MODEL,
+                    "messages": [
+                        {"role": "system", "content": system or "You are a professional broadcast journalist and YouTube SEO expert."},
+                        {"role": "user",   "content": prompt},
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 400,
+                },
+                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+                timeout=timeout,
+            )
+            r.raise_for_status()
+            return r.json()["choices"][0]["message"]["content"].strip()
+        except Exception:
+            pass
+    try:
+        payload = {
+            "messages": [
+                {"role": "system", "content": system or "You are a professional broadcast journalist and YouTube SEO expert."},
+                {"role": "user",   "content": prompt},
+            ],
+            "model": "openai",
+            "seed":  seed or abs(hash(prompt)) % 9999,
+            "private": True,
+        }
+        r = _http.post(POLLINATIONS_TEXT_URL, json=payload, timeout=timeout)
+        r.raise_for_status()
+        data = r.json()
+        if isinstance(data, dict) and "choices" in data:
+            return data["choices"][0]["message"]["content"].strip()
+        return str(data).strip()
+    except Exception:
+        return ""
+
 # ── Config ────────────────────────────────────────────────────────
 VIDEOS_DIR      = Path("_videos")
 SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
@@ -60,6 +108,8 @@ CATEGORY_COLORS = {
 }
 
 VOICE_SHORT = "en-US-AriaNeural"
+
+SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -179,11 +229,31 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT)
 
 
 # ── Script de narração do Short ───────────────────────────────────
+def _ai_shorts_hook(title: str, points: list[str], category: str) -> str:
+    """Generate a powerful hook sentence for a YouTube Short using AI."""
+    prompt = (
+        f"Write a single powerful hook sentence (max 20 words) for a YouTube Short about this news story.\n\n"
+        f"Story: {title}\n"
+        f"Category: {category}\n"
+        f"Key facts: {' '.join(points[:2])}\n\n"
+        f"CRITICAL: The script MUST start with a powerful hook in the FIRST sentence — a shocking statistic, "
+        f"provocative question, or urgent fact that makes viewers stop scrolling. Examples:\n"
+        f'- "Did you know [shocking fact]?"\n'
+        f'- "This just happened and it changes everything:"\n'
+        f'- "[Number] people were affected when..."\n'
+        f'- "Breaking: [dramatic summary in 10 words]"\n\n'
+        f"The hook must appear in the very first 3 seconds of audio. Do NOT start with introductions "
+        f'like "Hi" or "Welcome" or "Today we\'ll talk about".\n\n'
+        f"Return ONLY the hook sentence, nothing else."
+    )
+    return _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=15)
+
+
 def build_short_script(title: str, points: list[str], category: str) -> str:
     """
     Build a ~43-55 second narration script for a YouTube Short.
     Breakdown:
-      Intro   ~3s   (15 words)
+      Hook    ~3s   (15 words) — AI-generated powerful opener
       Title   ~5s   (25 words)
       Point 1 ~10s  (50 words)
       Point 2 ~10s  (50 words)
@@ -201,7 +271,11 @@ def build_short_script(title: str, points: list[str], category: str) -> str:
         "TECH": "in technology",
     }.get(category.upper(), "in the news")
 
-    script = f"""Breaking news {cat_label} — GlobalBR News has you covered.
+    # Try AI hook first, fall back to template hook
+    ai_hook = _ai_shorts_hook(title, points, category)
+    hook = ai_hook if ai_hook and len(ai_hook) > 10 else f"Breaking news {cat_label} — GlobalBR News has you covered."
+
+    script = f"""{hook}
 
 {title}
 
@@ -562,8 +636,8 @@ def build_short_metadata(story: dict, video_path: Path,
         f"Source: {source}\n\n"
         f"Follow GlobalBR News for hourly world news updates.\n"
         f"Read more at: https://non-s.github.io\n\n"
-        f"#Shorts #News #{category.replace(' ', '')} #GlobalBRNews "
-        f"#BreakingNews #WorldNews #{date_str.replace(' ', '').replace(',', '')}"
+        f"{SHORTS_HASHTAGS} #{category.replace(' ', '')} "
+        f"#{date_str.replace(' ', '').replace(',', '')}"
         f"\n\n© {year} GlobalBR News. Original articles belong to their respective sources."
     )
 

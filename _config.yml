@@ -76,6 +76,10 @@ sitemap:
 
 # --- Posts ---
 permalink: /:categories/:year/:month/:day/:title/
+
+# AMP pages — generated at /category/year/month/day/slug/amp/
+amp:
+  enabled: true
 show_excerpts: true
 excerpt_separator: "<!--more-->"
 
@@ -132,6 +136,9 @@ sass:
   style: compressed
   sass_dir: assets/css
 
+editorial_policy_url: /editorial-policy/
+corrections_url: /corrections/
+
 # --- Google Analytics (descomente e adicione seu ID) ---
 google_analytics: "G-ZSQXRQJ6WC"
 
@@ -149,4 +156,12 @@ google_analytics: "G-ZSQXRQJ6WC"
 
 # --- Ko-fi donation button ---
 # kofi_id: "globalbrnews"
+
+# --- HTML compression (via _layouts/compress.html) ---
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  ignore:
+    envs: development
 

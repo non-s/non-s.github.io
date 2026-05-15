@@ -42,8 +42,16 @@ layout: default
 
       <h1 class="post-title">{{ page.title }}</h1>
 
+      {% if page.breaking %}
+      <div class="breaking-badge">🔴 BREAKING</div>
+      {% endif %}
+
       {% if page.description %}
       <p class="post-deck">{{ page.description }}</p>
+      {% endif %}
+
+      {% if page.lead and page.lead != page.description %}
+      <p class="post-lead">{{ page.lead }}</p>
       {% endif %}
 
       <div class="post-meta">
@@ -67,6 +75,9 @@ layout: default
           <button class="fs-btn" id="fs-up" aria-label="Larger text">A+</button>
           <button id="reader-mode-btn" class="fs-btn" onclick="toggleReaderMode()" aria-label="Reader mode" title="Reader mode">
             <i class="bi bi-book"></i>
+          </button>
+          <button id="font-toggle-btn" class="fs-btn" onclick="toggleFont()" title="Toggle font family" aria-label="Toggle font family">
+            <i class="bi bi-fonts"></i>
           </button>
         </div>
         <!-- Save for later button -->
@@ -93,6 +104,13 @@ layout: default
     <!-- Main Content -->
     <div class="col-lg-8">
 
+      {% if page.tl_dr %}
+      <div class="tl-dr-box">
+        <span class="tl-dr-label">TL;DR</span>
+        <p class="tl-dr-text">{{ page.tl_dr }}</p>
+      </div>
+      {% endif %}
+
       {% if page.image %}
       <figure class="post-hero-img">
         <img src="{{ page.image }}" alt="{{ page.image_alt | default: page.title | escape }}" loading="eager" width="1200" height="630" style="width:100%;height:auto;">
@@ -100,6 +118,14 @@ layout: default
         <figcaption class="post-img-caption">{{ page.image_caption }}</figcaption>
         {% endif %}
       </figure>
+      {% endif %}
+
+      <!-- Related Story Banner (shown when post has related_post frontmatter) -->
+      {% if page.related_post %}
+      <div class="related-story-banner">
+        <i class="bi bi-link-45deg"></i> Related:
+        <a href="{{ page.related_post }}">{{ page.related_post_title | default: "Previous story" }}</a>
+      </div>
       {% endif %}
 
       <!-- Key Points Box -->
@@ -135,6 +161,28 @@ layout: default
         </div>
         <nav id="toc-nav" class="toc-nav"></nav>
       </div>
+
+      {% if site.adsense_publisher_id %}
+      <!-- AdSense In-Article Ad -->
+      <ins class="adsbygoogle"
+           style="display:block;text-align:center;margin:1.5rem 0;"
+           data-ad-layout="in-article"
+           data-ad-format="fluid"
+           data-ad-client="{{ site.adsense_publisher_id }}"
+           data-ad-slot="AUTO"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      {% endif %}
+
+      <!-- Share Buttons (top, before article) -->
+      <div class="share-buttons my-3 d-flex gap-2 flex-wrap">
+        <span class="share-label text-muted small me-1">Share:</span>
+        <a href="https://wa.me/?text={{ page.title | url_encode }}%20{{ site.url }}{{ page.url | url_encode }}" target="_blank" rel="noopener" class="btn btn-sm btn-share btn-whatsapp">WhatsApp</a>
+        <a href="https://t.me/share/url?url={{ site.url }}{{ page.url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="btn btn-sm btn-share btn-telegram">Telegram</a>
+        <button class="btn btn-sm btn-share btn-copy" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='✓ Copied!';setTimeout(()=>{this.textContent='Copy link'},2000)})">Copy link</button>
+      </div>
+
+      <!-- Table of Contents (spec: post-toc class) -->
+      <nav id="toc" class="post-toc" aria-label="Table of contents" style="display:none"></nav>
 
       <article class="post-content" id="post-article">
         {{ content }}
@@ -176,6 +224,10 @@ layout: default
            target="_blank" rel="noopener" class="share-pill whatsapp">
           <i class="bi bi-whatsapp"></i> WhatsApp
         </a>
+        <a href="https://t.me/share/url?url={{ page.url | absolute_url | uri_escape }}&text={{ page.title | uri_escape }}"
+           target="_blank" rel="noopener" class="share-pill telegram">
+          <i class="bi bi-telegram"></i> Telegram
+        </a>
         <a href="https://bsky.app/intent/compose?text={{ page.title | uri_escape }}%20{{ page.url | absolute_url | uri_escape }}%20%23GlobalBRNews"
            target="_blank" rel="noopener" class="share-pill bluesky">
           <svg width="13" height="13" viewBox="0 0 568 501" fill="currentColor" style="display:inline;vertical-align:-.1em;margin-right:4px"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.209C491.866-1.611 568-28.906 568 57.distrib v0C568 157.875 497.062 252.514 409.671 252.514c-62.558 0-94.94-34.628-116.849-67.664C270.873 217.886 238.491 252.514 175.933 252.514 88.542 252.514 17.604 157.875 17.604 57c0-86.906 76.134-59.611 105.517-23.336Z"/><path d="M284 333.664C255.16 296.335 171.592 251.29 88.389 267.5 30.875 278.75 0 321.875 0 375.914c0 115.583 104.427 125.085 176.309 78.664C224.886 423.29 258.87 378.914 284 333.664Zm0 0c28.84-45.084 62.824-89.375 107.691-121.086C463.573 165.164 568 174.666 568 290.25c0 54.038-30.875 97.163-88.389 108.413C396.408 414.875 312.84 369.83 284 333.664Z"/></svg>
@@ -207,6 +259,62 @@ layout: default
         </a>
         {% else %}<span></span>{% endif %}
       </nav>
+
+      {% if page.entities %}
+      <div class="post-entities">
+        <span class="entities-label">Key Topics:</span>
+        {% for entity in page.entities %}
+        <a href="{{ '/search/?q=' | relative_url }}{{ entity | uri_escape }}" class="entity-chip">{{ entity }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% comment %}Prev/Next navigation within same category{% endcomment %}
+      {% assign cat = page.categories | first %}
+      {% assign cat_posts = site.posts | where_exp: "p", "p.categories contains cat" %}
+      {% assign post_count = cat_posts | size %}
+
+      {% if post_count > 1 %}
+      {% assign current_index = 0 %}
+      {% for p in cat_posts %}
+        {% if p.url == page.url %}
+          {% assign current_index = forloop.index0 %}
+        {% endif %}
+      {% endfor %}
+
+      {% assign prev_index = current_index | minus: 1 %}
+      {% assign next_index = current_index | plus: 1 %}
+
+      <nav class="post-prevnext" aria-label="Article navigation">
+        <div class="prevnext-grid">
+          {% if prev_index >= 0 %}
+          {% assign prev_post = cat_posts[prev_index] %}
+          <a href="{{ prev_post.url | relative_url }}" class="prevnext-card prevnext-prev">
+            <span class="prevnext-label"><i class="bi bi-arrow-left"></i> Previous</span>
+            <span class="prevnext-title">{{ prev_post.title | truncate: 70 }}</span>
+          </a>
+          {% else %}
+          <div></div>
+          {% endif %}
+
+          {% if next_index < post_count %}
+          {% assign next_post = cat_posts[next_index] %}
+          <a href="{{ next_post.url | relative_url }}" class="prevnext-card prevnext-next">
+            <span class="prevnext-label">Next <i class="bi bi-arrow-right"></i></span>
+            <span class="prevnext-title">{{ next_post.title | truncate: 70 }}</span>
+          </a>
+          {% endif %}
+        </div>
+      </nav>
+      {% endif %}
+
+      <!-- Article Feedback -->
+      <div class="article-feedback my-4 p-3 rounded" style="background:var(--c-surface);border:1px solid var(--c-border);text-align:center;">
+        <p class="mb-2 text-muted small">Was this article helpful?</p>
+        <button class="btn btn-sm btn-outline-success me-2 feedback-btn" data-val="up" onclick="gbFeedback(this,'up')">👍 Yes</button>
+        <button class="btn btn-sm btn-outline-danger feedback-btn" data-val="down" onclick="gbFeedback(this,'down')">👎 No</button>
+        <p class="feedback-thanks mt-2 small text-muted" style="display:none">Thanks for your feedback!</p>
+      </div>
 
       <!-- Comments — Giscus (GitHub Discussions) preferred, fallback Utterances -->
       {% if site.giscus_repo %}
@@ -268,6 +376,18 @@ layout: default
           {% endunless %}
         {% endfor %}
       </div>
+
+      {% if site.adsense_publisher_id %}
+      <div class="sidebar-widget mt-3">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.adsense_publisher_id }}"
+             data-ad-slot="AUTO"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      {% endif %}
 
       <div class="sidebar-widget">
         <h6 class="sidebar-widget-title">Categories</h6>
@@ -400,6 +520,25 @@ layout: default
 </script>
 {% endif %}
 
+<!-- TOC builder for #toc.post-toc (spec implementation) -->
+<script>
+(function() {
+  var headings = document.querySelectorAll('.post-content h2, .post-content h3');
+  if (headings.length < 3) return;
+  var toc = document.getElementById('toc');
+  if (!toc) return;
+  var html = '<p class="toc-title">Contents</p><ul>';
+  headings.forEach(function(h, i) {
+    if (!h.id) h.id = 'h-' + i;
+    var level = h.tagName === 'H2' ? '' : 'toc-sub';
+    html += '<li class="' + level + '"><a href="#' + h.id + '">' + h.textContent + '</a></li>';
+  });
+  html += '</ul>';
+  toc.innerHTML = html;
+  toc.style.display = 'block';
+})();
+</script>
+
 <!-- Code Copy Button -->
 <script>
 (function(){
@@ -464,6 +603,55 @@ function toggleReaderMode() {
 if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode');
 </script>
 
+<!-- Font Toggle JS -->
+<script>
+function toggleFont() {
+  var body = document.body;
+  var serif = body.classList.toggle('font-serif');
+  localStorage.setItem('gb-font', serif ? 'serif' : 'sans');
+}
+// Restore font preference
+(function(){
+  if(localStorage.getItem('gb-font') === 'serif') document.body.classList.add('font-serif');
+})();
+</script>
+
+<!-- Reading Progress / Continue Reading JS -->
+<script>
+(function(){
+  var key = 'gb-pos-' + window.location.pathname;
+  var article = document.getElementById('post-article');
+  if(!article) return;
+
+  // Restore position after 500ms (let page render)
+  var saved = localStorage.getItem(key);
+  if(saved && parseInt(saved) > 200) {
+    setTimeout(function(){ window.scrollTo(0, parseInt(saved)); }, 500);
+  }
+
+  // Save position on scroll (throttled)
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      requestAnimationFrame(function(){
+        localStorage.setItem(key, window.scrollY);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Show "Continue reading" banner if returning
+  if(saved && parseInt(saved) > 500) {
+    var banner = document.createElement('div');
+    banner.className = 'continue-reading-banner';
+    banner.innerHTML = '<i class="bi bi-bookmark-check"></i> Continue where you left off <button onclick="window.scrollTo(0,'+saved+');this.parentElement.remove()">Jump &#8595;</button> <button onclick="this.parentElement.remove()">&#x2715;</button>';
+    document.body.appendChild(banner);
+    setTimeout(function(){ if(banner.parentElement) banner.remove(); }, 5000);
+  }
+})();
+</script>
+
 <!-- Image Lightbox (Task 5) -->
 <script>
 (function(){
@@ -500,6 +688,17 @@ if (localStorage.getItem('gb-reader')) document.body.classList.add('reader-mode'
   if(up) up.addEventListener('click', function(){ if(idx<sizes.length-1) apply(idx+1); });
   if(down) down.addEventListener('click', function(){ if(idx>0) apply(idx-1); });
 })();
+</script>
+
+<!-- Article Feedback JS -->
+<script>
+function gbFeedback(btn, val) {
+  var key = 'gb-fb-' + window.location.pathname;
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, val);
+  btn.closest('.article-feedback').querySelectorAll('.feedback-btn').forEach(function(b) { b.disabled = true; });
+  btn.closest('.article-feedback').querySelector('.feedback-thanks').style.display = 'block';
+}
 </script>
 
 <!-- Selection Share (Task 9) -->

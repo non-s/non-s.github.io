@@ -12,7 +12,6 @@ Env vars required:
   BLUESKY_APP_PASSWORD — App Password from Settings → App Passwords
 """
 
-import json
 import logging
 import os
 import sys
@@ -69,6 +68,7 @@ def find_new_videos() -> list[dict]:
     results = []
     for done_file in sorted(VIDEOS_DIR.glob("*.done"), reverse=True):
         try:
+            import json
             data = json.loads(done_file.read_text(encoding="utf-8"))
             uploaded_at = datetime.fromisoformat(data.get("uploaded_at", ""))
             if uploaded_at.tzinfo is None:
@@ -92,15 +92,7 @@ def get_session(handle: str, password: str) -> dict:
     return resp.json()
 
 
-def create_post(
-    session: dict,
-    text: str,
-    url: str,
-    title: str,
-    description: str = "",
-    reply_to: dict | None = None,
-) -> dict | None:
-    """Create a Bluesky post. Returns the result dict (uri, cid) or None on failure."""
+def create_post(session: dict, text: str, url: str, title: str, description: str = "") -> bool:
     did   = session["did"]
     token = session["accessJwt"]
 
@@ -114,9 +106,6 @@ def create_post(
             },
             "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
         })
-
-    # Ensure description is always populated with a meaningful excerpt
-    card_description = (description.strip() or title)[:300]
 
     record = {
         "$type":     "app.bsky.feed.post",
@@ -132,15 +121,9 @@ def create_post(
         "external": {
             "uri":         url,
             "title":       title[:300],
-            "description": card_description,
+            "description": description[:300] if description else "",
         },
     }
-
-    if reply_to:
-        record["reply"] = {
-            "root":   reply_to.get("root", reply_to),
-            "parent": reply_to,
-        }
 
     resp = requests.post(
         f"{BSKY_API}/com.atproto.repo.createRecord",
@@ -154,48 +137,9 @@ def create_post(
     )
     if resp.status_code == 200:
         log.info("Posted video to Bluesky — %s", url)
-        return resp.json()
+        return True
     log.warning("Failed to post — HTTP %s: %s", resp.status_code, resp.text[:200])
-    return None
-
-
-def post_thread(session: dict, posts_data: list[dict]) -> bool:
-    """Post a thread of connected posts. posts_data is list of {text, url, title, description}."""
-    parent_ref = None
-    root_ref = None
-    ok = True
-    for i, data in enumerate(posts_data):
-        record = {
-            "$type": "app.bsky.feed.post",
-            "text": data["text"],
-            "createdAt": datetime.now(timezone.utc).isoformat(),
-            "langs": ["en"],
-        }
-        if data.get("embed"):
-            record["embed"] = data["embed"]
-        if parent_ref:
-            record["reply"] = {
-                "root": root_ref,
-                "parent": parent_ref,
-            }
-
-        resp = requests.post(
-            f"{BSKY_API}/com.atproto.repo.createRecord",
-            headers={"Authorization": f"Bearer {session['accessJwt']}"},
-            json={"repo": session["did"], "collection": "app.bsky.feed.post", "record": record},
-            timeout=20,
-        )
-        if resp.status_code == 200:
-            result = resp.json()
-            ref = {"uri": result["uri"], "cid": result["cid"]}
-            if i == 0:
-                root_ref = ref
-            parent_ref = ref
-            time.sleep(1)
-        else:
-            log.warning("Thread post %d failed: %s", i + 1, resp.text[:200])
-            ok = False
-    return ok
+    return False
 
 
 def build_post_text(video: dict) -> str:
@@ -205,7 +149,6 @@ def build_post_text(video: dict) -> str:
     is_short    = video.get("is_short", False)
     category    = (video.get("category", "") or "roundup").lower().strip()
     tags        = video.get("tags", [])
-    # key_points consumed separately in main() for threading
 
     if is_short:
         emoji = "⚡"
@@ -280,36 +223,11 @@ def main() -> None:
 
     ok = 0
     for video in videos:
-        text       = build_post_text(video)
-        title      = video.get("title", "")
-        desc       = video.get("description", "")[:300]
-        url        = video.get("url", "")
-        key_points = video.get("key_points", [])
-
-        if key_points and isinstance(key_points, list) and len(key_points) > 0:
-            # Build a 2-post thread: post 1 = main post, post 2 = key points
-            bullets = "\n".join(f"• {str(kp).strip()}" for kp in key_points[:5])
-            kp_text = f"🔑 Key points:\n{bullets}"
-            posts_data = [
-                {
-                    "text": text,
-                    "embed": {
-                        "$type": "app.bsky.embed.external",
-                        "external": {
-                            "uri":         url,
-                            "title":       title[:300],
-                            "description": (desc.strip() or title)[:300],
-                        },
-                    },
-                },
-                {"text": kp_text},
-            ]
-            if post_thread(session, posts_data):
-                ok += 1
-        else:
-            result = create_post(session, text, url, title, desc)
-            if result:
-                ok += 1
+        text  = build_post_text(video)
+        title = video.get("title", "")
+        desc  = video.get("description", "")[:300]
+        if create_post(session, text, video.get("url", ""), title, desc):
+            ok += 1
         time.sleep(2)
 
     log.info("Done — %d/%d video(s) shared on Bluesky.", ok, len(videos))

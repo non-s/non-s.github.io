@@ -10,6 +10,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 <div style="width:100%;background:#000a14;line-height:0;">
   <img src="{{ '/assets/images/banner.jpg' | relative_url }}"
        alt="GlobalBR News — World News Every Hour"
+       loading="lazy"
        style="width:100%;max-height:320px;object-fit:cover;object-position:center;display:block;">
 </div>
 
@@ -71,6 +72,8 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                alt="{{ featured.title | escape }}"
                width="600" height="290"
                class="img-fluid rounded-3"
+               loading="lazy"
+               onerror="this.parentElement.innerHTML='<div class=hero-img-placeholder><div class=placeholder-icon>⚡</div></div>'"
                style="width:100%;height:290px;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.5);">
         {% else %}
           <div class="hero-img-placeholder">
@@ -115,6 +118,29 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
   </div>
 </section>
 {% endif %}
+
+<!-- ============================================================
+     TRENDING TODAY
+     ============================================================ -->
+{% assign today = 'now' | date: '%Y-%m-%d' %}
+{% assign categories_list = "world,technology,politics,business,science,health,sports,entertainment,environment,ai" | split: "," %}
+
+<section class="trending-section py-3 mb-4">
+  <div class="container">
+    <h2 class="trending-title">🔥 Trending Today</h2>
+    <div class="trending-pills d-flex flex-wrap gap-2">
+      {% for cat in categories_list %}
+        {% assign cat_posts_today = site.posts | where_exp: "p", "p.categories contains cat" | where_exp: "p", "p.date contains today" %}
+        {% if cat_posts_today.size > 0 %}
+          <a href="/{{ cat }}/" class="trending-pill">
+            {{ cat | capitalize }}
+            <span class="trending-count">{{ cat_posts_today.size }}</span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
 <!-- ============================================================
      CORPO — GRID + SIDEBAR
@@ -251,7 +277,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                 <div class="card-footer-row">
                   <span class="card-date">
                     <i class="bi bi-calendar3" style="font-size:.7rem;"></i>
-                    {{ post.date | date: "%B %d, %Y" }}
+                    <span class="post-date" data-pubdate="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d" }}</span>
                     {% if post.sentiment == 'positive' %}
                     <span class="sentiment-indicator positive" title="Positive news"></span>
                     {% elsif post.sentiment == 'negative' %}
@@ -260,9 +286,14 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                     <span class="sentiment-indicator neutral" title="Neutral news"></span>
                     {% endif %}
                   </span>
+                  <span class="read-time" data-words="{{ post.content | number_of_words }}">· {{ post.content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
                   <a href="{{ post.url | relative_url }}" class="btn-read">
                     Ler <i class="bi bi-arrow-right"></i>
                   </a>
+                  <button class="btn-copy-link" data-url="{{ post.url | absolute_url }}"
+                          onclick="copyCardLink(this)" title="Copy link" aria-label="Copy article link">
+                    <i class="bi bi-link-45deg"></i>
+                  </button>
                 </div>
               </div>
 
@@ -314,6 +345,17 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
 
     </div>
     <!-- /col principal -->
+
+    <!-- Copy link JS -->
+    <script>
+    function copyCardLink(btn) {
+      var url = btn.dataset.url;
+      navigator.clipboard.writeText(url).then(function(){
+        btn.innerHTML = '<i class="bi bi-check2"></i>';
+        setTimeout(function(){ btn.innerHTML = '<i class="bi bi-link-45deg"></i>'; }, 2000);
+      });
+    }
+    </script>
 
     <!-- Index page JS: skeleton, fade-in, badge NEW, date filter, countdown -->
     <script>
