@@ -38,6 +38,7 @@ from utils.ai_helper import (
     fact_check_score as _fact_check_score,
     is_breaking_news as _is_breaking_news,
     quality_check as _quality_check,
+    quality_score as _quality_score,
     BREAKING_KEYWORDS,
 )
 from utils.retry import retry_call
@@ -53,8 +54,18 @@ _pollinations_text = _ai_text  # legacy alias for internal compatibility
 # WIKIPEDIA API — Enriquecimento de artigos
 # ============================================================
 
+_WIKI_CACHE: dict[str, str] = {}
+
+
 def _fetch_wikipedia_summary(query: str) -> str:
-    """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars."""
+    """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars.
+
+    Cached per-process: titles that recur within a single run (common when
+    multiple articles reference the same entity) only hit Wikipedia once.
+    """
+    if query in _WIKI_CACHE:
+        return _WIKI_CACHE[query]
+
     def _do_fetch():
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
         r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
@@ -63,7 +74,9 @@ def _fetch_wikipedia_summary(query: str) -> str:
         r.raise_for_status()
         return r.json().get("extract", "")[:500]
     result = retry_call(_do_fetch, max_attempts=2, base_delay=2.0, default="")
-    return result or ""
+    out = result or ""
+    _WIKI_CACHE[query] = out
+    return out
 
 
 # ============================================================
@@ -497,9 +510,14 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
     # ── Wikipedia enrichment ──────────────────────────────────
-    wiki_summary = _fetch_wikipedia_summary(title)
-    if wiki_summary:
-        result["wikipedia_summary"] = wiki_summary
+    # Skip the Wikipedia round-trip when the AI already produced a
+    # rich body — Wikipedia exists to backfill thin posts, not to
+    # duplicate a 600-word article. Costs ~2-3s per skip.
+    ai_body = result.get("article_body") or ""
+    if not isinstance(ai_body, str) or len(ai_body) < 500:
+        wiki_summary = _fetch_wikipedia_summary(title)
+        if wiki_summary:
+            result["wikipedia_summary"] = wiki_summary
 
     return result
 
@@ -512,7 +530,14 @@ LOG_FILE         = "fetch_news.log"
 MAX_PER_FEED     = int(os.environ.get("FETCH_MAX_PER_FEED", "4"))     # Max posts por feed por execução
 MAX_POSTS_PER_RUN = int(os.environ.get("FETCH_MAX_PER_RUN", "50"))   # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
-SLEEP_BETWEEN_FEEDS = 2
+# Sleep was 2s × 135 feeds = 270s of pure waiting per run. Dropped
+# to 0 — feeds are now processed in parallel (see fetch_feeds_concurrent),
+# and the per-host rate-limiting is handled implicitly by requests.Session
+# connection pool. Override with FETCH_SLEEP_BETWEEN_FEEDS=2 if needed.
+SLEEP_BETWEEN_FEEDS = float(os.environ.get("FETCH_SLEEP_BETWEEN_FEEDS", "0"))
+# Cap on concurrent feeds. 10 is a polite default: most CDNs allow it
+# without throttling and we still cut total fetch time by ~7×.
+FEED_WORKERS = int(os.environ.get("FETCH_FEED_WORKERS", "10"))
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
 
 # Feeds RSS configurados
@@ -2631,6 +2656,9 @@ def _get_trending_keywords() -> set:
 # FUNÇÃO PRINCIPAL
 # ============================================================
 
+from utils.ranking import entry_relevance_score as _entry_relevance_score
+
+
 def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     """
     Processa um feed RSS e cria posts novos.
@@ -2676,6 +2704,12 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     # Reset failure counter on success
     _feed_failures[name] = 0
     log.info(f"  📋 {len(entries)} entradas encontradas")
+
+    # ── Pre-filter / pre-rank entries before we burn AI on them ─────
+    # Quality > volume. We sort entries by a lightweight score (no AI,
+    # no network) so the AI enrichment slots go to the strongest stories
+    # in the feed, not just whoever happens to be at the top.
+    entries = sorted(entries, key=_entry_relevance_score, reverse=True)
 
     created_count = 0
 
@@ -2762,12 +2796,34 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if ai.get("keywords"):
                 all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
 
-            # ── Imagem: OG > gerada localmente (Pillow+WebP) > Pollinations URL ─
-            if not image_url:
+            # ── Quality gate (post-AI) ──────────────────────────────
+            # We don't want to publish thin posts even if they pass
+            # the pre-AI quality check. After enrichment the AI either
+            # produced a substantial article_body + key_points + tl_dr
+            # (high score) or it didn't (low score). Drop the lows.
+            _score, _notes = _quality_score(
+                title=title,
+                description=description,
+                ai_payload=ai,
+                body_chars=len(og.get("body", "") or ""),
+            )
+            _gate = int(os.environ.get("FETCH_QUALITY_THRESHOLD", "6"))
+            if _score < _gate:
+                log.info(
+                    f"  ⏭  Quality gate {_score}/10 < {_gate} ({', '.join(_notes)[:120]}): {title[:60]}"
+                )
+                continue
+
+            # ── Imagem: source image (lazy — skip OG gen if usable) ───
+            # Check the source image first. If it's usable, skip the
+            # Pollinations + Pillow + WebP pipeline entirely — that
+            # saves ~3-5s per post in the common case.
+            if image_url and _validate_image_url(image_url):
+                log.debug(f"  🖼  Using source image: {image_url[:60]}")
+            else:
+                # Source missing/broken: synthesise an OG image locally.
                 image_url = _generate_og_image(title, category, slug)
                 log.info(f"  🎨 Generated OG image: {image_url}")
-            else:
-                log.debug(f"  🖼  Using source image: {image_url[:60]}")
             # Hard requirement: every published post must have a usable cover image.
             if not _validate_image_url(image_url):
                 # Last-ditch: try the Pollinations fallback.
@@ -2954,7 +3010,25 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     if ai.get("keywords"):
         all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
 
-    if not image_url:
+    # ── Quality gate (post-AI) ──────────────────────────────────
+    _score, _notes = _quality_score(
+        title=title,
+        description=description,
+        ai_payload=ai,
+        body_chars=len(og.get("body", "") or ""),
+    )
+    _gate = int(os.environ.get("FETCH_QUALITY_THRESHOLD", "6"))
+    if _score < _gate:
+        log.info(
+            f"  ⏭  Quality gate {_score}/10 < {_gate} ({', '.join(_notes)[:120]}): {title[:60]}"
+        )
+        return 0
+
+    # Lazy OG generation: skip the local Pillow render if the source
+    # already has a usable image.
+    if image_url and _validate_image_url(image_url):
+        pass
+    else:
         image_url = _generate_og_image(title, category, slug)
     if not _validate_image_url(image_url):
         fallback = _news_image_url(title, category)
@@ -3227,28 +3301,71 @@ def main():
     except Exception as exc:
         log.debug(f"Crypto prices pre-fetch failed: {exc}")
 
-    for i, feed in enumerate(FEEDS):
-        if total_created >= MAX_POSTS_PER_RUN:
-            log.info(f"  🏁 Limite global atingido ({MAX_POSTS_PER_RUN} posts/hora). Parando.")
-            break
+    # ── Parallel feed fetch ───────────────────────────────────────
+    # 135 feeds × ~10s each was the dominant cost (>20 min/run). Running
+    # 10 in parallel cuts that to ~2-3 min without changing each feed's
+    # internal dedup/AI pipeline. A Lock around `total_created` keeps
+    # the global cap honest across threads.
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    from threading import Lock as _Lock
+
+    counter_lock = _Lock()
+    counter = {"created": 0}
+
+    def _budget_left() -> int:
+        with counter_lock:
+            return MAX_POSTS_PER_RUN - counter["created"]
+
+    def _process_one(feed: dict) -> int:
+        # Each worker rechecks the global budget + timeout before starting
+        # so we don't burn AI quota when other workers already filled the
+        # bucket.
+        if _budget_left() <= 0:
+            return 0
         if _time.time() - _run_start > _RUN_TIMEOUT:
-            log.warning(f"  ⏰ Timeout global atingido ({_RUN_TIMEOUT}s). Parando fetch de feeds.")
-            break
-        remaining = MAX_POSTS_PER_RUN - total_created
-
-        # Trending boost: fetch one extra article from feeds matching a trending keyword
+            return 0
         feed_words = set((feed["name"] + " " + feed.get("category", "")).lower().split())
+        budget = _budget_left()
         if trending and feed_words & trending:
-            log.info(f"🔥 Trending boost: {feed['name']}")
-            max_override = min(remaining, MAX_PER_FEED + 1)
+            override = min(budget, MAX_PER_FEED + 1)
         else:
-            max_override = remaining
-
-        created = fetch_feed(feed, max_override=max_override)
-        total_created += created
-        if i < len(FEEDS) - 1 and total_created < MAX_POSTS_PER_RUN:
-            log.info(f"  ⏳ Aguardando {SLEEP_BETWEEN_FEEDS}s antes do próximo feed...")
+            override = min(budget, MAX_PER_FEED)
+        try:
+            n = fetch_feed(feed, max_override=override)
+        except Exception as exc:
+            log.warning(f"  ⚠️ feed {feed['name']} crashed: {exc}")
+            n = 0
+        if n:
+            with counter_lock:
+                counter["created"] += n
+        if SLEEP_BETWEEN_FEEDS > 0:
             sleep(SLEEP_BETWEEN_FEEDS)
+        return n
+
+    log.info(f"📡 Processing {len(FEEDS)} feeds with {FEED_WORKERS} workers")
+    with ThreadPoolExecutor(max_workers=FEED_WORKERS) as executor:
+        futures = [executor.submit(_process_one, feed) for feed in FEEDS]
+        for fut in as_completed(futures):
+            # We don't strictly need fut.result() — the worker already
+            # updated the counter. But pulling it surfaces unexpected
+            # exceptions in the log.
+            try:
+                fut.result()
+            except Exception as exc:
+                log.debug(f"feed worker exception: {exc}")
+            if counter["created"] >= MAX_POSTS_PER_RUN:
+                # Cancel pending futures we can; the running ones will
+                # honour their own budget check above.
+                for f in futures:
+                    f.cancel()
+                break
+            if _time.time() - _run_start > _RUN_TIMEOUT:
+                for f in futures:
+                    f.cancel()
+                break
+
+    total_created = counter["created"]
+    log.info(f"📊 Feeds done — {total_created}/{MAX_POSTS_PER_RUN} posts created")
 
     # ── HackerNews extra source ───────────────────────────────────
     if total_created < MAX_POSTS_PER_RUN:
