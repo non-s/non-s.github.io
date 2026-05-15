@@ -1,24 +1,30 @@
-// GlobalBR News — Service Worker v4
+// GlobalBR News — Service Worker v5
 // Stale-while-revalidate for article pages, cache-first for assets,
 // cache-then-network for homepage, offline fallback with cached articles by category,
 // background sync for saving offline reads.
 
-const CACHE_NAME        = 'globalbr-v4';
-const ARTICLE_CACHE     = 'globalbr-articles-v4';
+const CACHE_NAME        = 'globalbr-v5';
+const ARTICLE_CACHE     = 'globalbr-articles-v5';
+const AUDIO_CACHE       = 'globalbr-audio-v5';
+const FEED_CACHE        = 'globalbr-feeds-v5';
 const OFFLINE           = '/offline.html';
-const MAX_ARTICLE_CACHE = 50;
+const MAX_ARTICLE_CACHE = 80;
+const MAX_AUDIO_CACHE   = 20;
 const SYNC_TAG          = 'globalbr-offline-reads';
+const ALL_CACHES        = [CACHE_NAME, ARTICLE_CACHE, AUDIO_CACHE, FEED_CACHE];
 
 const STATIC_ASSETS = [
   '/',
+  '/pt/',
+  '/videos/',
+  '/search/',
+  '/reading-list/',
   OFFLINE,
   '/assets/css/style.css',
   '/assets/js/main.js',
   '/assets/js/post.js',
   '/assets/js/index.js',
   '/manifest.json',
-  '/search/',
-  '/reading-list/',
 ];
 
 // ── Install: pre-cache static shell ──────────────────────────
@@ -36,7 +42,7 @@ self.addEventListener('activate', e => {
     caches.keys().then(keys =>
       Promise.all(
         keys
-          .filter(k => !k.startsWith('globalbr-') || (k !== CACHE_NAME && k !== ARTICLE_CACHE))
+          .filter(k => k.startsWith('globalbr-') && !ALL_CACHES.includes(k))
           .map(k => caches.delete(k))
       )
     ).then(() => self.clients.claim())
@@ -54,15 +60,16 @@ function broadcastLastOnline() {
   });
 }
 
-function trimArticleCache(cache) {
+function trimCache(cache, max) {
   cache.keys().then(keys => {
-    if (keys.length > MAX_ARTICLE_CACHE) {
-      // Delete oldest entries (FIFO) until within limit
-      const toDelete = keys.slice(0, keys.length - MAX_ARTICLE_CACHE);
+    if (keys.length > max) {
+      const toDelete = keys.slice(0, keys.length - max);
       toDelete.forEach(k => cache.delete(k));
     }
   });
 }
+function trimArticleCache(cache) { trimCache(cache, MAX_ARTICLE_CACHE); }
+function trimAudioCache(cache)   { trimCache(cache, MAX_AUDIO_CACHE); }
 
 // ── Fetch ─────────────────────────────────────────────────────
 self.addEventListener('fetch', e => {
@@ -71,7 +78,21 @@ self.addEventListener('fetch', e => {
   // Only handle same-origin GET requests
   if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // Static assets: cache-first
+  // Audio MP3: cache-first, capped
+  if (url.pathname.startsWith('/assets/audio/')) {
+    e.respondWith(
+      caches.open(AUDIO_CACHE).then(async cache => {
+        const cached = await cache.match(e.request);
+        if (cached) return cached;
+        const resp = await fetch(e.request);
+        if (resp.ok) { cache.put(e.request, resp.clone()); trimAudioCache(cache); }
+        return resp;
+      })
+    );
+    return;
+  }
+
+  // Other static assets: cache-first
   if (url.pathname.startsWith('/assets/') || url.pathname === '/manifest.json') {
     e.respondWith(
       caches.match(e.request).then(r => r || fetch(e.request).then(resp => {
@@ -80,6 +101,21 @@ self.addEventListener('fetch', e => {
         }
         return resp;
       }))
+    );
+    return;
+  }
+
+  // Feeds (RSS / JSON): stale-while-revalidate (5 min freshness target)
+  if (url.pathname.endsWith('.xml') || url.pathname === '/feed.json' || url.pathname === '/search-index.json') {
+    e.respondWith(
+      caches.open(FEED_CACHE).then(async cache => {
+        const cached = await cache.match(e.request);
+        const networkFetch = fetch(e.request).then(resp => {
+          if (resp.ok) cache.put(e.request, resp.clone());
+          return resp;
+        }).catch(() => cached);
+        return cached || networkFetch;
+      })
     );
     return;
   }

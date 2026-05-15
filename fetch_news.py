@@ -472,8 +472,8 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
 
 POSTS_DIR        = Path("_posts")
 LOG_FILE         = "fetch_news.log"
-MAX_PER_FEED     = 3                   # Max posts por feed por execução
-MAX_POSTS_PER_RUN = 30                # Limite global por execução (muitos feeds agora)
+MAX_PER_FEED     = int(os.environ.get("FETCH_MAX_PER_FEED", "4"))     # Max posts por feed por execução
+MAX_POSTS_PER_RUN = int(os.environ.get("FETCH_MAX_PER_RUN", "50"))   # Limite global por execução (muitos feeds agora)
 REQUEST_TIMEOUT  = 15
 SLEEP_BETWEEN_FEEDS = 2
 MIN_DESCRIPTION_LEN = 80              # Descrição mínima para publicar
@@ -1108,6 +1108,79 @@ FEEDS = [
         "tags":     ["cybersecurity", "hacking", "vulnerability"],
         "source":   "The Hacker News",
     },
+
+    # ── Expanded global / regional desk ──────────────────────────
+    {"name": "Reuters World", "url": "https://www.reutersagency.com/feed/?best-topics=world&post_type=best", "category": "world", "tags": ["reuters", "world"], "source": "Reuters"},
+    {"name": "AP Top Stories", "url": "https://feeds.apnews.com/rss/apf-topnews", "category": "world", "tags": ["ap", "world"], "source": "Associated Press"},
+    {"name": "DW World", "url": "https://rss.dw.com/atom/rss-en-world", "category": "world", "tags": ["dw", "europe"], "source": "Deutsche Welle"},
+    {"name": "France 24 World", "url": "https://www.france24.com/en/rss", "category": "world", "tags": ["france24", "europe"], "source": "France 24"},
+    {"name": "Al Jazeera World", "url": "https://www.aljazeera.com/xml/rss/all.xml", "category": "world", "tags": ["aljazeera", "middle-east"], "source": "Al Jazeera"},
+    {"name": "NPR World", "url": "https://feeds.npr.org/1004/rss.xml", "category": "world", "tags": ["npr", "us"], "source": "NPR"},
+    {"name": "Reuters Africa", "url": "https://www.reutersagency.com/feed/?best-regions=africa&post_type=best", "category": "world", "tags": ["africa", "reuters"], "source": "Reuters"},
+    {"name": "Reuters Asia", "url": "https://www.reutersagency.com/feed/?best-regions=asia&post_type=best", "category": "world", "tags": ["asia", "reuters"], "source": "Reuters"},
+    {"name": "Nikkei Asia", "url": "https://asia.nikkei.com/rss/feed/nar", "category": "world", "tags": ["asia", "nikkei"], "source": "Nikkei Asia"},
+    {"name": "SCMP World", "url": "https://www.scmp.com/rss/91/feed", "category": "world", "tags": ["china", "asia"], "source": "South China Morning Post"},
+
+    # ── Politics extra ───────────────────────────────────────────
+    {"name": "Politico", "url": "https://www.politico.com/rss/politicopicks.xml", "category": "politics", "tags": ["politico", "us-politics"], "source": "Politico"},
+    {"name": "The Hill", "url": "https://thehill.com/feed", "category": "politics", "tags": ["thehill", "us"], "source": "The Hill"},
+    {"name": "Foreign Policy", "url": "https://foreignpolicy.com/feed/", "category": "politics", "tags": ["foreign-policy", "diplomacy"], "source": "Foreign Policy"},
+
+    # ── War / conflict ───────────────────────────────────────────
+    {"name": "Defense News", "url": "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml", "category": "war", "tags": ["defense", "military"], "source": "Defense News"},
+    {"name": "War on the Rocks", "url": "https://warontherocks.com/feed/", "category": "war", "tags": ["war-on-the-rocks", "conflict"], "source": "War on the Rocks"},
+    {"name": "Kyiv Independent", "url": "https://kyivindependent.com/rss/", "category": "war", "tags": ["ukraine", "war"], "source": "Kyiv Independent"},
+
+    # ── Business / Economy ───────────────────────────────────────
+    {"name": "Reuters Business", "url": "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best", "category": "business", "tags": ["reuters", "business"], "source": "Reuters"},
+    {"name": "Bloomberg Markets", "url": "https://feeds.bloomberg.com/markets/news.rss", "category": "business", "tags": ["bloomberg", "markets"], "source": "Bloomberg"},
+    {"name": "Financial Times World", "url": "https://www.ft.com/rss/home/international", "category": "business", "tags": ["ft", "world"], "source": "Financial Times"},
+    {"name": "CNBC Top News", "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html", "category": "business", "tags": ["cnbc", "markets"], "source": "CNBC"},
+
+    # ── Science / Health ─────────────────────────────────────────
+    {"name": "NASA Breaking", "url": "https://www.nasa.gov/news-release/feed/", "category": "science", "tags": ["nasa", "space"], "source": "NASA"},
+    {"name": "Nature News", "url": "https://www.nature.com/nature.rss", "category": "science", "tags": ["nature", "research"], "source": "Nature"},
+    {"name": "Scientific American", "url": "https://www.scientificamerican.com/feed/", "category": "science", "tags": ["scientific-american"], "source": "Scientific American"},
+    {"name": "STAT Health", "url": "https://www.statnews.com/feed/", "category": "health", "tags": ["statnews", "medicine"], "source": "STAT News"},
+    {"name": "NEJM This Week", "url": "https://www.nejm.org/action/showFeed?type=etoc&feed=rss&jc=nejm", "category": "health", "tags": ["nejm", "medicine"], "source": "New England Journal of Medicine"},
+    {"name": "WHO News", "url": "https://www.who.int/feeds/entity/news/en/rss.xml", "category": "health", "tags": ["who", "public-health"], "source": "World Health Organization"},
+
+    # ── Environment / Climate ────────────────────────────────────
+    {"name": "Inside Climate News", "url": "https://insideclimatenews.org/feed/", "category": "environment", "tags": ["climate"], "source": "Inside Climate News"},
+    {"name": "Grist", "url": "https://grist.org/feed/", "category": "environment", "tags": ["climate", "grist"], "source": "Grist"},
+    {"name": "Climate Central", "url": "https://www.climatecentral.org/rss/feed", "category": "environment", "tags": ["climate"], "source": "Climate Central"},
+
+    # ── Tech / AI / Startups ─────────────────────────────────────
+    {"name": "MIT Technology Review", "url": "https://www.technologyreview.com/feed/", "category": "technology", "tags": ["mit", "tech-review"], "source": "MIT Technology Review"},
+    {"name": "IEEE Spectrum", "url": "https://spectrum.ieee.org/feeds/feed.rss", "category": "technology", "tags": ["ieee", "engineering"], "source": "IEEE Spectrum"},
+    {"name": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/", "category": "ai", "tags": ["ai", "venturebeat"], "source": "VentureBeat"},
+    {"name": "DeepMind Blog", "url": "https://deepmind.com/blog/feed/basic/", "category": "ai", "tags": ["deepmind", "ai-research"], "source": "DeepMind"},
+    {"name": "OpenAI Blog", "url": "https://openai.com/blog/rss.xml", "category": "ai", "tags": ["openai", "ai-research"], "source": "OpenAI"},
+    {"name": "Anthropic Blog", "url": "https://www.anthropic.com/news/rss.xml", "category": "ai", "tags": ["anthropic", "ai-safety"], "source": "Anthropic"},
+
+    # ── Mobile / Gadgets ─────────────────────────────────────────
+    {"name": "9to5Mac", "url": "https://9to5mac.com/feed/", "category": "mobile", "tags": ["apple", "iphone"], "source": "9to5Mac"},
+    {"name": "9to5Google", "url": "https://9to5google.com/feed/", "category": "mobile", "tags": ["google", "android"], "source": "9to5Google"},
+    {"name": "Android Authority", "url": "https://www.androidauthority.com/feed/", "category": "mobile", "tags": ["android"], "source": "Android Authority"},
+
+    # ── Sports ───────────────────────────────────────────────────
+    {"name": "ESPN Top Headlines", "url": "https://www.espn.com/espn/rss/news", "category": "sports", "tags": ["espn"], "source": "ESPN"},
+    {"name": "BBC Sport", "url": "http://feeds.bbci.co.uk/sport/rss.xml", "category": "sports", "tags": ["bbc-sport"], "source": "BBC Sport"},
+
+    # ── Entertainment / Culture ──────────────────────────────────
+    {"name": "Variety", "url": "https://variety.com/feed/", "category": "entertainment", "tags": ["variety", "hollywood"], "source": "Variety"},
+    {"name": "Hollywood Reporter", "url": "https://www.hollywoodreporter.com/feed/", "category": "entertainment", "tags": ["hollywood"], "source": "The Hollywood Reporter"},
+    {"name": "Pitchfork", "url": "https://pitchfork.com/rss/news/", "category": "entertainment", "tags": ["pitchfork", "music"], "source": "Pitchfork"},
+
+    # ── Food / Travel ────────────────────────────────────────────
+    {"name": "Eater Latest", "url": "https://www.eater.com/rss/index.xml", "category": "food", "tags": ["eater"], "source": "Eater"},
+    {"name": "Bon Appétit", "url": "https://www.bonappetit.com/feed/rss", "category": "food", "tags": ["bonappetit"], "source": "Bon Appétit"},
+    {"name": "Lonely Planet News", "url": "https://www.lonelyplanet.com/news/feed", "category": "travel", "tags": ["lonelyplanet"], "source": "Lonely Planet"},
+
+    # ── Security extras ──────────────────────────────────────────
+    {"name": "Bleeping Computer", "url": "https://www.bleepingcomputer.com/feed/", "category": "security", "tags": ["bleepingcomputer", "malware"], "source": "Bleeping Computer"},
+    {"name": "Dark Reading", "url": "https://www.darkreading.com/rss.xml", "category": "security", "tags": ["dark-reading", "infosec"], "source": "Dark Reading"},
+    {"name": "Schneier on Security", "url": "https://www.schneier.com/feed/atom/", "category": "security", "tags": ["schneier", "cryptography"], "source": "Schneier on Security"},
 ]
 
 
@@ -3124,6 +3197,41 @@ def main():
                 sleep(1)
         except Exception as exc:
             log.warning(f"DEV.to processing failed: {exc}")
+
+    # ── Keyless trending discovery (Reddit + Wikipedia Current Events) ─
+    # Implemented in utils/public_sources.py — no API keys required.
+    if total_created < MAX_POSTS_PER_RUN:
+        try:
+            from utils.public_sources import (
+                fetch_reddit_trending,
+                fetch_wikipedia_current_events,
+            )
+        except Exception as exc:
+            log.debug(f"public_sources unavailable: {exc}")
+        else:
+            log.info("📡 Fetching Reddit trending threads...")
+            try:
+                for item in fetch_reddit_trending():
+                    if total_created >= MAX_POSTS_PER_RUN:
+                        break
+                    if _time.time() - _run_start > _RUN_TIMEOUT:
+                        break
+                    total_created += _process_article_dict(item)
+                    sleep(1)
+            except Exception as exc:
+                log.warning(f"Reddit processing failed: {exc}")
+
+            log.info("📡 Fetching Wikipedia Current Events portal...")
+            try:
+                for item in fetch_wikipedia_current_events(days=1):
+                    if total_created >= MAX_POSTS_PER_RUN:
+                        break
+                    if _time.time() - _run_start > _RUN_TIMEOUT:
+                        break
+                    total_created += _process_article_dict(item)
+                    sleep(1)
+            except Exception as exc:
+                log.warning(f"Wikipedia current events processing failed: {exc}")
 
     # ── Source diversity check ────────────────────────────────────
     source_counts = getattr(fetch_feed, "_source_counts", {})
