@@ -8,36 +8,16 @@ import logging
 import re
 from pathlib import Path
 
+from utils.frontmatter import parse, get_list
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
 POSTS_DIR = Path(__file__).parent / "_posts"
 TAGS_DIR  = Path(__file__).parent / "_tags"
 
-_INLINE_RE = re.compile(r"^tags:\s*\[([^\]]*)\]", re.MULTILINE)
-_BLOCK_RE  = re.compile(r"^tags:\s*\n((?:\s*-\s+.+\n?)+)", re.MULTILINE)
-_ITEM_RE   = re.compile(r"^\s*-\s+(.+)", re.MULTILINE)
-_SLUG_RE   = re.compile(r"[^\w\s-]")
-_SPACE_RE  = re.compile(r"[\s_]+")
-
-
-def extract_tags(text: str) -> list[str]:
-    if not text.startswith("---"):
-        return []
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return []
-    fm_text = parts[1]
-
-    inline = _INLINE_RE.search(fm_text)
-    if inline:
-        return [t.strip().strip('"').strip("'") for t in inline.group(1).split(",") if t.strip()]
-
-    block = _BLOCK_RE.search(fm_text)
-    if block:
-        return [t.strip().strip('"').strip("'") for t in _ITEM_RE.findall(block.group(1)) if t.strip()]
-
-    return []
+_SLUG_RE  = re.compile(r"[^\w\s-]")
+_SPACE_RE = re.compile(r"[\s_]+")
 
 
 def tag_to_slug(tag: str) -> str:
@@ -48,10 +28,12 @@ def tag_to_slug(tag: str) -> str:
 
 
 def generate_tag_file(tag: str) -> str:
+    # Escape any single quote inside the tag for the YAML title.
+    safe_tag = tag.replace("'", "''")
     return (
         f"---\n"
         f'layout: tag\n'
-        f'title: "Posts tagged \'{tag}\'"\n'
+        f'title: "Posts tagged \'{safe_tag}\'"\n'
         f"tag: {tag}\n"
         f"permalink: /tag/{tag_to_slug(tag)}/\n"
         f"---\n"
@@ -61,33 +43,32 @@ def generate_tag_file(tag: str) -> str:
 def main() -> None:
     TAGS_DIR.mkdir(exist_ok=True)
 
-    # Collect all unique tags from posts
     all_tags: set[str] = set()
     for path in POSTS_DIR.glob("*.md"):
         try:
             text = path.read_text(encoding="utf-8", errors="replace")
-            for tag in extract_tags(text):
+            fm   = parse(text)
+            for tag in get_list(fm, "tags"):
+                tag = (tag or "").strip()
                 if tag:
                     all_tags.add(tag)
         except Exception as e:
             log.warning("Could not read %s: %s", path.name, e)
 
-    # Build slug→tag mapping (what should exist)
-    expected_slugs = {tag_to_slug(tag): tag for tag in all_tags}
+    expected_slugs = {tag_to_slug(tag) for tag in all_tags}
 
-    # Generate missing / outdated tag pages
     generated = 0
     for tag in sorted(all_tags):
         slug = tag_to_slug(tag)
+        if not slug:
+            continue
         out_path = TAGS_DIR / f"{slug}.md"
         content = generate_tag_file(tag)
         if out_path.exists() and out_path.read_text(encoding="utf-8") == content:
             continue
         out_path.write_text(content, encoding="utf-8")
         generated += 1
-        log.debug("Generated tag page: %s", slug)
 
-    # Remove orphan tag pages
     removed = 0
     for existing in TAGS_DIR.glob("*.md"):
         if existing.stem not in expected_slugs:

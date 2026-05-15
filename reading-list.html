@@ -73,10 +73,85 @@ permalink: /reading-list/
   }
   function setSaved(arr) { localStorage.setItem('gb-saved', JSON.stringify(arr)); }
 
+  function isSafeUrl(u) {
+    return typeof u === 'string' && (u.charAt(0) === '/' || /^https?:\/\//i.test(u));
+  }
+
   function remove(url) {
     var saved = getSaved().filter(function(x){ return x.url !== url; });
     setSaved(saved);
     render();
+  }
+
+  function buildCard(item) {
+    var col = document.createElement('div');
+    col.className = 'col-md-6 col-lg-4';
+    var article = document.createElement('article');
+    article.className = 'news-card h-100 visible';
+    article.style.position = 'relative';
+
+    var removeBtn = document.createElement('button');
+    removeBtn.setAttribute('aria-label', 'Remove from reading list');
+    removeBtn.style.cssText = 'position:absolute;top:.6rem;right:.6rem;z-index:2;background:rgba(0,0,0,.6);border:none;color:#ef4444;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;';
+    removeBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+    removeBtn.addEventListener('click', function(){ remove(item.url); });
+    article.appendChild(removeBtn);
+
+    var safeUrl = isSafeUrl(item.url) ? item.url : '#';
+
+    if (item.image && /^https?:\/\//i.test(item.image)) {
+      var imgWrap = document.createElement('div');
+      imgWrap.className = 'card-img-wrapper';
+      var imgLink = document.createElement('a');
+      imgLink.href = safeUrl;
+      var imgEl = document.createElement('img');
+      imgEl.src = item.image;
+      imgEl.alt = '';
+      imgEl.loading = 'lazy';
+      imgEl.width = 400;
+      imgEl.height = 225;
+      imgLink.appendChild(imgEl);
+      imgWrap.appendChild(imgLink);
+      article.appendChild(imgWrap);
+    }
+
+    var body = document.createElement('div');
+    body.className = 'card-body';
+
+    var meta = document.createElement('div');
+    meta.style.cssText = 'font-size:.72rem;color:var(--c-muted);margin-bottom:.35rem;';
+    meta.textContent = item.date || '';
+    if (item.savedAt) {
+      var savedSpan = document.createElement('span');
+      savedSpan.innerHTML = ' &nbsp;·&nbsp; <i class="bi bi-bookmark-fill" style="color:var(--c-accent);font-size:.65rem;"></i> ';
+      savedSpan.appendChild(document.createTextNode(timeAgo(item.savedAt)));
+      meta.appendChild(savedSpan);
+    }
+    body.appendChild(meta);
+
+    var h3 = document.createElement('h3');
+    h3.className = 'card-title';
+    h3.style.fontSize = '.92rem';
+    var titleLink = document.createElement('a');
+    titleLink.href = safeUrl;
+    titleLink.style.cssText = 'color:var(--c-white);text-decoration:none;';
+    titleLink.textContent = item.title || 'Untitled';
+    h3.appendChild(titleLink);
+    body.appendChild(h3);
+
+    var footer = document.createElement('div');
+    footer.className = 'card-footer-row';
+    footer.style.marginTop = 'auto';
+    var readLink = document.createElement('a');
+    readLink.href = safeUrl;
+    readLink.className = 'btn-read ms-auto';
+    readLink.innerHTML = 'Read <i class="bi bi-arrow-right"></i>';
+    footer.appendChild(readLink);
+    body.appendChild(footer);
+
+    article.appendChild(body);
+    col.appendChild(article);
+    return col;
   }
 
   function render() {
@@ -100,39 +175,8 @@ permalink: /reading-list/
     if (sort === 'oldest') sorted.reverse();
     else if (sort === 'title') sorted.sort(function(a,b){ return (a.title||'').localeCompare(b.title||''); });
 
-    var html = '';
-    sorted.forEach(function(item){
-      html +=
-        '<div class="col-md-6 col-lg-4" id="rl-card-' + btoa(item.url).replace(/[^a-zA-Z0-9]/g,'') + '">' +
-          '<article class="news-card h-100 visible" style="position:relative;">' +
-            '<button onclick="rlRemove(\'' + item.url.replace(/'/g,"\\'") + '\')"' +
-                    ' aria-label="Remove from reading list"' +
-                    ' style="position:absolute;top:.6rem;right:.6rem;z-index:2;background:rgba(0,0,0,.6);' +
-                            'border:none;color:#ef4444;width:28px;height:28px;border-radius:50%;' +
-                            'display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;">' +
-              '<i class="bi bi-x-lg"></i>' +
-            '</button>' +
-            (item.image
-              ? '<div class="card-img-wrapper"><a href="' + item.url + '"><img src="' + item.image + '" alt="" loading="lazy" width="400" height="225"></a></div>'
-              : '') +
-            '<div class="card-body">' +
-              '<div style="font-size:.72rem;color:var(--c-muted);margin-bottom:.35rem;">' +
-                (item.date || '') +
-                (item.savedAt
-                  ? ' &nbsp;·&nbsp; <i class="bi bi-bookmark-fill" style="color:var(--c-accent);font-size:.65rem;"></i> ' + timeAgo(item.savedAt)
-                  : '') +
-              '</div>' +
-              '<h3 class="card-title" style="font-size:.92rem;">' +
-                '<a href="' + item.url + '" style="color:var(--c-white);text-decoration:none;">' + (item.title || 'Untitled') + '</a>' +
-              '</h3>' +
-              '<div class="card-footer-row" style="margin-top:auto;">' +
-                '<a href="' + item.url + '" class="btn-read ms-auto">Read <i class="bi bi-arrow-right"></i></a>' +
-              '</div>' +
-            '</div>' +
-          '</article>' +
-        '</div>';
-    });
-    grid.innerHTML = html;
+    grid.innerHTML = '';
+    sorted.forEach(function(item){ grid.appendChild(buildCard(item)); });
   }
 
   function timeAgo(iso) {
@@ -142,11 +186,6 @@ permalink: /reading-list/
     if (diff < 1440)     return Math.round(diff / 60) + 'h ago';
     return Math.round(diff / 1440) + 'd ago';
   }
-
-  /* expose remove globally for inline onclick */
-  window.rlRemove = function(url) {
-    remove(url);
-  };
 
   /* Sort buttons */
   document.querySelectorAll('#rl-toolbar .filter-btn').forEach(function(btn){

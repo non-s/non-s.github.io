@@ -23,7 +23,7 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - run: pip install requests
+      - run: pip install -r requirements.txt
 
       - name: "🔍 Run site audit"
         run: python audit_site.py
@@ -52,9 +52,16 @@ jobs:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
-      - name: "🔔 Ping sitemaps após auditoria"
+      - name: "🔔 IndexNow após auditoria"
         continue-on-error: true
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
         run: |
-          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
-          curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
-          echo "✅ Sitemaps notificados"
+          if [ -z "$INDEXNOW_KEY" ]; then
+            echo "ℹ️ INDEXNOW_KEY not set — skipping."
+            exit 0
+          fi
+          curl -fsS -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "{\"host\":\"non-s.github.io\",\"key\":\"$INDEXNOW_KEY\",\"keyLocation\":\"https://non-s.github.io/$INDEXNOW_KEY.txt\",\"urlList\":[\"https://non-s.github.io/sitemap.xml\"]}" \
+            || echo "⚠️ IndexNow returned non-zero (sometimes expected)."

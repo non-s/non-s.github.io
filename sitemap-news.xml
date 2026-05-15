@@ -4,25 +4,31 @@ layout: null
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  {% comment %}
+    Google News sitemap: only include articles published in the last 48h.
+    See https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap
+  {% endcomment %}
+  {% assign news_cutoff = site.time | date: '%s' | minus: 172800 %}
   {% for post in site.posts limit:1000 %}
+  {% assign post_ts = post.date | date: '%s' %}
+  {% if post_ts >= news_cutoff %}
   <url>
     <loc>{{ post.url | absolute_url }}</loc>
     <news:news>
       <news:publication>
-        <news:name>GlobalBR News</news:name>
+        <news:name>{{ site.title | default: 'GlobalBR News' | xml_escape }}</news:name>
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>{{ post.date | date_to_xmlschema }}</news:publication_date>
       <news:title>{{ post.title | xml_escape }}</news:title>
-      {% if post.keywords %}<news:keywords>{{ post.keywords | join: ', ' | xml_escape }}</news:keywords>{% endif %}
+      {% if post.keywords %}<news:keywords>{{ post.keywords | join: ', ' | xml_escape }}</news:keywords>{% elsif post.tags.size > 0 %}<news:keywords>{{ post.tags | join: ', ' | xml_escape }}</news:keywords>{% endif %}
       {% if post.content_type == 'opinion' %}
       <news:genres>Opinion</news:genres>
-      {% elsif post.content_type == 'analysis' %}
-      <news:genres>Blog</news:genres>
-      {% elsif post.content_type == 'explainer' %}
+      {% elsif post.content_type == 'analysis' or post.content_type == 'explainer' %}
       <news:genres>Blog</news:genres>
       {% endif %}
     </news:news>
   </url>
+  {% endif %}
   {% endfor %}
 </urlset>

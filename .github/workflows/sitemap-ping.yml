@@ -1,50 +1,52 @@
 name: "🗺️ Sitemap Ping"
 
+# Google deprecated their /ping endpoint in 2023 and Bing followed soon
+# after — sitemap submission now happens via Search Console, Bing
+# Webmaster Tools, or IndexNow. This workflow notifies IndexNow whenever
+# the Pages deploy succeeds.
+
 on:
   workflow_run:
     workflows: ["pages-build-deployment"]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   ping:
-    name: "Ping search engines"
+    name: "Notify IndexNow"
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: "Ping Google"
-        run: |
-          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
-          curl -s "https://www.google.com/ping?sitemap=https://non-s.github.io/sitemap-news.xml" || true
-
-      - name: "Ping Bing / IndexNow"
-        if: ${{ env.BING_API_KEY != '' || env.INDEXNOW_KEY != '' }}
+      - name: "🔔 IndexNow"
         env:
-          BING_API_KEY:  ${{ secrets.BING_API_KEY }}
-          INDEXNOW_KEY:  ${{ secrets.INDEXNOW_KEY }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
         run: |
           KEY="${INDEXNOW_KEY:-$BING_API_KEY}"
-          if [ -n "$KEY" ]; then
-            curl -s "https://www.bing.com/ping?sitemap=https://non-s.github.io/sitemap.xml" || true
-            curl -s -X POST "https://api.indexnow.org/indexnow" \
-              -H "Content-Type: application/json" \
-              -d "{\"host\":\"non-s.github.io\",\"key\":\"$KEY\",\"urlList\":[\"https://non-s.github.io/\"]}" || true
+          if [ -z "$KEY" ]; then
+            echo "ℹ️ INDEXNOW_KEY not set — skipping."
+            exit 0
           fi
+          curl -fsS -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "{\"host\":\"non-s.github.io\",\"key\":\"$KEY\",\"keyLocation\":\"https://non-s.github.io/$KEY.txt\",\"urlList\":[\"https://non-s.github.io/\",\"https://non-s.github.io/sitemap.xml\",\"https://non-s.github.io/sitemap-news.xml\"]}" \
+            || echo "⚠️ IndexNow ping returned non-zero (sometimes expected)."
 
-      - name: "Notify on failure"
+      - name: "🚨 Notify failure on Bluesky"
         if: failure()
         env:
           BLUESKY_HANDLE:       ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
         run: |
-          if [ -n "$BLUESKY_HANDLE" ] && [ -n "$BLUESKY_APP_PASSWORD" ]; then
-            TOKEN=$(curl -s -X POST "https://bsky.social/xrpc/com.atproto.server.createSession" \
-              -H "Content-Type: application/json" \
-              -d "{\"identifier\":\"$BLUESKY_HANDLE\",\"password\":\"$BLUESKY_APP_PASSWORD\"}" | python3 -c "import sys,json;print(json.load(sys.stdin).get('accessJwt',''))" 2>/dev/null || echo "")
-            if [ -n "$TOKEN" ]; then
-              DID=$(curl -s "https://bsky.social/xrpc/com.atproto.identity.resolveHandle?handle=$BLUESKY_HANDLE" | python3 -c "import sys,json;print(json.load(sys.stdin).get('did',''))" 2>/dev/null || echo "")
-              curl -s -X POST "https://bsky.social/xrpc/com.atproto.repo.createRecord" \
-                -H "Authorization: Bearer $TOKEN" \
-                -H "Content-Type: application/json" \
-                -d "{\"repo\":\"$DID\",\"collection\":\"app.bsky.feed.post\",\"record\":{\"text\":\"⚠️ GlobalBR News: sitemap ping workflow failed. Check GitHub Actions.\",\"createdAt\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"\$type\":\"app.bsky.feed.post\"}}" || true
-            fi
-          fi
+          if [ -z "$BLUESKY_HANDLE" ] || [ -z "$BLUESKY_APP_PASSWORD" ]; then exit 0; fi
+          TOKEN=$(curl -s -X POST "https://bsky.social/xrpc/com.atproto.server.createSession" \
+            -H "Content-Type: application/json" \
+            -d "{\"identifier\":\"$BLUESKY_HANDLE\",\"password\":\"$BLUESKY_APP_PASSWORD\"}" \
+            | python3 -c "import sys,json;print(json.load(sys.stdin).get('accessJwt',''))" 2>/dev/null || echo "")
+          if [ -z "$TOKEN" ]; then exit 0; fi
+          DID=$(curl -s "https://bsky.social/xrpc/com.atproto.identity.resolveHandle?handle=$BLUESKY_HANDLE" \
+            | python3 -c "import sys,json;print(json.load(sys.stdin).get('did',''))" 2>/dev/null || echo "")
+          curl -s -X POST "https://bsky.social/xrpc/com.atproto.repo.createRecord" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"repo\":\"$DID\",\"collection\":\"app.bsky.feed.post\",\"record\":{\"text\":\"⚠️ GlobalBR News: sitemap ping workflow failed. Check GitHub Actions.\",\"createdAt\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"\$type\":\"app.bsky.feed.post\"}}" || true

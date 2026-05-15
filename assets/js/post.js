@@ -5,58 +5,74 @@
  *         article feedback, selection share, reading progress bar.
  */
 
-/* ── Table of Contents (inline #toc fallback) ────────────── */
-(function() {
-  var headings = document.querySelectorAll('.post-content h2, .post-content h3');
-  if (headings.length < 3) return;
-  var toc = document.getElementById('toc');
-  if (!toc) return;
-  var html = '<p class="toc-title">Contents</p><ul>';
-  headings.forEach(function(h, i) {
-    if (!h.id) h.id = 'h-' + i;
-    var level = h.tagName === 'H2' ? '' : 'toc-sub';
-    html += '<li class="' + level + '"><a href="#' + h.id + '">' + h.textContent + '</a></li>';
-  });
-  html += '</ul>';
-  toc.innerHTML = html;
-  toc.style.display = 'block';
-})();
-
-/* ── TOC sidebar + active section highlight ──────────────── */
+/* ── Table of Contents (sidebar + active section highlight) ─ */
 (function(){
-  var article = document.getElementById('post-article');
-  var nav = document.getElementById('toc-nav');
+  var article   = document.getElementById('post-article');
+  var nav       = document.getElementById('toc-nav');
   var container = document.getElementById('toc-container');
-  if (!article || !nav || !container) return;
+  if (!article) return;
+
   var headings = article.querySelectorAll('h2, h3');
   if (headings.length < 2) return;
-  var fragment = document.createDocumentFragment();
-  headings.forEach(function(h, i) {
-    if (!h.id) h.id = 'toc-' + i;
-    var a = document.createElement('a');
-    a.href = '#' + h.id;
-    a.textContent = h.textContent;
-    a.className = 'toc-link toc-' + h.tagName.toLowerCase();
-    a.addEventListener('click', function(e){
-      e.preventDefault();
-      document.getElementById(h.id).scrollIntoView({behavior:'smooth', block:'start'});
-    });
-    fragment.appendChild(a);
+
+  headings.forEach(function(h, i){
+    if (!h.id) h.id = 'h-' + i;
   });
-  nav.appendChild(fragment);
-  container.style.display = 'block';
-  if (!window.IntersectionObserver) return;
-  var tocLinks = nav.querySelectorAll('a');
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting) {
-        tocLinks.forEach(function(l){ l.classList.remove('active'); });
-        var active = nav.querySelector('a[href="#' + e.target.id + '"]');
-        if (active) active.classList.add('active');
-      }
+
+  /* Sidebar TOC */
+  if (nav && container) {
+    var fragment = document.createDocumentFragment();
+    headings.forEach(function(h){
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      a.className = 'toc-link toc-' + h.tagName.toLowerCase();
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var target = document.getElementById(h.id);
+        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      fragment.appendChild(a);
     });
-  }, { rootMargin: '-20% 0px -60% 0px' });
-  headings.forEach(function(h){ if (h.id) observer.observe(h); });
+    nav.appendChild(fragment);
+    container.style.display = 'block';
+
+    if (window.IntersectionObserver) {
+      var tocLinks = nav.querySelectorAll('a');
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting) {
+            tocLinks.forEach(function(l){ l.classList.remove('active'); });
+            var active = nav.querySelector('a[href="#' + e.target.id + '"]');
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -60% 0px' });
+      headings.forEach(function(h){ if (h.id) observer.observe(h); });
+    }
+  }
+
+  /* Inline fallback (used by smaller viewports / no sidebar) */
+  var fallback = document.getElementById('toc');
+  if (fallback && headings.length >= 3) {
+    var titleEl = document.createElement('p');
+    titleEl.className = 'toc-title';
+    titleEl.textContent = 'Contents';
+    var ul = document.createElement('ul');
+    headings.forEach(function(h){
+      var li = document.createElement('li');
+      if (h.tagName !== 'H2') li.className = 'toc-sub';
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    fallback.innerHTML = '';
+    fallback.appendChild(titleEl);
+    fallback.appendChild(ul);
+    fallback.style.display = 'block';
+  }
 })();
 
 /* ── Code copy button ─────────────────────────────────────── */
@@ -156,25 +172,9 @@ function toggleFont() {
   }
 })();
 
-/* ── Image lightbox ───────────────────────────────────────── */
-(function(){
-  var img = document.querySelector('.post-hero-img img');
-  if (!img) return;
-  var overlay = document.createElement('div');
-  overlay.id = 'lb-overlay';
-  overlay.innerHTML = '<img id="lb-img" src="" alt=""><button id="lb-close" aria-label="Close">\xd7</button>';
-  document.body.appendChild(overlay);
-  img.style.cursor = 'zoom-in';
-  img.addEventListener('click', function(){
-    document.getElementById('lb-img').src = img.src;
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
-  function close(){ overlay.classList.remove('active'); document.body.style.overflow = ''; }
-  document.getElementById('lb-close').addEventListener('click', close);
-  overlay.addEventListener('click', function(e){ if (e.target === overlay) close(); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-})();
+/* Image lightbox is centralised in default.html (`#gbLightbox`).
+   Hero images use the .gb-zoomable class, so they participate in the
+   same lightbox without needing a parallel implementation here. */
 
 /* ── Font size toggle (global — called from HTML onclick) ─── */
 (function(){

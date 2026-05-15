@@ -97,8 +97,8 @@ function copyCardLink(btn) {
   bindFilterBar('#period-filter-bar', 'data-period', function(v){ activePer  = v; });
 
   /* ── Next-update countdown (schedule: 6,10,14,18,22 UTC) ── */
+  var HOURS_UTC = [6, 10, 14, 18, 22];
   function updateCountdown() {
-    var HOURS_UTC = [6, 10, 14, 18, 22];
     var now = new Date();
     var nowUtcH = now.getUTCHours();
     var nowUtcM = now.getUTCMinutes();
@@ -117,7 +117,22 @@ function copyCardLink(btn) {
     var el = document.getElementById('update-countdown');
     if (el) el.textContent = (h > 0 ? h + 'h ' : '') + m + ':' + (s < 10 ? '0' : '') + s;
   }
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
+  var countdownEl = document.getElementById('update-countdown');
+  if (countdownEl) {
+    var countdownTimer = null;
+    function startCountdown() {
+      if (countdownTimer == null) {
+        updateCountdown();
+        countdownTimer = setInterval(updateCountdown, 1000);
+      }
+    }
+    function stopCountdown() {
+      if (countdownTimer != null) { clearInterval(countdownTimer); countdownTimer = null; }
+    }
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden) stopCountdown(); else startCountdown();
+    });
+    startCountdown();
+  }
 
 })();

@@ -85,7 +85,7 @@ window.gbToast = function gbToast(msg, opts) {
   }, {passive:true});
 })();
 
-/* ── Keyboard shortcuts ───────────────────────────────────── */
+/* ── Keyboard shortcuts (vi-style: j=next, k=prev) ────────── */
 (function(){
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
@@ -97,12 +97,12 @@ window.gbToast = function gbToast(msg, opts) {
       if (search) { search.focus(); search.select(); }
     }
     if (key === 'j') {
-      var next = document.querySelector('.post-nav-item.prev a, a[rel="prev"]');
-      if (next) window.location.href = next.href;
+      var next = document.querySelector('a[rel="next"], .post-nav-item.next a, .prevnext-next');
+      if (next && next.href) window.location.href = next.href;
     }
     if (key === 'k') {
-      var prev = document.querySelector('.post-nav-item.next a, a[rel="next"]');
-      if (prev) window.location.href = prev.href;
+      var prev = document.querySelector('a[rel="prev"], .post-nav-item.prev a, .prevnext-prev');
+      if (prev && prev.href) window.location.href = prev.href;
     }
     if (key === 'h') { window.location.href = '/'; }
     if (key === '?') {
@@ -130,8 +130,14 @@ window.gbToast = function gbToast(msg, opts) {
   var lastCheck = Date.now();
   var notified = false;
 
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, function(c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
   function checkForNewPosts() {
-    if (notified) return;
+    if (notified || document.hidden) return;
     fetch('/search-index.json?t=' + Date.now(), {cache: 'no-store'})
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -145,21 +151,29 @@ window.gbToast = function gbToast(msg, opts) {
   }
 
   function showNewPostsBanner(post) {
+    var title = escapeHtml((post.title || '').substring(0, 60));
+    var url = post.url || '/';
+    var safeUrl = url.charAt(0) === '/' ? url : '/';
     var banner = document.createElement('div');
     banner.className = 'new-posts-banner';
-    banner.innerHTML = '<i class="bi bi-arrow-up-circle"></i> New article: <strong>' +
-      (post.title || '').substring(0, 50) + '</strong> <a href="' + (post.url || '/') +
-      '">Read &rarr;</a> <button onclick="this.parentElement.remove()">&#x2715;</button>';
+    var anchor = document.createElement('a');
+    anchor.href = safeUrl;
+    anchor.textContent = 'Read →';
+    var closeBtn = document.createElement('button');
+    closeBtn.setAttribute('aria-label', 'Dismiss notification');
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', function(){ banner.remove(); });
+    banner.innerHTML = '<i class="bi bi-arrow-up-circle"></i> New article: <strong>' + title + '</strong> ';
+    banner.appendChild(anchor);
+    banner.appendChild(document.createTextNode(' '));
+    banner.appendChild(closeBtn);
     document.body.appendChild(banner);
     setTimeout(function(){ if (banner.parentElement) banner.style.opacity = '0'; }, 10000);
     setTimeout(function(){ if (banner.parentElement) banner.remove(); }, 10500);
   }
 
   if (!document.body.classList.contains('layout-post')) {
-    setTimeout(function poll(){
-      checkForNewPosts();
-      setTimeout(poll, POLL_INTERVAL);
-    }, POLL_INTERVAL);
+    setInterval(checkForNewPosts, POLL_INTERVAL);
   }
 })();
 
@@ -191,7 +205,10 @@ document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
 /* ── Navbar search autocomplete ──────────────────────────── */
 (function(){
   var searchData = [];
-  fetch('/search-index.json').then(function(r){ return r.json(); }).then(function(data){ searchData = data; });
+  fetch('/search-index.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data){ searchData = Array.isArray(data) ? data : []; })
+    .catch(function(){});
 
   var input = document.querySelector('form[action*="search"] .search-input');
   if (!input) return;
@@ -201,22 +218,37 @@ document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
 
   var dropdown = document.createElement('div');
   dropdown.id = 'nav-autocomplete-dropdown';
+  dropdown.setAttribute('role', 'listbox');
   dropdown.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--c-surface);border:1px solid var(--c-border2);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:9999;max-height:300px;overflow-y:auto;display:none;min-width:280px;';
   wrapper.appendChild(dropdown);
+
+  function buildRow(p) {
+    var a = document.createElement('a');
+    a.href = (typeof p.url === 'string' && p.url.charAt(0) === '/') ? p.url : '/';
+    a.setAttribute('role', 'option');
+    a.style.cssText = 'display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;color:var(--c-text);text-decoration:none;border-bottom:1px solid var(--c-border);font-size:.85rem;';
+    a.addEventListener('mouseover', function(){ a.style.background = 'var(--c-surface2)'; });
+    a.addEventListener('mouseout',  function(){ a.style.background = ''; });
+    var titleEl = document.createElement('span');
+    titleEl.style.flex = '1';
+    titleEl.textContent = p.title || '';
+    var catEl = document.createElement('span');
+    catEl.style.cssText = 'color:var(--c-muted);font-size:.75rem;';
+    catEl.textContent = p.category || '';
+    a.appendChild(titleEl);
+    a.appendChild(catEl);
+    return a;
+  }
 
   input.addEventListener('input', function() {
     var q = this.value.trim().toLowerCase();
     if (q.length < 3) { dropdown.style.display = 'none'; return; }
     var matches = searchData.filter(function(p){
-      return p.title.toLowerCase().includes(q);
+      return p && typeof p.title === 'string' && p.title.toLowerCase().includes(q);
     }).slice(0, 8);
+    dropdown.innerHTML = '';
     if (!matches.length) { dropdown.style.display = 'none'; return; }
-    dropdown.innerHTML = matches.map(function(p){
-      return '<a href="' + p.url + '" style="display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;color:var(--c-text);text-decoration:none;border-bottom:1px solid var(--c-border);font-size:.85rem;" onmouseover="this.style.background=\'var(--c-surface2)\'" onmouseout="this.style.background=\'\'">' +
-        '<span style="flex:1;">' + p.title + '</span>' +
-        '<span style="color:var(--c-muted);font-size:.75rem;">' + (p.category || '') + '</span>' +
-        '</a>';
-    }).join('');
+    matches.forEach(function(p){ dropdown.appendChild(buildRow(p)); });
     dropdown.style.display = 'block';
   });
 

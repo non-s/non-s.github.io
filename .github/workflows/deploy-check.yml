@@ -1,43 +1,61 @@
-name: 🔍 Deploy Check
+name: "🔍 Deploy Check"
+
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-check-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
+    name: "Lint & syntax"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: "🔎 Lint workflows YAML"
-        run: |
-          pip install yamllint --quiet
-          yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" .github/workflows/
-          echo "✅ Workflow YAML OK"
-
-      - name: "🐍 Validate Python syntax"
+      - name: "🐍 Setup Python"
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
-      - run: |
+      - name: "📦 Install lint deps"
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint pytest
+
+      - name: "🔎 Lint workflows YAML"
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: {max: 200}}}" .github/workflows/
+
+      - name: "🐍 Validate Python syntax"
+        run: |
           python -m py_compile fetch_news.py generate_search_index.py \
             post_bluesky.py post_audit_bluesky.py submit_urls.py \
             check_links.py audit_site.py translate_posts.py \
-            generate_tag_pages.py google_index.py \
+            generate_tag_pages.py google_index.py send_newsletter.py \
             utils/text.py utils/dedup.py utils/ai_helper.py \
             utils/retry.py utils/frontmatter.py
-          echo "✅ Python syntax OK"
+
+      - name: "🧪 Run unit tests"
+        run: pytest -q
 
   build:
+    name: "Jekyll build"
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: "3.3"
           bundler-cache: true
-      - name: Build Jekyll
+      - name: "Build Jekyll"
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production

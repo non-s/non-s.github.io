@@ -46,10 +46,7 @@ from utils.retry import retry_call
 _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
-_pollinations_text = _ai_text  # alias interno
-
-# Alias para compatibilidade interna
-_pollinations_text = _ai_text
+_pollinations_text = _ai_text  # legacy alias for internal compatibility
 
 
 # ============================================================
@@ -2895,6 +2892,26 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
 # MILESTONE POSTS
 # ============================================================
 
+_MILESTONE_MARKERS = Path("_data/milestones.json")
+
+
+def _load_milestone_markers() -> set[str]:
+    if not _MILESTONE_MARKERS.exists():
+        return set()
+    try:
+        return set(json.loads(_MILESTONE_MARKERS.read_text(encoding="utf-8")))
+    except Exception:
+        return set()
+
+
+def _save_milestone_markers(markers: set[str]) -> None:
+    _MILESTONE_MARKERS.parent.mkdir(parents=True, exist_ok=True)
+    _MILESTONE_MARKERS.write_text(
+        json.dumps(sorted(markers), indent=2),
+        encoding="utf-8",
+    )
+
+
 def _check_milestones(new_posts_count: int) -> None:
     """Create a milestone post when a category hits 100/250/500/1000 posts."""
     if new_posts_count == 0:
@@ -2915,20 +2932,34 @@ def _check_milestones(new_posts_count: int) -> None:
         except Exception:
             pass
 
+    markers = _load_milestone_markers()
+    legacy_dir = Path("_posts")
+
     MILESTONES = [100, 250, 500, 1000]
     for cat, count in cat_counts.items():
         for milestone in MILESTONES:
-            milestone_marker = f"_posts/milestone-{cat}-{milestone}.md"
-            if count >= milestone and not Path(milestone_marker).exists():
-                date_str = datetime.now().strftime("%Y-%m-%d")
-                slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
-                filepath = f"_posts/{slug}.md"
-                if not Path(filepath).exists():
-                    milestone_img = _news_image_url(
-                        f"{milestone} articles milestone {cat} news celebration",
-                        cat,
-                    )
-                    milestone_content = f"""---
+            marker_key = f"{cat}-{milestone}"
+            # Migrate older marker files that lived inside _posts/.
+            legacy_marker = legacy_dir / f"milestone-{cat}-{milestone}.md"
+            if legacy_marker.exists():
+                markers.add(marker_key)
+                try:
+                    legacy_marker.unlink()
+                except OSError:
+                    pass
+            if count < milestone or marker_key in markers:
+                continue
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
+            filepath = legacy_dir / f"{slug}.md"
+            if filepath.exists():
+                markers.add(marker_key)
+                continue
+            milestone_img = _news_image_url(
+                f"{milestone} articles milestone {cat} news celebration",
+                cat,
+            )
+            milestone_content = f"""---
 title: "🎉 {milestone} Articles in {cat.capitalize()}!"
 date: {datetime.now(timezone.utc).isoformat()}
 categories: [{cat}]
@@ -2944,16 +2975,15 @@ We've reached a milestone: **{milestone} articles** published in the **{cat.capi
 
 Thank you for reading GlobalBR News.
 """
-                    try:
-                        with open(filepath, "w", encoding="utf-8") as mf:
-                            mf.write(milestone_content)
-                        # Create marker file so we don't recreate
-                        with open(milestone_marker, "w", encoding="utf-8") as mk:
-                            mk.write(f"milestone: {milestone} posts in {cat}\n")
-                        log.info(f"🎉 Milestone post created: {filepath}")
-                    except Exception as exc:
-                        log.warning(f"Milestone post creation failed: {exc}")
-                break  # Only one milestone per cat per run
+            try:
+                filepath.write_text(milestone_content, encoding="utf-8")
+                markers.add(marker_key)
+                log.info(f"🎉 Milestone post created: {filepath}")
+            except Exception as exc:
+                log.warning(f"Milestone post creation failed: {exc}")
+            break  # only one milestone per cat per run
+
+    _save_milestone_markers(markers)
 
 
 def _save_last_run(total_created: int, start_time: float) -> None:
