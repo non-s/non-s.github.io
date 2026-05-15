@@ -40,6 +40,9 @@ SITE_BASE  = "https://non-s.github.io"
 BSKY_API   = "https://bsky.social/xrpc"
 LOOKBACK_H = 2
 MAX_POSTS  = 5
+COOLDOWN_S = 10        # seconds between posts (rate-limit hygiene)
+COOLDOWN_429_S = 60    # extra cooldown after a 429
+PT_POSTS_DIR = POSTS_DIR / "pt"
 
 CATEGORY_EMOJIS = {
     "world": "🌍", "politics": "🏛️", "war": "⚔️", "business": "💼",
@@ -70,7 +73,7 @@ CATEGORY_HASHTAGS = {
 }
 
 
-def build_post_url(filename: str, fm: dict) -> str:
+def build_post_url(filename: str, fm: dict, lang: str = "en") -> str:
     stem  = filename.removesuffix(".md")
     parts = stem.split("-", 3)
     if len(parts) < 4:
@@ -78,16 +81,26 @@ def build_post_url(filename: str, fm: dict) -> str:
     year, month, day, slug = parts
     cats     = get_list(fm, "categories")
     category = (cats[0] if cats else "news").strip()
+    if lang == "pt":
+        return f"{SITE_BASE}/pt/{category}/{year}/{month}/{day}/{slug}/"
     return f"{SITE_BASE}/{category}/{year}/{month}/{day}/{slug}/"
 
 
-def find_new_posts() -> list[dict]:
+def find_new_posts(lang: str = "en") -> list[dict]:
     """
     Finds new posts by diffing the last commit (git diff HEAD~1 --name-only).
     Falls back to mtime-based detection if git is unavailable or the repo has
     only one commit.
+
+    `lang` controls which posts directory we scan:
+      - "en" (default) → `_posts/*.md` (skips anything under `_posts/pt/`)
+      - "pt" → `_posts/pt/*.md`
     """
+    posts_dir = POSTS_DIR if lang == "en" else PT_POSTS_DIR
+    if not posts_dir.exists():
+        return []
     results = []
+    posts_prefix = "_posts/pt/" if lang == "pt" else "_posts/"
 
     # ── Git-based detection (reliable in CI) ─────────────────────
     try:
@@ -100,14 +113,16 @@ def find_new_posts() -> list[dict]:
         )
         if proc.returncode == 0 and proc.stdout.strip():
             changed_files = set(proc.stdout.strip().splitlines())
-            for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
-                # Match both "_posts/filename.md" and "filename.md" formats
-                rel = f"_posts/{path.name}"
+            for path in sorted(posts_dir.glob("*.md"), reverse=True):
+                # When scanning English, ignore PT entries.
+                if lang == "en" and "/pt/" in str(path):
+                    continue
+                rel = f"{posts_prefix}{path.name}"
                 if rel in changed_files or path.name in changed_files:
                     text = path.read_text(encoding="utf-8", errors="replace")
                     fm   = _parse_fm(text)
-                    url  = build_post_url(path.name, fm)
-                    results.append({"filename": path.name, "url": url, "fm": fm})
+                    url  = build_post_url(path.name, fm, lang=lang)
+                    results.append({"filename": path.name, "url": url, "fm": fm, "lang": lang})
                     if len(results) >= MAX_POSTS:
                         break
             if results:
@@ -117,13 +132,15 @@ def find_new_posts() -> list[dict]:
 
     # ── mtime fallback ────────────────────────────────────────────
     cutoff = time.time() - LOOKBACK_H * 3600
-    for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+    for path in sorted(posts_dir.glob("*.md"), reverse=True):
+        if lang == "en" and "/pt/" in str(path):
+            continue
         if path.stat().st_mtime < cutoff:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         fm   = _parse_fm(text)
-        url  = build_post_url(path.name, fm)
-        results.append({"filename": path.name, "url": url, "fm": fm})
+        url  = build_post_url(path.name, fm, lang=lang)
+        results.append({"filename": path.name, "url": url, "fm": fm, "lang": lang})
         if len(results) >= MAX_POSTS:
             break
     return results
@@ -169,7 +186,7 @@ def upload_image_blob(token: str, image_url: str) -> dict | None:
     return retry_call(_upload, max_attempts=2, base_delay=3.0, default=None)
 
 
-def create_post(session: dict, text: str, url: str, title: str, description: str = "", image_url: str = "") -> bool:
+def create_post(session: dict, text: str, url: str, title: str, description: str = "", image_url: str = "", lang: str = "en") -> bool:
     """Create a Bluesky post with an embedded link card and optional thumbnail."""
     did   = session["did"]
     token = session["accessJwt"]
@@ -190,7 +207,7 @@ def create_post(session: dict, text: str, url: str, title: str, description: str
         "$type":     "app.bsky.feed.post",
         "text":      text,
         "createdAt": datetime.now(timezone.utc).isoformat(),
-        "langs":     ["en"],
+        "langs":     ["pt-BR"] if lang == "pt" else ["en"],
     }
     if facets:
         record["facets"] = facets
@@ -226,18 +243,21 @@ def create_post(session: dict, text: str, url: str, title: str, description: str
             timeout=20,
         )
         if resp.status_code == 429:
-            retry_after = int(resp.headers.get("Retry-After", "30"))
-            log.warning("Bluesky rate limited — waiting %ds", retry_after)
+            retry_after = int(resp.headers.get("Retry-After", str(COOLDOWN_429_S)))
+            log.warning("Bluesky rate limited (429) — sleeping %ds before retry", retry_after)
             time.sleep(retry_after)
             raise requests.exceptions.HTTPError("429 rate limited", response=resp)
+        if resp.status_code >= 400:
+            log.error("Bluesky API HTTP %d for %s | body=%s",
+                      resp.status_code, url, resp.text[:300])
         resp.raise_for_status()
         return True
 
     result = retry_call(_post, max_attempts=3, base_delay=5.0, default=False)
     if result:
-        log.info("Posted to Bluesky — %s", url)
+        log.info("✅ Posted to Bluesky — %s", url)
     else:
-        log.warning("Failed to post to Bluesky — %s", url)
+        log.warning("⚠️ Failed to post to Bluesky after 3 retries — %s", url)
     return bool(result)
 
 
@@ -254,22 +274,32 @@ def build_post_text(post: dict) -> str:
     description = get_str(fm, "description")
     tags_fm     = get_list(fm, "tags")
     key_points  = get_list(fm, "key_points")
+    breaking    = str(get_str(fm, "breaking", "")).lower() == "true"
+    featured    = str(get_str(fm, "featured", "")).lower() == "true"
+    fact_check  = get_str(fm, "fact_check", "")
 
     emoji = CATEGORY_EMOJIS.get(category, "📰")
 
-    # ── Hashtags ──────────────────────────────────────────────────
+    # ── Hashtags (with contextual signals) ────────────────────────
+    contextual: list[str] = []
+    if breaking:
+        contextual.append("#Breaking")
+    if featured and not breaking:
+        contextual.append("#MustRead")
+    if fact_check == "verified":
+        contextual.append("#FactChecked")
     cat_tags = CATEGORY_HASHTAGS.get(category, [f"#{category.replace(' ', '')}"])
     # Pick short post tags (≤15 chars as hashtag, no spaces, no duplicates)
     post_tags = []
-    seen_lower = {t.lstrip("#").lower() for t in cat_tags}
+    seen_lower = {t.lstrip("#").lower() for t in (contextual + cat_tags)}
     for t in (tags_fm if isinstance(tags_fm, list) else []):
         ht = "#" + t.replace("-", "").replace(" ", "")
         if len(ht) <= 15 and ht.lstrip("#").lower() not in seen_lower:
             post_tags.append(ht)
             seen_lower.add(ht.lstrip("#").lower())
-        if len(post_tags) >= 3:
+        if len(post_tags) >= 2:  # leave room for contextual tags
             break
-    hashtags = " ".join(cat_tags + post_tags + ["#GlobalBRNews"])
+    hashtags = " ".join(contextual + cat_tags + post_tags + ["#GlobalBRNews"])
 
     # ── Description excerpt (~120 chars) ─────────────────────────
     desc_excerpt = ""
@@ -326,33 +356,48 @@ def main() -> None:
     handle   = os.environ.get("BLUESKY_HANDLE", "").strip()
     password = os.environ.get("BLUESKY_APP_PASSWORD", "").strip()
 
-    if not handle or not password:
-        log.warning("BLUESKY_HANDLE or BLUESKY_APP_PASSWORD not set — skipping.")
+    if not handle:
+        log.error("❌ BLUESKY_HANDLE not set in environment — cannot post.")
         sys.exit(0)
+    if not password:
+        log.error("❌ BLUESKY_APP_PASSWORD not set in environment — cannot post.")
+        log.error("   Generate one at https://bsky.app → Settings → App Passwords")
+        sys.exit(0)
+    log.info("→ Bluesky handle: %s", handle)
 
-    posts = find_new_posts()
+    en_posts = find_new_posts(lang="en")
+    pt_posts = find_new_posts(lang="pt") if PT_POSTS_DIR.exists() else []
+    posts = en_posts + pt_posts
+    log.info("→ New posts to share: %d EN + %d PT = %d total",
+             len(en_posts), len(pt_posts), len(posts))
     if not posts:
         log.info("No new posts found — nothing to share on Bluesky.")
         sys.exit(0)
 
-    log.info("Found %d new post(s) to share.", len(posts))
-
     try:
         session = get_session(handle, password)
-        log.info("Authenticated as %s", session.get("handle"))
+        log.info("✅ Authenticated as %s (did=%s)", session.get("handle"), session.get("did"))
     except Exception as exc:
-        log.error("Auth failed: %s", exc)
+        # Surface the failure prominently so the workflow log is actionable.
+        log.error("❌ Bluesky auth failed: %s", exc)
+        log.error("   Common causes:")
+        log.error("   • App password expired/revoked → regenerate at Bluesky → Settings → App Passwords")
+        log.error("   • Handle typo (must be full handle: name.bsky.social)")
+        log.error("   • Account locked / 2FA blocking app password")
         sys.exit(1)
 
     ok = 0
-    for post in posts:
+    skipped = 0
+    for idx, post in enumerate(posts):
         post_url = post["url"]
+        lang = post.get("lang", "en")
 
         # Validate the post URL is reachable before sharing
         try:
             check = requests.head(post_url, timeout=10, allow_redirects=True)
             if check.status_code >= 400:
                 log.warning("Skipping — URL returned %d: %s", check.status_code, post_url)
+                skipped += 1
                 continue
         except requests.exceptions.RequestException:
             pass  # network error — still try to post (GitHub Pages may not be live yet)
@@ -361,11 +406,15 @@ def main() -> None:
         title       = get_str(post["fm"], "title")
         description = get_str(post["fm"], "description")
         image_url   = get_str(post["fm"], "image")
-        if create_post(session, text, post_url, title, description, image_url):
+        if create_post(session, text, post_url, title, description, image_url, lang=lang):
             ok += 1
-        time.sleep(2)  # be polite to the API
+        else:
+            skipped += 1
+        # Cool down between posts to avoid Bluesky rate limits.
+        if idx < len(posts) - 1:
+            time.sleep(COOLDOWN_S)
 
-    log.info("Done — %d/%d post(s) shared on Bluesky.", ok, len(posts))
+    log.info("Done — %d posted, %d skipped (of %d total).", ok, skipped, len(posts))
 
 
 if __name__ == "__main__":

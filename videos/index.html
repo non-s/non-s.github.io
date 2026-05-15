@@ -1,39 +1,131 @@
 ---
 layout: default
-title: "Videos"
+title: "Videos — GlobalBR News"
+description: "Daily news video roundups, breaking-story explainers, and YouTube Shorts from GlobalBR News."
 permalink: /videos/
+image: /assets/images/og-default.jpg
 ---
-<div class="container" style="padding:3rem 0;">
-  <h1 style="font-size:2rem;font-weight:800;margin-bottom:.5rem;">Videos</h1>
-  <p style="color:var(--c-muted);margin-bottom:2rem;">Daily news roundups and video reports from GlobalBR News.</p>
+
+{% assign video_posts = site.posts | where_exp: "p", "p.youtube_id" %}
+{% assign latest_video = video_posts | first %}
+
+<section style="background:var(--grad-hero);padding:3rem 0 2.5rem;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <h1 style="font-family:var(--font-head);font-size:2rem;font-weight:900;color:var(--c-white);margin-bottom:.5rem;">
+      <span style="color:#ff0000;">▶</span> Videos
+    </h1>
+    <p style="color:var(--c-muted);margin-bottom:1rem;">
+      {{ video_posts | size }} video{% if video_posts.size != 1 %}s{% endif %} · daily roundups, breaking-story explainers, and Shorts.
+    </p>
+    <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:.4rem;background:#ff0000;color:#fff;padding:.5rem 1rem;border-radius:6px;text-decoration:none;font-weight:600;font-size:.85rem;">
+      <i class="bi bi-youtube"></i> Subscribe on YouTube
+    </a>
+  </div>
+</section>
+
+{% if latest_video %}
+<section class="container py-4">
+  <h2 class="section-title">Latest</h2>
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-7">
+      <div class="ratio ratio-16x9" style="border-radius:.75rem;overflow:hidden;background:#000;">
+        <iframe src="https://www.youtube-nocookie.com/embed/{{ latest_video.youtube_id }}"
+                title="{{ latest_video.title | escape }}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      {% for cat in latest_video.categories limit:1 %}
+        <a href="{{ '/' | append: cat | relative_url }}" class="post-cat-badge">{{ cat | upcase }}</a>
+      {% endfor %}
+      <h3 style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin:.75rem 0;">
+        <a href="{{ latest_video.url | relative_url }}" style="color:var(--c-white);text-decoration:none;">{{ latest_video.title }}</a>
+      </h3>
+      <p style="color:var(--c-muted);font-size:.9rem;line-height:1.6;">
+        {{ latest_video.description | default: latest_video.excerpt | strip_html | truncate: 280 }}
+      </p>
+      <time style="font-size:.78rem;color:var(--c-muted);">{{ latest_video.date | date: "%B %-d, %Y" }}</time>
+      <div style="margin-top:1rem;">
+        <a href="{{ latest_video.url | relative_url }}" class="btn-read">Read companion article <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="container py-4">
+  <h2 class="section-title">All videos</h2>
+
+  {% if video_posts.size > 0 %}
   <div class="row g-4">
-    {% assign roundup_posts = site.posts | where_exp: "p", "p.categories contains 'roundup'" %}
-    {% for post in roundup_posts limit:12 %}
+    {% for post in video_posts %}
     <div class="col-md-6 col-lg-4">
-      <a href="{{ post.url | relative_url }}" class="news-card h-100">
-        {% if post.youtube_id %}
-        <div class="card-img-wrap" style="position:relative;">
-          <img src="https://img.youtube.com/vi/{{ post.youtube_id }}/maxresdefault.jpg" alt="{{ post.title | escape }}" loading="lazy" class="card-img">
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-            <div style="width:48px;height:48px;background:rgba(255,0,0,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;">
-              <i class="bi bi-play-fill" style="color:#fff;font-size:1.3rem;margin-left:3px;"></i>
-            </div>
-          </div>
-        </div>
-        {% elsif post.image %}
-        <div class="card-img-wrap"><img src="{{ post.image }}" alt="" loading="lazy" class="card-img"></div>
-        {% endif %}
+      <article class="news-card h-100">
+        <a href="{{ post.url | relative_url }}" class="card-img-wrap" style="position:relative;display:block;text-decoration:none;">
+          <img src="https://img.youtube.com/vi/{{ post.youtube_id }}/hqdefault.jpg"
+               alt="{{ post.title | escape }}"
+               loading="lazy"
+               width="480" height="360"
+               class="card-img"
+               style="width:100%;height:auto;object-fit:cover;">
+          <span aria-hidden="true"
+                style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.18);">
+            <span style="width:54px;height:54px;background:rgba(255,0,0,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <i class="bi bi-play-fill" style="color:#fff;font-size:1.5rem;margin-left:3px;"></i>
+            </span>
+          </span>
+        </a>
         <div class="card-body-inner">
-          <time style="font-size:.75rem;color:var(--c-muted);">{{ post.date | date: "%B %d, %Y" }}</time>
-          <h2 class="card-headline">{{ post.title | truncate: 80 }}</h2>
+          {% for cat in post.categories limit:1 %}
+            <div class="card-category">{{ cat }}</div>
+          {% endfor %}
+          <h3 class="card-headline">
+            <a href="{{ post.url | relative_url }}" style="color:var(--c-white);text-decoration:none;">
+              {{ post.title | truncate: 90 }}
+            </a>
+          </h3>
+          <time style="font-size:.75rem;color:var(--c-muted);">{{ post.date | date: "%b %-d, %Y" }}</time>
         </div>
-      </a>
+      </article>
     </div>
     {% endfor %}
-    {% if roundup_posts.size == 0 %}
-    <div class="col-12">
-      <p style="color:var(--c-muted);">Videos will appear here as they are published. Subscribe to our <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener" style="color:var(--c-accent);">YouTube channel</a> to stay updated.</p>
-    </div>
-    {% endif %}
   </div>
-</div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🎬</div>
+    <h4>No videos published yet</h4>
+    <p style="font-size:.9rem;max-width:380px;margin:.5rem auto 1.5rem;">
+      Videos appear here automatically once the YouTube bot uploads them.
+      Subscribe on YouTube to be notified when new ones drop.
+    </p>
+    <a href="https://youtube.com/@globalbrnews" target="_blank" rel="noopener" class="btn-read" style="display:inline-flex;">
+      <i class="bi bi-youtube me-1"></i> Subscribe on YouTube
+    </a>
+  </div>
+  {% endif %}
+</section>
+
+<!-- ItemList schema so search engines treat /videos/ as a video gallery -->
+{% if video_posts.size > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {% for post in video_posts limit: 20 %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.index }},
+      "url": "{{ post.url | absolute_url }}",
+      "name": {{ post.title | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
