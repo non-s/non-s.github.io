@@ -102,6 +102,7 @@
           </script>
         </ul>
 
+        <a class="nav-link me-1" href="{{ '/search/' | relative_url }}" aria-label="Search">🔍 Search</a>
         <form class="d-flex gap-2" role="search"
               action="{{ '/search/' | relative_url }}" method="get">
           <input class="form-control search-input" type="search"
@@ -419,6 +420,20 @@
     </a>
   </div>
   {% endif %}
+
+  <!-- ── READING PROGRESS BAR JS ────────────────────────── -->
+  <script>
+  (function() {
+    var bar = document.getElementById('reading-progress');
+    if (!bar) return;
+    window.addEventListener('scroll', function() {
+      var doc = document.documentElement;
+      var scrolled = doc.scrollTop || document.body.scrollTop;
+      var total = doc.scrollHeight - doc.clientHeight;
+      bar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
+    }, { passive: true });
+  })();
+  </script>
 
   <!-- ── New Posts Polling Notification ─────────────────── -->
   <script>
