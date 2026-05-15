@@ -6,13 +6,14 @@ upload_youtube.py — Faz upload dos vídeos gerados para o YouTube
 Requer: token.json (gerado pelo auth_youtube.py uma única vez)
 """
 
-import os, json, logging
+import os, json, logging, time
 from pathlib import Path
 from datetime import datetime, timezone
 
 PLAYLIST_DATA_FILE = Path("_data/yt_playlists.json")
 
 from google.oauth2.credentials import Credentials
+from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -23,6 +24,8 @@ VIDEOS_DIR = Path("_videos")
 TOKEN_FILE = Path("token.json")
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
                "https://www.googleapis.com/auth/youtube"]
+MAX_RETRIES = 4
+RETRYABLE_STATUSES = {500, 502, 503, 504}
 
 logging.basicConfig(
     level=logging.INFO,
@@ -109,17 +112,44 @@ def _add_to_playlist(youtube, video_id: str, playlist_id: str) -> None:
 
 
 def get_youtube_client():
-    """Autentica usando token salvo."""
+    """Autentica usando token salvo, com diagnóstico claro de falhas comuns."""
     if not TOKEN_FILE.exists():
         raise FileNotFoundError(
-            "token.json não encontrado! Execute auth_youtube.py primeiro."
+            "token.json não encontrado! Execute auth_youtube.py primeiro "
+            "(ou defina o secret YOUTUBE_TOKEN no GitHub)."
         )
-    creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
-    if creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+    raw = TOKEN_FILE.read_text(encoding="utf-8").strip()
+    if not raw:
+        raise RuntimeError(
+            "token.json está vazio. O secret YOUTUBE_TOKEN provavelmente "
+            "não foi configurado. Rode auth_youtube.py localmente e copie o "
+            "conteúdo de token.json para o secret YOUTUBE_TOKEN."
+        )
+    try:
+        creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
+    except (ValueError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"token.json malformado ({exc}). Recrie com auth_youtube.py."
+        ) from exc
+
+    if not creds.refresh_token:
+        raise RuntimeError(
+            "token.json não contém refresh_token. Re-autorize com "
+            "auth_youtube.py (a primeira autorização gera o refresh_token)."
+        )
+    if creds.expired:
+        try:
+            creds.refresh(Request())
+        except RefreshError as exc:
+            raise RuntimeError(
+                f"Falha ao renovar token YouTube: {exc}. "
+                "Causa provável: refresh_token revogado/expirado. "
+                "Solução: rodar auth_youtube.py localmente e atualizar o "
+                "secret YOUTUBE_TOKEN."
+            ) from exc
         TOKEN_FILE.write_text(creds.to_json())
-        log.info("Token renovado automaticamente.")
-    return build("youtube", "v3", credentials=creds)
+        log.info("✅ Access token renovado via refresh_token.")
+    return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
 def upload_video(youtube, meta: dict) -> str | None:
@@ -155,53 +185,83 @@ def upload_video(youtube, meta: dict) -> str | None:
         mimetype="video/mp4",
     )
 
-    try:
-        request = youtube.videos().insert(
-            part="snippet,status",
-            body=body,
-            media_body=media,
-        )
+    request = youtube.videos().insert(
+        part="snippet,status",
+        body=body,
+        media_body=media,
+    )
 
-        response = None
-        while response is None:
+    # ── Chunked upload with retry/backoff on transient errors ───────
+    response = None
+    attempt = 0
+    while response is None:
+        try:
             status, response = request.next_chunk()
             if status:
                 pct = int(status.progress() * 100)
                 log.info(f"  Upload: {pct}%")
+        except HttpError as e:
+            code = getattr(e.resp, "status", 0)
+            if code in RETRYABLE_STATUSES and attempt < MAX_RETRIES:
+                attempt += 1
+                wait = 2 ** attempt
+                log.warning(f"  ⚠️ HTTP {code} on chunk; retry {attempt}/{MAX_RETRIES} in {wait}s")
+                time.sleep(wait)
+                continue
+            log.error(f"  ❌ Erro HTTP {code}: {e.content!r}")
+            if code == 403:
+                log.error("  Causa provável: cota diária esgotada (10.000/dia, 1600/upload)")
+                log.error("  ou OAuth client/refresh_token revogado.")
+            elif code == 401:
+                log.error("  Auth inválida — refresh_token expirou. Re-rode auth_youtube.py.")
+            return None
+        except (TimeoutError, ConnectionError) as e:
+            if attempt < MAX_RETRIES:
+                attempt += 1
+                wait = 2 ** attempt
+                log.warning(f"  ⚠️ {type(e).__name__}: retry {attempt}/{MAX_RETRIES} in {wait}s")
+                time.sleep(wait)
+                continue
+            log.error(f"  ❌ Falha de conexão após {MAX_RETRIES} tentativas: {e}")
+            return None
 
-        video_id = response["id"]
-        yt_url   = f"https://youtube.com/watch?v={video_id}"
-        log.info(f"  ✅ Publicado: {yt_url}")
+    video_id = response["id"]
+    yt_url   = f"https://youtube.com/watch?v={video_id}"
+    log.info(f"  ✅ Publicado: {yt_url}")
 
-        # Faz upload da thumbnail
-        if thumb_path.exists():
+    # Faz upload da thumbnail (não-crítico — vídeo já foi publicado)
+    if thumb_path.exists():
+        try:
             youtube.thumbnails().set(
                 videoId=video_id,
                 media_body=MediaFileUpload(str(thumb_path), mimetype="image/jpeg"),
             ).execute()
             log.info(f"  🖼  Thumbnail aplicada")
+        except HttpError as e:
+            log.warning(f"  ⚠️ Não foi possível aplicar thumbnail: HTTP {e.resp.status}")
 
-        # Add to category playlist
+    # Add to category playlist
+    try:
         playlist_ids = _load_playlist_ids()
         category = meta.get("category", "roundup")
         playlist_id = _get_or_create_playlist(youtube, category, playlist_ids)
         if playlist_id:
             _add_to_playlist(youtube, video_id, playlist_id)
+    except Exception as e:
+        log.warning(f"  ⚠️ Playlist association failed: {e}")
 
-        return video_id
-
-    except HttpError as e:
-        log.error(f"  ❌ Erro HTTP {e.resp.status}: {e.content}")
-        if e.resp.status == 403:
-            log.error("  Cota da API atingida. Tente amanhã.")
-        return None
+    return video_id
 
 
 def main():
     try:
         youtube = get_youtube_client()
     except FileNotFoundError as e:
-        log.error(str(e))
+        log.error("❌ %s", e)
+        return
+    except RuntimeError as e:
+        # Surfaceia o erro com instruções acionáveis (ver get_youtube_client).
+        log.error("❌ %s", e)
         return
 
     # Busca vídeos com metadata JSON prontos para upload
@@ -209,14 +269,18 @@ def main():
     if not pending:
         log.info("Nenhum vídeo pendente para upload.")
         return
+    log.info("📋 %d vídeo(s) pendente(s) para upload", len(pending))
 
     uploaded = 0
     for meta_file in pending:
-        meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        try:
+            meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        except Exception as e:
+            log.error("Falha ao ler %s: %s", meta_file.name, e)
+            continue
 
         video_id = upload_video(youtube, meta)
         if video_id:
-            # Marca como enviado com metadados completos para cross-posting
             done_file = meta_file.with_suffix(".done")
             done_file.write_text(json.dumps({
                 "video_id":    video_id,
@@ -229,10 +293,10 @@ def main():
                 "category":    meta.get("category", ""),
                 "is_short":    meta.get("is_short", False),
             }, indent=2))
-            meta_file.unlink()   # remove metadata original
+            meta_file.unlink()
             uploaded += 1
 
-    log.info(f"\n🏁 {uploaded} vídeo(s) publicado(s) no YouTube.")
+    log.info("🏁 %d/%d vídeo(s) publicado(s) no YouTube.", uploaded, len(pending))
 
 
 if __name__ == "__main__":

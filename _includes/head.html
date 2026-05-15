@@ -290,7 +290,7 @@ if (navigator.onLine) {
 </script>
 {% endif %}
 
-{% if page.fact_check == 'verified' or page.fact_check == 'developing' or page.fact_check == 'opinion' %}
+{% if page.fact_check == 'verified' or page.fact_check == 'developing' or page.fact_check == 'opinion' or page.fact_check == 'satire' %}
 <!-- ClaimReview JSON-LD -->
 <script type="application/ld+json">
 {
@@ -325,6 +325,11 @@ if (navigator.onLine) {
     "bestRating": "5",
     "worstRating": "0",
     "alternateName": "Opinion"
+    {% elsif page.fact_check == 'satire' %}
+    "ratingValue": "0",
+    "bestRating": "5",
+    "worstRating": "0",
+    "alternateName": "Satire"
     {% endif %}
   }
 }
