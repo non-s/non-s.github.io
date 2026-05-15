@@ -4332,3 +4332,355 @@ img[loading="lazy"] {
   .search-filter-row { gap: .3rem; }
   .search-filter-label { min-width: 60px; font-size: .62rem; margin-right: .3rem; }
 }
+
+/* ============================================================
+   ROUND 8 — LIVE BLOG LAYOUT
+   ============================================================ */
+
+.live-blog-header {
+  background: linear-gradient(180deg, rgba(220,38,38,.07), transparent);
+  border-top: 3px solid var(--c-breaking);
+  padding: 1.8rem 0 1.5rem;
+}
+
+.liveblog-status-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .8rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  color: var(--c-muted);
+}
+.liveblog-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--c-breaking);
+  color: #fff;
+  font-weight: 900;
+  font-size: .7rem;
+  letter-spacing: 2.2px;
+  padding: .35rem .75rem;
+  border-radius: 0;
+}
+.liveblog-dot {
+  width: 9px; height: 9px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulse 1.3s ease-in-out infinite;
+}
+.liveblog-update-count {
+  font-weight: 700;
+  color: var(--c-text);
+}
+.liveblog-last {
+  font-weight: 500;
+  color: var(--c-muted);
+}
+.liveblog-last time { font-weight: 600; color: var(--c-text); }
+
+.liveblog-eyebrow {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: .5rem;
+}
+
+.liveblog-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1.07;
+  letter-spacing: -0.02em;
+  color: var(--c-white);
+  margin: 0 0 .85rem;
+}
+
+.liveblog-deck {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--c-muted2);
+  margin-bottom: 1rem;
+  max-width: 70ch;
+}
+
+.liveblog-byline { margin-top: .5rem; }
+
+.live-blog-body { padding-top: 2rem; padding-bottom: 3rem; }
+
+.liveblog-hero-img { margin-bottom: 2rem; }
+
+/* Key points box */
+.liveblog-keypoints {
+  background: rgba(225,29,72,.06);
+  border-left: 3px solid var(--c-accent);
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 2rem;
+}
+.liveblog-keypoints-title {
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin: 0 0 .7rem;
+}
+.liveblog-keypoints ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: .98rem;
+  line-height: 1.6;
+  color: var(--c-text);
+}
+.liveblog-keypoints li { margin-bottom: .4rem; }
+
+/* Refresh notice */
+.liveblog-refresh-notice {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.25);
+  padding: .7rem 1rem;
+  border-radius: var(--r-sm);
+  font-family: var(--font-ui);
+  font-size: .85rem;
+  color: var(--c-muted2);
+  margin-bottom: 1.5rem;
+}
+.liveblog-refresh-notice i { color: var(--c-accent2); }
+.liveblog-refresh-notice.liveblog-refresh-prominent {
+  background: rgba(225,29,72,.08);
+  border-color: rgba(225,29,72,.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+.liveblog-refresh-btn {
+  margin-left: auto;
+  background: var(--c-accent);
+  color: #fff;
+  border: none;
+  padding: .4rem .9rem;
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.liveblog-refresh-btn:hover { background: var(--c-accent-hover); }
+
+/* Timeline */
+.liveblog-timeline {
+  position: relative;
+  padding-left: 1.6rem;
+}
+.liveblog-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--c-accent), transparent);
+}
+
+.liveblog-update {
+  position: relative;
+  margin-bottom: 2.4rem;
+}
+.liveblog-update::before {
+  content: '';
+  position: absolute;
+  left: -1.6rem;
+  top: .5rem;
+  width: 12px; height: 12px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--c-bg), 0 0 0 5px rgba(225,29,72,.25);
+}
+.liveblog-update:first-child::before {
+  background: var(--c-breaking);
+  box-shadow: 0 0 0 4px var(--c-bg), 0 0 0 7px rgba(220,38,38,.35);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.liveblog-update-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .55rem;
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  margin-bottom: .55rem;
+}
+.liveblog-update-time {
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--c-text);
+  font-size: .82rem;
+}
+.liveblog-update-date {
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--c-muted);
+  font-size: .68rem;
+  font-weight: 700;
+}
+.liveblog-update-newest {
+  background: var(--c-breaking);
+  color: #fff;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  padding: .14rem .45rem;
+}
+.liveblog-opening-label {
+  background: var(--c-surface3);
+  color: var(--c-muted);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  padding: .14rem .45rem;
+}
+
+.liveblog-update-title {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.22;
+  margin: 0 0 .55rem;
+  color: var(--c-white);
+  letter-spacing: -0.01em;
+}
+
+.liveblog-update-img {
+  margin: .75rem 0 1rem;
+}
+.liveblog-update-img img {
+  width: 100%;
+  border-radius: var(--r-sm);
+}
+.liveblog-update-img figcaption {
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  color: var(--c-muted);
+  margin-top: .35rem;
+  padding-left: .5rem;
+  border-left: 2px solid var(--c-border2);
+}
+
+.liveblog-update-body {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--c-muted2);
+}
+.liveblog-update-body p { margin-bottom: .85rem; }
+.liveblog-update-body p:last-child { margin-bottom: 0; }
+.liveblog-update-body a { color: var(--c-accent2); text-decoration: underline; text-underline-offset: 2px; }
+
+.liveblog-update-source {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-family: var(--font-ui);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--c-accent);
+  margin-top: .7rem;
+  margin-right: .8rem;
+  transition: color .15s;
+}
+.liveblog-update-source:hover { color: var(--c-accent-hover); }
+
+.liveblog-update-share {
+  background: transparent;
+  border: 1px solid var(--c-border2);
+  color: var(--c-muted);
+  font-family: var(--font-ui);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .35rem .7rem;
+  border-radius: 4px;
+  margin-top: .7rem;
+  cursor: pointer;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+}
+.liveblog-update-share:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+/* Sidebar jump nav */
+.liveblog-jump-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: jumps;
+}
+.liveblog-jump-list li {
+  counter-increment: jumps;
+  border-bottom: 1px solid var(--c-border);
+}
+.liveblog-jump-list li:last-child { border-bottom: none; }
+.liveblog-jump-list a {
+  display: flex;
+  align-items: baseline;
+  gap: .55rem;
+  padding: .55rem .25rem;
+  font-family: var(--font-ui);
+  font-size: .85rem;
+  color: var(--c-muted2);
+  transition: all .15s;
+}
+.liveblog-jump-list a:hover {
+  background: rgba(225,29,72,.06);
+  color: var(--c-text);
+  padding-left: .5rem;
+}
+.liveblog-jump-list time {
+  font-weight: 700;
+  font-size: .72rem;
+  color: var(--c-accent);
+  letter-spacing: .5px;
+  white-space: nowrap;
+  min-width: 56px;
+}
+.liveblog-jump-list a span {
+  font-size: .82rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 575.98px) {
+  .liveblog-timeline { padding-left: 1.1rem; }
+  .liveblog-update::before { left: -1.1rem; width: 9px; height: 9px; }
+  .liveblog-update-title { font-size: 1.18rem; }
+  .liveblog-refresh-notice { flex-wrap: wrap; }
+  .liveblog-refresh-btn { margin-left: 0; margin-top: .4rem; }
+}
+
+/* Light theme overrides for live blog */
+[data-theme="light"] .live-blog-header {
+  background: linear-gradient(180deg, rgba(220,38,38,.04), transparent);
+}
+[data-theme="light"] .liveblog-title,
+[data-theme="light"] .liveblog-update-title { color: #0f172a; }
+[data-theme="light"] .liveblog-update-body,
+[data-theme="light"] .liveblog-deck { color: #334155; }
+[data-theme="light"] .liveblog-update::before {
+  box-shadow: 0 0 0 4px #fff, 0 0 0 5px rgba(225,29,72,.25);
+}
+[data-theme="light"] .liveblog-update:first-child::before {
+  box-shadow: 0 0 0 4px #fff, 0 0 0 7px rgba(220,38,38,.35);
+}
