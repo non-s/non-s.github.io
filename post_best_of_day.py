@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
 """Pick the best article of the day and post to Bluesky as featured."""
-import os
-import glob
+from __future__ import annotations
+
 import logging
+import os
+import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
 
 import requests
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+from utils.frontmatter import parse, get_str, get_list
+from utils.retry import retry_call
 
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+log = logging.getLogger(__name__)
+
+POSTS_DIR = Path("_posts")
 SITE_BASE = "https://non-s.github.io"
+BSKY_API  = "https://bsky.social/xrpc"
 
 CATEGORY_EMOJIS = {
     "world": "🌍", "politics": "🏛️", "war": "⚔️", "business": "💼",
@@ -19,166 +27,142 @@ CATEGORY_EMOJIS = {
     "travel": "✈️", "ai": "🤖", "security": "🔒",
 }
 
-
-def parse_frontmatter(text: str) -> dict:
-    if not text.startswith("---"):
-        return {}
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return {}
-    data: dict = {}
-    for line in parts[1].splitlines():
-        if ":" not in line:
-            continue
-        k, _, v = line.partition(":")
-        k = k.strip()
-        v = v.strip().strip('"').strip("'")
-        if v.startswith("[") and v.endswith("]"):
-            data[k] = [x.strip().strip('"').strip("'") for x in v[1:-1].split(",")]
-        else:
-            data[k] = v
-    return data
+_SKIP_STEMS = ("roundup", "digest", "milestone", "stats", "best-of")
 
 
-def pick_best_post():
+def pick_best_post() -> tuple[Path, dict] | None:
     today = date.today().strftime("%Y-%m-%d")
-    today_posts = []
-    for path in glob.glob(f"_posts/{today}-*.md"):
-        # Skip roundup/digest/milestone posts
-        stem = Path(path).stem
-        if any(x in stem for x in ("roundup", "digest", "milestone", "stats")):
+    scored: list[tuple[int, Path, dict]] = []
+    for path in sorted(POSTS_DIR.glob(f"{today}-*.md"), reverse=True):
+        if any(x in path.stem for x in _SKIP_STEMS):
             continue
         try:
-            text = Path(path).read_text(encoding="utf-8")
-            fm = parse_frontmatter(text)
-            title = fm.get("title", "").strip('"').strip("'")
-            desc = fm.get("description", "").strip('"').strip("'")
-            # Score: featured > breaking > has description + long title
+            fm = parse(path.read_text(encoding="utf-8", errors="replace"))
+            title = get_str(fm, "title")
+            desc  = get_str(fm, "description")
             score = 0
-            if fm.get("featured") == "true":
-                score += 10
-            if fm.get("breaking") == "true":
-                score += 5
-            if desc:
-                score += 3
-            if len(title) > 40:
-                score += 1
-            today_posts.append((score, path, fm))
+            if get_str(fm, "featured") == "true": score += 10
+            if get_str(fm, "breaking")  == "true": score += 5
+            if desc:  score += 3
+            if len(title) > 40: score += 1
+            scored.append((score, path, fm))
         except Exception:
             pass
-    if not today_posts:
-        logging.info("No posts today")
+
+    if not scored:
+        log.info("No posts today — skipping best-of")
         return None
-    today_posts.sort(reverse=True)
-    _, path, fm = today_posts[0]
+    scored.sort(reverse=True)
+    _, path, fm = scored[0]
+    log.info("Best post today: %s", path.name)
     return path, fm
 
 
-def use_groq_for_commentary(title: str, description: str) -> str:
-    key = os.getenv("GROQ_API_KEY")
+def _groq_commentary(title: str, description: str) -> str:
+    key = os.getenv("GROQ_API_KEY", "")
     if not key:
         return ""
-    try:
+
+    def _call():
         r = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
                 "model": "llama-3.1-8b-instant",
-                "messages": [{
-                    "role": "user",
-                    "content": (
-                        f"Write ONE engaging sentence (max 15 words) introducing this news for "
-                        f"social media. Be journalistic, not clickbait. "
-                        f"Title: {title}. Description: {description[:200]}"
-                    ),
-                }],
+                "messages": [{"role": "user", "content": (
+                    f"Write ONE engaging sentence (max 15 words) introducing this news for "
+                    f"social media. Journalistic, not clickbait. "
+                    f"Title: {title}. Description: {description[:200]}"
+                )}],
                 "max_tokens": 60,
             },
             timeout=20,
         )
-        if r.status_code == 200:
-            return r.json()["choices"][0]["message"]["content"].strip().strip('"')
-    except Exception:
-        pass
-    return ""
+        r.raise_for_status()
+        return r.json()["choices"][0]["message"]["content"].strip().strip('"')
+
+    result = retry_call(_call, max_attempts=2, base_delay=5.0, default="")
+    return result or ""
 
 
-def build_url(filepath: str, fm: dict) -> str:
-    stem = Path(filepath).stem
-    # YYYY-MM-DD-slug
-    parts = stem.split("-", 3)
+def build_url(path: Path, fm: dict) -> str:
+    parts = path.stem.split("-", 3)
     if len(parts) < 4:
         return SITE_BASE + "/"
-    year, month, day, slug = parts[0], parts[1], parts[2], parts[3]
-    cats = fm.get("categories", [])
-    cat = (cats[0] if isinstance(cats, list) and cats else "news").strip()
+    year, month, day, slug = parts
+    cat = get_str(fm, "categories", "news")
     return f"{SITE_BASE}/{cat}/{year}/{month}/{day}/{slug}/"
 
 
-def post_to_bluesky(text: str, url: str, title: str) -> None:
-    handle = os.getenv("BLUESKY_HANDLE")
-    password = os.getenv("BLUESKY_APP_PASSWORD")
-    if not handle or not password:
-        logging.info("Bluesky credentials not set")
-        return
-    try:
-        sess = requests.post(
-            "https://bsky.social/xrpc/com.atproto.server.createSession",
+def post_to_bluesky(text: str, url: str, title: str, handle: str, password: str) -> bool:
+    def _auth():
+        r = requests.post(
+            f"{BSKY_API}/com.atproto.server.createSession",
             json={"identifier": handle, "password": password},
             timeout=20,
         )
-        sess.raise_for_status()
-        s = sess.json()
+        r.raise_for_status()
+        return r.json()
 
-        record = {
-            "$type": "app.bsky.feed.post",
-            "text": text,
-            "createdAt": datetime.now(timezone.utc).isoformat(),
-            "langs": ["en"],
-            "embed": {
-                "$type": "app.bsky.embed.external",
-                "external": {"uri": url, "title": title[:300], "description": ""},
-            },
-        }
-        # Add link facet
-        url_start = text.find(url)
-        if url_start >= 0:
-            record["facets"] = [{
-                "index": {
-                    "byteStart": len(text[:url_start].encode()),
-                    "byteEnd": len(text[:url_start + len(url)].encode()),
-                },
-                "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
-            }]
+    session = retry_call(_auth, max_attempts=3, base_delay=5.0, default=None)
+    if not session:
+        log.error("Bluesky auth failed")
+        return False
 
-        requests.post(
-            "https://bsky.social/xrpc/com.atproto.repo.createRecord",
-            headers={"Authorization": f"Bearer {s['accessJwt']}"},
-            json={
-                "repo": s["did"],
-                "collection": "app.bsky.feed.post",
-                "record": record,
+    record: dict = {
+        "$type":     "app.bsky.feed.post",
+        "text":      text,
+        "createdAt": datetime.now(timezone.utc).isoformat(),
+        "langs":     ["en"],
+        "embed": {
+            "$type":    "app.bsky.embed.external",
+            "external": {"uri": url, "title": title[:300], "description": ""},
+        },
+    }
+    url_start = text.find(url)
+    if url_start >= 0:
+        record["facets"] = [{
+            "index": {
+                "byteStart": len(text[:url_start].encode()),
+                "byteEnd":   len(text[:url_start + len(url)].encode()),
             },
+            "features": [{"$type": "app.bsky.richtext.facet#link", "uri": url}],
+        }]
+
+    def _do_post():
+        r = requests.post(
+            f"{BSKY_API}/com.atproto.repo.createRecord",
+            headers={"Authorization": f"Bearer {session['accessJwt']}"},
+            json={"repo": session["did"], "collection": "app.bsky.feed.post", "record": record},
             timeout=20,
         )
-        logging.info(f"Posted to Bluesky: {url}")
-    except Exception as e:
-        logging.error(f"Bluesky failed: {e}")
+        r.raise_for_status()
+        return True
+
+    result = retry_call(_do_post, max_attempts=3, base_delay=5.0, default=False)
+    if result:
+        log.info("Posted best-of to Bluesky: %s", url)
+    return bool(result)
 
 
-def main():
+def main() -> None:
+    handle   = os.environ.get("BLUESKY_HANDLE", "").strip()
+    password = os.environ.get("BLUESKY_APP_PASSWORD", "").strip()
+    if not handle or not password:
+        log.warning("Bluesky credentials not set — skipping")
+        sys.exit(0)
+
     result = pick_best_post()
     if not result:
-        return
-    filepath, fm = result
-    title = fm.get("title", "").strip('"').strip("'")
-    description = fm.get("description", "").strip('"').strip("'")
-    cats = fm.get("categories", [])
-    cat = (cats[0] if isinstance(cats, list) and cats else "news").strip()
-    emoji = CATEGORY_EMOJIS.get(cat, "📰")
-    url = build_url(filepath, fm)
+        sys.exit(0)
 
-    commentary = use_groq_for_commentary(title, description)
+    path, fm = result
+    title       = get_str(fm, "title", "New Article")
+    description = get_str(fm, "description")
+    cat         = get_str(fm, "categories", "news")
+    emoji       = CATEGORY_EMOJIS.get(cat, "📰")
+    url         = build_url(path, fm)
+    commentary  = _groq_commentary(title, description)
 
     text = f"⭐ Article of the Day\n\n{emoji} {title}\n\n"
     if commentary:
@@ -186,9 +170,9 @@ def main():
     text += f"🔗 {url}\n\n#GlobalBRNews #BestOf"
 
     if len(text) > 300:
-        text = text[:297] + "..."
+        text = text[:297] + "…"
 
-    post_to_bluesky(text, url, title)
+    post_to_bluesky(text, url, title, handle, password)
 
 
 if __name__ == "__main__":

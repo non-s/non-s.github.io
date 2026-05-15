@@ -9,6 +9,7 @@ jobs:
   send:
     name: "Send daily newsletter"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     permissions:
       contents: read
@@ -23,6 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: "📦 Install dependencies"
         run: pip install requests
@@ -33,3 +35,11 @@ jobs:
           MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
           MAILCHIMP_AUDIENCE_ID: ${{ secrets.MAILCHIMP_AUDIENCE_ID }}
           MAILCHIMP_SERVER: ${{ secrets.MAILCHIMP_SERVER }}
+
+      - name: "📋 Upload newsletter log on failure"
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newsletter-log-${{ github.run_id }}
+          path: newsletter.log
+          retention-days: 7

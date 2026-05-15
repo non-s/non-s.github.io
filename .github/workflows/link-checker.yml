@@ -6,17 +6,23 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+
       - run: pip install requests
+
       - name: "🔗 Check source URLs"
         run: python check_links.py
-        timeout-minutes: 10
+        timeout-minutes: 15
+
       - name: "💾 Commit link report"
         run: |
           git config user.name "GlobalBR News Bot"
