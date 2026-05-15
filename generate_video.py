@@ -124,6 +124,25 @@ def _ai_video_hook(stories: list[dict], dominant_cat: str) -> str:
     )
     return _ai_text(prompt, seed=42, timeout=18)
 
+def _build_chapters(key_points: list[str], total_duration_estimate: int = 180) -> str:
+    """Generate YouTube chapter timestamps from key points."""
+    if not key_points or len(key_points) < 2:
+        return ""
+
+    chapters = ["00:00 Introduction"]
+    # Distribute key points evenly
+    segment = total_duration_estimate // (len(key_points) + 1)
+    for i, point in enumerate(key_points[:5], 1):
+        mins, secs = divmod(i * segment, 60)
+        label = point[:60].rstrip('.').strip()
+        chapters.append(f"{mins:02d}:{secs:02d} {label}")
+
+    # Add outro
+    outro_mins, outro_secs = divmod(total_duration_estimate - 10, 60)
+    chapters.append(f"{outro_mins:02d}:{outro_secs:02d} Summary")
+
+    return "\n\n" + "\n".join(chapters)
+
 # ── Config ─────────────────────────────────────────────────────
 VIDEOS_DIR        = Path("_videos")
 LOG_FILE          = "generate_video.log"
@@ -150,6 +169,48 @@ VOICE_BY_CATEGORY = {
     "TECH":     "en-US-AriaNeural",
 }
 VOICE_DEFAULT = "en-US-AriaNeural"
+
+# ── CTA block appended to all video descriptions ───────────────
+CTA_BLOCK = """
+
+─────────────────────────
+🌐 Read more: https://non-s.github.io
+🦋 Bluesky: https://bsky.app/profile/globalbrnews.bsky.social
+📡 RSS Feed: https://non-s.github.io/feed.xml
+─────────────────────────
+#GlobalBRNews #WorldNews #BreakingNews"""
+
+# ── Category-based tag bank ─────────────────────────────────────
+CATEGORY_TAG_BANK = {
+    "world":       ["world news", "international news", "global news", "breaking news", "current events"],
+    "technology":  ["tech news", "technology", "innovation", "silicon valley", "gadgets", "AI news"],
+    "politics":    ["politics", "government", "policy", "elections", "democracy", "world politics"],
+    "business":    ["business news", "economy", "finance", "markets", "stocks", "entrepreneurship"],
+    "science":     ["science news", "research", "discovery", "space", "biology", "physics"],
+    "health":      ["health news", "medicine", "wellness", "medical research", "public health"],
+    "environment": ["climate change", "environment", "sustainability", "green energy", "nature"],
+    "ai":          ["artificial intelligence", "machine learning", "ChatGPT", "AI", "deep learning"],
+    "sports":      ["sports news", "athletics", "championship", "football", "soccer"],
+}
+
+def _build_tags(article_tags: list, category: str) -> list:
+    base = CATEGORY_TAG_BANK.get(category.lower(), ["world news", "breaking news", "global news"])
+    combined = base + [t for t in article_tags if t not in base]
+    # Always include brand tags
+    combined += ["GlobalBR News", "globalbrnews"]
+    return list(dict.fromkeys(combined))[:30]  # deduplicate, max 30
+
+# ── Category colors for thumbnail banner ────────────────────────
+CATEGORY_COLORS = {
+    "world": "#dc2626", "technology": "#2563eb", "politics": "#7c3aed",
+    "business": "#d97706", "science": "#059669", "health": "#db2777",
+    "environment": "#16a34a", "ai": "#0891b2", "sports": "#ea580c",
+    "default": "#f97316",
+}
+
+def _hex_to_rgb(hex_color: str) -> tuple:
+    h = hex_color.lstrip("#")
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
 
 logging.basicConfig(
     level=logging.INFO,
@@ -727,24 +788,35 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
         t = max(0, 1 - x / (W * 0.75))
         alpha = int(210 * (t ** 0.6))
         od.line([(x, 0), (x, H)], fill=(0, 0, 8, alpha))
+    # Subtle gradient overlay at bottom for text readability
+    for y in range(H - 160, H):
+        t = (y - (H - 160)) / 160
+        alpha = int(180 * t)
+        od.line([(0, y), (W, y)], fill=(0, 0, 8, alpha))
     # Faixa inferior sólida para branding
     od.rectangle([(0, H - 120), (W, H)], fill=(0, 0, 8, 200))
     img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
 
     draw = ImageDraw.Draw(img)
 
-    # ── 3. Faixa lateral colorida (identidade GlobalBR) ──────────
+    # ── 3. Category banner bar at top (20px height) ───────────────
     cats = [s.get("category", "").upper() for s in stories]
     dominant_cat = max(set(cats), key=cats.count) if cats else "TECH"
+    cat_key_lower = dominant_cat.lower().replace(" ", "")
+    # Try CATEGORY_COLORS first, then fallback stripe_color map
+    cat_hex = CATEGORY_COLORS.get(cat_key_lower, CATEGORY_COLORS.get("default", "#f97316"))
+    banner_rgb = _hex_to_rgb(cat_hex)
+    draw.rectangle([(0, 0), (W, 20)], fill=banner_rgb)
+
     stripe_color = {
         "WAR": (220, 50, 50), "SPORTS": (255, 140, 0), "FOOD": (255, 180, 0),
         "ENTERTAINMENT": (180, 0, 220), "HEALTH": (0, 200, 120),
         "SCIENCE": (0, 180, 255), "ENVIRONMENT": (0, 200, 80),
-    }.get(dominant_cat, ACCENT_BLUE)
+    }.get(dominant_cat, banner_rgb)
 
     for i in range(8):
         alpha_val = 255 - i * 28
-        draw.rectangle([(i * 2, 0), (i * 2 + 1, H)],
+        draw.rectangle([(i * 2, 20), (i * 2 + 1, H)],
                        fill=(*stripe_color, alpha_val))
 
     n = len(stories)
@@ -753,36 +825,36 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
     badge_text = f"TOP {n} STORIES"
     bfont = get_font(34, bold=True)
     bbbox = draw.textbbox((0, 0), badge_text, font=bfont)
-    draw_rounded_rect(draw, (28, 28, 28 + bbbox[2] + 28, 78),
+    draw_rounded_rect(draw, (28, 32, 28 + bbbox[2] + 28, 82),
                       radius=8, fill=RED_LIVE)
-    draw.text((42, 36), badge_text, font=bfont, fill=TEXT_WHITE)
+    draw.text((42, 40), badge_text, font=bfont, fill=TEXT_WHITE)
 
     # Category label
     cat_text = dominant_cat
     cfont = get_font(28, bold=True)
     cx = 28 + bbbox[2] + 28 + 16
     cbbox = draw.textbbox((0, 0), cat_text, font=cfont)
-    draw_rounded_rect(draw, (cx, 32, cx + cbbox[2] + 20, 74),
+    draw_rounded_rect(draw, (cx, 36, cx + cbbox[2] + 20, 78),
                       radius=6, fill=(*stripe_color, 230))
-    draw.text((cx + 10, 38), cat_text, font=cfont, fill=(0, 0, 0))
+    draw.text((cx + 10, 42), cat_text, font=cfont, fill=(0, 0, 0))
 
     # ── 5. Título principal — grande, branco, outline+sombra para CTR ──
     main_title = stories[0]["title"] if stories else "World News Roundup"
-    tfont = get_font(82, bold=True)
+    tfont = get_font(90, bold=True)
     max_w = int(W * 0.68)
     tlines = wrap_text(draw, main_title, tfont, max_w)
     if len(tlines) > 3:
-        tfont = get_font(66, bold=True)
+        tfont = get_font(72, bold=True)
         tlines = wrap_text(draw, main_title, tfont, max_w)
-        lh = 82
+        lh = 88
     else:
-        lh = 98
+        lh = 106
 
-    ty = 100
+    ty = 108
     for line in tlines[:3]:
         # Outline espesso (stroke) — legível em qualquer fundo
-        for dx in range(-3, 4):
-            for dy in range(-3, 4):
+        for dx in range(-4, 5):
+            for dy in range(-4, 5):
                 if dx != 0 or dy != 0:
                     draw.text((30 + dx, ty + dy), line, font=tfont, fill=(0, 0, 0))
         # Sombra suave
@@ -803,12 +875,14 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
             draw.text((52, list_y + 2), short, font=lfont, fill=(220, 225, 240))
             list_y += 36
 
-    # ── 7. Branding na base ───────────────────────────────────────
+    # ── 7. Branding na base — "GLOBALBR NEWS" ────────────────────
     draw.rectangle([(22, H - 108), (int(W * 0.55), H - 105)], fill=stripe_color)
-    draw.text((22, H - 96), "GLOBAL", font=get_font(40, bold=True), fill=stripe_color)
-    draw.text((190, H - 96), "BR NEWS", font=get_font(40, bold=True), fill=TEXT_WHITE)
+    brand_font = get_font(44, bold=True)
+    draw.text((22, H - 100), "GLOBALBR", font=brand_font, fill=stripe_color)
+    gbbox = draw.textbbox((0, 0), "GLOBALBR", font=brand_font)
+    draw.text((22 + gbbox[2] + 8, H - 100), "NEWS", font=brand_font, fill=TEXT_WHITE)
     now_str = datetime.now().strftime("%b %d, %Y  •  Daily World Roundup")
-    draw.text((22, H - 46), now_str, font=get_font(26), fill=TEXT_GRAY)
+    draw.text((22, H - 50), now_str, font=get_font(26), fill=TEXT_GRAY)
 
     img.save(str(output), "JPEG", quality=95, optimize=True)
 
@@ -963,20 +1037,28 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         "━" * 28 + "\n"
         f"© {year} GlobalBR News. Original articles belong to their respective sources.\n"
         "#WorldNews #NewsRoundup #GlobalNews #GlobalBRNews #BreakingNews"
+        + CTA_BLOCK
     )
 
-    # Tags: AI > fallback template
-    base_tags = [
-        "world news", "global news", "GlobalBR News", f"news {year}",
-        "news roundup", "breaking news", "latest news", "news today",
-        "top stories", "international news",
-    ]
+    # Append auto-generated chapters from story key points
+    cats = [s.get("category", "news") for s in stories]
+    dominant_cat_lower = max(set(cats), key=cats.count).lower() if cats else "news"
+    story_titles = [s["title"] for s in stories]
+    chapters_block = _build_chapters(story_titles, int(duration_estimate))
+    if chapters_block:
+        yt_desc += chapters_block
+
+    # Truncate to YouTube 5000-char limit
+    yt_desc = yt_desc[:5000]
+
+    # Tags: use category tag bank + AI tags + story tags
     story_tags = [t for s in stories for t in s.get("tags", [])]
     if ai_meta.get("tags") and isinstance(ai_meta["tags"], list):
-        all_tags = list(dict.fromkeys(ai_meta["tags"] + base_tags + story_tags))[:40]
-        log.info(f"  🤖 AI YouTube tags: {len(ai_meta['tags'])} tags")
+        ai_tags = ai_meta["tags"]
+        log.info(f"  🤖 AI YouTube tags: {len(ai_tags)} tags")
     else:
-        all_tags = list(dict.fromkeys(base_tags + story_tags))[:30]
+        ai_tags = []
+    all_tags = _build_tags(ai_tags + story_tags, dominant_cat_lower)
 
     metadata = {
         "title":       yt_title,
