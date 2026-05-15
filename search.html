@@ -98,31 +98,34 @@ permalink: /search/
 
 </div>
 
-<!-- Embed search index as JSON in a script tag for client-side search -->
-<script id="search-index-data" type="application/json">
-[
-  {% for post in site.posts %}
-  {
-    "title": {{ post.title | jsonify }},
-    "url":   {{ post.url | relative_url | jsonify }},
-    "date":  {{ post.date | date: "%Y-%m-%d" | jsonify }},
-    "cats":  {{ post.categories | jsonify }},
-    "tags":  {{ post.tags | jsonify }},
-    "desc":  {{ post.description | default: post.excerpt | strip_html | truncate: 200 | jsonify }},
-    "src":   {{ post.source_name | default: "" | jsonify }},
-    "img":   {{ post.image | default: "" | jsonify }},
-    "sent":  {{ post.sentiment | default: "neutral" | jsonify }}
-  }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-]
-</script>
-
 <script>
 (function(){
   var index = [];
-  try {
-    index = JSON.parse(document.getElementById('search-index-data').textContent);
-  } catch(e) {}
+  var pendingQuery = null;
+
+  // Fetch the precomputed index. generate_search_index.py uses richer field
+  // names than the older Liquid template did, so we normalise them client-side
+  // for backward compatibility with the rest of this script.
+  fetch('{{ "/search-index.json" | relative_url }}', { cache: 'force-cache' })
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(data){
+      if (!Array.isArray(data)) return;
+      index = data.map(function(it){
+        return {
+          title: it.title,
+          url:   it.url,
+          date:  it.date,
+          cats:  it.category ? [it.category] : (it.cats || []),
+          tags:  it.tags || [],
+          desc:  it.description || it.desc || '',
+          src:   it.source || it.src || '',
+          img:   it.image || it.img || '',
+          sent:  it.sentiment || it.sent || 'neutral'
+        };
+      });
+      if (pendingQuery !== null) run(pendingQuery);
+    })
+    .catch(function(){});
 
   var input      = document.getElementById('search-input');
   var form       = document.getElementById('search-form');
@@ -194,9 +197,17 @@ permalink: /search/
     return s;
   }
 
+  function escapeAttr(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
   function highlight(text, terms) {
     if (!text) return '';
-    var safe = text.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    var safe = text.replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
     terms.forEach(function(t){
       if (!t) return;
       var re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
@@ -218,8 +229,21 @@ permalink: /search/
       empty.style.display = '';
       stats.style.display = 'none';
       filters.style.display = 'none';
+      pendingQuery = null;
       return;
     }
+
+    // The index loads asynchronously — remember the query so we re-run it
+    // once the fetch resolves.
+    if (!index.length) {
+      pendingQuery = q;
+      stats.style.display = '';
+      stats.textContent = 'Loading index…';
+      empty.style.display = 'none';
+      filters.style.display = '';
+      return;
+    }
+    pendingQuery = null;
 
     empty.style.display = 'none';
     filters.style.display = '';
@@ -273,22 +297,27 @@ permalink: /search/
       var titleHl = highlight(item.title, terms);
       var descHl  = highlight(item.desc,  terms);
       var sentColor = item.sent === 'positive' ? '#22c55e' : item.sent === 'negative' ? '#ef4444' : '#64748b';
+      var safeUrl = escapeAttr(item.url);
+      var safeImg = escapeAttr(item.img);
+      var safeCat = escapeAttr((item.cats && item.cats[0]) || '');
+      var safeDate = escapeAttr(item.date);
+      var safeSent = escapeAttr(item.sent);
       html +=
         '<div class="col-md-6 col-lg-4">' +
           '<article class="news-card h-100 visible">' +
             (item.img
-              ? '<div class="card-img-wrapper"><a href="' + item.url + '"><img src="' + item.img + '" alt="" loading="lazy" width="400" height="225"></a></div>'
+              ? '<div class="card-img-wrapper"><a href="' + safeUrl + '"><img src="' + safeImg + '" alt="" loading="lazy" width="400" height="225"></a></div>'
               : '') +
             '<div class="card-body">' +
-              '<div class="card-category">' + (item.cats[0] || '') + '</div>' +
+              '<div class="card-category">' + safeCat + '</div>' +
               '<h3 class="card-title">' +
-                '<a href="' + item.url + '">' + titleHl + '</a>' +
+                '<a href="' + safeUrl + '">' + titleHl + '</a>' +
               '</h3>' +
               '<p class="card-excerpt">' + descHl + '</p>' +
               '<div class="card-footer-row">' +
-                '<span class="card-date"><i class="bi bi-calendar3" style="font-size:.7rem;"></i> ' + item.date + '</span>' +
-                '<span style="width:8px;height:8px;border-radius:50%;background:' + sentColor + ';display:inline-block;margin-left:.4rem;" title="' + item.sent + '"></span>' +
-                '<a href="' + item.url + '" class="btn-read ms-auto">Read <i class="bi bi-arrow-right"></i></a>' +
+                '<span class="card-date"><i class="bi bi-calendar3" style="font-size:.7rem;"></i> ' + safeDate + '</span>' +
+                '<span style="width:8px;height:8px;border-radius:50%;background:' + sentColor + ';display:inline-block;margin-left:.4rem;" title="' + safeSent + '"></span>' +
+                '<a href="' + safeUrl + '" class="btn-read ms-auto">Read <i class="bi bi-arrow-right"></i></a>' +
               '</div>' +
             '</div>' +
           '</article>' +

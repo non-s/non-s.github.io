@@ -157,11 +157,6 @@
 </script>
 {% endif %}
 
-{% if page.url == "/" %}
-<!-- Auto-refresh homepage every 5 min -->
-<meta http-equiv="refresh" content="300">
-{% endif %}
-
 <!-- ── DNS Prefetch for CDNs ── -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -230,17 +225,19 @@
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').catch(function(){});
+    navigator.serviceWorker.register('{{ "/sw.js" | relative_url }}').catch(function(err){
+      if (window.console && console.warn) console.warn('SW registration failed:', err);
+    });
   });
   navigator.serviceWorker.addEventListener('message', function(e) {
-    if (e.data && e.data.type === 'LAST_ONLINE') {
-      localStorage.setItem('gb-last-online', e.data.ts.toString());
+    if (e.data && e.data.type === 'LAST_ONLINE' && typeof e.data.ts === 'number') {
+      try { localStorage.setItem('gb-last-online', e.data.ts.toString()); } catch(_) {}
     }
   });
 }
 // Also record timestamp directly on page load when online
 if (navigator.onLine) {
-  localStorage.setItem('gb-last-online', Date.now().toString());
+  try { localStorage.setItem('gb-last-online', Date.now().toString()); } catch(_) {}
 }
 </script>
 

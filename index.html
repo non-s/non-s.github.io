@@ -149,11 +149,16 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
     <div class="trending-pills d-flex flex-wrap gap-2">
       {% for cat in categories_list %}
-        {% assign cat_posts_today = site.posts | where_exp: "p", "p.categories contains cat" | where_exp: "p", "p.date contains today" %}
-        {% if cat_posts_today.size > 0 %}
+        {% assign cat_posts = site.posts | where_exp: "p", "p.categories contains cat" %}
+        {% assign cat_count_today = 0 %}
+        {% for p in cat_posts %}
+          {% assign p_day = p.date | date: '%Y-%m-%d' %}
+          {% if p_day == today %}{% assign cat_count_today = cat_count_today | plus: 1 %}{% endif %}
+        {% endfor %}
+        {% if cat_count_today > 0 %}
           <a href="/{{ cat }}/" class="trending-pill">
             {{ cat | capitalize }}
-            <span class="trending-count">{{ cat_posts_today.size }}</span>
+            <span class="trending-count">{{ cat_count_today }}</span>
           </a>
         {% endif %}
       {% endfor %}

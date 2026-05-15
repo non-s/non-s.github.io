@@ -14,11 +14,11 @@ layout: default
   </div>
 </div>
 
+{% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
 <section class="container py-4">
   <div class="row mb-4">
     <div class="col">
       <h1 class="section-title">Posts tagged '{{ page.tag }}'</h1>
-      {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
       <p class="text-muted">{{ tag_posts | size }} article{% if tag_posts.size != 1 %}s{% endif %} found</p>
       <hr class="section-divider">
       <a href="{{ '/tags/' | relative_url }}" class="btn btn-sm" style="background:var(--c-surface);color:var(--c-muted);border:1px solid var(--c-border);border-radius:var(--r-sm);">
@@ -28,7 +28,6 @@ layout: default
   </div>
 
   <div class="row g-3">
-    {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
     {% if tag_posts.size > 0 %}
       {% for post in tag_posts %}
       <div class="col-md-6 col-lg-4">

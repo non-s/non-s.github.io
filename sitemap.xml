@@ -15,20 +15,18 @@ layout: none
   </url>
 
   <!-- Category pages -->
-  {% assign categories = "world,politics,war,business,science,health,food,sports,entertainment,environment,travel,technology,ai,security" | split: "," %}
-  {% for cat in categories %}
+  {% for cat_pair in site.data.categories %}
   <url>
-    <loc>{{ site.url }}/{{ cat }}/</loc>
+    <loc>{{ site.url }}/{{ cat_pair[0] }}/</loc>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
   </url>
   {% endfor %}
 
-  <!-- Posts (newest = highest priority) -->
-  {% assign total = site.posts.size | minus: 1 %}
+  <!-- Posts (newest = highest priority; news:news only on items < 48h old) -->
+  {% assign news_cutoff = site.time | date: '%s' | minus: 172800 %}
   {% for post in site.posts %}
-    {% assign rank = forloop.index0 | times: 100 | divided_by: total %}
     {% if forloop.index <= 10 %}
       {% assign priority = "0.9" %}
     {% elsif forloop.index <= 50 %}
@@ -36,6 +34,7 @@ layout: none
     {% else %}
       {% assign priority = "0.5" %}
     {% endif %}
+    {% assign post_ts = post.date | date: '%s' | plus: 0 %}
   <url>
     <loc>{{ post.url | absolute_url }}</loc>
     <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
@@ -47,6 +46,7 @@ layout: none
       <image:title>{{ post.title | escape }}</image:title>
     </image:image>
     {% endif %}
+    {% if post_ts >= news_cutoff %}
     <news:news>
       <news:publication>
         <news:name>{{ site.title }}</news:name>
@@ -60,6 +60,7 @@ layout: none
       <news:keywords>{{ post.tags | join: ", " }}</news:keywords>
       {% endif %}
     </news:news>
+    {% endif %}
   </url>
   {% endfor %}
 
