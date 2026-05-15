@@ -10,7 +10,7 @@ layout: null
   {% endcomment %}
   {% assign news_cutoff = site.time | date: '%s' | minus: 172800 %}
   {% for post in site.posts limit:1000 %}
-  {% assign post_ts = post.date | date: '%s' %}
+  {% assign post_ts = post.date | date: '%s' | plus: 0 %}
   {% if post_ts >= news_cutoff %}
   <url>
     <loc>{{ post.url | absolute_url }}</loc>

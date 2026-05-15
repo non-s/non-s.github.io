@@ -34,7 +34,7 @@ layout: none
     {% else %}
       {% assign priority = "0.5" %}
     {% endif %}
-    {% assign post_ts = post.date | date: '%s' %}
+    {% assign post_ts = post.date | date: '%s' | plus: 0 %}
   <url>
     <loc>{{ post.url | absolute_url }}</loc>
     <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
