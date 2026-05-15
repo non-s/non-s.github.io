@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: "0 20 * * *"  # 20h UTC daily
   workflow_dispatch:
+concurrency:
+  group: translate-ptbr
+  cancel-in-progress: false
+
 jobs:
   translate:
     runs-on: ubuntu-latest
