@@ -3,8 +3,8 @@
 // cache-then-network for homepage, offline fallback with cached articles by category,
 // background sync for saving offline reads.
 
-const CACHE_NAME        = 'globalbr-v1';
-const ARTICLE_CACHE     = 'globalbr-articles-v1';
+const CACHE_NAME        = 'globalbr-v4';
+const ARTICLE_CACHE     = 'globalbr-articles-v4';
 const OFFLINE           = '/offline.html';
 const MAX_ARTICLE_CACHE = 50;
 const SYNC_TAG          = 'globalbr-offline-reads';
@@ -13,8 +13,12 @@ const STATIC_ASSETS = [
   '/',
   OFFLINE,
   '/assets/css/style.css',
+  '/assets/js/main.js',
+  '/assets/js/post.js',
+  '/assets/js/index.js',
   '/manifest.json',
   '/search/',
+  '/reading-list/',
 ];
 
 // ── Install: pre-cache static shell ──────────────────────────
@@ -32,7 +36,7 @@ self.addEventListener('activate', e => {
     caches.keys().then(keys =>
       Promise.all(
         keys
-          .filter(k => k !== CACHE_NAME && k !== ARTICLE_CACHE)
+          .filter(k => !k.startsWith('globalbr-') || (k !== CACHE_NAME && k !== ARTICLE_CACHE))
           .map(k => caches.delete(k))
       )
     ).then(() => self.clients.claim())
