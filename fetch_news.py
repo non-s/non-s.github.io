@@ -38,6 +38,7 @@ from utils.ai_helper import (
     fact_check_score as _fact_check_score,
     is_breaking_news as _is_breaking_news,
     quality_check as _quality_check,
+    quality_score as _quality_score,
     BREAKING_KEYWORDS,
 )
 from utils.retry import retry_call
@@ -2762,6 +2763,24 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if ai.get("keywords"):
                 all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
 
+            # ── Quality gate (post-AI) ──────────────────────────────
+            # We don't want to publish thin posts even if they pass
+            # the pre-AI quality check. After enrichment the AI either
+            # produced a substantial article_body + key_points + tl_dr
+            # (high score) or it didn't (low score). Drop the lows.
+            _score, _notes = _quality_score(
+                title=title,
+                description=description,
+                ai_payload=ai,
+                body_chars=len(og.get("body", "") or ""),
+            )
+            _gate = int(os.environ.get("FETCH_QUALITY_THRESHOLD", "6"))
+            if _score < _gate:
+                log.info(
+                    f"  ⏭  Quality gate {_score}/10 < {_gate} ({', '.join(_notes)[:120]}): {title[:60]}"
+                )
+                continue
+
             # ── Imagem: OG > gerada localmente (Pillow+WebP) > Pollinations URL ─
             if not image_url:
                 image_url = _generate_og_image(title, category, slug)
@@ -2953,6 +2972,20 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
         description = ai["meta_description"][:160]
     if ai.get("keywords"):
         all_tags = list(dict.fromkeys(all_tags + [k.lower().replace(" ", "-") for k in ai["keywords"]]))
+
+    # ── Quality gate (post-AI) ──────────────────────────────────
+    _score, _notes = _quality_score(
+        title=title,
+        description=description,
+        ai_payload=ai,
+        body_chars=len(og.get("body", "") or ""),
+    )
+    _gate = int(os.environ.get("FETCH_QUALITY_THRESHOLD", "6"))
+    if _score < _gate:
+        log.info(
+            f"  ⏭  Quality gate {_score}/10 < {_gate} ({', '.join(_notes)[:120]}): {title[:60]}"
+        )
+        return 0
 
     if not image_url:
         image_url = _generate_og_image(title, category, slug)
