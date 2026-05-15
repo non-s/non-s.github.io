@@ -6,9 +6,12 @@ import json
 import logging
 import os
 import re
+import time
 from time import sleep
 
 import requests
+
+from utils.retry import with_retry
 
 log = logging.getLogger(__name__)
 
@@ -68,9 +71,64 @@ _SPAM_PATTERNS = re.compile(
 )
 
 
+def _call_groq(sys_msg: str, prompt: str, timeout: int, groq_key: str) -> str:
+    r = _session.post(
+        _GROQ_API_URL,
+        json={
+            "model": _GROQ_MODEL,
+            "messages": [
+                {"role": "system", "content": sys_msg},
+                {"role": "user",   "content": prompt},
+            ],
+            "temperature": 0.7,
+            "max_tokens": 3000,
+        },
+        headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+        timeout=timeout,
+    )
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"].strip()
+
+
+def _call_gemini(sys_msg: str, prompt: str, timeout: int, gemini_key: str) -> str:
+    r = _session.post(
+        f"{_GEMINI_API_URL}?key={gemini_key}",
+        json={
+            "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
+            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2000},
+        },
+        timeout=timeout,
+    )
+    r.raise_for_status()
+    return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+
+
+def _call_pollinations(sys_msg: str, prompt: str, timeout: int, seed: int) -> str:
+    r = _session.post(
+        _POLLINATIONS_TEXT_URL,
+        json={
+            "messages": [
+                {"role": "system", "content": sys_msg},
+                {"role": "user",   "content": prompt},
+            ],
+            "model":      "openai",
+            "seed":       seed or abs(hash(prompt)) % 9999,
+            "private":    True,
+            "max_tokens": 3000,
+        },
+        timeout=timeout,
+    )
+    r.raise_for_status()
+    data = r.json()
+    if isinstance(data, dict) and "choices" in data:
+        return data["choices"][0]["message"]["content"].strip()
+    return str(data).strip()
+
+
 def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> str:
     """
     Generate text via Groq → Gemini 1.5 Flash → Pollinations.ai (all free tiers).
+    Each provider retried up to 2 times with backoff before falling back.
     Returns empty string if all providers fail.
     """
     sys_msg = system or (
@@ -83,79 +141,58 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> 
 
     groq_key = os.environ.get("GROQ_API_KEY", "")
     if groq_key:
-        try:
-            r = _session.post(
-                _GROQ_API_URL,
-                json={
-                    "model": _GROQ_MODEL,
-                    "messages": [
-                        {"role": "system", "content": sys_msg},
-                        {"role": "user",   "content": prompt},
-                    ],
-                    "temperature": 0.7,
-                    "max_tokens": 3000,
-                },
-                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
-                timeout=timeout,
-            )
-            r.raise_for_status()
-            return r.json()["choices"][0]["message"]["content"].strip()
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 0
-            if status == 429:
-                log.warning("Groq rate limited (429) — waiting 30s before Gemini fallback")
-                sleep(30)
-            else:
-                log.warning(f"Groq HTTP error {status} — trying Gemini")
-        except Exception as exc:
-            log.warning(f"Groq error: {exc}")
+        for attempt in range(3):
+            try:
+                return _call_groq(sys_msg, prompt, timeout, groq_key)
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else 0
+                if status == 429:
+                    wait = 15 * (2 ** attempt)
+                    log.warning(f"Groq rate limited (429) — waiting {wait}s (attempt {attempt+1}/3)")
+                    sleep(wait)
+                elif status in (500, 502, 503, 504):
+                    wait = 5 * (2 ** attempt)
+                    log.warning(f"Groq server error {status} — waiting {wait}s")
+                    sleep(wait)
+                else:
+                    log.warning(f"Groq HTTP error {status} — falling back to Gemini")
+                    break
+            except Exception as exc:
+                log.warning(f"Groq error (attempt {attempt+1}/3): {exc}")
+                if attempt < 2:
+                    time.sleep(3 * (attempt + 1))
 
     gemini_key = os.environ.get("GEMINI_API_KEY", "")
     if gemini_key:
-        try:
-            r = _session.post(
-                f"{_GEMINI_API_URL}?key={gemini_key}",
-                json={
-                    "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2000},
-                },
-                timeout=timeout,
-            )
-            r.raise_for_status()
-            return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 0
-            if status == 429:
-                log.warning("Gemini rate limited (429) — waiting 30s before Pollinations fallback")
-                sleep(30)
-            else:
-                log.warning(f"Gemini HTTP error {status} — trying Pollinations")
-        except Exception as exc:
-            log.warning(f"Gemini error: {exc}")
+        for attempt in range(3):
+            try:
+                return _call_gemini(sys_msg, prompt, timeout, gemini_key)
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else 0
+                if status == 429:
+                    wait = 15 * (2 ** attempt)
+                    log.warning(f"Gemini rate limited (429) — waiting {wait}s (attempt {attempt+1}/3)")
+                    sleep(wait)
+                elif status in (500, 502, 503, 504):
+                    wait = 5 * (2 ** attempt)
+                    log.warning(f"Gemini server error {status} — waiting {wait}s")
+                    sleep(wait)
+                else:
+                    log.warning(f"Gemini HTTP error {status} — falling back to Pollinations")
+                    break
+            except Exception as exc:
+                log.warning(f"Gemini error (attempt {attempt+1}/3): {exc}")
+                if attempt < 2:
+                    time.sleep(3 * (attempt + 1))
 
-    try:
-        r = _session.post(
-            _POLLINATIONS_TEXT_URL,
-            json={
-                "messages": [
-                    {"role": "system", "content": sys_msg},
-                    {"role": "user",   "content": prompt},
-                ],
-                "model":      "openai",
-                "seed":       seed or abs(hash(prompt)) % 9999,
-                "private":    True,
-                "max_tokens": 3000,
-            },
-            timeout=timeout,
-        )
-        r.raise_for_status()
-        data = r.json()
-        if isinstance(data, dict) and "choices" in data:
-            return data["choices"][0]["message"]["content"].strip()
-        return str(data).strip()
-    except Exception as exc:
-        log.warning(f"Pollinations error: {exc}")
-        return ""
+    for attempt in range(2):
+        try:
+            return _call_pollinations(sys_msg, prompt, timeout, seed)
+        except Exception as exc:
+            log.warning(f"Pollinations error (attempt {attempt+1}/2): {exc}")
+            if attempt == 0:
+                time.sleep(5)
+    return ""
 
 
 def sentiment_score(text: str) -> str:

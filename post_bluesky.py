@@ -22,6 +22,8 @@ from pathlib import Path
 
 import requests
 
+from utils.retry import retry_call
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -147,18 +149,23 @@ def find_new_posts() -> list[dict]:
 
 
 def get_session(handle: str, password: str) -> dict:
-    resp = requests.post(
-        f"{BSKY_API}/com.atproto.server.createSession",
-        json={"identifier": handle, "password": password},
-        timeout=20,
-    )
-    resp.raise_for_status()
-    return resp.json()
+    def _auth():
+        resp = requests.post(
+            f"{BSKY_API}/com.atproto.server.createSession",
+            json={"identifier": handle, "password": password},
+            timeout=20,
+        )
+        resp.raise_for_status()
+        return resp.json()
+    result = retry_call(_auth, max_attempts=3, base_delay=5.0, default=None)
+    if result is None:
+        raise RuntimeError("Bluesky auth failed after 3 attempts")
+    return result
 
 
 def upload_image_blob(token: str, image_url: str) -> dict | None:
-    """Download image_url and upload as a Bluesky blob. Returns blob ref dict or None."""
-    try:
+    """Download image_url and upload as a Bluesky blob. Retries on transient errors."""
+    def _upload():
         r = requests.get(image_url, timeout=20, stream=True)
         r.raise_for_status()
         content_type = r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
@@ -170,18 +177,15 @@ def upload_image_blob(token: str, image_url: str) -> dict | None:
         resp = requests.post(
             f"{BSKY_API}/com.atproto.repo.uploadBlob",
             headers={
-                "Authorization":  f"Bearer {token}",
-                "Content-Type":   content_type,
+                "Authorization": f"Bearer {token}",
+                "Content-Type":  content_type,
             },
             data=data,
             timeout=30,
         )
-        if resp.status_code == 200:
-            return resp.json().get("blob")
-        log.debug("Blob upload failed HTTP %s", resp.status_code)
-    except Exception as exc:
-        log.debug("Image upload skipped (%s)", exc)
-    return None
+        resp.raise_for_status()
+        return resp.json().get("blob")
+    return retry_call(_upload, max_attempts=2, base_delay=3.0, default=None)
 
 
 def create_post(session: dict, text: str, url: str, title: str, description: str = "", image_url: str = "") -> bool:
@@ -229,21 +233,31 @@ def create_post(session: dict, text: str, url: str, title: str, description: str
         "external": external,
     }
 
-    resp = requests.post(
-        f"{BSKY_API}/com.atproto.repo.createRecord",
-        headers={"Authorization": f"Bearer {token}"},
-        json={
-            "repo":       did,
-            "collection": "app.bsky.feed.post",
-            "record":     record,
-        },
-        timeout=20,
-    )
-    if resp.status_code == 200:
-        log.info("Posted to Bluesky — %s", url)
+    def _post():
+        resp = requests.post(
+            f"{BSKY_API}/com.atproto.repo.createRecord",
+            headers={"Authorization": f"Bearer {token}"},
+            json={
+                "repo":       did,
+                "collection": "app.bsky.feed.post",
+                "record":     record,
+            },
+            timeout=20,
+        )
+        if resp.status_code == 429:
+            retry_after = int(resp.headers.get("Retry-After", "30"))
+            log.warning("Bluesky rate limited — waiting %ds", retry_after)
+            time.sleep(retry_after)
+            raise requests.exceptions.HTTPError("429 rate limited", response=resp)
+        resp.raise_for_status()
         return True
-    log.warning("Failed to post — HTTP %s: %s", resp.status_code, resp.text[:200])
-    return False
+
+    result = retry_call(_post, max_attempts=3, base_delay=5.0, default=False)
+    if result:
+        log.info("Posted to Bluesky — %s", url)
+    else:
+        log.warning("Failed to post to Bluesky — %s", url)
+    return bool(result)
 
 
 def build_post_text(post: dict) -> str:

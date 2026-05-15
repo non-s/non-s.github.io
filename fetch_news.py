@@ -40,6 +40,7 @@ from utils.ai_helper import (
     quality_check as _quality_check,
     BREAKING_KEYWORDS,
 )
+from utils.retry import retry_call
 
 # HTTP session reutilizável (melhor performance)
 _session = requests.Session()
@@ -57,15 +58,15 @@ _pollinations_text = _ai_text
 
 def _fetch_wikipedia_summary(query: str) -> str:
     """Busca resumo do Wikipedia em inglês para o título dado. Retorna até 500 chars."""
-    try:
+    def _do_fetch():
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(query)}"
         r = requests.get(url, timeout=10, headers={"User-Agent": "GlobalBRNews/1.0"})
-        if r.status_code == 200:
-            data = r.json()
-            return data.get("extract", "")[:500]
-    except Exception:
-        pass
-    return ""
+        if r.status_code == 404:
+            return ""
+        r.raise_for_status()
+        return r.json().get("extract", "")[:500]
+    result = retry_call(_do_fetch, max_attempts=2, base_delay=2.0, default="")
+    return result or ""
 
 
 # ============================================================
@@ -138,20 +139,46 @@ def _check_source_url(url: str, timeout: int = 5) -> bool:
         return True   # network error — don't block the run
 
 
+_PROTECTED_SLUG_PATTERNS = re.compile(
+    r'roundup|digest|weekly|milestone|stats|best-of|infographic',
+    re.IGNORECASE,
+)
+
+
+def _get_referenced_slugs() -> set:
+    """Return stems of posts referenced in roundup/digest content (protected from cleanup)."""
+    referenced: set = set()
+    for post_path in POSTS_DIR.glob("*.md"):
+        if not _PROTECTED_SLUG_PATTERNS.search(post_path.name):
+            continue
+        try:
+            content = post_path.read_text(encoding="utf-8", errors="replace")
+            for m in re.finditer(r'/(\d{4}/\d{2}/\d{2}/[^/\s"\']+)/', content):
+                slug_part = m.group(1).split("/")[-1]
+                referenced.add(slug_part)
+        except Exception:
+            pass
+    return referenced
+
+
 def cleanup_old_posts(max_age_days: int = 90) -> int:
     """
     Scans _posts/ for .md files older than max_age_days.
-    Skips roundup/digest files. Deletes old posts and returns count deleted.
+    Skips roundup/digest/milestone/stats posts and posts referenced in roundups.
+    Returns count deleted.
     """
     from datetime import timedelta
     cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    referenced_slugs = _get_referenced_slugs()
     deleted = 0
     for post_path in POSTS_DIR.glob("*.md"):
         filename = post_path.name
-        # Skip roundup and digest files
-        if "roundup" in filename or "digest" in filename:
+        if _PROTECTED_SLUG_PATTERNS.search(filename):
             continue
-        # Parse date from YYYY-MM-DD prefix
+        stem = post_path.stem
+        slug_part = stem[11:] if len(stem) > 11 else stem  # strip YYYY-MM-DD-
+        if slug_part in referenced_slugs:
+            continue
         m = re.match(r'^(\d{4})-(\d{2})-(\d{2})-', filename)
         if not m:
             continue
@@ -249,13 +276,18 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
     Downloads background from Pollinations, overlays title + branding.
     Saves as WebP to assets/images/posts/SLUG.webp.
     Returns relative path /assets/images/posts/SLUG.webp, or falls back to Pollinations URL.
+    Returns immediately if the image already exists on disk (cache hit).
     """
     fallback = _news_image_url(title, category)
+    out_dir = Path("assets/images/posts")
+    cached_path = out_dir / f"{slug}.webp"
+    if cached_path.exists() and cached_path.stat().st_size > 1000:
+        return f"/assets/images/posts/{slug}.webp"
+
     try:
         from PIL import Image, ImageDraw, ImageFont
         import io
 
-        out_dir = Path("assets/images/posts")
         out_dir.mkdir(parents=True, exist_ok=True)
 
         # ── Download background image from Pollinations ──────────
@@ -409,9 +441,24 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
     if raw:
         try:
             clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
-            m = re.search(r'\{.*\}', clean, re.DOTALL)
-            if m:
-                result = json.loads(m.group())
+            # Find outermost JSON object — scan for matching braces
+            start = clean.find('{')
+            if start >= 0:
+                depth = 0
+                end = start
+                for i, ch in enumerate(clean[start:], start):
+                    if ch == '{':
+                        depth += 1
+                    elif ch == '}':
+                        depth -= 1
+                        if depth == 0:
+                            end = i
+                            break
+                try:
+                    result = json.loads(clean[start:end + 1])
+                except json.JSONDecodeError:
+                    # Last resort: try the whole clean string
+                    result = json.loads(clean)
         except Exception as e:
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
@@ -1515,13 +1562,24 @@ def is_blacklisted(title: str, description: str) -> bool:
     return False
 
 
+# Inverted index built once at import time: word → (cat, tags)
+# Avoids O(n*keywords) scan per article.
+_KEYWORD_INDEX: dict[str, tuple[str, list]] = {
+    kw: val for kw, val in KEYWORD_CATEGORIES.items()
+}
+
 def get_extra_tags(title: str, description: str) -> tuple[str, list]:
-    """Detecta categoria e tags extras a partir do conteúdo."""
+    """Detecta categoria e tags extras a partir do conteúdo (inverted index)."""
     combined = (title + " " + description).lower()
-    for keyword, (cat, tags) in KEYWORD_CATEGORIES.items():
+    for keyword, (cat, tags) in _KEYWORD_INDEX.items():
         if keyword in combined:
             return cat, tags
     return "", []
+
+
+# Dead-feed failure counter: feed name → consecutive failure count
+_feed_failures: dict[str, int] = {}
+_DEAD_FEED_THRESHOLD = 3
 
 
 def post_filename(date: datetime, slug: str) -> str:
@@ -2399,26 +2457,45 @@ def _generate_weekly_stats_post() -> None:
 # TRENDING KEYWORDS — Google Trends RSS
 # ============================================================
 
+_TRENDING_STOP_WORDS = frozenset({
+    "about", "after", "again", "also", "back", "been", "before", "being",
+    "between", "both", "could", "does", "doing", "during", "each", "from",
+    "have", "here", "into", "just", "know", "like", "make", "more", "most",
+    "much", "need", "news", "next", "only", "other", "over", "same", "says",
+    "should", "some", "still", "such", "than", "that", "their", "them",
+    "then", "there", "these", "they", "this", "those", "through", "time",
+    "very", "want", "were", "what", "when", "where", "which", "while",
+    "will", "with", "would", "your",
+})
+
+_TRENDS_FEEDS = [
+    "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
+    "https://trends.google.com/trends/trendingsearches/daily/rss?geo=GB",
+    "https://trends.google.com/trends/trendingsearches/daily/rss?geo=BR",
+]
+
+
 def _get_trending_keywords() -> set:
     """
-    Fetches Google Trends daily RSS for the US and returns a set of lowercase
+    Fetches Google Trends daily RSS for US/GB/BR and returns a set of lowercase
     keywords extracted from trending titles. Returns empty set on any failure.
     """
-    try:
-        parsed = feedparser.parse(
-            "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
-            request_headers={"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"},
-        )
-        keywords: set = set()
-        for entry in parsed.get("entries", []):
-            title = getattr(entry, "title", "")
-            for word in title.split():
-                word = word.lower().strip(".,!?\"'")
-                if len(word) > 4:
-                    keywords.add(word)
-        return keywords
-    except Exception:
-        return set()
+    keywords: set = set()
+    for feed_url in _TRENDS_FEEDS:
+        try:
+            parsed = feedparser.parse(
+                feed_url,
+                request_headers={"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"},
+            )
+            for entry in parsed.get("entries", []):
+                title = getattr(entry, "title", "")
+                for word in title.split():
+                    word = word.lower().strip(".,!?\"'()-")
+                    if len(word) > 4 and word not in _TRENDING_STOP_WORDS and word.isalpha():
+                        keywords.add(word)
+        except Exception:
+            continue
+    return keywords
 
 
 # ============================================================
@@ -2446,16 +2523,29 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
         })
     except Exception as e:
         log.error(f"  ❌ Erro ao ler feed {name}: {e}")
+        _feed_failures[name] = _feed_failures.get(name, 0) + 1
+        if _feed_failures[name] >= _DEAD_FEED_THRESHOLD:
+            log.warning(f"  💀 Feed possivelmente morto ({_feed_failures[name]} falhas consecutivas): {name}")
         return 0
 
-    if parsed.bozo:
-        log.warning(f"  ⚠️  Feed com problemas de parse: {parsed.bozo_exception}")
+    if parsed.bozo and not parsed.entries:
+        exc = getattr(parsed, 'bozo_exception', None)
+        log.warning(f"  ⚠️  Feed inválido (bozo, sem entradas): {name} — {exc}")
+        _feed_failures[name] = _feed_failures.get(name, 0) + 1
+        if _feed_failures[name] >= _DEAD_FEED_THRESHOLD:
+            log.warning(f"  💀 Feed possivelmente morto ({_feed_failures[name]} falhas consecutivas): {name}")
+        return 0
+    elif parsed.bozo:
+        log.debug(f"  ⚠️  Feed com bozo mas tem entradas: {parsed.bozo_exception}")
 
     entries = parsed.entries
     if not entries:
         log.info(f"  ℹ️  Nenhuma entrada encontrada em {name}")
+        _feed_failures[name] = _feed_failures.get(name, 0) + 1
         return 0
 
+    # Reset failure counter on success
+    _feed_failures[name] = 0
     log.info(f"  📋 {len(entries)} entradas encontradas")
 
     created_count = 0
@@ -2663,6 +2753,10 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     source      = item.get("source", "Unknown")
 
     if not title or not link:
+        return 0
+
+    # Check global limit BEFORE doing any expensive processing
+    if max_override is not None and max_override <= 0:
         return 0
 
     if not _check_source_url(link):
