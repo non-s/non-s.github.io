@@ -2656,6 +2656,9 @@ def _get_trending_keywords() -> set:
 # FUNÇÃO PRINCIPAL
 # ============================================================
 
+from utils.ranking import entry_relevance_score as _entry_relevance_score
+
+
 def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     """
     Processa um feed RSS e cria posts novos.
@@ -2701,6 +2704,12 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     # Reset failure counter on success
     _feed_failures[name] = 0
     log.info(f"  📋 {len(entries)} entradas encontradas")
+
+    # ── Pre-filter / pre-rank entries before we burn AI on them ─────
+    # Quality > volume. We sort entries by a lightweight score (no AI,
+    # no network) so the AI enrichment slots go to the strongest stories
+    # in the feed, not just whoever happens to be at the top.
+    entries = sorted(entries, key=_entry_relevance_score, reverse=True)
 
     created_count = 0
 
