@@ -22,6 +22,7 @@ from pathlib import Path
 
 import requests
 
+from utils.frontmatter import parse as _parse_fm, get_str, get_list
 from utils.retry import retry_call
 
 logging.basicConfig(
@@ -69,34 +70,14 @@ CATEGORY_HASHTAGS = {
 }
 
 
-def parse_frontmatter(text: str) -> dict:
-    if not text.startswith("---"):
-        return {}
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return {}
-    data: dict = {}
-    for line in parts[1].splitlines():
-        if ":" not in line:
-            continue
-        key, _, val = line.partition(":")
-        key = key.strip()
-        val = val.strip().strip('"').strip("'")
-        if val.startswith("[") and val.endswith("]"):
-            data[key] = [v.strip().strip('"').strip("'") for v in val[1:-1].split(",")]
-        else:
-            data[key] = val
-    return data
-
-
 def build_post_url(filename: str, fm: dict) -> str:
     stem  = filename.removesuffix(".md")
     parts = stem.split("-", 3)
     if len(parts) < 4:
         return SITE_BASE + "/"
     year, month, day, slug = parts
-    cats     = fm.get("categories", [])
-    category = (cats[0] if isinstance(cats, list) and cats else "news").strip()
+    cats     = get_list(fm, "categories")
+    category = (cats[0] if cats else "news").strip()
     return f"{SITE_BASE}/{category}/{year}/{month}/{day}/{slug}/"
 
 
@@ -124,7 +105,7 @@ def find_new_posts() -> list[dict]:
                 rel = f"_posts/{path.name}"
                 if rel in changed_files or path.name in changed_files:
                     text = path.read_text(encoding="utf-8", errors="replace")
-                    fm   = parse_frontmatter(text)
+                    fm   = _parse_fm(text)
                     url  = build_post_url(path.name, fm)
                     results.append({"filename": path.name, "url": url, "fm": fm})
                     if len(results) >= MAX_POSTS:
@@ -140,7 +121,7 @@ def find_new_posts() -> list[dict]:
         if path.stat().st_mtime < cutoff:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        fm   = parse_frontmatter(text)
+        fm   = _parse_fm(text)
         url  = build_post_url(path.name, fm)
         results.append({"filename": path.name, "url": url, "fm": fm})
         if len(results) >= MAX_POSTS:
@@ -266,13 +247,13 @@ def build_post_text(post: dict) -> str:
     link, and relevant hashtags. Fits within the 300-grapheme limit.
     """
     fm          = post["fm"]
-    title       = fm.get("title", "").strip('"').strip("'") or "New Article"
-    cats        = fm.get("categories", [])
-    category    = (cats[0] if isinstance(cats, list) and cats else "news").strip().lower()
+    title       = get_str(fm, "title", "New Article")
+    cats        = get_list(fm, "categories")
+    category    = (cats[0] if cats else "news").strip().lower()
     url         = post["url"]
-    description = fm.get("description", "").strip('"').strip("'").strip()
-    tags_fm     = fm.get("tags", [])
-    key_points  = fm.get("key_points", [])
+    description = get_str(fm, "description")
+    tags_fm     = get_list(fm, "tags")
+    key_points  = get_list(fm, "key_points")
 
     emoji = CATEGORY_EMOJIS.get(category, "📰")
 
@@ -377,9 +358,9 @@ def main() -> None:
             pass  # network error — still try to post (GitHub Pages may not be live yet)
 
         text        = build_post_text(post)
-        title       = post["fm"].get("title", "").strip('"').strip("'")
-        description = post["fm"].get("description", "").strip('"').strip("'")
-        image_url   = post["fm"].get("image", "").strip('"').strip("'")
+        title       = get_str(post["fm"], "title")
+        description = get_str(post["fm"], "description")
+        image_url   = get_str(post["fm"], "image")
         if create_post(session, text, post_url, title, description, image_url):
             ok += 1
         time.sleep(2)  # be polite to the API

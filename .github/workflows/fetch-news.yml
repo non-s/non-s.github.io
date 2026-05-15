@@ -21,10 +21,15 @@ on:
         default: "false"
         type: boolean
 
+concurrency:
+  group: fetch-news
+  cancel-in-progress: false
+
 jobs:
   fetch-and-publish:
     name: "Fetch & publish news"
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     permissions:
       contents: write

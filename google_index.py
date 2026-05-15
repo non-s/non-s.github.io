@@ -20,6 +20,7 @@ from pathlib import Path
 
 import requests
 
+from utils.frontmatter import parse as _parse_fm, get_str, get_list
 from utils.retry import retry_call
 
 # ---------------------------------------------------------------------------
@@ -49,29 +50,6 @@ LOOKBACK_HOURS = 2
 # Helpers
 # ---------------------------------------------------------------------------
 
-def parse_frontmatter(text: str) -> dict:
-    """Minimal YAML frontmatter parser — no external deps."""
-    if not text.startswith("---"):
-        return {}
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return {}
-    raw = parts[1]
-    data: dict = {}
-    for line in raw.splitlines():
-        if ":" not in line:
-            continue
-        key, _, val = line.partition(":")
-        key = key.strip()
-        val = val.strip().strip('"').strip("'")
-        if val.startswith("[") and val.endswith("]"):
-            items = [v.strip().strip('"').strip("'") for v in val[1:-1].split(",")]
-            data[key] = items
-        else:
-            data[key] = val
-    return data
-
-
 def build_post_url(filename: str, frontmatter: dict) -> str:
     """
     Build the full permalink for a post.
@@ -82,8 +60,8 @@ def build_post_url(filename: str, frontmatter: dict) -> str:
     if len(parts) < 4:
         return f"{SITE_BASE_URL}/"
     year, month, day, slug = parts[0], parts[1], parts[2], parts[3]
-    cats = frontmatter.get("categories", [])
-    category = (cats[0] if isinstance(cats, list) and cats else "news").strip()
+    cats     = get_list(frontmatter, "categories")
+    category = (cats[0] if cats else "news").strip()
     return f"{SITE_BASE_URL}/{category}/{year}/{month}/{day}/{slug}/"
 
 
@@ -98,7 +76,7 @@ def find_new_posts() -> list[tuple[str, str]]:
         if path.stat().st_mtime < cutoff:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        fm = parse_frontmatter(text)
+        fm   = _parse_fm(text)
         url = build_post_url(path.name, fm)
         results.append((path.name, url))
         if len(results) >= MAX_URLS_PER_RUN:

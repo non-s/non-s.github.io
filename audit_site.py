@@ -2,41 +2,22 @@
 """Weekly site audit — checks posts for quality issues and generates _data/audit_report.json"""
 import json
 import logging
-import re
+import os
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-import os
+from utils.frontmatter import parse as parse_frontmatter, get_str, get_list
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-POSTS_DIR = Path("_posts")
-DATA_DIR  = Path("_data")
+POSTS_DIR   = Path("_posts")
+DATA_DIR    = Path("_data")
 OUTPUT_FILE = DATA_DIR / "audit_report.json"
 
-# Configurable via environment variables
-OLD_POST_DAYS          = int(os.environ.get("AUDIT_MAX_AGE_DAYS",       "90"))
-SHORT_TITLE_CHARS      = int(os.environ.get("AUDIT_MIN_TITLE_CHARS",    "20"))
-MIN_POSTS_PER_CATEGORY = int(os.environ.get("AUDIT_MIN_POSTS_PER_CAT",  "3"))
-SHORT_DESC_CHARS       = int(os.environ.get("AUDIT_MIN_DESC_CHARS",     "50"))
-
-FRONT_MATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
-
-
-def parse_frontmatter(text: str) -> dict:
-    """Extract frontmatter fields as a simple dict (no YAML parser required)."""
-    match = FRONT_MATTER_RE.match(text)
-    if not match:
-        return {}
-    fm: dict = {}
-    for line in match.group(1).splitlines():
-        if ":" not in line:
-            continue
-        key, _, raw = line.partition(":")
-        key = key.strip()
-        raw = raw.strip().strip('"').strip("'")
-        fm[key] = raw
-    return fm
+OLD_POST_DAYS          = int(os.environ.get("AUDIT_MAX_AGE_DAYS",      "90"))
+SHORT_TITLE_CHARS      = int(os.environ.get("AUDIT_MIN_TITLE_CHARS",   "20"))
+MIN_POSTS_PER_CATEGORY = int(os.environ.get("AUDIT_MIN_POSTS_PER_CAT", "3"))
+SHORT_DESC_CHARS       = int(os.environ.get("AUDIT_MIN_DESC_CHARS",    "50"))
 
 
 def main() -> None:
@@ -63,42 +44,34 @@ def main() -> None:
 
     for post_path in md_files:
         text = post_path.read_text(encoding="utf-8", errors="replace")
-        fm = parse_frontmatter(text)
+        fm   = parse_frontmatter(text)
         slug = post_path.name
 
-        # --- image ---
-        if not fm.get("image"):
+        if not get_str(fm, "image"):
             posts_without_image.append(slug)
 
-        # --- description ---
-        desc = fm.get("description", "")
+        desc = get_str(fm, "description")
         if not desc or len(desc) < SHORT_DESC_CHARS:
             posts_without_description.append(slug)
 
-        # --- tags ---
-        raw_tags = fm.get("tags", "")
-        if not raw_tags or raw_tags in ("[]", ""):
+        tags = get_list(fm, "tags")
+        if not tags:
             posts_without_tags.append(slug)
 
-        # --- categories ---
-        raw_cats = fm.get("categories", "")
-        if not raw_cats or raw_cats in ("[]", ""):
+        cats = get_list(fm, "categories")
+        if not cats:
             posts_without_categories.append(slug)
         else:
-            # categories: [foo, bar]  or  categories: [foo]
-            cats_str = raw_cats.lstrip("[").rstrip("]")
-            for cat in cats_str.split(","):
+            for cat in cats:
                 cat = cat.strip()
                 if cat:
                     category_counts[cat] = category_counts.get(cat, 0) + 1
 
-        # --- short title ---
-        title = fm.get("title", "")
+        title = get_str(fm, "title")
         if len(title) < SHORT_TITLE_CHARS:
             posts_short_title.append(slug)
 
-        # --- age ---
-        date_str = fm.get("date", "")
+        date_str = get_str(fm, "date")
         if date_str:
             try:
                 # Accept "2026-01-19 14:00:00 +0000" or "2026-01-19"
