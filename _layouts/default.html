@@ -6,8 +6,7 @@
   {% include head.html %}
 </head>
 <body{% if page.layout == 'post' %} class="layout-post"{% endif %}>
-<div id="reading-progress" style="position:fixed;top:0;left:0;height:3px;width:0%;background:var(--c-accent);z-index:9999;transition:width .1s linear;" aria-hidden="true"></div>
-<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<a href="#main-content" class="skip-link skip-to-content">Skip to main content</a>
 
   <!-- ── NAVBAR ─────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg techbr-navbar sticky-top">
@@ -491,6 +490,14 @@
       el.textContent = timeAgo(el.dataset.pubdate);
     });
   })();
+  </script>
+
+  <!-- ── Lazy image fade-in ─────────────────────────────── -->
+  <script>
+  document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
+    if (img.complete) img.classList.add('loaded');
+    else img.addEventListener('load', function() { img.classList.add('loaded'); });
+  });
   </script>
 
   <!-- ── Navbar Search Autocomplete ─────────────────────── -->

@@ -3,8 +3,8 @@
 // cache-then-network for homepage, offline fallback with cached articles by category,
 // background sync for saving offline reads.
 
-const CACHE_NAME        = 'globalbr-v4';
-const ARTICLE_CACHE     = 'globalbr-articles-v4';
+const CACHE_NAME        = 'globalbr-v1';
+const ARTICLE_CACHE     = 'globalbr-articles-v1';
 const OFFLINE           = '/offline.html';
 const MAX_ARTICLE_CACHE = 50;
 const SYNC_TAG          = 'globalbr-offline-reads';
@@ -14,6 +14,7 @@ const STATIC_ASSETS = [
   OFFLINE,
   '/assets/css/style.css',
   '/manifest.json',
+  '/search/',
 ];
 
 // ── Install: pre-cache static shell ──────────────────────────
