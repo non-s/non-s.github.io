@@ -38,3 +38,19 @@ jobs:
         env:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
+      - name: "📊 Post Top 5 semanal no Bluesky"
+        run: python post_weekly_bluesky.py
+        continue-on-error: true
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
+      - name: "🔍 Monitor saúde dos feeds RSS"
+        run: python monitor_feeds.py
+        continue-on-error: true
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"

@@ -171,6 +171,15 @@ jobs:
             echo "✅ IndexNow notificado: $URLS"
           fi
 
+      - name: "🦋 Postar roundup diário no Bluesky (thread)"
+        run: python post_roundup_thread_bluesky.py
+        continue-on-error: true
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
         run: echo "✨ No new posts this run — skipping commit."
