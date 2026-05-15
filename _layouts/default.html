@@ -195,7 +195,7 @@
           <p class="footer-desc">
             World news portal maintained by
             <strong style="color:rgba(255,255,255,.7);">Julio</strong>,
-            automatically updated every hour with the biggest global news sources.
+            automatically updated 5× per day with the biggest global news sources.
           </p>
           <div class="footer-social">
             <a href="{{ '/feed.xml' | relative_url }}" class="social-btn" title="RSS Feed">
@@ -282,7 +282,7 @@
           crossorigin="anonymous"
           defer></script>
 
-  <!-- ── BACK TO TOP with circular progress  (UX feat 5) ──── -->
+  <!-- ── BACK TO TOP with circular progress ──────────────── -->
   <button id="back-top" aria-label="Back to top">
     <svg viewBox="0 0 36 36" class="progress-ring" aria-hidden="true">
       <circle cx="18" cy="18" r="15" class="ring-bg"/>
@@ -290,70 +290,6 @@
     </svg>
     <i class="bi bi-arrow-up"></i>
   </button>
-  <script>
-  (function(){
-    var btn  = document.getElementById('back-top');
-    var ring = document.getElementById('ring-progress');
-    var circ = 2 * Math.PI * 15; // ≈ 94.25
-    ring.style.strokeDasharray  = circ;
-    ring.style.strokeDashoffset = circ;
-    window.addEventListener('scroll', function(){
-      var doc    = document.documentElement;
-      var scrolled = doc.scrollTop || document.body.scrollTop;
-      var total    = doc.scrollHeight - doc.clientHeight;
-      var pct      = total > 0 ? scrolled / total : 0;
-      ring.style.strokeDashoffset = circ * (1 - pct);
-      btn.classList.toggle('visible', scrolled > 300);
-    }, {passive: true});
-    btn.addEventListener('click', function(){
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    });
-  })();
-  </script>
-
-  <!-- ── INFINITE SCROLL  (Task 10) ───────────────────────── -->
-  <script>
-  (function(){
-    var nextLink = document.querySelector('a[rel="next"], .pagination-wrap .page-chip[href*="page"]');
-    /* Use the paginator next chevron if present */
-    var paginationWrap = document.querySelector('.pagination-wrap');
-    if (paginationWrap) {
-      var chips = paginationWrap.querySelectorAll('a.page-chip');
-      chips.forEach(function(chip){
-        if (chip.querySelector('.bi-chevron-right')) nextLink = chip;
-      });
-    }
-    if (!nextLink) return;
-    var loading = false;
-    var grid = document.querySelector('.row.g-3');
-    if (!grid) return;
-    window.addEventListener('scroll', function(){
-      if (loading || !nextLink) return;
-      if (window.scrollY + window.innerHeight > document.body.offsetHeight - 600) {
-        loading = true;
-        var href = nextLink.href;
-        fetch(href)
-          .then(function(r){ return r.text(); })
-          .then(function(html){
-            var doc = new DOMParser().parseFromString(html, 'text/html');
-            var cards = doc.querySelectorAll('.row.g-3 > [class*="col-"]');
-            cards.forEach(function(c){ grid.appendChild(c.cloneNode(true)); });
-            /* find next page link in loaded page */
-            nextLink = null;
-            var newPagination = doc.querySelector('.pagination-wrap');
-            if (newPagination) {
-              var newChips = newPagination.querySelectorAll('a.page-chip');
-              newChips.forEach(function(chip){
-                if (chip.querySelector('.bi-chevron-right')) nextLink = {href: chip.href};
-              });
-            }
-            loading = false;
-          })
-          .catch(function(){ loading = false; nextLink = null; });
-      }
-    }, {passive:true});
-  })();
-  </script>
 
   <!-- ── KEYBOARD SHORTCUTS MODAL ────────────────────────── -->
   <div id="kb-shortcuts-modal" class="kb-modal" role="dialog" aria-label="Keyboard shortcuts" aria-hidden="true">
@@ -370,49 +306,6 @@
     </div>
   </div>
 
-  <!-- ── KEYBOARD SHORTCUTS JS ─────────────────────────── -->
-  <script>
-  (function(){
-    document.addEventListener('keydown', function(e) {
-      // Don't trigger in inputs/textareas
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-
-      var key = e.key;
-
-      // "/" — focus search
-      if (key === '/') {
-        e.preventDefault();
-        var search = document.querySelector('.search-input');
-        if (search) { search.focus(); search.select(); }
-      }
-
-      // "j" — next post (post pages only)
-      if (key === 'j') {
-        var next = document.querySelector('.post-nav-item.prev a, a[rel="prev"]');
-        if (next) window.location.href = next.href;
-      }
-
-      // "k" — previous post
-      if (key === 'k') {
-        var prev = document.querySelector('.post-nav-item.next a, a[rel="next"]');
-        if (prev) window.location.href = prev.href;
-      }
-
-      // "h" — go home
-      if (key === 'h') {
-        window.location.href = '/';
-      }
-
-      // "?" — show keyboard shortcuts
-      if (key === '?') {
-        var modal = document.getElementById('kb-shortcuts-modal');
-        if (modal) modal.classList.toggle('active');
-      }
-    });
-  })();
-  </script>
-
   <!-- ── KO-FI DONATION BUTTON ────────────────────────────── -->
   {% if site.kofi_id %}
   <div class="kofi-widget-container">
@@ -422,124 +315,7 @@
   </div>
   {% endif %}
 
-  <!-- ── READING PROGRESS BAR JS ────────────────────────── -->
-  <script>
-  (function() {
-    var bar = document.getElementById('reading-progress');
-    if (!bar) return;
-    window.addEventListener('scroll', function() {
-      var doc = document.documentElement;
-      var scrolled = doc.scrollTop || document.body.scrollTop;
-      var total = doc.scrollHeight - doc.clientHeight;
-      bar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
-    }, { passive: true });
-  })();
-  </script>
-
-  <!-- ── New Posts Polling Notification ─────────────────── -->
-  <script>
-  (function(){
-    var POLL_INTERVAL = 5 * 60 * 1000;
-    var lastCheck = Date.now();
-    var notified = false;
-
-    function checkForNewPosts() {
-      if(notified) return;
-      fetch('/search-index.json?t=' + Date.now(), {cache: 'no-store'})
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          if(!data || !data.length) return;
-          var latest = new Date(data[0].date);
-          if(latest.getTime() > lastCheck) {
-            showNewPostsBanner(data[0]);
-            notified = true;
-          }
-        }).catch(function(){});
-    }
-
-    function showNewPostsBanner(post) {
-      var banner = document.createElement('div');
-      banner.className = 'new-posts-banner';
-      banner.innerHTML = '<i class="bi bi-arrow-up-circle"></i> New article: <strong>' + (post.title||'').substring(0,50) + '</strong> <a href="' + (post.url||'/') + '">Read &rarr;</a> <button onclick="this.parentElement.remove()">&#x2715;</button>';
-      document.body.appendChild(banner);
-      setTimeout(function(){ if(banner.parentElement) banner.style.opacity='0'; }, 10000);
-      setTimeout(function(){ if(banner.parentElement) banner.remove(); }, 10500);
-    }
-
-    if(!document.body.classList.contains('layout-post')) {
-      setTimeout(function poll(){ checkForNewPosts(); setTimeout(poll, POLL_INTERVAL); }, POLL_INTERVAL);
-    }
-  })();
-  </script>
-
-  <!-- ── Freshness indicators — "2 hours ago", "3 days ago" ── -->
-  <script>
-  (function() {
-    function timeAgo(iso) {
-      var d = new Date(iso), now = new Date();
-      var s = Math.floor((now - d) / 1000);
-      if (s < 60)   return 'Just now';
-      var m = Math.floor(s / 60);
-      if (m < 60)   return m + 'm ago';
-      var h = Math.floor(m / 60);
-      if (h < 24)   return h + 'h ago';
-      var day = Math.floor(h / 24);
-      if (day < 7)  return day + 'd ago';
-      return d.toLocaleDateString('en', {month:'short', day:'numeric'});
-    }
-    document.querySelectorAll('.post-date[data-pubdate]').forEach(function(el) {
-      el.textContent = timeAgo(el.dataset.pubdate);
-    });
-  })();
-  </script>
-
-  <!-- ── Lazy image fade-in ─────────────────────────────── -->
-  <script>
-  document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
-    if (img.complete) img.classList.add('loaded');
-    else img.addEventListener('load', function() { img.classList.add('loaded'); });
-  });
-  </script>
-
-  <!-- ── Navbar Search Autocomplete ─────────────────────── -->
-  <script>
-  (function(){
-    var searchData = [];
-    fetch('/search-index.json').then(function(r){ return r.json(); }).then(function(data){ searchData = data; });
-
-    var input = document.querySelector('form[action*="search"] .search-input');
-    if (!input) return;
-    var wrapper = input.closest('form');
-    if (!wrapper) return;
-    wrapper.style.position = 'relative';
-
-    var dropdown = document.createElement('div');
-    dropdown.id = 'nav-autocomplete-dropdown';
-    dropdown.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--c-surface);border:1px solid var(--c-border2);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:9999;max-height:300px;overflow-y:auto;display:none;min-width:280px;';
-    wrapper.appendChild(dropdown);
-
-    input.addEventListener('input', function() {
-      var q = this.value.trim().toLowerCase();
-      if (q.length < 3) { dropdown.style.display = 'none'; return; }
-      var matches = searchData.filter(function(p) {
-        return p.title.toLowerCase().includes(q);
-      }).slice(0, 8);
-      if (matches.length === 0) { dropdown.style.display = 'none'; return; }
-      dropdown.innerHTML = matches.map(function(p) {
-        return '<a href="' + p.url + '" style="display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;color:var(--c-text);text-decoration:none;border-bottom:1px solid var(--c-border);font-size:.85rem;" onmouseover="this.style.background=\'var(--c-surface2)\'" onmouseout="this.style.background=\'\'">' +
-          '<span style="flex:1;">' + p.title + '</span>' +
-          '<span style="color:var(--c-muted);font-size:.75rem;">' + (p.category||'') + '</span>' +
-          '</a>';
-      }).join('');
-      dropdown.style.display = 'block';
-    });
-
-    document.addEventListener('click', function(e) {
-      if (!wrapper.contains(e.target)) dropdown.style.display = 'none';
-    });
-  })();
-  </script>
-
+  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
 
 </body>
 </html>

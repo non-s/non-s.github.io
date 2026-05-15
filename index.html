@@ -79,7 +79,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           <div class="hero-img-placeholder">
             <div class="placeholder-icon">⚡</div>
             <div style="text-align:center;">
-              <p style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.4);margin:0;">TechBR News</p>
+              <p style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.4);margin:0;">GlobalBR News</p>
               <p style="font-size:.78rem;color:rgba(255,255,255,.2);margin:0;">Featured Technology</p>
             </div>
           </div>
@@ -170,15 +170,10 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
       <div class="post-counter">
         <span class="counter-item"><i class="bi bi-file-text"></i> {{ site.posts | size }} total posts</span>
         <span class="counter-item"><i class="bi bi-calendar-check"></i> {{ today_count }} today</span>
-        <span class="counter-item"><i class="bi bi-clock"></i> Updated every 5 min</span>
-        <span class="next-update ms-auto" id="next-update">
-          <i class="bi bi-clock"></i> Next update in <span id="update-countdown">5:00</span>
+        <span class="counter-item"><i class="bi bi-clock"></i> Updated 5× per day</span>
+        <span class="next-update ms-auto">
+          <i class="bi bi-clock"></i> Next update in <span id="update-countdown">--:--</span>
         </span>
-      </div>
-
-      <!-- Next-update countdown  (UX feat 8) -->
-      <div class="next-update mb-2" id="next-update">
-        <i class="bi bi-clock"></i> Next update in <span id="update-countdown">5:00</span>
       </div>
 
       <!-- Category Filter (Task 2) -->
@@ -308,7 +303,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
           <div class="empty-icon">📡</div>
           <h4>Aguardando novas notícias</h4>
           <p style="font-size:.9rem;max-width:380px;margin:.5rem auto 1.5rem;">
-            O robô de notícias roda automaticamente às <strong style="color:rgba(255,255,255,.6);">8h, 12h e 18h</strong>.
+            O robô de notícias roda automaticamente às <strong style="color:rgba(255,255,255,.6);">6h, 10h, 14h, 18h e 22h UTC</strong>.
             Em breve este espaço estará cheio de notícias de tecnologia!
           </p>
           <a href="{{ '/feed.xml' | relative_url }}"
@@ -346,134 +341,7 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
     </div>
     <!-- /col principal -->
 
-    <!-- Copy link JS -->
-    <script>
-    function copyCardLink(btn) {
-      var url = btn.dataset.url;
-      navigator.clipboard.writeText(url).then(function(){
-        btn.innerHTML = '<i class="bi bi-check2"></i>';
-        setTimeout(function(){ btn.innerHTML = '<i class="bi bi-link-45deg"></i>'; }, 2000);
-      });
-    }
-    </script>
-
-    <!-- Index page JS: skeleton, fade-in, badge NEW, date filter, countdown -->
-    <script>
-    (function(){
-
-      /* ── 1. Skeleton: show posts after 400ms ─────────────────── */
-      var skeleton  = document.getElementById('skeleton-grid');
-      var postsGrid = document.getElementById('posts-grid');
-      if (skeleton && postsGrid) {
-        setTimeout(function(){
-          skeleton.style.display  = 'none';
-          postsGrid.style.display = '';
-          initObserver();
-          addBadges();
-        }, 400);
-      } else {
-        initObserver();
-        addBadges();
-      }
-
-      /* ── 2. IntersectionObserver fade-in ─────────────────────── */
-      function initObserver() {
-        if (!window.IntersectionObserver) {
-          document.querySelectorAll('.news-card').forEach(function(c){
-            c.classList.add('visible');
-          });
-          return;
-        }
-        var obs = new IntersectionObserver(function(entries){
-          entries.forEach(function(e){
-            if (e.isIntersecting) {
-              e.target.classList.add('visible');
-              obs.unobserve(e.target);
-            }
-          });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.news-card').forEach(function(c){ obs.observe(c); });
-      }
-
-      /* ── 3. Badge NEW (posts published in the last 2 hours) ──── */
-      function addBadges() {
-        document.querySelectorAll('.news-card[data-pubdate]').forEach(function(card){
-          var pub = new Date(card.dataset.pubdate);
-          if (Date.now() - pub.getTime() < 7200000) {
-            var badge = document.createElement('span');
-            badge.className = 'badge-new';
-            badge.textContent = 'NEW';
-            var headline = card.querySelector('.card-headline');
-            if (headline) headline.prepend(badge);
-          }
-        });
-      }
-
-      /* ── 4. Category & Sentiment & Period filters ────────────── */
-      var cards      = document.querySelectorAll('#posts-grid > [data-category]');
-      var activeCat  = 'all';
-      var activeSent = 'all';
-      var activePer  = 'all';
-
-      function applyFilters() {
-        var now = Date.now();
-        var todayStart = new Date(); todayStart.setHours(0,0,0,0);
-        var weekStart  = new Date(now - 7 * 24 * 3600 * 1000);
-        cards.forEach(function(card){
-          var cat  = (card.getAttribute('data-category') || '').toLowerCase();
-          var sent = (card.getAttribute('data-sentiment') || '').toLowerCase();
-          var pub  = card.getAttribute('data-pubdate') ? new Date(card.getAttribute('data-pubdate')) : null;
-          var catOk  = activeCat  === 'all' || cat  === activeCat;
-          var sentOk = activeSent === 'all' || sent === activeSent;
-          var perOk  = true;
-          if (pub && activePer === 'today') perOk = pub >= todayStart;
-          if (pub && activePer === 'week')  perOk = pub >= weekStart;
-          card.style.display = (catOk && sentOk && perOk) ? '' : 'none';
-        });
-      }
-
-      document.querySelectorAll('#cat-filter-bar .filter-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          document.querySelectorAll('#cat-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
-          btn.classList.add('active');
-          activeCat = btn.getAttribute('data-cat');
-          applyFilters();
-        });
-      });
-      document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          document.querySelectorAll('#sent-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
-          btn.classList.add('active');
-          activeSent = btn.getAttribute('data-sent');
-          applyFilters();
-        });
-      });
-      document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          document.querySelectorAll('#period-filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
-          btn.classList.add('active');
-          activePer = btn.getAttribute('data-period');
-          applyFilters();
-        });
-      });
-
-      /* ── 8. Next-update countdown ────────────────────────────── */
-      function updateCountdown() {
-        var now        = new Date();
-        var nextUpdate = new Date(now);
-        nextUpdate.setSeconds(0, 0);
-        nextUpdate.setMinutes(Math.ceil((now.getMinutes() + 1) / 5) * 5);
-        if (nextUpdate <= now) nextUpdate.setMinutes(nextUpdate.getMinutes() + 5);
-        var diff = Math.max(0, Math.floor((nextUpdate - now) / 1000));
-        var m = Math.floor(diff / 60), s = diff % 60;
-        var el = document.getElementById('update-countdown');
-        if (el) el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-      }
-      setInterval(updateCountdown, 1000);
-      updateCountdown();
-
-    })();
-    </script>
+    <script src="{{ '/assets/js/index.js' | relative_url }}" defer></script>
 
     <!-- ── SIDEBAR ────────────────────────────────────────── -->
     <aside class="col-lg-4">
