@@ -39,6 +39,7 @@ entities:
   - "Selecta Vision"
   - "Next from the Nordics"
   - "Cannes Film Festival"
+audio: "/assets/audio/posts/2026-05-16-vampire-santa-claus-horror-pic-red-snow-by-ilja-rautsi-sells-to-spain-for-charad.mp3"
 ---
 
 Spain’s [Selecta Vision](https://en.wikipedia.org/wiki/Selecta_Vision) has snapped up the Spanish rights to “Red Snow,” the groundbreaking horror comedy that reimagines Christmas with a fanged Santa Claus. The deal, announced after the film’s debut at Cannes’ Next from the Nordics showcase, marks a bold entry into the holiday horror genre.

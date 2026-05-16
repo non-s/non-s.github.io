@@ -43,6 +43,7 @@ entities:
   - "Robert Ross (exercise physiologist)"
   - "Queen's University"
   - "Centers for Disease Control and Prevention"
+audio: "/assets/audio/posts/2026-05-16-your-fitness-level-after-40-can-add-years-to-your-life-and-boost-health.mp3"
 ---
 
 Adults who maintain high cardiorespiratory fitness in their 40s and 50s gain more than five additional years of healthy life compared with less-fit peers, according to research published Wednesday in the journal *Circulation*. The study tracked 12,000 adults for three decades, finding that those with the highest fitness levels not only lived longer but spent fewer years managing chronic conditions like heart disease and diabetes.

@@ -43,6 +43,7 @@ entities:
   - "Taiwan Relations Act"
   - "Taiwan Strait"
   - "South China Sea"
+audio: "/assets/audio/posts/2026-05-16-why-taiwan-became-the-defining-issue-in-the-trump-xi-talks.mp3"
 ---
 
 U.S. President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) placed arms sales to [Taiwan](https://en.wikipedia.org/wiki/Taiwan) at the center of high-stakes talks with Chinese President [Xi Jinping](https://en.wikipedia.org/wiki/Xi_Jinping) this week, as the two leaders wrapped up a two-day meeting in [Washington](https://en.wikipedia.org/wiki/Washington,_D.C.) on Friday. The issue has emerged as one of the most contentious points in U.S.-China relations, with Beijing repeatedly voicing opposition to any American military support for the self-governing island it claims as part of its territory.
