@@ -22,9 +22,10 @@ _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.gi
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
-# Mistral free tier is 1 request/second. Burst calls trip 429 even when daily
-# quota is far from exhausted. Keep a global minimum gap between calls.
-_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "1.2"))
+# Mistral free tier is nominally 1 request/second but the actual ceiling is
+# closer to 1 every 2s once sustained traffic kicks in. Empirically 1.2s
+# still bled 429s under hourly fetch-news load — 2.0s gives a real margin.
+_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "2.0"))
 _call_lock       = threading.Lock()
 _last_call_ts    = 0.0
 
