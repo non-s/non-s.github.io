@@ -24,6 +24,7 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 from utils.ai_helper import ai_text as _ai_text
+from utils.text import humanize_for_tts
 
 def _ai_youtube_meta(stories: list[dict], n: int, date_str: str) -> dict:
     """
@@ -106,16 +107,17 @@ RED_LIVE    = (220, 50, 50)
 TEXT_WHITE  = (245, 245, 255)
 TEXT_GRAY   = (160, 165, 190)
 
-# Voz por categoria
+# Voz por categoria. Default Jenny + Davis: more conversational than
+# Aria (which sounds like a corporate anchor). Override per category.
 VOICE_BY_CATEGORY = {
-    "AI":       "en-US-AriaNeural",
+    "AI":       "en-US-JennyNeural",
     "SECURITY": "en-US-GuyNeural",
     "BUSINESS": "en-US-JennyNeural",
     "BIG TECH": "en-US-DavisNeural",
-    "HARDWARE": "en-US-TonyNeural",
-    "TECH":     "en-US-AriaNeural",
+    "HARDWARE": "en-US-DavisNeural",
+    "TECH":     "en-US-JennyNeural",
 }
-VOICE_DEFAULT = "en-US-AriaNeural"
+VOICE_DEFAULT = "en-US-JennyNeural"
 
 # ── CTA block appended to all video descriptions ───────────────
 CTA_BLOCK = """
@@ -289,9 +291,7 @@ def create_pt_video(stories: list[dict], script_en: str, output_dir: Path):
 ORDINALS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
 def clean_text(text: str, max_chars: int = 500) -> str:
-    t = re.sub(r'<[^>]+>', ' ', text)
-    t = re.sub(r'\s+', ' ', t).strip()
-    return t[:max_chars]
+    return humanize_for_tts(text)[:max_chars]
 
 def build_roundup_script(stories: list[dict]) -> str:
     """
@@ -333,27 +333,21 @@ def build_roundup_script(stories: list[dict]) -> str:
     if ai_hook:
         script = f"""{ai_hook}
 
-Welcome to GlobalBR News — your world news roundup for {date_str}.
+Hey, welcome to GlobalBR News. It's {date_str}, and I've got {n} stories you'll want to know about — covering {cat_label} and more from around the world.
 
-I am bringing you {n} of the most important stories right now, covering {cat_label} and more from around the globe. We publish every hour — so you always have a trusted, up-to-date source for what matters.
+Every link is in the description, so you can read the full piece from the original source. We always credit the journalists doing the actual reporting.
 
-Before we begin: every story has a direct link in the description below so you can read the full article from the original source. We always credit the journalists doing the important reporting."""
+Let's get into it."""
     else:
-        script = f"""Welcome to GlobalBR News — your hourly world news roundup.
+        script = f"""Hey, welcome back to GlobalBR News. It's {date_str} at {hour_str}, and I've got {n} stories for you — {cat_label} and more from around the world.
 
-It is {date_str} at {hour_str}, and I am bringing you {n} of the most important stories happening right now — covering {cat_label} and more from around the globe.
+Whether you're on a commute, at the gym, or just catching up — you're in the right spot. We do one of these every hour, so you never have to hunt for what's actually going on.
 
-Whether you are commuting, working out, or just keeping up with the latest developments, you are in the right place. We publish one of these roundups every single hour — so you always have a trusted, up-to-date source for what matters in the world.
+Every link is down in the description so you can read the full article from the source. Credit always goes to the journalists doing the reporting.
 
-The world moves fast. Things that were announced this morning can change the direction of entire industries, governments, and communities by the afternoon. That is exactly why we are here — to make sure you never fall behind.
+If any of this is useful to you, hit subscribe — it's the single biggest thing you can do to support us.
 
-Before we begin, a quick reminder: every story we cover today has a direct link in the description below, so you can read the full article straight from the original source. We always credit the journalists and publications doing the important reporting that keeps us all informed.
-
-If you find this roundup useful, the best thing you can do is hit that subscribe button right now — so you never miss a story.
-
-Now, let us get into today's {n} stories. Here we go.
-
-"""
+Alright. {n} stories. Let's go."""
 
     # ── HISTÓRIAS (~200 words cada) ───────────────────────────────
     cat_context = {
@@ -396,19 +390,25 @@ Now, let us get into today's {n} stories. Here we go.
     }
 
     transitions = [
-        "Moving on to our next story.",
-        "Let us keep the momentum going with story number {next}.",
-        "Now, here is a story you will want to pay attention to.",
-        "Our next headline takes us in a different direction.",
-        "And now, story number {next}.",
-        "Here is what else is making headlines right now.",
+        "Next up.",
+        "Onto the next one.",
+        "Here's another one worth your time.",
+        "Switching gears.",
+        "Story number {next}.",
+        "This one caught my eye too.",
+        "Now this is interesting.",
+        "Speaking of which, listen to this.",
+        "And there's more.",
+        "Let's get into the next story.",
+        "On a different note.",
+        "Here's something else you should know.",
     ]
 
     for i, story in enumerate(stories):
         ordinal  = ORDINALS[i] if i < len(ORDINALS) else f"number {i + 1}"
-        title    = story["title"]
+        title    = humanize_for_tts(story["title"])
         desc     = clean_text(story["description"], 600)
-        source   = story["source"]
+        source   = humanize_for_tts(story["source"])
         category = story["category"]
 
         sentences = re.split(r'(?<=[.!?])\s+', desc)
@@ -446,36 +446,35 @@ This story was reported by {source}, which is one of the most respected publicat
 """
 
     # ── OUTRO (~220 words) ────────────────────────────────────────
-    script += f"""And that wraps up this hour's GlobalBR News Roundup — {n} stories covering the most important developments happening around the world right now.
+    script += f"""And that's the hour. {n} stories from around the world.
 
-Let us do a quick recap of what we covered today.
+A quick recap before you go:
 
-We talked about {stories[0]['title'] if stories else 'our top story'}.
+We started with {stories[0]['title'] if stories else 'our top story'}.
 
-{"We also covered " + stories[1]['title'] + "." if len(stories) > 1 else ""}
+{"Then there was " + stories[1]['title'] + "." if len(stories) > 1 else ""}
 
-{"And " + str(len(stories) - 2) + " more stories to keep you fully up to date." if len(stories) > 2 else ""}
+{"Plus " + str(len(stories) - 2) + " more — all of them in the description with timestamps if you want to jump around." if len(stories) > 2 else ""}
 
-Every single one of those stories has a link in the description below, along with timestamps so you can jump to the section that interests you most.
+Which one caught your attention? Tell me in the comments — I actually read them, and it shapes what we cover next.
 
-We want to hear from you — which story caught your attention today? Drop a comment below. We read every single one, and your feedback genuinely helps us improve.
+If you're not subscribed yet, take a second to fix that. We're back every hour with a new roundup, so subscribing means you'll always be ahead of the news cycle.
 
-If you are not subscribed yet, please do it right now. It is completely free. Hit that subscribe button and the notification bell, and you will get a brand new roundup like this one every hour — {date_str}, tomorrow, and every day after that. You will always be the first to know.
+Everything is also on our website at non-s dot github dot io — searchable, with way more stories than fit in a video like this.
 
-We also publish everything on our website at non-s dot github dot io — a great place to search all our past stories and stay on top of the topics that matter to you.
+If you know someone who'd actually use this — send it their way. Word of mouth is how we grow.
 
-Share this video with someone who wants to stay informed about the world. It takes two seconds and it really helps us grow.
-
-Thank you so much for watching. This has been GlobalBR News.
-
-Stay curious. Stay informed. We will see you in exactly one hour."""
+Thanks for watching. I'll see you in an hour."""
 
     return script
 
 # ── TTS ────────────────────────────────────────────────────────
 async def text_to_speech(text: str, output_path: Path, voice: str):
     import edge_tts
-    communicate = edge_tts.Communicate(text, voice, rate="+5%", pitch="+0Hz")
+    # Slightly slower rate than the previous +5% — gives the speech room
+    # to breathe, which makes the synthetic voice feel less rushed and
+    # more like a person and less like an alert.
+    communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
 # ── Download de imagem ─────────────────────────────────────────

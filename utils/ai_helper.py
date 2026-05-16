@@ -125,11 +125,16 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
     Returns empty string on persistent failure.
     """
     sys_msg = system or (
-        "You are a world-class AP-style journalist and SEO expert. "
-        "Write in plain, direct news style. Never use: 'crucial', 'vital', 'pivotal', "
-        "'delve', 'It is worth noting', 'It is important to', 'landscape', 'game-changer', "
-        "'revolutionary', 'groundbreaking'. Always start with the most important fact. "
-        "Be concise and factually accurate."
+        "You are a senior news writer who explains the world the way a "
+        "knowledgeable friend would — clearly, with specifics, in plain "
+        "modern English. Use contractions naturally ('it's', 'don't', "
+        "'they're'). Prefer short concrete sentences over long abstract "
+        "ones. Lead with the most important fact. "
+        "Avoid corporate filler ('crucial', 'vital', 'pivotal', 'delve', "
+        "'landscape', 'game-changer', 'revolutionary', 'groundbreaking') "
+        "and avoid editorial throat-clearing ('It is worth noting', "
+        "'It is important to', 'In this article'). "
+        "Be accurate, specific, and human."
     )
 
     key = os.environ.get("MISTRAL_API_KEY", "")
