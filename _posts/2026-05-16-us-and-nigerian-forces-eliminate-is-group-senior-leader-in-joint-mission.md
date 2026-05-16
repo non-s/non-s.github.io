@@ -44,6 +44,7 @@ entities:
   - "Borno State"
   - "US Africa Command (AFRICOM)"
   - "West Africa Province"
+audio: "/assets/audio/posts/2026-05-16-us-and-nigerian-forces-eliminate-is-group-senior-leader-in-joint-mission.mp3"
 ---
 
 A senior leader of the Islamic State (IS) group was killed in a joint US-Nigerian military operation in Nigeria’s insurgency-hit northeast, US President Donald Trump announced on Friday and Nigeria’s President Bola Tinubu confirmed the following day. The operation targeted a high-value IS operative in Borno state, a region long plagued by Islamist insurgencies linked to IS and Boko Haram factions. While neither government named the IS leader, local military sources identified the target as a regional commander responsible for planning attacks in West Africa. The mission marks one of the most significant counterterrorism efforts in the region, where IS-affiliated groups have expanded their influence despite ongoing regional military campaigns.

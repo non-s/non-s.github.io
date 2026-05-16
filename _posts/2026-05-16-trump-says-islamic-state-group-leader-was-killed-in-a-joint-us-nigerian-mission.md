@@ -43,6 +43,7 @@ entities:
   - "Counter Extremism Project"
   - "Sahel"
   - "Mamman Nur"
+audio: "/assets/audio/posts/2026-05-16-trump-says-islamic-state-group-leader-was-killed-in-a-joint-us-nigerian-mission.mp3"
 ---
 
 U.S. President Donald Trump announced Friday that a joint U.S.-Nigerian military operation killed Abu Bakr al-Mainuki, the Islamic State group’s second-in-command, in Nigeria’s Lake Chad Basin. Trump revealed the operation in a late-night social media post that gave few details, calling al-Mainuki a key figure in ISIS financing and plotting attacks against America and its interests. The president said al-Mainuki ‘thought he could hide in Africa, but little did he know we had sources who kept us informed on what he was doing.’

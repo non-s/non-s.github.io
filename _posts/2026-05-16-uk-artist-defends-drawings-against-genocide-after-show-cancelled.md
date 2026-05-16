@@ -41,6 +41,7 @@ entities:
   - "Gaza"
   - "Board of Deputies of British Jews"
   - "London gallery"
+audio: "/assets/audio/posts/2026-05-16-uk-artist-defends-drawings-against-genocide-after-show-cancelled.mp3"
 ---
 
 British artist [Matthew Collings](https://en.wikipedia.org/wiki/Matthew_Collings) has defended his exhibition *Drawings Against Genocide*, arguing it was mischaracterised as anti-Semitic after the London show was abruptly cancelled following protests.
