@@ -521,6 +521,13 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         except Exception as e:
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
+    # Guarantee a dict return — downstream callers do `result.get(...)`,
+    # which would crash if a parse path returned a string/list (e.g. when
+    # the model returns a top-level JSON array or string literal).
+    if not isinstance(result, dict):
+        log.warning(f"AI enhance returned non-dict ({type(result).__name__}); falling back to empty dict")
+        result = {}
+
     # ── Wikipedia enrichment ──────────────────────────────────
     # Skip the Wikipedia round-trip when the AI already produced a
     # rich body — Wikipedia exists to backfill thin posts, not to
@@ -857,13 +864,6 @@ FEEDS = [
         "category": "environment",
         "tags":     ["guardian", "climate", "environment"],
         "source":   "The Guardian",
-    },
-    {
-        "name":     "Yale Environment 360",
-        "url":      "https://e360.yale.edu/feeds/all",
-        "category": "environment",
-        "tags":     ["climate", "environment", "sustainability"],
-        "source":   "Yale Environment 360",
     },
     {
         "name":     "BBC Science & Environment",
@@ -2942,7 +2942,10 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
 
         except Exception as e:
-            log.error(f"  ❌ Erro ao processar item '{getattr(entry, 'title', '?')}': {e}")
+            log.error(
+                f"  ❌ Erro ao processar item '{getattr(entry, 'title', '?')}': {e}",
+                exc_info=True,
+            )
             continue
 
     log.info(f"  📝 {created_count} posts criados para {name}")
