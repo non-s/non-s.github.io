@@ -5,7 +5,7 @@ date: 2026-05-16 04:47:34 +0000
 categories: [entertainment, startups]
 tags: [variety, movies, hollywood, startups, funding, grey, review, jake-gyllenhaal, henry-cavill, eiza-gonzalez-magazine, in-the-grey-review, guy-ritchie-heist-film, jake-gyllenhaal-henry-cavill-eiza-gonzalez, in-the-grey-movie, heist-film-2023, toronto-international-film-festival-premiere, guy-ritchie-new-movie, best-heist-movies, in-the-grey-cast]
 author: "GlobalBR News"
-description: "O novo filme de assalto de Guy Ritchie, "In the Grey", estrelado por Jake Gyllenhaal, Henry Cavill e Eiza Gonzalez, é um passatempo brilhante, mas esquecível. Avaliação: 3 estrelas."
+description: "O novo filme de assalto de Guy Ritchie, \"In the Grey\", estrelado por Jake Gyllenhaal, Henry Cavill e Eiza Gonzalez, é um passatempo brilhante, mas esquecível. Avaliação: 3 estrelas."
 source_url: "https://variety.com/2026/film/reviews/in-the-grey-review-1236750579/"
 source_name: "Variety"
 sentiment: "negative"

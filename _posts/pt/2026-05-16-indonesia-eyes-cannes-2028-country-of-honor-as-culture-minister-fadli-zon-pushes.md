@@ -5,7 +5,7 @@ date: 2026-05-16 06:15:54 +0000
 categories: [entertainment, war]
 tags: [variety, movies, hollywood, war, conflict, indonesia-eyes-cannes, country, honor, culture-minister-fadli, screen-agenda, cannes-2028-country-of-honor, indonesia-film-industry, fadli-zon-cannes-announcement, indonesian-cinema-expansion, indonesia-cannes-bid-2028, country-of-honor-cannes-process, indonesia-film-festival-strategy]
 author: "GlobalBR News"
-description: "O ministro da Cultura da Indonésia, Fadli Zon, defende a candidatura do país como "País Homenageado" no Festival de Cannes 2028 para elevar a presença global do cinema nacional. Ponto final."
+description: "O ministro da Cultura da Indonésia, Fadli Zon, defende a candidatura do país como \"País Homenageado\" no Festival de Cannes 2028 para elevar a presença global do cinema nacional. Ponto final."
 source_url: "https://variety.com/2026/film/markets-festivals/indonesia-cannes-2028-country-of-honor-fadli-zon-interview-1236750611/"
 source_name: "Variety"
 sentiment: "neutral"

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Como o hino "Three Lions" uniu os torcedores do futebol inglês por 25 anos"
+title: "Como o hino \"Three Lions\" uniu os torcedores do futebol inglês por 25 anos"
 date: 2026-05-16 06:24:53 +0000
 categories: [sports]
 tags: [bbc, sports, football, three-lions, sport, david-baddiel, three-lions-anthem, football's-coming-home-lyrics, david-baddiel-three-lions, three-lions-chart-history, england-football-anthem, euro-1996-song, best-selling-football-anthem-uk, three-lions-re-released]

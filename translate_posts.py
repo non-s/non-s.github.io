@@ -62,6 +62,20 @@ def translate_text(text: str) -> str:
     return result if result else text
 
 
+def _yaml_escape(value: str, quote: str) -> str:
+    """Escape a string so it's safe inside a single- or double-quoted YAML scalar.
+
+    Without this, a translated title like O hino "Three Lions" uniu...
+    breaks the YAML parser and the post lands in site.posts with nil
+    fields, which then trips Liquid sort filters elsewhere on the site.
+    """
+    if quote == '"':
+        # Escape backslashes first, then double quotes.
+        return value.replace('\\', '\\\\').replace('"', '\\"')
+    # Single-quoted YAML: double any embedded single quote.
+    return value.replace("'", "''")
+
+
 def _replace_fm_field(fm_text: str, key: str, original: str, translated: str) -> str:
     """Safely replace a frontmatter value, handling quoted and unquoted forms."""
     if not original or original == translated:
@@ -70,13 +84,13 @@ def _replace_fm_field(fm_text: str, key: str, original: str, translated: str) ->
     # Try quoted forms first
     fm_text = re.sub(
         rf'^({key}:\s*["\'])({escaped})(["\'])\s*$',
-        lambda m: f'{m.group(1)}{translated}{m.group(3)}',
+        lambda m: f'{m.group(1)}{_yaml_escape(translated, m.group(3))}{m.group(3)}',
         fm_text, flags=re.MULTILINE,
     )
     # Then unquoted
     fm_text = re.sub(
         rf'^({key}:\s*)({escaped})\s*$',
-        lambda m: f'{m.group(1)}"{translated}"',
+        lambda m: f'{m.group(1)}"{_yaml_escape(translated, chr(34))}"',
         fm_text, flags=re.MULTILINE,
     )
     return fm_text
