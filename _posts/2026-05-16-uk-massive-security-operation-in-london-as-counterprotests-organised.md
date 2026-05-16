@@ -41,6 +41,7 @@ entities:
   - "Trafalgar Square"
   - "Parliament Square"
   - "Home Office"
+audio: "/assets/audio/posts/2026-05-16-uk-massive-security-operation-in-london-as-counterprotests-organised.mp3"
 ---
 
 London police launched a sweeping security operation Thursday as far-right and anti-racist groups prepared for competing counterprotests in central locations. Authorities deployed additional officers, tactical units, and surveillance drones to monitor high-risk areas including [Trafalgar Square](https://en.wikipedia.org/wiki/Trafalgar_Square) and [Parliament Square](https://en.wikipedia.org/wiki/Parliament_Square). The move follows intelligence suggesting heightened tensions between the rival factions.

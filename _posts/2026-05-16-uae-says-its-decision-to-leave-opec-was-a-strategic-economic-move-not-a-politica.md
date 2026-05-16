@@ -41,6 +41,7 @@ entities:
   - "Haitham al-Ghais"
   - "Saudi Arabia"
   - "Organization of the Petroleum Exporting Countries"
+audio: "/assets/audio/posts/2026-05-16-uae-says-its-decision-to-leave-opec-was-a-strategic-economic-move-not-a-politica.mp3"
 ---
 
 The United Arab Emirates [UAE](https://en.wikipedia.org/wiki/United_Arab_Emirates) will exit the Organization of the Petroleum Exporting Countries [OPEC](https://en.wikipedia.org/wiki/OPEC) on May 1, 2024, the country confirmed Tuesday. The decision marks the end of nearly six decades of membership for the Gulf nation, which joined OPEC in 1967, the same year the cartel was founded. In a statement, the UAE’s Energy Ministry said the move was a strategic economic decision, not a political one, aimed at allowing the country to boost its oil production and maximize revenue from crude exports.

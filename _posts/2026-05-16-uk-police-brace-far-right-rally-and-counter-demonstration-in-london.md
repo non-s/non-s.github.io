@@ -40,6 +40,7 @@ entities:
   - "British Transport Police"
   - "UK far-right activism"
   - "pro-Palestinian groups"
+audio: "/assets/audio/posts/2026-05-16-uk-police-brace-far-right-rally-and-counter-demonstration-in-london.mp3"
 ---
 
 Police in London mobilized thousands of officers Saturday to monitor dueling protests—a far-right march led by activist [Tommy Robinson](https://en.wikipedia.org/wiki/Tommy_Robinson_(activist)) and a counter-demonstration that merged with pro-Palestinian groups. Authorities confirmed the heavy deployment amid fears of escalation as tensions simmered over immigration and foreign policy issues.
