@@ -42,6 +42,7 @@ entities:
   - "Association of British Insurers"
   - "Society of Motor Manufacturers and Traders"
   - "Compare the Market"
+audio: "/assets/audio/posts/2026-05-16-uk-drivers-struggle-to-get-insurance-for-chinese-evs-such-as-jaecoo.mp3"
 ---
 
 UK drivers buying electric or hybrid cars made in China face steeper insurance costs or outright refusal of coverage from major insurers, according to new research. Data from comparison site Compare the Market reveals that insurers frequently exclude models like the [Jaecoo 7](https://en.wikipedia.org/wiki/Jaecoo), a Chinese-made plug-in hybrid, or charge significantly higher premiums than for equivalent petrol cars or vehicles from Europe, the US, or South Korea.

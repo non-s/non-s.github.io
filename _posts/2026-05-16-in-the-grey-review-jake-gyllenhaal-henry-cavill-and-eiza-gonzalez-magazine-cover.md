@@ -40,6 +40,7 @@ entities:
   - "Guy Ritchie"
   - "Toronto International Film Festival"
   - "Variety"
+audio: "/assets/audio/posts/2026-05-16-in-the-grey-review-jake-gyllenhaal-henry-cavill-and-eiza-gonzalez-magazine-cover.mp3"
 ---
 
 Guy Ritchie’s heist thriller 'In the Grey' trades depth for style, packing slick action and star power into a glossy but forgettable time-killer. The film, which premiered at the Toronto International Film Festival and hits theaters Friday, stars Jake Gyllenhaal as a master thief plotting his final big score. He’s joined by Henry Cavill as his rival and Eiza Gonzalez as the tech whiz pulling the strings from behind the scenes.

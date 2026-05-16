@@ -41,6 +41,7 @@ entities:
   - "Juan Soto"
   - "Carlos Mendoza"
   - "Edwin Díaz"
+audio: "/assets/audio/posts/2026-05-16-injury-riddled-mets-lose-holmes-to-fractured-fibul.mp3"
 ---
 
 New York Mets right-handed reliever Clay Holmes [Clay Holmes](https://en.wikipedia.org/wiki/Clay_Holmes) suffered a fractured right fibula Monday night when he was struck by a 111.1 mph line drive off the bat of New York Yankees designated hitter Giancarlo Stanton [Giancarlo Stanton](https://en.wikipedia.org/wiki/Giancarlo_Stanton) during the fourth inning of the Subway Series opener at Yankee Stadium. The pitch was ruled a hit-by-pitch, and Holmes immediately crumpled to the ground, clutching his lower right leg before being helped off the field.

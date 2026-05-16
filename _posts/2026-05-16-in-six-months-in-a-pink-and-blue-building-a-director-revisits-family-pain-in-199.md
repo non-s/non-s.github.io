@@ -40,6 +40,7 @@ entities:
   - "Cannes Critics’ Week"
   - "Mexico City"
   - "Six Months in a Pink and Blue Building"
+audio: "/assets/audio/posts/2026-05-16-in-six-months-in-a-pink-and-blue-building-a-director-revisits-family-pain-in-199.mp3"
 ---
 
 A boy’s innocence vanishes when his father falls ill and his feelings for his best friend deepen in Bruno Santamaría Razo’s debut fiction feature, *Six Months in a Pink and Blue Building*. The film, screening in the Cannes Critics’ Week sidebar, blends childhood pain with unexpected joy as it revisits 1990s Mexico City through a lens of love and nostalgia.
