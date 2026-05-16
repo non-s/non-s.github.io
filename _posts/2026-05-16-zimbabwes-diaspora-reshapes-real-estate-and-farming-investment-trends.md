@@ -40,6 +40,7 @@ entities:
   - "Harare"
   - "Bulawayo"
   - "Zimbabwean diaspora"
+audio: "/assets/audio/posts/2026-05-16-zimbabwes-diaspora-reshapes-real-estate-and-farming-investment-trends.mp3"
 ---
 
 Zimbabweans living abroad are increasingly turning to social media for investment advice, reshaping trends in real estate and farming. Digital influencers [Kundai Chitima](https://en.wikipedia.org/wiki/Kundai_Chitima), 31, and [Kelvin Birioti](https://en.wikipedia.org/wiki/Kelvin_Birioti), 20, have built large followings by posting videos and updates about opportunities in Zimbabwe. Their content—ranging from property tours to agricultural tips—is influencing decisions on whether to return or invest.

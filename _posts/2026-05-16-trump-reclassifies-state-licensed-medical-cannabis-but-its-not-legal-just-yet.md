@@ -40,6 +40,7 @@ entities:
   - "Qualla Enterprises"
   - "Scottsdale Research Institute"
   - "Section 280E"
+audio: "/assets/audio/posts/2026-05-16-trump-reclassifies-state-licensed-medical-cannabis-but-its-not-legal-just-yet.mp3"
 ---
 
 The Trump administration moved Friday to reclassify state-licensed medical marijuana under federal law, easing decades-old restrictions but stopping short of full legalization. Acting Attorney General Todd Blanche signed an executive order April 23 that shifts marijuana from Schedule I to Schedule III of the Controlled Substances Act. Schedule I drugs, like heroin, are defined as having no accepted medical use and high potential for abuse. Schedule III drugs, like ketamine, are considered less dangerous and have recognized medical benefits.

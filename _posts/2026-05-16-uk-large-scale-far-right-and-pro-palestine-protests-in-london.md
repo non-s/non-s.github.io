@@ -40,6 +40,7 @@ entities:
   - "Sadiq Khan"
   - "Westminster"
   - "Palestinian flags"
+audio: "/assets/audio/posts/2026-05-16-uk-large-scale-far-right-and-pro-palestine-protests-in-london.mp3"
 ---
 
 Thousands of protesters filled central London Saturday as a far-right rally organized by activist [Tommy Robinson](https://en.wikipedia.org/wiki/Tommy_Robinson) and a pro-Palestine counter-demonstration clashed under heavy police supervision. Authorities sealed off key areas to prevent violent confrontations as tensions simmered over the Israel-Hamas war and immigration policies.

@@ -41,6 +41,7 @@ entities:
   - "Scarlett Johansson"
   - "Silicon Valley"
   - "996 work schedule"
+audio: "/assets/audio/posts/2026-05-16-youre-not-a-hero-youre-a-liability-shark-tanks-kevin-oleary-warns-gen-z-founders.mp3"
 ---
 
 Gen Z founders chasing startup success are getting bad advice about work hours, Shark Tank investor Kevin O’Leary [Kevin O’Leary](https://en.wikipedia.org/wiki/Kevin_O%27Leary) said this week. In an Instagram video featuring a flashy red cheetah-print top, he called out young entrepreneurs who push themselves to work 18 hours a day as illogical and counterproductive. “The worst advice I hear young founders talk about all the time is that they want to work 18 hours a day,” O’Leary said. “How stupid is that?”
