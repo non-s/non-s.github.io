@@ -43,6 +43,7 @@ entities:
   - "Callum McGregor"
   - "Reo Hatate"
   - "Joe Hart"
+audio: "/assets/audio/posts/2026-05-16-truth-stranger-than-fiction-as-oneill-leads-celtic-from-hostility-to-happiness.mp3"
 ---
 
 Martin O'Neill made a bold prediction in March: Celtic would have to win all seven of their remaining games to secure the Scottish Premiership title. On Sunday, he was proven right as his side completed a flawless run to finish nine points ahead of second-placed Aberdeen. The victory marks O'Neill’s first major trophy since joining Celtic in the summer of 2022, capping a remarkable turnaround from early season struggles.

@@ -42,6 +42,7 @@ entities:
   - "USS Bainbridge"
   - "Crete"
   - "Iran conflict"
+audio: "/assets/audio/posts/2026-05-16-worlds-largest-aircraft-carrier-returns-from-11-month-deployment-longest-since-v.mp3"
 ---
 
 NORFOLK, Va. — The USS Gerald R. Ford, the world’s largest aircraft carrier, returned to Virginia on Saturday after an 11-month deployment, the longest since the Vietnam War. The [USS Gerald R. Ford](https://en.wikipedia.org/wiki/USS_Gerald_R._Ford) and two destroyers docked at Naval Station Norfolk, where about 5,000 sailors waited to reunite with their families for the first time since June of last year.

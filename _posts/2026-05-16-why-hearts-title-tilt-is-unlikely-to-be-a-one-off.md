@@ -43,6 +43,7 @@ entities:
   - "Rangers F.C."
   - "Lawrence Shankland"
   - "Financial Fair Play (Scottish football)"
+audio: "/assets/audio/posts/2026-05-16-why-hearts-title-tilt-is-unlikely-to-be-a-one-off.mp3"
 ---
 
 Hearts came agonizingly close to ending their 66-year title drought last season, finishing just three points behind champions Celtic in the Scottish Premiership. The Edinburgh club’s owners, led by [Tony Bloom](https://en.wikipedia.org/wiki/Tony_Bloom), have since intensified their reliance on data analytics to ensure future challenges for the top spot. Bloom, a professional gambler turned sports investor, has transformed Hearts’ approach to recruitment and tactical decisions through his Brighton-based firm, producing tangible results in a short timeframe.

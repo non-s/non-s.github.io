@@ -40,6 +40,7 @@ entities:
   - "Stealth Pro 2"
   - "Nova Pro Omni"
   - "Arctis Nova Pro Wireless"
+audio: "/assets/audio/posts/2026-05-16-turtle-beach-made-a-good-steelseries-headset-clone-thats-50-less.mp3"
 ---
 
 Gaming headset maker Turtle Beach on Tuesday introduced the Stealth Pro 2, a $349 wireless headset that directly challenges SteelSeries’ $399 Nova Pro Omni. The new model arrives just weeks after SteelSeries refreshed its flagship line with the Nova Pro Omni, which debuted May 5. Both headsets now support 24-bit/96kHz wireless hi-res audio over 2.4GHz, a premium feature once reserved for wired setups. The Stealth Pro 2’s launch underscores a growing trend in audio hardware: budget-friendly alternatives with near-identical performance to premium models.
