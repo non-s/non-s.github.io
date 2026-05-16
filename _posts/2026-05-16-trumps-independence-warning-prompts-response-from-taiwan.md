@@ -43,6 +43,7 @@ entities:
   - "China’s foreign ministry"
   - "Tsai Ing-wen"
   - "U.S. State Department"
+audio: "/assets/audio/posts/2026-05-16-trumps-independence-warning-prompts-response-from-taiwan.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Trump urges Taiwan to avoid independence amid rising China tensions](/world/2026/05/16/trump-warns-taiwan-against-declaring-independence-hours-after-summit-with-chinas/)

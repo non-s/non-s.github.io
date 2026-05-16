@@ -44,6 +44,7 @@ entities:
   - "United Nations"
   - "Antony Blinken"
   - "Vladimir Putin"
+audio: "/assets/audio/posts/2026-05-16-ukraine-vows-retribution-after-russian-strike-on-housing-block-kills-24.mp3"
 ---
 
 A Russian missile slammed into a residential apartment building in central Kyiv on Friday, reducing part of the structure to rubble and killing 24 people, including three children, Ukrainian officials said. The strike, which occurred around 9 a.m. local time, targeted a densely populated area, flattening multiple floors of the 10-story building and trapping residents under debris. Rescue crews worked through the night to recover bodies and survivors, as President [Volodymyr Zelenskiy](https://en.wikipedia.org/wiki/Volodymyr_Zelenskyy) arrived at the scene to lay red roses and vow retaliation. The attack marks the deadliest single strike on Kyiv since Russia launched its full-scale invasion of Ukraine in February 2022.

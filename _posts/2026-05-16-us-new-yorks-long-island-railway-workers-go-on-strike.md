@@ -40,6 +40,7 @@ entities:
   - "Kathy Hochul"
   - "International Brotherhood of Teamsters"
   - "Brotherhood of Locomotive Engineers and Trainmen"
+audio: "/assets/audio/posts/2026-05-16-us-new-yorks-long-island-railway-workers-go-on-strike.mp3"
 ---
 
 Workers for New York’s [Long Island Rail Road (LIRR)](https://en.wikipedia.org/wiki/Long_Island_Rail_Road) walked off the job Saturday, crippling the nation’s busiest commuter rail system and stranding nearly 300,000 daily passengers. The walkout by 3,500 union members—including engineers, machinists and signalmen—marks the first strike on the LIRR in more than three decades. The stoppage follows the collapse of negotiations between five unions and the [Metropolitan Transportation Authority (MTA)](https://en.wikipedia.org/wiki/Metropolitan_Transportation_Authority), which manages the system.

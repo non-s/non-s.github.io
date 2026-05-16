@@ -42,6 +42,7 @@ entities:
   - "American Medical Association"
   - "Meta Platforms"
   - "TikTok"
+audio: "/assets/audio/posts/2026-05-16-your-social-feed-is-buzzing-with-health-advice-but-read-this-first.mp3"
 ---
 
 Social media feeds are flooded with health advice—some helpful, some dangerous, and most unchecked by medical professionals. A 2023 [Pew Research Center](https://www.pewresearch.org/) survey found 68% of Americans have tried at least one health tip they saw on platforms like TikTok, Instagram or Facebook. But doctors are warning that many of these suggestions bypass scientific scrutiny, sometimes with serious consequences.
