@@ -41,6 +41,7 @@ entities:
   - "January 6 Capitol attack"
   - "Louisiana Senate primary"
   - "Senate Health Committee"
+audio: "/assets/audio/posts/2026-05-16-this-republican-voted-to-convict-trump-now-hes-up-for-reelection-can-he-survive.mp3"
 ---
 
 Louisiana Sen. Bill Cassidy [https://en.wikipedia.org/wiki/Bill_Cassidy], one of only seven Senate Republicans who voted to convict former President Donald Trump [https://en.wikipedia.org/wiki/Donald_Trump] following the January 6, 2021, Capitol insurrection, is now fighting to keep his seat in a Saturday primary that will determine whether Trump’s grip on the GOP remains unchallenged. Cassidy’s reelection bid puts him directly in the crosshairs of a growing faction of the party that views any deviation from Trump’s agenda as unforgivable, especially on impeachment votes tied to the attack that left five dead and hundreds injured.

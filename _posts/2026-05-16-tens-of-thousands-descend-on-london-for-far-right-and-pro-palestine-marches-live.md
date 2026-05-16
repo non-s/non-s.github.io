@@ -33,6 +33,7 @@ entities:
   - "Nakba Day"
   - "Euston station"
   - "London protests"
+audio: "/assets/audio/posts/2026-05-16-tens-of-thousands-descend-on-london-for-far-right-and-pro-palestine-marches-live.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Thousands gather in London for far-right and pro-Palestine marches](/politics/2026/05/16/thousands-descend-on-london-for-far-right-and-pro-palestine-marches-live/)

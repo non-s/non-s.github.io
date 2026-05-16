@@ -44,6 +44,7 @@ entities:
   - "Boko Haram"
   - "Tillabéri region"
   - "Mahamat Saleh Al-Minuni"
+audio: "/assets/audio/posts/2026-05-16-trump-says-most-active-terrorist-in-the-world-killed-in-us-nigerian-operation.mp3"
 ---
 
 Abu-Bilal al-Minuki, the Islamic State’s (ISIS) [global deputy leader](https://en.wikipedia.org/wiki/List_of_ISIL_executives), was killed in a joint US-Niger military operation, President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) confirmed on Wednesday. The mission, conducted in Niger, targeted al-Minuki in what the White House described as a 'meticulously planned and very complex' counterterrorism strike. Trump called al-Minuki the 'most active terrorist in the world' during a briefing to reporters.

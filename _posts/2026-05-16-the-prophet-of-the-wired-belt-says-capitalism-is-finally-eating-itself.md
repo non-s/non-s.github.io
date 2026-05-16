@@ -40,6 +40,7 @@ entities:
   - "Facebook"
   - "Challenger Gray & Christmas"
   - "Menlo Park California"
+audio: "/assets/audio/posts/2026-05-16-the-prophet-of-the-wired-belt-says-capitalism-is-finally-eating-itself.mp3"
 ---
 
 Meta [Facebook](https://en.wikipedia.org/wiki/Facebook)’s internal restructuring will eliminate 8,000 jobs on May 20, coinciding with a strategic pivot toward artificial intelligence. The cuts follow the disappearance of 6,000 open job listings, signaling a broader shift in resource allocation. While Meta has not explicitly cited AI as the reason for the layoffs, the timing and parallel reductions in tech and finance point to a clear trend: AI is reshaping employment in industries that have long relied on knowledge workers.
