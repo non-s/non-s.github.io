@@ -41,6 +41,7 @@ entities:
   - "digital detox"
   - "CNBC"
   - "Make It"
+audio: "/assets/audio/posts/2026-05-16-we-traded-our-smartphones-for-flip-phones-for-4-daysand-learned-that-ditching-mo.mp3"
 ---
 
 Two CNBC Make It reporters swapped their modern smartphones for basic flip phones in a four-day digital detox experiment that revealed just how deeply ingrained daily tech habits have become. The reporters, who usually rely on high-end smartphones for work and personal tasks, traded devices to test their ability to disconnect from digital distractions.

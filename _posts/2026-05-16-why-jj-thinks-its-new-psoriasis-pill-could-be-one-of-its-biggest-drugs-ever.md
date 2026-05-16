@@ -43,6 +43,7 @@ entities:
   - "Pfizer"
   - "AbbVie"
   - "Novartis"
+audio: "/assets/audio/posts/2026-05-16-why-jj-thinks-its-new-psoriasis-pill-could-be-one-of-its-biggest-drugs-ever.mp3"
 ---
 
 Johnson & Johnson [J&J](https://en.wikipedia.org/wiki/Johnson_%26_Johnson) is betting its experimental psoriasis pill, Icotyde, will become one of its most lucrative drugs ever, with analysts projecting peak annual sales of $5 billion. The drug, an oral treatment for moderate to severe plaque psoriasis, is seen as a potential blockbuster that could accelerate J&J’s revenue growth in the coming years. Shares of J&J rose nearly 2% after the company highlighted Icotyde’s promise during its investor day presentation on Tuesday.

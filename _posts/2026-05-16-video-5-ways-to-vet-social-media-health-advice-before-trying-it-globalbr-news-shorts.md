@@ -15,6 +15,7 @@ content_type: "video"
 youtube_id: "qZqPs-JqLIY"
 youtube_url: "https://youtube.com/watch?v=qZqPs-JqLIY"
 lang: "en"
+audio: "/assets/audio/posts/2026-05-16-video-5-ways-to-vet-social-media-health-advice-before-trying-it-globalbr-news-shorts.mp3"
 ---
 
 5 Ways to Vet Social Media Health Advice Before Trying It

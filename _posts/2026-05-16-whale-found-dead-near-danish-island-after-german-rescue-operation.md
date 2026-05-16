@@ -42,6 +42,7 @@ entities:
   - "Denmark"
   - "Danish Nature Agency"
   - "Jonas Teilmann"
+audio: "/assets/audio/posts/2026-05-16-whale-found-dead-near-danish-island-after-german-rescue-operation.mp3"
 ---
 
 A sperm whale was found dead near [Bornholm](https://en.wikipedia.org/wiki/Bornholm), Denmark, on Friday, days after German rescuers attempted to free it from shallow waters off [Rügen](https://en.wikipedia.org/wiki/R%C3%BCgen) island. The animal, later identified as a 14-meter male sperm whale, had become stranded multiple times in recent weeks, prompting local authorities to call for assistance. Rescue teams from [Germany](https://en.wikipedia.org/wiki/Germany) and [Denmark](https://en.wikipedia.org/wiki/Denmark) worked for days to guide the whale back to deeper waters, but the animal repeatedly returned to the shallows before finally succumbing.

@@ -41,6 +41,7 @@ entities:
   - "4D ultrasound"
   - "mirror neurons"
   - "fetal development researchers"
+audio: "/assets/audio/posts/2026-05-16-yawning-is-so-contagious-you-can-catch-it-before-youre-born-study-suggests.mp3"
 ---
 
 A new study published in [PLOS ONE](https://journals.plos.org/plosone/) confirms that yawns are contagious even before birth, challenging earlier research that suggested this behavior begins after birth. Using 4D ultrasound technology, scientists observed 24 to 36-week-old fetuses reacting to yawns from people outside the womb, proving social behavior starts in the prenatal stage. The findings indicate contagious yawning is far stronger than previously believed, with fetuses responding within seconds of seeing or hearing a yawn. This suggests empathy and social connection may develop much earlier than expected. Researchers analyzed 336 ultrasound recordings of 19 fetuses in Spain, finding 55 yawns in response to external stimuli. ## Why yawning is contagious
