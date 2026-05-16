@@ -109,8 +109,18 @@ jobs:
           Auto-fetched via fetch_news.py
           Workflow: ${{ github.workflow }} #${{ github.run_number }}"
 
-          git push origin HEAD
-          echo "✅ $ADDED post(s) published!"
+          # Other workflows (youtube-bot, weekly-audit, etc.) may have
+          # pushed to main during our 20-30 minute run. Pull-rebase
+          # before pushing so we don't lose this batch to a rejected push.
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then
+              echo "✅ $ADDED post(s) published (attempt $attempt)!"
+              break
+            fi
+            echo "⚠️ Push rejected (attempt $attempt) — pulling rebase and retrying"
+            git pull --rebase --autostash origin main || true
+            sleep 3
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
