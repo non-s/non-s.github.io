@@ -1,11 +1,12 @@
 """
 utils/ai_helper.py — AI text generation and content analysis for GlobalBR News.
-Uses Mistral La Plateforme (free tier, 1B tokens/month, 60 req/min).
+Uses Mistral La Plateforme (free tier, 1B tokens/month, 1 RPS).
 """
 import json
 import logging
 import os
 import re
+import threading
 import time
 from time import sleep
 
@@ -20,6 +21,12 @@ _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.gi
 
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
+
+# Mistral free tier is 1 request/second. Burst calls trip 429 even when daily
+# quota is far from exhausted. Keep a global minimum gap between calls.
+_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "1.2"))
+_call_lock       = threading.Lock()
+_last_call_ts    = 0.0
 
 _POSITIVE_WORDS = {
     "breakthrough", "success", "discover", "innovation", "growth", "record",
@@ -69,7 +76,18 @@ _SPAM_PATTERNS = re.compile(
 )
 
 
+def _throttle() -> None:
+    """Block until at least _MIN_INTERVAL seconds have passed since last call."""
+    global _last_call_ts
+    with _call_lock:
+        elapsed = time.time() - _last_call_ts
+        if 0 < elapsed < _MIN_INTERVAL:
+            sleep(_MIN_INTERVAL - elapsed)
+        _last_call_ts = time.time()
+
+
 def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str) -> str:
+    _throttle()
     r = _session.post(
         _MISTRAL_API_URL,
         json={
@@ -115,7 +133,15 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> 
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code if e.response is not None else 0
             if status == 429:
-                wait = 5 * (attempt + 1)
+                # Respect Retry-After header when present, otherwise back off
+                # exponentially. Mistral's free tier sometimes serves bursts
+                # of 429s, so the wait needs a real ceiling.
+                hdr = (e.response.headers.get("Retry-After") if e.response is not None else None) or "0"
+                try:
+                    retry_after = int(float(hdr))
+                except (TypeError, ValueError):
+                    retry_after = 0
+                wait = max(retry_after, 5 * (attempt + 1))
                 if attempt < 2:
                     log.warning(f"Mistral rate limited (429) — retry in {wait}s (attempt {attempt+1}/3)")
                     sleep(wait)
