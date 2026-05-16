@@ -26,6 +26,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from utils.frontmatter import parse, get_str, get_list
+from utils.text import humanize_for_tts
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -34,14 +35,16 @@ POSTS_DIR    = Path(__file__).parent / "_posts"
 AUDIO_DIR    = Path(__file__).parent / "assets" / "audio" / "posts"
 MAX_PER_RUN  = int(os.environ.get("AUDIO_MAX_PER_RUN", "8"))
 LOOKBACK_D   = int(os.environ.get("AUDIO_LOOKBACK_DAYS", "3"))
-DEFAULT_VOICE = os.environ.get("AUDIO_VOICE", "en-US-AriaNeural")
+# Jenny is warmer and more conversational than Aria (which sounds like
+# a corporate anchor); Davis is calmer than Guy for serious topics.
+DEFAULT_VOICE = os.environ.get("AUDIO_VOICE", "en-US-JennyNeural")
 CATEGORY_VOICES = {
-    "ai":        "en-US-GuyNeural",
+    "ai":        "en-US-DavisNeural",
     "security":  "en-US-DavisNeural",
     "war":       "en-US-DavisNeural",
     "business":  "en-US-JennyNeural",
-    "world":     "en-US-AriaNeural",
-    "politics":  "en-US-AriaNeural",
+    "world":     "en-US-JennyNeural",
+    "politics":  "en-US-JennyNeural",
 }
 
 
@@ -54,10 +57,10 @@ def _voice_for(fm: dict) -> str:
 
 def _script(fm: dict, body: str) -> str:
     """The TTS-friendly version of the article: ~120-180 spoken seconds."""
-    title  = get_str(fm, "title")
-    tl_dr  = get_str(fm, "tl_dr")
-    lead   = get_str(fm, "lead")
-    desc   = get_str(fm, "description")
+    title  = humanize_for_tts(get_str(fm, "title"))
+    tl_dr  = humanize_for_tts(get_str(fm, "tl_dr"))
+    lead   = humanize_for_tts(get_str(fm, "lead"))
+    desc   = humanize_for_tts(get_str(fm, "description"))
 
     intro_lines = [title]
     if tl_dr:
@@ -67,13 +70,11 @@ def _script(fm: dict, body: str) -> str:
     if lead and lead.lower() != (tl_dr or desc or "").lower():
         intro_lines.append(lead)
 
-    # Pull the first 1-2 prose paragraphs of the body (strip markdown).
-    body_text = re.sub(r"```.*?```", "", body, flags=re.DOTALL)
-    body_text = re.sub(r"!\[.*?\]\(.*?\)", "", body_text)
-    body_text = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", body_text)
-    body_text = re.sub(r"^#{1,6}\s+.*$", "", body_text, flags=re.MULTILINE)
-    body_text = re.sub(r"[*_]{1,2}([^*_]+)[*_]{1,2}", r"\1", body_text)
-    paragraphs = [p.strip() for p in body_text.split("\n\n") if p.strip() and len(p.strip()) > 60]
+    # humanize_for_tts strips markdown/HTML and collapses whitespace into
+    # spaces, so we re-split paragraphs from the raw body before cleaning.
+    paragraphs_raw = [p.strip() for p in body.split("\n\n") if p.strip()]
+    paragraphs = [humanize_for_tts(p) for p in paragraphs_raw]
+    paragraphs = [p for p in paragraphs if len(p) > 60]
     intro_lines.extend(paragraphs[:2])
 
     intro_lines.append("This audio version was produced automatically by GlobalBR News.")
@@ -87,7 +88,7 @@ async def _synth(text: str, dest: Path, voice: str) -> bool:
         log.warning("edge_tts not installed — skipping audio for %s", dest.name)
         return False
     try:
-        communicate = edge_tts.Communicate(text, voice, rate="+4%", pitch="+0Hz")
+        communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="+0Hz")
         await communicate.save(str(dest))
         return dest.exists() and dest.stat().st_size > 1024
     except Exception as e:
