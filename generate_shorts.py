@@ -140,10 +140,8 @@ def extract_key_points(description: str) -> list[str]:
         if len(points) == 3:
             break
 
-    # Pad to 3 if we don't have enough
-    while len(points) < 3:
-        points.append("Stay tuned for more updates on this story.")
-
+    # Don't pad with boilerplate — empty slots are better than literal
+    # "Stay tuned for more updates on this story." on the thumbnail.
     return points[:3]
 
 
@@ -184,6 +182,46 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT)
     # losing the human-paced feel.
     communicate = edge_tts.Communicate(text, voice, rate="+3%", pitch="+0Hz")
     await communicate.save(str(output_path))
+
+
+def _ai_shorts_meta(title: str, description: str, category: str) -> dict:
+    """Generate a magnetic YouTube Shorts title + thumbnail hook + tags.
+
+    Returns dict with: yt_title (max 80 chars, no #Shorts suffix — caller
+    adds it), thumbnail_hook (3-5 punchy words), extra_tags (list).
+    Returns {} on parse failure — caller falls back to defaults.
+    """
+    prompt = (
+        f"You are a YouTube Shorts growth strategist. Generate metadata for a 60-second "
+        f"news Short. Respond ONLY as valid JSON.\n\n"
+        f"Story title: {title}\n"
+        f"Category: {category}\n"
+        f"Description: {description[:400]}\n\n"
+        f"Rules for YT_TITLE (max 80 chars, no '#Shorts' suffix — system adds it):\n"
+        f"  - Curiosity hook. Specifics (name, number, twist) beat vague phrasing.\n"
+        f"  - Question or surprising statement works well. No ALL CAPS title.\n"
+        f"  - DO NOT just copy the headline — rewrite it as something that makes "
+        f"someone stop scrolling.\n"
+        f"  - Good shapes: 'Why X just happened', 'The {category.lower()} story nobody saw coming', "
+        f"'X says Y — and it changes everything', 'How [thing] really works'.\n\n"
+        f"Rules for THUMBNAIL_HOOK (3-5 words, max 28 chars, ALL CAPS OK):\n"
+        f"  - Punchy phrase that dominates the vertical thumbnail. Different from yt_title.\n"
+        f"  - Examples: 'TRUMP SHOCKS WALL ST', 'GAZA CEASEFIRE BREAKS', 'AI BEATS DOCTORS'.\n\n"
+        f"Rules for EXTRA_TAGS (3 items):\n"
+        f"  - Real entities from this story (a person, a place, a company). Lowercase.\n\n"
+        f'Return this exact JSON: {{"yt_title":"...","thumbnail_hook":"...","extra_tags":["...","...","..."]}}'
+    )
+    raw = _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=18, json_mode=True)
+    if not raw:
+        return {}
+    try:
+        clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
+        m = re.search(r'\{.*\}', clean, re.DOTALL)
+        if m:
+            return json.loads(m.group(), strict=False)
+    except Exception as e:
+        log.warning(f"AI Shorts meta parse error: {e}")
+    return {}
 
 
 # ── Script de narração do Short ───────────────────────────────────
@@ -568,23 +606,46 @@ def save_shorts_done(done: set):
 
 # ── Metadados no formato upload_youtube.py ────────────────────────
 def build_short_metadata(story: dict, video_path: Path,
-                         thumb_path: Path) -> dict:
+                         thumb_path: Path,
+                         ai_meta: dict | None = None) -> dict:
     """
     Build metadata JSON in the exact format expected by upload_youtube.py.
     upload_youtube.py reads: title, description, tags, category_id,
                              privacy, thumbnail, video
+
+    If `ai_meta` is passed in, we skip the AI call (caller already made
+    it — typically because they needed the magnetic title for the frame
+    before this function runs).
     """
     title = story["title"]
+    description = story.get("description", "")
     category = story.get("category", "TECH")
     source = story.get("source", "GlobalBR News")
     source_url = story.get("source_url", "https://non-s.github.io")
     date_str = datetime.now().strftime("%B %d, %Y")
     year = datetime.now().year
 
-    # YouTube Shorts title: <= 100 chars, must include #Shorts
-    yt_title = f"{title[:70]} — GlobalBR News #Shorts"
+    # ── AI-generated magnetic title + thumbnail hook ─────────────────
+    # Fall back to the article headline if the AI call fails or returns
+    # something obviously wrong.
+    if ai_meta is None:
+        ai_meta = _ai_shorts_meta(title, description, category)
+    ai_meta = ai_meta or {}
+    ai_title = (ai_meta.get("yt_title") or "").strip()
+    if 15 < len(ai_title) <= 80:
+        base_title = ai_title
+        log.info(f"  ✨ Shorts AI title: {base_title}")
+    else:
+        base_title = title
+
+    yt_title = f"{base_title[:80]} #Shorts"
     if len(yt_title) > 100:
-        yt_title = f"{title[:52]}... — GlobalBR News #Shorts"
+        yt_title = f"{base_title[:88]}... #Shorts"
+
+    # Hook for thumbnail rendering — saved into metadata so the caller
+    # (or a future thumbnail re-render) can paint it big.
+    thumb_hook = (ai_meta.get("thumbnail_hook") or "").strip()
+    extra_tags = [t for t in (ai_meta.get("extra_tags") or []) if isinstance(t, str)]
 
     # Description
     yt_desc = (
@@ -606,18 +667,19 @@ def build_short_metadata(story: dict, video_path: Path,
     ]
     story_tags = story.get("tags", [])
     cat_tags = [category.lower(), category.lower() + " news"]
-    all_tags = list(dict.fromkeys(base_tags + cat_tags + story_tags))[:30]
+    all_tags = list(dict.fromkeys(base_tags + cat_tags + extra_tags + story_tags))[:30]
 
     metadata = {
-        "title":       yt_title,
-        "description": yt_desc,
-        "tags":        all_tags,
-        "category_id": "25",   # News & Politics
-        "privacy":     "public",
-        "thumbnail":   str(thumb_path),
-        "video":       str(video_path),
-        "story_slug":  story["slug"],
-        "created_at":  datetime.now(timezone.utc).isoformat(),
+        "title":           yt_title,
+        "description":     yt_desc,
+        "tags":            all_tags,
+        "category_id":     "25",   # News & Politics
+        "privacy":         "public",
+        "thumbnail":       str(thumb_path),
+        "video":           str(video_path),
+        "story_slug":      story["slug"],
+        "created_at":      datetime.now(timezone.utc).isoformat(),
+        "thumbnail_hook":  thumb_hook,
     }
     return metadata
 
@@ -681,8 +743,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     date_str = story["date"]
     title = story["title"]
     category = story.get("category", "TECH")
+    description = story.get("description", "")
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
+
+    # ── 0. AI meta first — frame + thumbnail need the magnetic title ─
+    ai_meta = _ai_shorts_meta(title, description, category)
+    ai_title = (ai_meta.get("yt_title") or "").strip()
+    display_title = ai_title if 15 < len(ai_title) <= 80 else title
+    if ai_title and display_title == ai_title:
+        log.info(f"  ✨ Shorts AI title: {display_title}")
 
     # ── 1. Background image (REQUIRED) ────────────────────────────
     # We skip Shorts that can't acquire a real background. Without one
@@ -713,8 +783,11 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     points = extract_key_points(story["description"])
 
     # ── 3. Build frame image ──────────────────────────────────────
+    # display_title is the magnetic AI title (or original headline as
+    # fallback). The frame doubles as the thumbnail source, so this
+    # is the single biggest CTR lever for Shorts.
     frame = create_short_frame(
-        title=title,
+        title=display_title,
         category=category,
         points=points,
         source=story["source"],
@@ -772,7 +845,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         return None
 
     # ── 9. Metadata JSON ──────────────────────────────────────────
-    metadata = build_short_metadata(story, video_path, thumb_path)
+    metadata = build_short_metadata(story, video_path, thumb_path, ai_meta=ai_meta)
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")

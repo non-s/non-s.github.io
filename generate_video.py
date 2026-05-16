@@ -28,30 +28,49 @@ from utils.text import humanize_for_tts
 
 def _ai_youtube_meta(stories: list[dict], n: int, date_str: str) -> dict:
     """
-    Gera título, descrição e tags do YouTube via AI para máximo SEO.
-    Retorna dict com title, description, tags. Retorna {} em falha.
+    Gera title, description, tags e thumbnail_hook do YouTube para máximo CTR + SEO.
+    Retorna dict (vazio se IA falhar — caller usa fallback).
     """
     cats = [s.get("category", "news").upper() for s in stories]
     dominant = max(set(cats), key=cats.count) if cats else "NEWS"
     headlines = "\n".join(f"- {s['title']}" for s in stories[:8])
     prompt = (
-        f"Generate YouTube SEO metadata for a news roundup video. "
-        f"Respond ONLY as valid JSON, no markdown, no code blocks.\n\n"
-        f"Date: {date_str}\nDominant category: {dominant}\n"
+        f"You are a YouTube growth strategist. Generate metadata for a news roundup video "
+        f"that maximises both click-through rate AND credibility. Respond ONLY as valid JSON.\n\n"
+        f"Date: {date_str}\nDominant category: {dominant}\nNumber of stories: {n}\n"
         f"Headlines:\n{headlines}\n\n"
-        f'Return this exact JSON:\n'
-        f'{{"title":"Max 70 chars. Start with the date or category (e.g. \'May 14 World News Roundup\' or \'AI & Tech: Top Stories Today\'). Accurate, not clickbait. Optimize for YouTube search.",'
-        f'"description":"900-1000 chars. First 2 sentences must summarize the top 3 stories (these show in search results). Then list what viewers will learn. Include 5-8 keywords naturally. End with: Subscribe for hourly world news updates → https://youtube.com/@globalbrnews",'
-        f'"tags":["primary keyword","secondary keyword","world news today","breaking news","news roundup","globalbr news","top stories","news {date_str[:4]}","category-specific tag","international news"]}}'
+        f"Rules for the TITLE (max 65 chars):\n"
+        f"  - Lead with a SPECIFIC hook from one of the headlines (a name, number, dollar amount, or twist).\n"
+        f"  - Curiosity gap is good. Pure clickbait is NOT (no 'YOU WON'T BELIEVE', no all-caps).\n"
+        f"  - NEVER use the boilerplate phrase 'World News Roundup'.\n"
+        f"  - Good shapes: '{n} stories you missed today (including ...)', "
+        f"'Why X just happened — and {n-1} more stories', "
+        f"'The {dominant.lower()} news nobody is covering today', "
+        f"'$50M, 3 arrests, 1 leak — today in {dominant.lower()}'.\n"
+        f"  - Numbers, names, and specifics ALWAYS beat generic phrasing.\n\n"
+        f"Rules for THUMBNAIL_HOOK (3-5 words, max 28 chars):\n"
+        f"  - Punchy phrase that goes BIG on the thumbnail image. Different from the title.\n"
+        f"  - High-emotion, specific. Examples: 'TRUMP SHOCKS WALL ST', 'KYIV HIT AGAIN', "
+        f"'$2B DEAL COLLAPSES', 'AI BEATS DOCTORS', 'OPENAI vs MUSK'.\n"
+        f"  - ALL CAPS is fine here (it's display text, not the title).\n\n"
+        f"Rules for DESCRIPTION (900-1000 chars):\n"
+        f"  - First 2 sentences summarise the top 3 stories (shown in search snippets).\n"
+        f"  - Then a bullet list of what viewers will learn.\n"
+        f"  - End with: Subscribe for hourly world news updates → https://youtube.com/@globalbrnews\n\n"
+        f"Rules for TAGS (10 items, lowercase, no hashtag prefix):\n"
+        f"  - Mix of: 2 broad ('world news today', 'breaking news'), 3 from the actual headlines "
+        f"(real names/places/topics), 2 category-specific, 3 long-tail '... today {date_str[:4]}' style.\n\n"
+        f'Return this exact JSON shape:\n'
+        f'{{"title":"...","thumbnail_hook":"...","description":"...","tags":["...","...","..."]}}'
     )
-    raw = _ai_text(prompt, seed=abs(hash(date_str)) % 9999, timeout=22)
+    raw = _ai_text(prompt, seed=abs(hash(date_str)) % 9999, timeout=22, json_mode=True)
     if not raw:
         return {}
     try:
         clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
         m = re.search(r'\{.*\}', clean, re.DOTALL)
         if m:
-            return json.loads(m.group())
+            return json.loads(m.group(), strict=False)
     except Exception as e:
         log.warning(f"AI YouTube meta parse error: {e}")
     return {}
@@ -681,10 +700,14 @@ def generate_ai_thumbnail_bg(prompt: str, dest: Path, width: int = 1280, height:
 
 
 def create_roundup_thumbnail(stories: list[dict], image_paths: list,
-                             output: Path):
+                             output: Path, hook_text: str = ""):
     """
     Thumbnail 1280×720 com fundo gerado por IA (Pollinations/Flux) e
-    texto em negrito sobreposto via PIL — estilo YouTube de alto CTR.
+    texto BIG sobreposto via PIL — estilo YouTube de alto CTR.
+
+    `hook_text`: 3-5 word punchy phrase from the AI metadata (e.g.
+    "TRUMP SHOCKS WALL ST"). When provided, dominates the thumbnail.
+    Falls back to top story title if missing.
     """
     W, H = 1280, 720
 
@@ -783,42 +806,44 @@ def create_roundup_thumbnail(stories: list[dict], image_paths: list,
                       radius=6, fill=(*stripe_color, 230))
     draw.text((cx + 10, 42), cat_text, font=cfont, fill=(0, 0, 0))
 
-    # ── 5. Título principal — grande, branco, outline+sombra para CTR ──
-    main_title = stories[0]["title"] if stories else "World News Roundup"
-    tfont = get_font(90, bold=True)
-    max_w = int(W * 0.68)
-    tlines = wrap_text(draw, main_title, tfont, max_w)
-    if len(tlines) > 3:
-        tfont = get_font(72, bold=True)
-        tlines = wrap_text(draw, main_title, tfont, max_w)
-        lh = 88
+    # ── 5. HOOK GIGANTE — o que decide o clique ──────────────────
+    # Prefer the AI's punchy hook ("$2B DEAL COLLAPSES", "KYIV HIT AGAIN").
+    # Fall back to the top story title if missing, but truncate hard so
+    # we never paint a 3-line cramped paragraph again.
+    if hook_text and 4 <= len(hook_text) <= 32:
+        main_title = hook_text.upper()
     else:
-        lh = 106
+        main_title = stories[0]["title"] if stories else "WORLD NEWS"
+        # Cap to ~24 chars so the text stays huge on the thumb.
+        if len(main_title) > 24:
+            main_title = main_title[:21].rstrip() + "…"
+        main_title = main_title.upper()
 
-    ty = 108
-    for line in tlines[:3]:
-        # Outline espesso (stroke) — legível em qualquer fundo
-        for dx in range(-4, 5):
-            for dy in range(-4, 5):
+    # Pick a font size that fills the canvas without wrapping more than 2 lines.
+    tfont = get_font(160, bold=True)
+    max_w = int(W * 0.92)
+    tlines = wrap_text(draw, main_title, tfont, max_w)
+    if len(tlines) > 2:
+        tfont = get_font(120, bold=True)
+        tlines = wrap_text(draw, main_title, tfont, max_w)
+        lh = 130
+    elif len(tlines) == 2:
+        lh = 168
+    else:
+        lh = 0  # single line
+
+    # Vertically centre the block.
+    total_h = max(lh * (len(tlines) - 1), 0) + (tfont.size if hasattr(tfont, "size") else 160)
+    ty = max(120, (H - total_h) // 2 - 20)
+    for line in tlines[:2]:
+        # Thick outline so it pops against any background.
+        for dx in range(-5, 6):
+            for dy in range(-5, 6):
                 if dx != 0 or dy != 0:
-                    draw.text((30 + dx, ty + dy), line, font=tfont, fill=(0, 0, 0))
-        # Sombra suave
-        draw.text((34, ty + 5), line, font=tfont, fill=(0, 0, 0, 180))
-        # Texto branco
-        draw.text((30, ty), line, font=tfont, fill=TEXT_WHITE)
+                    draw.text((40 + dx, ty + dy), line, font=tfont, fill=(0, 0, 0))
+        # Bright text — colour-pop via category stripe colour for variety.
+        draw.text((40, ty), line, font=tfont, fill=TEXT_WHITE)
         ty += lh
-
-    # ── 6. Lista das outras histórias ────────────────────────────
-    if len(stories) > 1:
-        list_y = max(ty + 10, H - 200)
-        lfont = get_font(27)
-        for i, s in enumerate(stories[1:4], start=2):
-            short = s["title"][:58] + ("…" if len(s["title"]) > 58 else "")
-            # Bullet colorido
-            draw.text((28, list_y), "▶", font=get_font(20, bold=True),
-                      fill=stripe_color)
-            draw.text((52, list_y + 2), short, font=lfont, fill=(220, 225, 240))
-            list_y += 36
 
     # ── 7. Branding na base — "GLOBALBR NEWS" ────────────────────
     draw.rectangle([(22, H - 108), (int(W * 0.55), H - 105)], fill=stripe_color)
@@ -928,7 +953,11 @@ def create_roundup_video(stories: list[dict], image_paths: list[Path | None],
 # ── Metadados SEO com capítulos + AI ───────────────────────────
 def build_metadata(roundup_slug: str, stories: list[dict],
                    thumbnail: Path, video: Path,
-                   duration_estimate: float) -> dict:
+                   duration_estimate: float,
+                   ai_meta: dict | None = None) -> dict:
+    """If `ai_meta` is passed in we skip the second AI call — the caller
+    has already generated it (typically because it needed thumbnail_hook
+    before this function ran)."""
     n = len(stories)
     year = datetime.now().year
     date_str = datetime.now().strftime("%B %d, %Y")
@@ -954,8 +983,10 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         f"  • Story {i}: {s['source_url']}" for i, s in enumerate(stories, 1)
     )
 
-    # ── AI-generated title + description (Pollinations — gratuito) ──
-    ai_meta = _ai_youtube_meta(stories, n, date_str)
+    # ── AI-generated title + description (reuse if pre-computed) ─────
+    if ai_meta is None:
+        ai_meta = _ai_youtube_meta(stories, n, date_str)
+    ai_meta = ai_meta or {}
 
     if ai_meta.get("title") and 10 < len(ai_meta["title"]) <= 100:
         yt_title = ai_meta["title"]
@@ -1173,9 +1204,17 @@ def main():
     if duration < 6 * 60:
         log.warning(f"  ⚠️  Vídeo abaixo de 6 minutos ({duration/60:.1f} min) — verifique o script")
 
+    # Gera o AI meta ANTES da thumbnail pra ter o thumbnail_hook na mão.
+    # build_metadata depois reusa esse mesmo dict (sem chamar a IA 2x).
+    date_str = datetime.now().strftime("%B %d, %Y")
+    ai_meta = _ai_youtube_meta(stories, len(stories), date_str)
+    hook_text = (ai_meta.get("thumbnail_hook") or "").strip()
+    if hook_text:
+        log.info(f"  ✨ Thumbnail hook: {hook_text}")
+
     # Thumbnail
     thumb_path = VIDEOS_DIR / f"{slug}_thumb.jpg"
-    create_roundup_thumbnail(stories, image_paths, thumb_path)
+    create_roundup_thumbnail(stories, image_paths, thumb_path, hook_text=hook_text)
 
     # Vídeo
     video_path = VIDEOS_DIR / f"{slug}.mp4"
@@ -1184,8 +1223,8 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
         return
 
-    # Metadados SEO com capítulos
-    build_metadata(slug, stories, thumb_path, video_path, duration)
+    # Metadados SEO com capítulos (reusa o ai_meta já gerado acima)
+    build_metadata(slug, stories, thumb_path, video_path, duration, ai_meta=ai_meta)
 
     # ── Versão PT-BR ─────────────────────────────────────────────
     pt_video = create_pt_video(stories, script, VIDEOS_DIR)
