@@ -482,7 +482,7 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'"hook": "One punchy sentence max 20 words — journalistic hook, creates curiosity without clickbait"'
         f'}}'
     )
-    raw = _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
+    raw = _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=25, json_mode=True)
     result = {}
     if raw:
         try:
