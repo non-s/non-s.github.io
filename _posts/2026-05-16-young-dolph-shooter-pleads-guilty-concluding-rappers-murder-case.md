@@ -40,6 +40,7 @@ entities:
   - "Adolph Thornton Jr."
   - "Memphis, Tennessee"
   - "Shelby County Criminal Court"
+audio: "/assets/audio/posts/2026-05-16-young-dolph-shooter-pleads-guilty-concluding-rappers-murder-case.mp3"
 ---
 
 Cornelius Smith Jr., the man convicted of fatally shooting rapper Young Dolph in 2021, was sentenced Friday to 20 years in prison after pleading guilty to second-degree murder. Smith’s confession came during the trial of a co-defendant, solidifying his role in the high-profile killing that shocked the hip-hop world. The sentence, handed down in [Shelby County Criminal Court](https://en.wikipedia.org/wiki/Shelby_County,_Tennessee), marks the end of a case that drew national attention and left fans mourning the loss of an influential artist.

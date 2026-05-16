@@ -42,6 +42,7 @@ entities:
   - "London"
   - "FA Cup final"
   - "pro-Palestinian protest"
+audio: "/assets/audio/posts/2026-05-16-uk-far-right-group-stages-anti-immigration-protest-in-london.mp3"
 ---
 
 Thousands of far-right supporters marched through London on Saturday as anti-immigration activist [Tommy Robinson](https://en.wikipedia.org/wiki/Tommy_Robinson_(activist)), real name Stephen Yaxley-Lennon, urged participants to act before what he called 'losing their country forever.' The demonstration in central London drew an estimated 150,000 people, according to previous rallies organized by Robinson, who has risen to prominence in recent years as a vocal critic of Islam and immigration policies. Protesters carried a sea of British Union Jack, English St George's and other flags as they moved through the capital, calling for stricter controls on immigration and what they described as the preservation of 'Christian values.'
