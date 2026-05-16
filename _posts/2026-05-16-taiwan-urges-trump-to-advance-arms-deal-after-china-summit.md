@@ -43,6 +43,7 @@ entities:
   - "Xi Jinping"
   - "Chen Ming-chi"
   - "Manila"
+audio: "/assets/audio/posts/2026-05-16-taiwan-urges-trump-to-advance-arms-deal-after-china-summit.mp3"
 ---
 
 Taiwan’s Deputy Foreign Minister [Chen Ming-chi](https://en.wikipedia.org/wiki/Chen_Ming-chi) said Saturday the island would continue pushing Washington to approve a pending $14 billion arms deal, the second major military sale awaiting President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump)’s signature. The push comes after Trump warned Taiwan against declaring independence during an interview with Fox News following his high-stakes summit with China’s leader, [Xi Jinping](https://en.wikipedia.org/wiki/Xi_Jinping), in [Manila](https://en.wikipedia.org/wiki/Manila).

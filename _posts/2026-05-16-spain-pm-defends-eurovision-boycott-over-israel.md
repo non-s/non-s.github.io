@@ -44,6 +44,7 @@ entities:
   - "European Broadcasting Union"
   - "Spain"
   - "RTVE"
+audio: "/assets/audio/posts/2026-05-16-spain-pm-defends-eurovision-boycott-over-israel.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Eurovision 2024 faces scrutiny over Israel’s participation amid war](/world/2026/05/16/where-did-eurovision-go-wrong/)

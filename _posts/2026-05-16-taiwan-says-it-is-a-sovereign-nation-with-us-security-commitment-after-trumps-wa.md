@@ -43,6 +43,7 @@ entities:
   - "China"
   - "United States"
   - "One China policy"
+audio: "/assets/audio/posts/2026-05-16-taiwan-says-it-is-a-sovereign-nation-with-us-security-commitment-after-trumps-wa.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Trump urges Taiwan to avoid independence amid rising China tensions](/world/2026/05/16/trump-warns-taiwan-against-declaring-independence-hours-after-summit-with-chinas/)
