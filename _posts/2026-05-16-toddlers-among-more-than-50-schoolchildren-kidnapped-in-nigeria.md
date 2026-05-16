@@ -42,6 +42,7 @@ entities:
   - "Bola Tinubu"
   - "United Nations"
   - "Amnesty International"
+audio: "/assets/audio/posts/2026-05-16-toddlers-among-more-than-50-schoolchildren-kidnapped-in-nigeria.mp3"
 ---
 
 Gunmen abducted at least 52 schoolchildren, including toddlers, in a series of raids on Mussa town in Nigeria’s [Borno state](https://en.wikipedia.org/wiki/Borno_State) on Thursday, officials confirmed Friday. The attacks left parents and local leaders searching for answers as no group has claimed responsibility. Nigerian security forces and local vigilantes began immediate search operations to locate the missing children and bring the perpetrators to justice.

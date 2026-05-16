@@ -41,6 +41,7 @@ entities:
   - "Donald Trump"
   - "Nigeria Armed Forces"
   - "Truth Social"
+audio: "/assets/audio/posts/2026-05-16-trump-says-islamic-state-second-in-command-killed-by-us-and-nigerian-forces.mp3"
 ---
 
 > 📰 **Continuing coverage:** [US, Nigeria kill Islamic State's second-in-command in Nigeria](/world/2026/05/16/us-and-nigeria-claim-killing-of-islamic-state-second-in-command/)

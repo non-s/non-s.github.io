@@ -43,6 +43,7 @@ entities:
   - "Crafted Hospitality"
   - "Milan"
   - "Italian tech industry"
+audio: "/assets/audio/posts/2026-05-16-top-chefs-tom-colicchio-got-a-15x-return-on-a-tech-company-most-americans-have-n.mp3"
 ---
 
 Celebrity chef and restaurateur [Tom Colicchio](https://en.wikipedia.org/wiki/Tom_Colicchio) turned a little-known Italian tech company into his most profitable investment ever, scoring roughly a 15x return. Colicchio revealed the windfall in a recent interview, crediting early bets on [Bending Spoons](https://en.wikipedia.org/wiki/Bending_Spoons), a Milan-based technology conglomerate that reached a $11 billion valuation in October 2025.
