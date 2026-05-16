@@ -88,19 +88,27 @@ def _throttle() -> None:
         _last_call_ts = time.time()
 
 
-def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str) -> str:
+def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
     _throttle()
+    payload: dict = {
+        "model": _MISTRAL_MODEL,
+        "messages": [
+            {"role": "system", "content": sys_msg},
+            {"role": "user",   "content": prompt},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 3000,
+    }
+    if json_mode:
+        # Forces Mistral to emit syntactically valid JSON. Eliminates the
+        # "Expecting ',' delimiter" / unescaped-quote / trailing-comma
+        # class of parse errors that were sinking entire posts at the
+        # quality gate. Requires a 'json' word somewhere in the messages
+        # (we already say "JSON" in the user prompt for these calls).
+        payload["response_format"] = {"type": "json_object"}
     r = _session.post(
         _MISTRAL_API_URL,
-        json={
-            "model": _MISTRAL_MODEL,
-            "messages": [
-                {"role": "system", "content": sys_msg},
-                {"role": "user",   "content": prompt},
-            ],
-            "temperature": 0.7,
-            "max_tokens": 3000,
-        },
+        json=payload,
         headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
         timeout=timeout,
     )
@@ -108,7 +116,7 @@ def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str) -> str:
     return r.json()["choices"][0]["message"]["content"].strip()
 
 
-def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> str:
+def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, json_mode: bool = False) -> str:
     """
     Generate text via Mistral La Plateforme (free tier).
     Up to 3 attempts with backoff on rate limit / transient errors.
@@ -131,7 +139,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> 
 
     for attempt in range(3):
         try:
-            return _call_mistral(sys_msg, prompt, timeout, key)
+            return _call_mistral(sys_msg, prompt, timeout, key, json_mode=json_mode)
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code if e.response is not None else 0
             if status == 429:
