@@ -19,7 +19,10 @@ image: /assets/images/logo.png
   <h1 class="section-title mb-2">Article Series</h1>
   <p class="text-muted mb-4">Ongoing stories and related article groups.</p>
 
-  {% assign all_tags = site.posts | map: "tags" | compact | flatten | compact | sort | uniq %}
+  {# join+split coerces every tag to a string so a stray integer (e.g. from a
+     YAML inline array like [foo, 73,000] where "000" parses as 0) can't
+     trip the sort filter with a String-vs-Integer comparison. #}
+  {% assign all_tags = site.posts | map: "tags" | compact | flatten | compact | join: "|" | split: "|" | uniq | sort %}
   {% assign series_tags = "" | split: "" %}
   {% for tag in all_tags %}
     {% assign tag_posts = site.posts | where_exp: "p", "p.tags contains tag" %}

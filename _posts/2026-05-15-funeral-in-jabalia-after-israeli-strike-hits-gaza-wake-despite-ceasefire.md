@@ -3,7 +3,7 @@ layout: post
 title: "Gaza funeral held after Israeli strike hits wake during ceasefire"
 date: 2026-05-15 13:15:48 +0000
 categories: [world, war]
-tags: [euronews, europe, world-news, war, conflict, diplomacy, funeral, jabalia, israeli, gaza, video, gaza-funeral-strike, israeli-airstrike-gaza, ceasefire-violations-gaza, jabalia-funeral-attack, gaza-death-toll-73,000, israeli-military-strike-on-mourners, gaza-ceasefire-collapse, palestinian-death-toll-october-2023]
+tags: [euronews, europe, world-news, war, conflict, diplomacy, funeral, jabalia, israeli, gaza, video, gaza-funeral-strike, israeli-airstrike-gaza, ceasefire-violations-gaza, jabalia-funeral-attack, gaza-death-toll-73000, israeli-military-strike-on-mourners, gaza-ceasefire-collapse, palestinian-death-toll-october-2023]
 author: "GlobalBR News"
 description: "Funeral held in Jabalia after Israeli strike kills two mourners during Gaza wake as truce violations continue, death toll nears 73,000."
 source_url: "http://www.euronews.com/video/2026/05/15/funeral-in-jabalia-after-israeli-strike-hits-gaza-wake-despite-ceasefire"
