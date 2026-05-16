@@ -122,7 +122,6 @@ CTA_BLOCK = """
 
 ─────────────────────────
 🌐 Read more: https://non-s.github.io
-🦋 Bluesky: https://bsky.app/profile/globalbrnews.bsky.social
 📡 RSS Feed: https://non-s.github.io/feed.xml
 ─────────────────────────
 #GlobalBRNews #WorldNews #BreakingNews"""
