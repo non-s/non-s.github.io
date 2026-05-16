@@ -501,8 +501,11 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
                             end = i
                             break
                 candidate = clean[start:end + 1]
+                # strict=False allows raw control chars (newlines, tabs)
+                # inside string values. Mistral often writes multi-paragraph
+                # article_body with literal \n instead of escaped \\n.
                 try:
-                    result = json.loads(candidate)
+                    result = json.loads(candidate, strict=False)
                 except json.JSONDecodeError:
                     # LLMs occasionally return a Python repr (single quotes)
                     # instead of JSON. Try literal_eval as a fallback.
@@ -512,9 +515,9 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
                         if isinstance(parsed, dict):
                             result = parsed
                         else:
-                            result = json.loads(clean)
+                            result = json.loads(clean, strict=False)
                     except (ValueError, SyntaxError):
-                        result = json.loads(clean)
+                        result = json.loads(clean, strict=False)
         except Exception as e:
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
