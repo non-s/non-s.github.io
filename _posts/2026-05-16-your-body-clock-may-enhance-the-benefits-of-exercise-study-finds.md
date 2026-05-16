@@ -40,6 +40,7 @@ entities:
   - "Jeanne Duffy"
   - "Science Advances"
   - "chronobiology"
+audio: "/assets/audio/posts/2026-05-16-your-body-clock-may-enhance-the-benefits-of-exercise-study-finds.mp3"
 ---
 
 People who exercise in sync with their natural body clock may see greater health benefits than those who work out at fixed times, according to new research. A study published in *Science Advances* found that individuals who adjusted their exercise routines to match their circadian rhythms—whether early morning or late evening—experienced improved fitness outcomes compared to those who ignored their internal clocks. The findings suggest that timing workouts to one’s natural energy peaks could enhance results for weight loss, muscle gain, and cardiovascular health.

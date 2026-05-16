@@ -43,6 +43,7 @@ entities:
   - "Rachel Reeves"
   - "Angela Rayner"
   - "John McDonnell"
+audio: "/assets/audio/posts/2026-05-16-wes-streeting-confirms-he-will-stand-if-labour-leadership-race-is-triggered.mp3"
 ---
 
 Labour MP Wes Streeting has become the first senior figure to publicly declare he will run to replace Prime Minister [Keir Starmer](https://en.wikipedia.org/wiki/Keir_Starmer) if the party triggers a leadership contest, calling for a full and open competition rather than a pre-arranged handover. Speaking at the annual conference hosted by the centre-left think tank Progress in London on Saturday, Streeting, the former health secretary, set out his intention to contest the leadership, warning that Labour risked losing public trust if it avoided a contest. “The British people deserve a proper contest, not a coronation,” Streeting told delegates. “I believe in democracy, and that includes within our own party.”

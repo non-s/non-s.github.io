@@ -43,6 +43,7 @@ entities:
   - "Manchester United F.C."
   - "Pep Guardiola"
   - "UEFA Champions League"
+audio: "/assets/audio/posts/2026-05-16-what-man-citys-fa-cup-win-means-for-premier-league-places-in-europe.mp3"
 ---
 
 Manchester City's [FA Cup](https://en.wikipedia.org/wiki/FA_Cup) triumph has reshaped the Premier League's European qualification race ahead of the 2024-25 season. The Blues' victory means the top eight clubs in England's top flight will now secure a spot in European competitions, up from the previous seven. This change follows a decision by [UEFA](https://en.wikipedia.org/wiki/UEFA) to expand qualification pathways for domestic cup winners.
