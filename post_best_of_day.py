@@ -58,17 +58,18 @@ def pick_best_post() -> tuple[Path, dict] | None:
     return path, fm
 
 
-def _groq_commentary(title: str, description: str) -> str:
-    key = os.getenv("GROQ_API_KEY", "")
+def _mistral_commentary(title: str, description: str) -> str:
+    key = os.getenv("MISTRAL_API_KEY", "")
     if not key:
         return ""
+    model = os.getenv("MISTRAL_MODEL", "mistral-small-latest")
 
     def _call():
         r = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
+            "https://api.mistral.ai/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
-                "model": "llama-3.1-8b-instant",
+                "model": model,
                 "messages": [{"role": "user", "content": (
                     f"Write ONE engaging sentence (max 15 words) introducing this news for "
                     f"social media. Journalistic, not clickbait. "
@@ -162,7 +163,7 @@ def main() -> None:
     cat         = get_str(fm, "categories", "news")
     emoji       = CATEGORY_EMOJIS.get(cat, "📰")
     url         = build_url(path, fm)
-    commentary  = _groq_commentary(title, description)
+    commentary  = _mistral_commentary(title, description)
 
     text = f"⭐ Article of the Day\n\n{emoji} {title}\n\n"
     if commentary:

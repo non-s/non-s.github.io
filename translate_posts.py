@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Translate latest English posts to PT-BR via DeepL → Groq → Gemini fallback chain."""
+"""Translate latest English posts to PT-BR via DeepL → Mistral fallback chain."""
 from __future__ import annotations
 
 import logging
@@ -19,9 +19,9 @@ PT_DIR        = POSTS_DIR / "pt"
 LOOKBACK_DAYS = 3
 MAX_PER_RUN   = 10
 
-DEEPL_KEY  = os.getenv("DEEPL_API_KEY", "")
-GROQ_KEY   = os.getenv("GROQ_API_KEY", "")
-GEMINI_KEY = os.getenv("GEMINI_API_KEY", "")
+DEEPL_KEY    = os.getenv("DEEPL_API_KEY", "")
+MISTRAL_KEY  = os.getenv("MISTRAL_API_KEY", "")
+MISTRAL_MODEL = os.getenv("MISTRAL_MODEL", "mistral-small-latest")
 
 _TRANSLATE_SYS = (
     "Traduza o texto a seguir para Português do Brasil (PT-BR). "
@@ -48,58 +48,35 @@ def _translate_deepl(text: str) -> str | None:
     return None
 
 
-def _translate_groq(text: str) -> str | None:
-    if not GROQ_KEY:
+def _translate_mistral(text: str) -> str | None:
+    if not MISTRAL_KEY:
         return None
     try:
         r = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"},
+            "https://api.mistral.ai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {MISTRAL_KEY}", "Content-Type": "application/json"},
             json={
-                "model": "llama-3.1-8b-instant",
+                "model": MISTRAL_MODEL,
                 "messages": [
                     {"role": "system", "content": _TRANSLATE_SYS},
                     {"role": "user",   "content": text},
                 ],
+                "temperature": 0.3,
                 "max_tokens": 4000,
             },
             timeout=45,
         )
         if r.status_code == 200:
             return r.json()["choices"][0]["message"]["content"].strip()
-        log.warning("Groq %d: %s", r.status_code, r.text[:100])
+        log.warning("Mistral %d: %s", r.status_code, r.text[:100])
     except Exception as e:
-        log.warning("Groq translate error: %s", e)
-    return None
-
-
-def _translate_gemini(text: str) -> str | None:
-    if not GEMINI_KEY:
-        return None
-    try:
-        url = (
-            "https://generativelanguage.googleapis.com/v1beta/models/"
-            f"gemini-1.5-flash:generateContent?key={GEMINI_KEY}"
-        )
-        r = requests.post(
-            url,
-            json={
-                "contents": [{"parts": [{"text": f"{_TRANSLATE_SYS}\n\n{text}"}]}],
-                "generationConfig": {"temperature": 0.3, "maxOutputTokens": 4000},
-            },
-            timeout=45,
-        )
-        if r.status_code == 200:
-            return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-        log.warning("Gemini %d: %s", r.status_code, r.text[:100])
-    except Exception as e:
-        log.warning("Gemini translate error: %s", e)
+        log.warning("Mistral translate error: %s", e)
     return None
 
 
 def translate_text(text: str) -> str:
-    """DeepL → Groq → Gemini → original (never loses content)."""
-    for fn in (_translate_deepl, _translate_groq, _translate_gemini):
+    """DeepL → Mistral → original (never loses content)."""
+    for fn in (_translate_deepl, _translate_mistral):
         result = fn(text)
         if result:
             return result
