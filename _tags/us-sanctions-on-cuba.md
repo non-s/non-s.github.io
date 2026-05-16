@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'u.s.-sanctions-on-cuba'"
-tag: u.s.-sanctions-on-cuba
+title: "Posts tagged 'us-sanctions-on-cuba'"
+tag: us-sanctions-on-cuba
 permalink: /tag/us-sanctions-on-cuba/
 ---

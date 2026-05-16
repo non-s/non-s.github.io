@@ -41,6 +41,7 @@ entities:
   - "The Tin Drum"
   - "MUBI"
   - "Criterion Channel"
+audio: "/assets/audio/posts/2026-05-16-visitation-review-volker-schlondorffs-tale-of-two-summer-houses-is-an-intelligen.mp3"
 ---
 
 German auteur Volker Schlöndorff’s latest film, *Visitation*, casts [Martina Gedeck](https://en.wikipedia.org/wiki/Martina_Gedeck) and [Lars Eidinger](https://en.wikipedia.org/wiki/Lars_Eidinger) as residents and visitors to two summer homes where personal joy and national tragedy collide. The elegantly crafted drama weaves together stories spanning decades, using the properties as silent witnesses to Germany’s 20th-century upheavals. Schlöndorff, best known for his Oscar-winning *The Tin Drum* (1979), returns with a project that balances intimacy and historical weight without heavy-handedness. The film premiered at the [Berlinale](https://en.wikipedia.org/wiki/Berlin_International_Film_Festival) earlier this year and is poised for wider theatrical release later this fall.

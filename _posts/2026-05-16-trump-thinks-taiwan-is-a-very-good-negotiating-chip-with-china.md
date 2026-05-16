@@ -44,6 +44,7 @@ entities:
   - "Fox News"
   - "Bret Baier"
   - "American Institute in Taiwan"
+audio: "/assets/audio/posts/2026-05-16-trump-thinks-taiwan-is-a-very-good-negotiating-chip-with-china.mp3"
 ---
 
 U.S. President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) said Friday that arms sales to [Taiwan](https://en.wikipedia.org/wiki/Taiwan) could be used as a bargaining tool in negotiations with [China](https://en.wikipedia.org/wiki/China), a stance that has unsettled officials in Taipei. Trump made the comment during a [Fox News](https://en.wikipedia.org/wiki/Fox_News) interview with Bret Baier, aired hours after he concluded a three-day state visit to Beijing, where tensions over trade, technology and security dominated discussions.

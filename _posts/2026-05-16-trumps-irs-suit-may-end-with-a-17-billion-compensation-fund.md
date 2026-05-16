@@ -42,6 +42,7 @@ entities:
   - "Justice Department"
   - "Tea Party movement"
   - "Biden administration"
+audio: "/assets/audio/posts/2026-05-16-trumps-irs-suit-may-end-with-a-17-billion-compensation-fund.mp3"
 ---
 
 Federal officials are weighing the creation of a $1.7 billion fund to compensate victims of alleged government weaponization, including supporters of former President Donald Trump, as part of settlement talks to resolve his $10 billion lawsuit against the Internal Revenue Service. The IRS is accused of leaking Trump’s tax information in 2019, a claim the agency has denied. Sources familiar with the discussions, who spoke on condition of anonymity due to the private nature of the talks, said the fund would follow the model of multimillion-dollar payouts already made to some of Trump’s allies under a separate program administered by the Department of Justice. [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) filed the lawsuit in 2022, seeking damages for what he alleges was politically motivated targeting by federal agencies.

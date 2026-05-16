@@ -44,6 +44,7 @@ entities:
   - "2024 U.S. election"
   - "Iran war"
   - "U.S. economy"
+audio: "/assets/audio/posts/2026-05-16-trump-voter-remorse-is-almost-entirely-concentrated-in-the-swing-voters-who-gave.mp3"
 ---
 
 Voter regret for backing Donald Trump in 2024 is overwhelmingly concentrated among swing voters who took a chance on the former president this election cycle, according to new polling data. The trend emerges as prominent conservatives who previously stood firmly behind Trump now publicly express remorse over their support, citing concerns about his handling of the Iran conflict, economic policies and his relationship with convicted sex offender [Jeffrey Epstein](https://en.wikipedia.org/wiki/Jeffrey_Epstein).
