@@ -41,6 +41,7 @@ entities:
   - "Andes virus"
   - "U.S. State Department"
   - "Antarctic expedition cruise ship"
+audio: "/assets/audio/posts/2026-05-16-hantavirus-arrives-in-us-could-cruise-ship-outbreak-cause-next-pandemic.mp3"
 ---
 
 Eighteen Americans were airlifted to the U.S. after traveling on an Antarctic expedition cruise ship linked to a rare Andes hantavirus outbreak. The U.S. State Department confirmed the passengers arrived safely, though health officials continue monitoring the situation closely. The outbreak raises concerns about the virus’s spread in confined spaces, but experts stress that the broader risk of a COVID-like pandemic remains low.

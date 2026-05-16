@@ -43,6 +43,7 @@ entities:
   - "Anthony Fauci"
   - "antiretroviral therapy"
   - "integrase inhibitors"
+audio: "/assets/audio/posts/2026-05-16-she-was-diagnosed-with-hiv-in-1996-and-still-thriving-today-at-74.mp3"
 ---
 
 Barbara Roberts has defied expectations for decades after her 1996 HIV diagnosis. At 74, she remains healthy, active, and optimistic, thanks to advances in antiretroviral therapy that have transformed HIV from a fatal diagnosis to a manageable condition. Roberts was 44 when she first noticed something was wrong. She initially dismissed her symptoms—fever, night sweats, and fatigue—as a stubborn case of the flu. After antibiotics failed to relieve her symptoms, she returned to the emergency room, where doctors finally ran the tests that would change her life. On December 21, 1996, Roberts received the news: she was HIV-positive. “It surprised me because I never considered myself at risk,” Roberts told Healthline. “I was married, monogamous, and had no reason to think this was coming.”
