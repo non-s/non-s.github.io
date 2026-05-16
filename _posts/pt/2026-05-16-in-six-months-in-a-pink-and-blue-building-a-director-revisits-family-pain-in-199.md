@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Em "Seis Meses em um Prédio Rosa e Azul", uma diretora revisita a dor familiar nos anos 1990 na Cidade do México através de uma lente de amor e alegria (Exclusivo: trecho de Cannes)"
+title: "Em \"Seis Meses em um Prédio Rosa e Azul\", uma diretora revisita a dor familiar nos anos 1990 na Cidade do México através de uma lente de amor e alegria (Exclusivo: trecho de Cannes)"
 date: 2026-05-16 06:00:00 +0000
 categories: [entertainment]
 tags: [hollywood, movies, tv, six-months, pink, blue-building, director-revisits-family, pain, cannes-critics’-week-2024-film, bruno-santamaría-razo-debut-film, six-months-in-a-pink-and-blue-building, 1990s-mexico-city-childhood-film, mexican-director-cannes-debut, coming-of-age-cinema, father-illness-in-film, first-love-movie, mexico-city-1990s-setting, cannes-critics-week-exclusive-clip]
 author: "GlobalBR News"
-description: "Bruno Santamaría Razo estreia na Semana da Crítica de Cannes com "Seis Meses em um Prédio Rosa e Azul", que explora a jornada de um menino diante da doença de seu pai e da infância"
+description: "Bruno Santamaría Razo estreia na Semana da Crítica de Cannes com \"Seis Meses em um Prédio Rosa e Azul\", que explora a jornada de um menino diante da doença de seu pai e da infância"
 source_url: "https://www.hollywoodreporter.com/movies/movie-news/cannes-critics-week-six-months-in-a-pink-and-blue-building-1236591012/"
 source_name: "Hollywood Reporter"
 sentiment: "neutral"

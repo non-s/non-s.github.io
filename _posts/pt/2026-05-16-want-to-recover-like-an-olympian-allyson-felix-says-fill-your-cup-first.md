@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Allyson Felix, da Olimpíada, sobre por que descanso e recuperação superam a cultura do "hustle""
+title: "Allyson Felix, da Olimpíada, sobre por que descanso e recuperação superam a cultura do \"hustle\""
 date: 2026-05-16 06:38:32 +0000
 categories: [health]
 tags: [health, wellness, medicine, want, recover-like, olympian, allyson-felix-says, fill-your-cup, allyson-felix-recovery-tips, olympian-rest-and-recovery-advice, paid-family-leave-advocacy, worker-rest-and-recovery, caregiver-paid-sick-leave, allyson-felix-paid-leave, us-paid-leave-policies, athlete-recovery-techniques]

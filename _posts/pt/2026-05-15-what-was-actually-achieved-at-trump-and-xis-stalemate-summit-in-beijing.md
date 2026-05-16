@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "O que foi realmente alcançado na "cúpula do impasse" entre Trump e Xi em Pequim?"
+title: "O que foi realmente alcançado na \"cúpula do impasse\" entre Trump e Xi em Pequim?"
 date: 2026-05-15 13:37:46 +0000
 categories: [world, politics]
 tags: [guardian, world-news, international, politics, government, trump, beijing, chinese, trump-china, donald-trump, trump-xi-summit-beijing, donald-trump-china-visit-outcomes, us-china-relations-2024, xi-jinping-donald-trump-meeting, us-china-trade-talks, trump-beijing-summit-results, us-china-diplomatic-relations, china-us-trade-war-status]
