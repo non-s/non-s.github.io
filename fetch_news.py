@@ -457,7 +457,10 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
     combined = f"{description}\n\n{body}".strip()[:2000]
     cat = category.capitalize()
     prompt = (
-        f'You are a world-class AP-style SEO journalist. Enhance this news article for maximum search visibility and reader engagement. '
+        f'You are a senior journalist who writes the way a smart friend talks — '
+        f'clear, specific, and a little warmer than wire copy. Use contractions naturally. '
+        f'Prefer concrete details over abstract claims. Avoid corporate filler. '
+        f'Enhance this news article for both search visibility and the reader who actually finishes it. '
         f'Respond ONLY with valid JSON. No markdown, no code blocks, no extra text.\n\n'
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
         f'Return this exact JSON structure:\n'

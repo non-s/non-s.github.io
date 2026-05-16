@@ -25,6 +25,7 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 from utils.ai_helper import ai_text as _ai_text
+from utils.text import humanize_for_tts
 
 # ── Config ────────────────────────────────────────────────────────
 VIDEOS_DIR      = Path("_videos")
@@ -61,7 +62,7 @@ CATEGORY_COLORS = {
     "ENTERTAINMENT": (180, 0, 220),
 }
 
-VOICE_SHORT = "en-US-AriaNeural"
+VOICE_SHORT = "en-US-JennyNeural"
 
 SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
 
@@ -178,7 +179,10 @@ def guess_category(tags: list, title: str) -> str:
 # ── TTS ───────────────────────────────────────────────────────────
 async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT):
     import edge_tts
-    communicate = edge_tts.Communicate(text, voice, rate="+8%", pitch="+0Hz")
+    # Shorts have a tight 60s budget so we still nudge the rate up a
+    # little — but +8% sounded panicked. +3% keeps it brisk without
+    # losing the human-paced feel.
+    communicate = edge_tts.Communicate(text, voice, rate="+3%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
 
@@ -721,7 +725,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     log.info(f"  Frame saved: {frame_path.name}")
 
     # ── 4. TTS narration ──────────────────────────────────────────
-    script = build_short_script(title, points, category)
+    script = humanize_for_tts(build_short_script(title, points, category))
     audio_path = tmp_dir / f"audio_{slug}.mp3"
     try:
         asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
