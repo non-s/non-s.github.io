@@ -44,6 +44,7 @@ entities:
   - "Merrick Garland"
   - "Islamic Revolutionary Guard Corps"
   - "Iran"
+audio: "/assets/audio/posts/2026-05-16-us-charges-alleged-iran-backed-kataib-hezbollah-suspect-what-we-know.mp3"
 ---
 
 The US Justice Department unsealed a criminal complaint on Friday in a Manhattan federal court charging Mohammad Baqer Saad Dawood al-Saadi, 32, with involvement in at least 18 attacks and attempted attacks spanning the United States, Canada, and Europe. According to court filings, the attacks were carried out to compel the US and Israel to halt recent military actions against Iran. Al-Saadi, an Iraqi national, is accused of being a senior commander of an Iran-backed armed group identified as Kataib Hezbollah.

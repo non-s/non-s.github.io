@@ -41,6 +41,7 @@ entities:
   - "PCOS Awareness Association"
   - "Irving Stein"
   - "Michael Leventhal"
+audio: "/assets/audio/posts/2026-05-16-this-week-in-science-pcos-becomes-pmos-an-impossible-crystal-and-more.mp3"
 ---
 
 The common hormone disorder previously called polycystic ovary syndrome (PCOS) has been officially renamed polyendocrine metabolic ovarian syndrome (PMOS) by a global medical consensus group. The change, announced this week, seeks to correct widespread misconceptions and diagnostic inaccuracies that have persisted for more than 30 years. Researchers say the new name better reflects the condition’s true metabolic and endocrine nature, which extends beyond the ovaries.

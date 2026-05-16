@@ -43,6 +43,7 @@ entities:
   - "David Lammy"
   - "Rishi Sunak"
   - "Conservative Party (UK)"
+audio: "/assets/audio/posts/2026-05-16-uk-leadership-crisis-deepens-starmer-faces-growing-calls-to-step-down.mp3"
 ---
 
 UK Prime Minister [Keir Starmer](https://en.wikipedia.org/wiki/Keir_Starmer) faced escalating calls to resign Tuesday after weeks of mounting political pressure and declining public approval. The crisis deepened as senior lawmakers within his own party joined opposition figures in demanding his immediate departure. Polls released Monday showed Starmer’s approval ratings at their lowest point in over a year, with just 28% of voters expressing confidence in his leadership.

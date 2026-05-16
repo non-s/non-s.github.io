@@ -43,6 +43,7 @@ entities:
   - "Benjamin Netanyahu"
   - "United Nations"
   - "Egypt"
+audio: "/assets/audio/posts/2026-05-16-war-in-the-middle-east-israel-targets-top-hamas-leader-in-gaza.mp3"
 ---
 
 An Israeli airstrike in Gaza on Friday targeted Izz al-Din al-Haddad, the leader of Hamas’ military wing [Qassam Brigades](https://en.wikipedia.org/wiki/Izz_ad-Din_al-Qassam_Brigades), Israeli officials confirmed. The strike, which occurred in southern Gaza, sought to eliminate a key figure in Hamas’ command structure, but the militant group has not yet verified al-Haddad’s status. Gaza health officials reported multiple civilian casualties, including children, in the strike’s aftermath, raising concerns over collateral damage in densely populated areas.
