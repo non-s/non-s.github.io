@@ -2866,7 +2866,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if category == "business":
                 combined_text = (title + " " + description).lower()
                 if any(kw in combined_text for kw in _CRYPTO_KEYWORDS):
-                    crypto_prices_for_post = _get_crypto_prices() or None
+                    crypto_prices_for_post = _get_crypto_prices_cached() or None
                     if crypto_prices_for_post:
                         log.debug(f"  💰 Crypto prices attached to business post")
 
@@ -3067,7 +3067,7 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     if category == "business":
         combined_text = (title + " " + description).lower()
         if any(kw in combined_text for kw in _CRYPTO_KEYWORDS):
-            crypto_prices_for_post = _get_crypto_prices() or None
+            crypto_prices_for_post = _get_crypto_prices_cached() or None
 
     continuation = _find_related_story(title, all_tags, category)
     last_updated_val = pub_date.strftime("%Y-%m-%d") if continuation else ""
@@ -3315,7 +3315,7 @@ def main():
 
     # ── Pre-fetch crypto prices once per run ──────────────────────
     try:
-        _get_crypto_prices()
+        _get_crypto_prices_cached()
     except Exception as exc:
         log.debug(f"Crypto prices pre-fetch failed: {exc}")
 
