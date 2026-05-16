@@ -1192,7 +1192,7 @@ def main():
     # ── Versão PT-BR ─────────────────────────────────────────────
     pt_video = create_pt_video(stories, script, VIDEOS_DIR)
     if pt_video:
-        # Traduz título e descrição para PT via Groq
+        # Traduz título e descrição para PT
         pt_title_raw = _ai_text(
             f"Translate this YouTube video title to Brazilian Portuguese (PT-BR). "
             f"Return ONLY the translated title, no commentary:\n\n{slug.replace('-', ' ').title()}"
