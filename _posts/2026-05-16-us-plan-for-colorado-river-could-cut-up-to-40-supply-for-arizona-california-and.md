@@ -43,6 +43,7 @@ entities:
   - "U.S. Bureau of Reclamation"
   - "Lake Mead"
   - "Lake Powell"
+audio: "/assets/audio/posts/2026-05-16-us-plan-for-colorado-river-could-cut-up-to-40-supply-for-arizona-california-and.mp3"
 ---
 
 The Trump administration has proposed a plan to reduce Colorado River water supplies by up to 40% for Arizona, California and Nevada, as the drought-stricken river’s reservoirs continue to drop to dangerously low levels. The proposal, revealed Wednesday during an Arizona water officials’ meeting, comes after seven states drawing water from the river failed to reach a consensus on voluntary cuts. The plan targets three of the seven states most dependent on the river, which supplies water to 40 million people across the western U.S. and irrigates 5.5 million acres of farmland.

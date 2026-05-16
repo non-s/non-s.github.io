@@ -41,6 +41,7 @@ entities:
   - "Surgilube"
   - "TikTok"
   - "Instagram"
+audio: "/assets/audio/posts/2026-05-16-why-ballmaxxing-may-be-more-dangerous-than-you-think.mp3"
 ---
 
 Health professionals are sounding alarms over a viral social media trend called ballmaxxing, where men inject fluids directly into the testicles to increase their size. The practice involves using substances such as saline or surgical lubricants like Surgilube, with some users claiming their testicles grew to the size of grapefruits. Medical experts, however, warn that such procedures pose serious health risks, including severe infections, scarring, and possible permanent damage to male genitalia.

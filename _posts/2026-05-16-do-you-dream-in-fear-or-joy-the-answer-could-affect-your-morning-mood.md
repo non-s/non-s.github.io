@@ -37,6 +37,7 @@ content_type: "news"
 entities:
   - "Sleep journal"
   - "Matthew Walker (neuroscientist)"
+audio: "/assets/audio/posts/2026-05-16-do-you-dream-in-fear-or-joy-the-answer-could-affect-your-morning-mood.mp3"
 ---
 
 Dreams of fear or joy may do more than just entertain you at night—they could influence how you feel when you wake up. A new study published in *Sleep* reveals that the emotions experienced in dreams can affect your mood the following morning. Researchers found that people who dreamed of fear were more likely to wake up in a lower mood, while those who dreamed of joy reported better psychological function after waking.

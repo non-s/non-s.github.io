@@ -41,6 +41,7 @@ entities:
   - "China"
   - "Taiwan Strait"
   - "San Francisco"
+audio: "/assets/audio/posts/2026-05-16-trump-warns-taiwan-against-declaring-independence-hours-after-summit-with-chinas.mp3"
 ---
 
 US President Donald Trump cautioned Taiwan on Wednesday against declaring independence, just hours after holding a summit with China’s President Xi Jinping aimed at lowering tensions across the Taiwan Strait. The warning came during a White House press briefing, where Trump stated that both Beijing and Taipei should "cool down" their rhetoric to prevent further escalation.
