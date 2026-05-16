@@ -43,6 +43,7 @@ entities:
   - "Liverpool"
   - "Newcastle"
   - "Sheffield"
+audio: "/assets/audio/posts/2026-05-17-olympics-in-north-of-england-multi-city-bid-for-2040s-to-be-assessed.mp3"
 ---
 
 The government has given the green light for [UK Sport](https://en.wikipedia.org/wiki/UK_Sport) to kick off a detailed assessment of whether northern England could realistically land the Olympic and Paralympic Games in the 2040s. The study will examine whether a "multi-city" approach—spreading events across several urban hubs—could work logistically and financially. Northern leaders have long argued that a Games could help reverse decades of underinvestment by creating jobs, upgrading infrastructure, and putting cities like Manchester, Leeds, and Newcastle on the global map.

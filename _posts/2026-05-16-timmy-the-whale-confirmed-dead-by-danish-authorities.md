@@ -41,6 +41,7 @@ entities:
   - "Kattegat strait"
   - "Horns Rev wind farm"
   - "Danish Veterinary and Food Administration"
+audio: "/assets/audio/posts/2026-05-16-timmy-the-whale-confirmed-dead-by-danish-authorities.mp3"
 ---
 
 Danish authorities confirmed Saturday that Timmy the humpback whale, whose controversial rescue attempt sparked outrage, has died. Environmental Protection Agency officials said the whale’s carcass was found Friday near [Anholt](https://en.wikipedia.org/wiki/Anholt), a small island in the Kattegat strait between Denmark and Sweden. Genetic testing confirmed the identity of the 27-foot humpback on Saturday.

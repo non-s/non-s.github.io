@@ -41,6 +41,7 @@ entities:
   - "Campaign Against Antisemitism"
   - "Tell MAMA"
   - "Suella Braverman"
+audio: "/assets/audio/posts/2026-05-16-tommy-robinson-tells-tens-of-thousands-at-london-rally-to-prepare-for-battle-of.mp3"
 ---
 
 Far-right activist [Tommy Robinson](https://en.wikipedia.org/wiki/Tommy_Robinson_(activist)), whose real name is Stephen Yaxley-Lennon, addressed a reported crowd of tens of thousands in central London on Saturday, urging supporters to prepare for a 'battle of Britain.' Organizers touted the event as a 'Unite the Kingdom' march, though police and independent observers described turnout as lower than the previous year’s gathering. The rally unfolded near Parliament Square, drawing heavy police presence to monitor potential unrest, hate speech, or violations of public order laws.
