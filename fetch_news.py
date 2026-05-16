@@ -501,11 +501,21 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
                         if depth == 0:
                             end = i
                             break
+                candidate = clean[start:end + 1]
                 try:
-                    result = json.loads(clean[start:end + 1])
+                    result = json.loads(candidate)
                 except json.JSONDecodeError:
-                    # Last resort: try the whole clean string
-                    result = json.loads(clean)
+                    # Pollinations/reasoning models sometimes return a Python
+                    # repr (single quotes) instead of JSON. Try literal_eval.
+                    try:
+                        import ast as _ast
+                        parsed = _ast.literal_eval(candidate)
+                        if isinstance(parsed, dict):
+                            result = parsed
+                        else:
+                            result = json.loads(clean)
+                    except (ValueError, SyntaxError):
+                        result = json.loads(clean)
         except Exception as e:
             log.warning(f"AI enhance parse error: {e} | raw[:120]={raw[:120]}")
 
