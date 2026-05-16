@@ -42,6 +42,7 @@ entities:
   - "National Partnership for Women & Families"
   - "Theraflu"
   - "Wakefield Research"
+audio: "/assets/audio/posts/2026-05-16-want-to-recover-like-an-olympian-allyson-felix-says-fill-your-cup-first.mp3"
 ---
 
 Olympic track and field legend [Allyson Felix](https://en.wikipedia.org/wiki/Allyson_Felix) has spent her career proving that rest and recovery are just as important as training. The 38-year-old mother of two and the most decorated U.S. track and field athlete in history now says her approach to rest has changed since becoming a parent—and she’s using her platform to push for policies that support workers who need time off. "Fill your cup first," Felix told *Healthline*. "When you’re caring for others, you have to take care of yourself first."

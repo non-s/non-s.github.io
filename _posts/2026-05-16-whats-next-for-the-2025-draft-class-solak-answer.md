@@ -44,6 +44,7 @@ entities:
   - "Javon Bullard"
   - "Jordan Morgan"
   - "2025 NFL Draft"
+audio: "/assets/audio/posts/2026-05-16-whats-next-for-the-2025-draft-class-solak-answer.mp3"
 ---
 
 The 2025 NFL Draft is less than a year away, but teams are already dissecting how prospects like [Travis Hunter](https://en.wikipedia.org/wiki/Travis_Hunter) fit their schemes. Hunter, a dual-threat from Jackson State, has drawn interest as a full-time cornerback or safety, ending speculation about his future on offense. Scouts say his versatility and ball skills make him a top-10 candidate, but teams must decide whether to maximize his defensive impact.

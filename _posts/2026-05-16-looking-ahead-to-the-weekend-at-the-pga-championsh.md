@@ -42,6 +42,7 @@ entities:
   - "Brooks Koepka"
   - "Justin Thomas"
   - "William Flynn"
+audio: "/assets/audio/posts/2026-05-16-looking-ahead-to-the-weekend-at-the-pga-championsh.mp3"
 ---
 
 Scottie Scheffler [has seized control](https://en.wikipedia.org/wiki/Scottie_Scheffler) of the PGA Championship after firing a 5-under 65 on Friday at Aronimink Golf Club in Pennsylvania. The 27-year-old Texan carded a two-round total of 10-under, leading by two strokes over Xander Schauffele. Scheffler’s round included six birdies and just one bogey, showcasing his dominance in the clubhouse.

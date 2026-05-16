@@ -41,6 +41,7 @@ entities:
   - "Frank Lampard"
   - "Thomas Tuchel"
   - "Jesse Marsch"
+audio: "/assets/audio/posts/2026-05-16-would-fa-cup-win-paper-over-the-cracks-for-chelsea.mp3"
 ---
 
 Chelsea arrive at Wembley Saturday for the FA Cup final against Leeds United after one of their most turbulent seasons in recent memory. The club has cycled through three managers—Thomas Tuchel, Frank Lampard, and now Graham Potter—while enduring persistent fan protests over the team’s direction and ownership decisions. A victory over Leeds would deliver tangible success and could quiet growing unrest in the stands.
