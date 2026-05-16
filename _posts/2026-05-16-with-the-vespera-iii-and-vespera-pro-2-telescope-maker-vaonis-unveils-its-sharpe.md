@@ -38,6 +38,7 @@ entities:
   - "Vaonis"
   - "Vespera III"
   - "Vespera Pro 2"
+audio: "/assets/audio/posts/2026-05-16-with-the-vespera-iii-and-vespera-pro-2-telescope-maker-vaonis-unveils-its-sharpe.mp3"
 ---
 
 Telescope maker Vaonis has debuted its most advanced stargazing tools yet with the release of the Vespera III and Vespera Pro 2. The new models feature a redesigned optical system that promises significantly sharper images compared to previous versions. Both telescopes are designed to simplify the stargazing experience while incorporating user-requested upgrades that enhance functionality and ease of use.

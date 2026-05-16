@@ -41,6 +41,7 @@ entities:
   - "Karama Has No Walls"
   - "Amal Al-Agroobi"
   - "Joana Vicente"
+audio: "/assets/audio/posts/2026-05-16-welcome-to-the-station-where-the-rules-are-no-men-no-weapons-no-politics.mp3"
 ---
 
 Yemeni-Scottish director [Sara Ishaq](https://en.wikipedia.org/wiki/Sara_Ishaq), known for her Oscar-nominated documentary *Karama Has No Walls*, makes her fiction feature debut with *The Station*, a film set at a gas station where men are banned, weapons are prohibited and politics are forbidden. The film premieres in the Cannes Critics’ Week lineup, marking a bold shift from Ishaq’s documentary roots into narrative storytelling.
