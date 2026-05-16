@@ -69,8 +69,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
       - name: "🔍 Check for new posts"
         id: check_changes
@@ -136,9 +135,7 @@ jobs:
         run: python translate_posts.py
         env:
           PYTHONIOENCODING: utf-8
-          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          DEEPL_API_KEY:  ${{ secrets.DEEPL_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
       - name: "📰 Daily Briefing (original editorial roundup)"
         if: steps.check_changes.outputs.changed != '0'
@@ -146,8 +143,7 @@ jobs:
         run: python create_daily_briefing.py
         env:
           PYTHONIOENCODING: utf-8
-          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
       - name: "🗓️ Weekly Wrap-up (Fridays only)"
         if: steps.check_changes.outputs.changed != '0'
@@ -155,8 +151,7 @@ jobs:
         run: python create_weekly_wrapup.py
         env:
           PYTHONIOENCODING: utf-8
-          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
       - name: "🔊 Generate audio narration (edge-tts)"
         if: steps.check_changes.outputs.changed != '0'

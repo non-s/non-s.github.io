@@ -1,8 +1,7 @@
 """
 utils/ai_helper.py — AI text generation and content analysis for GlobalBR News.
-Uses Groq (primary) → Gemini 2.5 Flash (fallback) → Pollinations.ai (free fallback).
+Uses Mistral La Plateforme (free tier, 1B tokens/month, 60 req/min).
 """
-import ast
 import json
 import logging
 import os
@@ -19,10 +18,8 @@ log = logging.getLogger(__name__)
 _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
-_GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
-_GROQ_MODEL            = "llama-3.3-70b-versatile"
-_GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
-_POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
+_MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
+_MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
 _POSITIVE_WORDS = {
     "breakthrough", "success", "discover", "innovation", "growth", "record",
@@ -72,11 +69,11 @@ _SPAM_PATTERNS = re.compile(
 )
 
 
-def _call_groq(sys_msg: str, prompt: str, timeout: int, groq_key: str) -> str:
+def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str) -> str:
     r = _session.post(
-        _GROQ_API_URL,
+        _MISTRAL_API_URL,
         json={
-            "model": _GROQ_MODEL,
+            "model": _MISTRAL_MODEL,
             "messages": [
                 {"role": "system", "content": sys_msg},
                 {"role": "user",   "content": prompt},
@@ -84,71 +81,20 @@ def _call_groq(sys_msg: str, prompt: str, timeout: int, groq_key: str) -> str:
             "temperature": 0.7,
             "max_tokens": 3000,
         },
-        headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
         timeout=timeout,
     )
     r.raise_for_status()
     return r.json()["choices"][0]["message"]["content"].strip()
 
 
-def _call_gemini(sys_msg: str, prompt: str, timeout: int, gemini_key: str) -> str:
-    r = _session.post(
-        f"{_GEMINI_API_URL}?key={gemini_key}",
-        json={
-            "contents": [{"parts": [{"text": f"{sys_msg}\n\n{prompt}"}]}],
-            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2000},
-        },
-        timeout=timeout,
-    )
-    r.raise_for_status()
-    return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-
-
-def _call_pollinations(sys_msg: str, prompt: str, timeout: int, seed: int) -> str:
-    r = _session.post(
-        _POLLINATIONS_TEXT_URL,
-        json={
-            "messages": [
-                {"role": "system", "content": sys_msg},
-                {"role": "user",   "content": prompt},
-            ],
-            "model":      "openai",
-            "seed":       seed or abs(hash(prompt)) % 9999,
-            "private":    True,
-            "max_tokens": 3000,
-        },
-        timeout=timeout,
-    )
-    r.raise_for_status()
-    # Pollinations sometimes returns a Python-repr'd dict (single quotes,
-    # reasoning model envelope) instead of JSON. Try JSON first, then
-    # fall back to literal_eval, then to the raw text body.
-    body = r.text
-    data: object
-    try:
-        data = r.json()
-    except ValueError:
-        try:
-            data = ast.literal_eval(body)
-        except (ValueError, SyntaxError):
-            return body.strip()
-    if isinstance(data, dict):
-        if "choices" in data:
-            try:
-                return data["choices"][0]["message"]["content"].strip()
-            except (KeyError, IndexError, TypeError):
-                pass
-        # Reasoning-model envelope: {'role': 'assistant', 'content': '...', 'reasoning': '...'}
-        if "content" in data and isinstance(data["content"], str):
-            return data["content"].strip()
-    return str(data).strip()
-
-
 def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> str:
     """
-    Generate text via Groq → Gemini 1.5 Flash → Pollinations.ai (all free tiers).
-    Each provider retried up to 2 times with backoff before falling back.
-    Returns empty string if all providers fail.
+    Generate text via Mistral La Plateforme (free tier).
+    Up to 3 attempts with backoff on rate limit / transient errors.
+    `seed` is accepted for backward compatibility but ignored — Mistral
+    doesn't expose seed control via the standard chat API.
+    Returns empty string on persistent failure.
     """
     sys_msg = system or (
         "You are a world-class AP-style journalist and SEO expert. "
@@ -158,74 +104,39 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> 
         "Be concise and factually accurate."
     )
 
-    groq_key = os.environ.get("GROQ_API_KEY", "")
-    if groq_key:
-        # 2 attempts max with short backoff: when Groq is rate-limited it stays
-        # rate-limited for the whole run, so a long wait just bleeds the job
-        # timeout. Better to fail fast to the next provider.
-        for attempt in range(2):
-            try:
-                return _call_groq(sys_msg, prompt, timeout, groq_key)
-            except requests.exceptions.HTTPError as e:
-                status = e.response.status_code if e.response is not None else 0
-                if status == 429:
-                    if attempt == 0:
-                        log.warning("Groq rate limited (429) — quick retry in 3s")
-                        sleep(3)
-                    else:
-                        log.warning("Groq rate limited (429) — giving up, falling back to Gemini")
-                        break
-                elif status in (500, 502, 503, 504):
-                    if attempt == 0:
-                        log.warning(f"Groq server error {status} — retry in 2s")
-                        sleep(2)
-                    else:
-                        log.warning(f"Groq server error {status} — falling back to Gemini")
-                        break
-                else:
-                    log.warning(f"Groq HTTP error {status} — falling back to Gemini")
-                    break
-            except Exception as exc:
-                log.warning(f"Groq error (attempt {attempt+1}/2): {exc}")
-                if attempt == 0:
-                    time.sleep(2)
+    key = os.environ.get("MISTRAL_API_KEY", "")
+    if not key:
+        log.error("MISTRAL_API_KEY not set — cannot generate AI text")
+        return ""
 
-    gemini_key = os.environ.get("GEMINI_API_KEY", "")
-    if gemini_key:
-        for attempt in range(2):
-            try:
-                return _call_gemini(sys_msg, prompt, timeout, gemini_key)
-            except requests.exceptions.HTTPError as e:
-                status = e.response.status_code if e.response is not None else 0
-                if status == 429:
-                    if attempt == 0:
-                        log.warning("Gemini rate limited (429) — quick retry in 3s")
-                        sleep(3)
-                    else:
-                        log.warning("Gemini rate limited (429) — giving up, falling back to Pollinations")
-                        break
-                elif status in (500, 502, 503, 504):
-                    if attempt == 0:
-                        log.warning(f"Gemini server error {status} — retry in 2s")
-                        sleep(2)
-                    else:
-                        log.warning(f"Gemini server error {status} — falling back to Pollinations")
-                        break
-                else:
-                    log.warning(f"Gemini HTTP error {status} — falling back to Pollinations")
-                    break
-            except Exception as exc:
-                log.warning(f"Gemini error (attempt {attempt+1}/2): {exc}")
-                if attempt == 0:
-                    time.sleep(2)
-
-    for attempt in range(2):
+    for attempt in range(3):
         try:
-            return _call_pollinations(sys_msg, prompt, timeout, seed)
+            return _call_mistral(sys_msg, prompt, timeout, key)
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            if status == 429:
+                wait = 5 * (attempt + 1)
+                if attempt < 2:
+                    log.warning(f"Mistral rate limited (429) — retry in {wait}s (attempt {attempt+1}/3)")
+                    sleep(wait)
+                else:
+                    log.warning("Mistral rate limited (429) — giving up after 3 attempts")
+                    break
+            elif status in (500, 502, 503, 504):
+                wait = 3 * (attempt + 1)
+                if attempt < 2:
+                    log.warning(f"Mistral server error {status} — retry in {wait}s (attempt {attempt+1}/3)")
+                    sleep(wait)
+                else:
+                    log.warning(f"Mistral server error {status} — giving up after 3 attempts")
+                    break
+            else:
+                log.warning(f"Mistral HTTP error {status} — giving up")
+                break
         except Exception as exc:
-            log.warning(f"Pollinations error (attempt {attempt+1}/2): {exc}")
-            if attempt == 0:
-                time.sleep(5)
+            log.warning(f"Mistral error (attempt {attempt+1}/3): {exc}")
+            if attempt < 2:
+                time.sleep(3)
     return ""
 
 

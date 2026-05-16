@@ -20,20 +20,20 @@ POSTS_DIR  = Path("_posts")
 MIN_POSTS  = int(os.environ.get("ROUNDUP_MIN_POSTS", "5"))
 _SKIP      = ("roundup", "digest", "milestone", "stats", "best-of")
 
-GROQ_KEY   = os.environ.get("GROQ_API_KEY", "")
-GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
+MISTRAL_KEY   = os.environ.get("MISTRAL_API_KEY", "")
+MISTRAL_MODEL = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
 
-def _groq_intro(month_name: str, total: int, titles_sample: str) -> str | None:
-    if not GROQ_KEY:
+def _mistral_intro(month_name: str, total: int, titles_sample: str) -> str | None:
+    if not MISTRAL_KEY:
         return None
 
     def _call():
         r = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"},
+            "https://api.mistral.ai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {MISTRAL_KEY}", "Content-Type": "application/json"},
             json={
-                "model": "llama-3.1-8b-instant",
+                "model": MISTRAL_MODEL,
                 "messages": [{"role": "user", "content": (
                     f"Write a 2-sentence journalistic intro for a monthly news roundup "
                     f"for {month_name}. {total} articles were published. "
@@ -47,28 +47,6 @@ def _groq_intro(month_name: str, total: int, titles_sample: str) -> str | None:
         return r.json()["choices"][0]["message"]["content"].strip()
 
     return retry_call(_call, max_attempts=3, base_delay=5.0, default=None)
-
-
-def _gemini_intro(month_name: str, total: int, titles_sample: str) -> str | None:
-    if not GEMINI_KEY:
-        return None
-
-    def _call():
-        prompt = (
-            f"Write a 2-sentence journalistic intro for a monthly news roundup "
-            f"for {month_name}. {total} articles published. Top stories: {titles_sample}."
-        )
-        r = requests.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/"
-            f"gemini-1.5-flash:generateContent?key={GEMINI_KEY}",
-            json={"contents": [{"parts": [{"text": prompt}]}],
-                  "generationConfig": {"maxOutputTokens": 100}},
-            timeout=25,
-        )
-        r.raise_for_status()
-        return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-
-    return retry_call(_call, max_attempts=2, base_delay=5.0, default=None)
 
 
 def main() -> None:
@@ -111,8 +89,7 @@ def main() -> None:
 
     titles_sample = "; ".join(p["title"] for p in posts[:10])
     intro = (
-        _groq_intro(month_name, total, titles_sample)
-        or _gemini_intro(month_name, total, titles_sample)
+        _mistral_intro(month_name, total, titles_sample)
         or f"Here's a look back at {month_name} — {total} articles across {len(cat_counts)} categories."
     )
     log.info("Intro generated (%d chars)", len(intro))
