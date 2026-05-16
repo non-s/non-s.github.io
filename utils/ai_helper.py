@@ -1,7 +1,8 @@
 """
 utils/ai_helper.py — AI text generation and content analysis for GlobalBR News.
-Uses Groq (primary) → Gemini 1.5 Flash (fallback) → Pollinations.ai (free fallback).
+Uses Groq (primary) → Gemini 2.5 Flash (fallback) → Pollinations.ai (free fallback).
 """
+import ast
 import json
 import logging
 import os
@@ -20,7 +21,7 @@ _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.gi
 
 _GROQ_API_URL          = "https://api.groq.com/openai/v1/chat/completions"
 _GROQ_MODEL            = "llama-3.3-70b-versatile"
-_GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+_GEMINI_API_URL        = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 _POLLINATIONS_TEXT_URL = "https://text.pollinations.ai/"
 
 _POSITIVE_WORDS = {
@@ -119,9 +120,27 @@ def _call_pollinations(sys_msg: str, prompt: str, timeout: int, seed: int) -> st
         timeout=timeout,
     )
     r.raise_for_status()
-    data = r.json()
-    if isinstance(data, dict) and "choices" in data:
-        return data["choices"][0]["message"]["content"].strip()
+    # Pollinations sometimes returns a Python-repr'd dict (single quotes,
+    # reasoning model envelope) instead of JSON. Try JSON first, then
+    # fall back to literal_eval, then to the raw text body.
+    body = r.text
+    data: object
+    try:
+        data = r.json()
+    except ValueError:
+        try:
+            data = ast.literal_eval(body)
+        except (ValueError, SyntaxError):
+            return body.strip()
+    if isinstance(data, dict):
+        if "choices" in data:
+            try:
+                return data["choices"][0]["message"]["content"].strip()
+            except (KeyError, IndexError, TypeError):
+                pass
+        # Reasoning-model envelope: {'role': 'assistant', 'content': '...', 'reasoning': '...'}
+        if "content" in data and isinstance(data["content"], str):
+            return data["content"].strip()
     return str(data).strip()
 
 
@@ -141,49 +160,64 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30) -> 
 
     groq_key = os.environ.get("GROQ_API_KEY", "")
     if groq_key:
-        for attempt in range(3):
+        # 2 attempts max with short backoff: when Groq is rate-limited it stays
+        # rate-limited for the whole run, so a long wait just bleeds the job
+        # timeout. Better to fail fast to the next provider.
+        for attempt in range(2):
             try:
                 return _call_groq(sys_msg, prompt, timeout, groq_key)
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
                 if status == 429:
-                    wait = 15 * (2 ** attempt)
-                    log.warning(f"Groq rate limited (429) — waiting {wait}s (attempt {attempt+1}/3)")
-                    sleep(wait)
+                    if attempt == 0:
+                        log.warning("Groq rate limited (429) — quick retry in 3s")
+                        sleep(3)
+                    else:
+                        log.warning("Groq rate limited (429) — giving up, falling back to Gemini")
+                        break
                 elif status in (500, 502, 503, 504):
-                    wait = 5 * (2 ** attempt)
-                    log.warning(f"Groq server error {status} — waiting {wait}s")
-                    sleep(wait)
+                    if attempt == 0:
+                        log.warning(f"Groq server error {status} — retry in 2s")
+                        sleep(2)
+                    else:
+                        log.warning(f"Groq server error {status} — falling back to Gemini")
+                        break
                 else:
                     log.warning(f"Groq HTTP error {status} — falling back to Gemini")
                     break
             except Exception as exc:
-                log.warning(f"Groq error (attempt {attempt+1}/3): {exc}")
-                if attempt < 2:
-                    time.sleep(3 * (attempt + 1))
+                log.warning(f"Groq error (attempt {attempt+1}/2): {exc}")
+                if attempt == 0:
+                    time.sleep(2)
 
     gemini_key = os.environ.get("GEMINI_API_KEY", "")
     if gemini_key:
-        for attempt in range(3):
+        for attempt in range(2):
             try:
                 return _call_gemini(sys_msg, prompt, timeout, gemini_key)
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
                 if status == 429:
-                    wait = 15 * (2 ** attempt)
-                    log.warning(f"Gemini rate limited (429) — waiting {wait}s (attempt {attempt+1}/3)")
-                    sleep(wait)
+                    if attempt == 0:
+                        log.warning("Gemini rate limited (429) — quick retry in 3s")
+                        sleep(3)
+                    else:
+                        log.warning("Gemini rate limited (429) — giving up, falling back to Pollinations")
+                        break
                 elif status in (500, 502, 503, 504):
-                    wait = 5 * (2 ** attempt)
-                    log.warning(f"Gemini server error {status} — waiting {wait}s")
-                    sleep(wait)
+                    if attempt == 0:
+                        log.warning(f"Gemini server error {status} — retry in 2s")
+                        sleep(2)
+                    else:
+                        log.warning(f"Gemini server error {status} — falling back to Pollinations")
+                        break
                 else:
                     log.warning(f"Gemini HTTP error {status} — falling back to Pollinations")
                     break
             except Exception as exc:
-                log.warning(f"Gemini error (attempt {attempt+1}/3): {exc}")
-                if attempt < 2:
-                    time.sleep(3 * (attempt + 1))
+                log.warning(f"Gemini error (attempt {attempt+1}/2): {exc}")
+                if attempt == 0:
+                    time.sleep(2)
 
     for attempt in range(2):
         try:
