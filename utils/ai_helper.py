@@ -22,10 +22,11 @@ _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.gi
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
-# Mistral free tier is nominally 1 request/second but the actual ceiling is
-# closer to 1 every 2s once sustained traffic kicks in. Empirically 1.2s
-# still bled 429s under hourly fetch-news load — 2.0s gives a real margin.
-_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "2.0"))
+# Mistral free tier is nominally 1 request/second but sustained traffic
+# hits 429 well before that. 8s gives a comfortable 8x margin over the
+# documented limit — costs ~7 min per 50-post run but eliminates the
+# retry-and-drop loop entirely. Override via MISTRAL_MIN_INTERVAL env.
+_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "8.0"))
 _call_lock       = threading.Lock()
 _last_call_ts    = 0.0
 
