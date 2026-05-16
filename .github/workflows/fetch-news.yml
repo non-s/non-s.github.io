@@ -136,7 +136,6 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          DEEPL_API_KEY:   ${{ secrets.DEEPL_API_KEY }}
 
       - name: "📰 Daily Briefing (original editorial roundup)"
         if: steps.check_changes.outputs.changed != '0'

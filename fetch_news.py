@@ -47,7 +47,6 @@ from utils.retry import retry_call
 _session = requests.Session()
 _session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
 
-_pollinations_text = _ai_text  # legacy alias for internal compatibility
 
 
 # ============================================================
@@ -483,7 +482,7 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
         f'"hook": "One punchy sentence max 20 words — journalistic hook, creates curiosity without clickbait"'
         f'}}'
     )
-    raw = _pollinations_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
+    raw = _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=25)
     result = {}
     if raw:
         try:
@@ -505,8 +504,8 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
                 try:
                     result = json.loads(candidate)
                 except json.JSONDecodeError:
-                    # Pollinations/reasoning models sometimes return a Python
-                    # repr (single quotes) instead of JSON. Try literal_eval.
+                    # LLMs occasionally return a Python repr (single quotes)
+                    # instead of JSON. Try literal_eval as a fallback.
                     try:
                         import ast as _ast
                         parsed = _ast.literal_eval(candidate)
@@ -2796,7 +2795,7 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             if similar_found:
                 continue
 
-            # ── AI Enhancement (Pollinations — gratuito) ─────────
+            # ── AI Enhancement (Mistral) ──────────────────────────
             ai = _ai_enhance_post(title, description, og.get("body", ""), category, source)
             if ai.get("seo_title") and 10 < len(ai["seo_title"]) <= 70:
                 log.info(f"  🤖 AI title: {ai['seo_title'][:60]}")

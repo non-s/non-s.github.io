@@ -2,10 +2,9 @@
 """
 create_daily_briefing.py — Original AI-authored daily briefing post.
 
-Picks the top 10 most-relevant stories from today's posts, then asks the
-AI fallback chain (Groq → Gemini → Pollinations) to produce a single
-~600-word editorial roundup with proper attribution. Output is a brand-new
-post in `_posts/` with category=briefing.
+Picks the top 10 most-relevant stories from today's posts, then asks
+Mistral to produce a single ~600-word editorial roundup with proper
+attribution. Output is a brand-new post in `_posts/` with category=briefing.
 
 This is *original derivative content*: we cite every source by name and
 URL, follow fair-use excerpting limits, and emit Schema.org `about`

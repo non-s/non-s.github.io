@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Translate latest English posts to PT-BR via DeepL → Mistral fallback chain."""
+"""Translate latest English posts to PT-BR via Mistral."""
 from __future__ import annotations
 
 import logging
@@ -19,7 +19,6 @@ PT_DIR        = POSTS_DIR / "pt"
 LOOKBACK_DAYS = 3
 MAX_PER_RUN   = 10
 
-DEEPL_KEY    = os.getenv("DEEPL_API_KEY", "")
 MISTRAL_KEY  = os.getenv("MISTRAL_API_KEY", "")
 MISTRAL_MODEL = os.getenv("MISTRAL_MODEL", "mistral-small-latest")
 
@@ -31,25 +30,8 @@ _TRANSLATE_SYS = (
 )
 
 
-def _translate_deepl(text: str) -> str | None:
-    if not DEEPL_KEY or not text.strip():
-        return None
-    try:
-        r = requests.post(
-            "https://api-free.deepl.com/v2/translate",
-            data={"auth_key": DEEPL_KEY, "text": text, "target_lang": "PT-BR"},
-            timeout=30,
-        )
-        if r.status_code == 200:
-            return r.json()["translations"][0]["text"]
-        log.warning("DeepL %d: %s", r.status_code, r.text[:100])
-    except Exception as e:
-        log.warning("DeepL error: %s", e)
-    return None
-
-
 def _translate_mistral(text: str) -> str | None:
-    if not MISTRAL_KEY:
+    if not MISTRAL_KEY or not text.strip():
         return None
     try:
         r = requests.post(
@@ -75,12 +57,9 @@ def _translate_mistral(text: str) -> str | None:
 
 
 def translate_text(text: str) -> str:
-    """DeepL → Mistral → original (never loses content)."""
-    for fn in (_translate_deepl, _translate_mistral):
-        result = fn(text)
-        if result:
-            return result
-    return text
+    """Translate via Mistral, fall back to original text on failure (never loses content)."""
+    result = _translate_mistral(text)
+    return result if result else text
 
 
 def _replace_fm_field(fm_text: str, key: str, original: str, translated: str) -> str:
