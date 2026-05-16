@@ -43,6 +43,7 @@ entities:
   - "MDMA"
   - "National Institute of Mental Health"
   - "National Institutes of Health"
+audio: "/assets/audio/posts/2026-05-16-trump-administration-aims-to-fast-track-psychedelic-therapies-for-ptsd.mp3"
 ---
 
 President Donald Trump [signed an executive order](https://www.whitehouse.gov) on Friday directing the U.S. Food and Drug Administration to expedite the review and approval of psychedelic-based therapies, including ibogaine, for post-traumatic stress disorder and other severe mental health conditions. The directive marks a significant shift in federal drug policy and comes amid growing interest in psychedelics as potential treatments for conditions resistant to conventional therapies.

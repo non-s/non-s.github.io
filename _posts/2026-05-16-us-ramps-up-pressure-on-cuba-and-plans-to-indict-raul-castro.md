@@ -43,6 +43,7 @@ entities:
   - "Nicolás Maduro"
   - "Venezuela"
   - "Russia"
+audio: "/assets/audio/posts/2026-05-16-us-ramps-up-pressure-on-cuba-and-plans-to-indict-raul-castro.mp3"
 ---
 
 The U.S. Justice Department is moving forward with plans to indict former Cuban President [Raúl Castro](https://en.wikipedia.org/wiki/Ra%C3%BAl_Castro), escalating pressure on Cuba’s communist government amid growing tensions between Washington and Havana.

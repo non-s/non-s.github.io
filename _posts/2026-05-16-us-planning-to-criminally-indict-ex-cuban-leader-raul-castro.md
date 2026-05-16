@@ -42,6 +42,7 @@ entities:
   - "Cuba"
   - "MiG fighters"
   - "José Basulto"
+audio: "/assets/audio/posts/2026-05-16-us-planning-to-criminally-indict-ex-cuban-leader-raul-castro.mp3"
 ---
 
 The U.S. Justice Department is preparing to file criminal charges against former Cuban President [Raúl Castro](https://en.wikipedia.org/wiki/Ra%C3%BAl_Castro), sources told [BBC News](https://www.bbc.com/news). The indictment, expected as early as next week, stems from the 1996 shootdown of two civilian planes by Cuban military jets, which killed four people, including three members of the [Brothers to the Rescue](https://en.wikipedia.org/wiki/Brothers_to_the_Rescue) organization and a U.S. citizen.

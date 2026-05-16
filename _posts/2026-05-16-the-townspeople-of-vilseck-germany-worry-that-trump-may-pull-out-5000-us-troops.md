@@ -41,6 +41,7 @@ entities:
   - "Mayor Thomas Falter"
   - "Chancellor Olaf Scholz"
   - "Grafenwöhr"
+audio: "/assets/audio/posts/2026-05-16-the-townspeople-of-vilseck-germany-worry-that-trump-may-pull-out-5000-us-troops.mp3"
 ---
 
 The quiet streets of [Vilseck, Germany](https://en.wikipedia.org/wiki/Vilseck), a town of 6,500 in eastern Bavaria, hum with anxiety after President Trump threatened to withdraw 5,000 U.S. troops stationed nearby. The [Rose Barracks](https://en.wikipedia.org/wiki/Rose_Barracks) military base has anchored this community since 1951, providing jobs, spending power, and decades of cross-cultural friendships. For many residents, the base isn’t just a military outpost—it’s the town’s lifeline.

@@ -44,6 +44,7 @@ entities:
   - "Satoshi"
   - "Akylas"
   - "Zdob și Zdub"
+audio: "/assets/audio/posts/2026-05-16-the-eurovision-song-contest-reaches-its-grand-final-with-pop-and-protests.mp3"
 ---
 
 The 70th anniversary Eurovision Song Contest final arrives Saturday in Vienna with 25 acts set to perform for Europe’s pop crown amid a charged atmosphere of protests, boycotts and heavy security. The Wiener Stadthalle arena will host the event, which has drawn millions of viewers worldwide despite calls to exclude Israel over its military actions in Gaza and beyond. Five countries—Spain, the Netherlands, Ireland, Iceland and Slovenia—have announced they will not participate in protest, marking the third consecutive year the contest has been drawn into geopolitical conflict.
