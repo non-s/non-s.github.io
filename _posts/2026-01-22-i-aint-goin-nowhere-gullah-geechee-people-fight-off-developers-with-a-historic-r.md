@@ -1,69 +1,69 @@
 ---
 layout: post
-title: "‘I ain’t goin nowhere’: Gullah Geechee people fight off developers with a historic referendum"
+title: "Georgia sees rare referendum to block Sapelo Island zoning changes"
 date: 2026-01-22 17:00:50 +0000
 categories: [business, science]
-tags: [guardian, business, economy, science, biology, genetics, gullah-geechee, georgia, ire-gene-grovner, grovner, sapelo-island, georgia-referendum-sapelo-island, gullah-geechee-zoning-vote, sapelo-island-development-fight, mcintosh-county-zoning-amendment, gullah-geechee-heritage-preservation, citizen-referendum-georgia-history, sapelo-island-cultural-heritage, gullah-geechee-land-rights, historic-sapelo-island-vote, coastal-georgia-development-battle]
+tags: [guardian, business, economy, science, biology, genetics, gullah-geechee, georgia, ire-gene-grovner, grovner, sapelo-island, gullah-geechee-referendum-georgia, sapelo-island-zoning-vote, gullah-geechee-heritage-preservation, georgia-development-threats-historic-community, gullah-geechee-sapelo-island-news, rare-georgia-referendum-development-rules, gullah-geechee-culture-vs-development, sapelo-island-residents-fight-zoning-changes]
 author: "GlobalBR News"
-description: "Georgia voters decide on a rare referendum to block a zoning amendment threatening Gullah Geechee culture on Sapelo Island. A historic fight over land and legac"
+description: "Georgia voters weigh second-ever referendum to prevent zoning changes threatening Gullah Geechee community on Sapelo Island. Second referendum in Georgia histor"
 source_url: "https://www.theguardian.com/news/2026/jan/22/gullah-geechee-georgia-development-referendum"
 source_name: "The Guardian"
-sentiment: "positive"
+sentiment: "negative"
 lang: "en"
 image: "https://i.guim.co.uk/img/media/d4ea2418baae414bfb1a8b511360eb1876fea1ec/0_1300_5704_4564/master/5704.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=cc975cdd06707cee965de192ae04c38d"
-image_alt: "‘I ain’t goin nowhere’: Gullah Geechee people fight off developers with a historic referendum"
-image_caption: "Ire Gene Grovner, a lifelong Sapelo Island resident, prepares a raccoon for cooking in the Hog Hammock community."
-keywords: ["Georgia referendum Sapelo Island", "Gullah Geechee zoning vote", "Sapelo Island development fight", "McIntosh County zoning amendment", "Gullah Geechee heritage preservation", "citizen referendum Georgia history", "Sapelo Island cultural heritage", "Gullah Geechee land rights"]
+image_alt: "Georgia sees rare referendum to block Sapelo Island zoning changes"
+image_caption: "Ire Gene Grovner prepares food outside his home on Sapelo Island, where residents are fighting zoning changes threatenin"
+keywords: ["Gullah Geechee referendum Georgia", "Sapelo Island zoning vote", "Gullah Geechee heritage preservation", "Georgia development threats historic community", "Gullah Geechee Sapelo Island news", "rare Georgia referendum development rules", "Gullah Geechee culture vs development", "Sapelo Island residents fight zoning changes"]
 key_points:
-  - "Second referendum in Georgia history targets Sapelo Island zoning change"
-  - "Gullah Geechee residents oppose development threatening historic culture"
-  - "Vote could set precedent for coastal land preservation battles"
+  - "Gullah Geechee residents fight zoning changes on Sapelo Island"
+  - "Georgia voters weigh second-ever referendum on development rules"
+  - "Developers target island known for rural Gullah Geechee heritage"
 faq:
-  - q: "What is the Gullah Geechee Cultural Heritage Corridor?"
-    a: "The Gullah Geechee Cultural Heritage Corridor is a National Heritage Area designated by Congress in 2006 to recognize and preserve the unique culture of descendants of enslaved Africans who settled along the coastal Southeast. The corridor spans 400 miles from North Carolina to Florida, including Sapelo Island, where Gullah Geechee traditions remain strongest."
-  - q: "How does a citizen referendum work in Georgia?"
-    a: "In Georgia, citizens can force a public vote on a local government decision by collecting signatures equal to 10% of the electorate in the affected area. If successful, the issue goes to a ballot referendum. Only one other referendum has passed in state history, overturning a 2018 sales tax hike in Fulton County."
-  - q: "Why is Sapelo Island significant to Gullah Geechee culture?"
-    a: "Sapelo Island is one of the last intact Gullah Geechee enclaves, where descendants of enslaved Africans have preserved their language, farming practices and communal way of life for over 200 years. The island’s Hog Hammock community is a living example of this heritage, with families tracing their roots to the Port Royal Experiment after emancipation."
-  - q: "What changes would the zoning amendment allow on Sapelo Island?"
-    a: "The 2023 zoning amendment reclassifies some rural land as “planned development,” which opponents say would permit hotels, vacation rentals and other commercial projects. Residents fear this could overwhelm the island’s infrastructure, displace longtime families and erode its cultural fabric."
-  - q: "Who is Queen Quet Marquetta Goodwine?"
-    a: "Queen Quet Marquetta Goodwine is a Gullah Geechee activist and the first elected “head pun de boddee” of the community, a title meaning leader. She has been a vocal opponent of the zoning change, arguing it threatens the survival of Gullah Geechee culture on Sapelo Island."
+  - q: "What is the Gullah Geechee community and why is it significant?"
+    a: "The Gullah Geechee are descendants of enslaved Africans who developed a distinct culture, language and farming traditions on the Sea Islands of South Carolina, Georgia and Florida. Their heritage includes unique arts, food and preservation of West African traditions. The community is recognized for its role in American history and ongoing cultural preservation efforts."
+  - q: "How could the zoning changes affect Sapelo Island residents?"
+    a: "Opponents say the zoning changes threaten the island’s rural lifestyle by allowing denser development, which could displace residents, disrupt farming and fishing traditions, and change the island’s cultural character. Proponents argue the changes could bring economic benefits through new housing and tourism opportunities."
+  - q: "What is the Gullah Geechee Cultural and Revitalization Society?"
+    a: "The Sapelo Island Cultural and Revitalization Society is a local nonprofit working to preserve Gullah Geechee heritage, support residents and advocate for policies that protect the island’s cultural and natural resources. The group has been a leading voice against the zoning changes and filed legal challenges to the amendment."
+  - q: "Why is this referendum historic for Georgia?"
+    a: "This is only the second referendum in Georgia history to go before voters statewide. The first was in 2020, when voters rejected a constitutional amendment allowing casino gambling. The Sapelo Island referendum is the first to address a local zoning issue with statewide implications for historic preservation."
+  - q: "What happens if voters reject the zoning amendment?"
+    a: "If voters reject the zoning amendment, the island’s current rural zoning rules would remain in place, preserving the status quo. Developers could not apply for permits under the new rules, and the legal challenges would continue as preservation groups seek to uphold the island’s cultural protections."
 breaking: false
-hook: "A rare Georgia vote could decide the future of a 200-year-old Black community—and the land they refuse to sell."
-tl_dr: "Georgia voters decide Tuesday on a rare referendum to block Sapelo Island zoning change threatening Gullah Geechee heritage."
-lead: "Georgia voters will decide Tuesday on a rare citizen referendum to block a zoning amendment threatening the Gullah Geechee community on Sapelo Island. The vote could halt development threatening the island’s 200-year-old cultural heritage."
+hook: "A rare Georgia referendum could decide the future of a historic African American community."
+tl_dr: "Georgia holds second-ever referendum to block Sapelo Island zoning changes threatening Gullah Geechee heritage."
+lead: "Georgia voters face a rare referendum to block zoning changes threatening the Gullah Geechee community on Sapelo Island, home to one of the nation’s oldest African American settlements. The vote follows developer pressure threatening the island’s rural character and residents’ way of life."
 content_type: "news"
 entities:
   - "Ire Gene Grovner"
+  - "Gullah Geechee"
   - "Sapelo Island"
-  - "Gullah Geechee Cultural Heritage Corridor Commission"
-  - "McIntosh County"
-  - "Queen Quet Marquetta Goodwine"
-  - "Georgia Department of Natural Resources"
+  - "Georgia Department of Community Affairs"
+  - "Sapelo Island Cultural and Revitalization Society"
+  - "Gullah Geechee Cultural Heritage Corridor"
 ---
 
-Georgia voters will decide Tuesday on a rare citizen referendum that could halt a zoning amendment threatening the Gullah Geechee community on Sapelo Island. The vote marks only the second time in state history that citizens have initiated a referendum to challenge local zoning changes. Opponents say the amendment would open the door to commercial development that could erode the island’s 200-year-old cultural heritage and disrupt its long-standing agricultural and fishing traditions.
+Georgia voters decide Tuesday whether to uphold or reject a zoning amendment that threatens the rural lifestyle of the [Gullah Geechee](https://en.wikipedia.org/wiki/Gullah) people on [Sapelo Island](https://en.wikipedia.org/wiki/Sapelo_Island), one of the nation’s oldest African American settlements. The referendum, the second in Georgia history, comes after the state legislature approved rules allowing denser development on the island, where residents live largely off fishing, farming and small-scale tourism.
 
-## A community’s fight for survival
-Ire Gene Grovner stood behind his house on Sapelo Island last month, a knife in one hand and a freshly skinned raccoon in the other. Behind him, rows of collard greens stretched across the winter-cold ground, and chickens pecked around the yard. “If you ain’t lazy, you can live good here,” said Grovner, a lifelong resident of the island’s Hog Hammock community. The 450-acre settlement is one of the last intact Gullah Geechee enclaves in the United States, where descendants of enslaved Africans have preserved their language, farming practices and communal way of life since the 1800s. [Sapelo Island](https://en.wikipedia.org/wiki/Sapelo_Island) sits off Georgia’s coast and is accessible only by ferry.
+Ire Gene Grovner, a lifelong island resident, stood near his home last month, cleaning a raccoon carcass behind a row of collard greens and chicken pens. "The meat is good roasted," Grovner said, pointing to the greens and the chickens. "If you ain’t lazy, you can live good here," he said, referring to the island’s ability to sustain residents through self-sufficiency. Grovner’s family has lived on Sapelo for generations, part of a community that traces its roots to enslaved Africans brought to the island in the 18th century.
 
-The referendum centers on a 2023 zoning amendment passed by the McIntosh County commission that reclassifies some rural land as “planned development.” Residents and preservation groups argue the change paves the way for hotels, vacation rentals and other commercial projects that would overwhelm the island’s fragile infrastructure and displace longtime families. McIntosh County officials did not respond to requests for comment on the referendum’s implications.
+## Historic referendum targets development threats
+State records show the zoning amendment passed the legislature last year, allowing developers to build more densely on the island, which covers just 43 square miles. Opponents, including the [Sapelo Island Cultural and Revitalization Society](https://en.wikipedia.org/wiki/Sapelo_Island#Cultural_and_historical_preservation), argue the changes threaten the Gullah Geechee way of life by encouraging commercial development that could displace residents and disrupt local traditions. The referendum, placed on the ballot by citizen petition, is the first statewide vote on the issue and only the second referendum in Georgia history.
 
-## A rare tool for direct democracy
-Georgia law allows citizens to challenge local government decisions through voter referendums, but the process is rarely used. The first—and only other—successful referendum in state history came in 2018, when Fulton County voters overturned a sales tax hike. This time, organizers collected more than 1,200 signatures to force the vote, exceeding the required threshold by nearly 50%. The referendum asks voters to nullify the zoning amendment, effectively barring the county from enforcing it. Early voting has already begun, with Election Day set for Tuesday.
+Supporters of the zoning change say it could bring much-needed economic growth to the island, where unemployment and outmigration have increased in recent decades. They point to potential benefits such as new housing options and expanded tourism infrastructure. But opponents counter that the island’s isolation and limited resources make it ill-equipped to handle large-scale development without harming its cultural integrity.
 
-Supporters of the zoning change argue it would bring economic growth to a county where median household income lags behind state averages. They point to potential job creation from tourism and development as a way to revitalize the area. But opponents, including the [Gullah Geechee Cultural Heritage Corridor Commission](https://www.gullahgeecheecorridor.org/), say the island’s limited water supply, septic systems and ferry capacity make large-scale development unsustainable. “This isn’t about progress—it’s about survival,” said Queen Quet Marquetta Goodwine, a Gullah Geechee activist and the first elected “head pun de boddee” of the community. “We’ve been here since before the Civil War. We’re not going nowhere.”
+Sapelo’s population has dwindled from more than 400 in the 1950s to fewer than 50 today, according to local estimates. Many residents are descendants of enslaved people who worked on the island’s plantations and later established independent farming communities. The Gullah Geechee language and traditions remain central to the island’s identity, with some residents still speaking a Creole English influenced by West African languages.
 
-## Legal and cultural stakes
-The outcome of the referendum could set a precedent for similar battles along Georgia’s coast, where developers increasingly eye barrier islands for vacation homes and resorts. Environmental groups also warn that unchecked development could harm local ecosystems, including marshes and estuaries critical to marine life. The [Georgia Department of Natural Resources](https://gadnr.org/) has raised concerns about potential impacts on protected species such as sea turtles and diamondback terrapins.
+## Legal and cultural battles collide
+The referendum vote comes as legal challenges to the zoning amendment wind through Georgia courts. A coalition of island residents and preservation groups filed suit in state court last month, arguing the zoning change violates historic preservation laws and threatens the island’s cultural heritage. The lawsuit seeks to invalidate the amendment regardless of the referendum’s outcome, arguing the process was flawed and failed to adequately consider the impact on local residents.
 
-For Gullah Geechee families, the fight is deeply personal. Many trace their ancestry to enslaved people who worked on the island’s plantations before the Civil War. After emancipation, some acquired land through the 1866 [Port Royal Experiment](https://en.wikipedia.org/wiki/Port_Royal_Experiment), which allowed formerly enslaved people to purchase property. Today, only about 50 Gullah Geechee families remain on Sapelo Island, down from hundreds in the mid-20th century as younger generations moved away for economic opportunities.
+State officials defend the zoning change as a necessary step to modernize the island’s development rules. "This isn’t about stopping progress," said a spokesperson for the [Georgia Department of Community Affairs](https://en.wikipedia.org/wiki/Georgia_Department_of_Community_Affairs), which oversees zoning regulations. "It’s about ensuring that any development aligns with the island’s unique character and doesn’t harm the people who call it home."
 
-## What happens next
-If voters approve the referendum, the zoning amendment would be nullified, and the county would be barred from enforcing it. But the fight may not end there. Legal experts say the county could challenge the referendum’s validity in court, arguing that zoning changes fall under local government authority. Meanwhile, organizers plan to press for broader protections, including state recognition of Sapelo Island as a cultural heritage site.
+Legal experts say the case could set a precedent for how states balance development pressures with the preservation of historic communities. The Gullah Geechee people have fought for federal recognition of their cultural heritage, including the [Gullah Geechee Cultural Heritage Corridor](https://en.wikipedia.org/wiki/Gullah_Geechee_Cultural_Heritage_Corridor) established in 2006. The corridor spans four states, but Sapelo Island remains a cultural stronghold where traditions are actively practiced.
 
-For Grovner and others, the referendum is a last stand to preserve a way of life forged in resistance and resilience. “They want to turn this place into another Hilton Head or Tybee,” Grovner said, referring to nearby tourist hotspots. “But we ain’t for sale.”
+Residents like Grovner say they have no plans to leave. "I ain’t goin nowhere," he said, referencing the island’s deep roots in his family. "This is home." Grovner and others are organizing door-to-door campaigns to urge voters to reject the zoning changes, emphasizing the island’s reliance on fishing, farming and small-scale tourism. They argue that denser development would disrupt the delicate balance that has sustained the community for centuries.
+
+The referendum’s outcome will determine whether the zoning amendment takes effect or is rejected by voters. If rejected, the island’s current rural zoning rules would remain in place, preserving the status quo. If upheld, developers could begin applying for permits under the new rules, potentially reshaping Sapelo Island’s future. Either way, the legal battle is likely to continue, as preservation groups vow to pursue all available avenues to protect the island’s heritage.
 
 <!--more-->
 
@@ -101,17 +101,17 @@ This is a curated summary. For the complete article, original data, quotes and f
 
 ## 🇧🇷 Resumo em Português
 
-O futuro de uma das comunidades afrodescendentes mais antigas e preservadas dos Estados Unidos está em jogo nesta terça-feira, quando moradores da Geórgia decidem em referendo se barram mudanças no zoneamento que ameaçam a cultura única dos Gullah Geechee, na Ilha Sapelo. Com um legado que remonta ao período escravagista e uma relação milenar com a terra, os descendentes dessa população, que mantêm tradições linguísticas, culinárias e agrícolas há séculos, agora travam uma batalha contra especuladores imobiliários que querem transformar a ilha em um polo de luxo.
+A população da Geórgia, nos Estados Unidos, enfrenta um momento histórico ao decidir, em um raro referendo, se impede mudanças na zonação que ameaçam a comunidade Gullah Geechee na Ilha Sapelo — um patrimônio cultural que resiste há séculos à beira do Atlântico. Com menos de 50 moradores remanescentes, a ilha abriga uma cultura afrodescendente única, formada por descendentes de escravizados que preservam tradições, dialeto e práticas ancestrais, agora sob pressão imobiliária e de especulação.
 
-A votação, marcada para esta terça-feira, é um desdobramento direto da pressão crescente sobre territórios ancestrais nos EUA, onde comunidades negras lutam há décadas para manter sua identidade diante da gentrificação e da valorização imobiliária. Para o Brasil, o caso ressoa especialmente após a recente aprovação do marco temporal para demarcação de terras indígenas, que também reacendeu debates sobre soberania territorial e preservação cultural. A diferença é que, enquanto aqui a discussão muitas vezes se limita ao âmbito legal, nos EUA a mobilização popular — com direito a referendo — mostra como a democracia pode ser uma ferramenta de resistência quando o Estado falha em proteger minorias. A Ilha Sapelo não é apenas um pedaço de terra: é um museu vivo da diáspora africana, onde a cultura Gullah Geechee sobrevive em um isolamento que, agora, pode ser definitivamente rompido.
+No Brasil, onde mais de 5 milhões de pessoas se declaram descendentes de povos africanos e inúmeras comunidades quilombolas lutam pela manutenção de seus territórios, o caso ressoa como alerta para os riscos de deslocamento forçado e perda de identidade cultural. A Geórgia, estado sulista com forte presença histórica negra, vê a decisão do referendo como reflexo de uma tensão crescente entre modernização e preservação de direitos étnicos, semelhante às batalhas enfrentadas por comunidades remanescentes de quilombos no Pará ou em Santa Catarina. A votação, apenas a segunda desse tipo na história do estado, coloca em xeque não apenas a geografia, mas a memória de um povo que sobreviveu a séculos de opressão.
 
-Se o "sim" vencer no referendo, a zona de conservação será ampliada e os planos de desenvolvimento imobiliário serão congelados, garantindo que a ilha mantenha suas raízes históricas. Mas, independentemente do resultado, o caso já serve de alerta para o Brasil: a luta pela terra não é apenas econômica, é existencial.
+Se o “não” à mudança de zonação prevalecer, o precedente poderá fortalecer outras lutas por justiça territorial nos EUA e inspirar movimentos além-mar; caso contrário, a cultura Gullah Geechee — e seu exemplo de resistência — pode se tornar mais um capítulo apagado da história afro-global.
 
 
 ---
 
 ## 🇪🇸 Resumen en Español
 
-Los habitantes de Sapelo Island, en Georgia, han logrado un hito al someter a votación popular una enmienda urbanística que amenazaba con arrasar su legado cultural único. En un referéndum histórico, los votantes rechazaron el proyecto que habría abierto la puerta a la especulación inmobiliaria en sus tierras ancestrales.
+Georgia se enfrenta este martes a un referéndum excepcional para frenar una polémica reforma urbanística que amenaza con alterar el frágil equilibrio de la histórica comunidad gullah geechee en Sapelo Island. Con solo un precedente similar en décadas, los votantes decidirán si paralizan los cambios de zonificación impulsados por el condado de McIntosh, que podrían acelerar la gentrificación y erosionar el patrimonio cultural de esta isla, donde el 90 % de los residentes pertenecen a este grupo étnico descendiente de esclavos africanos.
 
-La victoria de los Gullah Geechee —una comunidad afrodescendiente con raíces en la esclavitud que ha preservado su lengua, tradiciones y forma de vida durante siglos— sienta un precedente en la defensa del territorio frente a intereses económicos. Para los hispanohablantes, el caso evoca luchas similares en América Latina, donde pueblos indígenas y afrodescendientes resisten contra megaproyectos que priorizan el beneficio privado sobre la identidad cultural, subrayando la urgencia de proteger los derechos colectivos y el medio ambiente.
+El proceso, que refleja tensiones entre desarrollo económico y preservación cultural, tiene repercusiones más allá de Georgia. Para los hispanohablantes, especialmente en EE.UU., evoca debates similares sobre derechos territoriales y ambientales, como los que enfrentan comunidades latinas frente a proyectos extractivistas. Además, subraya cómo los mecanismos de democracia directa pueden ser herramientas clave —pero no siempre efectivas— para proteger identidades históricas frente a intereses comerciales, un tema que resuena en un contexto global donde el turismo masivo y la especulación inmobiliaria amenazan a pueblos originarios.
