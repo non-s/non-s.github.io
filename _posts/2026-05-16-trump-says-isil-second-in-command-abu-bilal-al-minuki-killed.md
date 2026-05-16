@@ -44,6 +44,7 @@ entities:
   - "Sahel region"
   - "U.S. State Department"
   - "Truth Social"
+audio: "/assets/audio/posts/2026-05-16-trump-says-isil-second-in-command-abu-bilal-al-minuki-killed.mp3"
 ---
 
 United States and Nigerian military forces eliminated Abu-Bilal al-Minuki, the alleged second-in-command of ISIL (ISIS), in a joint operation on Friday, President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) announced. Trump described al-Minuki as the 'most active terrorist in the world' and credited American and Nigerian troops for executing a 'flawless' mission.

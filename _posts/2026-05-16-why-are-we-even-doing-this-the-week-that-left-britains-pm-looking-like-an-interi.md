@@ -41,6 +41,7 @@ entities:
   - "Labour Together"
   - "BBC"
   - "Conservative Party"
+audio: "/assets/audio/posts/2026-05-16-why-are-we-even-doing-this-the-week-that-left-britains-pm-looking-like-an-interi.mp3"
 ---
 
 A week of behind-the-scenes maneuvering and public skepticism has left [Keir Starmer](https://en.wikipedia.org/wiki/Keir_Starmer), Britain’s Prime Minister and Labour Party leader, looking increasingly vulnerable, even as no formal challenge has materialized. The jostling follows a series of setbacks for his government, including poor polling results and criticism over policy decisions, which have fueled speculation about his future.

@@ -38,6 +38,7 @@ entities:
   - "Metropolitan Police"
   - "Hope Not Hate"
   - "Palestinian Solidarity Campaign"
+audio: "/assets/audio/posts/2026-05-16-thousands-descend-on-london-for-far-right-and-pro-palestine-marches-live.mp3"
 ---
 
 Thousands of demonstrators converged on central London Saturday for two polarizing marches, prompting a heavy police presence to prevent clashes between far-right activists and pro-Palestine groups. Police confirmed they were monitoring both events in real time, with additional officers deployed across key locations including Westminster and Whitehall.
