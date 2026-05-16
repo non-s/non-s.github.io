@@ -15,6 +15,7 @@ content_type: "video"
 youtube_id: "yMrm_VMciiM"
 youtube_url: "https://youtube.com/watch?v=yMrm_VMciiM"
 lang: "en"
+audio: "/assets/audio/posts/2026-05-16-video-may-16-tech-business-zimbabwe-real-estate-oleary-on-gen-z-ai-citations-penalty.mp3"
 ---
 
 Zimbabwe’s diaspora is driving new investment trends in real estate and farming. Kevin O’Leary questions the work ethic of Gen Z founders working 18-hour days. A study finds midlife fitness can add five-plus years to lifespan. Lawyers in Oregon face $110K sanctions for submitting fake AI citations. Chelsea could silence critics with a FA Cup victory.

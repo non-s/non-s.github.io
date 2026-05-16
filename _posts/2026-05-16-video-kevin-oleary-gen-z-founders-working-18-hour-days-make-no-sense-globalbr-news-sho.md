@@ -15,6 +15,7 @@ content_type: "video"
 youtube_id: "GyQHGG6MBw4"
 youtube_url: "https://youtube.com/watch?v=GyQHGG6MBw4"
 lang: "en"
+audio: "/assets/audio/posts/2026-05-16-video-kevin-oleary-gen-z-founders-working-18-hour-days-make-no-sense-globalbr-news-sho.mp3"
 ---
 
 Kevin O’Leary: Gen Z founders working 18-hour days make 'no sense'

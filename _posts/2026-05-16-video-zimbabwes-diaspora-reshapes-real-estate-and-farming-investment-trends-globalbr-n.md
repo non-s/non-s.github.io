@@ -15,6 +15,7 @@ content_type: "video"
 youtube_id: "F5xDB3rlvZA"
 youtube_url: "https://youtube.com/watch?v=F5xDB3rlvZA"
 lang: "en"
+audio: "/assets/audio/posts/2026-05-16-video-zimbabwes-diaspora-reshapes-real-estate-and-farming-investment-trends-globalbr-n.mp3"
 ---
 
 Zimbabwe’s diaspora reshapes real estate and farming investment trends
