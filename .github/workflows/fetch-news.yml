@@ -61,7 +61,7 @@ jobs:
         run: |
           python -m py_compile fetch_news.py
           python -m py_compile utils/text.py utils/dedup.py utils/ai_helper.py utils/retry.py
-          python -m py_compile submit_urls.py generate_search_index.py post_bluesky.py post_audit_bluesky.py
+          python -m py_compile submit_urls.py generate_search_index.py
           echo "✅ Syntax OK"
 
       - name: "📡 Run fetch_news.py"
@@ -184,14 +184,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "🦋 Bluesky — compartilhar posts novos"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python post_bluesky.py
-        env:
-          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-
       - name: "🔵 Bing & IndexNow — submeter URLs novas"
         if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true
@@ -200,21 +192,6 @@ jobs:
           BING_API_KEY:  ${{ secrets.BING_API_KEY }}
           INDEXNOW_KEY:  ${{ secrets.INDEXNOW_KEY }}
           SITE_URL:      "https://non-s.github.io"
-
-      - name: "💚 Health check — post stats to Bluesky (weekly)"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: |
-          # Only post health stats on Mondays
-          DOW=$(date -u +%u)
-          if [ "$DOW" = "1" ]; then
-            python post_audit_bluesky.py
-          else
-            echo "ℹ️ Not Monday — skipping weekly health post"
-          fi
-        env:
-          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
 
       - name: "ℹ️ No new posts"
         if: steps.check_changes.outputs.changed == '0'
@@ -228,22 +205,3 @@ jobs:
           path: fetch_news.log
           retention-days: 7
           if-no-files-found: ignore
-
-      - name: "🚨 Notify failure on Bluesky"
-        if: failure()
-        env:
-          BLUESKY_HANDLE:       ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-        run: |
-          if [ -z "$BLUESKY_HANDLE" ] || [ -z "$BLUESKY_APP_PASSWORD" ]; then exit 0; fi
-          TOKEN=$(curl -s -X POST "https://bsky.social/xrpc/com.atproto.server.createSession" \
-            -H "Content-Type: application/json" \
-            -d "{\"identifier\":\"$BLUESKY_HANDLE\",\"password\":\"$BLUESKY_APP_PASSWORD\"}" \
-            | python3 -c "import sys,json;print(json.load(sys.stdin).get('accessJwt',''))" 2>/dev/null || echo "")
-          if [ -z "$TOKEN" ]; then exit 0; fi
-          DID=$(curl -s "https://bsky.social/xrpc/com.atproto.identity.resolveHandle?handle=$BLUESKY_HANDLE" \
-            | python3 -c "import sys,json;print(json.load(sys.stdin).get('did',''))" 2>/dev/null || echo "")
-          curl -s -X POST "https://bsky.social/xrpc/com.atproto.repo.createRecord" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "{\"repo\":\"$DID\",\"collection\":\"app.bsky.feed.post\",\"record\":{\"text\":\"⚠️ GlobalBR News fetch-news workflow #${{ github.run_number }} failed. Check: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",\"createdAt\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"\$type\":\"app.bsky.feed.post\"}}" || true

@@ -109,15 +109,6 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "🦋 Postar vídeos no Bluesky"
-        run: python post_video_bluesky.py
-        continue-on-error: true
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-
       - name: "💾 Salvar marcadores e posts no git"
         run: |
           git config user.name  "GlobalBR News Bot"
