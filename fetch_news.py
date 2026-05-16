@@ -1860,8 +1860,14 @@ def build_frontmatter(
 ) -> str:
     """Monta o frontmatter YAML do post Jekyll."""
     date_str  = date.strftime("%Y-%m-%d %H:%M:%S %z").strip()
-    cats_yaml = "[" + ", ".join(categories) + "]"
-    tags_yaml = "[" + ", ".join(t for t in tags if t) + "]"
+    # Slugify tags before serialising to YAML — keeps the inline array
+    # safe against AI-generated values that contain commas, brackets, or
+    # quotes (e.g. "gaza-death-toll-73,000" would otherwise split the
+    # array and the trailing "000" would parse as integer 0, which then
+    # crashes the sort filter in series/index.html).
+    cats_yaml = "[" + ", ".join(c for c in categories if c) + "]"
+    safe_tags = [s for s in (slugify(t) for t in tags if t) if s]
+    tags_yaml = "[" + ", ".join(safe_tags) + "]"
 
     front = f"""---
 layout: post
