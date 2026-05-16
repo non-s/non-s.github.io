@@ -627,13 +627,6 @@ FEEDS = [
         "source":   "Foreign Policy",
     },
     {
-        "name":     "Politico",
-        "url":      "https://rss.politico.com/politics-news.xml",
-        "category": "politics",
-        "tags":     ["politico", "politics", "usa"],
-        "source":   "Politico",
-    },
-    {
         "name":     "BBC Politics",
         "url":      "https://feeds.bbci.co.uk/news/politics/rss.xml",
         "category": "politics",
@@ -1196,7 +1189,6 @@ FEEDS = [
     {"name": "SCMP World", "url": "https://www.scmp.com/rss/91/feed", "category": "world", "tags": ["china", "asia"], "source": "South China Morning Post"},
 
     # ── Politics extra ───────────────────────────────────────────
-    {"name": "Politico", "url": "https://www.politico.com/rss/politicopicks.xml", "category": "politics", "tags": ["politico", "us-politics"], "source": "Politico"},
     {"name": "The Hill", "url": "https://thehill.com/feed", "category": "politics", "tags": ["thehill", "us"], "source": "The Hill"},
     {"name": "Foreign Policy", "url": "https://foreignpolicy.com/feed/", "category": "politics", "tags": ["foreign-policy", "diplomacy"], "source": "Foreign Policy"},
 
