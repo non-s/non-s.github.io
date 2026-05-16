@@ -42,6 +42,7 @@ entities:
   - "BBC Sport"
   - "Euro 1996"
   - "Theresa May"
+audio: "/assets/audio/posts/2026-05-16-three-lions-the-football-anthem-that-united-a-nation.mp3"
 ---
 
 The anthem that became 'Three Lions (Football's Coming Home)' began as a joke. In 1996, comedian [David Baddiel](https://en.wikipedia.org/wiki/David_Baddiel) and his former comedy partner [Frank Skinner](https://en.wikipedia.org/wiki/Frank_Skinner_(comedian)) teamed up with [Lily Allen](https://en.wikipedia.org/wiki/Lily_Allen)'s brother [Alfie Allen](https://en.wikipedia.org/wiki/Alfie_Allen) and musician [Ian Broudie](https://en.wikipedia.org/wiki/Ian_Broudie) of The Lightning Seeds to create what would become England's most enduring football anthem.

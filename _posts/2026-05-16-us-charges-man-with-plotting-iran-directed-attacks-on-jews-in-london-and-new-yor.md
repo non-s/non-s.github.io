@@ -44,6 +44,7 @@ entities:
   - "London Metropolitan Police"
   - "Community Security Trust"
   - "NYPD Counterterrorism Bureau"
+audio: "/assets/audio/posts/2026-05-16-us-charges-man-with-plotting-iran-directed-attacks-on-jews-in-london-and-new-yor.mp3"
 ---
 
 Mohammad Baqer Saad Dawood al-Saadi, an Iraqi national, was arraigned in a New York federal court Monday on six charges including conspiracy to commit acts of terrorism and providing material support to a foreign terrorist organization. Prosecutors allege al-Saadi acted on behalf of Iran’s Islamic Revolutionary Guard Corps (IRGC) to target Jewish community centers, synagogues, and charities in London and New York in a series of coordinated plots spanning nearly two decades.

@@ -44,6 +44,7 @@ entities:
   - "RÚV (Iceland)"
   - "Yle (Finland)"
   - "NRK (Norway)"
+audio: "/assets/audio/posts/2026-05-16-where-did-eurovision-go-wrong.mp3"
 ---
 
 Eurovision 2024 is set to air this Saturday, promising the usual spectacle of sequins, smoke machines, and kitsch Europop. The contest, organized by the [European Broadcasting Union (EBU)](https://en.wikipedia.org/wiki/European_Broadcasting_Union), has long branded itself as a celebration of music and unity, insisting it remains above politics. But this year, that claim is under unprecedented strain as Israel’s participation draws sharp criticism amid its military actions in Gaza and Lebanon.

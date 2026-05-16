@@ -40,6 +40,7 @@ entities:
   - "Stephon Castle"
   - "Gregg Popovich"
   - "Anthony Edwards"
+audio: "/assets/audio/posts/2026-05-16-spurs-win-to-move-into-western-conference-finals.mp3"
 ---
 
 The San Antonio Spurs secured their place in the Western Conference finals Monday with a dominant 110-97 win over the Minnesota Timberwolves. Stephon Castle led the charge with 28 points, while the Spurs’ defense held Minnesota to just 40 percent shooting. The victory capped a hard-fought series and marked San Antonio’s return to the conference finals for the first time since 2017.

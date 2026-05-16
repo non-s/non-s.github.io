@@ -44,6 +44,7 @@ entities:
   - "tirzepatide"
   - "American Society for Metabolic and Bariatric Surgery"
   - "Dr. John Morton"
+audio: "/assets/audio/posts/2026-05-16-weight-loss-surgeries-decline-as-glp-1-use-skyrockets-why-this-matters.mp3"
 ---
 
 The number of bariatric surgeries performed for weight loss has declined as prescriptions for GLP-1 medications like Ozempic, Wegovy, and Mounjaro skyrocketed, according to a new study published by [Loyola Medicine](https://www.loyolamedicine.org/). Researchers attribute the drop to the growing availability, accessibility, and perceived effectiveness of these injectable drugs, which have gained widespread attention for promoting substantial weight loss. The study highlights a shift in how patients and doctors approach weight management, moving away from surgical interventions toward pharmaceutical options.
