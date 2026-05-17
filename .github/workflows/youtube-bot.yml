@@ -27,12 +27,12 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
 
       - name: "Python 3.11"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -65,10 +65,20 @@ jobs:
             echo "   em Settings → Secrets → Actions → YOUTUBE_TOKEN"
             exit 1
           fi
+          # Write the token under restrictive perms (umask covers the
+          # implicit mode of `printf > file`). 0600 keeps it readable
+          # only by the runner user.
+          umask 077
           printf '%s' "$YOUTUBE_TOKEN" > token.json
-          # Sanity check: confirm it parses as JSON.
-          if ! python -c "import json,sys; json.load(open('token.json'))"; then
+          chmod 600 token.json
+          # Sanity check: confirm it parses as JSON. Use a context
+          # manager so the file handle closes before exit.
+          if ! python -c "import json, sys
+with open('token.json') as f:
+    json.load(f)
+" ; then
             echo "❌ YOUTUBE_TOKEN secret não é JSON válido."
+            rm -f token.json
             exit 1
           fi
           echo "✅ token.json restaurado"
@@ -147,7 +157,7 @@ jobs:
 
       - name: "Log de execucao"
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: "youtube-log-${{ github.run_number }}"
           path: |
@@ -156,3 +166,15 @@ jobs:
             upload_youtube.log
           retention-days: 7
           if-no-files-found: ignore
+
+      # Defence in depth: shred the OAuth token on EVERY exit path
+      # (success, failure, cancellation). The runner is ephemeral, but
+      # leaving credentials in artifacts/logs is a real risk if any
+      # earlier step accidentally tar's the workspace.
+      - name: "🧹 Apagar token.json no final"
+        if: always()
+        run: |
+          if [ -f token.json ]; then
+            shred -u token.json 2>/dev/null || rm -f token.json
+            echo "🧹 token.json shredded"
+          fi

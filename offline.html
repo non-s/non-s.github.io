@@ -202,7 +202,10 @@
       }
 
       try {
-        var cacheName = 'globalbr-articles-v4';
+        // Must match ARTICLE_CACHE in sw.js. When you bump the SW
+        // version, bump this string too — otherwise offline.html reads
+        // from the previous cache and shows nothing.
+        var cacheName = 'globalbr-articles-v5';
         var cache = await caches.open(cacheName);
         var keys = await cache.keys();
 

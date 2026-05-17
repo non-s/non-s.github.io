@@ -108,7 +108,10 @@ Para que a automação de notícias funcione (commit automático):
 5. Verifique se novos posts apareceram na pasta `_posts/`
 6. Acesse o blog e veja as notícias! 🎉
 
-A partir de agora, o workflow roda automaticamente às **8h, 12h e 18h (horário de Brasília)**.
+A partir de agora, o workflow roda automaticamente a cada **3 horas**
+(00h, 03h, 06h, 09h, 12h, 15h, 18h, 21h **UTC** —
+21h, 00h, 03h, 06h, 09h, 12h, 15h, 18h horário de Brasília / GMT-3).
+O cronograma fica em `.github/workflows/fetch-news.yml` (`cron: "0 */3 * * *"`).
 
 ---
 
@@ -116,13 +119,18 @@ A partir de agora, o workflow roda automaticamente às **8h, 12h e 18h (horário
 
 ### 7.1 Ativar Google Analytics
 
+O Analytics já vem ativo no `_config.yml` apontando para a propriedade
+do site original (`G-ZSQXRQJ6WC`). Para usar **sua própria** propriedade:
+
 1. Crie uma conta em [analytics.google.com](https://analytics.google.com)
 2. Obtenha seu ID (formato `G-XXXXXXXXXX`)
-3. Em `_config.yml`, descomente e preencha:
+3. Em `_config.yml`, **substitua** o valor de `google_analytics`:
    ```yaml
    google_analytics: "G-XXXXXXXXXX"
    ```
-4. Em `_includes/head.html`, descomente o bloco do Analytics
+4. Para desativar GA por completo, comente a linha ou apague o valor.
+   O bloco em `_includes/head.html` é ativado pelo `{% if site.google_analytics %}`
+   — não há nada para descomentar manualmente.
 
 ### 7.2 Ativar Google AdSense
 

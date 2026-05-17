@@ -4,9 +4,12 @@ source "https://rubygems.org"
 gem "github-pages", group: :jekyll_plugins
 
 # Plugins adicionais
+# NB: jekyll-sitemap intentionally NOT listed — we ship hand-written
+# sitemap.xml / sitemap-news.xml with news+image annotations the plugin
+# can't emit. Letting jekyll-sitemap also walk the 16k+ tag pages
+# pushed builds past the CI timeout.
 group :jekyll_plugins do
   gem "jekyll-seo-tag"
-  gem "jekyll-sitemap"
   gem "jekyll-feed"
   gem "jekyll-paginate"
 end

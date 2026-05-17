@@ -355,16 +355,8 @@ description: "GlobalBR News — World news every hour covering politics, war, sc
                 {% else %}
                   <a href="{{ post.url | relative_url }}" class="card-img-placeholder">
                     {% for cat in post.categories limit:1 %}
-                      {% if cat == 'ia' or cat == 'ai' %}🤖
-                      {% elsif cat == 'technology' %}💻
-                      {% elsif cat == 'world' %}🌍
-                      {% elsif cat == 'politics' %}🏛️
-                      {% elsif cat == 'war' %}⚔️
-                      {% elsif cat == 'business' %}💼
-                      {% elsif cat == 'science' %}🔬
-                      {% elsif cat == 'health' %}🏥
-                      {% elsif cat == 'sports' %}⚽
-                      {% else %}📰{% endif %}
+                      {% assign cat_icon = site.data.categories[cat].icon %}
+                      {{ cat_icon | default: '📰' }}
                     {% endfor %}
                   </a>
                 {% endif %}
