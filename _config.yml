@@ -17,7 +17,8 @@ url: "https://non-s.github.io"
 baseurl: ""
 
 # --- Tema ---
-theme: minima
+# No remote theme: we ship our own layouts + Bootstrap via CDN. The
+# previous `theme: minima` shipped a conflicting stylesheet at build time.
 
 # --- Idioma e timezone ---
 lang: "en"
@@ -29,6 +30,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-feed
   - jekyll-paginate
+  - jekyll-sitemap
 
 # --- Paginação ---
 paginate: 10
@@ -69,17 +71,20 @@ logo: "/assets/images/logo.png"
 image: "/assets/images/og-default.jpg"
 
 # --- Sitemap ---
+# We ship a hand-written `/sitemap.xml` with news/image annotations.
+# jekyll-sitemap is loaded as a fallback but we tell it to skip the
+# pages already covered to avoid double indexing.
 sitemap:
-  file: "/sitemap.xml"
   exclude:
     - "/404.html"
+    - "/sitemap.xml"
+    - "/sitemap-custom.xml"
+    - "/sitemap-news.xml"
+    - "/sitemap-pt.xml"
 
 # --- Posts ---
 permalink: /:categories/:year/:month/:day/:title/
 
-# AMP pages — generated at /category/year/month/day/slug/amp/
-amp:
-  enabled: true
 show_excerpts: true
 excerpt_separator: "<!--more-->"
 
@@ -127,8 +132,14 @@ exclude:
   - requirements.txt
   - README.md
   - COMO_PUBLICAR.md
+  - CONTRIBUTING.md
+  - SECURITY.md
+  - LICENSE
+  - .env
+  - .env.example
   - .github
   - _videos
+  - tests
 
 # --- Sass ---
 sass:
