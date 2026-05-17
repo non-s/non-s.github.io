@@ -48,7 +48,10 @@ jobs:
   build:
     name: "Jekyll build"
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 14 511 tag pages plus 1 600+ posts → Jekyll routinely needs
+    # 10-15 min to finish. Cap at 25 to catch genuine hangs without
+    # killing healthy runs.
+    timeout-minutes: 25
     needs: lint
     steps:
       - uses: actions/checkout@v4
