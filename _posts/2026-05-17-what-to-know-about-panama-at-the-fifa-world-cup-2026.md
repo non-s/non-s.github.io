@@ -42,6 +42,7 @@ entities:
   - "CONCACAF"
   - "FIFA World Cup 2026"
   - "José Fajardo"
+audio: "/assets/audio/posts/2026-05-17-what-to-know-about-panama-at-the-fifa-world-cup-2026.mp3"
 ---
 
 Panama punched their ticket to the 2026 FIFA World Cup the same way they did in 2018—by grinding out results in CONCACAF qualifying. Their run started in the second round, where they faced Nicaragua, Guyana, Montserrat and Belize. They won all four games, scoring 10 goals and conceding just one. That perfect record set them up for the tougher third round, where they faced Suriname, Guatemala and El Salvador in a single table. After six matches, Panama had 11 points—good for fourth place—and secured their spot in the tournament. [Thomas Christiansen](https://en.wikipedia.org/wiki/Thomas_Christiansen_(footballer)), the Spanish-born coach who took over in 2020, made it clear Panama aren’t there just to make up the numbers. “We want to show the world what we can do,” he said after the final qualifying match. “We’re not here to lose. We’re here to compete.”

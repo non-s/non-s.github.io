@@ -40,6 +40,7 @@ entities:
   - "Red Bull Racing"
   - "Mercedes-AMG Team"
   - "Nürburgring Nordschleife"
+audio: "/assets/audio/posts/2026-05-17-verstappen-victory-hopes-ended-by-mechanical-problem.mp3"
 ---
 
 Max Verstappen’s [Nurburgring 24 Hours](https://en.wikipedia.org/wiki/N%C3%BCrburgring_24_Hours) debut lasted just a single race. The three-time Formula 1 world champion was running in the top ten when a late mechanical issue ended his chances of a podium finish. His #23 car, fielded by [Red Bull Racing](https://en.wikipedia.org/wiki/Red_Bull_Racing) in partnership with [Team WRT](https://en.wikipedia.org/wiki/Team_WRT), dropped out with 112 laps completed—leaving just 16 laps in the race.
