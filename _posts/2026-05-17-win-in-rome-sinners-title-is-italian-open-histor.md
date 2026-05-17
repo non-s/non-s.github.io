@@ -43,6 +43,7 @@ entities:
   - "Foro Italico"
   - "Adriano Panatta"
   - "Andrey Rublev"
+audio: "/assets/audio/posts/2026-05-17-win-in-rome-sinners-title-is-italian-open-histor.mp3"
 ---
 
 Jannik Sinner [clipped the court](https://en.wikipedia.org/wiki/Foro_Italico) with a controlled 6-2, 6-4 win over [Grigor Dimitrov](https://en.wikipedia.org/wiki/Grigor_Dimitrov) in Rome on Sunday. It wasn’t just another Masters 1000 title—it was a historic moment for Italian tennis. Sinner became the first Italian man to lift the Italian Open trophy since Adriano Panatta in 1976. The 22-year-old Italian now shares a record with Novak Djokovic for the most Masters 1000 titles won across all nine events. Sinner’s victory also marked his first clay-court title of the season, ending a four-tournament losing streak on dirt.
