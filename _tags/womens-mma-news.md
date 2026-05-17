@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'women''s-mma-news'"
-tag: women's-mma-news
+title: "Posts tagged 'womens-mma-news'"
+tag: womens-mma-news
 permalink: /tag/womens-mma-news/
 ---

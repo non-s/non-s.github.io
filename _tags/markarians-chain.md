@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'markarian''s-chain'"
-tag: markarian's-chain
+title: "Posts tagged 'markarians-chain'"
+tag: markarians-chain
 permalink: /tag/markarians-chain/
 ---

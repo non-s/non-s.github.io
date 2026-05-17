@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'how-to-find-markarian''s-chain'"
-tag: how-to-find-markarian's-chain
+title: "Posts tagged 'how-to-find-markarians-chain'"
+tag: how-to-find-markarians-chain
 permalink: /tag/how-to-find-markarians-chain/
 ---

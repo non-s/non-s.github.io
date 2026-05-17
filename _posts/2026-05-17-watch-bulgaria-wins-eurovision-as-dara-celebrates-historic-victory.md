@@ -41,6 +41,7 @@ entities:
   - "Liverpool"
   - "Switzerland"
   - "Sweden"
+audio: "/assets/audio/posts/2026-05-17-watch-bulgaria-wins-eurovision-as-dara-celebrates-historic-victory.mp3"
 ---
 
 Bulgaria’s Dara made history Saturday night in Liverpool, taking the Eurovision Song Contest crown with a record-smashing 685 points. The 22-year-old singer’s victory marks the first time Bulgaria has ever won the world’s biggest live music competition. Dara’s winning song, “Echo of the Heart,” dominated both jury and public votes, securing a 125-point lead over runner-up Switzerland. The final score shattered the previous record set by Måneskin in 2021, when Italy won with 524 points.\n\nDara’s win was no fluke. She led the leaderboard after every round of voting, including the semi-finals, where Bulgaria topped the charts with 270 points. Her performance in Liverpool’s M&S Bank Arena drew a massive home crowd, with Bulgarian flags waving and fans cheering every note. Judges praised her powerful vocals and stage presence, while viewers at home couldn’t stop talking about her energy.\n\n## How Bulgaria pulled off the win

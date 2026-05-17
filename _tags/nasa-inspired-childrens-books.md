@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'nasa-inspired-children''s-books'"
-tag: nasa-inspired-children's-books
+title: "Posts tagged 'nasa-inspired-childrens-books'"
+tag: nasa-inspired-childrens-books
 permalink: /tag/nasa-inspired-childrens-books/
 ---

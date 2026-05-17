@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'foodie-mother''s-day-presents'"
-tag: foodie-mother's-day-presents
+title: "Posts tagged 'foodie-mothers-day-presents'"
+tag: foodie-mothers-day-presents
 permalink: /tag/foodie-mothers-day-presents/
 ---
