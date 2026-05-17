@@ -38,11 +38,9 @@ jobs:
 
       - name: "🐍 Validate Python syntax"
         run: |
-          python -m py_compile fetch_news.py generate_search_index.py \
-            submit_urls.py check_links.py audit_site.py translate_posts.py \
-            generate_tag_pages.py google_index.py send_newsletter.py \
-            utils/text.py utils/dedup.py utils/ai_helper.py \
-            utils/retry.py utils/frontmatter.py
+          # Compile every top-level *.py + utils/ — easier to maintain than a
+          # hand-written list that drifts whenever a new script is added.
+          python -m compileall -q . -x '_site|node_modules|vendor'
 
       - name: "🧪 Run unit tests"
         run: pytest -q
@@ -50,9 +48,19 @@ jobs:
   build:
     name: "Jekyll build"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: lint
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: |
+          python -m pip install --upgrade pip
+          pip install PyYAML
+      - name: "Regenerate search-index.json"
+        run: python generate_search_index.py
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"

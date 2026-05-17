@@ -3,26 +3,54 @@ on:
   schedule:
     - cron: "0 4 * * 0"  # Sundays 4h UTC
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (only log, don't delete)"
+        required: false
+        default: "false"
+        type: boolean
+
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🧹 Delete merged branches"
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           git fetch --prune
-          # Delete remote branches that have been merged to main (except main, master, HEAD)
-          MERGED=$(git branch -r --merged origin/main | grep -v 'origin/main\|origin/master\|HEAD' | sed 's/origin\///')
+          # Cutoff: branches merged AND with no commit in the last 14 days.
+          CUTOFF=$(date -u -d '14 days ago' '+%Y-%m-%d')
+          MERGED=$(git branch -r --merged origin/main \
+            | grep -v 'origin/main\|origin/master\|HEAD' \
+            | sed 's|origin/||')
           COUNT=0
+          SKIPPED=0
           for branch in $MERGED; do
-            # Only delete claude/* worktree/* fix/* branches (our bot branches)
-            if echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
-              git push origin --delete "$branch" 2>/dev/null && COUNT=$((COUNT+1)) || true
+            # Only touch our bot branches.
+            if ! echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
+              continue
+            fi
+            # Age check.
+            LAST=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo '')
+            if [ -z "$LAST" ] || [ "$LAST" \> "$CUTOFF" ]; then
+              echo "  ⏭  skipping $branch (last commit $LAST > cutoff $CUTOFF)"
+              SKIPPED=$((SKIPPED+1))
+              continue
+            fi
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "  📝 [dry-run] would delete $branch (last commit $LAST)"
+            else
+              if git push origin --delete "$branch" 2>/dev/null; then
+                COUNT=$((COUNT+1))
+                echo "  ✅ deleted $branch"
+              fi
             fi
           done
-          echo "✅ Deleted $COUNT merged branches"
+          echo "✅ Deleted $COUNT branches (skipped $SKIPPED younger than 14d)"

@@ -15,6 +15,9 @@ jobs:
   ping:
     name: "Notify IndexNow"
     runs-on: ubuntu-latest
+    timeout-minutes: 2
+    # No write permissions needed — pure outbound curl.
+    permissions: {}
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: "🔔 IndexNow"
