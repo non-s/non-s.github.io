@@ -44,6 +44,7 @@ entities:
   - "Mbandaka"
   - "Uganda"
   - "South Sudan"
+audio: "/assets/audio/posts/2026-05-17-who-declares-emergency-as-ebola-outbreak-kills-more-than-80-in-dr-congo.mp3"
 ---
 
 > 📰 **Continuing coverage:** [WHO declares Ebola emergency as Congo outbreak spreads to Uganda](/world/2026/05/17/who-declares-international-emergency-over-ebola-outbreak/)

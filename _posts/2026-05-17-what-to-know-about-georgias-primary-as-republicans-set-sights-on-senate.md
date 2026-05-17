@@ -44,6 +44,7 @@ entities:
   - "Georgia"
   - "US Senate"
   - "Georgia Governor"
+audio: "/assets/audio/posts/2026-05-17-what-to-know-about-georgias-primary-as-republicans-set-sights-on-senate.mp3"
 ---
 
 Georgia’s primary on Tuesday isn’t just another election. It’s the first real test of whether Republicans can flip the state’s Senate seat after Democrat Jon Ossoff [won it in 2020](https://en.wikipedia.org/wiki/Jon_Ossoff) by 1.2 points. Ossoff faces no opposition in his own party, so Tuesday’s vote is all about the Republican side, where five candidates are fighting to take him on in November. The top GOP contenders include former football player Herschel Walker, who lost to Ossoff in 2022, and state Senator Mike Collins, who’s running as a staunch conservative. Polls show the race is tight, with no clear frontrunner yet. Whoever wins will face Ossoff in what’s shaping up to be one of the most expensive Senate races in the country this cycle. Outside groups have already poured millions into attack ads, and the eventual GOP nominee will need to rally the party’s base without alienating suburban voters who helped flip Georgia blue in recent years.

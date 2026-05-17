@@ -8,6 +8,7 @@ featured: true
 sentiment: "positive"
 image: "/assets/images/posts/2026-05-17-world-500-articles-milestone.webp"
 image_alt: "GlobalBR News 500 articles milestone in world category"
+audio: "/assets/audio/posts/2026-05-17-world-500-articles-milestone.mp3"
 ---
 
 We've reached a milestone: **500 articles** published in the **World** category!

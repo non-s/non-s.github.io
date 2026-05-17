@@ -43,6 +43,7 @@ entities:
   - "Miami, Florida"
   - "Texas"
   - "Florida"
+audio: "/assets/audio/posts/2026-05-17-why-your-fixed-mortgage-payment-keeps-going-up.mp3"
 ---
 
 If your mortgage payment suddenly feels heavier, it’s likely not your interest rate’s fault. Fixed-rate mortgages lock in your loan’s interest for the term, which is why so many homebuyers choose them. But the total monthly bill—the mortgage payment—includes more than just the loan. Property taxes and homeowners insurance get added on, and those costs are climbing fast. In some parts of the country, they’re rising faster than the mortgage itself, leaving homeowners stunned when the bill arrives.

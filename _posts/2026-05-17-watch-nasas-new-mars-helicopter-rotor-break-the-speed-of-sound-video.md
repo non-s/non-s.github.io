@@ -41,6 +41,7 @@ entities:
   - "Mars Sample Recovery Helicopter"
   - "Perseverance rover"
   - "Jaakko Karras"
+audio: "/assets/audio/posts/2026-05-17-watch-nasas-new-mars-helicopter-rotor-break-the-speed-of-sound-video.mp3"
 ---
 
 NASA just pushed the limits of what’s possible on Mars. Engineers at [NASA's Jet Propulsion Laboratory](https://en.wikipedia.org/wiki/Jet_Propulsion_Laboratory) spun next-gen helicopter blades faster than sound inside a 25-foot-wide vacuum chamber, proving that future Mars aircraft can fly faster than anything before. The November 2025 test marks the first time rotor blades designed for Mars have broken the sound barrier on Earth, a milestone that could change how we explore the Red Planet.
