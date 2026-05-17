@@ -1032,9 +1032,34 @@ def mark_posts_as_used(post_slugs: list[str]):
         (VIDEOS_DIR / f"{slug}.roundup").touch()
 
 def guess_category(tags: list, title: str) -> str:
+    """Pick a broad YouTube-style category from a story's title + tags.
+
+    Tag-driven first (each story already carries a categories: list),
+    then keyword heuristics for tech sub-niches that drive AI/Security
+    voice + thumbnail choices upstream. Returns an uppercase label.
+    """
     text = (title + " " + " ".join(tags)).lower()
-    # Use word boundary check for short keywords to avoid substring false positives
-    # e.g. "raises" contains "ai", "hackernews" contains "hack"
+    tag_set = {t.lower().strip() for t in (tags or [])}
+
+    # Tag-driven match (highest signal — categories: came from fetch_news).
+    cat_aliases = {
+        "POLITICS":     {"politics", "politicians", "elections", "government"},
+        "WAR":          {"war", "conflict", "ukraine", "gaza", "israel", "russia"},
+        "WORLD":        {"world", "international", "diplomacy"},
+        "BUSINESS":     {"business", "economy", "finance", "markets"},
+        "SCIENCE":      {"science", "research", "space", "physics", "biology"},
+        "HEALTH":       {"health", "medicine", "wellness", "medical"},
+        "ENVIRONMENT":  {"environment", "climate", "sustainability"},
+        "ENTERTAINMENT":{"entertainment", "movies", "music", "celebrity"},
+        "SPORTS":       {"sports", "football", "soccer", "basketball", "tennis"},
+        "TRAVEL":       {"travel", "tourism", "destinations"},
+        "FOOD":         {"food", "restaurant", "cooking", "cuisine"},
+    }
+    for label, keys in cat_aliases.items():
+        if tag_set & keys:
+            return label
+
+    # Tech sub-niches keyed by keyword presence in title/tags.
     if (re.search(r'\bai\b', text) or
             any(w in text for w in ["artificial intelligence", "machine learning",
                                      "gpt", "llm", "openai", "anthropic",
@@ -1047,8 +1072,8 @@ def guess_category(tags: list, title: str) -> str:
                                 "krebs", "the hacker news"]):
         return "SECURITY"
     if any(w in text for w in ["startup", "funding", "series a", "series b",
-                                "series c", "ipo", "acquisition", "billion",
-                                "venture capital", "unicorn"]):
+                                "series c", "ipo", "acquisition", "venture capital",
+                                "unicorn"]):
         return "BUSINESS"
     if any(w in text for w in ["apple", "google", "microsoft", "meta",
                                 "amazon", "nvidia", "tesla", "samsung"]):

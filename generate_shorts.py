@@ -114,7 +114,31 @@ def extract_key_points(description: str) -> list[str]:
 
 # ── Categorizar post ──────────────────────────────────────────────
 def guess_category(tags: list, title: str) -> str:
+    """Pick a broad YouTube-style category label.
+
+    Tag-driven first (the post already carries `categories:`), then
+    keyword heuristics for tech sub-niches. Returns an uppercase label.
+    """
     text = (title + " " + " ".join(tags)).lower()
+    tag_set = {t.lower().strip() for t in (tags or [])}
+
+    cat_aliases = {
+        "POLITICS":      {"politics", "politicians", "elections", "government"},
+        "WAR":           {"war", "conflict", "ukraine", "gaza", "israel", "russia"},
+        "WORLD":         {"world", "international", "diplomacy"},
+        "BUSINESS":      {"business", "economy", "finance", "markets"},
+        "SCIENCE":       {"science", "research", "space", "physics", "biology"},
+        "HEALTH":        {"health", "medicine", "wellness", "medical"},
+        "ENVIRONMENT":   {"environment", "climate", "sustainability"},
+        "ENTERTAINMENT": {"entertainment", "movies", "music", "celebrity"},
+        "SPORTS":        {"sports", "football", "soccer", "basketball", "tennis"},
+        "TRAVEL":        {"travel", "tourism", "destinations"},
+        "FOOD":          {"food", "restaurant", "cooking", "cuisine"},
+    }
+    for label, keys in cat_aliases.items():
+        if tag_set & keys:
+            return label
+
     if (re.search(r'\bai\b', text) or
             any(w in text for w in ["artificial intelligence", "machine learning",
                                      "gpt", "llm", "openai", "anthropic",
@@ -126,8 +150,8 @@ def guess_category(tags: list, title: str) -> str:
                                 "exploit", "hacking", "hacked", "spyware"]):
         return "SECURITY"
     if any(w in text for w in ["startup", "funding", "series a", "series b",
-                                "series c", "ipo", "acquisition", "billion",
-                                "venture capital", "unicorn"]):
+                                "series c", "ipo", "acquisition", "venture capital",
+                                "unicorn"]):
         return "BUSINESS"
     if any(w in text for w in ["apple", "google", "microsoft", "meta",
                                 "amazon", "nvidia", "tesla", "samsung"]):
