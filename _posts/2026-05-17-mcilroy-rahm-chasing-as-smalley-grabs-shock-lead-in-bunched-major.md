@@ -43,6 +43,7 @@ entities:
   - "Scottie Scheffler"
   - "Baltusrol Golf Club"
   - "PGA Championship"
+audio: "/assets/audio/posts/2026-05-17-mcilroy-rahm-chasing-as-smalley-grabs-shock-lead-in-bunched-major.mp3"
 ---
 
 Alex Smalley [has a two-stroke lead](https://www.pga.com/) at the PGA Championship after carding a two-under 68 in round three, putting him at eight under for the tournament. The 27-year-old American survived a nightmare start—three bogeys in his first five holes—before turning it around with seven birdies over the rest of the round. His resilience leaves him two ahead of a five-way tie for second, where Ryder Cup teammates Jon Rahm [and Ludvig Åberg](https://en.wikipedia.org/wiki/Ludvig_%C3%85berg) sit alongside Justin Rose, Aaron Rai, and Maverick McNealy. Rahm, the world No. 3, is playing his best golf when it matters most. He’s now two back after a round of 66 that included six birdies and a single bogey. "I’m happy with how I’m playing," Rahm said after his round. "The putter’s been good, the iron play’s been solid. I just need to keep doing that."

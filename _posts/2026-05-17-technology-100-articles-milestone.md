@@ -8,6 +8,7 @@ featured: true
 sentiment: "positive"
 image: "/assets/images/posts/2026-05-17-technology-100-articles-milestone.webp"
 image_alt: "GlobalBR News 100 articles milestone in technology category"
+audio: "/assets/audio/posts/2026-05-17-technology-100-articles-milestone.mp3"
 ---
 
 We've reached a milestone: **100 articles** published in the **Technology** category!
