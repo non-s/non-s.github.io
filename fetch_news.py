@@ -331,15 +331,28 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         out_dir.mkdir(parents=True, exist_ok=True)
 
         # ── Download background image from Pollinations ──────────
+        # We trust the URL (built from a hard-coded prefix in
+        # _pollinations_url()), but defend against the CDN serving
+        # something that isn't an image — e.g. an HTML error page
+        # under SSRF or during outages. Pillow would happily try to
+        # decode that and either raise or chew CPU.
         bg_img = None
         try:
             r = _session.get(fallback, timeout=20, stream=True)
             r.raise_for_status()
+            ctype = (r.headers.get("Content-Type") or "").lower()
+            if not ctype.startswith("image/"):
+                raise ValueError(f"unexpected content-type {ctype!r}")
             raw = b"".join(r.iter_content(chunk_size=16384))
+            # Cap the buffer so a malicious/oversized response can't
+            # blow up RAM in the runner.
+            if len(raw) > 12 * 1024 * 1024:
+                raise ValueError(f"image too large ({len(raw)} bytes)")
             bg_img = Image.open(io.BytesIO(raw)).convert("RGB")
             bg_img = bg_img.resize((1200, 630), Image.LANCZOS)
-        except Exception:
-            pass
+        except Exception as exc:
+            log.debug(f"og bg fetch failed (using gradient fallback): {exc!r}")
+            bg_img = None
 
         if bg_img is None:
             # Gradient fallback
@@ -546,7 +559,10 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
                     result = json.loads(candidate, strict=False)
                 except json.JSONDecodeError:
                     # LLMs occasionally return a Python repr (single quotes)
-                    # instead of JSON. Try literal_eval as a fallback.
+                    # instead of JSON. ast.literal_eval is the safe path:
+                    # it ONLY accepts Python literals (str/int/list/dict/
+                    # bool/None/tuples) and rejects names, calls, comprehensions
+                    # — so it cannot execute arbitrary code from the model.
                     try:
                         import ast as _ast
                         parsed = _ast.literal_eval(candidate)
