@@ -43,6 +43,7 @@ entities:
   - "Derry Girls"
   - "This Country"
   - "Gary Lineker"
+audio: "/assets/audio/posts/2026-05-17-we-need-working-class-voices-to-enrich-culture.mp3"
 ---
 
 Kate Pasola has spent years watching UK media and arts spaces stay closed to people from working-class backgrounds. The Northumberland journalist isn’t just frustrated—she’s pushing for real action. "It’s not about pity or charity," she says. "It’s about what we’re losing when whole groups get locked out." Pasola’s latest piece in [The Journal](https://en.wikipedia.org/wiki/The_Journal_(Newcastle_newspaper)) makes that clear: culture suffers when only certain voices get heard. She points to TV shows, newsrooms, and even local theatre productions where working-class accents, experiences, and perspectives are rare. That’s not just unfair. It’s making our stories thinner, our jokes flatter, our news less sharp. It’s not that people from working-class backgrounds don’t exist. It’s that their stories often don’t get told—or when they do, they’re framed as exceptions, not norms.

@@ -42,6 +42,7 @@ entities:
   - "Uganda"
   - "Doctors Without Borders"
   - "U.S. Centers for Disease Control and Prevention"
+audio: "/assets/audio/posts/2026-05-17-who-declares-global-health-emergency-over-ebola-outbreak-in-congo-and-uganda.mp3"
 ---
 
 > 📰 **Continuing coverage:** [WHO declares Ebola emergency as Congo outbreak spreads to Uganda](/world/2026/05/17/who-declares-international-emergency-over-ebola-outbreak/)

@@ -44,6 +44,7 @@ entities:
   - "Todd Boehly"
   - "Frank Lampard"
   - "Reece James"
+audio: "/assets/audio/posts/2026-05-17-we-share-same-ambition-alonso-named-chelseas-third-boss-in-year.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Alonso joins Chelsea as Salah keeps pressure on Liverpool's Slot](/sports/2026/05/16/the-alonso-dream-may-be-over-but-salahs-outburst-keeps-heat-on-slot/)
