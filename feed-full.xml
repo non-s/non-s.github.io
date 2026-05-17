@@ -23,7 +23,7 @@ layout: null
       <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
       {% if post.image %}<media:content url="{{ post.image }}" medium="image"/>{% endif %}
       {% for cat in post.categories %}<category>{{ cat | xml_escape }}</category>{% endfor %}
-      <author>bot@globalbrnews.com (GlobalBR News)</author>
+      {% if site.author.email and site.author.email != "" %}<author>{{ site.author.email }} ({{ site.author.name | default: site.title }})</author>{% endif %}
     </item>
     {% endfor %}
   </channel>

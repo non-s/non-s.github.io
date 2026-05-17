@@ -2,6 +2,15 @@
 layout: default
 ---
 
+{% assign _tag_match = site.posts | where_exp: "post", "post.tags contains page.tag" %}
+{% if _tag_match.size < 2 %}
+  {% comment %}
+    Single-post tags trigger Google's "thin content" classifier.
+    Allow indexing only once the topic has enough cluster mass.
+  {% endcomment %}
+  <meta name="robots" content="noindex,follow">
+{% endif %}
+
 <div class="post-breadcrumb">
   <div class="container">
     <nav aria-label="breadcrumb">

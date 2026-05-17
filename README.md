@@ -41,9 +41,12 @@ Once a day, a YouTube workflow:
 | Secret | Used for | Required? |
 |---|---|---|
 | `MISTRAL_API_KEY` | All AI calls (text, translation, video meta) | **Yes** — site stops publishing without it |
-| `YOUTUBE_TOKEN` | OAuth token for video upload | Only for YouTube workflow |
+| `YOUTUBE_TOKEN` | OAuth token for video upload | Only for `youtube-bot.yml` |
+| `MAILCHIMP_API_KEY` / `MAILCHIMP_AUDIENCE_ID` / `MAILCHIMP_SERVER` | Daily newsletter campaign | Only for `newsletter.yml` |
 | `GOOGLE_INDEXING_CREDENTIALS` | Google Search Console push | Optional |
 | `BING_API_KEY` / `INDEXNOW_KEY` | IndexNow ping | Optional |
+
+A complete list — including all tuning variables — is in [`.env.example`](.env.example).
 
 ## Where things live
 
@@ -63,8 +66,12 @@ _layouts/post.html       # JSON-LD (NewsArticle + FAQPage + BreadcrumbList)
 sitemap.xml              # main sitemap (image + news annotations)
 sitemap-news.xml         # Google News sitemap (48h window)
 sitemap-pt.xml           # Portuguese sitemap
-.github/workflows/       # 13 workflows: fetch-news, youtube-bot, translate, etc.
+.github/workflows/       # 14 workflows: fetch-news, youtube-bot, translate, etc.
 ```
+
+## Security
+
+Report vulnerabilities via [GitHub Security Advisories](https://github.com/non-s/non-s.github.io/security/advisories/new); the machine-readable contact is `/.well-known/security.txt`. See [`SECURITY.md`](SECURITY.md) for scope and turnaround.
 
 ## Editorial transparency
 

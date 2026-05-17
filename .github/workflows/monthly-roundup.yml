@@ -5,6 +5,10 @@ on:
     - cron: "0 10 1 * *"  # 1st of each month at 10h UTC
   workflow_dispatch:
 
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
 jobs:
   roundup:
     runs-on: ubuntu-latest
@@ -36,8 +40,6 @@ jobs:
           git add _posts/
           git diff --cached --quiet || git commit -m "📅 Monthly roundup — $(date -u +'%B %Y')"
           git push origin HEAD
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "🔔 IndexNow após roundup"
         continue-on-error: true

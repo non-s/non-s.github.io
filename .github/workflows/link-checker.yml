@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: "0 6 * * 3"  # Wednesday 6h UTC
   workflow_dispatch:
+
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -27,6 +32,7 @@ jobs:
         run: |
           git config user.name "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
-          git add _data/link_report.json || true
+          # _data/link_report.json is .gitignore'd as runtime artefact.
+          git add -f _data/link_report.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "🔗 Weekly link check — $(date -u +'%Y-%m-%d')"
           git push origin HEAD || true

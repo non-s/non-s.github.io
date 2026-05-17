@@ -5,48 +5,34 @@ from __future__ import annotations
 import logging
 import os
 from collections import Counter
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 
-import requests
-
-from utils.frontmatter import parse, get_str, get_list
-from utils.retry import retry_call
+from utils.frontmatter import parse, get_str
+from utils.ai_helper import ai_text
+from utils.digest import build_post_url
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-POSTS_DIR  = Path("_posts")
+_ROOT      = Path(__file__).resolve().parent
+POSTS_DIR  = _ROOT / "_posts"
 MIN_POSTS  = int(os.environ.get("ROUNDUP_MIN_POSTS", "5"))
 _SKIP      = ("roundup", "digest", "milestone", "stats", "best-of")
 
-MISTRAL_KEY   = os.environ.get("MISTRAL_API_KEY", "")
-MISTRAL_MODEL = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
-
-def _mistral_intro(month_name: str, total: int, titles_sample: str) -> str | None:
-    if not MISTRAL_KEY:
-        return None
-
-    def _call():
-        r = requests.post(
-            "https://api.mistral.ai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {MISTRAL_KEY}", "Content-Type": "application/json"},
-            json={
-                "model": MISTRAL_MODEL,
-                "messages": [{"role": "user", "content": (
-                    f"Write a 2-sentence journalistic intro for a monthly news roundup "
-                    f"for {month_name}. {total} articles were published. "
-                    f"Top stories: {titles_sample}. Be concise and engaging."
-                )}],
-                "max_tokens": 100,
-            },
-            timeout=25,
-        )
-        r.raise_for_status()
-        return r.json()["choices"][0]["message"]["content"].strip()
-
-    return retry_call(_call, max_attempts=3, base_delay=5.0, default=None)
+def _intro_text(month_name: str, total: int, titles_sample: str) -> str:
+    """Try the shared ai_text helper (handles retries + rate limit) and
+    fall back to a static line if the API is unreachable."""
+    prompt = (
+        f"Write a 2-sentence journalistic intro for a monthly news roundup "
+        f"for {month_name}. {total} articles were published. "
+        f"Top stories: {titles_sample}. Be concise and engaging."
+    )
+    body = ai_text(prompt, max_tokens=120, timeout=25)
+    if body:
+        return body.strip()
+    return f"Here's a look back at {month_name} — {total} articles across many categories."
 
 
 def main() -> None:
@@ -69,7 +55,7 @@ def main() -> None:
             cat   = get_str(fm, "categories", "news")
             desc  = get_str(fm, "description")
             if title:
-                posts.append({"path": path, "title": title, "cat": cat, "desc": desc})
+                posts.append({"path": path, "fm": fm, "title": title, "cat": cat, "desc": desc})
         except Exception as exc:
             log.warning("Skipping %s: %s", path.name, exc)
 
@@ -88,10 +74,7 @@ def main() -> None:
             featured.append(cat_posts[0])
 
     titles_sample = "; ".join(p["title"] for p in posts[:10])
-    intro = (
-        _mistral_intro(month_name, total, titles_sample)
-        or f"Here's a look back at {month_name} — {total} articles across {len(cat_counts)} categories."
-    )
+    intro = _intro_text(month_name, total, titles_sample)
     log.info("Intro generated (%d chars)", len(intro))
 
     body = f"{intro}\n\n## By the Numbers\n\n| Category | Articles |\n|---|---|\n"
@@ -100,11 +83,8 @@ def main() -> None:
     body += f"\n**Total:** {total} articles\n\n## Top Stories\n\n"
 
     for p in featured:
-        stem  = p["path"].stem
-        parts = stem.split("-", 3)
-        if len(parts) >= 4:
-            y, mo, d, slug = parts
-            url = f"/{p['cat']}/{y}/{mo}/{d}/{slug}/"
+        url = build_post_url(p["path"], p["fm"])
+        if url:
             body += f"- [{p['title']}]({url})"
             if p["desc"]:
                 body += f" — {p['desc'][:100]}"
@@ -120,7 +100,7 @@ def main() -> None:
     frontmatter = (
         f"---\n"
         f'title: "Month in Review: {month_name}"\n'
-        f"date: {datetime.utcnow().isoformat()}\n"
+        f"date: {datetime.now(timezone.utc).isoformat()}\n"
         f"categories: [roundup]\n"
         f'tags: [monthly, roundup, {month_name.lower().replace(" ", "-")}]\n'
         f'description: "A look back at {month_name}: {total} articles across {len(cat_counts)} categories."\n'

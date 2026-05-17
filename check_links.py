@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import re
 import time
 from datetime import date, timedelta
@@ -17,8 +16,9 @@ from utils.retry import retry_call
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-POSTS_DIR   = Path("_posts")
-DATA_DIR    = Path("_data")
+_ROOT       = Path(__file__).resolve().parent
+POSTS_DIR   = _ROOT / "_posts"
+DATA_DIR    = _ROOT / "_data"
 REPORT_FILE = DATA_DIR / "link_report.json"
 CACHE_FILE  = DATA_DIR / "link_cache.json"
 LOOKBACK_DAYS  = 14    # check posts up to 2 weeks old
@@ -55,18 +55,32 @@ def _save_cache(cache: dict[str, dict]) -> None:
 
 
 def _check_url(url: str, attempt_num: int = 0) -> int:
-    """HEAD request → status code, or 0 on error."""
+    """Return final HTTP status, or 0 on error.
+
+    Tries HEAD first; many large news sites (NYT, Bloomberg, Twitter) reject
+    HEAD with 405/403/501. Falls back to GET with streaming so we still don't
+    pull the full body.
+    """
     ua = _USER_AGENTS[attempt_num % len(_USER_AGENTS)]
+    headers = {"User-Agent": ua}
 
     def _do_head() -> int:
-        r = requests.head(
-            url, timeout=TIMEOUT, allow_redirects=True,
-            headers={"User-Agent": ua},
-        )
+        r = requests.head(url, timeout=TIMEOUT, allow_redirects=True, headers=headers)
         return r.status_code
 
-    result = retry_call(_do_head, max_attempts=2, base_delay=3.0, default=0)
-    return result or 0
+    status = retry_call(_do_head, max_attempts=2, base_delay=3.0, default=0) or 0
+
+    # HEAD-rejection codes — retry as GET-stream before declaring broken.
+    if status in (403, 405, 501):
+        def _do_get() -> int:
+            r = requests.get(
+                url, timeout=TIMEOUT, allow_redirects=True,
+                stream=True, headers=headers,
+            )
+            r.close()
+            return r.status_code
+        status = retry_call(_do_get, max_attempts=2, base_delay=3.0, default=status) or status
+    return status
 
 
 def main() -> None:
@@ -82,7 +96,9 @@ def main() -> None:
         try:
             date_str = "-".join(fname.split("-")[:3])
             if date.fromisoformat(date_str) < cutoff:
-                break
+                # Don't `break` — posts aren't guaranteed to be sorted by
+                # actual date (some are backdated to source pubDate).
+                continue
         except Exception:
             continue
 

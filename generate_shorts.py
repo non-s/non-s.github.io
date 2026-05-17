@@ -76,46 +76,13 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Fontes ────────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False):
-    candidates_bold = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-    ]
-    candidates_reg = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ]
-    for path in (candidates_bold if bold else candidates_reg):
-        if Path(path).exists():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default()
-
-
-# ── Utilitários de desenho ────────────────────────────────────────
-def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
-    x0, y0, x1, y1 = xy
-    draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
-                            outline=outline, width=outline_width)
-
-
-def wrap_text(draw, text, font, max_width):
-    words = text.split()
-    lines, line = [], []
-    for word in words:
-        test = ' '.join(line + [word])
-        if draw.textbbox((0, 0), test, font=font)[2] > max_width and line:
-            lines.append(' '.join(line))
-            line = [word]
-        else:
-            line.append(word)
-    if line:
-        lines.append(' '.join(line))
-    return lines
+# ── Fontes / utilitários compartilhados com generate_video.py ─────
+from utils.video_common import (
+    get_font,
+    draw_rounded_rect,
+    wrap_text,
+    download_image as _download_image_common,
+)
 
 
 def clean_text(text: str, max_chars: int = 500) -> str:
@@ -147,7 +114,31 @@ def extract_key_points(description: str) -> list[str]:
 
 # ── Categorizar post ──────────────────────────────────────────────
 def guess_category(tags: list, title: str) -> str:
+    """Pick a broad YouTube-style category label.
+
+    Tag-driven first (the post already carries `categories:`), then
+    keyword heuristics for tech sub-niches. Returns an uppercase label.
+    """
     text = (title + " " + " ".join(tags)).lower()
+    tag_set = {t.lower().strip() for t in (tags or [])}
+
+    cat_aliases = {
+        "POLITICS":      {"politics", "politicians", "elections", "government"},
+        "WAR":           {"war", "conflict", "ukraine", "gaza", "israel", "russia"},
+        "WORLD":         {"world", "international", "diplomacy"},
+        "BUSINESS":      {"business", "economy", "finance", "markets"},
+        "SCIENCE":       {"science", "research", "space", "physics", "biology"},
+        "HEALTH":        {"health", "medicine", "wellness", "medical"},
+        "ENVIRONMENT":   {"environment", "climate", "sustainability"},
+        "ENTERTAINMENT": {"entertainment", "movies", "music", "celebrity"},
+        "SPORTS":        {"sports", "football", "soccer", "basketball", "tennis"},
+        "TRAVEL":        {"travel", "tourism", "destinations"},
+        "FOOD":          {"food", "restaurant", "cooking", "cuisine"},
+    }
+    for label, keys in cat_aliases.items():
+        if tag_set & keys:
+            return label
+
     if (re.search(r'\bai\b', text) or
             any(w in text for w in ["artificial intelligence", "machine learning",
                                      "gpt", "llm", "openai", "anthropic",
@@ -159,8 +150,8 @@ def guess_category(tags: list, title: str) -> str:
                                 "exploit", "hacking", "hacked", "spyware"]):
         return "SECURITY"
     if any(w in text for w in ["startup", "funding", "series a", "series b",
-                                "series c", "ipo", "acquisition", "billion",
-                                "venture capital", "unicorn"]):
+                                "series c", "ipo", "acquisition", "venture capital",
+                                "unicorn"]):
         return "BUSINESS"
     if any(w in text for w in ["apple", "google", "microsoft", "meta",
                                 "amazon", "nvidia", "tesla", "samsung"]):
@@ -332,16 +323,9 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
         return False
 
 
+# Shorts use a 15s timeout (single image, more important not to fail).
 def download_image(url: str, dest: Path) -> bool:
-    try:
-        r = requests.get(url, timeout=15,
-                         headers={"User-Agent": "GlobalBR-Bot/2.0"})
-        if r.status_code == 200 and len(r.content) > 2000:
-            dest.write_bytes(r.content)
-            return True
-    except Exception as e:
-        log.debug(f"Image download failed: {e}")
-    return False
+    return _download_image_common(url, dest, timeout=15)
 
 
 # ── Frame vertical do Short ───────────────────────────────────────

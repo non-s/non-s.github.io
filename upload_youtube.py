@@ -179,11 +179,26 @@ def upload_video(youtube, meta: dict) -> str | None:
 
     log.info(f"📤 Uploading: {title[:60]}...")
 
+    # YouTube limits tags to ~500 *characters* total across the list,
+    # not 500 items. Pack greedily until the budget runs out.
+    packed_tags: list[str] = []
+    char_budget = 0
+    for raw_tag in tags or []:
+        tag = str(raw_tag).strip()
+        if not tag:
+            continue
+        # Account for commas between tags (YouTube counts them).
+        cost = len(tag) + (1 if packed_tags else 0)
+        if char_budget + cost > 480:  # leave 20-char safety margin
+            break
+        packed_tags.append(tag)
+        char_budget += cost
+
     body = {
         "snippet": {
             "title":       title[:100],   # YouTube limit: 100 chars
             "description": description[:5000],  # YouTube limit: 5000 chars
-            "tags":        tags[:500],   # YouTube limit
+            "tags":        packed_tags,
             "categoryId":  meta.get("category_id", "28"),
             "defaultLanguage": "en",
             "defaultAudioLanguage": "en",
