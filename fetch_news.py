@@ -2234,11 +2234,6 @@ def _add_internal_links(content: str, category: str, current_stem: str) -> str:
 
 
 # ============================================================
-# (removido) Resumos PT-BR e ES — site agora publica somente em inglês.
-# ============================================================
-
-
-# ============================================================
 # STORY CONTINUATION DETECTION
 # ============================================================
 
@@ -3018,8 +3013,6 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 post_content = continuation + post_content
 
             post_content = _add_internal_links(post_content, category, Path(filename).stem)
-            # Content policy: English only. PT-BR and ES summaries were
-            # removed when the site went mono-language.
 
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")

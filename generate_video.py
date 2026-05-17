@@ -200,10 +200,6 @@ def draw_tech_grid(img, alpha=12):
             d.ellipse([x-1, y-1, x+1, y+1], fill=(0, 195, 255, alpha))
     return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
 
-# ── (removido) Pipeline PT-BR ───────────────────────────────────
-# Site agora publica somente conteúdo em inglês. _translate_script_pt e
-# create_pt_video foram removidos junto com o bloco PT em main() abaixo.
-
 
 # ── Script de narração roundup ──────────────────────────────────
 ORDINALS = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
