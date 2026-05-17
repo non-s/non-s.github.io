@@ -43,6 +43,7 @@ entities:
   - "CQC"
   - "Scotland social care system"
   - "Lisa Nandy"
+audio: "/assets/audio/posts/2026-05-17-whatever-happens-with-the-leadership-labour-must-tackle-the-issue-of-social-care.mp3"
 ---
 
 The social care crisis in Britain isn’t new, but it’s getting worse every year. While NHS [budgets](https://en.wikipedia.org/wiki/National_Health_Service) get billions in extra funding, social care—the system that helps elderly and disabled people live independently—is starved of cash and staff. Politicians keep promising reforms, then kicking the can down the road. That’s why a new collection of essays from the Fabian Society, due out this week, is so blunt: it’s time to stop talking and start building a proper national care service. One that works like the NHS, with fair pay for workers and enough funding to actually help people.

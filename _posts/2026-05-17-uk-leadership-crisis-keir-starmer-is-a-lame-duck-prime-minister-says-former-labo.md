@@ -43,6 +43,7 @@ entities:
   - "Conservative Party"
   - "Makerfield by-election"
   - "Gordon Brown"
+audio: "/assets/audio/posts/2026-05-17-uk-leadership-crisis-keir-starmer-is-a-lame-duck-prime-minister-says-former-labo.mp3"
 ---
 
 Prime Minister Keir Starmer [survived](https://en.wikipedia.org/wiki/Keir_Starmer) the worst week of his leadership after nearly 90 Labour MPs signed a letter demanding he step down. The revolt followed the resignations of five junior ministers in just 48 hours, including junior minister Helen Hayes, who reportedly told colleagues Starmer had become a ‘lame duck’ leader. The scale of the backbench rebellion has not been seen in Labour since the party’s 2010 general election loss under Gordon Brown [Gordon Brown](https://en.wikipedia.org/wiki/Gordon_Brown). MPs from all wings of the party signed the letter, signaling Starmer’s grip on the party is slipping fast.

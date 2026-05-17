@@ -42,6 +42,7 @@ entities:
   - "Moscow"
   - "Belgorod"
   - "Kyiv"
+audio: "/assets/audio/posts/2026-05-17-ukrainian-drones-hit-russia-in-massive-overnight-attack.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Ukraine drones kill 3 in Russia after 500+ intercepted overnight](/world/2026/05/17/ukraine-launches-more-than-500-drones-at-russia-in-deadly-overnight-attack-autho/)
