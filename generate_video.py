@@ -91,25 +91,6 @@ def _ai_video_hook(stories: list[dict], dominant_cat: str) -> str:
     )
     return _ai_text(prompt, seed=42, timeout=18)
 
-def _build_chapters(key_points: list[str], total_duration_estimate: int = 180) -> str:
-    """Generate YouTube chapter timestamps from key points."""
-    if not key_points or len(key_points) < 2:
-        return ""
-
-    chapters = ["00:00 Introduction"]
-    # Distribute key points evenly
-    segment = total_duration_estimate // (len(key_points) + 1)
-    for i, point in enumerate(key_points[:5], 1):
-        mins, secs = divmod(i * segment, 60)
-        label = point[:60].rstrip('.').strip()
-        chapters.append(f"{mins:02d}:{secs:02d} {label}")
-
-    # Add outro
-    outro_mins, outro_secs = divmod(total_duration_estimate - 10, 60)
-    chapters.append(f"{outro_mins:02d}:{outro_secs:02d} Summary")
-
-    return "\n\n" + "\n".join(chapters)
-
 # ── Config ─────────────────────────────────────────────────────
 VIDEOS_DIR        = Path("_videos")
 LOG_FILE          = "generate_video.log"
@@ -1041,13 +1022,10 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         + CTA_BLOCK
     )
 
-    # Append auto-generated chapters from story key points
+    # Chapters already embedded in yt_desc via `chapters_list` above —
+    # don't append _build_chapters here or the list shows up twice.
     cats = [s.get("category", "news") for s in stories]
     dominant_cat_lower = max(set(cats), key=cats.count).lower() if cats else "news"
-    story_titles = [s["title"] for s in stories]
-    chapters_block = _build_chapters(story_titles, int(duration_estimate))
-    if chapters_block:
-        yt_desc += chapters_block
 
     # Truncate to YouTube 5000-char limit
     yt_desc = yt_desc[:5000]
@@ -1263,7 +1241,7 @@ def main():
             f"Translate this to Brazilian Portuguese (PT-BR). "
             f"Return ONLY the translated text:\n\nWorld news roundup with {len(stories)} top stories."
         )
-        base_tags = [s for s in stories for s in s.get("tags", [])]
+        base_tags = [t for s in stories for t in s.get("tags", [])]
         pt_meta = {
             "title":       pt_title_raw or f"Resumo de Notícias Mundiais | {slug}",
             "description": pt_desc_raw or "Principais notícias do mundo em português.",

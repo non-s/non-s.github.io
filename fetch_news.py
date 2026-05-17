@@ -25,13 +25,13 @@ import os
 import re
 import json
 import logging
-import unicodedata
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
 
 from utils.text import slugify, sanitize_text, extract_description, extract_image, parse_date
-from utils.dedup import levenshtein as _levenshtein, titles_too_similar as _titles_too_similar, title_similarity as _title_similarity
+from utils.dedup import titles_too_similar as _titles_too_similar
 from utils.ai_helper import (
     ai_text as _ai_text,
     sentiment_score as _sentiment_score,
@@ -1768,27 +1768,44 @@ def post_filename(date: datetime, slug: str) -> str:
     return f"{base}-{date.strftime('%H%M')}.md"
 
 
-# Cache de URLs conhecidas (construído uma vez por execução)
+# Cache de URLs conhecidas (construído uma vez por execução).
+# Mutated by worker threads in main(); guarded by _cache_lock.
 _known_urls: set | None = None
+_cache_lock = threading.Lock()
+_source_count_lock = threading.Lock()
 
 def _load_known_urls() -> set:
     """Lê posts existentes e coleta todas as source_url."""
     global _known_urls
     if _known_urls is not None:
         return _known_urls
-    _known_urls = set()
-    for f in POSTS_DIR.glob("*.md"):
-        try:
-            text = f.read_text(encoding="utf-8")
-            for line in text.splitlines():
-                if line.startswith("source_url:"):
-                    url = line.split("source_url:", 1)[1].strip().strip('"')
-                    if url:
-                        _known_urls.add(url)
-                    break
-        except Exception:
-            pass
+    with _cache_lock:
+        if _known_urls is not None:
+            return _known_urls
+        urls: set = set()
+        for f in POSTS_DIR.glob("*.md"):
+            try:
+                text = f.read_text(encoding="utf-8")
+                for line in text.splitlines():
+                    if line.startswith("source_url:"):
+                        url = line.split("source_url:", 1)[1].strip().strip('"')
+                        if url:
+                            urls.add(url)
+                        break
+            except Exception as exc:
+                log.debug(f"_load_known_urls: skipping {f.name}: {exc}")
+        _known_urls = urls
     return _known_urls
+
+
+def _record_new_post(title: str, filename: str, source_url: str) -> None:
+    """Thread-safe insertion of a freshly published post into the caches."""
+    urls = _load_known_urls()
+    titles = _load_known_titles()
+    with _cache_lock:
+        if source_url:
+            urls.add(source_url)
+        titles.insert(0, (title, filename))
 
 
 def post_exists(filename: str, source_url: str = "") -> bool:
@@ -1845,7 +1862,8 @@ def _find_continuation(title: str, known_posts: list) -> str | None:
     return best_match
 
 
-# Cache of known titles (built once per run)
+# Cache of known titles (built once per run).
+# Mutated by worker threads in main(); guarded by _cache_lock.
 _known_titles: list | None = None
 
 def _load_known_titles() -> list:
@@ -1853,18 +1871,29 @@ def _load_known_titles() -> list:
     global _known_titles
     if _known_titles is not None:
         return _known_titles
-    _known_titles = []
-    all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
-    for f in all_posts:
-        try:
-            for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
-                if line.startswith("title:"):
-                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
-                    if m:
-                        _known_titles.append((m.group(1).strip(), f.name))
-                    break
-        except Exception:
-            pass
+    with _cache_lock:
+        if _known_titles is not None:
+            return _known_titles
+        titles: list = []
+        all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
+        for f in all_posts:
+            try:
+                for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
+                    if line.startswith("title:"):
+                        # Use the shared frontmatter parser to handle escapes correctly.
+                        from utils.frontmatter import parse as _fm_parse
+                        try:
+                            fm = _fm_parse(f.read_text(encoding="utf-8", errors="replace"))
+                            t = (fm.get("title") or "").strip()
+                        except Exception:
+                            m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                            t = m.group(1).strip() if m else ""
+                        if t:
+                            titles.append((t, f.name))
+                        break
+            except Exception as exc:
+                log.debug(f"_load_known_titles: skipping {f.name}: {exc}")
+        _known_titles = titles
     return _known_titles
 
 
@@ -2410,10 +2439,10 @@ def create_weekly_digest() -> None:
     Creates a 'Best of the Week' digest post every Sunday.
     Skips if not Sunday or if the digest already exists.
     """
-    if datetime.now().weekday() != 6:  # 6 = Sunday
+    today = datetime.now(timezone.utc)
+    if today.weekday() != 6:  # 6 = Sunday (UTC, matches CI)
         return
 
-    today = datetime.now(timezone.utc)
     digest_filename = f"{today.strftime('%Y-%m-%d')}-weekly-digest.md"
     digest_path = POSTS_DIR / digest_filename
 
@@ -2515,10 +2544,10 @@ def _generate_weekly_stats_post() -> None:
     Counts posts by category, calculates average sentiment, and finds the most-used tag.
     Skips if not Sunday or if the stats post already exists today.
     """
-    if datetime.now().weekday() != 6:  # 6 = Sunday
+    today = datetime.now(timezone.utc)
+    if today.weekday() != 6:  # 6 = Sunday (UTC, matches CI)
         return
 
-    today = datetime.now(timezone.utc)
     stats_filename = f"{today.strftime('%Y-%m-%d')}-week-in-review-stats.md"
     stats_path = POSTS_DIR / stats_filename
 
@@ -2984,14 +3013,14 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
             log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
-            _load_known_urls().add(link)
-            _load_known_titles().insert(0, (title, filename))
+            _record_new_post(title, filename, link)
             created_count += 1
 
-            # Track source for diversity check (passed via return value extension below)
-            if not hasattr(fetch_feed, "_source_counts"):
-                fetch_feed._source_counts = {}
-            fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
+            # Track source for diversity check (thread-safe).
+            with _source_count_lock:
+                if not hasattr(fetch_feed, "_source_counts"):
+                    fetch_feed._source_counts = {}
+                fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
 
         except Exception as e:
             log.error(
@@ -3181,11 +3210,11 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
     log.info(f"  ✅ Post criado [{source}]: {filename}")
-    _load_known_urls().add(link)
-    _load_known_titles().insert(0, (title, filename))
-    if not hasattr(fetch_feed, "_source_counts"):
-        fetch_feed._source_counts = {}
-    fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
+    _record_new_post(title, filename, link)
+    with _source_count_lock:
+        if not hasattr(fetch_feed, "_source_counts"):
+            fetch_feed._source_counts = {}
+        fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
     return 1
 
 
@@ -3250,7 +3279,7 @@ def _check_milestones(new_posts_count: int) -> None:
                     pass
             if count < milestone or marker_key in markers:
                 continue
-            date_str = datetime.now().strftime("%Y-%m-%d")
+            date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
             slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
             filepath = legacy_dir / f"{slug}.md"
             if filepath.exists():
@@ -3339,7 +3368,7 @@ def main():
     _run_start = _time.time()
 
     log.info("=" * 60)
-    log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
     log.info("=" * 60)
 
     # Global timeout — bail out after 55 min so CI job stays within 60 min limit

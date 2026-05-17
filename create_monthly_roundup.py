@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import os
 from collections import Counter
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import requests
@@ -120,7 +120,7 @@ def main() -> None:
     frontmatter = (
         f"---\n"
         f'title: "Month in Review: {month_name}"\n'
-        f"date: {datetime.utcnow().isoformat()}\n"
+        f"date: {datetime.now(timezone.utc).isoformat()}\n"
         f"categories: [roundup]\n"
         f'tags: [monthly, roundup, {month_name.lower().replace(" ", "-")}]\n'
         f'description: "A look back at {month_name}: {total} articles across {len(cat_counts)} categories."\n'
