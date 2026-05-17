@@ -3,7 +3,7 @@ layout: post
 title: "Judge delays $1.5B Anthropic AI copyright settlement over objections"
 date: 2026-05-15 21:51:24 +0000
 categories: [technology, ai]
-tags: [arstechnica, tech, science, ai, anthropic, thursday, district-judge-araceli, martinez, olguin, anthropic-settlement, ai-copyright-settlement, anthropic-$1.5b-settlement, ai-copyright-infringement, anthropic-lawsuit, ai-training-data-copyright, largest-ai-copyright-settlement, anthropic-legal-fees, ai-copyright-case]
+tags: [arstechnica, tech, science, ai, anthropic, thursday, district-judge-araceli, martinez, olguin, anthropic-settlement, ai-copyright-settlement, anthropic-1-5b-settlement, ai-copyright-infringement, anthropic-lawsuit, ai-training-data-copyright, largest-ai-copyright-settlement, anthropic-legal-fees, ai-copyright-case]
 author: "GlobalBR News"
 description: "Federal judge pauses approval of Anthropic's $1.5B AI copyright settlement after authors and class members object to lawyer fees and class payouts. Hearings set"
 source_url: "https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/"

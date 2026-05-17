@@ -3,7 +3,7 @@ layout: post
 title: "Top Mother's Day Food Gifts for Every Taste – Eater’s Picks"
 date: 2026-05-06 16:33:00 +0000
 categories: [food]
-tags: [food, restaurants, cuisine, day-gifts, discerning, mother, julia-child, mother's-day-food-gifts, best-mother's-day-gifts-for-her, foodie-mother's-day-presents, unique-mother's-day-gift-ideas, gourmet-mother's-day-gifts, mother's-day-wine-and-chocolate-gifts, small-batch-food-gifts-for-mom, mother's-day-meal-delivery]
+tags: [food, restaurants, cuisine, day-gifts, discerning, mother, julia-child, mothers-day-food-gifts, best-mothers-day-gifts-for-her, foodie-mothers-day-presents, unique-mothers-day-gift-ideas, gourmet-mothers-day-gifts, mothers-day-wine-and-chocolate-gifts, small-batch-food-gifts-for-mom, mothers-day-meal-delivery]
 author: "GlobalBR News"
 description: "Find the perfect Mother's Day food gift for every mom—from wine lovers to home bakers. Eater’s curated list delivers delicious ideas. Eater editors tested dozen"
 source_url: "https://www.eater.com/24420355/best-mothers-day-gifts-for-food-lovers"

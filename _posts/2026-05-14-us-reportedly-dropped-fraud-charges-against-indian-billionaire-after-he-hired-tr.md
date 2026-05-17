@@ -3,7 +3,7 @@ layout: post
 title: "US reportedly dropped fraud charges against Indian billionaire after he hired Trump’s lawyer"
 date: 2026-05-14 18:35:58 +0000
 categories: [world, business]
-tags: [guardian, world-news, international, business, economy, indian, trump, gautam-adani, asia, department, gautam-adani-fraud-case-dropped, us-drops-charges-against-gautam-adani, adani-$10-billion-us-investment, robert-j.-giuffra-jr-trump-lawyer-adani, adani-group-fraud-allegations, us-department-of-justice-adani-settlement, adani-bribery-charges-dismissed, asia-richest-man-gautam-adani-legal-case]
+tags: [guardian, world-news, international, business, economy, indian, trump, gautam-adani, asia, department, gautam-adani-fraud-case-dropped, us-drops-charges-against-gautam-adani, adani-10-billion-us-investment, robert-j-giuffra-jr-trump-lawyer-adani, adani-group-fraud-allegations, us-department-of-justice-adani-settlement, adani-bribery-charges-dismissed, asia-richest-man-gautam-adani-legal-case]
 author: "GlobalBR News"
 description: "US Department of Justice reportedly drops fraud charges against Gautam Adani, Asia's richest man, after he hired Trump’s lawyer and pledged $10bn US investment."
 source_url: "https://www.theguardian.com/us-news/2026/may/14/gautam-adani-billionaire-trump"

@@ -3,7 +3,7 @@ layout: post
 title: "Alleged murder of Aboriginal girl highlights Australia's deep inequalities"
 date: 2026-05-15 20:37:39 +0000
 categories: [world]
-tags: [bbc, world-news, international, alleged, aboriginal, australia, australia-aboriginal-girl-murder, indigenous-australians-inequality, northern-territory-violence, aboriginal-justice-protests, systemic-racism-australia, indigenous-child-safety-australia, australia-racial-disparities, aboriginal-rights-australia, truth-about-systemic-inequalities-in-australia, who-is-anthony-albanese, what-is-the-northern-territory's-role-in-abuse-cases, why-are-indigenous-australians-overrepresented-in-prisons]
+tags: [bbc, world-news, international, alleged, aboriginal, australia, australia-aboriginal-girl-murder, indigenous-australians-inequality, northern-territory-violence, aboriginal-justice-protests, systemic-racism-australia, indigenous-child-safety-australia, australia-racial-disparities, aboriginal-rights-australia, truth-about-systemic-inequalities-in-australia, who-is-anthony-albanese, what-is-the-northern-territorys-role-in-abuse-cases, why-are-indigenous-australians-overrepresented-in-prisons]
 author: "GlobalBR News"
 description: "Australia probes alleged murder of 14-year-old Aboriginal girl as protests demand action on deep-rooted social inequalities. Protesters call for justice and sys"
 source_url: "https://www.bbc.com/news/articles/cq6p57mnz9lo?at_medium=RSS&at_campaign=rss"

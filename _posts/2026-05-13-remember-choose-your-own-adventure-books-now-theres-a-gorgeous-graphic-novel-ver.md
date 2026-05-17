@@ -3,7 +3,7 @@ layout: post
 title: "Remember 'Choose Your Own Adventure' books? Now there's a gorgeous graphic novel version heading to 'Space and Beyond' (exclusive)"
 date: 2026-05-13 21:00:00 +0000
 categories: [science]
-tags: [space, astronomy, nasa, science, remember, your-own-adventure, beyond, choose-your-own, adventure, choose-your-own-adventure-space-and-beyond-graphic-novel, space-and-beyond-graphic-novel-2025, interactive-graphic-novel-solar-system, choose-your-own-adventure-new-book, graphic-novel-for-kids-space-adventure, dan-dougherty-graphic-novel-2025, workman-publishing-new-releases, nasa-inspired-children's-books]
+tags: [space, astronomy, nasa, science, remember, your-own-adventure, beyond, choose-your-own, adventure, choose-your-own-adventure-space-and-beyond-graphic-novel, space-and-beyond-graphic-novel-2025, interactive-graphic-novel-solar-system, choose-your-own-adventure-new-book, graphic-novel-for-kids-space-adventure, dan-dougherty-graphic-novel-2025, workman-publishing-new-releases, nasa-inspired-childrens-books]
 author: "GlobalBR News"
 description: "A new graphic novel adaptation of Choose Your Own Adventure: Space and Beyond launches summer 2025. Explore the solar system in interactive sci-fi storytelling."
 source_url: "https://www.space.com/entertainment/space-books/remember-choose-your-own-adventure-books-now-theres-a-gorgeous-graphic-novel-version-heading-to-space-and-beyond-exclusive"

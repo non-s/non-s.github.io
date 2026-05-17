@@ -3,7 +3,7 @@ layout: post
 title: "US missile defense shield could cost $1.2 trillion, report says"
 date: 2026-05-13 17:41:38 +0000
 categories: [war]
-tags: [military, weapons, conflict, war, interceptors, space, core, trillion-golden-dome, cost-estimate, us-missile-defense-system-cost, golden-dome-initiative-cost, space-based-interceptors-cost, congressional-budget-office-missile-defense-estimate, 7800-interceptors-$1.2-trillion, us-space-missile-defense-program, trillion-dollar-missile-defense-shield]
+tags: [military, weapons, conflict, war, interceptors, space, core, trillion-golden-dome, cost-estimate, us-missile-defense-system-cost, golden-dome-initiative-cost, space-based-interceptors-cost, congressional-budget-office-missile-defense-estimate, 7800-interceptors-1-2-trillion, us-space-missile-defense-program, trillion-dollar-missile-defense-shield]
 author: "GlobalBR News"
 description: "A new report estimates a US space-based missile defense system could cost $1.2 trillion. It would deploy 7,800 interceptors in orbit with limited simultaneous t"
 source_url: "https://www.twz.com/space/7800-interceptors-in-space-at-core-of-1-2-trillion-golden-dome-cost-estimate"

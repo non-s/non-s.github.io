@@ -3,7 +3,7 @@ layout: post
 title: "Northampton smash Bristol 94-33 in Premiership Rugby record win"
 date: 2026-05-15 22:05:06 +0000
 categories: [sports]
-tags: [bbc, sports, football, northampton, bristol, bristol-bears, franklin, gardens, northampton-94-33-bristol-bears, premiership-rugby-record-win, northampton-saints-record-score, bristol-bears-33-94-northampton, premiership-rugby-semi-finals, northampton-set-premiership-scoring-record, franklin's-gardens-record-score, northampton-14-tries-vs-bristol]
+tags: [bbc, sports, football, northampton, bristol, bristol-bears, franklin, gardens, northampton-94-33-bristol-bears, premiership-rugby-record-win, northampton-saints-record-score, bristol-bears-33-94-northampton, premiership-rugby-semi-finals, northampton-set-premiership-scoring-record, franklins-gardens-record-score, northampton-14-tries-vs-bristol]
 author: "GlobalBR News"
 description: "Northampton set a Premiership Rugby record with a 94-33 win over Bristol Bears. The victory secured their semi-final spot in a record-breaking game at Franklin'"
 source_url: "https://www.bbc.com/sport/rugby-union/articles/cwy234p4dewo?at_medium=RSS&at_campaign=rss"

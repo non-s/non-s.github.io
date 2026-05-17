@@ -68,6 +68,8 @@ def parse_post(path: Path) -> dict | None:
         "image":       get_str(fm, "image"),
         "sentiment":   get_str(fm, "sentiment", "neutral"),
         "source":      get_str(fm, "source_name"),
+        "author":      get_str(fm, "author", "GlobalBR News"),
+        "lang":        get_str(fm, "lang", "en"),
     }
 
 

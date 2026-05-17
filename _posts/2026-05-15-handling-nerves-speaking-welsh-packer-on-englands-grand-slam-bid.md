@@ -3,7 +3,7 @@ layout: post
 title: "Handling nerves & speaking Welsh - Packer on England's Grand Slam bid"
 date: 2026-05-15 14:20:15 +0000
 categories: [sports]
-tags: [bbc, sports, football, handling, welsh, packer, england, grand-slam, england-women's-rugby, six-nations-grand-slam, lucy-packer-scrum-half, england-rugby-news, women's-six-nations-2024, england-vs-ireland-six-nations, red-roses-grand-slam-bid, england-rugby-tactics, women's-rugby-scrum-half, lucy-packer-england-captain]
+tags: [bbc, sports, football, handling, welsh, packer, england, grand-slam, england-womens-rugby, six-nations-grand-slam, lucy-packer-scrum-half, england-rugby-news, womens-six-nations-2024, england-vs-ireland-six-nations, red-roses-grand-slam-bid, england-rugby-tactics, womens-rugby-scrum-half, lucy-packer-england-captain]
 author: "GlobalBR News"
 description: "England scrum-half Lucy Packer is bucking stereotypes while leading the charge in the Women's Six Nations. Read how her form shapes the Grand Slam bid."
 source_url: "https://www.bbc.com/sport/rugby-union/articles/c4g758e66l5o?at_medium=RSS&at_campaign=rss"

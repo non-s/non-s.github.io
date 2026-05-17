@@ -3,7 +3,7 @@ layout: post
 title: "3-Ingredient Spicy Tuna Tostadas Cost Just $3 Per Serving"
 date: 2026-05-10 10:00:00 +0000
 categories: [food]
-tags: [food, cooking, recipes, spicy-tuna-tostadas, made, easy-tuna-tostadas-recipe, canned-tuna-recipes, mango-avocado-tostadas, $3-meals, quick-dinner-ideas, budget-friendly-tuna-dishes, spicy-tuna-appetizer]
+tags: [food, cooking, recipes, spicy-tuna-tostadas, made, easy-tuna-tostadas-recipe, canned-tuna-recipes, mango-avocado-tostadas, 3-meals, quick-dinner-ideas, budget-friendly-tuna-dishes, spicy-tuna-appetizer]
 author: "GlobalBR News"
 description: "Make budget-friendly spicy tuna tostadas with canned fish, mango and avocado in under 30 minutes. A quick, healthy meal idea that won’t break the bank."
 source_url: "https://www.bonappetit.com/recipe/tuna-tostadas"

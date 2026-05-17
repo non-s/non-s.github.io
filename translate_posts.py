@@ -172,7 +172,7 @@ def main() -> None:
             if "permalink:" not in new_fm:
                 new_fm = new_fm.rstrip("\n") + f'\npermalink: "{pt_permalink}"\n'
 
-            # Tag the translation so consumers (sitemap, Bluesky) can filter.
+            # Tag the translation so consumers (sitemap) can filter.
             if "translated_from:" not in new_fm:
                 new_fm = new_fm.rstrip("\n") + f'\ntranslated_from: "{fname}"\n'
 

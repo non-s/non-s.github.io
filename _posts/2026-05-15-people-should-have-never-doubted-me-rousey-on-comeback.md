@@ -3,7 +3,7 @@ layout: post
 title: "Ronda Rousey says critics were wrong, sets sights on Gina Carano fight"
 date: 2026-05-15 16:44:18 +0000
 categories: [sports]
-tags: [bbc, sports, football, ufc, mma, rousey, ronda-rousey, sport, gina-carano, ronda-rousey-ufc-return, ronda-rousey-gina-carano-fight, ronda-rousey-comeback, women's-mma-news, ufc-women's-bantamweight, rousey-vs-carano-2025]
+tags: [bbc, sports, football, ufc, mma, rousey, ronda-rousey, sport, gina-carano, ronda-rousey-ufc-return, ronda-rousey-gina-carano-fight, ronda-rousey-comeback, womens-mma-news, ufc-womens-bantamweight, rousey-vs-carano-2025]
 author: "GlobalBR News"
 description: "MMA star Ronda Rousey dismisses past doubts as she promotes her UFC return against Gina Carano. Read her latest fight plans and UFC opinions."
 source_url: "https://www.bbc.com/sport/mixed-martial-arts/videos/cm2pzv87432o?at_medium=RSS&at_campaign=rss"

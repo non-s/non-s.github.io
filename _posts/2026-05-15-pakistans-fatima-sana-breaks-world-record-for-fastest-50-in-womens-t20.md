@@ -3,7 +3,7 @@ layout: post
 title: "Pakistan’s Fatima Sana smashes women’s T20 record with 15-ball 50"
 date: 2026-05-15 19:44:08 +0000
 categories: [war]
-tags: [conflict, war, aljazeera, pakistan, fatima-sana, sana, zimbabwe, karachi, fatima-sana-t20-record, women's-t20-fastest-50, pakistan-cricket-record, fatima-sana-fastest-fifty, women's-cricket-records, pakistan-vs-zimbabwe-t20, t20-cricket-records-women, karachi-cricket-record, sana-t20-half-century, women's-cricket-fastest-50]
+tags: [conflict, war, aljazeera, pakistan, fatima-sana, sana, zimbabwe, karachi, fatima-sana-t20-record, womens-t20-fastest-50, pakistan-cricket-record, fatima-sana-fastest-fifty, womens-cricket-records, pakistan-vs-zimbabwe-t20, t20-cricket-records-women, karachi-cricket-record, sana-t20-half-century, womens-cricket-fastest-50]
 author: "GlobalBR News"
 description: "Pakistan’s Fatima Sana sets women’s T20 world record with 50 off 15 balls in Karachi. Breaks 18-ball record held by Devine, Litchfield, Ghosh."
 source_url: "https://www.aljazeera.com/sports/2026/5/15/pakistans-fatima-sana-breaks-record-for-fastest-50-in-womens-t20is?traffic_source=rss"

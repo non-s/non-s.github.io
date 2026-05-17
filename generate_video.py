@@ -161,11 +161,16 @@ CATEGORY_TAG_BANK = {
 }
 
 def _build_tags(article_tags: list, category: str) -> list:
+    """YouTube weights early tags higher. Lead with the story-specific
+    tags (real names/places), then category-specific, then broad/brand."""
     base = CATEGORY_TAG_BANK.get(category.lower(), ["world news", "breaking news", "global news"])
-    combined = base + [t for t in article_tags if t not in base]
-    # Always include brand tags
-    combined += ["GlobalBR News", "globalbrnews"]
-    return list(dict.fromkeys(combined))[:30]  # deduplicate, max 30
+    # Article-specific tags first — these are the actual names/places.
+    combined = [t for t in article_tags if t and t not in base]
+    # Then category tags.
+    combined.extend(base)
+    # Brand tags last (low specificity, just for channel association).
+    combined.extend(["GlobalBR News", "globalbrnews"])
+    return list(dict.fromkeys(combined))[:30]
 
 # ── Category colors for thumbnail banner ────────────────────────
 CATEGORY_COLORS = {
@@ -682,7 +687,11 @@ def generate_ai_thumbnail_bg(prompt: str, dest: Path, width: int = 1280, height:
     """Download AI-generated background from Pollinations.ai (free, no API key)."""
     import urllib.parse
     encoded = urllib.parse.quote(prompt)
-    seed = abs(hash(prompt)) % 999999
+    # Mix in the current minute so even back-to-back TECH-category runs
+    # land on different seeds (and visibly different artwork). Without
+    # this, the channel grid filled up with near-identical cyberpunk
+    # cityscapes — flat for CTR.
+    seed = (abs(hash(prompt)) + int(datetime.now().timestamp())) % 999999
     url = (
         f"https://image.pollinations.ai/prompt/{encoded}"
         f"?width={width}&height={height}&nologo=true&seed={seed}&model=flux"
@@ -962,16 +971,23 @@ def build_metadata(roundup_slug: str, stories: list[dict],
     year = datetime.now().year
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    # Capítulos com timestamps estimados (15s intro + 75s por história)
+    # Chapter timestamps. YouTube refuses to render chapters when any
+    # timestamp lands past the actual video duration — calibrate per-story
+    # length from the real measured duration so the spacing fits.
     chapters_list = ["0:00 Introduction"]
+    safe_duration = max(int(duration_estimate or 0), 60)
+    # Reserve 15s for intro and 20s for outro; spread the rest across stories.
+    available_for_stories = max(safe_duration - 35, 30 * len(stories))
+    per_story = max(int(available_for_stories / max(len(stories), 1)), 30)
     for i, story in enumerate(stories):
-        seconds = 15 + i * 75
+        seconds = 15 + i * per_story
+        # Hard cap so we never exceed the actual video length.
+        seconds = min(seconds, safe_duration - 5)
         mins = seconds // 60
         secs = seconds % 60
         title_short = story["title"][:50]
         chapters_list.append(f"{mins}:{secs:02d} {title_short}")
-    # Outro timestamp
-    outro_secs = 15 + len(stories) * 75
+    outro_secs = min(15 + len(stories) * per_story, safe_duration - 2)
     chapters_list.append(f"{outro_secs // 60}:{outro_secs % 60:02d} Stay informed")
 
     chapters = "⏱ CHAPTERS\n" + "\n".join(chapters_list)
@@ -992,13 +1008,22 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         yt_title = ai_meta["title"]
         log.info(f"  🤖 AI YouTube title: {yt_title[:60]}")
     else:
-        yt_title = f"World News Roundup — Top {n} Stories | {date_str} | GlobalBR News"
+        # AI failed — use the top story headline as the magnet instead of
+        # the boring "World News Roundup — Top N Stories" boilerplate.
+        top = stories[0]["title"] if stories else f"Top stories today"
+        yt_title = f"{top[:60]} — and {n-1} more stories ({date_str})"[:100]
 
     if ai_meta.get("description") and len(ai_meta["description"]) > 100:
         ai_intro = ai_meta["description"][:900]
         log.info(f"  🤖 AI YouTube description ({len(ai_intro)} chars)")
     else:
-        ai_intro = f"In this GlobalBR News World Roundup we cover {n} top stories from around the globe."
+        # First 125 chars of the description shape the YouTube search
+        # snippet. Lead with the top story, not boilerplate.
+        top = stories[0]["title"] if stories else "today's biggest story"
+        ai_intro = (
+            f"{top}. We cover that plus {n-1} more stories from around the world — "
+            f"all in one hourly roundup. Every headline links back to the original source in the description."
+        )
 
     yt_desc = (
         f"{ai_intro}\n\n"

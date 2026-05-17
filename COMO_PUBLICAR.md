@@ -137,10 +137,10 @@ A partir de agora, o workflow roda automaticamente às **8h, 12h e 18h (horário
 ### 7.3 Ativar links de afiliado Amazon
 
 1. Cadastre-se em [associados.amazon.com.br](https://associados.amazon.com.br)
-2. Obtenha sua tag de afiliado (ex: `techbrnews-20`)
+2. Obtenha sua tag de afiliado (ex: `globalbrnews-20`)
 3. Em `_config.yml` adicione:
    ```yaml
-   amazon_affiliate_tag: "techbrnews-20"
+   amazon_affiliate_tag: "globalbrnews-20"
    ```
 4. Substitua os `PLACEHOLDER` nos arquivos `_layouts/default.html`, `_layouts/post.html` e `index.html` pelos seus links reais
 

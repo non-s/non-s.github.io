@@ -3,7 +3,7 @@ layout: post
 title: "Bristol Myers Squibb turns to China to develop new drugs in newest cross-continent collaboration"
 date: 2026-05-15 16:19:15 +0000
 categories: [business]
-tags: [cnbc, finance, economy, bristol-myers-squibb, china, chinese, bristol-myers-squibb-china-drug-deal, bms-jw-therapeutics-partnership, pharmaceutical-collaboration-china, drug-development-china, cell-therapy-partnerships, $2.2-billion-pharma-deal]
+tags: [cnbc, finance, economy, bristol-myers-squibb, china, chinese, bristol-myers-squibb-china-drug-deal, bms-jw-therapeutics-partnership, pharmaceutical-collaboration-china, drug-development-china, cell-therapy-partnerships, 2-2-billion-pharma-deal]
 author: "GlobalBR News"
 description: "Bristol Myers Squibb partners with Chinese biotech firm to co-develop three experimental drugs in a $2.2 billion deal. The collaboration aims to speed up global"
 source_url: "https://www.cnbc.com/2026/05/15/bristol-myers-squibb-turns-to-chinas-hengrui-to-replenish-pipeline.html"
