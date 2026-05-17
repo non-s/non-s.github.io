@@ -130,10 +130,14 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
         "modern English. Use contractions naturally ('it's', 'don't', "
         "'they're'). Prefer short concrete sentences over long abstract "
         "ones. Lead with the most important fact. "
-        "Avoid corporate filler ('crucial', 'vital', 'pivotal', 'delve', "
-        "'landscape', 'game-changer', 'revolutionary', 'groundbreaking') "
-        "and avoid editorial throat-clearing ('It is worth noting', "
-        "'It is important to', 'In this article'). "
+        "NEVER use these AI-tell phrases or words: 'crucial', 'vital', "
+        "'pivotal', 'delve', 'landscape', 'game-changer', 'revolutionary', "
+        "'groundbreaking', 'underscores the importance', 'sheds light on', "
+        "'highlights the critical role', 'in this article', 'in this report', "
+        "'it is worth noting', 'it is important to', 'navigate the complexities', "
+        "'could reshape', 'paradigm shift', 'unprecedented', 'paves the way', "
+        "'in the realm of', 'in today's fast-paced', 'a testament to', "
+        "'tapestry', 'embark on', 'ushering in', 'reshape the future'. "
         "Be accurate, specific, and human."
     )
 

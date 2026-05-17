@@ -3,7 +3,7 @@ layout: post
 title: "Astrophotographer captures remarkable view of galactic 'Eyes' with backyard telescope"
 date: 2026-05-13 18:00:00 +0000
 categories: [science]
-tags: [space, astronomy, nasa, science, astrophotographer, markarian's-chain, markarian's-chain-galaxies, amateur-astrophotography, virgo-cluster-galaxies, how-to-find-markarian's-chain, best-galaxies-to-photograph, spring-galaxy-season, deep-space-astrophotography, markarian's-chain-location-guide, backyard-telescope-galaxy-cluster]
+tags: [space, astronomy, nasa, science, astrophotographer, markarians-chain, markarians-chain-galaxies, amateur-astrophotography, virgo-cluster-galaxies, how-to-find-markarians-chain, best-galaxies-to-photograph, spring-galaxy-season, deep-space-astrophotography, markarians-chain-location-guide, backyard-telescope-galaxy-cluster]
 author: "GlobalBR News"
 description: "Home telescope captures rare deep-space view of Markarian's Chain galaxies between Leo and Virgo. Perfect for amateur astronomers seeking stunning cosmic target"
 source_url: "https://www.space.com/stargazing/astrophotography/astrophotographer-captures-remarkable-view-of-galactic-eyes-with-backyard-telescope"

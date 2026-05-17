@@ -3,7 +3,7 @@ layout: post
 title: "PCOS renamed to PMOS after decades of misdiagnosis confusion"
 date: 2026-05-16 11:00:38 +0000
 categories: [science]
-tags: [science, biology, chemistry, becomes, crystal, and-more, officially-renamed, pcos-renamed-to-pmos, polycystic-ovary-syndrome-new-name-pmos, pcos-diagnosis-accuracy, women's-health-terminology-update, metabolic-ovarian-syndrome, endocrine-society-pcos-update, pcos-misdiagnosis-history, women's-health-name-changes-2024]
+tags: [science, biology, chemistry, becomes, crystal, and-more, officially-renamed, pcos-renamed-to-pmos, polycystic-ovary-syndrome-new-name-pmos, pcos-diagnosis-accuracy, womens-health-terminology-update, metabolic-ovarian-syndrome, endocrine-society-pcos-update, pcos-misdiagnosis-history, womens-health-name-changes-2024]
 author: "GlobalBR News"
 description: "Polycystic ovary syndrome (PCOS) officially renamed to polyendocrine metabolic ovarian syndrome (PMOS) to correct decades of misinformation. Ends long-standing"
 source_url: "https://www.sciencealert.com/this-week-in-science-pcos-becomes-pmos-an-impossible-crystal-and-more"

@@ -1,0 +1,56 @@
+---
+layout: default
+title: "Sobre — GlobalBR News"
+description: "GlobalBR News é um portal de notícias mundial totalmente automatizado, publicando matérias todas as horas das maiores fontes do mundo."
+permalink: /pt/about/
+lang: pt-br
+---
+
+<div class="container py-5" style="max-width:860px">
+
+  <h1 class="section-title">Sobre o GlobalBR News</h1>
+  <hr class="section-divider">
+
+  <p style="font-size:1.05rem;line-height:1.8;">
+    <strong>GlobalBR News</strong> é um portal de notícias mundial mantido por
+    <strong><a href="https://github.com/non-s" target="_blank" rel="noopener">Julio (non-s)</a></strong>.
+    Publicamos matérias 24 horas por dia — completamente automatizado, com curadoria e
+    enriquecimento por IA, mantendo sempre o link de volta para a fonte original.
+  </p>
+
+  <h2 class="mt-5 mb-3" style="font-size:1.3rem;font-family:var(--font-head);">Como funciona</h2>
+  <div class="row g-3 mb-5">
+    <div class="col-md-6">
+      <div class="p-3 h-100" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);">
+        <h4 style="font-size:.95rem;font-weight:700;margin-bottom:.75rem;color:var(--c-text);">Pipeline</h4>
+        <ul style="font-size:.85rem;color:var(--c-muted);padding-left:1.2rem;margin:0;line-height:2;">
+          <li>Cron de hora em hora via GitHub Actions</li>
+          <li>RSS de 30+ fontes globais</li>
+          <li>Detecção de duplicatas antes de publicar</li>
+          <li>Mistral AI gera título, resumo, FAQ e key points</li>
+          <li>Quality gate (0–10) descarta posts fracos</li>
+          <li>Jekyll constrói o site; GitHub Pages serve</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-3 h-100" style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);">
+        <h4 style="font-size:.95rem;font-weight:700;margin-bottom:.75rem;color:var(--c-text);">O que a IA faz (e não faz)</h4>
+        <ul style="font-size:.85rem;color:var(--c-muted);padding-left:1.2rem;margin:0;line-height:2;">
+          <li><strong>Faz:</strong> reescreve o título pra clareza + SEO</li>
+          <li><strong>Faz:</strong> escreve resumo, key points, FAQ, tl;dr</li>
+          <li><strong>Faz:</strong> classifica entidades e sentimento</li>
+          <li><strong>Não:</strong> inventa fatos — só reformula o que a fonte reportou</li>
+          <li><strong>Não:</strong> remove o link para a fonte original</li>
+          <li><strong>Não:</strong> substitui o jornalista que fez a apuração</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:.95rem;color:var(--c-muted);">
+    Veja também nossa <a href="/pt/editorial-policy/">Política Editorial</a> ou volte para a
+    <a href="/pt/">homepage em português</a>.
+  </p>
+
+</div>

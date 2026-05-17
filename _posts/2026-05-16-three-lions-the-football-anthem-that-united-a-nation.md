@@ -3,7 +3,7 @@ layout: post
 title: "How Three Lions anthem united England football fans for 25 years"
 date: 2026-05-16 06:24:53 +0000
 categories: [sports]
-tags: [bbc, sports, football, three-lions, sport, david-baddiel, three-lions-anthem, football's-coming-home-lyrics, david-baddiel-three-lions, three-lions-chart-history, england-football-anthem, euro-1996-song, best-selling-football-anthem-uk, three-lions-re-released]
+tags: [bbc, sports, football, three-lions, sport, david-baddiel, three-lions-anthem, footballs-coming-home-lyrics, david-baddiel-three-lions, three-lions-chart-history, england-football-anthem, euro-1996-song, best-selling-football-anthem-uk, three-lions-re-released]
 author: "GlobalBR News"
 description: "Three Lions created by David Baddiel and Frank Skinner has topped charts for 25 years. Discover how the English football anthem became a national symbol and its"
 source_url: "https://www.bbc.com/sport/football/articles/cq5p818xexvo?at_medium=RSS&at_campaign=rss"

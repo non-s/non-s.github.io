@@ -108,7 +108,28 @@ def create_video_post(video: dict) -> bool:
 
     tags_yaml = "[" + ", ".join(post_tags) + "]"
     date_yaml = pub_date.strftime("%Y-%m-%d %H:%M:%S +0000")
-    thumbnail_url = f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+    # Prefer our locally-generated thumbnail when we still have it on disk
+    # — img.youtube.com/maxresdefault.jpg returns 404 for older videos
+    # and produces a broken cover image in the blog. The .done JSON
+    # written by upload_youtube.py records the local path used at upload.
+    local_thumb = video.get("local_thumbnail") or video.get("thumbnail") or ""
+    if local_thumb and Path(local_thumb).exists():
+        # Convert /home/.../_videos/foo_thumb.jpg → /assets/images/posts/foo_thumb.jpg
+        thumb_name = Path(local_thumb).name
+        dest = Path("assets/images/posts") / thumb_name
+        try:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            if not dest.exists():
+                import shutil as _shutil
+                _shutil.copy2(local_thumb, dest)
+            thumbnail_url = f"/assets/images/posts/{thumb_name}"
+        except Exception as exc:
+            log.debug(f"Could not stage local thumbnail: {exc}")
+            thumbnail_url = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
+    else:
+        # hqdefault.jpg always exists for any uploaded YouTube video.
+        # maxresdefault.jpg often 404s on older / shorter videos.
+        thumbnail_url = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
     content_type  = "shorts" if is_short else "video"
 
     # Build frontmatter

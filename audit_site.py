@@ -32,8 +32,13 @@ def main() -> None:
     posts_without_tags: list[str] = []
     posts_without_categories: list[str] = []
     posts_short_title: list[str] = []
+    posts_without_faq: list[str] = []
+    posts_without_keypoints: list[str] = []
     old_posts: list[str] = []
+    duplicate_titles: dict[str, list[str]] = {}
     category_counts: dict[str, int] = {}
+    source_counts: dict[str, int] = {}
+    lang_counts: dict[str, int] = {}
 
     now = datetime.now(timezone.utc)
     cutoff = now - timedelta(days=OLD_POST_DAYS)
@@ -71,6 +76,31 @@ def main() -> None:
         if len(title) < SHORT_TITLE_CHARS:
             posts_short_title.append(slug)
 
+        # Track duplicate titles across the corpus — same headline twice
+        # usually means a feed deduped imperfectly or a dupe slipped past
+        # the URL-based check.
+        title_key = title.lower().strip()
+        if title_key:
+            duplicate_titles.setdefault(title_key, []).append(slug)
+
+        # Track source diversity — if one outlet dominates, the front
+        # page reads like a Reuters mirror.
+        src = get_str(fm, "source_name").strip()
+        if src:
+            source_counts[src] = source_counts.get(src, 0) + 1
+
+        # Track language split (en vs pt-br) for monitoring translation
+        # coverage.
+        lang = get_str(fm, "lang", "en").strip().lower()
+        lang_counts[lang] = lang_counts.get(lang, 0) + 1
+
+        # Posts that skipped FAQ / key_points usually scored low at the
+        # AI quality gate — useful to spot drift if % goes up over time.
+        if not fm.get("faq"):
+            posts_without_faq.append(slug)
+        if not fm.get("key_points"):
+            posts_without_keypoints.append(slug)
+
         date_str = get_str(fm, "date")
         if date_str:
             try:
@@ -98,12 +128,27 @@ def main() -> None:
     # categories with fewer than MIN_POSTS_PER_CATEGORY
     thin_categories = {k: v for k, v in category_counts.items() if v < MIN_POSTS_PER_CATEGORY}
 
+    # Read persisted feed health (written by fetch_news.py) so the audit
+    # report shows which feeds are silently failing.
+    feed_health: dict[str, int] = {}
+    try:
+        fh_path = DATA_DIR / "feed_health.json"
+        if fh_path.exists():
+            feed_health = json.loads(fh_path.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    dead_feeds = {name: fails for name, fails in feed_health.items() if fails >= 3}
+
+    # Duplicate titles → list only those that actually collide.
+    dupe_titles_report = {k: v for k, v in duplicate_titles.items() if len(v) > 1}
+
     issues_count = (
         len(posts_without_image)
         + len(posts_without_description)
         + len(posts_without_tags)
         + len(posts_without_categories)
         + len(posts_short_title)
+        + len(dupe_titles_report)
     )
 
     report = {
@@ -114,10 +159,16 @@ def main() -> None:
         "posts_without_tags": posts_without_tags,
         "posts_without_categories": posts_without_categories,
         "posts_short_title": posts_short_title,
+        "posts_without_faq": posts_without_faq[:50],
+        "posts_without_keypoints": posts_without_keypoints[:50],
+        "duplicate_titles": dupe_titles_report,
         "category_counts": dict(sorted(category_counts.items(), key=lambda x: x[1], reverse=True)),
+        "source_counts": dict(sorted(source_counts.items(), key=lambda x: x[1], reverse=True)),
+        "lang_counts": lang_counts,
         "thin_categories": thin_categories,
         "old_posts_count": len(old_posts),
         "old_posts": old_posts,
+        "dead_feeds": dead_feeds,
         "issues_count": issues_count,
     }
 

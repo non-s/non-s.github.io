@@ -3,7 +3,7 @@ layout: post
 title: "Reed Jobs plans $1bn UK cancer care investment after father’s death"
 date: 2026-05-16 11:00:09 +0000
 categories: [world, startups]
-tags: [guardian, world-news, international, startups, venture-capital, research, steve-jobs, reed-jobs, yosemite, apple, reed-jobs-cancer-investment, yosemite-fund-uk-cancer-care, $1bn-cancer-research-uk, steve-jobs-son-pancreatic-cancer, uk-cancer-treatment-investment, venture-capital-cancer-research, pancreatic-cancer-survival-rate-uk, cancer-immunotherapy-uk-investment]
+tags: [guardian, world-news, international, startups, venture-capital, research, steve-jobs, reed-jobs, yosemite, apple, reed-jobs-cancer-investment, yosemite-fund-uk-cancer-care, 1bn-cancer-research-uk, steve-jobs-son-pancreatic-cancer, uk-cancer-treatment-investment, venture-capital-cancer-research, pancreatic-cancer-survival-rate-uk, cancer-immunotherapy-uk-investment]
 author: "GlobalBR News"
 description: "Reed Jobs, son of Steve Jobs, aims to invest $1bn in UK cancer care to transform outcomes after losing his father to the disease in 2011. Ends cancer as a death"
 source_url: "https://www.theguardian.com/business/2026/may/16/steve-jobs-son-reed-jobs-invest-uk-cancer-care-yosemite"

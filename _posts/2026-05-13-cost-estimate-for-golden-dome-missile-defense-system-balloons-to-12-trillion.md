@@ -3,7 +3,7 @@ layout: post
 title: "Cost estimate for 'Golden Dome' missile defense system balloons to $1.2 trillion"
 date: 2026-05-13 10:00:00 +0000
 categories: [science, war]
-tags: [space, astronomy, nasa, war, weapons, military, cost, dome, president-trump, congressional-budget-office, golden-dome-missile-defense-system-cost, space-development-agency-missile-defense, $1.2-trillion-missile-defense-cost, 'golden-dome'-system-budget-2024, congressional-budget-office-missile-defense-report, u.s.-missile-defense-spending, space-based-missile-defense-costs, pentagon-missile-defense-budget-2024]
+tags: [space, astronomy, nasa, war, weapons, military, cost, dome, president-trump, congressional-budget-office, golden-dome-missile-defense-system-cost, space-development-agency-missile-defense, 1-2-trillion-missile-defense-cost, golden-dome-system-budget-2024, congressional-budget-office-missile-defense-report, u-s-missile-defense-spending, space-based-missile-defense-costs, pentagon-missile-defense-budget-2024]
 author: "GlobalBR News"
 description: "Congressional Budget Office report reveals the price tag for President Trump’s 'Golden Dome' missile defense system has ballooned to $1.2 trillion. Congress now"
 source_url: "https://www.space.com/space-exploration/satellites/cost-estimate-for-golden-dome-missile-defense-system-balloons-to-usd1-2-trillion"

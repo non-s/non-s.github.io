@@ -3,7 +3,7 @@ layout: post
 title: "Liverpool groups push for better women’s health services access"
 date: 2026-05-11 05:23:29 +0000
 categories: [health]
-tags: [bbc, health, medicine, groups, liverpool, women's-healthcare-liverpool, liverpool-women’s-health-services, gynecological-care-access-uk, nhs-women’s-health-funding, mobile-clinics-for-women, liverpool-health-initiatives-2024]
+tags: [bbc, health, medicine, groups, liverpool, womens-healthcare-liverpool, liverpool-women-s-health-services, gynecological-care-access-uk, nhs-women-s-health-funding, mobile-clinics-for-women, liverpool-health-initiatives-2024]
 author: "GlobalBR News"
 description: "Groups in Liverpool aim to fix longstanding gaps in women’s healthcare access with new community initiatives. Ending today."
 source_url: "https://www.bbc.com/news/articles/c893g74p4v7o?at_medium=RSS&at_campaign=rss"

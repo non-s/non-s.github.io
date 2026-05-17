@@ -104,8 +104,8 @@ def _fetch_crypto_prices() -> dict:
         )
         if r.status_code == 200:
             return r.json()
-    except Exception:
-        pass
+    except Exception as e:
+        log.debug(f"crypto price fetch failed (non-fatal): {e}")
     return {}
 
 
@@ -459,7 +459,12 @@ def _ai_enhance_post(title: str, description: str, body: str, category: str, sou
     prompt = (
         f'You are a senior journalist who writes the way a smart friend talks — '
         f'clear, specific, and a little warmer than wire copy. Use contractions naturally. '
-        f'Prefer concrete details over abstract claims. Avoid corporate filler. '
+        f'Prefer concrete details over abstract claims. '
+        f'NEVER use these AI-tell phrases: "underscores the importance", "sheds light on", '
+        f'"highlights the critical role", "could reshape", "paves the way", "in the realm of", '
+        f'"navigate the complexities", "paradigm shift", "unprecedented", "a testament to", '
+        f'"tapestry", "embark on", "ushering in", "in this article/report", "delve", "landscape", '
+        f'"game-changer", "revolutionary", "groundbreaking", "crucial", "vital", "pivotal". '
         f'Enhance this news article for both search visibility and the reader who actually finishes it. '
         f'Respond ONLY with valid JSON. No markdown, no code blocks, no extra text.\n\n'
         f'Title: {title}\nCategory: {cat}\nSource: {source_name}\nContent:\n{combined}\n\n'
@@ -1634,7 +1639,8 @@ def fetch_og_metadata(url: str, timeout: int = 10) -> dict:
                 break
         resp.close()
         html = chunk.decode("utf-8", errors="ignore")
-    except Exception:
+    except Exception as e:
+        log.debug(f"OG metadata fetch failed for {url[:80]}: {e}")
         return result
 
     # og:description
@@ -1716,14 +1722,50 @@ def get_extra_tags(title: str, description: str) -> tuple[str, list]:
     return "", []
 
 
-# Dead-feed failure counter: feed name → consecutive failure count
-_feed_failures: dict[str, int] = {}
-_DEAD_FEED_THRESHOLD = 3
+# Dead-feed failure counter: feed name → consecutive failure count.
+# Persisted across runs in _data/feed_health.json so a permanently broken
+# feed eventually stops getting polled (saves time + avoids log noise).
+_DEAD_FEED_THRESHOLD     = 3   # warn at this many consecutive failures
+_DEAD_FEED_SKIP_AT       = 10  # actually skip the feed at this many
+_FEED_HEALTH_FILE        = Path("_data") / "feed_health.json"
+
+def _load_feed_failures() -> dict[str, int]:
+    try:
+        if _FEED_HEALTH_FILE.exists():
+            data = json.loads(_FEED_HEALTH_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                return {str(k): int(v) for k, v in data.items() if isinstance(v, (int, float))}
+    except Exception as e:
+        log.debug(f"feed_health load failed (starting fresh): {e}")
+    return {}
+
+def _save_feed_failures(failures: dict[str, int]) -> None:
+    try:
+        _FEED_HEALTH_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _FEED_HEALTH_FILE.write_text(
+            json.dumps(failures, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+    except Exception as e:
+        log.debug(f"feed_health save failed (non-fatal): {e}")
+
+_feed_failures: dict[str, int] = _load_feed_failures()
 
 
 def post_filename(date: datetime, slug: str) -> str:
-    """Gera nome do arquivo de post Jekyll."""
-    return f"{date.strftime('%Y-%m-%d')}-{slug}.md"
+    """Gera nome do arquivo de post Jekyll, com sufixo numérico em
+    caso de colisão no mesmo dia (evita sobrescrever post anterior)."""
+    base = f"{date.strftime('%Y-%m-%d')}-{slug}"
+    candidate = f"{base}.md"
+    if not (POSTS_DIR / candidate).exists():
+        return candidate
+    # Tenta -2, -3, ... até achar livre. Cap em -9 pra slug não ficar feio.
+    for i in range(2, 10):
+        candidate = f"{base}-{i}.md"
+        if not (POSTS_DIR / candidate).exists():
+            return candidate
+    # Último recurso: stamp horário (raro mas garante unicidade).
+    return f"{base}-{date.strftime('%H%M')}.md"
 
 
 # Cache de URLs conhecidas (construído uma vez por execução)
@@ -2685,6 +2727,13 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
     source    = feed_config["source"]
     limit     = min(MAX_PER_FEED, max_override) if max_override is not None else MAX_PER_FEED
 
+    # Skip feeds that have failed too many times in a row across runs.
+    # On the next successful fetch the counter resets to 0 and the feed
+    # comes back. Keeps log noise down on permanently-broken feeds.
+    if _feed_failures.get(name, 0) >= _DEAD_FEED_SKIP_AT:
+        log.info(f"⏭  Pulando feed marcado como morto ({_feed_failures[name]} falhas): {name}")
+        return 0
+
     log.info(f"📡 Processando feed: {name} ({url})")
 
     try:
@@ -3279,6 +3328,10 @@ def _save_last_run(total_created: int, start_time: float) -> None:
         Path("_data/last_run.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning(f"Could not write run summary: {exc}")
+
+    # Persist the failure counts across runs so feeds that stay broken
+    # eventually trip the skip threshold instead of being polled forever.
+    _save_feed_failures(_feed_failures)
 
 
 def main():
