@@ -1,67 +1,72 @@
 ---
 layout: post
-title: "COP30: Why the summit matters even if Trump and others skip it"
+title: "Why COP30 matters even with Trump and leaders skipping it"
 date: 2025-11-10 00:09:19 +0000
 categories: [environment, politics]
-tags: [bbc, environment, climate, politics, government, trump, cop30, climate-summit, united-nations-climate-talks, amazon-deforestation, fossil-fuel-phase-out, john-kerry-cop30, why-leaders-skip-cop-summits, climate-finance-deals-at-cop30, what-happens-if-cop30-fails, brazil-climate-summit-2025]
+tags: [bbc, environment, climate, politics, government, trump, cop30, cop30-summit, climate-summit-2025, cop30-brazil, un-climate-talks, why-leaders-skip-cop, climate-change-negotiations, amazon-deforestation-deal, climate-finance-2025]
 author: "GlobalBR News"
-description: "World leaders including Trump skip COP30 climate talks. But the summit still sets global policies that shape billions of lives and dollars every year."
+description: "COP30 climate summit kicks off in Brazil as key leaders like Trump skip it. Experts say the show must still go on. Here's why."
 source_url: "https://www.bbc.com/news/articles/c205jvyg3wjo?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"
 sentiment: "neutral"
 lang: "en"
-image: "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/cdc6/live/3570dfa0-bbe5-11f0-ae46-bd64331f0fd4.jpg"
-image_alt: "COP30: Why the summit matters even if Trump and others skip it"
-image_caption: "Delegates walk past a COP30 banner in Belém, Brazil, where negotiators are finalizing climate rules that will shape glob"
-fact_check: "verified"
-keywords: ["COP30", "climate summit", "United Nations climate talks", "Amazon deforestation", "fossil fuel phase out", "John Kerry COP30", "why leaders skip COP summits", "climate finance deals at COP30"]
+image: "/assets/images/posts/cop30-trump-and-many-leaders-are-skipping-it-so-does-the-summit-still-have-a-poi.webp"
+image_alt: "Why COP30 matters even with Trump and leaders skipping it"
+image_caption: "Delegates arrive at COP30 in Belém, Brazil, for climate talks as key leaders skip the event."
+keywords: ["COP30", "COP30 summit", "climate summit 2025", "COP30 Brazil", "UN climate talks", "why leaders skip COP", "climate change negotiations", "Amazon deforestation deal"]
 key_points:
-  - "COP30 has record low attendance from heads of state this year"
-  - "Negotiators from 200-plus countries still push for binding climate deals"
-  - "Outcomes will steer trillions in global energy investments over the next decade"
+  - "COP30 starts in Brazil with fewer leaders than expected"
+  - "U.S. president and others skipped the summit"
+  - "Talks still set global climate rules and push action"
 faq:
-  - q: "Why are so many world leaders skipping COP30?"
-    a: "Many leaders cite domestic priorities or scheduling conflicts, but the pattern reflects a broader shift: climate summits are increasingly seen as bureaucratic marathons rather than high-profile events where presidents cut deals. Rising global tensions, wars, and economic worries have pushed climate down the agenda for some governments."
-  - q: "What happens if COP30 fails to reach strong agreements?"
-    a: "Weak or vague agreements let fossil fuel companies and polluting industries slow down climate action. Without clear rules on emissions reporting or fossil fuel phase-outs, investors will keep betting on oil and gas, making it harder to hit global warming targets. Poor countries will also lose access to promised climate finance."
-  - q: "How much money is involved in the deals being discussed at COP30?"
-    a: "Negotiators are finalizing a $300 billion fund set up at COP29 to help poorer countries adapt to climate change. They’re also working on rules that could unlock trillions more in private investment by forcing banks and companies to disclose climate risks and align lending with global goals."
-  - q: "Is the US still influencing COP30 even without Trump attending?"
-    a: "Yes. The US sent a delegation led by climate envoy John Kerry, who’s pushing for stricter methane rules and deforestation financing. While Trump’s absence matters symbolically, the US still wields influence through domestic financial regulations and its role in shaping global reporting standards."
-  - q: "What’s the biggest climate issue on the table at COP30 in Belém?"
-    a: "Protecting the Amazon rainforest is the headline act in Belém. Brazil’s government has slowed deforestation, but deals here will decide whether it gets the money to keep protecting the jungle—or whether agribusiness lobbyists win more land for soy and beef farming."
+  - q: "What is COP30 and why does it matter?"
+    a: "COP30 is the UN’s 2025 climate summit in Belém, Brazil. It sets global rules on emissions, finance, and forest protection, even if leaders miss the event. For poorer nations, it’s a rare chance to demand climate funding from rich countries."
+  - q: "Why aren’t leaders like Trump attending COP30?"
+    a: "Leaders skip COP for many reasons: election years, crises, or avoiding criticism. Trump’s absence follows a pattern—other leaders skip when their climate policies are weak or when the timing clashes with domestic priorities."
+  - q: "What are the main goals of COP30?"
+    a: "This year’s priorities include a global deal to end deforestation by 2030, stricter methane rules, and progress on the $100 billion climate finance promise rich countries made to poorer nations. Brazil’s president is pushing hard for forest protection."
+  - q: "Has COP delivered real results before?"
+    a: "Yes. The Paris Agreement, signed at COP21, is the most famous example. It’s legally binding and has shaped climate laws in over 190 countries. Critics say progress is slow, but the process has led to real policy changes worldwide."
+  - q: "What happens if COP30 fails to deliver?"
+    a: "If COP30 ends with weak commitments, it’ll erode trust in the process. Poorer nations, already frustrated by unmet finance promises, may push back harder next time. The world’s ability to meet climate goals will suffer, making future crises worse."
 breaking: false
-hook: "Belém isn’t just another climate summit—it’s where the rules for the next trillion-dollar energy bets get written."
-tl_dr: "COP30 still sets global climate rules even without Trump and other leaders in the room."
-lead: "The US president [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) isn’t at COP30 in Brazil this week, and neither are many other world leaders. Yet 200-plus countries still send negotiators to set global climate rules that shape trillions of dollars in energy spending."
+tl_dr: "COP30 still sets rules and pushes action even without star leaders like Trump."
+lead: "The COP30 climate summit in Brazil starts today without the U.S. president or dozens of other world leaders, raising questions about the summit’s relevance. But the talks still matter because they set global climate rules and push poorer nations to act."
 content_type: "analysis"
 entities:
   - "COP30"
-  - "United Nations Framework Convention on Climate Change"
-  - "Donald Trump"
+  - "United States"
+  - "Brazil"
   - "Luiz Inácio Lula da Silva"
-  - "John Kerry"
   - "Amazon rainforest"
-  - "Belém Brazil"
-  - "Saudi Arabia"
+  - "Paris Agreement"
+  - "COP26"
+  - "COP21"
 ---
 
-This year’s UN climate summit, COP30, opened in [Belém, Brazil](https://en.wikipedia.org/wiki/Bel%C3%A9m) with a glaring absence: the world’s most powerful leader. [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump), who already pulled the US out of the Paris Agreement once, isn’t showing up. He’s not alone. Only about 20 heads of state bothered to attend the opening, including Brazil’s [Luiz Inácio Lula da Silva](https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva), who’s hosting. The UK’s new prime minister skipped it too, as did Germany’s chancellor. That leaves a lot of empty seats—and a lot of questions about what COP30 can actually achieve when the people who sign treaties aren’t there to sign them.
+The annual UN climate conference, [COP30](https://en.wikipedia.org/wiki/2025_United_Nations_Climate_Change_Conference), is kicking off in Belém, Brazil, today with a glaring absence: the U.S. president won’t be there. He’s not alone. Leaders from India, the UK, and France also stayed home. That doesn’t mean the summit is pointless—it’s just quieter than usual.
 
-But here’s the thing: COP isn’t just a photo op for presidents. It’s a 12-day marathon where mid-level diplomats, scientists, and activists hammer out the rules that will shape how the world spends trillions on energy, forests, and technology for the next decade. The deals aren’t flashy, but they matter. Last year’s COP29 in [Azerbaijan](https://en.wikipedia.org/wiki/Azerbaijan) locked in a $300 billion fund to help poorer countries adapt to climate change. This year, negotiators are racing to finalize how countries report their emissions, set new targets for cutting fossil fuel use, and protect the Amazon. None of that requires Trump’s signature—but it will dictate whether Exxon or a solar farm gets the next billion-dollar contract.
+## What COP is supposed to do
+COP stands for Conference of the Parties, the UN’s annual climate talks where nearly 200 countries hammer out rules on cutting emissions. Even without top politicians, negotiators from 190+ countries will still work on things like carbon markets, climate finance, and national targets. These aren’t sexy decisions, but they shape how governments and businesses operate worldwide.
 
-## The Amazon is why Belém matters
-Belém sits on the edge of the Amazon rainforest, the world’s biggest carbon sink. Lula’s government has slowed deforestation by 50% since 2023, but the forest is still losing ground. The deals being hashed out here will decide whether Brazil gets the money it needs to keep protecting the jungle—or whether agribusiness lobbyists push for more soy and beef expansion. It’s not just about trees. The Amazon stores enough carbon to flip parts of South America from a carbon sink to a savanna if it crosses a tipping point. That would accelerate global warming faster than any policy tweak in Washington.
+For poorer nations, COP is one of the few places where they can demand rich countries pay for climate damage. Brazil’s president [Luiz Inácio Lula da Silva](https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva) is hosting, and he’s pushing hard for a deal on forest protection. That’s a big deal for the Amazon, the world’s largest rainforest, which stores vast amounts of carbon.
 
-Diplomats aren’t just talking forests. They’re also fighting over how to force oil companies and petrostates to clean up their act. Saudi Arabia and other fossil fuel exporters want language in the final text that softens commitments to phase out oil and gas. Europe and small island nations want the opposite: a clear timeline to stop new drilling. The text that emerges will signal whether the world’s energy giants have to start planning for a post-oil future—or whether they can keep drilling for decades more.
+## Why leaders skip COP
+Leaders don’t show up for a few reasons. One is timing—these summits happen amid election years or crises, making it hard to spare a week. Another is optics: some leaders avoid events where they might face criticism, especially if their climate policies are weak. The U.S. president’s absence is notable, but not unprecedented. Former president [Barack Obama](https://en.wikipedia.org/wiki/Barack_Obama) skipped COP15 in 2009, the last time a U.S. president didn’t attend.
 
-## What’s at stake for the US without Trump
-America emits more CO2 than any other country except China. When Trump was last president, the US bailed on Paris, undermined global talks, and fast-tracked oil drilling. This time, his administration isn’t in charge—but that doesn’t mean the US is sitting things out. The US still sent a delegation led by [John Kerry](https://en.wikipedia.org/wiki/John_Kerry), the former secretary of state and Biden’s climate envoy, who’s pushing for stricter rules on methane leaks and deforestation financing. Kerry’s presence shows the US isn’t irrelevant—it’s just not prioritizing a presidential photo op. The real power lies in what the US does domestically, not whether Trump shows up to give a speech.
+Still, COP isn’t just about photo ops. The real work happens in backrooms, where diplomats negotiate text line by line. Even when leaders aren’t there, their teams still push for their countries’ interests. The EU, for example, will likely keep pushing for stricter methane rules, regardless of who’s in the room.
 
-That domestic action is where the biggest gaps remain. Congress isn’t about to pass a climate bill, and the Supreme Court has tied the EPA’s hands. But US banks, insurers, and pension funds are under growing pressure to stop funding new coal and oil projects. If COP30’s final text pushes global banks to align their lending with climate goals, Wall Street will feel it—even if the White House doesn’t.
+## What’s at stake this year
+This COP is happening in Brazil, a country with a complicated climate record. Lula has slowed Amazon deforestation since returning to office, but fires and illegal logging are still rampant. The summit’s host has promised to push for a global deal to end deforestation by 2030, similar to the one agreed at [COP26](https://en.wikipedia.org/wiki/2021_United_Nations_Climate_Change_Conference) in Glasgow.
 
-## The bottom line: COP30 isn’t about who’s in the room
-The summit’s value isn’t measured in handshakes between presidents. It’s measured in the fine print of the agreements that will guide trillions in investments. The Amazon fund, the methane rules, the oil phase-out timeline—these aren’t just words on paper. They’re signals to investors about where the world is heading. If COP30 locks in strong rules, money will flow toward renewables and away from fossil fuels. If it doesn’t, the opposite happens. The people who matter most aren’t the ones giving speeches. They’re the ones drafting the treaties in windowless rooms.
+But there’s a catch: rich countries haven’t delivered on the $100 billion a year they promised to help poorer nations adapt to climate change. That funding gap is straining trust, and it’s a major topic in Belém. Without it, many developing nations won’t sign off on new commitments.
+
+## Does COP even move the needle?
+Critics argue COP is all talk, no action. They point to past summits where promises weren’t kept. But defenders say the process works in slow, incremental ways. The [Paris Agreement](https://en.wikipedia.org/wiki/Paris_Agreement), signed at COP21, is the most obvious example—it’s legally binding and has shaped climate laws in over 190 countries. Even without a blockbuster moment this year, the rules being hashed out in Belém will matter for decades.
+
+The bigger issue is whether anyone outside the negotiating rooms cares. Public attention is scattered. Social media amplifies protests and scandals, but the grind of policy details rarely goes viral. Still, the people who need these deals—farmers in drought-stricken regions, coastal communities facing rising seas—are watching closely. For them, COP isn’t an abstract summit. It’s a lifeline.
+
+What happens next depends on who shows up to the final days. If enough ministers and negotiators stay through the weekend, they might salvage something meaningful. If not, the summit will end with a whimper, another missed opportunity in a world that can’t afford many more.
 
 <!--more-->
 
@@ -90,8 +95,8 @@ This is a curated summary. For the complete article, original data, quotes and f
 
 ## 🇧🇷 Resumo em Português
 
-A dois anos da realização da COP30 em Belém, a ausência de líderes como Donald Trump não diminui a importância da cúpula climática, que se consolidou como o principal palco de decisões globais capazes de impactar bilhões de pessoas e trilhões de dólares. Mesmo com a presença reduzida de figuras políticas de grande peso, o evento segue como um termômetro das ambições ambientais do planeta, definindo diretrizes que podem acelerar ou frear a crise climática nas próximas décadas.
+O Brasil sedia, a partir desta semana, a COP30, a maior conferência climática do mundo, mesmo com a ausência de figuras como Donald Trump e outros líderes globais, que optaram por não comparecer ao evento. Em meio a um cenário internacional cada vez mais polarizado em relação às mudanças climáticas, o país assume o papel de anfitrião de um encontro que pode definir os rumos da política ambiental global.
 
-No Brasil, a escolha de Belém como sede da conferência não é mera coincidência: a Amazônia, coração da discussão, enfrenta pressões históricas de desmatamento e exploração predatória. A COP30 chega em um momento crítico, com o governo brasileiro sob cobrança internacional para apresentar metas concretas de redução das emissões e proteção da floresta, além de garantir a participação efetiva de povos indígenas e comunidades tradicionais na formulação de políticas públicas. Para os brasileiros, o evento representa uma oportunidade única de posicionar o país como protagonista na transição para uma economia de baixo carbono, mas também expõe os riscos de retrocessos caso as promessas não se convertam em ações.
+A realização da COP30 no Brasil, em Belém, não é apenas simbólica, mas estratégica. O país, que abriga grande parte da Floresta Amazônica — um dos principais reguladores do clima do planeta — precisa mostrar ao mundo que está comprometido com a proteção ambiental, mesmo com desafios internos e pressões econômicas. A conferência ocorre em um momento crítico, com recordes de emissões de gases de efeito estufa e crises ambientais em diversas regiões, como enchentes no sul do país e secas extremas na Amazônia. Para os brasileiros e falantes de língua portuguesa, o evento representa uma oportunidade de discutir soluções locais e globais, como financiamento para a transição energética e a proteção dos biomas, que impactam diretamente a vida de milhões de pessoas.
 
-O desfecho da cúpula poderá sinalizar se o mundo — e o Brasil — estão dispostos a agir antes que os pontos de não retorno climáticos se tornem irreversíveis.
+A expectativa agora é que, mesmo com a ausência de líderes globais, os resultados da COP30 possam pressionar governos a cumprirem metas mais ambiciosas de redução de emissões e fortalecer a cooperação internacional em prol do clima.
