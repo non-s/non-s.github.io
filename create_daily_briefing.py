@@ -17,14 +17,20 @@ from __future__ import annotations
 import json
 import logging
 import os
-import re
-import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from utils.frontmatter import parse, get_str, get_list
-from utils.text import slugify, sanitize_text
+from utils.frontmatter import get_str, get_list
+from utils.text import sanitize_text
 from utils.ai_helper import ai_text
+from utils.digest import (
+    AUTO_POST_SLUG_MARKERS,
+    base_score,
+    build_post_url,
+    cited_posts_yaml,
+    first_image,
+    load_posts_in_window,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -32,58 +38,17 @@ log = logging.getLogger(__name__)
 POSTS_DIR    = Path(__file__).parent / "_posts"
 MIN_POSTS    = int(os.environ.get("BRIEFING_MIN_POSTS", "5"))
 MAX_STORIES  = int(os.environ.get("BRIEFING_MAX_STORIES", "10"))
-SKIP_CATS    = {"briefing", "roundup", "digest", "milestone", "stats"}
 
 
 def _today_posts() -> list[tuple[Path, dict]]:
-    today_prefix = date.today().strftime("%Y-%m-%d")
-    items = []
-    for path in sorted(POSTS_DIR.glob(f"{today_prefix}-*.md"), reverse=True):
-        if any(skip in path.stem for skip in SKIP_CATS):
-            continue
-        try:
-            fm = parse(path.read_text(encoding="utf-8", errors="replace"))
-        except Exception:
-            continue
-        cats = [c.lower() for c in get_list(fm, "categories")]
-        if any(c in SKIP_CATS for c in cats):
-            continue
-        items.append((path, fm))
-    return items
-
-
-def _score(fm: dict) -> int:
-    """Higher score wins the cut. Breaking + fact-checked + with description rank highest."""
-    score = 0
-    if str(get_str(fm, "breaking", "")).lower() == "true":
-        score += 50
-    if str(get_str(fm, "featured", "")).lower() == "true":
-        score += 30
-    if get_str(fm, "fact_check") == "verified":
-        score += 10
-    if get_str(fm, "tl_dr"):
-        score += 5
-    if len(get_str(fm, "description") or "") > 80:
-        score += 5
-    if get_str(fm, "image"):
-        score += 3
-    return score
-
-
-def _build_post_url(path: Path, fm: dict) -> str:
-    stem = path.stem
-    parts = stem.split("-", 3)
-    if len(parts) < 4:
-        return ""
-    y, m, d, slug = parts
-    cats = get_list(fm, "categories")
-    cat = (cats[0] if cats else "news").strip()
-    return f"/{cat}/{y}/{m}/{d}/{slug}/"
+    today = date.today()
+    triples = load_posts_in_window(POSTS_DIR, today, today, AUTO_POST_SLUG_MARKERS)
+    return [(p, fm) for p, fm, _dt in triples]
 
 
 def _ai_briefing(stories: list[tuple[Path, dict]]) -> str:
     bullets = []
-    for path, fm in stories:
+    for _path, fm in stories:
         title = get_str(fm, "title", "Untitled")
         desc  = get_str(fm, "description")
         cat   = (get_list(fm, "categories") or ["news"])[0]
@@ -122,23 +87,8 @@ def _frontmatter(stories: list[tuple[Path, dict]], body: str) -> str:
         f"{len(stories)} stories that shaped the day"
     )
 
-    # Build a list of "about" Schema.org references back to source posts.
-    cited_paths: list[str] = []
-    for path, fm in stories:
-        url = _build_post_url(path, fm)
-        if url:
-            cited_paths.append(url)
-    cited_yaml = ""
-    if cited_paths:
-        cited_yaml = "cited_posts:\n" + "".join(f'  - "{u}"\n' for u in cited_paths)
-
-    # Pull a representative image from the highest-scoring story.
-    image = ""
-    for _, fm in stories:
-        img = get_str(fm, "image")
-        if img:
-            image = img
-            break
+    cited_yaml = cited_posts_yaml(stories)
+    image = first_image(stories)
 
     return (
         "---\n"
@@ -172,7 +122,7 @@ def main() -> None:
         )
         return
 
-    stories.sort(key=lambda pair: _score(pair[1]), reverse=True)
+    stories.sort(key=lambda pair: base_score(pair[1]), reverse=True)
     stories = stories[:MAX_STORIES]
 
     today = date.today()

@@ -147,28 +147,42 @@ def extract_description(entry: object) -> str:
     return sanitize_text(best[:800])
 
 
+def _safe_dict_get(item: object, key: str, default: str = "") -> str:
+    """Tolerant `.get()` — feedparser sometimes returns strings where we
+    expect dicts (notably for `media_thumbnail` in some Atom feeds)."""
+    if isinstance(item, dict):
+        return item.get(key, default) or default
+    if isinstance(item, str):
+        # Treat the bare string as the URL itself when we're asking for "url".
+        return item if key in ("url", "href") else default
+    return default
+
+
 def extract_image(entry: object) -> str:
     """Tenta extrair URL de imagem do item RSS."""
     if hasattr(entry, "media_content"):
         for m in entry.media_content:  # type: ignore[union-attr]
-            if m.get("type", "").startswith("image"):
-                url = m.get("url", "")
+            if _safe_dict_get(m, "type").startswith("image"):
+                url = _safe_dict_get(m, "url")
                 if url:
                     return url
     if hasattr(entry, "media_thumbnail"):
         for t in entry.media_thumbnail:  # type: ignore[union-attr]
-            url = t.get("url", "")
+            url = _safe_dict_get(t, "url")
             if url:
                 return url
     if hasattr(entry, "enclosures"):
         for e in entry.enclosures:  # type: ignore[union-attr]
-            if e.get("type", "").startswith("image"):
-                url = e.get("href", "")
+            if _safe_dict_get(e, "type").startswith("image"):
+                url = _safe_dict_get(e, "href")
                 if url:
                     return url
     content = ""
     if hasattr(entry, "content"):
-        content = entry.content[0].get("value", "")  # type: ignore[union-attr]
+        try:
+            content = entry.content[0].get("value", "")  # type: ignore[union-attr]
+        except (AttributeError, IndexError):
+            content = ""
     elif hasattr(entry, "summary"):
         content = entry.summary  # type: ignore[union-attr]
     match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content)
@@ -177,10 +191,28 @@ def extract_image(entry: object) -> str:
     return ""
 
 
-def parse_date(entry: object) -> datetime:
-    """Extrai data do item RSS como objeto datetime (UTC)."""
+def parse_date(entry: object, max_age_days: int | None = 30) -> datetime:
+    """Extrai data do item RSS como datetime UTC.
+
+    `max_age_days` clamps the result so we don't end up with `_posts/2014-…`
+    URLs when a publisher re-broadcasts an old article in their feed today.
+    The post still cites the original publisher; the permalink date just
+    reflects when WE picked it up. Set `max_age_days=None` to disable.
+    """
+    now = datetime.now(timezone.utc)
+    candidate: datetime | None = None
     if hasattr(entry, "published_parsed") and entry.published_parsed:
-        return datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)  # type: ignore[union-attr]
-    if hasattr(entry, "updated_parsed") and entry.updated_parsed:
-        return datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)  # type: ignore[union-attr]
-    return datetime.now(timezone.utc)
+        candidate = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)  # type: ignore[union-attr]
+    elif hasattr(entry, "updated_parsed") and entry.updated_parsed:
+        candidate = datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)  # type: ignore[union-attr]
+    if candidate is None:
+        return now
+    # Cap future-dated entries to "now" (some feeds set tomorrow's date).
+    if candidate > now:
+        return now
+    # Cap entries older than max_age_days to "now".
+    if max_age_days is not None:
+        from datetime import timedelta
+        if (now - candidate).days > max_age_days:
+            return now
+    return candidate

@@ -91,25 +91,6 @@ def _ai_video_hook(stories: list[dict], dominant_cat: str) -> str:
     )
     return _ai_text(prompt, seed=42, timeout=18)
 
-def _build_chapters(key_points: list[str], total_duration_estimate: int = 180) -> str:
-    """Generate YouTube chapter timestamps from key points."""
-    if not key_points or len(key_points) < 2:
-        return ""
-
-    chapters = ["00:00 Introduction"]
-    # Distribute key points evenly
-    segment = total_duration_estimate // (len(key_points) + 1)
-    for i, point in enumerate(key_points[:5], 1):
-        mins, secs = divmod(i * segment, 60)
-        label = point[:60].rstrip('.').strip()
-        chapters.append(f"{mins:02d}:{secs:02d} {label}")
-
-    # Add outro
-    outro_mins, outro_secs = divmod(total_duration_estimate - 10, 60)
-    chapters.append(f"{outro_mins:02d}:{outro_secs:02d} Summary")
-
-    return "\n\n" + "\n".join(chapters)
-
 # ── Config ─────────────────────────────────────────────────────
 VIDEOS_DIR        = Path("_videos")
 LOG_FILE          = "generate_video.log"
@@ -194,30 +175,13 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Fontes ─────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False):
-    candidates_bold = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-    ]
-    candidates_reg = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ]
-    for path in (candidates_bold if bold else candidates_reg):
-        if Path(path).exists():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default()
-
-# ── Utilitários de desenho ─────────────────────────────────────
-def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
-    x0, y0, x1, y1 = xy
-    draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
-                            outline=outline, width=outline_width)
+# ── Fontes / utilitários compartilhados com generate_shorts.py ────
+from utils.video_common import (
+    get_font,
+    draw_rounded_rect,
+    wrap_text,
+    download_image as _download_image_common,
+)
 
 def draw_gradient_bg(img, color_top, color_bot):
     draw = ImageDraw.Draw(img)
@@ -235,20 +199,6 @@ def draw_tech_grid(img, alpha=12):
         for y in range(0, VIDEO_H, 48):
             d.ellipse([x-1, y-1, x+1, y+1], fill=(0, 195, 255, alpha))
     return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
-
-def wrap_text(draw, text, font, max_width):
-    words = text.split()
-    lines, line = [], []
-    for word in words:
-        test = ' '.join(line + [word])
-        if draw.textbbox((0, 0), test, font=font)[2] > max_width and line:
-            lines.append(' '.join(line))
-            line = [word]
-        else:
-            line.append(word)
-    if line:
-        lines.append(' '.join(line))
-    return lines
 
 # ── Tradução PT-BR ────────────────────────────────────────────
 def _translate_script_pt(script: str) -> str:
@@ -501,17 +451,9 @@ async def text_to_speech(text: str, output_path: Path, voice: str):
     communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
-# ── Download de imagem ─────────────────────────────────────────
+# Roundup uses a tighter timeout (single frame fallback is OK).
 def download_image(url: str, dest: Path) -> bool:
-    try:
-        r = requests.get(url, timeout=10,
-                         headers={"User-Agent": "GlobalBR-Bot/2.0"})
-        if r.status_code == 200 and len(r.content) > 2000:
-            dest.write_bytes(r.content)
-            return True
-    except Exception as e:
-        log.debug(f"Image download failed: {e}")
-    return False
+    return _download_image_common(url, dest, timeout=10)
 
 # ── Frame de vídeo ─────────────────────────────────────────────
 def create_video_frame(title: str, source: str, image_path: Path | None,
@@ -1041,13 +983,10 @@ def build_metadata(roundup_slug: str, stories: list[dict],
         + CTA_BLOCK
     )
 
-    # Append auto-generated chapters from story key points
+    # Chapters already embedded in yt_desc via `chapters_list` above —
+    # don't append _build_chapters here or the list shows up twice.
     cats = [s.get("category", "news") for s in stories]
     dominant_cat_lower = max(set(cats), key=cats.count).lower() if cats else "news"
-    story_titles = [s["title"] for s in stories]
-    chapters_block = _build_chapters(story_titles, int(duration_estimate))
-    if chapters_block:
-        yt_desc += chapters_block
 
     # Truncate to YouTube 5000-char limit
     yt_desc = yt_desc[:5000]
@@ -1093,9 +1032,34 @@ def mark_posts_as_used(post_slugs: list[str]):
         (VIDEOS_DIR / f"{slug}.roundup").touch()
 
 def guess_category(tags: list, title: str) -> str:
+    """Pick a broad YouTube-style category from a story's title + tags.
+
+    Tag-driven first (each story already carries a categories: list),
+    then keyword heuristics for tech sub-niches that drive AI/Security
+    voice + thumbnail choices upstream. Returns an uppercase label.
+    """
     text = (title + " " + " ".join(tags)).lower()
-    # Use word boundary check for short keywords to avoid substring false positives
-    # e.g. "raises" contains "ai", "hackernews" contains "hack"
+    tag_set = {t.lower().strip() for t in (tags or [])}
+
+    # Tag-driven match (highest signal — categories: came from fetch_news).
+    cat_aliases = {
+        "POLITICS":     {"politics", "politicians", "elections", "government"},
+        "WAR":          {"war", "conflict", "ukraine", "gaza", "israel", "russia"},
+        "WORLD":        {"world", "international", "diplomacy"},
+        "BUSINESS":     {"business", "economy", "finance", "markets"},
+        "SCIENCE":      {"science", "research", "space", "physics", "biology"},
+        "HEALTH":       {"health", "medicine", "wellness", "medical"},
+        "ENVIRONMENT":  {"environment", "climate", "sustainability"},
+        "ENTERTAINMENT":{"entertainment", "movies", "music", "celebrity"},
+        "SPORTS":       {"sports", "football", "soccer", "basketball", "tennis"},
+        "TRAVEL":       {"travel", "tourism", "destinations"},
+        "FOOD":         {"food", "restaurant", "cooking", "cuisine"},
+    }
+    for label, keys in cat_aliases.items():
+        if tag_set & keys:
+            return label
+
+    # Tech sub-niches keyed by keyword presence in title/tags.
     if (re.search(r'\bai\b', text) or
             any(w in text for w in ["artificial intelligence", "machine learning",
                                      "gpt", "llm", "openai", "anthropic",
@@ -1108,8 +1072,8 @@ def guess_category(tags: list, title: str) -> str:
                                 "krebs", "the hacker news"]):
         return "SECURITY"
     if any(w in text for w in ["startup", "funding", "series a", "series b",
-                                "series c", "ipo", "acquisition", "billion",
-                                "venture capital", "unicorn"]):
+                                "series c", "ipo", "acquisition", "venture capital",
+                                "unicorn"]):
         return "BUSINESS"
     if any(w in text for w in ["apple", "google", "microsoft", "meta",
                                 "amazon", "nvidia", "tesla", "samsung"]):
@@ -1263,7 +1227,7 @@ def main():
             f"Translate this to Brazilian Portuguese (PT-BR). "
             f"Return ONLY the translated text:\n\nWorld news roundup with {len(stories)} top stories."
         )
-        base_tags = [s for s in stories for s in s.get("tags", [])]
+        base_tags = [t for s in stories for t in s.get("tags", [])]
         pt_meta = {
             "title":       pt_title_raw or f"Resumo de Notícias Mundiais | {slug}",
             "description": pt_desc_raw or "Principais notícias do mundo em português.",

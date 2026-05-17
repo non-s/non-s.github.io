@@ -10,8 +10,9 @@ from utils.frontmatter import parse as parse_frontmatter, get_str, get_list
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-POSTS_DIR   = Path("_posts")
-DATA_DIR    = Path("_data")
+_ROOT       = Path(__file__).resolve().parent
+POSTS_DIR   = _ROOT / "_posts"
+DATA_DIR    = _ROOT / "_data"
 OUTPUT_FILE = DATA_DIR / "audit_report.json"
 
 OLD_POST_DAYS          = int(os.environ.get("AUDIT_MAX_AGE_DAYS",      "90"))
@@ -101,18 +102,19 @@ def main() -> None:
         if not fm.get("key_points"):
             posts_without_keypoints.append(slug)
 
+        post_date: datetime | None = None
         date_str = get_str(fm, "date")
         if date_str:
             try:
                 # Accept "2026-01-19 14:00:00 +0000" or "2026-01-19"
                 date_part = date_str[:10]
                 post_date = datetime.strptime(date_part, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-                if post_date < cutoff:
-                    old_posts.append(slug)
             except ValueError:
-                pass
-        else:
-            # Try to extract date from filename: YYYY-MM-DD-slug.md
+                post_date = None
+        if post_date is None:
+            # Fall back to extracting from filename: YYYY-MM-DD-slug.md.
+            # Runs whether `date_str` was missing OR malformed — otherwise
+            # bad-date posts silently dodge the cutoff check.
             name_parts = post_path.stem.split("-", 3)
             if len(name_parts) >= 3:
                 try:
@@ -120,10 +122,10 @@ def main() -> None:
                         int(name_parts[0]), int(name_parts[1]), int(name_parts[2]),
                         tzinfo=timezone.utc
                     )
-                    if post_date < cutoff:
-                        old_posts.append(slug)
                 except (ValueError, IndexError):
-                    pass
+                    post_date = None
+        if post_date is not None and post_date < cutoff:
+            old_posts.append(slug)
 
     # categories with fewer than MIN_POSTS_PER_CATEGORY
     thin_categories = {k: v for k, v in category_counts.items() if v < MIN_POSTS_PER_CATEGORY}

@@ -14,7 +14,8 @@ import requests
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-POSTS_DIR     = Path("_posts")
+_ROOT         = Path(__file__).resolve().parent
+POSTS_DIR     = _ROOT / "_posts"
 PT_DIR        = POSTS_DIR / "pt"
 LOOKBACK_DAYS = 3
 MAX_PER_RUN   = 10

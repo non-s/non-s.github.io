@@ -8,6 +8,11 @@ on:
     - cron: "0 14 * * *"
   workflow_dispatch:
 
+# Serialise with every other workflow that pushes to main.
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
 jobs:
   generate-and-upload:
     name: "Gerar videos e publicar"
@@ -16,15 +21,14 @@ jobs:
     # whole monthly GitHub Actions quota on a single hung job.
     timeout-minutes: 60
 
+    # Least-privilege: we don't use OIDC, only commit + push.
     permissions:
       contents: write
-      id-token: write
 
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: "Python 3.11"

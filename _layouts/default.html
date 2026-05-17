@@ -1,7 +1,8 @@
 ---
+layout: compress
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.lang | default: 'en' }}">
 <head>
   {% include head.html %}
 </head>
@@ -66,26 +67,31 @@
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2 gb-mainnav">
+          {% comment %}
+            Active state matches the section, not just the exact category index.
+            A reader on a post (/world/2026/.../slug/) or pillar page
+            (/world/pillar/) should still see "World" highlighted.
+          {% endcomment %}
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/world/' %}active{% endif %}" href="{{ '/world/' | relative_url }}">World</a>
+            <a class="nav-link {% if page.url contains '/world/' or page.categories contains 'world' %}active{% endif %}" href="{{ '/world/' | relative_url }}">World</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/politics/' %}active{% endif %}" href="{{ '/politics/' | relative_url }}">Politics</a>
+            <a class="nav-link {% if page.url contains '/politics/' or page.categories contains 'politics' %}active{% endif %}" href="{{ '/politics/' | relative_url }}">Politics</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/business/' %}active{% endif %}" href="{{ '/business/' | relative_url }}">Business</a>
+            <a class="nav-link {% if page.url contains '/business/' or page.categories contains 'business' %}active{% endif %}" href="{{ '/business/' | relative_url }}">Business</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/technology/' %}active{% endif %}" href="{{ '/technology/' | relative_url }}">Tech</a>
+            <a class="nav-link {% if page.url contains '/technology/' or page.categories contains 'technology' %}active{% endif %}" href="{{ '/technology/' | relative_url }}">Tech</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/science/' %}active{% endif %}" href="{{ '/science/' | relative_url }}">Science</a>
+            <a class="nav-link {% if page.url contains '/science/' or page.categories contains 'science' %}active{% endif %}" href="{{ '/science/' | relative_url }}">Science</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/sports/' %}active{% endif %}" href="{{ '/sports/' | relative_url }}">Sports</a>
+            <a class="nav-link {% if page.url contains '/sports/' or page.categories contains 'sports' %}active{% endif %}" href="{{ '/sports/' | relative_url }}">Sports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if page.url == '/videos/' %}active{% endif %}" href="{{ '/videos/' | relative_url }}">Videos</a>
+            <a class="nav-link {% if page.url contains '/videos/' %}active{% endif %}" href="{{ '/videos/' | relative_url }}">Videos</a>
           </li>
           <li class="nav-item gb-mega-wrap">
             <a class="nav-link" href="#" id="gbMoreBtn" aria-haspopup="true" aria-expanded="false">
@@ -540,7 +546,7 @@
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmGGmFMqgGxT1GvE+LLWcmIFJ5m"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
           crossorigin="anonymous"
           defer></script>
 

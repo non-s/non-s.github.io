@@ -34,6 +34,18 @@ def strip_markdown(text: str) -> str:
     return _WS_RE.sub(" ", text).strip()
 
 
+def _truncate(text: str, limit: int) -> str:
+    """Cut at a word boundary so client-side snippets don't end mid-word."""
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    # Don't break in the middle of a word — back up to the last space.
+    last_space = cut.rfind(" ")
+    if last_space > limit - 30:
+        cut = cut[:last_space]
+    return cut.rstrip() + "…"
+
+
 def parse_post(path: Path) -> dict | None:
     text = path.read_text(encoding="utf-8", errors="replace")
     fm = parse(text)
@@ -57,18 +69,25 @@ def parse_post(path: Path) -> dict | None:
     if not title:
         return None
 
+    # Keep the per-post payload small — the index is downloaded by every
+    # mobile visitor. Cap description at 160 chars and excerpt at 240; the
+    # search UI fetches the full post once the user clicks through.
+    description = _truncate(get_str(fm, "description"), 160)
+    excerpt = _truncate(strip_markdown(body), 240)
+    # Skip empty tags to save bytes.
+    tags = [t for t in (s.strip() for s in get_list(fm, "tags")) if t]
+
     return {
         "title":       title,
         "url":         f"/{category}/{year}/{month}/{day}/{slug}/",
         "date":        get_str(fm, "date")[:10],
         "category":    category,
-        "tags":        get_list(fm, "tags"),
-        "description": get_str(fm, "description"),
-        "content":     strip_markdown(body)[:600],
+        "tags":        tags[:8],  # cap — 1k+ tags per post would balloon the index
+        "description": description,
+        "excerpt":     excerpt,
         "image":       get_str(fm, "image"),
         "sentiment":   get_str(fm, "sentiment", "neutral"),
         "source":      get_str(fm, "source_name"),
-        "author":      get_str(fm, "author", "GlobalBR News"),
         "lang":        get_str(fm, "lang", "en"),
     }
 

@@ -25,13 +25,13 @@ import os
 import re
 import json
 import logging
-import unicodedata
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep
 
 from utils.text import slugify, sanitize_text, extract_description, extract_image, parse_date
-from utils.dedup import levenshtein as _levenshtein, titles_too_similar as _titles_too_similar, title_similarity as _title_similarity
+from utils.dedup import titles_too_similar as _titles_too_similar
 from utils.ai_helper import (
     ai_text as _ai_text,
     sentiment_score as _sentiment_score,
@@ -126,21 +126,52 @@ def _get_crypto_prices_cached() -> dict:
     return _crypto_prices_cache
 
 
-def _post_is_crypto_related(title: str, description: str) -> bool:
-    """Retorna True se o post menciona palavras-chave de cripto."""
-    combined = (title + " " + description).lower()
-    return any(kw in combined for kw in _CRYPTO_KEYWORDS)
+def _is_public_url(url: str) -> bool:
+    """Reject URLs that point at non-http schemes or private/loopback hosts.
+
+    Feeds can redirect; without this we could ask the runner to HEAD an
+    internal address (`http://169.254.169.254/...`, `http://10.0.0.1/...`)
+    and leak its response into logs.
+    """
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(url)
+    except Exception:
+        return False
+    if p.scheme not in ("http", "https"):
+        return False
+    host = (p.hostname or "").strip().lower()
+    if not host:
+        return False
+    # Reject literal IP addresses in private ranges.
+    import ipaddress
+    try:
+        ip = ipaddress.ip_address(host)
+        if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_multicast or ip.is_reserved:
+            return False
+    except ValueError:
+        # Not an IP — apply hostname-level checks.
+        if host in {"localhost", "ip6-localhost", "ip6-loopback"}:
+            return False
+        if host.endswith(".local") or host.endswith(".internal"):
+            return False
+    return True
 
 
 def _check_source_url(url: str, timeout: int = 5) -> bool:
     """
     Makes a HEAD request to the source URL.
     Returns True if HTTP status < 400.
-    Returns False on 4xx/5xx errors.
+    Returns False on 4xx/5xx errors or unsafe URLs.
     Returns True on timeout/connection error (don't block on slow servers).
     """
+    if not _is_public_url(url):
+        return False
     try:
+        # NB: allow_redirects=True means we trust 30x targets — re-validate after.
         r = _session.head(url, timeout=timeout, allow_redirects=True)
+        if r.url and r.url != url and not _is_public_url(r.url):
+            return False
         return r.status_code < 400
     except requests.exceptions.Timeout:
         return True   # slow server — don't block the run
@@ -398,7 +429,6 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         bg_img.save(str(jpg_path), "JPEG", quality=82, optimize=True)
 
         webp_path = _to_webp(jpg_path)
-        final_local = str(webp_path) if (webp_path and webp_path.exists()) else (str(jpg_path) if jpg_path.exists() else None)
         local_url = f"/assets/images/posts/{slug}.webp" if (webp_path and webp_path.exists()) else (f"/assets/images/posts/{slug}.jpg" if jpg_path.exists() else fallback)
 
         return local_url
@@ -1258,6 +1288,17 @@ FEEDS = [
 ]
 
 
+# Dedup FEEDS by URL — the literal list above grew copy-paste duplicates over
+# time (Al Jazeera 2×, BBC Sport 2×, Krebs 2×, etc). Keeping them costs AI
+# budget and run time even though the post-level dedup catches the output.
+_seen_urls: set[str] = set()
+FEEDS = [
+    f for f in FEEDS
+    if not (f["url"] in _seen_urls or _seen_urls.add(f["url"]))
+]
+del _seen_urls
+
+
 # ============================================================
 # EXTRA SOURCES — HackerNews, DEV.to
 # ============================================================
@@ -1628,9 +1669,15 @@ def fetch_og_metadata(url: str, timeout: int = 10) -> dict:
     Returns dict with 'description', 'image', and 'body' keys.
     """
     result = {"description": "", "image": "", "body": ""}
+    if not _is_public_url(url):
+        return result
     try:
         resp = _session.get(url, timeout=timeout, stream=True,
                             headers={"Accept": "text/html"})
+        # Reject redirects that land on private/internal hosts.
+        if resp.url and resp.url != url and not _is_public_url(resp.url):
+            resp.close()
+            return result
         resp.raise_for_status()
         chunk = b""
         for data in resp.iter_content(chunk_size=8192):
@@ -1728,6 +1775,11 @@ def get_extra_tags(title: str, description: str) -> tuple[str, list]:
 _DEAD_FEED_THRESHOLD     = 3   # warn at this many consecutive failures
 _DEAD_FEED_SKIP_AT       = 10  # actually skip the feed at this many
 _FEED_HEALTH_FILE        = Path("_data") / "feed_health.json"
+# Conditional-fetch state: feed URL → {"etag": str, "modified": str}. Lets
+# feedparser send If-None-Match / If-Modified-Since and skip the ~100 KB
+# body when nothing changed. At 132 feeds × 8 runs/day, this saves
+# ~100 MB/day of bandwidth.
+_FEED_CACHE_FILE         = Path("_data") / "feed_cache.json"
 
 def _load_feed_failures() -> dict[str, int]:
     try:
@@ -1749,7 +1801,33 @@ def _save_feed_failures(failures: dict[str, int]) -> None:
     except Exception as e:
         log.debug(f"feed_health save failed (non-fatal): {e}")
 
+
+def _load_feed_cache() -> dict[str, dict]:
+    try:
+        if _FEED_CACHE_FILE.exists():
+            data = json.loads(_FEED_CACHE_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                return {str(k): v for k, v in data.items() if isinstance(v, dict)}
+    except Exception as e:
+        log.debug(f"feed_cache load failed (starting fresh): {e}")
+    return {}
+
+
+_feed_cache_lock = threading.Lock()
+
+def _save_feed_cache(cache: dict[str, dict]) -> None:
+    try:
+        _FEED_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _FEED_CACHE_FILE.write_text(
+            json.dumps(cache, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+    except Exception as e:
+        log.debug(f"feed_cache save failed (non-fatal): {e}")
+
+
 _feed_failures: dict[str, int] = _load_feed_failures()
+_feed_cache: dict[str, dict] = _load_feed_cache()
 
 
 def post_filename(date: datetime, slug: str) -> str:
@@ -1768,27 +1846,44 @@ def post_filename(date: datetime, slug: str) -> str:
     return f"{base}-{date.strftime('%H%M')}.md"
 
 
-# Cache de URLs conhecidas (construído uma vez por execução)
+# Cache de URLs conhecidas (construído uma vez por execução).
+# Mutated by worker threads in main(); guarded by _cache_lock.
 _known_urls: set | None = None
+_cache_lock = threading.Lock()
+_source_count_lock = threading.Lock()
 
 def _load_known_urls() -> set:
     """Lê posts existentes e coleta todas as source_url."""
     global _known_urls
     if _known_urls is not None:
         return _known_urls
-    _known_urls = set()
-    for f in POSTS_DIR.glob("*.md"):
-        try:
-            text = f.read_text(encoding="utf-8")
-            for line in text.splitlines():
-                if line.startswith("source_url:"):
-                    url = line.split("source_url:", 1)[1].strip().strip('"')
-                    if url:
-                        _known_urls.add(url)
-                    break
-        except Exception:
-            pass
+    with _cache_lock:
+        if _known_urls is not None:
+            return _known_urls
+        urls: set = set()
+        for f in POSTS_DIR.glob("*.md"):
+            try:
+                text = f.read_text(encoding="utf-8")
+                for line in text.splitlines():
+                    if line.startswith("source_url:"):
+                        url = line.split("source_url:", 1)[1].strip().strip('"')
+                        if url:
+                            urls.add(url)
+                        break
+            except Exception as exc:
+                log.debug(f"_load_known_urls: skipping {f.name}: {exc}")
+        _known_urls = urls
     return _known_urls
+
+
+def _record_new_post(title: str, filename: str, source_url: str) -> None:
+    """Thread-safe insertion of a freshly published post into the caches."""
+    urls = _load_known_urls()
+    titles = _load_known_titles()
+    with _cache_lock:
+        if source_url:
+            urls.add(source_url)
+        titles.insert(0, (title, filename))
 
 
 def post_exists(filename: str, source_url: str = "") -> bool:
@@ -1845,7 +1940,8 @@ def _find_continuation(title: str, known_posts: list) -> str | None:
     return best_match
 
 
-# Cache of known titles (built once per run)
+# Cache of known titles (built once per run).
+# Mutated by worker threads in main(); guarded by _cache_lock.
 _known_titles: list | None = None
 
 def _load_known_titles() -> list:
@@ -1853,18 +1949,33 @@ def _load_known_titles() -> list:
     global _known_titles
     if _known_titles is not None:
         return _known_titles
-    _known_titles = []
-    all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
-    for f in all_posts:
-        try:
-            for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
-                if line.startswith("title:"):
-                    m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
-                    if m:
-                        _known_titles.append((m.group(1).strip(), f.name))
-                    break
-        except Exception:
-            pass
+    from utils.frontmatter import parse as _fm_parse
+    with _cache_lock:
+        if _known_titles is not None:
+            return _known_titles
+        titles: list = []
+        all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
+        for f in all_posts:
+            try:
+                # One read per post — parse the full frontmatter once so
+                # escaped quotes / multiline titles are handled correctly.
+                text = f.read_text(encoding="utf-8", errors="replace")
+                try:
+                    fm = _fm_parse(text)
+                    t = (fm.get("title") or "").strip()
+                except Exception:
+                    # Fall back to a single regex line search.
+                    t = ""
+                    for line in text.splitlines():
+                        if line.startswith("title:"):
+                            m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
+                            t = m.group(1).strip() if m else ""
+                            break
+                if t:
+                    titles.append((t, f.name))
+            except Exception as exc:
+                log.debug(f"_load_known_titles: skipping {f.name}: {exc}")
+        _known_titles = titles
     return _known_titles
 
 
@@ -1929,9 +2040,7 @@ lang: "en"
         front += f'last_updated: "{last_updated}"\n'
     if image:
         front += f'image: "{image}"\n'
-        alt = sanitize_text(title[:100])
-        if not alt:
-            alt = sanitize_text(title[:100])
+        alt = sanitize_text(title[:100]) or "News article cover image"
         front += f'image_alt: "{alt}"\n'
     if image_caption:
         front += f'image_caption: "{sanitize_text(image_caption[:120])}"\n'
@@ -2220,17 +2329,19 @@ def _add_es_summary(title: str, description: str, category: str) -> str:
 # STORY CONTINUATION DETECTION
 # ============================================================
 
-_PT_STOPWORDS = {
-    "about", "after", "again", "along", "among", "around", "before",
-    "being", "between", "could", "during", "every", "first", "found",
-    "great", "group", "house", "large", "later", "light", "might",
-    "never", "night", "often", "other", "place", "right", "small",
-    "still", "their", "there", "these", "thing", "think", "those",
-    "three", "through", "today", "under", "until", "using", "where",
-    "which", "while", "world", "would", "years", "their", "since",
-    "after", "major", "report", "shows", "ahead", "calls", "backs",
-    "says", "says",
-}
+# NB: misleadingly named — these are English stopwords used by
+# `_find_related_story` to filter out common words from headlines before
+# computing keyword overlap. Kept the old name to avoid touching call sites.
+_PT_STOPWORDS = frozenset({
+    "about", "after", "again", "ahead", "along", "among", "around",
+    "backs", "before", "being", "between", "calls", "could", "during",
+    "every", "first", "found", "great", "group", "house", "large",
+    "later", "light", "major", "might", "never", "night", "often",
+    "other", "place", "report", "right", "says", "shows", "since",
+    "small", "still", "their", "there", "these", "thing", "think",
+    "those", "three", "through", "today", "under", "until", "using",
+    "where", "which", "while", "world", "would", "years",
+})
 
 
 def _find_related_story(title: str, tags: list, category: str) -> str:
@@ -2410,10 +2521,10 @@ def create_weekly_digest() -> None:
     Creates a 'Best of the Week' digest post every Sunday.
     Skips if not Sunday or if the digest already exists.
     """
-    if datetime.now().weekday() != 6:  # 6 = Sunday
+    today = datetime.now(timezone.utc)
+    if today.weekday() != 6:  # 6 = Sunday (UTC, matches CI)
         return
 
-    today = datetime.now(timezone.utc)
     digest_filename = f"{today.strftime('%Y-%m-%d')}-weekly-digest.md"
     digest_path = POSTS_DIR / digest_filename
 
@@ -2515,10 +2626,10 @@ def _generate_weekly_stats_post() -> None:
     Counts posts by category, calculates average sentiment, and finds the most-used tag.
     Skips if not Sunday or if the stats post already exists today.
     """
-    if datetime.now().weekday() != 6:  # 6 = Sunday
+    today = datetime.now(timezone.utc)
+    if today.weekday() != 6:  # 6 = Sunday (UTC, matches CI)
         return
 
-    today = datetime.now(timezone.utc)
     stats_filename = f"{today.strftime('%Y-%m-%d')}-week-in-review-stats.md"
     stats_path = POSTS_DIR / stats_filename
 
@@ -2736,16 +2847,37 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
     log.info(f"📡 Processando feed: {name} ({url})")
 
+    # Conditional fetch: pass last ETag / Last-Modified back so the server
+    # can answer 304 Not Modified and skip the body. Saves ~100 MB/day.
+    cached = _feed_cache.get(url) or {}
     try:
-        parsed = feedparser.parse(url, request_headers={
-            "User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"
-        })
+        parsed = feedparser.parse(
+            url,
+            etag=cached.get("etag") or None,
+            modified=cached.get("modified") or None,
+            request_headers={
+                "User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)",
+            },
+        )
     except Exception as e:
         log.error(f"  ❌ Erro ao ler feed {name}: {e}")
         _feed_failures[name] = _feed_failures.get(name, 0) + 1
         if _feed_failures[name] >= _DEAD_FEED_THRESHOLD:
             log.warning(f"  💀 Feed possivelmente morto ({_feed_failures[name]} falhas consecutivas): {name}")
         return 0
+
+    # feedparser surfaces 304 as `status=304` with an empty entries list.
+    if getattr(parsed, "status", None) == 304:
+        log.info(f"  ✓ {name}: 304 Not Modified (cached)")
+        _feed_failures[name] = 0
+        return 0
+
+    # Persist ETag / Last-Modified for the next run.
+    new_etag = getattr(parsed, "etag", "") or ""
+    new_modified = getattr(parsed, "modified", "") or ""
+    if new_etag or new_modified:
+        with _feed_cache_lock:
+            _feed_cache[url] = {"etag": new_etag, "modified": new_modified}
 
     if parsed.bozo and not parsed.entries:
         exc = getattr(parsed, 'bozo_exception', None)
@@ -2984,14 +3116,14 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
             log.info(f"  ✅ Post criado: {filename}" + (f" [fact:{fact_check}]" if fact_check else ""))
-            _load_known_urls().add(link)
-            _load_known_titles().insert(0, (title, filename))
+            _record_new_post(title, filename, link)
             created_count += 1
 
-            # Track source for diversity check (passed via return value extension below)
-            if not hasattr(fetch_feed, "_source_counts"):
-                fetch_feed._source_counts = {}
-            fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
+            # Track source for diversity check (thread-safe).
+            with _source_count_lock:
+                if not hasattr(fetch_feed, "_source_counts"):
+                    fetch_feed._source_counts = {}
+                fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
 
         except Exception as e:
             log.error(
@@ -3181,11 +3313,11 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
 
     log.info(f"  ✅ Post criado [{source}]: {filename}")
-    _load_known_urls().add(link)
-    _load_known_titles().insert(0, (title, filename))
-    if not hasattr(fetch_feed, "_source_counts"):
-        fetch_feed._source_counts = {}
-    fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
+    _record_new_post(title, filename, link)
+    with _source_count_lock:
+        if not hasattr(fetch_feed, "_source_counts"):
+            fetch_feed._source_counts = {}
+        fetch_feed._source_counts[source] = fetch_feed._source_counts.get(source, 0) + 1
     return 1
 
 
@@ -3250,7 +3382,7 @@ def _check_milestones(new_posts_count: int) -> None:
                     pass
             if count < milestone or marker_key in markers:
                 continue
-            date_str = datetime.now().strftime("%Y-%m-%d")
+            date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
             slug = f"{date_str}-{cat}-{milestone}-articles-milestone"
             filepath = legacy_dir / f"{slug}.md"
             if filepath.exists():
@@ -3332,6 +3464,8 @@ def _save_last_run(total_created: int, start_time: float) -> None:
     # Persist the failure counts across runs so feeds that stay broken
     # eventually trip the skip threshold instead of being polled forever.
     _save_feed_failures(_feed_failures)
+    # Persist ETag / Last-Modified for conditional fetches next run.
+    _save_feed_cache(_feed_cache)
 
 
 def main():
@@ -3339,7 +3473,7 @@ def main():
     _run_start = _time.time()
 
     log.info("=" * 60)
-    log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    log.info(f"🚀 GlobalBR News — Fetch iniciado: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
     log.info("=" * 60)
 
     # Global timeout — bail out after 55 min so CI job stays within 60 min limit

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: weekly-audit
+  group: main-write
   cancel-in-progress: false
 
 jobs:
@@ -32,11 +32,11 @@ jobs:
         run: |
           git config user.name "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
-          git add _data/audit_report.json
+          # _data/audit_report.json is .gitignore'd as runtime artefact;
+          # -f ensures the file gets committed so /audit/ can render.
+          git add -f _data/audit_report.json
           git diff --cached --quiet || git commit -m "📊 Weekly audit report — $(date -u +'%Y-%m-%d')"
           git push origin HEAD
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "🔔 IndexNow após auditoria"
         continue-on-error: true

@@ -13,14 +13,20 @@ from __future__ import annotations
 
 import logging
 import os
-import sys
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from utils.frontmatter import parse, get_str, get_list
+from utils.frontmatter import get_str, get_list
 from utils.text import sanitize_text
 from utils.ai_helper import ai_text
+from utils.digest import (
+    AUTO_POST_SLUG_MARKERS,
+    base_score,
+    build_post_url,
+    first_image,
+    load_posts_in_window,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -28,7 +34,6 @@ log = logging.getLogger(__name__)
 POSTS_DIR = Path(__file__).parent / "_posts"
 MIN_POSTS = int(os.environ.get("WRAPUP_MIN_POSTS", "10"))
 TOP_N     = int(os.environ.get("WRAPUP_TOP_N", "20"))
-SKIP      = {"briefing", "roundup", "digest", "milestone", "stats", "wrapup"}
 
 
 def _week_window() -> tuple[date, date]:
@@ -38,51 +43,13 @@ def _week_window() -> tuple[date, date]:
 
 def _recent_posts() -> list[tuple[Path, dict, date]]:
     start, end = _week_window()
-    items: list[tuple[Path, dict, date]] = []
-    for path in POSTS_DIR.glob("*.md"):
-        if any(s in path.stem for s in SKIP):
-            continue
-        try:
-            y, m, d = path.stem.split("-")[:3]
-            dt = date(int(y), int(m), int(d))
-        except Exception:
-            continue
-        if not (start <= dt <= end):
-            continue
-        try:
-            fm = parse(path.read_text(encoding="utf-8", errors="replace"))
-        except Exception:
-            continue
-        items.append((path, fm, dt))
-    return items
+    return load_posts_in_window(POSTS_DIR, start, end, AUTO_POST_SLUG_MARKERS)
 
 
-def _score(fm: dict, dt: date) -> int:
-    score = 0
-    if str(get_str(fm, "breaking", "")).lower() == "true":
-        score += 50
-    if str(get_str(fm, "featured", "")).lower() == "true":
-        score += 30
-    if get_str(fm, "fact_check") == "verified":
-        score += 10
-    if get_str(fm, "tl_dr"):
-        score += 5
-    if get_str(fm, "image"):
-        score += 3
-    # Recent days weight slightly higher (recency bias).
+def _score_with_recency(fm: dict, dt: date) -> int:
+    """Same as base_score, but adds a small recency boost for the wrap-up."""
     age = (date.today() - dt).days
-    score += max(0, 6 - age)
-    return score
-
-
-def _build_post_url(path: Path, fm: dict) -> str:
-    parts = path.stem.split("-", 3)
-    if len(parts) < 4:
-        return ""
-    y, m, d, slug = parts
-    cats = get_list(fm, "categories")
-    cat = (cats[0] if cats else "news").strip()
-    return f"/{cat}/{y}/{m}/{d}/{slug}/"
+    return base_score(fm) + max(0, 6 - age)
 
 
 def _ai_wrapup(by_category: dict[str, list[tuple[Path, dict]]]) -> str:
@@ -95,7 +62,7 @@ def _ai_wrapup(by_category: dict[str, list[tuple[Path, dict]]]) -> str:
             t = get_str(fm, "title", "Untitled")
             d = get_str(fm, "description", "")
             src = get_str(fm, "source_name", "")
-            url = _build_post_url(path, fm)
+            url = build_post_url(path, fm)
             bullets.append(f"- {t} — {d[:140]} (source: {src}; permalink: {url})")
         sections.append(f"### {cat.capitalize()}\n" + "\n".join(bullets))
     catalog = "\n\n".join(sections)
@@ -122,7 +89,6 @@ def _ai_wrapup(by_category: dict[str, list[tuple[Path, dict]]]) -> str:
 
 
 def _frontmatter(top: list[tuple[Path, dict, date]], body: str) -> str:
-    today = date.today()
     start, end = _week_window()
     iso = datetime.now(timezone.utc).isoformat()
     headline = (
@@ -130,14 +96,9 @@ def _frontmatter(top: list[tuple[Path, dict, date]], body: str) -> str:
         f"the {len(top)} stories that mattered"
     )
 
-    image = ""
-    for _, fm, _dt in top:
-        if get_str(fm, "image"):
-            image = get_str(fm, "image")
-            break
-
+    image = first_image(top)
     cited_yaml = "cited_posts:\n" + "".join(
-        f'  - "{_build_post_url(p, fm)}"\n' for p, fm, _ in top if _build_post_url(p, fm)
+        f'  - "{build_post_url(p, fm)}"\n' for p, fm, _ in top if build_post_url(p, fm)
     )
 
     return (
@@ -173,7 +134,7 @@ def main() -> None:
         log.info("Only %d post(s) this week (need ≥%d) — skipping wrap-up.", len(items), MIN_POSTS)
         return
 
-    items.sort(key=lambda triple: _score(triple[1], triple[2]), reverse=True)
+    items.sort(key=lambda triple: _score_with_recency(triple[1], triple[2]), reverse=True)
     top = items[:TOP_N]
 
     by_category: dict[str, list[tuple[Path, dict]]] = defaultdict(list)
