@@ -43,6 +43,7 @@ entities:
   - "Leeds"
   - "Bank of England"
   - "Federation of Small Businesses"
+audio: "/assets/audio/posts/2026-05-17-vicious-circle-of-rising-costs-is-fuelling-crisis-for-traders.mp3"
 ---
 
 A 12kg box of dried apricots cost £35 a year ago. Today, the same box costs £100 — a near-tripling of the price. That’s what [John Mitchell](https://en.wikipedia.org/wiki/John_Mitchell_(cheesemonger)), who runs a cheesemonger in [Manchester](https://en.wikipedia.org/wiki/Manchester), told BBC News. He’s been in the trade for 20 years and says he’s never seen anything like it. "I’m buying cheese for £12 a kilo now. Before, it was £6.50," he said. "There’s no way I can sell it at a price customers will pay and still make a profit." Mitchell closed his shop’s doors last week after 15 years in business. He’s not alone. Traders across the UK report the same story: prices are climbing so fast they can’t keep up, and many are shutting down for good.

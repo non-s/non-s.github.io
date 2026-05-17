@@ -43,6 +43,7 @@ entities:
   - "Abu Omar"
   - "Abu Khattab"
   - "Abu Bakr"
+audio: "/assets/audio/posts/2026-05-17-the-foreign-fighters-who-helped-topple-assad-and-why-china-worries-about-them.mp3"
 ---
 
 In the dusty hills outside Idlib, a Syrian rebel commander named Abu Omar adjusted his rifle strap and pointed toward the Turkish border. ‘These men,’ he said, ‘turned the tide in Idlib.’ He wasn’t talking about Syrians. He meant men who spoke Uyghur, the Turkic language of China’s far west, as their first language. They came from a region Beijing calls Xinjiang, a place most of them had never seen after fleeing. Between 2012 and 2019, hundreds — possibly thousands — of Uyghurs left China to join the fight against Syria’s Assad regime. They fought in some of the war’s bloodiest battles, earning a reputation as fearless, disciplined fighters. Now, years after the war’s end, China is worried about what happens when some of them come home — or don’t.
