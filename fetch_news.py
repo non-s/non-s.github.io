@@ -132,15 +132,52 @@ def _post_is_crypto_related(title: str, description: str) -> bool:
     return any(kw in combined for kw in _CRYPTO_KEYWORDS)
 
 
+def _is_public_url(url: str) -> bool:
+    """Reject URLs that point at non-http schemes or private/loopback hosts.
+
+    Feeds can redirect; without this we could ask the runner to HEAD an
+    internal address (`http://169.254.169.254/...`, `http://10.0.0.1/...`)
+    and leak its response into logs.
+    """
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(url)
+    except Exception:
+        return False
+    if p.scheme not in ("http", "https"):
+        return False
+    host = (p.hostname or "").strip().lower()
+    if not host:
+        return False
+    # Reject literal IP addresses in private ranges.
+    import ipaddress
+    try:
+        ip = ipaddress.ip_address(host)
+        if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_multicast or ip.is_reserved:
+            return False
+    except ValueError:
+        # Not an IP — apply hostname-level checks.
+        if host in {"localhost", "ip6-localhost", "ip6-loopback"}:
+            return False
+        if host.endswith(".local") or host.endswith(".internal"):
+            return False
+    return True
+
+
 def _check_source_url(url: str, timeout: int = 5) -> bool:
     """
     Makes a HEAD request to the source URL.
     Returns True if HTTP status < 400.
-    Returns False on 4xx/5xx errors.
+    Returns False on 4xx/5xx errors or unsafe URLs.
     Returns True on timeout/connection error (don't block on slow servers).
     """
+    if not _is_public_url(url):
+        return False
     try:
+        # NB: allow_redirects=True means we trust 30x targets — re-validate after.
         r = _session.head(url, timeout=timeout, allow_redirects=True)
+        if r.url and r.url != url and not _is_public_url(r.url):
+            return False
         return r.status_code < 400
     except requests.exceptions.Timeout:
         return True   # slow server — don't block the run
@@ -1628,9 +1665,15 @@ def fetch_og_metadata(url: str, timeout: int = 10) -> dict:
     Returns dict with 'description', 'image', and 'body' keys.
     """
     result = {"description": "", "image": "", "body": ""}
+    if not _is_public_url(url):
+        return result
     try:
         resp = _session.get(url, timeout=timeout, stream=True,
                             headers={"Accept": "text/html"})
+        # Reject redirects that land on private/internal hosts.
+        if resp.url and resp.url != url and not _is_public_url(resp.url):
+            resp.close()
+            return result
         resp.raise_for_status()
         chunk = b""
         for data in resp.iter_content(chunk_size=8192):
