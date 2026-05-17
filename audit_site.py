@@ -90,7 +90,7 @@ def main() -> None:
         if src:
             source_counts[src] = source_counts.get(src, 0) + 1
 
-        # Track language split (en vs pt-br) for monitoring translation
+        # Track language split (sanity check — site is English-only now).
         # coverage.
         lang = get_str(fm, "lang", "en").strip().lower()
         lang_counts[lang] = lang_counts.get(lang, 0) + 1

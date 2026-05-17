@@ -15,12 +15,12 @@ Every hour, GitHub Actions runs `fetch_news.py`, which:
 5. Generates a cover image (Pollinations.ai) and Jekyll post in `_posts/`.
 6. Commits and pushes — Jekyll on GitHub Pages does the rest.
 
-On the same run, a translation pass (Mistral) writes a PT-BR version into `_posts/pt/`.
-
 Once a day, a YouTube workflow:
-- Builds a roundup video (FFmpeg + edge-tts narration + an AI-painted thumbnail).
+- Builds an English roundup video (FFmpeg + edge-tts narration + an AI-painted thumbnail).
 - Generates Shorts from the most engaging single-story posts.
 - Uploads both and writes blog posts pointing to the videos.
+
+The site is **English-only** — there is no translation pass and no PT-BR mirror.
 
 ## The stack
 
@@ -31,7 +31,7 @@ Once a day, a YouTube workflow:
 | RSS | `feedparser` |
 | LLM | Mistral La Plateforme (free tier, `mistral-small-latest`) via REST |
 | Image generation | Pollinations.ai Flux (no API key) |
-| TTS | Microsoft `edge-tts` (Jenny / Davis / Francisca) |
+| TTS | Microsoft `edge-tts` (Jenny / Davis) |
 | Video assembly | FFmpeg + Pillow |
 | YouTube upload | YouTube Data API v3 + OAuth |
 | Search engine indexing | IndexNow + Google Indexing API |
@@ -40,7 +40,7 @@ Once a day, a YouTube workflow:
 
 | Secret | Used for | Required? |
 |---|---|---|
-| `MISTRAL_API_KEY` | All AI calls (text, translation, video meta) | **Yes** — site stops publishing without it |
+| `MISTRAL_API_KEY` | All AI calls (rewriting, FAQ, video meta) | **Yes** — site stops publishing without it |
 | `YOUTUBE_TOKEN` | OAuth token for video upload | Only for `youtube-bot.yml` |
 | `MAILCHIMP_API_KEY` / `MAILCHIMP_AUDIENCE_ID` / `MAILCHIMP_SERVER` | Daily newsletter campaign | Only for `newsletter.yml` |
 | `GOOGLE_INDEXING_CREDENTIALS` | Google Search Console push | Optional |
@@ -52,8 +52,7 @@ A complete list — including all tuning variables — is in [`.env.example`](.e
 
 ```
 fetch_news.py            # main hourly pipeline
-translate_posts.py       # EN → PT-BR via Mistral
-generate_video.py        # YouTube roundup video
+generate_video.py        # YouTube roundup video (English)
 generate_shorts.py       # YouTube Shorts (one per story)
 generate_audio.py        # MP3 narration per post
 audit_site.py            # weekly quality report → _data/audit_report.json
@@ -61,12 +60,13 @@ utils/
   ai_helper.py           # Mistral wrapper, quality_score, sentiment, etc.
   text.py                # humanize_for_tts (strips markdown for TTS)
   frontmatter.py         # YAML parse helpers
+  digest.py              # shared helpers for editorial digests
+  video_common.py        # PIL / font / download helpers shared by video pipelines
   dedup.py / retry.py    # plumbing
 _layouts/post.html       # JSON-LD (NewsArticle + FAQPage + BreadcrumbList)
 sitemap.xml              # main sitemap (image + news annotations)
 sitemap-news.xml         # Google News sitemap (48h window)
-sitemap-pt.xml           # Portuguese sitemap
-.github/workflows/       # 14 workflows: fetch-news, youtube-bot, translate, etc.
+.github/workflows/       # fetch-news, youtube-bot, newsletter, etc.
 ```
 
 ## Security

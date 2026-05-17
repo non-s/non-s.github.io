@@ -159,8 +159,8 @@ def upload_video(youtube, meta: dict) -> str | None:
         log.error("Metadata sem campo 'video' — pulando.")
         return None
     video_path = Path(video_field)
-    # Thumbnail is optional — older metadata (e.g. the PT-BR variant) may
-    # omit it. We just skip thumbnail upload in that case.
+    # Thumbnail is optional — Shorts metadata sometimes omits it, in which
+    # case we just skip the thumbnail upload step.
     thumb_field = meta.get("thumbnail") or ""
     thumb_path = Path(thumb_field) if thumb_field else None
 
