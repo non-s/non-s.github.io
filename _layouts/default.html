@@ -1,5 +1,8 @@
 ---
-layout: compress
+# NB: `layout: compress` was tried briefly but added a Liquid pass
+# per page that pushed the Jekyll build past 25 min on this corpus
+# (14 511 tag pages × 1 670 posts). HTML compression — if needed at
+# all — should be done as a post-build pass, not via Liquid templates.
 ---
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: 'en' }}">
