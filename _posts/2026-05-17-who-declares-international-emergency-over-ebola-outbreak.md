@@ -44,6 +44,7 @@ entities:
   - "Ituri Province"
   - "Samuel-Roger Kamba"
   - "Gavi, the Vaccine Alliance"
+audio: "/assets/audio/posts/2026-05-17-who-declares-international-emergency-over-ebola-outbreak.mp3"
 ---
 
 > 📰 **Continuing coverage:** [WHO declares Ebola outbreak in DR Congo a global emergency](/world/2026/05/17/who-declares-ebola-outbreak-in-dr-congo-a-global-health-emergency/)

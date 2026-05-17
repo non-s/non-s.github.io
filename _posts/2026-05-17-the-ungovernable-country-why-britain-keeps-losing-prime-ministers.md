@@ -40,6 +40,7 @@ entities:
   - "Reform UK"
   - "Conservative Party (UK)"
   - "10 Downing Street"
+audio: "/assets/audio/posts/2026-05-17-the-ungovernable-country-why-britain-keeps-losing-prime-ministers.mp3"
 ---
 
 Britain’s prime ministers [Liz Truss](https://en.wikipedia.org/wiki/Liz_Truss) and [Rishi Sunak](https://en.wikipedia.org/wiki/Rishi_Sunak) didn’t just lose their jobs — they were wiped out fast. Truss’s 49-day reign is the shortest in history. Sunak lasted 18 months before calling it quits. [Liz Truss](https://en.wikipedia.org/wiki/Liz_Truss) wasn’t alone. Since 2016, Britain has cycled through five prime ministers like it’s a revolving door. Each one left in disgrace, exhaustion, or defeat. The pattern isn’t random. It’s a system breaking under its own weight.

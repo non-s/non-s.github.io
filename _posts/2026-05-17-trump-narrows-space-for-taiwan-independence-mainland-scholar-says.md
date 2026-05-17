@@ -42,6 +42,7 @@ entities:
   - "Democratic Progressive Party"
   - "Tsai Ing-wen"
   - "South China Morning Post"
+audio: "/assets/audio/posts/2026-05-17-trump-narrows-space-for-taiwan-independence-mainland-scholar-says.mp3"
 ---
 
 The message from Beijing is blunt: don’t test the red line. Wu Yongping, one of China’s top experts on Taiwan affairs and dean of the Institute for Taiwan Studies at [Tsinghua University](https://en.wikipedia.org/wiki/Tsinghua_University), says the recent summit between President [Xi Jinping](https://en.wikipedia.org/wiki/Xi_Jinping) and former President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) sent a clear signal that Washington is no longer giving Taipei room to push for formal independence. That’s a shift from earlier years when U.S. leaders often wavered on the issue.
