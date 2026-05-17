@@ -10,8 +10,9 @@ from utils.frontmatter import parse as parse_frontmatter, get_str, get_list
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-POSTS_DIR   = Path("_posts")
-DATA_DIR    = Path("_data")
+_ROOT       = Path(__file__).resolve().parent
+POSTS_DIR   = _ROOT / "_posts"
+DATA_DIR    = _ROOT / "_data"
 OUTPUT_FILE = DATA_DIR / "audit_report.json"
 
 OLD_POST_DAYS          = int(os.environ.get("AUDIT_MAX_AGE_DAYS",      "90"))

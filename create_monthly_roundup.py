@@ -16,7 +16,8 @@ from utils.retry import retry_call
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-POSTS_DIR  = Path("_posts")
+_ROOT      = Path(__file__).resolve().parent
+POSTS_DIR  = _ROOT / "_posts"
 MIN_POSTS  = int(os.environ.get("ROUNDUP_MIN_POSTS", "5"))
 _SKIP      = ("roundup", "digest", "milestone", "stats", "best-of")
 

@@ -95,6 +95,9 @@ jobs:
           git add assets/images/posts/ || true
           git add fetch_news.log || true
           git add search-index.json || true
+          # Per-run state: ETag/Last-Modified cache + dead-feed counters.
+          # Tracked so they survive the fresh CI checkout next run.
+          git add _data/feed_cache.json _data/feed_health.json 2>/dev/null || true
 
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
