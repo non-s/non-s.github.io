@@ -76,46 +76,13 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Fontes ────────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False):
-    candidates_bold = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-    ]
-    candidates_reg = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ]
-    for path in (candidates_bold if bold else candidates_reg):
-        if Path(path).exists():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default()
-
-
-# ── Utilitários de desenho ────────────────────────────────────────
-def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
-    x0, y0, x1, y1 = xy
-    draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
-                            outline=outline, width=outline_width)
-
-
-def wrap_text(draw, text, font, max_width):
-    words = text.split()
-    lines, line = [], []
-    for word in words:
-        test = ' '.join(line + [word])
-        if draw.textbbox((0, 0), test, font=font)[2] > max_width and line:
-            lines.append(' '.join(line))
-            line = [word]
-        else:
-            line.append(word)
-    if line:
-        lines.append(' '.join(line))
-    return lines
+# ── Fontes / utilitários compartilhados com generate_video.py ─────
+from utils.video_common import (
+    get_font,
+    draw_rounded_rect,
+    wrap_text,
+    download_image as _download_image_common,
+)
 
 
 def clean_text(text: str, max_chars: int = 500) -> str:
@@ -332,16 +299,9 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
         return False
 
 
+# Shorts use a 15s timeout (single image, more important not to fail).
 def download_image(url: str, dest: Path) -> bool:
-    try:
-        r = requests.get(url, timeout=15,
-                         headers={"User-Agent": "GlobalBR-Bot/2.0"})
-        if r.status_code == 200 and len(r.content) > 2000:
-            dest.write_bytes(r.content)
-            return True
-    except Exception as e:
-        log.debug(f"Image download failed: {e}")
-    return False
+    return _download_image_common(url, dest, timeout=15)
 
 
 # ── Frame vertical do Short ───────────────────────────────────────

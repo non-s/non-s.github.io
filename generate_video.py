@@ -175,30 +175,13 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Fontes ─────────────────────────────────────────────────────
-def get_font(size: int, bold: bool = False):
-    candidates_bold = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-    ]
-    candidates_reg = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ]
-    for path in (candidates_bold if bold else candidates_reg):
-        if Path(path).exists():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default()
-
-# ── Utilitários de desenho ─────────────────────────────────────
-def draw_rounded_rect(draw, xy, radius, fill, outline=None, outline_width=2):
-    x0, y0, x1, y1 = xy
-    draw.rounded_rectangle([x0, y0, x1, y1], radius=radius, fill=fill,
-                            outline=outline, width=outline_width)
+# ── Fontes / utilitários compartilhados com generate_shorts.py ────
+from utils.video_common import (
+    get_font,
+    draw_rounded_rect,
+    wrap_text,
+    download_image as _download_image_common,
+)
 
 def draw_gradient_bg(img, color_top, color_bot):
     draw = ImageDraw.Draw(img)
@@ -216,20 +199,6 @@ def draw_tech_grid(img, alpha=12):
         for y in range(0, VIDEO_H, 48):
             d.ellipse([x-1, y-1, x+1, y+1], fill=(0, 195, 255, alpha))
     return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
-
-def wrap_text(draw, text, font, max_width):
-    words = text.split()
-    lines, line = [], []
-    for word in words:
-        test = ' '.join(line + [word])
-        if draw.textbbox((0, 0), test, font=font)[2] > max_width and line:
-            lines.append(' '.join(line))
-            line = [word]
-        else:
-            line.append(word)
-    if line:
-        lines.append(' '.join(line))
-    return lines
 
 # ── Tradução PT-BR ────────────────────────────────────────────
 def _translate_script_pt(script: str) -> str:
@@ -482,17 +451,9 @@ async def text_to_speech(text: str, output_path: Path, voice: str):
     communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="+0Hz")
     await communicate.save(str(output_path))
 
-# ── Download de imagem ─────────────────────────────────────────
+# Roundup uses a tighter timeout (single frame fallback is OK).
 def download_image(url: str, dest: Path) -> bool:
-    try:
-        r = requests.get(url, timeout=10,
-                         headers={"User-Agent": "GlobalBR-Bot/2.0"})
-        if r.status_code == 200 and len(r.content) > 2000:
-            dest.write_bytes(r.content)
-            return True
-    except Exception as e:
-        log.debug(f"Image download failed: {e}")
-    return False
+    return _download_image_common(url, dest, timeout=10)
 
 # ── Frame de vídeo ─────────────────────────────────────────────
 def create_video_frame(title: str, source: str, image_path: Path | None,
