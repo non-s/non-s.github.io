@@ -5,6 +5,7 @@ date: 2026-05-14 19:00:34 +0000
 categories: [world, war]
 tags: [aljazeera, world-news, middle-east, war, conflict, iran-internet-access, tiered-internet-access, digital-rights, cyberspace-governance, internet-shutdown]
 author: "GlobalBR News"
+lang: "en"
 description: "Iran expands tiered internet access amid continued online blackout, limiting connectivity to approved individuals and entities, raising concerns about digital r"
 source_url: "https://www.aljazeera.com/editorial/2026/5/14/iran-expands-tiered-internet-access-amid-continued-online-blackout?traffic_source=rss"
 source_name: "Al Jazeera"

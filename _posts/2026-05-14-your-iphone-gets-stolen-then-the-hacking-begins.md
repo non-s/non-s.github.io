@@ -4,7 +4,8 @@ title: "Your iPhone Gets Stolen. Then the Hacking Begins"
 date: 2026-05-14 10:00:00 +0000
 categories: [technology, security]
 tags: [wired, tech, science, security, phishing]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "A bustling underground ecosystem is providing criminals with the tools to unlock iPhones—and wage phishing attacks against their contacts to access bank account"
 source_url: "https://www.wired.com/story/your-iphone-gets-stolen-then-the-hacking-begins/"
 source_name: "Wired"

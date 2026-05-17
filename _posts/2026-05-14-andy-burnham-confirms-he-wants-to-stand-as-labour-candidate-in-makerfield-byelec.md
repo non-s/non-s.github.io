@@ -5,6 +5,7 @@ date: 2026-05-14 16:57:36 +0000
 categories: [politics]
 tags: [guardian, politics, uk, election, andy-burnham, labour-party, uk-politics, makerfield-byelection, leadership-bid]
 author: "GlobalBR News"
+lang: "en"
 description: "Andy Burnham confirms he wants to stand as Labour candidate in Makerfield byelection, UK politics live updates and analysis from The Guardian, Labour party news"
 source_url: "https://www.theguardian.com/politics/live/2026/may/14/angela-rayner-says-starmer-should-reflect-on-stepping-aside-after-hmrc-clears-her-over-tax-affairs-uk-politics-live"
 source_name: "The Guardian"

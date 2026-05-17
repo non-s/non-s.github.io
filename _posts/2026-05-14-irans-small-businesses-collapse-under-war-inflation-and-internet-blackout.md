@@ -5,6 +5,7 @@ date: 2026-05-14 16:44:48 +0000
 categories: [world, startups]
 tags: [france24, world-news, europe, startups, iran-economy, small-businesses, inflation, internet-blackout, economic-crisis]
 author: "GlobalBR News"
+lang: "en"
 description: "Iran's small businesses struggle as war, inflation and internet blackout take toll on economy, causing widespread job loss and currency devaluation, with no end"
 source_url: "https://www.france24.com/en/middle-east/20260514-iran-economy-collapse-internet-blackout-small-businesses-war-inflation"
 source_name: "France 24"

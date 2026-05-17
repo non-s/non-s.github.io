@@ -5,7 +5,9 @@ date: 2026-05-17 00:24:50 +0000
 categories: [digest]
 tags: [weekly, roundup, digest]
 author: "GlobalBR News"
+lang: "en"
 description: "The most important stories of the week, curated by GlobalBR News — May 17, 2026."
+image: "/assets/images/og-default.jpg"
 sentiment: "neutral"
 audio: "/assets/audio/posts/2026-05-17-weekly-digest.mp3"
 ---

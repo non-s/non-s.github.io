@@ -4,8 +4,10 @@ title: "Claude for Small Business"
 date: 2026-05-14 03:59:35 +0000
 categories: [technology, ai]
 tags: [hackernews, programming, tech, ai, anthropic]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Article URL: https://www.anthropic.com/news/claude-for-small-business Comments URL: https://news.ycombinator.com/item?id=48130950 Points: 120 # Comments: 64"
+image: "/assets/images/og-default.jpg"
 source_url: "https://www.anthropic.com/news/claude-for-small-business"
 source_name: "Hacker News"
 ---

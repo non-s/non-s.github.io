@@ -5,6 +5,7 @@ date: 2026-05-14 08:45:00 +0000
 categories: [politics]
 tags: [politico, politics, usa, democrats]
 author: "GlobalBR News"
+lang: "en"
 description: "A lot of Democrats are willing to sacrifice Black voting power to beat the GOP. In the two weeks since the Supreme Court significantly narrowed a key provision"
 source_url: "https://www.politico.com/news/2026/05/14/poll-democrats-redistricting-black-voters-00919972"
 source_name: "Politico"

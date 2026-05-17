@@ -5,6 +5,7 @@ date: 2026-05-14 19:00:50 +0000
 categories: [world, war]
 tags: [aljazeera, world-news, middle-east, war, conflict, diplomacy, lebanon-israel-conflict, us-foreign-policy, middle-east-peace-talks, hezbollah, israeli-attacks-on-lebanon]
 author: "GlobalBR News"
+lang: "en"
 description: "The US hosts Lebanon-Israel talks as Israeli attacks continue, despite ceasefire, with Hezbollah opposing the negotiations in Washington to find a way forward f"
 source_url: "https://www.aljazeera.com/video/inside-story/2026/5/14/what-does-the-us-hope-to-achieve-from-lebanese-israeli-talks?traffic_source=rss"
 source_name: "Al Jazeera"

@@ -5,6 +5,7 @@ date: 2026-05-13 20:43:53 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, politics, government]
 author: "GlobalBR News"
+lang: "en"
 description: "The U.S. president is expected to downplay other issues to secure new trade deals."
 source_url: "https://foreignpolicy.com/2026/05/13/trump-china-xi-jinping-summit-trade-rare-earths-artificial-intelligence/"
 source_name: "Foreign Policy"

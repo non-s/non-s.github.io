@@ -4,7 +4,8 @@ title: "The FCC Banned Foreign-Made Routers. Here’s Why I Would Hold Off On Bu
 date: 2026-05-13 20:55:00 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Nearly every router is affected by the FCC’s unprecedented ban. Until we learn more, you should wait on a new purchase if you can."
 source_url: "https://www.cnet.com/home/internet/the-fcc-banned-foreign-made-routers-heres-why-i-would-hold-off-on-buying-one/"
 source_name: "CNET"

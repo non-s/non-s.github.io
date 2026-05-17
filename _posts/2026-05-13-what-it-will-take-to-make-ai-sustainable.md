@@ -4,7 +4,8 @@ title: "What It Will Take to Make AI Sustainable"
 date: 2026-05-13 19:15:59 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Researcher Sasha Luccioni argues we need better emissions data and a better sense of how people are using AI in the first place."
 source_url: "https://www.wired.com/story/what-it-will-take-to-make-ai-sustainable/"
 source_name: "Wired"

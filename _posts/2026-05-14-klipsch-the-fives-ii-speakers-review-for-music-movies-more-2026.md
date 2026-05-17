@@ -4,7 +4,8 @@ title: "Klipsch the Fives II Speakers Review for Music, Movies, More (2026)"
 date: 2026-05-14 10:32:00 +0000 -0300
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "These bookshelf speakers are excellent for music playback, but you&#x27;ll want to stick with a soundbar for theater-shaking surround sound."
 source_url: "https://www.wired.com/review/klipsch-the-fives-ii/"
 source_name: "Wired"

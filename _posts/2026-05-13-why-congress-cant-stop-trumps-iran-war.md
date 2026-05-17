@@ -5,6 +5,7 @@ date: 2026-05-13 16:49:02 +0000
 categories: [politics, war]
 tags: [foreign-policy, geopolitics, diplomacy, war, conflict, iran-war, us-congress, trump-presidency, war-powers-resolution, us-constitution]
 author: "GlobalBR News"
+lang: "en"
 description: "The US Congress faces challenges in stopping Trump's Iran war due to constitutional design issues."
 source_url: "https://foreignpolicy.com/2026/05/13/why-congress-cant-stop-trumps-iran-war/"
 source_name: "Foreign Policy"

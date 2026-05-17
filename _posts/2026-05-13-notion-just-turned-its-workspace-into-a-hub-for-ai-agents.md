@@ -4,8 +4,10 @@ title: "Notion just turned its workspace into a hub for AI agents"
 date: 2026-05-13 21:45:09 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Notion’s new developer platform lets teams connect AI agents, external data sources, and custom code directly into their workspace as the company pushes deeper"
+image: "/assets/images/og-default.jpg"
 source_url: "https://techcrunch.com/2026/05/13/notion-just-turned-its-workspace-into-a-hub-for-ai-agents/"
 source_name: "TechCrunch"
 ---

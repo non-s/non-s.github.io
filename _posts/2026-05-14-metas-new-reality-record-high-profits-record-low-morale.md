@@ -4,7 +4,8 @@ title: "Meta’s New Reality: Record High Profits. Record Low Morale"
 date: 2026-05-14 09:00:00 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Next week, Meta is cutting about 10 percent of its staff. WIRED spoke with more than a dozen current and former employees about what it's like inside a company"
 source_url: "https://www.wired.com/story/meta-layoffs-bad-vibes-mark-zuckerberg-ai/"
 source_name: "Wired"

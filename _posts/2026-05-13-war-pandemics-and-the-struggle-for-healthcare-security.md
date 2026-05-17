@@ -5,6 +5,7 @@ date: 2026-05-13 13:12:26 +0000
 categories: [politics, war]
 tags: [foreign-policy, geopolitics, diplomacy, war, conflict, global-health-security, pandemics, supply-chain-shocks, healthcare-infrastructure, international-cooperation]
 author: "GlobalBR News"
+lang: "en"
 description: "Countries face dual threat of pandemics and supply chain shocks, impacting healthcare security worldwide."
 source_url: "https://foreignpolicy.com/2026/05/13/healthcare-resilience-covid-pandemic-hantavirus-supply-chain-china-iran/"
 source_name: "Foreign Policy"

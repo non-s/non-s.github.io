@@ -5,6 +5,7 @@ date: 2026-05-14 15:46:55 +0000
 categories: [world, war]
 tags: [france24, world-news, europe, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "A month after Guinea deployed troops to its border with Liberia, President Joseph Boakai claimed to be in touch with his Guinean counterpart Mamady Doumbouya, i"
 source_url: "https://www.france24.com/en/tv-shows/t%C3%AAte-%C3%A0-t%C3%AAte/20260514-we-have-learned-to-live-with-our-neighbours-liberia-s-president-joseph-boakai"
 source_name: "France 24"

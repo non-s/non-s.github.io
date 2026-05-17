@@ -5,6 +5,7 @@ date: 2026-05-13 09:50:00 +0000
 categories: [politics, war]
 tags: [politico, politics, usa, war, conflict, iowa-primary, buttigieg-endorsement, democratic-presidential-campaign, progressive-politics, 2024-election]
 author: "GlobalBR News"
+lang: "en"
 description: "Pete Buttigieg is picking sides in a heated Senate Democratic primary in Iowa, backing state Rep. Josh Turek ahead of another possible presidential campaign, sh"
 source_url: "https://www.politico.com/news/2026/05/13/buttigieg-endorses-turek-iowa-senate-00918205"
 source_name: "Politico"

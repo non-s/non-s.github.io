@@ -4,7 +4,8 @@ title: "Netflix's ad tier now has a whopping 250 million monthly users"
 date: 2026-05-13 21:21:27 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Advertising has become big business for the streamer."
 source_url: "https://www.engadget.com/2172449/netflixs-ad-tier-now-has-a-whopping-250-million-monthly-users/"
 source_name: "Engadget"

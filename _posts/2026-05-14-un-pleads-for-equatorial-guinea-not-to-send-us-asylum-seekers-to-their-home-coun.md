@@ -5,6 +5,7 @@ date: 2026-05-14 11:00:25 +0000
 categories: [world]
 tags: [guardian, world-news, international, equatorial-guinea, asylum-seekers, human-rights, refoulement, un-appeal]
 author: "GlobalBR News"
+lang: "en"
 description: "UN urges Equatorial Guinea to halt plans to return US deportees to their home countries due to danger of persecution and death, amid reports of prison-like cond"
 source_url: "https://www.theguardian.com/world/2026/may/14/un-equatorial-guinea-us-deportees"
 source_name: "The Guardian"

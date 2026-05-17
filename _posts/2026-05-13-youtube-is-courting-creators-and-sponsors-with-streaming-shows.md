@@ -4,7 +4,8 @@ title: "YouTube is courting creators — and sponsors — with streaming shows"
 date: 2026-05-13 21:30:00 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "In the ongoing fight for content and talent, YouTube is pitching itself as the connector between the creators and advertisers - and marketing its creators not j"
 source_url: "https://www.theverge.com/news/930092/youtube-creators-shows-sponsors-netflix-upfront"
 source_name: "The Verge"

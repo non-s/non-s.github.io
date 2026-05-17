@@ -5,6 +5,7 @@ date: 2026-05-14 12:22:28 +0000
 categories: [world, war]
 tags: [euronews, europe, world-news, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "Video. Supporters gathered in Tehran to send off Iran’s national football team ahead of the 2026 World Cup, chanting slogans including “Death to America” and “D"
 source_url: "http://www.euronews.com/video/2026/05/14/iran-national-team-heads-toward-2026-world-cup-amid-death-to-america-chants-in-tehran"
 source_name: "Euronews"

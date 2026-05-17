@@ -5,6 +5,7 @@ date: 2026-05-14 16:47:27 +0000
 categories: [world]
 tags: [npr, usa, world-news]
 author: "GlobalBR News"
+lang: "en"
 description: "They're calling it the 'last titan' of Thailand. The sauropod — an herbivore with a long neck and tail — comes from the late Early Cretaceous period, some 100 t"
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5819740/dinosaur-thailand-sauropod-giant-asia-paleontology"
 source_name: "NPR"

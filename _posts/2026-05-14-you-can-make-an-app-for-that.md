@@ -4,7 +4,8 @@ title: "You can make an app for that"
 date: 2026-05-14 11:00:00 +0000 -0300
 categories: [technology]
 tags: [theverge, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The tyranny of software is almost over. Since the first computer programmers wrote the first computer programs, we, the users of that software, have been forced"
 source_url: "https://www.theverge.com/tech/928905/vibe-code-personal-software-revolution"
 source_name: "The Verge"

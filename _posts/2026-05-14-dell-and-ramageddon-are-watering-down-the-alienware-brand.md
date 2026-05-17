@@ -4,7 +4,8 @@ title: "Dell and RAMageddon are watering down the Alienware brand"
 date: 2026-05-14 13:00:00 +0000
 categories: [technology, gadgets]
 tags: [theverge, gadgets, reviews, laptop]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "I remember a time when Alienware refused to make a thinner laptop - the company didn't want to compromise on its builds. But today, Dell is slapping the Alienwa"
 source_url: "https://www.theverge.com/tech/929160/dell-alienware-15-laptop-price-release-date-branding"
 source_name: "The Verge"

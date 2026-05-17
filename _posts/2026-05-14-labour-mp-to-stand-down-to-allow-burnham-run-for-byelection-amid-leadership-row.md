@@ -5,6 +5,7 @@ date: 2026-05-14 18:16:41 +0000
 categories: [politics]
 tags: [guardian, politics, uk, election, labour-byelection, andy-burnham, keir-starmer, labour-leadership-row, uk-politics]
 author: "GlobalBR News"
+lang: "en"
 description: "Labour MP to stand down, paving way for Andy Burnham to run in byelection and challenge Keir Starmer's leadership, amid party row, triggering UK politics update"
 source_url: "https://www.theguardian.com/politics/2026/may/14/labour-mp-to-stand-down-to-allow-burnham-run-for-byelection-amid-leadership-row"
 source_name: "The Guardian"

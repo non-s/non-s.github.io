@@ -4,7 +4,8 @@ title: "AI chatbots are giving out people’s real phone numbers"
 date: 2026-05-13 18:09:03 +0000
 categories: [ai]
 tags: [mit, ai, research]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "People report that their personal contact info was surfaced by Google AI—and there’s apparently no easy way to prevent it.&#160; A Redditor recently wrote that"
 source_url: "https://www.technologyreview.com/2026/05/13/1137203/ai-chatbots-are-giving-out-peoples-real-phone-numbers/"
 source_name: "MIT Technology Review"

@@ -5,6 +5,7 @@ date: 2026-05-14 20:08:33 +0000
 categories: [world, sports]
 tags: [france24, world-news, europe, sports, football, world-cup, france, kylian-mbappé, didier-deschamps, fifa]
 author: "GlobalBR News"
+lang: "en"
 description: "Kylian Mbappé to lead France in World Cup, squad named by coach Didier Deschamps, tournament in US, Canada, and Mexico this summer."
 source_url: "https://www.france24.com/en/sport/20260514-mbapp%C3%A9-heads-france-squad-in-deschamps-final-world-cup-bid"
 source_name: "France 24"

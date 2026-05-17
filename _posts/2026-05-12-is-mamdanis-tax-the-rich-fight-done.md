@@ -5,6 +5,7 @@ date: 2026-05-12 21:10:16 +0000
 categories: [politics]
 tags: [politico, politics, usa, new-york-city-budget, zohran-mamdani, tax-the-rich, albany, new-york-city-politics]
 author: "GlobalBR News"
+lang: "en"
 description: "New York City Mayor Zohran Mamdani's 'Tax the Rich' initiative faces uncertainty as the city's budget deficit is addressed without state-level tax hikes."
 source_url: "https://www.politico.com/newsletters/new-york-playbook-pm/2026/05/12/hochul-mamdani-tax-the-rich-fight-budget-00917585"
 source_name: "Politico"

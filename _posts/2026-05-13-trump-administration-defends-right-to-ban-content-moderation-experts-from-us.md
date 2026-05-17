@@ -4,7 +4,8 @@ title: "Trump administration defends right to ban content moderation experts fro
 date: 2026-05-13 21:58:44 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The Trump administration is fighting for the right to keep some social media moderation advocates out of the US. On Wednesday, US District Court Judge James Boa"
 source_url: "https://www.theverge.com/policy/930178/citr-rubio-visa-deportation-misinformation-research"
 source_name: "The Verge"

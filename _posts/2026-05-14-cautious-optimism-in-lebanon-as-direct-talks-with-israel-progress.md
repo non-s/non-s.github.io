@@ -5,6 +5,7 @@ date: 2026-05-14 20:25:19 +0000
 categories: [world, war]
 tags: [aljazeera, world-news, middle-east, war, conflict, diplomacy, lebanon-israel-talks, middle-east-peace-process, hezbollah-disarmament, israeli-withdrawal-from-lebanon, us-diplomatic-efforts]
 author: "GlobalBR News"
+lang: "en"
 description: "Lebanon and Israel hold direct talks in US, seeking new ceasefire deal and resolution to longstanding issues, including Israeli withdrawal and Hezbollah disarma"
 source_url: "https://www.aljazeera.com/news/2026/5/14/cautious-optimism-in-lebanon-as-direct-talks-with-israel-progress?traffic_source=rss"
 source_name: "Al Jazeera"

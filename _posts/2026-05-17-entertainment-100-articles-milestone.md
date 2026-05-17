@@ -8,6 +8,7 @@ featured: true
 sentiment: "positive"
 image: "/assets/images/posts/2026-05-17-entertainment-100-articles-milestone.webp"
 image_alt: "GlobalBR News 100 articles milestone in entertainment category"
+lang: "en"
 ---
 
 We've reached a milestone: **100 articles** published in the **Entertainment** category!

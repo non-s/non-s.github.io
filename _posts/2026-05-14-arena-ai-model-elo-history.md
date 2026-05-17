@@ -4,8 +4,10 @@ title: "Arena AI Model ELO History"
 date: 2026-05-14 03:19:05 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Hi HN,I built a live tracker to visualize the lifecycle and performance changes of flagship AI models.We've all experienced the phenomenon where a flagship mode"
+image: "/assets/images/og-default.jpg"
 source_url: "https://mayerwin.github.io/AI-Arena-History/"
 source_name: "Hacker News"
 ---

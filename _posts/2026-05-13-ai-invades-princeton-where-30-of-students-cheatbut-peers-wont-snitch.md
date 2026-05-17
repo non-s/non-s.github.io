@@ -4,7 +4,8 @@ title: "AI invades Princeton, where 30% of students cheat—but peers won't snit
 date: 2026-05-13 19:47:24 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Pity poor Princeton. The ultra-elite university has a mere $38 billion in endowment money. Many of its dorms lack air conditioning . And it's in New Jersey. I k"
 source_url: "https://arstechnica.com/tech-policy/2026/05/ai-driven-cheating-widespread-even-at-elite-schools-like-princeton/"
 source_name: "Ars Technica"

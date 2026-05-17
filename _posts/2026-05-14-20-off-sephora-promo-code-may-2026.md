@@ -4,7 +4,8 @@ title: "20% Off Sephora Promo Code | May 2026"
 date: 2026-05-14 05:00:00 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Earn more points on skincare purchases when you use our Sephora coupon."
 source_url: "https://www.wired.com/story/sephora-promo-code/"
 source_name: "Wired"

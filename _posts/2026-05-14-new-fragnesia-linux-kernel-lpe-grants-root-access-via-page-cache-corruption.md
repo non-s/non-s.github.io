@@ -4,7 +4,8 @@ title: "New Fragnesia Linux Kernel LPE Grants Root Access via Page Cache Corrupt
 date: 2026-05-14 07:06:15 +0000
 categories: [security]
 tags: [hackernews, security, vulnerabilities, vulnerability]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Details have emerged about a new variant of the recent Dirty Frag Linux local privilege escalation (LPE) vulnerability that allows local attackers to gain root"
 source_url: "https://thehackernews.com/2026/05/new-fragnesia-linux-kernel-lpe-grants.html"
 source_name: "The Hacker News"

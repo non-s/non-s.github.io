@@ -4,7 +4,8 @@ title: "Calling the cops just got extra AI as police seek to add tech to contact
 date: 2026-05-14 09:15:00 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "AI already listening in to call handlers in real time, conducting live database searches"
 source_url: "https://www.theregister.com/public-sector/2026/05/14/calling-the-cops-just-got-extra-ai-as-police-seek-to-add-tech-to-contact-systems/5239737"
 source_name: "The Register"

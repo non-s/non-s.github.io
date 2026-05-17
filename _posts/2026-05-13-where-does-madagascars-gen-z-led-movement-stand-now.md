@@ -5,6 +5,7 @@ date: 2026-05-13 23:00:59 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, politics, election]
 author: "GlobalBR News"
+lang: "en"
 description: "The country has announced a constitutional referendum and elections. Can that bring democratic change?"
 source_url: "https://foreignpolicy.com/2026/05/13/madagascar-gen-z-movement-protests-military-government-elections-democracy/"
 source_name: "Foreign Policy"

@@ -5,6 +5,7 @@ date: 2026-05-14 20:18:31 +0000
 categories: [world, war]
 tags: [france24, world-news, europe, war, conflict, nobel-laureate, us-brokered-peace-deal, drc, china, turkey, senegal, tyla, african-music-scene]
 author: "GlobalBR News"
+lang: "en"
 description: "Congolese Nobel laureate Denis Mukwege criticizes US-brokered peace deal in eastern DRC as predatory, citing concerns over exploitation of natural resources."
 source_url: "https://www.france24.com/en/nobel-winner-mukwege-warns-of-predatory-us-deal-for-dr-congo"
 source_name: "France 24"

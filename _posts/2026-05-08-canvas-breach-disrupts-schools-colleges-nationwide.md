@@ -4,7 +4,8 @@ title: "Canvas Breach Disrupts Schools & Colleges Nationwide"
 date: 2026-05-08 02:58:46 +0000
 categories: [security]
 tags: [krebs, security, cybersecurity]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "An ongoing data extortion attack targeting the widely-used education technology platform Canvas disrupted classes and coursework at school districts and univers"
 source_url: "https://krebsonsecurity.com/2026/05/canvas-breach-disrupts-schools-colleges-nationwide/"
 source_name: "Krebs on Security"

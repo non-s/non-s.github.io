@@ -5,6 +5,7 @@ date: 2026-05-14 13:16:32 +0000
 categories: [world, war]
 tags: [bbc, world-news, international, war, weapons, military, ukraine-russia-conflict, russian-strikes-on-kyiv, ukraine-rescuers, humanitarian-crisis, peaceful-resolution]
 author: "GlobalBR News"
+lang: "en"
 description: "Ukraine rescuers search for survivors after Russian strikes on Kyiv, killing at least 12, including two children, in massive drone and missile attacks in the ca"
 source_url: "https://www.bbc.com/news/articles/cq5p8yygq94o?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

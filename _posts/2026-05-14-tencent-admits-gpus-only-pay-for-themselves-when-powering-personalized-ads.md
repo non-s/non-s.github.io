@@ -4,7 +4,8 @@ title: "Tencent admits GPUs only pay for themselves when powering personalized a
 date: 2026-05-14 04:40:43 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Chinese web giant says accelerator shortage is over as local hardware arrives in volume"
 source_url: "https://www.theregister.com/off-prem/2026/05/14/tencent-admits-gpus-only-pay-for-themselves-when-powering-personalized-ads/5240150"
 source_name: "The Register"

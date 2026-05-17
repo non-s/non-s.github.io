@@ -4,8 +4,10 @@ title: "Anthropic’s Cat Wu says that, in the future, AI will anticipate your n
 date: 2026-05-13 19:28:06 +0000
 categories: [technology, ai]
 tags: [techcrunch, startups, tech, ai, anthropic]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The head of product for Claude Code and Cowork says that the next big step for AI is proactivity."
+image: "/assets/images/og-default.jpg"
 source_url: "https://techcrunch.com/2026/05/13/anthropics-cat-wu-says-that-in-the-future-ai-will-anticipate-your-needs-before-you-know-what-they-are/"
 source_name: "TechCrunch"
 ---

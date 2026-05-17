@@ -4,7 +4,8 @@ title: "What Will Be Running Inside the New Googlebook Laptops? What We Know So 
 date: 2026-05-14 02:30:40 +0000
 categories: [technology, gadgets]
 tags: [cnet, tech, reviews, gadgets, laptop]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Here's what we know about Google's latest operating system."
 source_url: "https://www.cnet.com/tech/mobile/google-aluminum-os-android-chromeos-laptop-explainer/"
 source_name: "CNET"

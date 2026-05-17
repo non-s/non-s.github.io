@@ -5,6 +5,7 @@ date: 2026-05-14 10:53:56 +0000
 categories: [world]
 tags: [bbc, world-news, international, latvia, russia, ukraine, drone-incident, political-fallout]
 author: "GlobalBR News"
+lang: "en"
 description: "Latvian PM resigns after drones bound for Russia crashed in Latvia, prompting a political fallout in the country and its relations with Russia and Ukraine."
 source_url: "https://www.bbc.com/news/articles/cwy21k5917jo?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

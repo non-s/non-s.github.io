@@ -4,7 +4,8 @@ title: "Apple backs Google after EU orders Android be opened up to AI rivals"
 date: 2026-05-14 07:03:16 +0000
 categories: [gadgets, mobile]
 tags: [engadget, gadgets, reviews, mobile, android]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The company agrees with Google that it would put European users' privacy and safety at risk."
 source_url: "https://www.engadget.com/2172631/apple-comments-back-google-eu-ai-order-android/"
 source_name: "Engadget"

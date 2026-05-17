@@ -4,7 +4,7 @@ title: "Daily Briefing — May 17, 2026: 10 stories that shaped the day"
 date: 2026-05-17T04:07:18.500784+00:00
 categories: [briefing, world]
 tags: [daily-briefing, roundup, editorial]
-author: "GlobalBR News Desk"
+author: "GlobalBR News"
 description: "Daily editorial roundup of the top stories of May 17, 2026 — 10 stories synthesised into one read."
 content_type: "analysis"
 image: "https://www.aljazeera.com/wp-content/uploads/2026/05/AFP__20260516__B32D3BB__v1__HighRes__LebanonIranIsraelUsWar-1778976559.jpg?resize=1920%2C1440"

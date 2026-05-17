@@ -4,7 +4,8 @@ title: "Instagram Introduces Instants, Meta's New Private Photo Sharing App"
 date: 2026-05-13 22:51:54 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The photos shared using Instagram's new feature will vanish after 24 hours."
 source_url: "https://www.cnet.com/tech/instagram-instants-meta-disappearing-photo-app/"
 source_name: "CNET"

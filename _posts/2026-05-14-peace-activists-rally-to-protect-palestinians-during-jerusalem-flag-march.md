@@ -5,6 +5,7 @@ date: 2026-05-14 13:17:20 +0000
 categories: [world]
 tags: [euronews, europe, world-news, jerusalem-flag-march, israeli-peace-activists, palestinian-residents, nationalist-tensions, peaceful-coexistence]
 author: "GlobalBR News"
+lang: "en"
 description: "Israeli peace activists rally to protect Palestinians during Jerusalem flag march amid nationalist tensions and heavy security."
 source_url: "http://www.euronews.com/video/2026/05/14/peace-activists-rally-to-protect-palestinians-during-jerusalem-flag-march"
 source_name: "Euronews"
