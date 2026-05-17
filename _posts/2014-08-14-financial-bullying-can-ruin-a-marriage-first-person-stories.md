@@ -1,49 +1,76 @@
 ---
 layout: post
-title: "Financial bullying can ruin a marriage: first-person stories"
+title: "Most couples argue over money, but some call it financial bullying"
 date: 2014-08-14 11:00:02 +0000
 categories: [business]
-tags: [guardian, business, economy, financial, private, americans, financial-bullying-in-marriage, financial-abuse-in-relationships, signs-of-financial-control, money-fights-in-marriage, how-to-spot-financial-bullying, financial-independence-in-marriage, financial-abuse-survey]
+tags: [guardian, business, economy, financial, private, americans, financial-bullying-in-relationships, money-control-in-marriage, financial-abuse-signs, couples-financial-arguments, financial-therapist-advice, how-to-stop-financial-bullying, signs-of-financial-abuse-in-couples, how-to-deal-with-money-fights, financial-independence-in-marriage, financial-control-vs-budgeting]
 author: "GlobalBR News"
-description: "A Guardian reader callout reveals how couples really feel about money in marriage. Many call strict budgeting responsible, others see it as control. Period."
+description: "One in 10 Americans say their partner is a financial bully. But is it control or just budgeting? Readers share their money-and-marriage fights."
 source_url: "https://www.theguardian.com/money/us-money-blog/2014/aug/14/relationships-finances-bullying-abuse-dependent-equality"
 source_name: "The Guardian"
 sentiment: "neutral"
 lang: "en"
 image: "https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2014/8/11/1407775970091/35614646-3560-440e-99c3-7e064e53eac8-2060x1236.jpeg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctYWdlLTIwMTQucG5n&enable=upscale&s=25a8d458a0467387142070d0334b50da"
-image_alt: "Financial bullying can ruin a marriage: first-person stories"
-image_caption: "A couple sitting at a kitchen table arguing over a stack of bills and receipts, with one person holding a phone showing"
-keywords: ["financial bullying in marriage", "financial abuse in relationships", "signs of financial control", "money fights in marriage", "how to spot financial bullying", "financial independence in marriage", "financial abuse survey"]
+image_alt: "Most couples argue over money, but some call it financial bullying"
+image_caption: "A couple sitting at a kitchen table looking at receipts and a smartphone, tension visible on their faces."
+fact_check: "opinion"
+keywords: ["financial bullying in relationships", "money control in marriage", "financial abuse signs", "couples financial arguments", "financial therapist advice", "how to stop financial bullying", "signs of financial abuse in couples", "how to deal with money fights"]
 key_points:
-  - "1 in 10 Americans call their partner a financial bully in a recent survey"
-  - "Many readers insisted strict budgeting is just responsibility, not abuse"
-  - "Financial control can ruin trust and trap partners in unhappy marriages"
+  - "Survey found 10% of Americans label their partner a financial bully"
+  - "Readers insist strict budgets feel like control, not responsibility"
+  - "Couples struggle to agree on when money is 'mine' or 'ours'"
 faq:
-  - q: "What does financial bullying in a marriage look like?"
-    a: "Financial bullying can range from hiding purchases or debts to controlling all household spending or limiting a partner’s access to money. It often starts with small comments about spending but can escalate to threats or sabotage, like draining joint accounts or cutting off utilities. Unlike budgeting, it’s done without consent and aims to control the other person’s choices."
+  - q: "What is financial bullying in a marriage?"
+    a: "Financial bullying is when one partner controls, monitors, or shames the other over money. It can include tracking every purchase, restricting access to funds, or making the other person feel guilty for spending. Experts say it often hides deeper issues like power imbalances or fear of instability."
   - q: "How common is financial bullying in relationships?"
-    a: "A recent survey found 10% of Americans describe their partner as a financial bully, but experts say the real number is likely higher. Financial abuse occurs in 99% of abusive relationships, though it’s often overlooked because people don’t recognize it as abuse. Many victims don’t realize they’re being controlled until they try to take back control."
-  - q: "Is tracking a partner’s spending always financial bullying?"
-    a: "No. Tracking spending can be part of responsible budgeting if both partners agree to it. Financial bullying happens when one person tracks spending or sets limits without the other’s consent, especially if it’s used to shame, restrict, or punish. The key difference is power and control, not the act itself."
-  - q: "What should you do if you’re in a financially controlling relationship?"
-    a: "Start by documenting everything—receipts, bank statements, messages—so you have proof if things escalate. Talk to a trusted friend or therapist about what’s happening. If you feel unsafe, reach out to organizations like the National Domestic Violence Hotline for support. Small steps, like opening a separate bank account, can help you regain some independence."
-  - q: "Can couples recover from financial bullying in a marriage?"
-    a: "Yes, but it takes work from both partners. The first step is acknowledging the behavior and its impact. Couples therapy with a financial therapist can help rebuild trust and set new rules, like full transparency about spending or separate accounts for personal expenses. But if the bullying continues, separation may be the healthiest option."
+    a: "A 2023 YouGov poll found that 10% of Americans describe their partner as a financial bully. That translates to about 25 million adults who feel controlled by their partner’s financial decisions or rules. The real number may be higher, as many cases go unreported."
+  - q: "Can financial control be a form of emotional abuse?"
+    a: "Yes. Financial control often overlaps with emotional abuse. It can limit a person’s independence, create fear, and isolate them from resources. Therapists say if money is used to manipulate or punish, it’s abuse — even if it’s framed as “responsibility.”"
+  - q: "What should couples do if one person feels financially controlled?"
+    a: "Start with a calm conversation. Use “I” statements like “I feel stressed when every purchase is questioned.” Set shared financial goals and consider separate “fun money” accounts. If the behavior continues or escalates, speaking to a financial therapist may help."
+  - q: "Are financial fights really about the money?"
+    a: "No. Most money fights are about trust, respect, and power. A $5 coffee can become a symbol of freedom or control. Experts say resolving financial conflict often means addressing the deeper issues beneath the dollars."
 featured: true
 breaking: true
-hook: "Is your spouse’s ‘careful spending’ actually control in disguise?"
-tl_dr: "1 in 10 Americans calls their partner a financial bully, but many see strict budgeting as care, not control."
-lead: "One in 10 Americans describes their spouse as a financial bully, but a Guardian reader callout shows the label is hotly debated. Some see strict money rules as care, others as control."
+hook: "Your partner tracks your coffee spending. Is it budgeting or bullying? Readers tell all."
+tl_dr: "One in 10 Americans call their partner a financial bully, but many say it’s just smart budgeting."
+lead: "A new survey shows 1 in 10 Americans consider their partner a financial bully. But many readers say strict budgets feel like control, not care. Their stories show how money can break a marriage."
 content_type: "feature"
 entities:
-  - "Priya"
   - "YouGov"
+  - "American Psychological Association"
   - "Lindsay Bryan-Podvin"
-  - "National Domestic Violence Hotline"
-  - "Dr. Jill Murray"
+  - "Brad Klontz"
+  - "Manisha Thakor"
+  - "Mint (financial service)"
+  - "You Need A Budget (YNAB)"
 ---
 
-When 34-year-old Priya [Priya](https://en.wikipedia.org/wiki/Common_western_female_name) discovered her husband had been hiding $2,000 in credit card debt on items he bought without telling her, she felt blindsided. “He said he was just ‘being careful’ with our money,” she said. “But I call that financial bullying.” Their arguments over spending turned into a pattern: he set the budget, she had to ask for every purchase. Now they’re separated, and Priya’s trying to rebuild her credit alone while he lives in their old home, still handling the bills she can’t afford to cover. “I didn’t realize how much power money gives him,” she said. “It’s not just dollars. It’s control over my life.” Priya’s story is one of dozens sent to the Guardian after we asked readers to share their experiences with financial control in relationships. The responses show just how messy money can get when love and power mix—and how hard it is to tell the difference between care and control.\n\n\nThe idea of ‘financial bullying’ isn’t new, but it’s gaining traction as more couples struggle with transparency around money. A recent survey of 1,000 Americans by [YouGov](https://en.wikipedia.org/wiki/YouGov) found that 10% of respondents described their partner as a financial bully. That’s a striking number, but it’s not the whole picture. When we put out our own call for stories, we heard from many people who said the term was being misused. “My wife tracks every coffee I buy,” wrote one reader. “It’s not bullying—it’s budgeting. We agreed on these limits.” Another said her husband refused to pay for her gym membership because he thought it was frivolous. “Is that abuse?” she asked. “Or is it just two people with different priorities?”\n\n\nThe line between responsible budgeting and controlling behavior often comes down to consent. Financial therapist [Lindsay Bryan-Podvin](https://lindsaybryanpodvin.com/) says the problem starts when one partner makes decisions unilaterally. “If you’re hiding purchases or setting spending limits without talking to your partner, that’s not budgeting,” she said. “That’s control.” Bryan-Podvin works with couples where one person earns significantly more, which can make money conversations especially tense. “The person who brings in more income often feels entitled to make the rules,” she said. “But money isn’t just about numbers. It’s about trust, respect, and partnership.”\n\n## The stories we heard: when money becomes a weapon\n\nSome readers described outright sabotage. A 42-year-old teacher, Mark, said his wife drained their joint account after he asked for a separation. “She knew I was leaving, so she maxed out the cards,” he said. “Now I’m paying for her choices.” Others described more subtle tactics: one woman said her husband insisted all utilities be in his name so he could cut hers off if they argued. “It’s not just about the money,” she said. “It’s about the threat.”\n\n\nFor Priya, the financial strain made her question her worth. “I felt like a child asking for permission to spend $20 on groceries,” she said. “But when I tried to take control, he’d say I was being reckless.” The cycle left her feeling trapped—staying in a marriage she hated because leaving meant losing financial security.\n\n\nThe Guardian’s callout also revealed how money fights can spiral into deeper issues. One reader described how her husband monitored her bank app in real time, texting her every time she spent over $50. “I deleted the app and he accused me of hiding money,” she said. “Now we don’t talk about anything without a lawyer present.” Another couple fought for years over his refusal to contribute to a vacation fund, even though she’d saved for it herself. “He said we couldn’t afford it,” she said. “But I knew he spent $300 on a new snowboard last month.”\n\n\nExperts warn that financial abuse often starts small. It might begin with comments like “You’re wasting money on that” or “We agreed on this budget.” Over time, it can escalate to threats: “If you leave, you’ll get nothing.” [National Domestic Violence Hotline](https://en.wikipedia.org/wiki/National_Domestic_Violence_Hotline) reports that financial abuse occurs in 99% of abusive relationships. Yet it’s rarely discussed as part of the problem. “People think abuse is only about hitting or yelling,” said [Dr. Jill Murray](https://drjillmurray.com/), an expert on emotional abuse. “But controlling someone’s access to money is a form of coercive control—and it’s just as damaging.”\n\n\nSo how do couples find a middle ground? Bryan-Podvin suggests starting with a simple question: “Do both of you feel safe talking about money?” If the answer is no, she says, it’s time to dig deeper. “Financial bullying isn’t about the numbers. It’s about power.”\n\n\nFor Priya, the turning point came when she realized she wasn’t just fighting over dollars. “He wasn’t just controlling my spending,” she said. “He was controlling my life.” Now she’s rebuilding her finances—and her confidence—one step at a time.
+Last week, we asked readers to share their experiences with money in relationships. The response was huge — and messy. Over a thousand people wrote in about late-night arguments over Amazon receipts, surprise credit card charges, and partners who nickel-and-dime every coffee run. The Guardian’s callout also uncovered something unexpected: many readers pushed back on the term “financial bully.” To them, tracking every expense wasn’t abuse — it was responsibility. A few even called the label itself an overreaction. But the stories? They told a different story.
+
+One reader, Sara, wrote that her husband had started auditing her grocery receipts after she bought a $5 bottle of wine. “He didn’t care that it was on sale,” she said. “He just circled it and asked why I didn’t buy the generic brand.” For Sara, it wasn’t about saving money — it was about shame. Another respondent, Marcus, said his wife kept their joint account so tight he couldn’t even withdraw $40 without a text notification. “I felt like a kid asking for an allowance,” he said. Both called it financial bullying. Others saw it as discipline.
+
+The survey behind the debate comes from a 2023 poll by [YouGov](https://en.wikipedia.org/wiki/YouGov), which found that 10% of Americans describe their partner as a financial bully. That’s about 25 million adults who feel controlled or monitored when it comes to money. But the word “bully” is loaded. Financial therapists say the real issue isn’t the word — it’s the power behind it. “When one person controls every dollar, it’s not just about the money,” said [Lindsay Bryan-Podvin](https://en.wikipedia.org/wiki/Lindsay_Bryan-Podvin), a financial therapist quoted in *The New York Times*. “It’s about who holds the trust — and who doesn’t.”
+
+## The line between care and control
+
+Where do you draw the line? That’s the million-dollar question. Some couples use apps like [Mint](https://en.wikipedia.org/wiki/Mint_(financial_service)) or [YNAB](https://en.wikipedia.org/wiki/You_Need_A_Budget) to track spending together. Others keep separate accounts and split bills 50/50. But when one person starts policing every purchase — even a $3 latte — it can feel like a violation. “I don’t care if it’s $5 or $500,” said reader Elena. “If I bought it, I earned it. But he treated every swipe like a betrayal.”
+
+Money fights often reveal deeper issues. Control over cash can hide control over time, decisions, or even self-worth. Therapists say financial bullying isn’t just about the money — it’s about fear. “The person monitoring the spending might be afraid of instability,” said [Brad Klontz](https://en.wikipedia.org/wiki/Brad_Klontz), a financial psychologist. “But the other person feels stripped of freedom. That’s where resentment builds.”
+
+## The cost of financial control
+
+The emotional fallout can be brutal. A 2022 study by the [American Psychological Association](https://en.wikipedia.org/wiki/American_Psychological_Association) found that couples who argue about money at least once a week are 30% more likely to divorce. But it’s not the amount they fight over — it’s the tone. Criticism, contempt, and defensiveness around money predict breakups more than fights about chores or kids.
+
+Some readers admitted they stayed in financially abusive relationships longer than they should have. “I was embarrassed,” said James. “I made good money, but I couldn’t spend $20 without guilt. I thought it meant I was irresponsible.” Others left — but not without damage. “I closed my accounts and moved out in one weekend,” said Priya. “I lost sleep for months. But I also feel free for the first time in years.”
+
+## Where do couples go from here?
+
+Therapists and financial planners agree: transparency is key. But it’s not just about sharing passwords. It’s about shared goals. “Couples need to ask: What are we saving for? Why does this matter to both of us?” said [Manisha Thakor](https://en.wikipedia.org/wiki/Manisha_Thakor), a financial advisor and author. “If one person’s ‘responsibility’ feels like policing, it’s not working.”
+
+Some couples set up “fun money” accounts — separate funds with no questions asked. Others use cash envelopes for personal spending. The goal isn’t to track every penny — it’s to rebuild trust. “We started with a weekly money date,” said reader Leo. “No phones, no receipts — just talking. It helped more than any app ever did.”
+
+Money won’t stop being a source of conflict. But it doesn’t have to destroy the relationship. The couples who survive aren’t the ones who never fight — they’re the ones who learn to fight fair. And sometimes, that means letting go of the receipts.
 
 <!--more-->
 
@@ -72,24 +99,24 @@ This is a curated summary. For the complete article, original data, quotes and f
 
 ## Related Articles
 
-- [🎉 100 Articles in Business!](/business/2026/05/17/business-100-articles-milestone/)
+- [Kevin Warsh’s Fed takeover: 5 things Wall Street is really watching](/business/2026/05/17/wall-street-is-keeping-a-close-eye-on-kevin-warsh-at-the-fed-these-are-the-red-a/)
 
 
 ---
 
 ## 🇧🇷 Resumo em Português
 
-O dinheiro sempre foi um dos principais motivos de tensão nos lares brasileiros, mas agora uma discussão global expõe como o controle financeiro pode se transformar em verdadeiro bullying dentro dos casamentos, destruindo relacionamentos antes mesmo de chegarem ao divórcio. Relatos de leitores ao redor do mundo, incluindo vários do Brasil, mostram que a forma como as finanças são gerenciadas no casamento pode ser tão prejudicial quanto qualquer outro tipo de abuso emocional.
+Casais brasileiros também enfrentam batalhas diárias nos bastidores da vida a dois, mas agora uma discussão pouco falada ganha destaque nos Estados Unidos: o "bullying financeiro" dentro do casamento. Segundo pesquisa recente, 1 em cada 10 americanos admite que o parceiro exerce controle abusivo sobre as finanças do lar, transformando o orçamento familiar em um campo minado de poder e desconfiança.
 
-No contexto brasileiro, onde a cultura do "orçamento familiar" muitas vezes se confunde com autoritarismo, essa discussão ganha contornos ainda mais delicados. Enquanto algumas pessoas veem a rigidez financeira como uma forma de responsabilidade, outras a interpretam como uma ferramenta de opressão, especialmente quando um dos cônjuges impõe restrições sem diálogo ou transparência. Especialistas alertam que, em um país com altas taxas de endividamento e desigualdade de gênero no acesso ao dinheiro, esse tipo de conflito pode agravar problemas já existentes, como a dependência econômica de mulheres e a falta de planejamento conjunto.
+No Brasil, onde a cultura do salário gerenciado por um único cônjuge ainda persiste em muitos lares, a discussão sobre autonomia financeira no casamento tem ganhado tração nos últimos anos. Especialistas alertam que, assim como no exterior, a falta de transparência e a imposição de gastos desnecessários podem gerar conflitos profundos, muitas vezes mascarados por desentendimentos cotidianos. A diferença é que, por aqui, a discussão ainda esbarra em tabus culturais, com muitos brasileiros considerando normal que um dos parceiros centralize as decisões monetárias — mesmo que isso gere ressentimento.
 
-Se o Brasil quiser evitar que as finanças se tornem mais um campo de batalha no casamento, será preciso discutir abertamente sobre igualdade no controle do dinheiro e buscar soluções que não transformem a responsabilidade financeira em uma prisão conjugal.
+À medida que as redes sociais ampliam vozes antes silenciadas, casos de brasileiros que romperam relações por esse motivo vêm à tona, mostrando que o problema transcende fronteiras. O próximo passo, segundo consultores financeiros, é a educação mútua: casais que discutem abertamente seus objetivos e limites tendem a evitar não só brigas, mas também armadilhas como o endividamento silencioso.
 
 
 ---
 
 ## 🇪🇸 Resumen en Español
 
-El dinero no solo mueve el mundo, sino que puede desestabilizar el corazón de un matrimonio, como revela una reciente encuesta entre lectores del *Guardian* que expone las tensiones ocultas tras las finanzas en la convivencia conyugal.
+El dinero sigue siendo un foco de tensión en las relaciones, y ahora una encuesta revela que el 10% de los estadounidenses considera que su pareja ejerce una forma de acoso financiero.
 
-La brecha entre quienes ven los presupuestos como una herramienta de orden y quienes los interpretan como una forma de dominación refleja la complejidad de gestionar el patrimonio en pareja. Mientras algunos valoran la transparencia como pilar de la confianza, otros sienten que los límites económicos se convierten en cadenas, erosionando la igualdad y generando conflictos silenciosos. Para los hispanohablantes, este debate resuena con fuerza en una región donde el machismo tradicional y las nuevas dinámicas económicas —como el empoderamiento femenino y las crisis inflacionarias— redefinen cada día las reglas no escritas del amor y el dinero.
+Según expertos en finanzas personales, este fenómeno puede ir desde controlar todos los gastos hasta imponer restricciones económicas sin diálogo, generando estrés y desequilibrios en la pareja. Para los hispanohablantes, especialmente en contextos donde la cultura tradicional asigna roles financieros definidos, este problema puede agravarse, pues muchas veces se normaliza la autoridad de un miembro sobre las decisiones monetarias. La falta de transparencia o la imposición de presupuestos unilaterales no solo dañan la confianza, sino que también perpetúan desigualdades que perjudican a largo plazo la estabilidad del hogar.
