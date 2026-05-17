@@ -7,6 +7,7 @@ tags: [weekly, roundup, digest]
 author: "GlobalBR News"
 description: "The most important stories of the week, curated by GlobalBR News — May 17, 2026."
 sentiment: "neutral"
+audio: "/assets/audio/posts/2026-05-17-weekly-digest.mp3"
 ---
 
 **GlobalBR News Best of the Week: A World of Contrasts**
