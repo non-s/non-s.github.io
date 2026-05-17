@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'women''s-health-terminology-update'"
-tag: women's-health-terminology-update
+title: "Posts tagged 'womens-health-terminology-update'"
+tag: womens-health-terminology-update
 permalink: /tag/womens-health-terminology-update/
 ---

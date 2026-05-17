@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'mother''s-day-wine-and-chocolate-gifts'"
-tag: mother's-day-wine-and-chocolate-gifts
+title: "Posts tagged 'mothers-day-wine-and-chocolate-gifts'"
+tag: mothers-day-wine-and-chocolate-gifts
 permalink: /tag/mothers-day-wine-and-chocolate-gifts/
 ---

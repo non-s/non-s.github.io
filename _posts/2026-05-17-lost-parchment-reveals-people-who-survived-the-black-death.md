@@ -43,6 +43,7 @@ entities:
   - "Eastcheap district London"
   - "Thomas the baker"
   - "Agnes the midwife"
+audio: "/assets/audio/posts/2026-05-17-lost-parchment-reveals-people-who-survived-the-black-death.mp3"
 ---
 
 A team of historians and paleographers scanning the British Library’s medieval manuscripts hit pay dirt: a crumbling parchment from 1351 that names real people who lived through the Black Death’s worst year. The page, catalogued as Additional MS 48031A, wasn’t some grand royal decree—just a local church’s parish record from London’s Eastcheap district. But tucked inside its Latin entries are details that flip long-held assumptions about who survived the plague.

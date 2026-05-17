@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'ufc-women''s-bantamweight'"
-tag: ufc-women's-bantamweight
+title: "Posts tagged 'ufc-womens-bantamweight'"
+tag: ufc-womens-bantamweight
 permalink: /tag/ufc-womens-bantamweight/
 ---

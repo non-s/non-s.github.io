@@ -40,6 +40,7 @@ entities:
   - "Donald Trump"
   - "January 6 insurrection"
   - "Louisiana Senate race 2026"
+audio: "/assets/audio/posts/2026-05-17-louisiana-sen-bill-cassidy-loses-in-republican-primary-does-not-advance-to-runof.mp3"
 ---
 
 Sen. Bill Cassidy’s [12-year Senate career](https://en.wikipedia.org/wiki/Bill_Cassidy) ended Saturday when Louisiana Republicans chose Rep. Julia Letlow as their nominee in the November general election. The Associated Press called the race just hours after polls closed, confirming Letlow’s victory in the all-party primary. Cassidy, a physician and former health committee chair, was one of only seven Republican senators who voted to convict Donald Trump after the January 6 insurrection. That vote made him a target for Trump and the MAGA wing of the party, who pushed Letlow—a first-term congresswoman and millennial loyalist—to run against him.

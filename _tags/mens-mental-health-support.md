@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'men''s-mental-health-support'"
-tag: men's-mental-health-support
+title: "Posts tagged 'mens-mental-health-support'"
+tag: mens-mental-health-support
 permalink: /tag/mens-mental-health-support/
 ---

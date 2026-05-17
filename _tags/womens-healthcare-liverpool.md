@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'women''s-healthcare-liverpool'"
-tag: women's-healthcare-liverpool
+title: "Posts tagged 'womens-healthcare-liverpool'"
+tag: womens-healthcare-liverpool
 permalink: /tag/womens-healthcare-liverpool/
 ---

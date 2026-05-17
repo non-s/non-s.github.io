@@ -1,6 +1,6 @@
 ---
 layout: tag
-title: "Posts tagged 'mother''s-day-food-gifts'"
-tag: mother's-day-food-gifts
+title: "Posts tagged 'mothers-day-food-gifts'"
+tag: mothers-day-food-gifts
 permalink: /tag/mothers-day-food-gifts/
 ---

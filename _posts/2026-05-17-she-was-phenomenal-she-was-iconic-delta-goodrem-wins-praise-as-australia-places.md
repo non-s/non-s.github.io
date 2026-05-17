@@ -44,6 +44,7 @@ entities:
   - "Anthony Albanese"
   - "Phoenix (song)"
   - "Light the Sky (song)"
+audio: "/assets/audio/posts/2026-05-17-she-was-phenomenal-she-was-iconic-delta-goodrem-wins-praise-as-australia-places.mp3"
 ---
 
 Australia’s Delta Goodrem delivered a show-stopping performance at the 2025 Eurovision Song Contest in Vienna, Austria, earning fourth place but winning widespread praise for her powerhouse vocals and stage presence. The former *Neighbours* star’s rendition of her self-penned song *Phoenix* captivated audiences early Sunday morning, despite falling just short of the top three. The contest’s winner was a surprise: Bulgaria took its first-ever Eurovision title with a high-energy performance that left many fans buzzing overnight. The win marks Bulgaria’s debut in the spotlight, a historic moment for the country’s music scene after decades of trying to break through in the fiercely competitive contest.
