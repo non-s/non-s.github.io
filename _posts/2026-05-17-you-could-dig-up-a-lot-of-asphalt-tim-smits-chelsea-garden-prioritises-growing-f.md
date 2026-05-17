@@ -42,6 +42,7 @@ entities:
   - "Alex Michaelis"
   - "Falmouth Cornwall"
   - "Todmorden Yorkshire"
+audio: "/assets/audio/posts/2026-05-17-you-could-dig-up-a-lot-of-asphalt-tim-smits-chelsea-garden-prioritises-growing-f.mp3"
 ---
 
 Tim Smit isn’t mincing words when he calls for a radical shift in how British towns and cities use their space. Speaking ahead of this year’s Chelsea Flower Show, the man behind Cornwall’s giant [biome domes](https://en.wikipedia.org/wiki/Eden_Project) made one thing clear: the country’s obsession with tarmac is costing communities more than just money. "You could dig up a lot of asphalt and find soil underneath," Smit said. "We’ve got to stop paving over our future." His solution? Rip out parking lots, playgrounds, and even some roads to plant vegetables where kids can reach them easily.

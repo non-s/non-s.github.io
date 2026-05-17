@@ -43,6 +43,7 @@ entities:
   - "Médecins Sans Frontières"
   - "North Kivu"
   - "Ituri"
+audio: "/assets/audio/posts/2026-05-17-who-declares-ebola-outbreak-in-dr-congo-a-global-health-emergency.mp3"
 ---
 
 The World Health Organization (WHO) [announced](https://www.who.int) Wednesday that the Ebola outbreak in the Democratic Republic of Congo (DRC) now qualifies as a Public Health Emergency of International Concern (PHEIC). The declaration came after the agency’s emergency committee met to assess the situation, which has sickened 246 people and killed 80 since the outbreak began in August 2018. The committee stressed that while the outbreak is serious, it doesn’t yet meet the threshold for a pandemic emergency. WHO Director-General [Tedros Adhanom Ghebreyesus](https://en.wikipedia.org/wiki/Tedros_Adhanom) called the situation “serious and concerning” but said the risk of international spread remains low outside the region.
