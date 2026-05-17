@@ -1949,6 +1949,7 @@ def _load_known_titles() -> list:
     global _known_titles
     if _known_titles is not None:
         return _known_titles
+    from utils.frontmatter import parse as _fm_parse
     with _cache_lock:
         if _known_titles is not None:
             return _known_titles
@@ -1956,19 +1957,22 @@ def _load_known_titles() -> list:
         all_posts = sorted(POSTS_DIR.glob("*.md"), reverse=True)[:100]
         for f in all_posts:
             try:
-                for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
-                    if line.startswith("title:"):
-                        # Use the shared frontmatter parser to handle escapes correctly.
-                        from utils.frontmatter import parse as _fm_parse
-                        try:
-                            fm = _fm_parse(f.read_text(encoding="utf-8", errors="replace"))
-                            t = (fm.get("title") or "").strip()
-                        except Exception:
+                # One read per post — parse the full frontmatter once so
+                # escaped quotes / multiline titles are handled correctly.
+                text = f.read_text(encoding="utf-8", errors="replace")
+                try:
+                    fm = _fm_parse(text)
+                    t = (fm.get("title") or "").strip()
+                except Exception:
+                    # Fall back to a single regex line search.
+                    t = ""
+                    for line in text.splitlines():
+                        if line.startswith("title:"):
                             m = re.match(r'title:\s*"?([^"]+)"?\s*$', line)
                             t = m.group(1).strip() if m else ""
-                        if t:
-                            titles.append((t, f.name))
-                        break
+                            break
+                if t:
+                    titles.append((t, f.name))
             except Exception as exc:
                 log.debug(f"_load_known_titles: skipping {f.name}: {exc}")
         _known_titles = titles
