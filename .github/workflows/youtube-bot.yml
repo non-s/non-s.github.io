@@ -71,12 +71,11 @@ jobs:
           umask 077
           printf '%s' "$YOUTUBE_TOKEN" > token.json
           chmod 600 token.json
-          # Sanity check: confirm it parses as JSON. Use a context
-          # manager so the file handle closes before exit.
-          if ! python -c "import json, sys
-with open('token.json') as f:
-    json.load(f)
-" ; then
+          # Sanity check: confirm it parses as JSON. `python -m json.tool`
+          # reads stdin, closes the file properly, and exits non-zero on
+          # invalid JSON — simpler than embedding a multi-line script
+          # that has to round-trip through YAML.
+          if ! python -m json.tool < token.json > /dev/null 2>&1; then
             echo "❌ YOUTUBE_TOKEN secret não é JSON válido."
             rm -f token.json
             exit 1
