@@ -27,7 +27,7 @@ locale: "en_US"
 
 # --- Plugins ---
 # NB: jekyll-sitemap was tried briefly but removed — we ship
-# hand-written sitemap.xml / sitemap-news.xml / sitemap-pt.xml with
+# hand-written sitemap.xml / sitemap-news.xml with
 # news+image annotations the plugin can't emit. Letting jekyll-sitemap
 # also walk the 14 500+ tag pages slowed builds past the CI timeout.
 plugins:
@@ -75,7 +75,7 @@ image: "/assets/images/og-default.jpg"
 
 # --- Sitemap ---
 # We ship a hand-written /sitemap.xml with news+image annotations,
-# plus separate /sitemap-news.xml (48h window) and /sitemap-pt.xml.
+# plus /sitemap-news.xml (48h window).
 
 # --- Posts ---
 permalink: /:categories/:year/:month/:day/:title/
