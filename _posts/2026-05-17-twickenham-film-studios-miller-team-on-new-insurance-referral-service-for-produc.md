@@ -41,6 +41,7 @@ entities:
   - "Variety International Movie lunch"
   - "Financial Conduct Authority"
   - "Entertainment Partners"
+audio: "/assets/audio/posts/2026-05-17-twickenham-film-studios-miller-team-on-new-insurance-referral-service-for-produc.mp3"
 ---
 
 Film and TV producers just got a faster way to find the right insurance. Twickenham Film Studios flipped the switch on Twickenham Investment Services, a brand-new FCA-regulated introducer business designed to match producers with specialist brokers. The first partner on board is Miller Insurance Services, a long-time player in entertainment risk. The move was announced at Variety’s International Movie lunch in Cannes, where industry execs were already talking about rising production costs and tighter budgets.

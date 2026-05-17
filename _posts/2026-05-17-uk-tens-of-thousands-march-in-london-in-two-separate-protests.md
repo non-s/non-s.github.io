@@ -39,6 +39,7 @@ entities:
   - "Metropolitan Police"
   - "UK government"
   - "Gaza health officials"
+audio: "/assets/audio/posts/2026-05-17-uk-tens-of-thousands-march-in-london-in-two-separate-protests.mp3"
 ---
 
 A wave of demonstrations swept central London on Saturday as two separate crowds marched through the streets, each carrying sharply different messages. The first protest, organized by the group **Stop the Boats UK** [Stop the Boats UK](https://en.wikipedia.org/wiki/Stop_the_Boats_UK), drew tens of thousands of people to oppose what they called uncontrolled immigration and a perceived threat to British identity from Islamic influence. Many carried signs reading "Take Back Control" and "No More Mass Migration." The group has been active since 2022, pushing for tighter border controls and lower net migration figures, which hit a record 745,000 last year. This protest followed a similar march in March that drew around 40,000 people, showing growing public frustration over immigration policies under the current government [UK government](https://en.wikipedia.org/wiki/UK_government).

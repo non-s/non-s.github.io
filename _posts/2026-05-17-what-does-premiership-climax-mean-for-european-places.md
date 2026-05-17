@@ -43,6 +43,7 @@ entities:
   - "Uefa"
   - "Scottish Premiership"
   - "Europa Conference League"
+audio: "/assets/audio/posts/2026-05-17-what-does-premiership-climax-mean-for-european-places.mp3"
 ---
 
 Aberdeen had every reason to celebrate on Saturday. Their 4-0 demolition of already-relegated Dundee was the perfect end to a season that had looked bleak for months. But the 11-point gap to sixth place meant even a record win couldn’t save them. Hearts, meanwhile, sneaked past them on goal difference after beating Hibernian 2-1, locking in the final Europa Conference League spot for next season. It’s the kind of finish that leaves fans stunned—one club celebrating a European place while another watches from the sidelines, just inches away.
