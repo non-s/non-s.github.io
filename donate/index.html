@@ -9,10 +9,20 @@ permalink: /donate/
       <h1 class="mb-3"><i class="bi bi-heart-fill text-danger"></i> Support Us</h1>
       <p class="lead text-muted mb-4">GlobalBR News is free and independent. Your support helps us keep it that way.</p>
 
+      {% if site.kofi_id or site.paypal_id %}
       <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
-        <a href="https://ko-fi.com" class="btn btn-warning btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-cup-hot me-2"></i> Ko-fi</a>
-        <a href="https://paypal.com/donate" class="btn btn-primary btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-paypal me-2"></i> PayPal</a>
+        {% if site.kofi_id %}
+        <a href="https://ko-fi.com/{{ site.kofi_id }}" class="btn btn-warning btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-cup-hot me-2"></i> Ko-fi</a>
+        {% endif %}
+        {% if site.paypal_id %}
+        <a href="https://paypal.me/{{ site.paypal_id }}" class="btn btn-primary btn-lg px-4" target="_blank" rel="noopener"><i class="bi bi-paypal me-2"></i> PayPal</a>
+        {% endif %}
       </div>
+      {% else %}
+      <p class="text-muted mb-4">
+        Direct donation links are coming soon. In the meantime, the "Other ways to support" below help us a lot.
+      </p>
+      {% endif %}
 
       <hr class="my-5">
       <h3 class="mb-3">Other ways to support</h3>
