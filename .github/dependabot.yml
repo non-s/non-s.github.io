@@ -7,6 +7,20 @@ updates:
       day: "monday"
     open-pull-requests-limit: 5
     labels: ["dependencies"]
+    groups:
+      python-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels: ["dependencies", "jekyll"]
+    groups:
+      ruby-deps:
+        patterns: ["*"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -14,4 +28,7 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 5
-    labels: ["dependencies"]
+    labels: ["dependencies", "github-actions"]
+    groups:
+      gh-actions:
+        patterns: ["*"]

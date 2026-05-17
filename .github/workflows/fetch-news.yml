@@ -11,11 +11,11 @@ name: "📰 Fetch News RSS"
 
 on:
   schedule:
-    # 24 runs/day (hourly). Now feasible after the parallel-feed +
-    # skip-wikipedia + lazy-OG refactor cut typical run time from
-    # ~28 min to <10 min. 24×10min/day ≈ 240 min/day = 7.2 GB-min/day,
-    # still ~50% of the GitHub Actions free tier (2000 min/month).
-    - cron: "0 * * * *"
+    # Every 3 hours (8 runs/day). Hourly was over the Actions free
+    # tier (2000 min/month); 8×~10min ≈ 80 min/day = ~2400 min/month,
+    # but we share that quota with youtube-bot/newsletter/etc, and on
+    # public repos Actions minutes are unmetered anyway.
+    - cron: "0 */3 * * *"
 
   workflow_dispatch:
     inputs:
@@ -25,8 +25,11 @@ on:
         default: "false"
         type: boolean
 
+# Serialise with every other workflow that pushes to main, otherwise the
+# pull-rebase retry below would race against youtube-bot / translate /
+# weekly-digest commits. `cancel-in-progress: false` means later runs wait.
 concurrency:
-  group: fetch-news
+  group: main-write
   cancel-in-progress: false
 
 jobs:
@@ -43,7 +46,6 @@ jobs:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: "🐍 Set up Python 3.11"

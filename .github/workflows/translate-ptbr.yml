@@ -1,10 +1,13 @@
 name: "Translate Posts to PT-BR"
 on:
   schedule:
-    - cron: "0 20 * * *"  # 20h UTC daily
+    - cron: "0 20 * * *"  # 20h UTC daily catch-up — fetch-news.yml runs translate
+                          # inline; this is the fallback for posts that failed
+                          # mid-run (translate_posts.py is idempotent).
   workflow_dispatch:
+
 concurrency:
-  group: translate-ptbr
+  group: main-write
   cancel-in-progress: false
 
 jobs:
