@@ -42,6 +42,7 @@ entities:
   - "Parliament Square"
   - "Israel-Hamas war"
   - "Gaza conflict"
+audio: "/assets/audio/posts/2026-05-17-uk-police-make-43-arrests-at-far-right-rally-counter-pro-palestinian-demo.mp3"
 ---
 
 London’s Metropolitan Police confirmed they detained 43 people during Saturday’s marches, as far-right activists led by [Tommy Robinson](https://en.wikipedia.org/wiki/Tommy_Robinson_(activist)), co-founder of the now-dissolved [English Defence League](https://en.wikipedia.org/wiki/English_Defence_League), clashed with counter-protesters. The far-right march, described by Robinson as a call to prepare for the next 'battle of Britain,' drew hundreds of supporters to central London. Meanwhile, a counter-demonstration—overlapping with pro-Palestinian groups—amplified tensions, with police struggling to keep the two sides apart.
