@@ -26,8 +26,8 @@ on:
         type: boolean
 
 # Serialise with every other workflow that pushes to main, otherwise the
-# pull-rebase retry below would race against youtube-bot / translate /
-# weekly-digest commits. `cancel-in-progress: false` means later runs wait.
+# pull-rebase retry below would race against youtube-bot / weekly-digest
+# commits. `cancel-in-progress: false` means later runs wait.
 concurrency:
   group: main-write
   cancel-in-progress: false
