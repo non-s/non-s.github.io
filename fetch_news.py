@@ -2234,95 +2234,8 @@ def _add_internal_links(content: str, category: str, current_stem: str) -> str:
 
 
 # ============================================================
-# PORTUGUESE SUMMARY
+# (removido) Resumos PT-BR e ES — site agora publica somente em inglês.
 # ============================================================
-
-def _add_pt_summary(title: str, description: str, category: str) -> str:
-    """Generates a rich Portuguese (PT-BR) summary section using AI."""
-    try:
-        cat_pt = {
-            "world": "mundo", "politics": "política", "war": "conflito/defesa",
-            "business": "economia", "science": "ciência", "health": "saúde",
-            "food": "gastronomia", "sports": "esportes", "entertainment": "entretenimento",
-            "environment": "meio ambiente", "travel": "viagens", "technology": "tecnologia",
-            "ai": "inteligência artificial", "security": "segurança digital",
-            "gadgets": "gadgets", "startups": "startups", "mobile": "celulares",
-        }.get(category, "notícias")
-
-        prompt = (
-            f"Você é um jornalista brasileiro experiente da área de {cat_pt}. "
-            f"Escreva um resumo em português do Brasil (PT-BR) sobre a notícia abaixo. "
-            f"O resumo deve ter EXATAMENTE 2 a 3 parágrafos em texto corrido:\n"
-            f"1. Uma frase de abertura envolvente que contextualize o fato principal de forma atraente para o leitor brasileiro.\n"
-            f"2. Um parágrafo explicando o contexto e a relevância desta notícia para o Brasil e os leitores de língua portuguesa.\n"
-            f"3. Uma frase ou parágrafo de fechamento com implicações ou próximos passos.\n\n"
-            f"Use linguagem jornalística natural, clara e acessível. "
-            f"Não use bullet points, JSON, títulos ou formatação especial — apenas parágrafos corridos.\n\n"
-            f"Título: {title}\nDescrição: {description}"
-        )
-        pt_text = _ai_text(
-            prompt,
-            system=(
-                "Você é um jornalista profissional brasileiro. "
-                "Escreva sempre em português do Brasil (PT-BR), com linguagem natural e fluente. "
-                "Nunca use inglês. Responda apenas com o texto do resumo, sem introduções como 'Aqui está...'."
-            ),
-        )
-        if not pt_text:
-            return ""
-        pt_text = pt_text.strip()
-        # Strip any accidental leading label like "Resumo:" the AI might add
-        pt_text = re.sub(r'^(resumo\s*:|aqui está[^:]*:|resultado:)\s*', '', pt_text, flags=re.IGNORECASE)
-        if len(pt_text) < 60:
-            return ""
-        return f"\n\n---\n\n## 🇧🇷 Resumo em Português\n\n{pt_text}\n"
-    except Exception:
-        return ""
-
-
-# ============================================================
-# SPANISH SUMMARY
-# ============================================================
-
-def _add_es_summary(title: str, description: str, category: str) -> str:
-    """Generates a rich Spanish (ES) summary section using AI."""
-    try:
-        cat_es = {
-            "world": "mundo", "politics": "política", "war": "conflicto/defensa",
-            "business": "economía", "science": "ciencia", "health": "salud",
-            "food": "gastronomía", "sports": "deportes", "entertainment": "entretenimiento",
-            "environment": "medio ambiente", "travel": "viajes", "technology": "tecnología",
-            "ai": "inteligencia artificial", "security": "ciberseguridad",
-            "gadgets": "gadgets", "startups": "startups", "mobile": "móviles",
-        }.get(category, "noticias")
-
-        prompt = (
-            f"Eres un periodista español experimentado en {cat_es}. "
-            f"Escribe un resumen en español (ES) sobre la noticia siguiente. "
-            f"El resumen debe tener EXACTAMENTE 2 párrafos en prosa:\n"
-            f"1. Una frase de apertura que contextualice el hecho principal de forma atractiva.\n"
-            f"2. Un párrafo que explique el contexto, la relevancia y las implicaciones para los lectores hispanohablantes.\n\n"
-            f"Usa lenguaje periodístico natural, claro y accesible. "
-            f"Sin bullet points, sin JSON, sin títulos — solo párrafos en prosa.\n\n"
-            f"Título: {title}\nDescripción: {description}"
-        )
-        es_text = _ai_text(
-            prompt,
-            system=(
-                "Eres un periodista profesional hispanohablante. "
-                "Escribe siempre en español estándar, con lenguaje natural y fluido. "
-                "Nunca uses inglés. Responde solo con el texto del resumen."
-            ),
-        )
-        if not es_text:
-            return ""
-        es_text = es_text.strip()
-        es_text = re.sub(r'^(resumen\s*:|aquí está[^:]*:|resultado:)\s*', '', es_text, flags=re.IGNORECASE)
-        if len(es_text) < 60:
-            return ""
-        return f"\n\n---\n\n## 🇪🇸 Resumen en Español\n\n{es_text}\n"
-    except Exception:
-        return ""
 
 
 # ============================================================
@@ -3105,12 +3018,8 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
                 post_content = continuation + post_content
 
             post_content = _add_internal_links(post_content, category, Path(filename).stem)
-            pt_section = _add_pt_summary(title, description, category)
-            post_content += pt_section
-            # Spanish summary — top 3 categories by global readership
-            if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
-                es_section = _add_es_summary(title, description, category)
-                post_content += es_section
+            # Content policy: English only. PT-BR and ES summaries were
+            # removed when the site went mono-language.
 
             post_path = POSTS_DIR / filename
             post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")
@@ -3302,12 +3211,7 @@ def _process_article_dict(item: dict, max_override: int | None = None) -> int:
     if continuation:
         post_content = continuation + post_content
     post_content = _add_internal_links(post_content, category, Path(filename).stem)
-    pt_section = _add_pt_summary(title, description, category)
-    post_content += pt_section
-    # Spanish summary — top 3 categories by global readership
-    if category in {"world", "politics", "business", "technology", "science", "health", "war"}:
-        es_section = _add_es_summary(title, description, category)
-        post_content += es_section
+    # Content policy: English only.
 
     post_path = POSTS_DIR / filename
     post_path.write_text(frontmatter + "\n" + post_content, encoding="utf-8")

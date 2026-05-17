@@ -19,28 +19,9 @@
 <!-- ── Meta robots (custom — jekyll-seo-tag não define max-snippet) ── -->
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
-<!-- ── hreflang: link EN ↔ PT-BR variants when both exist ────── -->
-{% if page.lang == "pt-br" %}
-  {% comment %}On a PT post, link back to the EN canonical via translated_from. {% endcomment %}
-  {% if page.translated_from %}
-    {% assign en_match = site.posts | where_exp: "p", "p.path contains page.translated_from" | first %}
-    {% if en_match %}
-      <link rel="alternate" hreflang="en" href="{{ en_match.url | absolute_url }}">
-      <link rel="alternate" hreflang="x-default" href="{{ en_match.url | absolute_url }}">
-    {% endif %}
-  {% endif %}
-  <link rel="alternate" hreflang="pt-BR" href="{{ page.url | absolute_url }}">
-{% else %}
-  <link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}">
-  <link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
-  {% if page.layout == 'post' %}
-    {% assign post_filename = page.path | split: "/" | last %}
-    {% assign pt_match = site.posts | where_exp: "p", "p.translated_from == post_filename" | first %}
-    {% if pt_match %}
-      <link rel="alternate" hreflang="pt-BR" href="{{ pt_match.url | absolute_url }}">
-    {% endif %}
-  {% endif %}
-{% endif %}
+<!-- ── hreflang: site is English-only -->
+<link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
 
 <!-- ── Paginação rel=prev/next ── -->
 {% if paginator %}

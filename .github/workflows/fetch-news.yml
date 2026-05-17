@@ -144,14 +144,6 @@ jobs:
         if: steps.check_changes.outputs.changed != '0'
         run: python generate_search_index.py
 
-      - name: "🇧🇷 Translate posts to PT-BR"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python translate_posts.py
-        env:
-          PYTHONIOENCODING: utf-8
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-
       - name: "📰 Daily Briefing (original editorial roundup)"
         if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true
@@ -180,11 +172,11 @@ jobs:
         continue-on-error: true
         run: python generate_pillar_pages.py
 
-      - name: "💾 Commit derived artefacts (translations, briefings, audio, search index)"
+      - name: "💾 Commit derived artefacts (briefings, audio, search index)"
         if: steps.check_changes.outputs.changed != '0'
         continue-on-error: true
         run: |
-          git add _posts/pt/ search-index.json _tags/ 2>/dev/null || true
+          git add search-index.json _tags/ 2>/dev/null || true
           git add _posts/*-daily-briefing.md _posts/*-weekly-wrapup.md 2>/dev/null || true
           # generate_audio.py writes back into _posts/ frontmatter + drops MP3s in assets/audio/
           git add assets/audio/posts/ _posts/*.md 2>/dev/null || true
