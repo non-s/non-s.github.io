@@ -3,7 +3,7 @@ layout: post
 title: "Trump faces backlash as Democrats question $1.7B IRS settlement fund"
 date: 2026-05-15 19:31:34 +0000
 categories: [business, politics]
-tags: [cnbc, finance, economy, politics, government, democrats, trump, news, president-donald-trump, trump-irs-settlement-fund, democrats-criticize-trump-$1.7b-irs-fund, irs-lawsuit-trump-organization, trump-allies-irs-fund-controversy, irs-tax-settlement-legal-concerns, trump-tax-fraud-investigation-allies, congressional-democrats-demand-irs-transparency, irs-settlement-fund-legal-legitimacy]
+tags: [cnbc, finance, economy, politics, government, democrats, trump, news, president-donald-trump, trump-irs-settlement-fund, democrats-criticize-trump-1-7b-irs-fund, irs-lawsuit-trump-organization, trump-allies-irs-fund-controversy, irs-tax-settlement-legal-concerns, trump-tax-fraud-investigation-allies, congressional-democrats-demand-irs-transparency, irs-settlement-fund-legal-legitimacy]
 author: "GlobalBR News"
 description: "Democrats criticize a potential $1.7 billion IRS settlement fund for Trump allies, raising concerns over misuse. ABC News reports on the legal and political imp"
 source_url: "https://www.cnbc.com/2026/05/15/trump-irs-taxes-democrats.html"

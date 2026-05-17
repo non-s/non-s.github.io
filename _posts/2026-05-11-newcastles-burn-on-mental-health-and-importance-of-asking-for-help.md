@@ -3,7 +3,7 @@ layout: post
 title: "Newcastle paints park benches to promote mental health support"
 date: 2026-05-11 09:50:53 +0000
 categories: [health]
-tags: [bbc, health, medicine, mental-health, newcastle, burn, leazes-park, dan-burn, sport, mental-health-support, newcastle-united-mental-health, leazes-park-benches-mental-health, dan-burn-mental-health, football-mental-health-awareness, men's-mental-health-support, mental-health-stigma-in-sports, newcastle-united-foundation-mental-health-campaign]
+tags: [bbc, health, medicine, mental-health, newcastle, burn, leazes-park, dan-burn, sport, mental-health-support, newcastle-united-mental-health, leazes-park-benches-mental-health, dan-burn-mental-health, football-mental-health-awareness, mens-mental-health-support, mental-health-stigma-in-sports, newcastle-united-foundation-mental-health-campaign]
 author: "GlobalBR News"
 description: "Newcastle United Foundation paints benches in Leazes Park to encourage mental health conversations. Defender Dan Burn discusses why asking for help matters."
 source_url: "https://www.bbc.com/sport/football/videos/c74rn0pz2v7o?at_medium=RSS&at_campaign=rss"

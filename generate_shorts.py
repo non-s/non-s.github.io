@@ -313,7 +313,9 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
         f"professional news broadcast aesthetic, inspired by: {short_title}"
     )
     encoded = urllib.parse.quote(prompt)
-    seed = abs(hash(prompt)) % 999999
+    # Mix wall clock into the seed so consecutive Shorts in the same
+    # category don't fall on the same Pollinations background.
+    seed = (abs(hash(prompt)) + int(datetime.now().timestamp())) % 999999
     url = (
         f"https://image.pollinations.ai/prompt/{encoded}"
         f"?width={SHORT_W}&height={SHORT_H}&nologo=true&seed={seed}&model=flux"
@@ -647,16 +649,30 @@ def build_short_metadata(story: dict, video_path: Path,
     thumb_hook = (ai_meta.get("thumbnail_hook") or "").strip()
     extra_tags = [t for t in (ai_meta.get("extra_tags") or []) if isinstance(t, str)]
 
-    # Description
+    # Build the blog post URL (mirror of fetch_news.py's slug convention:
+    # /:category/:year/:month/:day/:slug/). YouTube weighs the first
+    # ~125 chars of the description heavily in search snippets.
+    slug = story.get("slug", "")
+    blog_url = ""
+    if slug:
+        m = re.match(r"^(\d{4})-(\d{2})-(\d{2})-(.+)$", slug)
+        if m:
+            yr, mo, da, slug_only = m.groups()
+            blog_url = f"https://non-s.github.io/{category.lower()}/{yr}/{mo}/{da}/{slug_only}/"
+
+    # Description — first line is the headline (snippet bait), then the
+    # internal blog link (drives traffic to the site, important for SEO),
+    # then external source for credibility.
+    blog_link_block = f"📖 Read the full story on our site: {blog_url}\n" if blog_url else ""
     yt_desc = (
         f"{title}\n\n"
         f"Breaking {category.lower()} news from GlobalBR News — {date_str}.\n\n"
-        f"Full story: {source_url}\n"
-        f"Source: {source}\n\n"
-        f"Follow GlobalBR News for hourly world news updates.\n"
-        f"Read more at: https://non-s.github.io\n\n"
-        f"{SHORTS_HASHTAGS} #{category.replace(' ', '')} "
-        f"#{date_str.replace(' ', '').replace(',', '')}"
+        f"{blog_link_block}"
+        f"📰 Original source: {source_url}\n"
+        f"   ({source})\n\n"
+        f"🔔 Follow for hourly world news updates.\n"
+        f"🌐 More at: https://non-s.github.io\n\n"
+        f"{SHORTS_HASHTAGS} #{category.replace(' ', '')}"
         f"\n\n© {year} GlobalBR News. Original articles belong to their respective sources."
     )
 

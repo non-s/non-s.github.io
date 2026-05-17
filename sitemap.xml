@@ -26,6 +26,7 @@ layout: none
 
   <!-- Posts (newest = highest priority; news:news only on items < 48h old) -->
   {% assign news_cutoff = site.time | date: '%s' | minus: 172800 %}
+  {% assign now_ts = site.time | date: '%s' | plus: 0 %}
   {% for post in site.posts %}
     {% if forloop.index <= 10 %}
       {% assign priority = "0.9" %}
@@ -35,22 +36,28 @@ layout: none
       {% assign priority = "0.5" %}
     {% endif %}
     {% assign post_ts = post.date | date: '%s' | plus: 0 %}
+    {% assign age_days = now_ts | minus: post_ts | divided_by: 86400 %}
+    {% if age_days < 1 %}{% assign cf = "hourly" %}
+    {% elsif age_days < 7 %}{% assign cf = "daily" %}
+    {% elsif age_days < 30 %}{% assign cf = "weekly" %}
+    {% else %}{% assign cf = "monthly" %}{% endif %}
   <url>
     <loc>{{ post.url | absolute_url }}</loc>
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-    <changefreq>never</changefreq>
+    <lastmod>{% if post.last_modified_at %}{{ post.last_modified_at | date_to_xmlschema }}{% else %}{{ post.date | date_to_xmlschema }}{% endif %}</lastmod>
+    <changefreq>{{ cf }}</changefreq>
     <priority>{{ priority }}</priority>
     {% if post.image %}
     <image:image>
       <image:loc>{% if post.image contains 'http' %}{{ post.image }}{% else %}{{ post.image | absolute_url }}{% endif %}</image:loc>
       <image:title>{{ post.title | escape }}</image:title>
+      {% if post.image_caption %}<image:caption>{{ post.image_caption | escape }}</image:caption>{% endif %}
     </image:image>
     {% endif %}
     {% if post_ts >= news_cutoff %}
     <news:news>
       <news:publication>
         <news:name>{{ site.title }}</news:name>
-        <news:language>en</news:language>
+        <news:language>{{ post.lang | default: 'en' }}</news:language>
       </news:publication>
       <news:publication_date>{{ post.date | date_to_xmlschema }}</news:publication_date>
       <news:title>{{ post.title | escape }}</news:title>

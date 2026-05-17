@@ -3,7 +3,7 @@ layout: post
 title: "Farage paid for £1.4m house with I'm a Celebrity cash, says Reform"
 date: 2026-05-15 12:46:43 +0000
 categories: [politics]
-tags: [bbc, politics, uk, government, farage, celebrity, parliament, nigel-farage-reform-uk-£5m-donation, nigel-farage-investigation-standards-committee, nigel-farage-i'm-a-celebrity-earnings-£1.4m-house, reform-uk-leader-under-scrutiny, parliament-watchdog-probes-farage-donations, nigel-farage-financial-transparency-issues, £5m-billionaire-donation-nigel-farage]
+tags: [bbc, politics, uk, government, farage, celebrity, parliament, nigel-farage-reform-uk-5m-donation, nigel-farage-investigation-standards-committee, nigel-farage-im-a-celebrity-earnings-1-4m-house, reform-uk-leader-under-scrutiny, parliament-watchdog-probes-farage-donations, nigel-farage-financial-transparency-issues, 5m-billionaire-donation-nigel-farage]
 author: "GlobalBR News"
 description: "Nigel Farage faces a parliamentary investigation into a £5m donation from a billionaire and a £1.4m home purchased using I'm a Celebrity earnings. Reform UK con"
 source_url: "https://www.bbc.com/news/articles/c809gkg7m00o?at_medium=RSS&at_campaign=rss"

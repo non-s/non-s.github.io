@@ -3,7 +3,7 @@ layout: post
 title: "Lawyers sanctioned $110K for fake AI citations in landmark Oregon case"
 date: 2026-05-16 10:30:00 +0000
 categories: [business, ai]
-tags: [fortune, business, economy, ai, machine-learning, would, alabama, alabama-supreme-court, oregon, manhattan, ai-hallucinations-in-legal-filings, lawyers-sanctioned-for-ai-misuse, oregon-lawyers-fined-$110000-ai-citations, alabama-supreme-court-ai-case-dismissal, ai-chatbot-legal-privilege-waiver-manhattan, legal-consequences-of-using-ai-in-court, generative-ai-risks-for-lawyers, ai-generated-fake-citations-sanctions, how-to-avoid-ai-sanctions-as-a-lawyer, courts-cracking-down-on-ai-in-legal-work]
+tags: [fortune, business, economy, ai, machine-learning, would, alabama, alabama-supreme-court, oregon, manhattan, ai-hallucinations-in-legal-filings, lawyers-sanctioned-for-ai-misuse, oregon-lawyers-fined-110000-ai-citations, alabama-supreme-court-ai-case-dismissal, ai-chatbot-legal-privilege-waiver-manhattan, legal-consequences-of-using-ai-in-court, generative-ai-risks-for-lawyers, ai-generated-fake-citations-sanctions, how-to-avoid-ai-sanctions-as-a-lawyer, courts-cracking-down-on-ai-in-legal-work]
 author: "GlobalBR News"
 description: "Two Oregon lawyers fined $110,000 for submitting 23 fabricated citations linked to AI hallucinations. Judges across the U.S. crack down on AI misuse in legal fi"
 source_url: "https://fortune.com/2026/05/16/ai-hallucinations-legal-sanctions-courtroom-lexisnexis/"

@@ -3,7 +3,7 @@ layout: post
 title: "Top 10 WSL scorers revealed before final weekend fixtures"
 date: 2026-05-16 08:38:19 +0000
 categories: [sports]
-tags: [bbc, sports, football, name, women, super-league, saturday, wsl-top-scorers-2023-24, women's-super-league-goal-leaders, beth-mead-wsl-goals, chelsea-women-top-scorers, wsl-final-weekend-fixtures, arsenal-women-scoring-chart, aston-villa-rachel-daly-goals, wsl-title-race-2023-24, women's-super-league-top-10-scorers, wsl-relegation-battle-2023-24]
+tags: [bbc, sports, football, name, women, super-league, saturday, wsl-top-scorers-2023-24, womens-super-league-goal-leaders, beth-mead-wsl-goals, chelsea-women-top-scorers, wsl-final-weekend-fixtures, arsenal-women-scoring-chart, aston-villa-rachel-daly-goals, wsl-title-race-2023-24, womens-super-league-top-10-scorers, wsl-relegation-battle-2023-24]
 author: "GlobalBR News"
 description: "Check the Women's Super League's top 10 goal scorers before the season's final matches this weekend. Includes player stats and key insights."
 source_url: "https://www.bbc.com/sport/football/articles/cdep39g6w2xo?at_medium=RSS&at_campaign=rss"

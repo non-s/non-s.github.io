@@ -12,6 +12,9 @@ jobs:
   generate-and-upload:
     name: "Gerar videos e publicar"
     runs-on: ubuntu-latest
+    # Without a timeout, a stuck FFmpeg encode can chew through the
+    # whole monthly GitHub Actions quota on a single hung job.
+    timeout-minutes: 60
 
     permissions:
       contents: write
