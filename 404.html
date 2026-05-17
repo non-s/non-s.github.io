@@ -76,8 +76,12 @@ hide_subscribe: true
     <div class="col">
       <h2 class="section-title" style="margin-bottom:1.25rem;">Browse Categories</h2>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-        {% assign cats = "world,politics,war,business,science,health,sports,food,entertainment,environment,travel,technology,ai,security,gadgets,startups,mobile" | split: "," %}
-        {% for cat in cats %}
+        {% comment %}
+          Driven from _data/categories.yml so this list stays in sync
+          with the rest of the site automatically.
+        {% endcomment %}
+        {% for entry in site.data.categories %}
+        {% assign cat = entry[0] %}
         <a href="{{ '/' | append: cat | append: '/' | relative_url }}"
            style="display:inline-flex;align-items:center;padding:.45rem 1rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:50px;font-size:.82rem;font-weight:600;color:var(--c-muted);text-decoration:none;transition:all .2s;text-transform:capitalize;"
            onmouseover="this.style.color='var(--c-accent)';this.style.borderColor='rgba(249,115,22,.3)';this.style.background='rgba(249,115,22,.08)'"

@@ -9,7 +9,9 @@ tagline: "World news: politics, war, science, food, sports & more"
 description: "GlobalBR News brings you the latest news from around the world — politics, war & conflict, science, health, food, sports, entertainment, business and technology."
 author:
   name: "Julio"
-  email: ""
+  # NB: leave `email` unset (omit the key) rather than set to "". feed-full.xml
+  # only emits the <author> element when email is truthy, so the empty
+  # string was producing malformed `<author> ()</author>` lines.
   github: "non-s"
 
 # --- URL e baseurl ---

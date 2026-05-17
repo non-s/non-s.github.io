@@ -125,7 +125,16 @@ permalink: /search/
       });
       if (pendingQuery !== null) run(pendingQuery);
     })
-    .catch(function(){});
+    .catch(function(err){
+      // Don't swallow silently — surface a hint to the user (and the
+      // console) so a missing/corrupted index isn't an invisible bug.
+      if (window.console && console.warn) console.warn('search-index fetch failed:', err);
+      var empty = document.getElementById('search-empty');
+      if (empty) {
+        empty.style.display = 'block';
+        empty.textContent = 'Search is temporarily unavailable. Please retry in a moment.';
+      }
+    });
 
   var input      = document.getElementById('search-input');
   var form       = document.getElementById('search-form');

@@ -126,9 +126,12 @@ window.gbToast = function gbToast(msg, opts) {
 
 /* ── New posts polling notification ──────────────────────── */
 (function(){
-  var POLL_INTERVAL = 5 * 60 * 1000;
-  var lastCheck = Date.now();
-  var notified = false;
+  var BASE_INTERVAL  = 5 * 60 * 1000;   // 5 min
+  var MAX_INTERVAL   = 60 * 60 * 1000;  // 1 hour
+  var pollInterval   = BASE_INTERVAL;
+  var lastCheck      = Date.now();
+  var notified       = false;
+  var pollTimer      = null;
 
   function escapeHtml(s) {
     return String(s || '').replace(/[&<>"']/g, function(c) {
@@ -136,18 +139,43 @@ window.gbToast = function gbToast(msg, opts) {
     });
   }
 
+  function scheduleNextPoll() {
+    if (notified) return;
+    // Add up to 25% jitter so tabs that opened at the same time
+    // don't all hit the CDN in the same instant.
+    var jitter = pollInterval * 0.25 * Math.random();
+    pollTimer = setTimeout(checkForNewPosts, pollInterval + jitter);
+  }
+
   function checkForNewPosts() {
-    if (notified || document.hidden) return;
+    if (notified) return;
+    if (document.hidden) {
+      // Don't burn CPU/network polling for a hidden tab — wait for
+      // visibility to come back, then retry immediately.
+      return;
+    }
     fetch('/search-index.json?t=' + Date.now(), {cache: 'no-store'})
-      .then(function(r){ return r.json(); })
+      .then(function(r){
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
       .then(function(data){
-        if (!data || !data.length) return;
+        // Success: reset interval to baseline.
+        pollInterval = BASE_INTERVAL;
+        if (!data || !data.length) { scheduleNextPoll(); return; }
         var latest = new Date(data[0].date);
         if (latest.getTime() > lastCheck) {
           showNewPostsBanner(data[0]);
           notified = true;
+          return;
         }
-      }).catch(function(){});
+        scheduleNextPoll();
+      })
+      .catch(function(){
+        // Exponential backoff on failure — caps at 1 hour.
+        pollInterval = Math.min(pollInterval * 2, MAX_INTERVAL);
+        scheduleNextPoll();
+      });
   }
 
   function showNewPostsBanner(post) {
@@ -173,7 +201,14 @@ window.gbToast = function gbToast(msg, opts) {
   }
 
   if (!document.body.classList.contains('layout-post')) {
-    setInterval(checkForNewPosts, POLL_INTERVAL);
+    scheduleNextPoll();
+    // When a hidden tab comes back, run a fresh check immediately.
+    document.addEventListener('visibilitychange', function(){
+      if (!document.hidden && !notified) {
+        clearTimeout(pollTimer);
+        checkForNewPosts();
+      }
+    });
   }
 })();
 

@@ -26,7 +26,7 @@ jobs:
         run: |
           git fetch --prune
           # Cutoff: branches merged AND with no commit in the last 14 days.
-          CUTOFF=$(date -u -d '14 days ago' '+%Y-%m-%d')
+          CUTOFF_EPOCH=$(date -u -d '14 days ago' +%s)
           MERGED=$(git branch -r --merged origin/main \
             | grep -v 'origin/main\|origin/master\|HEAD' \
             | sed 's|origin/||')
@@ -37,10 +37,14 @@ jobs:
             if ! echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
               continue
             fi
-            # Age check.
-            LAST=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo '')
-            if [ -z "$LAST" ] || [ "$LAST" \> "$CUTOFF" ]; then
-              echo "  ⏭  skipping $branch (last commit $LAST > cutoff $CUTOFF)"
+            # Age check via epoch comparison — string compare on ISO
+            # dates only works while years stay 4-digit, but more
+            # importantly `[ "$a" \> "$b" ]` is non-portable and quoted
+            # the wrong way (returns wrong result on busybox sh).
+            LAST_EPOCH=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null || echo '')
+            if [ -z "$LAST_EPOCH" ] || [ "$LAST_EPOCH" -gt "$CUTOFF_EPOCH" ]; then
+              LAST_HUMAN=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo 'unknown')
+              echo "  ⏭  skipping $branch (last commit $LAST_HUMAN — newer than 14d cutoff)"
               SKIPPED=$((SKIPPED+1))
               continue
             fi
