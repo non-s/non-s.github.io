@@ -26,11 +26,14 @@ timezone: "America/New_York"
 locale: "en_US"
 
 # --- Plugins ---
+# NB: jekyll-sitemap was tried briefly but removed — we ship
+# hand-written sitemap.xml / sitemap-news.xml / sitemap-pt.xml with
+# news+image annotations the plugin can't emit. Letting jekyll-sitemap
+# also walk the 14 500+ tag pages slowed builds past the CI timeout.
 plugins:
   - jekyll-seo-tag
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-sitemap
 
 # --- Paginação ---
 paginate: 10
@@ -71,16 +74,8 @@ logo: "/assets/images/logo.png"
 image: "/assets/images/og-default.jpg"
 
 # --- Sitemap ---
-# We ship a hand-written `/sitemap.xml` with news/image annotations.
-# jekyll-sitemap is loaded as a fallback but we tell it to skip the
-# pages already covered to avoid double indexing.
-sitemap:
-  exclude:
-    - "/404.html"
-    - "/sitemap.xml"
-    - "/sitemap-custom.xml"
-    - "/sitemap-news.xml"
-    - "/sitemap-pt.xml"
+# We ship a hand-written /sitemap.xml with news+image annotations,
+# plus separate /sitemap-news.xml (48h window) and /sitemap-pt.xml.
 
 # --- Posts ---
 permalink: /:categories/:year/:month/:day/:title/
