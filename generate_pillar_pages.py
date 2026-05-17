@@ -19,9 +19,10 @@ Re-runnable: overwrites existing pillar files atomically.
 """
 from __future__ import annotations
 
+import html
+import json
 import logging
 from collections import Counter, defaultdict
-from datetime import date
 from pathlib import Path
 
 from utils.frontmatter import parse, get_list, get_str
@@ -45,10 +46,8 @@ def _load_categories() -> dict[str, dict]:
 
 def _posts_by_category() -> dict[str, list[tuple[Path, dict]]]:
     out: dict[str, list[tuple[Path, dict]]] = defaultdict(list)
+    # glob("*.md") does NOT descend into _posts/pt/, so EN canonicals only.
     for path in POSTS_DIR.glob("*.md"):
-        # Skip translated posts (PT) so the pillar lists EN canonicals only.
-        if "/pt/" in str(path):
-            continue
         try:
             fm = parse(path.read_text(encoding="utf-8", errors="replace"))
         except Exception:
@@ -99,53 +98,86 @@ def _render(category: str, meta: dict, posts: list[tuple[Path, dict]]) -> str:
             "image": get_str(fm, "image"),
         })
 
+    cat_label = meta.get("title", category)
+    cat_label_cap = meta.get("title", category.capitalize())
+
     cards_html = []
     for item in item_rows:
         y, m, d = item["date"]
-        date_str = f"{y}-{m}-{d}"
+        date_str = html.escape(f"{y}-{m}-{d}")
+        item_url = html.escape(item["url"], quote=True)
+        item_title = html.escape(item["title"])
+        img_src = html.escape(item["image"], quote=True) if item["image"] else ""
         img_html = (
-            f'<img src="{item["image"]}" alt="" loading="lazy" width="320" height="200">'
+            f'<img src="{img_src}" alt="" loading="lazy" width="320" height="200">'
             if item["image"]
-            else f'<span class="card-img-placeholder">{icon}</span>'
+            else f'<span class="card-img-placeholder">{html.escape(icon)}</span>'
         )
         cards_html.append(
-            f'<article class="cat-card"><a href="{item["url"]}" class="cat-card-imglink">{img_html}</a>'
+            f'<article class="cat-card"><a href="{item_url}" class="cat-card-imglink">{img_html}</a>'
             f'<div class="cat-card-body"><h3 class="cat-card-title">'
-            f'<a href="{item["url"]}">{item["title"]}</a></h3>'
+            f'<a href="{item_url}">{item_title}</a></h3>'
             f'<time class="cat-card-time">{date_str}</time></div></article>'
         )
     cards_block = "\n".join(cards_html)
 
     topic_pills = "\n".join(
-        f'<a href="/tag/{t}/" class="tag-pill">#{t}</a>'
+        f'<a href="/tag/{html.escape(t, quote=True)}/" class="tag-pill">#{html.escape(t)}</a>'
         for t in top_tags
     )
 
-    # JSON-LD: CollectionPage + BreadcrumbList
-    jsonld = (
-        '<script type="application/ld+json">{'
-        '"@context":"https://schema.org",'
-        '"@type":"CollectionPage",'
-        f'"name":"{title}",'
-        f'"description":"{desc}",'
-        '"isPartOf":{"@type":"WebSite","name":"{{ site.title }}","url":"{{ site.url }}"},'
-        f'"about":"{meta.get("title", category)}"'
-        '}</script>'
-        '<script type="application/ld+json">{'
-        '"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
-        '{"@type":"ListItem","position":1,"name":"Home","item":"{{ site.url }}/"},'
-        f'{{"@type":"ListItem","position":2,"name":"{meta.get("title", category)}",'
-        f'"item":"{{{{ site.url }}}}/{category}/"}},'
-        f'{{"@type":"ListItem","position":3,"name":"Complete coverage",'
-        f'"item":"{{{{ site.url }}}}/{category}/pillar/"}}]'
-        '}</script>'
-    )
+    # JSON-LD: build as dicts then serialize with json.dumps so any quote /
+    # backslash / </script> in titles is correctly escaped. We embed Liquid
+    # placeholders (`{{ site.url }}`, `{{ site.title }}`) as literal sentinel
+    # strings, then unwrap them in the final source so Jekyll still expands them.
+    collection_page = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": title,
+        "description": desc,
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "__SITE_TITLE__",
+            "url": "__SITE_URL__",
+        },
+        "about": cat_label,
+    }
+    breadcrumb = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home",
+             "item": "__SITE_URL__/"},
+            {"@type": "ListItem", "position": 2, "name": cat_label,
+             "item": f"__SITE_URL__/{category}/"},
+            {"@type": "ListItem", "position": 3, "name": "Complete coverage",
+             "item": f"__SITE_URL__/{category}/pillar/"},
+        ],
+    }
+
+    def _ld(d: dict) -> str:
+        # Escape "</script>" defensively per Google's JSON-LD guidance.
+        raw = json.dumps(d, ensure_ascii=False).replace("</", "<\\/")
+        raw = raw.replace('"__SITE_URL__"', '"{{ site.url }}"')
+        raw = raw.replace('"__SITE_TITLE__"', '"{{ site.title }}"')
+        # Also unwrap interpolated occurrences (e.g. embedded in a longer URL).
+        raw = raw.replace("__SITE_URL__", "{{ site.url }}")
+        raw = raw.replace("__SITE_TITLE__", "{{ site.title }}")
+        return f'<script type="application/ld+json">{raw}</script>'
+
+    jsonld = _ld(collection_page) + _ld(breadcrumb)
+
+    title_attr = html.escape(title, quote=True)
+    desc_attr = html.escape(desc, quote=True)
+    icon_html = html.escape(icon)
+    cat_label_html = html.escape(cat_label_cap)
+    category_attr = html.escape(category, quote=True)
 
     return (
         "---\n"
         "layout: default\n"
-        f'title: "{title}"\n'
-        f'description: "{desc}"\n'
+        f'title: "{title_attr}"\n'
+        f'description: "{desc_attr}"\n'
         f"permalink: /{category}/pillar/\n"
         f'image: "/assets/images/og-default.jpg"\n'
         "hide_subscribe: true\n"
@@ -153,11 +185,11 @@ def _render(category: str, meta: dict, posts: list[tuple[Path, dict]]) -> str:
         '<div class="container py-5">\n'
         f'  <nav aria-label="breadcrumb" class="mb-3"><ol class="breadcrumb mb-0">'
         f'<li class="breadcrumb-item"><a href="/">Home</a></li>'
-        f'<li class="breadcrumb-item"><a href="/{category}/">{meta.get("title", category.capitalize())}</a></li>'
+        f'<li class="breadcrumb-item"><a href="/{category_attr}/">{cat_label_html}</a></li>'
         f'<li class="breadcrumb-item active">Complete coverage</li></ol></nav>\n'
-        f'  <h1 class="section-title"><span style="font-size:1.2em;">{icon}</span> '
-        f'{title}</h1>\n'
-        f'  <p class="text-muted mb-4">{desc}</p>\n'
+        f'  <h1 class="section-title"><span style="font-size:1.2em;">{icon_html}</span> '
+        f'{html.escape(title)}</h1>\n'
+        f'  <p class="text-muted mb-4">{html.escape(desc)}</p>\n'
         f'  <div class="trending-pills d-flex flex-wrap gap-2 mb-4">{topic_pills}</div>\n'
         f'  <div class="cat-section-grid">{cards_block}</div>\n'
         '</div>\n'
