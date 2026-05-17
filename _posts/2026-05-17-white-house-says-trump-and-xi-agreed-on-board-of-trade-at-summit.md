@@ -39,6 +39,7 @@ entities:
   - "Xi Jinping"
   - "White House"
   - "Phase One trade deal"
+audio: "/assets/audio/posts/2026-05-17-white-house-says-trump-and-xi-agreed-on-board-of-trade-at-summit.mp3"
 ---
 
 The White House confirmed Friday that former President Donald Trump and Chinese leader Xi Jinping [Xi Jinping](https://en.wikipedia.org/wiki/Xi_Jinping) had agreed during their meeting earlier this week to establish a new trade board. This board will reportedly focus on monitoring and stabilizing economic ties between the US and China, which have been battered by years of tariffs, export controls, and regulatory crackdowns on both sides. The announcement came as both nations face growing pressure to ease trade barriers that have hurt businesses, farmers, and consumers in both countries.
