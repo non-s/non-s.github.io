@@ -42,6 +42,7 @@ entities:
   - "Twickenham Stoop"
   - "Lydia Thompson"
   - "Emily Scarratt"
+audio: "/assets/audio/posts/2026-05-17-what-a-finish-breach-scores-brilliant-try-as-england-close-on-title.mp3"
 ---
 
 England secured a thrilling 43-28 victory over France in the Women's Six Nations at [Twickenham Stoop](https://en.wikipedia.org/wiki/Twickenham_Stoop) on Saturday. The match was decided in the final minute when [Jessie Breach](https://en.wikipedia.org/wiki/Jessie_Breach) finished off a sweeping move to score the decisive try. England’s attack ran the ball from their own 22 to the French line, and Breach dived over under the posts to make it 43-28. The try capped a dominant second-half performance from England after France fought back to make it a nervous finish.

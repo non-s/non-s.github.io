@@ -41,6 +41,7 @@ entities:
   - "Nathan Ballantyne"
   - "Jared B. Celniker"
   - "Arizona State University"
+audio: "/assets/audio/posts/2026-05-17-when-politics-enter-the-picture-credentials-take-a-back-seat.mp3"
 ---
 
 Most of us claim we judge experts by their qualifications: the right degree, years of research, peer respect. But a new study from [University of California, Irvine](https://en.wikipedia.org/wiki/University_of_California,_Irvine) shows that none of it matters once politics come into play.
