@@ -42,6 +42,7 @@ entities:
   - "Great Salt Lake Basin"
   - "Skull Valley Band of Goshute Indians"
   - "China Mobile Cloud Computing Center"
+audio: "/assets/audio/posts/2026-05-17-whats-up-with-mr-wonderfuls-utah-data-center.mp3"
 ---
 
 Kevin O’Leary, the brash investor known for his 'Mr. Wonderful' persona on ABC’s [Shark Tank](https://en.wikipedia.org/wiki/Shark_Tank_(American_TV_series)), is trying to turn a patch of Utah desert into one of the largest data centers in the world. His company, [O’Shares Investments](https://en.wikipedia.org/wiki/Kevin_O%27Leary), wants to build a 40,000-acre 'hyperscale' facility in Box Elder County, about 80 miles northwest of Salt Lake City. That’s roughly 62 square miles—bigger than the entire city of Chicago. The plan calls for massive server farms, cooling systems, and backup power plants to keep the internet running 24/7. But the project is already running into fierce resistance from locals who say it’ll suck up too much water in a drought-prone region and wreck the landscape they call home.

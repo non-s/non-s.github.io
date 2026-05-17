@@ -43,6 +43,7 @@ entities:
   - "Remco Evenepoel"
   - "Naples"
   - "Pompei"
+audio: "/assets/audio/posts/2026-05-17-vingegaard-reduces-gap-on-leader-with-stage-nine-win.mp3"
 ---
 
 Jonas Vingegaard [Jumbo-Visma](https://en.wikipedia.org/wiki/Jumbo-Visma) just pulled off a dominant finish on stage nine of the Giro d'Italia, crossing the line in [Naples](https://en.wikipedia.org/wiki/Naples) ahead of a chasing group that included [Remco Evenepoel](https://en.wikipedia.org/wiki/Remco_Evenepoel). The 28-year-old Dane powered up the final climb with the kind of strength that's made him one of the sport's most feared climbers this season. It was his second stage win in this year's race, following his victory on stage four in [Andorra](https://en.wikipedia.org/wiki/Andorra) la Vella last week. The win today wasn't just about the stage—it was about the gap Vingegaard slashed to the race leader, [Afonso Eulalio](https://en.wikipedia.org/wiki/Afonso_Eulalio) of [Israel-Premier Tech](https://en.wikipedia.org/wiki/Israel–Premier_Tech_Road_Team). Before the stage, Eulalio led by 1 minute and 20 seconds. After Vingegaard's blistering performance, that margin is down to just 46 seconds. That's the kind of deficit that can disappear in a single day if the weather turns or the peloton cracks under pressure. ## Vingegaard's form is peaking right now

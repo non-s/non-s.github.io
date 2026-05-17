@@ -41,6 +41,7 @@ entities:
   - "United States"
   - "Strait of Hormuz"
   - "Ministry of Commerce China"
+audio: "/assets/audio/posts/2026-05-17-us-says-china-to-buy-17-billion-of-agricultural-goods-annually.mp3"
 ---
 
 China will buy at least $17 billion of US agricultural products every year until 2028, the White House announced after President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump)’s two-day summit in Beijing. That’s the biggest takeaway from the trip, which marked the first visit to China by a sitting U.S. president since [George W. Bush](https://en.wikipedia.org/wiki/George_W._Bush) in 2009. The White House’s fact sheet called the deal a major step toward easing trade tensions, though it didn’t mention tariffs—leaving that part of the talks still up in the air.

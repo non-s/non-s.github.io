@@ -45,6 +45,7 @@ entities:
   - "Brexit"
   - "European Union"
   - "Reform UK"
+audio: "/assets/audio/posts/2026-05-17-where-does-uk-eu-relationship-stand-and-how-might-bid-to-rejoin-bloc-be-received.mp3"
 ---
 
 > 📰 **Continuing coverage:** [Brexit looms over Labour leadership race and by-election](/politics/2026/05/17/labour-leadership-jostling-puts-brexit-back-under-political-spotlight-2/)
