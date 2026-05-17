@@ -41,6 +41,7 @@ entities:
   - "Donald Trump"
   - "Louisiana Republican Party"
   - "U.S. Senate"
+audio: "/assets/audio/posts/2026-05-17-trump-backed-challenger-defeats-republican-senator-who-voted-to-convict-presiden.mp3"
 ---
 
 Louisiana’s Republican primary delivered a sharp rebuke to one of the GOP’s most prominent critics of Donald Trump on Tuesday night, as Trump-backed candidate Julia Letlow defeated Senator Bill Cassidy in a landslide. Cassidy, who represents Louisiana in the U.S. Senate, had voted to convict Trump during his second impeachment trial in 2021, a vote that made him one of seven Republicans to break ranks. Letlow, a former Trump administration official, ran a campaign that leaned heavily on Trump’s endorsement and branding Cassidy as “disloyal” to the former president’s movement. The win marks another step in Trump’s ongoing campaign to reshape the Republican Party in his image, purging those who’ve crossed him in the past.

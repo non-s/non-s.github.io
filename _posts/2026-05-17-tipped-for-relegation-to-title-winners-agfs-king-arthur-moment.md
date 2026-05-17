@@ -40,6 +40,7 @@ entities:
   - "Uwe Rösler"
   - "Emil Riis"
   - "Ceres Park stadium"
+audio: "/assets/audio/posts/2026-05-17-tipped-for-relegation-to-title-winners-agfs-king-arthur-moment.mp3"
 ---
 
 AGF Aarhus [Aarhus GF](https://en.wikipedia.org/wiki/Aarhus_Gymnastik_Forening) will close their 40-year trophy drought this Sunday when they lift the Danish Superliga championship. The club was one of the pre-season favorites to get relegated, but instead, they pulled off one of the biggest underdog stories in Danish football history.

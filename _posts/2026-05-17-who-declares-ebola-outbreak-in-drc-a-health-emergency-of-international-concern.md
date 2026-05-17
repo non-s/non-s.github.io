@@ -45,6 +45,7 @@ entities:
   - "Goma"
   - "Beni"
   - "Butembo"
+audio: "/assets/audio/posts/2026-05-17-who-declares-ebola-outbreak-in-drc-a-health-emergency-of-international-concern.mp3"
 ---
 
 > 📰 **Continuing coverage:** [WHO declares Ebola emergency as Congo outbreak spreads to Uganda](/world/2026/05/17/who-declares-international-emergency-over-ebola-outbreak/)

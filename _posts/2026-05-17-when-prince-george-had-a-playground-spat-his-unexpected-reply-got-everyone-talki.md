@@ -41,6 +41,7 @@ entities:
   - "British monarchy"
   - "Thomas’s Battersea"
   - "University College London"
+audio: "/assets/audio/posts/2026-05-17-when-prince-george-had-a-playground-spat-his-unexpected-reply-got-everyone-talki.mp3"
 ---
 
 The video clip of young Prince George, now 11, first appeared online in 2019 after a parent filmed it at a school in Norfolk. In the footage, George — dressed in a navy polo shirt and shorts — confronts a classmate during a playground scuffle. His exact words, caught on camera, are simple and blunt: ‘My dad is going to be king, so watch out.’ The moment quickly spread among parents and royal watchers, who either laughed at the kid’s confidence or winced at the hint of entitlement. It’s easy to see why the clip struck a chord: it’s a moment where royal duty collides with playground logic, and the kid handled it like any other five-year-old would — by leaning on the one fact he knows best.
