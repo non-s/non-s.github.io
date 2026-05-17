@@ -28,7 +28,6 @@ from __future__ import annotations
 import logging
 import re
 from datetime import datetime, timezone, timedelta
-from typing import Iterable
 
 import requests
 

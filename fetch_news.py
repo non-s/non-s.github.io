@@ -126,12 +126,6 @@ def _get_crypto_prices_cached() -> dict:
     return _crypto_prices_cache
 
 
-def _post_is_crypto_related(title: str, description: str) -> bool:
-    """Retorna True se o post menciona palavras-chave de cripto."""
-    combined = (title + " " + description).lower()
-    return any(kw in combined for kw in _CRYPTO_KEYWORDS)
-
-
 def _is_public_url(url: str) -> bool:
     """Reject URLs that point at non-http schemes or private/loopback hosts.
 
@@ -435,7 +429,6 @@ def _generate_og_image(title: str, category: str, slug: str) -> str:
         bg_img.save(str(jpg_path), "JPEG", quality=82, optimize=True)
 
         webp_path = _to_webp(jpg_path)
-        final_local = str(webp_path) if (webp_path and webp_path.exists()) else (str(jpg_path) if jpg_path.exists() else None)
         local_url = f"/assets/images/posts/{slug}.webp" if (webp_path and webp_path.exists()) else (f"/assets/images/posts/{slug}.jpg" if jpg_path.exists() else fallback)
 
         return local_url
@@ -1295,6 +1288,17 @@ FEEDS = [
 ]
 
 
+# Dedup FEEDS by URL — the literal list above grew copy-paste duplicates over
+# time (Al Jazeera 2×, BBC Sport 2×, Krebs 2×, etc). Keeping them costs AI
+# budget and run time even though the post-level dedup catches the output.
+_seen_urls: set[str] = set()
+FEEDS = [
+    f for f in FEEDS
+    if not (f["url"] in _seen_urls or _seen_urls.add(f["url"]))
+]
+del _seen_urls
+
+
 # ============================================================
 # EXTRA SOURCES — HackerNews, DEV.to
 # ============================================================
@@ -1771,6 +1775,11 @@ def get_extra_tags(title: str, description: str) -> tuple[str, list]:
 _DEAD_FEED_THRESHOLD     = 3   # warn at this many consecutive failures
 _DEAD_FEED_SKIP_AT       = 10  # actually skip the feed at this many
 _FEED_HEALTH_FILE        = Path("_data") / "feed_health.json"
+# Conditional-fetch state: feed URL → {"etag": str, "modified": str}. Lets
+# feedparser send If-None-Match / If-Modified-Since and skip the ~100 KB
+# body when nothing changed. At 132 feeds × 8 runs/day, this saves
+# ~100 MB/day of bandwidth.
+_FEED_CACHE_FILE         = Path("_data") / "feed_cache.json"
 
 def _load_feed_failures() -> dict[str, int]:
     try:
@@ -1792,7 +1801,33 @@ def _save_feed_failures(failures: dict[str, int]) -> None:
     except Exception as e:
         log.debug(f"feed_health save failed (non-fatal): {e}")
 
+
+def _load_feed_cache() -> dict[str, dict]:
+    try:
+        if _FEED_CACHE_FILE.exists():
+            data = json.loads(_FEED_CACHE_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                return {str(k): v for k, v in data.items() if isinstance(v, dict)}
+    except Exception as e:
+        log.debug(f"feed_cache load failed (starting fresh): {e}")
+    return {}
+
+
+_feed_cache_lock = threading.Lock()
+
+def _save_feed_cache(cache: dict[str, dict]) -> None:
+    try:
+        _FEED_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _FEED_CACHE_FILE.write_text(
+            json.dumps(cache, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+    except Exception as e:
+        log.debug(f"feed_cache save failed (non-fatal): {e}")
+
+
 _feed_failures: dict[str, int] = _load_feed_failures()
+_feed_cache: dict[str, dict] = _load_feed_cache()
 
 
 def post_filename(date: datetime, slug: str) -> str:
@@ -2001,9 +2036,7 @@ lang: "en"
         front += f'last_updated: "{last_updated}"\n'
     if image:
         front += f'image: "{image}"\n'
-        alt = sanitize_text(title[:100])
-        if not alt:
-            alt = sanitize_text(title[:100])
+        alt = sanitize_text(title[:100]) or "News article cover image"
         front += f'image_alt: "{alt}"\n'
     if image_caption:
         front += f'image_caption: "{sanitize_text(image_caption[:120])}"\n'
@@ -2292,17 +2325,19 @@ def _add_es_summary(title: str, description: str, category: str) -> str:
 # STORY CONTINUATION DETECTION
 # ============================================================
 
-_PT_STOPWORDS = {
-    "about", "after", "again", "along", "among", "around", "before",
-    "being", "between", "could", "during", "every", "first", "found",
-    "great", "group", "house", "large", "later", "light", "might",
-    "never", "night", "often", "other", "place", "right", "small",
-    "still", "their", "there", "these", "thing", "think", "those",
-    "three", "through", "today", "under", "until", "using", "where",
-    "which", "while", "world", "would", "years", "their", "since",
-    "after", "major", "report", "shows", "ahead", "calls", "backs",
-    "says", "says",
-}
+# NB: misleadingly named — these are English stopwords used by
+# `_find_related_story` to filter out common words from headlines before
+# computing keyword overlap. Kept the old name to avoid touching call sites.
+_PT_STOPWORDS = frozenset({
+    "about", "after", "again", "ahead", "along", "among", "around",
+    "backs", "before", "being", "between", "calls", "could", "during",
+    "every", "first", "found", "great", "group", "house", "large",
+    "later", "light", "major", "might", "never", "night", "often",
+    "other", "place", "report", "right", "says", "shows", "since",
+    "small", "still", "their", "there", "these", "thing", "think",
+    "those", "three", "through", "today", "under", "until", "using",
+    "where", "which", "while", "world", "would", "years",
+})
 
 
 def _find_related_story(title: str, tags: list, category: str) -> str:
@@ -2808,16 +2843,37 @@ def fetch_feed(feed_config: dict, max_override: int | None = None) -> int:
 
     log.info(f"📡 Processando feed: {name} ({url})")
 
+    # Conditional fetch: pass last ETag / Last-Modified back so the server
+    # can answer 304 Not Modified and skip the body. Saves ~100 MB/day.
+    cached = _feed_cache.get(url) or {}
     try:
-        parsed = feedparser.parse(url, request_headers={
-            "User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"
-        })
+        parsed = feedparser.parse(
+            url,
+            etag=cached.get("etag") or None,
+            modified=cached.get("modified") or None,
+            request_headers={
+                "User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)",
+            },
+        )
     except Exception as e:
         log.error(f"  ❌ Erro ao ler feed {name}: {e}")
         _feed_failures[name] = _feed_failures.get(name, 0) + 1
         if _feed_failures[name] >= _DEAD_FEED_THRESHOLD:
             log.warning(f"  💀 Feed possivelmente morto ({_feed_failures[name]} falhas consecutivas): {name}")
         return 0
+
+    # feedparser surfaces 304 as `status=304` with an empty entries list.
+    if getattr(parsed, "status", None) == 304:
+        log.info(f"  ✓ {name}: 304 Not Modified (cached)")
+        _feed_failures[name] = 0
+        return 0
+
+    # Persist ETag / Last-Modified for the next run.
+    new_etag = getattr(parsed, "etag", "") or ""
+    new_modified = getattr(parsed, "modified", "") or ""
+    if new_etag or new_modified:
+        with _feed_cache_lock:
+            _feed_cache[url] = {"etag": new_etag, "modified": new_modified}
 
     if parsed.bozo and not parsed.entries:
         exc = getattr(parsed, 'bozo_exception', None)
@@ -3404,6 +3460,8 @@ def _save_last_run(total_created: int, start_time: float) -> None:
     # Persist the failure counts across runs so feeds that stay broken
     # eventually trip the skip threshold instead of being polled forever.
     _save_feed_failures(_feed_failures)
+    # Persist ETag / Last-Modified for conditional fetches next run.
+    _save_feed_cache(_feed_cache)
 
 
 def main():
