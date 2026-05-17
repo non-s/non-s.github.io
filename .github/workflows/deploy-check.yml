@@ -46,12 +46,14 @@ jobs:
         run: pytest -q
 
   build:
-    name: "Jekyll build"
+    name: "Jekyll build (smoke)"
     runs-on: ubuntu-latest
-    # 14 511 tag pages plus 1 600+ posts → Jekyll routinely needs
-    # 10-15 min to finish. Cap at 25 to catch genuine hangs without
-    # killing healthy runs.
-    timeout-minutes: 25
+    # Smoke-build only the most recent 100 posts + all tag/category
+    # indexes. Catches Liquid errors, missing layouts, bad frontmatter
+    # in ~2-3 min. The real, full-corpus build runs upstream of CI
+    # in GitHub Pages' own `pages-build-deployment` workflow, which
+    # has no timeout cap.
+    timeout-minutes: 10
     needs: lint
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +70,9 @@ jobs:
         with:
           ruby-version: "3.3"
           bundler-cache: true
-      - name: "Build Jekyll"
-        run: bundle exec jekyll build
+      - name: "Build Jekyll (smoke: last 100 posts)"
+        # NB: --limit_posts also limits tag/category index sizes via
+        # the smaller site.posts collection, so this finishes fast.
+        run: bundle exec jekyll build --limit_posts 100
         env:
           JEKYLL_ENV: production
