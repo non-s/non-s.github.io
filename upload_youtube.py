@@ -283,7 +283,63 @@ def upload_video(youtube, meta: dict) -> str | None:
     except Exception as e:
         log.warning(f"  ⚠️ Playlist association failed: {e}")
 
+    # Post a first-comment crediting the source + a viewer prompt.
+    # Comments-per-view is a documented ranking signal for Shorts;
+    # the channel-owner comment automatically appears at the top of
+    # the comment list. Best-effort: a failure here does NOT block
+    # the upload — the video already shipped.
+    try:
+        _post_first_comment(youtube, video_id, meta)
+    except Exception as e:
+        log.warning(f"  ⚠️ First comment failed: {e}")
+
     return video_id
+
+
+def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
+    """
+    Drop a first-comment from the channel: credit the source + ask the
+    viewer a one-liner that pulls them into the comment thread.
+    YouTube's `commentThreads.insert` costs 50 quota units — cheap.
+    """
+    source = (meta.get("source") or "").strip()
+    source_url = (meta.get("source_url") or "").strip()
+    geo = (meta.get("geo_hashtag") or "Global").strip("#")
+
+    parts = []
+    if source:
+        if source_url:
+            parts.append(f"📰 Source: {source} — {source_url}")
+        else:
+            parts.append(f"📰 Source: {source}")
+    # Engagement prompt. Rotate the prompt by geo so a viewer browsing
+    # the channel doesn't see the same line under every Short.
+    if geo.lower() in ("usa", "us", "uk", "europe", "eu"):
+        prompt = "🌍 Following from your side of the Atlantic? Drop a comment."
+    elif geo.lower() in ("asia", "china", "japan", "korea", "india"):
+        prompt = "🌏 Watching from Asia? Tell us how this lands locally."
+    elif geo.lower() in ("brazil", "br", "latin", "latam"):
+        prompt = "🌎 Da América Latina? Conta pra gente o que acha nos comentários."
+    else:
+        prompt = "🌍 Where are you watching from? Drop your country in the comments."
+    parts.append(prompt)
+
+    text = "\n\n".join(parts)
+    if not text.strip():
+        return
+
+    youtube.commentThreads().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "videoId": video_id,
+                "topLevelComment": {
+                    "snippet": {"textOriginal": text[:10000]},
+                },
+            }
+        },
+    ).execute()
+    log.info("  💬 First comment posted")
 
 
 def main():

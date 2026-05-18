@@ -2,14 +2,19 @@ name: "YouTube Bot — Shorts only"
 
 # Shorts-only pipeline. Long-form videos were dropped 2026-05 — every
 # short already covers one story, which is what we want on the channel.
-# Quota math: YouTube allows 10,000 units/day; each upload costs 1,600,
-# so 3 shorts/run × 1 run/day = 4,800 units (well under the cap).
+#
+# Quota math: YouTube allows 10,000 units/day; each upload costs ~1,650
+# (videos.insert 1,600 + thumbnails.set 50). 3 runs/day × 1 short =
+# 4,950 units — half the daily cap, plenty of headroom.
+#
+# Why three staggered runs (not one batch of 3): the algorithm grants
+# each Short its own seed-audience test window. Batching all 3 at the
+# same hour wastes 2/3 of the "explore" cycles. 08:00 / 14:00 / 20:00
+# UTC hits Europe-morning, US-lunch, US-evening — three distinct
+# audience pools. Source: Buffer + Hopper Shorts timing studies, 2026.
 on:
   schedule:
-    # Once a day at 14:00 UTC. Bump to "0 8,14,20 * * *" for 3 runs/day
-    # (~9 shorts/day) if you ever want a higher cadence — still under
-    # the daily quota.
-    - cron: "0 14 * * *"
+    - cron: "0 8,14,20 * * *"
   workflow_dispatch:
 
 # Serialise with every other workflow that pushes to main.
@@ -31,10 +36,11 @@ jobs:
       contents: write
 
     env:
-      # Cap of shorts produced per run. Mirrors the default in
-      # generate_shorts.py (MAX_SHORTS_PER_RUN), but explicit here so
-      # operators can tune via repo Vars without editing Python.
-      MAX_SHORTS_PER_RUN: "3"
+      # 1 short per run × 3 runs/day = 3 shorts/day, spaced for the
+      # algorithm's separate test windows. Bump to 2 if you ever want
+      # ~6/day; do NOT exceed the daily 10k YouTube API quota:
+      # 6 uploads × 1,650 = 9,900 units, no margin.
+      MAX_SHORTS_PER_RUN: "1"
 
     steps:
       - name: "Checkout"
