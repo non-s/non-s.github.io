@@ -24,7 +24,7 @@ class _FakeHTTPError(requests.exceptions.HTTPError):
 
 @pytest.fixture(autouse=True)
 def _clear_keys(monkeypatch, tmp_path):
-    """Strip provider keys + isolate the AI disk cache per test."""
+    """Strip provider keys + isolate the AI disk cache + provider stats."""
     for var in ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY"):
         monkeypatch.delenv(var, raising=False)
     # Each test gets its own cache file so a hit in one test never
@@ -37,6 +37,10 @@ def _clear_keys(monkeypatch, tmp_path):
     importlib.reload(_ac)
     _ac.reset_cache_for_tests()
     monkeypatch.setattr(ai_helper, "ai_cache", _ac)
+    # provider_stats.record() writes to `_data/provider_stats.jsonl`
+    # by default. Tests must NEVER leak into the repo's _data dir.
+    from utils import provider_stats as _ps
+    monkeypatch.setattr(_ps, "STATS_LOG", tmp_path / "provider_stats.jsonl")
 
 
 @pytest.fixture

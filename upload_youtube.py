@@ -366,6 +366,8 @@ def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
 
 def main():
     import sys
+    from utils.panic import abort_if_halted
+    abort_if_halted("upload_youtube")
 
     # Fail-fast: if token.json is missing, get_youtube_client() raises
     # FileNotFoundError. We exit 2 so the workflow turns red instead

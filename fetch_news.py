@@ -502,7 +502,11 @@ _AI_PROMPT_TEMPLATE = (
     'monetization policy requires. Close with a one-line takeaway or a question '
     'for the comments. Speak directly to camera. No stage directions, no '
     'bracketed cues. No URLs. No \\\"In conclusion\\\" or \\\"To wrap up\\\".>",'
-    '"key_points": ["<10-word fact 1>", "<10-word fact 2>", "<10-word fact 3>"],'
+    # `key_points` was removed May 2026 — the field was wired through
+    # the queue but never consumed by generate_shorts.py (the legacy
+    # template-builder that used it was deleted). Asking the LLM for
+    # it cost ~30 tokens per story × 200 stories/day = 180k tokens/mo
+    # of pure waste.
     '"sentiment": "<positive|neutral|negative>"'
     '}}'
 )
@@ -631,7 +635,8 @@ def _ai_enhance(title: str, description: str, source: str, category: str,
             # at average TTS pacing.
             "script":         str(data.get("script", "")).strip()[:900],
             "lead":           str(data.get("lead", description or ""))[:400],
-            "key_points":     [str(p).strip()[:80] for p in (data.get("key_points") or [])][:3],
+            # `key_points` field removed from output too — generate_shorts
+            # doesn't read it and Shorts metadata schema doesn't need it.
             "sentiment":      str(data.get("sentiment", "neutral")).lower(),
         }
         # If the model skipped `lead`, derive it from the first line of
@@ -987,6 +992,9 @@ def _process_public_sources(
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main() -> None:
+    from utils.panic import abort_if_halted
+    abort_if_halted("fetch_news")
+
     run_start = time.time()
     run_deadline = run_start + RUN_TIMEOUT_S
 

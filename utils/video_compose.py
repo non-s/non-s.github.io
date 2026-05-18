@@ -103,6 +103,15 @@ def build_broll_short(broll_paths: list[Path],
     n = len(broll_paths)
     seg_dur = audio_dur / n
 
+    # Pre-probe each clip for a face so the crop window can be biased
+    # to keep it on-screen. Cheap: one PNG extract + one cascade pass
+    # per clip. Falls back to centre-crop when no face is found OR
+    # OpenCV isn't installed.
+    from utils.face_crop import detect_face_center
+    face_centers: list[tuple[float, float] | None] = []
+    for clip in broll_paths:
+        face_centers.append(detect_face_center(clip, output_path.parent))
+
     # Build the filter graph. Each clip becomes a normalised vertical
     # segment of `seg_dur` seconds with a subtle Ken Burns push so the
     # frame is never literally static — a hard requirement for the
@@ -119,13 +128,28 @@ def build_broll_short(broll_paths: list[Path],
             z_expr = f"min(zoom+0.0008,1.08)"
         else:
             z_expr = f"if(eq(on,0),1.08,max(zoom-0.0008,1.00))"
+        # Face-aware crop: bias the crop window so the face stays
+        # centred in the cropped frame. Face detection runs on the
+        # ORIGINAL frame; once we scale to 2× the offset scales too.
+        face = face_centers[i] if i < len(face_centers) else None
+        if face is not None:
+            fx, fy = face
+            # In the scaled space iw = source_w × 2. We want the crop
+            # window of width ow centred at fx × iw, clamped.
+            crop_x = (f"max(0,min(iw-ow,"
+                       f"{fx:.4f}*iw-(ow/2)))")
+            crop_y = (f"max(0,min(ih-oh,"
+                       f"{fy:.4f}*ih-(oh/2)))")
+            crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}:{crop_x}:{crop_y}"
+        else:
+            crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}"
         parts.append(
             # Loop short clips, trim long ones to the exact segment length.
             # `setpts=PTS-STARTPTS` resets timestamps so concat splices cleanly.
             f"[{i}:v]"
             f"loop=loop=-1:size=10000:start=0,"  # cheap loop covers under-length clips
             f"scale={SHORT_W * 2}:{SHORT_H * 2}:force_original_aspect_ratio=increase,"
-            f"crop={SHORT_W * 2}:{SHORT_H * 2},"
+            f"{crop_expr},"
             # Ken Burns push — `d=1` outputs one frame per input frame so
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
             # the output back down to Shorts native after the crop walk.

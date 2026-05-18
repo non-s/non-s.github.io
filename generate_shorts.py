@@ -320,7 +320,8 @@ VOICE_RATE_OFFSETS = {
 }
 
 
-async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT):
+async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
+                          rate_override: str | None = None):
     """
     Render `text` to `output_path` (MP3) via Microsoft Edge-TTS.
 
@@ -333,15 +334,74 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT)
 
     Each voice gets its own rate offset (see VOICE_RATE_OFFSETS) — a
     single global nudge made British voices sound stately and Brazilian
-    voices panicked.
+    voices panicked. `rate_override` lets the caller (the hook-slow
+    path) inject a specific rate without rebuilding the panel.
     """
     import edge_tts
-    rate = VOICE_RATE_OFFSETS.get(voice, "+3%")
+    rate = rate_override or VOICE_RATE_OFFSETS.get(voice, "+3%")
     communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
     await asyncio.wait_for(
         communicate.save(str(output_path)),
         timeout=TTS_TIMEOUT_S,
     )
+
+
+async def text_to_speech_hook_then_body(hook: str, body: str,
+                                          output_path: Path,
+                                          voice: str = VOICE_SHORT,
+                                          tmp_dir: Path | None = None) -> bool:
+    """Render the hook at the voice's "calm" baseline rate (4 % slower
+    than the body), then the body at the voice's regular rate. The
+    two MP3 segments are FFmpeg-concatenated into `output_path`.
+
+    Why: the first 3 s decide whether a viewer swipes or stays. A
+    rushed hook is the single biggest "swiped before they understood"
+    failure mode. Reading the hook ~4 % slower than the body gives
+    viewers time to comprehend the lead without making the whole
+    Short feel slow.
+
+    Returns True on success. False = caller should fall back to the
+    one-shot text_to_speech with the full script.
+    """
+    if not hook or not body or not tmp_dir:
+        return False
+    body_rate = VOICE_RATE_OFFSETS.get(voice, "+3%")
+    # Compute a "calm" rate ~4 percentage points below body_rate.
+    try:
+        body_pp = int(body_rate.rstrip("%"))
+    except ValueError:
+        body_pp = 3
+    hook_pp = body_pp - 4
+    hook_rate = f"{hook_pp:+d}%" if hook_pp != 0 else "+0%"
+
+    hook_mp3 = tmp_dir / "_hook.mp3"
+    body_mp3 = tmp_dir / "_body.mp3"
+    try:
+        await text_to_speech(hook, hook_mp3, voice, rate_override=hook_rate)
+        await text_to_speech(body, body_mp3, voice, rate_override=body_rate)
+    except Exception as exc:
+        log.warning("hook/body TTS split failed: %s", exc)
+        return False
+    if not (hook_mp3.exists() and body_mp3.exists()):
+        return False
+    # Concat with FFmpeg's concat demuxer (lossless for MP3).
+    list_file = tmp_dir / "_concat.txt"
+    list_file.write_text(
+        f"file '{hook_mp3.resolve()}'\nfile '{body_mp3.resolve()}'\n",
+        encoding="utf-8",
+    )
+    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
+           "-i", str(list_file), "-c", "copy", str(output_path)]
+    try:
+        r = subprocess.run(cmd, capture_output=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return False
+    if r.returncode != 0:
+        log.warning("hook/body MP3 concat failed: %s",
+                     r.stderr[-200:].decode("utf-8", errors="replace"))
+        return False
+    log.info("  🎤 Hook @ %s, body @ %s (split-rate)", hook_rate, body_rate)
+    return True
 
 
 # ── Legacy AI metadata + script builders removed ─────────────────
@@ -1097,22 +1157,48 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     voice_tag = story.get("voice_tag", "")
     voice = pick_voice(seed_text=title, category=category, voice_tag=voice_tag)
     log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")
-    try:
-        asyncio.run(text_to_speech(script, audio_path, voice))
-        size_kb = audio_path.stat().st_size / 1024
-        log.info(f"  TTS generated ({size_kb:.0f} KB)")
-    except Exception as e:
-        log.error(f"  TTS failed: {e}")
-        if voice != VOICE_SHORT:
+
+    # Split-rate TTS: render the hook at a calmer rate (≈ 4 pp slower)
+    # then the rest of the script at the voice's regular rate. The
+    # script always opens with the hook verbatim (fetch_news.py's
+    # prompt enforces this), so we can split on the hook itself.
+    split_rendered = False
+    if hook_text and queue_script.lstrip().lower().startswith(hook_text.lower()):
+        body_after = queue_script[len(hook_text):].lstrip(" .!?")
+        body_humanised = humanize_for_tts(body_after)
+        if body_humanised:
             try:
-                log.info("  Retrying TTS with default voice…")
-                asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
-                log.info(f"  TTS recovered with {VOICE_SHORT}")
-            except Exception as e2:
-                log.error(f"  TTS retry failed: {e2}")
+                split_rendered = asyncio.run(
+                    text_to_speech_hook_then_body(
+                        hook=humanize_for_tts(hook_text),
+                        body=body_humanised,
+                        output_path=audio_path,
+                        voice=voice,
+                        tmp_dir=tmp_dir,
+                    )
+                )
+            except Exception as exc:
+                log.warning("hook/body split TTS errored: %s — falling back",
+                              exc)
+                split_rendered = False
+
+    if not split_rendered:
+        try:
+            asyncio.run(text_to_speech(script, audio_path, voice))
+            size_kb = audio_path.stat().st_size / 1024
+            log.info(f"  TTS generated ({size_kb:.0f} KB)")
+        except Exception as e:
+            log.error(f"  TTS failed: {e}")
+            if voice != VOICE_SHORT:
+                try:
+                    log.info("  Retrying TTS with default voice…")
+                    asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
+                    log.info(f"  TTS recovered with {VOICE_SHORT}")
+                except Exception as e2:
+                    log.error(f"  TTS retry failed: {e2}")
+                    return None
+            else:
                 return None
-        else:
-            return None
 
     # ── 1.5. Music bed (background, ducked to -22 dB by default). ─
     # Picks a Pixabay CC0 track keyed by story mood and mixes it under
@@ -1274,6 +1360,8 @@ def main():
     # captions and edge-tts for narration, but those happen inside
     # generate_short() on a per-story basis. The fail-fast checks
     # below catch the cases where the queue file itself is missing.
+    from utils.panic import abort_if_halted
+    abort_if_halted("generate_shorts")
     VIDEOS_DIR.mkdir(exist_ok=True)
 
     if not QUEUE_FILE.exists():

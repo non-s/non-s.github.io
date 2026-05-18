@@ -136,6 +136,25 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
                 lines.append(f"- **{axis}**: `{variant}`{lift_s}")
             lines.append("")
 
+    # Anomaly alert — surfaced at the TOP after the checklist when
+    # something looks wrong, so the operator sees it before scrolling
+    # through the daily Shorts list.
+    anomaly_path = Path("_data/analytics/anomaly.json")
+    if anomaly_path.exists():
+        try:
+            anomaly = json.loads(anomaly_path.read_text(encoding="utf-8"))
+        except Exception:
+            anomaly = {}
+        if anomaly.get("flagged"):
+            lines.append("### 🚨 Anomaly alert")
+            lines.append("")
+            lines.append(f"- {anomaly.get('reason', '')}")
+            lines.append(
+                "- Likely causes: channel strike, YouTube quota hit, "
+                "workflow failure, or slow news day. Investigate."
+            )
+            lines.append("")
+
     # Audience cohort timing recommendation.
     cohort_path = Path("_data/analytics/cohort_timing.json")
     if cohort_path.exists():
