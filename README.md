@@ -1,13 +1,19 @@
 # GlobalBR News — YouTube Shorts Bot
 
+[![📰 Refresh stories queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-news.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-news.yml)
+[![YouTube Bot — Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
+[![📊 YouTube Analytics nightly](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Automated pipeline that turns world news into vertical Shorts and uploads
-them to YouTube. No website, no markdown blog — just **RSS → AI →
-Shorts → YouTube**.
+them to YouTube. No website, no markdown blog — just **RSS + public APIs
+→ AI → Shorts → YouTube**.
 
 - Channel: <https://youtube.com/@globalbrnews>
 - Cadence: **3 Shorts/day**, staggered at 08:00, 14:00, 20:00 UTC so
   each gets its own algorithm test window. YouTube API quota cap is
   ~5/day; we run at 60% of that.
+- Cost: **$0/month** — every layer is on a no-card free tier.
 
 **First time here?** Read [`SETUP.md`](SETUP.md) — it walks you through
 every secret + every optional free service the pipeline can use.
@@ -36,17 +42,47 @@ consumed. Both can be run independently.
 
 | Layer | Tool | Free tier |
 |--|--|--|
-| RSS | `feedparser` | OSS |
+| RSS sources | `feedparser` (38 curated feeds) | OSS |
+| Public sources | Reddit + HN + Wikipedia + Google Trends + GDELT | unauth, no key |
 | AI primary | Mistral La Plateforme | 500k tokens/mo |
-| AI fallback | Cerebras (opt-in) | 1M tokens/day |
-| Background image | Pollinations | unlimited |
-| Narration | Microsoft Edge-TTS | unlimited |
+| AI fallback 1 | Cerebras (opt-in) | 1M tokens/day |
+| AI fallback 2 | Google Gemini (opt-in) | 1,500 req/day |
+| AI fallback 3 | Groq (opt-in) | ~14k req/day |
+| Background images | OG meta → Wikipedia → Openverse → Pollinations | unauth, no key |
+| Narration | Microsoft Edge-TTS (6-voice rotation) | unlimited |
 | Encoder | FFmpeg (libx264, AAC) | OSS |
 | Hosting | GitHub Actions (public repo) | unlimited minutes |
 | Upload | YouTube Data API v3 | 10k units/day |
 | Analytics | YouTube Analytics API v2 | unlimited |
 
-Total cost: **$0/month**.
+Total cost: **$0/month**. Every layer above is on a no-credit-card free
+tier or fully open-source.
+
+## What makes this best-in-class
+
+- **5 keyless discovery sources** beyond classical RSS — Reddit, HN,
+  Wikipedia, Google Trends, GDELT — so the queue is fuller and more
+  current than any single-RSS pipeline.
+- **Trending boost**: any story whose headline mentions a Google Trends
+  term gets a score bump. Search what people are searching.
+- **Performance feedback loop**: the nightly Analytics workflow writes
+  a per-category retention summary; the next fetch-news run biases
+  toward categories that retained >60% and demands a higher score
+  from those that retained <30%. Self-tuning.
+- **4-provider AI chain** — Mistral + Cerebras + Gemini + Groq, all
+  free-tier, all opt-in. A story has up to 4 chances to survive a
+  rate-limit or 5xx instead of being dropped.
+- **5-layer image fallback** — story image → Open Graph scrape →
+  Wikipedia thumbnail → Openverse CC → Pollinations AI. The Short
+  almost never falls back to a generic background.
+- **6-voice TTS rotation** — Jenny / Aria / Guy / Sonia / Ryan / Natasha,
+  picked deterministically by story title hash. War/politics get the
+  authoritative British voices, lifestyle gets the warmer ones.
+- **Per-category playlists + first-comment seed** — every upload joins
+  the right playlist and the channel auto-posts a sourcing + engagement
+  prompt as the first comment.
+- **Workflow run summaries** — every CI run drops a markdown panel
+  with metrics under the Actions tab. Zero external monitoring needed.
 
 ## Workflows
 

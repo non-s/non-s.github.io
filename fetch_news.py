@@ -59,6 +59,11 @@ from utils.ai_helper import (
     sentiment_score,
 )
 from utils.dedup import titles_too_similar
+from utils.public_sources import (
+    fetch_all_public_sources,
+    fetch_google_trends,
+    trending_keywords,
+)
 from utils.ranking import entry_relevance_score
 from utils.text import (
     extract_description,
@@ -70,11 +75,12 @@ from utils.text import (
 
 # ── Config ────────────────────────────────────────────────────────────
 
-DATA_DIR    = Path("_data")
-QUEUE_FILE  = DATA_DIR / "stories_queue.json"
-CACHE_FILE  = DATA_DIR / "feed_cache.json"
-HEALTH_FILE = DATA_DIR / "feed_health.json"
-LOG_FILE    = "fetch_news.log"
+DATA_DIR        = Path("_data")
+QUEUE_FILE      = DATA_DIR / "stories_queue.json"
+CACHE_FILE      = DATA_DIR / "feed_cache.json"
+HEALTH_FILE     = DATA_DIR / "feed_health.json"
+ANALYTICS_LATEST = DATA_DIR / "analytics" / "latest.json"
+LOG_FILE        = "fetch_news.log"
 
 MAX_PER_FEED      = int(os.environ.get("FETCH_MAX_PER_FEED", "10"))
 MAX_PER_RUN       = int(os.environ.get("FETCH_MAX_PER_RUN",  "100"))
@@ -82,36 +88,80 @@ FEED_WORKERS      = int(os.environ.get("FETCH_FEED_WORKERS", "10"))
 QUALITY_THRESHOLD = int(os.environ.get("FETCH_QUALITY_THRESHOLD", "6"))
 RUN_TIMEOUT_S     = int(os.environ.get("FETCH_TIMEOUT_S",    "3300"))
 DEAD_FEED_SKIP_AT = 5  # consecutive failures before we stop trying
+INCLUDE_PUBLIC_SOURCES = os.environ.get("FETCH_INCLUDE_PUBLIC", "1") not in ("0", "false", "False")
+INCLUDE_TRENDS         = os.environ.get("FETCH_INCLUDE_TRENDS", "1") not in ("0", "false", "False")
 
 # Keep the queue bounded — older consumed stories get pruned.
 QUEUE_MAX_LEN = 500
 
+# ── RSS feed list (free, no-auth) ──────────────────────────────────
+#
+# Reuters' historic feeds.reuters.com endpoints were retired years ago —
+# they're omitted here intentionally. SCMP / Times of India / Deutsche
+# Welle give us non-Anglosphere coverage on the same free terms.
+#
+# Adding a feed: keep the categories aligned with the playlist map in
+# upload_youtube.py (`world`, `technology`, `politics`, `business`,
+# `science`, `health`, `environment`, `ai`, `sports`, `entertainment`,
+# `security`). Misaligned categories still publish but won't auto-join
+# a category playlist.
 FEEDS: list[dict] = [
     # World / general
     {"name": "BBC World",         "url": "https://feeds.bbci.co.uk/news/world/rss.xml",                              "category": "world",       "source": "BBC"},
-    {"name": "Reuters World",     "url": "https://feeds.reuters.com/Reuters/worldNews",                              "category": "world",       "source": "Reuters"},
     {"name": "Guardian World",    "url": "https://www.theguardian.com/world/rss",                                    "category": "world",       "source": "The Guardian"},
     {"name": "Al Jazeera",        "url": "https://www.aljazeera.com/xml/rss/all.xml",                                "category": "world",       "source": "Al Jazeera"},
+    {"name": "NPR News",          "url": "https://feeds.npr.org/1001/rss.xml",                                       "category": "world",       "source": "NPR"},
+    {"name": "Deutsche Welle",    "url": "https://rss.dw.com/atom/rss-en-all",                                       "category": "world",       "source": "Deutsche Welle"},
+    {"name": "France 24",         "url": "https://www.france24.com/en/rss",                                          "category": "world",       "source": "France 24"},
+    {"name": "Euronews",          "url": "https://feeds.feedburner.com/euronews/en/news",                            "category": "world",       "source": "Euronews"},
+    {"name": "Times of India",    "url": "https://timesofindia.indiatimes.com/rssfeeds/296589292.cms",               "category": "world",       "source": "Times of India"},
+    {"name": "SCMP World",        "url": "https://www.scmp.com/rss/91/feed",                                         "category": "world",       "source": "South China Morning Post"},
+
+    # Politics
+    {"name": "Guardian Politics", "url": "https://www.theguardian.com/politics/rss",                                 "category": "politics",    "source": "The Guardian"},
+    {"name": "Foreign Policy",    "url": "https://foreignpolicy.com/feed/",                                          "category": "politics",    "source": "Foreign Policy"},
 
     # Tech / AI
     {"name": "TechCrunch",        "url": "https://techcrunch.com/feed/",                                              "category": "technology",  "source": "TechCrunch"},
     {"name": "The Verge",         "url": "https://www.theverge.com/rss/index.xml",                                    "category": "technology",  "source": "The Verge"},
     {"name": "Wired",             "url": "https://www.wired.com/feed/rss",                                            "category": "technology",  "source": "Wired"},
     {"name": "Ars Technica",      "url": "https://feeds.arstechnica.com/arstechnica/index",                           "category": "technology",  "source": "Ars Technica"},
+    {"name": "Engadget",          "url": "https://www.engadget.com/rss.xml",                                          "category": "technology",  "source": "Engadget"},
+    {"name": "CNET",              "url": "https://www.cnet.com/rss/news/",                                            "category": "technology",  "source": "CNET"},
+    {"name": "MIT Tech Review",   "url": "https://www.technologyreview.com/feed/",                                    "category": "technology",  "source": "MIT Tech Review"},
+    {"name": "The Register",      "url": "https://www.theregister.com/headlines.atom",                                "category": "technology",  "source": "The Register"},
     {"name": "TechCrunch AI",     "url": "https://techcrunch.com/category/artificial-intelligence/feed/",             "category": "ai",          "source": "TechCrunch"},
+    {"name": "VentureBeat AI",    "url": "https://venturebeat.com/category/ai/feed/",                                 "category": "ai",          "source": "VentureBeat"},
 
-    # Business
-    {"name": "Reuters Business",  "url": "https://feeds.reuters.com/reuters/businessNews",                            "category": "business",    "source": "Reuters"},
+    # Business / economy
     {"name": "CNBC",              "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",                     "category": "business",    "source": "CNBC"},
+    {"name": "Guardian Business", "url": "https://www.theguardian.com/business/rss",                                 "category": "business",    "source": "The Guardian"},
+    {"name": "MarketWatch",       "url": "https://feeds.marketwatch.com/marketwatch/topstories/",                    "category": "business",    "source": "MarketWatch"},
+    {"name": "Fortune",           "url": "https://fortune.com/feed/",                                                 "category": "business",    "source": "Fortune"},
 
-    # Science / health / sports / entertainment
+    # Science / health / environment
     {"name": "BBC Science",       "url": "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml",              "category": "science",     "source": "BBC"},
+    {"name": "ScienceAlert",      "url": "https://www.sciencealert.com/feed",                                         "category": "science",     "source": "ScienceAlert"},
+    {"name": "Phys.org",          "url": "https://phys.org/rss-feed/",                                                "category": "science",     "source": "Phys.org"},
+    {"name": "NASA News",         "url": "https://www.nasa.gov/feed/",                                                "category": "science",     "source": "NASA"},
     {"name": "BBC Health",        "url": "http://feeds.bbci.co.uk/news/health/rss.xml",                               "category": "health",      "source": "BBC"},
-    {"name": "ESPN Top",          "url": "https://www.espn.com/espn/rss/news",                                        "category": "sports",      "source": "ESPN"},
-    {"name": "Variety",           "url": "https://variety.com/feed/",                                                 "category": "entertainment","source": "Variety"},
+    {"name": "WHO News",          "url": "https://www.who.int/feeds/entity/news/en/rss.xml",                          "category": "health",      "source": "WHO"},
+    {"name": "Guardian Environ.", "url": "https://www.theguardian.com/environment/rss",                              "category": "environment", "source": "The Guardian"},
+    {"name": "Inside Climate",    "url": "https://insideclimatenews.org/feed/",                                       "category": "environment", "source": "Inside Climate News"},
+    {"name": "Carbon Brief",      "url": "https://www.carbonbrief.org/feed",                                          "category": "environment", "source": "Carbon Brief"},
 
-    # Security
+    # Sports / entertainment
+    {"name": "Sky Sports",        "url": "https://www.skysports.com/rss/12040",                                       "category": "sports",      "source": "Sky Sports"},
+    {"name": "BBC Sport",         "url": "https://feeds.bbci.co.uk/sport/rss.xml",                                    "category": "sports",      "source": "BBC Sport"},
+    {"name": "Variety",           "url": "https://variety.com/feed/",                                                 "category": "entertainment","source": "Variety"},
+    {"name": "Hollywood Reporter","url": "https://www.hollywoodreporter.com/feed/",                                   "category": "entertainment","source": "Hollywood Reporter"},
+    {"name": "Rolling Stone",     "url": "https://www.rollingstone.com/feed/",                                        "category": "entertainment","source": "Rolling Stone"},
+
+    # Security / defense
     {"name": "Krebs on Security", "url": "https://krebsonsecurity.com/feed/",                                          "category": "security",    "source": "Krebs on Security"},
+    {"name": "The Hacker News",   "url": "https://feeds.feedburner.com/TheHackersNews",                               "category": "security",    "source": "The Hacker News"},
+    {"name": "Defense News",      "url": "https://www.defensenews.com/arc/outboundfeeds/rss/",                        "category": "world",       "source": "Defense News"},
+    {"name": "War on the Rocks",  "url": "https://warontherocks.com/feed/",                                           "category": "world",       "source": "War on the Rocks"},
 ]
 
 
@@ -260,6 +310,70 @@ def _reset_feed_failure(name: str, health: dict) -> None:
 
 def _feed_should_skip(name: str, health: dict) -> bool:
     return health.get(name, 0) >= DEAD_FEED_SKIP_AT
+
+
+def _prune_dead_health(health: dict, active_feed_names: set[str]) -> None:
+    """Drop health entries for feeds no longer in the FEEDS list.
+
+    Without this, a feed that gets removed from the config keeps its
+    stale failure counter forever. If we re-add it later, the old
+    counter would skip it on day 1.
+    """
+    stale = [name for name in health if name not in active_feed_names]
+    for name in stale:
+        del health[name]
+
+
+# ── Performance feedback loop ─────────────────────────────────────────
+#
+# The nightly analytics workflow drops _data/analytics/latest.json with
+# the previous 14d performance summary. We use it here to:
+#   * give a small score bonus to categories that retained well
+#   * flag categories that consistently underperformed so the AI ranker
+#     knows to demand a higher quality threshold for them.
+#
+# Falling back to neutral defaults if the file is absent (first run,
+# no analytics workflow yet, etc.) keeps fetch_news.py completely
+# decoupled from the analytics workflow.
+
+def _load_category_perf() -> dict:
+    """Map category -> avg view % across the last 14 days, when available.
+
+    Returns an empty dict on any error. fetch_news.py uses this to bias
+    story selection — categories above 60% retention get a small score
+    boost, those below 30% get a penalty. Neutral default is "no signal".
+    """
+    if not ANALYTICS_LATEST.exists():
+        return {}
+    try:
+        data = json.loads(ANALYTICS_LATEST.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    # `latest.json` (see youtube_analytics.py) currently only carries
+    # the channel-wide avg_view_pct, not a per-category breakdown.
+    # We still expose the hook so the workflow can be enriched later
+    # without touching fetch_news.py.
+    cat_perf = data.get("category_avg_view_pct") or {}
+    if not isinstance(cat_perf, dict):
+        return {}
+    return {str(k).lower(): float(v) for k, v in cat_perf.items() if isinstance(v, (int, float))}
+
+
+def _perf_bias(category: str, perf: dict) -> int:
+    """Returns -1 / 0 / +1 depending on past view-percentage for the category.
+
+    +1 → retained well (>=60% avg view): boost this story's score.
+    -1 → underperformed (<30% avg view): nudge it below the quality gate.
+     0 → no signal, default behaviour.
+    """
+    pct = perf.get((category or "").lower())
+    if pct is None:
+        return 0
+    if pct >= 60.0:
+        return 1
+    if pct < 30.0:
+        return -1
+    return 0
 
 
 # ── AI enhancement (shorts-sized, not blog-sized) ─────────────────────
@@ -524,14 +638,56 @@ def _entry_to_story(entry, feed_cfg: dict) -> dict | None:
     }
 
 
-def _enrich_story(story: dict) -> dict | None:
-    """Add AI fields. Returns None if the story doesn't clear the quality bar."""
+def _enrich_story(story: dict,
+                  trending: set[str] | None = None,
+                  perf: dict | None = None) -> dict | None:
+    """Add AI fields. Returns None if the story doesn't clear the quality bar.
+
+    `trending` (set of lowercase keywords) and `perf` (category -> avg view %)
+    let us bias the score:
+
+      * +1 / +2 if the title overlaps with a currently-trending Google term
+      * +1 if the story's category has historically retained well
+      * -1 if the category has historically underperformed
+
+    Bias is additive on top of the AI's 0-10 score; the quality gate
+    still applies after biasing.
+    """
     ai = _ai_enhance(story["title"], story["description"], story["source"], story["category"])
     if not ai:
         return None
-    if ai["score"] < QUALITY_THRESHOLD:
-        log.debug(f"  ⏭  quality_score={ai['score']} < {QUALITY_THRESHOLD}: '{story['title'][:60]}'")
+
+    score = ai["score"]
+    bias_notes: list[str] = []
+
+    # Trending overlap — searching for what people are searching is the
+    # single biggest CTR lever a free pipeline has.
+    if trending:
+        t_lower = story["title"].lower()
+        hits = [kw for kw in trending if kw and len(kw) >= 4 and kw in t_lower]
+        if hits:
+            score += 2 if len(hits) >= 2 else 1
+            bias_notes.append(f"trending:{hits[:3]}")
+
+    # Category retention bias from analytics workflow.
+    if perf:
+        delta = _perf_bias(story.get("category", ""), perf)
+        if delta:
+            score += delta
+            bias_notes.append(f"perf{delta:+d}")
+
+    # Clamp into 0-10 range so downstream consumers don't see weird values.
+    score = max(0, min(10, score))
+
+    if score < QUALITY_THRESHOLD:
+        log.debug(
+            f"  ⏭  quality_score={score} (raw {ai['score']}, bias {bias_notes}) "
+            f"< {QUALITY_THRESHOLD}: '{story['title'][:60]}'"
+        )
         return None
+    if bias_notes and score != ai["score"]:
+        log.info(f"  ⬆  score {ai['score']}→{score} ({', '.join(bias_notes)}): {story['title'][:60]}")
+    ai["score"] = score
     story.update(ai)
     story["sentiment"] = ai["sentiment"] or sentiment_score(f"{story['title']} {story['description']}")
     return story
@@ -543,7 +699,9 @@ def _process_feed(feed_cfg: dict,
                   health: dict,
                   cache: dict,
                   budget_left,
-                  run_deadline: float) -> list[dict]:
+                  run_deadline: float,
+                  trending: set[str] | None = None,
+                  perf: dict | None = None) -> list[dict]:
     """Fetch a feed end-to-end. Returns the new stories to add to the queue."""
     name = feed_cfg["name"]
     if _feed_should_skip(name, health):
@@ -577,13 +735,87 @@ def _process_feed(feed_cfg: dict,
         # Fuzzy dedup against existing titles.
         if any(titles_too_similar(story["title"], t) for t in queue_titles):
             continue
-        enriched = _enrich_story(story)
+        enriched = _enrich_story(story, trending=trending, perf=perf)
         if not enriched:
             continue
         new_stories.append(enriched)
         queue_ids.add(story["id"])
         queue_titles.append(story["title"])
     log.info(f"📰 {name}: kept {len(new_stories)} new stories")
+    return new_stories
+
+
+# ── Public sources adapter ───────────────────────────────────────────
+#
+# `utils.public_sources.fetch_all_public_sources()` returns a flat list
+# of normalised dicts. We map each one onto the same Feed-config shape
+# `_entry_to_story` consumes, then run them through the same enrich +
+# dedup gates as RSS-borne stories. Free, no extra auth.
+
+def _public_item_to_entry(item: dict):
+    """Adapt a public-source item to something feedparser-shaped for
+    `_entry_to_story`. We use `types.SimpleNamespace` so the attribute
+    access in `extract_description` / `extract_image` / `parse_date`
+    works unchanged."""
+    import types
+    e = types.SimpleNamespace()
+    e.title       = item.get("title", "")
+    e.link        = item.get("link", "")
+    e.summary     = item.get("description", "")
+    e.description = item.get("description", "")
+    if item.get("image"):
+        e.media_thumbnail = [{"url": item["image"]}]
+    # parse_date prefers `.published_parsed`; rebuild from the datetime.
+    pub = item.get("published")
+    if pub:
+        e.published_parsed = pub.timetuple()
+    return e
+
+
+def _process_public_sources(
+    queue_ids: set[str],
+    queue_titles: list[str],
+    budget_left,
+    run_deadline: float,
+    include_trends: bool,
+    trending: set[str] | None,
+    perf: dict | None,
+) -> list[dict]:
+    """Fetch Reddit / HN / Wikipedia / Google Trends / GDELT, enrich, return new stories."""
+    if time.time() > run_deadline:
+        return []
+    log.info("🌐 Fetching public sources (Reddit, HN, Wikipedia, Trends, GDELT)…")
+    try:
+        items = fetch_all_public_sources(include_trends=include_trends, include_gdelt=True)
+    except Exception as exc:
+        log.warning(f"public sources fetch failed: {exc}")
+        return []
+    log.info(f"  📥 {len(items)} candidate items from public sources")
+
+    new_stories: list[dict] = []
+    for item in items:
+        if budget_left() <= 0 or time.time() > run_deadline:
+            break
+        # Synthetic feed_cfg so _entry_to_story stays generic.
+        feed_cfg = {
+            "name":     item.get("source", "public"),
+            "category": item.get("category", "world"),
+            "source":   item.get("source", "GlobalBR News"),
+        }
+        story = _entry_to_story(_public_item_to_entry(item), feed_cfg)
+        if not story:
+            continue
+        if story["id"] in queue_ids:
+            continue
+        if any(titles_too_similar(story["title"], t) for t in queue_titles):
+            continue
+        enriched = _enrich_story(story, trending=trending, perf=perf)
+        if not enriched:
+            continue
+        new_stories.append(enriched)
+        queue_ids.add(story["id"])
+        queue_titles.append(story["title"])
+    log.info(f"🌐 Public sources: kept {len(new_stories)} new stories")
     return new_stories
 
 
@@ -612,8 +844,24 @@ def main() -> None:
     queue_ids    = _existing_ids(queue)
     queue_titles = _existing_titles(queue)
 
+    # Drop health entries for feeds we no longer fetch, so a removed
+    # feed doesn't get skipped if it's re-added later.
+    _prune_dead_health(health, {f["name"] for f in FEEDS})
+
     log.info(f"📦 Queue starts with {len(queue.get('stories', []))} stories "
              f"({sum(1 for s in queue.get('stories', []) if not s.get('consumed'))} pending)")
+
+    # ── Pre-compute trending keywords + analytics bias (both free)
+    perf = _load_category_perf()
+    if perf:
+        log.info(f"📊 Loaded category performance: {len(perf)} entries from analytics/latest.json")
+    trending: set[str] = set()
+    if INCLUDE_TRENDS:
+        try:
+            trending = trending_keywords()
+            log.info(f"🔥 Pulled {len(trending)} trending keywords from Google Trends")
+        except Exception as exc:
+            log.warning(f"Google Trends pull failed (continuing without bias): {exc}")
 
     counter_lock = threading.Lock()
     counter = {"added": 0}
@@ -630,6 +878,7 @@ def main() -> None:
             return 0
         added = _process_feed(
             feed_cfg, queue_ids, queue_titles, health, cache, budget_left, run_deadline,
+            trending=trending, perf=perf,
         )
         if not added:
             return 0
@@ -651,6 +900,23 @@ def main() -> None:
                 for f in futures:
                     f.cancel()
                 break
+
+    # ── Public sources (Reddit / HN / Wikipedia / Trends / GDELT).
+    # Runs after RSS so we don't burn the budget before traditional
+    # feeds get their shot. Each item still goes through the same
+    # enrich + quality + dedup gates.
+    if INCLUDE_PUBLIC_SOURCES and counter["added"] < MAX_PER_RUN and time.time() < run_deadline:
+        try:
+            extras = _process_public_sources(
+                queue_ids, queue_titles, budget_left, run_deadline,
+                include_trends=INCLUDE_TRENDS, trending=trending, perf=perf,
+            )
+            with new_lock:
+                new_stories.extend(extras)
+            with counter_lock:
+                counter["added"] += len(extras)
+        except Exception as exc:
+            log.warning(f"public sources stage failed: {exc}")
 
     if new_stories:
         # Hold both the in-process thread lock AND the cross-process

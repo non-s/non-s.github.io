@@ -57,7 +57,34 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
+          # Optional free AI fallbacks — set these in repo secrets to
+          # cushion against Mistral rate limits / outages.
+          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
+
+      - name: "📊 Write run summary"
+        if: always()
+        run: |
+          # Surfaces a concise status panel under the workflow run page
+          # without anyone having to download the log artifact.
+          {
+            echo "## Stories queue refresh"
+            if [ -f _data/stories_queue.json ]; then
+              TOTAL=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(len(d.get('stories',[])))")
+              PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories',[]) if not s.get('consumed')))")
+              echo "| Metric | Value |"
+              echo "|--------|-------|"
+              echo "| Total stories on queue | ${TOTAL} |"
+              echo "| Pending (not yet shipped) | ${PENDING} |"
+              echo ""
+              echo "### Top sources (pending)"
+              # `python -c` with leading whitespace breaks Python's
+              # parser, so we keep this as a single-line one-liner.
+              python -c "import json,collections; d=json.load(open('_data/stories_queue.json')); c=collections.Counter(s.get('source','?') for s in d.get('stories',[]) if not s.get('consumed')); [print(f'- **{src}**: {n}') for src,n in c.most_common(8)]"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: "💾 Commit queue + state files"
         run: |

@@ -119,7 +119,12 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
+          # Same free fallback chain as fetch-news. Configuring even
+          # one of these massively reduces "Mistral 429 → no Short" days.
+          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
       - name: "📤 Upload Shorts para YouTube"
@@ -127,6 +132,29 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+
+      - name: "📊 Write run summary"
+        if: always()
+        run: |
+          {
+            echo "## YouTube Shorts run"
+            echo ""
+            # Count what we actually shipped this run.
+            UPLOADED=$(ls _videos/*.done 2>/dev/null | wc -l)
+            META_LEFT=$(ls _videos/*.json 2>/dev/null | wc -l)
+            echo "| Metric | Value |"
+            echo "|--------|-------|"
+            echo "| Done markers (lifetime) | ${UPLOADED} |"
+            echo "| Pending metadata (this run) | ${META_LEFT} |"
+            # Most recent uploaded titles.
+            echo ""
+            echo "### Last 5 published"
+            ls -t _videos/*.done 2>/dev/null | head -5 | while read f; do
+              TITLE=$(python -c "import json; print(json.load(open('$f')).get('title','?'))" 2>/dev/null || echo "?")
+              URL=$(python -c "import json; print(json.load(open('$f')).get('url',''))" 2>/dev/null || echo "")
+              echo "- [${TITLE}](${URL})"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: "💾 Salvar marcadores no git"
         run: |

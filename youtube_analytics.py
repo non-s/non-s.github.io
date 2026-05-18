@@ -33,6 +33,8 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+from utils.categorise import infer_category_from_title
+
 ANALYTICS_DIR = Path("_data/analytics")
 TOKEN_FILE    = Path("token.json")
 LOG_FILE      = "youtube_analytics.log"
@@ -237,16 +239,47 @@ def main() -> None:
         writer.writerows(rows)
     log.info(f"✅ Wrote {len(rows)} rows to {csv_path}")
 
-    # Also dump a compact summary JSON for at-a-glance reading.
+    # Also dump a compact summary JSON for at-a-glance reading. The
+    # `category_avg_view_pct` block is consumed by fetch_news.py to
+    # bias future story selection toward what retained well.
     if rows:
         avg_pct = sum(r.get("avg_view_pct", 0) for r in rows) / len(rows)
         total_views = sum(r.get("an_views", 0) for r in rows)
+
+        # Per-category breakdown. We infer the category from the title's
+        # leading hashtag when possible (the upload metadata embeds the
+        # category playlist tag in the description, not the title — so
+        # this is a coarse approximation pending a join against the
+        # _videos/*.done sidecar files).
+        from collections import defaultdict
+        cat_views: dict[str, list[float]] = defaultdict(list)
+        for r in rows:
+            cat = infer_category_from_title(r.get("title", "")) or "uncategorised"
+            cat_views[cat].append(r.get("avg_view_pct", 0))
+        cat_avg = {
+            cat: round(sum(v) / len(v), 1) if v else 0.0
+            for cat, v in cat_views.items()
+        }
+
+        # Top performers (avg_view_pct >= 80 + at least 100 views).
+        top_performers = sorted(
+            [r for r in rows if r.get("avg_view_pct", 0) >= 80 and r.get("an_views", 0) >= 100],
+            key=lambda r: r.get("an_views", 0),
+            reverse=True,
+        )[:5]
+
         summary = {
-            "pulled_at":       end_date,
-            "shorts_analysed": len(rows),
-            "total_views_14d": total_views,
-            "avg_view_pct":    round(avg_pct, 1),
-            "below_60_pct":    [r["video_id"] for r in rows if r.get("avg_view_pct", 100) < 60],
+            "pulled_at":              end_date,
+            "shorts_analysed":        len(rows),
+            "total_views_14d":        total_views,
+            "avg_view_pct":           round(avg_pct, 1),
+            "below_60_pct":           [r["video_id"] for r in rows if r.get("avg_view_pct", 100) < 60],
+            "category_avg_view_pct":  cat_avg,
+            "top_performers":         [
+                {"video_id": r["video_id"], "title": r.get("title", ""),
+                 "views": r.get("an_views", 0), "view_pct": r.get("avg_view_pct", 0)}
+                for r in top_performers
+            ],
         }
         (ANALYTICS_DIR / "latest.json").write_text(
             json.dumps(summary, indent=2), encoding="utf-8",
@@ -254,6 +287,8 @@ def main() -> None:
         log.info(f"📈 Avg view %: {summary['avg_view_pct']} · "
                  f"Total views 14d: {total_views} · "
                  f"Underperforming (<60%): {len(summary['below_60_pct'])}")
+        if cat_avg:
+            log.info(f"📂 Per-category retention: {cat_avg}")
 
 
 if __name__ == "__main__":
