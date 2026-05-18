@@ -227,13 +227,16 @@ def _feed_should_skip(name: str, health: dict) -> bool:
 # ── AI enhancement (shorts-sized, not blog-sized) ─────────────────────
 
 _AI_PROMPT_TEMPLATE = (
-    "You write spoken scripts for a YouTube Shorts news commentator. "
-    "Tone: conversational, opinionated but grounded, like a smart friend "
-    "explaining the story over coffee. Use first person plural ('we', 'us'). "
-    "Take a stance — agree, disagree, point out the catch, name the winner "
-    "or loser. NO clickbait. NO AI-isms (avoid 'pivotal', 'unprecedented', "
+    "You write spoken scripts AND YouTube Shorts metadata for a news "
+    "commentator channel. The channel ships every Short with the same "
+    "static thumbnail that says 'DID YOU KNOW? / THE WORLD CHANGED TODAY' "
+    "— so the title has to answer 'WHAT changed?' in front-loaded, "
+    "search-friendly language. Tone for the voice-over: conversational, "
+    "opinionated but grounded, first-person plural ('we', 'us'). Take a "
+    "stance — name the winner or loser, point out what most coverage "
+    "misses. NO clickbait. NO AI-isms (avoid 'pivotal', 'unprecedented', "
     "'paradigm shift', 'sheds light on', 'in the realm of', 'delve'). "
-    "Speak naturally, contractions are fine. Respond ONLY with valid JSON.\n\n"
+    "Contractions are fine. Respond ONLY with valid JSON.\n\n"
     "Story:\n"
     "Title: {title}\n"
     "Source: {source}\n"
@@ -241,9 +244,34 @@ _AI_PROMPT_TEMPLATE = (
     "Description: {description}\n\n"
     "Return this exact JSON shape:\n"
     '{{'
-    '"score": <int 1-10 — how interesting/important is this for a global-audience short>,'
-    '"seo_title": "<headline for YouTube, max 60 chars, factual, no all-caps>",'
-    '"thumbnail_text": "<2-4 word punchy overlay for the thumbnail, ALL CAPS allowed, e.g. \\"PRICES TANK\\" or \\"NEW DEAL\\">",'
+    '"score": <int 1-10 — how interesting/important is this for a global short>,'
+    # ── SEO-tuned title for YouTube Shorts ────────────────────────────
+    '"seo_title": "<40-55 chars. Front-load the primary search keyword '
+    '(the person/place/org/event readers will Google). At most 1 emoji '
+    '(🚨📉🤖🌍🇺🇸🇨🇳 etc.) and only if it adds info, not decoration. '
+    'NO all-caps, NO multiple punctuation (!!!, ???). Pair with the '
+    'fixed thumbnail \\\"DID YOU KNOW? / THE WORLD CHANGED TODAY\\\" — '
+    'the title answers WHAT changed. '
+    'Good: \\\"Fed cuts rates again — but inflation isn\'t done\\\". '
+    'Good: \\\"Iran-Saudi oil deal: who actually wins?\\\". '
+    'Good: \\\"🚨 Strike on Iraqi PM convoy, 3 dead\\\". '
+    'Bad: \\\"This shocking thing the Fed did today\\\" (clickbait). '
+    'Bad: \\\"BREAKING: PRICES TANK!!\\\" (caps + bangs).>",'
+    # ── Tags for YouTube Data API videos.insert ─────────────────────
+    '"yt_tags": ["<5 lowercase tags, NO #. First 3 are search-driven '
+    'entities (people, places, orgs, the specific event). Last 2 are '
+    'evergreen channel tags like \\\"world news\\\", \\\"breaking news\\\", '
+    '\\\"daily news\\\". E.g. [\\\"fed\\\", \\\"jerome powell\\\", '
+    '\\\"interest rates\\\", \\\"world news\\\", \\\"breaking news\\\"].>"],'
+    # ── YouTube description for the video itself ────────────────────
+    '"yt_description": "<2-3 sentences. Sentence 1 repeats the primary '
+    'keyword from the title — first 100 chars matter most for search. '
+    'Sentence 2 is one-line opinion / takeaway. Last line is exactly '
+    '\\\"Source: {source}\\\\n#Shorts #BreakingNews\\\" (literal newline). '
+    'No URLs.>",'
+    '"thumbnail_text": "<2-4 word punchy overlay phrase the static '
+    'thumbnail does NOT show but a future dynamic version could. ALL '
+    'CAPS allowed. E.g. PRICES TANK, NEW DEAL.>",'
     '"hook": "<the very first spoken line, max 12 words, snappy enough to stop a scroll>",'
     '"script": "<the full spoken voice-over script for a 30-45 second short. 85-120 words. Starts with the hook. State the news in plain English in one sentence. Then 1-2 sentences of opinion/analysis (call out who wins, who loses, what is suspect, the angle most coverage misses). Close with a one-line takeaway or a question for the comments. Speak directly to camera. No stage directions, no bracketed cues. No URLs.>",'
     '"key_points": ["<10-word fact 1>", "<10-word fact 2>", "<10-word fact 3>"],'
@@ -273,9 +301,26 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
         if not isinstance(data, dict):
             return None
         # Coerce types, clip lengths.
+        # YouTube hard limits we enforce here:
+        #   - title:       100 chars (we soft-cap at 60 for CTR)
+        #   - description: 5000 chars (we cap at 500)
+        #   - tags total:  500 chars combined, ~30 chars each
+        raw_tags = data.get("yt_tags") or []
+        if not isinstance(raw_tags, list):
+            raw_tags = []
+        clean_tags: list[str] = []
+        for t in raw_tags:
+            t = str(t).strip().lower().lstrip("#")
+            if t and 2 <= len(t) <= 30 and t not in clean_tags:
+                clean_tags.append(t)
+            if len(clean_tags) >= 5:
+                break
+
         out = {
             "score":          int(data.get("score", 0) or 0),
-            "seo_title":      str(data.get("seo_title", title))[:80],
+            "seo_title":      str(data.get("seo_title", title))[:60],
+            "yt_tags":        clean_tags,
+            "yt_description": str(data.get("yt_description", "")).strip()[:500],
             "thumbnail_text": str(data.get("thumbnail_text", "")).strip()[:30],
             "hook":           str(data.get("hook", "")).strip()[:140],
             # `script` is the full TTS voice-over. Keep it short of
@@ -292,6 +337,12 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
             out["lead"] = out["script"][:300]
         if out["sentiment"] not in ("positive", "neutral", "negative"):
             out["sentiment"] = "neutral"
+        # If the model returned no description, synthesise a usable one
+        # from script + source. Better to fall back than to upload with
+        # an empty description (YouTube SEO suffers).
+        if not out["yt_description"]:
+            base = out["script"] or out["lead"] or out["seo_title"]
+            out["yt_description"] = f"{base}\n\nSource: {source}\n#Shorts #BreakingNews"[:500]
         return out
     except (json.JSONDecodeError, ValueError) as exc:
         log.debug(f"AI enhance parse error: {exc} | raw[:120]={raw[:120]}")
