@@ -52,6 +52,8 @@ OPERATION_COSTS = {
     "playlistItems.insert":  50,
     "playlists.insert":      50,
     "commentThreads.insert": 50,
+    "commentThreads.list":   1,
+    "comments.insert":       50,
     "channels.list":         1,
     "search.list":           100,
 }

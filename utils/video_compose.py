@@ -73,7 +73,8 @@ def build_broll_short(broll_paths: list[Path],
                       output_path: Path,
                       ass_subtitle_path: Path | None = None,
                       hook_text: str = "",
-                      cta_text: str = "") -> bool:
+                      cta_text: str = "",
+                      watermark_text: str = "") -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
     - Each clip is cropped to 9:16, scaled to 1080x1920, played for
@@ -86,6 +87,8 @@ def build_broll_short(broll_paths: list[Path],
     - `hook_text` (max ~40 chars) is drawn as a top-center text overlay
       during the first 3 seconds, the highest-leverage retention window.
     - `cta_text` is drawn near the bottom for the last 6 seconds.
+    - `watermark_text` is the channel handle drawn lower-right
+      throughout the entire video — the industry-standard brand bug.
 
     Returns True on success.
     """
@@ -166,6 +169,20 @@ def build_broll_short(broll_paths: list[Path],
         )
         last_label = "withcta"
 
+    # Brand-bug watermark — drawn ALL THE TIME at the upper-right,
+    # offset to clear YouTube's likes/comments rail at the right side.
+    # Industry standard for news Shorts; lets reposters get traced.
+    if watermark_text and font:
+        safe = _ffmpeg_escape(watermark_text[:32])
+        parts.append(
+            f"[{last_label}]drawtext=fontfile={font}"
+            f":text='{safe}':fontcolor=white@0.75:fontsize=36"
+            f":box=1:boxcolor=black@0.30:boxborderw=10"
+            f":x=w-text_w-40:y=140"
+            f"[withbug]"
+        )
+        last_label = "withbug"
+
     # Burned ASS subtitles (word-level captions in the middle band).
     if ass_subtitle_path and ass_subtitle_path.exists():
         # Use the ASS filter so V4+ styles are honoured. Path is escaped
@@ -213,7 +230,8 @@ def build_static_short(frame_path: Path,
                        audio_path: Path,
                        output_path: Path,
                        ass_subtitle_path: Path | None = None,
-                       hook_text: str = "") -> bool:
+                       hook_text: str = "",
+                       watermark_text: str = "") -> bool:
     """Single still image + audio, with optional burned captions.
 
     The legacy path. Used when no b-roll was acquired. We still burn
@@ -240,6 +258,15 @@ def build_static_short(frame_path: Path,
             f":x=(w-text_w)/2:y=180:enable='between(t,0,3)'[withhook]"
         )
         last = "withhook"
+    if watermark_text and font:
+        safe = _ffmpeg_escape(watermark_text[:32])
+        parts.append(
+            f"[{last}]drawtext=fontfile={font}"
+            f":text='{safe}':fontcolor=white@0.75:fontsize=36"
+            f":box=1:boxcolor=black@0.30:boxborderw=10"
+            f":x=w-text_w-40:y=140[withbug]"
+        )
+        last = "withbug"
     if ass_subtitle_path and ass_subtitle_path.exists():
         ass_path = str(ass_subtitle_path).replace("\\", "/").replace(":", "\\:")
         parts.append(f"[{last}]ass={ass_path}[final]")

@@ -40,6 +40,7 @@ from utils.captions import (
 from utils.digest import load_blocked_slugs
 from utils.experiments import assign_variant
 from utils.free_images import fetch_any_free_image
+from utils.music_bed import add_music_bed
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
@@ -1113,6 +1114,12 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         else:
             return None
 
+    # ── 1.5. Music bed (background, ducked to -22 dB by default). ─
+    # Picks a Pixabay CC0 track keyed by story mood and mixes it under
+    # the TTS. If the download or mix fails, audio_path is returned
+    # unchanged — music is enhancement, not a hard requirement.
+    audio_path = add_music_bed(audio_path, story, tmp_dir)
+
     # ── 2. Captions (word-level) — biggest single retention lever. ─
     ass_path = generate_captions(audio_path, tmp_dir)
     if ass_path:
@@ -1121,7 +1128,12 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         log.info("  ⚠ Captions skipped — Whisper providers unavailable")
 
     # ── 3. B-roll discovery + download ────────────────────────────
-    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=3)
+    # More clips per Short = more pattern interrupts = higher retention.
+    # We aim for 6 clips so the visual cuts land every ~7-8 s in a 45 s
+    # Short — well inside the 2-3 s "pattern interrupt sweet spot" the
+    # algorithm research called out. Pexels 200 req/h covers this even
+    # at 3 Shorts/day × 2 channels.
+    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=6)
 
     # ── 4. Output paths ───────────────────────────────────────────
     VIDEOS_DIR.mkdir(exist_ok=True)
@@ -1203,6 +1215,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         "engage_comment":  "Drop your country in comments 👇",
         "question_close":  "Which side wins this one?",
     }.get(cta_variant, "Follow @globalbrnews")
+    # Brand-bug watermark — channel handle in upper-right corner, on
+    # the whole duration. Industry standard for news Shorts so the
+    # source is unmistakable when the video is re-uploaded elsewhere.
+    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@globalbrnews")
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,
@@ -1211,6 +1227,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             ass_subtitle_path=ass_path,
             hook_text=hook_text or display_title,
             cta_text=cta_text,
+            watermark_text=watermark_text,
         )
         if not ok:
             log.info("  ⤵ B-roll compose failed — falling back to static frame.")
@@ -1220,6 +1237,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
                 output_path=video_path,
                 ass_subtitle_path=ass_path,
                 hook_text=hook_text or display_title,
+                watermark_text=watermark_text,
             )
     else:
         ok = build_static_short(
@@ -1228,6 +1246,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             output_path=video_path,
             ass_subtitle_path=ass_path,
             hook_text=hook_text or display_title,
+            watermark_text=watermark_text,
         )
     if not ok:
         return None
