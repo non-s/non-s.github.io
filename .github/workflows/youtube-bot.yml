@@ -166,6 +166,9 @@ jobs:
             echo "|--------|-------|"
             echo "| Done markers (lifetime) | ${UPLOADED} |"
             echo "| Pending metadata (this run) | ${META_LEFT} |"
+            # YouTube API quota snapshot (estimated from our own
+            # upload log; see utils/youtube_quota.py).
+            python -c "from utils.youtube_quota import summary; s=summary(); print(f'| YouTube quota today | **{s[\"used\"]}/{s[\"budget\"]}** ({s[\"pct_used\"]}%) |')"
             # Most recent uploaded titles.
             echo ""
             echo "### Last 5 published"
@@ -174,6 +177,12 @@ jobs:
               URL=$(python -c "import json; print(json.load(open('$f')).get('url',''))" 2>/dev/null || echo "")
               echo "- [${TITLE}](${URL})"
             done
+            # Quota warning (only emits if >80 % used)
+            WARN=$(python -c "from utils.youtube_quota import warn_if_near_cap; print(warn_if_near_cap())")
+            if [ -n "$WARN" ]; then
+              echo ""
+              echo "$WARN"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: "💾 Salvar marcadores no git"
@@ -189,6 +198,9 @@ jobs:
           # The stories queue gets stories marked as consumed by
           # generate_shorts.py — commit that back too.
           git add _data/stories_queue.json 2>/dev/null || true
+          # Quota ledger — tracks per-upload YouTube Data API spend so
+          # the workflow summary can surface "we're at 85 % of cap".
+          git add _data/quota_log.jsonl 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "✅ Nenhum arquivo novo para salvar."
