@@ -328,6 +328,19 @@ def upload_video(youtube, meta: dict) -> str | None:
     except Exception as e:
         log.warning(f"  ⚠️ Bluesky cross-post failed: {e}")
 
+    # Cross-post the YouTube link to the category-appropriate subreddit.
+    # Reddit's free API requires only an unaudited script-type app.
+    # No-ops silently when REDDIT_* env vars aren't all set.
+    try:
+        from utils.crosspost_reddit import crosspost_link
+        crosspost_link(
+            youtube_url=yt_url,
+            title=title,
+            category=meta.get("category", "world"),
+        )
+    except Exception as e:
+        log.warning(f"  ⚠️ Reddit cross-post failed: {e}")
+
     return video_id
 
 
@@ -430,6 +443,10 @@ def main():
                 "thumbnail":   meta.get("thumbnail", ""),
                 "category":    meta.get("category", ""),
                 "is_short":    meta.get("is_short", False),
+                # A/B variant tags so youtube_analytics.py can correlate
+                # them with the retention numbers it pulls.
+                "experiments": meta.get("experiments", {}),
+                "language":    _LANGUAGE,
             }, indent=2))
             meta_file.unlink()
             uploaded += 1
