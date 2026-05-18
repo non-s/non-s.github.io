@@ -427,6 +427,9 @@ def build_roundup_metadata(stories: list[dict],
 # ── Main ──────────────────────────────────────────────────────────
 
 def main() -> None:
+    from utils.panic import abort_if_halted
+    abort_if_halted("generate_roundup")
+
     log.info("=" * 60)
     log.info("🎬 Weekly roundup — %s", datetime.now(timezone.utc).isoformat())
     log.info("=" * 60)

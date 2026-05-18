@@ -29,7 +29,7 @@ from time import sleep
 
 import requests
 
-from utils import ai_cache
+from utils import ai_cache, provider_stats
 from utils.retry import with_retry
 
 log = logging.getLogger(__name__)
@@ -301,10 +301,12 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
         try:
             out = _call_mistral(sys_msg, prompt, timeout, key, json_mode=json_mode)
             ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
+            provider_stats.record("mistral", success=True)
             return out
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code if e.response is not None else 0
             mistral_failed_with = status
+            provider_stats.record("mistral", success=False, status=status)
             if status == 429:
                 # Respect Retry-After header when present, otherwise back off
                 # exponentially. Mistral's free tier sometimes serves bursts
@@ -334,6 +336,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
                 break
         except Exception as exc:
             mistral_failed_with = "exception"
+            provider_stats.record("mistral", success=False, status=None)
             log.warning(f"Mistral error (attempt {attempt+1}/3): {exc}")
             if attempt < 2:
                 time.sleep(3)
@@ -350,15 +353,23 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
     if not transient_failure:
         return ""
 
-    # Each fallback is (env var name, log label, caller). The chain runs
-    # in order; first successful response wins.
-    fallback_chain = [
-        ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
-        ("GEMINI_API_KEY",   "Gemini",   _call_gemini),
-        ("GROQ_API_KEY",     "Groq",     _call_groq),
+    # Each fallback is (env var name, log label, caller, internal_name).
+    # We define them all here and then reorder by recent success rate —
+    # `provider_stats.preferred_chain` puts hot providers first so a
+    # consistently-429ing provider doesn't burn our throttle budget
+    # before we reach a healthy one.
+    _by_name = {
+        "cerebras": ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
+        "gemini":   ("GEMINI_API_KEY",   "Gemini",   _call_gemini),
+        "groq":     ("GROQ_API_KEY",     "Groq",     _call_groq),
+    }
+    ranked_names = [
+        n for n in provider_stats.preferred_chain()
+        if n != "mistral"  # mistral was the primary, already failed
     ]
+    fallback_chain = [(_by_name[n] + (n,)) for n in ranked_names if n in _by_name]
     any_configured = False
-    for env_var, label, caller in fallback_chain:
+    for env_var, label, caller, internal_name in fallback_chain:
         key = os.environ.get(env_var, "")
         if not key:
             continue
@@ -371,9 +382,11 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
                 # model hint) so a subsequent run hits the cache regardless
                 # of which provider answered first.
                 ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
+                provider_stats.record(internal_name, success=True)
                 return out
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
+                provider_stats.record(internal_name, success=False, status=status)
                 if status == 429 and attempt < 1:
                     log.warning(f"{label} 429 — retry in 5s (attempt {attempt+1}/2)")
                     sleep(5)
@@ -381,6 +394,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
                 log.warning(f"{label} HTTP {status} — moving on")
                 break
             except Exception as exc:
+                provider_stats.record(internal_name, success=False, status=None)
                 log.warning(f"{label} error (attempt {attempt+1}/2): {exc}")
                 if attempt < 1:
                     sleep(3)

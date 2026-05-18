@@ -151,6 +151,55 @@ def _cohort_optimal_utc_hours(geo_views: dict[str, dict[str, int]]) -> dict:
     }
 
 
+def _write_anomaly_check() -> None:
+    """Compare today's CSV total views against the 7-day baseline.
+
+    Writes `_data/analytics/anomaly.json` with `{flagged, today_total,
+    baseline_mean, drop_pct, reason}`. The daily digest reads it.
+    """
+    import csv as _csv
+    today = datetime.now(timezone.utc).date()
+    today_path = ANALYTICS_DIR / f"{today.strftime('%Y-%m-%d')}.csv"
+    if not today_path.exists():
+        return
+    def _total(path: Path) -> int:
+        try:
+            with path.open(encoding="utf-8") as fh:
+                reader = _csv.DictReader(fh)
+                return sum(int(r.get("an_views", 0) or 0) for r in reader)
+        except Exception:
+            return 0
+
+    today_total = _total(today_path)
+    baseline: list[int] = []
+    for d in range(1, 8):
+        prev = ANALYTICS_DIR / f"{(today - timedelta(days=d)).strftime('%Y-%m-%d')}.csv"
+        if prev.exists():
+            t = _total(prev)
+            if t > 0:
+                baseline.append(t)
+    if len(baseline) < 3:
+        return  # not enough baseline; skip silently
+    baseline_mean = sum(baseline) / len(baseline)
+    drop_pct = round((1 - today_total / baseline_mean) * 100, 1) if baseline_mean else 0.0
+    flagged = today_total > 0 and drop_pct >= 50.0
+    payload = {
+        "checked_at":     datetime.now(timezone.utc).isoformat(),
+        "today_total":    today_total,
+        "baseline_mean":  round(baseline_mean, 1),
+        "drop_pct":       drop_pct,
+        "flagged":        flagged,
+        "reason":         (f"today's {today_total} views vs 7-day baseline "
+                            f"{baseline_mean:.0f} = {drop_pct} % drop"
+                            if flagged else "within normal range"),
+    }
+    (ANALYTICS_DIR / "anomaly.json").write_text(
+        json.dumps(payload, indent=2), encoding="utf-8",
+    )
+    if flagged:
+        log.warning("🚨 ANOMALY: %s", payload["reason"])
+
+
 def _write_cohort_timing(row_geo: dict[str, dict[str, int]]) -> None:
     """Compute + persist `_data/analytics/cohort_timing.json`."""
     payload = _cohort_optimal_utc_hours(row_geo)
@@ -313,6 +362,27 @@ def _pull_video_metrics(yt_analytics, video_id: str, start_date: str, end_date: 
         "subs_gained":          int(row[5] or 0),
     }
 
+    # CTR + impressions. cardImpressionsClickThroughRate covers in-card
+    # CTR; the more relevant Shorts impression metric is
+    # `cardClickRate` / `cardImpressions` and (separately)
+    # `impressionsToViewRatio` for non-Shorts. We pull both and let
+    # the analyser pick the one with non-zero data per row.
+    try:
+        ctr_resp = yt_analytics.reports().query(
+            ids="channel==MINE",
+            startDate=start_date,
+            endDate=end_date,
+            metrics="cardImpressions,cardClickRate",
+            filters=f"video=={video_id}",
+        ).execute()
+        ctr_rows = ctr_resp.get("rows", []) or [[0, 0]]
+        out["impressions"]      = int(ctr_rows[0][0] or 0)
+        out["impression_ctr"]   = round(float(ctr_rows[0][1] or 0), 3)
+    except HttpError as e:
+        log.debug(f"CTR query failed for {video_id}: {e}")
+        out["impressions"]    = 0
+        out["impression_ctr"] = 0.0
+
     # Top 3 traffic sources by view share.
     try:
         traf = yt_analytics.reports().query(
@@ -449,13 +519,30 @@ def main() -> None:
     # The daily-digest workflow surfaces this in the Issue body.
     _write_cohort_timing(row_geo)
 
+    # ── Anomaly detection on view volume ──────────────────────────
+    # Compare today's total against the trailing 7-day mean. A sudden
+    # > 50 % drop flags as anomaly so the daily-digest issue surfaces
+    # it the next morning. Could be: channel strike, API quota hit,
+    # workflow misfire, or external (slow news day) — operator's job
+    # to investigate.
+    _write_anomaly_check()
+
     # ── A/B winner computation ─────────────────────────────────────
     # Build observations from the rows that have experiments + a score.
-    # The metric we optimise is avg_view_pct — retention is the
-    # algorithmic ranking signal that matters most on Shorts.
+    # `score_metric` decides what we optimise. By default we use a
+    # 60/40 blend of retention (avg_view_pct) and CTR — the two stages
+    # of the Shorts funnel — so a thumbnail variant that lifts CTR
+    # by 10 % but tanks retention by 30 % still loses.
+    def _blend(r: dict) -> float:
+        retention = float(r.get("avg_view_pct", 0) or 0)
+        # CTR comes back as a fraction in [0, 1]. Scale to 0-100 so it
+        # weighs comparably with avg_view_pct.
+        ctr_pct = float(r.get("impression_ctr", 0) or 0) * 100
+        return 0.6 * retention + 0.4 * ctr_pct
+
     observations = [
         {"experiments": r.get("experiments") or {},
-         "score":       r.get("avg_view_pct", 0)}
+         "score":       _blend(r)}
         for r in rows
         if isinstance(r.get("experiments"), dict)
         and (r.get("experiments") or {})
