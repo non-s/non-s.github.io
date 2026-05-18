@@ -135,11 +135,6 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           LANGUAGE: "pt-BR"
-          # Bluesky cross-post can reuse the same handle since Bluesky
-          # doesn't care about language. If you want a separate PT-BR
-          # Bluesky account, override these with PT-BR-specific secrets.
-          BLUESKY_HANDLE:        ${{ secrets.BLUESKY_HANDLE_PTBR || secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD:  ${{ secrets.BLUESKY_APP_PASSWORD_PTBR || secrets.BLUESKY_APP_PASSWORD }}
 
       - name: "💾 Salvar marcadores PT-BR no git"
         if: hashFiles('token.json') != ''

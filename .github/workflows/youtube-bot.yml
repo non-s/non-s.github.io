@@ -148,17 +148,6 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          # Bluesky cross-post (free vertical-video feed, ~42M MAU).
-          # Both empty → skipped silently; configuring lifts reach
-          # without touching any other moving part.
-          BLUESKY_HANDLE:        ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD:  ${{ secrets.BLUESKY_APP_PASSWORD }}
-          # Reddit cross-post (free, no audit). Empty → skipped.
-          REDDIT_USER_AGENT:     ${{ secrets.REDDIT_USER_AGENT }}
-          REDDIT_USERNAME:       ${{ secrets.REDDIT_USERNAME }}
-          REDDIT_PASSWORD:       ${{ secrets.REDDIT_PASSWORD }}
-          REDDIT_CLIENT_ID:      ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_CLIENT_SECRET:  ${{ secrets.REDDIT_CLIENT_SECRET }}
 
       - name: "📊 Write run summary"
         if: always()
