@@ -131,6 +131,34 @@ static frames. To stay on the right side of the bar this pipeline:
   CartaCapital, GE Globo, etc.) marked as native PT-BR. The
   Portuguese sibling channel renders them directly without
   translation round-trip, while the English channel skips them.
+- **A/B experimentation framework** — every Short ships with a
+  variant assignment across 4 axes (hook style, script tone,
+  thumbnail style, CTA style). Analytics workflow correlates
+  variants with retention nightly and writes
+  `_data/analytics/experiments.json` with the winner per axis. The
+  daily digest issue surfaces the live winners + their measured
+  lift over runners-up.
+- **Audience cohort timing** — the analytics workflow pulls per-video
+  geo breakdown and recommends three UTC posting hours hitting the
+  evening peak of your top-3 audience markets. Surfaced in the daily
+  digest.
+- **Long-form weekly roundup** — Sunday 21:00 UTC, generates a 9-11
+  min "Top 7 of the week" vertical video from the highest-scoring
+  Shorts of the last 7 days. Long-form is the algorithmic foundation
+  Shorts-only channels lack — total watch time outranks average view
+  % on YouTube's overall ranker.
+- **Reddit cross-post** — the YouTube link drops as a self-post on
+  the category-appropriate subreddit (`worldnews`, `MachineLearning`,
+  `cybersecurity`, etc.) right after each upload. Free, no audit,
+  one sub per Short to stay on the right side of every sub's spam rules.
+- **Static dashboard on GitHub Pages** — `dashboard.yml` builds an
+  HTML page with sparklines, top performers, retention by category,
+  A/B winners, and cohort timing slots from the analytics CSVs.
+  Deployed nightly to `<owner>.github.io/<repo>/`.
+- **End-to-end smoke test** — `tests/test_e2e_smoke.py` exercises
+  fetch → enrich → generate → metadata-sidecar with every external
+  touchpoint mocked. Wiring regressions go red locally instead of in
+  production.
 
 ## Workflows
 
@@ -139,7 +167,9 @@ static frames. To stay on the right side of the bar this pipeline:
 | `fetch-news.yml` | every 3 h | Refresh the stories queue |
 | `youtube-bot.yml` | 08 / 14 / 20 | Generate + upload 1 English Short per run |
 | `youtube-bot-ptbr.yml` | 09 / 15 / 21 | Generate + upload 1 PT-BR Short per run (sibling channel, opt-in) |
-| `analytics.yml` | 03:00 | Pull retention/CTR snapshot to `_data/analytics/` |
+| `weekly-roundup.yml` | Sun 21:00 | Build + publish a 9-11 min long-form weekly roundup |
+| `analytics.yml` | 03:00 | Pull retention/CTR snapshot + compute A/B winners + cohort timing |
+| `dashboard.yml` | 03:30 | Build + deploy the channel dashboard to GitHub Pages |
 | `daily-digest.yml` | 04:00 | Post a GitHub Issue with the 24 h review checklist |
 | `cleanup-branches.yml` | Sun 04:00 | Delete merged bot branches |
 

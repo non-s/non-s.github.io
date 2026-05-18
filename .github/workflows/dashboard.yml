@@ -1,0 +1,52 @@
+name: "📊 Build + deploy dashboard"
+
+# Builds the static channel-analytics dashboard from
+# `_data/analytics/*` and publishes it to GitHub Pages.
+# Runs nightly after the analytics workflow has populated the CSV
+# snapshots, plus on-demand via workflow_dispatch.
+
+on:
+  schedule:
+    - cron: "30 3 * * *"   # 03:30 UTC — after analytics at 03:00
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages:    write
+  id-token: write
+
+# Single concurrent dashboard build — cancel in-flight runs since
+# we only ever want the latest snapshot live.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.11"
+
+      - name: "Build dashboard HTML"
+        run: python scripts/build_dashboard.py
+
+      - name: "Upload Pages artifact"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

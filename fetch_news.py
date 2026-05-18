@@ -59,6 +59,7 @@ from utils.ai_helper import (
     sentiment_score,
 )
 from utils.dedup import titles_too_similar
+from utils.experiments import assign_all as assign_experiments
 from utils.prompt_safety import sanitize_for_prompt, wrap_untrusted
 from utils.public_sources import (
     fetch_all_public_sources,
@@ -506,8 +507,48 @@ _AI_PROMPT_TEMPLATE = (
 )
 
 
-def _ai_enhance(title: str, description: str, source: str, category: str) -> dict | None:
-    """Returns a dict with the keys in _AI_PROMPT_TEMPLATE, or None on failure."""
+# ── Experiment-driven prompt overlays ────────────────────────────
+#
+# Each axis has a short instruction block that's appended to the base
+# template when the story is assigned that variant. The analyser later
+# correlates `experiments` field on the queue entry with retention to
+# pick winners; until enough samples exist, every variant ships about
+# evenly.
+
+_HOOK_STYLE_INSTRUCTIONS = {
+    "outcome_first":    "HOOK SHAPE: verb + consequence + number first. "
+                        "Examples: 'China just banned the dollar in 3 industries.', "
+                        "'Markets dropped 2 percent before lunch.'",
+    "question":         "HOOK SHAPE: open with a single sharp question that names "
+                        "the concrete consequence. Example: 'Did the Fed just "
+                        "trigger the recession everyone was waiting for?'",
+    "shocking_number":  "HOOK SHAPE: lead with the single most surprising NUMBER "
+                        "from the story, as its own sentence fragment, then the "
+                        "consequence. Example: 'Two percent. Wiped out before "
+                        "lunch.'",
+    "curiosity_gap":    "HOOK SHAPE: state that X did something specific, with "
+                        "the WHAT held back. Example: 'Apple just changed Siri "
+                        "in a way nobody's talking about.' Avoid the word 'this'.",
+}
+_SCRIPT_TONE_INSTRUCTIONS = {
+    "opinionated":      "TONE: pick a side. Name the winner AND loser by the "
+                        "third sentence. Don't hedge.",
+    "analytical":       "TONE: explain the underlying mechanism in plain English. "
+                        "If there's a chart-shaped argument, make it.",
+    "conversational":   "TONE: friend-explaining-it-at-the-bar. Short sentences. "
+                        "Contractions. Concrete examples.",
+}
+
+
+def _ai_enhance(title: str, description: str, source: str, category: str,
+                experiments: dict | None = None) -> dict | None:
+    """Returns a dict with the keys in _AI_PROMPT_TEMPLATE, or None on failure.
+
+    `experiments` is the per-story variant assignment (axis → variant)
+    from utils.experiments. We append the matching instruction blocks
+    to the system prompt so the LLM actually behaves differently per
+    variant — that's the only way the A/B framework produces signal.
+    """
     # Defense in depth: sanitise RSS-borne strings before they hit the
     # prompt template. The system message tells the model to treat the
     # wrapped blocks as data, not instructions — combined with the
@@ -523,6 +564,21 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
         category=safe_category,
         description=safe_description,
     )
+
+    # Append experiment overlays. We add them to the user prompt (not
+    # the system) so the ai_cache key picks up the variation — each
+    # variant gets its own cache slot.
+    experiments = experiments or {}
+    overlays: list[str] = []
+    hook_style = experiments.get("hook_style")
+    if hook_style and hook_style in _HOOK_STYLE_INSTRUCTIONS:
+        overlays.append(_HOOK_STYLE_INSTRUCTIONS[hook_style])
+    tone = experiments.get("script_tone")
+    if tone and tone in _SCRIPT_TONE_INSTRUCTIONS:
+        overlays.append(_SCRIPT_TONE_INSTRUCTIONS[tone])
+    if overlays:
+        prompt = prompt + "\n\nADDITIONAL CONSTRAINTS:\n" + "\n".join(overlays)
+
     raw = ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=25, json_mode=True)
     if not raw:
         return None
@@ -712,7 +768,14 @@ def _enrich_story(story: dict,
     Bias is additive on top of the AI's 0-10 score; the quality gate
     still applies after biasing.
     """
-    ai = _ai_enhance(story["title"], story["description"], story["source"], story["category"])
+    # Assign per-story experiment variants. assign_all is deterministic
+    # on the story id so a re-run yields the same variants and the
+    # ai_cache hit rate stays high.
+    experiments = assign_experiments(story.get("id", ""))
+    story["experiments"] = experiments
+
+    ai = _ai_enhance(story["title"], story["description"], story["source"],
+                     story["category"], experiments=experiments)
     if not ai:
         return None
 

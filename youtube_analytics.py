@@ -34,6 +34,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from utils.categorise import infer_category_from_title
+from utils.experiments import compute_winners, write_winners
 
 ANALYTICS_DIR = Path("_data/analytics")
 TOKEN_FILE    = Path("token.json")
@@ -70,6 +71,123 @@ def _channel_id(youtube) -> str:
     if not items:
         raise RuntimeError("Could not resolve `mine=True` channel ID — token scope issue?")
     return items[0]["id"]
+
+
+_VIDEO_DIRS = (Path("_videos"), Path("_videos_pt-BR"),
+               Path("_videos_es-ES"), Path("_videos_fr-FR"))
+
+# Map ISO 3166 codes to (city, UTC offset hours). Just the codes that
+# show up frequently in the wild — extend as the channel grows. Offsets
+# are non-DST baselines; the recommender only needs hour-resolution.
+_COUNTRY_OFFSETS: dict[str, int] = {
+    "US": -5,   # ET — biggest single market, EST
+    "GB": 0,
+    "BR": -3,
+    "IN": 5,    # rounded down from 5.5h
+    "MX": -6,
+    "CA": -5,
+    "AU": 10,
+    "DE": 1,
+    "FR": 1,
+    "ES": 1,
+    "IT": 1,
+    "JP": 9,
+    "KR": 9,
+    "PH": 8,
+    "NG": 1,
+    "ZA": 2,
+    "AR": -3,
+    "CL": -4,
+    "CO": -5,
+    "EG": 2,
+    "TR": 3,
+    "ID": 7,
+    "PT": 0,
+    "PL": 1,
+    "NL": 1,
+    "SE": 1,
+    "RU": 3,
+}
+
+
+def _cohort_optimal_utc_hours(geo_views: dict[str, dict[str, int]]) -> dict:
+    """Aggregate views by country, return suggested UTC posting hours.
+
+    Strategy: for each top country, the local evening peak is 18:00.
+    Convert that to UTC. Final output recommends the three best
+    posting slots (one per top-3 country market, deduplicated).
+    """
+    totals: dict[str, int] = {}
+    for video_geo in geo_views.values():
+        for country, views in video_geo.items():
+            totals[country] = totals.get(country, 0) + int(views or 0)
+    if not totals:
+        return {"top_countries": [], "recommended_utc_hours": []}
+    ranked = sorted(totals.items(), key=lambda kv: kv[1], reverse=True)[:10]
+    suggestions: list[dict] = []
+    hours_seen: set[int] = set()
+    for country, views in ranked:
+        offset = _COUNTRY_OFFSETS.get(country)
+        if offset is None:
+            continue
+        # Local 18:00 in UTC.
+        local_target = 18
+        utc_hour = (local_target - offset) % 24
+        if utc_hour in hours_seen:
+            continue
+        hours_seen.add(utc_hour)
+        suggestions.append({
+            "country":         country,
+            "views":           views,
+            "local_offset_h":  offset,
+            "utc_hour":        utc_hour,
+        })
+        if len(suggestions) >= 3:
+            break
+    return {
+        "top_countries":          [{"country": c, "views": v}
+                                    for c, v in ranked[:5]],
+        "recommended_utc_hours":  suggestions,
+    }
+
+
+def _write_cohort_timing(row_geo: dict[str, dict[str, int]]) -> None:
+    """Compute + persist `_data/analytics/cohort_timing.json`."""
+    payload = _cohort_optimal_utc_hours(row_geo)
+    out = ANALYTICS_DIR / "cohort_timing.json"
+    try:
+        out.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
+                        encoding="utf-8")
+        if payload.get("recommended_utc_hours"):
+            log.info("⏰ Audience cohort timing:")
+            for s in payload["recommended_utc_hours"]:
+                log.info("   %s (%d views) → %02d:00 UTC",
+                         s["country"], s["views"], s["utc_hour"])
+    except Exception as exc:
+        log.warning("cohort timing write failed: %s", exc)
+
+
+def _experiments_for_video(video_id: str) -> dict[str, str]:
+    """Look up the variant assignments for `video_id` from the .done sidecars.
+
+    Returns {} if the sidecar is missing or doesn't carry experiments
+    (older Shorts that predate the A/B framework).
+    """
+    if not video_id:
+        return {}
+    for d in _VIDEO_DIRS:
+        if not d.exists():
+            continue
+        for done_path in d.glob("*.done"):
+            try:
+                data = json.loads(done_path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if data.get("video_id") == video_id:
+                exps = data.get("experiments") or {}
+                if isinstance(exps, dict):
+                    return {str(k): str(v) for k, v in exps.items()}
+    return {}
 
 
 def _recent_shorts(youtube, channel_id: str) -> list[dict]:
@@ -149,6 +267,29 @@ def _is_short_duration(iso8601: str) -> bool:
     return (minutes * 60 + seconds) <= 60
 
 
+def _pull_geo_breakdown(yt_analytics, video_id: str,
+                        start_date: str, end_date: str) -> dict[str, int]:
+    """Top 5 countries by views for a single video.
+
+    Returns `{ISO-3166-1: views}`. Used by the audience cohort timing
+    recommender — knowing where viewers are tells us when to post.
+    """
+    try:
+        r = yt_analytics.reports().query(
+            ids="channel==MINE",
+            startDate=start_date,
+            endDate=end_date,
+            metrics="views",
+            dimensions="country",
+            filters=f"video=={video_id}",
+            sort="-views",
+            maxResults=5,
+        ).execute()
+        return {row[0]: int(row[1] or 0) for row in r.get("rows", []) or []}
+    except HttpError:
+        return {}
+
+
 def _pull_video_metrics(yt_analytics, video_id: str, start_date: str, end_date: str) -> dict:
     """
     YouTube Analytics API for one video: average view %, CTR, traffic
@@ -222,13 +363,24 @@ def main() -> None:
     start_date = (today - timedelta(days=14)).strftime("%Y-%m-%d")
 
     rows: list[dict] = []
+    row_geo: dict[str, dict[str, int]] = {}
     for short in shorts:
         try:
             metrics = _pull_video_metrics(yt_analytics, short["video_id"], start_date, end_date)
         except HttpError as e:
             log.warning(f"⚠️ analytics fetch failed for {short['video_id']}: {e}")
             continue
-        rows.append({**short, **metrics, "pulled_at": end_date})
+        # Join with experiment tags from the .done sidecar so we can
+        # correlate variant ↔ retention. The sidecars live in either
+        # _videos/ or _videos_<lang>/; we scan both.
+        experiments = _experiments_for_video(short["video_id"])
+        geo_views = _pull_geo_breakdown(yt_analytics, short["video_id"],
+                                          start_date, end_date)
+        rows.append({**short, **metrics, "pulled_at": end_date,
+                     "experiments": experiments,
+                     "geo_top5":   ",".join(f"{k}:{v}" for k, v in geo_views.items())})
+        # Stash geo breakdown for the cohort-timing analyser below.
+        row_geo[short["video_id"]] = geo_views
 
     # Write today's snapshot.
     csv_path = ANALYTICS_DIR / f"{end_date}.csv"
@@ -289,6 +441,40 @@ def main() -> None:
                  f"Underperforming (<60%): {len(summary['below_60_pct'])}")
         if cat_avg:
             log.info(f"📂 Per-category retention: {cat_avg}")
+
+    # ── Audience cohort timing recommender ────────────────────────
+    # Aggregate views by country across all recent Shorts, then map
+    # each top country to a recommended posting hour-in-UTC (the
+    # local 18:00-20:00 window for that country = "evening peak").
+    # The daily-digest workflow surfaces this in the Issue body.
+    _write_cohort_timing(row_geo)
+
+    # ── A/B winner computation ─────────────────────────────────────
+    # Build observations from the rows that have experiments + a score.
+    # The metric we optimise is avg_view_pct — retention is the
+    # algorithmic ranking signal that matters most on Shorts.
+    observations = [
+        {"experiments": r.get("experiments") or {},
+         "score":       r.get("avg_view_pct", 0)}
+        for r in rows
+        if isinstance(r.get("experiments"), dict)
+        and (r.get("experiments") or {})
+        and r.get("avg_view_pct") is not None
+    ]
+    if observations:
+        winners_payload = compute_winners(observations)
+        write_winners(winners_payload)
+        winners = winners_payload.get("winners") or {}
+        if winners:
+            log.info("🏆 Experiment winners: %s",
+                     ", ".join(f"{k}={v}" for k, v in winners.items()))
+        else:
+            stats_by_axis = winners_payload.get("axis_stats") or {}
+            n_total = sum(d["n"] for v in stats_by_axis.values() for d in v.values())
+            log.info("⏳ A/B framework still warming up — %d observations "
+                     "across %d axes (need ≥ %d per variant per axis)",
+                     n_total, len(stats_by_axis),
+                     winners_payload.get("min_samples", 8))
 
 
 if __name__ == "__main__":

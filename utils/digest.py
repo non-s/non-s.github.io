@@ -119,6 +119,41 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append("- Top categories: " + ", ".join(f"{k} ({v:.0f}%)" for k, v in top))
         lines.append("")
 
+    # A/B experiment winners (set by the analytics workflow).
+    exp_path = Path("_data/analytics/experiments.json")
+    if exp_path.exists():
+        try:
+            exp_payload = json.loads(exp_path.read_text(encoding="utf-8"))
+        except Exception:
+            exp_payload = {}
+        winners = exp_payload.get("winners") or {}
+        if winners:
+            lines.append("### A/B winners")
+            lines.append("")
+            for axis, variant in winners.items():
+                lift = (exp_payload.get("lift") or {}).get(axis, {}).get("lift")
+                lift_s = f" (+{lift:.1f} pp)" if isinstance(lift, (int, float)) else ""
+                lines.append(f"- **{axis}**: `{variant}`{lift_s}")
+            lines.append("")
+
+    # Audience cohort timing recommendation.
+    cohort_path = Path("_data/analytics/cohort_timing.json")
+    if cohort_path.exists():
+        try:
+            cohort = json.loads(cohort_path.read_text(encoding="utf-8"))
+        except Exception:
+            cohort = {}
+        slots = cohort.get("recommended_utc_hours") or []
+        if slots:
+            lines.append("### Optimal posting times (per audience cohort)")
+            lines.append("")
+            for s in slots:
+                lines.append(
+                    f"- {s['country']} ({s['views']} views, "
+                    f"UTC{s['local_offset_h']:+d}) → **{s['utc_hour']:02d}:00 UTC**"
+                )
+            lines.append("")
+
     if not shorts:
         lines.append("_No Shorts shipped in the last 24 h._ Possible causes: "
                      "Mistral 429 with no fallback configured, all stories failed "

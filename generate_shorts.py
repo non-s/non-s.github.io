@@ -38,6 +38,7 @@ from utils.captions import (
     write_ass,
 )
 from utils.digest import load_blocked_slugs
+from utils.experiments import assign_variant
 from utils.free_images import fetch_any_free_image
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.text import humanize_for_tts
@@ -853,6 +854,10 @@ def build_short_metadata(story: dict, video_path: Path,
         "source_url":     story.get("source_url", ""),
         "geo_hashtag":    story.get("geo_hashtag", "Global"),
         "category":       category,
+        # A/B variant tags ride along all the way to the .done sidecar
+        # after upload, so youtube_analytics.py can correlate them with
+        # the retention numbers it pulls from the Analytics API.
+        "experiments":    dict(story.get("experiments") or {}),
     }
 
 
@@ -1164,16 +1169,40 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     frame_path = tmp_dir / f"frame_{slug}.png"
     frame.save(str(frame_path))
 
-    # ── 6. Thumbnail: dynamic using thumbnail_text ─────────────────
-    create_short_thumbnail(frame, thumb_path,
-                            thumbnail_text=thumbnail_text,
-                            category=category)
+    # ── 6. Thumbnail: variant-driven (A/B framework) ──────────────
+    # The thumbnail_style axis picks between dynamic_text overlay,
+    # category-colour solid block, and the legacy brand-static JPEG.
+    # create_short_thumbnail's fallback chain handles each path.
+    experiments = story.get("experiments") or {}
+    thumb_variant = experiments.get("thumbnail_style") \
+                    or assign_variant("thumbnail_style", slug)
+    if thumb_variant == "brand_static":
+        # Forcing empty thumbnail_text triggers the static brand fallback
+        # inside create_short_thumbnail.
+        create_short_thumbnail(frame, thumb_path,
+                                thumbnail_text="",
+                                category=category)
+    else:
+        # dynamic_text + category_color both use the dynamic renderer;
+        # category_color biases harder toward the slab fill colour.
+        create_short_thumbnail(frame, thumb_path,
+                                thumbnail_text=thumbnail_text,
+                                category=category)
     if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
         log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
         return None
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
-    cta_text = "Follow @globalbrnews"
+    # CTA axis: rotate per-Short between handle-follow, comment prompt,
+    # and a closing question. Variant assignment is deterministic on
+    # the slug so re-renders are idempotent.
+    cta_variant = experiments.get("cta_style") \
+                  or assign_variant("cta_style", slug)
+    cta_text = {
+        "follow_handle":   "Follow @globalbrnews",
+        "engage_comment":  "Drop your country in comments 👇",
+        "question_close":  "Which side wins this one?",
+    }.get(cta_variant, "Follow @globalbrnews")
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,

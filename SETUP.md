@@ -143,7 +143,42 @@ app password. Same MP4, additional reach.
 
 Skipping either secret silently no-ops the cross-post step.
 
-### 2.7 Portuguese sibling channel (huge untapped niche)
+### 2.7 Reddit cross-post (free, no audit)
+
+Reddit's free OAuth API takes one click to enable and adds another
+free distribution channel. Sign up a dedicated bot account (the
+established account rule keeps you off shadowban lists), then:
+
+1. Log in as the bot account → <https://www.reddit.com/prefs/apps>
+2. "create another app…" → choose **script** → name it `globalbr-bot`
+   → redirect URI `http://localhost`. Save.
+3. Note the **client_id** (right under the app name) and
+   **client_secret**.
+4. Add five repo secrets:
+   - `REDDIT_USER_AGENT` e.g. `"Mozilla/5.0 (GlobalBR News bot by /u/<handle>)"`
+   - `REDDIT_USERNAME` the bot account
+   - `REDDIT_PASSWORD` (the bot account password, **not** 2FA token)
+   - `REDDIT_CLIENT_ID`
+   - `REDDIT_CLIENT_SECRET`
+
+The pipeline posts one self-link per Short to the
+category-appropriate subreddit (`r/worldnews`, `r/MachineLearning`,
+`r/cybersecurity`, …) — no multi-sub spam, no bot-account behaviour
+patterns that trip Reddit's anti-spam.
+
+### 2.8 GitHub Pages dashboard (free)
+
+`dashboard.yml` builds a static analytics dashboard from the
+analytics CSVs every night and deploys to GitHub Pages. To enable:
+
+1. **Settings → Pages**: set "Source" to **GitHub Actions**.
+2. That's it. The workflow runs at 03:30 UTC and the page lands at
+   `https://<owner>.github.io/<repo>/`.
+
+The page shows total views, sparklines, top performers, A/B winners,
+retention by category, and the cohort-timing recommendations.
+
+### 2.9 Portuguese sibling channel (huge untapped niche)
 
 Brazil is the **#3 YouTube Shorts market by views** (~9 % of global
 traffic, AIR Media-Tech 2026) and there is currently **no mass-scale
