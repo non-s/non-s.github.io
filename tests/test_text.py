@@ -3,8 +3,6 @@ import time
 import types
 from datetime import datetime, timezone, timedelta
 
-import pytest
-
 from utils.text import slugify, sanitize_text, humanize_for_tts, parse_date, extract_image
 
 

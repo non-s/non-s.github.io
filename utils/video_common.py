@@ -1,8 +1,8 @@
-"""Drawing helpers shared between `generate_video.py` and `generate_shorts.py`.
+"""Drawing helpers used by `generate_shorts.py`.
 
-Both scripts use Pillow for frame composition and the same handful of
-font / drawing utilities. Centralised here so a fix to (say) the font
-fallback chain propagates to both pipelines.
+Pillow font selection, rounded rectangles, text wrapping and a defensive
+image downloader (HTTP status + MIME + magic-byte sniff). Centralised
+here so a future second renderer can share the same primitives.
 """
 from __future__ import annotations
 

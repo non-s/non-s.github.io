@@ -7,7 +7,6 @@ Fallback: Cerebras (OpenAI-compatible, 1M tokens/DAY free at 30 RPM)
 CEREBRAS_API_KEY to enable; without it the fallback is skipped and
 behaviour matches the pre-fallback world.
 """
-import json
 import logging
 import os
 import re
@@ -17,12 +16,10 @@ from time import sleep
 
 import requests
 
-from utils.retry import with_retry
-
 log = logging.getLogger(__name__)
 
 _session = requests.Session()
-_session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
+_session.headers.update({"User-Agent": "GlobalBR-News-Bot/4.0 (+https://youtube.com/@globalbrnews)"})
 
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
@@ -54,27 +51,6 @@ _NEGATIVE_WORDS = {
     "earthquake", "explosion", "shooting", "murder", "arrest", "ban", "loss",
     "decline", "drop", "recession", "conflict", "violence", "protest", "riot",
     "scandal", "corrupt", "terror", "bomb", "casualt", "injur", "evacuate",
-}
-
-_FACT_VERIFIED_PHRASES = {
-    "officials confirmed", "according to", "announced", "reported by",
-    "confirmed by", "published by", "data shows", "study found",
-    "research shows", "percent", "million", "billion",
-    "2024", "2025", "2026",
-}
-_FACT_DEVELOPING_PHRASES = {
-    "reportedly", "sources say", "unconfirmed", "alleged", "claims",
-    "rumored", "believed to", "said to be", "may have", "might have",
-    "anonymous source", "sources close", "could be",
-}
-_FACT_OPINION_PHRASES = {
-    "opinion", "analysis", "commentary", "editorial", "think",
-    "perspective", "column", "op-ed", "viewpoint", "argue",
-    "believe we should", "it is time to",
-}
-_FACT_SATIRE_PHRASES = {
-    "satire", "parody", "humor", "humour", "spoof", "onion",
-    "satirical", "comedic take",
 }
 
 BREAKING_KEYWORDS = [
@@ -277,24 +253,6 @@ def sentiment_score(text: str) -> str:
     return "neutral"
 
 
-def fact_check_score(title: str, description: str) -> str | None:
-    """Returns 'verified', 'developing', 'opinion', 'satire', or None."""
-    combined = (title + " " + description).lower()
-    for phrase in _FACT_SATIRE_PHRASES:
-        if phrase in combined:
-            return "satire"
-    for phrase in _FACT_OPINION_PHRASES:
-        if phrase in combined:
-            return "opinion"
-    for phrase in _FACT_DEVELOPING_PHRASES:
-        if phrase in combined:
-            return "developing"
-    for phrase in _FACT_VERIFIED_PHRASES:
-        if phrase in combined:
-            return "verified"
-    return None
-
-
 def is_breaking_news(title: str, description: str = "") -> bool:
     """Return True if the article appears to be breaking/urgent news."""
     text = (title + " " + description).lower()
@@ -313,94 +271,3 @@ def quality_check(title: str, description: str) -> tuple[bool, str]:
     if letters and sum(1 for c in letters if c.isupper()) / len(letters) > 0.80:
         return False, "title is ALL CAPS"
     return True, ""
-
-
-# ── Numeric quality score for fine-grained gating ──────────────────
-#
-# Used as a publish gate after AI enrichment. We don't want a binary
-# yes/no on description length anymore — we want to differentiate a
-# barebones RSS dump (low score) from a full AI-enhanced post with
-# body + key_points + faq (high score). The gate then skips anything
-# below a configurable threshold.
-
-_VAGUE_TITLE_RE = re.compile(
-    r"^\s*(some|the|a|new|this|that|update|news|breaking)\s+(news|story|item|article)\s*$",
-    re.IGNORECASE,
-)
-
-
-def quality_score(
-    title: str,
-    description: str,
-    ai_payload: dict | None = None,
-    body_chars: int = 0,
-) -> tuple[int, list[str]]:
-    """
-    Score 0-10. Returns (score, reasons_below_max).
-
-    >= 6  publish (default threshold)
-    >= 8  promote to /featured (caller may use)
-    <  6  drop with reason logged
-
-    Components:
-      * title length + non-vague    (max 2)
-      * description length + clean  (max 2)
-      * AI body present, ≥400 chars (max 2)
-      * AI key_points ≥3            (max 1)
-      * AI tl_dr present, sensible  (max 1)
-      * AI faq ≥3                   (max 1)
-      * Has image OR will get OG    (max 1) — caller injects
-    """
-    ai = ai_payload or {}
-    score = 0
-    notes: list[str] = []
-
-    t_clean = (title or "").strip()
-    if len(t_clean) >= 25 and not _VAGUE_TITLE_RE.match(t_clean):
-        score += 2
-    elif len(t_clean) >= 15:
-        score += 1
-        notes.append("title shortish")
-    else:
-        notes.append(f"title too short ({len(t_clean)})")
-    if _SPAM_PATTERNS.search(t_clean):
-        notes.append("title spammy")
-        score = max(0, score - 1)
-
-    d_clean = (description or "").strip()
-    if len(d_clean) >= 120 and "." in d_clean:
-        score += 2
-    elif len(d_clean) >= 60:
-        score += 1
-        notes.append("description shortish")
-    else:
-        notes.append(f"description too short ({len(d_clean)})")
-
-    body = ai.get("article_body") or ""
-    if isinstance(body, str) and len(body) >= 400:
-        score += 2
-    elif body_chars >= 400:
-        score += 1
-        notes.append("body via source only, no AI body")
-    else:
-        notes.append("no substantial body")
-
-    kp = ai.get("key_points") or []
-    if isinstance(kp, list) and len([k for k in kp if k]) >= 3:
-        score += 1
-    else:
-        notes.append("no key_points")
-
-    tl = (ai.get("tl_dr") or "").strip()
-    if 12 <= len(tl) <= 280:
-        score += 1
-    else:
-        notes.append("no usable tl_dr")
-
-    faq = ai.get("faq") or []
-    if isinstance(faq, list) and len(faq) >= 3:
-        score += 1
-    else:
-        notes.append("no FAQ")
-
-    return min(score, 10), notes
