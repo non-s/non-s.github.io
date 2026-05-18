@@ -688,52 +688,83 @@ def build_short_metadata(story: dict, video_path: Path,
 
 
 # ── Parse posts ──────────────────────────────────────────────────
-def parse_post(post_file: Path) -> dict | None:
-    """Parse frontmatter YAML from a Jekyll post .md file."""
+QUEUE_FILE = Path("_data/stories_queue.json")
+
+
+def _load_queue() -> dict:
+    """Read _data/stories_queue.json — schema written by fetch_news.py."""
+    if not QUEUE_FILE.exists():
+        return {"stories": []}
     try:
-        raw = post_file.read_text(encoding="utf-8")
-    except Exception:
-        return None
+        return json.loads(QUEUE_FILE.read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.warning(f"Failed to parse {QUEUE_FILE}: {exc}")
+        return {"stories": []}
 
-    fm = {}
-    if raw.startswith("---"):
-        end = raw.find("---", 3)
-        if end > 0:
-            for line in raw[3:end].splitlines():
-                if ": " in line:
-                    k, v = line.split(": ", 1)
-                    fm[k.strip()] = v.strip().strip('"')
 
-    title = fm.get("title", post_file.stem.replace("-", " ").title())
-    desc = fm.get("description", "")
-    source = fm.get("source_name", "GlobalBR News")
-    src_url = fm.get("source_url", "https://non-s.github.io")
-    img_url = fm.get("image", "")
-    tags_raw = fm.get("tags", "[]")
+def _save_queue(queue: dict) -> None:
+    """Atomic write — temp file + rename."""
+    QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    tmp = QUEUE_FILE.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(QUEUE_FILE)
 
-    try:
-        tags = json.loads(tags_raw.replace("'", '"'))
-    except Exception:
-        tags = ["tech"]
 
-    # Extract date from filename (YYYY-MM-DD-slug) or frontmatter
-    date_match = re.match(r'^(\d{4}-\d{2}-\d{2})', post_file.stem)
-    post_date = date_match.group(1) if date_match else datetime.now().strftime("%Y-%m-%d")
-
-    # Derive a slug: use the filename stem
-    slug = post_file.stem
-
+def _queue_to_story(qs: dict) -> dict:
+    """
+    Map a queue entry to the dict shape `generate_short()` expects.
+    Falls back to source-feed metadata when the AI fields are missing.
+    """
+    title = qs.get("seo_title") or qs.get("title", "")
     return {
-        "slug":        slug,
-        "title":       title,
-        "description": desc,
-        "source":      source,
-        "source_url":  src_url,
-        "image_url":   img_url,
-        "tags":        tags,
-        "category":    guess_category(tags, title),
-        "date":        post_date,
+        "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
+        "title":          title,
+        "description":    qs.get("lead") or qs.get("description", ""),
+        "source":         qs.get("source", "GlobalBR News"),
+        "source_url":     qs.get("url", ""),
+        "image_url":      qs.get("image_url", ""),
+        "tags":           [qs.get("category", "world")],
+        "category":       qs.get("category", "world"),
+        "date":           (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
+        "hook":           qs.get("hook", ""),
+        # `script` is the full opinionated voice-over (~30-45 s) authored
+        # by fetch_news.py's AI prompt. generate_short() will TTS this
+        # directly instead of rebuilding from key_points.
+        "script":         qs.get("script", ""),
+        "thumbnail_text": qs.get("thumbnail_text", ""),
+        "key_points":     qs.get("key_points", []),
+        "_queue_id":      qs["id"],  # used to mark consumed after success
     }
+
+
+def load_pending_stories() -> tuple[list[dict], dict]:
+    """
+    Return (pending_stories, raw_queue). Pending = not yet consumed AND
+    not already shipped to YouTube (`shorts_done` tracks the latter,
+    handled by the caller). Stories sorted by AI quality score desc,
+    breaking news first.
+    """
+    queue = _load_queue()
+    stories = queue.get("stories", [])
+    pending = [s for s in stories if not s.get("consumed")]
+    pending.sort(
+        key=lambda s: (
+            bool(s.get("breaking", False)),
+            int(s.get("score", 0) or 0),
+            s.get("fetched_at", ""),
+        ),
+        reverse=True,
+    )
+    return [_queue_to_story(s) for s in pending], queue
+
+
+def mark_consumed(queue: dict, queue_id: str) -> None:
+    """Mutate queue: flag the matching story as consumed=true (in memory)."""
+    for s in queue.get("stories", []):
+        if s.get("id") == queue_id:
+            s["consumed"] = True
+            s["consumed_at"] = datetime.now(timezone.utc).isoformat()
+            return
 
 
 # ── Gera um único Short ───────────────────────────────────────────
@@ -751,7 +782,17 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
     # ── 0. AI meta first — frame + thumbnail need the magnetic title ─
-    ai_meta = _ai_shorts_meta(title, description, category)
+    # The queue (from fetch_news.py) already carries an AI-written
+    # `title` (seo_title), `script` (opinion voice-over) and
+    # `thumbnail_text` (2-4 word punchy overlay). Only call the
+    # legacy _ai_shorts_meta as a backstop when those fields are
+    # missing — saves one round-trip to Mistral per Short on the
+    # happy path.
+    queue_script = (story.get("script") or "").strip()
+    if queue_script:
+        ai_meta = {"yt_title": title}
+    else:
+        ai_meta = _ai_shorts_meta(title, description, category)
     ai_title = (ai_meta.get("yt_title") or "").strip()
     display_title = ai_title if 15 < len(ai_title) <= 80 else title
     if ai_title and display_title == ai_title:
@@ -801,7 +842,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     log.info(f"  Frame saved: {frame_path.name}")
 
     # ── 4. TTS narration ──────────────────────────────────────────
-    script = humanize_for_tts(build_short_script(title, points, category))
+    # Prefer the queue's `script` (full opinionated voice-over from
+    # fetch_news.py's AI prompt). Fall back to the legacy template
+    # builder if the queue field is empty (e.g. backlog stories
+    # written before the script field existed).
+    if queue_script:
+        raw_script = queue_script
+        log.info(f"  ✨ Using AI opinion script from queue ({len(raw_script)} chars)")
+    else:
+        raw_script = build_short_script(title, points, category)
+    script = humanize_for_tts(raw_script)
     audio_path = tmp_dir / f"audio_{slug}.mp3"
     try:
         asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
@@ -861,26 +911,22 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 def main():
     VIDEOS_DIR.mkdir(exist_ok=True)
 
-    posts_dir = Path("_posts")
-    if not posts_dir.exists():
-        log.error("_posts/ not found")
+    if not QUEUE_FILE.exists():
+        log.error(f"{QUEUE_FILE} not found — run fetch_news.py first.")
         return
 
-    # Load tracking set
     shorts_done = load_shorts_done()
     log.info(f"Shorts already done: {len(shorts_done)}")
 
-    # Collect posts not yet turned into Shorts (most recent first)
-    posts = sorted(posts_dir.glob("*.md"), reverse=True)
-    candidates = []
-    for p in posts:
-        if p.stem not in shorts_done:
-            story = parse_post(p)
-            if story and story["title"] and story["description"]:
-                candidates.append(story)
+    candidates, queue = load_pending_stories()
+    # Belt-and-braces: queue dedup already excludes consumed stories,
+    # but shorts_done covers the case where a story was published to
+    # YouTube but the workflow died before marking it consumed.
+    candidates = [c for c in candidates if c["slug"] not in shorts_done]
 
+    log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
     if not candidates:
-        log.info("No new stories to create Shorts for. Nothing to do.")
+        log.info("Nothing to do.")
         return
 
     selected = candidates[:MAX_SHORTS_PER_RUN]
@@ -898,6 +944,10 @@ def main():
             video_path, thumb_path, metadata = result
             shorts_done.add(story["slug"])
             save_shorts_done(shorts_done)
+            mark_consumed(queue, story["_queue_id"])
+            # Persist after each success so a mid-run crash doesn't
+            # cost us the work that already landed on YouTube.
+            _save_queue(queue)
             created += 1
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
