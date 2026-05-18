@@ -123,7 +123,7 @@
       crossorigin="anonymous">
 
 <!-- ── CSS customizado ── -->
-<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}">
 
 <!-- ── Feed RSS ── -->
 <link rel="alternate" type="application/rss+xml"
