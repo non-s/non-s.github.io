@@ -11,17 +11,6 @@ updates:
       python-deps:
         patterns: ["*"]
 
-  - package-ecosystem: "bundler"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 3
-    labels: ["dependencies", "jekyll"]
-    groups:
-      ruby-deps:
-        patterns: ["*"]
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

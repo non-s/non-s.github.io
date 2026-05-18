@@ -22,7 +22,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 # fcntl is POSIX-only; we use it to serialise queue access against
 # fetch_news.py. Guarded for local Windows dev — the CI runner is Linux.
@@ -86,7 +86,7 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Fontes / utilitários compartilhados com generate_video.py ─────
+# ── Pillow / FFmpeg helpers (see utils/video_common.py) ───────────
 from utils.video_common import (
     get_font,
     draw_rounded_rect,
@@ -338,7 +338,7 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
         f"?width={SHORT_W}&height={SHORT_H}&nologo=true&seed={seed}&model=flux"
     )
     try:
-        log.info(f"  Generating AI background via Pollinations.ai...")
+        log.info("  Generating AI background via Pollinations.ai...")
         r = requests.get(url, timeout=90, headers={"User-Agent": "GlobalBR-Bot/3.0"})
         r.raise_for_status()
         dest.write_bytes(r.content)
@@ -448,7 +448,6 @@ def create_short_frame(title: str, category: str, points: list[str],
         title_lines = wrap_text(draw, title, title_font, title_max_w)
 
     line_height = 88
-    total_title_h = len(title_lines[:4]) * line_height
     ty = title_start_y
     for line in title_lines[:4]:
         lbbox = draw.textbbox((0, 0), line, font=title_font)
@@ -467,7 +466,6 @@ def create_short_frame(title: str, category: str, points: list[str],
     # ── 3 bullet points ───────────────────────────────────────────
     bullet_start_y = div_y + 36
     bullet_font = get_font(46)
-    bullet_bold_font = get_font(46, bold=True)
     bullet_max_w = SHORT_W - padding * 2 - 60  # 60 for bullet icon
     bullet_labels = ["01", "02", "03"]
     bullet_spacing = 16  # vertical gap between bullets
@@ -518,7 +516,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 
     # CTA
     cta_font = get_font(38, bold=True)
-    cta_text = "Follow for more  |  non-s.github.io"
+    cta_text = "Follow @globalbrnews for more"
     cta_y = src_y + 48
     ctabbox = draw.textbbox((0, 0), cta_text, font=cta_font)
     ctx = (SHORT_W - ctabbox[2]) // 2

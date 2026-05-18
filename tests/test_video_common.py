@@ -1,7 +1,6 @@
 """Unit tests for utils/video_common.py."""
 from __future__ import annotations
 
-from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -12,8 +11,6 @@ from utils.video_common import (  # noqa: E402
     draw_rounded_rect,
     wrap_text,
     download_image,
-    _BOLD_FONTS,
-    _REGULAR_FONTS,
 )
 
 
@@ -69,11 +66,16 @@ def test_wrap_text_handles_empty_string():
 
 def test_download_image_writes_file_on_success(tmp_path):
     dest = tmp_path / "out.jpg"
-    fake_resp = MagicMock(status_code=200, content=b"\xff\xd8" + b"x" * 5000)
+    # Magic bytes match the JPEG check in download_image (b"\xff\xd8\xff").
+    fake_resp = MagicMock(
+        status_code=200,
+        content=b"\xff\xd8\xff" + b"x" * 5000,
+        headers={"Content-Type": "image/jpeg"},
+    )
     with patch("utils.video_common.requests.get", return_value=fake_resp):
         ok = download_image("https://example.com/x.jpg", dest, timeout=5)
     assert ok is True
-    assert dest.read_bytes().startswith(b"\xff\xd8")
+    assert dest.read_bytes().startswith(b"\xff\xd8\xff")
 
 
 def test_download_image_rejects_small_response(tmp_path):

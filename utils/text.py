@@ -44,7 +44,7 @@ _MD_IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^\)]*\)")
 _MD_LINK_RE = re.compile(r"\[([^\]]+)\]\([^\)]+\)")
 _MD_HEADING_RE = re.compile(r"^\s{0,3}#{1,6}\s+", re.MULTILINE)
 _MD_BLOCKQUOTE_RE = re.compile(r"^\s{0,3}>\s?", re.MULTILINE)
-_MD_HRULE_RE = re.compile(r"^\s{0,3}([-*_])\s*\1\s*\1[\s\1]*$", re.MULTILINE)
+_MD_HRULE_RE = re.compile(r"^\s{0,3}[-*_](?:\s*[-*_]){2,}\s*$", re.MULTILINE)
 _MD_LIST_BULLET_RE = re.compile(r"^\s*[-*+]\s+", re.MULTILINE)
 _MD_LIST_NUMBER_RE = re.compile(r"^\s*\d+\.\s+", re.MULTILINE)
 _MD_EMPHASIS_RE = re.compile(r"[*_]+")
@@ -212,7 +212,6 @@ def parse_date(entry: object, max_age_days: int | None = 30) -> datetime:
         return now
     # Cap entries older than max_age_days to "now".
     if max_age_days is not None:
-        from datetime import timedelta
         if (now - candidate).days > max_age_days:
             return now
     return candidate

@@ -6,7 +6,7 @@ upload_youtube.py — Faz upload dos vídeos gerados para o YouTube
 Requer: token.json (gerado pelo auth_youtube.py uma única vez)
 """
 
-import os, json, logging, time
+import json, logging, time
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -22,8 +22,14 @@ from googleapiclient.errors import HttpError
 LOG_FILE   = "upload_youtube.log"
 VIDEOS_DIR = Path("_videos")
 TOKEN_FILE = Path("token.json")
+# Minimum scopes the uploader actually exercises (videos.insert,
+# thumbnails.set, playlists.insert, playlistItems.insert,
+# commentThreads.insert). auth_youtube.py requests a broader set
+# (readonly + analytics) so the same token also drives
+# youtube_analytics.py — passing a subset here is fine: google-auth
+# accepts narrower scopes than the token was minted with.
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
-               "https://www.googleapis.com/auth/youtube"]
+              "https://www.googleapis.com/auth/youtube"]
 MAX_RETRIES = 4
 RETRYABLE_STATUSES = {500, 502, 503, 504}
 
@@ -79,7 +85,7 @@ def _get_or_create_playlist(youtube, category: str, playlist_ids: dict) -> str |
             body={
                 "snippet": {
                     "title": playlist_title,
-                    "description": f"Latest {category} news from GlobalBR News — world news every hour.\n\n🌐 https://non-s.github.io",
+                    "description": f"Latest {category} news from GlobalBR News — world news every hour.\n\nSubscribe: https://youtube.com/@globalbrnews",
                     "defaultLanguage": "en",
                 },
                 "status": {"privacyStatus": "public"},
@@ -106,7 +112,7 @@ def _add_to_playlist(youtube, video_id: str, playlist_id: str) -> None:
                 }
             }
         ).execute()
-        log.info(f"  📋 Added to playlist")
+        log.info("  📋 Added to playlist")
     except Exception as e:
         log.warning(f"  Could not add to playlist: {e}")
 
@@ -267,7 +273,7 @@ def upload_video(youtube, meta: dict) -> str | None:
                 videoId=video_id,
                 media_body=MediaFileUpload(str(thumb_path), mimetype="image/jpeg"),
             ).execute()
-            log.info(f"  🖼  Thumbnail aplicada")
+            log.info("  🖼  Thumbnail aplicada")
         except HttpError as e:
             log.warning(f"  ⚠️ Não foi possível aplicar thumbnail: HTTP {e.resp.status}")
     else:
@@ -393,7 +399,6 @@ def main():
                 "tags":        meta.get("tags", []),
                 "thumbnail":   meta.get("thumbnail", ""),
                 "category":    meta.get("category", ""),
-                "is_short":    meta.get("is_short", False),
             }, indent=2))
             meta_file.unlink()
             uploaded += 1

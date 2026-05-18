@@ -55,7 +55,6 @@ from utils.ai_helper import (
     ai_text,
     is_breaking_news,
     quality_check,
-    quality_score,
     sentiment_score,
 )
 from utils.dedup import titles_too_similar
@@ -65,7 +64,6 @@ from utils.text import (
     extract_image,
     parse_date,
     sanitize_text,
-    slugify,
 )
 
 # ── Config ────────────────────────────────────────────────────────────
@@ -129,7 +127,7 @@ log = logging.getLogger("fetch_news")
 
 _session = requests.Session()
 _session.headers.update({
-    "User-Agent": "GlobalBR-News-Bot/4.0 (+https://github.com/non-s/non-s.github.io)",
+    "User-Agent": "GlobalBR-News-Bot/4.0 (+https://youtube.com/@globalbrnews)",
 })
 
 
@@ -498,8 +496,6 @@ def _entry_to_story(entry, feed_cfg: dict) -> dict | None:
         published = parse_date(entry, max_age_days=2)
     except Exception:
         return None  # stale / unparseable
-    if not published:
-        return None
 
     # Cheap quality gate before we spend AI tokens.
     ok, reason = quality_check(title, description)

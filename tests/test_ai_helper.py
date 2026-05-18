@@ -1,9 +1,6 @@
 """Tests for utils/ai_helper.py — pure functions only (no live API calls)."""
-import pytest
-
 from utils.ai_helper import (
     sentiment_score,
-    fact_check_score,
     is_breaking_news,
     quality_check,
 )
@@ -23,34 +20,6 @@ def test_sentiment_neutral():
 
 def test_sentiment_empty():
     assert sentiment_score("") == "neutral"
-
-
-def test_fact_check_verified():
-    assert fact_check_score("Officials confirmed", "Data shows record growth") == "verified"
-
-
-def test_fact_check_developing():
-    assert fact_check_score("Sources say", "Reportedly an investigation is underway") == "developing"
-
-
-def test_fact_check_opinion():
-    assert fact_check_score("Why we believe", "It is time to act, in this opinion column") == "opinion"
-
-
-def test_fact_check_satire():
-    assert fact_check_score("Onion satire", "A spoof of the day's news") == "satire"
-
-
-def test_fact_check_none():
-    assert fact_check_score("Plain headline", "Plain description") is None
-
-
-def test_fact_check_satire_beats_others():
-    # Satire should win even when other phrases are present.
-    assert fact_check_score(
-        "Satirical opinion piece",
-        "Reportedly an opinion-flavored editorial",
-    ) == "satire"
 
 
 def test_is_breaking_keyword_match():

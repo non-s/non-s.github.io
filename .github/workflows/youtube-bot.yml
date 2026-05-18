@@ -102,14 +102,10 @@ jobs:
       - name: "Restaurar marcadores de videos processados"
         run: |
           mkdir -p _videos
-          # Os arquivos .done e .roundup ficam no git para rastrear o que já foi feito
+          # .done markers are committed back to git so a fresh checkout
+          # doesn't re-publish the same Short across runs.
           echo "📂 Marcadores existentes:"
           ls _videos/*.done 2>/dev/null | wc -l || echo "0 .done"
-          ls _videos/*.roundup 2>/dev/null | wc -l || echo "0 .roundup"
-
-      # Long-form roundup video generation was removed 2026-05. The
-      # channel is shorts-only now. generate_video.py / upload_youtube.py
-      # for long-form remain in the repo — re-enable here if needed.
 
       - name: "📱 Gerar YouTube Shorts (até 3 por run)"
         # This is now the primary content step — drop the
@@ -135,9 +131,8 @@ jobs:
 
           # Done markers keep the pipeline idempotent across runs: a
           # fresh checkout otherwise re-publishes the same Shorts.
-          git add _videos/*.done    2>/dev/null || true
-          git add _videos/*.roundup 2>/dev/null || true
-          git add _videos/*.json    2>/dev/null || true
+          git add _videos/*.done 2>/dev/null || true
+          git add _videos/*.json 2>/dev/null || true
           # The stories queue gets stories marked as consumed by
           # generate_shorts.py — commit that back too.
           git add _data/stories_queue.json 2>/dev/null || true

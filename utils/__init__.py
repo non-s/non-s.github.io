@@ -2,8 +2,10 @@
 Shared utilities for GlobalBR News automation scripts.
 
 Modules:
-  retry       — retry_call() helper and with_retry() decorator with exponential back-off
-  frontmatter — Jekyll frontmatter parser (parse, get_str, get_list)
-  dedup       — Levenshtein + Jaccard title deduplication
-  text        — slug generation, text sanitisation, RSS helpers
+  ai_helper    — Mistral (primary) + Cerebras (fallback) text generation
+  dedup        — Levenshtein + Jaccard title deduplication
+  ranking      — Pre-AI relevance scoring for RSS entries
+  retry        — retry_call() helper and with_retry() decorator
+  text         — slug generation, sanitisation, TTS humaniser, RSS helpers
+  video_common — Pillow drawing helpers + image download for the Shorts renderer
 """
