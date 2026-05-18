@@ -49,7 +49,12 @@ def _touch(path: Path, size: int = 100_000) -> Path:
     return path
 
 
-def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok):
+def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok,
+                                       monkeypatch):
+    # The brand-card overlay also runs by default. To keep this test
+    # focused on the b-roll concat (and avoid pulling Pillow + the
+    # PNG render path into a unit test), disable brand cards here.
+    monkeypatch.setattr(video_compose, "BRAND_CARDS_ENABLED", False)
     out = tmp_path / "out.mp4"
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / f"c{i}.mp4") for i in range(3)]
@@ -61,10 +66,46 @@ def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok):
     last_cmd = stub_ffmpeg_ok[-1]
     # Must include all three -i broll paths plus the audio.
     input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
-    assert len(input_idxs) == 4  # 3 clips + 1 audio
+    assert len(input_idxs) == 4  # 3 clips + 1 audio (no brand cards)
     # Filtergraph references concat.
     fg_idx = last_cmd.index("-filter_complex")
     assert "concat=n=3" in last_cmd[fg_idx + 1]
+
+
+def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe,
+                                              stub_ffmpeg_ok, monkeypatch):
+    """When brand cards are enabled, the concat chain grows to 5
+    (intro + 3 clips + outro) and there are 2 extra -i inputs."""
+    monkeypatch.setattr(video_compose, "BRAND_CARDS_ENABLED", True)
+    fake_intro = tmp_path / "intro.png"
+    fake_outro = tmp_path / "outro.png"
+    fake_intro.write_bytes(b"\x89PNG\r\n\x1a\n" + b"x" * 5000)
+    fake_outro.write_bytes(b"\x89PNG\r\n\x1a\n" + b"x" * 5000)
+
+    def fake_cards():
+        return fake_intro, fake_outro
+
+    # video_compose imports brand_card lazily; patch the sys.modules
+    # entry it expects to find.
+    import types, sys
+    fake_module = types.ModuleType("utils.brand_card")
+    fake_module.get_intro_outro_cards = fake_cards
+    monkeypatch.setitem(sys.modules, "utils.brand_card", fake_module)
+
+    out = tmp_path / "out.mp4"
+    audio = _touch(tmp_path / "a.mp3")
+    clips = [_touch(tmp_path / f"c{i}.mp4") for i in range(3)]
+    ok = video_compose.build_broll_short(
+        broll_paths=clips, audio_path=audio, output_path=out,
+    )
+    assert ok
+    last_cmd = stub_ffmpeg_ok[-1]
+    input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
+    # 3 clips + 2 brand cards + 1 audio.
+    assert len(input_idxs) == 6
+    # Filtergraph concats intro + 3 clips + outro = 5 segments.
+    fg_idx = last_cmd.index("-filter_complex")
+    assert "concat=n=5" in last_cmd[fg_idx + 1]
 
 
 def test_build_broll_short_returns_false_without_clips(tmp_path, stub_ffprobe):

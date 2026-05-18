@@ -40,6 +40,8 @@ from utils.captions import (
 from utils.digest import load_blocked_slugs
 from utils.experiments import assign_variant
 from utils.free_images import fetch_any_free_image
+from utils.host_persona import load as load_persona
+from utils.intro_outro import wrap_with_intro_outro
 from utils.music_bed import add_music_bed
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.text import humanize_for_tts
@@ -111,80 +113,57 @@ CATEGORY_COLORS = {
 # We pick the voice deterministically from the story's title hash so a
 # given story always renders with the same voice (idempotent reruns)
 # and there's roughly-even distribution across the panel.
-VOICE_PANEL = [
-    "en-US-JennyNeural",     # original — warm, conversational
-    "en-US-AriaNeural",      # crisp, news-anchor
-    "en-US-GuyNeural",       # male, level
-    "en-GB-SoniaNeural",     # British female, gravitas
-    "en-GB-RyanNeural",      # British male
-    "en-AU-NatashaNeural",   # Australian female (variety geo)
-]
-# Backwards-compat alias — kept for any caller still importing it.
-VOICE_SHORT = VOICE_PANEL[0]
+# SIGNATURE VOICE — committed to a single host identity.
+#
+# The audit data is clear: automated channels that monetize have ONE
+# recognizable voice. Six-voice rotation reads as randomness, not
+# editorial choice. The host "Alex" (configurable via host_persona)
+# now speaks in en-US-AriaNeural — crisp news-anchor delivery that
+# doesn't fatigue across daily listening.
+#
+# The second voice (Guy) is the contingency: when Aria's edge-tts
+# CDN blips on a particular Short, Guy takes over for that one
+# render. Listeners on the channel hear Aria 99 % of the time.
+HOST_VOICE_PRIMARY   = "en-US-AriaNeural"
+HOST_VOICE_BACKUP    = "en-US-GuyNeural"
 
-# Per-locale panels for sibling channels. The keys match
-# utils.translation.SUPPORTED_LANGUAGES so a translated story carries
-# its own voice_tag and we pick from the right panel automatically.
+VOICE_PANEL = [HOST_VOICE_PRIMARY, HOST_VOICE_BACKUP]
+# Backwards-compat alias — kept for any caller still importing it.
+VOICE_SHORT = HOST_VOICE_PRIMARY
+
+# Per-locale signature voices. Each locale picks ONE host voice +
+# ONE backup, matching the English channel's "one recognizable
+# host" commitment.
 VOICE_PANEL_BY_LOCALE: dict[str, list[str]] = {
     "en":    VOICE_PANEL,
-    "pt-BR": [
-        "pt-BR-FranciscaNeural",   # warm, conversational
-        "pt-BR-AntonioNeural",     # male, news-anchor
-        "pt-BR-ThalitaNeural",     # younger female
-    ],
-    "es-ES": [
-        "es-ES-ElviraNeural",
-        "es-ES-AlvaroNeural",
-    ],
-    "es-MX": [
-        "es-MX-DaliaNeural",
-        "es-MX-JorgeNeural",
-    ],
-    "fr-FR": [
-        "fr-FR-DeniseNeural",
-        "fr-FR-HenriNeural",
-    ],
+    "pt-BR": ["pt-BR-FranciscaNeural", "pt-BR-AntonioNeural"],
+    "es-ES": ["es-ES-ElviraNeural",    "es-ES-AlvaroNeural"],
+    "es-MX": ["es-MX-DaliaNeural",     "es-MX-JorgeNeural"],
+    "fr-FR": ["fr-FR-DeniseNeural",    "fr-FR-HenriNeural"],
 }
 
 
 def pick_voice(seed_text: str, category: str = "",
                 voice_tag: str = "") -> str:
-    """Deterministic voice choice based on `seed_text` (usually the title).
+    """Pick the host's signature voice for this Short.
 
-    Same text → same voice across reruns, so regenerating a Short doesn't
-    produce a different audio track. Category nudges high-stakes news
-    (WAR, POLITICS) toward the more authoritative British voices, but
-    only as a bias — the hash still decides the final pick within the
-    eligible subset so distribution stays roughly even.
+    With the post-May-2026 humanization shift, the channel is committed
+    to a SINGLE recognizable host voice per locale. We return the
+    primary voice for the chosen locale on every call — `seed_text`
+    and `category` are kept in the signature for API compatibility
+    with the older rotation logic but are no longer used to scatter
+    voices.
 
-    `voice_tag` switches to the per-locale panel — pt-BR, es-ES, etc. —
-    so a translated story renders with native voices. Category bias
-    isn't applied for non-English panels (smaller panels = less room
-    to filter).
+    The backup voice (index 1 of the panel) is reserved for the case
+    where the primary voice's edge-tts CDN errors on a particular
+    render — caller handles that fallback explicitly via VOICE_SHORT.
     """
     voice_tag = (voice_tag or "").strip()
-    # Translated story: pick from the locale panel. No category bias —
-    # the per-locale panels are small (2-3 voices) and partitioning
-    # them further would collapse to a single voice.
-    if voice_tag and voice_tag != "en":
-        panel = VOICE_PANEL_BY_LOCALE.get(voice_tag)
-        if panel:
-            idx = abs(hash(seed_text or "default")) % len(panel)
-            return panel[idx]
-
-    cat = (category or "").upper()
-    if cat in ("WAR", "POLITICS", "WORLD") and seed_text:
-        eligible = [v for v in VOICE_PANEL if v.startswith(("en-GB", "en-US-Guy"))]
-    elif cat in ("AI", "TECH", "SCIENCE", "HARDWARE"):
-        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Aria", "en-GB-Ryan", "en-US-Guy"))]
-    elif cat in ("ENTERTAINMENT", "SPORTS", "FOOD", "TRAVEL"):
-        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Jenny", "en-AU-Natasha"))]
-    else:
-        eligible = VOICE_PANEL
-    if not eligible:
-        eligible = VOICE_PANEL
-    idx = abs(hash(seed_text or "default")) % len(eligible)
-    return eligible[idx]
+    panel = VOICE_PANEL_BY_LOCALE.get(
+        voice_tag if voice_tag and voice_tag != "en" else "en",
+        VOICE_PANEL,
+    )
+    return panel[0] if panel else HOST_VOICE_PRIMARY
 
 
 SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
@@ -1200,6 +1179,18 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             else:
                 return None
 
+    # ── 1.4. Intro / outro wrap with the host's recurring lines. ─
+    # Pre-rendered once per voice and cached under
+    # `_data/intro_outro_cache/` so the SAME 2-second opening greets
+    # the viewer every Short — the channel-recognition signal humans
+    # respond to faster than any other branding move.
+    audio_path = wrap_with_intro_outro(
+        body_audio=audio_path,
+        voice=voice,
+        tmp_dir=tmp_dir,
+        text_to_speech_fn=text_to_speech,
+    )
+
     # ── 1.5. Music bed (background, ducked to -22 dB by default). ─
     # Picks a Pixabay CC0 track keyed by story mood and mixes it under
     # the TTS. If the download or mix fails, audio_path is returned
@@ -1348,6 +1339,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")
     log.info(f"  Metadata saved: {meta_path.name}")
+
+    # ── 9. Channel memory: log this Short so future stories can
+    # callback to it ("I covered this two weeks ago — here's the update").
+    try:
+        from utils.channel_memory import remember as _remember_story
+        _remember_story(story)
+    except Exception as exc:
+        log.debug("channel_memory remember skipped: %s", exc)
 
     return video_path, thumb_path, metadata
 

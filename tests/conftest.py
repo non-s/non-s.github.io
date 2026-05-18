@@ -18,6 +18,45 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 
+@pytest.fixture(autouse=True)
+def _isolate_state_files(tmp_path_factory, monkeypatch):
+    """Redirect every module that writes to `_data/...` at runtime
+    into a per-test-session tmp dir.
+
+    Tests have repeatedly leaked state files (music cache, brand cards,
+    intro/outro audio, quota log, provider stats, channel memory,
+    velocity ledger) into the repo's `_data/` because each module
+    declares its path at import time. We can't catch every leak
+    one-by-one without losing time — this fixture autouses across
+    every test and forces all cache/ledger paths through a tmp dir.
+
+    Individual tests that explicitly monkeypatch these constants are
+    NOT affected — their specific overrides happen AFTER this fixture
+    and win.
+    """
+    cache_root = tmp_path_factory.mktemp("isolated_data")
+
+    # Each (module, attribute, path-fragment) tuple gets isolated.
+    overrides = [
+        ("utils.youtube_quota",   "QUOTA_LOG",         "quota_log.jsonl"),
+        ("utils.provider_stats",  "STATS_LOG",         "provider_stats.jsonl"),
+        ("utils.channel_memory",  "MEMORY_LOG",        "channel_memory.jsonl"),
+        ("utils.velocity",        "VELOCITY_LOG",      "velocity.jsonl"),
+        ("utils.music_bed",       "MUSIC_CACHE_DIR",   "music_cache"),
+        ("utils.broll",           "_CACHE_DIR",        "broll_cache"),
+        ("utils.brand_card",      "BRAND_CARD_CACHE",  "brand_card_cache"),
+        ("utils.intro_outro",     "INTRO_OUTRO_CACHE", "intro_outro_cache"),
+        ("utils.host_persona",    "PERSONA_FILE",      "host_persona.json"),
+    ]
+    for module_name, attr, frag in overrides:
+        try:
+            mod = __import__(module_name, fromlist=[attr])
+        except Exception:
+            continue
+        if hasattr(mod, attr):
+            monkeypatch.setattr(mod, attr, cache_root / frag, raising=False)
+
+
 @pytest.fixture
 def sample_feedparser_entry():
     """A dict that quacks like a feedparser entry."""
