@@ -37,7 +37,9 @@ from utils.captions import (
     transcribe as captions_transcribe,
     write_ass,
 )
+from utils.digest import load_blocked_slugs
 from utils.free_images import fetch_any_free_image
+from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
@@ -288,6 +290,34 @@ def guess_category(tags: list, title: str) -> str:
 TTS_TIMEOUT_S = float(os.environ.get("TTS_TIMEOUT_S", "45"))
 
 
+# Per-voice TTS rate. edge-tts voices have noticeably different
+# baseline tempos: British voices read slower (Sonia/Ryan), Brazilian
+# Portuguese voices faster than US English. A single global +3% nudge
+# (the old default) made Sonia sound stately and Antonio panicked.
+# These offsets are tuned by ear to land each voice in the 30-45s
+# range for a 100-word script. Missing entries fall through to +3%.
+VOICE_RATE_OFFSETS = {
+    # English
+    "en-US-JennyNeural":     "+3%",   # baseline
+    "en-US-AriaNeural":      "+4%",
+    "en-US-GuyNeural":       "+2%",
+    "en-GB-SoniaNeural":     "+6%",   # British — naturally slower
+    "en-GB-RyanNeural":      "+6%",
+    "en-AU-NatashaNeural":   "+3%",
+    # Portuguese (Brazil) — already brisk; we slow down slightly
+    "pt-BR-FranciscaNeural": "+0%",
+    "pt-BR-AntonioNeural":   "-2%",   # the calmest of the three
+    "pt-BR-ThalitaNeural":   "+0%",
+    # Spanish + French
+    "es-ES-ElviraNeural":    "+2%",
+    "es-ES-AlvaroNeural":    "+2%",
+    "es-MX-DaliaNeural":     "+2%",
+    "es-MX-JorgeNeural":     "+2%",
+    "fr-FR-DeniseNeural":    "+4%",
+    "fr-FR-HenriNeural":     "+4%",
+}
+
+
 async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT):
     """
     Render `text` to `output_path` (MP3) via Microsoft Edge-TTS.
@@ -298,12 +328,14 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT)
     blipped — that meant zero Shorts shipped that day. We raise on
     timeout so the caller logs the failure and moves on to the next
     story.
+
+    Each voice gets its own rate offset (see VOICE_RATE_OFFSETS) — a
+    single global nudge made British voices sound stately and Brazilian
+    voices panicked.
     """
     import edge_tts
-    # Shorts have a tight 60s budget so we still nudge the rate up a
-    # little — but +8% sounded panicked. +3% keeps it brisk without
-    # losing the human-paced feel.
-    communicate = edge_tts.Communicate(text, voice, rate="+3%", pitch="+0Hz")
+    rate = VOICE_RATE_OFFSETS.get(voice, "+3%")
+    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
     await asyncio.wait_for(
         communicate.save(str(output_path)),
         timeout=TTS_TIMEOUT_S,
@@ -982,21 +1014,42 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
+    # English channel ignores stories from PT-BR-native feeds — they're
+    # enriched in Portuguese by fetch_news.py and would need a costly
+    # back-translation. Cleaner to skip and let the PT-BR pipeline
+    # render them natively.
+    native = (story.get("native_lang") or "en").lower()
+    if LANGUAGE == "en" and native != "en":
+        log.info("  ⏭  Skipping for English channel — story is native %s", native)
+        return None
+
     # Sibling-language channel: translate the AI-authored fields first.
     # The translation already runs through ai_cache so repeat runs of
     # the same story don't double the Mistral burn.
     if LANGUAGE != "en":
-        translated = translate_story(story, LANGUAGE)
-        if not translated:
-            log.warning("  ⏭  Skipping Short — translation to %s failed for %s",
-                         LANGUAGE, title[:60])
-            return None
-        story = translated
+        # NATIVE-LANGUAGE FAST PATH: when the story originated from a
+        # PT-BR feed (G1, UOL, Folha, etc.) tagged native_lang=pt-BR,
+        # fetch_news.py already enriched it in Portuguese. Skipping
+        # translate_story here means zero extra AI calls AND higher
+        # editorial quality (no round-trip translation artefacts).
+        native = (story.get("native_lang") or "en").lower()
+        if native == LANGUAGE.lower():
+            log.info("  🇧🇷 Native %s source — no translation needed", LANGUAGE)
+            # Still stamp voice_tag so pick_voice walks the locale panel.
+            story = dict(story,
+                          language=LANGUAGE,
+                          voice_tag=SUPPORTED_LANGUAGES[LANGUAGE]["voice_tag"],
+                          lang_hashtag=SUPPORTED_LANGUAGES[LANGUAGE]["hashtag"])
+        else:
+            translated = translate_story(story, LANGUAGE)
+            if not translated:
+                log.warning("  ⏭  Skipping Short — translation to %s failed for %s",
+                             LANGUAGE, title[:60])
+                return None
+            story = translated
+            log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
         title = story.get("title") or story.get("seo_title") or title
-        # The slug is locale-tagged so the same story can be rendered for
-        # multiple channels without clobbering each other's outputs.
         slug = f"{slug}-{LANGUAGE.lower().replace('-', '')}"
-        log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
 
     # Queue carries pre-enriched fields when fetch_news.py is up to date.
     # We require `script` (the full opinionated voice-over) to proceed —
@@ -1004,6 +1057,26 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     queue_script = (story.get("script") or "").strip()
     if not queue_script:
         log.warning("  ⏭  Skipping Short — no AI script on queue entry: %s", title[:80])
+        return None
+
+    # ── Pre-flight quality gate ──────────────────────────────────
+    # Catch AI-tell phrases, weak hooks, and wire-copy rewrites
+    # BEFORE we burn TTS / b-roll / FFmpeg time. The case-study
+    # research is unanimous: shipping unchecked LLM output is what
+    # got the terminated channels terminated. Skipping a bad Short
+    # is always cheaper than getting flagged.
+    grade, issues = evaluate_script(story)
+    if issues:
+        log.info("  📋 Script quality grade=%d/10 — %d issue(s):", grade, len(issues))
+        for issue in issues:
+            log.info("     [%s/%s] %s", issue.severity, issue.code, issue.message)
+    if quality_should_block(issues):
+        log.warning(
+            "  ⏭  Skipping Short — quality gate blocks: %s (grade=%d, blocks=%d, warns=%d)",
+            title[:60], grade,
+            sum(1 for i in issues if i.severity == "block"),
+            sum(1 for i in issues if i.severity == "warn"),
+        )
         return None
     hook_text       = (story.get("hook") or "").strip()
     thumbnail_text  = (story.get("thumbnail_text") or "").strip()
@@ -1167,6 +1240,19 @@ def main():
     # but shorts_done covers the case where a story was published to
     # YouTube but the workflow died before marking it consumed.
     candidates = [c for c in candidates if c["slug"] not in shorts_done]
+
+    # Honour the operator's `/block <slug>` decisions from the daily
+    # digest issue. utils/digest.py harvest_block_commands writes the
+    # list to _data/blocked_slugs.json; we filter against it here so a
+    # blocked story is silently dropped before any AI/render work.
+    blocked = load_blocked_slugs()
+    if blocked:
+        before = len(candidates)
+        candidates = [c for c in candidates if c["slug"] not in blocked
+                       and c.get("_queue_id", "") not in blocked]
+        if before != len(candidates):
+            log.info("🚫 Filtered out %d blocked stories (operator /block)",
+                     before - len(candidates))
 
     log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
     if not candidates:

@@ -115,6 +115,22 @@ static frames. To stay on the right side of the bar this pipeline:
   sanitized for "ignore previous instructions" / system-tag forgery
   patterns before they touch the LLM. System prompt explicitly tells
   every provider to treat field values as untrusted data.
+- **Pre-flight script quality gate** — every Short is linted before
+  upload for AI-tell phrases, weak hooks, wire-copy rewrites, and
+  identical-to-headline titles. A bad Short is silently skipped; the
+  channel never publishes slop.
+- **Daily digest GitHub Issue** — auto-posted every 04 UTC with each
+  Short's hook + script + retention. Closes the case-study research's
+  #1 mistake ("treating automation as abdication"). Comment
+  `/block <slug>` on any digest issue to skip the story on next run.
+- **Per-voice TTS rate calibration** — British voices read slower,
+  Brazilian Portuguese voices faster; each voice has its own tuned
+  offset so the 100-word script consistently lands at 30-45 s.
+- **PT-BR native sources** — 13 Brazilian feeds (G1, UOL, Folha,
+  BBC News Brasil, Olhar Digital, Tecmundo, InfoMoney, Valor,
+  CartaCapital, GE Globo, etc.) marked as native PT-BR. The
+  Portuguese sibling channel renders them directly without
+  translation round-trip, while the English channel skips them.
 
 ## Workflows
 
@@ -124,6 +140,7 @@ static frames. To stay on the right side of the bar this pipeline:
 | `youtube-bot.yml` | 08 / 14 / 20 | Generate + upload 1 English Short per run |
 | `youtube-bot-ptbr.yml` | 09 / 15 / 21 | Generate + upload 1 PT-BR Short per run (sibling channel, opt-in) |
 | `analytics.yml` | 03:00 | Pull retention/CTR snapshot to `_data/analytics/` |
+| `daily-digest.yml` | 04:00 | Post a GitHub Issue with the 24 h review checklist |
 | `cleanup-branches.yml` | Sun 04:00 | Delete merged bot branches |
 
 ## Local dev
