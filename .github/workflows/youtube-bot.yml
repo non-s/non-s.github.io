@@ -104,8 +104,8 @@ jobs:
           mkdir -p _videos
           # .done markers are committed back to git so a fresh checkout
           # doesn't re-publish the same Short across runs.
-          echo "📂 Marcadores existentes:"
-          ls _videos/*.done 2>/dev/null | wc -l || echo "0 .done"
+          DONE_COUNT=$(find _videos -maxdepth 1 -name '*.done' | wc -l)
+          echo "📂 Marcadores .done existentes: $DONE_COUNT"
 
       - name: "📱 Gerar YouTube Shorts (até 3 por run)"
         # This is now the primary content step — drop the
