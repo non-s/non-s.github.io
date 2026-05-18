@@ -17,12 +17,19 @@ Estrutura de cada Short:
 Total alvo: ~43-55 segundos (dentro do limite de 60s do YouTube Shorts)
 """
 
-import os, re, json, asyncio, subprocess, logging, shutil, urllib.parse
+import os, re, json, asyncio, subprocess, logging, shutil, sys, time, urllib.parse, contextlib
 from pathlib import Path
 from datetime import datetime, timezone
 
 import requests
 from PIL import Image, ImageDraw, ImageFont
+
+# fcntl is POSIX-only; we use it to serialise queue access against
+# fetch_news.py. Guarded for local Windows dev — the CI runner is Linux.
+try:
+    import fcntl
+except ImportError:  # pragma: no cover
+    fcntl = None
 
 from utils.ai_helper import ai_text as _ai_text
 from utils.text import humanize_for_tts
@@ -169,13 +176,29 @@ def guess_category(tags: list, title: str) -> str:
 
 
 # ── TTS ───────────────────────────────────────────────────────────
+TTS_TIMEOUT_S = float(os.environ.get("TTS_TIMEOUT_S", "45"))
+
+
 async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT):
+    """
+    Render `text` to `output_path` (MP3) via Microsoft Edge-TTS.
+
+    Wrapped in asyncio.wait_for so a hung WebSocket can't pin the whole
+    Short generation. The previous version (no timeout) would silently
+    hang for up to the workflow's full 30-min budget if edge-tts's CDN
+    blipped — that meant zero Shorts shipped that day. We raise on
+    timeout so the caller logs the failure and moves on to the next
+    story.
+    """
     import edge_tts
     # Shorts have a tight 60s budget so we still nudge the rate up a
     # little — but +8% sounded panicked. +3% keeps it brisk without
     # losing the human-paced feel.
     communicate = edge_tts.Communicate(text, voice, rate="+3%", pitch="+0Hz")
-    await communicate.save(str(output_path))
+    await asyncio.wait_for(
+        communicate.save(str(output_path)),
+        timeout=TTS_TIMEOUT_S,
+    )
 
 
 def _ai_shorts_meta(title: str, description: str, category: str) -> dict:
@@ -722,6 +745,30 @@ def build_short_metadata(story: dict, video_path: Path,
 QUEUE_FILE = Path("_data/stories_queue.json")
 
 
+@contextlib.contextmanager
+def _queue_file_lock():
+    """
+    Cross-process advisory lock on the queue file. Held while we
+    read-modify-write to mark a story consumed, so a concurrent
+    fetch_news.py append doesn't clobber the consumed flag (or vice
+    versa). Mirror of fetch_news.py::_file_lock.
+    """
+    if fcntl is None:
+        yield
+        return
+    QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = QUEUE_FILE.with_suffix(".json.lock")
+    with open(lock_path, "w") as fh:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
+            yield
+        finally:
+            try:
+                fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+            except Exception:
+                pass
+
+
 def _load_queue() -> dict:
     """Read _data/stories_queue.json — schema written by fetch_news.py."""
     if not QUEUE_FILE.exists():
@@ -796,11 +843,29 @@ def load_pending_stories() -> tuple[list[dict], dict]:
 
 def mark_consumed(queue: dict, queue_id: str) -> None:
     """Mutate queue: flag the matching story as consumed=true (in memory)."""
+    if not queue_id:
+        log.warning("mark_consumed called with empty queue_id — skipping")
+        return
     for s in queue.get("stories", []):
         if s.get("id") == queue_id:
             s["consumed"] = True
             s["consumed_at"] = datetime.now(timezone.utc).isoformat()
             return
+    log.warning(f"mark_consumed: story id {queue_id} not found in queue (lost?)")
+
+
+def commit_consumed(queue_id: str) -> None:
+    """
+    Atomic read-mark-write: under the cross-process lock, reload the
+    queue from disk (a concurrent fetch_news.py may have appended new
+    stories since we loaded it), mark this story consumed, save.
+    This is the only safe way to persist `consumed: true` when
+    fetch_news.py and generate_shorts.py can interleave.
+    """
+    with _queue_file_lock():
+        disk_queue = _load_queue()
+        mark_consumed(disk_queue, queue_id)
+        _save_queue(disk_queue)
 
 
 # ── Gera um único Short ───────────────────────────────────────────
@@ -809,9 +874,11 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     Generate one Short for a story.
     Returns (video_path, thumb_path, metadata) or None on failure.
     """
-    slug = story["slug"]
-    date_str = story["date"]
-    title = story["title"]
+    # Defensive .get()s on the story dict — a queue entry with a bad
+    # schema would crash the whole run otherwise.
+    slug = story.get("slug") or f"unknown-{int(time.time())}"
+    date_str = story.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    title = story.get("title") or "World news update"
     category = story.get("category", "TECH")
     description = story.get("description", "")
 
@@ -945,11 +1012,21 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
 # ── Principal ────────────────────────────────────────────────────
 def main():
+    # Fail-fast startup validation. _ai_shorts_meta (the legacy backstop)
+    # still calls Mistral, and Pollinations doesn't need auth, but the
+    # queue's AI-authored script is what makes a Short worth shipping —
+    # missing key would mean degrading silently to the legacy path.
+    if not os.environ.get("MISTRAL_API_KEY"):
+        log.warning(
+            "⚠ MISTRAL_API_KEY is not set. Shorts will fall back to "
+            "the legacy template-script renderer and may look generic."
+        )
+
     VIDEOS_DIR.mkdir(exist_ok=True)
 
     if not QUEUE_FILE.exists():
         log.error(f"{QUEUE_FILE} not found — run fetch_news.py first.")
-        return
+        sys.exit(2)
 
     shorts_done = load_shorts_done()
     log.info(f"Shorts already done: {len(shorts_done)}")
@@ -980,18 +1057,27 @@ def main():
             video_path, thumb_path, metadata = result
             shorts_done.add(story["slug"])
             save_shorts_done(shorts_done)
-            mark_consumed(queue, story["_queue_id"])
-            # Persist after each success so a mid-run crash doesn't
-            # cost us the work that already landed on YouTube.
-            _save_queue(queue)
+            # Persist consumption back to the queue under the
+            # cross-process lock so a concurrent fetch_news.py append
+            # can't undo it. We pass through commit_consumed() instead
+            # of the bare _save_queue(queue) — that one would write our
+            # stale in-memory copy and overwrite any fetch_news flush.
+            commit_consumed(story.get("_queue_id", ""))
             created += 1
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
         else:
-            log.error(f"  Failed to generate Short for: {story['slug']}")
+            log.error(f"  Failed to generate Short for: {story.get('slug', '?')}")
 
     shutil.rmtree(tmp, ignore_errors=True)
     log.info(f"\nDone: {created}/{len(selected)} Short(s) created in {VIDEOS_DIR}/")
+
+    # Observable failure signal: if we were asked to make Shorts and
+    # produced zero, exit non-zero so the workflow turns red. Beats
+    # "✅ success" on a day where no Short actually shipped.
+    if selected and created == 0:
+        log.error("❌ All Short generations failed. Exiting non-zero.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
