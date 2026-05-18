@@ -4,8 +4,10 @@ title: "Musk’s xAI is running nearly 50 gas turbines unchecked at its Mississi
 date: 2026-05-13 19:49:42 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Gas turbines at xAI's Colossus 2 data center have drawn a lawsuit over the company's use of 'mobile' gas turbines as power plants."
+image: "/assets/images/og-default.jpg"
 source_url: "https://techcrunch.com/2026/05/13/musks-xai-is-running-nearly-50-gas-turbines-unchecked-at-its-mississippi-data-center/"
 source_name: "TechCrunch"
 ---

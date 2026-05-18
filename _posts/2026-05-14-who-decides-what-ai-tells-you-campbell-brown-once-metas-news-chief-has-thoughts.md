@@ -4,8 +4,10 @@ title: "Who decides what AI tells you? Campbell Brown, once Meta’s news chief,
 date: 2026-05-14 06:05:31 +0000
 categories: [technology]
 tags: [techcrunch, startups, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "'The conversation is sort of happening in Silicon Valley around one thing, and a totally different conversation is happening among consumers.'"
+image: "/assets/images/og-default.jpg"
 source_url: "https://techcrunch.com/2026/05/13/who-decides-what-ai-tells-you-campbell-brown-once-metas-news-chief-has-thoughts/"
 source_name: "TechCrunch"
 ---

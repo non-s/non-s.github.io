@@ -5,6 +5,7 @@ date: 2026-05-14 11:44:22 +0000
 categories: [world]
 tags: [bbc, world-news, international, nigeria-corruption, corruption-verdict, saleh-mamman, nigerian-government, anti-corruption-efforts]
 author: "GlobalBR News"
+lang: "en"
 description: "Former Nigerian Power Minister Saleh Mamman sentenced to 75 years in rare corruption case, authorities currently unaware of his location and unable to take him"
 source_url: "https://www.bbc.com/news/articles/c0j296392j1o?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

@@ -5,6 +5,7 @@ date: 2026-05-14 14:26:12 +0000
 categories: [politics]
 tags: [bbc, politics, uk, election]
 author: "GlobalBR News"
+lang: "en"
 description: "The prime minister is fighting to stay on in No 10 as heavy election losses trigger a Labour revolt."
 source_url: "https://www.bbc.com/news/articles/c8jv1mzzkjgo?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

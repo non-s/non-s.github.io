@@ -5,6 +5,7 @@ date: 2026-05-14 20:16:31 +0000
 categories: [politics]
 tags: [guardian, politics, uk, election, andy-burnham, labour-party, westminster, uk-politics, keir-starmer]
 author: "GlobalBR News"
+lang: "en"
 description: "Andy Burnham to attempt Westminster return after Labour MP Josh Simons vacates Makerfield seat, amidst Labour party leadership uncertainty and recent resignatio"
 source_url: "https://www.theguardian.com/politics/audio/2026/may/14/is-andy-burnham-about-to-return-to-westminster-podcast"
 source_name: "The Guardian"

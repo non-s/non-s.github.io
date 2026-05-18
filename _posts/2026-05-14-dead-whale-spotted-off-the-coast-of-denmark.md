@@ -5,6 +5,7 @@ date: 2026-05-14 20:35:00 +0000
 categories: [world]
 tags: [dw, europe, world-news]
 author: "GlobalBR News"
+lang: "en"
 description: "It was not immediately clear if the whale was Timmy, the humpback whale that captivated Germany for weeks while getting stranded multiple times off the German c"
 source_url: "https://www.dw.com/en/dead-whale-spotted-off-the-coast-of-denmark/a-77163823?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

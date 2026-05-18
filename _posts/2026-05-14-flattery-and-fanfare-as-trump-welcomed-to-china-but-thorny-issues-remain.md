@@ -5,6 +5,7 @@ date: 2026-05-14 13:02:13 +0000
 categories: [world, politics]
 tags: [bbc, world-news, international, politics, government]
 author: "GlobalBR News"
+lang: "en"
 description: "The leaders of the world&#x27;s two superpowers were all smiles for the cameras during the US president&#x27;s visit to Beijing."
 source_url: "https://www.bbc.com/news/articles/cdxpypg9dgeo?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

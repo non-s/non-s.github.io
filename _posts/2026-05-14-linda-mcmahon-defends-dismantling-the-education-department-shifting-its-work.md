@@ -5,6 +5,7 @@ date: 2026-05-14 20:42:29 +0000
 categories: [world]
 tags: [npr, usa, world-news, u.s.-department-of-education, linda-mcmahon, trump-administration, education-policy, federal-student-loans]
 author: "GlobalBR News"
+lang: "en"
 description: "Education Secretary Linda McMahon defends budget proposal and agency changes."
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5815213/education-secretary-linda-mcmahon-house-hearing"
 source_name: "NPR"

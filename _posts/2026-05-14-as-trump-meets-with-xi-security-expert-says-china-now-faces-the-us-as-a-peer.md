@@ -5,6 +5,7 @@ date: 2026-05-14 17:58:20 +0000
 categories: [world, politics]
 tags: [npr, usa, world-news, politics, government, us-china-relations, trade-war, international-diplomacy, global-politics, economic-trade]
 author: "GlobalBR News"
+lang: "en"
 description: "Former national security official Rush Doshi discusses the current state of US-China relations after Trump's tariffs sparked a clash with China prevailing. The"
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5821644/as-trump-meets-with-xi-security-expert-says-china-now-faces-the-u-s-as-a-peer"
 source_name: "NPR"

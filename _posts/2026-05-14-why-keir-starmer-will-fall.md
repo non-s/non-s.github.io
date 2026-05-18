@@ -5,6 +5,7 @@ date: 2026-05-14 12:37:26 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, politics, government]
 author: "GlobalBR News"
+lang: "en"
 description: "The British prime minister’s timid reign will serve as a how-not-to guide in the exercise of power."
 source_url: "https://foreignpolicy.com/2026/05/14/keir-starmer-fall-resign-leadership-streeting-labour/"
 source_name: "Foreign Policy"

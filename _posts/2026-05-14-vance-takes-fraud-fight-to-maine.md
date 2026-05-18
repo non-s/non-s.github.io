@@ -5,6 +5,7 @@ date: 2026-05-14 19:00:00 +0000
 categories: [politics, war]
 tags: [politico, politics, usa, war, conflict, fraud-fight, jd-vance, republican-stewardship, maine-politics, trump-administration]
 author: "GlobalBR News"
+lang: "en"
 description: "Vice President JD Vance takes his fraud-fighting tour to Maine, targeting Democrats and promoting Republican stewardship of tax dollars in a key swing district,"
 source_url: "https://www.politico.com/news/2026/05/14/vance-maine-fraud-midterms-00921292"
 source_name: "Politico"

@@ -12,6 +12,11 @@ const MAX_ARTICLE_CACHE = 80;
 const MAX_AUDIO_CACHE   = 20;
 const SYNC_TAG          = 'globalbr-offline-reads';
 const ALL_CACHES        = [CACHE_NAME, ARTICLE_CACHE, AUDIO_CACHE, FEED_CACHE];
+// NB: the activate handler below evicts every cache whose name starts
+// with `globalbr-` and isn't in ALL_CACHES — that means bumping the
+// `-v5` suffix automatically clears the old v4 caches on next visit.
+// Keep `ALL_CACHES` and the `ARTICLE_CACHE` constant in offline.html
+// in lockstep when you bump the version.
 
 const STATIC_ASSETS = [
   '/',

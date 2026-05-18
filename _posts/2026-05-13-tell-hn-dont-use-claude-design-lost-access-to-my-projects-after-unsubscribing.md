@@ -4,8 +4,10 @@ title: "Tell HN: Dont use Claude Design, lost access to my projects after unsubs
 date: 2026-05-13 21:40:18 +0000
 categories: [technology, ai]
 tags: [hackernews, programming, tech, ai, llm]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "I wanted to try codex after 5 months of claude code max subscription. And then I went back to my previous projects on claude design only to realize I don't have"
+image: "/assets/images/og-default.jpg"
 source_url: "https://news.ycombinator.com/item?id=48128003"
 source_name: "Hacker News"
 ---

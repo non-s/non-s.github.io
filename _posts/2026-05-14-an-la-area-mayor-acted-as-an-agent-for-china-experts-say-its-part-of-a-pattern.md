@@ -5,6 +5,7 @@ date: 2026-05-14 12:06:17 +0000
 categories: [world]
 tags: [npr, usa, world-news]
 author: "GlobalBR News"
+lang: "en"
 description: "Eileen Wang, now the former mayor of the City of Arcadia, agreed to plead guilty to one felony charge that she acted as an illegal foreign agent of China. (Imag"
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5819933/china-trump-trip-la-agent-mayor-arcardia"
 source_name: "NPR"

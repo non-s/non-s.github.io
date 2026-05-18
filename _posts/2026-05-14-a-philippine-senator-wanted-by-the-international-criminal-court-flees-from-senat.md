@@ -5,6 +5,7 @@ date: 2026-05-14 13:29:47 +0000
 categories: [world, war]
 tags: [npr, usa, world-news, war, nato, military]
 author: "GlobalBR News"
+lang: "en"
 description: "A police investigation is underway in the Philippines, with suspicions that the incident was staged to help Sen. Ronald dela Rosa escape. (Image credit: Aaron F"
 source_url: "https://www.npr.org/2026/05/14/g-s1-122021/philippines-senator-escape-wanted-icc"
 source_name: "NPR"

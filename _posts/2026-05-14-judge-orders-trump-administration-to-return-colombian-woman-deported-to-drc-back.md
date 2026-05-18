@@ -5,6 +5,7 @@ date: 2026-05-14 18:49:23 +0000
 categories: [world, politics]
 tags: [guardian, world-news, international, politics, usa, democrats]
 author: "GlobalBR News"
+lang: "en"
 description: "Judge called Adriana Maria Quiroz Zapata’s deportation to the Democratic Republic of Congo ‘likely illegal’ A federal judge has ordered the Trump administration"
 source_url: "https://www.theguardian.com/us-news/2026/may/14/trump-administration-colombian-woman-drc"
 source_name: "The Guardian"

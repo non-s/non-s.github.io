@@ -4,7 +4,8 @@ title: "AI Promised the Audemars Piguet x Swatch Wristwatch. China Will Deliver 
 date: 2026-05-14 12:52:28 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Watch fans spent a week falling in love with colorful Royal Oak wristwatches that didn’t exist—then the real thing arrived. Now, fantasy is becoming a manufactu"
 source_url: "https://www.wired.com/story/ai-ruined-the-audemars-piguet-x-swatch-collaboration-china-could-save-it/"
 source_name: "Wired"

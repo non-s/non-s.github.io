@@ -4,7 +4,8 @@ title: "FCC angers small carriers by helping AT&T and Starlink buy EchoStar spec
 date: 2026-05-13 20:44:38 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Approval is no surprise after FCC chair pressured EchoStar to sell licenses."
 source_url: "https://arstechnica.com/tech-policy/2026/05/fcc-angers-small-carriers-by-helping-att-and-starlink-buy-echostar-spectrum/"
 source_name: "Ars Technica"

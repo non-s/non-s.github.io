@@ -4,7 +4,8 @@ title: "Everyone at the Musk v. Altman Trial Is Using Fancy Butt Cushions"
 date: 2026-05-13 21:58:47 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The plaintiffs and defense have rested their cases, as well as their rear ends."
 source_url: "https://www.wired.com/story/fancy-butt-pillows-musk-v-altman-trial/"
 source_name: "Wired"

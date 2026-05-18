@@ -5,7 +5,9 @@ date: 2026-05-17 00:24:58 +0000
 categories: [roundup]
 tags: [weekly, stats, roundup]
 author: "GlobalBR News"
+lang: "en"
 description: "GlobalBR News weekly stats: 1129 articles published (May 11–May 17, 2026), top category World, sentiment neutral."
+image: "/assets/images/og-default.jpg"
 sentiment: "neutral"
 featured: true
 audio: "/assets/audio/posts/2026-05-17-week-in-review-stats.mp3"

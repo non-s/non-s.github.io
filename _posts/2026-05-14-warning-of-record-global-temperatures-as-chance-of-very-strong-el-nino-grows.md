@@ -5,6 +5,7 @@ date: 2026-05-14 13:56:57 +0000
 categories: [world, war]
 tags: [bbc, world-news, international, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "As El Niño develops this year, scientists are increasingly confident it could be one of the strongest on record with global consequences, as Simon King explains"
 source_url: "https://www.bbc.com/weather/articles/cvgzn11v421o?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

@@ -5,6 +5,7 @@ date: 2026-05-15 02:29:20 +0000
 categories: [roundup]
 tags: [daily, news, roundup]
 author: "GlobalBR News"
+lang: "en"
 description: "Your daily roundup of the top 6 news stories for May 15, 2026."
 image: "/assets/images/posts/2026-05-15-daily-roundup.webp"
 sentiment: "neutral"

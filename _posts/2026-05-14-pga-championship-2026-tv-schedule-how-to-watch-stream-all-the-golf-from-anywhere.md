@@ -4,7 +4,8 @@ title: "PGA Championship 2026: TV Schedule, How to Watch, Stream All the Golf Fr
 date: 2026-05-14 00:00:42 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "It's the second major of the golf season at the Aronimink Golf Club."
 source_url: "https://www.cnet.com/tech/services-and-software/pga-championship-2026-tv-schedule-how-to-watch-stream-golf/"
 source_name: "CNET"

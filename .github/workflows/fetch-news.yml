@@ -36,7 +36,11 @@ jobs:
   fetch-and-publish:
     name: "Fetch & publish news"
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    # 45 min is enough for the worst observed cold-start run (~30 min).
+    # A hung Mistral call or zombie feed used to chew through the old
+    # 90-min budget, blocking the `main-write` concurrency lock for the
+    # whole hour and pushing youtube-bot / newsletter into the next slot.
+    timeout-minutes: 45
 
     permissions:
       contents: write
@@ -44,12 +48,12 @@ jobs:
     steps:
 
       - name: "📥 Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
 
       - name: "🐍 Set up Python 3.11"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -67,6 +71,10 @@ jobs:
           echo "✅ Syntax OK"
 
       - name: "📡 Run fetch_news.py"
+        # Inner step timeout: even if the job has 45min, the fetch
+        # itself shouldn't take more than 30min. Saves CI minutes when
+        # something hangs and gives later steps room to finish.
+        timeout-minutes: 30
         run: python fetch_news.py
         env:
           PYTHONIOENCODING: utf-8
@@ -95,9 +103,13 @@ jobs:
           git add assets/images/posts/ || true
           git add fetch_news.log || true
           git add search-index.json || true
-          # Per-run state: ETag/Last-Modified cache + dead-feed counters.
-          # Tracked so they survive the fresh CI checkout next run.
-          git add _data/feed_cache.json _data/feed_health.json 2>/dev/null || true
+          # Per-run state files. These MUST be added — they hold the
+          # ETag/Last-Modified cache (saves ~100 MB/day of feed bandwidth),
+          # the consecutive-failure counter (powers the dead-feed
+          # circuit-breaker), and the milestones marker (without it,
+          # fetch_news.py re-detects each milestone on every run and
+          # creates a duplicate post every day past the threshold).
+          git add _data/feed_cache.json _data/feed_health.json _data/milestones.json 2>/dev/null || true
 
           ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
@@ -109,24 +121,39 @@ jobs:
             MSG="🤖 +${ADDED} post(s) — ${TIMESTAMP}"
           fi
 
+          # NB: github.workflow / github.run_number are sourced via env
+          # so they're treated as literal strings, not interpolated into
+          # the shell. Belt-and-braces — neither value is user-controlled
+          # today, but quoting them removes the whole class of risk.
           git commit -m "$MSG
 
           Auto-fetched via fetch_news.py
-          Workflow: ${{ github.workflow }} #${{ github.run_number }}"
+          Workflow: ${GH_WORKFLOW} #${GH_RUN_NUMBER}"
 
           # Other workflows (youtube-bot, weekly-audit, etc.) may have
           # pushed to main during our 20-30 minute run. Pull-rebase
           # before pushing so we don't lose this batch to a rejected push.
+          # Exponential backoff prevents thundering-herd retries when the
+          # main-write lock is contended.
           for attempt in 1 2 3; do
             if git push origin HEAD; then
               echo "✅ $ADDED post(s) published (attempt $attempt)!"
               break
             fi
             echo "⚠️ Push rejected (attempt $attempt) — pulling rebase and retrying"
-            git pull --rebase --autostash origin main || true
-            sleep 3
+            if ! git pull --rebase --autostash origin main; then
+              echo "⚠️ Rebase failed on attempt $attempt — aborting rebase"
+              git rebase --abort 2>/dev/null || true
+              if [ "$attempt" = "3" ]; then
+                echo "❌ All retries exhausted — giving up so next run can try"
+                exit 1
+              fi
+            fi
+            sleep $((attempt * 5))
           done
         env:
+          GH_WORKFLOW: ${{ github.workflow }}
+          GH_RUN_NUMBER: ${{ github.run_number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "🔎 Google Search Console — indexar URLs novas"
@@ -206,7 +233,7 @@ jobs:
 
       - name: "📋 Save execution log"
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: "fetch-news-log-${{ github.run_number }}"
           path: fetch_news.log

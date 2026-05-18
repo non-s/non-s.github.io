@@ -4,7 +4,8 @@ title: "The Download: making drugs in orbit and NASA’s nuclear-powered spacecr
 date: 2026-05-13 12:10:00 +0000
 categories: [ai, startups]
 tags: [mit, ai, research, startups]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "This is today&#8217;s edition of The Download, our weekday newsletter that provides a daily dose of what&#8217;s going on in the world of technology. A plan to"
 source_url: "https://www.technologyreview.com/2026/05/13/1137176/the-download-drugs-in-orbit-nasa-nuclear-spacecraft/"
 source_name: "MIT Technology Review"

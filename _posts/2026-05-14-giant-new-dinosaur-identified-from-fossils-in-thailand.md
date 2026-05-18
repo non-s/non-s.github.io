@@ -5,6 +5,7 @@ date: 2026-05-14 17:28:56 +0000
 categories: [world]
 tags: [bbc, world-news, international, dinosaur-fossil, nagatitan, south-east-asia, paleontology, prehistoric-creatures]
 author: "GlobalBR News"
+lang: "en"
 description: "A giant dinosaur has been identified from fossils in Thailand, weighing as much as nine elephants and being the largest in South-East Asia, according to BBC New"
 source_url: "https://www.bbc.com/news/articles/cx21pk5g20ro?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

@@ -4,7 +4,8 @@ title: "18-Year-Old NGINX Rewrite Module Flaw Enables Unauthenticated RCE"
 date: 2026-05-14 06:00:09 +0000
 categories: [security]
 tags: [hackernews, security, vulnerabilities, cybersecurity]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Cybersecurity researchers have disclosed multiple security vulnerabilities impacting NGINX Plus and NGINX Open, including a critical flaw that remained undetect"
 source_url: "https://thehackernews.com/2026/05/18-year-old-nginx-rewrite-module-flaw.html"
 source_name: "The Hacker News"

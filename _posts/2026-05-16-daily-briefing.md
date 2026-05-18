@@ -4,7 +4,7 @@ title: "Daily Briefing — May 16, 2026: 6 stories that shaped the day"
 date: 2026-05-16T03:55:46.477994+00:00
 categories: [briefing, world]
 tags: [daily-briefing, roundup, editorial]
-author: "GlobalBR News Desk"
+author: "GlobalBR News"
 description: "Daily editorial roundup of the top stories of May 16, 2026 — 6 stories synthesised into one read."
 content_type: "analysis"
 image: "https://media.post.rvohealth.io/wp-content/uploads/2026/05/hantavirus-americans-1296x728-header.jpg"

@@ -5,6 +5,7 @@ date: 2026-05-13 21:36:24 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, overconfidence, nationalism, international-relations, global-politics, us-china-relations]
 author: "GlobalBR News"
+lang: "en"
 description: "Leaders in the US and China are buying into their own myths, leading to overestimation of their abilities and power, affecting global politics and relationships"
 source_url: "https://foreignpolicy.com/2026/05/13/trump-xi-summit-us-china-relations/"
 source_name: "Foreign Policy"

@@ -4,7 +4,8 @@ title: "Instagram’s New Instants App Is a Snapchat Clone for Thirst Traps"
 date: 2026-05-13 20:49:17 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Instagram’s Instants app lets you send disappearing photos—and it’s probably where your horny friends will post spicy pics."
 source_url: "https://www.wired.com/story/instagrams-new-instants-app-is-a-snapchat-clone-for-thirst-traps/"
 source_name: "Wired"

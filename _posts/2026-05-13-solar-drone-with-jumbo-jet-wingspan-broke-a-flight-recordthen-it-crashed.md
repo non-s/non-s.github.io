@@ -4,7 +4,8 @@ title: "Solar drone with jumbo jet wingspan broke a flight record—then it cras
 date: 2026-05-13 21:48:27 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The final flight and complex legacy of a pioneering solar-powered aircraft."
 source_url: "https://arstechnica.com/gadgets/2026/05/solar-drone-with-jumbo-jet-wingspan-broke-a-flight-record-then-it-crashed/"
 source_name: "Ars Technica"

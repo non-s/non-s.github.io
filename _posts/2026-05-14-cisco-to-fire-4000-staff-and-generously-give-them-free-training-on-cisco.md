@@ -4,7 +4,8 @@ title: "Cisco to fire 4,000 staff and generously give them free training – on 
 date: 2026-05-14 03:32:53 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Reducing memory requirements to control costs in a new wave of kit"
 source_url: "https://www.theregister.com/networks/2026/05/14/cisco-to-fire-4000-staff-and-generously-give-them-free-training-on-cisco/5240125"
 source_name: "The Register"

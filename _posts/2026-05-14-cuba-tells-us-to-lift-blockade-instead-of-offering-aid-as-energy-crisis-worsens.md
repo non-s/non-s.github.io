@@ -5,6 +5,7 @@ date: 2026-05-14 20:24:59 +0000
 categories: [world]
 tags: [bbc, world-news, international, cuba-energy-crisis, us-blockade, fuel-shortages, communist-party-of-cuba, united-states-trade-embargo]
 author: "GlobalBR News"
+lang: "en"
 description: "Cuba faces worsening power cuts due to fuel shortages, prompting rare protests and calls for US to lift blockade."
 source_url: "https://www.bbc.com/news/articles/cd7pyrj0vx7o?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

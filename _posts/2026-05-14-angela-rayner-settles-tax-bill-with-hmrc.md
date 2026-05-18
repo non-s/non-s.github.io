@@ -5,6 +5,7 @@ date: 2026-05-14 12:37:41 +0000
 categories: [politics]
 tags: [bbc, politics, uk, government]
 author: "GlobalBR News"
+lang: "en"
 description: "Rayner stood down as deputy prime minister in September 2025 after admitting underpaying stamp duty."
 source_url: "https://www.bbc.com/news/articles/cx219y4qy0qo?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

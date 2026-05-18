@@ -4,7 +4,8 @@ title: "Welcome to the vulnpocalypse, as vendors use AI to find bugs and patches
 date: 2026-05-13 23:27:50 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Palo Alto Networks found and fixed 75 flaws this month, up from its usual five"
 source_url: "https://www.theregister.com/patches/2026/05/14/welcome-to-the-vulnpocalypse-as-vendors-use-ai-to-find-bugs-and-patches-multiply-like-rabbits/5240027"
 source_name: "The Register"

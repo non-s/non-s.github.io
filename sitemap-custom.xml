@@ -11,7 +11,7 @@ layout: null
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
   </url>
   <!-- Category pages: high priority -->
-  {% for cat in site.categories %}
+  {% for cat in site.data.categories %}
   <url>
     <loc>{{ site.url }}/{{ cat[0] }}/</loc>
     <changefreq>hourly</changefreq>

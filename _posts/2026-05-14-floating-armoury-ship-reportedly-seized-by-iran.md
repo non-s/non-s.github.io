@@ -5,6 +5,7 @@ date: 2026-05-14 13:33:20 +0000
 categories: [world, war]
 tags: [bbc, world-news, international, war, military, defense]
 author: "GlobalBR News"
+lang: "en"
 description: "A vessel said to be a “floating armoury” in the Gulf of Oman has been seized by Iranian military personnel, according to reports."
 source_url: "https://www.bbc.com/news/articles/cx219xwxg9no?at_medium=RSS&at_campaign=rss"
 source_name: "BBC News"

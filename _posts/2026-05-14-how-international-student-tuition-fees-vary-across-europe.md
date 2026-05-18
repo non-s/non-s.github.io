@@ -5,6 +5,7 @@ date: 2026-05-14 19:52:00 +0000
 categories: [world]
 tags: [dw, europe, world-news, international-student-tuition-fees, eu-student-fees, higher-education-in-europe, france-education-system, study-in-europe]
 author: "GlobalBR News"
+lang: "en"
 description: "International student tuition fees in France to increase 16 times, sparking protests and debate about access to higher education in Europe."
 source_url: "https://www.dw.com/en/how-international-student-tuition-fees-vary-across-europe/a-77146306?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

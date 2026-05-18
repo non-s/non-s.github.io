@@ -4,7 +4,8 @@ title: "Protein in Homo erectus teeth suggests Denisovans gave us some of their 
 date: 2026-05-13 20:27:54 +0000
 categories: [technology]
 tags: [arstechnica, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Distinct form of tooth protein in Homo erectus shows up in Denisovans&#8212;and us."
 source_url: "https://arstechnica.com/science/2026/05/protein-in-homo-erectus-teeth-suggests-denisovans-gave-us-some-of-their-dna/"
 source_name: "Ars Technica"

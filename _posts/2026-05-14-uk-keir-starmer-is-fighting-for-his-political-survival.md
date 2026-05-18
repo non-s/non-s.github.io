@@ -5,6 +5,7 @@ date: 2026-05-14 16:19:33 +0000
 categories: [world, war]
 tags: [france24, world-news, europe, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "British Prime Minister Keir Starmer is fighting for his political survival. He is warning of chaos as is expected to face a leadership challenge from his own he"
 source_url: "https://www.france24.com/en/uk-keir-starmer-is-fighting-for-his-political-survival"
 source_name: "France 24"

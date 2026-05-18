@@ -5,6 +5,7 @@ date: 2026-05-14 16:10:00 +0000
 categories: [world, war]
 tags: [dw, europe, world-news, war, ukraine, russia]
 author: "GlobalBR News"
+lang: "en"
 description: "A drawn-out corruption affair in Ukraine is widening, with authorities now taking action against Andriy Yermak, the former head of the presidential office. Will"
 source_url: "https://www.dw.com/en/corruption-in-ukraine-will-this-scandal-reach-zelenskyy/a-77161926?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

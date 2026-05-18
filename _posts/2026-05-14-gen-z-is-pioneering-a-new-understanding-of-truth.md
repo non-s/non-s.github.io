@@ -4,7 +4,8 @@ title: "Gen Z Is Pioneering a New Understanding of Truth"
 date: 2026-05-14 11:00:00 +0000 -0300
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The first generation to truly grow up online, Generation Z and their cohort live in a social media ecosystem that blends facts and feelings. It’s significantly"
 source_url: "https://www.wired.com/story/book-excerpt-the-future-of-truth-steven-rosenbaum/"
 source_name: "Wired"

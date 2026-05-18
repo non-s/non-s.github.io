@@ -5,6 +5,7 @@ date: 2026-05-13 21:55:00 +0000
 categories: [war]
 tags: [military, weapons, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "The U.S. Air Force has confirmed it has come up with a new set of requirements as it continues to look for a successor to its hard-working MQ-9 Reaper fleet. In"
 source_url: "https://www.twz.com/air/mq-9-reaper-replacement-requirements-stress-a-drone-cheap-enough-to-risk-losing"
 source_name: "The Drive"

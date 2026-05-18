@@ -2,10 +2,17 @@
 
 ## Reporting a Vulnerability
 
-Please report security issues via **GitHub Security Advisories**:
-<https://github.com/non-s/non-s.github.io/security/advisories/new>
+Please report security issues via **GitHub Security Advisories**
+on this repository:
 
-For machine-readable contact info, see [`/.well-known/security.txt`](https://non-s.github.io/.well-known/security.txt).
+  Repository → **Security** tab → **Report a vulnerability**
+
+(Direct link on the canonical deployment:
+<https://github.com/non-s/non-s.github.io/security/advisories/new>.)
+
+For machine-readable contact info, see
+[`/.well-known/security.txt`](.well-known/security.txt) — it points to
+the same advisory channel and an `Expires:` date we keep refreshed.
 
 ## Supported Versions
 

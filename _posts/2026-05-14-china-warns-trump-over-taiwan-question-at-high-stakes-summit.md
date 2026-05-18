@@ -5,6 +5,7 @@ date: 2026-05-14 17:28:00 +0000
 categories: [world, war]
 tags: [dw, europe, world-news, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "Chinese state media reported that Xi Jinping raised the question of Taiwan during his meeting with Donald Trump. The pair held talks for about two hours. Follow"
 source_url: "https://www.dw.com/en/china-warns-trump-over-taiwan-question-at-high-stakes-summit/live-77140304?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

@@ -5,6 +5,7 @@ date: 2026-05-12 20:40:46 +0000
 categories: [politics]
 tags: [politico, politics, usa, government]
 author: "GlobalBR News"
+lang: "en"
 description: "The South Carolina Senate just made it harder for the state to redraw its congressional map, resisting pressure from President Donald Trump. Lawmakers on Tuesda"
 source_url: "https://www.politico.com/news/2026/05/12/south-carolina-redistricting-vote-fails-00917584"
 source_name: "Politico"

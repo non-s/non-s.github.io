@@ -5,6 +5,7 @@ date: 2026-05-14 15:28:07 +0000
 categories: [world]
 tags: [france24, world-news, europe]
 author: "GlobalBR News"
+lang: "en"
 description: "The new Syrian administration is trying to provide justice for the tens of thousands tortured and hundreds of thousands more killed by the regime of former dict"
 source_url: "https://www.france24.com/en/tv-shows/middle-east-matters/20260514-syria-prosecuting-assad-era-security-officials"
 source_name: "France 24"

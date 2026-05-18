@@ -187,7 +187,10 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   align-items: center;
   gap: 0;
-  animation: ticker-scroll 720s linear infinite;
+  /* 1800s = ~2.5× slower than before so individual headlines stay
+     on-screen long enough to actually read on the move. Hovering
+     pauses the scroll for full reading. */
+  animation: ticker-scroll 1800s linear infinite;
 }
 .breaking-track:hover { animation-play-state: paused; }
 .breaking-item {

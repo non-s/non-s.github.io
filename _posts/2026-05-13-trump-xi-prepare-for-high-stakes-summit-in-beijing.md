@@ -5,6 +5,7 @@ date: 2026-05-13 20:43:49 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, politics, government, trump-xi-summit, us-china-trade, trade-deals, global-economy, international-relations]
 author: "GlobalBR News"
+lang: "en"
 description: "US President Trump and China's Xi Jinping prepare for a high-stakes summit in Beijing to discuss trade deals and other issues, expected to have significant glob"
 source_url: "https://foreignpolicy.com/2026/05/13/trump-china-xi-jinping-trade-rare-earths-artificial-intelligence/"
 source_name: "Foreign Policy"

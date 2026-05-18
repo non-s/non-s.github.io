@@ -5,6 +5,7 @@ date: 2026-05-14 18:48:28 +0000
 categories: [politics]
 tags: [guardian, politics, uk, government]
 author: "GlobalBR News"
+lang: "en"
 description: "Makerfield MP is an ambitious Labour figure who only won the seat two years ago UK politics live – latest updates “He’s burned bright and briefly,” says one MP"
 source_url: "https://www.theguardian.com/politics/2026/may/14/who-is-josh-simons-labour-mp-andy-burnham"
 source_name: "The Guardian"

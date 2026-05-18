@@ -4,7 +4,8 @@ title: "AWS to Quick admins: The access control didn't work, but you weren't usi
 date: 2026-05-13 22:56:41 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "If a setting fails in the forest and nobody hears it ..."
 source_url: "https://www.theregister.com/paas-and-iaas/2026/05/13/aws-patched-quick-auth-bypass-says-customers-werent-using-control/5240041"
 source_name: "The Register"

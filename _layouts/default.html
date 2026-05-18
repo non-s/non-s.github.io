@@ -40,7 +40,21 @@
   <!-- ── DATELINE BAR ──────────────────────────────────────── -->
   <div class="dateline-bar">
     <div class="container d-flex justify-content-between align-items-center">
-      <span class="dateline-date">{{ 'now' | date: "%A, %B %-d, %Y" }}</span>
+      {% comment %}
+        Server-side date is the build date (and the page is cached for
+        hours by GH Pages + the SW), so it can be a day or two stale.
+        JS replaces it with the reader's actual current date on load.
+      {% endcomment %}
+      <span class="dateline-date" id="gb-dateline-date">{{ 'now' | date: "%A, %B %-d, %Y" }}</span>
+      <script>
+      (function(){
+        try {
+          var el = document.getElementById('gb-dateline-date');
+          if (el) el.textContent = new Date().toLocaleDateString(undefined,
+            {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+        } catch(_) {}
+      })();
+      </script>
       <span class="dateline-meta">
         <a href="{{ '/feed.xml' | relative_url }}" class="dateline-link"><i class="bi bi-rss-fill"></i> RSS</a>
         <span class="dateline-sep">·</span>
@@ -102,9 +116,14 @@
             </a>
             <div id="gbMegaMenu" class="gb-mega-menu" aria-hidden="true">
               <div class="gb-mega-grid">
-                {% assign mega_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security" | split: "," %}
-                {% for cat in mega_cats %}
-                  {% assign cat_meta = site.data.categories[cat] %}
+                {% comment %}
+                  Drive the mega menu from _data/categories.yml so adding a
+                  new category in YAML is enough — no template edit needed.
+                  Falls back gracefully if cat_meta is missing.
+                {% endcomment %}
+                {% for entry in site.data.categories %}
+                  {% assign cat = entry[0] %}
+                  {% assign cat_meta = entry[1] %}
                   {% assign cat_latest = site.posts | where_exp: "p", "p.categories contains cat" | limit: 1 %}
                   <div class="gb-mega-col">
                     <a href="/{{ cat }}/" class="gb-mega-cat">
@@ -126,7 +145,6 @@
                 <a href="{{ '/tags/' | relative_url }}">🏷️ Topics</a>
                 <a href="{{ '/archive/' | relative_url }}">📅 Archive</a>
                 <a href="{{ '/editorial-policy/' | relative_url }}">📋 Editorial Policy</a>
-                <a href="{{ '/food/' | relative_url }}">🍕 Food</a>
               </div>
             </div>
           </li>
@@ -187,9 +205,13 @@
 
     <div class="gb-drawer-section">
       <p class="gb-drawer-section-title">Sections</p>
-      {% assign drawer_cats = "world,politics,war,business,technology,ai,science,health,sports,entertainment,environment,security,food" | split: "," %}
-      {% for cat in drawer_cats %}
-        {% assign cat_meta = site.data.categories[cat] %}
+      {% comment %}
+        Driven from _data/categories.yml — same source as the desktop
+        mega menu so the two never drift out of sync.
+      {% endcomment %}
+      {% for entry in site.data.categories %}
+        {% assign cat = entry[0] %}
+        {% assign cat_meta = entry[1] %}
         {% assign cat_url = '/' | append: cat | append: '/' %}
         <a href="{{ cat_url }}" class="gb-drawer-link gb-drawer-cat-link {% if page.url == cat_url %}active{% endif %}">
           <span class="gb-drawer-icon">{{ cat_meta.icon }}</span>

@@ -4,7 +4,8 @@ title: "Dyson put a camera on its purifier so fresh air can follow you around th
 date: 2026-05-14 13:35:41 +0000
 categories: [technology]
 tags: [theverge, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Dyson’s new air purifier can target multiple people. | Image: Dyson Dyson has announced a new air purifying bladeless fan that's its first to incorporate an AI-"
 source_url: "https://www.theverge.com/tech/930348/dyson-find-follow-air-purifier-cool-ai-tracking-camera-privacy"
 source_name: "The Verge"

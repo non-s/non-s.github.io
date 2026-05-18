@@ -5,6 +5,7 @@ date: 2026-05-13 20:10:23 +0000
 categories: [war]
 tags: [military, weapons, conflict, war]
 author: "GlobalBR News"
+lang: "en"
 description: "The Pentagon has outlined plans to acquire at least 10,000 lower-cost cruise missiles over the next three years, as well as a similar number of relatively cheap"
 source_url: "https://www.twz.com/sea/10000-low-cost-cruise-missiles-in-three-years-procurement-plan-laid-out-by-pentagon"
 source_name: "The Drive"

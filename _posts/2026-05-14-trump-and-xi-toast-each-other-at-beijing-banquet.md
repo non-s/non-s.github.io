@@ -5,6 +5,7 @@ date: 2026-05-14 13:03:47 +0000
 categories: [world, politics]
 tags: [euronews, europe, world-news, politics, usa, white-house, trump-xi-meeting, china-us-relations, state-banquet, international-diplomacy, global-politics]
 author: "GlobalBR News"
+lang: "en"
 description: "Donald Trump and Xi Jinping meet in Beijing for high-level talks and a state banquet. Read more about the meeting."
 source_url: "http://www.euronews.com/2026/05/14/trump-and-xi-toast-each-other-at-beijing-banquet"
 source_name: "Euronews"

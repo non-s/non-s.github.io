@@ -4,7 +4,8 @@ title: "Microsoft is retiring Copilot Mode on Edge, because everything is Copilo
 date: 2026-05-14 03:57:54 +0000
 categories: [gadgets, ai]
 tags: [engadget, gadgets, reviews, ai, microsoft, copilot]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Copilot features are now available on Edge for mobile."
 source_url: "https://www.engadget.com/2172610/microsoft-copilot-edge-desktop-mobile/"
 source_name: "Engadget"

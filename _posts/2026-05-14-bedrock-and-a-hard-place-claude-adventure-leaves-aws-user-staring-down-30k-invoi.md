@@ -4,7 +4,8 @@ title: "Bedrock and a hard place: Claude adventure leaves AWS user staring down 
 date: 2026-05-14 08:30:00 +0000
 categories: [technology]
 tags: [theregister, tech, enterprise]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "CAD: Cost Anomaly Detection or Create Astounding Debt?"
 source_url: "https://www.theregister.com/saas/2026/05/14/bedrock-and-a-hard-place-claude-adventure-leaves-aws-user-staring-down-30k-invoice/5238153"
 source_name: "The Register"

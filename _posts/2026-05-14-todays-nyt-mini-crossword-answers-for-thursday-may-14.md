@@ -4,7 +4,8 @@ title: "Today's NYT Mini Crossword Answers for Thursday, May 14"
 date: 2026-05-14 06:46:57 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Here are the answers for The New York Times Mini Crossword for May 14."
 source_url: "https://www.cnet.com/tech/gaming/todays-nyt-mini-crossword-answers-for-thursday-may-14/"
 source_name: "CNET"

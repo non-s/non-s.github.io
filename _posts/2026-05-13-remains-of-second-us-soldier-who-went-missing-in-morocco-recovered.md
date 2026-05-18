@@ -5,6 +5,7 @@ date: 2026-05-13 23:01:13 +0000
 categories: [world, ai]
 tags: [guardian, world-news, international, ai, machine-learning]
 author: "GlobalBR News"
+lang: "en"
 description: "Mariyah Symone Collington and Kendrick Lamont Key Jr, who also died, had fallen off a cliff during an off-duty hike The remains of the second US army soldier wh"
 source_url: "https://www.theguardian.com/world/2026/may/13/second-us-soldier-recovered-remains-morocco"
 source_name: "The Guardian"

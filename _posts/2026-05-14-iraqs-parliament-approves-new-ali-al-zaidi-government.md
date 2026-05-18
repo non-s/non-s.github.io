@@ -5,6 +5,7 @@ date: 2026-05-14 17:04:51 +0000
 categories: [world, politics]
 tags: [aljazeera, world-news, middle-east, politics, government, iraq-new-government, ali-al-zaidi, cabinet-formation, middle-east-politics, iraq-parliament]
 author: "GlobalBR News"
+lang: "en"
 description: "Iraq's parliament approves new Ali al-Zaidi government with 14 ministers, but fails to reach consensus on key posts, including interior and defence, in a partia"
 source_url: "https://www.aljazeera.com/news/2026/5/14/iraqs-parliament-approves-new-ali-al-zaidi-government?traffic_source=rss"
 source_name: "Al Jazeera"

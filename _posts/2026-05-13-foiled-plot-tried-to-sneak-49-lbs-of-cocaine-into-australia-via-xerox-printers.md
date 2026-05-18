@@ -4,7 +4,8 @@ title: "Foiled plot tried to sneak 49 lbs of cocaine into Australia via Xerox pr
 date: 2026-05-13 20:06:09 +0000 -0300
 categories: [technology]
 tags: [arstechnica, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Four Australian men have given new meaning to the term “ bricked printers .” According to a press release from the Australian Federal Police (AFP) and Australia"
 source_url: "https://arstechnica.com/tech-policy/2026/05/foiled-plot-tried-to-sneak-49-lbs-of-cocaine-into-australia-via-xerox-printers/"
 source_name: "Ars Technica"

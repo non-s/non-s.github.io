@@ -4,8 +4,10 @@ title: "The Other Half of AI Safety"
 date: 2026-05-14 00:27:20 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Article URL: https://personalaisafety.com/p/the-other-half-of-ai-safety Comments URL: https://news.ycombinator.com/item?id=48129561 Points: 48 # Comments: 62"
+image: "/assets/images/og-default.jpg"
 source_url: "https://personalaisafety.com/p/the-other-half-of-ai-safety"
 source_name: "Hacker News"
 ---
