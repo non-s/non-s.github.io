@@ -97,6 +97,24 @@ AI background generator, the Shorts renderer now tries (free, no key):
 
 This makes "no background available → drop the Short" much rarer.
 
+### 2.4 Token-saving defaults (already on)
+
+Three knobs cut AI quota use without changing output quality:
+
+  - **Disk cache** (`utils/ai_cache.py`): hashes the full prompt + model
+    + json_mode flag and stores answers in `_data/ai_cache.jsonl` with a
+    30-day TTL. Re-encountering the same story across the 3h cron
+    cadence returns instantly from disk. Self-invalidates on prompt
+    template changes (hash differs). Toggle with `AI_CACHE_ENABLED=0`.
+  - **Pre-AI relevance gate** (`FETCH_RELEVANCE_MIN_AI`, default `3.0`):
+    drops headlines with `entry_relevance_score < 3` before any AI call.
+    Eliminates clickbait, short headlines, image-less wire copy.
+  - **Prompt injection defense** (`utils/prompt_safety.py`): strips
+    "ignore previous instructions", system-tag forgery, and other
+    common jailbreak patterns from RSS-borne text before it reaches the
+    LLM. Combined with explicit system-prompt instructions that field
+    values are untrusted data.
+
 ---
 
 ## 3. Future — needs external infra setup
