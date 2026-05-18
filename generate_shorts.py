@@ -512,11 +512,36 @@ def create_short_frame(title: str, category: str, points: list[str],
 
 
 # ── Thumbnail do Short ────────────────────────────────────────────
+# Static thumbnail shipped with the repo. Every Short uses this same
+# JPEG as its YouTube thumbnail — the channel keeps a consistent
+# brand grid on /shorts. We can swap it by replacing the PNG; no code
+# change needed.
+STATIC_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "thumbnail_static.png"
+
+
 def create_short_thumbnail(frame_img: Image.Image, output: Path):
-    """Save the frame as a JPEG thumbnail."""
+    """
+    Write the YouTube thumbnail. By design, every Short uses the same
+    static brand thumbnail at STATIC_THUMB_PATH so the channel grid
+    stays uniform. If that file is missing for any reason, fall back
+    to saving the rendered frame so we never publish without a thumb.
+    """
+    if STATIC_THUMB_PATH.exists():
+        try:
+            thumb = Image.open(STATIC_THUMB_PATH).convert("RGB")
+            # YouTube recommends <=2 MB, 16:9 or vertical — JPEG quality
+            # 90 lands at ~120 KB for our 1080x1920 source.
+            thumb.save(str(output), "JPEG", quality=90, optimize=True)
+            log.info(f"  Thumbnail (static brand): {output.name}")
+            return
+        except Exception as exc:
+            log.warning(
+                f"  ⚠ Failed to load static thumb at {STATIC_THUMB_PATH}: {exc}. "
+                "Falling back to per-Short frame."
+            )
     thumb = frame_img.copy()
     thumb.save(str(output), "JPEG", quality=92, optimize=True)
-    log.info(f"  Thumbnail saved: {output.name}")
+    log.info(f"  Thumbnail (rendered fallback): {output.name}")
 
 
 # ── Combina imagem + áudio com FFmpeg ─────────────────────────────
