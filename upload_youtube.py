@@ -322,27 +322,35 @@ def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
     Drop a first-comment from the channel: credit the source + ask the
     viewer a one-liner that pulls them into the comment thread.
     YouTube's `commentThreads.insert` costs 50 quota units — cheap.
+
+    The recurring header line is the host's signature greeting (loaded
+    from `_data/host_persona.json` — defaults to "I'm Alex"). Viewers
+    seeing the same opener under every video = channel-recognition
+    signal that lifts the algorithm's "active creator" classifier.
     """
+    from utils.host_persona import first_comment_text, load as load_persona
+    persona = load_persona()
     source = (meta.get("source") or "").strip()
     source_url = (meta.get("source_url") or "").strip()
     geo = (meta.get("geo_hashtag") or "Global").strip("#")
 
-    parts = []
+    parts = [first_comment_text(persona)]
     if source:
         if source_url:
             parts.append(f"📰 Source: {source} — {source_url}")
         else:
             parts.append(f"📰 Source: {source}")
-    # Engagement prompt. Rotate the prompt by geo so a viewer browsing
-    # the channel doesn't see the same line under every Short.
+    # Geo-specific engagement prompt as the SECOND prompt (after the
+    # host's signature greeting) so the comment doesn't feel templated
+    # while still hitting the localised viewer.
     if geo.lower() in ("usa", "us", "uk", "europe", "eu"):
-        prompt = "🌍 Following from your side of the Atlantic? Drop a comment."
+        prompt = "Following from your side of the Atlantic? What's the angle I missed?"
     elif geo.lower() in ("asia", "china", "japan", "korea", "india"):
-        prompt = "🌏 Watching from Asia? Tell us how this lands locally."
+        prompt = "Watching from Asia? Tell me how this lands locally."
     elif geo.lower() in ("brazil", "br", "latin", "latam"):
-        prompt = "🌎 Da América Latina? Conta pra gente o que acha nos comentários."
+        prompt = "Da América Latina? Me conta o que você acha nos comentários."
     else:
-        prompt = "🌍 Where are you watching from? Drop your country in the comments."
+        prompt = "Where are you watching from? Drop your country below."
     parts.append(prompt)
 
     text = "\n\n".join(parts)

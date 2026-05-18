@@ -32,6 +32,15 @@ import requests
 from utils import ai_cache, provider_stats
 from utils.retry import with_retry
 
+
+def _host_persona_block() -> str:
+    """Lazy-load the persona to keep ai_helper's import cheap."""
+    try:
+        from utils.host_persona import system_prompt_overlay
+        return system_prompt_overlay()
+    except Exception:
+        return ""
+
 log = logging.getLogger(__name__)
 
 _session = requests.Session()
@@ -253,7 +262,14 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
     Returns empty string on persistent failure.
     """
     sys_msg = system or (
-        "You are a senior news writer who explains the world the way a "
+        # Host persona overlay — injected first so the rest of the
+        # style rules are interpreted IN CHARACTER. The persona itself
+        # is loaded from `_data/host_persona.json` and the default is
+        # the channel's recurring host "Alex" (configurable per
+        # operator). This is what turns the channel from "generic
+        # AI narrator" into "Alex's daily brief".
+        _host_persona_block() + " "
+        "You explain the world the way a "
         "knowledgeable friend would — clearly, with specifics, in plain "
         "modern English. Use contractions naturally ('it's', 'don't', "
         "'they're'). Prefer short concrete sentences over long abstract "

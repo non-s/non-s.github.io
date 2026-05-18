@@ -27,36 +27,26 @@ def test_pick_voice_returns_valid_panel_member():
             assert pick_voice(title, cat) in VOICE_PANEL
 
 
-def test_pick_voice_distributes_across_panel():
-    from generate_shorts import pick_voice
+def test_pick_voice_returns_signature_voice_consistently():
+    """Post-humanization pivot: the channel commits to ONE host voice.
+    The picker is now deterministic to that single voice, so 200 calls
+    return the same voice — that's the desired behaviour."""
+    from generate_shorts import pick_voice, HOST_VOICE_PRIMARY
     seen = set()
     for i in range(200):
         seen.add(pick_voice(f"Story number {i}", "WORLD"))
-    # Should hit at least 2 distinct voices for WORLD category (panel of British + Guy).
-    assert len(seen) >= 2
+    # ONE voice per language → seen contains exactly one element.
+    assert seen == {HOST_VOICE_PRIMARY}
 
 
-def test_pick_voice_war_uses_authoritative_subset():
-    """High-stakes categories should bias toward British / male voices."""
-    from generate_shorts import pick_voice
-    seen = set()
-    for i in range(50):
-        v = pick_voice(f"Headline {i}", "WAR")
-        seen.add(v)
-        # Should NEVER pick a lifestyle voice for war coverage.
-        assert "Natasha" not in v
-        assert "Jenny" not in v
-    assert len(seen) >= 1
-
-
-def test_pick_voice_entertainment_uses_lifestyle_subset():
-    from generate_shorts import pick_voice
-    seen = set()
-    for i in range(50):
-        v = pick_voice(f"Headline {i}", "ENTERTAINMENT")
-        seen.add(v)
-    # All picks must be from the lifestyle pool (Jenny / Natasha).
-    assert all(("Jenny" in v or "Natasha" in v) for v in seen)
+def test_pick_voice_ignores_category_after_humanization_pivot():
+    """Post-pivot the host commits to a single signature voice — the
+    category-bias logic that used to scatter voices is intentionally
+    gone. These tests pin the new behaviour so we don't accidentally
+    re-introduce voice scatter under "improving variety"."""
+    from generate_shorts import pick_voice, HOST_VOICE_PRIMARY
+    for cat in ("WAR", "ENTERTAINMENT", "AI", "POLITICS", "WORLD", "TECH", ""):
+        assert pick_voice("Some headline", cat) == HOST_VOICE_PRIMARY
 
 
 def test_pick_voice_handles_empty_seed():
