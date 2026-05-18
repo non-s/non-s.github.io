@@ -3568,10 +3568,14 @@ def main():
         log.warning(f"Weekly stats post failed: {exc}")
 
     # ── Milestone posts ───────────────────────────────────────────
-    try:
-        _check_milestones(total_created)
-    except Exception as exc:
-        log.warning(f"Milestone check failed: {exc}")
+    # Disabled 2026-05: auto-generated "🎉 100 articles in <cat>!" posts
+    # cluttered the homepage feed with non-news. _check_milestones() is
+    # kept in this file in case we want to revive it later as a
+    # newsletter footer or a /stats/ widget instead of front-page posts.
+    # try:
+    #     _check_milestones(total_created)
+    # except Exception as exc:
+    #     log.warning(f"Milestone check failed: {exc}")
 
     # ── Save run summary ──────────────────────────────────────────
     try:
