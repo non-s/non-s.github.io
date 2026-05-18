@@ -2518,6 +2518,18 @@ def create_weekly_digest() -> None:
     date_display = today.strftime("%B %d, %Y")
     top5_list = "\n".join(f"- [{t}]({u})" for t, u, _ in top5)
 
+    # Generate an OG image so the digest doesn't fall back to og-default.jpg
+    # — the homepage feed only shows posts that have a usable cover image.
+    digest_slug = f"{today.strftime('%Y-%m-%d')}-weekly-digest"
+    digest_img = _generate_og_image(
+        f"Best of the Week — {date_display}", "digest", digest_slug,
+    )
+    if not _validate_image_url(digest_img):
+        digest_img = _news_image_url("weekly news digest top stories", "digest")
+    if not _validate_image_url(digest_img):
+        log.warning("Skipping weekly digest — no usable cover image.")
+        return
+
     frontmatter = f"""---
 layout: post
 title: "Best of the Week — {date_display}"
@@ -2526,6 +2538,8 @@ categories: [digest]
 tags: [weekly, roundup, digest]
 author: "GlobalBR News"
 description: "The most important stories of the week, curated by GlobalBR News — {date_display}."
+image: "{digest_img}"
+image_alt: "GlobalBR News weekly digest cover — {date_display}"
 sentiment: "neutral"
 ---
 """
@@ -2677,6 +2691,20 @@ def _generate_weekly_stats_post() -> None:
         f"*Weekly stats by [GlobalBR News](https://non-s.github.io) · {date_display}*\n"
     )
 
+    # Same image requirement as the rest of the feed: skip publishing
+    # if we can't produce a cover.
+    stats_slug = f"{today.strftime('%Y-%m-%d')}-week-in-review-stats"
+    stats_img = _generate_og_image(
+        f"Week in Review — {date_display}", "roundup", stats_slug,
+    )
+    if not _validate_image_url(stats_img):
+        stats_img = _news_image_url(
+            "weekly news statistics dashboard", "roundup",
+        )
+    if not _validate_image_url(stats_img):
+        log.warning("Skipping week-in-review stats — no usable cover image.")
+        return
+
     frontmatter = (
         f"---\n"
         f'layout: post\n'
@@ -2688,6 +2716,8 @@ def _generate_weekly_stats_post() -> None:
         f'description: "GlobalBR News weekly stats: {total_posts} articles published '
         f'({week_range}), top category {top_category.capitalize()}, '
         f'sentiment {avg_sentiment}."\n'
+        f'image: "{stats_img}"\n'
+        f'image_alt: "GlobalBR News week-in-review cover for {date_display}"\n'
         f'sentiment: "{avg_sentiment}"\n'
         f'featured: true\n'
         f"---\n"
