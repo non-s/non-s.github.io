@@ -91,6 +91,7 @@ RUN_TIMEOUT_S     = int(os.environ.get("FETCH_TIMEOUT_S",    "3300"))
 DEAD_FEED_SKIP_AT = 5  # consecutive failures before we stop trying
 INCLUDE_PUBLIC_SOURCES = os.environ.get("FETCH_INCLUDE_PUBLIC", "1") not in ("0", "false", "False")
 INCLUDE_TRENDS         = os.environ.get("FETCH_INCLUDE_TRENDS", "1") not in ("0", "false", "False")
+INCLUDE_PTBR_FEEDS     = os.environ.get("FETCH_INCLUDE_PTBR", "1") not in ("0", "false", "False")
 
 # Relevance pre-filter — stories whose headline-only score falls below
 # this threshold skip the AI enrichment step entirely. Saves up to ~50 %
@@ -170,6 +171,33 @@ FEEDS: list[dict] = [
     {"name": "The Hacker News",   "url": "https://feeds.feedburner.com/TheHackersNews",                               "category": "security",    "source": "The Hacker News"},
     {"name": "Defense News",      "url": "https://www.defensenews.com/arc/outboundfeeds/rss/",                        "category": "world",       "source": "Defense News"},
     {"name": "War on the Rocks",  "url": "https://warontherocks.com/feed/",                                           "category": "world",       "source": "War on the Rocks"},
+]
+
+# ── PT-BR native sources (no translation) ──────────────────────────
+#
+# Brazilian-language feeds for the PT-BR sibling channel. When the
+# pipeline runs with LANGUAGE=pt-BR (see generate_shorts.py), the
+# translation step is skipped for stories tagged native_lang=pt-BR
+# — they're already in Portuguese, so we ship them as-is. Massive
+# quality win vs translating English wire copy.
+#
+# Each story still goes through the SAME AI enrichment (hook, script,
+# thumbnail_text), only the prompt is in Portuguese. ai_helper.py's
+# system message is language-agnostic.
+PTBR_FEEDS: list[dict] = [
+    {"name": "G1",                "url": "https://g1.globo.com/rss/g1/",                                           "category": "world",        "source": "G1"},
+    {"name": "UOL Notícias",      "url": "https://rss.uol.com.br/feed/noticias.xml",                               "category": "world",        "source": "UOL"},
+    {"name": "Folha de S.Paulo",  "url": "https://feeds.folha.uol.com.br/poder/rss091.xml",                        "category": "politics",     "source": "Folha de S.Paulo"},
+    {"name": "BBC News Brasil",   "url": "https://www.bbc.com/portuguese/index.xml",                                "category": "world",        "source": "BBC News Brasil"},
+    {"name": "DW Brasil",         "url": "https://rss.dw.com/atom/rss-br-all",                                     "category": "world",        "source": "DW Brasil"},
+    {"name": "Estadão",           "url": "https://www.estadao.com.br/rss/ultimas.xml",                             "category": "world",        "source": "Estadão"},
+    {"name": "Olhar Digital",     "url": "https://olhardigital.com.br/feed/",                                       "category": "technology",   "source": "Olhar Digital"},
+    {"name": "Tecmundo",          "url": "https://www.tecmundo.com.br/rss",                                         "category": "technology",   "source": "Tecmundo"},
+    {"name": "Canaltech",         "url": "https://canaltech.com.br/rss/",                                           "category": "technology",   "source": "Canaltech"},
+    {"name": "InfoMoney",         "url": "https://www.infomoney.com.br/feed/",                                      "category": "business",     "source": "InfoMoney"},
+    {"name": "Valor Econômico",   "url": "https://valor.globo.com/rss/valor-economico/",                            "category": "business",     "source": "Valor Econômico"},
+    {"name": "CartaCapital",      "url": "https://www.cartacapital.com.br/feed/",                                   "category": "politics",     "source": "CartaCapital"},
+    {"name": "GE Globo",          "url": "https://ge.globo.com/rss/ultimas/feed.xml",                               "category": "sports",       "source": "GE Globo"},
 ]
 
 
@@ -661,6 +689,11 @@ def _entry_to_story(entry, feed_cfg: dict) -> dict | None:
         "image_url":      image_url,
         "breaking":       is_breaking_news(title, description),
         "relevance":      relevance,
+        # native_lang lets generate_shorts.py skip the translation step
+        # when LANGUAGE=pt-BR matches the story's native language —
+        # rendering native PT-BR content instead of round-tripping an
+        # English wire-copy story through the translator.
+        "native_lang":    feed_cfg.get("native_lang", "en"),
     }
 
 
@@ -871,8 +904,13 @@ def main() -> None:
     queue_titles = _existing_titles(queue)
 
     # Drop health entries for feeds we no longer fetch, so a removed
-    # feed doesn't get skipped if it's re-added later.
-    _prune_dead_health(health, {f["name"] for f in FEEDS})
+    # feed doesn't get skipped if it's re-added later. Honours the
+    # PT-BR toggle: when INCLUDE_PTBR_FEEDS is off we still keep the
+    # PT-BR feed names in the active set so flipping the toggle doesn't
+    # silently re-mark them dead on the next run.
+    active_names = {f["name"] for f in FEEDS}
+    active_names |= {f["name"] for f in PTBR_FEEDS}
+    _prune_dead_health(health, active_names)
 
     log.info(f"📦 Queue starts with {len(queue.get('stories', []))} stories "
              f"({sum(1 for s in queue.get('stories', []) if not s.get('consumed'))} pending)")
@@ -914,9 +952,19 @@ def main() -> None:
             counter["added"] += len(added)
         return len(added)
 
-    log.info(f"📡 Processing {len(FEEDS)} feeds with {FEED_WORKERS} workers")
+    # Tag PT-BR feeds with native_lang so generate_shorts.py knows to
+    # skip translation. We merge them into the main feed list when the
+    # FETCH_INCLUDE_PTBR toggle is on (default).
+    all_feeds: list[dict] = list(FEEDS)
+    if INCLUDE_PTBR_FEEDS:
+        for f in PTBR_FEEDS:
+            tagged = dict(f, native_lang="pt-BR")
+            all_feeds.append(tagged)
+        log.info(f"📡 Merged {len(PTBR_FEEDS)} PT-BR native feeds (FETCH_INCLUDE_PTBR=1)")
+
+    log.info(f"📡 Processing {len(all_feeds)} feeds with {FEED_WORKERS} workers")
     with ThreadPoolExecutor(max_workers=FEED_WORKERS) as ex:
-        futures = [ex.submit(worker, f) for f in FEEDS]
+        futures = [ex.submit(worker, f) for f in all_feeds]
         for fut in as_completed(futures):
             try:
                 fut.result()
