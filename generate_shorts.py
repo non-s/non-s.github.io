@@ -717,18 +717,23 @@ def _queue_to_story(qs: dict) -> dict:
     """
     title = qs.get("seo_title") or qs.get("title", "")
     return {
-        "slug":        f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
-        "title":       title,
-        "description": qs.get("lead") or qs.get("description", ""),
-        "source":      qs.get("source", "GlobalBR News"),
-        "source_url":  qs.get("url", ""),
-        "image_url":   qs.get("image_url", ""),
-        "tags":        [qs.get("category", "world")],
-        "category":    qs.get("category", "world"),
-        "date":        (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
-        "hook":        qs.get("hook", ""),
-        "key_points":  qs.get("key_points", []),
-        "_queue_id":   qs["id"],  # used to mark consumed after success
+        "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
+        "title":          title,
+        "description":    qs.get("lead") or qs.get("description", ""),
+        "source":         qs.get("source", "GlobalBR News"),
+        "source_url":     qs.get("url", ""),
+        "image_url":      qs.get("image_url", ""),
+        "tags":           [qs.get("category", "world")],
+        "category":       qs.get("category", "world"),
+        "date":           (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
+        "hook":           qs.get("hook", ""),
+        # `script` is the full opinionated voice-over (~30-45 s) authored
+        # by fetch_news.py's AI prompt. generate_short() will TTS this
+        # directly instead of rebuilding from key_points.
+        "script":         qs.get("script", ""),
+        "thumbnail_text": qs.get("thumbnail_text", ""),
+        "key_points":     qs.get("key_points", []),
+        "_queue_id":      qs["id"],  # used to mark consumed after success
     }
 
 
@@ -777,7 +782,17 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
     # ── 0. AI meta first — frame + thumbnail need the magnetic title ─
-    ai_meta = _ai_shorts_meta(title, description, category)
+    # The queue (from fetch_news.py) already carries an AI-written
+    # `title` (seo_title), `script` (opinion voice-over) and
+    # `thumbnail_text` (2-4 word punchy overlay). Only call the
+    # legacy _ai_shorts_meta as a backstop when those fields are
+    # missing — saves one round-trip to Mistral per Short on the
+    # happy path.
+    queue_script = (story.get("script") or "").strip()
+    if queue_script:
+        ai_meta = {"yt_title": title}
+    else:
+        ai_meta = _ai_shorts_meta(title, description, category)
     ai_title = (ai_meta.get("yt_title") or "").strip()
     display_title = ai_title if 15 < len(ai_title) <= 80 else title
     if ai_title and display_title == ai_title:
@@ -827,7 +842,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     log.info(f"  Frame saved: {frame_path.name}")
 
     # ── 4. TTS narration ──────────────────────────────────────────
-    script = humanize_for_tts(build_short_script(title, points, category))
+    # Prefer the queue's `script` (full opinionated voice-over from
+    # fetch_news.py's AI prompt). Fall back to the legacy template
+    # builder if the queue field is empty (e.g. backlog stories
+    # written before the script field existed).
+    if queue_script:
+        raw_script = queue_script
+        log.info(f"  ✨ Using AI opinion script from queue ({len(raw_script)} chars)")
+    else:
+        raw_script = build_short_script(title, points, category)
+    script = humanize_for_tts(raw_script)
     audio_path = tmp_dir / f"audio_{slug}.mp3"
     try:
         asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))

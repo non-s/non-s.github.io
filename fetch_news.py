@@ -227,20 +227,25 @@ def _feed_should_skip(name: str, health: dict) -> bool:
 # ── AI enhancement (shorts-sized, not blog-sized) ─────────────────────
 
 _AI_PROMPT_TEMPLATE = (
-    "You write hooks for vertical short-form videos covering world news. "
-    "Stay factual, no clickbait, no AI-isms (no 'pivotal', 'unprecedented', "
-    "'paradigm shift', 'sheds light on', etc.). Respond ONLY with valid JSON.\n\n"
+    "You write spoken scripts for a YouTube Shorts news commentator. "
+    "Tone: conversational, opinionated but grounded, like a smart friend "
+    "explaining the story over coffee. Use first person plural ('we', 'us'). "
+    "Take a stance — agree, disagree, point out the catch, name the winner "
+    "or loser. NO clickbait. NO AI-isms (avoid 'pivotal', 'unprecedented', "
+    "'paradigm shift', 'sheds light on', 'in the realm of', 'delve'). "
+    "Speak naturally, contractions are fine. Respond ONLY with valid JSON.\n\n"
     "Story:\n"
     "Title: {title}\n"
     "Source: {source}\n"
     "Category: {category}\n"
     "Description: {description}\n\n"
-    "Return this JSON exactly:\n"
+    "Return this exact JSON shape:\n"
     '{{'
-    '"score": <int 1-10 — how interesting/important is this for a global news short>,'
-    '"seo_title": "<short headline, max 60 chars, factual>",'
-    '"hook": "<one punchy opening sentence, max 15 words, no clickbait>",'
-    '"lead": "<one tight paragraph, 35-50 words, who/what/when/where/why>",'
+    '"score": <int 1-10 — how interesting/important is this for a global-audience short>,'
+    '"seo_title": "<headline for YouTube, max 60 chars, factual, no all-caps>",'
+    '"thumbnail_text": "<2-4 word punchy overlay for the thumbnail, ALL CAPS allowed, e.g. \\"PRICES TANK\\" or \\"NEW DEAL\\">",'
+    '"hook": "<the very first spoken line, max 12 words, snappy enough to stop a scroll>",'
+    '"script": "<the full spoken voice-over script for a 30-45 second short. 85-120 words. Starts with the hook. State the news in plain English in one sentence. Then 1-2 sentences of opinion/analysis (call out who wins, who loses, what is suspect, the angle most coverage misses). Close with a one-line takeaway or a question for the comments. Speak directly to camera. No stage directions, no bracketed cues. No URLs.>",'
     '"key_points": ["<10-word fact 1>", "<10-word fact 2>", "<10-word fact 3>"],'
     '"sentiment": "<positive|neutral|negative>"'
     '}}'
@@ -269,13 +274,22 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
             return None
         # Coerce types, clip lengths.
         out = {
-            "score":      int(data.get("score", 0) or 0),
-            "seo_title":  str(data.get("seo_title",  title))[:80],
-            "hook":       str(data.get("hook",       "")).strip()[:120],
-            "lead":       str(data.get("lead",       description or ""))[:400],
-            "key_points": [str(p).strip()[:80] for p in (data.get("key_points") or [])][:3],
-            "sentiment":  str(data.get("sentiment", "neutral")).lower(),
+            "score":          int(data.get("score", 0) or 0),
+            "seo_title":      str(data.get("seo_title", title))[:80],
+            "thumbnail_text": str(data.get("thumbnail_text", "")).strip()[:30],
+            "hook":           str(data.get("hook", "")).strip()[:140],
+            # `script` is the full TTS voice-over. Keep it short of
+            # YouTube Shorts' 60s cap — ~150 words is the upper bound
+            # at average TTS pacing.
+            "script":         str(data.get("script", "")).strip()[:900],
+            "lead":           str(data.get("lead", description or ""))[:400],
+            "key_points":     [str(p).strip()[:80] for p in (data.get("key_points") or [])][:3],
+            "sentiment":      str(data.get("sentiment", "neutral")).lower(),
         }
+        # If the model skipped `lead`, derive it from the first line of
+        # the script so the queue entry stays self-describing.
+        if not out["lead"] and out["script"]:
+            out["lead"] = out["script"][:300]
         if out["sentiment"] not in ("positive", "neutral", "negative"):
             out["sentiment"] = "neutral"
         return out
