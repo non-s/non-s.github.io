@@ -8,3 +8,9 @@ google-auth>=2.30.0,<3.0
 google-auth-oauthlib>=1.2.0,<2.0
 google-api-python-client>=2.130.0,<3.0
 PyYAML>=6.0,<7.0
+# OpenCV (headless) for face-aware b-roll cropping. ~35 MB install,
+# adds ~10 s to cold-start. Used only inside utils/face_crop.py — that
+# module no-ops gracefully when the import fails, so OpenCV is
+# technically optional and the requirements pin lets us drop it
+# without code changes if we ever need to slim cold-start back down.
+opencv-python-headless>=4.10.0,<5.0

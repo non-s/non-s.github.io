@@ -31,13 +31,40 @@ try:
 except ImportError:  # pragma: no cover
     fcntl = None
 
-from utils.ai_helper import ai_text as _ai_text
+from utils.broll import BrollClip, download_clip, fetch_broll_clips
+from utils.captions import (
+    group_words_into_phrases,
+    transcribe as captions_transcribe,
+    write_ass,
+)
+from utils.digest import load_blocked_slugs
+from utils.experiments import assign_variant
+from utils.free_images import fetch_any_free_image
+from utils.music_bed import add_music_bed
+from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.text import humanize_for_tts
+from utils.translation import SUPPORTED_LANGUAGES, translate_story
+from utils.video_compose import build_broll_short, build_static_short
 
 # ── Config ────────────────────────────────────────────────────────
-VIDEOS_DIR      = Path("_videos")
+# Language axis. "en" is the default channel; setting LANGUAGE=pt-BR
+# (or es-ES, es-MX, fr-FR) flips this run into the sibling-channel
+# pipeline:
+#   • every story passes through utils.translation.translate_story
+#   • outputs land in `_videos_<lang>/` to avoid colliding with English
+#   • shorts_done bookkeeping is per-language
+# All of the rest of the rendering (b-roll, captions, thumbnail) is
+# language-agnostic — only the script and metadata change.
+LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
+if LANGUAGE != "en" and LANGUAGE not in SUPPORTED_LANGUAGES:
+    raise RuntimeError(
+        f"LANGUAGE={LANGUAGE!r} is not supported. "
+        f"Pick one of: en, {', '.join(SUPPORTED_LANGUAGES)}"
+    )
+
+VIDEOS_DIR      = Path("_videos") if LANGUAGE == "en" else Path(f"_videos_{LANGUAGE}")
 SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
-LOG_FILE        = "generate_shorts.log"
+LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
 # Cap of shorts produced per run. Overridable via env var so the
 # workflow can tune it without editing this file. Defaults to 3 —
 # matches youtube-bot.yml schedule (1 run/day × 3 shorts = 3/day).
@@ -72,7 +99,93 @@ CATEGORY_COLORS = {
     "ENTERTAINMENT": (180, 0, 220),
 }
 
-VOICE_SHORT = "en-US-JennyNeural"
+# ── TTS voice rotation ────────────────────────────────────────────
+#
+# Channel grew on Jenny's voice originally, but a single voice across
+# every Short flattens audience appetite — YouTube's algorithm notices
+# when consecutive videos sound identical and de-prioritises the second
+# (the "session homogeneity" signal). Rotating between a small panel
+# of high-quality edge-tts voices keeps things fresh without dropping
+# the channel's recognisable bilingual-news tone.
+#
+# We pick the voice deterministically from the story's title hash so a
+# given story always renders with the same voice (idempotent reruns)
+# and there's roughly-even distribution across the panel.
+VOICE_PANEL = [
+    "en-US-JennyNeural",     # original — warm, conversational
+    "en-US-AriaNeural",      # crisp, news-anchor
+    "en-US-GuyNeural",       # male, level
+    "en-GB-SoniaNeural",     # British female, gravitas
+    "en-GB-RyanNeural",      # British male
+    "en-AU-NatashaNeural",   # Australian female (variety geo)
+]
+# Backwards-compat alias — kept for any caller still importing it.
+VOICE_SHORT = VOICE_PANEL[0]
+
+# Per-locale panels for sibling channels. The keys match
+# utils.translation.SUPPORTED_LANGUAGES so a translated story carries
+# its own voice_tag and we pick from the right panel automatically.
+VOICE_PANEL_BY_LOCALE: dict[str, list[str]] = {
+    "en":    VOICE_PANEL,
+    "pt-BR": [
+        "pt-BR-FranciscaNeural",   # warm, conversational
+        "pt-BR-AntonioNeural",     # male, news-anchor
+        "pt-BR-ThalitaNeural",     # younger female
+    ],
+    "es-ES": [
+        "es-ES-ElviraNeural",
+        "es-ES-AlvaroNeural",
+    ],
+    "es-MX": [
+        "es-MX-DaliaNeural",
+        "es-MX-JorgeNeural",
+    ],
+    "fr-FR": [
+        "fr-FR-DeniseNeural",
+        "fr-FR-HenriNeural",
+    ],
+}
+
+
+def pick_voice(seed_text: str, category: str = "",
+                voice_tag: str = "") -> str:
+    """Deterministic voice choice based on `seed_text` (usually the title).
+
+    Same text → same voice across reruns, so regenerating a Short doesn't
+    produce a different audio track. Category nudges high-stakes news
+    (WAR, POLITICS) toward the more authoritative British voices, but
+    only as a bias — the hash still decides the final pick within the
+    eligible subset so distribution stays roughly even.
+
+    `voice_tag` switches to the per-locale panel — pt-BR, es-ES, etc. —
+    so a translated story renders with native voices. Category bias
+    isn't applied for non-English panels (smaller panels = less room
+    to filter).
+    """
+    voice_tag = (voice_tag or "").strip()
+    # Translated story: pick from the locale panel. No category bias —
+    # the per-locale panels are small (2-3 voices) and partitioning
+    # them further would collapse to a single voice.
+    if voice_tag and voice_tag != "en":
+        panel = VOICE_PANEL_BY_LOCALE.get(voice_tag)
+        if panel:
+            idx = abs(hash(seed_text or "default")) % len(panel)
+            return panel[idx]
+
+    cat = (category or "").upper()
+    if cat in ("WAR", "POLITICS", "WORLD") and seed_text:
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-GB", "en-US-Guy"))]
+    elif cat in ("AI", "TECH", "SCIENCE", "HARDWARE"):
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Aria", "en-GB-Ryan", "en-US-Guy"))]
+    elif cat in ("ENTERTAINMENT", "SPORTS", "FOOD", "TRAVEL"):
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Jenny", "en-AU-Natasha"))]
+    else:
+        eligible = VOICE_PANEL
+    if not eligible:
+        eligible = VOICE_PANEL
+    idx = abs(hash(seed_text or "default")) % len(eligible)
+    return eligible[idx]
+
 
 SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
 
@@ -179,7 +292,36 @@ def guess_category(tags: list, title: str) -> str:
 TTS_TIMEOUT_S = float(os.environ.get("TTS_TIMEOUT_S", "45"))
 
 
-async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT):
+# Per-voice TTS rate. edge-tts voices have noticeably different
+# baseline tempos: British voices read slower (Sonia/Ryan), Brazilian
+# Portuguese voices faster than US English. A single global +3% nudge
+# (the old default) made Sonia sound stately and Antonio panicked.
+# These offsets are tuned by ear to land each voice in the 30-45s
+# range for a 100-word script. Missing entries fall through to +3%.
+VOICE_RATE_OFFSETS = {
+    # English
+    "en-US-JennyNeural":     "+3%",   # baseline
+    "en-US-AriaNeural":      "+4%",
+    "en-US-GuyNeural":       "+2%",
+    "en-GB-SoniaNeural":     "+6%",   # British — naturally slower
+    "en-GB-RyanNeural":      "+6%",
+    "en-AU-NatashaNeural":   "+3%",
+    # Portuguese (Brazil) — already brisk; we slow down slightly
+    "pt-BR-FranciscaNeural": "+0%",
+    "pt-BR-AntonioNeural":   "-2%",   # the calmest of the three
+    "pt-BR-ThalitaNeural":   "+0%",
+    # Spanish + French
+    "es-ES-ElviraNeural":    "+2%",
+    "es-ES-AlvaroNeural":    "+2%",
+    "es-MX-DaliaNeural":     "+2%",
+    "es-MX-JorgeNeural":     "+2%",
+    "fr-FR-DeniseNeural":    "+4%",
+    "fr-FR-HenriNeural":     "+4%",
+}
+
+
+async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
+                          rate_override: str | None = None):
     """
     Render `text` to `output_path` (MP3) via Microsoft Edge-TTS.
 
@@ -189,120 +331,88 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT)
     blipped — that meant zero Shorts shipped that day. We raise on
     timeout so the caller logs the failure and moves on to the next
     story.
+
+    Each voice gets its own rate offset (see VOICE_RATE_OFFSETS) — a
+    single global nudge made British voices sound stately and Brazilian
+    voices panicked. `rate_override` lets the caller (the hook-slow
+    path) inject a specific rate without rebuilding the panel.
     """
     import edge_tts
-    # Shorts have a tight 60s budget so we still nudge the rate up a
-    # little — but +8% sounded panicked. +3% keeps it brisk without
-    # losing the human-paced feel.
-    communicate = edge_tts.Communicate(text, voice, rate="+3%", pitch="+0Hz")
+    rate = rate_override or VOICE_RATE_OFFSETS.get(voice, "+3%")
+    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
     await asyncio.wait_for(
         communicate.save(str(output_path)),
         timeout=TTS_TIMEOUT_S,
     )
 
 
-def _ai_shorts_meta(title: str, description: str, category: str) -> dict:
-    """Generate a magnetic YouTube Shorts title + thumbnail hook + tags.
+async def text_to_speech_hook_then_body(hook: str, body: str,
+                                          output_path: Path,
+                                          voice: str = VOICE_SHORT,
+                                          tmp_dir: Path | None = None) -> bool:
+    """Render the hook at the voice's "calm" baseline rate (4 % slower
+    than the body), then the body at the voice's regular rate. The
+    two MP3 segments are FFmpeg-concatenated into `output_path`.
 
-    Returns dict with: yt_title (max 80 chars, no #Shorts suffix — caller
-    adds it), thumbnail_hook (3-5 punchy words), extra_tags (list).
-    Returns {} on parse failure — caller falls back to defaults.
+    Why: the first 3 s decide whether a viewer swipes or stays. A
+    rushed hook is the single biggest "swiped before they understood"
+    failure mode. Reading the hook ~4 % slower than the body gives
+    viewers time to comprehend the lead without making the whole
+    Short feel slow.
+
+    Returns True on success. False = caller should fall back to the
+    one-shot text_to_speech with the full script.
     """
-    prompt = (
-        f"You are a YouTube Shorts growth strategist. Generate metadata for a 60-second "
-        f"news Short. Respond ONLY as valid JSON.\n\n"
-        f"Story title: {title}\n"
-        f"Category: {category}\n"
-        f"Description: {description[:400]}\n\n"
-        f"Rules for YT_TITLE (max 80 chars, no '#Shorts' suffix — system adds it):\n"
-        f"  - Curiosity hook. Specifics (name, number, twist) beat vague phrasing.\n"
-        f"  - Question or surprising statement works well. No ALL CAPS title.\n"
-        f"  - DO NOT just copy the headline — rewrite it as something that makes "
-        f"someone stop scrolling.\n"
-        f"  - Good shapes: 'Why X just happened', 'The {category.lower()} story nobody saw coming', "
-        f"'X says Y — and it changes everything', 'How [thing] really works'.\n\n"
-        f"Rules for THUMBNAIL_HOOK (3-5 words, max 28 chars, ALL CAPS OK):\n"
-        f"  - Punchy phrase that dominates the vertical thumbnail. Different from yt_title.\n"
-        f"  - Examples: 'TRUMP SHOCKS WALL ST', 'GAZA CEASEFIRE BREAKS', 'AI BEATS DOCTORS'.\n\n"
-        f"Rules for EXTRA_TAGS (3 items):\n"
-        f"  - Real entities from this story (a person, a place, a company). Lowercase.\n\n"
-        f'Return this exact JSON: {{"yt_title":"...","thumbnail_hook":"...","extra_tags":["...","...","..."]}}'
-    )
-    raw = _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=18, json_mode=True)
-    if not raw:
-        return {}
+    if not hook or not body or not tmp_dir:
+        return False
+    body_rate = VOICE_RATE_OFFSETS.get(voice, "+3%")
+    # Compute a "calm" rate ~4 percentage points below body_rate.
     try:
-        clean = re.sub(r'```(?:json)?\s*|\s*```', '', raw).strip()
-        m = re.search(r'\{.*\}', clean, re.DOTALL)
-        if m:
-            return json.loads(m.group(), strict=False)
-    except Exception as e:
-        log.warning(f"AI Shorts meta parse error: {e}")
-    return {}
+        body_pp = int(body_rate.rstrip("%"))
+    except ValueError:
+        body_pp = 3
+    hook_pp = body_pp - 4
+    hook_rate = f"{hook_pp:+d}%" if hook_pp != 0 else "+0%"
 
-
-# ── Script de narração do Short ───────────────────────────────────
-def _ai_shorts_hook(title: str, points: list[str], category: str) -> str:
-    """Generate a powerful hook sentence for a YouTube Short using AI."""
-    prompt = (
-        f"Write a single powerful hook sentence (max 20 words) for a YouTube Short about this news story.\n\n"
-        f"Story: {title}\n"
-        f"Category: {category}\n"
-        f"Key facts: {' '.join(points[:2])}\n\n"
-        f"CRITICAL: The script MUST start with a powerful hook in the FIRST sentence — a shocking statistic, "
-        f"provocative question, or urgent fact that makes viewers stop scrolling. Examples:\n"
-        f'- "Did you know [shocking fact]?"\n'
-        f'- "This just happened and it changes everything:"\n'
-        f'- "[Number] people were affected when..."\n'
-        f'- "Breaking: [dramatic summary in 10 words]"\n\n'
-        f"The hook must appear in the very first 3 seconds of audio. Do NOT start with introductions "
-        f'like "Hi" or "Welcome" or "Today we\'ll talk about".\n\n'
-        f"Return ONLY the hook sentence, nothing else."
+    hook_mp3 = tmp_dir / "_hook.mp3"
+    body_mp3 = tmp_dir / "_body.mp3"
+    try:
+        await text_to_speech(hook, hook_mp3, voice, rate_override=hook_rate)
+        await text_to_speech(body, body_mp3, voice, rate_override=body_rate)
+    except Exception as exc:
+        log.warning("hook/body TTS split failed: %s", exc)
+        return False
+    if not (hook_mp3.exists() and body_mp3.exists()):
+        return False
+    # Concat with FFmpeg's concat demuxer (lossless for MP3).
+    list_file = tmp_dir / "_concat.txt"
+    list_file.write_text(
+        f"file '{hook_mp3.resolve()}'\nfile '{body_mp3.resolve()}'\n",
+        encoding="utf-8",
     )
-    return _ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=15)
+    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
+           "-i", str(list_file), "-c", "copy", str(output_path)]
+    try:
+        r = subprocess.run(cmd, capture_output=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return False
+    if r.returncode != 0:
+        log.warning("hook/body MP3 concat failed: %s",
+                     r.stderr[-200:].decode("utf-8", errors="replace"))
+        return False
+    log.info("  🎤 Hook @ %s, body @ %s (split-rate)", hook_rate, body_rate)
+    return True
 
 
-def build_short_script(title: str, points: list[str], category: str) -> str:
-    """
-    Build a ~43-55 second narration script for a YouTube Short.
-    Breakdown:
-      Hook    ~3s   (15 words) — AI-generated powerful opener
-      Title   ~5s   (25 words)
-      Point 1 ~10s  (50 words)
-      Point 2 ~10s  (50 words)
-      Point 3 ~10s  (50 words)
-      CTA     ~5s   (25 words)
-    """
-    cat_label = {
-        "AI": "in artificial intelligence",
-        "SECURITY": "in cybersecurity",
-        "BUSINESS": "in business",
-        "BIG TECH": "in big tech",
-        "HARDWARE": "in hardware",
-        "WAR": "in world conflict",
-        "WORLD": "in world news",
-        "TECH": "in technology",
-    }.get(category.upper(), "in the news")
-
-    # Try AI hook first, fall back to template hook
-    ai_hook = _ai_shorts_hook(title, points, category)
-    hook = ai_hook if ai_hook and len(ai_hook) > 10 else f"Breaking news {cat_label} — GlobalBR News has you covered."
-
-    script = f"""{hook}
-
-{title}
-
-Here is what you need to know.
-
-First: {points[0]}
-
-Second: {points[1]}
-
-Third: {points[2]}
-
-Follow GlobalBR News for hourly updates and click the link in our bio to read the full story. Subscribe so you never miss what matters."""
-
-    return script
+# ── Legacy AI metadata + script builders removed ─────────────────
+#
+# `_ai_shorts_meta`, `_ai_shorts_hook`, and `build_short_script` used
+# to round-trip Mistral for title/hook/script generation, but every
+# pending story in the queue is now pre-enriched by fetch_news.py with
+# `seo_title`, `hook`, `script`, `thumbnail_text`, `yt_tags`, etc.
+# Keeping the legacy paths would burn extra free-tier tokens and create
+# divergent metadata between the queue and the upload sidecar. Removed
+# May 2026 as part of the b-roll + captions pivot.
 
 
 # ── AI background via Pollinations ───────────────────────────────
@@ -534,92 +644,154 @@ def create_short_frame(title: str, category: str, points: list[str],
     return img.convert("RGB")
 
 
-# ── Thumbnail do Short ────────────────────────────────────────────
-# Static thumbnail shipped with the repo. Every Short uses this same
-# JPEG as its YouTube thumbnail — the channel keeps a consistent
-# brand grid on /shorts. We can swap it by replacing the PNG; no code
-# change needed.
+# ── Thumbnail do Short (dynamic per-story) ────────────────────────
+#
+# Previously every Short shipped with the same brand-grid JPEG. The
+# "Inauthentic Content" policy + CTR research both push the other way:
+# a thumbnail that names WHAT the story is about wins clicks at the
+# moment the viewer is browsing the Shorts feed search page. We now
+# render the thumbnail per-Short with the AI-generated `thumbnail_text`
+# (a 2-4 word punchy overlay like "RATES CUT" or "WALL ST STUNNED")
+# drawn over the background image. The static-grid fallback remains as
+# a last resort when the AI didn't produce a thumbnail_text.
 STATIC_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "thumbnail_static.png"
 
 
-def create_short_thumbnail(frame_img: Image.Image, output: Path):
+def create_short_thumbnail(frame_img: Image.Image, output: Path,
+                            thumbnail_text: str = "",
+                            category: str = "") -> None:
     """
-    Write the YouTube thumbnail. By design, every Short uses the same
-    static brand thumbnail at STATIC_THUMB_PATH so the channel grid
-    stays uniform. If that file is missing for any reason, fall back
-    to saving the rendered frame so we never publish without a thumb.
+    Render the YouTube thumbnail. If `thumbnail_text` is provided, we
+    drop it as a high-contrast overlay on the centre band of the frame
+    image. Otherwise we fall through to the brand-static JPEG, then to
+    the bare frame.
     """
+    if thumbnail_text and frame_img is not None:
+        try:
+            thumb = frame_img.copy().convert("RGB")
+            draw = ImageDraw.Draw(thumb)
+            text = thumbnail_text.upper().strip()[:30]
+            # Pick a font size that fills ~70% of the width.
+            font_size = 220
+            font = get_font(font_size, bold=True)
+            while font_size > 90:
+                bbox = draw.textbbox((0, 0), text, font=font)
+                if (bbox[2] - bbox[0]) < (SHORT_W - 80):
+                    break
+                font_size -= 12
+                font = get_font(font_size, bold=True)
+            bbox = draw.textbbox((0, 0), text, font=font)
+            tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+            cx = (SHORT_W - tw) // 2
+            cy = (SHORT_H - th) // 2 - 60
+            # Translucent slab for legibility on any background.
+            slab_pad = 36
+            cat_color = CATEGORY_COLORS.get((category or "TECH").upper(), ACCENT_BLUE)
+            draw_rounded_rect(
+                draw,
+                (cx - slab_pad, cy - slab_pad,
+                 cx + tw + slab_pad, cy + th + slab_pad),
+                radius=28, fill=(0, 0, 10),
+            )
+            # Coloured underline strip for brand cohesion.
+            draw.rectangle(
+                [(cx - slab_pad, cy + th + slab_pad - 14),
+                 (cx + tw + slab_pad, cy + th + slab_pad)],
+                fill=cat_color,
+            )
+            # Text with a layered shadow for extra punch.
+            for dx, dy in ((4, 4), (3, 3)):
+                draw.text((cx + dx, cy + dy), text, font=font, fill=(0, 0, 0))
+            draw.text((cx, cy), text, font=font, fill=TEXT_WHITE)
+            thumb.save(str(output), "JPEG", quality=88, optimize=True)
+            log.info("  🖼  Thumbnail (dynamic, %r): %s",
+                     text[:24], output.name)
+            return
+        except Exception as exc:
+            log.warning("  ⚠ Dynamic thumbnail render failed: %s — falling back", exc)
+
+    # Fallback 1: brand-static shipped JPEG.
     if STATIC_THUMB_PATH.exists():
         try:
             thumb = Image.open(STATIC_THUMB_PATH).convert("RGB")
-            # YouTube recommends <=2 MB, 16:9 or vertical — JPEG quality
-            # 90 lands at ~120 KB for our 1080x1920 source.
             thumb.save(str(output), "JPEG", quality=90, optimize=True)
-            log.info(f"  Thumbnail (static brand): {output.name}")
+            log.info(f"  Thumbnail (static brand fallback): {output.name}")
             return
         except Exception as exc:
             log.warning(
                 f"  ⚠ Failed to load static thumb at {STATIC_THUMB_PATH}: {exc}. "
                 "Falling back to per-Short frame."
             )
-    thumb = frame_img.copy()
-    thumb.save(str(output), "JPEG", quality=92, optimize=True)
-    log.info(f"  Thumbnail (rendered fallback): {output.name}")
+    # Fallback 2: raw frame image (always succeeds when frame_img is set).
+    if frame_img is not None:
+        thumb = frame_img.copy().convert("RGB")
+        thumb.save(str(output), "JPEG", quality=92, optimize=True)
+        log.info(f"  Thumbnail (rendered fallback): {output.name}")
 
 
-# ── Combina imagem + áudio com FFmpeg ─────────────────────────────
-def create_short_video(frame_path: Path, audio_path: Path,
-                       output_path: Path) -> bool:
+# ── Video assembly (b-roll + captions + hook overlay) ────────────
+#
+# The composition itself moved to utils/video_compose.py so the two
+# render paths (multi-clip motion or static-frame fallback) can be
+# unit-tested in isolation. This wrapper is what `generate_short()`
+# calls; it picks the right pipeline based on whether we actually
+# acquired b-roll clips.
+
+def acquire_broll_clips(story: dict, tmp_dir: Path,
+                         want_n: int = 3) -> list[Path]:
     """
-    Use FFmpeg to create a vertical Short MP4:
-    - Loop the static frame image for the duration of the audio
-    - 1080x1920, 30fps, yuv420p
-    - Audio from edge-tts MP3
+    Pull `want_n` b-roll MP4s into `tmp_dir`. Returns local paths.
+    Empty list = the caller falls back to a static frame.
+
+    Query construction: a story usually has either an AI-written
+    `seo_title` or the raw RSS `title`. We prefer the more search-
+    friendly one and supplement with the topic hashtag if present.
     """
-    # Get audio duration
-    result = subprocess.run(
-        ["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
-         "-of", "csv=p=0", str(audio_path)],
-        capture_output=True, text=True,
-    )
-    try:
-        duration = float(result.stdout.strip())
-    except Exception:
-        duration = 50.0  # fallback
-
-    log.info(f"  Audio duration: {duration:.1f}s")
-
-    # Enforce 60s max (YouTube Shorts requirement)
-    if duration > 59.5:
-        log.warning(f"  Audio is {duration:.1f}s — trimming to 59s for Shorts compliance")
-        duration = 59.0
-
-    cmd = [
-        "ffmpeg", "-y",
-        "-loop", "1",
-        "-i", str(frame_path),
-        "-i", str(audio_path),
-        "-c:v", "libx264",
-        "-preset", "fast",
-        "-crf", "22",
-        "-c:a", "aac",
-        "-b:a", "128k",
-        "-pix_fmt", "yuv420p",
-        "-vf", f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
-               f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,fps=30",
-        "-t", str(duration),
-        "-movflags", "+faststart",
-        "-shortest",
-        str(output_path),
+    if want_n <= 0:
+        return []
+    query_parts = [
+        story.get("seo_title") or story.get("title") or "",
+        story.get("topic_hashtag", ""),
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    query = " ".join(p for p in query_parts if p)[:160]
+    if not query:
+        return []
+    category = story.get("category", "")
+    try:
+        candidates = fetch_broll_clips(query, want_n=want_n * 2, category=category)
+    except Exception as exc:
+        log.debug("broll discovery failed: %s", exc)
+        return []
+    log.info("  🎬 B-roll candidates: %d (query=%r)", len(candidates), query[:80])
 
-    if result.returncode != 0:
-        log.error(f"FFmpeg error: {result.stderr[-800:]}")
-        return False
+    paths: list[Path] = []
+    for i, clip in enumerate(candidates):
+        if len(paths) >= want_n:
+            break
+        dest = tmp_dir / f"broll_{i}.mp4"
+        if download_clip(clip, dest):
+            paths.append(dest)
+    log.info("  🎬 B-roll downloaded: %d/%d (sources: %s)",
+             len(paths), want_n,
+             {c.source for c in candidates[:len(paths)]})
+    return paths
 
-    log.info(f"  Video created: {output_path.name} ({output_path.stat().st_size // 1024} KB)")
-    return True
+
+def generate_captions(audio_path: Path, tmp_dir: Path) -> Path | None:
+    """Transcribe `audio_path` and emit an ASS subtitle file. None if both
+    Whisper providers fail; callers should still ship the Short."""
+    try:
+        words = captions_transcribe(audio_path)
+    except Exception as exc:
+        log.warning("caption transcribe crashed: %s", exc)
+        return None
+    if not words:
+        return None
+    phrases = group_words_into_phrases(words, max_words=4, max_gap_s=0.6)
+    ass_path = tmp_dir / "captions.ass"
+    if not write_ass(phrases, ass_path):
+        return None
+    return ass_path
 
 
 # ── Tracking: quais posts já foram transformados em Short ────────
@@ -643,8 +815,7 @@ def save_shorts_done(done: set):
 
 # ── Metadados no formato upload_youtube.py ────────────────────────
 def build_short_metadata(story: dict, video_path: Path,
-                         thumb_path: Path,
-                         ai_meta: dict | None = None) -> dict:
+                         thumb_path: Path) -> dict:
     """
     Build the JSON metadata payload that upload_youtube.py consumes.
     Required keys downstream: title, description, tags, category_id,
@@ -662,19 +833,11 @@ def build_short_metadata(story: dict, video_path: Path,
                       mandatory #Shorts suffix)
       - description:  5000 chars (we emit ~500)
       - tags:         500 chars combined across the list
-
-    `ai_meta` is kept as a backwards-compat hook for when the queue
-    didn't ship SEO fields yet — we'll fall through to its yt_title /
-    extra_tags / thumbnail_hook keys. Anything from the queue wins.
     """
     base_title = (story.get("title") or "").strip()
     category   = story.get("category", "world")
     source     = story.get("source", "GlobalBR News")
 
-    ai_meta = ai_meta or {}
-    legacy_ai_title = (ai_meta.get("yt_title") or "").strip()
-    if not base_title and 15 < len(legacy_ai_title) <= 80:
-        base_title = legacy_ai_title
     if not base_title:
         base_title = "World news update"
 
@@ -714,7 +877,6 @@ def build_short_metadata(story: dict, video_path: Path,
     # then evergreen channel tags. Cap at 15 — well under YouTube's
     # 500-char combined budget while leaving room for the long ones.
     queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
-    legacy_extra = [t for t in (ai_meta.get("extra_tags") or []) if isinstance(t, str)]
     evergreen = [
         "shorts", "news", "breaking news", "world news",
         category.lower(), f"{category.lower()} news",
@@ -723,7 +885,7 @@ def build_short_metadata(story: dict, video_path: Path,
     seen: set[str] = set()
     all_tags: list[str] = []
     combined_len = 0
-    for tag in queue_tags + legacy_extra + evergreen:
+    for tag in queue_tags + evergreen:
         t = tag.strip().lower().lstrip("#")
         if not t or t in seen:
             continue
@@ -745,7 +907,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "video":          str(video_path),
         "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
-        "thumbnail_hook": (ai_meta.get("thumbnail_hook") or story.get("thumbnail_text", "")).strip(),
+        "thumbnail_hook": story.get("thumbnail_text", "").strip(),
         # Fields the uploader uses for the pinned first-comment + the
         # per-region playlist. Carrying them through metadata.json keeps
         # the generate / upload contract explicit.
@@ -753,6 +915,10 @@ def build_short_metadata(story: dict, video_path: Path,
         "source_url":     story.get("source_url", ""),
         "geo_hashtag":    story.get("geo_hashtag", "Global"),
         "category":       category,
+        # A/B variant tags ride along all the way to the .done sidecar
+        # after upload, so youtube_analytics.py can correlate them with
+        # the retention numbers it pulls from the Analytics API.
+        "experiments":    dict(story.get("experiments") or {}),
     }
 
 
@@ -889,6 +1055,20 @@ def commit_consumed(queue_id: str) -> None:
 def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None:
     """
     Generate one Short for a story.
+
+    Pipeline (preferred path):
+      1. TTS audio from the queue's `script` field
+      2. b-roll: 3 clips × ~15s each from Pexels/NASA/Internet Archive
+      3. captions: Groq Whisper → ASS file with word-level phrases
+      4. compose: FFmpeg concats b-roll, burns captions + hook overlay
+      5. thumbnail: dynamic, using AI-authored `thumbnail_text`
+      6. metadata: from queue's seo_title / yt_tags / yt_description
+
+    Fallback (b-roll unavailable):
+      • Acquire a single still image (existing chain: RSS img → OG →
+        Wikipedia → Openverse → Pollinations).
+      • Compose with a static-frame FFmpeg pipeline; captions still burn.
+
     Returns (video_path, thumb_path, metadata) or None on failure.
     """
     # Defensive .get()s on the story dict — a queue entry with a bad
@@ -897,128 +1077,273 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     date_str = story.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = story.get("title") or "World news update"
     category = story.get("category", "TECH")
-    description = story.get("description", "")
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
-    # ── 0. AI meta first — frame + thumbnail need the magnetic title ─
-    # The queue (from fetch_news.py) already carries an AI-written
-    # `title` (seo_title), `script` (opinion voice-over) and
-    # `thumbnail_text` (2-4 word punchy overlay). Only call the
-    # legacy _ai_shorts_meta as a backstop when those fields are
-    # missing — saves one round-trip to Mistral per Short on the
-    # happy path.
+    # English channel ignores stories from PT-BR-native feeds — they're
+    # enriched in Portuguese by fetch_news.py and would need a costly
+    # back-translation. Cleaner to skip and let the PT-BR pipeline
+    # render them natively.
+    native = (story.get("native_lang") or "en").lower()
+    if LANGUAGE == "en" and native != "en":
+        log.info("  ⏭  Skipping for English channel — story is native %s", native)
+        return None
+
+    # Sibling-language channel: translate the AI-authored fields first.
+    # The translation already runs through ai_cache so repeat runs of
+    # the same story don't double the Mistral burn.
+    if LANGUAGE != "en":
+        # NATIVE-LANGUAGE FAST PATH: when the story originated from a
+        # PT-BR feed (G1, UOL, Folha, etc.) tagged native_lang=pt-BR,
+        # fetch_news.py already enriched it in Portuguese. Skipping
+        # translate_story here means zero extra AI calls AND higher
+        # editorial quality (no round-trip translation artefacts).
+        native = (story.get("native_lang") or "en").lower()
+        if native == LANGUAGE.lower():
+            log.info("  🇧🇷 Native %s source — no translation needed", LANGUAGE)
+            # Still stamp voice_tag so pick_voice walks the locale panel.
+            story = dict(story,
+                          language=LANGUAGE,
+                          voice_tag=SUPPORTED_LANGUAGES[LANGUAGE]["voice_tag"],
+                          lang_hashtag=SUPPORTED_LANGUAGES[LANGUAGE]["hashtag"])
+        else:
+            translated = translate_story(story, LANGUAGE)
+            if not translated:
+                log.warning("  ⏭  Skipping Short — translation to %s failed for %s",
+                             LANGUAGE, title[:60])
+                return None
+            story = translated
+            log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
+        title = story.get("title") or story.get("seo_title") or title
+        slug = f"{slug}-{LANGUAGE.lower().replace('-', '')}"
+
+    # Queue carries pre-enriched fields when fetch_news.py is up to date.
+    # We require `script` (the full opinionated voice-over) to proceed —
+    # backlog stories that predate the schema get rejected here.
     queue_script = (story.get("script") or "").strip()
-    if queue_script:
-        ai_meta = {"yt_title": title}
-    else:
-        ai_meta = _ai_shorts_meta(title, description, category)
-    ai_title = (ai_meta.get("yt_title") or "").strip()
-    display_title = ai_title if 15 < len(ai_title) <= 80 else title
-    if ai_title and display_title == ai_title:
-        log.info(f"  ✨ Shorts AI title: {display_title}")
+    if not queue_script:
+        log.warning("  ⏭  Skipping Short — no AI script on queue entry: %s", title[:80])
+        return None
 
-    # ── 1. Background image (REQUIRED) ────────────────────────────
-    # We skip Shorts that can't acquire a real background. Without one
-    # the auto-generated thumbnail looks like a grey placeholder on
-    # YouTube — terrible CTR and indistinguishable from broken uploads.
-    bg_path = tmp_dir / f"bg_{slug}.jpg"
-
-    # Try story's own image first, then Pollinations
-    if story["image_url"]:
-        img_ok = download_image(story["image_url"], bg_path)
-    else:
-        img_ok = False
-
-    if not img_ok:
-        img_ok = generate_ai_background(title, category, bg_path)
-
-    # Hard requirement: skip Shorts without a usable background image.
-    if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
+    # ── Pre-flight quality gate ──────────────────────────────────
+    # Catch AI-tell phrases, weak hooks, and wire-copy rewrites
+    # BEFORE we burn TTS / b-roll / FFmpeg time. The case-study
+    # research is unanimous: shipping unchecked LLM output is what
+    # got the terminated channels terminated. Skipping a bad Short
+    # is always cheaper than getting flagged.
+    grade, issues = evaluate_script(story)
+    if issues:
+        log.info("  📋 Script quality grade=%d/10 — %d issue(s):", grade, len(issues))
+        for issue in issues:
+            log.info("     [%s/%s] %s", issue.severity, issue.code, issue.message)
+    if quality_should_block(issues):
         log.warning(
-            "  ⏭  Skipping Short — no valid background image (story image and "
-            "Pollinations fallback both failed): %s", title[:80],
+            "  ⏭  Skipping Short — quality gate blocks: %s (grade=%d, blocks=%d, warns=%d)",
+            title[:60], grade,
+            sum(1 for i in issues if i.severity == "block"),
+            sum(1 for i in issues if i.severity == "warn"),
         )
         return None
+    hook_text       = (story.get("hook") or "").strip()
+    thumbnail_text  = (story.get("thumbnail_text") or "").strip()
+    display_title   = (story.get("title") or "").strip()  # already seo_title from queue
 
-    bg_path_final = bg_path
-
-    # ── 2. Extract key points ─────────────────────────────────────
-    points = extract_key_points(story["description"])
-
-    # ── 3. Build frame image ──────────────────────────────────────
-    # display_title is the magnetic AI title (or original headline as
-    # fallback). The frame doubles as the thumbnail source, so this
-    # is the single biggest CTR lever for Shorts.
-    frame = create_short_frame(
-        title=display_title,
-        category=category,
-        points=points,
-        source=story["source"],
-        bg_path=bg_path_final,
-    )
-    frame_path = tmp_dir / f"frame_{slug}.png"
-    frame.save(str(frame_path))
-    log.info(f"  Frame saved: {frame_path.name}")
-
-    # ── 4. TTS narration ──────────────────────────────────────────
-    # Prefer the queue's `script` (full opinionated voice-over from
-    # fetch_news.py's AI prompt). Fall back to the legacy template
-    # builder if the queue field is empty (e.g. backlog stories
-    # written before the script field existed).
-    if queue_script:
-        raw_script = queue_script
-        log.info(f"  ✨ Using AI opinion script from queue ({len(raw_script)} chars)")
-    else:
-        raw_script = build_short_script(title, points, category)
-    script = humanize_for_tts(raw_script)
+    # ── 1. TTS narration ──────────────────────────────────────────
+    script = humanize_for_tts(queue_script)
     audio_path = tmp_dir / f"audio_{slug}.mp3"
-    try:
-        asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
-        size_kb = audio_path.stat().st_size / 1024
-        log.info(f"  TTS generated ({size_kb:.0f} KB)")
-    except Exception as e:
-        log.error(f"  TTS failed: {e}")
-        return None
+    # Translated stories carry a `voice_tag` (e.g. "pt-BR") set by
+    # utils.translation.translate_story. English stories don't set it,
+    # so pick_voice falls through to the default panel.
+    voice_tag = story.get("voice_tag", "")
+    voice = pick_voice(seed_text=title, category=category, voice_tag=voice_tag)
+    log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")
 
-    # ── 5. Check duration ─────────────────────────────────────────
-    res = subprocess.run(
-        ["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
-         "-of", "csv=p=0", str(audio_path)],
-        capture_output=True, text=True,
-    )
-    try:
-        duration = float(res.stdout.strip())
-    except Exception:
-        duration = 50.0
+    # Split-rate TTS: render the hook at a calmer rate (≈ 4 pp slower)
+    # then the rest of the script at the voice's regular rate. The
+    # script always opens with the hook verbatim (fetch_news.py's
+    # prompt enforces this), so we can split on the hook itself.
+    split_rendered = False
+    if hook_text and queue_script.lstrip().lower().startswith(hook_text.lower()):
+        body_after = queue_script[len(hook_text):].lstrip(" .!?")
+        body_humanised = humanize_for_tts(body_after)
+        if body_humanised:
+            try:
+                split_rendered = asyncio.run(
+                    text_to_speech_hook_then_body(
+                        hook=humanize_for_tts(hook_text),
+                        body=body_humanised,
+                        output_path=audio_path,
+                        voice=voice,
+                        tmp_dir=tmp_dir,
+                    )
+                )
+            except Exception as exc:
+                log.warning("hook/body split TTS errored: %s — falling back",
+                              exc)
+                split_rendered = False
 
-    if duration > 60.0:
-        log.warning(f"  Script too long ({duration:.1f}s) — will be trimmed by FFmpeg")
+    if not split_rendered:
+        try:
+            asyncio.run(text_to_speech(script, audio_path, voice))
+            size_kb = audio_path.stat().st_size / 1024
+            log.info(f"  TTS generated ({size_kb:.0f} KB)")
+        except Exception as e:
+            log.error(f"  TTS failed: {e}")
+            if voice != VOICE_SHORT:
+                try:
+                    log.info("  Retrying TTS with default voice…")
+                    asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
+                    log.info(f"  TTS recovered with {VOICE_SHORT}")
+                except Exception as e2:
+                    log.error(f"  TTS retry failed: {e2}")
+                    return None
+            else:
+                return None
 
-    # ── 6. Output paths ───────────────────────────────────────────
+    # ── 1.5. Music bed (background, ducked to -22 dB by default). ─
+    # Picks a Pixabay CC0 track keyed by story mood and mixes it under
+    # the TTS. If the download or mix fails, audio_path is returned
+    # unchanged — music is enhancement, not a hard requirement.
+    audio_path = add_music_bed(audio_path, story, tmp_dir)
+
+    # ── 2. Captions (word-level) — biggest single retention lever. ─
+    ass_path = generate_captions(audio_path, tmp_dir)
+    if ass_path:
+        log.info("  📝 Captions ready: %s", ass_path.name)
+    else:
+        log.info("  ⚠ Captions skipped — Whisper providers unavailable")
+
+    # ── 3. B-roll discovery + download ────────────────────────────
+    # More clips per Short = more pattern interrupts = higher retention.
+    # We aim for 6 clips so the visual cuts land every ~7-8 s in a 45 s
+    # Short — well inside the 2-3 s "pattern interrupt sweet spot" the
+    # algorithm research called out. Pexels 200 req/h covers this even
+    # at 3 Shorts/day × 2 channels.
+    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=6)
+
+    # ── 4. Output paths ───────────────────────────────────────────
     VIDEOS_DIR.mkdir(exist_ok=True)
     video_path = VIDEOS_DIR / f"short-{slug}-{date_str}.mp4"
     thumb_path = VIDEOS_DIR / f"short-{slug}-{date_str}_thumb.jpg"
 
-    # ── 7. Thumbnail ──────────────────────────────────────────────
-    create_short_thumbnail(frame, thumb_path)
-    # YouTube refuses thumbnails < 2KB and won't show meaningful content
-    # for greyscale/empty frames. If the generated frame ended up too
-    # small (background failed and renderer produced a tiny image), bail.
-    if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
+    # ── 5. Background image (always needed for thumbnail; sometimes
+    # also for the static-frame video pipeline fallback). The b-roll
+    # path doesn't use this for video but we still need a still for
+    # the thumbnail composition.
+    bg_path = tmp_dir / f"bg_{slug}.jpg"
+    img_ok = False
+    if story.get("image_url"):
+        img_ok = download_image(story["image_url"], bg_path)
+    if not img_ok:
+        try:
+            img_ok = fetch_any_free_image(
+                article_url=story.get("source_url", ""),
+                query=title,
+                dest=bg_path,
+            )
+        except Exception as exc:
+            log.debug("free_images fallback failed: %s", exc)
+            img_ok = False
+    if not img_ok:
+        img_ok = generate_ai_background(title, category, bg_path)
+
+    if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
         log.warning(
-            "  ⏭  Skipping Short — thumbnail too small to be visually useful: %s",
-            title[:80],
+            "  ⏭  Skipping Short — no valid background image (story image and "
+            "all free fallbacks failed): %s", title[:80],
         )
         return None
 
-    # ── 8. FFmpeg: combine image + audio → video ──────────────────
-    ok = create_short_video(frame_path, audio_path, video_path)
+    # Render the still frame used for (a) the static-video fallback,
+    # and (b) the dynamic thumbnail base.
+    points = extract_key_points(story.get("description", ""))
+    frame = create_short_frame(
+        title=display_title,
+        category=category,
+        points=points,
+        source=story.get("source", "GlobalBR News"),
+        bg_path=bg_path,
+    )
+    frame_path = tmp_dir / f"frame_{slug}.png"
+    frame.save(str(frame_path))
+
+    # ── 6. Thumbnail: variant-driven (A/B framework) ──────────────
+    # The thumbnail_style axis picks between dynamic_text overlay,
+    # category-colour solid block, and the legacy brand-static JPEG.
+    # create_short_thumbnail's fallback chain handles each path.
+    experiments = story.get("experiments") or {}
+    thumb_variant = experiments.get("thumbnail_style") \
+                    or assign_variant("thumbnail_style", slug)
+    if thumb_variant == "brand_static":
+        # Forcing empty thumbnail_text triggers the static brand fallback
+        # inside create_short_thumbnail.
+        create_short_thumbnail(frame, thumb_path,
+                                thumbnail_text="",
+                                category=category)
+    else:
+        # dynamic_text + category_color both use the dynamic renderer;
+        # category_color biases harder toward the slab fill colour.
+        create_short_thumbnail(frame, thumb_path,
+                                thumbnail_text=thumbnail_text,
+                                category=category)
+    if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
+        log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
+        return None
+
+    # ── 7. Compose video (b-roll preferred, static fallback) ──────
+    # CTA axis: rotate per-Short between handle-follow, comment prompt,
+    # and a closing question. Variant assignment is deterministic on
+    # the slug so re-renders are idempotent.
+    cta_variant = experiments.get("cta_style") \
+                  or assign_variant("cta_style", slug)
+    cta_text = {
+        "follow_handle":   "Follow @globalbrnews",
+        "engage_comment":  "Drop your country in comments 👇",
+        "question_close":  "Which side wins this one?",
+    }.get(cta_variant, "Follow @globalbrnews")
+    # Brand-bug watermark — channel handle in upper-right corner, on
+    # the whole duration. Industry standard for news Shorts so the
+    # source is unmistakable when the video is re-uploaded elsewhere.
+    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@globalbrnews")
+    if broll_paths:
+        ok = build_broll_short(
+            broll_paths=broll_paths,
+            audio_path=audio_path,
+            output_path=video_path,
+            ass_subtitle_path=ass_path,
+            hook_text=hook_text or display_title,
+            cta_text=cta_text,
+            watermark_text=watermark_text,
+        )
+        if not ok:
+            log.info("  ⤵ B-roll compose failed — falling back to static frame.")
+            ok = build_static_short(
+                frame_path=frame_path,
+                audio_path=audio_path,
+                output_path=video_path,
+                ass_subtitle_path=ass_path,
+                hook_text=hook_text or display_title,
+                watermark_text=watermark_text,
+            )
+    else:
+        ok = build_static_short(
+            frame_path=frame_path,
+            audio_path=audio_path,
+            output_path=video_path,
+            ass_subtitle_path=ass_path,
+            hook_text=hook_text or display_title,
+            watermark_text=watermark_text,
+        )
     if not ok:
         return None
 
-    # ── 9. Metadata JSON ──────────────────────────────────────────
-    metadata = build_short_metadata(story, video_path, thumb_path, ai_meta=ai_meta)
+    # ── 8. Metadata JSON ──────────────────────────────────────────
+    metadata = build_short_metadata(story, video_path, thumb_path)
+    # Tag the metadata so the uploader can disclose synthetic/altered
+    # content to YouTube. This is required by the July 2025 policy.
+    metadata["altered_content"] = True
+    metadata["has_broll"] = bool(broll_paths)
+    metadata["has_captions"] = bool(ass_path)
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")
@@ -1029,16 +1354,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
 # ── Principal ────────────────────────────────────────────────────
 def main():
-    # Fail-fast startup validation. _ai_shorts_meta (the legacy backstop)
-    # still calls Mistral, and Pollinations doesn't need auth, but the
-    # queue's AI-authored script is what makes a Short worth shipping —
-    # missing key would mean degrading silently to the legacy path.
-    if not os.environ.get("MISTRAL_API_KEY"):
-        log.warning(
-            "⚠ MISTRAL_API_KEY is not set. Shorts will fall back to "
-            "the legacy template-script renderer and may look generic."
-        )
-
+    # generate_shorts.py no longer calls the LLM at the top level —
+    # `seo_title`, `script`, `hook`, `yt_tags`, `thumbnail_text` all
+    # come from fetch_news.py's queue. We DO still call Whisper for
+    # captions and edge-tts for narration, but those happen inside
+    # generate_short() on a per-story basis. The fail-fast checks
+    # below catch the cases where the queue file itself is missing.
+    from utils.panic import abort_if_halted
+    abort_if_halted("generate_shorts")
     VIDEOS_DIR.mkdir(exist_ok=True)
 
     if not QUEUE_FILE.exists():
@@ -1053,6 +1376,19 @@ def main():
     # but shorts_done covers the case where a story was published to
     # YouTube but the workflow died before marking it consumed.
     candidates = [c for c in candidates if c["slug"] not in shorts_done]
+
+    # Honour the operator's `/block <slug>` decisions from the daily
+    # digest issue. utils/digest.py harvest_block_commands writes the
+    # list to _data/blocked_slugs.json; we filter against it here so a
+    # blocked story is silently dropped before any AI/render work.
+    blocked = load_blocked_slugs()
+    if blocked:
+        before = len(candidates)
+        candidates = [c for c in candidates if c["slug"] not in blocked
+                       and c.get("_queue_id", "") not in blocked]
+        if before != len(candidates):
+            log.info("🚫 Filtered out %d blocked stories (operator /block)",
+                     before - len(candidates))
 
     log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
     if not candidates:

@@ -54,11 +54,16 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - name: "Instalar FFmpeg e fontes"
+      - name: "Instalar FFmpeg, libass e fontes"
         run: |
           sudo apt-get update -qq
+          # libass is required for the ASS subtitle burn-in step. It's
+          # already a dep of the ffmpeg binary on ubuntu-latest, but
+          # we install explicitly to fail loudly if Ubuntu ever splits
+          # ffmpeg-extras out of the default package.
           sudo apt-get install -y \
             ffmpeg \
+            libass9 \
             fonts-dejavu-core \
             fonts-liberation \
             fonts-noto-core \
@@ -71,6 +76,12 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          # Optional: faster-whisper for local caption fallback if Groq
+          # Whisper isn't configured. Keeps captions working with zero
+          # network deps. ~200 MB download, runs CPU-only.
+          if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
+            pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
+          fi
 
       - name: "Restaurar token do YouTube"
         env:
@@ -119,7 +130,17 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
+          # Same free fallback chain as fetch-news. We accept the short
+          # secret names too (CEREBRAS / GEMINI / GROQ / PEXELS) so
+          # legacy setups don't have to rename.
+          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY   || secrets.GEMINI   }}
+          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY     || secrets.GROQ     }}
+          # B-roll: Pexels needs a free key (20k req/mo, no card).
+          # Without it the pipeline falls back to NASA + Internet Archive
+          # (both keyless) which still beats static frames.
+          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY   || secrets.PEXELS   }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
       - name: "📤 Upload Shorts para YouTube"
@@ -127,6 +148,38 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+
+      - name: "📊 Write run summary"
+        if: always()
+        run: |
+          {
+            echo "## YouTube Shorts run"
+            echo ""
+            # Count what we actually shipped this run.
+            UPLOADED=$(ls _videos/*.done 2>/dev/null | wc -l)
+            META_LEFT=$(ls _videos/*.json 2>/dev/null | wc -l)
+            echo "| Metric | Value |"
+            echo "|--------|-------|"
+            echo "| Done markers (lifetime) | ${UPLOADED} |"
+            echo "| Pending metadata (this run) | ${META_LEFT} |"
+            # YouTube API quota snapshot (estimated from our own
+            # upload log; see utils/youtube_quota.py).
+            python -c "from utils.youtube_quota import summary; s=summary(); print(f'| YouTube quota today | **{s[\"used\"]}/{s[\"budget\"]}** ({s[\"pct_used\"]}%) |')"
+            # Most recent uploaded titles.
+            echo ""
+            echo "### Last 5 published"
+            ls -t _videos/*.done 2>/dev/null | head -5 | while read f; do
+              TITLE=$(python -c "import json; print(json.load(open('$f')).get('title','?'))" 2>/dev/null || echo "?")
+              URL=$(python -c "import json; print(json.load(open('$f')).get('url',''))" 2>/dev/null || echo "")
+              echo "- [${TITLE}](${URL})"
+            done
+            # Quota warning (only emits if >80 % used)
+            WARN=$(python -c "from utils.youtube_quota import warn_if_near_cap; print(warn_if_near_cap())")
+            if [ -n "$WARN" ]; then
+              echo ""
+              echo "$WARN"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: "💾 Salvar marcadores no git"
         run: |
@@ -141,6 +194,9 @@ jobs:
           # The stories queue gets stories marked as consumed by
           # generate_shorts.py — commit that back too.
           git add _data/stories_queue.json 2>/dev/null || true
+          # Quota ledger — tracks per-upload YouTube Data API spend so
+          # the workflow summary can surface "we're at 85 % of cap".
+          git add _data/quota_log.jsonl 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "✅ Nenhum arquivo novo para salvar."
