@@ -102,8 +102,33 @@ VOICE_PANEL = [
 # Backwards-compat alias — kept for any caller still importing it.
 VOICE_SHORT = VOICE_PANEL[0]
 
+# Per-locale panels for sibling channels. The keys match
+# utils.translation.SUPPORTED_LANGUAGES so a translated story carries
+# its own voice_tag and we pick from the right panel automatically.
+VOICE_PANEL_BY_LOCALE: dict[str, list[str]] = {
+    "en":    VOICE_PANEL,
+    "pt-BR": [
+        "pt-BR-FranciscaNeural",   # warm, conversational
+        "pt-BR-AntonioNeural",     # male, news-anchor
+        "pt-BR-ThalitaNeural",     # younger female
+    ],
+    "es-ES": [
+        "es-ES-ElviraNeural",
+        "es-ES-AlvaroNeural",
+    ],
+    "es-MX": [
+        "es-MX-DaliaNeural",
+        "es-MX-JorgeNeural",
+    ],
+    "fr-FR": [
+        "fr-FR-DeniseNeural",
+        "fr-FR-HenriNeural",
+    ],
+}
 
-def pick_voice(seed_text: str, category: str = "") -> str:
+
+def pick_voice(seed_text: str, category: str = "",
+                voice_tag: str = "") -> str:
     """Deterministic voice choice based on `seed_text` (usually the title).
 
     Same text → same voice across reruns, so regenerating a Short doesn't
@@ -111,7 +136,22 @@ def pick_voice(seed_text: str, category: str = "") -> str:
     (WAR, POLITICS) toward the more authoritative British voices, but
     only as a bias — the hash still decides the final pick within the
     eligible subset so distribution stays roughly even.
+
+    `voice_tag` switches to the per-locale panel — pt-BR, es-ES, etc. —
+    so a translated story renders with native voices. Category bias
+    isn't applied for non-English panels (smaller panels = less room
+    to filter).
     """
+    voice_tag = (voice_tag or "").strip()
+    # Translated story: pick from the locale panel. No category bias —
+    # the per-locale panels are small (2-3 voices) and partitioning
+    # them further would collapse to a single voice.
+    if voice_tag and voice_tag != "en":
+        panel = VOICE_PANEL_BY_LOCALE.get(voice_tag)
+        if panel:
+            idx = abs(hash(seed_text or "default")) % len(panel)
+            return panel[idx]
+
     cat = (category or "").upper()
     if cat in ("WAR", "POLITICS", "WORLD") and seed_text:
         eligible = [v for v in VOICE_PANEL if v.startswith(("en-GB", "en-US-Guy"))]
@@ -940,8 +980,12 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # ── 1. TTS narration ──────────────────────────────────────────
     script = humanize_for_tts(queue_script)
     audio_path = tmp_dir / f"audio_{slug}.mp3"
-    voice = pick_voice(seed_text=title, category=category)
-    log.info(f"  🎤 Voice: {voice}")
+    # Translated stories carry a `voice_tag` (e.g. "pt-BR") set by
+    # utils.translation.translate_story. English stories don't set it,
+    # so pick_voice falls through to the default panel.
+    voice_tag = story.get("voice_tag", "")
+    voice = pick_voice(seed_text=title, category=category, voice_tag=voice_tag)
+    log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")
     try:
         asyncio.run(text_to_speech(script, audio_path, voice))
         size_kb = audio_path.stat().st_size / 1024
