@@ -31,7 +31,10 @@ from utils.text import humanize_for_tts
 VIDEOS_DIR      = Path("_videos")
 SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
 LOG_FILE        = "generate_shorts.log"
-MAX_SHORTS_PER_RUN = 3
+# Cap of shorts produced per run. Overridable via env var so the
+# workflow can tune it without editing this file. Defaults to 3 —
+# matches youtube-bot.yml schedule (1 run/day × 3 shorts = 3/day).
+MAX_SHORTS_PER_RUN = int(os.environ.get("MAX_SHORTS_PER_RUN", "3"))
 SHORT_W, SHORT_H = 1080, 1920  # vertical 9:16
 
 # Paleta de cores — identidade GlobalBR

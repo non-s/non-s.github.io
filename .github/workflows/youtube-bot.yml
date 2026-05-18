@@ -1,10 +1,14 @@
-name: "YouTube Bot"
+name: "YouTube Bot — Shorts only"
 
+# Shorts-only pipeline. Long-form videos were dropped 2026-05 — every
+# short already covers one story, which is what we want on the channel.
+# Quota math: YouTube allows 10,000 units/day; each upload costs 1,600,
+# so 3 shorts/run × 1 run/day = 4,800 units (well under the cap).
 on:
   schedule:
-    # Roda uma vez por dia às 14:00 UTC
-    # YouTube quota: 10.000 unidades/dia | 1 upload = 1.600 unidades
-    # 1 video EN + até 3 Shorts = ~4 uploads = ~6.400 unidades (dentro da quota)
+    # Once a day at 14:00 UTC. Bump to "0 8,14,20 * * *" for 3 runs/day
+    # (~9 shorts/day) if you ever want a higher cadence — still under
+    # the daily quota.
     - cron: "0 14 * * *"
   workflow_dispatch:
 
@@ -15,15 +19,22 @@ concurrency:
 
 jobs:
   generate-and-upload:
-    name: "Gerar videos e publicar"
+    name: "Gerar e publicar Shorts"
     runs-on: ubuntu-latest
     # Without a timeout, a stuck FFmpeg encode can chew through the
     # whole monthly GitHub Actions quota on a single hung job.
-    timeout-minutes: 60
+    # 30min is generous for 3 shorts (~5min each end-to-end).
+    timeout-minutes: 30
 
     # Least-privilege: we don't use OIDC, only commit + push.
     permissions:
       contents: write
+
+    env:
+      # Cap of shorts produced per run. Mirrors the default in
+      # generate_shorts.py (MAX_SHORTS_PER_RUN), but explicit here so
+      # operators can tune via repo Vars without editing Python.
+      MAX_SHORTS_PER_RUN: "3"
 
     steps:
       - name: "Checkout"
@@ -90,35 +101,31 @@ jobs:
           ls _videos/*.done 2>/dev/null | wc -l || echo "0 .done"
           ls _videos/*.roundup 2>/dev/null | wc -l || echo "0 .roundup"
 
-      - name: "Gerar video (English roundup)"
-        run: python generate_video.py
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+      # Long-form roundup video generation was removed 2026-05. The
+      # channel is shorts-only now. generate_video.py / upload_youtube.py
+      # for long-form remain in the repo — re-enable here if needed.
 
-      - name: "Upload video para YouTube"
-        run: python upload_youtube.py
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-
-      - name: "📱 Gerar YouTube Shorts"
+      - name: "📱 Gerar YouTube Shorts (até 3 por run)"
+        # This is now the primary content step — drop the
+        # continue-on-error so a failure surfaces instead of silently
+        # producing zero shorts for the day.
         run: python generate_shorts.py
-        continue-on-error: true
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
       - name: "📤 Upload Shorts para YouTube"
         run: python upload_youtube.py
-        continue-on-error: true
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "📝 Criar posts no blog para os vídeos"
+      - name: "📝 Criar posts no blog para os Shorts"
+        # Best-effort: blog mirror of each Short. The Short on YouTube
+        # is the canonical artefact, so failing here doesn't block the
+        # rest of the pipeline.
         run: python create_video_blog_post.py
         continue-on-error: true
         env:
@@ -140,7 +147,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "✅ Nenhum arquivo novo para salvar."
           else
-            git commit -m "🎬 Vídeos + posts — $(date -u +'%Y-%m-%d')"
+            git commit -m "📱 Shorts + posts — $(date -u +'%Y-%m-%d')"
             git push origin HEAD
           fi
         env:
@@ -160,7 +167,6 @@ jobs:
         with:
           name: "youtube-log-${{ github.run_number }}"
           path: |
-            generate_video.log
             generate_shorts.log
             upload_youtube.log
           retention-days: 7
