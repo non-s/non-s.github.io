@@ -23,7 +23,12 @@ LOG_FILE   = "upload_youtube.log"
 VIDEOS_DIR = Path("_videos")
 TOKEN_FILE = Path("token.json")
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
-               "https://www.googleapis.com/auth/youtube"]
+               "https://www.googleapis.com/auth/youtube",
+               # commentThreads.insert refuses anything weaker than
+               # force-ssl, even though every YouTube API call already
+               # goes over HTTPS. Without this the pinned first-comment
+               # fails 403 insufficientPermissions.
+               "https://www.googleapis.com/auth/youtube.force-ssl"]
 MAX_RETRIES = 4
 RETRYABLE_STATUSES = {500, 502, 503, 504}
 
@@ -366,8 +371,14 @@ def main():
         log.error("❌ %s", e)
         sys.exit(2)
 
-    # Busca vídeos com metadata JSON prontos para upload
-    pending = sorted(VIDEOS_DIR.glob("*.json"))
+    # Busca vídeos com metadata JSON prontos para upload.
+    # `shorts_done.json` lives in the same directory but is a list of
+    # already-published slugs — skipping it here keeps us from passing a
+    # list into upload_video() and crashing the whole run.
+    pending = sorted(
+        p for p in VIDEOS_DIR.glob("*.json")
+        if p.name != "shorts_done.json"
+    )
     if not pending:
         log.info("Nenhum vídeo pendente para upload.")
         return
@@ -379,6 +390,13 @@ def main():
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
         except Exception as e:
             log.error("Falha ao ler %s: %s", meta_file.name, e)
+            continue
+
+        # Defensive: a non-dict payload would crash upload_video at the
+        # first meta.get() call and abort every remaining file in the run.
+        if not isinstance(meta, dict):
+            log.error("Ignorando %s: top-level JSON não é objeto (%s).",
+                      meta_file.name, type(meta).__name__)
             continue
 
         video_id = upload_video(youtube, meta)
