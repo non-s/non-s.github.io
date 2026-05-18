@@ -55,19 +55,47 @@ the secret.
 
 ## 2. Recommended — free, opt-in upgrades
 
-### 2.1 Cerebras AI fallback (1M tokens/day free)
+### 2.1 AI fallback chain (zero-cost reliability)
 
-When Mistral rate-limits you ([happens on bursty hours](https://docs.mistral.ai/deployment/laplateforme/rate_limits/)), the pipeline currently drops those stories silently. Cerebras adds a 1M tokens/DAY parachute that fires automatically.
+When Mistral rate-limits you ([happens on bursty hours](https://docs.mistral.ai/deployment/laplateforme/rate_limits/)), every Mistral-only pipeline drops the affected story silently. We avoid that with a chain of free-tier providers — configure **any** of them (or all) and the pipeline tries them in order before giving up:
 
-1. Sign up at <https://cloud.cerebras.ai> (Google or GitHub login,
-   no credit card)
-2. Generate an API key in the dashboard
-3. In this repo: add secret `CEREBRAS_API_KEY` with the value
+| Provider | Free tier | Sign up | Secret |
+|----------|-----------|---------|--------|
+| **Cerebras** | 1M tokens/DAY, OpenAI-compatible | <https://cloud.cerebras.ai> | `CEREBRAS_API_KEY` |
+| **Google Gemini** | 15 RPM, 1,500 req/DAY (flash-lite) | <https://aistudio.google.com/apikey> | `GEMINI_API_KEY` |
+| **Groq** | ~14k req/DAY, very fast inference | <https://console.groq.com> | `GROQ_API_KEY` |
 
-Verify it's working: in `fetch-news.log` after a Mistral 429,
-you should see `"Falling back to Cerebras after Mistral 429"`.
-Without the key, the pipeline simply skips the failover (same
-behaviour as before Phase 3 of the audit).
+None require a credit card. After Mistral exhausts its retries on a
+429 / 5xx / network error, the chain tries Cerebras → Gemini → Groq
+in order. First successful response wins. Verify a fallback fired:
+`fetch-news.log` will show `"Falling back to Cerebras|Gemini|Groq
+after Mistral …"`.
+
+Configuring at least one fallback is highly recommended — without it,
+a single Mistral hiccup drops the affected stories for the day.
+
+### 2.2 Public-source discovery (already on, free, no key)
+
+The pipeline pulls additional candidate stories from Reddit (curated
+news subs), Hacker News, Wikipedia Current Events, Google Trends
+(daily search) and GDELT (global news index) on every fetch-news run.
+All free, no auth, no extra secrets. Disable with `FETCH_INCLUDE_PUBLIC=0`
+or `FETCH_INCLUDE_TRENDS=0` if you ever need to.
+
+Google Trends doubles as a search-bias signal: any RSS story whose
+title mentions a currently-trending keyword gets a +1 or +2 boost on
+the AI ranker score, which lifts timely stories over evergreen ones.
+
+### 2.3 Free image fallback chain
+
+When a story has no embedded image and Pollinations rate-limits the
+AI background generator, the Shorts renderer now tries (free, no key):
+
+  1. Open Graph image scraped from the source article URL
+  2. Wikipedia REST API thumbnail for any named entity in the title
+  3. Openverse Creative-Commons image search
+
+This makes "no background available → drop the Short" much rarer.
 
 ---
 

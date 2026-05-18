@@ -1,11 +1,23 @@
 """
 utils/ai_helper.py — AI text generation and content analysis.
 
-Primary: Mistral La Plateforme (free tier, 500k tokens/mo, ~1 RPS).
-Fallback: Cerebras (OpenAI-compatible, 1M tokens/DAY free at 30 RPM)
-— kicks in transparently when Mistral 429s through its retries. Set
-CEREBRAS_API_KEY to enable; without it the fallback is skipped and
-behaviour matches the pre-fallback world.
+Primary:    Mistral La Plateforme (free tier, 500k tokens/mo, ~1 RPS).
+Fallback 1: Cerebras (OpenAI-compatible, 1M tokens/DAY free at 30 RPM)
+Fallback 2: Google Gemini (15 RPM + 1500 req/day free on flash-lite)
+Fallback 3: Groq (OpenAI-compatible, ~14k req/day free, very fast)
+
+Fallbacks fire in order, only when the previous provider hits a
+transient failure (429 / 5xx / network). Each fallback is opt-in via
+its API key env var:
+
+  CEREBRAS_API_KEY  → Cerebras fallback
+  GEMINI_API_KEY    → Gemini fallback
+  GROQ_API_KEY      → Groq fallback
+
+Without any fallback key set, behaviour matches the Mistral-only world.
+This chain means a single story has up to 4 chances to survive a
+provider hiccup — drastically reducing the "Mistral 429 → drop story"
+loss rate on the free-tier budget.
 """
 import json
 import logging
@@ -33,6 +45,19 @@ _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 # don't drop the story" parachute.
 _CEREBRAS_API_URL = "https://api.cerebras.ai/v1/chat/completions"
 _CEREBRAS_MODEL   = os.environ.get("CEREBRAS_MODEL", "llama-3.3-70b")
+
+# Google Gemini free tier — 15 RPM, 1,500 requests/day on flash-lite.
+# Uses a different request shape than OpenAI-compat APIs, so we have
+# a dedicated _call_gemini below.
+_GEMINI_API_URL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+)
+_GEMINI_MODEL   = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+
+# Groq — OpenAI-compatible API, free tier ~14k req/day on llama-3.3-70b
+# and llama-3.1-8b. Very fast (sub-second usually).
+_GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+_GROQ_MODEL   = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # Mistral free tier is nominally 1 request/second but sustained traffic
 # hits 429 well before that. 8s gives a comfortable 8x margin over the
@@ -161,6 +186,63 @@ def _call_cerebras(sys_msg: str, prompt: str, timeout: int, key: str, json_mode:
     return r.json()["choices"][0]["message"]["content"].strip()
 
 
+def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
+    """Google Gemini (generative-language). Different request shape than OpenAI.
+
+    Free tier: 15 RPM, 1,500 req/day on flash-lite — way more headroom
+    than Mistral's 500k tokens/mo. Used as a 3rd parachute after Mistral
+    and Cerebras both fail in a single 24h window.
+    """
+    _throttle()
+    url = _GEMINI_API_URL.format(model=_GEMINI_MODEL) + f"?key={key}"
+    body: dict = {
+        "contents": [{
+            "role": "user",
+            "parts": [{"text": prompt}],
+        }],
+        "systemInstruction": {"parts": [{"text": sys_msg}]},
+        "generationConfig": {
+            "temperature": 0.7,
+            "maxOutputTokens": 3000,
+        },
+    }
+    if json_mode:
+        body["generationConfig"]["responseMimeType"] = "application/json"
+
+    r = _session.post(url, json=body, timeout=timeout,
+                      headers={"Content-Type": "application/json"})
+    r.raise_for_status()
+    data = r.json()
+    try:
+        return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+    except (KeyError, IndexError) as exc:
+        raise RuntimeError(f"Gemini response missing text: {data}") from exc
+
+
+def _call_groq(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
+    """Groq — OpenAI-compatible, free tier ~14k req/day. Last fallback."""
+    _throttle()
+    payload: dict = {
+        "model": _GROQ_MODEL,
+        "messages": [
+            {"role": "system", "content": sys_msg},
+            {"role": "user",   "content": prompt},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 3000,
+    }
+    if json_mode:
+        payload["response_format"] = {"type": "json_object"}
+    r = _session.post(
+        _GROQ_API_URL,
+        json=payload,
+        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+        timeout=timeout,
+    )
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"].strip()
+
+
 def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, json_mode: bool = False) -> str:
     """
     Generate text via Mistral La Plateforme (free tier).
@@ -231,36 +313,55 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
             if attempt < 2:
                 time.sleep(3)
 
-    # ── Fallback: Cerebras (1M tokens/day free, OpenAI-compatible) ──
-    # Only worth trying when Mistral failed for a reason Cerebras might
-    # not share — 429 (quota) or 5xx (provider outage). For other
-    # statuses (e.g. 400 = bad prompt) Cerebras would also reject, so
-    # we don't waste the call.
-    cerebras_key = os.environ.get("CEREBRAS_API_KEY", "")
+    # ── Multi-provider fallback chain ──────────────────────────────
+    # Only fire fallbacks when Mistral failed transiently (429 / 5xx /
+    # network). 400-class errors mean the prompt itself is bad — every
+    # provider would reject it, so we save the budget.
     transient_failure = (
         mistral_failed_with == 429
         or mistral_failed_with in (500, 502, 503, 504)
         or mistral_failed_with == "exception"
     )
-    if cerebras_key and transient_failure:
+    if not transient_failure:
+        return ""
+
+    # Each fallback is (env var name, log label, caller). The chain runs
+    # in order; first successful response wins.
+    fallback_chain = [
+        ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
+        ("GEMINI_API_KEY",   "Gemini",   _call_gemini),
+        ("GROQ_API_KEY",     "Groq",     _call_groq),
+    ]
+    any_configured = False
+    for env_var, label, caller in fallback_chain:
+        key = os.environ.get(env_var, "")
+        if not key:
+            continue
+        any_configured = True
         for attempt in range(2):
             try:
-                log.info(f"Falling back to Cerebras after Mistral {mistral_failed_with}")
-                return _call_cerebras(sys_msg, prompt, timeout, cerebras_key, json_mode=json_mode)
+                log.info(f"Falling back to {label} after Mistral {mistral_failed_with}")
+                return caller(sys_msg, prompt, timeout, key, json_mode=json_mode)
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
                 if status == 429 and attempt < 1:
-                    log.warning(f"Cerebras 429 — retry in 5s (attempt {attempt+1}/2)")
+                    log.warning(f"{label} 429 — retry in 5s (attempt {attempt+1}/2)")
                     sleep(5)
                     continue
-                log.warning(f"Cerebras HTTP {status} — giving up on this story")
+                log.warning(f"{label} HTTP {status} — moving on")
                 break
             except Exception as exc:
-                log.warning(f"Cerebras error (attempt {attempt+1}/2): {exc}")
+                log.warning(f"{label} error (attempt {attempt+1}/2): {exc}")
                 if attempt < 1:
                     sleep(3)
-    elif transient_failure:
-        log.info("CEREBRAS_API_KEY not set — no fallback path. Set it to add a 1M tok/day cushion.")
+                    continue
+                break
+
+    if not any_configured:
+        log.info(
+            "No fallback AI key set (CEREBRAS_API_KEY / GEMINI_API_KEY / "
+            "GROQ_API_KEY). Configure at least one to add a free-tier cushion."
+        )
 
     return ""
 

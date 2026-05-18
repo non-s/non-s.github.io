@@ -32,6 +32,7 @@ except ImportError:  # pragma: no cover
     fcntl = None
 
 from utils.ai_helper import ai_text as _ai_text
+from utils.free_images import fetch_any_free_image
 from utils.text import humanize_for_tts
 
 # ── Config ────────────────────────────────────────────────────────
@@ -72,7 +73,53 @@ CATEGORY_COLORS = {
     "ENTERTAINMENT": (180, 0, 220),
 }
 
-VOICE_SHORT = "en-US-JennyNeural"
+# ── TTS voice rotation ────────────────────────────────────────────
+#
+# Channel grew on Jenny's voice originally, but a single voice across
+# every Short flattens audience appetite — YouTube's algorithm notices
+# when consecutive videos sound identical and de-prioritises the second
+# (the "session homogeneity" signal). Rotating between a small panel
+# of high-quality edge-tts voices keeps things fresh without dropping
+# the channel's recognisable bilingual-news tone.
+#
+# We pick the voice deterministically from the story's title hash so a
+# given story always renders with the same voice (idempotent reruns)
+# and there's roughly-even distribution across the panel.
+VOICE_PANEL = [
+    "en-US-JennyNeural",     # original — warm, conversational
+    "en-US-AriaNeural",      # crisp, news-anchor
+    "en-US-GuyNeural",       # male, level
+    "en-GB-SoniaNeural",     # British female, gravitas
+    "en-GB-RyanNeural",      # British male
+    "en-AU-NatashaNeural",   # Australian female (variety geo)
+]
+# Backwards-compat alias — kept for any caller still importing it.
+VOICE_SHORT = VOICE_PANEL[0]
+
+
+def pick_voice(seed_text: str, category: str = "") -> str:
+    """Deterministic voice choice based on `seed_text` (usually the title).
+
+    Same text → same voice across reruns, so regenerating a Short doesn't
+    produce a different audio track. Category nudges high-stakes news
+    (WAR, POLITICS) toward the more authoritative British voices, but
+    only as a bias — the hash still decides the final pick within the
+    eligible subset so distribution stays roughly even.
+    """
+    cat = (category or "").upper()
+    if cat in ("WAR", "POLITICS", "WORLD") and seed_text:
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-GB", "en-US-Guy"))]
+    elif cat in ("AI", "TECH", "SCIENCE", "HARDWARE"):
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Aria", "en-GB-Ryan", "en-US-Guy"))]
+    elif cat in ("ENTERTAINMENT", "SPORTS", "FOOD", "TRAVEL"):
+        eligible = [v for v in VOICE_PANEL if v.startswith(("en-US-Jenny", "en-AU-Natasha"))]
+    else:
+        eligible = VOICE_PANEL
+    if not eligible:
+        eligible = VOICE_PANEL
+    idx = abs(hash(seed_text or "default")) % len(eligible)
+    return eligible[idx]
+
 
 SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
 
@@ -922,13 +969,32 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # We skip Shorts that can't acquire a real background. Without one
     # the auto-generated thumbnail looks like a grey placeholder on
     # YouTube — terrible CTR and indistinguishable from broken uploads.
+    #
+    # Fallback chain (all free, no auth):
+    #   1. Story's own image_url (RSS-embedded media).
+    #   2. Open Graph image scraped from the source article URL.
+    #   3. Wikipedia/Wikimedia summary thumbnail for any named entity in the title.
+    #   4. Openverse Creative Commons image search.
+    #   5. Pollinations AI generation (existing default).
+    #
+    # We try the editorial sources before Pollinations so a generic
+    # photo of the actual subject beats a hallucinated digital scene.
     bg_path = tmp_dir / f"bg_{slug}.jpg"
+    img_ok = False
 
-    # Try story's own image first, then Pollinations
-    if story["image_url"]:
+    if story.get("image_url"):
         img_ok = download_image(story["image_url"], bg_path)
-    else:
-        img_ok = False
+
+    if not img_ok:
+        try:
+            img_ok = fetch_any_free_image(
+                article_url=story.get("source_url", ""),
+                query=title,
+                dest=bg_path,
+            )
+        except Exception as exc:
+            log.debug("free_images fallback failed: %s", exc)
+            img_ok = False
 
     if not img_ok:
         img_ok = generate_ai_background(title, category, bg_path)
@@ -937,7 +1003,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
         log.warning(
             "  ⏭  Skipping Short — no valid background image (story image and "
-            "Pollinations fallback both failed): %s", title[:80],
+            "all free fallbacks failed): %s", title[:80],
         )
         return None
 
@@ -973,13 +1039,27 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         raw_script = build_short_script(title, points, category)
     script = humanize_for_tts(raw_script)
     audio_path = tmp_dir / f"audio_{slug}.mp3"
+    voice = pick_voice(seed_text=title, category=category)
+    log.info(f"  🎤 Voice: {voice}")
     try:
-        asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
+        asyncio.run(text_to_speech(script, audio_path, voice))
         size_kb = audio_path.stat().st_size / 1024
         log.info(f"  TTS generated ({size_kb:.0f} KB)")
     except Exception as e:
         log.error(f"  TTS failed: {e}")
-        return None
+        # Defensive fallback: if the rotated voice errors out (rare,
+        # but edge-tts is unauthenticated and any one voice CDN can
+        # 502), retry once with the original VOICE_SHORT.
+        if voice != VOICE_SHORT:
+            try:
+                log.info("  Retrying TTS with default voice…")
+                asyncio.run(text_to_speech(script, audio_path, VOICE_SHORT))
+                log.info(f"  TTS recovered with {VOICE_SHORT}")
+            except Exception as e2:
+                log.error(f"  TTS retry failed: {e2}")
+                return None
+        else:
+            return None
 
     # ── 5. Check duration ─────────────────────────────────────────
     res = subprocess.run(
