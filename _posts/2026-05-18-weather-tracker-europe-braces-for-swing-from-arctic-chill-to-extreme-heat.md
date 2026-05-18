@@ -43,6 +43,7 @@ entities:
   - "World Meteorological Organization"
   - "Chicago"
   - "Paris"
+audio: "/assets/audio/posts/2026-05-18-weather-tracker-europe-braces-for-swing-from-arctic-chill-to-extreme-heat.mp3"
 ---
 
 A stubborn Arctic blast that sent temperatures 10-15°C below normal across France, England, and Germany for more than a week is about to reverse course. A high-pressure system parked over the North Atlantic and a slow-moving low over southern Scandinavia pushed frigid air southward, turning parks into skating rinks and forcing people to dig out their winter coats. Now, that cold air is on its way out as warmer tropical air surges northward, pushing thermometers up by as much as 15°C in some places.

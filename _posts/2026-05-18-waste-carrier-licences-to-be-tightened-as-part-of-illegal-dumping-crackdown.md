@@ -40,6 +40,7 @@ entities:
   - "Devon"
   - "South Gloucestershire"
   - "Companies House"
+audio: "/assets/audio/posts/2026-05-18-waste-carrier-licences-to-be-tightened-as-part-of-illegal-dumping-crackdown.mp3"
 ---
 
 The UK is tightening waste carrier licences after a cow named Beau Vine somehow got approved for one. The bizarre incident exposed major gaps in how the system checks who can legally transport and dispose of waste. Now, officials say they’ll fix those holes fast to stop criminals from exploiting them.

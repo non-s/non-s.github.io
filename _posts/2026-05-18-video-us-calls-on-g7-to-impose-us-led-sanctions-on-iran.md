@@ -41,6 +41,7 @@ entities:
   - "Islamic Revolutionary Guard Corps"
   - "Strait of Hormuz"
   - "Brent crude"
+audio: "/assets/audio/posts/2026-05-18-video-us-calls-on-g7-to-impose-us-led-sanctions-on-iran.mp3"
 ---
 
 US Treasury Secretary Scott Bessent [led](https://en.wikipedia.org/wiki/United_States_Department_of_the_Treasury) a fresh push Wednesday for Washington’s allies to impose new sanctions on Iran. Bessent made the plea as finance ministers from the G7 [group](https://en.wikipedia.org/wiki/Group_of_Seven) arrived in Paris for a two-day meeting focused on global economic stress and rising geopolitical risks. His comments underscore how Iran’s actions in the Middle East have pushed its relations with Western powers to a new low, just months after Tehran’s direct military clashes with Israel and regional proxies escalated regional tensions even further.
