@@ -137,8 +137,115 @@ def test_fetch_all_dedupes_by_link():
     with patch.object(public_sources, "fetch_reddit_trending", return_value=[fake_item("https://e.test/a")]):
         with patch.object(public_sources, "fetch_hackernews_top", return_value=[fake_item("https://e.test/a/")]):
             with patch.object(public_sources, "fetch_wikipedia_current_events", return_value=[fake_item("https://e.test/b")]):
-                merged = public_sources.fetch_all_public_sources()
+                with patch.object(public_sources, "fetch_google_trends", return_value=[]):
+                    with patch.object(public_sources, "fetch_gdelt_recent", return_value=[]):
+                        merged = public_sources.fetch_all_public_sources()
 
     links = [m["link"] for m in merged]
     # /a and /a/ collapse to one; /b stays.
     assert sorted(links) == sorted(["https://e.test/a", "https://e.test/b"])
+
+
+# ── Google Trends ────────────────────────────────────────────────
+
+_TRENDS_XML_SAMPLE = """
+<?xml version="1.0" encoding="UTF-8"?>
+<rss>
+  <channel>
+    <item>
+      <title>Federal Reserve</title>
+      <ht:approx_traffic>500,000+</ht:approx_traffic>
+      <ht:news_item>
+        <ht:news_item_title><![CDATA[Fed cuts rates after key meeting]]></ht:news_item_title>
+        <ht:news_item_snippet><![CDATA[Powell says inflation is cooling.]]></ht:news_item_snippet>
+        <ht:news_item_url>https://news.example.com/fed-cuts</ht:news_item_url>
+        <ht:news_item_picture>https://img.example.com/fed.jpg</ht:news_item_picture>
+      </ht:news_item>
+    </item>
+    <item>
+      <title>x</title>
+      <ht:news_item>
+        <ht:news_item_title><![CDATA[Short title]]></ht:news_item_title>
+        <ht:news_item_url>https://news.example.com/short</ht:news_item_url>
+      </ht:news_item>
+    </item>
+  </channel>
+</rss>
+""".strip()
+
+
+def test_google_trends_parses_rss_and_extracts_news_links():
+    from utils import public_sources
+
+    fake_resp = MagicMock(status_code=200, text=_TRENDS_XML_SAMPLE)
+    with patch.object(public_sources, "_session") as factory:
+        s = MagicMock()
+        s.get.return_value = fake_resp
+        factory.return_value = s
+        items = public_sources.fetch_google_trends(per_region=5)
+
+    # Five regions × ~1 valid item each. We require trending_term presence.
+    assert items, "expected at least one trending news item"
+    assert any("Powell" in (i.get("description") or "") for i in items)
+    assert all(i.get("trending_term") for i in items)
+    assert all(i["link"].startswith("https://news.example.com") for i in items)
+
+
+def test_google_trends_skips_when_news_url_missing():
+    from utils import public_sources
+
+    no_url = "<rss><channel><item><title>Term</title></item></channel></rss>"
+    fake_resp = MagicMock(status_code=200, text=no_url)
+    with patch.object(public_sources, "_session") as factory:
+        s = MagicMock()
+        s.get.return_value = fake_resp
+        factory.return_value = s
+        items = public_sources.fetch_google_trends(per_region=5)
+    assert items == []
+
+
+def test_trending_keywords_dedupes_and_tokenises():
+    from utils import public_sources
+
+    items = [
+        {"trending_term": "Jerome Powell"},
+        {"trending_term": "Federal Reserve rates"},
+        {"trending_term": "x"},  # too short, skipped
+    ]
+    out = public_sources.trending_keywords(items)
+    # "jerome", "powell", "federal", "reserve", "rates" all retained.
+    assert "powell" in out
+    assert "federal" in out
+    assert "jerome powell" in out
+    # The 1-char term is dropped.
+    assert "x" not in out
+
+
+# ── GDELT ────────────────────────────────────────────────────────
+
+def test_gdelt_filters_short_titles_and_bad_urls():
+    from utils import public_sources
+
+    payload = {
+        "articles": [
+            {"url": "https://news.example.com/a", "title": "A reasonably long substantive headline",
+             "domain": "news.example.com", "seendate": "20260518T120000Z"},
+            {"url": "ftp://nope/", "title": "Plenty long but wrong scheme entirely"},
+            {"url": "https://news.example.com/short", "title": "tiny"},
+            {"url": "https://news.example.com/c", "title": "Another fully-formed headline about something significant",
+             "domain": "news.example.com", "seendate": "20260518T120000Z"},
+        ],
+    }
+    fake_resp = MagicMock(status_code=200)
+    fake_resp.json.return_value = payload
+
+    with patch.object(public_sources, "_session") as factory:
+        s = MagicMock()
+        s.get.return_value = fake_resp
+        factory.return_value = s
+        items = public_sources.fetch_gdelt_recent(themes=("FAKE_THEME",), limit=10)
+
+    titles = [i["title"] for i in items]
+    assert any("reasonably long" in t for t in titles)
+    assert not any(t == "tiny" for t in titles)
+    assert not any(i["link"].startswith("ftp://") for i in items)

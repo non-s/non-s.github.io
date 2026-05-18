@@ -55,19 +55,153 @@ the secret.
 
 ## 2. Recommended — free, opt-in upgrades
 
-### 2.1 Cerebras AI fallback (1M tokens/day free)
+### 2.1 AI fallback chain (zero-cost reliability)
 
-When Mistral rate-limits you ([happens on bursty hours](https://docs.mistral.ai/deployment/laplateforme/rate_limits/)), the pipeline currently drops those stories silently. Cerebras adds a 1M tokens/DAY parachute that fires automatically.
+When Mistral rate-limits you ([happens on bursty hours](https://docs.mistral.ai/deployment/laplateforme/rate_limits/)), every Mistral-only pipeline drops the affected story silently. We avoid that with a chain of free-tier providers — configure **any** of them (or all) and the pipeline tries them in order before giving up:
 
-1. Sign up at <https://cloud.cerebras.ai> (Google or GitHub login,
-   no credit card)
-2. Generate an API key in the dashboard
-3. In this repo: add secret `CEREBRAS_API_KEY` with the value
+| Provider | Free tier | Sign up | Secret |
+|----------|-----------|---------|--------|
+| **Cerebras** | 1M tokens/DAY, OpenAI-compatible | <https://cloud.cerebras.ai> | `CEREBRAS_API_KEY` |
+| **Google Gemini** | 15 RPM, 1,500 req/DAY (flash-lite) | <https://aistudio.google.com/apikey> | `GEMINI_API_KEY` |
+| **Groq** | ~14k req/DAY, very fast inference | <https://console.groq.com> | `GROQ_API_KEY` |
 
-Verify it's working: in `fetch-news.log` after a Mistral 429,
-you should see `"Falling back to Cerebras after Mistral 429"`.
-Without the key, the pipeline simply skips the failover (same
-behaviour as before Phase 3 of the audit).
+None require a credit card. After Mistral exhausts its retries on a
+429 / 5xx / network error, the chain tries Cerebras → Gemini → Groq
+in order. First successful response wins. Verify a fallback fired:
+`fetch-news.log` will show `"Falling back to Cerebras|Gemini|Groq
+after Mistral …"`.
+
+Configuring at least one fallback is highly recommended — without it,
+a single Mistral hiccup drops the affected stories for the day.
+
+### 2.2 Public-source discovery (already on, free, no key)
+
+The pipeline pulls additional candidate stories from Reddit (curated
+news subs), Hacker News, Wikipedia Current Events, Google Trends
+(daily search) and GDELT (global news index) on every fetch-news run.
+All free, no auth, no extra secrets. Disable with `FETCH_INCLUDE_PUBLIC=0`
+or `FETCH_INCLUDE_TRENDS=0` if you ever need to.
+
+Google Trends doubles as a search-bias signal: any RSS story whose
+title mentions a currently-trending keyword gets a +1 or +2 boost on
+the AI ranker score, which lifts timely stories over evergreen ones.
+
+### 2.3 Free image fallback chain
+
+When a story has no embedded image and Pollinations rate-limits the
+AI background generator, the Shorts renderer now tries (free, no key):
+
+  1. Open Graph image scraped from the source article URL
+  2. Wikipedia REST API thumbnail for any named entity in the title
+  3. Openverse Creative-Commons image search
+
+This makes "no background available → drop the Short" much rarer.
+
+### 2.4 B-roll motion footage (Pexels API — recommended)
+
+YouTube's July 2025 "Inauthentic Content" policy demonetises Shorts
+that pair AI-narration with static-frame video (Screen Culture / KH
+Studio / True Crime Case Files were all terminated for this). Adding
+real motion footage is the single biggest defensive move.
+
+1. Free key at <https://www.pexels.com/api/new/> (no credit card)
+2. Add the secret `PEXELS_API_KEY` to repo settings
+
+Free tier: 200 req/h, 20,000/month — more than enough for 3 Shorts/day.
+
+Without this key, the pipeline still ships — it falls back to NASA's
+free Image+Video Library and the Internet Archive (both keyless).
+But Pexels has the best portrait-orientation coverage and is what
+makes the static-vs-motion gap disappear.
+
+### 2.5 Burned-in captions (Groq Whisper — recommended)
+
+~80 % of Shorts are watched muted in the first two seconds. Burned
+captions are the single biggest retention lever (+18 % watch time
+documented). The pipeline tries:
+
+  1. Groq Whisper API — free, 2,000 req/day, word-level timestamps
+     (`whisper-large-v3-turbo`). Reuses your `GROQ_API_KEY` from §2.1.
+  2. faster-whisper locally on the runner — CPU-only fallback,
+     installed by the workflow if `GROQ_API_KEY` is unset.
+
+Setting Groq is the cheaper path (much faster + no extra runtime).
+Without either, the pipeline still ships but skips captions.
+
+### 2.6 GitHub Pages dashboard (free)
+
+`dashboard.yml` builds a static analytics dashboard from the
+analytics CSVs every night and deploys to GitHub Pages. To enable:
+
+1. **Settings → Pages**: set "Source" to **GitHub Actions**.
+2. That's it. The workflow runs at 03:30 UTC and the page lands at
+   `https://<owner>.github.io/<repo>/`.
+
+The page shows total views, sparklines, top performers, A/B winners,
+retention by category, and the cohort-timing recommendations.
+
+### 2.7 Portuguese sibling channel (huge untapped niche)
+
+Brazil is the **#3 YouTube Shorts market by views** (~9 % of global
+traffic, AIR Media-Tech 2026) and there is currently **no mass-scale
+automated PT-BR news Shorts competition**. RPM per view is lower
+($0.045 vs US $0.18) but the volume gap more than compensates —
+Brazilian creators routinely out-earn US peers on a single niche.
+
+The pipeline already supports a sibling channel that publishes the
+same stories in Brazilian Portuguese. The English channel is
+unaffected; the workflow `youtube-bot-ptbr.yml` runs at 09 / 15 / 21
+UTC (06 / 12 / 18 BRT — Brazilian morning, lunch, evening peaks).
+
+**To activate:**
+
+1. **Create a new YouTube channel** under your Google account:
+   YouTube → Settings → Add or manage your channel → Create a new
+   channel. Pick a Portuguese-friendly handle like `@globalbrnewsbr`.
+2. **Generate the OAuth token for the new channel:**
+   ```bash
+   # Locally, with the same client_secret.json you used for English:
+   python auth_youtube.py
+   # Sign in with the SAME Google account, but select the NEW channel
+   # in the consent screen. token.json now belongs to the PT-BR channel.
+   ```
+3. **Add the new repo secret**: paste `token.json` contents as
+   `YOUTUBE_TOKEN_PTBR`. Keep `YOUTUBE_TOKEN` for English.
+
+That's it. The workflow checks for `YOUTUBE_TOKEN_PTBR` and silently
+skips if it's not set, so committing the workflow file does no harm
+on accounts that haven't opted in.
+
+**What the PT-BR run does differently:**
+
+- Every story passes through `utils/translation.py` (free, uses the
+  same Mistral / Cerebras / Gemini / Groq chain). Cached so the
+  daily run doesn't burn extra tokens.
+- Voice rotation switches to PT-BR edge-tts voices
+  (FranciscaNeural / AntonioNeural / ThalitaNeural).
+- Outputs land in `_videos_pt-BR/` to keep the two channels' state
+  cleanly separated.
+- Tags stay in English (Powell, Tesla, etc.) so cross-language
+  search still hits — PT-BR viewers search "Powell", not the
+  hypothetical translation.
+
+### 2.8 Token-saving defaults (already on)
+
+Three knobs cut AI quota use without changing output quality:
+
+  - **Disk cache** (`utils/ai_cache.py`): hashes the full prompt + model
+    + json_mode flag and stores answers in `_data/ai_cache.jsonl` with a
+    30-day TTL. Re-encountering the same story across the 3h cron
+    cadence returns instantly from disk. Self-invalidates on prompt
+    template changes (hash differs). Toggle with `AI_CACHE_ENABLED=0`.
+  - **Pre-AI relevance gate** (`FETCH_RELEVANCE_MIN_AI`, default `3.0`):
+    drops headlines with `entry_relevance_score < 3` before any AI call.
+    Eliminates clickbait, short headlines, image-less wire copy.
+  - **Prompt injection defense** (`utils/prompt_safety.py`): strips
+    "ignore previous instructions", system-tag forgery, and other
+    common jailbreak patterns from RSS-borne text before it reaches the
+    LLM. Combined with explicit system-prompt instructions that field
+    values are untrusted data.
 
 ---
 
@@ -115,41 +249,6 @@ GitHub Actions is **not** an option — jobs cap at 6 hours. Oracle's
    directly)
 
 This unlocks future Phase: 24/7 news loop live stream.
-
-### 3.3 Meta Graph API — cross-post Reels to IG + FB
-
-Same MP4 we upload to YouTube can go to Instagram Reels and Facebook
-Reels via the Meta Graph API. Free. Requires a Facebook Business
-account.
-
-1. <https://developers.facebook.com> → Create App → Business type
-2. Add Instagram Graph API + Facebook Graph API products
-3. Connect a Facebook Page to your Instagram account (must be
-   Business or Creator type — personal IG accounts can't post via API)
-4. Generate a Page access token with `instagram_basic`,
-   `instagram_content_publish`, `pages_show_list` scopes
-5. Add repo secrets:
-   - `META_PAGE_ID`
-   - `META_IG_USER_ID`
-   - `META_PAGE_TOKEN` (long-lived, 60-day; refresh script needed
-     before expiry)
-
-Hard limits to know:
-- IG Reels via API: **100 posts / 24 h** per account (Phyllo, 2026)
-- Only Business / Creator IG accounts (personal blocked)
-- MP4 must already be embedded with its audio — IG API doesn't
-  apply music
-
-When you're ready to wire this, the workflow stub goes in
-`.github/workflows/crosspost.yml`; it triggers off
-`workflow_run: youtube-bot success`.
-
-### 3.4 TikTok — needs manual audit
-
-The TikTok Content Posting API works, but **unaudited apps can only
-post `SELF_ONLY` (private)** — useless for a public channel. The
-audit is a manual process, takes weeks, and isn't worth chasing until
-the IG/FB cross-post is proven. Skip until then.
 
 ---
 
