@@ -17,9 +17,17 @@ from pathlib import Path
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES        = [
+SCOPES = [
+    # Upload videos.
     "https://www.googleapis.com/auth/youtube.upload",
+    # Playlists + comments (we auto-add Shorts to per-region playlists
+    # and post a first comment crediting the source).
     "https://www.googleapis.com/auth/youtube",
+    # Read channel + video metadata (analytics workflow lists recent
+    # uploads via the uploads playlist).
+    "https://www.googleapis.com/auth/youtube.readonly",
+    # YouTube Analytics — retention curves, CTR, traffic sources.
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
 ]
 CLIENT_SECRET = Path("client_secret.json")
 TOKEN_FILE    = Path("token.json")
