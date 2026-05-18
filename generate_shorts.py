@@ -623,93 +623,99 @@ def build_short_metadata(story: dict, video_path: Path,
                          thumb_path: Path,
                          ai_meta: dict | None = None) -> dict:
     """
-    Build metadata JSON in the exact format expected by upload_youtube.py.
-    upload_youtube.py reads: title, description, tags, category_id,
-                             privacy, thumbnail, video
+    Build the JSON metadata payload that upload_youtube.py consumes.
+    Required keys downstream: title, description, tags, category_id,
+                              privacy, thumbnail, video.
 
-    If `ai_meta` is passed in, we skip the AI call (caller already made
-    it — typically because they needed the magnetic title for the frame
-    before this function runs).
+    SEO inputs (already authored by fetch_news.py's prompt and carried
+    on the queue entry):
+
+      story["title"]          — seo_title, 40-55 chars, front-loaded
+      story["yt_tags"]        — 5 lowercase tags (entities + evergreen)
+      story["yt_description"] — 2-3 sentences ending with "#Shorts ..."
+
+    YouTube hard limits we respect:
+      - title:        100 chars total (we soft-cap before adding the
+                      mandatory #Shorts suffix)
+      - description:  5000 chars (we emit ~500)
+      - tags:         500 chars combined across the list
+
+    `ai_meta` is kept as a backwards-compat hook for when the queue
+    didn't ship SEO fields yet — we'll fall through to its yt_title /
+    extra_tags / thumbnail_hook keys. Anything from the queue wins.
     """
-    title = story["title"]
-    description = story.get("description", "")
-    category = story.get("category", "TECH")
-    source = story.get("source", "GlobalBR News")
-    source_url = story.get("source_url", "https://non-s.github.io")
-    date_str = datetime.now().strftime("%B %d, %Y")
-    year = datetime.now().year
+    base_title = (story.get("title") or "").strip()
+    category   = story.get("category", "world")
+    source     = story.get("source", "GlobalBR News")
 
-    # ── AI-generated magnetic title + thumbnail hook ─────────────────
-    # Fall back to the article headline if the AI call fails or returns
-    # something obviously wrong.
-    if ai_meta is None:
-        ai_meta = _ai_shorts_meta(title, description, category)
     ai_meta = ai_meta or {}
-    ai_title = (ai_meta.get("yt_title") or "").strip()
-    if 15 < len(ai_title) <= 80:
-        base_title = ai_title
-        log.info(f"  ✨ Shorts AI title: {base_title}")
-    else:
-        base_title = title
+    legacy_ai_title = (ai_meta.get("yt_title") or "").strip()
+    if not base_title and 15 < len(legacy_ai_title) <= 80:
+        base_title = legacy_ai_title
+    if not base_title:
+        base_title = "World news update"
 
-    yt_title = f"{base_title[:80]} #Shorts"
-    if len(yt_title) > 100:
-        yt_title = f"{base_title[:88]}... #Shorts"
+    # Reserve room for the " #Shorts" suffix (8 chars). YouTube weighs
+    # the first 50-60 chars heavily, so we cap at 88 + suffix = 96.
+    SUFFIX = " #Shorts"
+    cap = 100 - len(SUFFIX)
+    if len(base_title) > cap:
+        base_title = base_title[: cap - 1].rstrip(" .,;:—-") + "…"
+    yt_title = f"{base_title}{SUFFIX}"
 
-    # Hook for thumbnail rendering — saved into metadata so the caller
-    # (or a future thumbnail re-render) can paint it big.
-    thumb_hook = (ai_meta.get("thumbnail_hook") or "").strip()
-    extra_tags = [t for t in (ai_meta.get("extra_tags") or []) if isinstance(t, str)]
+    # ── Description: prefer the AI-authored yt_description, which is
+    # already keyword-front-loaded and ends with #Shorts. Fall back to
+    # synthesising one from the story we have on hand.
+    yt_desc = (story.get("yt_description") or "").strip()
+    if not yt_desc:
+        lead = story.get("description") or story.get("script") or ""
+        yt_desc = (
+            f"{base_title}. {lead}".strip()[:380] +
+            f"\n\nSource: {source}\n#Shorts #BreakingNews"
+        )
+    # Belt-and-braces: guarantee the algorithm sees #Shorts even if the
+    # model forgot it.
+    if "#Shorts" not in yt_desc:
+        yt_desc = yt_desc.rstrip() + "\n#Shorts"
+    yt_desc = yt_desc[:5000]
 
-    # Build the blog post URL (mirror of fetch_news.py's slug convention:
-    # /:category/:year/:month/:day/:slug/). YouTube weighs the first
-    # ~125 chars of the description heavily in search snippets.
-    slug = story.get("slug", "")
-    blog_url = ""
-    if slug:
-        m = re.match(r"^(\d{4})-(\d{2})-(\d{2})-(.+)$", slug)
-        if m:
-            yr, mo, da, slug_only = m.groups()
-            blog_url = f"https://non-s.github.io/{category.lower()}/{yr}/{mo}/{da}/{slug_only}/"
-
-    # Description — first line is the headline (snippet bait), then the
-    # internal blog link (drives traffic to the site, important for SEO),
-    # then external source for credibility.
-    blog_link_block = f"📖 Read the full story on our site: {blog_url}\n" if blog_url else ""
-    yt_desc = (
-        f"{title}\n\n"
-        f"Breaking {category.lower()} news from GlobalBR News — {date_str}.\n\n"
-        f"{blog_link_block}"
-        f"📰 Original source: {source_url}\n"
-        f"   ({source})\n\n"
-        f"🔔 Follow for hourly world news updates.\n"
-        f"🌐 More at: https://non-s.github.io\n\n"
-        f"{SHORTS_HASHTAGS} #{category.replace(' ', '')}"
-        f"\n\n© {year} GlobalBR News. Original articles belong to their respective sources."
-    )
-
-    # Tags
-    base_tags = [
-        "shorts", "news", "breaking news", "world news", "GlobalBR News",
-        "news shorts", f"news {year}", "short news", "latest news", "today news",
+    # ── Tags. Queue-authored entity tags first (they're search-driven),
+    # then evergreen channel tags. Cap at 15 — well under YouTube's
+    # 500-char combined budget while leaving room for the long ones.
+    queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
+    legacy_extra = [t for t in (ai_meta.get("extra_tags") or []) if isinstance(t, str)]
+    evergreen = [
+        "shorts", "news", "breaking news", "world news",
+        category.lower(), f"{category.lower()} news",
+        "globalbr news", "latest news", "today news",
     ]
-    story_tags = story.get("tags", [])
-    cat_tags = [category.lower(), category.lower() + " news"]
-    all_tags = list(dict.fromkeys(base_tags + cat_tags + extra_tags + story_tags))[:30]
+    seen: set[str] = set()
+    all_tags: list[str] = []
+    combined_len = 0
+    for tag in queue_tags + legacy_extra + evergreen:
+        t = tag.strip().lower().lstrip("#")
+        if not t or t in seen:
+            continue
+        # YouTube counts: each tag, plus 1 char per separator. Stop
+        # before we breach the 500-char total.
+        if combined_len + len(t) + 1 > 500 or len(all_tags) >= 15:
+            break
+        all_tags.append(t)
+        seen.add(t)
+        combined_len += len(t) + 1
 
-    metadata = {
-        "title":           yt_title,
-        "description":     yt_desc,
-        "tags":            all_tags,
-        "category_id":     "25",   # News & Politics
-        "privacy":         "public",
-        "thumbnail":       str(thumb_path),
-        "video":           str(video_path),
-        "story_slug":      story["slug"],
-        "created_at":      datetime.now(timezone.utc).isoformat(),
-        "thumbnail_hook":  thumb_hook,
+    return {
+        "title":          yt_title,
+        "description":    yt_desc,
+        "tags":           all_tags,
+        "category_id":    "25",      # News & Politics
+        "privacy":        "public",
+        "thumbnail":      str(thumb_path),
+        "video":          str(video_path),
+        "story_slug":     story["slug"],
+        "created_at":     datetime.now(timezone.utc).isoformat(),
+        "thumbnail_hook": (ai_meta.get("thumbnail_hook") or story.get("thumbnail_text", "")).strip(),
     }
-    return metadata
 
 
 # ── Parse posts ──────────────────────────────────────────────────
@@ -758,6 +764,11 @@ def _queue_to_story(qs: dict) -> dict:
         "script":         qs.get("script", ""),
         "thumbnail_text": qs.get("thumbnail_text", ""),
         "key_points":     qs.get("key_points", []),
+        # SEO fields authored by fetch_news.py — used as-is by
+        # build_short_metadata. Each is allowed to be empty; the
+        # metadata builder falls back to safe defaults.
+        "yt_tags":        qs.get("yt_tags", []),
+        "yt_description": qs.get("yt_description", ""),
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
 
