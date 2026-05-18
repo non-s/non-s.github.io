@@ -41,6 +41,7 @@ entities:
   - "White House"
   - "US Department of Agriculture"
   - "Beijing"
+audio: "/assets/audio/posts/2026-05-18-us-says-china-to-buy-billions-in-agricultural-goods-after-trump-xi-talks.mp3"
 ---
 
 China will buy at least $17 billion worth of American agricultural products every year through 2028 under a new trade agreement announced by the White House after President Donald Trump’s meeting with Chinese leader Xi Jinping in Beijing. The deal covers soybeans, beef, and poultry, and follows earlier commitments made during their October summit in South Korea. China has not yet commented on the announcement, leaving the agreement’s future uncertain despite the White House’s fact sheet detailing the terms.

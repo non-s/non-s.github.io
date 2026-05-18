@@ -43,6 +43,7 @@ entities:
   - "Zohran Mamdani"
   - "World Bank"
   - "Journal of Health Economics"
+audio: "/assets/audio/posts/2026-05-18-world-economic-forum-womens-health-gets-only-20-of-rd-funding-we-must-seize-this.mp3"
 ---
 
 The World Economic Forum just dropped a hard truth: for every dollar spent on global health research, only 20 cents goes toward women’s health. That’s not just unfair—it’s bad business. Women drive 70% of all healthcare spending decisions worldwide, yet the science, treatments, and tools we rely on were built mostly by and for men. The result? Doctors miss early signs of heart attacks in women half the time. Drug dosages are often based on male metabolisms. And diseases that uniquely affect women—like endometriosis or ovarian cancer—haven’t seen new treatments in decades.

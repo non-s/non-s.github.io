@@ -41,6 +41,7 @@ entities:
   - "Les Misérables"
   - "Raw"
   - "Northeast France forests"
+audio: "/assets/audio/posts/2026-05-18-too-many-beasts-review-hunting-season-is-open-in-a-grippingly-offbeat-french-cri.mp3"
 ---
 
 Too Many Beasts isn’t your usual crime thriller. It’s a raw, almost documentary-style look at simmering tensions in rural France, where hunting isn’t just a sport—it’s a way of life. Sarah Arnold’s debut feature pulls no punches, showing how quickly respect turns to rage when farmers blame hunters for crop damage and cops try to keep the peace. The film’s title hints at the chaos: too many beasts means too many bullets, too many grudges, and too little room for compromise. By the end, the forest becomes a powder keg, and no one walks away clean.
