@@ -143,6 +143,54 @@ app password. Same MP4, additional reach.
 
 Skipping either secret silently no-ops the cross-post step.
 
+### 2.7 Portuguese sibling channel (huge untapped niche)
+
+Brazil is the **#3 YouTube Shorts market by views** (~9 % of global
+traffic, AIR Media-Tech 2026) and there is currently **no mass-scale
+automated PT-BR news Shorts competition**. RPM per view is lower
+($0.045 vs US $0.18) but the volume gap more than compensates —
+Brazilian creators routinely out-earn US peers on a single niche.
+
+The pipeline already supports a sibling channel that publishes the
+same stories in Brazilian Portuguese. The English channel is
+unaffected; the workflow `youtube-bot-ptbr.yml` runs at 09 / 15 / 21
+UTC (06 / 12 / 18 BRT — Brazilian morning, lunch, evening peaks).
+
+**To activate:**
+
+1. **Create a new YouTube channel** under your Google account:
+   YouTube → Settings → Add or manage your channel → Create a new
+   channel. Pick a Portuguese-friendly handle like `@globalbrnewsbr`.
+2. **Generate the OAuth token for the new channel:**
+   ```bash
+   # Locally, with the same client_secret.json you used for English:
+   python auth_youtube.py
+   # Sign in with the SAME Google account, but select the NEW channel
+   # in the consent screen. token.json now belongs to the PT-BR channel.
+   ```
+3. **Add the new repo secret**: paste `token.json` contents as
+   `YOUTUBE_TOKEN_PTBR`. Keep `YOUTUBE_TOKEN` for English.
+4. (Optional) `BLUESKY_HANDLE_PTBR` + `BLUESKY_APP_PASSWORD_PTBR`
+   if you want a separate Brazilian Bluesky account. Otherwise the
+   PT-BR workflow reuses the main Bluesky secrets.
+
+That's it. The workflow checks for `YOUTUBE_TOKEN_PTBR` and silently
+skips if it's not set, so committing the workflow file does no harm
+on accounts that haven't opted in.
+
+**What the PT-BR run does differently:**
+
+- Every story passes through `utils/translation.py` (free, uses the
+  same Mistral / Cerebras / Gemini / Groq chain). Cached so the
+  daily run doesn't burn extra tokens.
+- Voice rotation switches to PT-BR edge-tts voices
+  (FranciscaNeural / AntonioNeural / ThalitaNeural).
+- Outputs land in `_videos_pt-BR/` to keep the two channels' state
+  cleanly separated.
+- Tags stay in English (Powell, Tesla, etc.) so cross-language
+  search still hits — PT-BR viewers search "Powell", not the
+  hypothetical translation.
+
 ### 2.7 Token-saving defaults (already on)
 
 Three knobs cut AI quota use without changing output quality:

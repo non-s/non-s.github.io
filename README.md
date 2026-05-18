@@ -121,7 +121,8 @@ static frames. To stay on the right side of the bar this pipeline:
 | Workflow | Schedule (UTC) | Purpose |
 |--|--|--|
 | `fetch-news.yml` | every 3 h | Refresh the stories queue |
-| `youtube-bot.yml` | 08 / 14 / 20 | Generate + upload 1 Short per run |
+| `youtube-bot.yml` | 08 / 14 / 20 | Generate + upload 1 English Short per run |
+| `youtube-bot-ptbr.yml` | 09 / 15 / 21 | Generate + upload 1 PT-BR Short per run (sibling channel, opt-in) |
 | `analytics.yml` | 03:00 | Pull retention/CTR snapshot to `_data/analytics/` |
 | `cleanup-branches.yml` | Sun 04:00 | Delete merged bot branches |
 
