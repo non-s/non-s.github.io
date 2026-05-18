@@ -17,6 +17,7 @@ TTS MP3 we already render.
 from __future__ import annotations
 
 import logging
+import os
 import shlex
 import subprocess
 from dataclasses import dataclass
@@ -27,6 +28,14 @@ log = logging.getLogger(__name__)
 SHORT_W, SHORT_H = 1080, 1920
 TARGET_FPS = 30
 MAX_DURATION_S = 59.0   # YouTube Shorts hard cap is 60s; we stay below.
+
+# How long the branded intro / outro cards appear. These are PNGs
+# (not motion clips) loop-displayed for these durations. Total
+# intro+outro budget is bounded so the news content gets the
+# remaining ~56 s.
+INTRO_CARD_S = 0.8
+OUTRO_CARD_S = 2.0
+BRAND_CARDS_ENABLED = os.environ.get("BRAND_CARDS_ENABLED", "1") not in ("0", "false", "False")
 
 # Path to the system font we burn the hook overlay with. Falls back to
 # DejaVu if Liberation isn't installed (covers ubuntu-latest runners).
@@ -100,8 +109,27 @@ def build_broll_short(broll_paths: list[Path],
         return False
 
     audio_dur = min(_audio_duration_s(audio_path), MAX_DURATION_S)
+
+    # Branded intro + outro cards reserve a fixed slice at the head
+    # and tail of the timeline. The b-roll fills the remaining
+    # duration so the FULL Short still matches the audio length.
+    intro_card_path: Path | None = None
+    outro_card_path: Path | None = None
+    if BRAND_CARDS_ENABLED:
+        try:
+            from utils.brand_card import get_intro_outro_cards
+            intro_card_path, outro_card_path = get_intro_outro_cards()
+        except Exception as exc:
+            log.warning("brand cards skipped: %s", exc)
+            intro_card_path = outro_card_path = None
+    intro_s = INTRO_CARD_S if intro_card_path else 0.0
+    outro_s = OUTRO_CARD_S if outro_card_path else 0.0
+    # Floor the b-roll budget so even a 10 s Short still has body.
+    body_dur = max(audio_dur - intro_s - outro_s, audio_dur * 0.6)
+    intro_s = (audio_dur - body_dur - outro_s) if intro_card_path else 0.0
+
     n = len(broll_paths)
-    seg_dur = audio_dur / n
+    seg_dur = body_dur / n
 
     # Pre-probe each clip for a face so the crop window can be biased
     # to keep it on-screen. Cheap: one PNG extract + one cascade pass
@@ -159,8 +187,47 @@ def build_broll_short(broll_paths: list[Path],
             f"trim=duration={seg_dur:.3f},setpts=PTS-STARTPTS"
             f"[v{i}]"
         )
-    concat_inputs = "".join(f"[v{i}]" for i in range(n))
-    parts.append(f"{concat_inputs}concat=n={n}:v=1:a=0[concat]")
+    # Brand-card streams. We add them as extra FFmpeg inputs and
+    # PREPEND/APPEND to the concat chain so the body is bracketed
+    # by the same visual on every Short.
+    extra_inputs: list[Path] = []
+    intro_node = outro_node = None
+    if intro_card_path:
+        idx = n + len(extra_inputs)  # next ffmpeg input slot
+        extra_inputs.append(intro_card_path)
+        parts.append(
+            f"[{idx}:v]"
+            f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
+            f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,fps={TARGET_FPS},"
+            f"trim=duration={intro_s:.3f},setpts=PTS-STARTPTS"
+            f"[vintro]"
+        )
+        intro_node = "vintro"
+    if outro_card_path:
+        idx = n + len(extra_inputs)
+        extra_inputs.append(outro_card_path)
+        parts.append(
+            f"[{idx}:v]"
+            f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
+            f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,fps={TARGET_FPS},"
+            f"trim=duration={outro_s:.3f},setpts=PTS-STARTPTS"
+            f"[voutro]"
+        )
+        outro_node = "voutro"
+
+    # Build the concat chain: optional intro card + body clips + optional outro.
+    concat_inputs_parts: list[str] = []
+    if intro_node:
+        concat_inputs_parts.append(f"[{intro_node}]")
+    concat_inputs_parts.extend(f"[v{i}]" for i in range(n))
+    if outro_node:
+        concat_inputs_parts.append(f"[{outro_node}]")
+    total_segs = len(concat_inputs_parts)
+    parts.append(
+        f"{''.join(concat_inputs_parts)}concat=n={total_segs}:v=1:a=0[concat]"
+    )
 
     last_label = "concat"
 
@@ -220,11 +287,18 @@ def build_broll_short(broll_paths: list[Path],
     cmd = ["ffmpeg", "-y"]
     for clip in broll_paths:
         cmd += ["-i", str(clip)]
+    # Branded intro/outro PNGs come AFTER the b-roll inputs so their
+    # indexes are stable (n, n+1) regardless of how many b-roll clips
+    # we have. PNGs need `-loop 1` + a `-t` so FFmpeg knows when to stop.
+    for card in extra_inputs:
+        cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}",
+                 "-i", str(card)]
     cmd += ["-i", str(audio_path)]
+    audio_idx = n + len(extra_inputs)
     cmd += [
         "-filter_complex", filtergraph,
         "-map", f"[{last_label}]",
-        "-map", f"{n}:a",
+        "-map", f"{audio_idx}:a",
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
         "-c:a", "aac", "-b:a", "128k",
         "-pix_fmt", "yuv420p",

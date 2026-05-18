@@ -59,6 +59,10 @@ from utils.ai_helper import (
     sentiment_score,
 )
 from utils.brand_safety import evaluate as brand_safety_evaluate
+from utils.channel_memory import (
+    callback_prompt_block as _channel_memory_callback_block,
+    find_callback_candidates as _channel_memory_find,
+)
 from utils.dedup import titles_too_similar
 from utils.experiments import assign_all as assign_experiments
 from utils.prompt_safety import sanitize_for_prompt, wrap_untrusted
@@ -583,6 +587,25 @@ def _ai_enhance(title: str, description: str, source: str, category: str,
         overlays.append(_SCRIPT_TONE_INSTRUCTIONS[tone])
     if overlays:
         prompt = prompt + "\n\nADDITIONAL CONSTRAINTS:\n" + "\n".join(overlays)
+
+    # Channel-memory callback: surface 0-2 past stories that share
+    # entities/topic with this one so the AI can mention prior
+    # coverage. Most stories will get an empty block (no overlap),
+    # and the prompt explicitly tells the LLM to skip the callback
+    # when it doesn't fit. Used sparingly = feels like a person
+    # remembering; overused = robotic.
+    callback_candidates = _channel_memory_find({
+        "slug":           safe_title,
+        "seo_title":      safe_title,
+        "hook":           safe_description,
+        "yt_tags":        [],
+        "topic_hashtag":  "",
+        "geo_hashtag":    "",
+    })
+    if callback_candidates:
+        callback_block = _channel_memory_callback_block(callback_candidates)
+        if callback_block:
+            prompt = prompt + "\n\n" + callback_block
 
     raw = ai_text(prompt, seed=abs(hash(title)) % 9999, timeout=25, json_mode=True)
     if not raw:
