@@ -1,0 +1,179 @@
+name: "YouTube Bot — PT-BR Shorts (sibling channel)"
+
+# Sibling-channel pipeline for a Portuguese-language @globalbrnewsbr.
+# Brazil is the #3 Shorts market globally and has zero mass-scale
+# automated PT-BR news Shorts competition (May 2026). RPM per view is
+# lower than US ($0.045 vs $0.18) but volume more than compensates.
+#
+# How to activate
+# ----------------
+# This workflow runs ONLY if `YOUTUBE_TOKEN_PTBR` is configured. Steps:
+#
+#   1. Create a new YouTube channel under your Google account
+#      (Settings → Add or manage your channel → Create a new channel).
+#   2. Locally:
+#         python auth_youtube.py
+#      Sign in with the new channel selected. token.json is written.
+#   3. Paste the contents into a repo secret named YOUTUBE_TOKEN_PTBR.
+#      (Keep YOUTUBE_TOKEN for the English channel.)
+#   4. Done — this workflow will publish 1 PT-BR Short / run on the
+#      stagger below.
+#
+# Cost: $0 (edge-tts PT-BR voices + same Pexels b-roll + same Whisper
+# captions; only difference is the YouTube token + the LANGUAGE flag).
+
+on:
+  schedule:
+    # Stagger PT-BR by 1 hour from the English channel so we don't both
+    # write the queue file at the same time AND so the Brazilian
+    # audience window (morning + lunch + evening BRT) catches us at
+    # the right hour:
+    #   09:00 UTC = 06:00 BRT (early-morning commute, low)
+    #   15:00 UTC = 12:00 BRT (lunch peak)
+    #   21:00 UTC = 18:00 BRT (evening commute peak)
+    - cron: "0 9,15,21 * * *"
+  workflow_dispatch:
+
+# Share the same write-lock as the English workflow so the queue file
+# isn't touched by two writers at once.
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "PT-BR Shorts"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    env:
+      LANGUAGE: "pt-BR"
+      MAX_SHORTS_PER_RUN: "1"
+
+    steps:
+      - name: "Sanity check — PT-BR token configured?"
+        env:
+          YOUTUBE_TOKEN_PTBR: ${{ secrets.YOUTUBE_TOKEN_PTBR }}
+        run: |
+          if [ -z "$YOUTUBE_TOKEN_PTBR" ]; then
+            echo "::warning::YOUTUBE_TOKEN_PTBR not configured — skipping PT-BR run."
+            echo "See SETUP.md §2.6 to enable the Portuguese sibling channel."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+      - name: "Checkout"
+        if: env.has_token != 'false'
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Instalar FFmpeg, libass e fontes"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            ffmpeg libass9 \
+            fonts-dejavu-core fonts-liberation fonts-noto-core \
+            fonts-noto-mono fonts-open-sans fontconfig
+          sudo fc-cache -f -v
+
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
+
+      - name: "Restaurar token PT-BR"
+        env:
+          YOUTUBE_TOKEN_PTBR: ${{ secrets.YOUTUBE_TOKEN_PTBR }}
+        run: |
+          if [ -z "$YOUTUBE_TOKEN_PTBR" ]; then
+            echo "❌ YOUTUBE_TOKEN_PTBR não configurado — pulando run PT-BR."
+            exit 0
+          fi
+          umask 077
+          printf '%s' "$YOUTUBE_TOKEN_PTBR" > token.json
+          chmod 600 token.json
+          if ! python -m json.tool < token.json > /dev/null 2>&1; then
+            echo "❌ YOUTUBE_TOKEN_PTBR não é JSON válido."
+            rm -f token.json; exit 1
+          fi
+          echo "✅ token.json (PT-BR) restaurado"
+
+      - name: "Restaurar marcadores PT-BR"
+        run: |
+          mkdir -p _videos_pt-BR
+          ls _videos_pt-BR/*.done 2>/dev/null | wc -l || true
+
+      - name: "📱 Gerar Shorts PT-BR"
+        if: hashFiles('token.json') != ''
+        run: python generate_shorts.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          LANGUAGE: "pt-BR"
+          MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
+          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
+          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
+          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY }}
+
+      - name: "📤 Upload para o canal PT-BR"
+        if: hashFiles('token.json') != ''
+        run: python upload_youtube.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          LANGUAGE: "pt-BR"
+          # Bluesky cross-post can reuse the same handle since Bluesky
+          # doesn't care about language. If you want a separate PT-BR
+          # Bluesky account, override these with PT-BR-specific secrets.
+          BLUESKY_HANDLE:        ${{ secrets.BLUESKY_HANDLE_PTBR || secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD:  ${{ secrets.BLUESKY_APP_PASSWORD_PTBR || secrets.BLUESKY_APP_PASSWORD }}
+
+      - name: "💾 Salvar marcadores PT-BR no git"
+        if: hashFiles('token.json') != ''
+        run: |
+          git config user.name  "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+
+          git add _videos_pt-BR/*.done    2>/dev/null || true
+          git add _videos_pt-BR/*.json    2>/dev/null || true
+          git add _data/stories_queue.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "✅ Nenhum arquivo PT-BR novo para salvar."
+          else
+            git commit -m "📱 PT-BR Shorts — $(date -u +'%Y-%m-%d')"
+            git push origin HEAD
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Log de execução PT-BR"
+        if: always()
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: "youtube-log-ptbr-${{ github.run_number }}"
+          path: |
+            generate_shorts_pt-BR.log
+            upload_youtube_pt-BR.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: "🧹 Apagar token.json no final"
+        if: always()
+        run: |
+          if [ -f token.json ]; then
+            shred -u token.json 2>/dev/null || rm -f token.json
+          fi

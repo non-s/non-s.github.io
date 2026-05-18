@@ -39,12 +39,28 @@ from utils.captions import (
 )
 from utils.free_images import fetch_any_free_image
 from utils.text import humanize_for_tts
+from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
 
 # ── Config ────────────────────────────────────────────────────────
-VIDEOS_DIR      = Path("_videos")
+# Language axis. "en" is the default channel; setting LANGUAGE=pt-BR
+# (or es-ES, es-MX, fr-FR) flips this run into the sibling-channel
+# pipeline:
+#   • every story passes through utils.translation.translate_story
+#   • outputs land in `_videos_<lang>/` to avoid colliding with English
+#   • shorts_done bookkeeping is per-language
+# All of the rest of the rendering (b-roll, captions, thumbnail) is
+# language-agnostic — only the script and metadata change.
+LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
+if LANGUAGE != "en" and LANGUAGE not in SUPPORTED_LANGUAGES:
+    raise RuntimeError(
+        f"LANGUAGE={LANGUAGE!r} is not supported. "
+        f"Pick one of: en, {', '.join(SUPPORTED_LANGUAGES)}"
+    )
+
+VIDEOS_DIR      = Path("_videos") if LANGUAGE == "en" else Path(f"_videos_{LANGUAGE}")
 SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
-LOG_FILE        = "generate_shorts.log"
+LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
 # Cap of shorts produced per run. Overridable via env var so the
 # workflow can tune it without editing this file. Defaults to 3 —
 # matches youtube-bot.yml schedule (1 run/day × 3 shorts = 3/day).
@@ -965,6 +981,22 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     category = story.get("category", "TECH")
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
+
+    # Sibling-language channel: translate the AI-authored fields first.
+    # The translation already runs through ai_cache so repeat runs of
+    # the same story don't double the Mistral burn.
+    if LANGUAGE != "en":
+        translated = translate_story(story, LANGUAGE)
+        if not translated:
+            log.warning("  ⏭  Skipping Short — translation to %s failed for %s",
+                         LANGUAGE, title[:60])
+            return None
+        story = translated
+        title = story.get("title") or story.get("seo_title") or title
+        # The slug is locale-tagged so the same story can be rendered for
+        # multiple channels without clobbering each other's outputs.
+        slug = f"{slug}-{LANGUAGE.lower().replace('-', '')}"
+        log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
 
     # Queue carries pre-enriched fields when fetch_news.py is up to date.
     # We require `script` (the full opinionated voice-over) to proceed —

@@ -19,8 +19,14 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError
 
-LOG_FILE   = "upload_youtube.log"
-VIDEOS_DIR = Path("_videos")
+# Locale axis — mirrors generate_shorts.py. When LANGUAGE=pt-BR (or
+# any other non-en supported locale), we upload from `_videos_pt-BR/`
+# instead of `_videos/`. This lets one repo serve multiple sibling
+# channels (English on @globalbrnews, Portuguese on @globalbrnewsbr,
+# etc.) without entangling their state.
+_LANGUAGE  = os.environ.get("LANGUAGE", "en").strip() or "en"
+LOG_FILE   = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
+VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
 TOKEN_FILE = Path("token.json")
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
                "https://www.googleapis.com/auth/youtube"]
