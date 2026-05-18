@@ -43,6 +43,7 @@ entities:
   - "Ukraine"
   - "North Korea"
   - "United States"
+audio: "/assets/audio/posts/2026-05-18-xi-jinping-prepares-to-welcome-vladimir-putin-to-china-four-days-after-hosting-d.mp3"
 ---
 
 Russian President Vladimir Putin landed in Beijing on Monday for a two-day visit with his Chinese counterpart Xi Jinping, just four days after former U.S. President Donald Trump wrapped up his own high-profile summit with Xi. The timing of Putin’s trip—set for Tuesday and Wednesday—isn’t a coincidence. It’s a clear signal that Beijing and Moscow are keeping their relationship close even as the U.S. tries to pull China away from Russia over the war in Ukraine.

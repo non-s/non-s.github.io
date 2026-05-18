@@ -42,6 +42,7 @@ entities:
   - "Iran"
   - "Strait of Hormuz"
   - "White House"
+audio: "/assets/audio/posts/2026-05-18-trump-xi-summit-taiwan-absent-from-white-house-china-visit-summary-amid-iran-tra.mp3"
 ---
 
 Donald Trump and China’s leader Xi Jinping [Xi Jinping](https://en.wikipedia.org/wiki/Xi_Jinping) wrapped up two days of talks in Washington with a batch of deals that will boost U.S. exports and lock in new investments. Boeing [Boeing](https://en.wikipedia.org/wiki/Boeing) landed orders for at least 260 jets, worth roughly $37 billion, while American farmers secured deals for soybeans and pork that could top $20 billion over the next few years. The White House called it the biggest trade package China has ever signed with a foreign country. Both sides framed the pacts as proof that the U.S. and China can cooperate even as they compete on technology and military power.

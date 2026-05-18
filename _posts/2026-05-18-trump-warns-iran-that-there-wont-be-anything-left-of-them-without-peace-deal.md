@@ -43,6 +43,7 @@ entities:
   - "IAEA"
   - "BP"
   - "Shell"
+audio: "/assets/audio/posts/2026-05-18-trump-warns-iran-that-there-wont-be-anything-left-of-them-without-peace-deal.mp3"
 ---
 
 On Sunday, President [Donald Trump](https://en.wikipedia.org/wiki/Donald_Trump) delivered a stark warning to [Iran](https://en.wikipedia.org/wiki/Iran): if Tehran doesn’t finalize a nuclear deal soon, it won’t just face sanctions or a military strike—he’s threatening the country’s existence. Speaking to a crowd in South Carolina, Trump said, 'They’re going to regret it if they don’t make a deal. They won’t have a country left.' The threat came as talks between the U.S. and Iran have stalled for months, leaving diplomats and analysts scrambling to revive an agreement that once seemed within reach. The collapse of negotiations has already pushed global oil prices higher, with markets jittery over the prospect of a prolonged standoff. Gasoline futures in the U.S. rose more than 5% last week alone, adding pressure to an already strained global energy market.
