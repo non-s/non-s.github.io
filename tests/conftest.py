@@ -1,11 +1,11 @@
 """Shared pytest fixtures.
 
-Keeps test files lean: every test that needs a fake Mistral, a temp
-`_posts/` directory, or a sample feedparser entry pulls them from here.
+Keeps test files lean: every test that needs a fake Mistral or a
+sample feedparser entry pulls them from here. The blog post fixtures
+were removed when the Jekyll site was deleted (May 2026 pivot).
 """
 from __future__ import annotations
 
-import json
 import sys
 import types
 from pathlib import Path
@@ -16,33 +16,6 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
-
-
-@pytest.fixture
-def tmp_posts_dir(tmp_path):
-    """Empty `_posts/` directory under a tmp root. Returns the path."""
-    d = tmp_path / "_posts"
-    d.mkdir()
-    return d
-
-
-@pytest.fixture
-def sample_post(tmp_posts_dir):
-    """Write one minimal post + return its path."""
-    p = tmp_posts_dir / "2026-05-15-sample-headline.md"
-    p.write_text(
-        "---\n"
-        'title: "Sample headline"\n'
-        "date: 2026-05-15 10:00:00 +0000\n"
-        "categories: [world]\n"
-        "tags: [sample, fixture]\n"
-        'description: "A short description."\n'
-        'source_url: "https://example.com/article"\n'
-        'source_name: "Example"\n'
-        "---\n\nBody.\n",
-        encoding="utf-8",
-    )
-    return p
 
 
 @pytest.fixture

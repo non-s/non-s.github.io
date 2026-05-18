@@ -27,11 +27,13 @@ Env (see .env.example for the full list):
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import logging
 import os
 import re
+import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -40,6 +42,14 @@ from pathlib import Path
 
 import feedparser
 import requests
+
+# fcntl is POSIX-only — Windows runners would skip queue locking. The
+# GitHub Actions runner is Linux so this is fine in production; we
+# guard the import for local dev on macOS / Windows.
+try:
+    import fcntl
+except ImportError:  # pragma: no cover — Windows local dev only
+    fcntl = None
 
 from utils.ai_helper import (
     ai_text,
@@ -126,6 +136,34 @@ _session.headers.update({
 # ── Queue I/O ─────────────────────────────────────────────────────────
 
 _queue_lock = threading.Lock()
+
+
+@contextlib.contextmanager
+def _file_lock(path: Path):
+    """
+    Cross-process advisory lock on `path`. Used to serialise the
+    fetch_news.py writer against generate_shorts.py's read-modify-write
+    on _data/stories_queue.json — without it, a generate_shorts run
+    that overlaps fetch_news can stomp the just-added stories.
+
+    On Windows (fcntl unavailable) this becomes a no-op, falling back
+    to the in-process threading lock above. The CI runner is Linux so
+    the real lock is taken in production.
+    """
+    if fcntl is None:
+        yield
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = path.with_suffix(path.suffix + ".lock")
+    with open(lock_path, "w") as fh:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
+            yield
+        finally:
+            try:
+                fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+            except Exception:
+                pass
 
 
 def _load_queue() -> dict:
@@ -504,6 +542,15 @@ def main() -> None:
     log.info(f"🚀 GlobalBR News — queue refresh {datetime.now(timezone.utc).isoformat()}")
     log.info("=" * 60)
 
+    # Fail-fast startup validation. Without MISTRAL_API_KEY, every story
+    # gets dropped at the AI enrichment step — we'd burn 30 min of CI and
+    # save 0 stories. Better to exit immediately so the workflow shows
+    # red and someone notices the missing secret.
+    if not os.environ.get("MISTRAL_API_KEY"):
+        log.error("❌ MISTRAL_API_KEY is not set. Cannot enrich stories.")
+        log.error("   Add it at Settings → Secrets and variables → Actions.")
+        sys.exit(2)
+
     queue        = _load_queue()
     cache        = _load_json(CACHE_FILE)
     health       = _load_json(HEALTH_FILE)
@@ -551,10 +598,22 @@ def main() -> None:
                 break
 
     if new_stories:
-        with _queue_lock:
-            queue.setdefault("stories", []).extend(new_stories)
-            _prune_queue(queue)
-            _save_queue(queue)
+        # Hold both the in-process thread lock AND the cross-process
+        # file lock while doing read-modify-write on the queue file.
+        # generate_shorts.py acquires the same file lock when it marks
+        # stories consumed, so the two scripts can never race even if
+        # the daily youtube-bot run overlaps with a fetch-news cron.
+        with _queue_lock, _file_lock(QUEUE_FILE):
+            # Re-read under the lock — another writer may have flushed
+            # while we were enriching.
+            disk_queue = _load_queue()
+            disk_ids = {s["id"] for s in disk_queue.get("stories", []) if s.get("id")}
+            fresh = [s for s in new_stories if s["id"] not in disk_ids]
+            if fresh:
+                disk_queue.setdefault("stories", []).extend(fresh)
+                _prune_queue(disk_queue)
+                _save_queue(disk_queue)
+            queue = disk_queue
     _save_json(CACHE_FILE, cache)
     _save_json(HEALTH_FILE, health)
 

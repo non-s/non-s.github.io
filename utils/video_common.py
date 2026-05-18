@@ -73,16 +73,42 @@ _DOWNLOAD_UA = "GlobalBR-Bot/2.0"
 
 
 def download_image(url: str, dest: Path, timeout: int = 12) -> bool:
-    """GET an image into `dest`; True if the body is ≥2 KB and HTTP 200.
+    """GET an image into `dest`; True if the body is a valid image ≥2 KB.
 
-    Returns False on every error path (including small responses) so the
-    caller can fall back to a placeholder gracefully.
+    Validates HTTP 200 + Content-Type starts with `image/`. Without the
+    MIME check, a 2 KB HTML error page (think Pollinations rate-limit
+    HTML) would pass and only blow up later when Pillow tried to open
+    the file.
+
+    Returns False on every error path so the caller can fall back to a
+    placeholder gracefully.
     """
     try:
         r = requests.get(url, timeout=timeout, headers={"User-Agent": _DOWNLOAD_UA})
-        if r.status_code == 200 and len(r.content) > 2000:
-            dest.write_bytes(r.content)
-            return True
+        if r.status_code != 200:
+            log.debug(f"Image download: HTTP {r.status_code} for {url[:60]}")
+            return False
+        ctype = (r.headers.get("Content-Type") or "").lower()
+        # `octet-stream` slips through because many CDNs (incl. Pollinations
+        # on cache miss) don't set the type. Trust the body sniff instead.
+        if not (ctype.startswith("image/") or ctype == "application/octet-stream"):
+            log.debug(f"Image download: rejected non-image content-type {ctype!r}")
+            return False
+        if len(r.content) < 2000:
+            log.debug(f"Image download: body too small ({len(r.content)} bytes)")
+            return False
+        # Quick magic-number sniff so an HTML 2 KB error page still gets
+        # rejected even when the server lied about Content-Type.
+        head = r.content[:12]
+        if not (head.startswith(b"\xff\xd8\xff")            # JPEG
+                or head.startswith(b"\x89PNG\r\n\x1a\n")    # PNG
+                or head.startswith(b"GIF8")                 # GIF
+                or head[:4] == b"RIFF" and head[8:12] == b"WEBP"  # WEBP
+                or head.startswith(b"BM")):                 # BMP
+            log.debug("Image download: payload doesn't look like an image")
+            return False
+        dest.write_bytes(r.content)
+        return True
     except Exception as e:
         log.debug(f"Image download failed: {e}")
     return False

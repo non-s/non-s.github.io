@@ -287,15 +287,28 @@ def upload_video(youtube, meta: dict) -> str | None:
 
 
 def main():
+    import sys
+
+    # Fail-fast: if token.json is missing, get_youtube_client() raises
+    # FileNotFoundError. We exit 2 so the workflow turns red instead
+    # of completing with "0 videos uploaded" and looking like a no-op.
+    if not Path("token.json").exists():
+        log.error(
+            "❌ token.json not found. The youtube-bot workflow restores "
+            "it from the YOUTUBE_TOKEN secret — that secret may be unset "
+            "or invalid JSON. Run auth_youtube.py locally to refresh it."
+        )
+        sys.exit(2)
+
     try:
         youtube = get_youtube_client()
     except FileNotFoundError as e:
         log.error("❌ %s", e)
-        return
+        sys.exit(2)
     except RuntimeError as e:
         # Surfaceia o erro com instruções acionáveis (ver get_youtube_client).
         log.error("❌ %s", e)
-        return
+        sys.exit(2)
 
     # Busca vídeos com metadata JSON prontos para upload
     pending = sorted(VIDEOS_DIR.glob("*.json"))
@@ -330,6 +343,12 @@ def main():
             uploaded += 1
 
     log.info("🏁 %d/%d vídeo(s) publicado(s) no YouTube.", uploaded, len(pending))
+
+    # Observable failure signal: we had work but uploaded nothing.
+    # Workflow goes red and someone notices, instead of "✅ 0/3".
+    if pending and uploaded == 0:
+        log.error("❌ All uploads failed (%d pending, 0 uploaded). Exiting non-zero.", len(pending))
+        sys.exit(1)
 
 
 if __name__ == "__main__":
