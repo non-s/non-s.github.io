@@ -2,17 +2,9 @@
 
 ## Reporting a Vulnerability
 
-Please report security issues via **GitHub Security Advisories**
-on this repository:
+Please report security issues via **GitHub Security Advisories**:
 
   Repository → **Security** tab → **Report a vulnerability**
-
-(Direct link on the canonical deployment:
-<https://github.com/non-s/non-s.github.io/security/advisories/new>.)
-
-For machine-readable contact info, see
-[`/.well-known/security.txt`](.well-known/security.txt) — it points to
-the same advisory channel and an `Expires:` date we keep refreshed.
 
 ## Supported Versions
 
@@ -22,14 +14,14 @@ Only the current `main` branch is maintained. There are no LTS branches.
 
 In scope:
 
-- The Jekyll site (`_layouts/`, `_includes/`, `_data/`, `_posts/`, root HTML/XML).
-- The Python automation pipeline (`fetch_news.py`, `generate_*.py`, `utils/`, `_videos/`).
+- The Python automation pipeline (`fetch_news.py`, `generate_shorts.py`,
+  `upload_youtube.py`, `auth_youtube.py`, `utils/`).
 - The GitHub Actions workflows under `.github/workflows/`.
 
 Out of scope:
 
 - Third-party services we integrate with (Mistral, Pollinations, edge-tts,
-  Mailchimp, YouTube, jsDelivr, GitHub Pages). Report those upstream.
+  YouTube). Report those upstream.
 - Issues already known and tracked publicly in the GitHub issue tracker.
 - Denial-of-service, social engineering, or physical attacks against
   infrastructure we don't control.

@@ -122,32 +122,24 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
 
-      - name: "📝 Criar posts no blog para os Shorts"
-        # Best-effort: blog mirror of each Short. The Short on YouTube
-        # is the canonical artefact, so failing here doesn't block the
-        # rest of the pipeline.
-        run: python create_video_blog_post.py
-        continue-on-error: true
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-
-      - name: "💾 Salvar marcadores e posts no git"
+      - name: "💾 Salvar marcadores no git"
         run: |
           git config user.name  "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
 
-          # Marcadores de vídeo
-          git add _videos/*.done   2>/dev/null || true
+          # Done markers keep the pipeline idempotent across runs: a
+          # fresh checkout otherwise re-publishes the same Shorts.
+          git add _videos/*.done    2>/dev/null || true
           git add _videos/*.roundup 2>/dev/null || true
-          git add _videos/*.json   2>/dev/null || true
-          # Posts do blog criados para os vídeos
-          git add _posts/*-video-*.md 2>/dev/null || true
+          git add _videos/*.json    2>/dev/null || true
+          # The stories queue gets stories marked as consumed by
+          # generate_shorts.py — commit that back too.
+          git add _data/stories_queue.json 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "✅ Nenhum arquivo novo para salvar."
           else
-            git commit -m "📱 Shorts + posts — $(date -u +'%Y-%m-%d')"
+            git commit -m "📱 Shorts — $(date -u +'%Y-%m-%d')"
             git push origin HEAD
           fi
         env:

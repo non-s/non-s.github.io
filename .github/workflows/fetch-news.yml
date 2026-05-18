@@ -1,56 +1,40 @@
 # ============================================================
 # .github/workflows/fetch-news.yml
-# GitHub Actions — Auto news fetcher
-#
-# Runs 5x per day (6h, 10h, 14h, 18h, 22h UTC). Only commits if there are new posts.
-# Duplicate detection is handled by fetch_news.py itself
-# (checks existing filenames before creating new ones).
+# Refresh the RSS stories queue (_data/stories_queue.json).
+# generate_shorts.py reads from that queue on the next youtube-bot run.
 # ============================================================
 
-name: "📰 Fetch News RSS"
+name: "📰 Refresh stories queue"
 
 on:
   schedule:
-    # Every 3 hours (8 runs/day). Hourly was over the Actions free
-    # tier (2000 min/month); 8×~10min ≈ 80 min/day = ~2400 min/month,
-    # but we share that quota with youtube-bot/newsletter/etc, and on
-    # public repos Actions minutes are unmetered anyway.
+    # Every 3h — the queue is consumed once a day by youtube-bot, so
+    # this keeps it warm with the latest 100-ish stories from each
+    # ~3-hour news cycle.
     - cron: "0 */3 * * *"
 
   workflow_dispatch:
-    inputs:
-      debug:
-        description: "Enable debug log?"
-        required: false
-        default: "false"
-        type: boolean
 
-# Serialise with every other workflow that pushes to main, otherwise the
-# pull-rebase retry below would race against youtube-bot / weekly-digest
-# commits. `cancel-in-progress: false` means later runs wait.
+# Serialise with youtube-bot to avoid two workflows pushing the
+# stories_queue.json at the same time.
 concurrency:
   group: main-write
   cancel-in-progress: false
 
 jobs:
-  fetch-and-publish:
-    name: "Fetch & publish news"
+  refresh-queue:
+    name: "Pull RSS and update the queue"
     runs-on: ubuntu-latest
-    # 45 min is enough for the worst observed cold-start run (~30 min).
-    # A hung Mistral call or zombie feed used to chew through the old
-    # 90-min budget, blocking the `main-write` concurrency lock for the
-    # whole hour and pushing youtube-bot / newsletter into the next slot.
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     permissions:
       contents: write
 
     steps:
-
-      - name: "📥 Checkout repository"
+      - name: "📥 Checkout"
         uses: actions/checkout@v4.2.2
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: "🐍 Set up Python 3.11"
         uses: actions/setup-python@v5.3.0
@@ -65,89 +49,38 @@ jobs:
 
       - name: "✅ Validate Python syntax"
         run: |
-          python -m py_compile fetch_news.py
-          python -m py_compile utils/text.py utils/dedup.py utils/ai_helper.py utils/retry.py
-          python -m py_compile submit_urls.py generate_search_index.py
-          echo "✅ Syntax OK"
+          python -m compileall -q fetch_news.py utils/
 
       - name: "📡 Run fetch_news.py"
-        # Inner step timeout: even if the job has 45min, the fetch
-        # itself shouldn't take more than 30min. Saves CI minutes when
-        # something hangs and gives later steps room to finish.
-        timeout-minutes: 30
+        timeout-minutes: 25
         run: python fetch_news.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
-      - name: "🔍 Check for new posts"
-        id: check_changes
-        run: |
-          CHANGED=$(git status --porcelain _posts/ | wc -l | tr -d ' ')
-          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
-          echo "New posts found: $CHANGED"
-          if [ "$CHANGED" -gt "0" ]; then
-            echo "New posts:"
-            git status --porcelain _posts/ | head -20
-          fi
-
-      - name: "💾 Commit & push new posts"
-        if: steps.check_changes.outputs.changed != '0'
+      - name: "💾 Commit queue + state files"
         run: |
           git config user.name  "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
-
-          git add _posts/
-          git add _tags/ || true
-          git add assets/images/posts/ || true
-          git add fetch_news.log || true
-          git add search-index.json || true
-          # Per-run state files. These MUST be added — they hold the
-          # ETag/Last-Modified cache (saves ~100 MB/day of feed bandwidth),
-          # the consecutive-failure counter (powers the dead-feed
-          # circuit-breaker), and the milestones marker (without it,
-          # fetch_news.py re-detects each milestone on every run and
-          # creates a duplicate post every day past the threshold).
-          git add _data/feed_cache.json _data/feed_health.json _data/milestones.json 2>/dev/null || true
-
-          ADDED=$(git diff --cached --name-only | grep "_posts/" | wc -l | tr -d ' ')
-          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
-          CATEGORIES=$(git diff --cached --name-only | grep "_posts/" | head -5 | xargs -I{} grep -m1 "^categories:" {} 2>/dev/null | sed 's/categories: \[//;s/\].*//' | tr -d ' ' | cut -d',' -f1 | sort -u | head -3 | tr '\n' ',' | sed 's/,$//')
-
-          if [ -n "$CATEGORIES" ]; then
-            MSG="🤖 +${ADDED} post(s) [${CATEGORIES}] — ${TIMESTAMP}"
-          else
-            MSG="🤖 +${ADDED} post(s) — ${TIMESTAMP}"
+          git add _data/stories_queue.json _data/feed_cache.json _data/feed_health.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "✨ No new stories — nothing to commit."
+            exit 0
           fi
+          PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories',[]) if not s.get('consumed')))")
+          git commit -m "🤖 queue refresh — ${PENDING} pending — $(date -u +'%Y-%m-%d %H:%M UTC')
 
-          # NB: github.workflow / github.run_number are sourced via env
-          # so they're treated as literal strings, not interpolated into
-          # the shell. Belt-and-braces — neither value is user-controlled
-          # today, but quoting them removes the whole class of risk.
-          git commit -m "$MSG
-
-          Auto-fetched via fetch_news.py
           Workflow: ${GH_WORKFLOW} #${GH_RUN_NUMBER}"
 
-          # Other workflows (youtube-bot, weekly-audit, etc.) may have
-          # pushed to main during our 20-30 minute run. Pull-rebase
-          # before pushing so we don't lose this batch to a rejected push.
-          # Exponential backoff prevents thundering-herd retries when the
-          # main-write lock is contended.
           for attempt in 1 2 3; do
             if git push origin HEAD; then
-              echo "✅ $ADDED post(s) published (attempt $attempt)!"
-              break
+              exit 0
             fi
-            echo "⚠️ Push rejected (attempt $attempt) — pulling rebase and retrying"
+            echo "⚠️ Push rejected (attempt $attempt) — rebasing"
             if ! git pull --rebase --autostash origin main; then
-              echo "⚠️ Rebase failed on attempt $attempt — aborting rebase"
               git rebase --abort 2>/dev/null || true
-              if [ "$attempt" = "3" ]; then
-                echo "❌ All retries exhausted — giving up so next run can try"
-                exit 1
-              fi
+              [ "$attempt" = "3" ] && exit 1
             fi
             sleep $((attempt * 5))
           done
@@ -155,81 +88,6 @@ jobs:
           GH_WORKFLOW: ${{ github.workflow }}
           GH_RUN_NUMBER: ${{ github.run_number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "🔎 Google Search Console — indexar URLs novas"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python google_index.py
-        env:
-          GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
-
-      - name: Generate tag pages
-        if: steps.check_changes.outputs.changed != '0'
-        run: python generate_tag_pages.py
-
-      - name: Generate search index
-        if: steps.check_changes.outputs.changed != '0'
-        run: python generate_search_index.py
-
-      - name: "📰 Daily Briefing (original editorial roundup)"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python create_daily_briefing.py
-        env:
-          PYTHONIOENCODING: utf-8
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-
-      - name: "🗓️ Weekly Wrap-up (Fridays only)"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python create_weekly_wrapup.py
-        env:
-          PYTHONIOENCODING: utf-8
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-
-      - name: "🔊 Generate audio narration (edge-tts)"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python generate_audio.py
-        env:
-          PYTHONIOENCODING: utf-8
-
-      - name: "🏛️ Generate category pillar pages"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python generate_pillar_pages.py
-
-      - name: "💾 Commit derived artefacts (briefings, audio, search index)"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: |
-          git add search-index.json _tags/ 2>/dev/null || true
-          git add _posts/*-daily-briefing.md _posts/*-weekly-wrapup.md 2>/dev/null || true
-          # generate_audio.py writes back into _posts/ frontmatter + drops MP3s in assets/audio/
-          git add assets/audio/posts/ _posts/*.md 2>/dev/null || true
-          # Pillar pages live under {category}/pillar.html
-          git add */pillar.html 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "ℹ️ No derived artefact changes."
-          else
-            git commit -m "🤖 derived artefacts — $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push origin HEAD || echo "⚠️ push failed, will retry next run"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "🔵 Bing & IndexNow — submeter URLs novas"
-        if: steps.check_changes.outputs.changed != '0'
-        continue-on-error: true
-        run: python submit_urls.py
-        env:
-          BING_API_KEY:  ${{ secrets.BING_API_KEY }}
-          INDEXNOW_KEY:  ${{ secrets.INDEXNOW_KEY }}
-          SITE_URL:      "https://non-s.github.io"
-
-      - name: "ℹ️ No new posts"
-        if: steps.check_changes.outputs.changed == '0'
-        run: echo "✨ No new posts this run — skipping commit."
 
       - name: "📋 Save execution log"
         if: always()
