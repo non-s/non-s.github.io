@@ -187,10 +187,11 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   align-items: center;
   gap: 0;
-  /* 1800s = ~2.5× slower than before so individual headlines stay
-     on-screen long enough to actually read on the move. Hovering
-     pauses the scroll for full reading. */
-  animation: ticker-scroll 1800s linear infinite;
+  /* 120s (2 min) for one full loop. The track is duplicated, so this
+     means each headline passes through the viewport in ~7s, slow
+     enough to read at a glance. Hover pauses the scroll if you need
+     longer. */
+  animation: ticker-scroll 120s linear infinite;
 }
 .breaking-track:hover { animation-play-state: paused; }
 .breaking-item {
