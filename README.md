@@ -48,17 +48,41 @@ consumed. Both can be run independently.
 | AI fallback 1 | Cerebras (opt-in) | 1M tokens/day |
 | AI fallback 2 | Google Gemini (opt-in) | 1,500 req/day |
 | AI fallback 3 | Groq (opt-in) | ~14k req/day |
+| B-roll motion video | Pexels Videos → NASA → Internet Archive | 20k req/mo (Pexels) / unauth (rest) |
 | Background images | OG meta → Wikipedia → Openverse → Pollinations | unauth, no key |
+| Captions (word-level) | Groq Whisper → faster-whisper local | 2k req/day (Groq) / OSS (fwh) |
 | Narration | Microsoft Edge-TTS (6-voice rotation) | unlimited |
-| Encoder | FFmpeg (libx264, AAC) | OSS |
+| Encoder | FFmpeg (libx264, AAC, libass) | OSS |
 | Hosting | GitHub Actions (public repo) | unlimited minutes |
 | Upload | YouTube Data API v3 | 10k units/day |
+| Cross-post | Bluesky AT Protocol (opt-in) | free, vertical-video feed |
 | Analytics | YouTube Analytics API v2 | unlimited |
 
 Total cost: **$0/month**. Every layer above is on a no-credit-card free
 tier or fully open-source.
 
 ## What makes this best-in-class
+
+### Inauthentic-Content survival (the existential bit)
+
+YouTube's 15 July 2025 policy terminated **12M+ channels in 2025**
+including Screen Culture (1M+ subs) for pure wire-copy narration over
+static frames. To stay on the right side of the bar this pipeline:
+
+- **B-roll motion footage** instead of static frames — Pexels Videos
+  API (200 req/h, free key) → NASA Image+Video → Internet Archive.
+  Three different sources rotated per Short = no "templated visuals"
+  signal.
+- **Word-level burned captions** via Groq Whisper (free 2k req/day) or
+  faster-whisper locally. +18 % watch time documented (Zebracat 2025).
+- **Hook text overlay** for the first 3 seconds — the highest-leverage
+  retention window in 2026 (swipe-away signal weighs heaviest).
+- **AI disclosure flag** (`containsSyntheticMedia=true`) on every
+  upload — explicit transparency satisfies the policy.
+- **Transformative voice-over**: the AI prompt forces opinion / analysis
+  / winner-and-loser framing — never just reading the headline.
+
+
 
 - **5 keyless discovery sources** beyond classical RSS — Reddit, HN,
   Wikipedia, Google Trends, GDELT — so the queue is fuller and more

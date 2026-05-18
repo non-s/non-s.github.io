@@ -97,7 +97,53 @@ AI background generator, the Shorts renderer now tries (free, no key):
 
 This makes "no background available → drop the Short" much rarer.
 
-### 2.4 Token-saving defaults (already on)
+### 2.4 B-roll motion footage (Pexels API — recommended)
+
+YouTube's July 2025 "Inauthentic Content" policy demonetises Shorts
+that pair AI-narration with static-frame video (Screen Culture / KH
+Studio / True Crime Case Files were all terminated for this). Adding
+real motion footage is the single biggest defensive move.
+
+1. Free key at <https://www.pexels.com/api/new/> (no credit card)
+2. Add the secret `PEXELS_API_KEY` to repo settings
+
+Free tier: 200 req/h, 20,000/month — more than enough for 3 Shorts/day.
+
+Without this key, the pipeline still ships — it falls back to NASA's
+free Image+Video Library and the Internet Archive (both keyless).
+But Pexels has the best portrait-orientation coverage and is what
+makes the static-vs-motion gap disappear.
+
+### 2.5 Burned-in captions (Groq Whisper — recommended)
+
+~80 % of Shorts are watched muted in the first two seconds. Burned
+captions are the single biggest retention lever (+18 % watch time
+documented). The pipeline tries:
+
+  1. Groq Whisper API — free, 2,000 req/day, word-level timestamps
+     (`whisper-large-v3-turbo`). Reuses your `GROQ_API_KEY` from §2.1.
+  2. faster-whisper locally on the runner — CPU-only fallback,
+     installed by the workflow if `GROQ_API_KEY` is unset.
+
+Setting Groq is the cheaper path (much faster + no extra runtime).
+Without either, the pipeline still ships but skips captions.
+
+### 2.6 Bluesky cross-post (vertical video, ~42M MAU)
+
+Bluesky's vertical-video feed launched Jan 2025 and is the easiest
+secondary platform to wire — no audit, no business account, just an
+app password. Same MP4, additional reach.
+
+1. Log in at <https://bsky.app/>, create the account if needed
+2. Settings → Privacy & Security → App Passwords → Create a new one
+   labelled `globalbr-bot`
+3. Add two repo secrets:
+   - `BLUESKY_HANDLE` (e.g. `globalbrnews.bsky.social`)
+   - `BLUESKY_APP_PASSWORD` (the app password, never your real password)
+
+Skipping either secret silently no-ops the cross-post step.
+
+### 2.7 Token-saving defaults (already on)
 
 Three knobs cut AI quota use without changing output quality:
 
