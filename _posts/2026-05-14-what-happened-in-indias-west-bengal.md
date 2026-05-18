@@ -5,6 +5,7 @@ date: 2026-05-14 18:42:12 +0000
 categories: [politics]
 tags: [foreign-policy, geopolitics, diplomacy, west-bengal, india-politics, bjp, election-controversy, indian-democracy]
 author: "GlobalBR News"
+lang: "en"
 description: "The BJP won in West Bengal, but allegations of foul play arise due to voter roll changes, sparking controversy and debate about the election's legitimacy and fa"
 source_url: "https://foreignpolicy.com/2026/05/14/india-west-bengal-elections-bjp-victory-banerjee-aitc/"
 source_name: "Foreign Policy"

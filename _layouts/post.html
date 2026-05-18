@@ -332,22 +332,12 @@ layout: default
         </button>
       </div>
 
-      <!-- Prev / Next -->
-      <nav class="post-nav">
-        {% if page.next.url %}
-        <a href="{{ page.next.url | relative_url }}" class="post-nav-item prev">
-          <span class="post-nav-dir"><i class="bi bi-arrow-left"></i> Previous</span>
-          <span class="post-nav-title">{{ page.next.title | truncate: 55 }}</span>
-        </a>
-        {% else %}<span></span>{% endif %}
-
-        {% if page.previous.url %}
-        <a href="{{ page.previous.url | relative_url }}" class="post-nav-item next">
-          <span class="post-nav-dir">Next <i class="bi bi-arrow-right"></i></span>
-          <span class="post-nav-title">{{ page.previous.title | truncate: 55 }}</span>
-        </a>
-        {% else %}<span></span>{% endif %}
-      </nav>
+      {% comment %}
+        Removed the chronological prev/next nav that used Jekyll's
+        global `page.next` / `page.previous` — it jumped between
+        unrelated categories (food → war → tech) and made for a poor
+        reading flow. The same-category nav further down replaces it.
+      {% endcomment %}
 
       {% if page.entities %}
       <div class="post-entities">

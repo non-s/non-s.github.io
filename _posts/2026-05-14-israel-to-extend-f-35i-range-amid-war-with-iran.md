@@ -5,6 +5,7 @@ date: 2026-05-14 13:46:32 +0000
 categories: [war]
 tags: [defense, military, pentagon, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "JERUSALEM — Israel will develop a system for extending the range of its F-35I ‘Adir’ fighter jets, Israel’s defense ministry announced May 14. Officials didn’t"
 source_url: "https://www.defensenews.com/global/mideast-africa/2026/05/14/israel-to-extend-f-35i-range-amid-war-with-iran/"
 source_name: "Defense News"

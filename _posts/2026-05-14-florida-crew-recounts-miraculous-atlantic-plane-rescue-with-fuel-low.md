@@ -5,6 +5,7 @@ date: 2026-05-14 18:33:39 +0000
 categories: [world, war]
 tags: [guardian, world-news, international, war, military, defense, plane-crash, atlantic-ocean, rescue-mission, florida, military-rescue-crew]
 author: "GlobalBR News"
+lang: "en"
 description: "A military rescue crew saved all 11 people from a plane crash in the Atlantic Ocean near the Bahamas."
 source_url: "https://www.theguardian.com/us-news/2026/may/14/florida-atlantic-plane-rescue-fuel-low"
 source_name: "The Guardian"

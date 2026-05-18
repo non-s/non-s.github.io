@@ -5,6 +5,7 @@ date: 2026-05-14 16:45:52 +0000
 categories: [world]
 tags: [aljazeera, world-news, middle-east, cuba-blackouts, power-outages, fuel-shortages, us-blockade, energy-crisis]
 author: "GlobalBR News"
+lang: "en"
 description: "Cuba hit by blackouts and protests amid power outages due to fuel shortages and struggling electrical system, causing widespread disruption to daily life and ec"
 source_url: "https://www.aljazeera.com/news/2026/5/14/absolutely-no-fuel-cuba-hit-by-blackouts-protests-amid-power-outages?traffic_source=rss"
 source_name: "Al Jazeera"

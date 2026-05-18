@@ -5,6 +5,7 @@ date: 2026-05-13 19:13:27 +0000
 categories: [politics, war]
 tags: [politico, politics, usa, war, nato, military]
 author: "GlobalBR News"
+lang: "en"
 description: "South Carolina GOP Gov. Henry McMaster is expected to announce a special session on redistricting, teeing up the state legislature to pass a Republican gerryman"
 source_url: "https://www.politico.com/news/2026/05/13/mcmaster-special-session-redistricting-south-carolina-00919106"
 source_name: "Politico"

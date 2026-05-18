@@ -4,7 +4,8 @@ title: "Android’s latest AI feature predicts what you’ll do next"
 date: 2026-05-14 10:37:03 +0000 -0300
 categories: [technology, mobile]
 tags: [theverge, gadgets, reviews, mobile, android]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The contextual suggestions feature has started appearing on some Pixel 10 series devices. | Photo: Allison Johnson / The Verge Google is rolling out a new AI-po"
 source_url: "https://www.theverge.com/tech/930318/android-contextual-suggestions-google-ai-feature-rollout"
 source_name: "The Verge"

@@ -22,6 +22,12 @@ layout: null
       "summary": {{ post.description | default: post.excerpt | strip_html | truncate: 280 | jsonify }},
       "date_published": "{{ post.date | date_to_xmlschema }}",
       {% if post.image %}"image": {{ post.image | jsonify }},{% endif %}
+      {% comment %}
+        JSON Feed 1.1 has no `category` field at the item level — `tags`
+        is the canonical list. The leading underscore in `_category`
+        marks this as a publisher extension per the spec, so feed
+        readers ignore it instead of erroring on an unknown key.
+      {% endcomment %}
       {% if post.categories.size > 0 %}"_category": {{ post.categories.first | jsonify }},{% endif %}
       "tags": {{ post.tags | jsonify }}
     }{% unless forloop.last %},{% endunless %}

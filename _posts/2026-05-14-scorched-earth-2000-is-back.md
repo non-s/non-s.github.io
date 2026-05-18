@@ -4,8 +4,10 @@ title: "Scorched Earth 2000 is back"
 date: 2026-05-14 00:41:29 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Article URL: http://www.scorch2000.com/web/ Comments URL: https://news.ycombinator.com/item?id=48129694 Points: 86 # Comments: 28"
+image: "/assets/images/og-default.jpg"
 source_url: "http://www.scorch2000.com/web/"
 source_name: "Hacker News"
 ---

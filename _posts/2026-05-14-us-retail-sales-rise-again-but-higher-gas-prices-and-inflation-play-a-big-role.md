@@ -5,6 +5,7 @@ date: 2026-05-14 15:02:00 +0000
 categories: [business]
 tags: [marketwatch, stocks, finance, business, economy]
 author: "GlobalBR News"
+lang: "en"
 description: "Sales at retailers rose in April for the third month in a row in a seemingly good sign for the economy, but the increase was inflated by drivers spending more o"
 source_url: "https://www.marketwatch.com/story/u-s-retail-sales-increase-again-but-higher-gas-prices-and-inflation-played-a-big-role-167ae1c3?mod=mw_rss_topstories"
 source_name: "MarketWatch"

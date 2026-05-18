@@ -5,6 +5,7 @@ date: 2026-05-12 08:01:28 +0000
 categories: [world, sports]
 tags: [guardian, world-news, international, sports, nfl, american-football, internal-displacement, conflict-driven-displacement, disaster-driven-displacement, refugee-crisis, humanitarian-aid]
 author: "GlobalBR News"
+lang: "en"
 description: "Internal displacements caused by violence or conflict reach record high, surpassing disaster-driven displacements for the first time, with 82.2m people displace"
 source_url: "https://www.theguardian.com/world/2026/may/12/internal-displacements-violence-conflict-record-high-2025"
 source_name: "The Guardian"

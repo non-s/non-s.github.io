@@ -5,6 +5,7 @@ date: 2026-05-14 20:30:43 +0000
 categories: [world]
 tags: [npr, usa, world-news]
 author: "GlobalBR News"
+lang: "en"
 description: "Cuba's aging power grid has eroded in recent years as it faces a prolonged economic crisis, made worse by a U.S. energy blockade of the island. (Image credit: R"
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5822583/cuba-blackout"
 source_name: "NPR"

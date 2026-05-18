@@ -4,7 +4,8 @@ title: "Microsoft&#8217;s Edge Copilot update uses AI to pull information from a
 date: 2026-05-13 22:04:28 +0000
 categories: [technology, ai]
 tags: [theverge, gadgets, reviews, ai, microsoft, copilot]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Microsoft Edge is adding a new feature that will allow its Copilot AI chatbot to gather information from all of your open tabs. When you start a conversation wi"
 source_url: "https://www.theverge.com/tech/930188/microsoft-edge-copilot-ai-tabs"
 source_name: "The Verge"

@@ -4,7 +4,8 @@ title: "Microsoft's MDASH AI System Finds 16 Windows Flaws Fixed in Patch Tuesda
 date: 2026-05-13 13:46:02 +0000
 categories: [security, ai]
 tags: [hackernews, security, vulnerabilities, ai, machine-learning]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Microsoft has unveiled a new multi-model artificial intelligence (AI)-driven system called MDASH to facilitate vulnerability discovery and remediation at scale,"
 source_url: "https://thehackernews.com/2026/05/microsofts-mdash-ai-system-finds-16.html"
 source_name: "The Hacker News"

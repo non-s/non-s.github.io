@@ -5,6 +5,7 @@ date: 2026-05-14 15:14:01 +0000
 categories: [world, politics]
 tags: [euronews, europe, world-news, politics, government, mario-draghi, european-unity, charlemagne-prize, eurozone-debt-crisis, european-central-bank]
 author: "GlobalBR News"
+lang: "en"
 description: "Mario Draghi receives 2026 Charlemagne Prize for defending euro and European unity, recognition of his leadership during eurozone debt crisis period."
 source_url: "http://www.euronews.com/video/2026/05/14/super-mario-celebrated-for-defending-the-euro-and-european-unity"
 source_name: "Euronews"

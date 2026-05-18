@@ -5,6 +5,7 @@ date: 2026-05-13 02:50:23 +0000
 categories: [politics]
 tags: [politico, politics, usa, brad-raffensperger, political-violence, georgia-governor-race, us-elections, political-threats]
 author: "GlobalBR News"
+lang: "en"
 description: "Georgia Secretary of State Brad Raffensperger targeted by credible written threat as he runs for governor, prompting concerns over political violence in the US."
 source_url: "https://www.politico.com/news/2026/05/12/brad-raffensperger-threat-00918228"
 source_name: "Politico"

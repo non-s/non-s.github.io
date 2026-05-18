@@ -5,6 +5,7 @@ date: 2026-05-14 07:00:00 +0000
 categories: [business, war]
 tags: [fortune, business, economy, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "President Trump has declared that the main focus of the China Summit is trade , specifically unveiling big transactions for signature U.S. enterprises that swel"
 source_url: "https://fortune.com/2026/05/14/trump-china-boeing-kelly-ortberg-plane-sales/"
 source_name: "Fortune"

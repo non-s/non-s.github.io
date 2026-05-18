@@ -5,6 +5,7 @@ date: 2026-05-14 15:48:59 +0000
 categories: [war]
 tags: [defense, military, pentagon, war]
 author: "GlobalBR News"
+lang: "en"
 description: "KYIV, Ukraine — The U.S. State Department and Ukraine’s ambassador in Washington have outlined a memorandum that would route Ukrainian drone technology into joi"
 source_url: "https://www.defensenews.com/global/europe/2026/05/14/blacklists-corruption-and-frontline-needs-ukraine-tackles-an-arms-export-puzzle/"
 source_name: "Defense News"

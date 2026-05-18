@@ -4,7 +4,8 @@ title: "ChatGPT Briefly Returned a 'Content Failed to Load' Error for Some Users
 date: 2026-05-13 23:55:34 +0000
 categories: [technology, ai]
 tags: [cnet, tech, reviews, ai, chatgpt, openai]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The AI chatbot stopped working for some people on Wednesday afternoon."
 source_url: "https://www.cnet.com/news-live/chatgpt-briefly-returned-a-content-failed-to-load-error-for-some-users/"
 source_name: "CNET"

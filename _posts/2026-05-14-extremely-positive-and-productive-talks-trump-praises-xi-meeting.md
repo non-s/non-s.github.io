@@ -5,6 +5,7 @@ date: 2026-05-14 16:20:27 +0000
 categories: [world, war]
 tags: [france24, world-news, europe, war, conflict]
 author: "GlobalBR News"
+lang: "en"
 description: "Chinese President Xi Jinping warned his US counterpart Donald Trump that missteps on Taiwan could push their two countries into 'conflict', a stark opening salv"
 source_url: "https://www.france24.com/en/extremely-positive-and-productive-talks-trump-praises-xi-meeting"
 source_name: "France 24"

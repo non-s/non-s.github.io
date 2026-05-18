@@ -5,6 +5,7 @@ date: 2026-05-14 11:32:21 +0000
 categories: [world, war]
 tags: [npr, usa, world-news, war, conflict, trump-china-visit, kevin-warsh-fed-leader, global-economy, trade-policies, us-china-relations]
 author: "GlobalBR News"
+lang: "en"
 description: "President Trump visits China to make deals with President Xi Jinping, while the Senate confirms Kevin Warsh as Fed leader, impacting global economy and trade po"
 source_url: "https://www.npr.org/2026/05/14/g-s1-122014/up-first-newsletter-china-taiwan-trump-law-firms-kevin-warsh-denise-powell-nebraska"
 source_name: "NPR"

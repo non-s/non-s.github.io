@@ -5,6 +5,7 @@ date: 2026-05-14 18:10:59 +0000
 categories: [world, war]
 tags: [npr, usa, world-news, war, conflict, boeing-737-max, airplane-crash, aviation-safety, compensatory-damages, ethiopian-airlines-flight-302]
 author: "GlobalBR News"
+lang: "en"
 description: "A federal jury awards $49.5 million to the family of a 737 MAX crash victim, resolving one of the last remaining cases from the deadly crashes in 2018 and 2019"
 source_url: "https://www.npr.org/2026/05/14/nx-s1-5822441/jury-award-737-max-crash-ethiopian-airlines"
 source_name: "NPR"

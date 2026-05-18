@@ -11,15 +11,23 @@ concurrency:
   group: deploy-check-${{ github.ref }}
   cancel-in-progress: true
 
+# Least-privilege: this workflow only reads the repo (no commits, no
+# releases, no packages). Without this block the default GITHUB_TOKEN
+# inherits the repo's default permissions, which on `pull_request`
+# could include write access if the repo default is "read and write".
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: "Lint & syntax"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: "🐍 Setup Python"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -56,8 +64,8 @@ jobs:
     timeout-minutes: 10
     needs: lint
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -66,7 +74,7 @@ jobs:
           pip install PyYAML
       - name: "Regenerate search-index.json"
         run: python generate_search_index.py
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1.220.0
         with:
           ruby-version: "3.3"
           bundler-cache: true

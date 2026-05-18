@@ -5,6 +5,7 @@ date: 2026-05-14 20:47:46 +0000
 categories: [roundup]
 tags: [daily, news, roundup]
 author: "GlobalBR News"
+lang: "en"
 description: "Your daily roundup of the top 92 news stories for May 14, 2026."
 image: "https://image.pollinations.ai/prompt/daily%20news%20roundup%20newspaper%20collage%20dark%20editorial%20globalbr%20news?width=1200&height=630&nologo=true&seed=20260514&model=flux"
 sentiment: "neutral"

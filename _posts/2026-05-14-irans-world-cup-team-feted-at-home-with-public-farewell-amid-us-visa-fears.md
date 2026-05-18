@@ -5,6 +5,7 @@ date: 2026-05-14 13:17:55 +0000
 categories: [world, sports]
 tags: [euronews, europe, world-news, sports, football, world-cup, iran-world-cup, us-visa-fears, world-cup-2026, iran-football-team, us-iran-relations]
 author: "GlobalBR News"
+lang: "en"
 description: "Iran's football team given a state send-off in Tehran amid US visa fears for World Cup games in the US, sparking anti-US chants and flag waving period"
 source_url: "http://www.euronews.com/2026/05/14/irans-world-cup-team-feted-at-home-with-public-farewell-amid-us-visa-fears"
 source_name: "Euronews"

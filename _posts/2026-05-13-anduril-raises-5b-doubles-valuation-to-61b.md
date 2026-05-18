@@ -4,8 +4,10 @@ title: "Anduril raises $5B, doubles valuation to $61B"
 date: 2026-05-13 14:44:25 +0000
 categories: [startups]
 tags: [techcrunch, startups, venture-capital]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "After achieving $2.2 billion in revenue in 2025, the defense tech startup has raised another massive round, led by Thrive and a16z, it says."
+image: "/assets/images/og-default.jpg"
 source_url: "https://techcrunch.com/2026/05/13/anduril-raises-5b-doubles-valuation-to-61b/"
 source_name: "TechCrunch"
 ---

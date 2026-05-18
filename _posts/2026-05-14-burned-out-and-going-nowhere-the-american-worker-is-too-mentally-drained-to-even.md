@@ -5,6 +5,7 @@ date: 2026-05-14 14:00:46 +0000
 categories: [business]
 tags: [fortune, business, economy, fed]
 author: "GlobalBR News"
+lang: "en"
 description: "The résumé sits unfinished in a Google Doc. The LinkedIn tab stays open, untouched. For millions of American workers, the search for something better has ground"
 source_url: "https://fortune.com/2026/05/14/burnout-workers-too-tired-to-apply-for-jobs-glassdoor/"
 source_name: "Fortune"

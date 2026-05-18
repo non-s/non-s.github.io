@@ -4,7 +4,8 @@ title: "KitchenAid launches its first smart thermometer"
 date: 2026-05-13 22:22:37 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "There are single and dual probe models available."
 source_url: "https://www.engadget.com/2172500/kitchenaid-launches-its-first-smart-thermometer/"
 source_name: "Engadget"

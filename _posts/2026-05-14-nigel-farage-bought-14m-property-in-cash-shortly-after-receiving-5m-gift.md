@@ -5,6 +5,7 @@ date: 2026-05-14 16:53:18 +0000
 categories: [politics, war]
 tags: [guardian, politics, uk, war, conflict, nigel-farage, brexit, crypto-billionaire, political-financing, uk-politics]
 author: "GlobalBR News"
+lang: "en"
 description: "Nigel Farage received a £5m gift from crypto billionaire Christopher Harborne, buying a £1.4m property in cash, now under investigation by standards watchdog."
 source_url: "https://www.theguardian.com/politics/2026/may/14/nigel-farage-bought-property-after-receiving-gift-christopher-harborne-reform-uk"
 source_name: "The Guardian"

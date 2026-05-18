@@ -4,7 +4,8 @@ title: "We-Vibe Discount Codes and Deals: Up to 60% Off"
 date: 2026-05-14 05:00:00 +0000
 categories: [technology]
 tags: [wired, tech, science]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Save on We-Vibe, including app-controlled bestsellers and popular gift sets designed for couples, connection, and shared pleasure."
 source_url: "https://www.wired.com/story/we-vibe-discount-code/"
 source_name: "Wired"

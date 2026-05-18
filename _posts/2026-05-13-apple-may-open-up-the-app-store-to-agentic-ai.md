@@ -4,7 +4,8 @@ title: "Apple may open up the App Store to agentic AI"
 date: 2026-05-13 20:28:01 +0000
 categories: [gadgets]
 tags: [engadget, gadgets, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "But doing so could threaten its bottom line."
 source_url: "https://www.engadget.com/2172378/apple-may-open-up-the-app-store-to-agentic-ai/"
 source_name: "Engadget"

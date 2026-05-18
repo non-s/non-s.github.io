@@ -5,6 +5,7 @@ date: 2026-05-14 20:20:48 +0000
 categories: [world]
 tags: [aljazeera, world-news, middle-east]
 author: "GlobalBR News"
+lang: "en"
 description: "Iran’s Foreign Minister, Abbas Araghchi, spoke at a gathering of foreign ministers in New Delhi on Thursday."
 source_url: "https://www.aljazeera.com/video/newsfeed/2026/5/14/irans-fm-urges-brics-states-to-condemn-us-israeli-aggression?traffic_source=rss"
 source_name: "Al Jazeera"

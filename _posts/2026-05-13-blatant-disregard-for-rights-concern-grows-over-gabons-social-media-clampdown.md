@@ -5,6 +5,7 @@ date: 2026-05-13 04:00:20 +0000
 categories: [world, war]
 tags: [guardian, world-news, international, war, conflict, gabon-social-media-clampdown, internet-freedom-in-africa, human-rights-in-gabon, virtual-private-networks, online-censorship]
 author: "GlobalBR News"
+lang: "en"
 description: "Gabon's government is facing criticism for suspending social media platforms, sparking concerns over internet freedoms and human rights in the central African c"
 source_url: "https://www.theguardian.com/world/2026/may/13/concern-gabon-social-media-clampdown-human-rights"
 source_name: "The Guardian"

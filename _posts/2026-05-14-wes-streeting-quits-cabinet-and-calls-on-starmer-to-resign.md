@@ -5,6 +5,7 @@ date: 2026-05-14 17:31:27 +0000
 categories: [politics]
 tags: [guardian, politics, uk, government, uk-politics, labour-party, leadership-contest, keir-starmer, wes-streeting]
 author: "GlobalBR News"
+lang: "en"
 description: "Wes Streeting quits cabinet, calls on Keir Starmer to resign, seeking a broad leadership contest with various candidates, including Andy Burnham."
 source_url: "https://www.theguardian.com/politics/2026/may/14/wes-streeting-quits-cabinet-and-calls-on-starmer-to-resign"
 source_name: "The Guardian"

@@ -5,6 +5,7 @@ date: 2026-05-14 18:14:00 +0000
 categories: [world]
 tags: [dw, europe, world-news, strait-of-hormuz, iran, china, us, israel, global-oil-shipments, geopolitical-alliances]
 author: "GlobalBR News"
+lang: "en"
 description: "Iran's Revolutionary Guard allowed Chinese ships to pass through the Strait of Hormuz, a critical waterway, amid tensions with the US and Israel, raising questi"
 source_url: "https://www.dw.com/en/iran-says-chinese-ships-passed-through-hormuz-overnight/a-77163709?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

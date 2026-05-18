@@ -4,6 +4,13 @@ source "https://rubygems.org"
 gem "github-pages", group: :jekyll_plugins
 
 # Plugins adicionais
+# NB: jekyll-sitemap is listed here so the Gemfile.lock can resolve, but
+# we explicitly DO NOT register it under `plugins:` in _config.yml — we
+# ship hand-written sitemap.xml / sitemap-news.xml with news+image
+# annotations the plugin can't emit. (Letting jekyll-sitemap also walk
+# the 16k+ tag pages used to push builds past the CI timeout.)
+# github-pages would install it transitively anyway; declaring it here
+# keeps `bundle install --frozen` happy on the CI runner.
 group :jekyll_plugins do
   gem "jekyll-seo-tag"
   gem "jekyll-sitemap"

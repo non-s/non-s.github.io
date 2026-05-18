@@ -4,7 +4,8 @@ title: "Trump Phone Will Finally Ship This Week, CEO Says"
 date: 2026-05-13 20:41:28 +0000
 categories: [technology]
 tags: [cnet, tech, reviews]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "The T1 phone is shipping at last, according to an emailed confirmation from the CEO of Trump Mobile."
 source_url: "https://www.cnet.com/tech/mobile/trump-phone-will-finally-ship-this-week-mobile-ceo-says/"
 source_name: "CNET"

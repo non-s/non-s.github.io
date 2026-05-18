@@ -8,6 +8,7 @@ featured: true
 sentiment: "positive"
 image: "/assets/images/posts/2026-05-16-war-100-articles-milestone.webp"
 image_alt: "GlobalBR News 100 articles milestone in war category"
+lang: "en"
 ---
 
 We've reached a milestone: **100 articles** published in the **War** category!

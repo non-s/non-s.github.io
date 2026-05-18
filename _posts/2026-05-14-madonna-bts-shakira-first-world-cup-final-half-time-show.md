@@ -5,6 +5,7 @@ date: 2026-05-14 16:22:12 +0000
 categories: [world, sports]
 tags: [france24, world-news, europe, sports, football, world-cup, world-cup-halftime-show, super-bowl-style-concert, madonna-bts-shakira, football-and-music, fifa-world-cup-final]
 author: "GlobalBR News"
+lang: "en"
 description: "Madonna, BTS, and Shakira to perform at the first World Cup final halftime show in July, a Super Bowl-style concert event. The FIFA announcement has generated e"
 source_url: "https://www.france24.com/en/madonna-bts-shakira-first-world-cup-final-half-time-show"
 source_name: "France 24"

@@ -9,7 +9,9 @@ tagline: "World news: politics, war, science, food, sports & more"
 description: "GlobalBR News brings you the latest news from around the world — politics, war & conflict, science, health, food, sports, entertainment, business and technology."
 author:
   name: "Julio"
-  email: ""
+  # NB: leave `email` unset (omit the key) rather than set to "". feed-full.xml
+  # only emits the <author> element when email is truthy, so the empty
+  # string was producing malformed `<author> ()</author>` lines.
   github: "non-s"
 
 # --- URL e baseurl ---
@@ -103,8 +105,12 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      author: "Julio"
-      image: "/assets/images/default-post.jpg"
+      # Match the byline emitted by fetch_news.py for all auto-curated
+      # posts. The legacy "Julio" / "TechBR News" values get migrated
+      # away in scripts/migrate_authors.py.
+      author: "GlobalBR News"
+      image: "/assets/images/og-default.jpg"
+      lang: "en"
       comments: true
   - scope:
       path: ""
@@ -144,7 +150,8 @@ sass:
 editorial_policy_url: /editorial-policy/
 corrections_url: /corrections/
 
-# --- Google Analytics (descomente e adicione seu ID) ---
+# --- Google Analytics ---
+# Replace with your GA4 measurement ID, or comment out to disable analytics.
 google_analytics: "G-ZSQXRQJ6WC"
 
 # --- Microsoft Clarity (adicione o Project ID do dashboard Clarity) ---

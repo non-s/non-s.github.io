@@ -4,7 +4,8 @@ title: "AI IQ is here: a new site scores frontier AI models on the human IQ scal
 date: 2026-05-13 23:47:24 +0000
 categories: [startups, ai]
 tags: [venturebeat, startups, enterprise, ai, machine-learning]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "For decades, the IQ test has been one of the most familiar — and most contested — yardsticks for human intelligence. Now, a startup project called AI IQ is appl"
 source_url: "https://venturebeat.com/technology/ai-iq-is-here-a-new-site-scores-frontier-ai-models-on-the-human-iq-scale-the-results-are-already-dividing-tech"
 source_name: "VentureBeat"

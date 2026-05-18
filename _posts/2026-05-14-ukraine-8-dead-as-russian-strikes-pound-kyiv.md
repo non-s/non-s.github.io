@@ -5,6 +5,7 @@ date: 2026-05-14 17:11:00 +0000
 categories: [world, war]
 tags: [dw, europe, world-news, war, weapons, military, ukraine-russia-conflict, russian-strikes-on-ukraine, ukraine-invasion, ukrainian-cities-under-attack, russia-ukraine-war]
 author: "GlobalBR News"
+lang: "en"
 description: "Russia launches massive missile and drone attacks on Ukrainian cities, killing 8 in Kyiv, with dozens injured across the country, including a 12-year-old girl,"
 source_url: "https://www.dw.com/en/ukraine-8-dead-as-russian-strikes-pound-kyiv/a-77163392?maca=en-rss-en-all-1573-rdf"
 source_name: "Deutsche Welle"

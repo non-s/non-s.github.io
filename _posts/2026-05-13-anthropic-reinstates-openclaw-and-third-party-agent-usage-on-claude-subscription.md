@@ -4,7 +4,8 @@ title: "Anthropic reinstates OpenClaw and third-party agent usage on Claude subs
 date: 2026-05-13 22:15:00 +0000
 categories: [startups, ai]
 tags: [venturebeat, startups, enterprise, ai, anthropic]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Good news, OpenClaw fans — you can once again use your Claude AI subscription to power the hit, open source, autonomous AI agentic harness! But, there&#x27;s a"
 source_url: "https://venturebeat.com/technology/anthropic-reinstates-openclaw-and-third-party-agent-usage-on-claude-subscriptions-with-a-catch"
 source_name: "VentureBeat"

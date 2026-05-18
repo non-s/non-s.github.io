@@ -5,6 +5,7 @@ date: 2026-05-13 20:53:46 +0000
 categories: [politics]
 tags: [politico, politics, usa, republicans]
 author: "GlobalBR News"
+lang: "en"
 description: "DAYS THE BUDGET IS LATE: 43 PRIMARY COLORS : Republican Assemblymember Robert Smullen sat down with Rep. Elise Stefanik five years ago to talk about a rural dev"
 source_url: "https://www.politico.com/newsletters/new-york-playbook-pm/2026/05/13/elise-stefnik-republican-new-york-primary-00919396"
 source_name: "Politico"

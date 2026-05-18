@@ -5,6 +5,7 @@ date: 2026-05-14 16:00:29 +0000
 categories: [world, travel]
 tags: [euronews, europe, world-news, travel, destinations]
 author: "GlobalBR News"
+lang: "en"
 description: "Catch up with the most important stories from around Europe and beyond this May 14th, 2026 - latest news, breaking news, World, Business, Entertainment, Politic"
 source_url: "http://www.euronews.com/video/2026/05/14/latest-news-bulletin-may-14th-2026-evening"
 source_name: "Euronews"

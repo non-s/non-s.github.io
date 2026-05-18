@@ -4,8 +4,10 @@ title: "Intercom changes name to Fin"
 date: 2026-05-13 23:10:19 +0000
 categories: [technology]
 tags: [hackernews, programming, tech]
-author: "TechBR News"
+author: "GlobalBR News"
+lang: "en"
 description: "Article URL: https://www.intercom.com/blog/today-intercom-becomes-fin/ Comments URL: https://news.ycombinator.com/item?id=48128842 Points: 14 # Comments: 8"
+image: "/assets/images/og-default.jpg"
 source_url: "https://www.intercom.com/blog/today-intercom-becomes-fin/"
 source_name: "Hacker News"
 ---
