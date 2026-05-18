@@ -202,7 +202,7 @@ if (navigator.onLine) {
         crossorigin="anonymous"></script>
 {% endif %}
 
-{# BreadcrumbList JSON-LD is emitted by _layouts/post.html. #}
+{% comment %} BreadcrumbList JSON-LD is emitted by _layouts/post.html. {% endcomment %}
 
 {% if page.fact_check == 'verified' or page.fact_check == 'developing' or page.fact_check == 'opinion' or page.fact_check == 'satire' %}
 <!-- ClaimReview JSON-LD -->
@@ -250,9 +250,11 @@ if (navigator.onLine) {
 </script>
 {% endif %}
 
-{# Author Person schema removed — NewsArticle author (Organization)
-   is the canonical attribution; redundant Person markup was
-   confusing Google's structured-data parser. #}
+{% comment %}
+  Author Person schema removed — NewsArticle author (Organization)
+  is the canonical attribution; redundant Person markup was
+  confusing Google's structured-data parser.
+{% endcomment %}
 
 <!-- Organization Schema — all pages -->
 <script type="application/ld+json">
@@ -284,9 +286,11 @@ if (navigator.onLine) {
 </script>
 {% endif %}
 
-{# FAQ JSON-LD is emitted by _layouts/post.html with broader
-   field-name support (item.q/item.question, item.a/item.answer)
-   and safer jsonify escaping. #}
+{% comment %}
+  FAQ JSON-LD is emitted by _layouts/post.html with broader
+  field-name support (item.q/item.question, item.a/item.answer)
+  and safer jsonify escaping.
+{% endcomment %}
 
 {% if page.how_to_steps %}
 <!-- HowTo Schema (JSON-LD) -->
