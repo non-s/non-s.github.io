@@ -83,6 +83,14 @@ tier or fully open-source.
   prompt as the first comment.
 - **Workflow run summaries** — every CI run drops a markdown panel
   with metrics under the Actions tab. Zero external monitoring needed.
+- **AI response cache** — disk JSONL with 30-day TTL; identical
+  prompts across runs come back free, cutting Mistral burn 60-80 %.
+- **Pre-AI relevance gate** — `entry_relevance_score < 3` skips the
+  AI call entirely. Roughly halves the AI calls per run.
+- **Prompt-injection defense** — RSS-borne titles / descriptions are
+  sanitized for "ignore previous instructions" / system-tag forgery
+  patterns before they touch the LLM. System prompt explicitly tells
+  every provider to treat field values as untrusted data.
 
 ## Workflows
 

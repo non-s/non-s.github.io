@@ -23,10 +23,20 @@ class _FakeHTTPError(requests.exceptions.HTTPError):
 
 
 @pytest.fixture(autouse=True)
-def _clear_keys(monkeypatch):
-    """Strip provider keys so each test sets only the ones it needs."""
+def _clear_keys(monkeypatch, tmp_path):
+    """Strip provider keys + isolate the AI disk cache per test."""
     for var in ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY"):
         monkeypatch.delenv(var, raising=False)
+    # Each test gets its own cache file so a hit in one test never
+    # bleeds into another. Reload `ai_cache` so the module-level
+    # _DEFAULT_PATH constant picks up the env var.
+    monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "ai_cache.jsonl"))
+    monkeypatch.setenv("AI_CACHE_ENABLED", "1")
+    import importlib
+    from utils import ai_cache as _ac
+    importlib.reload(_ac)
+    _ac.reset_cache_for_tests()
+    monkeypatch.setattr(ai_helper, "ai_cache", _ac)
 
 
 @pytest.fixture
@@ -138,3 +148,65 @@ def test_skips_provider_without_key(monkeypatch, fast_sleep):
     assert out == "ok-gemini"
     ce.assert_not_called()
     ge.assert_called()
+
+
+# ── Cache integration ────────────────────────────────────────────
+
+def test_cache_hit_skips_every_provider(monkeypatch, fast_sleep, tmp_path):
+    """A cached response means no API is contacted at all."""
+    monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "c.jsonl"))
+    monkeypatch.setenv("AI_CACHE_ENABLED", "1")
+    monkeypatch.setenv("MISTRAL_API_KEY", "m")
+    monkeypatch.setenv("CEREBRAS_API_KEY", "c")
+
+    import importlib
+    from utils import ai_cache as _ac
+    importlib.reload(_ac)
+    _ac.reset_cache_for_tests()
+    # Patch ai_helper's reference to the freshly-reloaded module.
+    monkeypatch.setattr(ai_helper, "ai_cache", _ac)
+
+    # First call hits Mistral, populates cache.
+    with patch.object(ai_helper, "_call_mistral", return_value="fresh-out") as m1:
+        first = ai_helper.ai_text("hello prompt")
+    assert first == "fresh-out"
+    m1.assert_called_once()
+
+    # Second call: no provider should be invoked.
+    with patch.object(ai_helper, "_call_mistral") as m2, \
+         patch.object(ai_helper, "_call_cerebras") as ce, \
+         patch.object(ai_helper, "_call_gemini") as ge, \
+         patch.object(ai_helper, "_call_groq") as gr:
+        second = ai_helper.ai_text("hello prompt")
+    assert second == "fresh-out"
+    m2.assert_not_called()
+    ce.assert_not_called()
+    ge.assert_not_called()
+    gr.assert_not_called()
+
+
+def test_fallback_result_is_cached_under_primary_key(monkeypatch, fast_sleep, tmp_path):
+    """A Cerebras-served answer should be hot-served from cache on the next call."""
+    monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "c.jsonl"))
+    monkeypatch.setenv("AI_CACHE_ENABLED", "1")
+    monkeypatch.setenv("MISTRAL_API_KEY", "m")
+    monkeypatch.setenv("CEREBRAS_API_KEY", "c")
+
+    import importlib
+    from utils import ai_cache as _ac
+    importlib.reload(_ac)
+    _ac.reset_cache_for_tests()
+    monkeypatch.setattr(ai_helper, "ai_cache", _ac)
+
+    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)), \
+         patch.object(ai_helper, "_call_cerebras", return_value="from-cerebras"):
+        out1 = ai_helper.ai_text("identical prompt")
+    assert out1 == "from-cerebras"
+
+    # Second call: cache hit means we never reach Mistral or Cerebras.
+    with patch.object(ai_helper, "_call_mistral") as m, \
+         patch.object(ai_helper, "_call_cerebras") as ce:
+        out2 = ai_helper.ai_text("identical prompt")
+    assert out2 == "from-cerebras"
+    m.assert_not_called()
+    ce.assert_not_called()

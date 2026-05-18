@@ -86,11 +86,18 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: "🧹 Prune AI cache"
+        if: always()
+        run: |
+          # Drops expired entries (TTL 30d default) so the JSONL stays
+          # bounded. Safe to skip — readers ignore expired rows.
+          python -c "from utils import ai_cache; print('kept', ai_cache.prune(), 'entries')" || true
+
       - name: "💾 Commit queue + state files"
         run: |
           git config user.name  "GlobalBR News Bot"
           git config user.email "bot@globalbrnews.com"
-          git add _data/stories_queue.json _data/feed_cache.json _data/feed_health.json 2>/dev/null || true
+          git add _data/stories_queue.json _data/feed_cache.json _data/feed_health.json _data/ai_cache.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "✨ No new stories — nothing to commit."
             exit 0
