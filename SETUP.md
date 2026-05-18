@@ -128,45 +128,7 @@ documented). The pipeline tries:
 Setting Groq is the cheaper path (much faster + no extra runtime).
 Without either, the pipeline still ships but skips captions.
 
-### 2.6 Bluesky cross-post (vertical video, ~42M MAU)
-
-Bluesky's vertical-video feed launched Jan 2025 and is the easiest
-secondary platform to wire — no audit, no business account, just an
-app password. Same MP4, additional reach.
-
-1. Log in at <https://bsky.app/>, create the account if needed
-2. Settings → Privacy & Security → App Passwords → Create a new one
-   labelled `globalbr-bot`
-3. Add two repo secrets:
-   - `BLUESKY_HANDLE` (e.g. `globalbrnews.bsky.social`)
-   - `BLUESKY_APP_PASSWORD` (the app password, never your real password)
-
-Skipping either secret silently no-ops the cross-post step.
-
-### 2.7 Reddit cross-post (free, no audit)
-
-Reddit's free OAuth API takes one click to enable and adds another
-free distribution channel. Sign up a dedicated bot account (the
-established account rule keeps you off shadowban lists), then:
-
-1. Log in as the bot account → <https://www.reddit.com/prefs/apps>
-2. "create another app…" → choose **script** → name it `globalbr-bot`
-   → redirect URI `http://localhost`. Save.
-3. Note the **client_id** (right under the app name) and
-   **client_secret**.
-4. Add five repo secrets:
-   - `REDDIT_USER_AGENT` e.g. `"Mozilla/5.0 (GlobalBR News bot by /u/<handle>)"`
-   - `REDDIT_USERNAME` the bot account
-   - `REDDIT_PASSWORD` (the bot account password, **not** 2FA token)
-   - `REDDIT_CLIENT_ID`
-   - `REDDIT_CLIENT_SECRET`
-
-The pipeline posts one self-link per Short to the
-category-appropriate subreddit (`r/worldnews`, `r/MachineLearning`,
-`r/cybersecurity`, …) — no multi-sub spam, no bot-account behaviour
-patterns that trip Reddit's anti-spam.
-
-### 2.8 GitHub Pages dashboard (free)
+### 2.6 GitHub Pages dashboard (free)
 
 `dashboard.yml` builds a static analytics dashboard from the
 analytics CSVs every night and deploys to GitHub Pages. To enable:
@@ -178,7 +140,7 @@ analytics CSVs every night and deploys to GitHub Pages. To enable:
 The page shows total views, sparklines, top performers, A/B winners,
 retention by category, and the cohort-timing recommendations.
 
-### 2.9 Portuguese sibling channel (huge untapped niche)
+### 2.7 Portuguese sibling channel (huge untapped niche)
 
 Brazil is the **#3 YouTube Shorts market by views** (~9 % of global
 traffic, AIR Media-Tech 2026) and there is currently **no mass-scale
@@ -205,9 +167,6 @@ UTC (06 / 12 / 18 BRT — Brazilian morning, lunch, evening peaks).
    ```
 3. **Add the new repo secret**: paste `token.json` contents as
    `YOUTUBE_TOKEN_PTBR`. Keep `YOUTUBE_TOKEN` for English.
-4. (Optional) `BLUESKY_HANDLE_PTBR` + `BLUESKY_APP_PASSWORD_PTBR`
-   if you want a separate Brazilian Bluesky account. Otherwise the
-   PT-BR workflow reuses the main Bluesky secrets.
 
 That's it. The workflow checks for `YOUTUBE_TOKEN_PTBR` and silently
 skips if it's not set, so committing the workflow file does no harm
@@ -226,7 +185,7 @@ on accounts that haven't opted in.
   search still hits — PT-BR viewers search "Powell", not the
   hypothetical translation.
 
-### 2.7 Token-saving defaults (already on)
+### 2.8 Token-saving defaults (already on)
 
 Three knobs cut AI quota use without changing output quality:
 
@@ -290,41 +249,6 @@ GitHub Actions is **not** an option — jobs cap at 6 hours. Oracle's
    directly)
 
 This unlocks future Phase: 24/7 news loop live stream.
-
-### 3.3 Meta Graph API — cross-post Reels to IG + FB
-
-Same MP4 we upload to YouTube can go to Instagram Reels and Facebook
-Reels via the Meta Graph API. Free. Requires a Facebook Business
-account.
-
-1. <https://developers.facebook.com> → Create App → Business type
-2. Add Instagram Graph API + Facebook Graph API products
-3. Connect a Facebook Page to your Instagram account (must be
-   Business or Creator type — personal IG accounts can't post via API)
-4. Generate a Page access token with `instagram_basic`,
-   `instagram_content_publish`, `pages_show_list` scopes
-5. Add repo secrets:
-   - `META_PAGE_ID`
-   - `META_IG_USER_ID`
-   - `META_PAGE_TOKEN` (long-lived, 60-day; refresh script needed
-     before expiry)
-
-Hard limits to know:
-- IG Reels via API: **100 posts / 24 h** per account (Phyllo, 2026)
-- Only Business / Creator IG accounts (personal blocked)
-- MP4 must already be embedded with its audio — IG API doesn't
-  apply music
-
-When you're ready to wire this, the workflow stub goes in
-`.github/workflows/crosspost.yml`; it triggers off
-`workflow_run: youtube-bot success`.
-
-### 3.4 TikTok — needs manual audit
-
-The TikTok Content Posting API works, but **unaudited apps can only
-post `SELF_ONLY` (private)** — useless for a public channel. The
-audit is a manual process, takes weeks, and isn't worth chasing until
-the IG/FB cross-post is proven. Skip until then.
 
 ---
 

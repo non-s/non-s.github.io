@@ -55,7 +55,6 @@ consumed. Both can be run independently.
 | Encoder | FFmpeg (libx264, AAC, libass) | OSS |
 | Hosting | GitHub Actions (public repo) | unlimited minutes |
 | Upload | YouTube Data API v3 | 10k units/day |
-| Cross-post | Bluesky AT Protocol (opt-in) | free, vertical-video feed |
 | Analytics | YouTube Analytics API v2 | unlimited |
 
 Total cost: **$0/month**. Every layer above is on a no-credit-card free
@@ -147,10 +146,6 @@ static frames. To stay on the right side of the bar this pipeline:
   Shorts of the last 7 days. Long-form is the algorithmic foundation
   Shorts-only channels lack — total watch time outranks average view
   % on YouTube's overall ranker.
-- **Reddit cross-post** — the YouTube link drops as a self-post on
-  the category-appropriate subreddit (`worldnews`, `MachineLearning`,
-  `cybersecurity`, etc.) right after each upload. Free, no audit,
-  one sub per Short to stay on the right side of every sub's spam rules.
 - **Static dashboard on GitHub Pages** — `dashboard.yml` builds an
   HTML page with sparklines, top performers, retention by category,
   A/B winners, and cohort timing slots from the analytics CSVs.

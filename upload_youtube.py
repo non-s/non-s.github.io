@@ -314,33 +314,6 @@ def upload_video(youtube, meta: dict) -> str | None:
     except Exception as e:
         log.warning(f"  ⚠️ First comment failed: {e}")
 
-    # Cross-post to Bluesky (free, keyless via app password). Strictly
-    # additive — Bluesky's vertical-video feed is small but growing
-    # and the same MP4 + caption costs nothing to also publish there.
-    try:
-        from utils.crosspost_bluesky import crosspost_video
-        crosspost_video(
-            video_path=video_path,
-            caption=(meta.get("description") or "").split("\n")[0],
-            alt_text=title,
-            youtube_url=yt_url,
-        )
-    except Exception as e:
-        log.warning(f"  ⚠️ Bluesky cross-post failed: {e}")
-
-    # Cross-post the YouTube link to the category-appropriate subreddit.
-    # Reddit's free API requires only an unaudited script-type app.
-    # No-ops silently when REDDIT_* env vars aren't all set.
-    try:
-        from utils.crosspost_reddit import crosspost_link
-        crosspost_link(
-            youtube_url=yt_url,
-            title=title,
-            category=meta.get("category", "world"),
-        )
-    except Exception as e:
-        log.warning(f"  ⚠️ Reddit cross-post failed: {e}")
-
     return video_id
 
 
