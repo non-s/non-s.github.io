@@ -101,17 +101,34 @@ def build_broll_short(broll_paths: list[Path],
     seg_dur = audio_dur / n
 
     # Build the filter graph. Each clip becomes a normalised vertical
-    # segment of seg_dur seconds; concat then crop+caption overlay.
+    # segment of `seg_dur` seconds with a subtle Ken Burns push so the
+    # frame is never literally static — a hard requirement for the
+    # Inauthentic Content policy. Direction alternates per clip
+    # (in / out / in) so consecutive segments feel different.
     parts: list[str] = []
+    segment_frames = int(round(seg_dur * TARGET_FPS))
     for i, clip in enumerate(broll_paths):
+        zoom_in = (i % 2 == 0)
+        # zoompan z' starts at 1 and grows (or shrinks) per frame. A 1.08
+        # final zoom over seg_dur ≈ 1.78 % per second — slow enough to
+        # feel cinematic, not so fast the viewer notices the crop walking.
+        if zoom_in:
+            z_expr = f"min(zoom+0.0008,1.08)"
+        else:
+            z_expr = f"if(eq(on,0),1.08,max(zoom-0.0008,1.00))"
         parts.append(
             # Loop short clips, trim long ones to the exact segment length.
             # `setpts=PTS-STARTPTS` resets timestamps so concat splices cleanly.
             f"[{i}:v]"
             f"loop=loop=-1:size=10000:start=0,"  # cheap loop covers under-length clips
-            f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=increase,"
-            f"crop={SHORT_W}:{SHORT_H},"
-            f"setsar=1,fps={TARGET_FPS},"
+            f"scale={SHORT_W * 2}:{SHORT_H * 2}:force_original_aspect_ratio=increase,"
+            f"crop={SHORT_W * 2}:{SHORT_H * 2},"
+            # Ken Burns push — `d=1` outputs one frame per input frame so
+            # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
+            # the output back down to Shorts native after the crop walk.
+            f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+            f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
+            f"setsar=1,"
             f"trim=duration={seg_dur:.3f},setpts=PTS-STARTPTS"
             f"[v{i}]"
         )

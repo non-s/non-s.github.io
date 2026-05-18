@@ -19,6 +19,8 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError
 
+from utils import youtube_quota
+
 # Locale axis — mirrors generate_shorts.py. When LANGUAGE=pt-BR (or
 # any other non-en supported locale), we upload from `_videos_pt-BR/`
 # instead of `_videos/`. This lets one repo serve multiple sibling
@@ -95,6 +97,7 @@ def _get_or_create_playlist(youtube, category: str, playlist_ids: dict) -> str |
         playlist_ids[key] = pid
         _save_playlist_ids(playlist_ids)
         log.info(f"  📋 Created playlist '{playlist_title}': {pid}")
+        youtube_quota.record("playlists.insert", channel=_LANGUAGE)
         return pid
     except Exception as e:
         log.warning(f"  Could not create playlist for {category}: {e}")
@@ -113,6 +116,7 @@ def _add_to_playlist(youtube, video_id: str, playlist_id: str) -> None:
             }
         ).execute()
         log.info(f"  📋 Added to playlist")
+        youtube_quota.record("playlistItems.insert", channel=_LANGUAGE, video_id=video_id)
     except Exception as e:
         log.warning(f"  Could not add to playlist: {e}")
 
@@ -274,6 +278,7 @@ def upload_video(youtube, meta: dict) -> str | None:
     video_id = response["id"]
     yt_url   = f"https://youtube.com/watch?v={video_id}"
     log.info(f"  ✅ Publicado: {yt_url}")
+    youtube_quota.record("videos.insert", channel=_LANGUAGE, video_id=video_id)
 
     # Faz upload da thumbnail (não-crítico — vídeo já foi publicado)
     if thumb_path and thumb_path.exists():
@@ -283,6 +288,7 @@ def upload_video(youtube, meta: dict) -> str | None:
                 media_body=MediaFileUpload(str(thumb_path), mimetype="image/jpeg"),
             ).execute()
             log.info(f"  🖼  Thumbnail aplicada")
+            youtube_quota.record("thumbnails.set", channel=_LANGUAGE, video_id=video_id)
         except HttpError as e:
             log.warning(f"  ⚠️ Não foi possível aplicar thumbnail: HTTP {e.resp.status}")
     else:
@@ -369,6 +375,7 @@ def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
         },
     ).execute()
     log.info("  💬 First comment posted")
+    youtube_quota.record("commentThreads.insert", channel=_LANGUAGE, video_id=video_id)
 
 
 def main():
@@ -428,6 +435,12 @@ def main():
             uploaded += 1
 
     log.info("🏁 %d/%d vídeo(s) publicado(s) no YouTube.", uploaded, len(pending))
+
+    # Quota snapshot for the workflow summary step.
+    q = youtube_quota.summary()
+    log.info("📊 YouTube quota today: %d / %d units (%.0f%%) — %s",
+             q["used"], q["budget"], q["pct_used"],
+             q["warning"] or "OK")
 
     # Observable failure signal: we had work but uploaded nothing.
     # Workflow goes red and someone notices, instead of "✅ 0/3".
