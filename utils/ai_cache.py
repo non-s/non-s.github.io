@@ -51,6 +51,12 @@ log = logging.getLogger(__name__)
 _DEFAULT_TTL_DAYS = float(os.environ.get("AI_CACHE_TTL_DAYS", "30"))
 _DEFAULT_PATH = Path(os.environ.get("AI_CACHE_PATH", "_data/ai_cache.jsonl"))
 _ENABLED = os.environ.get("AI_CACHE_ENABLED", "1") not in ("0", "false", "False")
+# Template version is folded into every cache key. Bump it when the
+# `_AI_PROMPT_TEMPLATE` in fetch_news.py (or any other prompt that
+# round-trips through ai_text) changes shape in a way that invalidates
+# previous responses. Old entries become unreachable instantly; the
+# prune() call rewrites the file the next time the workflow runs.
+_TEMPLATE_VERSION = os.environ.get("AI_TEMPLATE_VERSION", "v3-2026-05")
 
 # In-process lock so worker threads in fetch_news.py don't both call
 # the API for the same key in the brief window before disk is read.
@@ -59,13 +65,16 @@ _mem: dict[str, dict] | None = None  # lazy-loaded on first use
 
 
 def _key(prompt: str, model_hint: str, json_mode: bool) -> str:
-    """Stable cache key. Hashing the prompt means template edits self-invalidate."""
+    """Stable cache key. Hashing the prompt + template version means both
+    inline-edits AND deliberate template-version bumps self-invalidate."""
     h = hashlib.sha256()
     h.update(prompt.encode("utf-8", errors="replace"))
     h.update(b"\x00")
     h.update(model_hint.encode("utf-8", errors="replace"))
     h.update(b"\x00")
     h.update(b"1" if json_mode else b"0")
+    h.update(b"\x00")
+    h.update(_TEMPLATE_VERSION.encode("utf-8", errors="replace"))
     return h.hexdigest()[:24]
 
 

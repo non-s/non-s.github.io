@@ -64,3 +64,31 @@ def test_pick_voice_handles_empty_seed():
     # Empty / missing seed must still return a valid voice.
     assert pick_voice("", "") in VOICE_PANEL
     assert pick_voice("", "AI") in VOICE_PANEL
+
+
+def test_pick_voice_pt_br_uses_locale_panel():
+    """A pt-BR voice_tag should switch to the Portuguese panel."""
+    from generate_shorts import pick_voice, VOICE_PANEL_BY_LOCALE
+    for title in ("manchete 1", "manchete 2", "manchete 3", "manchete 4"):
+        v = pick_voice(title, "WORLD", voice_tag="pt-BR")
+        assert v in VOICE_PANEL_BY_LOCALE["pt-BR"]
+
+
+def test_pick_voice_es_es_uses_locale_panel():
+    from generate_shorts import pick_voice, VOICE_PANEL_BY_LOCALE
+    v = pick_voice("noticia importante", "WORLD", voice_tag="es-ES")
+    assert v in VOICE_PANEL_BY_LOCALE["es-ES"]
+
+
+def test_pick_voice_unknown_locale_falls_back_to_english():
+    """An unrecognised voice_tag falls through to the English panel."""
+    from generate_shorts import pick_voice, VOICE_PANEL
+    v = pick_voice("title", "WORLD", voice_tag="zz-ZZ")
+    assert v in VOICE_PANEL
+
+
+def test_pick_voice_pt_br_is_deterministic():
+    from generate_shorts import pick_voice
+    seed = "Mesma manchete brasileira"
+    assert pick_voice(seed, "WORLD", voice_tag="pt-BR") == \
+           pick_voice(seed, "WORLD", voice_tag="pt-BR")
