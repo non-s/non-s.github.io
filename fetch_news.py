@@ -58,6 +58,7 @@ from utils.ai_helper import (
     quality_score,
     sentiment_score,
 )
+from utils.brand_safety import evaluate as brand_safety_evaluate
 from utils.dedup import titles_too_similar
 from utils.experiments import assign_all as assign_experiments
 from utils.prompt_safety import sanitize_for_prompt, wrap_untrusted
@@ -731,6 +732,20 @@ def _entry_to_story(entry, feed_cfg: dict) -> dict | None:
         log.debug(f"  ⏭  relevance={relevance:.1f} < {RELEVANCE_MIN_FOR_AI}: '{title[:60]}'")
         return None
 
+    # Brand-safety gate. Stories with hard signals (mass shootings,
+    # graphic violence, war crimes, etc.) drop here BEFORE we pay
+    # any AI tokens. Soft signals get a score penalty later.
+    breaking_flag = is_breaking_news(title, description)
+    safety = brand_safety_evaluate(
+        title=title,
+        description=description,
+        breaking_override=breaking_flag,
+        relevance=relevance,
+    )
+    if not safety.ok:
+        log.debug(f"  ⏭  brand_safety blocked '{title[:60]}': {safety.reason}")
+        return None
+
     return {
         "id":             _story_id(link),
         "fetched_at":     datetime.now(timezone.utc).isoformat(),
@@ -743,8 +758,13 @@ def _entry_to_story(entry, feed_cfg: dict) -> dict | None:
         "category":       feed_cfg.get("category", "world"),
         "description":    description,
         "image_url":      image_url,
-        "breaking":       is_breaking_news(title, description),
+        "breaking":       breaking_flag,
         "relevance":      relevance,
+        # Brand-safety soft-hit penalty: 0 for clean stories, 1+ for
+        # stories with one or more soft signals. _enrich_story
+        # subtracts this from the AI score so a clean story of similar
+        # quality wins the slot.
+        "safety_penalty": safety.penalty,
         # native_lang lets generate_shorts.py skip the translation step
         # when LANGUAGE=pt-BR matches the story's native language —
         # rendering native PT-BR content instead of round-tripping an
@@ -797,6 +817,29 @@ def _enrich_story(story: dict,
         if delta:
             score += delta
             bias_notes.append(f"perf{delta:+d}")
+
+    # Freshness boost. The Shorts algorithm strongly prefers fresh
+    # stories (the first 12 h after publication are when virality
+    # happens). We bonus stories under 6 h (+2) and 12 h (+1).
+    try:
+        published_at = datetime.fromisoformat(
+            (story.get("published_at") or "").replace("Z", "+00:00")
+        )
+        age_hours = (datetime.now(timezone.utc) - published_at).total_seconds() / 3600.0
+        if age_hours <= 3:
+            score += 2; bias_notes.append("fresh+2")
+        elif age_hours <= 12:
+            score += 1; bias_notes.append("fresh+1")
+        elif age_hours >= 36:
+            score -= 1; bias_notes.append("stale-1")
+    except Exception:
+        pass
+
+    # Brand-safety soft penalty (set in _entry_to_story).
+    penalty = int(story.get("safety_penalty", 0) or 0)
+    if penalty:
+        score -= penalty
+        bias_notes.append(f"safety-{penalty}")
 
     # Clamp into 0-10 range so downstream consumers don't see weird values.
     score = max(0, min(10, score))

@@ -87,11 +87,15 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
         "image_url": "", "source_url": "",
     }
     from unittest.mock import patch
-    # Mock every external call we'd otherwise need ffmpeg / edge-tts for.
+    # Mock every external call we'd otherwise need ffmpeg / edge-tts /
+    # Pexels / Pixabay for. Without mocking add_music_bed the test
+    # would actually hit Pixabay's CDN and leak a 4 MB MP3 into the
+    # repo's _data/music_cache.
     with patch.object(gs, "translate_story", return_value=translated) as tx, \
          patch.object(gs, "acquire_broll_clips", return_value=[]), \
          patch.object(gs, "generate_captions", return_value=None), \
          patch.object(gs, "text_to_speech") as tts, \
+         patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio), \
          patch.object(gs, "download_image", return_value=False), \
          patch.object(gs, "fetch_any_free_image", return_value=False), \
          patch.object(gs, "generate_ai_background", return_value=False):

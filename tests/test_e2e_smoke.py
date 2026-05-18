@@ -121,12 +121,14 @@ def _stub_image_chain(monkeypatch, gs):
 
 
 def _stub_tts_and_captions(monkeypatch, gs):
-    """No real TTS, no real Whisper."""
+    """No real TTS, no real Whisper, no real Pixabay download."""
     async def fake_tts(text, output_path, voice):
         output_path.write_bytes(b"ID3" + b"\x00" * 10_000)
 
     monkeypatch.setattr(gs, "text_to_speech", fake_tts)
     monkeypatch.setattr(gs, "generate_captions", lambda audio, tmp: None)
+    # Music bed: return the unchanged audio path, no network.
+    monkeypatch.setattr(gs, "add_music_bed", lambda audio, story, tmp: audio)
 
 
 def _stub_broll_acquisition(monkeypatch, gs):

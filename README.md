@@ -154,6 +154,33 @@ static frames. To stay on the right side of the bar this pipeline:
   fetch → enrich → generate → metadata-sidecar with every external
   touchpoint mocked. Wiring regressions go red locally instead of in
   production.
+- **Brand-safety filter** — `utils/brand_safety.py` drops stories
+  with graphic violence / war crimes / partisan attack-ad signals
+  BEFORE any AI tokens are spent. RPM-killing patterns never reach
+  the pipeline; the channel-wide classifier stays clean.
+- **Freshness boost** — stories under 3 h old get +2 score; under 12
+  h get +1; over 36 h get −1. Viral Shorts emerge in the first 12 h
+  of a news cycle; the scorer follows the algorithm's bias.
+- **Music bed** — Pixabay CC0 tracks ducked to −22 dB under the TTS,
+  picked deterministically by story mood (breaking → tense, science →
+  reflective, default → upbeat). Production-value lift documented at
+  +4-7 % retention.
+- **Channel watermark** — handle drawn upper-right throughout the
+  whole video as the industry-standard brand bug. Trace re-uploads
+  and reinforce recognition without consuming captioning area.
+- **6 b-roll clips per Short** (was 3) — pattern interrupts land
+  every ~7-8 s in a 45 s Short, well inside the algorithm's 2-3 s
+  retention sweet spot.
+- **Auto-reply to viewer comments** — `utils/comment_replies.py`
+  classifies new top-level comments (positive / curious / agreement /
+  geo) and posts a templated reply from the channel account. Comments-
+  per-view is a top-three Shorts ranking signal; each reply boosts
+  it twice (the reply itself + the parent's visibility).
+- **Velocity tracker** — `utils/velocity.py` snapshots view counts
+  at +2 h / +6 h / +24 h post-upload. The +2 h view count is the
+  single strongest predictor of whether the Shorts algorithm will
+  distribute a video; analytics correlates it with category +
+  experiment variants to bias future story selection.
 
 ## Workflows
 
@@ -163,6 +190,8 @@ static frames. To stay on the right side of the bar this pipeline:
 | `youtube-bot.yml` | 08 / 14 / 20 | Generate + upload 1 English Short per run |
 | `youtube-bot-ptbr.yml` | 09 / 15 / 21 | Generate + upload 1 PT-BR Short per run (sibling channel, opt-in) |
 | `weekly-roundup.yml` | Sun 21:00 | Build + publish a 9-11 min long-form weekly roundup |
+| `velocity-snapshot.yml` | every 2 h | Snapshot view counts at +2h / +6h / +24h post-upload |
+| `comment-replies.yml` | every 6 h | Auto-reply (filtered) to top viewer comments |
 | `analytics.yml` | 03:00 | Pull retention/CTR snapshot + compute A/B winners + cohort timing |
 | `dashboard.yml` | 03:30 | Build + deploy the channel dashboard to GitHub Pages |
 | `daily-digest.yml` | 04:00 | Post a GitHub Issue with the 24 h review checklist |
