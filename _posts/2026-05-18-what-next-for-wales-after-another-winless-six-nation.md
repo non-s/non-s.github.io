@@ -41,6 +41,7 @@ entities:
   - "Stephen Varney"
   - "Stadio Olimpico"
   - "Six Nations Championship"
+audio: "/assets/audio/posts/2026-05-18-what-next-for-wales-after-another-winless-six-nation.mp3"
 ---
 
 Wales’ Six Nations campaign ended in familiar disappointment as Italy claimed their first win over the Dragons since 2013 with a 27-13 victory in Rome. The defeat sealed Wales’ second winless tournament in seven years and their fifth Wooden Spoon in the last decade. Fans inside the Stadio Olimpico booed the team off the field, a clear sign of the frustration that’s grown with each passing defeat.

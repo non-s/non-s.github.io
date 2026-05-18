@@ -43,6 +43,7 @@ entities:
   - "Greene King"
   - "Apollo Global Management"
   - "Carlyle Group"
+audio: "/assets/audio/posts/2026-05-18-why-a-small-uk-lender-has-major-us-credit-firms-on-edge.mp3"
 ---
 
 Last August, [MFS Investment Management](https://en.wikipedia.org/wiki/MFS_Investment_Management)—a mid-sized UK lender—folded under a pile of bad loans it couldn’t repay. The mess left dozens of U.S. hedge funds and private credit firms staring at losses totaling more than £1 billion. What’s spooking Wall Street isn’t just the size of the blowup. It’s how fast it happened and how little anyone saw it coming. Most of MFS’s loans were to small and midsize UK businesses that couldn’t cover their debts when interest rates jumped. When those companies defaulted, MFS couldn’t collect, and its lenders got stuck holding worthless paper. The collapse didn’t make national news for weeks, but inside credit markets, it’s been the talk of the town ever since.
