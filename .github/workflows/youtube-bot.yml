@@ -54,11 +54,16 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - name: "Instalar FFmpeg e fontes"
+      - name: "Instalar FFmpeg, libass e fontes"
         run: |
           sudo apt-get update -qq
+          # libass is required for the ASS subtitle burn-in step. It's
+          # already a dep of the ffmpeg binary on ubuntu-latest, but
+          # we install explicitly to fail loudly if Ubuntu ever splits
+          # ffmpeg-extras out of the default package.
           sudo apt-get install -y \
             ffmpeg \
+            libass9 \
             fonts-dejavu-core \
             fonts-liberation \
             fonts-noto-core \
@@ -71,6 +76,12 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          # Optional: faster-whisper for local caption fallback if Groq
+          # Whisper isn't configured. Keeps captions working with zero
+          # network deps. ~200 MB download, runs CPU-only.
+          if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
+            pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
+          fi
 
       - name: "Restaurar token do YouTube"
         env:
@@ -125,6 +136,10 @@ jobs:
           CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
+          # B-roll: Pexels needs a free key (20k req/mo, no card).
+          # Without it the pipeline falls back to NASA + Internet Archive
+          # (both keyless) which still beats static frames.
+          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
       - name: "📤 Upload Shorts para YouTube"
@@ -132,6 +147,11 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+          # Bluesky cross-post (free vertical-video feed, ~42M MAU).
+          # Both empty → skipped silently; configuring lifts reach
+          # without touching any other moving part.
+          BLUESKY_HANDLE:        ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD:  ${{ secrets.BLUESKY_APP_PASSWORD }}
 
       - name: "📊 Write run summary"
         if: always()

@@ -206,6 +206,15 @@ def upload_video(youtube, meta: dict) -> str | None:
         "status": {
             "privacyStatus":           meta.get("privacy", "public"),
             "selfDeclaredMadeForKids": False,
+            # July 2025 "Inauthentic Content" policy requires creators
+            # to disclose AI-generated / altered content. Every Short
+            # we publish has AI-written voice-over + AI-selected
+            # imagery, so this flag is always True on this channel.
+            # YouTube surfaces "Altered or synthetic content" beneath
+            # the video — better than getting demonetised for omitting
+            # the disclosure. Field accepts None / True / False; we
+            # default True since the bot's whole output is AI-authored.
+            "containsSyntheticMedia":  bool(meta.get("altered_content", True)),
         },
     }
 
@@ -292,6 +301,20 @@ def upload_video(youtube, meta: dict) -> str | None:
         _post_first_comment(youtube, video_id, meta)
     except Exception as e:
         log.warning(f"  ⚠️ First comment failed: {e}")
+
+    # Cross-post to Bluesky (free, keyless via app password). Strictly
+    # additive — Bluesky's vertical-video feed is small but growing
+    # and the same MP4 + caption costs nothing to also publish there.
+    try:
+        from utils.crosspost_bluesky import crosspost_video
+        crosspost_video(
+            video_path=video_path,
+            caption=(meta.get("description") or "").split("\n")[0],
+            alt_text=title,
+            youtube_url=yt_url,
+        )
+    except Exception as e:
+        log.warning(f"  ⚠️ Bluesky cross-post failed: {e}")
 
     return video_id
 
