@@ -272,9 +272,14 @@ _AI_PROMPT_TEMPLATE = (
     "search-friendly language. Tone for the voice-over: conversational, "
     "opinionated but grounded, first-person plural ('we', 'us'). Take a "
     "stance — name the winner or loser, point out what most coverage "
-    "misses. NO clickbait. NO AI-isms (avoid 'pivotal', 'unprecedented', "
-    "'paradigm shift', 'sheds light on', 'in the realm of', 'delve'). "
-    "Contractions are fine. Respond ONLY with valid JSON.\n\n"
+    "misses. EVERY short must include at least one line of analysis or "
+    "context that goes BEYOND what the source article said — this is "
+    "the 'original value' YouTube's monetization policy now requires "
+    "(July 2025 update; channels relying on pure narration of wire "
+    "copy have been terminated). NO clickbait. NO AI-isms (avoid "
+    "'pivotal', 'unprecedented', 'paradigm shift', 'sheds light on', "
+    "'in the realm of', 'delve'). Contractions are fine. Respond ONLY "
+    "with valid JSON.\n\n"
     "Story:\n"
     "Title: {title}\n"
     "Source: {source}\n"
@@ -301,17 +306,50 @@ _AI_PROMPT_TEMPLATE = (
     'evergreen channel tags like \\\"world news\\\", \\\"breaking news\\\", '
     '\\\"daily news\\\". E.g. [\\\"fed\\\", \\\"jerome powell\\\", '
     '\\\"interest rates\\\", \\\"world news\\\", \\\"breaking news\\\"].>"],'
+    # ── Geo + topic hashtag for the description (kept SHORT — YouTube
+    # ignores hashtags entirely when there are more than 15, and stuffing
+    # is a known suppression signal). We hard-cap at 4: #Shorts, #WorldNews,
+    # and these two AI-picked ones.
+    '"geo_hashtag": "<one CamelCase hashtag identifying the geography '
+    '(country, region, or city). NO leading #. Examples: USA, Brazil, '
+    'EU, Ukraine, MiddleEast, Africa, Asia. If global / no geo, use Global.>",'
+    '"topic_hashtag": "<one CamelCase hashtag identifying the topic. '
+    'NO leading #. Examples: Markets, Climate, AI, Elections, Tech, '
+    'Sports, Health, Conflict.>",'
     # ── YouTube description for the video itself ────────────────────
     '"yt_description": "<2-3 sentences. Sentence 1 repeats the primary '
     'keyword from the title — first 100 chars matter most for search. '
-    'Sentence 2 is one-line opinion / takeaway. Last line is exactly '
-    '\\\"Source: {source}\\\\n#Shorts #BreakingNews\\\" (literal newline). '
+    'Sentence 2 is one-line opinion / takeaway (the original value). '
+    'Last line is exactly \\\"Source: {source}\\\" — the build step '
+    'appends the hashtags (#Shorts #WorldNews #<geo> #<topic>). '
     'No URLs.>",'
     '"thumbnail_text": "<2-4 word punchy overlay phrase the static '
     'thumbnail does NOT show but a future dynamic version could. ALL '
     'CAPS allowed. E.g. PRICES TANK, NEW DEAL.>",'
-    '"hook": "<the very first spoken line, max 12 words, snappy enough to stop a scroll>",'
-    '"script": "<the full spoken voice-over script for a 30-45 second short. 85-120 words. Starts with the hook. State the news in plain English in one sentence. Then 1-2 sentences of opinion/analysis (call out who wins, who loses, what is suspect, the angle most coverage misses). Close with a one-line takeaway or a question for the comments. Speak directly to camera. No stage directions, no bracketed cues. No URLs.>",'
+    # ── The hook is THE single most important line in the whole short.
+    # 50-60% of viewers drop in the first 3 seconds; the static thumbnail
+    # carries no information, so the spoken hook IS the entire ad. We
+    # demand outcome-first construction (verb + consequence + number)
+    # to maximise VVSA on the algorithm test gate.
+    '"hook": "<the very first spoken line, max 12 words, in OUTCOME-FIRST '
+    'shape — lead with the consequence, not the setup. NEVER open with '
+    '\\\"Today\\\", \\\"In a recent\\\", \\\"According to\\\", \\\"It was '
+    'announced\\\", \\\"A new report\\\". Open with the verb + the result. '
+    'Good: \\\"China just banned the dollar in 3 industries.\\\". '
+    'Good: \\\"Iraq\'s PM convoy hit — 3 dead in 12 minutes.\\\". '
+    'Good: \\\"Markets dropped 2 percent before lunch.\\\". '
+    'Bad: \\\"Today the Federal Reserve announced rates.\\\". '
+    'Bad: \\\"In a recent move, China decided to...\\\". '
+    'Bad: \\\"According to Reuters, a new...\\\".>",'
+    '"script": "<the full spoken voice-over script for a 30-45 second short. '
+    '85-120 words. The script\'s VERY FIRST WORDS MUST BE the hook, exactly '
+    'as written in `hook` above — no preamble, no \\\"Today\\\", no \\\"Hi\\\". '
+    'Sentence 2 states the news in plain English. Then 1-2 sentences of '
+    'opinion/analysis that ADD context beyond the source article (winner/loser/'
+    'the angle most coverage misses) — this is the \\\"original value\\\" the '
+    'monetization policy requires. Close with a one-line takeaway or a question '
+    'for the comments. Speak directly to camera. No stage directions, no '
+    'bracketed cues. No URLs. No \\\"In conclusion\\\" or \\\"To wrap up\\\".>",'
     '"key_points": ["<10-word fact 1>", "<10-word fact 2>", "<10-word fact 3>"],'
     '"sentiment": "<positive|neutral|negative>"'
     '}}'
@@ -354,10 +392,21 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
             if len(clean_tags) >= 5:
                 break
 
+        # Sanitise the two AI-picked hashtags. Strip leading '#', whitespace,
+        # any non-alphanumeric. Default to safe constants.
+        def _clean_tag(raw: str, fallback: str) -> str:
+            cleaned = re.sub(r"[^A-Za-z0-9]", "", str(raw or ""))[:24]
+            return cleaned or fallback
+
+        geo_hashtag   = _clean_tag(data.get("geo_hashtag"),   "Global")
+        topic_hashtag = _clean_tag(data.get("topic_hashtag"), "Breaking")
+
         out = {
             "score":          int(data.get("score", 0) or 0),
             "seo_title":      str(data.get("seo_title", title))[:60],
             "yt_tags":        clean_tags,
+            "geo_hashtag":    geo_hashtag,
+            "topic_hashtag":  topic_hashtag,
             "yt_description": str(data.get("yt_description", "")).strip()[:500],
             "thumbnail_text": str(data.get("thumbnail_text", "")).strip()[:30],
             "hook":           str(data.get("hook", "")).strip()[:140],
@@ -375,12 +424,18 @@ def _ai_enhance(title: str, description: str, source: str, category: str) -> dic
             out["lead"] = out["script"][:300]
         if out["sentiment"] not in ("positive", "neutral", "negative"):
             out["sentiment"] = "neutral"
-        # If the model returned no description, synthesise a usable one
-        # from script + source. Better to fall back than to upload with
-        # an empty description (YouTube SEO suffers).
-        if not out["yt_description"]:
+        # Build / repair the description. YouTube ignores all hashtags
+        # past 15, and treats hashtag-stuffing as a suppression signal —
+        # we cap at exactly 4: #Shorts #WorldNews #<geo> #<topic>.
+        hashtag_block = f"#Shorts #WorldNews #{geo_hashtag} #{topic_hashtag}"
+        raw_desc = out["yt_description"]
+        if not raw_desc:
             base = out["script"] or out["lead"] or out["seo_title"]
-            out["yt_description"] = f"{base}\n\nSource: {source}\n#Shorts #BreakingNews"[:500]
+            raw_desc = f"{base}\n\nSource: {source}"
+        # Strip any hashtag bloat Mistral may have appended itself, so
+        # we don't end up with 8 hashtags total.
+        cleaned_desc = re.sub(r"(?m)^#.*$", "", raw_desc).rstrip()
+        out["yt_description"] = (cleaned_desc + "\n" + hashtag_block)[:500]
         return out
     except (json.JSONDecodeError, ValueError) as exc:
         log.debug(f"AI enhance parse error: {exc} | raw[:120]={raw[:120]}")

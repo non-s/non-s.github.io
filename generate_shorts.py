@@ -687,19 +687,27 @@ def build_short_metadata(story: dict, video_path: Path,
     yt_title = f"{base_title}{SUFFIX}"
 
     # ── Description: prefer the AI-authored yt_description, which is
-    # already keyword-front-loaded and ends with #Shorts. Fall back to
-    # synthesising one from the story we have on hand.
+    # already keyword-front-loaded and capped at exactly 4 hashtags
+    # (#Shorts #WorldNews #<geo> #<topic>) by fetch_news.py. Fall back
+    # to synthesising one from the story we have on hand — same rule:
+    # **exactly 4 hashtags**, no more (>15 = YouTube ignores all,
+    # stuffing = suppression signal).
+    geo_tag   = story.get("geo_hashtag") or "Global"
+    topic_tag = story.get("topic_hashtag") or "Breaking"
+    hashtag_block = f"#Shorts #WorldNews #{geo_tag} #{topic_tag}"
+
     yt_desc = (story.get("yt_description") or "").strip()
     if not yt_desc:
         lead = story.get("description") or story.get("script") or ""
         yt_desc = (
             f"{base_title}. {lead}".strip()[:380] +
-            f"\n\nSource: {source}\n#Shorts #BreakingNews"
+            f"\n\nSource: {source}\n{hashtag_block}"
         )
-    # Belt-and-braces: guarantee the algorithm sees #Shorts even if the
-    # model forgot it.
+    # Belt-and-braces: if the AI text already ends with hashtags, trust
+    # it (fetch_news.py enforces the same 4-tag rule). Otherwise append
+    # the canonical hashtag block.
     if "#Shorts" not in yt_desc:
-        yt_desc = yt_desc.rstrip() + "\n#Shorts"
+        yt_desc = yt_desc.rstrip() + "\n" + hashtag_block
     yt_desc = yt_desc[:5000]
 
     # ── Tags. Queue-authored entity tags first (they're search-driven),
@@ -735,9 +743,16 @@ def build_short_metadata(story: dict, video_path: Path,
         "privacy":        "public",
         "thumbnail":      str(thumb_path),
         "video":          str(video_path),
-        "story_slug":     story["slug"],
+        "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
         "thumbnail_hook": (ai_meta.get("thumbnail_hook") or story.get("thumbnail_text", "")).strip(),
+        # Fields the uploader uses for the pinned first-comment + the
+        # per-region playlist. Carrying them through metadata.json keeps
+        # the generate / upload contract explicit.
+        "source":         source,
+        "source_url":     story.get("source_url", ""),
+        "geo_hashtag":    story.get("geo_hashtag", "Global"),
+        "category":       category,
     }
 
 
@@ -816,6 +831,8 @@ def _queue_to_story(qs: dict) -> dict:
         # metadata builder falls back to safe defaults.
         "yt_tags":        qs.get("yt_tags", []),
         "yt_description": qs.get("yt_description", ""),
+        "geo_hashtag":    qs.get("geo_hashtag", ""),
+        "topic_hashtag":  qs.get("topic_hashtag", ""),
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
 
