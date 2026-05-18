@@ -1,0 +1,89 @@
+name: "📊 YouTube Analytics nightly"
+
+# Pull the previous 24h of performance data once a day. Lands a CSV
+# snapshot under _data/analytics/YYYY-MM-DD.csv plus a `latest.json`
+# summary. Both are committed back to the repo so trends are visible
+# in `git log` without any external analytics service.
+#
+# Runs at 03:00 UTC — after all 3 daily Shorts have shipped (08/14/20)
+# and Analytics data has a few hours to settle.
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
+jobs:
+  pull-analytics:
+    name: "Pull YouTube Analytics"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4.2.2
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Install deps"
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-api-python-client
+
+      - name: "Restore token.json"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -z "$YOUTUBE_TOKEN" ]; then
+            echo "❌ YOUTUBE_TOKEN secret is not set."
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$YOUTUBE_TOKEN" > token.json
+          chmod 600 token.json
+          if ! python -m json.tool < token.json > /dev/null 2>&1; then
+            echo "❌ YOUTUBE_TOKEN is not valid JSON."
+            rm -f token.json
+            exit 1
+          fi
+
+      - name: "Pull analytics"
+        run: python youtube_analytics.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+
+      - name: "Commit CSV snapshot"
+        run: |
+          git config user.name  "GlobalBR News Bot"
+          git config user.email "bot@globalbrnews.com"
+          git add _data/analytics/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "ℹ️ No analytics changes."
+            exit 0
+          fi
+          git commit -m "📊 analytics snapshot — $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then exit 0; fi
+            git pull --rebase --autostash origin main || git rebase --abort
+            sleep $((attempt * 5))
+          done
+          exit 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🧹 Shred token"
+        if: always()
+        run: |
+          if [ -f token.json ]; then
+            shred -u token.json 2>/dev/null || rm -f token.json
+          fi
