@@ -131,15 +131,16 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
-          # Same free fallback chain as fetch-news. Configuring even
-          # one of these massively reduces "Mistral 429 → no Short" days.
-          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
-          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
-          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
+          # Same free fallback chain as fetch-news. We accept the short
+          # secret names too (CEREBRAS / GEMINI / GROQ / PEXELS) so
+          # legacy setups don't have to rename.
+          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY   || secrets.GEMINI   }}
+          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY     || secrets.GROQ     }}
           # B-roll: Pexels needs a free key (20k req/mo, no card).
           # Without it the pipeline falls back to NASA + Internet Archive
           # (both keyless) which still beats static frames.
-          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY }}
+          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY   || secrets.PEXELS   }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
       - name: "📤 Upload Shorts para YouTube"
