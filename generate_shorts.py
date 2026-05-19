@@ -1289,14 +1289,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     cta_variant = experiments.get("cta_style") \
                   or assign_variant("cta_style", slug)
     cta_text = {
-        "follow_handle":   "Follow @globalbrnews",
+        "follow_handle":   "Follow @wildbrief",
         "engage_comment":  "Drop your country in comments 👇",
         "question_close":  "Which side wins this one?",
-    }.get(cta_variant, "Follow @globalbrnews")
+    }.get(cta_variant, "Follow @wildbrief")
     # Brand-bug watermark — channel handle in upper-right corner, on
     # the whole duration. Standard practice on Shorts so the source
     # stays unmistakable if the video is re-uploaded elsewhere.
-    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@globalbrnews")
+    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@wildbrief")
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,
