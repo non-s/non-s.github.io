@@ -1442,7 +1442,7 @@ def main():
     # Observable failure signal: if we were asked to make Shorts and
     # produced zero, exit non-zero so the workflow turns red. Beats
     # "✅ success" on a day where no Short actually shipped.
-    if selected and created == 0:
+    if pool and created == 0:
         log.error("❌ All Short generations failed. Exiting non-zero.")
         sys.exit(1)
 
