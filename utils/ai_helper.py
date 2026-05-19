@@ -99,48 +99,6 @@ def _reset_mistral_circuit_breaker() -> None:
     _mistral_429_streak = 0
     _mistral_circuit_open = False
 
-_POSITIVE_WORDS = {
-    "breakthrough", "success", "discover", "innovation", "growth", "record",
-    "victory", "achieve", "advance", "cure", "save", "improve", "rise",
-    "hope", "peace", "agreement", "award", "celebrate", "launch", "win",
-    "boom", "rally", "recover", "benefit", "progress", "surge", "historic",
-}
-_NEGATIVE_WORDS = {
-    "war", "attack", "kill", "death", "dead", "crisis", "disaster", "collapse",
-    "crash", "fall", "fail", "worst", "threat", "danger", "flood", "fire",
-    "earthquake", "explosion", "shooting", "murder", "arrest", "ban", "loss",
-    "decline", "drop", "recession", "conflict", "violence", "protest", "riot",
-    "scandal", "corrupt", "terror", "bomb", "casualt", "injur", "evacuate",
-}
-
-_FACT_VERIFIED_PHRASES = {
-    "officials confirmed", "according to", "announced", "reported by",
-    "confirmed by", "published by", "data shows", "study found",
-    "research shows", "percent", "million", "billion",
-    "2024", "2025", "2026",
-}
-_FACT_DEVELOPING_PHRASES = {
-    "reportedly", "sources say", "unconfirmed", "alleged", "claims",
-    "rumored", "believed to", "said to be", "may have", "might have",
-    "anonymous source", "sources close", "could be",
-}
-_FACT_OPINION_PHRASES = {
-    "opinion", "analysis", "commentary", "editorial", "think",
-    "perspective", "column", "op-ed", "viewpoint", "argue",
-    "believe we should", "it is time to",
-}
-_FACT_SATIRE_PHRASES = {
-    "satire", "parody", "humor", "humour", "spoof", "onion",
-    "satirical", "comedic take",
-}
-
-BREAKING_KEYWORDS = [
-    "breaking", "urgent", "alert", "just in", "developing",
-    "just announced", "breaking news", "emergency", "exclusive",
-    "war declared", "killed", "attack", "explosion", "crash",
-    "earthquake", "tsunami", "coup", "assassination", "outbreak",
-]
-
 _SPAM_PATTERNS = re.compile(
     r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
     re.IGNORECASE,
@@ -467,42 +425,6 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
         )
 
     return ""
-
-
-def sentiment_score(text: str) -> str:
-    """Returns 'positive', 'negative', or 'neutral'."""
-    words = re.findall(r'\b\w+\b', text.lower())
-    pos = sum(1 for w in words if any(w.startswith(p) for p in _POSITIVE_WORDS))
-    neg = sum(1 for w in words if any(w.startswith(p) for p in _NEGATIVE_WORDS))
-    if neg > pos:
-        return "negative"
-    if pos > neg:
-        return "positive"
-    return "neutral"
-
-
-def fact_check_score(title: str, description: str) -> str | None:
-    """Returns 'verified', 'developing', 'opinion', 'satire', or None."""
-    combined = (title + " " + description).lower()
-    for phrase in _FACT_SATIRE_PHRASES:
-        if phrase in combined:
-            return "satire"
-    for phrase in _FACT_OPINION_PHRASES:
-        if phrase in combined:
-            return "opinion"
-    for phrase in _FACT_DEVELOPING_PHRASES:
-        if phrase in combined:
-            return "developing"
-    for phrase in _FACT_VERIFIED_PHRASES:
-        if phrase in combined:
-            return "verified"
-    return None
-
-
-def is_breaking_news(title: str, description: str = "") -> bool:
-    """Return True if the article appears to be breaking/urgent news."""
-    text = (title + " " + description).lower()
-    return any(kw in text for kw in BREAKING_KEYWORDS)
 
 
 def quality_check(title: str, description: str) -> tuple[bool, str]:

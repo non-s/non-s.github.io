@@ -7,7 +7,7 @@ comes from iterating — and iteration without measurement is theatre.
 
 How it works
 ------------
-1. fetch_news.py / generate_shorts.py call `assign_variant(story_id, axis)`
+1. fetch_animals.py / generate_shorts.py call `assign_variant(story_id, axis)`
    when they need to pick a variant for an experimentable axis (e.g.
    the hook style for THIS story, or the voice for THIS Short).
 2. The assignment is deterministic (hash(story_id + axis) mod n_buckets)

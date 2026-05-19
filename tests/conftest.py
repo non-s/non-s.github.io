@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-# Make the repo root importable so tests can `import fetch_news` etc.
+# Make the repo root importable so tests can `import fetch_animals` etc.
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))

@@ -25,7 +25,7 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 # fcntl is POSIX-only; we use it to serialise queue access against
-# fetch_news.py. Guarded for local Windows dev — the CI runner is Linux.
+# fetch_animals.py. Guarded for local Windows dev — the CI runner is Linux.
 try:
     import fcntl
 except ImportError:  # pragma: no cover
@@ -83,22 +83,18 @@ TEXT_GRAY    = (160, 165, 190)
 
 # Cores por categoria
 CATEGORY_COLORS = {
-    "AI":          (0, 195, 255),
-    "SECURITY":    (220, 50, 50),
-    "BUSINESS":    (255, 165, 0),
-    "BIG TECH":    (0, 200, 120),
-    "HARDWARE":    (160, 80, 255),
-    "TECH":        (0, 195, 255),
-    "WORLD":       (255, 200, 0),
-    "POLITICS":    (200, 80, 80),
-    "WAR":         (220, 50, 50),
-    "SCIENCE":     (0, 180, 255),
-    "HEALTH":      (0, 200, 120),
-    "SPORTS":      (255, 140, 0),
-    "FOOD":        (255, 180, 0),
-    "ENVIRONMENT": (0, 200, 80),
-    "TRAVEL":      (0, 200, 200),
-    "ENTERTAINMENT": (180, 0, 220),
+    # Wild Brief animal categories.
+    "CATS":        (255, 140, 90),   # warm orange (tabby tone)
+    "DOGS":        (255, 195, 90),   # golden retriever yellow
+    "OCEAN":       (0, 140, 220),    # deep marine blue
+    "WILDLIFE":    (180, 130, 60),   # savanna ochre
+    "BIRDS":       (90, 200, 255),   # sky blue
+    "FARM":        (140, 180, 90),   # field green
+    # Generic animal fallback — used when a queue entry slips through
+    # without a recognised category, so the gradient renders something
+    # warm and on-brand instead of a default blue.
+    "ANIMAL":      (200, 150, 90),
+    "ANIMALS":     (200, 150, 90),
 }
 
 # ── TTS voice rotation ────────────────────────────────────────────
@@ -212,59 +208,6 @@ def extract_key_points(description: str) -> list[str]:
     # Don't pad with boilerplate — empty slots are better than literal
     # "Stay tuned for more updates on this story." on the thumbnail.
     return points[:3]
-
-
-# ── Categorizar post ──────────────────────────────────────────────
-def guess_category(tags: list, title: str) -> str:
-    """Pick a broad YouTube-style category label.
-
-    Tag-driven first (the post already carries `categories:`), then
-    keyword heuristics for tech sub-niches. Returns an uppercase label.
-    """
-    text = (title + " " + " ".join(tags)).lower()
-    tag_set = {t.lower().strip() for t in (tags or [])}
-
-    cat_aliases = {
-        "POLITICS":      {"politics", "politicians", "elections", "government"},
-        "WAR":           {"war", "conflict", "ukraine", "gaza", "israel", "russia"},
-        "WORLD":         {"world", "international", "diplomacy"},
-        "BUSINESS":      {"business", "economy", "finance", "markets"},
-        "SCIENCE":       {"science", "research", "space", "physics", "biology"},
-        "HEALTH":        {"health", "medicine", "wellness", "medical"},
-        "ENVIRONMENT":   {"environment", "climate", "sustainability"},
-        "ENTERTAINMENT": {"entertainment", "movies", "music", "celebrity"},
-        "SPORTS":        {"sports", "football", "soccer", "basketball", "tennis"},
-        "TRAVEL":        {"travel", "tourism", "destinations"},
-        "FOOD":          {"food", "restaurant", "cooking", "cuisine"},
-    }
-    for label, keys in cat_aliases.items():
-        if tag_set & keys:
-            return label
-
-    if (re.search(r'\bai\b', text) or
-            any(w in text for w in ["artificial intelligence", "machine learning",
-                                     "gpt", "llm", "openai", "anthropic",
-                                     "gemini", "claude", "deepmind", "mistral"])):
-        return "AI"
-    if any(w in text for w in ["cybersecurity", "cyber attack", "cyberattack",
-                                "data breach", "malware", "ransomware",
-                                "vulnerability", "zero-day", "phishing",
-                                "exploit", "hacking", "hacked", "spyware"]):
-        return "SECURITY"
-    if any(w in text for w in ["startup", "funding", "series a", "series b",
-                                "series c", "ipo", "acquisition", "venture capital",
-                                "unicorn"]):
-        return "BUSINESS"
-    if any(w in text for w in ["apple", "google", "microsoft", "meta",
-                                "amazon", "nvidia", "tesla", "samsung"]):
-        return "BIG TECH"
-    if any(w in text for w in ["phone", "iphone", "android", "hardware",
-                                "chip", "gpu", "laptop", "processor", "display"]):
-        return "HARDWARE"
-    if any(w in text for w in ["war", "military", "missile", "army", "navy",
-                                "combat", "troops", "weapon", "pentagon"]):
-        return "WAR"
-    return "TECH"
 
 
 # ── TTS ───────────────────────────────────────────────────────────
@@ -387,7 +330,7 @@ async def text_to_speech_hook_then_body(hook: str, body: str,
 #
 # `_ai_shorts_meta`, `_ai_shorts_hook`, and `build_short_script` used
 # to round-trip Mistral for title/hook/script generation, but every
-# pending story in the queue is now pre-enriched by fetch_news.py with
+# pending story in the queue is now pre-enriched by fetch_animals.py with
 # `seo_title`, `hook`, `script`, `thumbnail_text`, `yt_tags`, etc.
 # Keeping the legacy paths would burn extra free-tier tokens and create
 # divergent metadata between the queue and the upload sidecar. Removed
@@ -396,27 +339,28 @@ async def text_to_speech_hook_then_body(hook: str, body: str,
 
 # ── AI background via Pollinations ───────────────────────────────
 def generate_ai_background(title: str, category: str, dest: Path) -> bool:
-    """Generate a 1080x1920 vertical background via Pollinations.ai (free)."""
+    """Generate a 1080x1920 vertical background via Pollinations.ai (free).
+
+    Used only as the title-card / thumbnail backdrop when no Pexels
+    preview image is available — the actual Short's body is the
+    downloaded b-roll, not this image.
+    """
     scene_map = {
-        "AI":          "futuristic neural network visualization, glowing circuit brain, blue neon tech, vertical composition",
-        "SECURITY":    "dark cyber hacker atmosphere, glowing code streams, ominous red and blue, vertical",
-        "BUSINESS":    "futuristic city financial district, glowing skyscrapers, stock market data, vertical",
-        "BIG TECH":    "sleek tech devices glowing, modern minimalist product lighting, vertical",
-        "HARDWARE":    "advanced microchip circuit board close-up, glowing blue, ultra sharp, vertical",
-        "WAR":         "dramatic military scene, smoke and fire, helicopter silhouette, golden hour, vertical",
-        "WORLD":       "dramatic globe earth from space, city skyline at night, epic scale, vertical",
-        "POLITICS":    "government building columns with dramatic sky, powerful atmosphere, vertical",
-        "SCIENCE":     "stunning NASA space view, galaxy nebula, cosmic colors, vertical",
-        "HEALTH":      "futuristic medical lab glowing blue, DNA helix, clean white light, vertical",
-        "ENVIRONMENT": "dramatic nature landscape, stormy sky over ocean, earth crisis, vertical",
-        "TECH":        "futuristic smart city, holographic displays, neon blue tech, vertical",
+        "CATS":     "cute cat portrait, soft fur detail, warm sunlight, shallow depth of field, vertical composition",
+        "DOGS":     "happy dog portrait, expressive eyes, golden light, shallow depth of field, vertical composition",
+        "OCEAN":    "vibrant underwater scene, fish and coral reef, sun rays through blue water, vertical",
+        "WILDLIFE": "majestic wild animal on savanna, golden hour, cinematic wildlife portrait, vertical",
+        "BIRDS":    "colourful bird in flight, sharp feather detail, sky background, vertical",
+        "FARM":     "peaceful farm-animal portrait, green pasture, warm afternoon light, vertical",
     }
-    scene = scene_map.get(category.upper(), scene_map["TECH"])
+    scene = scene_map.get(category.upper(),
+                          "stunning animal portrait, sharp eyes, natural light, "
+                          "professional wildlife photography, vertical")
     short_title = title[:60]
     prompt = (
-        f"{scene}, ultra-high quality, cinematic dramatic lighting, "
-        f"vivid saturated colors, photorealistic, 4K, sharp focus, "
-        f"professional news broadcast aesthetic, inspired by: {short_title}"
+        f"{scene}, ultra-high quality, cinematic lighting, vivid saturated "
+        f"colors, photorealistic, 4K, sharp focus, professional nature "
+        f"documentary aesthetic, inspired by: {short_title}"
     )
     encoded = urllib.parse.quote(prompt)
     # Mix wall clock into the seed so consecutive Shorts in the same
@@ -441,6 +385,34 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
 # Shorts use a 15s timeout (single image, more important not to fail).
 def download_image(url: str, dest: Path) -> bool:
     return _download_image_common(url, dest, timeout=15)
+
+
+def _render_solid_color_background(category: str, dest: Path) -> bool:
+    """Synthesise a category-coloured vertical gradient as the
+    background-of-last-resort. The b-roll path is the actual visual
+    content; this just backs the thumbnail and the static-frame
+    compose when every image source above failed.
+
+    Returns True iff the file was written and is larger than the 5KB
+    sanity floor downstream checks. Single-file PIL draw — no network,
+    no external command, so this never fails except on totally broken
+    Python installs (in which case the whole pipeline is dead anyway).
+    """
+    base = CATEGORY_COLORS.get((category or "").upper(), ACCENT_BLUE)
+    bg = Image.new("RGB", (SHORT_W, SHORT_H), (12, 14, 22))
+    draw = ImageDraw.Draw(bg)
+    # Linear gradient: dark navy at top → category color at bottom.
+    # Keeps the title-card text band readable while signalling the
+    # topic visually. One horizontal line per row is ~2000× faster
+    # than a per-pixel loop and finishes in ~30 ms at 1080×1920.
+    for y in range(SHORT_H):
+        t = y / max(1, SHORT_H - 1)
+        r = int(12 * (1 - t) + base[0] * t * 0.45)
+        g = int(14 * (1 - t) + base[1] * t * 0.45)
+        b = int(22 * (1 - t) + base[2] * t * 0.45)
+        draw.line([(0, y), (SHORT_W, y)], fill=(r, g, b))
+    bg.save(str(dest), "JPEG", quality=88, optimize=True)
+    return dest.exists() and dest.stat().st_size > 5 * 1024
 
 
 # ── Frame vertical do Short ───────────────────────────────────────
@@ -590,15 +562,15 @@ def create_short_frame(title: str, category: str, points: list[str],
     draw.line([(padding, brand_y), (SHORT_W - padding, brand_y)],
               fill=(*ACCENT_BLUE, 80), width=2)
 
-    # Logo text
+    # Logo text — channel name lockup on the title card.
     logo_font = get_font(54, bold=True)
     brand_y2 = brand_y + 24
-    draw.text((padding, brand_y2), "GLOBAL", font=logo_font, fill=ACCENT_BLUE)
-    gbbox = draw.textbbox((0, 0), "GLOBAL", font=logo_font)
+    draw.text((padding, brand_y2), "WILD", font=logo_font, fill=ACCENT_BLUE)
+    gbbox = draw.textbbox((0, 0), "WILD", font=logo_font)
     sep_x = padding + gbbox[2] + 12
     draw.rectangle([(sep_x, brand_y2 + 4), (sep_x + 4, brand_y2 + gbbox[3] - 4)],
                    fill=(*ACCENT_BLUE, 180))
-    draw.text((sep_x + 16, brand_y2), "BR NEWS", font=logo_font, fill=TEXT_WHITE)
+    draw.text((sep_x + 16, brand_y2), "BRIEF", font=logo_font, fill=TEXT_WHITE)
 
     # Source
     src_font = get_font(36)
@@ -800,7 +772,7 @@ def build_short_metadata(story: dict, video_path: Path,
     Required keys downstream: title, description, tags, category_id,
                               privacy, thumbnail, video.
 
-    SEO inputs (already authored by fetch_news.py's prompt and carried
+    SEO inputs (already authored by fetch_animals.py's prompt and carried
     on the queue entry):
 
       story["title"]          — seo_title, 40-55 chars, front-loaded
@@ -814,11 +786,11 @@ def build_short_metadata(story: dict, video_path: Path,
       - tags:         500 chars combined across the list
     """
     base_title = (story.get("title") or "").strip()
-    category   = story.get("category", "world")
+    category   = story.get("category", "wildlife")
     source     = story.get("source", "Pexels")
 
     if not base_title:
-        base_title = "World news update"
+        base_title = "Animal fact of the day"
 
     # Reserve room for the " #Shorts" suffix (8 chars). YouTube weighs
     # the first 50-60 chars heavily, so we cap at 88 + suffix = 96.
@@ -830,7 +802,7 @@ def build_short_metadata(story: dict, video_path: Path,
 
     # ── Description: prefer the AI-authored yt_description, which is
     # already keyword-front-loaded and capped at exactly 4 hashtags
-    # (#Shorts #WorldNews #<geo> #<topic>) by fetch_news.py. Fall back
+    # (#Shorts #WorldNews #<geo> #<topic>) by fetch_animals.py. Fall back
     # to synthesising one from the story we have on hand — same rule:
     # **exactly 4 hashtags**, no more (>15 = YouTube ignores all,
     # stuffing = suppression signal).
@@ -846,7 +818,7 @@ def build_short_metadata(story: dict, video_path: Path,
             f"\n\nSource: {source}\n{hashtag_block}"
         )
     # Belt-and-braces: if the AI text already ends with hashtags, trust
-    # it (fetch_news.py enforces the same 4-tag rule). Otherwise append
+    # it (fetch_animals.py enforces the same 4-tag rule). Otherwise append
     # the canonical hashtag block.
     if "#Shorts" not in yt_desc:
         yt_desc = yt_desc.rstrip() + "\n" + hashtag_block
@@ -857,9 +829,9 @@ def build_short_metadata(story: dict, video_path: Path,
     # 500-char combined budget while leaving room for the long ones.
     queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
     evergreen = [
-        "shorts", "news", "breaking news", "world news",
-        category.lower(), f"{category.lower()} news",
-        "globalbr news", "latest news", "today news",
+        "shorts", "animals", "animal facts", "wildlife", "nature",
+        category.lower(), f"{category.lower()} facts",
+        "wild brief", "cute animals", "did you know",
     ]
     seen: set[str] = set()
     all_tags: list[str] = []
@@ -925,8 +897,8 @@ def _queue_file_lock():
     """
     Cross-process advisory lock on the queue file. Held while we
     read-modify-write to mark a story consumed, so a concurrent
-    fetch_news.py append doesn't clobber the consumed flag (or vice
-    versa). Mirror of fetch_news.py::_file_lock.
+    fetch_animals.py append doesn't clobber the consumed flag (or vice
+    versa). Mirror of fetch_animals.py::_file_lock.
     """
     if fcntl is None:
         yield
@@ -945,7 +917,7 @@ def _queue_file_lock():
 
 
 def _load_queue() -> dict:
-    """Read _data/stories_queue.json — schema written by fetch_news.py."""
+    """Read _data/stories_queue.json — schema written by fetch_animals.py."""
     if not QUEUE_FILE.exists():
         return {"stories": []}
     try:
@@ -976,17 +948,17 @@ def _queue_to_story(qs: dict) -> dict:
         "source":         qs.get("source", "Pexels"),
         "source_url":     qs.get("url", ""),
         "image_url":      qs.get("image_url", ""),
-        "tags":           [qs.get("category", "world")],
-        "category":       qs.get("category", "world"),
+        "tags":           [qs.get("category", "wildlife")],
+        "category":       qs.get("category", "wildlife"),
         "date":           (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
         "hook":           qs.get("hook", ""),
         # `script` is the full opinionated voice-over (~30-45 s) authored
-        # by fetch_news.py's AI prompt. generate_short() will TTS this
+        # by fetch_animals.py's AI prompt. generate_short() will TTS this
         # directly instead of rebuilding from key_points.
         "script":         qs.get("script", ""),
         "thumbnail_text": qs.get("thumbnail_text", ""),
         "key_points":     qs.get("key_points", []),
-        # SEO fields authored by fetch_news.py — used as-is by
+        # SEO fields authored by fetch_animals.py — used as-is by
         # build_short_metadata. Each is allowed to be empty; the
         # metadata builder falls back to safe defaults.
         "yt_tags":        qs.get("yt_tags", []),
@@ -1001,8 +973,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     """
     Return (pending_stories, raw_queue). Pending = not yet consumed AND
     not already shipped to YouTube (`shorts_done` tracks the latter,
-    handled by the caller). Stories sorted by AI quality score desc,
-    breaking news first.
+    handled by the caller). Stories sorted by AI quality score desc.
     """
     queue = _load_queue()
     stories = queue.get("stories", [])
@@ -1034,10 +1005,10 @@ def mark_consumed(queue: dict, queue_id: str) -> None:
 def commit_consumed(queue_id: str) -> None:
     """
     Atomic read-mark-write: under the cross-process lock, reload the
-    queue from disk (a concurrent fetch_news.py may have appended new
+    queue from disk (a concurrent fetch_animals.py may have appended new
     stories since we loaded it), mark this story consumed, save.
     This is the only safe way to persist `consumed: true` when
-    fetch_news.py and generate_shorts.py can interleave.
+    fetch_animals.py and generate_shorts.py can interleave.
     """
     with _queue_file_lock():
         disk_queue = _load_queue()
@@ -1069,13 +1040,13 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # schema would crash the whole run otherwise.
     slug = story.get("slug") or f"unknown-{int(time.time())}"
     date_str = story.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    title = story.get("title") or "World news update"
+    title = story.get("title") or "Animal fact of the day"
     category = story.get("category", "TECH")
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
     # English channel ignores stories from PT-BR-native feeds — they're
-    # enriched in Portuguese by fetch_news.py and would need a costly
+    # enriched in Portuguese by fetch_animals.py and would need a costly
     # back-translation. Cleaner to skip and let the PT-BR pipeline
     # render them natively.
     native = (story.get("native_lang") or "en").lower()
@@ -1089,7 +1060,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if LANGUAGE != "en":
         # NATIVE-LANGUAGE FAST PATH: when the story originated from a
         # PT-BR feed (G1, UOL, Folha, etc.) tagged native_lang=pt-BR,
-        # fetch_news.py already enriched it in Portuguese. Skipping
+        # fetch_animals.py already enriched it in Portuguese. Skipping
         # translate_story here means zero extra AI calls AND higher
         # editorial quality (no round-trip translation artefacts).
         native = (story.get("native_lang") or "en").lower()
@@ -1111,7 +1082,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         title = story.get("title") or story.get("seo_title") or title
         slug = f"{slug}-{LANGUAGE.lower().replace('-', '')}"
 
-    # Queue carries pre-enriched fields when fetch_news.py is up to date.
+    # Queue carries pre-enriched fields when fetch_animals.py is up to date.
     # We require `script` (the full opinionated voice-over) to proceed —
     # backlog stories that predate the schema get rejected here.
     queue_script = (story.get("script") or "").strip()
@@ -1154,7 +1125,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # Split-rate TTS: render the hook at a calmer rate (≈ 4 pp slower)
     # then the rest of the script at the voice's regular rate. The
-    # script always opens with the hook verbatim (fetch_news.py's
+    # script always opens with the hook verbatim (fetch_animals.py's
     # prompt enforces this), so we can split on the hook itself.
     split_rendered = False
     if hook_text and queue_script.lstrip().lower().startswith(hook_text.lower()):
@@ -1253,10 +1224,25 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not img_ok:
         img_ok = generate_ai_background(title, category, bg_path)
 
+    # Final-fallback: synthesise a category-coloured gradient so a story
+    # without any usable image NEVER aborts the run. Used to be a hard
+    # skip, but that meant a single missing Wikipedia / Pollinations
+    # result took the whole 5-runs-per-day cadence down to 4. The b-roll
+    # path is the actual visual content of the Short — this bg only
+    # backs the dynamic thumbnail and the static-frame fallback compose,
+    # so a clean gradient is good enough.
+    if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
+        try:
+            img_ok = _render_solid_color_background(category, bg_path)
+        except Exception as exc:
+            log.warning("  ⚠ solid-colour bg fallback failed: %s", exc)
+            img_ok = False
+
     if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
         log.warning(
-            "  ⏭  Skipping Short — no valid background image (story image and "
-            "all free fallbacks failed): %s", title[:80],
+            "  ⏭  Skipping Short — every background source failed, "
+            "including the solid-colour fallback (PIL not importable?): %s",
+            title[:80],
         )
         return None
 
@@ -1308,8 +1294,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         "question_close":  "Which side wins this one?",
     }.get(cta_variant, "Follow @globalbrnews")
     # Brand-bug watermark — channel handle in upper-right corner, on
-    # the whole duration. Industry standard for news Shorts so the
-    # source is unmistakable when the video is re-uploaded elsewhere.
+    # the whole duration. Standard practice on Shorts so the source
+    # stays unmistakable if the video is re-uploaded elsewhere.
     watermark_text = os.environ.get("CHANNEL_WATERMARK", "@globalbrnews")
     if broll_paths:
         ok = build_broll_short(
@@ -1370,7 +1356,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 def main():
     # generate_shorts.py no longer calls the LLM at the top level —
     # `seo_title`, `script`, `hook`, `yt_tags`, `thumbnail_text` all
-    # come from fetch_news.py's queue. We DO still call Whisper for
+    # come from fetch_animals.py's queue. We DO still call Whisper for
     # captions and edge-tts for narration, but those happen inside
     # generate_short() on a per-story basis. The fail-fast checks
     # below catch the cases where the queue file itself is missing.
@@ -1379,7 +1365,7 @@ def main():
     VIDEOS_DIR.mkdir(exist_ok=True)
 
     if not QUEUE_FILE.exists():
-        log.error(f"{QUEUE_FILE} not found — run fetch_news.py first.")
+        log.error(f"{QUEUE_FILE} not found — run fetch_animals.py first.")
         sys.exit(2)
 
     shorts_done = load_shorts_done()
@@ -1425,10 +1411,10 @@ def main():
             shorts_done.add(story["slug"])
             save_shorts_done(shorts_done)
             # Persist consumption back to the queue under the
-            # cross-process lock so a concurrent fetch_news.py append
+            # cross-process lock so a concurrent fetch_animals.py append
             # can't undo it. We pass through commit_consumed() instead
             # of the bare _save_queue(queue) — that one would write our
-            # stale in-memory copy and overwrite any fetch_news flush.
+            # stale in-memory copy and overwrite any fetch_animals flush.
             commit_consumed(story.get("_queue_id", ""))
             created += 1
             log.info(f"  Short ready: {video_path.name}")

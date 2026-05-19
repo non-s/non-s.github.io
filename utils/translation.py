@@ -3,22 +3,22 @@ utils/translation.py — Free AI-powered translation for sibling-channel Shorts.
 
 Why this exists
 ---------------
-Brazil is the #3 YouTube Shorts market by views (~9 % of global Shorts
-traffic, AIR Media-Tech 2026) but has NO mass-scale automated PT-BR
-news Shorts channel. RPM is lower per view ($0.045 vs $0.18-0.30 US)
-but the volume more than compensates — Brazilian creators routinely
-out-earn US peers on a single niche.
+Animal content is universal — a PT-BR sibling of Wild Brief is a
+zero-cost growth lever once the English channel is producing. Brazil
+is the #3 YouTube Shorts market by views (~9 % of global Shorts
+traffic), with no entrenched competition on automated animal-fact
+Shorts. RPM per view is lower than the US (~$0.045 vs $0.18) but
+volume compensates.
 
-A free PT-BR sibling channel is the highest-leverage growth play
-available, and the pipeline already has every primitive needed:
+The primitives are all reusable from the English pipeline:
 
-  * fetch_news.py produces English-language story metadata + script
+  * fetch_animals.py produces English-language clip metadata + script
   * edge-tts ships Portuguese voices (FranciscaNeural, AntonioNeural,
     ThalitaNeural) at the same zero cost as the English voices
   * Pexels b-roll is language-agnostic
   * Captions via Whisper transcribe whatever audio they're given
-  * YouTube allows separate channels under one Google account; we
-    publish English on @globalbrnews and PT-BR on @globalbrnewsbr
+  * YouTube allows separate channels under one Google account; the
+    PT-BR sibling lives on @<handle>br once the workflow is reactivated
 
 What this module does
 ---------------------

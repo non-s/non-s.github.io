@@ -57,7 +57,7 @@ _BANNED_PHRASES = [
 _BANNED_RE = [re.compile(p, re.IGNORECASE) for p in _BANNED_PHRASES]
 
 # Weak opening words — the hook should NOT start with these per the
-# fetch_news.py prompt rules. We check the script's first sentence
+# fetch_animals.py prompt rules. We check the script's first sentence
 # matches the hook AND lead with action.
 _WEAK_HOOK_OPENERS = (
     "today",
@@ -141,7 +141,7 @@ def check_hook_opens_strong(hook: str, script: str = "") -> list[Issue]:
 
 
 def check_script_starts_with_hook(hook: str, script: str) -> list[Issue]:
-    """fetch_news.py's prompt requires script[0] == hook. Drift = bug."""
+    """fetch_animals.py's prompt requires script[0] == hook. Drift = bug."""
     if not hook or not script:
         return []
     h = hook.strip().lower().rstrip(".!?")
@@ -161,9 +161,11 @@ def check_script_starts_with_hook(hook: str, script: str) -> list[Issue]:
 def check_transformation_present(script: str, description: str) -> list[Issue]:
     """Transformative bar: script must add something beyond the source.
 
-    Conservative heuristic: if 70 %+ of the script's words appear in the
-    source description, it's likely a wire-copy rewrite. The policy
-    explicitly demonetises this.
+    Conservative heuristic: if 70 %+ of the script's words appear in
+    the source description (the short Pexels label), the narration is
+    barely doing more than reading the metadata. YouTube's Inauthentic
+    Content policy specifically demonetises that — original commentary
+    is what keeps Wild Brief on the right side of the rules.
     """
     if not script or not description:
         return []
