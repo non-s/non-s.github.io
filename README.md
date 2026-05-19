@@ -9,7 +9,7 @@ Automated pipeline that turns Pexels animal footage into vertical
 Shorts with original voice-over narration, and uploads them to YouTube
 3 times a day.
 
-- Channel: <https://youtube.com/@globalbrnews> (display name: **Wild Brief**)
+- Channel: <https://youtube.com/@wildbrief> (display name: **Wild Brief**)
 - Cadence: **5 Shorts/day**, staggered at 00, 05, 10, 15, 20 UTC so
   each gets its own algorithm test window. Running at ~87 % of the
   10 k unit YouTube Data API daily quota — safe ceiling without
