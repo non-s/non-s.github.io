@@ -30,9 +30,16 @@ _LANGUAGE  = os.environ.get("LANGUAGE", "en").strip() or "en"
 LOG_FILE   = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
 VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
 TOKEN_FILE = Path("token.json")
+# SCOPES here is the set the runtime token loader CLAIMS the token
+# has. google-auth passes these on refresh; if they don't match what
+# the actual refresh_token was minted with, Google returns
+# `invalid_scope: Bad Request` and the whole run fails before any
+# upload. So this list MUST stay narrow to what the existing
+# YOUTUBE_TOKEN secret was authorised for. Granting the comment-write
+# scope happens via `auth_youtube.py` (which is what the user runs
+# locally to mint a fresh token), NOT here.
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
-               "https://www.googleapis.com/auth/youtube",
-               "https://www.googleapis.com/auth/youtube.force-ssl"]
+               "https://www.googleapis.com/auth/youtube"]
 MAX_RETRIES = 4
 RETRYABLE_STATUSES = {500, 502, 503, 504}
 
