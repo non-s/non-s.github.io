@@ -49,14 +49,20 @@ jobs:
 
       - name: "✅ Validate Python syntax"
         run: |
-          python -m compileall -q fetch_news.py utils/
+          python -m compileall -q fetch_animals.py utils/
 
-      - name: "📡 Run fetch_news.py"
+      - name: "🐾 Run fetch_animals.py"
+        # The channel pivoted from news to animal compilation Shorts;
+        # discovery is now Pexels searches instead of RSS feeds. The
+        # queue schema is unchanged so the rest of the pipeline keeps
+        # working untouched. `fetch_news.py` is retained in the repo
+        # so we can revert with a one-line workflow change if needed.
         timeout-minutes: 25
-        run: python fetch_news.py
+        run: python fetch_animals.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY   || secrets.PEXELS   }}
           MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
           # Optional free AI fallbacks — accept both naming conventions
           # (the short form CEREBRAS / GEMINI / GROQ as well as the
