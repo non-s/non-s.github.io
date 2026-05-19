@@ -77,3 +77,23 @@ def test_order_is_deterministic(tmp_path: Path):
         "short-2026-05-19-a.json",
         "short-2026-05-19-b.json",
     ]
+
+
+def test_runtime_scopes_match_existing_token_grant():
+    """`upload_youtube.SCOPES` is passed to `Credentials.from_authorized_user_file`
+    and ridden through to `refresh()`. If it claims a scope the live
+    refresh_token wasn't actually granted, Google rejects the refresh
+    with `invalid_scope: Bad Request` and the whole run fails before
+    a single upload. This pinned in production on 2026-05-19 12:02 UTC
+    after `youtube.force-ssl` was added optimistically — the secret in
+    the workflow wasn't re-minted with that scope, so the refresh broke.
+
+    `auth_youtube.py` is the right place to advertise new scopes (it
+    runs locally and triggers a fresh consent flow). The runtime
+    loader must stay narrow to what the existing token has.
+    """
+    from upload_youtube import SCOPES
+    assert "https://www.googleapis.com/auth/youtube.force-ssl" not in SCOPES, (
+        "Adding youtube.force-ssl here would invalidate existing tokens — "
+        "advertise the broader scope in auth_youtube.py instead."
+    )
