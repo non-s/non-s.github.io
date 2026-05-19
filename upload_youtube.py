@@ -31,9 +31,22 @@ LOG_FILE   = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
 VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
 TOKEN_FILE = Path("token.json")
 SCOPES     = ["https://www.googleapis.com/auth/youtube.upload",
-               "https://www.googleapis.com/auth/youtube"]
+               "https://www.googleapis.com/auth/youtube",
+               "https://www.googleapis.com/auth/youtube.force-ssl"]
 MAX_RETRIES = 4
 RETRYABLE_STATUSES = {500, 502, 503, 504}
+
+# Run-scoped flag: flips to True the first time `commentThreads.insert`
+# returns 403 insufficientPermissions, so we don't log the same
+# actionable warning once per upload.
+_COMMENTS_DISABLED_THIS_RUN = False
+
+
+def _reset_comments_disabled_for_tests() -> None:
+    """Test hook: re-arm comment-posting between tests. Production
+    code never calls this."""
+    global _COMMENTS_DISABLED_THIS_RUN
+    _COMMENTS_DISABLED_THIS_RUN = False
 
 logging.basicConfig(
     level=logging.INFO,
@@ -304,17 +317,58 @@ def upload_video(youtube, meta: dict) -> str | None:
     except Exception as e:
         log.warning(f"  ⚠️ Playlist association failed: {e}")
 
-    # Post a first-comment crediting the source + a viewer prompt.
-    # Comments-per-view is a documented ranking signal for Shorts;
-    # the channel-owner comment automatically appears at the top of
-    # the comment list. Best-effort: a failure here does NOT block
-    # the upload — the video already shipped.
-    try:
-        _post_first_comment(youtube, video_id, meta)
-    except Exception as e:
-        log.warning(f"  ⚠️ First comment failed: {e}")
+    # Best-effort first comment. Failure never blocks the upload —
+    # the video already shipped at this point.
+    _try_post_first_comment(youtube, video_id, meta)
 
     return video_id
+
+
+def _is_insufficient_permissions(error: "HttpError") -> bool:
+    """True iff `error` is a YouTube API 403 with reason
+    `insufficientPermissions`. Means the OAuth token wasn't granted
+    the scope this endpoint needs (most often `youtube.force-ssl` for
+    commentThreads.insert)."""
+    status = (getattr(error, "status_code", None)
+              or getattr(getattr(error, "resp", None), "status", None))
+    try:
+        reason = (error.error_details or [{}])[0].get("reason", "")
+    except Exception:
+        reason = ""
+    return status == 403 and reason == "insufficientPermissions"
+
+
+def _try_post_first_comment(youtube, video_id: str, meta: dict) -> None:
+    """Post the channel-owner first comment, swallowing failures.
+
+    Comments-per-view is a documented ranking signal for Shorts; the
+    channel-owner comment automatically appears at the top of the
+    comment list. Best-effort: a failure here does NOT block the
+    upload — the video already shipped.
+
+    403 insufficientPermissions means the OAuth token wasn't granted
+    the comment-write scope. We surface the actionable fix once and
+    disable comments for the rest of the run so the warning doesn't
+    repeat per video.
+    """
+    global _COMMENTS_DISABLED_THIS_RUN
+    if _COMMENTS_DISABLED_THIS_RUN:
+        return
+    try:
+        _post_first_comment(youtube, video_id, meta)
+    except HttpError as e:
+        if _is_insufficient_permissions(e):
+            log.warning(
+                "  ⚠️ First comment skipped: OAuth token lacks the "
+                "`youtube.force-ssl` scope. Fix: re-run auth_youtube.py "
+                "locally and update the YOUTUBE_TOKEN secret. Comments "
+                "disabled for the rest of this run."
+            )
+            _COMMENTS_DISABLED_THIS_RUN = True
+        else:
+            log.warning(f"  ⚠️ First comment failed: {e}")
+    except Exception as e:
+        log.warning(f"  ⚠️ First comment failed: {e}")
 
 
 def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
@@ -372,6 +426,21 @@ def _post_first_comment(youtube, video_id: str, meta: dict) -> None:
     youtube_quota.record("commentThreads.insert", channel=_LANGUAGE, video_id=video_id)
 
 
+def _collect_pending_meta(videos_dir: Path) -> list[Path]:
+    """Return the meta JSON sidecars in `videos_dir` that the uploader
+    should process, in deterministic order.
+
+    Only files matching the `short-…` / `roundup-…` prefix are real
+    meta sidecars. Other `.json` files in the same directory — notably
+    `shorts_done.json` (a list of slugs the generator uses for
+    idempotency) — are NOT video metadata. Used to crash the uploader
+    with `AttributeError: 'list' object has no attribute 'get'` after
+    the first successful upload, blocking the whole daily cadence.
+    """
+    return sorted(p for p in videos_dir.glob("*.json")
+                  if p.stem.startswith(("short-", "roundup-")))
+
+
 def main():
     import sys
     from utils.panic import abort_if_halted
@@ -398,8 +467,7 @@ def main():
         log.error("❌ %s", e)
         sys.exit(2)
 
-    # Busca vídeos com metadata JSON prontos para upload
-    pending = sorted(VIDEOS_DIR.glob("*.json"))
+    pending = _collect_pending_meta(VIDEOS_DIR)
     if not pending:
         log.info("Nenhum vídeo pendente para upload.")
         return
@@ -411,6 +479,10 @@ def main():
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
         except Exception as e:
             log.error("Falha ao ler %s: %s", meta_file.name, e)
+            continue
+        if not isinstance(meta, dict):
+            log.error("Pulando %s: metadata não é um dict (got %s).",
+                      meta_file.name, type(meta).__name__)
             continue
 
         video_id = upload_video(youtube, meta)
