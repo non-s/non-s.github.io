@@ -77,6 +77,28 @@ _MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "8.0"))
 _call_lock       = threading.Lock()
 _last_call_ts    = 0.0
 
+# In-run circuit breaker: when Mistral 429s repeatedly (free-tier
+# quota gone for the day, sustained burst limit), keep trying it on
+# every story costs ~30s per failure (3 attempts × waits). After
+# `_MISTRAL_429_CIRCUIT_THRESHOLD` consecutive give-ups in the same
+# process, skip Mistral and go straight to the fallback chain for
+# the rest of the run. Successful Mistral call resets the streak.
+# Earlier fetch-news runs hit the 25-min workflow timeout exactly
+# because we burned the whole budget on 36 consecutive Mistral 429s.
+_MISTRAL_429_CIRCUIT_THRESHOLD = int(os.environ.get("MISTRAL_429_CIRCUIT_THRESHOLD", "3"))
+_mistral_429_streak  = 0
+_mistral_circuit_open = False
+
+
+def _reset_mistral_circuit_breaker() -> None:
+    """Test hook — re-arm the breaker between tests. Module-level state
+    persists across pytest items because Python caches the import, so
+    a 429 streak set up by one test would otherwise carry into the
+    next. Production code never calls this."""
+    global _mistral_429_streak, _mistral_circuit_open
+    _mistral_429_streak = 0
+    _mistral_circuit_open = False
+
 _POSITIVE_WORDS = {
     "breakthrough", "success", "discover", "innovation", "growth", "record",
     "victory", "achieve", "advance", "cure", "save", "improve", "rise",
@@ -313,49 +335,70 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
         return cached
 
     mistral_failed_with = None  # tracked so we know whether to try Cerebras
-    for attempt in range(3):
-        try:
-            out = _call_mistral(sys_msg, prompt, timeout, key, json_mode=json_mode)
-            ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
-            provider_stats.record("mistral", success=True)
-            return out
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 0
-            mistral_failed_with = status
-            provider_stats.record("mistral", success=False, status=status)
-            if status == 429:
-                # Respect Retry-After header when present, otherwise back off
-                # exponentially. Mistral's free tier sometimes serves bursts
-                # of 429s, so the wait needs a real ceiling.
-                hdr = (e.response.headers.get("Retry-After") if e.response is not None else None) or "0"
-                try:
-                    retry_after = int(float(hdr))
-                except (TypeError, ValueError):
-                    retry_after = 0
-                wait = max(retry_after, 5 * (attempt + 1))
-                if attempt < 2:
-                    log.warning(f"Mistral rate limited (429) — retry in {wait}s (attempt {attempt+1}/3)")
-                    sleep(wait)
+    global _mistral_429_streak, _mistral_circuit_open
+    if _mistral_circuit_open:
+        # Skip straight to the fallback chain. The circuit was opened
+        # earlier in this run because Mistral 429'd 3+ times in a row;
+        # hammering it again would burn the workflow's 25-min budget.
+        mistral_failed_with = 429
+    else:
+        for attempt in range(3):
+            try:
+                out = _call_mistral(sys_msg, prompt, timeout, key, json_mode=json_mode)
+                ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
+                provider_stats.record("mistral", success=True)
+                _mistral_429_streak = 0  # success resets the streak
+                return out
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else 0
+                mistral_failed_with = status
+                provider_stats.record("mistral", success=False, status=status)
+                if status == 429:
+                    # Respect Retry-After header when present, otherwise back off
+                    # exponentially. Mistral's free tier sometimes serves bursts
+                    # of 429s, so the wait needs a real ceiling.
+                    hdr = (e.response.headers.get("Retry-After") if e.response is not None else None) or "0"
+                    try:
+                        retry_after = int(float(hdr))
+                    except (TypeError, ValueError):
+                        retry_after = 0
+                    wait = max(retry_after, 5 * (attempt + 1))
+                    if attempt < 1:
+                        # Single retry is enough — a quota-gone 429 stays
+                        # 429 no matter how long we wait. Burst 429s
+                        # recover within ~5s, so one retry catches them.
+                        log.warning(f"Mistral rate limited (429) — retry in {wait}s (attempt {attempt+1}/2)")
+                        sleep(wait)
+                    else:
+                        log.warning("Mistral rate limited (429) — giving up after 2 attempts")
+                        _mistral_429_streak += 1
+                        if (not _mistral_circuit_open
+                                and _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD):
+                            _mistral_circuit_open = True
+                            log.warning(
+                                "🔌 Mistral circuit breaker OPEN after "
+                                "%d consecutive 429s — skipping Mistral "
+                                "for the rest of this run.",
+                                _mistral_429_streak,
+                            )
+                        break
+                elif status in (500, 502, 503, 504):
+                    wait = 3 * (attempt + 1)
+                    if attempt < 2:
+                        log.warning(f"Mistral server error {status} — retry in {wait}s (attempt {attempt+1}/3)")
+                        sleep(wait)
+                    else:
+                        log.warning(f"Mistral server error {status} — giving up after 3 attempts")
+                        break
                 else:
-                    log.warning("Mistral rate limited (429) — giving up after 3 attempts")
+                    log.warning(f"Mistral HTTP error {status} — giving up")
                     break
-            elif status in (500, 502, 503, 504):
-                wait = 3 * (attempt + 1)
+            except Exception as exc:
+                mistral_failed_with = "exception"
+                provider_stats.record("mistral", success=False, status=None)
+                log.warning(f"Mistral error (attempt {attempt+1}/3): {exc}")
                 if attempt < 2:
-                    log.warning(f"Mistral server error {status} — retry in {wait}s (attempt {attempt+1}/3)")
-                    sleep(wait)
-                else:
-                    log.warning(f"Mistral server error {status} — giving up after 3 attempts")
-                    break
-            else:
-                log.warning(f"Mistral HTTP error {status} — giving up")
-                break
-        except Exception as exc:
-            mistral_failed_with = "exception"
-            provider_stats.record("mistral", success=False, status=None)
-            log.warning(f"Mistral error (attempt {attempt+1}/3): {exc}")
-            if attempt < 2:
-                time.sleep(3)
+                    time.sleep(3)
 
     # ── Multi-provider fallback chain ──────────────────────────────
     # Only fire fallbacks when Mistral failed transiently (429 / 5xx /

@@ -20,9 +20,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 SCOPES = [
     # Upload videos.
     "https://www.googleapis.com/auth/youtube.upload",
-    # Playlists + comments (we auto-add Shorts to per-region playlists
-    # and post a first comment crediting the source).
+    # Playlists (we auto-add Shorts to per-region playlists).
     "https://www.googleapis.com/auth/youtube",
+    # First-pinned comment on every upload. `commentThreads.insert`
+    # requires `youtube.force-ssl` specifically — the plain `youtube`
+    # scope returns 403 insufficientPermissions on comment writes.
+    "https://www.googleapis.com/auth/youtube.force-ssl",
     # Read channel + video metadata (analytics workflow lists recent
     # uploads via the uploads playlist).
     "https://www.googleapis.com/auth/youtube.readonly",

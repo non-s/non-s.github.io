@@ -59,15 +59,28 @@ def test_upload_youtube_respects_language(monkeypatch):
     # test still gives signal where it can run.
     monkeypatch.setenv("LANGUAGE", "pt-BR")
     import sys
-    if "upload_youtube" in sys.modules:
-        del sys.modules["upload_youtube"]
+    # Stash the original module so we can restore it on teardown.
+    # Otherwise the pt-BR variant of upload_youtube leaks into
+    # subsequent tests that imported `upload_youtube` at module load
+    # — their reference still points to the original (English) module
+    # while sys.modules now serves the reloaded (pt-BR) one, and any
+    # module-level mutable state (e.g. the comment-disabled latch)
+    # diverges between the two.
+    saved = sys.modules.get("upload_youtube")
+    sys.modules.pop("upload_youtube", None)
     try:
-        import upload_youtube
-    except BaseException as exc:  # PanicException isn't a normal Exception
-        pytest.skip(f"upload_youtube import blocked in sandbox: {exc}")
-        return
-    assert upload_youtube.VIDEOS_DIR == Path("_videos_pt-BR")
-    assert upload_youtube.LOG_FILE == "upload_youtube_pt-BR.log"
+        try:
+            import upload_youtube
+        except BaseException as exc:  # PanicException isn't a normal Exception
+            pytest.skip(f"upload_youtube import blocked in sandbox: {exc}")
+            return
+        assert upload_youtube.VIDEOS_DIR == Path("_videos_pt-BR")
+        assert upload_youtube.LOG_FILE == "upload_youtube_pt-BR.log"
+    finally:
+        if saved is not None:
+            sys.modules["upload_youtube"] = saved
+        else:
+            sys.modules.pop("upload_youtube", None)
 
 
 def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):

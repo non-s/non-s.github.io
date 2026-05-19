@@ -56,6 +56,24 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         if hasattr(mod, attr):
             monkeypatch.setattr(mod, attr, cache_root / frag, raising=False)
 
+    # The Mistral-429 circuit breaker in utils.ai_helper holds module-
+    # level state (`_mistral_429_streak`, `_mistral_circuit_open`).
+    # Without an explicit reset, a 429-heavy test that trips the breaker
+    # leaks "Mistral disabled" mode into every following test in the
+    # same pytest process. Reset it once per test up front.
+    try:
+        from utils import ai_helper as _ah
+        _ah._reset_mistral_circuit_breaker()
+    except Exception:
+        pass
+
+    # Same story for the comment-403 latch in upload_youtube.
+    try:
+        import upload_youtube as _uy
+        _uy._reset_comments_disabled_for_tests()
+    except Exception:
+        pass
+
 
 @pytest.fixture
 def sample_feedparser_entry():
