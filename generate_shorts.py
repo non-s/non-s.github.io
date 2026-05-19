@@ -891,6 +891,17 @@ def build_short_metadata(story: dict, video_path: Path,
         # `.done` sidecar so youtube_analytics.py can split retention
         # curves by surface (Shorts feed vs. regular watch page).
         "is_short":       True,
+        # Pexels source-clip identity. Propagated through metadata.json
+        # so upload_youtube can append it to the permanent dedup ledger
+        # (`_data/published_clips.json`) on a successful upload. Without
+        # this, the same Pexels clip can re-appear in the queue weeks
+        # later once `fetch_animals._prune_queue` ages it out — and a
+        # repeat upload would burn quota for zero new content.
+        "pexels_video_id":     story.get("pexels_video_id", ""),
+        "pexels_download_url": story.get("pexels_download_url", ""),
+        # Queue entry id (sha1 of the Pexels page URL). Second dedup
+        # key after pexels_video_id; whichever the recorder has is fine.
+        "story_id":            story.get("id", ""),
         # Fields the uploader uses for the pinned first-comment + the
         # per-region playlist. Carrying them through metadata.json keeps
         # the generate / upload contract explicit.
