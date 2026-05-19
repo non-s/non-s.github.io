@@ -10,8 +10,10 @@ Shorts with original voice-over narration, and uploads them to YouTube
 3 times a day.
 
 - Channel: <https://youtube.com/@globalbrnews> (display name: **Wild Brief**)
-- Cadence: **3 Shorts/day**, staggered at 08:00, 14:00, 20:00 UTC so
-  each gets its own algorithm test window.
+- Cadence: **5 Shorts/day**, staggered at 00, 05, 10, 15, 20 UTC so
+  each gets its own algorithm test window. Running at ~87 % of the
+  10 k unit YouTube Data API daily quota — safe ceiling without
+  requesting an increase.
 - Cost: **$0/month** — every layer is on a no-card free tier.
 
 **First time here?** Read [`SETUP.md`](SETUP.md) — it walks you through
