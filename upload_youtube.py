@@ -505,11 +505,31 @@ def main():
                 "thumbnail":   meta.get("thumbnail", ""),
                 "category":    meta.get("category", ""),
                 "is_short":    meta.get("is_short", False),
+                # Pexels source-clip identity. Carried through to the
+                # .done sidecar so a future audit can match a YouTube
+                # video back to its source clip; AND so the dedup
+                # ledger below can reconstruct from the audit trail.
+                "pexels_video_id":     meta.get("pexels_video_id", ""),
+                "pexels_download_url": meta.get("pexels_download_url", ""),
                 # A/B variant tags so youtube_analytics.py can correlate
                 # them with the retention numbers it pulls.
                 "experiments": meta.get("experiments", {}),
                 "language":    _LANGUAGE,
             }, indent=2))
+            # Permanent dedup ledger — append BEFORE deleting the meta
+            # file so a crash between these two steps still leaves the
+            # ledger truthful. (Worst case: the meta is re-tried but the
+            # ledger blocks the re-enqueue — fine.)
+            try:
+                from fetch_animals import record_published_clip
+                record_published_clip(
+                    pexels_video_id=meta.get("pexels_video_id", ""),
+                    story_id=meta.get("story_id", ""),
+                    pexels_url=meta.get("pexels_download_url", ""),
+                    youtube_video_id=video_id,
+                )
+            except Exception as exc:
+                log.warning("⚠️ published_clips ledger update failed: %s", exc)
             meta_file.unlink()
             uploaded += 1
 

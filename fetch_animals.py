@@ -76,6 +76,13 @@ log = logging.getLogger(__name__)
 
 
 QUEUE_FILE = Path("_data/stories_queue.json")
+# Permanent ledger of Pexels clips we already published. Survives
+# `_prune_queue` and any queue rebuild, so a clip that was shipped
+# weeks ago can never re-enter the rotation. `upload_youtube.py`
+# appends to this on a successful upload (see
+# `record_published_clip()` below); `main()` filters Pexels candidates
+# against it before paying for AI enrichment.
+PUBLISHED_CLIPS_FILE = Path("_data/published_clips.json")
 MAX_PER_TOPIC = int(os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
 KEEP_DAYS = int(os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 
@@ -278,6 +285,88 @@ def _story_id(url: str) -> str:
     return hashlib.sha1(url.encode("utf-8")).hexdigest()[:16]
 
 
+def _pexels_id_from_clip(clip) -> str:
+    """Pull the canonical Pexels video id from a BrollClip. Pexels
+    page URLs look like `https://www.pexels.com/video/<slug>/<id>/`
+    — `rsplit("/", 2)[-2]` is the id, regardless of which slug Pexels
+    chose for that clip. Empty string if we can't extract one."""
+    url = getattr(clip, "url", "") or ""
+    if not url:
+        return ""
+    try:
+        candidate = url.rstrip("/").rsplit("/", 1)[-1]
+        if candidate.isdigit():
+            return candidate
+        return url.rsplit("/", 2)[-2]
+    except Exception:
+        return ""
+
+
+# ── Published-clips ledger ────────────────────────────────────────
+
+def load_published_clip_keys() -> set[str]:
+    """Return the permanent set of Pexels clip identifiers we already
+    shipped. Each entry is matched by BOTH `pexels_video_id` (Pexels
+    canonical id) and the queue-side `story_id` (sha1 of the page
+    URL) — whichever is recorded survives schema variations.
+
+    Empty set if the ledger doesn't exist yet.
+    """
+    if not PUBLISHED_CLIPS_FILE.exists():
+        return set()
+    try:
+        data = json.loads(PUBLISHED_CLIPS_FILE.read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.warning("published_clips parse failed: %s — treating as empty", exc)
+        return set()
+    if not isinstance(data, dict):
+        return set()
+    keys: set[str] = set()
+    for entry in (data.get("clips") or []):
+        if not isinstance(entry, dict):
+            continue
+        for field in ("pexels_video_id", "story_id"):
+            val = entry.get(field)
+            if val:
+                keys.add(str(val))
+    return keys
+
+
+def record_published_clip(*, pexels_video_id: str = "",
+                          story_id: str = "",
+                          pexels_url: str = "",
+                          youtube_video_id: str = "") -> None:
+    """Append one record to the permanent published-clips ledger.
+
+    Called by upload_youtube.py right after a successful videos.insert,
+    so a clip that ships can NEVER be re-enqueued. Atomic write via
+    tmp + rename so a crash mid-write doesn't corrupt the file.
+    """
+    if not pexels_video_id and not story_id:
+        return  # nothing to record
+    PUBLISHED_CLIPS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    payload = {"clips": [], "updated_at": None}
+    if PUBLISHED_CLIPS_FILE.exists():
+        try:
+            existing = json.loads(PUBLISHED_CLIPS_FILE.read_text(encoding="utf-8"))
+            if isinstance(existing, dict) and isinstance(existing.get("clips"), list):
+                payload = existing
+        except Exception:
+            pass
+    payload["clips"].append({
+        "pexels_video_id":  pexels_video_id or "",
+        "story_id":         story_id or "",
+        "pexels_url":       pexels_url or "",
+        "youtube_video_id": youtube_video_id or "",
+        "uploaded_at":      datetime.now(timezone.utc).isoformat(),
+    })
+    payload["updated_at"] = datetime.now(timezone.utc).isoformat()
+    tmp = PUBLISHED_CLIPS_FILE.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
+                   encoding="utf-8")
+    tmp.replace(PUBLISHED_CLIPS_FILE)
+
+
 def _load_queue() -> dict:
     if QUEUE_FILE.exists():
         try:
@@ -362,7 +451,7 @@ def _build_story(clip_subject: str,
         # Pexels-specific extras — kept so a follow-up PR can later
         # bias `generate_shorts.acquire_broll_clips` to PREFER the
         # exact clip that informed the script.
-        "pexels_video_id":     pexels_clip.url.rsplit("/", 2)[-2] if pexels_clip.url else "",
+        "pexels_video_id":     _pexels_id_from_clip(pexels_clip),
         "pexels_download_url": pexels_clip.download_url,
     }
 
@@ -399,7 +488,24 @@ def main() -> int:
         return 2
 
     queue = _load_queue()
-    existing_ids: set[str] = {s.get("id") for s in queue["stories"] if s.get("id")}
+    # Dedup keys come from three places, unioned into a single set:
+    #   1. Queue ids — anything still on the queue (pending or recently
+    #      consumed, before prune).
+    #   2. Published clips ledger — the permanent record of clips we
+    #      already shipped to YouTube. This is the line of defence
+    #      against re-uploading the same Pexels clip after the queue
+    #      pruned its consumed entry weeks later.
+    #   3. The pexels_video_id of every queue entry — same defense,
+    #      but for entries that have it (added in commit 2026-05-19).
+    queue_ids: set[str] = {s.get("id") for s in queue["stories"] if s.get("id")}
+    queue_pexels_ids: set[str] = {
+        str(s.get("pexels_video_id", "")) for s in queue["stories"]
+        if s.get("pexels_video_id")
+    }
+    published_keys = load_published_clip_keys()
+    dedupe_keys: set[str] = queue_ids | queue_pexels_ids | published_keys
+    log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
+             len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
@@ -422,7 +528,8 @@ def main() -> int:
 
         for clip in clips:
             sid = _story_id(clip.url or clip.download_url)
-            if sid in existing_ids:
+            pid = _pexels_id_from_clip(clip)
+            if sid in dedupe_keys or (pid and pid in dedupe_keys):
                 continue
             subject = clip.title or queries[0]
             context = topic_cfg.get("description_prefix", "an animal clip")
@@ -432,7 +539,9 @@ def main() -> int:
                 continue
             story = _build_story(subject, topic_key, topic_cfg, clip, ai_out)
             new_entries.append(story)
-            existing_ids.add(story["id"])
+            dedupe_keys.add(story["id"])
+            if pid:
+                dedupe_keys.add(pid)
 
     # Merge + prune.
     queue["stories"].extend(new_entries)
