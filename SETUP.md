@@ -106,7 +106,7 @@ category, A/B winners, cohort timing recommendations.
 | Workflow | Schedule (UTC) | Purpose |
 |----------|----------------|---------|
 | `fetch-content.yml` | every 3 h | Pexels search + AI enrich → queue |
-| `youtube-bot.yml` | 08 / 14 / 20 | 1 Short per run × 3 runs = 3 Shorts/day |
+| `youtube-bot.yml` | 00 / 05 / 10 / 15 / 20 | 1 Short per run × 5 runs = 5 Shorts/day |
 | `analytics.yml` | 03 daily | Pull retention + CTR per video |
 | `daily-digest.yml` | 04 daily | Post GitHub Issue summarising the day |
 | `dashboard.yml` | nightly | Rebuild static HTML dashboard on Pages |
@@ -135,11 +135,11 @@ Sustainable Shorts/day at default config:
 
 | Shorts/day | Units used | % of cap |
 |------------|------------|----------|
-| 3 (default) | 5,250 | 52 % |
+| 3 | 5,250 | 52 % |
 | 4 | 7,000 | 70 % |
-| **5** | **8,750** | **87 % — safe ceiling** |
+| **5 (default)** | **8,750** | **87 % — safe ceiling** |
 | 6 | 10,500 | 105 % — risk of cap-out |
-| 8 (every 3h) | 14,000 | **140 % — will fail** |
+| 8 (every 3 h) | 14,000 | **140 % — will fail** |
 
 To go above 5/day, request a quota increase via the
 [YouTube API Compliance form](https://support.google.com/youtube/contact/yt_api_form)

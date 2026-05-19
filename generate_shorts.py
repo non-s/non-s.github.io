@@ -1212,8 +1212,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # More clips per Short = more pattern interrupts = higher retention.
     # We aim for 6 clips so the visual cuts land every ~7-8 s in a 45 s
     # Short — well inside the 2-3 s "pattern interrupt sweet spot" the
-    # algorithm research called out. Pexels 200 req/h covers this even
-    # at 3 Shorts/day × 2 channels.
+    # algorithm research called out. Pexels 200 req/h covers this
+    # comfortably at 5 Shorts/day.
     broll_paths = acquire_broll_clips(story, tmp_dir, want_n=6)
 
     # ── 4. Output paths ───────────────────────────────────────────
