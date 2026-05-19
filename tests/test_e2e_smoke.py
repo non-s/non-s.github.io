@@ -5,7 +5,7 @@ We don't need the full network or ffmpeg to validate that the modules
 wire together — we mock every external touchpoint (AI, edge-tts,
 Pexels, Whisper, FFmpeg, YouTube) and assert that:
 
-  1. `fetch_news._enrich_story` produces a queue entry with the
+  1. `fetch_animals._enrich_story` produces a queue entry with the
      fields generate_shorts.py expects.
   2. `generate_shorts.generate_short` consumes that entry, calls
      each external service exactly once via mocks, and produces
@@ -32,7 +32,7 @@ pytest.importorskip("PIL")
 
 @pytest.fixture
 def fake_queue_story():
-    """The shape fetch_news.py produces and generate_shorts.py expects."""
+    """The shape fetch_animals.py produces and generate_shorts.py expects."""
     return {
         "id":             "abc123",
         "fetched_at":     "2026-05-18T12:00:00+00:00",

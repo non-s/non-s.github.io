@@ -6,7 +6,7 @@ window don't burn Mistral / Cerebras / Gemini / Groq quota.
 
 How it helps the free-tier budget
 ---------------------------------
-fetch_news.py runs every 3h and reads the same RSS items repeatedly
+fetch_animals.py runs every 3h and reads the same RSS items repeatedly
 until they're consumed. Without caching, each retry of the same story
 costs a fresh AI call. With caching, the first call is paid; reruns
 within `AI_CACHE_TTL_DAYS` (default 30) come back from disk for free.
@@ -52,13 +52,13 @@ _DEFAULT_TTL_DAYS = float(os.environ.get("AI_CACHE_TTL_DAYS", "30"))
 _DEFAULT_PATH = Path(os.environ.get("AI_CACHE_PATH", "_data/ai_cache.jsonl"))
 _ENABLED = os.environ.get("AI_CACHE_ENABLED", "1") not in ("0", "false", "False")
 # Template version is folded into every cache key. Bump it when the
-# `_AI_PROMPT_TEMPLATE` in fetch_news.py (or any other prompt that
+# `_AI_PROMPT_TEMPLATE` in fetch_animals.py (or any other prompt that
 # round-trips through ai_text) changes shape in a way that invalidates
 # previous responses. Old entries become unreachable instantly; the
 # prune() call rewrites the file the next time the workflow runs.
 _TEMPLATE_VERSION = os.environ.get("AI_TEMPLATE_VERSION", "v3-2026-05")
 
-# In-process lock so worker threads in fetch_news.py don't both call
+# In-process lock so worker threads in fetch_animals.py don't both call
 # the API for the same key in the brief window before disk is read.
 _mem_lock = threading.Lock()
 _mem: dict[str, dict] | None = None  # lazy-loaded on first use

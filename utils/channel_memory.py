@@ -12,7 +12,7 @@ This module:
 
   1. After every successful Short, `remember()` appends the story's
      core facts (slug, hook, topic, sources, geo) to a JSONL ledger.
-  2. Before each new story is enriched, fetch_news.py calls
+  2. Before each new story is enriched, fetch_animals.py calls
      `find_callback_candidates()` to surface 0-2 recent past stories
      that share entities / topics with the new one.
   3. The candidates are injected into the AI prompt so the LLM can
@@ -58,7 +58,7 @@ def remember(story: dict) -> None:
         "source":      story.get("source", ""),
         "language":    story.get("language", "en"),
         # Entities = the AI-picked search tags from yt_tags. The first
-        # three are the entity-driven ones per the fetch_news prompt
+        # three are the entity-driven ones per the fetch_animals prompt
         # contract.
         "entities":    [t for t in (story.get("yt_tags") or [])[:3]
                          if isinstance(t, str)],

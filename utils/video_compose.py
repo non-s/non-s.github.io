@@ -262,7 +262,7 @@ def build_broll_short(broll_paths: list[Path],
 
     # Brand-bug watermark — drawn ALL THE TIME at the upper-right,
     # offset to clear YouTube's likes/comments rail at the right side.
-    # Industry standard for news Shorts; lets reposters get traced.
+    # Standard practice on Shorts; lets reposters get traced.
     if watermark_text and font:
         safe = _ffmpeg_escape(watermark_text[:32])
         parts.append(

@@ -50,9 +50,9 @@ LOOKBACK_HOURS        = int(os.environ.get("COMMENT_REPLIES_LOOKBACK_H",    "72"
 # see the same reply twice in a row.
 REPLY_PANEL: dict[str, tuple[str, ...]] = {
     "positive": (
-        "Thanks for watching — more breaking news every day 🌍",
-        "Glad it landed. Subscribe for the next one!",
-        "🙌 appreciated. Keep us honest in the next one.",
+        "Thanks for watching — one weird animal fact every day 🐾",
+        "Glad it landed. Subscribe for tomorrow's brief 🦅",
+        "🙌 appreciated. Drop the next animal you want covered.",
         "Thanks — sharing helps the channel a lot.",
     ),
     "curious": (
