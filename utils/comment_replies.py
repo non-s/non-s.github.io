@@ -28,7 +28,7 @@ The reply panel is deliberately conservative:
 Quota
 -----
 commentThreads.list = 1 unit, comments.insert = 50 units. Five
-replies per video × 3 Shorts/day = 15 inserts = 750 units = 7.5 %
+replies per video × 5 Shorts/day = 25 inserts = 1,250 units = 12.5 %
 of the 10k daily budget. The quota ledger picks this up.
 """
 from __future__ import annotations
