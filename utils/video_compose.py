@@ -152,10 +152,16 @@ def build_broll_short(broll_paths: list[Path],
         # zoompan z' starts at 1 and grows (or shrinks) per frame. A 1.08
         # final zoom over seg_dur ≈ 1.78 % per second — slow enough to
         # feel cinematic, not so fast the viewer notices the crop walking.
+        #
+        # Every comma inside the z-expression has to be backslash-escaped
+        # (`\,`) or FFmpeg's filter_complex parser treats it as a filter
+        # separator and the zoompan splits into two malformed filters →
+        # "Filter not found" hard error. Unescaped commas were silently
+        # falling back to static-frame compose for every b-roll Short.
         if zoom_in:
-            z_expr = f"min(zoom+0.0008,1.08)"
+            z_expr = "min(zoom+0.0008\\,1.08)"
         else:
-            z_expr = f"if(eq(on,0),1.08,max(zoom-0.0008,1.00))"
+            z_expr = "if(eq(on\\,0)\\,1.08\\,max(zoom-0.0008\\,1.00))"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2× the offset scales too.
@@ -163,10 +169,12 @@ def build_broll_short(broll_paths: list[Path],
         if face is not None:
             fx, fy = face
             # In the scaled space iw = source_w × 2. We want the crop
-            # window of width ow centred at fx × iw, clamped.
-            crop_x = (f"max(0,min(iw-ow,"
+            # window of width ow centred at fx × iw, clamped. Every
+            # comma inside the max(0,min(...)) expressions has to be
+            # backslash-escaped — see the zoompan note above.
+            crop_x = (f"max(0\\,min(iw-ow\\,"
                        f"{fx:.4f}*iw-(ow/2)))")
-            crop_y = (f"max(0,min(ih-oh,"
+            crop_y = (f"max(0\\,min(ih-oh\\,"
                        f"{fy:.4f}*ih-(oh/2)))")
             crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}:{crop_x}:{crop_y}"
         else:
