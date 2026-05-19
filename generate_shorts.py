@@ -602,82 +602,56 @@ def create_short_frame(title: str, category: str, points: list[str],
 # a thumbnail that names WHAT the story is about wins clicks at the
 # moment the viewer is browsing the Shorts feed search page. We now
 # render the thumbnail per-Short with the AI-generated `thumbnail_text`
-# (a 2-4 word punchy overlay like "RATES CUT" or "WALL ST STUNNED")
-# drawn over the background image. The static-grid fallback remains as
-# a last resort when the AI didn't produce a thumbnail_text.
-STATIC_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_thumbnail.png"
+# Per-operator decision (2026-05-19): every Short ships with the same
+# branded vertical thumbnail (`wildbrief_short_thumb.png`) as a
+# placeholder. The operator overrides each Short's thumb manually via
+# YouTube Studio for the ones that earn a bespoke design. This is
+# cleaner than auto-generating a per-Short title-card thumb because:
+#   * Every channel preview tile looks instantly recognisable as Wild
+#     Brief — branding consistency at the highest-impact surface.
+#   * The dynamic AI-text overlay path was visually inconsistent.
+#   * Frame-from-video extracts looked random / weak.
+SHIPPED_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_short_thumb.png"
+# Legacy alias retained because tests / older comments referenced it.
+STATIC_THUMB_PATH = SHIPPED_THUMB_PATH
 
 
 def create_short_thumbnail(frame_img: Image.Image, output: Path,
                             thumbnail_text: str = "",
                             category: str = "") -> None:
     """
-    Render the YouTube thumbnail. If `thumbnail_text` is provided, we
-    drop it as a high-contrast overlay on the centre band of the frame
-    image. Otherwise we fall through to the brand-static JPEG, then to
-    the bare frame.
-    """
-    if thumbnail_text and frame_img is not None:
-        try:
-            thumb = frame_img.copy().convert("RGB")
-            draw = ImageDraw.Draw(thumb)
-            text = thumbnail_text.upper().strip()[:30]
-            # Pick a font size that fills ~70% of the width.
-            font_size = 220
-            font = get_font(font_size, bold=True)
-            while font_size > 90:
-                bbox = draw.textbbox((0, 0), text, font=font)
-                if (bbox[2] - bbox[0]) < (SHORT_W - 80):
-                    break
-                font_size -= 12
-                font = get_font(font_size, bold=True)
-            bbox = draw.textbbox((0, 0), text, font=font)
-            tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-            cx = (SHORT_W - tw) // 2
-            cy = (SHORT_H - th) // 2 - 60
-            # Translucent slab for legibility on any background.
-            slab_pad = 36
-            cat_color = CATEGORY_COLORS.get((category or "TECH").upper(), ACCENT_BLUE)
-            draw_rounded_rect(
-                draw,
-                (cx - slab_pad, cy - slab_pad,
-                 cx + tw + slab_pad, cy + th + slab_pad),
-                radius=28, fill=(0, 0, 10),
-            )
-            # Coloured underline strip for brand cohesion.
-            draw.rectangle(
-                [(cx - slab_pad, cy + th + slab_pad - 14),
-                 (cx + tw + slab_pad, cy + th + slab_pad)],
-                fill=cat_color,
-            )
-            # Text with a layered shadow for extra punch.
-            for dx, dy in ((4, 4), (3, 3)):
-                draw.text((cx + dx, cy + dy), text, font=font, fill=(0, 0, 0))
-            draw.text((cx, cy), text, font=font, fill=TEXT_WHITE)
-            thumb.save(str(output), "JPEG", quality=88, optimize=True)
-            log.info("  🖼  Thumbnail (dynamic, %r): %s",
-                     text[:24], output.name)
-            return
-        except Exception as exc:
-            log.warning("  ⚠ Dynamic thumbnail render failed: %s — falling back", exc)
+    Write the per-Short thumbnail.
 
-    # Fallback 1: brand-static shipped JPEG.
-    if STATIC_THUMB_PATH.exists():
+    Current policy: every Short ships with the SAME branded vertical
+    placeholder (`wildbrief_short_thumb.png`). The operator overrides
+    each Short individually via YouTube Studio for the ones that earn
+    bespoke art. `thumbnail_text` and `category` are kept in the
+    signature so older callers still type-check; they're ignored.
+
+    Fallback chain:
+      1. Copy the branded placeholder (the normal case).
+      2. If that file is missing, save the title-card frame as JPEG.
+      3. If even that fails (no PIL image passed), bail silently — the
+         uploader's `thumbnails.set()` is wrapped in try/except and will
+         just skip the thumbnail upload, letting YouTube auto-pick.
+    """
+    if SHIPPED_THUMB_PATH.exists():
         try:
-            thumb = Image.open(STATIC_THUMB_PATH).convert("RGB")
+            thumb = Image.open(SHIPPED_THUMB_PATH).convert("RGB")
             thumb.save(str(output), "JPEG", quality=90, optimize=True)
-            log.info(f"  Thumbnail (static brand fallback): {output.name}")
+            log.info("  🖼  Thumbnail (branded Wild Brief): %s", output.name)
             return
         except Exception as exc:
             log.warning(
-                f"  ⚠ Failed to load static thumb at {STATIC_THUMB_PATH}: {exc}. "
-                "Falling back to per-Short frame."
+                "  ⚠ Failed to load branded thumb at %s: %s — falling back.",
+                SHIPPED_THUMB_PATH, exc,
             )
-    # Fallback 2: raw frame image (always succeeds when frame_img is set).
+
+    # Fallback: title-card frame as a JPEG (never branded but never empty).
     if frame_img is not None:
         thumb = frame_img.copy().convert("RGB")
         thumb.save(str(output), "JPEG", quality=92, optimize=True)
-        log.info(f"  Thumbnail (rendered fallback): {output.name}")
+        log.info("  Thumbnail (title-card fallback): %s", output.name)
 
 
 # ── Video assembly (b-roll + captions + hook overlay) ────────────
@@ -1329,22 +1303,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not ok:
         return None
 
-    # ── 7.5. Replace the auto-thumbnail with a real frame from the
-    # composed video. The earlier `create_short_thumbnail()` call
-    # baked a title-card image; that's a fine fallback but the
-    # operator's manual thumbnails (and YouTube's CTR signal) both
-    # do better with a real animal frame. We sample at 15 s — past
-    # the intro card and into the b-roll body. If extraction fails
-    # the existing title-card thumb stays as-is.
-    try:
-        from utils.video_compose import extract_thumbnail_from_video
-        # 15 s ≈ midpoint of the average 30 s Short. ffmpeg's `-ss`
-        # before `-i` is the fast seek; if the video is shorter than
-        # 15 s the extract just falls back to the last frame.
-        extract_thumbnail_from_video(video_path, thumb_path,
-                                      timestamp_s=15.0)
-    except Exception as exc:
-        log.debug("thumbnail-from-video extract skipped: %s", exc)
+    # NOTE: the thumbnail was written earlier by `create_short_thumbnail`
+    # using the branded Wild Brief placeholder. We deliberately do NOT
+    # overwrite it with a frame from the composed video — the operator
+    # prefers a consistent branded preview tile across the channel.
 
     # ── 8. Metadata JSON ──────────────────────────────────────────
     metadata = build_short_metadata(story, video_path, thumb_path)
