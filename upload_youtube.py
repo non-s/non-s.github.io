@@ -24,7 +24,7 @@ from utils import youtube_quota
 # Locale axis — mirrors generate_shorts.py. When LANGUAGE=pt-BR (or
 # any other non-en supported locale), we upload from `_videos_pt-BR/`
 # instead of `_videos/`. This lets one repo serve multiple sibling
-# channels (English on @globalbrnews, Portuguese on @globalbrnewsbr,
+# channels (English on @wildbrief, Portuguese on @wildbriefbr,
 # etc.) without entangling their state.
 _LANGUAGE  = os.environ.get("LANGUAGE", "en").strip() or "en"
 LOG_FILE   = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"

@@ -85,7 +85,7 @@ class HostPersona:
     )
 
     # Channel handle (without the @). Used in CTAs and watermarks.
-    handle: str = "globalbrnews"
+    handle: str = "wildbrief"
 
     # Channel tagline — appears in long-form description, never in Shorts.
     tagline: str = "One weird animal fact a day. Wild Brief."
