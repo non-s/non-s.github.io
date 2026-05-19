@@ -342,9 +342,24 @@ def build_static_short(frame_path: Path,
     font = _font_path()
     parts: list[str] = []
     last = "0:v"
+    # Slow Ken Burns zoom-in (1.00 → 1.04 over the full audio
+    # duration). Without this the static-frame fallback shipped as
+    # a JPEG-with-audio Short — viewers swipe within 2 s because
+    # NOTHING moves. 4 % zoom is enough to register as motion without
+    # cropping out the title or the 3 numbered points the title card
+    # carries. The b-roll path applies the same trick per segment
+    # (utils/video_compose.py:build_broll_short); this just mirrors
+    # it for the fallback so every Short has motion.
+    zoom_frames = max(int(audio_dur * TARGET_FPS), 1)
+    zoom_step = 0.04 / zoom_frames  # total magnification over the clip
+    # Commas inside the zoompan z-expression have to be backslash-
+    # escaped so FFmpeg doesn't parse them as filter separators.
     parts.append(
         f"[{last}]scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
-        f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={TARGET_FPS}[scaled]"
+        f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+        f"zoompan=z='min(zoom+{zoom_step:.6f}\\,1.04)':"
+        f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+        f"d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS}[scaled]"
     )
     last = "scaled"
     if hook_text and font:
