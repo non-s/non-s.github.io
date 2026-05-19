@@ -185,15 +185,20 @@ def check_transformation_present(script: str, description: str) -> list[Issue]:
 
 
 def check_length(script: str) -> list[Issue]:
-    """Spoken at +3% rate, 85-120 words ≈ 30-45s. Outside that = bad fit."""
+    """Spoken at +3% rate, ~85-120 words = a 30-45 s Short. We BLOCK
+    only when the script is genuinely too thin to fill a Short — below
+    40 words is <15 s of body audio after intro/outro chunks consume
+    their share, which underperforms. Animal Pexels clips sometimes
+    yield terse AI scripts; the relaxed bar means we publish-rather-
+    than-skip when the AI ran lean."""
     if not script:
         return [Issue(code="empty_script", severity="block",
                        message="Script is empty — TTS would produce nothing")]
     words = re.findall(r"\S+", script)
     n = len(words)
-    if n < 55:
+    if n < 40:
         return [Issue(code="script_too_short", severity="block",
-                       message=f"Script has only {n} words — Shorts < 20s underperform")]
+                       message=f"Script has only {n} words — Shorts < 15s underperform")]
     if n > 160:
         return [Issue(code="script_too_long", severity="warn",
                        message=f"Script has {n} words — likely exceeds 60s cap")]
