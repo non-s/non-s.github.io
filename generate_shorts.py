@@ -1329,6 +1329,23 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not ok:
         return None
 
+    # ── 7.5. Replace the auto-thumbnail with a real frame from the
+    # composed video. The earlier `create_short_thumbnail()` call
+    # baked a title-card image; that's a fine fallback but the
+    # operator's manual thumbnails (and YouTube's CTR signal) both
+    # do better with a real animal frame. We sample at 15 s — past
+    # the intro card and into the b-roll body. If extraction fails
+    # the existing title-card thumb stays as-is.
+    try:
+        from utils.video_compose import extract_thumbnail_from_video
+        # 15 s ≈ midpoint of the average 30 s Short. ffmpeg's `-ss`
+        # before `-i` is the fast seek; if the video is shorter than
+        # 15 s the extract just falls back to the last frame.
+        extract_thumbnail_from_video(video_path, thumb_path,
+                                      timestamp_s=15.0)
+    except Exception as exc:
+        log.debug("thumbnail-from-video extract skipped: %s", exc)
+
     # ── 8. Metadata JSON ──────────────────────────────────────────
     metadata = build_short_metadata(story, video_path, thumb_path)
     # Tag the metadata so the uploader can disclose synthetic/altered
