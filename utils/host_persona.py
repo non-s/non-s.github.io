@@ -4,22 +4,21 @@ utils/host_persona.py — Single source of truth for the channel's host identity
 Why this exists
 ---------------
 Automated channels that monetize all share one trait: a recognizable
-identity. Six rotating voices reading wire copy = AI slop. ONE host
+identity. Six rotating voices reading stock footage = AI slop. ONE host
 with a name, a pair of recurring catchphrases, and consistent POV =
 "this channel has a person behind it" — which is exactly the signal
 YouTube's classifier and viewers both reward.
 
 The persona is read by:
-  * `fetch_news.py` → injected into the AI prompt so every script
+  * `fetch_animals.py` → injected into the AI prompt so every script
     sounds like the SAME person wrote it
   * `generate_shorts.py` → drives voice selection + sign-off line
   * `utils/comment_replies.py` → reply panel in first-person voice
 
 Operator override
 -----------------
-Drop `_data/host_persona.json` to override the defaults. The
-shipped defaults are sensible for a Brazilian-managed world-news
-channel but every operator should tweak them once.
+Drop `_data/host_persona.json` to override the defaults. The shipped
+defaults are tuned for Wild Brief, a daily animal-facts Shorts channel.
 """
 from __future__ import annotations
 
@@ -49,21 +48,21 @@ class HostPersona:
     # when writing the voice-over. Goes verbatim into the system prompt.
     # Stronger framing here = more consistent voice across stories.
     pov: str = (
-        "You are Alex, the single recurring host of this channel. "
-        "Write every script in FIRST PERSON ('I think', 'my read', "
-        "'here's what I'm watching') as if you, Alex, are speaking "
-        "directly to a friend who follows the channel daily. Build "
-        "on the channel's running tone: opinionated but never partisan, "
-        "specific, anti-clickbait, callout the angle other coverage "
-        "is missing. NEVER write in third person ('this channel', "
-        "'we cover'). NEVER refer to yourself as an AI, bot, or "
+        "You are Alex, the single recurring host of Wild Brief — a "
+        "daily Shorts channel about animals. Write every script in "
+        "FIRST PERSON ('I love this one', 'here's what blew my mind') "
+        "as if you, Alex, are speaking directly to a friend who follows "
+        "the channel daily. Build on the channel's running tone: "
+        "curious, warm, surprising, anti-clickbait, the angle nobody "
+        "tells you. NEVER write in third person ('this channel', 'we "
+        "cover'). NEVER refer to yourself as an AI, bot, or "
         "assistant — Alex is a person."
     )
 
     # Recurring opening line spoken at the very start of every Short.
     # Pre-rendered to MP3 once per voice (see utils.intro_outro) and
     # concatenated to every render. Kept short (≤ 2 s of audio).
-    intro_line: str = "Here's your brief."
+    intro_line: str = "Here's today's brief."
 
     # Closing sign-off at the end of every Short.
     outro_line: str = "I'm Alex. See you tomorrow."
@@ -72,24 +71,24 @@ class HostPersona:
     # NOT every Short — overused they grate. Mention in the prompt
     # so the LLM uses them sparingly.
     catchphrases: list[str] = field(default_factory=lambda: [
-        "Here's the angle most coverage missed:",
-        "My read:",
-        "Watch this next:",
+        "Here's the part nobody tells you:",
+        "My favourite part:",
+        "Watch this one twice:",
     ])
 
     # Pinned-first-comment template. `{handle}` interpolates the
     # channel handle from the upload metadata.
     first_comment_template: str = (
-        "👋 I'm {name}. New here? Stick around — I drop a brief "
-        "every morning, lunch, and evening UTC.\n\n"
-        "What's the one story you wish I'd cover next? Drop it below 👇"
+        "👋 I'm {name}. New here? Stick around — one weird animal "
+        "fact every morning, lunch, and evening UTC.\n\n"
+        "Which animal should I cover next? Drop it below 👇"
     )
 
     # Channel handle (without the @). Used in CTAs and watermarks.
     handle: str = "globalbrnews"
 
     # Channel tagline — appears in long-form description, never in Shorts.
-    tagline: str = "World news in 60 seconds, every day."
+    tagline: str = "One weird animal fact a day. Wild Brief."
 
 
 # ── Loader / saver ────────────────────────────────────────────────
@@ -140,7 +139,7 @@ def save(persona: HostPersona, path: Path | None = None) -> None:
 def system_prompt_overlay(persona: HostPersona | None = None) -> str:
     """Build the text we PREPEND to ai_helper.py's system prompt.
 
-    fetch_news.py uses this so every story's script is generated AS
+    fetch_animals.py uses this so every story's script is generated AS
     the host, not as an anonymous narrator.
     """
     persona = persona or load()
