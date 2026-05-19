@@ -228,3 +228,98 @@ def test_every_topic_has_queries_and_hashtag():
         assert cfg.get("queries"), f"{key} has no queries"
         assert cfg.get("topic_hashtag"), f"{key} has no topic_hashtag"
         assert cfg.get("tags"), f"{key} has no tags"
+
+
+# ── Permanent published-clips dedup ledger ───────────────────────
+
+def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE",
+                        tmp_path / "missing.json")
+    assert fetch_animals.load_published_clip_keys() == set()
+
+
+def test_load_published_clip_keys_extracts_both_id_fields(tmp_path, monkeypatch):
+    f = tmp_path / "p.json"
+    f.write_text(json.dumps({
+        "clips": [
+            {"pexels_video_id": "111", "story_id": "abc123"},
+            {"pexels_video_id": "222"},                       # only pexels id
+            {"story_id": "def456"},                            # only story id
+            {"pexels_video_id": "", "story_id": ""},           # both empty — ignored
+        ],
+    }), encoding="utf-8")
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    assert fetch_animals.load_published_clip_keys() == {
+        "111", "222", "abc123", "def456",
+    }
+
+
+def test_load_published_clip_keys_tolerates_malformed_json(tmp_path, monkeypatch):
+    f = tmp_path / "p.json"
+    f.write_text("{not json", encoding="utf-8")
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    assert fetch_animals.load_published_clip_keys() == set()
+
+
+def test_record_published_clip_appends_to_empty_ledger(tmp_path, monkeypatch):
+    f = tmp_path / "p.json"
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    fetch_animals.record_published_clip(
+        pexels_video_id="123",
+        story_id="abc",
+        pexels_url="https://pexels.com/v/123",
+        youtube_video_id="yt_xyz",
+    )
+    payload = json.loads(f.read_text(encoding="utf-8"))
+    assert len(payload["clips"]) == 1
+    assert payload["clips"][0]["pexels_video_id"] == "123"
+    assert payload["clips"][0]["story_id"] == "abc"
+    assert payload["clips"][0]["youtube_video_id"] == "yt_xyz"
+    assert payload["updated_at"] is not None
+
+
+def test_record_published_clip_appends_to_existing_ledger(tmp_path, monkeypatch):
+    f = tmp_path / "p.json"
+    f.write_text(json.dumps({
+        "clips":      [{"pexels_video_id": "111", "story_id": "old1"}],
+        "updated_at": "2026-05-01T00:00:00+00:00",
+    }), encoding="utf-8")
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    fetch_animals.record_published_clip(pexels_video_id="222",
+                                         story_id="new2")
+    payload = json.loads(f.read_text(encoding="utf-8"))
+    assert len(payload["clips"]) == 2
+    assert {c["pexels_video_id"] for c in payload["clips"]} == {"111", "222"}
+
+
+def test_record_published_clip_noop_without_identifiers(tmp_path, monkeypatch):
+    f = tmp_path / "p.json"
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    fetch_animals.record_published_clip()  # both ids empty
+    assert not f.exists()
+
+
+def test_record_then_load_round_trip(tmp_path, monkeypatch):
+    """Permanent dedup contract: a clip recorded as published must
+    appear in the load() set on the next call, regardless of any
+    queue prune that happened in between."""
+    f = tmp_path / "p.json"
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
+    fetch_animals.record_published_clip(pexels_video_id="999", story_id="zzz")
+    keys = fetch_animals.load_published_clip_keys()
+    assert "999" in keys
+    assert "zzz" in keys
+
+
+def test_pexels_id_from_clip_extracts_canonical_id():
+    clip = BrollClip(source="pexels",
+                     url="https://www.pexels.com/video/cat/12345/",
+                     download_url="https://files.pexels.com/v/cat-1.mp4",
+                     width=1080, height=1920, duration_s=10)
+    assert fetch_animals._pexels_id_from_clip(clip) == "12345"
+
+
+def test_pexels_id_from_clip_handles_missing_url():
+    clip = BrollClip(source="pexels", url="", download_url="x",
+                     width=1080, height=1920, duration_s=10)
+    assert fetch_animals._pexels_id_from_clip(clip) == ""
