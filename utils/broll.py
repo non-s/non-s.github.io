@@ -342,6 +342,13 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "") -> list[B
     cat_query = (category or "").strip().lower()
     queries = [q for q in (refined, query, cat_query) if q]
 
+    # Track per-source contribution so b-roll failures are visible at
+    # INFO. Without this the workflow log only shows the final count
+    # and operators can't tell whether a missing Pexels key, a quota
+    # wall, or an unlucky query phrase pushed the run into the static
+    # fallback.
+    per_source: dict[str, int] = {"pexels": 0, "nasa": 0, "internet_archive": 0}
+
     for fetcher in (fetch_pexels, fetch_nasa, fetch_internet_archive):
         if len(collected) >= want_n:
             break
@@ -351,15 +358,27 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "") -> list[B
             try:
                 clips = fetcher(q)
             except Exception as exc:
-                log.debug("broll fetcher %s crashed: %s", fetcher.__name__, exc)
+                log.warning("broll fetcher %s crashed: %s", fetcher.__name__, exc)
                 clips = []
             for c in clips:
                 if c.download_url in seen_urls:
                     continue
                 seen_urls.add(c.download_url)
                 collected.append(c)
+                per_source[c.source] = per_source.get(c.source, 0) + 1
                 if len(collected) >= want_n:
                     break
+
+    pexels_key_present = bool(os.environ.get("PEXELS_API_KEY", "").strip())
+    log.info(
+        "  🔎 B-roll sources: pexels=%d (key %s) · nasa=%d · archive=%d · total=%d/%d",
+        per_source["pexels"],
+        "present" if pexels_key_present else "MISSING",
+        per_source["nasa"],
+        per_source["internet_archive"],
+        len(collected),
+        want_n,
+    )
     return collected
 
 
