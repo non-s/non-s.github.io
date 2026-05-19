@@ -605,7 +605,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 # (a 2-4 word punchy overlay like "RATES CUT" or "WALL ST STUNNED")
 # drawn over the background image. The static-grid fallback remains as
 # a last resort when the AI didn't produce a thumbnail_text.
-STATIC_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "thumbnail_static.png"
+STATIC_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_thumbnail.png"
 
 
 def create_short_thumbnail(frame_img: Image.Image, output: Path,
