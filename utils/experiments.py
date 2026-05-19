@@ -88,7 +88,12 @@ AXES: tuple[Axis, ...] = (
         variants=(
             "dynamic_text",      # AI-authored thumbnail_text overlay (current default)
             "category_color",    # solid category-color slab + headline
-            "brand_static",      # the shipped static brand JPEG
+            # `brand_static` (the shipped JPEG with no per-Short text) was
+            # part of the A/B until the channel had enough volume to
+            # learn from it. At <100 subs every Short is a first-
+            # impression and the boring brand image hurts CTR. Re-add
+            # once the channel passes ~500 subs and the A/B has real
+            # statistical power.
         ),
         description="Thumbnail composition strategy.",
     ),
