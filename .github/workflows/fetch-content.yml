@@ -1,16 +1,17 @@
 # ============================================================
-# .github/workflows/fetch-news.yml
-# Refresh the RSS stories queue (_data/stories_queue.json).
-# generate_shorts.py reads from that queue on the next youtube-bot run.
+# .github/workflows/fetch-content.yml
+# Refresh the animal Shorts queue (_data/stories_queue.json) by
+# searching Pexels across 6 animal categories and running each clip
+# through the AI for a fun-fact narration. generate_shorts.py
+# consumes the queue on the next youtube-bot run.
 # ============================================================
 
-name: "📰 Refresh stories queue"
+name: "🐾 Refresh animal queue"
 
 on:
   schedule:
-    # Every 3h — the queue is consumed once a day by youtube-bot, so
-    # this keeps it warm with the latest 100-ish stories from each
-    # ~3-hour news cycle.
+    # Every 3h — the queue is consumed 3×/day by youtube-bot, so
+    # this keeps it warm with fresh Pexels clips per 3-hour window.
     - cron: "0 */3 * * *"
 
   workflow_dispatch:
@@ -103,8 +104,8 @@ jobs:
 
       - name: "💾 Commit queue + state files"
         run: |
-          git config user.name  "GlobalBR News Bot"
-          git config user.email "bot@globalbrnews.com"
+          git config user.name  "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
           git add _data/stories_queue.json _data/feed_cache.json _data/feed_health.json _data/ai_cache.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "✨ No new stories — nothing to commit."

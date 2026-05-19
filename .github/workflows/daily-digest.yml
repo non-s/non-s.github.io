@@ -86,8 +86,8 @@ jobs:
 
       - name: "Commit refreshed blocked-slug list"
         run: |
-          git config user.name  "GlobalBR News Bot"
-          git config user.email "bot@globalbrnews.com"
+          git config user.name  "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
           git add _data/blocked_slugs.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "✅ No new /block commands."

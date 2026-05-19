@@ -386,7 +386,7 @@ def main() -> int:
     abort_if_halted("fetch_animals")
 
     log.info("=" * 60)
-    log.info("🐾 GlobalBR News — animal queue refresh %s",
+    log.info("🐾 Wild Brief — animal queue refresh %s",
              datetime.now(timezone.utc).isoformat())
     log.info("=" * 60)
 

@@ -79,8 +79,8 @@ jobs:
 
       - name: "Commit reply log + quota ledger"
         run: |
-          git config user.name  "GlobalBR News Bot"
-          git config user.email "bot@globalbrnews.com"
+          git config user.name  "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
           git add _data/comment_replies.jsonl _data/quota_log.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "✅ No new replies to commit."

@@ -1,9 +1,11 @@
-# GlobalBR News — Setup Guide
+# Wild Brief — Setup Guide
 
-Everything required to run the pipeline + everything optional you can
-turn on later. All steps are **free**, none require a credit card
-unless explicitly noted (only Turso's most generous tier asks for one,
-and the alternative is also free).
+Every secret + every optional free service the pipeline can use, in
+order of importance.
+
+The shortest path to a publishing channel is **§1 (3 secrets)** —
+everything in §2 is opt-in and adds redundancy, retention, or
+discovery breadth.
 
 ---
 
@@ -11,45 +13,44 @@ and the alternative is also free).
 
 ### 1.1 Mistral La Plateforme API key
 
-1. Create a free account at <https://console.mistral.ai>
-2. Settings → API keys → Create new key
-3. Copy the key
-4. In this repo: **Settings → Secrets and variables → Actions** →
-   New repository secret → name `MISTRAL_API_KEY`, paste the key
+Primary AI provider for the fun-fact narration script. Free tier:
+500 k tokens/month.
 
-Free tier: ~500k tokens/month, 1 request/second. The pipeline throttles
-to one call per 8 s to stay well under the limit.
+1. Sign up at <https://console.mistral.ai> (no credit card).
+2. Generate an API key in **API Keys** → **Create new key**.
+3. Add it as `MISTRAL_API_KEY` under
+   **Settings → Secrets and variables → Actions → New repository secret**.
 
-### 1.2 YouTube OAuth token
+### 1.2 Pexels API key
 
-1. Locally, clone the repo and install deps:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Create an OAuth client in Google Cloud Console:
-   - <https://console.cloud.google.com/apis/credentials>
-   - Create project → Enable YouTube Data API v3 + YouTube Analytics API
-   - OAuth consent screen → External → fill the required fields →
-     add scopes:
-     - `https://www.googleapis.com/auth/youtube.upload`
-     - `https://www.googleapis.com/auth/youtube`            (playlists+comments)
-     - `https://www.googleapis.com/auth/youtube.readonly`   (analytics workflow)
-     - `https://www.googleapis.com/auth/yt-analytics.readonly`
-   - Credentials → Create credentials → OAuth client ID → Desktop app
-   - Download the JSON → save it as `client_secret.json` in the repo root
-3. Run the local helper:
-   ```bash
-   python auth_youtube.py
-   ```
-   This opens a browser, asks you to sign in with the channel's Google
-   account, and writes `token.json` next to `client_secret.json`.
-4. Copy the **entire contents** of `token.json` (it's small, one line of JSON).
-5. In this repo: **Settings → Secrets and variables → Actions** →
-   New repository secret → name `YOUTUBE_TOKEN`, paste the JSON.
+Discovery + b-roll. Every Short is a real Pexels animal clip + AI
+narration on top. Without this key the pipeline returns exit 2 and no
+queue is produced. Free tier: 200 req/h, 20 k req/month.
 
-The refresh token inside doesn't normally expire — one-time setup. If
-YouTube ever invalidates it, just re-run `auth_youtube.py` and update
-the secret.
+1. Sign up at <https://www.pexels.com/api/new/>.
+2. Copy the key from your dashboard.
+3. Add as `PEXELS_API_KEY` (or `PEXELS` short form) on GitHub.
+
+### 1.3 YouTube OAuth token
+
+1. Set up a Google Cloud OAuth client (Desktop type):
+   <https://console.cloud.google.com/apis/credentials>.
+2. Enable the **YouTube Data API v3** AND the **YouTube Analytics
+   API** for the project.
+3. Download `client_secret.json` and drop it in the repo root locally.
+4. Run `python auth_youtube.py` locally. It opens a browser, you log
+   in with the YouTube account that owns the channel, and approve the
+   requested scopes:
+     - `youtube.upload` (uploads)
+     - `youtube` (playlists)
+     - `youtube.force-ssl` (pinned comments)
+     - `youtube.readonly` + `yt-analytics.readonly` (analytics)
+5. The script writes `token.json` — paste its entire contents as a
+   single-line string into the GitHub secret `YOUTUBE_TOKEN`.
+
+> **If you ever see `invalid_scope: Bad Request` in a workflow log**,
+> the token was minted with an older scope list. Re-run
+> `auth_youtube.py` and update the secret.
 
 ---
 
@@ -57,235 +58,121 @@ the secret.
 
 ### 2.1 AI fallback chain (zero-cost reliability)
 
-When Mistral rate-limits you ([happens on bursty hours](https://docs.mistral.ai/deployment/laplateforme/rate_limits/)), every Mistral-only pipeline drops the affected story silently. We avoid that with a chain of free-tier providers — configure **any** of them (or all) and the pipeline tries them in order before giving up:
+When Mistral rate-limits or 5xxs (and it will — free-tier is bursty),
+the chain falls through to the first configured alternative. Each one
+is a separate free tier; configuring even one of them lifts the
+runs-per-day floor dramatically.
 
-| Provider | Free tier | Sign up | Secret |
-|----------|-----------|---------|--------|
-| **Cerebras** | 1M tokens/DAY, OpenAI-compatible | <https://cloud.cerebras.ai> | `CEREBRAS_API_KEY` |
-| **Google Gemini** | 15 RPM, 1,500 req/DAY (flash-lite) | <https://aistudio.google.com/apikey> | `GEMINI_API_KEY` |
-| **Groq** | ~14k req/DAY, very fast inference | <https://console.groq.com> | `GROQ_API_KEY` |
+| Provider | Free tier | Sign-up | Secret name |
+|----------|-----------|---------|-------------|
+| Cerebras | 1 M tokens/day | <https://cloud.cerebras.ai> | `CEREBRAS_API_KEY` or `CEREBRAS` |
+| Gemini | 1,500 req/day on flash-lite | <https://aistudio.google.com/apikey> | `GEMINI_API_KEY` or `GEMINI` |
+| Groq | ~14 k req/day | <https://console.groq.com> | `GROQ_API_KEY` or `GROQ` |
 
-None require a credit card. After Mistral exhausts its retries on a
-429 / 5xx / network error, the chain tries Cerebras → Gemini → Groq
-in order. First successful response wins. Verify a fallback fired:
-`fetch-news.log` will show `"Falling back to Cerebras|Gemini|Groq
-after Mistral …"`.
+Chain order is dynamic — `utils/provider_stats.py` reorders by recent
+success rate every run, and a 429-burst on the primary trips the
+in-run circuit breaker so later stories skip the dead provider entirely.
 
-Configuring at least one fallback is highly recommended — without it,
-a single Mistral hiccup drops the affected stories for the day.
+### 2.2 Burned-in captions (Groq Whisper — recommended)
 
-### 2.2 Public-source discovery (already on, free, no key)
+Word-level captions lift Shorts retention by ~ 18 % (muted autoplay).
+Groq Whisper is free, sub-second, 2 k req/day — set the same
+`GROQ_API_KEY` from §2.1 and captions just turn on. Without it the
+workflow falls back to local `faster-whisper` which works but takes
+~ 10× longer per Short.
 
-The pipeline pulls additional candidate stories from Reddit (curated
-news subs), Hacker News, Wikipedia Current Events, Google Trends
-(daily search) and GDELT (global news index) on every fetch-news run.
-All free, no auth, no extra secrets. Disable with `FETCH_INCLUDE_PUBLIC=0`
-or `FETCH_INCLUDE_TRENDS=0` if you ever need to.
+### 2.3 GitHub Pages dashboard (free)
 
-Google Trends doubles as a search-bias signal: any RSS story whose
-title mentions a currently-trending keyword gets a +1 or +2 boost on
-the AI ranker score, which lifts timely stories over evergreen ones.
+`dashboard.yml` deploys nightly to GitHub Pages at
+`https://<owner>.github.io/<repo>/` with top performers, retention by
+category, A/B winners, cohort timing recommendations.
 
-### 2.3 Free image fallback chain
+1. **Settings → Pages → Source: GitHub Actions** on the repo.
+2. The dashboard workflow does the rest — no extra secret.
 
-When a story has no embedded image and Pollinations rate-limits the
-AI background generator, the Shorts renderer now tries (free, no key):
+### 2.4 Token-saving defaults (already on)
 
-  1. Open Graph image scraped from the source article URL
-  2. Wikipedia REST API thumbnail for any named entity in the title
-  3. Openverse Creative-Commons image search
-
-This makes "no background available → drop the Short" much rarer.
-
-### 2.4 B-roll motion footage (Pexels API — recommended)
-
-YouTube's July 2025 "Inauthentic Content" policy demonetises Shorts
-that pair AI-narration with static-frame video (Screen Culture / KH
-Studio / True Crime Case Files were all terminated for this). Adding
-real motion footage is the single biggest defensive move.
-
-1. Free key at <https://www.pexels.com/api/new/> (no credit card)
-2. Add the secret `PEXELS_API_KEY` to repo settings
-
-Free tier: 200 req/h, 20,000/month — more than enough for 3 Shorts/day.
-
-Without this key, the pipeline still ships — it falls back to NASA's
-free Image+Video Library and the Internet Archive (both keyless).
-But Pexels has the best portrait-orientation coverage and is what
-makes the static-vs-motion gap disappear.
-
-### 2.5 Burned-in captions (Groq Whisper — recommended)
-
-~80 % of Shorts are watched muted in the first two seconds. Burned
-captions are the single biggest retention lever (+18 % watch time
-documented). The pipeline tries:
-
-  1. Groq Whisper API — free, 2,000 req/day, word-level timestamps
-     (`whisper-large-v3-turbo`). Reuses your `GROQ_API_KEY` from §2.1.
-  2. faster-whisper locally on the runner — CPU-only fallback,
-     installed by the workflow if `GROQ_API_KEY` is unset.
-
-Setting Groq is the cheaper path (much faster + no extra runtime).
-Without either, the pipeline still ships but skips captions.
-
-### 2.6 GitHub Pages dashboard (free)
-
-`dashboard.yml` builds a static analytics dashboard from the
-analytics CSVs every night and deploys to GitHub Pages. To enable:
-
-1. **Settings → Pages**: set "Source" to **GitHub Actions**.
-2. That's it. The workflow runs at 03:30 UTC and the page lands at
-   `https://<owner>.github.io/<repo>/`.
-
-The page shows total views, sparklines, top performers, A/B winners,
-retention by category, and the cohort-timing recommendations.
-
-### 2.7 Portuguese sibling channel (huge untapped niche)
-
-Brazil is the **#3 YouTube Shorts market by views** (~9 % of global
-traffic, AIR Media-Tech 2026) and there is currently **no mass-scale
-automated PT-BR news Shorts competition**. RPM per view is lower
-($0.045 vs US $0.18) but the volume gap more than compensates —
-Brazilian creators routinely out-earn US peers on a single niche.
-
-The pipeline already supports a sibling channel that publishes the
-same stories in Brazilian Portuguese. The English channel is
-unaffected; the workflow `youtube-bot-ptbr.yml` runs at 09 / 15 / 21
-UTC (06 / 12 / 18 BRT — Brazilian morning, lunch, evening peaks).
-
-**To activate:**
-
-1. **Create a new YouTube channel** under your Google account:
-   YouTube → Settings → Add or manage your channel → Create a new
-   channel. Pick a Portuguese-friendly handle like `@globalbrnewsbr`.
-2. **Generate the OAuth token for the new channel:**
-   ```bash
-   # Locally, with the same client_secret.json you used for English:
-   python auth_youtube.py
-   # Sign in with the SAME Google account, but select the NEW channel
-   # in the consent screen. token.json now belongs to the PT-BR channel.
-   ```
-3. **Add the new repo secret**: paste `token.json` contents as
-   `YOUTUBE_TOKEN_PTBR`. Keep `YOUTUBE_TOKEN` for English.
-
-That's it. The workflow checks for `YOUTUBE_TOKEN_PTBR` and silently
-skips if it's not set, so committing the workflow file does no harm
-on accounts that haven't opted in.
-
-**What the PT-BR run does differently:**
-
-- Every story passes through `utils/translation.py` (free, uses the
-  same Mistral / Cerebras / Gemini / Groq chain). Cached so the
-  daily run doesn't burn extra tokens.
-- Voice rotation switches to PT-BR edge-tts voices
-  (FranciscaNeural / AntonioNeural / ThalitaNeural).
-- Outputs land in `_videos_pt-BR/` to keep the two channels' state
-  cleanly separated.
-- Tags stay in English (Powell, Tesla, etc.) so cross-language
-  search still hits — PT-BR viewers search "Powell", not the
-  hypothetical translation.
-
-### 2.8 Token-saving defaults (already on)
-
-Three knobs cut AI quota use without changing output quality:
-
-  - **Disk cache** (`utils/ai_cache.py`): hashes the full prompt + model
-    + json_mode flag and stores answers in `_data/ai_cache.jsonl` with a
-    30-day TTL. Re-encountering the same story across the 3h cron
-    cadence returns instantly from disk. Self-invalidates on prompt
-    template changes (hash differs). Toggle with `AI_CACHE_ENABLED=0`.
-  - **Pre-AI relevance gate** (`FETCH_RELEVANCE_MIN_AI`, default `3.0`):
-    drops headlines with `entry_relevance_score < 3` before any AI call.
-    Eliminates clickbait, short headlines, image-less wire copy.
-  - **Prompt injection defense** (`utils/prompt_safety.py`): strips
-    "ignore previous instructions", system-tag forgery, and other
-    common jailbreak patterns from RSS-borne text before it reaches the
-    LLM. Combined with explicit system-prompt instructions that field
-    values are untrusted data.
+- AI disk cache at `_data/ai_cache.jsonl` — same prompt → same answer
+  for 30 days. Saves 60-80 % of Mistral calls on the 3-hour cron.
+- Pexels b-roll cache at `_data/broll_cache/` — same query → same
+  clip list for 7 days.
+- AI provider stats at `_data/provider_stats.jsonl` — informs the
+  fallback chain ordering.
 
 ---
 
-## 3. Future — needs external infra setup
+## 3. What runs when
 
-These give the project room to grow but require accounts/services
-outside GitHub. None of them is required for the channel to publish
-its 3 Shorts/day.
+| Workflow | Schedule (UTC) | Purpose |
+|----------|----------------|---------|
+| `fetch-content.yml` | every 3 h | Pexels search + AI enrich → queue |
+| `youtube-bot.yml` | 08 / 14 / 20 | 1 Short per run × 3 runs = 3 Shorts/day |
+| `analytics.yml` | 03 daily | Pull retention + CTR per video |
+| `daily-digest.yml` | 04 daily | Post GitHub Issue summarising the day |
+| `dashboard.yml` | nightly | Rebuild static HTML dashboard on Pages |
+| `comment-replies.yml` | every 6 h | Auto-reply to top-level viewer comments |
+| `velocity-snapshot.yml` | every 2 h | +2 h / +6 h / +24 h view counts |
+| `cleanup-branches.yml` | weekly | Delete merged `claude/*` branches |
 
-### 3.1 Turso for queue state (replaces git-as-DB)
-
-Today `_data/stories_queue.json` is committed back to the repo on every
-fetch-news run. Works, but pollutes `git log` and grows the repo over
-time. Turso is a free SQLite-over-HTTP service (500M reads/mo, 25M
-writes/mo, 5 GB) that lets us keep state out of git.
-
-1. Sign up at <https://app.turso.tech> with GitHub (no credit card)
-2. `brew install tursodatabase/tap/turso` or [other installs](https://docs.turso.tech/cli/installation)
-3. ```bash
-   turso db create globalbr
-   turso db tokens create globalbr
-   ```
-4. Add two repo secrets:
-   - `TURSO_DATABASE_URL` (output of `turso db show --url globalbr`)
-   - `TURSO_AUTH_TOKEN` (the token from step 3)
-
-The code to actually use Turso isn't wired in yet — when you decide
-to migrate, the adapter slot is in `fetch_news.py::_load_queue` /
-`_save_queue` and `generate_shorts.py` mirror functions.
-
-### 3.2 Oracle Cloud Always Free — VM for 24/7 use
-
-If you ever want a live stream (FFmpeg pushing RTMP to YouTube 24/7),
-GitHub Actions is **not** an option — jobs cap at 6 hours. Oracle's
-"Always Free" tier gives a parrudo VM (4 vCPU ARM Ampere + 24 GB RAM,
-10 TB outbound/month) **for life, no time limit**.
-
-1. Sign up at <https://www.oracle.com/cloud/free/> with a card
-   (Oracle uses it for ID verification, **never charges**)
-2. Wait 1-3 business days for the account to be approved
-3. Create Compute → Instance → shape `VM.Standard.A1.Flex`
-   (4 OCPU / 24 GB), Ubuntu 22.04
-4. Open ports 1935 (RTMP) and 443 (HTTPS) on the security list
-5. SSH in, install ffmpeg + nginx-rtmp (or just ffmpeg push to YouTube
-   directly)
-
-This unlocks future Phase: 24/7 news loop live stream.
+All workflows share the `main-write` concurrency group so they
+serialise on git push.
 
 ---
 
-## 4. What runs when
+## 4. YouTube quota math
 
-| Workflow | Cron (UTC) | Cost (YouTube units) | Cost (Actions min) |
-|--|--|--|--|
-| `fetch-news` | every 3h | 0 | ~5 min/run × 8 = 40 min/day |
-| `youtube-bot` | 08, 14, 20 | 3 × 1,650 = **4,950**/day | ~5 min/run × 3 = 15 min/day |
-| `analytics` | 03 | 0 (separate Analytics quota) | ~2 min |
-| `cleanup-branches` | Sun 04 | 0 | ~1 min/week |
+The Data API daily budget is **10,000 units**. Per Short upload:
 
-Public repo = unlimited Actions minutes, so the only hard ceiling
-is the YouTube Data API daily quota (**10,000**). We use roughly
-half. Bumping to 5 Shorts/day would put us at 8,250/day — safe.
-Above that, you'd need a Google quota increase request.
+| Call | Units |
+|------|-------|
+| `videos.insert` | 1,600 |
+| `thumbnails.set` | 50 |
+| `playlistItems.insert` | 50 |
+| `commentThreads.insert` (pinned comment) | 50 |
+| **Total per Short** | **~1,750** |
+
+Sustainable Shorts/day at default config:
+
+| Shorts/day | Units used | % of cap |
+|------------|------------|----------|
+| 3 (default) | 5,250 | 52 % |
+| 4 | 7,000 | 70 % |
+| **5** | **8,750** | **87 % — safe ceiling** |
+| 6 | 10,500 | 105 % — risk of cap-out |
+| 8 (every 3h) | 14,000 | **140 % — will fail** |
+
+To go above 5/day, request a quota increase via the
+[YouTube API Compliance form](https://support.google.com/youtube/contact/yt_api_form)
+(free, 1-2 weeks). Approved projects routinely get 1 M units/day.
 
 ---
 
 ## 5. Troubleshooting
 
-**`fetch_news` runs but `_data/stories_queue.json` stays empty.**
-- Check the run log for `Mistral rate limited` → set `CEREBRAS_API_KEY`
-- Check for `quality_check rejected` patterns → tune
-  `FETCH_QUALITY_THRESHOLD` (default 6) lower
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| `❌ PEXELS_API_KEY not set` | Secret missing | Add it (§1.2) |
+| `invalid_scope: Bad Request` | Stale OAuth token | Re-run `auth_youtube.py`, update `YOUTUBE_TOKEN` |
+| `Mistral rate limited (429)` storm | Free-tier quota hit | Configure one fallback (§2.1) — the in-run circuit breaker now opens after 3 give-ups and routes around Mistral |
+| Workflow timeout at 25 min | Same as above | Same fix |
+| Static Short (no motion) | All b-roll sources returned 0 | Check the `🔎 B-roll sources:` log line — it tells you which source failed. Verify Pexels key, or extend `ANIMAL_TOPICS` queries |
+| Channel publishes 1 Short then stops | Poison-pill `.json` in `_videos/` | Run `git rm _videos/short-*.json` (the `.done` sidecars stay) and re-trigger the bot |
 
-**`youtube-bot` reports `0 Shorts uploaded today`.**
-- Workflow exits non-zero now (Phase 1 fix) so it shows red in Actions.
-- Check `generate_shorts.log` artifact: if TTS / Pollinations
-  failed for every story, that's an upstream outage. The job will
-  retry naturally on the next scheduled run.
+For anything else, check the workflow log via Actions → workflow run
+→ Artifacts → download the log zip.
 
-**`analytics.yml` fails with `403`.**
-- Token doesn't have `yt-analytics.readonly`. Re-run
-  `auth_youtube.py` after adding the scope in Google Cloud Console.
+---
 
-**First comment doesn't appear under uploads.**
-- The channel-owner account must have **community-tab eligibility**
-  for the comment API to work without 403. Below 500 subscribers,
-  comments still post but you can't pin them programmatically.
+## 6. Operator hygiene
+
+- **Never commit `token.json`** — `.gitignore` already excludes it,
+  but watch for accidental adds.
+- **Never push directly to `main`** if you're prototyping new content
+  topics; use a `claude/*` branch + PR.
+- **Roll the YouTube OAuth token every 6 months** — Google rotates
+  refresh-tokens silently on inactivity.
+- **Watch the YouTube quota ledger** — `_data/quota_log.jsonl` records
+  every Data API call. The workflow summary surfaces the daily total
+  and warns at 80 %.
+
+That's all that's required to operate Wild Brief end-to-end.

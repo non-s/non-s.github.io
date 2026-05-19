@@ -87,19 +87,14 @@ def _get_or_create_playlist(youtube, category: str, playlist_ids: dict) -> str |
         return playlist_ids[key]
 
     title_map = {
-        "world": "🌍 World News — GlobalBR News",
-        "technology": "💻 Tech News — GlobalBR News",
-        "politics": "🏛️ Politics — GlobalBR News",
-        "business": "💼 Business & Economy — GlobalBR News",
-        "science": "🔬 Science — GlobalBR News",
-        "health": "🏥 Health — GlobalBR News",
-        "environment": "🌱 Environment — GlobalBR News",
-        "ai": "🤖 AI & Machine Learning — GlobalBR News",
-        "sports": "⚽ Sports — GlobalBR News",
-        "roundup": "📰 News Roundups — GlobalBR News",
-        "shorts": "⚡ News Shorts — GlobalBR News",
+        "cats":     "🐱 Cats — Wild Brief",
+        "dogs":     "🐶 Dogs — Wild Brief",
+        "ocean":    "🐬 Ocean Life — Wild Brief",
+        "wildlife": "🦁 Wild Animals — Wild Brief",
+        "birds":    "🦅 Birds — Wild Brief",
+        "farm":     "🐴 Farm Animals — Wild Brief",
     }
-    playlist_title = title_map.get(key, f"📺 {category.capitalize()} — GlobalBR News")
+    playlist_title = title_map.get(key, f"🐾 {category.capitalize()} — Wild Brief")
 
     try:
         resp = youtube.playlists().insert(
@@ -107,7 +102,12 @@ def _get_or_create_playlist(youtube, category: str, playlist_ids: dict) -> str |
             body={
                 "snippet": {
                     "title": playlist_title,
-                    "description": f"Latest {category} news from GlobalBR News — world news every hour.\n\n🌐 https://non-s.github.io",
+                    "description": (
+                        f"Daily Shorts about {category} — surprising "
+                        "animal facts, narrated. New brief every "
+                        "morning, lunch, and evening UTC.\n\n"
+                        "Subscribe to Wild Brief for one weird fact a day."
+                    ),
                     "defaultLanguage": "en",
                 },
                 "status": {"privacyStatus": "public"},
