@@ -887,6 +887,10 @@ def build_short_metadata(story: dict, video_path: Path,
         "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
+        # Vertical 9:16 + ≤60s = a Short. The flag rides through to the
+        # `.done` sidecar so youtube_analytics.py can split retention
+        # curves by surface (Shorts feed vs. regular watch page).
+        "is_short":       True,
         # Fields the uploader uses for the pinned first-comment + the
         # per-region playlist. Carrying them through metadata.json keeps
         # the generate / upload contract explicit.
