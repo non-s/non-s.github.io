@@ -1395,16 +1395,29 @@ def main():
         log.info("Nothing to do.")
         return
 
-    selected = candidates[:MAX_SHORTS_PER_RUN]
-    log.info(f"Creating {len(selected)} Short(s) this run:")
-    for i, s in enumerate(selected, 1):
+    # Walk MORE candidates than we need so a single quality-gate
+    # rejection or a transient generation failure (TTS hiccup, b-roll
+    # download timeout, etc.) doesn't take the whole run to zero
+    # published. We aim to PRODUCE `MAX_SHORTS_PER_RUN` successes and
+    # we'll burn up to 5× that many candidates trying. With ~20+
+    # pending stories in the queue at any given moment, 5 retries is
+    # well under queue depth and worst-case adds maybe 30 seconds of
+    # wasted AI work — far better than skipping the slot entirely.
+    pool = candidates[:MAX_SHORTS_PER_RUN * 5]
+    log.info(f"Aiming for {MAX_SHORTS_PER_RUN} Short(s) this run "
+             f"(pool of {len(pool)} candidate(s) available):")
+    for i, s in enumerate(pool[:MAX_SHORTS_PER_RUN], 1):
         log.info(f"  {i}. [{s['category']}] {s['title'][:70]}")
 
     tmp = Path(f"/tmp/yt_shorts_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
     tmp.mkdir(exist_ok=True)
 
     created = 0
-    for story in selected:
+    attempted = 0
+    for story in pool:
+        if created >= MAX_SHORTS_PER_RUN:
+            break
+        attempted += 1
         result = generate_short(story, tmp)
         if result:
             video_path, thumb_path, metadata = result
@@ -1420,10 +1433,11 @@ def main():
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
         else:
-            log.error(f"  Failed to generate Short for: {story.get('slug', '?')}")
+            log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
 
     shutil.rmtree(tmp, ignore_errors=True)
-    log.info(f"\nDone: {created}/{len(selected)} Short(s) created in {VIDEOS_DIR}/")
+    log.info(f"\nDone: {created}/{MAX_SHORTS_PER_RUN} Short(s) created "
+             f"in {VIDEOS_DIR}/ ({attempted} candidate(s) attempted).")
 
     # Observable failure signal: if we were asked to make Shorts and
     # produced zero, exit non-zero so the workflow turns red. Beats
