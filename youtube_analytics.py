@@ -462,7 +462,7 @@ def main() -> None:
     log.info(f"✅ Wrote {len(rows)} rows to {csv_path}")
 
     # Also dump a compact summary JSON for at-a-glance reading. The
-    # `category_avg_view_pct` block is consumed by fetch_news.py to
+    # `category_avg_view_pct` block is consumed by fetch_animals.py to
     # bias future story selection toward what retained well.
     if rows:
         avg_pct = sum(r.get("avg_view_pct", 0) for r in rows) / len(rows)

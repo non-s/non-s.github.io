@@ -12,7 +12,7 @@ We can't manipulate velocity directly, but we CAN learn from it:
   2. Persist as `_data/velocity.jsonl`
   3. Aggregate by category / hook style / topic_hashtag to find
      which dimensions correlate with high early-velocity
-  4. Feed back into fetch_news.py's scoring on the next run
+  4. Feed back into fetch_animals.py's scoring on the next run
 
 The third + fourth steps land in the analytics workflow; this module
 is the data-collection half.
@@ -174,7 +174,7 @@ def snapshot_velocities(youtube,
 # ── Aggregation helpers (called by the analytics workflow) ──────
 
 def aggregate_by_category(path: Path = VELOCITY_LOG) -> dict[str, dict]:
-    """Mean +2h view count per category. Used to bias fetch_news.py."""
+    """Mean +2h view count per category. Used to bias fetch_animals.py."""
     by_cat: dict[str, list[int]] = {}
     for entry in _iter_jsonl(path):
         if entry.get("offset_h") != 2:

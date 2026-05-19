@@ -3,7 +3,7 @@
 """
 fetch_animals.py — Build the daily Shorts queue from animal Pexels clips.
 
-Replaces fetch_news.py for the channel's content pivot from news to
+Replaces fetch_animals.py for the channel's content pivot from news to
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
 + upload_youtube.py) is unchanged — this script writes the same
 `_data/stories_queue.json` shape, so every existing consumer keeps
@@ -24,7 +24,7 @@ How it works
 
 3. Calls `utils.ai_helper.ai_text` with an animal-tuned JSON prompt
    to produce hook + script + seo_title + thumbnail_text + tags. The
-   prompt mirrors the fields fetch_news.py asks for so the downstream
+   prompt mirrors the fields fetch_animals.py asks for so the downstream
    schema is identical.
 
 4. Merges new entries onto the existing `stories_queue.json`,
@@ -215,7 +215,7 @@ _AI_PROMPT_TEMPLATE = (
 def _ai_enhance_animal(subject: str, context: str) -> dict | None:
     """Run the AI enhancement for an animal subject + return the
     parsed JSON, or None on parse failure. Mirrors the shape of
-    fetch_news._ai_enhance so downstream code is unchanged.
+    fetch_animals._ai_enhance so downstream code is unchanged.
     """
     prompt = _AI_PROMPT_TEMPLATE.format(subject=subject, context=context)
     raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25,
@@ -557,7 +557,7 @@ def main() -> int:
     log.info("✅ +%d new animal entries (queue: %d total, %d pending)",
              len(new_entries), len(queue["stories"]), pending)
 
-    # Keep the AI disk cache bounded — same chore fetch_news.py does.
+    # Keep the AI disk cache bounded — same chore fetch_animals.py does.
     try:
         ai_cache_prune(ttl_days=30)
     except Exception as exc:
