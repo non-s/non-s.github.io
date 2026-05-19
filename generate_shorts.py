@@ -7,7 +7,7 @@ Formato: vídeo vertical 1080x1920, 45-55 segundos, uma história por Short.
 Máximo 3 Shorts por execução para respeitar limites de API.
 
 Estrutura de cada Short:
-  Intro       ~3s    "GlobalBR News — breaking story"
+  Intro       ~3s    "Wild Brief — animal fact"
   Título      ~5s    Título em destaque
   Ponto 1    ~10s    Primeiro bullet point
   Ponto 2    ~10s    Segundo bullet point
@@ -73,7 +73,7 @@ LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.
 MAX_SHORTS_PER_RUN = int(os.environ.get("MAX_SHORTS_PER_RUN", "3"))
 SHORT_W, SHORT_H = 1080, 1920  # vertical 9:16
 
-# Paleta de cores — identidade GlobalBR
+# Paleta de cores — identidade Wild Brief
 BG_DARK      = (8, 8, 18)
 ACCENT_BLUE  = (0, 195, 255)
 ACCENT_CYAN  = (0, 240, 200)
@@ -166,7 +166,7 @@ def pick_voice(seed_text: str, category: str = "",
     return panel[0] if panel else HOST_VOICE_PRIMARY
 
 
-SHORTS_HASHTAGS = "#Shorts #NewsShorts #BreakingNews #GlobalBRNews #WorldNews #ShortNews"
+SHORTS_HASHTAGS = "#Shorts #WildBrief #Animals #AnimalFacts #Wildlife #Nature"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -428,7 +428,7 @@ def generate_ai_background(title: str, category: str, dest: Path) -> bool:
     )
     try:
         log.info(f"  Generating AI background via Pollinations.ai...")
-        r = requests.get(url, timeout=90, headers={"User-Agent": "GlobalBR-Bot/3.0"})
+        r = requests.get(url, timeout=90, headers={"User-Agent": "WildBrief-Bot/3.0"})
         r.raise_for_status()
         dest.write_bytes(r.content)
         log.info(f"  AI background saved ({len(r.content) // 1024} KB)")
@@ -453,7 +453,7 @@ def create_short_frame(title: str, category: str, points: list[str],
       - Category badge (top ~10%)
       - Story title (center, ~25-55%)
       - 3 bullet points (middle, ~55-80%)
-      - GlobalBR News branding (bottom ~85-95%)
+      - Wild Brief branding (bottom ~85-95%)
     """
     img = Image.new("RGB", (SHORT_W, SHORT_H), BG_DARK)
 
@@ -815,7 +815,7 @@ def build_short_metadata(story: dict, video_path: Path,
     """
     base_title = (story.get("title") or "").strip()
     category   = story.get("category", "world")
-    source     = story.get("source", "GlobalBR News")
+    source     = story.get("source", "Pexels")
 
     if not base_title:
         base_title = "World news update"
@@ -962,7 +962,7 @@ def _queue_to_story(qs: dict) -> dict:
         "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
         "title":          title,
         "description":    qs.get("lead") or qs.get("description", ""),
-        "source":         qs.get("source", "GlobalBR News"),
+        "source":         qs.get("source", "Pexels"),
         "source_url":     qs.get("url", ""),
         "image_url":      qs.get("image_url", ""),
         "tags":           [qs.get("category", "world")],
@@ -1256,7 +1256,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         title=display_title,
         category=category,
         points=points,
-        source=story.get("source", "GlobalBR News"),
+        source=story.get("source", "Pexels"),
         bg_path=bg_path,
     )
     frame_path = tmp_dir / f"frame_{slug}.png"

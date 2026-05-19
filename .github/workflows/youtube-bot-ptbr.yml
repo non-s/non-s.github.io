@@ -139,8 +139,8 @@ jobs:
       - name: "💾 Salvar marcadores PT-BR no git"
         if: hashFiles('token.json') != ''
         run: |
-          git config user.name  "GlobalBR News Bot"
-          git config user.email "bot@globalbrnews.com"
+          git config user.name  "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
 
           git add _videos_pt-BR/*.done    2>/dev/null || true
           git add _videos_pt-BR/*.json    2>/dev/null || true
