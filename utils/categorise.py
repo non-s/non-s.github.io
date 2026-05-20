@@ -1,19 +1,19 @@
 """
-utils/categorise.py — Pure-Python category inference for YouTube titles.
+utils/categorise.py — Pure-Python category inference for Short titles.
 
-Extracted so it can be unit-tested without pulling in the google-api
-client stack that `youtube_analytics.py` requires at import time.
+Extracted so it can be unit-tested without pulling in any platform SDK
+that `tiktok_analytics.py` may require at import time.
 
-`infer_category_from_title()` maps a YouTube Short title (or any
-short text) back to one of the coarse animal buckets the rest of the
-pipeline knows: cats, dogs, ocean, wildlife, birds, farm. Returns None
-when there's no signal.
+`infer_category_from_title()` maps a TikTok caption (or any short text)
+back to one of the coarse animal buckets the rest of the pipeline
+knows: cats, dogs, ocean, wildlife, birds, farm. Returns None when
+there's no signal.
 """
 from __future__ import annotations
 
 
 # Order matters — earlier rules win. Place sharper signals first.
-# Used by youtube_analytics.py to back-classify uploaded Shorts that
+# Used by tiktok_analytics.py to back-classify uploaded Shorts that
 # pre-date the explicit `category` field on the queue (or whose
 # metadata got truncated). For freshly-published Wild Brief Shorts
 # this returns the same category fetch_animals.py already wrote.

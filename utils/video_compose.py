@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 SHORT_W, SHORT_H = 1080, 1920
 TARGET_FPS = 30
-MAX_DURATION_S = 59.0   # YouTube Shorts hard cap is 60s; we stay below.
+MAX_DURATION_S = 59.0   # TikTok For You hard cap is 60s; we stay below.
 
 # How long the branded intro / outro cards appear. These are PNGs
 # (not motion clips) loop-displayed for these durations. Total
@@ -269,8 +269,8 @@ def build_broll_short(broll_paths: list[Path],
         last_label = "withcta"
 
     # Brand-bug watermark — drawn ALL THE TIME at the upper-right,
-    # offset to clear YouTube's likes/comments rail at the right side.
-    # Standard practice on Shorts; lets reposters get traced.
+    # offset to clear TikTok's likes/comments rail at the right side.
+    # Standard practice on short-form video; lets reposters get traced.
     if watermark_text and font:
         safe = _ffmpeg_escape(watermark_text[:32])
         parts.append(

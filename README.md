@@ -1,19 +1,18 @@
-# Wild Brief — Animal Shorts Bot
+# Wild Brief — Animal Shorts Bot (TikTok)
 
 [![🐾 Refresh animal queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
-[![YouTube Bot — Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
-[![📊 YouTube Analytics nightly](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml)
+[![TikTok Bot — Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/tiktok-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/tiktok-bot.yml)
+[![📊 TikTok Analytics nightly](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/analytics.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Automated pipeline that turns Pexels animal footage into vertical
-Shorts with original voice-over narration, and uploads them to YouTube
-3 times a day.
+TikTok videos with original voice-over narration, and publishes them
+via the official TikTok Content Posting API 5 times a day.
 
-- Channel: <https://youtube.com/@wildbrief> (display name: **Wild Brief**)
+- Channel: <https://www.tiktok.com/@wildbrief_x> (display name: **Wild Brief**)
 - Cadence: **5 Shorts/day**, staggered at 00, 05, 10, 15, 20 UTC so
-  each gets its own algorithm test window. Running at ~87 % of the
-  10 k unit YouTube Data API daily quota — safe ceiling without
-  requesting an increase.
+  each gets its own For You algorithm test window. 5 posts/day = 17 %
+  of TikTok's 30/day unaudited-app ceiling — safe headroom for retries.
 - Cost: **$0/month** — every layer is on a no-card free tier.
 
 **First time here?** Read [`SETUP.md`](SETUP.md) — it walks you through
@@ -36,9 +35,9 @@ every secret + every optional free service the pipeline can use.
                                                          │
                                                          ▼
                       ┌──────────────────┐    ┌────────────────────┐
-                      │ upload_youtube   │ →  │ YouTube channel    │
-                      │ (resumable +     │    │ + .done sidecar    │
-                      │ thumb + playlist)│    │ committed to git   │
+                      │ upload_tiktok    │ →  │ TikTok profile     │
+                      │ (chunked +       │    │ + .done sidecar    │
+                      │  Direct Post)    │    │ committed to git   │
                       └──────────────────┘    └────────────────────┘
 ```
 
@@ -54,10 +53,7 @@ every secret + every optional free service the pipeline can use.
 - **Channel watermark** upper-right on every frame
 - **Branded intro card** (~0.8 s) + outro card (~2 s) with the host's
   signature sign-off
-- **Per-Short thumbnail** with the AI-authored headline overlay
-- **Pinned first comment** in the host's voice (Alex)
-- **Synthetic-content disclosure** flag set on every upload (YouTube
-  Inauthentic Content policy compliance)
+- **AI-generated content flag** on every upload (TikTok policy compliance)
 
 ## Six animal categories
 
@@ -80,16 +76,13 @@ doesn't burn the same query every run.
   Groq, with disk cache + per-provider success-rate reordering + an
   in-run circuit breaker when Mistral 429s repeatedly
 - **A/B framework** across hook style / script tone / thumbnail style /
-  CTA style, with CTR+retention blended winner detection once each
+  CTA style, with engagement-blended winner detection once each
   variant has ≥ 8 samples
-- **Audience cohort timing recommender** — top-3 countries → optimal
-  UTC posting hour
 - **Per-category retention bias** — high-velocity categories get
   amplified in the next ranking pass
 - **Music bed** — Pixabay CC0 tracks ducked to −22 dB under TTS
 - **Velocity tracker** — +2h / +6h / +24h view-count snapshots, the
-  strongest predictor of algorithmic distribution
-- **Auto-reply to top-level viewer comments** every 6 h
+  strongest predictor of algorithmic distribution on the For You feed
 - **Pre-flight script quality lint** blocks weak hooks / clickbait /
   AI-tell phrases before upload
 - **Channel memory** — past Shorts logged so the AI can reference
@@ -99,14 +92,28 @@ doesn't burn the same query every run.
 
 ## Operational ops
 
-- **YouTube quota ledger** with 80 % warning before the daily 10k unit cap
+- **TikTok posts ledger** with 80 % warning before the daily 30-post cap
 - **Daily digest GitHub Issue** at 04 UTC summarising the prior 24 h
   of Shorts + analytics
 - **Anomaly detection** flags > 50 % drops vs the 7-day baseline
 - **Token shredding** at the end of every workflow run (defence-in-depth)
 - **`_videos/.done` sidecars** committed back to git on every successful
   upload — provides a full audit trail of what shipped, when, and which
-  YouTube video ID it became
+  TikTok video ID it became
+
+## What TikTok doesn't let us automate (yet)
+
+Compared to the previous YouTube version, the TikTok Open API doesn't
+expose endpoints for:
+
+- **Reading or posting comments** — comment moderation is manual,
+  inside the TikTok app. The auto-reply workflow is therefore disabled.
+- **Setting a custom video cover image** — TikTok auto-generates the
+  cover from a timestamp we request (1 s into the clip). The branded
+  thumbnail we render is kept on disk for cross-posting / dashboards.
+- **Playlists** — TikTok doesn't have a playlist concept; discovery is
+  hashtag-driven, so the bot front-loads `#fyp #foryou #<topic>` in
+  every caption instead.
 
 ## Tests
 
@@ -115,9 +122,10 @@ $ python -m pytest tests/
 ```
 
 400+ tests covering every utility module, the AI fallback chain, the
-A/B framework, the YouTube API contract, video composition, captions,
-the queue schema, and an end-to-end smoke test that exercises the full
-fetch → enrich → generate path with every external touchpoint mocked.
+A/B framework, the TikTok Content Posting contract, video composition,
+captions, the queue schema, and an end-to-end smoke test that exercises
+the full fetch → enrich → generate path with every external touchpoint
+mocked.
 
 ## License
 
@@ -127,10 +135,11 @@ MIT. See [LICENSE](LICENSE).
 
 To start the channel from a clean slate:
 
-1. Add `PEXELS_API_KEY`, `MISTRAL_API_KEY`, `YOUTUBE_TOKEN` to
-   GitHub Secrets ([SETUP.md](SETUP.md)).
+1. Add `PEXELS_API_KEY`, `MISTRAL_API_KEY`, `TIKTOK_CLIENT_KEY`,
+   `TIKTOK_CLIENT_SECRET`, `TIKTOK_TOKEN` to GitHub Secrets
+   ([SETUP.md](SETUP.md)).
 2. (Optional) Add at least one of `CEREBRAS_API_KEY` / `GEMINI_API_KEY` /
    `GROQ_API_KEY` for the fallback chain.
 3. Trigger `fetch-content.yml` manually to populate the queue.
-4. Trigger `youtube-bot.yml` manually to publish the first Short — or
-   wait for the next cron slot (08 / 14 / 20 UTC).
+4. Trigger `tiktok-bot.yml` manually to publish the first Short — or
+   wait for the next cron slot (00 / 05 / 10 / 15 / 20 UTC).

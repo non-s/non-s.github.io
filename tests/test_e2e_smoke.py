@@ -3,15 +3,15 @@ End-to-end smoke test for the Shorts pipeline.
 
 We don't need the full network or ffmpeg to validate that the modules
 wire together — we mock every external touchpoint (AI, edge-tts,
-Pexels, Whisper, FFmpeg, YouTube) and assert that:
+Pexels, Whisper, FFmpeg, TikTok) and assert that:
 
   1. `fetch_animals._enrich_story` produces a queue entry with the
      fields generate_shorts.py expects.
   2. `generate_shorts.generate_short` consumes that entry, calls
      each external service exactly once via mocks, and produces
-     a metadata sidecar with the right keys for upload_youtube.py.
+     a metadata sidecar with the right keys for upload_tiktok.py.
   3. The metadata sidecar contains the experiment tags so
-     youtube_analytics.py can later compute winners.
+     tiktok_analytics.py can later compute winners.
 
 When any wiring breaks, this test goes red — way faster than waiting
 for CI to fail in production.
@@ -182,19 +182,17 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
     assert out is not None
     video_path, thumb_path, metadata = out
 
-    # Verify the metadata sidecar has every field upload_youtube.py reads.
+    # Verify the metadata sidecar has every field upload_tiktok.py reads.
     required = {
-        "title", "description", "tags", "category_id", "privacy",
+        "title", "description", "tags", "privacy_level",
         "thumbnail", "video", "story_slug", "created_at",
-        "thumbnail_hook", "source", "experiments",
+        "thumbnail_hook", "source", "experiments", "channel_handle",
     }
     missing = required - metadata.keys()
     assert missing == set(), f"missing metadata fields: {missing}"
 
-    # YouTube hard limits.
-    assert len(metadata["title"]) <= 100
-    assert len(metadata["description"]) <= 5000
-    assert sum(len(t) + 1 for t in metadata["tags"]) <= 500
+    # TikTok caption hard limit.
+    assert len(metadata["description"]) <= 2200
 
     # Experiment tags carried through.
     assert metadata["experiments"]["hook_style"] == "outcome_first"

@@ -5,7 +5,7 @@ fetch_animals.py — Build the daily Shorts queue from animal Pexels clips.
 
 Replaces fetch_animals.py for the channel's content pivot from news to
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
-+ upload_youtube.py) is unchanged — this script writes the same
++ upload_tiktok.py) is unchanged — this script writes the same
 `_data/stories_queue.json` shape, so every existing consumer keeps
 working.
 
@@ -78,7 +78,7 @@ log = logging.getLogger(__name__)
 QUEUE_FILE = Path("_data/stories_queue.json")
 # Permanent ledger of Pexels clips we already published. Survives
 # `_prune_queue` and any queue rebuild, so a clip that was shipped
-# weeks ago can never re-enter the rotation. `upload_youtube.py`
+# weeks ago can never re-enter the rotation. `upload_tiktok.py`
 # appends to this on a successful upload (see
 # `record_published_clip()` below); `main()` filters Pexels candidates
 # against it before paying for AI enrichment.
@@ -159,7 +159,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
 # ── AI prompt ─────────────────────────────────────────────────────
 
 _AI_PROMPT_TEMPLATE = (
-    "You write fun, educational scripts about animals for YouTube "
+    "You write fun, educational scripts about animals for TikTok "
     "Shorts. Every Short combines stock footage of an animal with a "
     "30-second voice-over packed with surprising facts. The viewer "
     "should learn something they did not know. Tone: friendly, "
@@ -335,15 +335,21 @@ def load_published_clip_keys() -> set[str]:
 def record_published_clip(*, pexels_video_id: str = "",
                           story_id: str = "",
                           pexels_url: str = "",
-                          youtube_video_id: str = "") -> None:
+                          platform_video_id: str = "",
+                          **_legacy) -> None:
     """Append one record to the permanent published-clips ledger.
 
-    Called by upload_youtube.py right after a successful videos.insert,
-    so a clip that ships can NEVER be re-enqueued. Atomic write via
-    tmp + rename so a crash mid-write doesn't corrupt the file.
+    Called by upload_tiktok.py right after a successful publish, so a
+    clip that ships can NEVER be re-enqueued. Atomic write via tmp +
+    rename so a crash mid-write doesn't corrupt the file.
+
+    `**_legacy` swallows old kwargs (e.g. `youtube_video_id=`) so older
+    callers don't crash; the value is stored in `platform_video_id`.
     """
     if not pexels_video_id and not story_id:
         return  # nothing to record
+    if not platform_video_id and _legacy.get("youtube_video_id"):
+        platform_video_id = _legacy["youtube_video_id"]
     PUBLISHED_CLIPS_FILE.parent.mkdir(parents=True, exist_ok=True)
     payload = {"clips": [], "updated_at": None}
     if PUBLISHED_CLIPS_FILE.exists():
@@ -354,11 +360,11 @@ def record_published_clip(*, pexels_video_id: str = "",
         except Exception:
             pass
     payload["clips"].append({
-        "pexels_video_id":  pexels_video_id or "",
-        "story_id":         story_id or "",
-        "pexels_url":       pexels_url or "",
-        "youtube_video_id": youtube_video_id or "",
-        "uploaded_at":      datetime.now(timezone.utc).isoformat(),
+        "pexels_video_id":     pexels_video_id or "",
+        "story_id":            story_id or "",
+        "pexels_url":          pexels_url or "",
+        "platform_video_id":   platform_video_id or "",
+        "uploaded_at":         datetime.now(timezone.utc).isoformat(),
     })
     payload["updated_at"] = datetime.now(timezone.utc).isoformat()
     tmp = PUBLISHED_CLIPS_FILE.with_suffix(".json.tmp")
@@ -407,7 +413,7 @@ def _build_story(clip_subject: str,
     url = pexels_clip.url or f"https://www.pexels.com/video/{_story_id(pexels_clip.download_url)}"
     now = datetime.now(timezone.utc).isoformat()
     # Merge the AI-picked tags with the topic's evergreen tags,
-    # deduplicating. Capped at 8 to leave room for upload_youtube's
+    # deduplicating. Capped at 8 to leave room for upload_tiktok's
     # tag-packer + evergreens it adds later.
     merged_tags: list[str] = list(ai_out.get("yt_tags") or [])
     for t in topic_cfg.get("tags", []):
@@ -492,7 +498,7 @@ def main() -> int:
     #   1. Queue ids — anything still on the queue (pending or recently
     #      consumed, before prune).
     #   2. Published clips ledger — the permanent record of clips we
-    #      already shipped to YouTube. This is the line of defence
+    #      already shipped to TikTok. This is the line of defence
     #      against re-uploading the same Pexels clip after the queue
     #      pruned its consumed entry weeks later.
     #   3. The pexels_video_id of every queue entry — same defense,

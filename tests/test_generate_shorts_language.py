@@ -1,4 +1,4 @@
-"""Tests for LANGUAGE-axis behaviour in generate_shorts.py + upload_youtube.py.
+"""Tests for LANGUAGE-axis behaviour in generate_shorts.py + upload_tiktok.py.
 
 We reload the modules in each test with a fresh LANGUAGE env so the
 module-level path constants reflect the locale axis correctly.
@@ -52,35 +52,29 @@ def test_unsupported_language_raises(monkeypatch):
         import generate_shorts  # noqa: F401
 
 
-def test_upload_youtube_respects_language(monkeypatch):
-    # upload_youtube transitively imports the google-auth crypto stack,
-    # which crashes in sandboxes with a broken _cffi_backend (the
-    # CI runner is fine). We probe with a forgiving try/except so the
-    # test still gives signal where it can run.
+def test_upload_tiktok_respects_language(monkeypatch):
     monkeypatch.setenv("LANGUAGE", "pt-BR")
     import sys
     # Stash the original module so we can restore it on teardown.
-    # Otherwise the pt-BR variant of upload_youtube leaks into
-    # subsequent tests that imported `upload_youtube` at module load
-    # — their reference still points to the original (English) module
-    # while sys.modules now serves the reloaded (pt-BR) one, and any
-    # module-level mutable state (e.g. the comment-disabled latch)
-    # diverges between the two.
-    saved = sys.modules.get("upload_youtube")
-    sys.modules.pop("upload_youtube", None)
+    # Otherwise the pt-BR variant of upload_tiktok leaks into
+    # subsequent tests that imported `upload_tiktok` at module load —
+    # their reference still points to the original (English) module
+    # while sys.modules now serves the reloaded (pt-BR) one.
+    saved = sys.modules.get("upload_tiktok")
+    sys.modules.pop("upload_tiktok", None)
     try:
         try:
-            import upload_youtube
+            import upload_tiktok
         except BaseException as exc:  # PanicException isn't a normal Exception
-            pytest.skip(f"upload_youtube import blocked in sandbox: {exc}")
+            pytest.skip(f"upload_tiktok import blocked in sandbox: {exc}")
             return
-        assert upload_youtube.VIDEOS_DIR == Path("_videos_pt-BR")
-        assert upload_youtube.LOG_FILE == "upload_youtube_pt-BR.log"
+        assert upload_tiktok.VIDEOS_DIR == Path("_videos_pt-BR")
+        assert upload_tiktok.LOG_FILE == "upload_tiktok_pt-BR.log"
     finally:
         if saved is not None:
-            sys.modules["upload_youtube"] = saved
+            sys.modules["upload_tiktok"] = saved
         else:
-            sys.modules.pop("upload_youtube", None)
+            sys.modules.pop("upload_tiktok", None)
 
 
 def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
