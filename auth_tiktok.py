@@ -135,14 +135,43 @@ def _capture_code(state: str, port: int) -> str:
     return _CallbackHandler.code or ""
 
 
+def _interactive_prompt(label: str, hint: str) -> str:
+    """Read a value from stdin, retrying on empty input. Used when this
+    script is packaged as a .exe and the user double-clicks it instead
+    of running with env vars."""
+    print(f"\n  {label}")
+    if hint:
+        print(f"  ({hint})")
+    while True:
+        try:
+            value = input("  > ").strip()
+        except EOFError:
+            return ""
+        if value:
+            return value
+        print("  ⚠️ Valor vazio — tenta de novo:")
+
+
 def main() -> None:
+    print("\n" + "=" * 70)
+    print("  TikTok OAuth Helper — Wild Brief Bot")
+    print("=" * 70)
+
     client_key = os.environ.get("TIKTOK_CLIENT_KEY", "").strip()
     client_secret = os.environ.get("TIKTOK_CLIENT_SECRET", "").strip()
+    if not client_key:
+        client_key = _interactive_prompt(
+            "Cole o TIKTOK_CLIENT_KEY:",
+            "Pega em developers.tiktok.com → Manage apps → App details → Client key",
+        )
+    if not client_secret:
+        client_secret = _interactive_prompt(
+            "Cole o TIKTOK_CLIENT_SECRET:",
+            "Mesma página → Client secret (cuidado, é sensível)",
+        )
     if not client_key or not client_secret:
-        print("\n❌ TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET ausentes.")
-        print("   Crie um app em https://developers.tiktok.com/ e exporte:")
-        print("     export TIKTOK_CLIENT_KEY=awxxxxxxxxxx")
-        print("     export TIKTOK_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        print("\n❌ Sem client key/secret não dá pra continuar.")
+        input("\nPressione Enter para fechar...")
         sys.exit(2)
 
     state = secrets.token_urlsafe(16)
@@ -160,23 +189,31 @@ def main() -> None:
     code = _capture_code(state, port)
     if not code:
         print("❌ Nenhum code recebido — timeout ou consentimento negado.")
+        input("\nPressione Enter para fechar...")
         sys.exit(1)
 
     print("🔁 Trocando code por access_token + refresh_token…")
     payload = _exchange_code(code, client_key, client_secret)
 
-    # Persist EVERYTHING returned by TikTok (access_token, refresh_token,
-    # open_id, scopes, expires_in). `issued_at` lets upload_tiktok.py
-    # compute expiry on the FIRST workflow run without a wasteful
-    # preemptive refresh (which would burn the single-use refresh_token).
     payload["client_key"] = client_key
     payload["issued_at"] = datetime.now(timezone.utc).isoformat()
-    TOKEN_FILE.write_text(json.dumps(payload, indent=2))
-    print(f"\n✅ Autenticação concluída! Token salvo em: {TOKEN_FILE}")
-    print("\n📋 PRÓXIMO PASSO:")
-    print("   Cole o conteúdo de tiktok_token.json no GitHub Secret")
-    print("   com o nome: TIKTOK_TOKEN")
-    print("   (e configure também TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET)\n")
+    token_json = json.dumps(payload, indent=2)
+    TOKEN_FILE.write_text(token_json)
+
+    print("\n" + "=" * 70)
+    print("  ✅ TOKEN GERADO COM SUCESSO")
+    print("=" * 70)
+    print(f"\n  Arquivo salvo em: {TOKEN_FILE.resolve()}")
+    print("\n  COPIA TUDO entre as linhas tracejadas abaixo e cola no")
+    print("  GitHub Secret TIKTOK_TOKEN:")
+    print("\n" + "-" * 70)
+    print(token_json)
+    print("-" * 70)
+    print("\n  📋 Próximo passo:")
+    print("     https://github.com/non-s/non-s.github.io/settings/secrets/actions")
+    print("     → TIKTOK_TOKEN → Update → cola o JSON acima → Update secret\n")
+
+    input("Pressione Enter para fechar...")
 
 
 if __name__ == "__main__":
