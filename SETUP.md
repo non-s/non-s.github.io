@@ -220,10 +220,23 @@ To go above 30/day, get the app **approved** by TikTok (free,
 
 | Mode | What happens | When to use |
 |------|--------------|-------------|
-| `direct` (default) | Video goes live immediately. | App is approved for `video.publish`. |
-| `inbox` | Draft lands in your TikTok app; you tap publish from the phone. | App is in sandbox / awaiting Direct Post approval. |
+| `direct` | Video goes live immediately at the requested privacy level. | App is **audited / approved** for `video.publish`. |
+| `inbox` (default) | Draft lands in your TikTok mobile app; you tap "Post" to publish. | App is in **sandbox / awaiting review**. |
 
-Set the mode via `TIKTOK_PUBLISH_MODE` (env or workflow `vars`).
+The default ships as `inbox` because TikTok refuses direct public
+posts from unaudited apps (`unaudited_client_can_only_post_to_private_accounts`).
+The runtime also auto-falls-back from `direct`→`inbox` if it detects
+that error code mid-run — so you never get a hard publish failure
+just because the app's review is still pending.
+
+**Once your app is audited**, flip both knobs to go fully automated:
+
+1. Settings → Secrets and variables → Actions → **Variables** tab
+2. `New repository variable`:
+     - `TIKTOK_PUBLISH_MODE` = `direct`
+     - `TIKTOK_PRIVACY` = `PUBLIC_TO_EVERYONE`
+
+That's it — next workflow run publishes publicly without manual taps.
 
 ---
 
