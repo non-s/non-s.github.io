@@ -613,7 +613,15 @@ def upload_video(access_token: str, meta: dict) -> str | None:
         log.error("  ❌ Publish never reached PUBLISH_COMPLETE: %s", exc)
         return None
 
-    public_id = final.get("publicaly_available_post_id") or final.get("video_id") or ""
+    # TikTok actually misspells this field in their docs and response:
+    # `publicaly_available_post_id` (not `publicly_…`). Read both to
+    # stay safe if they ever fix the typo.
+    public_id = (
+        final.get("publicaly_available_post_id")
+        or final.get("publicly_available_post_id")
+        or final.get("video_id")
+        or ""
+    )
     if mode == "inbox":
         log.info("  ✅ Drafted to inbox — finalize in the TikTok app.")
         log.info("     publish_id=%s", publish_id)

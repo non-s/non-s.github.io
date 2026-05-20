@@ -154,3 +154,78 @@ def test_transcribe_returns_none_if_both_fail(tmp_path):
 def test_transcribe_returns_none_for_missing_audio(tmp_path):
     missing = tmp_path / "nope.mp3"
     assert captions.transcribe(missing) is None
+
+
+# ── language hint ────────────────────────────────────────────────
+
+
+def test_whisper_language_defaults_to_en(monkeypatch):
+    monkeypatch.delenv("LANGUAGE", raising=False)
+    assert captions._whisper_language() == "en"
+
+
+def test_whisper_language_maps_locale_to_base(monkeypatch):
+    monkeypatch.setenv("LANGUAGE", "pt-BR")
+    assert captions._whisper_language() == "pt"
+    monkeypatch.setenv("LANGUAGE", "es-MX")
+    assert captions._whisper_language() == "es"
+    monkeypatch.setenv("LANGUAGE", "fr-FR")
+    assert captions._whisper_language() == "fr"
+
+
+def test_whisper_language_falls_through_for_unknown(monkeypatch):
+    """Unknown locale → empty string so Whisper auto-detects instead
+    of being poisoned by an invalid hint."""
+    monkeypatch.setenv("LANGUAGE", "zz-ZZ")
+    assert captions._whisper_language() == ""
+
+
+# ── Groq 429 retry ────────────────────────────────────────────────
+
+
+def test_transcribe_groq_retries_once_on_429(tmp_path, monkeypatch):
+    audio = tmp_path / "a.mp3"
+    audio.write_bytes(b"x" * 100)
+    monkeypatch.setenv("GROQ_API_KEY", "fake")
+    monkeypatch.setattr(captions, "_GROQ_RETRY_DELAY_S", 0.0)
+
+    call_count = {"n": 0}
+
+    def _fake_post(*args, **kwargs):
+        call_count["n"] += 1
+        resp = MagicMock()
+        if call_count["n"] == 1:
+            resp.status_code = 429
+            resp.text = "rate limited"
+        else:
+            resp.status_code = 200
+            resp.json.return_value = {
+                "words": [{"word": "hi", "start": 0.0, "end": 0.3}]
+            }
+        return resp
+
+    monkeypatch.setattr(captions.requests, "post", _fake_post)
+    out = captions.transcribe_groq(audio)
+    assert out is not None
+    assert call_count["n"] == 2
+
+
+def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
+    audio = tmp_path / "a.mp3"
+    audio.write_bytes(b"x" * 100)
+    monkeypatch.setenv("GROQ_API_KEY", "fake")
+    monkeypatch.setattr(captions, "_GROQ_RETRY_DELAY_S", 0.0)
+
+    call_count = {"n": 0}
+
+    def _fake_post(*args, **kwargs):
+        call_count["n"] += 1
+        resp = MagicMock()
+        resp.status_code = 429
+        resp.text = "rate limited"
+        return resp
+
+    monkeypatch.setattr(captions.requests, "post", _fake_post)
+    out = captions.transcribe_groq(audio)
+    assert out is None
+    assert call_count["n"] == 2
