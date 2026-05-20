@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok OAuth callback — Wild Brief</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #0e1410;
+    color: #e8e6dc;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
+  h1 { color: #d4a13a; font-size: 1.6rem; margin-bottom: 0.5em; }
+  .lede { color: #b8b6a8; margin-bottom: 2em; }
+  .panel {
+    background: #15201a;
+    border: 1px solid #2a3a30;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 1.5em;
+  }
+  .label { color: #d4a13a; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  code, .codebox {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9rem;
+    background: #0a0f0c;
+    color: #c5e6c8;
+    padding: 12px 14px;
+    border-radius: 6px;
+    display: block;
+    word-break: break-all;
+    user-select: all;
+    border: 1px solid #2a3a30;
+  }
+  button {
+    margin-top: 10px;
+    background: #d4a13a;
+    color: #0e1410;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  button:hover { background: #e0b04a; }
+  .status-ok { color: #6fcf7b; }
+  .status-err { color: #e07b6f; }
+  .muted { color: #7a7a6e; font-size: 0.85rem; }
+  a { color: #d4a13a; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>TikTok OAuth callback</h1>
+<p class="lede">
+This page receives the redirect from TikTok during the one-time
+authorization flow for the Wild Brief publishing bot.
+It does <strong>not</strong> store anything in the browser and does
+<strong>not</strong> transmit anything to any third party &mdash; the
+authorization code is shown below for the operator to paste into the
+token-exchange script run locally.
+</p>
+
+<div id="result" class="panel">
+  <div class="label">Status</div>
+  <div id="status">Waiting for callback parameters&hellip;</div>
+</div>
+
+<div id="codeBlock" class="panel" style="display:none;">
+  <div class="label">Authorization code</div>
+  <div id="code" class="codebox"></div>
+  <button id="copyBtn" type="button">Copy code</button>
+  <p class="muted" style="margin-top: 14px;">
+    Paste this into your local token-exchange script (the one that
+    POSTs to <code>https://open.tiktokapis.com/v2/oauth/token/</code>
+    with your <code>client_secret</code>). Do <strong>not</strong> share
+    this code &mdash; it is single-use and expires in minutes.
+  </p>
+</div>
+
+<div id="scopesBlock" class="panel" style="display:none;">
+  <div class="label">Granted scopes</div>
+  <div id="scopes" class="codebox"></div>
+</div>
+
+<div id="stateBlock" class="panel" style="display:none;">
+  <div class="label">State (CSRF token)</div>
+  <div id="state" class="codebox"></div>
+  <p class="muted" style="margin-top: 14px;">
+    Verify this matches the <code>state</code> value your script
+    generated before the authorization request.
+  </p>
+</div>
+
+<p class="muted">
+  <a href="/">&larr; back to dashboard</a> &middot;
+  <a href="https://github.com/non-s/non-s.github.io">view source on GitHub</a>
+</p>
+
+</div>
+
+<script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var code = params.get('code');
+    var scopes = params.get('scopes');
+    var state = params.get('state');
+    var error = params.get('error') || params.get('error_description');
+
+    var statusEl = document.getElementById('status');
+
+    if (error) {
+      statusEl.innerHTML = '<span class="status-err">Authorization failed: ' +
+        String(error).replace(/[<>&]/g, '') + '</span>';
+      return;
+    }
+
+    if (!code) {
+      statusEl.innerHTML = '<span class="muted">No <code>code</code> parameter in URL. ' +
+        'Open this page only via the TikTok authorization redirect.</span>';
+      return;
+    }
+
+    statusEl.innerHTML = '<span class="status-ok">Authorization code received successfully.</span>';
+
+    document.getElementById('codeBlock').style.display = 'block';
+    document.getElementById('code').textContent = code;
+
+    if (scopes) {
+      document.getElementById('scopesBlock').style.display = 'block';
+      document.getElementById('scopes').textContent = scopes;
+    }
+    if (state) {
+      document.getElementById('stateBlock').style.display = 'block';
+      document.getElementById('state').textContent = state;
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      var text = document.getElementById('code').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+        this.textContent = 'Copied';
+        var btn = this;
+        setTimeout(function () { btn.textContent = 'Copy code'; }, 1500);
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
