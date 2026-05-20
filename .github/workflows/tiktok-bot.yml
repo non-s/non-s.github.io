@@ -1,19 +1,17 @@
-name: "YouTube Bot — Shorts only"
+name: "TikTok Bot — Shorts only"
 
 # Shorts-only pipeline.
 #
-# Quota math: YouTube allows 10,000 units/day; each upload costs
-# ~1,750 (videos.insert 1,600 + thumbnails.set 50 + playlistItems 50
-# + commentThreads 50). 5 runs/day × 1 short = 8,750 units ≈ 87 %
-# of the daily cap — the safe ceiling without requesting a quota
-# increase. A 6th run on the same day would push the bot past 100 %
-# and the last upload would fail with 403 quotaExceeded.
+# Posting cadence:
+# TikTok's unaudited Content Posting API caps direct posts at 30/day per
+# user (and 6/min). We stay well below the cap at 5/day staggered across
+# the global prime-time windows, mirroring what worked on YouTube.
 #
-# Why five staggered runs (not one batch of 5): the algorithm grants
-# each Short its own seed-audience test window. Batching them wastes
+# Why five staggered runs (not one batch of 5): the For You algorithm
+# grants each post its own seed-audience test window. Batching wastes
 # explore cycles. 00 / 05 / 10 / 15 / 20 UTC = 21 / 02 / 07 / 12 / 17
 # BRT — coverage across Brazil prime time, US daytime, Europe morning
-# and evening. Source: Buffer + Hopper Shorts timing studies, 2026.
+# and evening.
 on:
   schedule:
     - cron: "0 0,5,10,15,20 * * *"
@@ -26,7 +24,7 @@ concurrency:
 
 jobs:
   generate-and-upload:
-    name: "Gerar e publicar Shorts"
+    name: "Gerar e publicar Shorts no TikTok"
     runs-on: ubuntu-latest
     # Without a timeout, a stuck FFmpeg encode can chew through the
     # whole monthly GitHub Actions quota on a single hung job.
@@ -38,10 +36,9 @@ jobs:
       contents: write
 
     env:
-      # 1 short per run × 5 runs/day = 5 shorts/day. DO NOT raise to 2:
-      # 10 uploads/day × 1,750 = 17,500 units, 175 % of cap. To go
-      # beyond 5/day, request a quota increase from Google first
-      # (free, ~1-2 weeks) — see SETUP.md §4.
+      # 1 short per run × 5 runs/day = 5 shorts/day. TikTok caps direct
+      # posts at 30/day/user; 5/day = 17% of the ceiling, plenty of
+      # headroom for retries.
       MAX_SHORTS_PER_RUN: "1"
 
     steps:
@@ -85,32 +82,28 @@ jobs:
             pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
           fi
 
-      - name: "Restaurar token do YouTube"
+      - name: "Restaurar token do TikTok"
         env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          TIKTOK_TOKEN: ${{ secrets.TIKTOK_TOKEN }}
         run: |
-          if [ -z "$YOUTUBE_TOKEN" ]; then
-            echo "❌ YOUTUBE_TOKEN secret não está configurado."
-            echo "   Rode auth_youtube.py localmente e cole o conteúdo de token.json"
-            echo "   em Settings → Secrets → Actions → YOUTUBE_TOKEN"
+          if [ -z "$TIKTOK_TOKEN" ]; then
+            echo "❌ TIKTOK_TOKEN secret não está configurado."
+            echo "   Rode auth_tiktok.py localmente e cole o conteúdo de"
+            echo "   tiktok_token.json em Settings → Secrets → Actions →"
+            echo "   TIKTOK_TOKEN"
             exit 1
           fi
-          # Write the token under restrictive perms (umask covers the
-          # implicit mode of `printf > file`). 0600 keeps it readable
-          # only by the runner user.
+          # Write the token under restrictive perms.
           umask 077
-          printf '%s' "$YOUTUBE_TOKEN" > token.json
-          chmod 600 token.json
-          # Sanity check: confirm it parses as JSON. `python -m json.tool`
-          # reads stdin, closes the file properly, and exits non-zero on
-          # invalid JSON — simpler than embedding a multi-line script
-          # that has to round-trip through YAML.
-          if ! python -m json.tool < token.json > /dev/null 2>&1; then
-            echo "❌ YOUTUBE_TOKEN secret não é JSON válido."
-            rm -f token.json
+          printf '%s' "$TIKTOK_TOKEN" > tiktok_token.json
+          chmod 600 tiktok_token.json
+          # Sanity check: confirm it parses as JSON.
+          if ! python -m json.tool < tiktok_token.json > /dev/null 2>&1; then
+            echo "❌ TIKTOK_TOKEN secret não é JSON válido."
+            rm -f tiktok_token.json
             exit 1
           fi
-          echo "✅ token.json restaurado"
+          echo "✅ tiktok_token.json restaurado"
 
       - name: "Restaurar marcadores de videos processados"
         run: |
@@ -120,14 +113,9 @@ jobs:
           ls _videos/*.done 2>/dev/null | wc -l || echo "0 .done"
           ls _videos/*.roundup 2>/dev/null | wc -l || echo "0 .roundup"
 
-      # Long-form roundup video generation was removed 2026-05. The
-      # channel is shorts-only now. generate_video.py / upload_youtube.py
-      # for long-form remain in the repo — re-enable here if needed.
-
-      - name: "📱 Gerar YouTube Shorts (até 3 por run)"
-        # This is now the primary content step — drop the
-        # continue-on-error so a failure surfaces instead of silently
-        # producing zero shorts for the day.
+      - name: "📱 Gerar Shorts (até 3 por run)"
+        # This is the primary content step — surface failures so we
+        # don't silently produce zero shorts for the day.
         run: python generate_shorts.py
         env:
           PYTHONIOENCODING: utf-8
@@ -145,17 +133,24 @@ jobs:
           PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY   || secrets.PEXELS   }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
 
-      - name: "📤 Upload Shorts para YouTube"
-        run: python upload_youtube.py
+      - name: "📤 Upload Shorts para TikTok"
+        run: python upload_tiktok.py
         env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
+          PYTHONIOENCODING:      utf-8
+          PYTHONUNBUFFERED:      "1"
+          TIKTOK_CLIENT_KEY:     ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET:  ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          # Optional knobs (default direct-post / public). Override here
+          # if the app is awaiting publish-scope approval — then the bot
+          # drops drafts in the user's inbox instead.
+          TIKTOK_PUBLISH_MODE:   ${{ vars.TIKTOK_PUBLISH_MODE || 'direct' }}
+          TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'PUBLIC_TO_EVERYONE' }}
 
       - name: "📊 Write run summary"
         if: always()
         run: |
           {
-            echo "## YouTube Shorts run"
+            echo "## TikTok Shorts run"
             echo ""
             # Count what we actually shipped this run.
             UPLOADED=$(ls _videos/*.done 2>/dev/null | wc -l)
@@ -164,9 +159,8 @@ jobs:
             echo "|--------|-------|"
             echo "| Done markers (lifetime) | ${UPLOADED} |"
             echo "| Pending metadata (this run) | ${META_LEFT} |"
-            # YouTube API quota snapshot (estimated from our own
-            # upload log; see utils/youtube_quota.py).
-            python -c "from utils.youtube_quota import summary; s=summary(); print(f'| YouTube quota today | **{s[\"used\"]}/{s[\"budget\"]}** ({s[\"pct_used\"]}%) |')"
+            # TikTok posting count for the day.
+            python -c "from utils.tiktok_quota import summary; s=summary(); print(f'| TikTok posts today | **{s[\"used\"]}/{s[\"budget\"]}** ({s[\"pct_used\"]}%) |')"
             # Most recent uploaded titles.
             echo ""
             echo "### Last 5 published"
@@ -176,7 +170,7 @@ jobs:
               echo "- [${TITLE}](${URL})"
             done
             # Quota warning (only emits if >80 % used)
-            WARN=$(python -c "from utils.youtube_quota import warn_if_near_cap; print(warn_if_near_cap())")
+            WARN=$(python -c "from utils.tiktok_quota import warn_if_near_cap; print(warn_if_near_cap())")
             if [ -n "$WARN" ]; then
               echo ""
               echo "$WARN"
@@ -196,9 +190,9 @@ jobs:
           # The stories queue gets stories marked as consumed by
           # generate_shorts.py — commit that back too.
           git add _data/stories_queue.json 2>/dev/null || true
-          # Quota ledger — tracks per-upload YouTube Data API spend so
-          # the workflow summary can surface "we're at 85 % of cap".
-          git add _data/quota_log.jsonl 2>/dev/null || true
+          # Quota ledger — tracks per-upload TikTok API spend so the
+          # workflow summary can surface "we're at 85 % of cap".
+          git add _data/tiktok_quota_log.jsonl 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "✅ Nenhum arquivo novo para salvar."
@@ -209,22 +203,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Note: we don't try to push token.json back to the YOUTUBE_TOKEN
-      # secret here — the default GITHUB_TOKEN can't modify repository
-      # secrets, so the previous `gh secret set` step always failed
-      # silently. Google's refresh_token doesn't normally expire, so a
-      # one-time setup of the secret is enough. If you ever need to
-      # rotate it: run `python auth_youtube.py` locally and paste the
-      # contents of token.json into the YOUTUBE_TOKEN repo secret.
+      # Note: we don't try to push tiktok_token.json back to the
+      # TIKTOK_TOKEN secret here — the default GITHUB_TOKEN can't modify
+      # repository secrets. TikTok's refresh_token rotates on every
+      # refresh; the runtime saves the rolled token locally for the
+      # duration of the run, but the secret keeps the original. After
+      # ~365 days the original refresh token expires — when that
+      # happens, re-run `auth_tiktok.py` and update the secret.
 
       - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: "youtube-log-${{ github.run_number }}"
+          name: "tiktok-log-${{ github.run_number }}"
           path: |
             generate_shorts.log
-            upload_youtube.log
+            upload_tiktok.log
           retention-days: 7
           if-no-files-found: ignore
 
@@ -232,10 +226,10 @@ jobs:
       # (success, failure, cancellation). The runner is ephemeral, but
       # leaving credentials in artifacts/logs is a real risk if any
       # earlier step accidentally tar's the workspace.
-      - name: "🧹 Apagar token.json no final"
+      - name: "🧹 Apagar tiktok_token.json no final"
         if: always()
         run: |
-          if [ -f token.json ]; then
-            shred -u token.json 2>/dev/null || rm -f token.json
-            echo "🧹 token.json shredded"
+          if [ -f tiktok_token.json ]; then
+            shred -u tiktok_token.json 2>/dev/null || rm -f tiktok_token.json
+            echo "🧹 tiktok_token.json shredded"
           fi

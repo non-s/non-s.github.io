@@ -3,20 +3,20 @@
 # Refresh the animal Shorts queue (_data/stories_queue.json) by
 # searching Pexels across 6 animal categories and running each clip
 # through the AI for a fun-fact narration. generate_shorts.py
-# consumes the queue on the next youtube-bot run.
+# consumes the queue on the next tiktok-bot run.
 # ============================================================
 
 name: "🐾 Refresh animal queue"
 
 on:
   schedule:
-    # Every 3h — the queue is consumed 3×/day by youtube-bot, so
-    # this keeps it warm with fresh Pexels clips per 3-hour window.
+    # Every 3h — the queue is consumed by tiktok-bot throughout the
+    # day, so this keeps it warm with fresh Pexels clips per 3-hour window.
     - cron: "0 */3 * * *"
 
   workflow_dispatch:
 
-# Serialise with youtube-bot to avoid two workflows pushing the
+# Serialise with tiktok-bot to avoid two workflows pushing the
 # stories_queue.json at the same time.
 concurrency:
   group: main-write

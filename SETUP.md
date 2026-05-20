@@ -1,9 +1,9 @@
-# Wild Brief — Setup Guide
+# Wild Brief — Setup Guide (TikTok)
 
 Every secret + every optional free service the pipeline can use, in
 order of importance.
 
-The shortest path to a publishing channel is **§1 (3 secrets)** —
+The shortest path to a publishing channel is **§1 (5 secrets)** —
 everything in §2 is opt-in and adds redundancy, retention, or
 discovery breadth.
 
@@ -31,26 +31,54 @@ queue is produced. Free tier: 200 req/h, 20 k req/month.
 2. Copy the key from your dashboard.
 3. Add as `PEXELS_API_KEY` (or `PEXELS` short form) on GitHub.
 
-### 1.3 YouTube OAuth token
+### 1.3 TikTok developer app
 
-1. Set up a Google Cloud OAuth client (Desktop type):
-   <https://console.cloud.google.com/apis/credentials>.
-2. Enable the **YouTube Data API v3** AND the **YouTube Analytics
-   API** for the project.
-3. Download `client_secret.json` and drop it in the repo root locally.
-4. Run `python auth_youtube.py` locally. It opens a browser, you log
-   in with the YouTube account that owns the channel, and approve the
-   requested scopes:
-     - `youtube.upload` (uploads)
-     - `youtube` (playlists)
-     - `youtube.force-ssl` (pinned comments)
-     - `youtube.readonly` + `yt-analytics.readonly` (analytics)
-5. The script writes `token.json` — paste its entire contents as a
-   single-line string into the GitHub secret `YOUTUBE_TOKEN`.
+1. Go to <https://developers.tiktok.com/> and sign in with the TikTok
+   account that owns the channel (here: `@wildbrief_x`).
+2. Click **Manage apps → Connect an app**. Pick a name (e.g.
+   "Wild Brief Bot"), upload an icon, fill the description.
+3. Under **Add products**, enable BOTH:
+     - **Login Kit** (OAuth 2.0)
+     - **Content Posting API** — and toggle on:
+         * `video.publish` (Direct Post)
+         * `video.upload` (Inbox fallback)
+         * `user.info.basic`
+         * `video.list`
+4. Under **App configuration → Redirect URI** add
+   `http://localhost:8080/callback` (matches `auth_tiktok.py`).
+5. Submit the app for review. While it's pending you can still test
+   in sandbox mode — the bot supports `TIKTOK_PUBLISH_MODE=inbox` so
+   it drops drafts in your TikTok app for you to finalize from the
+   phone.
+6. From **App details** copy the **Client key** and **Client secret**
+   and add them as GitHub secrets:
+     - `TIKTOK_CLIENT_KEY`
+     - `TIKTOK_CLIENT_SECRET`
 
-> **If you ever see `invalid_scope: Bad Request` in a workflow log**,
-> the token was minted with an older scope list. Re-run
-> `auth_youtube.py` and update the secret.
+### 1.4 TikTok OAuth token
+
+1. Locally export the credentials and run the auth helper:
+
+   ```bash
+   export TIKTOK_CLIENT_KEY=awxxxxxxxxxx
+   export TIKTOK_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   python auth_tiktok.py
+   ```
+
+2. A browser opens, you log in with the channel's TikTok account, and
+   approve the requested scopes. The script writes `tiktok_token.json`.
+3. Paste the entire file contents as a single-line string into the
+   GitHub secret `TIKTOK_TOKEN`.
+
+> **If you ever see `invalid_scope` in a workflow log**, the token was
+> minted with an older scope list. Re-run `auth_tiktok.py` and update
+> the secret.
+
+> **Refresh tokens roll on every refresh.** The runtime saves the
+> rotated token locally for the duration of the run, but the
+> GitHub secret keeps the original. After ~365 days, when the
+> original refresh token expires, re-run `auth_tiktok.py` and update
+> `TIKTOK_TOKEN`.
 
 ---
 
@@ -85,7 +113,7 @@ workflow falls back to local `faster-whisper` which works but takes
 
 `dashboard.yml` deploys nightly to GitHub Pages at
 `https://<owner>.github.io/<repo>/` with top performers, retention by
-category, A/B winners, cohort timing recommendations.
+category, A/B winners.
 
 1. **Settings → Pages → Source: GitHub Actions** on the repo.
 2. The dashboard workflow does the rest — no extra secret.
@@ -106,11 +134,10 @@ category, A/B winners, cohort timing recommendations.
 | Workflow | Schedule (UTC) | Purpose |
 |----------|----------------|---------|
 | `fetch-content.yml` | every 3 h | Pexels search + AI enrich → queue |
-| `youtube-bot.yml` | 00 / 05 / 10 / 15 / 20 | 1 Short per run × 5 runs = 5 Shorts/day |
-| `analytics.yml` | 03 daily | Pull retention + CTR per video |
+| `tiktok-bot.yml` | 00 / 05 / 10 / 15 / 20 | 1 Short per run × 5 runs = 5 Shorts/day |
+| `analytics.yml` | 03 daily | Pull view/like/comment/share metrics |
 | `daily-digest.yml` | 04 daily | Post GitHub Issue summarising the day |
 | `dashboard.yml` | nightly | Rebuild static HTML dashboard on Pages |
-| `comment-replies.yml` | every 6 h | Auto-reply to top-level viewer comments |
 | `velocity-snapshot.yml` | every 2 h | +2 h / +6 h / +24 h view counts |
 | `cleanup-branches.yml` | weekly | Delete merged `claude/*` branches |
 
@@ -119,60 +146,66 @@ serialise on git push.
 
 ---
 
-## 4. YouTube quota math
+## 4. TikTok rate-limit math
 
-The Data API daily budget is **10,000 units**. Per Short upload:
+TikTok caps the Content Posting API (unaudited apps) at:
 
-| Call | Units |
-|------|-------|
-| `videos.insert` | 1,600 |
-| `thumbnails.set` | 50 |
-| `playlistItems.insert` | 50 |
-| `commentThreads.insert` (pinned comment) | 50 |
-| **Total per Short** | **~1,750** |
+- **6 posts / minute / user**
+- **30 posts / day / user**
 
 Sustainable Shorts/day at default config:
 
-| Shorts/day | Units used | % of cap |
-|------------|------------|----------|
-| 3 | 5,250 | 52 % |
-| 4 | 7,000 | 70 % |
-| **5 (default)** | **8,750** | **87 % — safe ceiling** |
-| 6 | 10,500 | 105 % — risk of cap-out |
-| 8 (every 3 h) | 14,000 | **140 % — will fail** |
+| Shorts/day | TikTok daily cap usage |
+|------------|------------------------|
+| 3 | 10 % |
+| **5 (default)** | **17 % — safe ceiling** |
+| 10 | 33 % |
+| 20 | 67 % |
+| 30 | 100 % (no headroom for retries) |
 
-To go above 5/day, request a quota increase via the
-[YouTube API Compliance form](https://support.google.com/youtube/contact/yt_api_form)
-(free, 1-2 weeks). Approved projects routinely get 1 M units/day.
+To go above 30/day, get the app **approved** by TikTok (free,
+~1-2 weeks). Approved apps get higher per-user limits.
 
 ---
 
-## 5. Troubleshooting
+## 5. Direct Post vs. Inbox
+
+| Mode | What happens | When to use |
+|------|--------------|-------------|
+| `direct` (default) | Video goes live immediately. | App is approved for `video.publish`. |
+| `inbox` | Draft lands in your TikTok app; you tap publish from the phone. | App is in sandbox / awaiting Direct Post approval. |
+
+Set the mode via `TIKTOK_PUBLISH_MODE` (env or workflow `vars`).
+
+---
+
+## 6. Troubleshooting
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
 | `❌ PEXELS_API_KEY not set` | Secret missing | Add it (§1.2) |
-| `invalid_scope: Bad Request` | Stale OAuth token | Re-run `auth_youtube.py`, update `YOUTUBE_TOKEN` |
-| `Mistral rate limited (429)` storm | Free-tier quota hit | Configure one fallback (§2.1) — the in-run circuit breaker now opens after 3 give-ups and routes around Mistral |
+| `invalid_scope` in TikTok logs | Stale OAuth token | Re-run `auth_tiktok.py`, update `TIKTOK_TOKEN` |
+| `Mistral rate limited (429)` storm | Free-tier quota hit | Configure one fallback (§2.1) |
 | Workflow timeout at 25 min | Same as above | Same fix |
-| Static Short (no motion) | All b-roll sources returned 0 | Check the `🔎 B-roll sources:` log line — it tells you which source failed. Verify Pexels key, or extend `ANIMAL_TOPICS` queries |
+| Static Short (no motion) | All b-roll sources returned 0 | Check the `🔎 B-roll sources:` log line — verify Pexels key, or extend `ANIMAL_TOPICS` queries |
 | Channel publishes 1 Short then stops | Poison-pill `.json` in `_videos/` | Run `git rm _videos/short-*.json` (the `.done` sidecars stay) and re-trigger the bot |
+| `Publish status: FAILED` | TikTok moderation rejected the clip | Open TikTok app → Inbox → see rejection reason |
 
 For anything else, check the workflow log via Actions → workflow run
 → Artifacts → download the log zip.
 
 ---
 
-## 6. Operator hygiene
+## 7. Operator hygiene
 
-- **Never commit `token.json`** — `.gitignore` already excludes it,
+- **Never commit `tiktok_token.json`** — `.gitignore` excludes it,
   but watch for accidental adds.
 - **Never push directly to `main`** if you're prototyping new content
   topics; use a `claude/*` branch + PR.
-- **Roll the YouTube OAuth token every 6 months** — Google rotates
-  refresh-tokens silently on inactivity.
-- **Watch the YouTube quota ledger** — `_data/quota_log.jsonl` records
-  every Data API call. The workflow summary surfaces the daily total
-  and warns at 80 %.
+- **Roll the TikTok OAuth token every ~12 months** — the refresh token
+  itself expires after a year of use.
+- **Watch the TikTok posts ledger** — `_data/tiktok_quota_log.jsonl`
+  records every Direct Post init. The workflow summary surfaces the
+  daily total and warns at 80 %.
 
 That's all that's required to operate Wild Brief end-to-end.

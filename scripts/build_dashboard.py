@@ -183,7 +183,10 @@ def render_html() -> str:
         out.append("<div class='card'><h2>Top performers (last 14 d)</h2>")
         out.append("<table><tr><th>Title</th><th>Views</th><th>Retention</th></tr>")
         for t in top_performers[:10]:
-            url = f"https://youtube.com/watch?v={t.get('video_id', '')}"
+            handle = "wildbrief_x"
+            url = t.get("share_url") or (
+                f"https://www.tiktok.com/@{handle}/video/{t.get('video_id', '')}"
+            )
             out.append(
                 f"<tr><td><a href='{html.escape(url)}'>"
                 f"{html.escape(t.get('title', '')[:90])}</a></td>"

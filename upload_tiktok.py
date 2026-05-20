@@ -1,0 +1,570 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+upload_tiktok.py — Faz upload dos vídeos gerados para o TikTok
+=================================================================
+Usa a Content Posting API oficial:
+
+  POST /v2/post/publish/video/init/    → cria a sessão de upload
+  PUT  <upload_url>                    → envia o arquivo em chunks
+  POST /v2/post/publish/status/fetch/  → polling até publicar
+
+Requer: tiktok_token.json (gerado por auth_tiktok.py uma única vez)
+"""
+from __future__ import annotations
+
+import json
+import logging
+import os
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+
+from utils import tiktok_quota
+
+# Locale axis — mirrors generate_shorts.py. When LANGUAGE=pt-BR (or any
+# non-en locale), we upload from `_videos_pt-BR/` so a single repo can
+# serve sibling channels (English @wildbrief_x, Portuguese @wildbriefbr…)
+# without entangling state.
+_LANGUAGE  = os.environ.get("LANGUAGE", "en").strip() or "en"
+LOG_FILE   = f"upload_tiktok{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
+VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
+TOKEN_FILE = Path("tiktok_token.json")
+
+# TikTok Open API v2 endpoints.
+API_BASE         = "https://open.tiktokapis.com"
+INIT_URL         = f"{API_BASE}/v2/post/publish/video/init/"
+INBOX_INIT_URL   = f"{API_BASE}/v2/post/publish/inbox/video/init/"
+STATUS_URL       = f"{API_BASE}/v2/post/publish/status/fetch/"
+TOKEN_REFRESH_URL = f"{API_BASE}/v2/oauth/token/"
+USER_INFO_URL    = f"{API_BASE}/v2/user/info/"
+
+# Chunked upload tuning. TikTok requires:
+#   - min chunk = 5 MB (except the last)
+#   - max chunk = 64 MB
+#   - chunk count <= 1000
+# 5 MB is the sweet spot for our ~5-15 MB Shorts.
+CHUNK_SIZE = 5 * 1024 * 1024
+MAX_RETRIES = 4
+RETRYABLE_STATUSES = {429, 500, 502, 503, 504}
+
+# Polling cadence for publish status. TikTok says "available for query
+# up to 24h after init"; in practice the FAILED/PUBLISH_COMPLETE state
+# lands within 30s for small files.
+STATUS_POLL_INITIAL = 5
+STATUS_POLL_MAX_S   = 300
+STATUS_POLL_BACKOFF = 1.5
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE, encoding="utf-8"),
+        logging.StreamHandler(),
+    ],
+)
+log = logging.getLogger(__name__)
+
+
+# ── Token handling ──────────────────────────────────────────────────
+
+def _load_token() -> dict:
+    """Read tiktok_token.json with clear diagnostics on common failures."""
+    if not TOKEN_FILE.exists():
+        raise FileNotFoundError(
+            "tiktok_token.json não encontrado! Execute auth_tiktok.py "
+            "primeiro (ou defina o secret TIKTOK_TOKEN no GitHub)."
+        )
+    raw = TOKEN_FILE.read_text(encoding="utf-8").strip()
+    if not raw:
+        raise RuntimeError(
+            "tiktok_token.json está vazio. O secret TIKTOK_TOKEN "
+            "provavelmente não foi configurado. Rode auth_tiktok.py "
+            "localmente e copie o conteúdo para o secret TIKTOK_TOKEN."
+        )
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"tiktok_token.json malformado ({exc}). Recrie com auth_tiktok.py."
+        ) from exc
+    # TikTok wraps successful responses in {"data": {...}, "error": ...}.
+    # auth_tiktok.py persists the raw response, so unwrap if needed.
+    if "data" in data and isinstance(data["data"], dict):
+        merged = dict(data["data"])
+        if "client_key" in data:
+            merged["client_key"] = data["client_key"]
+        data = merged
+    if not data.get("access_token"):
+        raise RuntimeError(
+            "tiktok_token.json não contém access_token. Re-autorize "
+            "com auth_tiktok.py."
+        )
+    if not data.get("refresh_token"):
+        raise RuntimeError(
+            "tiktok_token.json não contém refresh_token. Re-autorize "
+            "com auth_tiktok.py (a primeira autorização gera o "
+            "refresh_token)."
+        )
+    return data
+
+
+def _refresh_access_token(token: dict) -> dict:
+    """Use refresh_token to mint a new access_token. Saves token back."""
+    client_key = (token.get("client_key")
+                  or os.environ.get("TIKTOK_CLIENT_KEY", "")).strip()
+    client_secret = os.environ.get("TIKTOK_CLIENT_SECRET", "").strip()
+    if not client_key or not client_secret:
+        raise RuntimeError(
+            "TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET não configurados — "
+            "necessários para renovar o access_token."
+        )
+    resp = requests.post(
+        TOKEN_REFRESH_URL,
+        data={
+            "client_key":    client_key,
+            "client_secret": client_secret,
+            "grant_type":    "refresh_token",
+            "refresh_token": token["refresh_token"],
+        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    payload = resp.json()
+    if payload.get("error"):
+        raise RuntimeError(f"TikTok refresh falhou: {payload}")
+    new_token = dict(token)
+    new_token.update({
+        "access_token":  payload.get("access_token", token["access_token"]),
+        "refresh_token": payload.get("refresh_token", token["refresh_token"]),
+        "expires_in":    payload.get("expires_in"),
+        "refreshed_at":  datetime.now(timezone.utc).isoformat(),
+        "scope":         payload.get("scope", token.get("scope", "")),
+    })
+    new_token["client_key"] = client_key
+    TOKEN_FILE.write_text(json.dumps(new_token, indent=2))
+    log.info("✅ access_token renovado via refresh_token.")
+    return new_token
+
+
+def _is_token_expired(token: dict) -> bool:
+    """Heuristic: TikTok access tokens last 24h; refresh if older than 23h
+    or no timestamp is available."""
+    refreshed_at = token.get("refreshed_at")
+    expires_in = token.get("expires_in")
+    if not refreshed_at or not isinstance(expires_in, (int, float)):
+        return True
+    try:
+        ts = datetime.fromisoformat(refreshed_at.replace("Z", "+00:00"))
+    except Exception:
+        return True
+    age = (datetime.now(timezone.utc) - ts).total_seconds()
+    # Refresh 5 minutes early to absorb clock skew.
+    return age >= max(0, float(expires_in) - 300)
+
+
+def get_access_token() -> tuple[str, dict]:
+    """Returns (access_token, full_token_dict). Refreshes if expired."""
+    token = _load_token()
+    if _is_token_expired(token):
+        token = _refresh_access_token(token)
+    return token["access_token"], token
+
+
+# ── Caption building ────────────────────────────────────────────────
+
+def _build_caption(meta: dict) -> str:
+    """Combine title + description + hashtags into one ≤2200 char caption.
+
+    TikTok has a single `title` field on the post which doubles as the
+    caption: hashtags go inline. We respect their hard limits:
+      - caption (title field) max 2200 chars
+      - max 100 hashtags (we ship 4-6)
+    """
+    title = (meta.get("title") or "").strip()
+    description = (meta.get("description") or "").strip()
+    # Description often already ends with the hashtag block; if not,
+    # append a sensible default chosen by generate_shorts.py.
+    parts: list[str] = []
+    if title:
+        parts.append(title)
+    if description and description not in title:
+        parts.append(description)
+    caption = "\n\n".join(parts).strip() or "Wild Brief"
+    if len(caption) > 2200:
+        caption = caption[:2190].rstrip() + "…"
+    return caption
+
+
+# ── Publish flow ────────────────────────────────────────────────────
+
+def _post_json(url: str, access_token: str, body: dict,
+                timeout: int = 30) -> dict:
+    """POST JSON to a TikTok API endpoint with bearer auth."""
+    resp = requests.post(
+        url,
+        json=body,
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type":  "application/json; charset=UTF-8",
+        },
+        timeout=timeout,
+    )
+    try:
+        payload = resp.json()
+    except Exception:
+        payload = {"raw": resp.text[:500]}
+    if resp.status_code >= 400:
+        raise RuntimeError(
+            f"TikTok API {url} → HTTP {resp.status_code}: {payload}"
+        )
+    err = (payload.get("error") or {})
+    if err and err.get("code") and err["code"] not in ("ok", ""):
+        raise RuntimeError(f"TikTok API {url} → error {err}")
+    return payload
+
+
+def _init_direct_post(access_token: str, video_size: int,
+                       caption: str, privacy_level: str,
+                       disable_comment: bool, disable_duet: bool,
+                       disable_stitch: bool) -> dict:
+    """POST /post/publish/video/init/ — kicks off a DIRECT_POST upload."""
+    total_chunks = max(1, (video_size + CHUNK_SIZE - 1) // CHUNK_SIZE)
+    # Last chunk may be smaller; init expects equal `chunk_size` plus a
+    # `total_chunk_count` derived from the request body, not the file.
+    body = {
+        "post_info": {
+            "title":           caption[:2200],
+            "privacy_level":   privacy_level,
+            "disable_duet":    disable_duet,
+            "disable_comment": disable_comment,
+            "disable_stitch":  disable_stitch,
+            # Cover frame at 1s — gives Ken Burns a beat to settle.
+            "video_cover_timestamp_ms": 1000,
+            # Required disclosure: every Short on this channel has
+            # AI-authored voice-over + AI-selected imagery.
+            "brand_content_toggle": False,
+            "brand_organic_toggle": False,
+        },
+        "source_info": {
+            "source":            "FILE_UPLOAD",
+            "video_size":        video_size,
+            "chunk_size":        CHUNK_SIZE,
+            "total_chunk_count": total_chunks,
+        },
+    }
+    return _post_json(INIT_URL, access_token, body)
+
+
+def _init_inbox_upload(access_token: str, video_size: int) -> dict:
+    """Fallback path: drop the video into the user's TikTok inbox as a
+    draft. The user must finalize publish in the app. Used when DIRECT_POST
+    is unavailable for an unaudited app.
+    """
+    total_chunks = max(1, (video_size + CHUNK_SIZE - 1) // CHUNK_SIZE)
+    body = {
+        "source_info": {
+            "source":            "FILE_UPLOAD",
+            "video_size":        video_size,
+            "chunk_size":        CHUNK_SIZE,
+            "total_chunk_count": total_chunks,
+        },
+    }
+    return _post_json(INBOX_INIT_URL, access_token, body)
+
+
+def _upload_chunks(upload_url: str, video_path: Path) -> None:
+    """PUT the file to TikTok's signed upload_url in CHUNK_SIZE pieces.
+
+    TikTok accepts a single PUT with the whole file too, but chunked
+    uploads survive flaky CI networks much better.
+    """
+    total = video_path.stat().st_size
+    sent = 0
+    with video_path.open("rb") as fh:
+        chunk_index = 0
+        while sent < total:
+            data = fh.read(CHUNK_SIZE)
+            if not data:
+                break
+            start = sent
+            end = sent + len(data) - 1
+            attempt = 0
+            while True:
+                try:
+                    resp = requests.put(
+                        upload_url,
+                        data=data,
+                        headers={
+                            "Content-Type":   "video/mp4",
+                            "Content-Length": str(len(data)),
+                            "Content-Range":  f"bytes {start}-{end}/{total}",
+                        },
+                        timeout=300,
+                    )
+                except (requests.ConnectionError, requests.Timeout) as exc:
+                    if attempt < MAX_RETRIES:
+                        attempt += 1
+                        wait = 2 ** attempt
+                        log.warning("  ⚠️ %s on chunk %d; retry %d/%d in %ds",
+                                    type(exc).__name__, chunk_index,
+                                    attempt, MAX_RETRIES, wait)
+                        time.sleep(wait)
+                        continue
+                    raise
+                if resp.status_code in RETRYABLE_STATUSES:
+                    if attempt < MAX_RETRIES:
+                        attempt += 1
+                        wait = 2 ** attempt
+                        log.warning("  ⚠️ HTTP %d on chunk %d; retry %d/%d in %ds",
+                                    resp.status_code, chunk_index,
+                                    attempt, MAX_RETRIES, wait)
+                        time.sleep(wait)
+                        continue
+                if resp.status_code >= 400:
+                    raise RuntimeError(
+                        f"TikTok chunk PUT failed: HTTP {resp.status_code} "
+                        f"body={resp.text[:300]}"
+                    )
+                break
+            sent += len(data)
+            chunk_index += 1
+            pct = int(100 * sent / total) if total else 100
+            log.info("  Upload: %d%% (chunk %d, %d/%d bytes)",
+                     pct, chunk_index, sent, total)
+
+
+def _poll_publish_status(access_token: str, publish_id: str) -> dict:
+    """Poll status/fetch until terminal state. Returns the final payload.
+
+    Terminal states: PUBLISH_COMPLETE, FAILED. Intermediate: PROCESSING_*,
+    PROCESSING_UPLOAD, etc.
+    """
+    deadline = time.time() + STATUS_POLL_MAX_S
+    wait = STATUS_POLL_INITIAL
+    while time.time() < deadline:
+        body = {"publish_id": publish_id}
+        payload = _post_json(STATUS_URL, access_token, body, timeout=20)
+        tiktok_quota.record("publish.status.fetch",
+                            channel=_LANGUAGE, publish_id=publish_id)
+        data = (payload.get("data") or {})
+        status = data.get("status", "")
+        log.info("  📡 publish status: %s", status or "(empty)")
+        if status == "PUBLISH_COMPLETE":
+            return data
+        if status == "FAILED":
+            reason = data.get("fail_reason") or data
+            raise RuntimeError(f"TikTok publish FAILED: {reason}")
+        time.sleep(wait)
+        wait = min(int(wait * STATUS_POLL_BACKOFF) + 1, 30)
+    raise TimeoutError(
+        f"TikTok publish status polling timed out after {STATUS_POLL_MAX_S}s "
+        f"for publish_id={publish_id}"
+    )
+
+
+def upload_video(access_token: str, meta: dict) -> str | None:
+    """Upload a single video to TikTok. Returns the publish_id or None.
+
+    Honors the env knob `TIKTOK_PUBLISH_MODE`:
+      - "direct" (default) → posts go live immediately via Direct Post API.
+        Requires the app to be approved for the `video.publish` scope.
+      - "inbox"            → drops as a draft in the user's TikTok inbox.
+        The user finalizes from the TikTok mobile app. Useful while the
+        Direct Post scope is pending review.
+    """
+    video_field = meta.get("video")
+    if not video_field:
+        log.error("Metadata sem campo 'video' — pulando.")
+        return None
+    video_path = Path(video_field)
+    if not video_path.exists():
+        log.error(f"Vídeo não encontrado: {video_path}")
+        return None
+
+    caption = _build_caption(meta)
+    log.info(f"📤 Uploading: {caption[:60]}…")
+
+    privacy_level = (os.environ.get("TIKTOK_PRIVACY", "")
+                      or meta.get("privacy_level")
+                      or "PUBLIC_TO_EVERYONE").upper()
+    disable_comment = _flag(os.environ.get("TIKTOK_DISABLE_COMMENT"), False)
+    disable_duet    = _flag(os.environ.get("TIKTOK_DISABLE_DUET"),    False)
+    disable_stitch  = _flag(os.environ.get("TIKTOK_DISABLE_STITCH"),  False)
+
+    mode = (os.environ.get("TIKTOK_PUBLISH_MODE", "direct").strip().lower()
+            or "direct")
+    video_size = video_path.stat().st_size
+
+    try:
+        if mode == "inbox":
+            init_payload = _init_inbox_upload(access_token, video_size)
+            tiktok_quota.record("video.upload.init", channel=_LANGUAGE)
+        else:
+            init_payload = _init_direct_post(
+                access_token, video_size, caption, privacy_level,
+                disable_comment, disable_duet, disable_stitch,
+            )
+            tiktok_quota.record("video.publish.init", channel=_LANGUAGE)
+    except RuntimeError as exc:
+        log.error("  ❌ TikTok init failed: %s", exc)
+        return None
+
+    data = (init_payload.get("data") or {})
+    publish_id = data.get("publish_id") or ""
+    upload_url = data.get("upload_url") or ""
+    if not publish_id or not upload_url:
+        log.error("  ❌ TikTok init returned no publish_id/upload_url: %s",
+                  init_payload)
+        return None
+
+    try:
+        _upload_chunks(upload_url, video_path)
+    except Exception as exc:
+        log.error("  ❌ Chunk upload failed: %s", exc)
+        return None
+
+    # Polling completes the publish handshake (TikTok runs an async
+    # moderation pass before the video goes live).
+    try:
+        final = _poll_publish_status(access_token, publish_id)
+    except Exception as exc:
+        log.error("  ❌ Publish never reached PUBLISH_COMPLETE: %s", exc)
+        return None
+
+    public_id = final.get("publicaly_available_post_id") or final.get("video_id") or ""
+    if mode == "inbox":
+        log.info("  ✅ Drafted to inbox — finalize in the TikTok app.")
+        log.info("     publish_id=%s", publish_id)
+    else:
+        tt_url = _tiktok_url(public_id, meta)
+        log.info("  ✅ Publicado: %s", tt_url or f"publish_id={publish_id}")
+    return public_id or publish_id
+
+
+def _flag(value: str | None, default: bool) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in ("1", "true", "yes", "y", "on")
+
+
+def _tiktok_url(public_id: str, meta: dict) -> str:
+    """Construct the canonical TikTok share URL when we have an id."""
+    if not public_id:
+        return ""
+    handle = (meta.get("channel_handle")
+              or os.environ.get("CHANNEL_WATERMARK", "@wildbrief_x")).lstrip("@")
+    return f"https://www.tiktok.com/@{handle}/video/{public_id}"
+
+
+# ── Pending-metadata orchestration ─────────────────────────────────
+
+def _collect_pending_meta(videos_dir: Path) -> list[Path]:
+    """Return meta JSON sidecars in `videos_dir` for the uploader to process.
+
+    Only files matching `short-…` / `roundup-…` are real meta sidecars —
+    other `.json` files (notably `shorts_done.json`, which the generator
+    uses for idempotency) are NOT video metadata.
+    """
+    return sorted(p for p in videos_dir.glob("*.json")
+                  if p.stem.startswith(("short-", "roundup-")))
+
+
+def main():
+    from utils.panic import abort_if_halted
+    abort_if_halted("upload_tiktok")
+
+    if not TOKEN_FILE.exists():
+        log.error(
+            "❌ tiktok_token.json not found. The tiktok-bot workflow "
+            "restores it from the TIKTOK_TOKEN secret — that secret may "
+            "be unset or invalid JSON. Run auth_tiktok.py locally to "
+            "refresh it."
+        )
+        sys.exit(2)
+
+    try:
+        access_token, _ = get_access_token()
+    except FileNotFoundError as e:
+        log.error("❌ %s", e)
+        sys.exit(2)
+    except RuntimeError as e:
+        log.error("❌ %s", e)
+        sys.exit(2)
+
+    pending = _collect_pending_meta(VIDEOS_DIR)
+    if not pending:
+        log.info("Nenhum vídeo pendente para upload.")
+        return
+    log.info("📋 %d vídeo(s) pendente(s) para upload", len(pending))
+
+    uploaded = 0
+    for meta_file in pending:
+        try:
+            meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        except Exception as e:
+            log.error("Falha ao ler %s: %s", meta_file.name, e)
+            continue
+        if not isinstance(meta, dict):
+            log.error("Pulando %s: metadata não é um dict (got %s).",
+                      meta_file.name, type(meta).__name__)
+            continue
+
+        publish_id = upload_video(access_token, meta)
+        if publish_id:
+            done_file = meta_file.with_suffix(".done")
+            tt_url = _tiktok_url(publish_id, meta)
+            done_file.write_text(json.dumps({
+                "video_id":    publish_id,
+                "url":         tt_url,
+                "uploaded_at": datetime.now(timezone.utc).isoformat(),
+                "title":       meta.get("title", ""),
+                "description": meta.get("description", ""),
+                "tags":        meta.get("tags", []),
+                "category":    meta.get("category", ""),
+                "is_short":    meta.get("is_short", False),
+                # Pexels source-clip identity — carries through so a
+                # future audit can match a TikTok post back to its
+                # source clip; the dedup ledger reads from this.
+                "pexels_video_id":     meta.get("pexels_video_id", ""),
+                "pexels_download_url": meta.get("pexels_download_url", ""),
+                # A/B variant tags so tiktok_analytics.py can correlate
+                # them with the retention numbers it pulls.
+                "experiments": meta.get("experiments", {}),
+                "language":    _LANGUAGE,
+            }, indent=2))
+            # Permanent dedup ledger — append BEFORE deleting the meta
+            # file so a crash between the two steps still leaves the
+            # ledger truthful.
+            try:
+                from fetch_animals import record_published_clip
+                record_published_clip(
+                    pexels_video_id=meta.get("pexels_video_id", ""),
+                    story_id=meta.get("story_id", ""),
+                    pexels_url=meta.get("pexels_download_url", ""),
+                    platform_video_id=publish_id,
+                )
+            except Exception as exc:
+                log.warning("⚠️ published_clips ledger update failed: %s", exc)
+            meta_file.unlink()
+            uploaded += 1
+
+    log.info("🏁 %d/%d vídeo(s) publicado(s) no TikTok.", uploaded, len(pending))
+
+    q = tiktok_quota.summary()
+    log.info("📊 TikTok posts today: %d / %d (%.0f%%) — %s",
+             q["used"], q["budget"], q["pct_used"],
+             q["warning"] or "OK")
+
+    if pending and uploaded == 0:
+        log.error("❌ All uploads failed (%d pending, 0 uploaded). Exiting non-zero.",
+                  len(pending))
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

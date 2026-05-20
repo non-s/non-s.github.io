@@ -45,7 +45,7 @@ def _read_done(done_path: Path) -> dict | None:
 
 def _read_meta_alongside(done_path: Path) -> dict:
     """If a metadata JSON sibling still exists, parse it for extra fields.
-    Most of the time it's been deleted by upload_youtube.py after success."""
+    Most of the time it's been deleted by upload_tiktok.py after success."""
     meta_path = done_path.with_suffix(".json")
     if not meta_path.exists():
         return {}
@@ -150,7 +150,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append("")
             lines.append(f"- {anomaly.get('reason', '')}")
             lines.append(
-                "- Likely causes: channel strike, YouTube quota hit, "
+                "- Likely causes: channel strike, TikTok rate-limit, "
                 "workflow failure, or slow news day. Investigate."
             )
             lines.append("")

@@ -268,13 +268,13 @@ def test_record_published_clip_appends_to_empty_ledger(tmp_path, monkeypatch):
         pexels_video_id="123",
         story_id="abc",
         pexels_url="https://pexels.com/v/123",
-        youtube_video_id="yt_xyz",
+        platform_video_id="tt_xyz",
     )
     payload = json.loads(f.read_text(encoding="utf-8"))
     assert len(payload["clips"]) == 1
     assert payload["clips"][0]["pexels_video_id"] == "123"
     assert payload["clips"][0]["story_id"] == "abc"
-    assert payload["clips"][0]["youtube_video_id"] == "yt_xyz"
+    assert payload["clips"][0]["platform_video_id"] == "tt_xyz"
     assert payload["updated_at"] is not None
 
 

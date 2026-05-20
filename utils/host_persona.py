@@ -7,7 +7,7 @@ Automated channels that monetize all share one trait: a recognizable
 identity. Six rotating voices reading stock footage = AI slop. ONE host
 with a name, a pair of recurring catchphrases, and consistent POV =
 "this channel has a person behind it" — which is exactly the signal
-YouTube's classifier and viewers both reward.
+TikTok's classifier and viewers both reward.
 
 The persona is read by:
   * `fetch_animals.py` → injected into the AI prompt so every script
@@ -85,7 +85,7 @@ class HostPersona:
     )
 
     # Channel handle (without the @). Used in CTAs and watermarks.
-    handle: str = "wildbrief"
+    handle: str = "wildbrief_x"
 
     # Channel tagline — appears in long-form description, never in Shorts.
     tagline: str = "One weird animal fact a day. Wild Brief."

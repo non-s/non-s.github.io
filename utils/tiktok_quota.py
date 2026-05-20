@@ -1,27 +1,27 @@
 """
-utils/youtube_quota.py — Estimate-and-track YouTube Data API quota usage.
+utils/tiktok_quota.py — Track TikTok Content Posting API rate-limit usage.
 
-YouTube doesn't expose a quota-remaining endpoint, but its quota costs
-are documented. We estimate burn from our own operations and append to
-`_data/quota_log.jsonl`, then the workflow summary can show "used X of
-10 000 units today" so the operator knows when they're cutting it close.
+TikTok doesn't expose a daily quota the way YouTube does — it enforces
+per-user rate limits at the endpoint level. The documented production
+limits (May 2026):
 
-Per-operation costs (Data API v3, May 2026):
-  videos.insert           1600
-  videos.list             1
-  thumbnails.set          50
-  playlistItems.insert    50
-  playlists.insert        50
-  commentThreads.insert   50
-  channels.list           1
+  video.publish (Direct Post init)       6 / min, 30 / day per user
+  video.upload (Inbox init)              6 / min, 30 / day per user
+  publish/status/fetch                   30 / min per user
+  video/list                              ~600 / min, soft cap
+
+We still log every API call to `_data/tiktok_quota_log.jsonl` so the
+workflow summary can show "we made N posts today" and warn if we're
+approaching the daily ceiling.
+
+Per-operation costs are conceptual ("1 post" rather than YouTube's
+unit system) — the daily budget defaults to 30 posts/day which is
+TikTok's own cap for unaudited apps. Operators with higher caps can
+override via `TIKTOK_QUOTA_DAILY`.
 
 Each ledger entry is one JSON line:
-  {"ts": 1715900000.0, "op": "videos.insert", "cost": 1600,
-   "video_id": "abc123", "channel": "en"}
-
-`daily_used()` reads back the last N hours' entries and returns the
-total cost. `record()` appends one entry — call it right after the
-matching API call.
+  {"ts": 1715900000.0, "op": "video.publish.init", "cost": 1,
+   "publish_id": "v_inbox.123…", "channel": "en"}
 """
 from __future__ import annotations
 
@@ -40,49 +40,46 @@ except ImportError:  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
-QUOTA_LOG = Path(os.environ.get("YOUTUBE_QUOTA_LOG", "_data/quota_log.jsonl"))
-DAILY_BUDGET = int(os.environ.get("YOUTUBE_QUOTA_DAILY", "10000"))
-WARN_AT = float(os.environ.get("YOUTUBE_QUOTA_WARN_AT", "0.80"))  # 80 %
+QUOTA_LOG = Path(os.environ.get("TIKTOK_QUOTA_LOG", "_data/tiktok_quota_log.jsonl"))
+DAILY_BUDGET = int(os.environ.get("TIKTOK_QUOTA_DAILY", "30"))
+WARN_AT = float(os.environ.get("TIKTOK_QUOTA_WARN_AT", "0.80"))
 
-# Canonical cost table. Source: developers.google.com/youtube/v3/determine_quota_cost
+# Conceptual cost table. Each successful "post" counts 1 against the
+# daily cap; metadata calls are free.
 OPERATION_COSTS = {
-    "videos.insert":         1600,
-    "videos.list":           1,
-    "thumbnails.set":        50,
-    "playlistItems.insert":  50,
-    "playlists.insert":      50,
-    "commentThreads.insert": 50,
-    "commentThreads.list":   1,
-    "comments.insert":       50,
-    "channels.list":         1,
-    "search.list":           100,
+    "video.publish.init":   1,
+    "video.upload.init":    1,
+    "publish.status.fetch": 0,
+    "user.info":            0,
+    "video.list":           0,
+    "video.query":          0,
 }
 
 _write_lock = threading.Lock()
 
 
 def cost_of(op: str) -> int:
-    """Return the documented unit cost for an op. 0 for unknown ops."""
+    """Documented cost for an op (in posts). 0 for read-only ops."""
     return OPERATION_COSTS.get(op, 0)
 
 
 def record(op: str, *, channel: str = "en",
-            video_id: str = "", extra: dict | None = None) -> int:
-    """Append a quota usage entry. Returns the cost recorded.
+            publish_id: str = "", extra: dict | None = None) -> int:
+    """Append a usage entry. Returns the cost recorded.
 
     Best-effort: any write failure is logged but never raised — quota
     tracking must never block an upload that already succeeded.
     """
     cost = cost_of(op)
-    if cost == 0:
-        log.debug("quota: unknown op %r, recording cost=0", op)
+    if cost == 0 and op not in OPERATION_COSTS:
+        log.debug("tiktok_quota: unknown op %r, recording cost=0", op)
     entry = {
-        "ts":       time.time(),
-        "iso":      datetime.now(timezone.utc).isoformat(),
-        "op":       op,
-        "cost":     cost,
-        "channel":  channel,
-        "video_id": video_id,
+        "ts":         time.time(),
+        "iso":        datetime.now(timezone.utc).isoformat(),
+        "op":         op,
+        "cost":       cost,
+        "channel":    channel,
+        "publish_id": publish_id,
     }
     if extra:
         entry.update(extra)
@@ -104,7 +101,7 @@ def record(op: str, *, channel: str = "en",
                         except Exception:
                             pass
     except Exception as exc:
-        log.debug("quota: write failed: %s", exc)
+        log.debug("tiktok_quota: write failed: %s", exc)
     return cost
 
 
@@ -125,12 +122,7 @@ def _iter_entries(path: Path = QUOTA_LOG):
 
 
 def daily_used(now: float | None = None, path: Path = QUOTA_LOG) -> int:
-    """Sum the costs of every operation in the UTC day containing `now`.
-
-    YouTube resets quota at midnight Pacific Time, but the Pacific-vs-
-    UTC offset would only matter at hour-zero; treating it as a UTC
-    day is close enough for an "are we near the cap" alert.
-    """
+    """Sum costs of every op in the UTC day containing `now`."""
     now = now or time.time()
     today = datetime.fromtimestamp(now, tz=timezone.utc).date()
     total = 0
@@ -145,10 +137,10 @@ def daily_used(now: float | None = None, path: Path = QUOTA_LOG) -> int:
 
 
 def warn_if_near_cap(now: float | None = None, path: Path = QUOTA_LOG) -> str:
-    """Returns a human-readable warning string if usage > WARN_AT, else ""."""
+    """Human-readable warning if usage > WARN_AT, else ""."""
     used = daily_used(now=now, path=path)
     if used / DAILY_BUDGET >= WARN_AT:
-        return (f"⚠ YouTube quota: {used}/{DAILY_BUDGET} units used "
+        return (f"⚠ TikTok posts: {used}/{DAILY_BUDGET} today "
                 f"({used / DAILY_BUDGET * 100:.0f}% of daily cap)")
     return ""
 
@@ -157,11 +149,11 @@ def summary(now: float | None = None, path: Path = QUOTA_LOG) -> dict:
     """Concise stats for the workflow summary step."""
     used = daily_used(now=now, path=path)
     return {
-        "used":            used,
-        "budget":          DAILY_BUDGET,
-        "remaining":       max(0, DAILY_BUDGET - used),
-        "pct_used":        round(100.0 * used / DAILY_BUDGET, 1) if DAILY_BUDGET else 0.0,
-        "warning":         warn_if_near_cap(now=now, path=path),
+        "used":      used,
+        "budget":    DAILY_BUDGET,
+        "remaining": max(0, DAILY_BUDGET - used),
+        "pct_used":  round(100.0 * used / DAILY_BUDGET, 1) if DAILY_BUDGET else 0.0,
+        "warning":   warn_if_near_cap(now=now, path=path),
     }
 
 

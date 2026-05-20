@@ -2,11 +2,12 @@ name: "📈 Velocity snapshots"
 
 # Snapshot Shorts view counts at +2h / +6h / +24h post-upload to
 # capture the early-window velocity signal — the strongest predictor
-# of whether the Shorts algorithm will distribute a video. Runs every
-# 2 hours so each target offset is sampled with ±1 h tolerance.
+# of whether TikTok's For You algorithm will distribute a video. Runs
+# every 2 hours so each target offset is sampled with ±1 h tolerance.
 #
-# Each snapshot costs 1 unit (videos.list, batched). 12 runs/day × 1
-# unit = 12 units/day — negligible against the 10 000 daily cap.
+# TikTok's video/query endpoint is rate-limited but not formally
+# quoted; 12 runs/day × ~5 calls = negligible. We still log to the
+# quota ledger so anomalies surface.
 
 on:
   schedule:
@@ -40,41 +41,36 @@ jobs:
 
       - name: "Restore token"
         env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          TIKTOK_TOKEN: ${{ secrets.TIKTOK_TOKEN }}
         run: |
-          if [ -z "$YOUTUBE_TOKEN" ]; then
-            echo "❌ YOUTUBE_TOKEN secret is not set."
+          if [ -z "$TIKTOK_TOKEN" ]; then
+            echo "❌ TIKTOK_TOKEN secret is not set."
             exit 1
           fi
           umask 077
-          printf '%s' "$YOUTUBE_TOKEN" > token.json
-          chmod 600 token.json
-          if ! python -m json.tool < token.json > /dev/null 2>&1; then
-            echo "❌ YOUTUBE_TOKEN is not valid JSON."
-            rm -f token.json; exit 1
+          printf '%s' "$TIKTOK_TOKEN" > tiktok_token.json
+          chmod 600 tiktok_token.json
+          if ! python -m json.tool < tiktok_token.json > /dev/null 2>&1; then
+            echo "❌ TIKTOK_TOKEN is not valid JSON."
+            rm -f tiktok_token.json; exit 1
           fi
 
       - name: "Snapshot"
         run: |
           python - <<'PY'
-          from google.oauth2.credentials import Credentials
-          from google.auth.transport.requests import Request
-          from googleapiclient.discovery import build
           from utils.velocity import snapshot_velocities
-
-          creds = Credentials.from_authorized_user_file("token.json")
-          if creds.expired and creds.refresh_token:
-              creds.refresh(Request())
-          youtube = build("youtube", "v3", credentials=creds, cache_discovery=False)
-          n = snapshot_velocities(youtube)
+          n = snapshot_velocities()
           print(f"📈 Recorded {n} velocity snapshots")
           PY
+        env:
+          TIKTOK_CLIENT_KEY:    ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
 
       - name: "Commit ledger"
         run: |
           git config user.name  "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          git add _data/velocity.jsonl _data/quota_log.jsonl 2>/dev/null || true
+          git add _data/velocity.jsonl _data/tiktok_quota_log.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "✅ No snapshots taken this run."
           else
@@ -91,6 +87,6 @@ jobs:
       - name: "Shred token"
         if: always()
         run: |
-          if [ -f token.json ]; then
-            shred -u token.json 2>/dev/null || rm -f token.json
+          if [ -f tiktok_token.json ]; then
+            shred -u tiktok_token.json 2>/dev/null || rm -f tiktok_token.json
           fi
