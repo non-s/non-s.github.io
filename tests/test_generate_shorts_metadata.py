@@ -21,10 +21,12 @@ def _story() -> dict:
         "source":         "Pexels",
         "source_url":     "https://www.pexels.com/video/xyz",
         "slug":           "headline-that-will-become-the-seo-title-2026-05-19",
-        "yt_description": "AI-authored Short description. More info follows.\n\n#Shorts #Animals",
+        "yt_description": "AI-authored Short description. More info follows.",
         "yt_tags":        ["lion", "wildlife", "savanna"],
-        "geo_hashtag":    "Global",
         "topic_hashtag":  "Wildlife",
+        "discovery_hashtags": [
+            "fyp", "foryou", "wildlife", "wildanimals", "safari", "funfacts",
+        ],
         "experiments":    {"hook_style": "outcome_first"},
     }
 
@@ -53,9 +55,9 @@ def test_metadata_carries_required_uploader_fields(tmp_path: Path):
 
 
 def test_metadata_caption_uses_tiktok_hashtags(tmp_path: Path):
-    """TikTok-native hashtags (#fyp / #foryou) replace the YouTube
-    #Shorts block. The legacy #Shorts hashtag has no discovery value
-    on TikTok and is stripped from the caption body."""
+    """TikTok-native hashtags (#fyp / #foryou + niche) replace the legacy
+    YouTube #Shorts block. The story carries `discovery_hashtags` set
+    by fetch_animals.ANIMAL_TOPICS, lowercased into the caption."""
     from generate_shorts import build_short_metadata
     meta = build_short_metadata(
         _story(),
@@ -65,8 +67,28 @@ def test_metadata_caption_uses_tiktok_hashtags(tmp_path: Path):
     desc = meta["description"]
     assert "#fyp" in desc
     assert "#foryou" in desc
-    # Legacy YouTube hashtag block must NOT survive into the caption.
+    assert "#wildlife" in desc
+    # Niche discovery hashtag from the story's discovery_hashtags list.
+    assert "#wildanimals" in desc
+    # No legacy YouTube hashtags should survive.
     assert "#Shorts" not in desc
+    # The empty #Global geo hashtag should not appear either.
+    assert "#Global" not in desc
+
+
+def test_metadata_hashtags_are_lowercase(tmp_path: Path):
+    """TikTok treats #Wildlife and #wildlife as different in some
+    discovery surfaces — we always lowercase for consistency."""
+    from generate_shorts import build_short_metadata
+    meta = build_short_metadata(
+        _story(),
+        tmp_path / "short-foo.mp4",
+        tmp_path / "short-foo_thumb.jpg",
+    )
+    import re as _re
+    hashtags = _re.findall(r"#([A-Za-z0-9]+)", meta["description"])
+    for tag in hashtags:
+        assert tag == tag.lower(), f"hashtag #{tag} is not lowercase"
 
 
 def test_metadata_caption_respects_tiktok_2200_limit(tmp_path: Path):
@@ -77,6 +99,22 @@ def test_metadata_caption_respects_tiktok_2200_limit(tmp_path: Path):
         tmp_path / "short-foo_thumb.jpg",
     )
     assert len(meta["description"]) <= 2200
+
+
+def test_metadata_falls_back_when_discovery_hashtags_missing(tmp_path: Path):
+    """Older queue entries (pre-discovery_hashtags) still get a sensible
+    hashtag block synthesised from category + topic_hashtag."""
+    from generate_shorts import build_short_metadata
+    legacy_story = _story()
+    del legacy_story["discovery_hashtags"]
+    meta = build_short_metadata(
+        legacy_story,
+        tmp_path / "short-foo.mp4",
+        tmp_path / "short-foo_thumb.jpg",
+    )
+    desc = meta["description"]
+    assert "#fyp" in desc
+    assert "#wildlife" in desc
 
 
 def test_metadata_preserves_experiments(tmp_path: Path):

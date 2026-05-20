@@ -531,6 +531,20 @@ def upload_video(access_token: str, meta: dict) -> str | None:
             or "direct")
     video_size = video_path.stat().st_size
 
+    # Sentinel strings that signal "your app isn't approved for Direct
+    # Post yet, fall back to Inbox so the operator can finalize from
+    # the TikTok mobile app." TikTok returns these in the `error.code`
+    # / `error.message` fields when an unaudited app tries to publish
+    # directly with PUBLIC_TO_EVERYONE.
+    _SCOPE_DENIAL_HINTS = (
+        "scope_not_authorized",
+        "unaudited_client",
+        "url_ownership_unverified",
+        "spam_risk_too_many_pending_share",
+        "publish_token_invalid",
+    )
+
+    init_payload: dict | None = None
     try:
         if mode == "inbox":
             init_payload = _init_inbox_upload(access_token, video_size)
