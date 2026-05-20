@@ -28,6 +28,7 @@ Uso
 """
 from __future__ import annotations
 
+import hashlib
 import http.server
 import json
 import os
@@ -58,19 +59,46 @@ AUTHORIZE_URL = "https://www.tiktok.com/v2/auth/authorize/"
 TOKEN_URL = "https://open.tiktokapis.com/v2/oauth/token/"
 
 
-def _build_authorize_url(client_key: str, state: str) -> str:
+def _generate_pkce_pair() -> tuple[str, str]:
+    """Return a (code_verifier, code_challenge) pair for TikTok OAuth.
+
+    TikTok's PKCE deviates from RFC 7636: instead of the standard
+    base64url(SHA256(verifier)), TikTok requires HEX encoding of the
+    SHA-256 hash. The `code_challenge_method=S256` parameter is still
+    advertised. We followed the standard initially and TikTok rejected
+    every exchange with `Code verifier or code challenge is invalid`
+    despite a local SHA-256 round-trip matching — the mismatch was
+    against TikTok's internally-recomputed *hex* digest.
+
+    See: https://developers.tiktok.com/doc/login-kit-desktop/
+    """
+    verifier = secrets.token_urlsafe(64)        # 43-128 URL-safe chars
+    challenge = hashlib.sha256(verifier.encode("ascii")).hexdigest()
+    return verifier, challenge
+
+
+def _build_authorize_url(client_key: str, state: str,
+                          code_challenge: str) -> str:
     params = {
-        "client_key":    client_key,
-        "scope":         ",".join(SCOPES),
-        "response_type": "code",
-        "redirect_uri":  REDIRECT_URI,
-        "state":         state,
+        "client_key":            client_key,
+        "scope":                 ",".join(SCOPES),
+        "response_type":         "code",
+        "redirect_uri":          REDIRECT_URI,
+        "state":                 state,
+        "code_challenge":        code_challenge,
+        "code_challenge_method": "S256",
     }
     return f"{AUTHORIZE_URL}?{urllib.parse.urlencode(params)}"
 
 
-def _exchange_code(code: str, client_key: str, client_secret: str) -> dict:
-    """Exchange an authorization code for access + refresh tokens."""
+def _exchange_code(code: str, client_key: str, client_secret: str,
+                    code_verifier: str) -> dict:
+    """Exchange an authorization code for access + refresh tokens.
+
+    `code_verifier` is the PKCE secret minted before the consent URL
+    was opened; TikTok requires it on the token exchange to match the
+    `code_challenge` it received on the authorize step.
+    """
     resp = requests.post(
         TOKEN_URL,
         data={
@@ -79,6 +107,7 @@ def _exchange_code(code: str, client_key: str, client_secret: str) -> dict:
             "code":          code,
             "grant_type":    "authorization_code",
             "redirect_uri":  REDIRECT_URI,
+            "code_verifier": code_verifier,
         },
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         timeout=30,
@@ -118,16 +147,17 @@ class _CallbackHandler(http.server.BaseHTTPRequestHandler):
 
 
 def _capture_code(state: str, port: int) -> str:
-    """Spin up a one-shot local server to receive the OAuth redirect."""
+    """Spin up a one-shot local server to receive the OAuth redirect.
+
+    The previous implementation raced two competing handlers
+    (a `serve_forever` daemon thread + a `handle_request` loop on the
+    main thread), which sometimes hung after the callback arrived.
+    TikTok only ever sends ONE callback, so a single blocking
+    `handle_request()` is both simpler and correct.
+    """
     with socketserver.TCPServer(("127.0.0.1", port), _CallbackHandler) as srv:
         srv.timeout = 300  # 5 min to click the consent screen
-        thread = threading.Thread(target=srv.serve_forever, daemon=True)
-        thread.start()
-        while _CallbackHandler.code is None:
-            srv.handle_request()
-            if _CallbackHandler.code is not None:
-                break
-        srv.shutdown()
+        srv.handle_request()
     if _CallbackHandler.state != state:
         raise RuntimeError(
             "OAuth state mismatch — possible CSRF. Aborting."
@@ -175,7 +205,8 @@ def main() -> None:
         sys.exit(2)
 
     state = secrets.token_urlsafe(16)
-    url = _build_authorize_url(client_key, state)
+    code_verifier, code_challenge = _generate_pkce_pair()
+    url = _build_authorize_url(client_key, state, code_challenge)
     print("\n🔐 Iniciando autenticação OAuth do TikTok...")
     print("   Uma janela do navegador vai abrir.")
     print("   Faça login com a conta do TikTok do canal e aprove as permissões.")
@@ -193,7 +224,12 @@ def main() -> None:
         sys.exit(1)
 
     print("🔁 Trocando code por access_token + refresh_token…")
-    payload = _exchange_code(code, client_key, client_secret)
+    try:
+        payload = _exchange_code(code, client_key, client_secret, code_verifier)
+    except RuntimeError as exc:
+        print(f"\n❌ {exc}")
+        input("\nPressione Enter para fechar...")
+        sys.exit(1)
 
     payload["client_key"] = client_key
     payload["issued_at"] = datetime.now(timezone.utc).isoformat()

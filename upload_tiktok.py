@@ -42,14 +42,46 @@ STATUS_URL       = f"{API_BASE}/v2/post/publish/status/fetch/"
 TOKEN_REFRESH_URL = f"{API_BASE}/v2/oauth/token/"
 USER_INFO_URL    = f"{API_BASE}/v2/user/info/"
 
-# Chunked upload tuning. TikTok requires:
-#   - min chunk = 5 MB (except the last)
+# Chunked upload tuning. TikTok's documented rules:
+#   - min chunk = 5 MB (except the LAST chunk, if there are > 1 chunks)
 #   - max chunk = 64 MB
+#   - chunk_size <= video_size (so single-chunk uploads MUST set
+#       chunk_size = video_size, not the 5 MB default)
 #   - chunk count <= 1000
-# 5 MB is the sweet spot for our ~5-15 MB Shorts.
-CHUNK_SIZE = 5 * 1024 * 1024
+# Wild Brief shorts are always under 64 MB, so `_compute_chunking()`
+# returns 1 chunk == video_size; the multi-chunk branch only matters
+# for hypothetical bigger inputs.
+MIN_CHUNK_SIZE = 5 * 1024 * 1024
+MAX_CHUNK_SIZE = 64 * 1024 * 1024
 MAX_RETRIES = 4
 RETRYABLE_STATUSES = {429, 500, 502, 503, 504}
+
+
+def _compute_chunking(video_size: int) -> tuple[int, int]:
+    """Return (chunk_size, total_chunks) that satisfy TikTok's rules.
+
+    Earlier versions hard-coded CHUNK_SIZE=5MB and ceil'd the count,
+    which produced bodies TikTok rejects with
+    `invalid_params - The total chunk count is invalid` whenever the
+    video was under 5 MB (chunk_size > video_size) or just above 5 MB
+    (last chunk would be < 5 MB).
+    """
+    if video_size <= MAX_CHUNK_SIZE:
+        return video_size, 1
+    # Multi-chunk path: try the largest legal chunk_size first,
+    # shrinking if the leftover last chunk would fall under the 5 MB
+    # floor. This always terminates because at chunk_size == MIN we
+    # can fold the leftover into the previous chunk (last < 2*MIN).
+    chunk = MAX_CHUNK_SIZE
+    while chunk >= MIN_CHUNK_SIZE:
+        total = (video_size + chunk - 1) // chunk
+        last = video_size - chunk * (total - 1)
+        if last >= MIN_CHUNK_SIZE:
+            return chunk, total
+        chunk -= MIN_CHUNK_SIZE
+    # Pathological fallback (shouldn't happen with the loop bounds
+    # above): one giant chunk equal to video_size.
+    return video_size, 1
 
 # Polling cadence for publish status. TikTok says "available for query
 # up to 24h after init"; in practice the FAILED/PUBLISH_COMPLETE state
@@ -321,9 +353,7 @@ def _init_direct_post(access_token: str, video_size: int,
                        disable_comment: bool, disable_duet: bool,
                        disable_stitch: bool) -> dict:
     """POST /post/publish/video/init/ — kicks off a DIRECT_POST upload."""
-    total_chunks = max(1, (video_size + CHUNK_SIZE - 1) // CHUNK_SIZE)
-    # Last chunk may be smaller; init expects equal `chunk_size` plus a
-    # `total_chunk_count` derived from the request body, not the file.
+    chunk_size, total_chunks = _compute_chunking(video_size)
     body = {
         "post_info": {
             "title":           caption[:2200],
@@ -341,7 +371,7 @@ def _init_direct_post(access_token: str, video_size: int,
         "source_info": {
             "source":            "FILE_UPLOAD",
             "video_size":        video_size,
-            "chunk_size":        CHUNK_SIZE,
+            "chunk_size":        chunk_size,
             "total_chunk_count": total_chunks,
         },
     }
@@ -353,12 +383,12 @@ def _init_inbox_upload(access_token: str, video_size: int) -> dict:
     draft. The user must finalize publish in the app. Used when DIRECT_POST
     is unavailable for an unaudited app.
     """
-    total_chunks = max(1, (video_size + CHUNK_SIZE - 1) // CHUNK_SIZE)
+    chunk_size, total_chunks = _compute_chunking(video_size)
     body = {
         "source_info": {
             "source":            "FILE_UPLOAD",
             "video_size":        video_size,
-            "chunk_size":        CHUNK_SIZE,
+            "chunk_size":        chunk_size,
             "total_chunk_count": total_chunks,
         },
     }
@@ -366,17 +396,16 @@ def _init_inbox_upload(access_token: str, video_size: int) -> dict:
 
 
 def _upload_chunks(upload_url: str, video_path: Path) -> None:
-    """PUT the file to TikTok's signed upload_url in CHUNK_SIZE pieces.
-
-    TikTok accepts a single PUT with the whole file too, but chunked
-    uploads survive flaky CI networks much better.
-    """
+    """PUT the file to TikTok's signed upload_url in chunks that match
+    what `_init_*` told TikTok to expect. TikTok rejects PUTs whose
+    Content-Range doesn't line up with the init metadata."""
     total = video_path.stat().st_size
+    chunk_size, _ = _compute_chunking(total)
     sent = 0
     with video_path.open("rb") as fh:
         chunk_index = 0
         while sent < total:
-            data = fh.read(CHUNK_SIZE)
+            data = fh.read(chunk_size)
             if not data:
                 break
             start = sent
