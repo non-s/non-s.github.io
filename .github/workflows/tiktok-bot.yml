@@ -148,22 +148,19 @@ jobs:
           # See SETUP.md §1.5 for the PAT setup.
           TIKTOK_SECRETS_PAT:    ${{ secrets.TIKTOK_SECRETS_PAT }}
           GH_REPO_FULL:          ${{ github.repository }}
-          # Defaults are tuned for an UNAUDITED app (TikTok's "in review"
-          # state). The combo `direct + SELF_ONLY` is the most automated
-          # mode TikTok actually permits without app approval:
-          #   - `direct` posts the video to the channel without any
-          #     manual step in the TikTok mobile app
-          #   - `SELF_ONLY` makes the post private ("Only me") — the
-          #     operator flips the privacy toggle on the phone when
-          #     they want to publish
-          # Once the app is audited / approved, flip ONE Variable:
-          #   TIKTOK_PRIVACY = PUBLIC_TO_EVERYONE
-          # to graduate into fully-automated public publishing. No
-          # other changes needed.
-          # If TikTok ever rejects direct (e.g. scope_not_authorized),
-          # the runtime falls back to Inbox draft mode in the same run.
+          # Defaults are set to the END-STATE the operator wants:
+          # public direct posting, fully automated. While the TikTok app
+          # is still in review, every cron run will hit the
+          # `unaudited_client_can_only_post_to_private_accounts` error
+          # — `upload_tiktok.py` treats that as a soft-skip: leaves the
+          # video pending and exits 0. The moment TikTok approves the
+          # app, the next cron starts publishing publicly with zero
+          # additional configuration.
+          # Override one or both via repository Variables if you want
+          # a different policy (e.g. `inbox` to manually finalize each
+          # short on your phone, or `SELF_ONLY` to publish privately).
           TIKTOK_PUBLISH_MODE:   ${{ vars.TIKTOK_PUBLISH_MODE || 'direct' }}
-          TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'SELF_ONLY' }}
+          TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'PUBLIC_TO_EVERYONE' }}
 
       - name: "📊 Write run summary"
         if: always()

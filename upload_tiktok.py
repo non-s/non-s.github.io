@@ -90,6 +90,13 @@ STATUS_POLL_INITIAL = 5
 STATUS_POLL_MAX_S   = 300
 STATUS_POLL_BACKOFF = 1.5
 
+# Tracks per-invocation how many videos got soft-skipped because the
+# TikTok app is still in the multi-week review queue. When ALL pending
+# uploads in a run hit this state (and only this state), `main()` exits
+# 0 so the workflow shows green — the videos just wait for the next
+# cron after TikTok approves. Reset at the start of `main()`.
+_audit_pending_count = 0
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -535,17 +542,36 @@ def upload_video(access_token: str, meta: dict) -> str | None:
             )
             tiktok_quota.record("video.publish.init", channel=_LANGUAGE)
     except RuntimeError as exc:
-        # Apps awaiting TikTok review return specific codes that we can
-        # recover from by retrying through Inbox — the video lands as a
-        # draft in the user's TikTok mobile app for them to publish
-        # manually. Beats dropping the upload until the app is approved.
+        # Apps awaiting TikTok review return specific codes when asked
+        # to do anything beyond `SELF_ONLY` posts to private accounts.
+        # We have two behaviours depending on what the operator wanted:
+        #
+        #   privacy=PUBLIC_TO_EVERYONE → soft-wait. The operator has
+        #     opted into "publish publicly the moment the app is
+        #     audited"; falling back to Inbox would dump unwanted
+        #     drafts in their phone. Leave the .json pending and let
+        #     the next cron retry.
+        #
+        #   privacy=SELF_ONLY (or other) → fall back to Inbox so the
+        #     operator can finish publishing manually from the TikTok
+        #     mobile app. This is the historical workflow.
         msg = str(exc)
         unaudited_signals = (
             "unaudited_client_can_only_post_to_private_accounts",
             "scope_not_authorized",
             "unaudited_client",
         )
-        if mode != "inbox" and any(s in msg for s in unaudited_signals):
+        is_unaudited = any(s in msg for s in unaudited_signals)
+        if is_unaudited and mode != "inbox":
+            if privacy_level == "PUBLIC_TO_EVERYONE":
+                global _audit_pending_count
+                _audit_pending_count += 1
+                log.warning(
+                    "  ⏳ TikTok app still unaudited — public direct-post "
+                    "denied. Video stays queued for the next cron retry. "
+                    "This is expected until TikTok approves the app."
+                )
+                return None
             log.warning(
                 "  ⚠️ TikTok refused direct post (app likely unaudited): %s",
                 msg[:200],
@@ -628,6 +654,9 @@ def _collect_pending_meta(videos_dir: Path) -> list[Path]:
 def main():
     from utils.panic import abort_if_halted
     abort_if_halted("upload_tiktok")
+
+    global _audit_pending_count
+    _audit_pending_count = 0
 
     if not TOKEN_FILE.exists():
         log.error(
@@ -712,6 +741,17 @@ def main():
              q["warning"] or "OK")
 
     if pending and uploaded == 0:
+        # Soft-exit if every pending video was deferred waiting for
+        # TikTok to audit the app. The workflow stays green; the
+        # videos retry on the next cron.
+        if _audit_pending_count == len(pending):
+            log.info(
+                "⏳ %d video(s) waiting for TikTok to approve the app. "
+                "They'll publish automatically on the next cron after "
+                "approval — no action needed. Exit 0.",
+                len(pending),
+            )
+            return
         log.error("❌ All uploads failed (%d pending, 0 uploaded). Exiting non-zero.",
                   len(pending))
         sys.exit(1)

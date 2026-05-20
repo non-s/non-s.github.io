@@ -218,27 +218,31 @@ To go above 30/day, get the app **approved** by TikTok (free,
 
 ## 5. Publishing modes
 
-There are three workable combinations of `TIKTOK_PUBLISH_MODE` and
-`TIKTOK_PRIVACY`. Default ships as **direct + SELF_ONLY** — the most
-hands-off mode TikTok actually allows for an unaudited app.
+Default is **`direct + PUBLIC_TO_EVERYONE`** — set to the end-state
+the operator wants. While the app is in TikTok's review queue, every
+upload soft-fails (exit 0, no Inbox draft pollution, video stays
+queued) and waits for the next cron. The moment TikTok approves the
+app, the next cron publishes publicly with **zero additional config**.
 
-| Mode | Privacy | What you do | When to use |
-|------|---------|-------------|-------------|
-| `direct` | `SELF_ONLY` (default) | Open the TikTok app → your profile → video → 3-dot menu → privacy toggle to Public. ~10 s per video. | **App is in review.** |
-| `direct` | `PUBLIC_TO_EVERYONE` | Nothing — fully automatic. | **App is audited / approved.** |
-| `inbox` | _N/A_ | Open the TikTok app → Inbox → finalize caption + privacy + post. ~30-60 s per video. | Backup if direct rejects with a scope error. |
+If you want a different policy while waiting for approval, override
+via repository Variables:
 
-The runtime also **auto-falls-back from `direct` → Inbox** when it
-detects unaudited-client error codes mid-run, so you never get a hard
-publish failure just because the app's review is still pending.
+| Mode | Privacy | What happens | When to use |
+|------|---------|--------------|-------------|
+| `direct` | `PUBLIC_TO_EVERYONE` (default) | Publishes public immediately. Pre-approval runs soft-skip waiting for audit. | You're fine waiting for app approval; the channel will start publishing automatically. |
+| `inbox` | _N/A_ | Drops video as draft in TikTok mobile app's Inbox. You finalize manually. | You want to publish during the review window via manual finalisation on the phone. |
+| `direct` | `SELF_ONLY` | Publishes as "Only me"; you flip privacy toggle on the phone. | Hands-off-ish during review. ~10 s/video manual. |
 
-**Once your app is audited**, change exactly ONE Variable:
+Settings → Secrets and variables → Actions → **Variables** tab →
+create:
+- `TIKTOK_PUBLISH_MODE` (optional, default `direct`)
+- `TIKTOK_PRIVACY` (optional, default `PUBLIC_TO_EVERYONE`)
 
-1. Settings → Secrets and variables → Actions → **Variables** tab
-2. Either create or update:
-     - `TIKTOK_PRIVACY` = `PUBLIC_TO_EVERYONE`
-
-Next workflow run publishes publicly with zero manual steps.
+The runtime **auto-falls-back from `direct` → Inbox** when privacy is
+non-PUBLIC and TikTok rejects with a scope/unaudited error. With
+PUBLIC privacy, it soft-skips instead (no Inbox draft) so the operator
+isn't bombarded with manual finalisation tasks while waiting for app
+approval.
 
 ---
 
