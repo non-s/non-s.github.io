@@ -216,27 +216,29 @@ To go above 30/day, get the app **approved** by TikTok (free,
 
 ---
 
-## 5. Direct Post vs. Inbox
+## 5. Publishing modes
 
-| Mode | What happens | When to use |
-|------|--------------|-------------|
-| `direct` | Video goes live immediately at the requested privacy level. | App is **audited / approved** for `video.publish`. |
-| `inbox` (default) | Draft lands in your TikTok mobile app; you tap "Post" to publish. | App is in **sandbox / awaiting review**. |
+There are three workable combinations of `TIKTOK_PUBLISH_MODE` and
+`TIKTOK_PRIVACY`. Default ships as **direct + SELF_ONLY** — the most
+hands-off mode TikTok actually allows for an unaudited app.
 
-The default ships as `inbox` because TikTok refuses direct public
-posts from unaudited apps (`unaudited_client_can_only_post_to_private_accounts`).
-The runtime also auto-falls-back from `direct`→`inbox` if it detects
-that error code mid-run — so you never get a hard publish failure
-just because the app's review is still pending.
+| Mode | Privacy | What you do | When to use |
+|------|---------|-------------|-------------|
+| `direct` | `SELF_ONLY` (default) | Open the TikTok app → your profile → video → 3-dot menu → privacy toggle to Public. ~10 s per video. | **App is in review.** |
+| `direct` | `PUBLIC_TO_EVERYONE` | Nothing — fully automatic. | **App is audited / approved.** |
+| `inbox` | _N/A_ | Open the TikTok app → Inbox → finalize caption + privacy + post. ~30-60 s per video. | Backup if direct rejects with a scope error. |
 
-**Once your app is audited**, flip both knobs to go fully automated:
+The runtime also **auto-falls-back from `direct` → Inbox** when it
+detects unaudited-client error codes mid-run, so you never get a hard
+publish failure just because the app's review is still pending.
+
+**Once your app is audited**, change exactly ONE Variable:
 
 1. Settings → Secrets and variables → Actions → **Variables** tab
-2. `New repository variable`:
-     - `TIKTOK_PUBLISH_MODE` = `direct`
+2. Either create or update:
      - `TIKTOK_PRIVACY` = `PUBLIC_TO_EVERYONE`
 
-That's it — next workflow run publishes publicly without manual taps.
+Next workflow run publishes publicly with zero manual steps.
 
 ---
 
