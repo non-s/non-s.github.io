@@ -37,6 +37,9 @@ def _ok_init(publish_id: str = "p123") -> dict:
 
 def test_falls_back_to_inbox_on_unaudited_error(tmp_path, monkeypatch):
     monkeypatch.setenv("TIKTOK_PUBLISH_MODE", "direct")
+    # SELF_ONLY: operator explicitly opted into private direct posting.
+    # If TikTok refuses, Inbox is the right manual recovery.
+    monkeypatch.setenv("TIKTOK_PRIVACY", "SELF_ONLY")
     monkeypatch.delenv("LANGUAGE", raising=False)
     meta = _meta(tmp_path)
 
@@ -73,6 +76,7 @@ def test_falls_back_to_inbox_on_unaudited_error(tmp_path, monkeypatch):
 ])
 def test_falls_back_for_each_unaudited_signal(tmp_path, monkeypatch, signal):
     monkeypatch.setenv("TIKTOK_PUBLISH_MODE", "direct")
+    monkeypatch.setenv("TIKTOK_PRIVACY", "SELF_ONLY")
     meta = _meta(tmp_path)
 
     monkeypatch.setattr(

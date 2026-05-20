@@ -48,8 +48,9 @@ jobs:
               SKIPPED=$((SKIPPED+1))
               continue
             fi
+            LAST_HUMAN=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo 'unknown')
             if [ "$DRY_RUN" = "true" ]; then
-              echo "  📝 [dry-run] would delete $branch (last commit $LAST)"
+              echo "  📝 [dry-run] would delete $branch (last commit $LAST_HUMAN)"
             else
               if git push origin --delete "$branch" 2>/dev/null; then
                 COUNT=$((COUNT+1))

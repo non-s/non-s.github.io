@@ -3,7 +3,7 @@ utils/captions.py — Word-level captions for burned-in Shorts subtitles.
 
 Why captions matter for Shorts
 ------------------------------
-~80 % of YouTube Shorts are viewed muted in the first 2 seconds
+~80 % of TikTok Shorts are viewed muted in the first 2 seconds
 (autoplay starts before the user taps unmute). Captions burned into
 the frame are the single biggest retention lever for AI-narrated
 Shorts: Zebracat's 2025 data shows +18 % watch time when the hook
@@ -57,6 +57,32 @@ class Caption:
 _GROQ_STT_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 _GROQ_MODEL   = os.environ.get("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 
+# A single 429 retry recovers ~80 % of Groq blips without forcing the
+# ~10× slower local faster-whisper fallback.
+_GROQ_RETRY_DELAY_S = 2.0
+
+
+def _whisper_language() -> str:
+    """Map the active LANGUAGE env to a Whisper-compatible 2-char code.
+
+    Whisper accepts ISO-639-1 codes (`en`, `pt`, `es`, `fr`, …). Our
+    sibling-channels convention is `pt-BR` / `es-MX` / `fr-FR` style.
+    Unknown locales return "" so the caller drops the hint and lets
+    Whisper auto-detect — better than poisoning the request with an
+    invalid language code.
+    """
+    locale = (os.environ.get("LANGUAGE", "en") or "en").strip().lower()
+    if not locale:
+        return "en"
+    base = locale.split("-", 1)[0].split("_", 1)[0]
+    # The set Whisper definitely supports per its model card. Anything
+    # outside this set falls through to auto-detect.
+    known = {
+        "en", "pt", "es", "fr", "de", "it", "ja", "ko", "zh",
+        "ru", "ar", "hi", "tr", "pl", "nl", "sv", "id", "vi",
+    }
+    return base if base in known else ""
+
 
 def transcribe_groq(audio_path: Path) -> list[Caption] | None:
     """Word-level transcribe via Groq Whisper. None on any failure."""
@@ -65,24 +91,42 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
         return None
     if not audio_path.exists():
         return None
-    try:
-        with audio_path.open("rb") as fh:
-            r = requests.post(
-                _GROQ_STT_URL,
-                headers={"Authorization": f"Bearer {key}"},
-                files={"file": (audio_path.name, fh, "audio/mpeg")},
-                data={
+    lang = _whisper_language()
+    for attempt in range(2):
+        try:
+            with audio_path.open("rb") as fh:
+                data = {
                     "model": _GROQ_MODEL,
                     "response_format": "verbose_json",
                     "timestamp_granularities[]": "word",
                     "temperature": "0",
-                    "language": "en",
-                },
-                timeout=60,
-            )
-        if r.status_code != 200:
-            log.debug("groq whisper %d: %s", r.status_code, r.text[:200])
+                }
+                if lang:
+                    data["language"] = lang
+                r = requests.post(
+                    _GROQ_STT_URL,
+                    headers={"Authorization": f"Bearer {key}"},
+                    files={"file": (audio_path.name, fh, "audio/mpeg")},
+                    data=data,
+                    timeout=60,
+                )
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            if attempt == 0:
+                log.debug("groq whisper transient %s; retrying", type(exc).__name__)
+                import time as _time
+                _time.sleep(_GROQ_RETRY_DELAY_S)
+                continue
             return None
+        if r.status_code == 200:
+            break
+        if r.status_code in (429, 500, 502, 503, 504) and attempt == 0:
+            log.debug("groq whisper %d; retrying once", r.status_code)
+            import time as _time
+            _time.sleep(_GROQ_RETRY_DELAY_S)
+            continue
+        log.debug("groq whisper %d: %s", r.status_code, r.text[:200])
+        return None
+    try:
         data = r.json()
     except Exception as exc:
         log.debug("groq whisper error: %s", exc)
@@ -126,11 +170,14 @@ def transcribe_faster_whisper(audio_path: Path,
         return None
     try:
         model = WhisperModel(model_name, device="cpu", compute_type="int8")
+        # Empty `language` lets faster-whisper auto-detect — same fallback
+        # policy as the Groq path for unknown locales.
+        lang = _whisper_language() or None
         segments, _info = model.transcribe(
             str(audio_path),
             beam_size=1,
             word_timestamps=True,
-            language="en",
+            language=lang,
             condition_on_previous_text=False,
         )
         out: list[Caption] = []
