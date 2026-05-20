@@ -5,10 +5,9 @@ Why this exists
 ---------------
 Animal content is universal — a PT-BR sibling of Wild Brief is a
 zero-cost growth lever once the English channel is producing. Brazil
-is the #3 YouTube Shorts market by views (~9 % of global Shorts
-traffic), with no entrenched competition on automated animal-fact
-Shorts. RPM per view is lower than the US (~$0.045 vs $0.18) but
-volume compensates.
+is the #2 TikTok market by daily active users (~99M monthly users,
+ahead of every other country except the US), with no entrenched
+competition on automated animal-fact Shorts.
 
 The primitives are all reusable from the English pipeline:
 
@@ -17,8 +16,9 @@ The primitives are all reusable from the English pipeline:
     ThalitaNeural) at the same zero cost as the English voices
   * Pexels b-roll is language-agnostic
   * Captions via Whisper transcribe whatever audio they're given
-  * YouTube allows separate channels under one Google account; the
-    PT-BR sibling lives on @<handle>br once the workflow is reactivated
+  * TikTok lets you switch active account inside the app; the PT-BR
+    sibling lives on @<handle>br with its own OAuth token once that
+    sibling workflow is reactivated
 
 What this module does
 ---------------------
@@ -74,7 +74,7 @@ SUPPORTED_LANGUAGES: dict[str, dict] = {
 # Fields we ask the model to translate. Keys preserved verbatim in
 # output. `yt_tags` is intentionally left ENGLISH so the entity
 # keywords (e.g. "jerome powell") still match cross-language search
-# queries on YouTube — Portuguese viewers search Powell, not "powell em português".
+# queries on TikTok — Portuguese viewers search Powell, not "powell em português".
 _TRANSLATABLE_FIELDS = (
     "seo_title", "hook", "script", "thumbnail_text",
     "yt_description", "lead",
@@ -89,7 +89,7 @@ def _build_prompt(story: dict, target_lang: str) -> str:
     payload = json.dumps(safe, ensure_ascii=False)
 
     return (
-        f"You are a YouTube Shorts localiser. Translate the following "
+        f"You are a TikTok Shorts localiser. Translate the following "
         f"news Short metadata from English to **{lang_info['name']}**.\n\n"
         f"Rules:\n"
         f"  - Keep the same JSON shape and field names. Do not add or "

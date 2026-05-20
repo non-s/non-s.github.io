@@ -144,7 +144,7 @@ def test_build_broll_short_with_cta_overlay(tmp_path, stub_ffprobe, stub_ffmpeg_
     video_compose.build_broll_short(
         broll_paths=clips, audio_path=audio,
         output_path=tmp_path / "out.mp4",
-        cta_text="Follow @wildbrief",
+        cta_text="Follow @wildbrief_x",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
     assert "Follow" in fg

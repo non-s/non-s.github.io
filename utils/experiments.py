@@ -100,7 +100,7 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="cta_style",
         variants=(
-            "follow_handle",     # "Follow @wildbrief"
+            "follow_handle",     # "Follow @wildbrief_x"
             "engage_comment",    # "Drop your country in comments"
             "question_close",    # "Which side wins this one?"
         ),
