@@ -1,13 +1,13 @@
 # Pinned versions guarantee reproducible CI builds.
 # Bump deliberately via Dependabot or `pip install -U <pkg>` + manual verification.
-feedparser>=6.0.10,<7.0
-requests>=2.31.0,<3.0
-Pillow>=10.2.0,<12.0
-edge-tts>=6.1.10,<8.0
-PyYAML>=6.0,<7.0
+feedparser>=6.0.12,<7.0
+requests>=2.34.2,<3.0
+Pillow>=12.2.0,<13.0
+edge-tts>=7.2.8,<8.0
+PyYAML>=6.0.3,<7.0
 # OpenCV (headless) for face-aware b-roll cropping. ~35 MB install,
 # adds ~10 s to cold-start. Used only inside utils/face_crop.py — that
 # module no-ops gracefully when the import fails, so OpenCV is
 # technically optional and the requirements pin lets us drop it
 # without code changes if we ever need to slim cold-start back down.
-opencv-python-headless>=4.10.0,<5.0
+opencv-python-headless>=4.13.0.92,<5.0
