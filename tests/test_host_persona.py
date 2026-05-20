@@ -35,7 +35,10 @@ def test_load_merges_partial_override(tmp_path, monkeypatch):
     assert p.name == "Beatriz"
     assert p.handle == "globalbrnewsbr"
     # Defaults preserved for fields the file didn't override.
-    assert p.intro_line == "Here's today's brief."
+    # The default intro_line is intentionally short (≤ 1 s of audio)
+    # so the hook lands inside TikTok's first-2-second engagement
+    # window without burning half of it on branding.
+    assert p.intro_line == "Brief."
 
 
 def test_load_handles_malformed_json(tmp_path, monkeypatch):

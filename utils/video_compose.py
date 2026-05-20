@@ -27,7 +27,12 @@ log = logging.getLogger(__name__)
 
 SHORT_W, SHORT_H = 1080, 1920
 TARGET_FPS = 30
-MAX_DURATION_S = 59.0   # TikTok For You hard cap is 60s; we stay below.
+# TikTok For You hard-caps Shorts at 60s, but the algorithm rewards
+# COMPLETION RATE far more than total information density. 2025 data:
+# 25-35s videos hit ~85% completion vs ~45% for 50-60s. A 30s short
+# with high completion outperforms a 55s short with mediocre completion
+# every time. We clip the audio (and so the video) at 35s.
+MAX_DURATION_S = 35.0
 
 # How long the branded intro / outro cards appear. These are PNGs
 # (not motion clips) loop-displayed for these durations. Total

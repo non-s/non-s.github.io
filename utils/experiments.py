@@ -99,10 +99,16 @@ AXES: tuple[Axis, ...] = (
     ),
     Axis(
         name="cta_style",
+        # Order matters: variants[0] is the production fallback when no
+        # A/B winner is declared yet. engage_comment is the
+        # TikTok-native default — Follow CTAs perform poorly on TikTok
+        # (the Follow button is right there in the UI; the CTA only
+        # adds friction). Comment prompts feed the engagement signal
+        # the For You algorithm reads first.
         variants=(
-            "follow_handle",     # "Follow @wildbrief_x"
-            "engage_comment",    # "Drop your country in comments"
-            "question_close",    # "Which side wins this one?"
+            "engage_comment",    # "Drop your favorite below 👇"
+            "question_close",    # "Which one surprised you?"
+            "follow_handle",     # "Follow Alex 🐾"
         ),
         description="End-of-Short call-to-action.",
     ),
