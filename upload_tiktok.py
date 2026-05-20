@@ -528,8 +528,35 @@ def upload_video(access_token: str, meta: dict) -> str | None:
             )
             tiktok_quota.record("video.publish.init", channel=_LANGUAGE)
     except RuntimeError as exc:
-        log.error("  ❌ TikTok init failed: %s", exc)
-        return None
+        # Apps awaiting TikTok review return specific codes that we can
+        # recover from by retrying through Inbox — the video lands as a
+        # draft in the user's TikTok mobile app for them to publish
+        # manually. Beats dropping the upload until the app is approved.
+        msg = str(exc)
+        unaudited_signals = (
+            "unaudited_client_can_only_post_to_private_accounts",
+            "scope_not_authorized",
+            "unaudited_client",
+        )
+        if mode != "inbox" and any(s in msg for s in unaudited_signals):
+            log.warning(
+                "  ⚠️ TikTok refused direct post (app likely unaudited): %s",
+                msg[:200],
+            )
+            log.warning(
+                "  ⤷ Retrying via Inbox — open the TikTok app on your "
+                "phone to finalize the draft."
+            )
+            try:
+                init_payload = _init_inbox_upload(access_token, video_size)
+                tiktok_quota.record("video.upload.init", channel=_LANGUAGE)
+                mode = "inbox"
+            except RuntimeError as exc2:
+                log.error("  ❌ TikTok inbox fallback also failed: %s", exc2)
+                return None
+        else:
+            log.error("  ❌ TikTok init failed: %s", exc)
+            return None
 
     data = (init_payload.get("data") or {})
     publish_id = data.get("publish_id") or ""

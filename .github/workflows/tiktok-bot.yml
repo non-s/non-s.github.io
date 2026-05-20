@@ -148,11 +148,19 @@ jobs:
           # See SETUP.md §1.5 for the PAT setup.
           TIKTOK_SECRETS_PAT:    ${{ secrets.TIKTOK_SECRETS_PAT }}
           GH_REPO_FULL:          ${{ github.repository }}
-          # Optional knobs (default direct-post / public). Override here
-          # if the app is awaiting publish-scope approval — then the bot
-          # drops drafts in the user's inbox instead.
-          TIKTOK_PUBLISH_MODE:   ${{ vars.TIKTOK_PUBLISH_MODE || 'direct' }}
-          TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'PUBLIC_TO_EVERYONE' }}
+          # Defaults are tuned for an UNAUDITED app (TikTok's "in review"
+          # state). Unaudited apps cannot direct-post publicly — TikTok
+          # returns `unaudited_client_can_only_post_to_private_accounts`.
+          # `inbox` mode drops the video as a draft in the user's TikTok
+          # mobile app, and they tap Post to publish.
+          # Once the app is audited / approved, set repository variables:
+          #   TIKTOK_PUBLISH_MODE = direct
+          #   TIKTOK_PRIVACY      = PUBLIC_TO_EVERYONE
+          # to flip into fully-automated public publishing.
+          # The runtime ALSO falls back automatically from direct→inbox
+          # if it detects an unaudited-client error mid-run.
+          TIKTOK_PUBLISH_MODE:   ${{ vars.TIKTOK_PUBLISH_MODE || 'inbox' }}
+          TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'SELF_ONLY' }}
 
       - name: "📊 Write run summary"
         if: always()
