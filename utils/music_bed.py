@@ -44,10 +44,16 @@ log = logging.getLogger(__name__)
 
 MUSIC_CACHE_DIR = Path(os.environ.get("MUSIC_CACHE_DIR", "_data/music_cache"))
 MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "1") not in ("0", "false", "False")
-# Volume of the music bed relative to the TTS (in dB). -22 dB lands the
-# music perceptually just-noticeable under the vocal — clear but not
-# distracting. Override with `MUSIC_BED_VOLUME=-25` for quieter, etc.
-MUSIC_BED_VOLUME_DB = float(os.environ.get("MUSIC_BED_VOLUME", "-22"))
+# Volume of the music bed relative to the TTS (in dB). -26 dB lands the
+# music perceptually background — the spoken voice dominates, which
+# (a) gives the speech clarity TikTok captions track best with,
+# (b) keeps the audio fingerprint dominated by spoken word so TikTok
+#     classifies the Short closer to "original sound" (re-usable by
+#     other creators → compounding discovery).
+# Override with MUSIC_BED_VOLUME=-22 for punchier, -30 for near-silent.
+# Set MUSIC_BED_ENABLED=0 to drop music entirely (pure spoken word =
+# fully classifiable as Original Sound by TikTok).
+MUSIC_BED_VOLUME_DB = float(os.environ.get("MUSIC_BED_VOLUME", "-26"))
 
 
 @dataclass(frozen=True)

@@ -10,9 +10,13 @@ TikTok videos with original voice-over narration, and publishes them
 via the official TikTok Content Posting API 5 times a day.
 
 - Channel: <https://www.tiktok.com/@wildbrief_x> (display name: **Wild Brief**)
-- Cadence: **5 Shorts/day**, staggered at 00, 05, 10, 15, 20 UTC so
-  each gets its own For You algorithm test window. 5 posts/day = 17 %
-  of TikTok's 30/day unaudited-app ceiling — safe headroom for retries.
+- Cadence: **5 Shorts/day**, posted at 01, 14, 17, 22, 23 UTC —
+  TikTok-tuned to Brazil + US peak engagement windows (BR 19-22 BRT
+  double-stamped). 5 posts/day = 17 % of TikTok's 30/day unaudited-app
+  ceiling.
+- Duration target: **25-35 seconds** — TikTok For You rewards
+  completion rate, not length. 30s Shorts at 85 % completion beat
+  55s Shorts at 50 % completion every time.
 - Cost: **$0/month** — every layer is on a no-card free tier.
 
 **First time here?** Read [`SETUP.md`](SETUP.md) — it walks you through
@@ -142,4 +146,5 @@ To start the channel from a clean slate:
    `GROQ_API_KEY` for the fallback chain.
 3. Trigger `fetch-content.yml` manually to populate the queue.
 4. Trigger `tiktok-bot.yml` manually to publish the first Short — or
-   wait for the next cron slot (00 / 05 / 10 / 15 / 20 UTC).
+   wait for the next cron slot (01 / 14 / 17 / 22 / 23 UTC, tuned to
+   Brazil + US TikTok peak-engagement windows).

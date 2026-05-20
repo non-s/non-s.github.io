@@ -200,3 +200,11 @@ def test_ffmpeg_escape_handles_special_chars():
 def test_ffmpeg_escape_handles_empty():
     assert video_compose._ffmpeg_escape("") == ""
     assert video_compose._ffmpeg_escape(None) == ""
+
+
+def test_max_duration_targets_tiktok_completion_rate():
+    """TikTok For You rewards completion rate exponentially; we cap
+    at 35s so a 90 % completion rate is achievable on every Short
+    instead of a 50 % rate on 55s+ videos. Hard ceiling is 35s — the
+    AI prompt is tuned to 70-90 words which renders to ~25-30s."""
+    assert video_compose.MAX_DURATION_S <= 35.0

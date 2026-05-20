@@ -4,17 +4,22 @@ name: "TikTok Bot — Shorts only"
 #
 # Posting cadence:
 # TikTok's unaudited Content Posting API caps direct posts at 30/day per
-# user (and 6/min). We stay well below the cap at 5/day staggered across
-# the global prime-time windows.
+# user (and 6/min). We stay well below the cap at 5/day, BUT we time
+# the runs to TikTok's documented peak-engagement windows (not the
+# uniform-spacing pattern that worked on YouTube).
 #
-# Why five staggered runs (not one batch of 5): the For You algorithm
-# grants each post its own seed-audience test window. Batching wastes
-# explore cycles. 00 / 05 / 10 / 15 / 20 UTC = 21 / 02 / 07 / 12 / 17
-# BRT — coverage across Brazil prime time, US daytime, Europe morning
-# and evening.
+# Why 01 / 14 / 17 / 22 / 23 UTC (5/day, TikTok-tuned):
+#   01 UTC = 22h BRT (Brazil prime time)  +  20h EST (US prime time)
+#   14 UTC = 11h BRT (BR mid-morning swipe break) + 09h EST (commute)
+#   17 UTC = 14h BRT (BR lunch break)     +  12h EST (US lunch)
+#   22 UTC = 19h BRT (Brazil prime time)  +  17h EST (US after-work)
+#   23 UTC = 20h BRT (Brazil prime time)  +  18h EST (US prime time)
+# This pattern double-stamps the Brazil 19-22h window (the channel's
+# largest target market for animal content) without ever exceeding
+# the 6-min TikTok rate limit between two runs.
 on:
   schedule:
-    - cron: "0 0,5,10,15,20 * * *"
+    - cron: "0 1,14,17,22,23 * * *"
   workflow_dispatch:
 
 # Serialise with every other workflow that pushes to main.
@@ -140,25 +145,9 @@ jobs:
           PYTHONUNBUFFERED:      "1"
           TIKTOK_CLIENT_KEY:     ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET:  ${{ secrets.TIKTOK_CLIENT_SECRET }}
-          # PAT + repo are used by upload_tiktok._persist_token_to_github_secret
-          # to push the rotated refresh_token back to the TIKTOK_TOKEN
-          # secret after every refresh. Without these the channel breaks
-          # within 24h of the last manual auth_tiktok.py mint, because
-          # TikTok single-use-rotates refresh_tokens on every refresh.
-          # See SETUP.md §1.5 for the PAT setup.
-          TIKTOK_SECRETS_PAT:    ${{ secrets.TIKTOK_SECRETS_PAT }}
-          GH_REPO_FULL:          ${{ github.repository }}
-          # Defaults are set to the END-STATE the operator wants:
-          # public direct posting, fully automated. While the TikTok app
-          # is still in review, every cron run will hit the
-          # `unaudited_client_can_only_post_to_private_accounts` error
-          # — `upload_tiktok.py` treats that as a soft-skip: leaves the
-          # video pending and exits 0. The moment TikTok approves the
-          # app, the next cron starts publishing publicly with zero
-          # additional configuration.
-          # Override one or both via repository Variables if you want
-          # a different policy (e.g. `inbox` to manually finalize each
-          # short on your phone, or `SELF_ONLY` to publish privately).
+          # Optional knobs (default direct-post / public). Override here
+          # if the app is awaiting publish-scope approval — then the bot
+          # drops drafts in the user's inbox instead.
           TIKTOK_PUBLISH_MODE:   ${{ vars.TIKTOK_PUBLISH_MODE || 'direct' }}
           TIKTOK_PRIVACY:        ${{ vars.TIKTOK_PRIVACY || 'PUBLIC_TO_EVERYONE' }}
 
@@ -219,13 +208,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Refresh-token persistence happens INSIDE upload_tiktok.py via
-      # _persist_token_to_github_secret (driven by TIKTOK_SECRETS_PAT).
-      # If that PAT isn't configured, the runtime saves the rolled token
-      # only locally — and the NEXT run dies with invalid_grant because
-      # TikTok single-use-rotates refresh_tokens. SETUP.md §1.5 covers
-      # the one-time PAT setup; until then the channel works for ≤24h
-      # per manual auth_tiktok.py mint.
+      # Note: we don't try to push tiktok_token.json back to the
+      # TIKTOK_TOKEN secret here — the default GITHUB_TOKEN can't modify
+      # repository secrets. TikTok's refresh_token rotates on every
+      # refresh; the runtime saves the rolled token locally for the
+      # duration of the run, but the secret keeps the original. After
+      # ~365 days the original refresh token expires — when that
+      # happens, re-run `auth_tiktok.py` and update the secret.
 
       - name: "Log de execucao"
         if: always()

@@ -182,7 +182,7 @@ category, A/B winners.
 | Workflow | Schedule (UTC) | Purpose |
 |----------|----------------|---------|
 | `fetch-content.yml` | every 3 h | Pexels search + AI enrich → queue |
-| `tiktok-bot.yml` | 00 / 05 / 10 / 15 / 20 | 1 Short per run × 5 runs = 5 Shorts/day |
+| `tiktok-bot.yml` | 01 / 14 / 17 / 22 / 23 | 1 Short per run × 5 runs = 5 Shorts/day (BR + US peak-tuned) |
 | `analytics.yml` | 03 daily | Pull view/like/comment/share metrics |
 | `daily-digest.yml` | 04 daily | Post GitHub Issue summarising the day |
 | `dashboard.yml` | nightly | Rebuild static HTML dashboard on Pages |

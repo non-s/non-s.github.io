@@ -278,11 +278,15 @@ def write_ass(captions: list[Caption], path: Path,
               primary_colour: str = "&H00FFFFFF",
               outline_colour: str = "&H00000000",
               shadow_colour: str = "&H00000000",
-              margin_v: int = 220) -> bool:
+              margin_v: int = 360) -> bool:
     """Write a Shorts-tuned ASS subtitle file.
 
     Default style: bold white, thick black outline, dropped shadow,
-    positioned at the lower-third (margin_v from bottom). Tweak via
+    positioned in the upper-middle (margin_v from bottom). The 360px
+    margin clears TikTok's bottom UI band (caption preview + sound
+    link + share rail ≈ 250px) and leaves the captions in the dead-
+    centre safe zone where the eye lands first on a vertical feed.
+    Tweak via
     args if you want a different look. Returns True on success.
     """
     if not captions:
