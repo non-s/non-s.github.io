@@ -3,18 +3,20 @@
 """
 generate_shorts.py — Gera vídeos verticais curtos para o TikTok
 ================================================================================
-Formato: vídeo vertical 1080x1920, 45-55 segundos, uma história por vídeo.
+Formato: vídeo vertical 1080x1920, 25-35 segundos, uma história por vídeo.
 Máximo 3 vídeos por execução para respeitar limites de API.
 
-Estrutura de cada vídeo:
-  Intro       ~3s    "Wild Brief — animal fact"
-  Título      ~5s    Título em destaque
-  Ponto 1    ~10s    Primeiro bullet point
-  Ponto 2    ~10s    Segundo bullet point
-  Ponto 3    ~10s    Terceiro bullet point
-  CTA         ~5s    "Follow for more — link in bio"
+Estrutura de cada vídeo (TikTok-tuned):
+  Intro       ~1s    "Here's today's brief." (cached, voice baseline)
+  Hook        ~3s    Surprising fact, on-screen text
+  Fato 1     ~8s    Primeira surpresa
+  Fato 2     ~8s    Segunda surpresa
+  Fato 3     ~8s    Terceira surpresa (opcional)
+  CTA         ~2s    "Drop your favorite below 👇"
 
-Total alvo: ~43-55 segundos (dentro do limite de 60s do feed For You)
+Total alvo: ~25-35 segundos. TikTok For You premia completion rate
+muito mais que duração — videos de 30s com 85% completion batem
+videos de 55s com 50% completion. We clip at 35s hard.
 """
 
 import os, re, json, asyncio, subprocess, logging, shutil, sys, time, urllib.parse, contextlib
@@ -864,7 +866,10 @@ def build_short_metadata(story: dict, video_path: Path,
         "source_url":     story.get("source_url", ""),
         "geo_hashtag":    story.get("geo_hashtag", "Global"),
         "category":       category,
-        "channel_handle": os.environ.get("CHANNEL_WATERMARK", "@wildbrief_x"),
+        # channel_handle is kept on the metadata for the .done sidecar /
+        # analytics joins even when the on-frame watermark is disabled.
+        "channel_handle": (os.environ.get("CHANNEL_WATERMARK", "").strip()
+                           or "@wildbrief_x"),
         # A/B variant tags ride along all the way to the .done sidecar
         # after upload, so tiktok_analytics.py can correlate them with
         # the engagement numbers it pulls from the Display API.
@@ -1267,20 +1272,26 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         return None
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
-    # CTA axis: rotate per-Short between handle-follow, comment prompt,
-    # and a closing question. Variant assignment is deterministic on
-    # the slug so re-renders are idempotent.
+    # CTA axis: rotate per-Short between comment prompt, closing
+    # question, and Follow-the-handle. Variant assignment is
+    # deterministic on the slug so re-renders are idempotent. Default
+    # fallback is engage_comment — Follow CTAs underperform on TikTok
+    # because the Follow button is already in the native UI; comment
+    # prompts feed the engagement signal the For You algorithm reads.
     cta_variant = experiments.get("cta_style") \
                   or assign_variant("cta_style", slug)
     cta_text = {
-        "follow_handle":   "Follow @wildbrief_x",
-        "engage_comment":  "Drop your country in comments 👇",
-        "question_close":  "Which side wins this one?",
-    }.get(cta_variant, "Follow @wildbrief_x")
-    # Brand-bug watermark — channel handle in upper-right corner, on
-    # the whole duration. Standard practice on Shorts so the source
-    # stays unmistakable if the video is re-uploaded elsewhere.
-    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@wildbrief_x")
+        "follow_handle":   "Follow Alex 🐾",
+        "engage_comment":  "Drop your favorite below 👇",
+        "question_close":  "Which one surprised you?",
+    }.get(cta_variant, "Drop your favorite below 👇")
+    # Brand-bug watermark. DISABLED by default for TikTok: the platform
+    # automatically draws the @username watermark on every video the
+    # viewer downloads — adding our own creates a duplicate that looks
+    # amateur and risks collision with TikTok's verified-badge slot.
+    # Set CHANNEL_WATERMARK=@yourhandle to opt back in (useful if you're
+    # cross-posting the raw MP4 elsewhere).
+    watermark_text = os.environ.get("CHANNEL_WATERMARK", "")
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,

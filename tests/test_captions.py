@@ -156,7 +156,16 @@ def test_transcribe_returns_none_for_missing_audio(tmp_path):
     assert captions.transcribe(missing) is None
 
 
-# ── language hint ────────────────────────────────────────────────
+def test_write_ass_default_margin_v_clears_tiktok_ui(tmp_path):
+    """TikTok's bottom UI band (caption preview + sound link + share
+    rail) takes ~250 px; we keep margin_v ≥ 320 so captions land in
+    the centre-safe zone, not under the UI."""
+    import inspect
+    sig = inspect.signature(write_ass)
+    assert sig.parameters["margin_v"].default >= 320
+
+
+# ── language hint ─────────────────────────────────────────────────
 
 
 def test_whisper_language_defaults_to_en(monkeypatch):
@@ -174,8 +183,8 @@ def test_whisper_language_maps_locale_to_base(monkeypatch):
 
 
 def test_whisper_language_falls_through_for_unknown(monkeypatch):
-    """Unknown locale → empty string so Whisper auto-detects instead
-    of being poisoned by an invalid hint."""
+    """An unmapped LANGUAGE shouldn't poison the Whisper request — we
+    return "" so the caller omits the hint and Whisper auto-detects."""
     monkeypatch.setenv("LANGUAGE", "zz-ZZ")
     assert captions._whisper_language() == ""
 
@@ -207,7 +216,7 @@ def test_transcribe_groq_retries_once_on_429(tmp_path, monkeypatch):
     monkeypatch.setattr(captions.requests, "post", _fake_post)
     out = captions.transcribe_groq(audio)
     assert out is not None
-    assert call_count["n"] == 2
+    assert call_count["n"] == 2  # first 429, then 200
 
 
 def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
@@ -228,4 +237,5 @@ def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
     monkeypatch.setattr(captions.requests, "post", _fake_post)
     out = captions.transcribe_groq(audio)
     assert out is None
+    # Original + 1 retry = 2 calls total.
     assert call_count["n"] == 2

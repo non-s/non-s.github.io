@@ -61,11 +61,14 @@ class HostPersona:
 
     # Recurring opening line spoken at the very start of every Short.
     # Pre-rendered to MP3 once per voice (see utils.intro_outro) and
-    # concatenated to every render. Kept short (≤ 2 s of audio).
-    intro_line: str = "Here's today's brief."
+    # concatenated to every render. Kept short (≤ 1 s of audio) so
+    # the hook lands before the TikTok For You feed swipe-away window
+    # (~2 s) — a 2-second intro burns half that budget on branding.
+    intro_line: str = "Brief."
 
-    # Closing sign-off at the end of every Short.
-    outro_line: str = "I'm Alex. See you tomorrow."
+    # Closing sign-off — kept to ~1 second so a 30 s Short doesn't lose
+    # 7% of its airtime to outro chatter. Punchy is the goal.
+    outro_line: str = "Follow Alex."
 
     # Signature catchphrases the AI should weave in occasionally.
     # NOT every Short — overused they grate. Mention in the prompt

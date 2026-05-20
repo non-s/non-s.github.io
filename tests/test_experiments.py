@@ -51,6 +51,14 @@ def test_variant_choices_includes_documented_variants():
     assert "opinionated" in experiments.variant_choices("script_tone")
 
 
+def test_cta_default_is_engage_comment():
+    """variants[0] is the production fallback when no A/B winner has
+    been declared yet. On TikTok the engagement-driving CTA
+    (`engage_comment`) outperforms a Follow CTA, so it sits first."""
+    cta_variants = experiments.variant_choices("cta_style")
+    assert cta_variants[0] == "engage_comment"
+
+
 # ── winner computation ──────────────────────────────────────────
 
 def test_compute_winners_picks_highest_mean(monkeypatch):

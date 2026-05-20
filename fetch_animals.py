@@ -224,9 +224,10 @@ _AI_PROMPT_TEMPLATE = (
     'Good: \\"Cats purr to heal their own bones.\\". '
     'Good: \\"Dolphins call each other by name.\\". '
     'Bad: \\"Today I will tell you about cats.\\".>",'
-    '"script": "<the full voice-over for a 30-45 second short. '
-    "85-120 words. The script's FIRST WORDS MUST BE the hook, "
-    "verbatim. Then 3-5 surprising facts about the subject, each "
+    '"script": "<the full voice-over for a 25-35 second short. '
+    "70-90 words MAX (TikTok For You rewards completion-rate; "
+    "shorter wins). The script's FIRST WORDS MUST BE the hook, "
+    "verbatim. Then 2-3 surprising facts about the subject, each "
     "as a short sentence. Close with a one-line question for the "
     'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
     "no stage directions, no URLs.>\","
