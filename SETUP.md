@@ -57,7 +57,28 @@ queue is produced. Free tier: 200 req/h, 20 k req/month.
 
 ### 1.4 TikTok OAuth token
 
-1. Locally export the credentials and run the auth helper:
+Two paths — pick whichever is easier. Both end with the same JSON
+pasted into the `TIKTOK_TOKEN` GitHub secret.
+
+#### Path A — Windows .exe (no Python required)
+
+1. **Actions → "Build auth_tiktok.exe (Windows)" → Run workflow**.
+   The workflow takes ~3 min and produces a single-file `.exe`.
+2. Open the finished run → scroll to the **Artifacts** section at the
+   bottom → download `auth_tiktok-windows.zip`.
+3. Unzip and double-click `auth_tiktok.exe`. Windows SmartScreen will
+   flag it as unrecognised — click **More info → Run anyway** (we
+   don't pay for code-signing).
+4. The console prompts for `TIKTOK_CLIENT_KEY` and `TIKTOK_CLIENT_SECRET`
+   — paste the same values from §1.3.
+5. A browser opens; log in to the channel TikTok account and approve
+   the scopes. The console prints the token JSON between dashed lines.
+6. Copy everything between the dashes and paste into the `TIKTOK_TOKEN`
+   GitHub secret (Settings → Secrets → Actions → TIKTOK_TOKEN → Update).
+
+#### Path B — Local Python
+
+1. Export the credentials and run the helper directly:
 
    ```bash
    export TIKTOK_CLIENT_KEY=awxxxxxxxxxx
@@ -65,10 +86,9 @@ queue is produced. Free tier: 200 req/h, 20 k req/month.
    python auth_tiktok.py
    ```
 
-2. A browser opens, you log in with the channel's TikTok account, and
-   approve the requested scopes. The script writes `tiktok_token.json`.
-3. Paste the entire file contents as a single-line string into the
-   GitHub secret `TIKTOK_TOKEN`.
+2. A browser opens; log in with the channel's TikTok account and
+   approve the scopes. The script writes `tiktok_token.json`.
+3. Paste the file contents into the `TIKTOK_TOKEN` GitHub secret.
 
 > **If you ever see `invalid_scope` in a workflow log**, the token was
 > minted with an older scope list. Re-run `auth_tiktok.py` and update
