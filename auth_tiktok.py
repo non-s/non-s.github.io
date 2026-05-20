@@ -37,6 +37,7 @@ import sys
 import threading
 import urllib.parse
 import webbrowser
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -165,8 +166,11 @@ def main() -> None:
     payload = _exchange_code(code, client_key, client_secret)
 
     # Persist EVERYTHING returned by TikTok (access_token, refresh_token,
-    # open_id, scopes, expires_in). The runtime loader re-derives expiry.
+    # open_id, scopes, expires_in). `issued_at` lets upload_tiktok.py
+    # compute expiry on the FIRST workflow run without a wasteful
+    # preemptive refresh (which would burn the single-use refresh_token).
     payload["client_key"] = client_key
+    payload["issued_at"] = datetime.now(timezone.utc).isoformat()
     TOKEN_FILE.write_text(json.dumps(payload, indent=2))
     print(f"\n✅ Autenticação concluída! Token salvo em: {TOKEN_FILE}")
     print("\n📋 PRÓXIMO PASSO:")

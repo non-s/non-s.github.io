@@ -140,6 +140,14 @@ jobs:
           PYTHONUNBUFFERED:      "1"
           TIKTOK_CLIENT_KEY:     ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET:  ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          # PAT + repo are used by upload_tiktok._persist_token_to_github_secret
+          # to push the rotated refresh_token back to the TIKTOK_TOKEN
+          # secret after every refresh. Without these the channel breaks
+          # within 24h of the last manual auth_tiktok.py mint, because
+          # TikTok single-use-rotates refresh_tokens on every refresh.
+          # See SETUP.md §1.5 for the PAT setup.
+          TIKTOK_SECRETS_PAT:    ${{ secrets.TIKTOK_SECRETS_PAT }}
+          GH_REPO_FULL:          ${{ github.repository }}
           # Optional knobs (default direct-post / public). Override here
           # if the app is awaiting publish-scope approval — then the bot
           # drops drafts in the user's inbox instead.
@@ -203,13 +211,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Note: we don't try to push tiktok_token.json back to the
-      # TIKTOK_TOKEN secret here — the default GITHUB_TOKEN can't modify
-      # repository secrets. TikTok's refresh_token rotates on every
-      # refresh; the runtime saves the rolled token locally for the
-      # duration of the run, but the secret keeps the original. After
-      # ~365 days the original refresh token expires — when that
-      # happens, re-run `auth_tiktok.py` and update the secret.
+      # Refresh-token persistence happens INSIDE upload_tiktok.py via
+      # _persist_token_to_github_secret (driven by TIKTOK_SECRETS_PAT).
+      # If that PAT isn't configured, the runtime saves the rolled token
+      # only locally — and the NEXT run dies with invalid_grant because
+      # TikTok single-use-rotates refresh_tokens. SETUP.md §1.5 covers
+      # the one-time PAT setup; until then the channel works for ≤24h
+      # per manual auth_tiktok.py mint.
 
       - name: "Log de execucao"
         if: always()

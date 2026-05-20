@@ -112,6 +112,85 @@ def _load_token() -> dict:
     return data
 
 
+def _persist_token_to_github_secret(token: dict) -> bool:
+    """Push the rotated TikTok token JSON back to the TIKTOK_TOKEN
+    GitHub repository secret so the next workflow run starts with a
+    valid refresh_token.
+
+    TikTok rotates the refresh_token on EVERY refresh and invalidates
+    the previous one immediately. Without this round-trip, the local
+    file gets the new token but the secret keeps the (now-dead) old
+    one — and the next run dies with `invalid_grant`.
+
+    Requires two env vars (both set by the workflow):
+      - GH_REPO_FULL       (auto-set as ${{ github.repository }})
+      - TIKTOK_SECRETS_PAT (PAT with Actions secrets read+write;
+                            see SETUP.md §1.5)
+
+    Best-effort: returns False on any failure and only WARNS — we
+    still have a valid runtime token for this run; the failure mode
+    only bites the NEXT run, and the user can re-mint manually.
+    """
+    repo = os.environ.get("GH_REPO_FULL", "").strip()
+    pat = os.environ.get("TIKTOK_SECRETS_PAT", "").strip()
+    if not repo or not pat:
+        log.warning(
+            "⚠️ TIKTOK_SECRETS_PAT/GH_REPO_FULL ausentes — refresh_token "
+            "rotacionado NÃO será persistido. Próxima run vai morrer com "
+            "invalid_grant. Configure conforme SETUP.md §1.5."
+        )
+        return False
+    try:
+        from nacl import encoding, public  # type: ignore
+    except ImportError:
+        log.warning(
+            "⚠️ pynacl não está instalado — não consigo encriptar pro "
+            "GitHub Secrets API. Adicione `pynacl` em requirements.txt."
+        )
+        return False
+
+    api = f"https://api.github.com/repos/{repo}/actions/secrets"
+    headers = {
+        "Authorization":        f"Bearer {pat}",
+        "Accept":               "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    try:
+        r = requests.get(f"{api}/public-key", headers=headers, timeout=20)
+        if r.status_code != 200:
+            log.warning(
+                "⚠️ GET /actions/secrets/public-key → %s %s",
+                r.status_code, r.text[:200],
+            )
+            return False
+        pk = r.json()
+        sealed = public.SealedBox(
+            public.PublicKey(pk["key"].encode("utf-8"),
+                             encoder=encoding.Base64Encoder)
+        )
+        body = json.dumps(token, indent=2).encode("utf-8")
+        ciphertext = sealed.encrypt(body)
+        encoded = encoding.Base64Encoder.encode(ciphertext).decode("utf-8")
+
+        r = requests.put(
+            f"{api}/TIKTOK_TOKEN",
+            headers=headers,
+            json={"encrypted_value": encoded, "key_id": pk["key_id"]},
+            timeout=20,
+        )
+        if r.status_code not in (201, 204):
+            log.warning(
+                "⚠️ PUT /actions/secrets/TIKTOK_TOKEN → %s %s",
+                r.status_code, r.text[:200],
+            )
+            return False
+        log.info("🔐 TIKTOK_TOKEN GitHub secret atualizado.")
+        return True
+    except Exception as exc:
+        log.warning("⚠️ Falha ao persistir TIKTOK_TOKEN no GitHub: %s", exc)
+        return False
+
+
 def _refresh_access_token(token: dict) -> dict:
     """Use refresh_token to mint a new access_token. Saves token back."""
     client_key = (token.get("client_key")
@@ -148,22 +227,31 @@ def _refresh_access_token(token: dict) -> dict:
     new_token["client_key"] = client_key
     TOKEN_FILE.write_text(json.dumps(new_token, indent=2))
     log.info("✅ access_token renovado via refresh_token.")
+    _persist_token_to_github_secret(new_token)
     return new_token
 
 
 def _is_token_expired(token: dict) -> bool:
-    """Heuristic: TikTok access tokens last 24h; refresh if older than 23h
-    or no timestamp is available."""
-    refreshed_at = token.get("refreshed_at")
+    """True if the access_token should be refreshed proactively.
+
+    Decides based on `refreshed_at` (stamped by `_refresh_access_token`)
+    or `issued_at` (stamped by `auth_tiktok.py` at initial mint) plus
+    `expires_in`. If NEITHER timestamp is present, we trust the token
+    and skip the preemptive refresh — refreshing a fresh access_token
+    unnecessarily would burn the single-use refresh_token and break
+    the first workflow run after every manual `auth_tiktok.py` mint.
+    """
     expires_in = token.get("expires_in")
-    if not refreshed_at or not isinstance(expires_in, (int, float)):
+    if not isinstance(expires_in, (int, float)):
         return True
+    ts_str = token.get("refreshed_at") or token.get("issued_at")
+    if not ts_str:
+        return False
     try:
-        ts = datetime.fromisoformat(refreshed_at.replace("Z", "+00:00"))
+        ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
     except Exception:
         return True
     age = (datetime.now(timezone.utc) - ts).total_seconds()
-    # Refresh 5 minutes early to absorb clock skew.
     return age >= max(0, float(expires_in) - 300)
 
 
