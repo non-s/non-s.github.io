@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-generate_shorts.py — Gera YouTube Shorts verticais a partir de notícias do blog
+generate_shorts.py — Gera vídeos verticais curtos para o TikTok
 ================================================================================
-Formato: vídeo vertical 1080x1920, 45-55 segundos, uma história por Short.
-Máximo 3 Shorts por execução para respeitar limites de API.
+Formato: vídeo vertical 1080x1920, 45-55 segundos, uma história por vídeo.
+Máximo 3 vídeos por execução para respeitar limites de API.
 
-Estrutura de cada Short:
+Estrutura de cada vídeo:
   Intro       ~3s    "Wild Brief — animal fact"
   Título      ~5s    Título em destaque
   Ponto 1    ~10s    Primeiro bullet point
@@ -14,7 +14,7 @@ Estrutura de cada Short:
   Ponto 3    ~10s    Terceiro bullet point
   CTA         ~5s    "Follow for more — link in bio"
 
-Total alvo: ~43-55 segundos (dentro do limite de 60s do YouTube Shorts)
+Total alvo: ~43-55 segundos (dentro do limite de 60s do feed For You)
 """
 
 import os, re, json, asyncio, subprocess, logging, shutil, sys, time, urllib.parse, contextlib
@@ -69,7 +69,7 @@ SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
 LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
 # Cap of shorts produced per run. Overridable via env var so the
 # workflow can tune it without editing this file. Defaults to 3 —
-# matches youtube-bot.yml schedule (1 run/day × 3 shorts = 3/day).
+# matches tiktok-bot.yml schedule (1 run/day × 3 shorts = 3/day).
 MAX_SHORTS_PER_RUN = int(os.environ.get("MAX_SHORTS_PER_RUN", "3"))
 SHORT_W, SHORT_H = 1080, 1920  # vertical 9:16
 
@@ -100,7 +100,7 @@ CATEGORY_COLORS = {
 # ── TTS voice rotation ────────────────────────────────────────────
 #
 # Channel grew on Jenny's voice originally, but a single voice across
-# every Short flattens audience appetite — YouTube's algorithm notices
+# every Short flattens audience appetite — the TikTok For You algorithm notices
 # when consecutive videos sound identical and de-prioritises the second
 # (the "session homogeneity" signal). Rotating between a small panel
 # of high-quality edge-tts voices keeps things fresh without dropping
@@ -419,7 +419,7 @@ def _render_solid_color_background(category: str, dest: Path) -> bool:
 def create_short_frame(title: str, category: str, points: list[str],
                        source: str, bg_path: Path | None) -> Image.Image:
     """
-    Create a single 1080x1920 vertical frame for a YouTube Short.
+    Create a single 1080x1920 vertical frame for a TikTok Short.
     Layout (top to bottom):
       - AI background + dark overlay
       - Category badge (top ~10%)
@@ -605,7 +605,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 # Per-operator decision (2026-05-19): every Short ships with the same
 # branded vertical thumbnail (`wildbrief_short_thumb.png`) as a
 # placeholder. The operator overrides each Short's thumb manually via
-# YouTube Studio for the ones that earn a bespoke design. This is
+# TikTok Studio for the ones that earn a bespoke design. This is
 # cleaner than auto-generating a per-Short title-card thumb because:
 #   * Every channel preview tile looks instantly recognisable as Wild
 #     Brief — branding consistency at the highest-impact surface.
@@ -623,17 +623,18 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     Write the per-Short thumbnail.
 
     Current policy: every Short ships with the SAME branded vertical
-    placeholder (`wildbrief_short_thumb.png`). The operator overrides
-    each Short individually via YouTube Studio for the ones that earn
-    bespoke art. `thumbnail_text` and `category` are kept in the
+    placeholder (`wildbrief_short_thumb.png`). TikTok auto-generates a
+    cover from the video itself, but we still emit a JPEG so the
+    `.done` sidecar carries one for downstream dashboards / future
+    cross-posting. `thumbnail_text` and `category` are kept in the
     signature so older callers still type-check; they're ignored.
 
     Fallback chain:
       1. Copy the branded placeholder (the normal case).
       2. If that file is missing, save the title-card frame as JPEG.
       3. If even that fails (no PIL image passed), bail silently — the
-         uploader's `thumbnails.set()` is wrapped in try/except and will
-         just skip the thumbnail upload, letting YouTube auto-pick.
+         uploader ignores a missing thumbnail because TikTok auto-picks
+         the cover at the timestamp we send in publish init.
     """
     if SHIPPED_THUMB_PATH.exists():
         try:
@@ -738,26 +739,27 @@ def save_shorts_done(done: set):
     )
 
 
-# ── Metadados no formato upload_youtube.py ────────────────────────
+# ── Metadados no formato upload_tiktok.py ────────────────────────
 def build_short_metadata(story: dict, video_path: Path,
                          thumb_path: Path) -> dict:
     """
-    Build the JSON metadata payload that upload_youtube.py consumes.
-    Required keys downstream: title, description, tags, category_id,
-                              privacy, thumbnail, video.
+    Build the JSON metadata payload that upload_tiktok.py consumes.
+    Required keys downstream: title, description, video.
 
     SEO inputs (already authored by fetch_animals.py's prompt and carried
     on the queue entry):
 
       story["title"]          — seo_title, 40-55 chars, front-loaded
-      story["yt_tags"]        — 5 lowercase tags (entities + evergreen)
-      story["yt_description"] — 2-3 sentences ending with "#Shorts ..."
+      story["yt_tags"]        — 5 lowercase tags (kept name for queue
+                                schema back-compat; we render them inline
+                                as hashtags below)
+      story["yt_description"] — 2-3 sentences ending with hashtag block
 
-    YouTube hard limits we respect:
-      - title:        100 chars total (we soft-cap before adding the
-                      mandatory #Shorts suffix)
-      - description:  5000 chars (we emit ~500)
-      - tags:         500 chars combined across the list
+    TikTok limits we respect:
+      - caption (post.title): 2200 chars total (we emit ~500)
+      - inline hashtags: 4-6 are the sweet spot for For You discovery
+      - tags as a separate field: NOT used by TikTok; we still emit the
+        list in metadata so analytics/dashboards keep working
     """
     base_title = (story.get("title") or "").strip()
     category   = story.get("category", "wildlife")
@@ -766,98 +768,87 @@ def build_short_metadata(story: dict, video_path: Path,
     if not base_title:
         base_title = "Animal fact of the day"
 
-    # Reserve room for the " #Shorts" suffix (8 chars). YouTube weighs
-    # the first 50-60 chars heavily, so we cap at 88 + suffix = 96.
-    SUFFIX = " #Shorts"
-    cap = 100 - len(SUFFIX)
-    if len(base_title) > cap:
-        base_title = base_title[: cap - 1].rstrip(" .,;:—-") + "…"
-    yt_title = f"{base_title}{SUFFIX}"
+    # Caption headline (TikTok uses a single field). Front-load the
+    # punchy text, then let the description body + hashtags follow.
+    if len(base_title) > 150:
+        base_title = base_title[: 149].rstrip(" .,;:—-") + "…"
 
-    # ── Description: prefer the AI-authored yt_description, which is
-    # already keyword-front-loaded and capped at exactly 4 hashtags
-    # (#Shorts #WorldNews #<geo> #<topic>) by fetch_animals.py. Fall back
-    # to synthesising one from the story we have on hand — same rule:
-    # **exactly 4 hashtags**, no more (>15 = YouTube ignores all,
-    # stuffing = suppression signal).
+    # ── Hashtag block. fetch_animals.py emits #Shorts in the
+    # AI-authored description; on TikTok #Shorts has no discovery value
+    # so we rewrite to TikTok-native equivalents (#fyp + #foryou are
+    # the canonical For You trigger tags). Plus the topic + geo tags.
     geo_tag   = story.get("geo_hashtag") or "Global"
-    topic_tag = story.get("topic_hashtag") or "Breaking"
-    hashtag_block = f"#Shorts #WorldNews #{geo_tag} #{topic_tag}"
+    topic_tag = story.get("topic_hashtag") or category
+    hashtag_block = f"#fyp #foryou #{topic_tag} #{geo_tag}"
 
-    yt_desc = (story.get("yt_description") or "").strip()
-    if not yt_desc:
+    raw_desc = (story.get("yt_description") or "").strip()
+    # Strip YouTube-era hashtags so we don't carry #Shorts /
+    # #WorldNews into the TikTok caption.
+    cleaned = []
+    for line in raw_desc.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("#") and all(p.startswith("#") for p in stripped.split()):
+            continue  # drop pure hashtag lines authored for YouTube
+        cleaned.append(line)
+    body = "\n".join(cleaned).rstrip()
+    if not body:
         lead = story.get("description") or story.get("script") or ""
-        yt_desc = (
-            f"{base_title}. {lead}".strip()[:380] +
-            f"\n\nSource: {source}\n{hashtag_block}"
-        )
-    # Belt-and-braces: if the AI text already ends with hashtags, trust
-    # it (fetch_animals.py enforces the same 4-tag rule). Otherwise append
-    # the canonical hashtag block.
-    if "#Shorts" not in yt_desc:
-        yt_desc = yt_desc.rstrip() + "\n" + hashtag_block
-    yt_desc = yt_desc[:5000]
+        body = f"{base_title}. {lead}".strip()[:380] + f"\n\nSource: {source}"
 
-    # ── Tags. Queue-authored entity tags first (they're search-driven),
-    # then evergreen channel tags. Cap at 15 — well under YouTube's
-    # 500-char combined budget while leaving room for the long ones.
+    caption = f"{body}\n\n{hashtag_block}"[:2200]
+
+    # Tag list kept for analytics back-compat (the digest + dashboard
+    # both read `meta['tags']`). Not sent to TikTok directly.
     queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
     evergreen = [
-        "shorts", "animals", "animal facts", "wildlife", "nature",
+        "tiktok", "animals", "animal facts", "wildlife", "nature",
         category.lower(), f"{category.lower()} facts",
         "wild brief", "cute animals", "did you know",
     ]
     seen: set[str] = set()
     all_tags: list[str] = []
-    combined_len = 0
     for tag in queue_tags + evergreen:
         t = tag.strip().lower().lstrip("#")
         if not t or t in seen:
             continue
-        # YouTube counts: each tag, plus 1 char per separator. Stop
-        # before we breach the 500-char total.
-        if combined_len + len(t) + 1 > 500 or len(all_tags) >= 15:
-            break
         all_tags.append(t)
         seen.add(t)
-        combined_len += len(t) + 1
+        if len(all_tags) >= 15:
+            break
 
     return {
-        "title":          yt_title,
-        "description":    yt_desc,
+        # `title` is the TikTok caption (post.title in the API).
+        "title":          base_title,
+        "description":    caption,
         "tags":           all_tags,
-        "category_id":    "25",      # News & Politics
-        "privacy":        "public",
+        # TikTok privacy levels: PUBLIC_TO_EVERYONE | MUTUAL_FOLLOW_FRIENDS
+        # | SELF_ONLY. Unaudited apps may only publish as SELF_ONLY /
+        # MUTUAL_FOLLOW_FRIENDS until TikTok approves the publishing scope.
+        "privacy_level":  "PUBLIC_TO_EVERYONE",
         "thumbnail":      str(thumb_path),
         "video":          str(video_path),
         "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
-        # Vertical 9:16 + ≤60s = a Short. The flag rides through to the
-        # `.done` sidecar so youtube_analytics.py can split retention
-        # curves by surface (Shorts feed vs. regular watch page).
+        # Vertical 9:16 + ≤60s = a TikTok Short.
         "is_short":       True,
-        # Pexels source-clip identity. Propagated through metadata.json
-        # so upload_youtube can append it to the permanent dedup ledger
-        # (`_data/published_clips.json`) on a successful upload. Without
-        # this, the same Pexels clip can re-appear in the queue weeks
-        # later once `fetch_animals._prune_queue` ages it out — and a
-        # repeat upload would burn quota for zero new content.
+        # Pexels source-clip identity. Propagated so upload_tiktok can
+        # append it to the permanent dedup ledger
+        # (`_data/published_clips.json`) on a successful upload.
         "pexels_video_id":     story.get("pexels_video_id", ""),
         "pexels_download_url": story.get("pexels_download_url", ""),
         # Queue entry id (sha1 of the Pexels page URL). Second dedup
         # key after pexels_video_id; whichever the recorder has is fine.
         "story_id":            story.get("id", ""),
-        # Fields the uploader uses for the pinned first-comment + the
-        # per-region playlist. Carrying them through metadata.json keeps
-        # the generate / upload contract explicit.
+        # Source metadata (kept for analytics / dashboard).
         "source":         source,
         "source_url":     story.get("source_url", ""),
         "geo_hashtag":    story.get("geo_hashtag", "Global"),
         "category":       category,
+        "channel_handle": os.environ.get("CHANNEL_WATERMARK", "@wildbrief_x"),
         # A/B variant tags ride along all the way to the .done sidecar
-        # after upload, so youtube_analytics.py can correlate them with
-        # the retention numbers it pulls from the Analytics API.
+        # after upload, so tiktok_analytics.py can correlate them with
+        # the engagement numbers it pulls from the Display API.
         "experiments":    dict(story.get("experiments") or {}),
     }
 
@@ -946,7 +937,7 @@ def _queue_to_story(qs: dict) -> dict:
 def load_pending_stories() -> tuple[list[dict], dict]:
     """
     Return (pending_stories, raw_queue). Pending = not yet consumed AND
-    not already shipped to YouTube (`shorts_done` tracks the latter,
+    not already shipped to TikTok (`shorts_done` tracks the latter,
     handled by the caller). Stories sorted by AI quality score desc.
     """
     queue = _load_queue()
@@ -1263,14 +1254,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     cta_variant = experiments.get("cta_style") \
                   or assign_variant("cta_style", slug)
     cta_text = {
-        "follow_handle":   "Follow @wildbrief",
+        "follow_handle":   "Follow @wildbrief_x",
         "engage_comment":  "Drop your country in comments 👇",
         "question_close":  "Which side wins this one?",
-    }.get(cta_variant, "Follow @wildbrief")
+    }.get(cta_variant, "Follow @wildbrief_x")
     # Brand-bug watermark — channel handle in upper-right corner, on
     # the whole duration. Standard practice on Shorts so the source
     # stays unmistakable if the video is re-uploaded elsewhere.
-    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@wildbrief")
+    watermark_text = os.environ.get("CHANNEL_WATERMARK", "@wildbrief_x")
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,
@@ -1310,8 +1301,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 8. Metadata JSON ──────────────────────────────────────────
     metadata = build_short_metadata(story, video_path, thumb_path)
-    # Tag the metadata so the uploader can disclose synthetic/altered
-    # content to YouTube. This is required by the July 2025 policy.
+    # Tag the metadata as synthetic content. TikTok requires creators
+    # to disclose AI-generated content via the "AI-generated content"
+    # toggle inside the app; we set the flag here so the uploader can
+    # surface it if/when the Content Posting API exposes the toggle.
     metadata["altered_content"] = True
     metadata["has_broll"] = bool(broll_paths)
     metadata["has_captions"] = bool(ass_path)
@@ -1353,7 +1346,7 @@ def main():
     candidates, queue = load_pending_stories()
     # Belt-and-braces: queue dedup already excludes consumed stories,
     # but shorts_done covers the case where a story was published to
-    # YouTube but the workflow died before marking it consumed.
+    # TikTok but the workflow died before marking it consumed.
     candidates = [c for c in candidates if c["slug"] not in shorts_done]
 
     # Honour the operator's `/block <slug>` decisions from the daily

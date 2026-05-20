@@ -1,10 +1,10 @@
 """
 utils/velocity.py — Snapshot Shorts view counts at +2h / +6h / +24h.
 
-The Shorts algorithm reads early-window velocity as the strongest
+The TikTok For You algorithm reads early-window velocity as the strongest
 signal that a video is worth distributing further: a Short that hits
-1 000 views in its first 2 h gets a meaningful explore-tab boost.
-A Short that limps under 100 views in 2 h gets quietly shelved.
+1 000 views in its first 2 h gets a meaningful For You boost. A Short
+that limps under 100 views in 2 h gets quietly shelved.
 
 We can't manipulate velocity directly, but we CAN learn from it:
 
@@ -15,7 +15,8 @@ We can't manipulate velocity directly, but we CAN learn from it:
   4. Feed back into fetch_animals.py's scoring on the next run
 
 The third + fourth steps land in the analytics workflow; this module
-is the data-collection half.
+is the data-collection half. Data source: TikTok `/v2/video/query/`
+endpoint, joined to the local `.done` sidecar registry.
 """
 from __future__ import annotations
 
@@ -26,6 +27,8 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import requests
+
 log = logging.getLogger(__name__)
 
 VELOCITY_LOG = Path(os.environ.get("VELOCITY_LOG", "_data/velocity.jsonl"))
@@ -34,6 +37,10 @@ VELOCITY_LOG = Path(os.environ.get("VELOCITY_LOG", "_data/velocity.jsonl"))
 # the workflow runs at fixed cron times rather than offset-anchored.
 SNAPSHOT_OFFSETS_H = (2, 6, 24)
 SNAPSHOT_TOLERANCE_H = 1.5
+
+API_BASE        = "https://open.tiktokapis.com"
+VIDEO_QUERY_URL = f"{API_BASE}/v2/video/query/"
+VIDEO_FIELDS    = "id,view_count,like_count,comment_count,share_count"
 
 
 def _iter_jsonl(path: Path):
@@ -91,7 +98,6 @@ def _videos_due_for_snapshot(done_dir: Path,
 
 def _already_snapshotted(video_id: str, offset_h: int,
                          path: Path | None = None) -> bool:
-    # Resolve at call time so tests can monkeypatch VELOCITY_LOG.
     p = path or VELOCITY_LOG
     for entry in _iter_jsonl(p):
         if (entry.get("video_id") == video_id and
@@ -107,17 +113,60 @@ def _append(entry: dict, path: Path | None = None) -> None:
         fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
 
-def snapshot_velocities(youtube,
+def _query_tiktok_videos(access_token: str, video_ids: list[str]) -> dict[str, dict]:
+    """POST /v2/video/query/ — fetch current stats for a list of own videos.
+
+    Returns {video_id: stats_dict}. TikTok caps `filters.video_ids` at
+    20 per request, so we batch.
+    """
+    out: dict[str, dict] = {}
+    for i in range(0, len(video_ids), 20):
+        chunk = video_ids[i:i + 20]
+        body = {"filters": {"video_ids": chunk}}
+        try:
+            resp = requests.post(
+                VIDEO_QUERY_URL,
+                params={"fields": VIDEO_FIELDS},
+                json=body,
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Content-Type":  "application/json; charset=UTF-8",
+                },
+                timeout=30,
+            )
+            payload = resp.json()
+        except Exception as exc:
+            log.warning("velocity: video/query failed: %s", exc)
+            continue
+        if resp.status_code >= 400:
+            log.warning("velocity: video/query HTTP %d: %s",
+                        resp.status_code, payload)
+            continue
+        for v in (payload.get("data") or {}).get("videos") or []:
+            vid = str(v.get("id", ""))
+            if vid:
+                out[vid] = v
+    return out
+
+
+def snapshot_velocities(access_token: str | None = None,
                          done_dirs: tuple[Path, ...] = (Path("_videos"),
                                                           Path("_videos_pt-BR")),
                          now: float | None = None) -> int:
-    """For each .done sidecar in window, pull current view count + record.
+    """For each .done sidecar in window, pull current stats + record.
 
     Returns the number of snapshots written. Idempotent — re-runs in
     the same offset window skip the videos already recorded for that
     offset.
+
+    `access_token` may be omitted; in that case we resolve it via
+    `upload_tiktok.get_access_token()`.
     """
-    from utils import youtube_quota
+    from utils import tiktok_quota
+
+    if not access_token:
+        from upload_tiktok import get_access_token
+        access_token, _ = get_access_token()
 
     n = 0
     targets: list[dict] = []
@@ -126,48 +175,39 @@ def snapshot_velocities(youtube,
     if not targets:
         log.info("velocity: nothing due for snapshot this run")
         return 0
-    # Batch by 50 (videos.list takes comma-separated ids).
     by_id: dict[str, dict] = {t["video_id"]: t for t in targets if t["video_id"]}
     ids = list(by_id)
     log.info("velocity: %d video(s) due for snapshot", len(ids))
-    for i in range(0, len(ids), 50):
-        chunk = ids[i:i + 50]
-        try:
-            resp = youtube.videos().list(
-                part="statistics", id=",".join(chunk),
-            ).execute()
-            youtube_quota.record("videos.list",
-                                   video_id=chunk[0] if chunk else "")
-        except Exception as exc:
-            log.warning("velocity: videos.list failed: %s", exc)
+
+    stats_by_id = _query_tiktok_videos(access_token, ids)
+    tiktok_quota.record("video.query", channel="en")
+
+    for vid, v in stats_by_id.items():
+        target = by_id.get(vid)
+        if not target:
             continue
-        for item in resp.get("items", []):
-            vid = item["id"]
-            target = by_id.get(vid)
-            if not target:
-                continue
-            offset = target["offset_h"]
-            if _already_snapshotted(vid, offset):
-                continue
-            stats = item.get("statistics") or {}
-            entry = {
-                "ts":           time.time(),
-                "iso":          datetime.now(timezone.utc).isoformat(),
-                "video_id":     vid,
-                "slug":         target["slug"],
-                "offset_h":     offset,
-                "views":        int(stats.get("viewCount", 0)),
-                "likes":        int(stats.get("likeCount", 0)),
-                "comments":     int(stats.get("commentCount", 0)),
-                "uploaded_at":  target["uploaded_at"],
-                "category":     target["category"],
-                "experiments":  target["experiments"],
-                "language":     target["language"],
-            }
-            _append(entry)
-            n += 1
-            log.info("  📈 %s @+%dh → %d views",
-                     vid, offset, entry["views"])
+        offset = target["offset_h"]
+        if _already_snapshotted(vid, offset):
+            continue
+        entry = {
+            "ts":           time.time(),
+            "iso":          datetime.now(timezone.utc).isoformat(),
+            "video_id":     vid,
+            "slug":         target["slug"],
+            "offset_h":     offset,
+            "views":        int(v.get("view_count")    or 0),
+            "likes":        int(v.get("like_count")    or 0),
+            "comments":     int(v.get("comment_count") or 0),
+            "shares":       int(v.get("share_count")   or 0),
+            "uploaded_at":  target["uploaded_at"],
+            "category":     target["category"],
+            "experiments":  target["experiments"],
+            "language":     target["language"],
+        }
+        _append(entry)
+        n += 1
+        log.info("  📈 %s @+%dh → %d views",
+                 vid, offset, entry["views"])
     return n
 
 

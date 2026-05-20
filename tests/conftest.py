@@ -38,7 +38,7 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
 
     # Each (module, attribute, path-fragment) tuple gets isolated.
     overrides = [
-        ("utils.youtube_quota",   "QUOTA_LOG",         "quota_log.jsonl"),
+        ("utils.tiktok_quota",    "QUOTA_LOG",         "tiktok_quota_log.jsonl"),
         ("utils.provider_stats",  "STATS_LOG",         "provider_stats.jsonl"),
         ("utils.channel_memory",  "MEMORY_LOG",        "channel_memory.jsonl"),
         ("utils.velocity",        "VELOCITY_LOG",      "velocity.jsonl"),
@@ -68,12 +68,9 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     except Exception:
         pass
 
-    # Same story for the comment-403 latch in upload_youtube.
-    try:
-        import upload_youtube as _uy
-        _uy._reset_comments_disabled_for_tests()
-    except Exception:
-        pass
+    # No comment latch on TikTok (comment management isn't supported
+    # by the Open API), but keep the hook for backwards compat with
+    # tests that monkeypatch the upload module.
 
 
 @pytest.fixture
