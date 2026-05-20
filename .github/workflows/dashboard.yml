@@ -1,9 +1,9 @@
 name: "📊 Build + deploy dashboard"
 
 # Builds the static channel-analytics dashboard from
-# `_data/analytics/*` and publishes it to GitHub Pages.
-# Runs nightly after the analytics workflow has populated the CSV
-# snapshots, plus on-demand via workflow_dispatch.
+# `_data/analytics/*` and publishes it to GitHub Pages,
+# plus a handful of static legal/OAuth pages used by the
+# TikTok app (terms / privacy / OAuth callback / signature).
 
 on:
   schedule:
@@ -15,8 +15,6 @@ permissions:
   pages:    write
   id-token: write
 
-# Single concurrent dashboard build — cancel in-flight runs since
-# we only ever want the latest snapshot live.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -34,6 +32,20 @@ jobs:
 
       - name: "Build dashboard HTML"
         run: python scripts/build_dashboard.py
+
+      - name: "Copy static pages (terms / privacy / OAuth callback / TikTok signature)"
+        run: |
+          mkdir -p _site
+          cp -f terms.html             _site/ 2>/dev/null || true
+          cp -f privacy.html           _site/ 2>/dev/null || true
+          cp -f tiktok-callback.html   _site/ 2>/dev/null || true
+          # TikTok URL-prefix verification file — keep the file at the repo
+          # root and it will be served at /tiktok<hash>.txt on Pages.
+          for f in tiktok*.txt; do
+            [ -e "$f" ] && cp -f "$f" _site/
+          done
+          echo "----- _site contents -----"
+          ls -la _site/
 
       - name: "Upload Pages artifact"
         uses: actions/upload-pages-artifact@v3
