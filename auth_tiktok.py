@@ -143,16 +143,17 @@ class _CallbackHandler(http.server.BaseHTTPRequestHandler):
 
 
 def _capture_code(state: str, port: int) -> str:
-    """Spin up a one-shot local server to receive the OAuth redirect."""
+    """Spin up a one-shot local server to receive the OAuth redirect.
+
+    The previous implementation raced two competing handlers
+    (a `serve_forever` daemon thread + a `handle_request` loop on the
+    main thread), which sometimes hung after the callback arrived.
+    TikTok only ever sends ONE callback, so a single blocking
+    `handle_request()` is both simpler and correct.
+    """
     with socketserver.TCPServer(("127.0.0.1", port), _CallbackHandler) as srv:
         srv.timeout = 300  # 5 min to click the consent screen
-        thread = threading.Thread(target=srv.serve_forever, daemon=True)
-        thread.start()
-        while _CallbackHandler.code is None:
-            srv.handle_request()
-            if _CallbackHandler.code is not None:
-                break
-        srv.shutdown()
+        srv.handle_request()
     if _CallbackHandler.state != state:
         raise RuntimeError(
             "OAuth state mismatch — possible CSRF. Aborting."
@@ -219,7 +220,22 @@ def main() -> None:
         sys.exit(1)
 
     print("🔁 Trocando code por access_token + refresh_token…")
-    payload = _exchange_code(code, client_key, client_secret, code_verifier)
+    # Debug: helps diagnose mismatched-PKCE errors. None of these
+    # leak the access_token; the verifier is only useful WITH the
+    # one-shot OAuth code that's already been spent on this call.
+    _vsha = hashlib.sha256(code_verifier.encode("ascii")).digest()
+    _vchallenge = base64.urlsafe_b64encode(_vsha).decode("ascii").rstrip("=")
+    print(f"   debug code      head: {code[:24]}…")
+    print(f"   debug verifier  head: {code_verifier[:24]}… (len={len(code_verifier)})")
+    print(f"   debug challenge sent: {code_challenge}")
+    print(f"   debug sha(verifier) : {_vchallenge}")
+    print(f"   debug match         : {_vchallenge == code_challenge}")
+    try:
+        payload = _exchange_code(code, client_key, client_secret, code_verifier)
+    except RuntimeError as exc:
+        print(f"\n❌ {exc}")
+        input("\nPressione Enter para fechar...")
+        sys.exit(1)
 
     payload["client_key"] = client_key
     payload["issued_at"] = datetime.now(timezone.utc).isoformat()
