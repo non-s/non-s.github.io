@@ -458,8 +458,15 @@ def _upload_chunks(upload_url: str, video_path: Path) -> None:
 def _poll_publish_status(access_token: str, publish_id: str) -> dict:
     """Poll status/fetch until terminal state. Returns the final payload.
 
-    Terminal states: PUBLISH_COMPLETE, FAILED. Intermediate: PROCESSING_*,
-    PROCESSING_UPLOAD, etc.
+    Terminal states:
+      - PUBLISH_COMPLETE    → direct-post succeeded
+      - SEND_TO_USER_INBOX  → inbox upload reached the user's TikTok
+                              app; they finalize publish manually. This
+                              is terminal for inbox mode — polling
+                              forever for PUBLISH_COMPLETE would just
+                              waste 5 min and exit with TimeoutError.
+      - FAILED              → permanent failure
+    Intermediate: PROCESSING_UPLOAD, PROCESSING_*.
     """
     deadline = time.time() + STATUS_POLL_MAX_S
     wait = STATUS_POLL_INITIAL
@@ -471,7 +478,7 @@ def _poll_publish_status(access_token: str, publish_id: str) -> dict:
         data = (payload.get("data") or {})
         status = data.get("status", "")
         log.info("  📡 publish status: %s", status or "(empty)")
-        if status == "PUBLISH_COMPLETE":
+        if status in ("PUBLISH_COMPLETE", "SEND_TO_USER_INBOX"):
             return data
         if status == "FAILED":
             reason = data.get("fail_reason") or data
