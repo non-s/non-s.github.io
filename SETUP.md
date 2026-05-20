@@ -74,11 +74,39 @@ queue is produced. Free tier: 200 req/h, 20 k req/month.
 > minted with an older scope list. Re-run `auth_tiktok.py` and update
 > the secret.
 
-> **Refresh tokens roll on every refresh.** The runtime saves the
-> rotated token locally for the duration of the run, but the
-> GitHub secret keeps the original. After ~365 days, when the
-> original refresh token expires, re-run `auth_tiktok.py` and update
-> `TIKTOK_TOKEN`.
+> **Refresh tokens are single-use.** TikTok rotates the refresh_token
+> on every refresh and immediately invalidates the previous one — so
+> the runtime token diverges from the GitHub secret on the very first
+> refresh. Without **§1.5** below the channel breaks within ≤24 h of
+> every manual mint. §1.5 closes the loop so the bot keeps itself
+> authenticated indefinitely.
+
+### 1.5 GitHub PAT for auto-rotating the TikTok token
+
+This is the lever that turns the bot into a fire-and-forget channel.
+After every successful TikTok OAuth refresh, `upload_tiktok.py` calls
+the GitHub Secrets API to PUT the rolled token JSON back into
+`TIKTOK_TOKEN`. Without the PAT this round-trip silently no-ops, the
+local file is shredded at end-of-job, and the next run dies with
+`invalid_grant`.
+
+1. Generate a Fine-grained PAT at
+   <https://github.com/settings/personal-access-tokens/new>:
+     - **Resource owner**: the account/org that owns this repo.
+     - **Repository access**: *Only select repositories* → pick this repo.
+     - **Permissions → Repository → Secrets**: **Read and write**.
+     - **Expiration**: 1 year (rotate annually; GitHub emails reminders).
+2. Copy the PAT and add it as `TIKTOK_SECRETS_PAT` under
+   **Settings → Secrets and variables → Actions → New repository secret**.
+
+That's it — the workflow already passes `TIKTOK_SECRETS_PAT` and
+`GH_REPO_FULL` to the upload step. From the next run onward, every
+refresh round-trips back into the secret and the loop self-heals.
+
+> **What if you skip §1.5?** The channel still works, just not on
+> autopilot: you'll see `invalid_grant` in the logs on the next refresh
+> (≤24 h later) and have to re-run `auth_tiktok.py` + paste the JSON
+> into `TIKTOK_TOKEN` every single time.
 
 ---
 
