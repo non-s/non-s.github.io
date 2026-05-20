@@ -95,6 +95,11 @@ KEEP_DAYS = int(os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 #                    same 4 phrases every time.
 #   * `topic_hashtag` — CamelCase channel hashtag for the description.
 #   * `tags`       — base evergreen tags appended after the AI-picked ones.
+#   * `discovery_hashtags` — TikTok-native lowercase hashtags. Each row
+#                    mixes broad (#fyp, #foryou), niche (#cattok), and
+#                    intent (#didyouknow) per the 2025 For You research:
+#                    5-7 tags is the sweet spot, the niche `*tok`
+#                    suffix tags dominate non-FYP discovery surfaces.
 #   * `description_prefix` — handed to the AI as the "what this clip
 #                    shows" context. Keeps the prompt under control
 #                    without giving the model open license to invent.
@@ -106,6 +111,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "Cats",
         "tags": ["cats", "kittens", "cat facts", "feline"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "cats", "cattok", "catsoftiktok", "funfacts",
+        ],
         "description_prefix": "A clip of cats / kittens",
     },
     "dogs": {
@@ -115,6 +123,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "Dogs",
         "tags": ["dogs", "puppies", "dog facts", "canine"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "dogs", "dogtok", "dogsoftiktok", "funfacts",
+        ],
         "description_prefix": "A clip of dogs / puppies",
     },
     "ocean": {
@@ -124,6 +135,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "Ocean",
         "tags": ["ocean", "marine life", "sea animals", "underwater"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "ocean", "oceanlife", "marinelife", "funfacts",
+        ],
         "description_prefix": "A clip of marine life in the ocean",
     },
     "wildlife": {
@@ -133,6 +147,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "Wildlife",
         "tags": ["wildlife", "wild animals", "nature", "safari"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "wildlife", "wildanimals", "safari", "funfacts",
+        ],
         "description_prefix": "A clip of wild animals in nature",
     },
     "birds": {
@@ -142,6 +159,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "Birds",
         "tags": ["birds", "bird facts", "avian", "wildlife"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "birds", "birdtok", "birdsoftiktok", "funfacts",
+        ],
         "description_prefix": "A clip of birds",
     },
     "farm": {
@@ -151,6 +171,9 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "topic_hashtag": "FarmAnimals",
         "tags": ["farm animals", "horses", "farm life", "countryside"],
+        "discovery_hashtags": [
+            "fyp", "foryou", "farmanimals", "farmtok", "countrylife", "funfacts",
+        ],
         "description_prefix": "A clip of farm animals",
     },
 }
@@ -191,8 +214,8 @@ _AI_PROMPT_TEMPLATE = (
     '"yt_description": "<2-3 sentences. Sentence 1 repeats the '
     "subject keyword. Sentence 2 is the single most surprising "
     "fact from the script. Last line is exactly "
-    '\\"Source: Pexels\\" — the build step appends the hashtags '
-    "(#Shorts #Animals #<topic>). No URLs.>\","
+    '\\"Source: Pexels\\". Do NOT include any hashtags — the build '
+    "step adds TikTok-tuned hashtags afterwards. No URLs.>\","
     '"thumbnail_text": "<2-4 word punchy phrase the thumbnail '
     "overlay will use. ALL CAPS allowed. "
     'E.g. WHY CATS PURR, DOLPHIN NAMES, FOX SECRETS.>",'
@@ -267,14 +290,17 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
         "sentiment":      "positive",  # animal content is always positive
     }
 
-    # Build the final description with channel-standard hashtags.
-    hashtag_block = f"#Shorts #Animals #{topic_hashtag}"
+    # Hashtags are NOT injected here anymore — generate_shorts.py owns
+    # the TikTok hashtag block construction (it knows the locale-specific
+    # discovery tags and the For You-tuned mix). We just hand off a
+    # clean description body; any stray hashtag lines authored by the
+    # model are stripped so the caption builder doesn't have to.
     raw_desc = out["yt_description"]
     if not raw_desc:
         base = out["script"] or out["seo_title"]
         raw_desc = f"{base}\n\nSource: Pexels"
     cleaned_desc = re.sub(r"(?m)^#.*$", "", raw_desc).rstrip()
-    out["yt_description"] = (cleaned_desc + "\n" + hashtag_block)[:500]
+    out["yt_description"] = cleaned_desc[:500]
     return out
 
 
@@ -454,6 +480,10 @@ def _build_story(clip_subject: str,
         "script":         ai_out["script"],
         "lead":           ai_out["lead"],
         "sentiment":      ai_out["sentiment"],
+        # TikTok discovery hashtags (lowercase, mix broad+niche+intent).
+        # Carried on the queue so generate_shorts can drop them into the
+        # caption without reaching back into ANIMAL_TOPICS.
+        "discovery_hashtags": list(topic_cfg.get("discovery_hashtags") or []),
         # Pexels-specific extras — kept so a follow-up PR can later
         # bias `generate_shorts.acquire_broll_clips` to PREFER the
         # exact clip that informed the script.

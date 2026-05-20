@@ -57,9 +57,10 @@ def test_ai_enhance_animal_parses_valid_json(monkeypatch):
     assert out["seo_title"].startswith("Why cats really purr")
     assert out["hook"].startswith("Cats purr")
     assert out["topic_hashtag"] == "Cats"
-    assert "#Shorts" in out["yt_description"]
-    assert "#Animals" in out["yt_description"]
-    assert "#Cats" in out["yt_description"]
+    # _ai_enhance_animal no longer appends hashtags to yt_description —
+    # generate_shorts.py owns the TikTok hashtag block.
+    assert "#Shorts" not in out["yt_description"]
+    assert "#Animals" not in out["yt_description"]
     assert out["sentiment"] == "positive"
 
 
@@ -98,9 +99,7 @@ def test_build_story_shape_matches_news_queue_schema():
     # Reproduce the post-parse normalisation _ai_enhance_animal does.
     ai_out["geo_hashtag"] = "Global"
     ai_out["lead"] = ai_out["script"][:400]
-    ai_out["yt_description"] = (
-        ai_out["yt_description"] + "\n#Shorts #Animals #Cats"
-    )[:500]
+    # No hashtag injection anymore — generate_shorts owns that step.
     story = fetch_animals._build_story(
         clip_subject="cat playing",
         topic_key="cats",
@@ -119,8 +118,15 @@ def test_build_story_shape_matches_news_queue_schema():
         "seo_title", "yt_tags", "geo_hashtag", "topic_hashtag",
         "yt_description", "thumbnail_text", "hook", "script", "lead",
         "sentiment",
+        # TikTok discovery hashtag bundle (set from ANIMAL_TOPICS).
+        "discovery_hashtags",
     ):
         assert required in story, f"missing field: {required}"
+    # Each topic ships a non-empty discovery_hashtag list with the
+    # broad-reach trigger tags up front.
+    assert "fyp" in story["discovery_hashtags"]
+    assert "foryou" in story["discovery_hashtags"]
+    assert "cats" in story["discovery_hashtags"]
 
 
 def test_build_story_starts_unconsumed():
@@ -228,6 +234,17 @@ def test_every_topic_has_queries_and_hashtag():
         assert cfg.get("queries"), f"{key} has no queries"
         assert cfg.get("topic_hashtag"), f"{key} has no topic_hashtag"
         assert cfg.get("tags"), f"{key} has no tags"
+        # TikTok discovery hashtag bundle is required for the caption
+        # builder. Each must start with #fyp #foryou for For You reach.
+        disc = cfg.get("discovery_hashtags") or []
+        assert len(disc) >= 4, f"{key} discovery_hashtags too short"
+        assert "fyp" in disc, f"{key} missing #fyp"
+        assert "foryou" in disc, f"{key} missing #foryou"
+        # All hashtags lowercase + alphanumeric only (TikTok strips
+        # punctuation; mixed-case fragments discovery).
+        for tag in disc:
+            assert tag == tag.lower(), f"{key} hashtag {tag!r} not lowercase"
+            assert tag.isalnum(), f"{key} hashtag {tag!r} not alphanumeric"
 
 
 # ── Permanent published-clips dedup ledger ───────────────────────

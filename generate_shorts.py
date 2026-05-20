@@ -162,8 +162,6 @@ def pick_voice(seed_text: str, category: str = "",
     return panel[0] if panel else HOST_VOICE_PRIMARY
 
 
-SHORTS_HASHTAGS = "#Shorts #WildBrief #Animals #AnimalFacts #Wildlife #Nature"
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -773,13 +771,34 @@ def build_short_metadata(story: dict, video_path: Path,
     if len(base_title) > 150:
         base_title = base_title[: 149].rstrip(" .,;:—-") + "…"
 
-    # ── Hashtag block. fetch_animals.py emits #Shorts in the
-    # AI-authored description; on TikTok #Shorts has no discovery value
-    # so we rewrite to TikTok-native equivalents (#fyp + #foryou are
-    # the canonical For You trigger tags). Plus the topic + geo tags.
-    geo_tag   = story.get("geo_hashtag") or "Global"
-    topic_tag = story.get("topic_hashtag") or category
-    hashtag_block = f"#fyp #foryou #{topic_tag} #{geo_tag}"
+    # ── Hashtag block (TikTok For You-tuned).
+    # Research (2025-2026): TikTok rewards 5-7 lowercase hashtags mixing
+    # broad reach (#fyp #foryou), category niche (#cats #cattok), and
+    # intent (#funfacts #didyouknow). Mixed-case tags fragment discovery
+    # so we lowercase everything. We DROP geo_hashtag entirely — animal
+    # content has no geographic relevance, and #Global has zero search
+    # volume on TikTok.
+    discovery = list(story.get("discovery_hashtags") or [])
+    if not discovery:
+        # Fallback for queue entries written before discovery_hashtags
+        # landed: synthesise a reasonable set from category + topic.
+        cat = (category or "animals").lower()
+        topic_tag = (story.get("topic_hashtag") or category or "animals").lower()
+        topic_tag = "".join(ch for ch in topic_tag if ch.isalnum())
+        discovery = ["fyp", "foryou", cat, topic_tag, "animals", "funfacts"]
+    # Dedupe while preserving order; cap at 7.
+    seen_h: set[str] = set()
+    final_tags: list[str] = []
+    for tag in discovery:
+        t = str(tag).strip().lower().lstrip("#")
+        t = "".join(ch for ch in t if ch.isalnum())  # TikTok strips punctuation
+        if not t or t in seen_h:
+            continue
+        final_tags.append(t)
+        seen_h.add(t)
+        if len(final_tags) >= 7:
+            break
+    hashtag_block = " ".join(f"#{t}" for t in final_tags)
 
     raw_desc = (story.get("yt_description") or "").strip()
     # Strip YouTube-era hashtags so we don't carry #Shorts /
