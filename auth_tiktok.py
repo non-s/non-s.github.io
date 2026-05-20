@@ -28,7 +28,6 @@ Uso
 """
 from __future__ import annotations
 
-import base64
 import hashlib
 import http.server
 import json
@@ -61,15 +60,20 @@ TOKEN_URL = "https://open.tiktokapis.com/v2/oauth/token/"
 
 
 def _generate_pkce_pair() -> tuple[str, str]:
-    """Return a (code_verifier, code_challenge) pair per RFC 7636.
+    """Return a (code_verifier, code_challenge) pair for TikTok OAuth.
 
-    TikTok's v2 OAuth flow requires PKCE — without `code_challenge`
-    + `code_challenge_method=S256` on the authorize URL, the consent
-    screen rejects the request with a `code_challenge` error.
+    TikTok's PKCE deviates from RFC 7636: instead of the standard
+    base64url(SHA256(verifier)), TikTok requires HEX encoding of the
+    SHA-256 hash. The `code_challenge_method=S256` parameter is still
+    advertised. We followed the standard initially and TikTok rejected
+    every exchange with `Code verifier or code challenge is invalid`
+    despite a local SHA-256 round-trip matching — the mismatch was
+    against TikTok's internally-recomputed *hex* digest.
+
+    See: https://developers.tiktok.com/doc/login-kit-desktop/
     """
     verifier = secrets.token_urlsafe(64)        # 43-128 URL-safe chars
-    digest = hashlib.sha256(verifier.encode("ascii")).digest()
-    challenge = base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+    challenge = hashlib.sha256(verifier.encode("ascii")).hexdigest()
     return verifier, challenge
 
 
@@ -220,16 +224,6 @@ def main() -> None:
         sys.exit(1)
 
     print("🔁 Trocando code por access_token + refresh_token…")
-    # Debug: helps diagnose mismatched-PKCE errors. None of these
-    # leak the access_token; the verifier is only useful WITH the
-    # one-shot OAuth code that's already been spent on this call.
-    _vsha = hashlib.sha256(code_verifier.encode("ascii")).digest()
-    _vchallenge = base64.urlsafe_b64encode(_vsha).decode("ascii").rstrip("=")
-    print(f"   debug code      head: {code[:24]}…")
-    print(f"   debug verifier  head: {code_verifier[:24]}… (len={len(code_verifier)})")
-    print(f"   debug challenge sent: {code_challenge}")
-    print(f"   debug sha(verifier) : {_vchallenge}")
-    print(f"   debug match         : {_vchallenge == code_challenge}")
     try:
         payload = _exchange_code(code, client_key, client_secret, code_verifier)
     except RuntimeError as exc:
