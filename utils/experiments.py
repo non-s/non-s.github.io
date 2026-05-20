@@ -100,7 +100,7 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="cta_style",
         variants=(
-            "follow_handle",     # "Follow @wildbrief"
+            "follow_handle",     # "Follow @wildbrief_x"
             "engage_comment",    # "Drop your country in comments"
             "question_close",    # "Which side wins this one?"
         ),
@@ -173,8 +173,9 @@ def compute_winners(observations: Iterable[dict],
         "winners":     {axis: variant_with_best_mean OR omitted if too few samples}
       }
 
-    `score` is typically `avg_view_pct` from YouTube Analytics. The
-    metric must be "higher = better".
+    `score` is typically the TikTok engagement rate
+    (likes+comments+shares)/views from tiktok_analytics.py. The metric
+    must be "higher = better".
     """
     stats: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
     for obs in observations:
