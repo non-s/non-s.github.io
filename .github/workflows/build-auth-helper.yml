@@ -1,20 +1,4 @@
-name: "Build auth_tiktok.exe (Windows)"
-
-# One-shot helper: packages `auth_tiktok.py` into a standalone Windows
-# .exe so the operator can run the OAuth flow without installing
-# Python locally. Triggered manually — the artifact lives 7 days.
-#
-# How to use:
-#   1. Actions → "Build auth_tiktok.exe (Windows)" → Run workflow
-#   2. Wait ~3 min for it to finish
-#   3. Open the run → scroll to "Artifacts" → download `auth_tiktok-windows.zip`
-#   4. Unzip and double-click `auth_tiktok.exe`
-#   5. Paste your TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET when prompted
-#   6. Browser opens → log in to @wildbrief_x → authorize
-#   7. Copy the printed JSON → paste into the TIKTOK_TOKEN GitHub secret
-#
-# Note: Windows SmartScreen will flag the .exe as "unrecognised" since
-# we don't pay for code-signing. Click "More info → Run anyway".
+name: "Build auth_youtube.exe (Windows)"
 
 on:
   workflow_dispatch:
@@ -27,42 +11,22 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4.2.2
-
-      - name: "Python 3.11"
-        uses: actions/setup-python@v5.3.0
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
-
       - name: "Install PyInstaller + auth deps"
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller==6.11.1 requests==2.32.3
-
-      - name: "Build single-file .exe"
-        # --console keeps the terminal window open so the user sees
-        # the printed JSON. --onefile bundles everything (no DLLs).
-        # --clean strips PyInstaller's cache so reruns are reproducible.
+          pip install pyinstaller==6.11.1 "google-auth-oauthlib>=1.2.0,<2.0"
+      - name: "Build auth_youtube.exe"
         run: |
           pyinstaller --onefile --console --clean ^
-                      --name auth_tiktok ^
-                      auth_tiktok.py
+                      --name auth_youtube ^
+                      auth_youtube.py
         shell: cmd
-
-      - name: "Sanity check the binary exists"
-        run: |
-          if (-not (Test-Path dist/auth_tiktok.exe)) {
-            Write-Error "auth_tiktok.exe not found in dist/"
-            exit 1
-          }
-          Get-Item dist/auth_tiktok.exe | Select-Object Name, Length
-        shell: pwsh
-
-      - name: "Upload .exe as artifact"
-        uses: actions/upload-artifact@v4.4.3
+      - uses: actions/upload-artifact@v4.4.3
         with:
-          name: auth_tiktok-windows
-          path: dist/auth_tiktok.exe
+          name: auth_youtube-windows
+          path: dist/auth_youtube.exe
           retention-days: 7
-          if-no-files-found: error
