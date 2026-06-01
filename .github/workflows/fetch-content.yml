@@ -1,138 +1,99 @@
-# ============================================================
-# .github/workflows/fetch-content.yml
-# Refresh the animal Shorts queue (_data/stories_queue.json) by
-# searching Pexels across 6 animal categories and running each clip
-# through the AI for a fun-fact narration. generate_shorts.py
-# consumes the queue on the next tiktok-bot run.
-# ============================================================
-
-name: "🐾 Refresh animal queue"
+# Refresh the animal Shorts queue consumed by the YouTube publishing workflow.
+name: "Refresh animal queue"
 
 on:
   schedule:
-    # Every 3h — the queue is consumed by tiktok-bot throughout the
-    # day, so this keeps it warm with fresh Pexels clips per 3-hour window.
     - cron: "0 */3 * * *"
-
   workflow_dispatch:
 
-# Serialise with tiktok-bot to avoid two workflows pushing the
-# stories_queue.json at the same time.
+# Serialise queue updates with YouTube publishing commits.
 concurrency:
   group: main-write
   cancel-in-progress: false
 
 jobs:
   refresh-queue:
-    name: "Pull RSS and update the queue"
+    name: "Refresh YouTube Shorts queue"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
     permissions:
       contents: write
 
     steps:
-      - name: "📥 Checkout"
+      - name: "Checkout"
         uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 1
 
-      - name: "🐍 Set up Python 3.11"
+      - name: "Set up Python 3.11"
         uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.11"
           cache: "pip"
 
-      - name: "📦 Install dependencies"
+      - name: "Install dependencies"
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: "✅ Validate Python syntax"
-        run: |
-          python -m compileall -q fetch_animals.py utils/
+      - name: "Validate Python syntax"
+        run: python -m compileall -q fetch_animals.py utils/
 
-      - name: "🐾 Run fetch_animals.py"
-        # The channel pivoted from news to animal compilation Shorts;
-        # discovery is now Pexels searches instead of RSS feeds. The
-        # queue schema is unchanged so the rest of the pipeline keeps
-        # working untouched. `fetch_news.py` is retained in the repo
-        # so we can revert with a one-line workflow change if needed.
+      - name: "Refresh animal stories"
         timeout-minutes: 25
         run: python fetch_animals.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          PEXELS_API_KEY:    ${{ secrets.PEXELS_API_KEY   || secrets.PEXELS   }}
-          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
-          # Optional free AI fallbacks — accept both naming conventions
-          # (the short form CEREBRAS / GEMINI / GROQ as well as the
-          # explicit *_API_KEY) so existing repo setups don't have to
-          # rename their secret.
-          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY   || secrets.GEMINI   }}
-          GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY     || secrets.GROQ     }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
 
-      - name: "📊 Write run summary"
+      - name: "Write run summary"
         if: always()
         run: |
-          # Surfaces a concise status panel under the workflow run page
-          # without anyone having to download the log artifact.
           {
-            echo "## Stories queue refresh"
+            echo "## YouTube Shorts queue refresh"
             if [ -f _data/stories_queue.json ]; then
-              TOTAL=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(len(d.get('stories',[])))")
-              PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories',[]) if not s.get('consumed')))")
+              TOTAL=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(len(d.get('stories', [])))")
+              PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories', []) if not s.get('consumed')))")
               echo "| Metric | Value |"
               echo "|--------|-------|"
-              echo "| Total stories on queue | ${TOTAL} |"
-              echo "| Pending (not yet shipped) | ${PENDING} |"
-              echo ""
-              echo "### Top sources (pending)"
-              # `python -c` with leading whitespace breaks Python's
-              # parser, so we keep this as a single-line one-liner.
-              python -c "import json,collections; d=json.load(open('_data/stories_queue.json')); c=collections.Counter(s.get('source','?') for s in d.get('stories',[]) if not s.get('consumed')); [print(f'- **{src}**: {n}') for src,n in c.most_common(8)]"
+              echo "| Total stories | ${TOTAL} |"
+              echo "| Pending Shorts | ${PENDING} |"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: "🧹 Prune AI cache"
+      - name: "Prune AI cache"
         if: always()
-        run: |
-          # Drops expired entries (TTL 30d default) so the JSONL stays
-          # bounded. Safe to skip — readers ignore expired rows.
-          python -c "from utils import ai_cache; print('kept', ai_cache.prune(), 'entries')" || true
+        run: python -c "from utils import ai_cache; print('kept', ai_cache.prune(), 'entries')" || true
 
-      - name: "💾 Commit queue + state files"
+      - name: "Commit queue state"
         run: |
-          git config user.name  "Wild Brief Bot"
+          git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
           git add _data/stories_queue.json _data/feed_cache.json _data/feed_health.json _data/ai_cache.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "✨ No new stories — nothing to commit."
+            echo "No new animal stories to commit."
             exit 0
           fi
-          PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories',[]) if not s.get('consumed')))")
-          git commit -m "🤖 queue refresh — ${PENDING} pending — $(date -u +'%Y-%m-%d %H:%M UTC')
-
-          Workflow: ${GH_WORKFLOW} #${GH_RUN_NUMBER}"
-
+          PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories', []) if not s.get('consumed')))")
+          git commit -m "queue refresh: ${PENDING} pending YouTube Shorts"
           for attempt in 1 2 3; do
             if git push origin HEAD; then
               exit 0
             fi
-            echo "⚠️ Push rejected (attempt $attempt) — rebasing"
+            echo "Push rejected on attempt ${attempt}; rebasing."
             if ! git pull --rebase --autostash origin main; then
               git rebase --abort 2>/dev/null || true
               [ "$attempt" = "3" ] && exit 1
             fi
             sleep $((attempt * 5))
           done
-        env:
-          GH_WORKFLOW: ${{ github.workflow }}
-          GH_RUN_NUMBER: ${{ github.run_number }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "📋 Save execution log"
+      - name: "Save execution log"
         if: always()
         uses: actions/upload-artifact@v4.4.3
         with:
