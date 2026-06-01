@@ -7,6 +7,10 @@ on:
       - ".github/workflows/final-animal-audit-cleanup.yml"
   workflow_dispatch:
 
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -21,10 +25,18 @@ jobs:
       - name: Apply audited cleanup package
         run: |
           set -euo pipefail
-          curl -L --fail --silent --show-error https://paste.rs/Sffu3 -o /tmp/final-animal-cleanup.zip
-          echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-animal-cleanup.zip" | sha256sum --check
-          unzip -oq /tmp/final-animal-cleanup.zip -d .
-          rm -f _data/feed_cache.json _data/feed_health.json
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, io, urllib.request, zipfile
+          expected = "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774"
+          payload = urllib.request.urlopen("https://paste.rs/Sffu3", timeout=30).read()
+          actual = hashlib.sha256(payload).hexdigest()
+          if actual != expected:
+              raise SystemExit(f"payload sha mismatch: {actual}")
+          zipfile.ZipFile(io.BytesIO(payload)).extractall(".")
+          for rel in ("_data/feed_cache.json", "_data/feed_health.json"):
+              Path(rel).unlink(missing_ok=True)
+          PY
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
           git add -A
@@ -33,4 +45,11 @@ jobs:
             exit 0
           fi
           git commit -m "audit: remove remaining non-animal legacy"
-          git push origin HEAD:main
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git pull --rebase --autostash origin main
+            sleep $((attempt * 3))
+          done
+          exit 1
