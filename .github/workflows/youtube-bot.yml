@@ -1,10 +1,10 @@
 name: "YouTube Bot - Shorts only"
 
 # Shorts-only pipeline for YouTube.
-# Cadence: 5 Shorts/day, timed for Brazil + US viewing windows.
+# Cadence: 3 Shorts/day, prioritising quality and channel variety.
 on:
   schedule:
-    - cron: "0 1,14,17,22,23 * * *"
+    - cron: "0 14,19,23 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -20,6 +20,9 @@ jobs:
       contents: write
     env:
       MAX_SHORTS_PER_RUN: "1"
+      # Spoken narration + captions only by default. This avoids
+      # third-party Content ID surprises while keeping the pipeline free.
+      MUSIC_BED_ENABLED: "0"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4.2.2
@@ -76,7 +79,7 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          git add _videos/*.done _videos/*.roundup _videos/*.json _data/stories_queue.json 2>/dev/null || true
+          git add _videos/*.done _videos/*.roundup _videos/*.json _data/stories_queue.json _data/published_clips.json _data/channel_memory.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Nenhum arquivo novo para salvar."
           else
