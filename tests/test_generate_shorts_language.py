@@ -1,4 +1,4 @@
-"""Tests for LANGUAGE-axis behaviour in generate_shorts.py + upload_tiktok.py.
+"""Tests for LANGUAGE-axis behaviour in generate_shorts.py + upload_youtube.py.
 
 We reload the modules in each test with a fresh LANGUAGE env so the
 module-level path constants reflect the locale axis correctly.
@@ -52,29 +52,29 @@ def test_unsupported_language_raises(monkeypatch):
         import generate_shorts  # noqa: F401
 
 
-def test_upload_tiktok_respects_language(monkeypatch):
+def test_upload_youtube_respects_language(monkeypatch):
     monkeypatch.setenv("LANGUAGE", "pt-BR")
     import sys
     # Stash the original module so we can restore it on teardown.
-    # Otherwise the pt-BR variant of upload_tiktok leaks into
-    # subsequent tests that imported `upload_tiktok` at module load —
+    # Otherwise the pt-BR variant of upload_youtube leaks into
+    # subsequent tests that imported `upload_youtube` at module load —
     # their reference still points to the original (English) module
     # while sys.modules now serves the reloaded (pt-BR) one.
-    saved = sys.modules.get("upload_tiktok")
-    sys.modules.pop("upload_tiktok", None)
+    saved = sys.modules.get("upload_youtube")
+    sys.modules.pop("upload_youtube", None)
     try:
         try:
-            import upload_tiktok
+            import upload_youtube
         except BaseException as exc:  # PanicException isn't a normal Exception
-            pytest.skip(f"upload_tiktok import blocked in sandbox: {exc}")
+            pytest.skip(f"upload_youtube import blocked in sandbox: {exc}")
             return
-        assert upload_tiktok.VIDEOS_DIR == Path("_videos_pt-BR")
-        assert upload_tiktok.LOG_FILE == "upload_tiktok_pt-BR.log"
+        assert upload_youtube.VIDEOS_DIR == Path("_videos_pt-BR")
+        assert upload_youtube.LOG_FILE == "upload_youtube_pt-BR.log"
     finally:
         if saved is not None:
-            sys.modules["upload_tiktok"] = saved
+            sys.modules["upload_youtube"] = saved
         else:
-            sys.modules.pop("upload_tiktok", None)
+            sys.modules.pop("upload_youtube", None)
 
 
 def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):

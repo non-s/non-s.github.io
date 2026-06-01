@@ -1,13 +1,13 @@
 """
-utils/video_compose.py — FFmpeg pipelines for Shorts assembly.
+utils/video_compose.py â€” FFmpeg pipelines for Shorts assembly.
 
 Two pipelines:
 
-  build_broll_short(...)   — multi-clip vertical Short with burned captions
+  build_broll_short(...)   â€” multi-clip vertical Short with burned captions
                               and a hook overlay. The "best" path; used when
                               we successfully fetched b-roll motion footage.
 
-  build_static_short(...)  — single static-image fallback (current behaviour).
+  build_static_short(...)  â€” single static-image fallback (current behaviour).
                               Used when b-roll is unavailable and we still
                               need to ship.
 
@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 SHORT_W, SHORT_H = 1080, 1920
 TARGET_FPS = 30
-# TikTok For You hard-caps Shorts at 60s, but the algorithm rewards
+# YouTube Shorts favor concise videos, and completion rewards
 # COMPLETION RATE far more than total information density. 2025 data:
 # 25-35s videos hit ~85% completion vs ~45% for 50-60s. A 30s short
 # with high completion outperforms a 55s short with mediocre completion
@@ -80,7 +80,7 @@ def _ffmpeg_escape(text: str) -> str:
     return text
 
 
-# ── Multi-clip b-roll pipeline ────────────────────────────────────
+# â”€â”€ Multi-clip b-roll pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def build_broll_short(broll_paths: list[Path],
                       audio_path: Path,
@@ -102,7 +102,7 @@ def build_broll_short(broll_paths: list[Path],
       during the first 3 seconds, the highest-leverage retention window.
     - `cta_text` is drawn near the bottom for the last 6 seconds.
     - `watermark_text` is the channel handle drawn lower-right
-      throughout the entire video — the industry-standard brand bug.
+      throughout the entire video â€” the industry-standard brand bug.
 
     Returns True on success.
     """
@@ -147,7 +147,7 @@ def build_broll_short(broll_paths: list[Path],
 
     # Build the filter graph. Each clip becomes a normalised vertical
     # segment of `seg_dur` seconds with a subtle Ken Burns push so the
-    # frame is never literally static — a hard requirement for the
+    # frame is never literally static â€” a hard requirement for the
     # Inauthentic Content policy. Direction alternates per clip
     # (in / out / in) so consecutive segments feel different.
     parts: list[str] = []
@@ -155,12 +155,12 @@ def build_broll_short(broll_paths: list[Path],
     for i, clip in enumerate(broll_paths):
         zoom_in = (i % 2 == 0)
         # zoompan z' starts at 1 and grows (or shrinks) per frame. A 1.08
-        # final zoom over seg_dur ≈ 1.78 % per second — slow enough to
+        # final zoom over seg_dur â‰ˆ 1.78 % per second â€” slow enough to
         # feel cinematic, not so fast the viewer notices the crop walking.
         #
         # Every comma inside the z-expression has to be backslash-escaped
         # (`\,`) or FFmpeg's filter_complex parser treats it as a filter
-        # separator and the zoompan splits into two malformed filters →
+        # separator and the zoompan splits into two malformed filters â†’
         # "Filter not found" hard error. Unescaped commas were silently
         # falling back to static-frame compose for every b-roll Short.
         if zoom_in:
@@ -169,14 +169,14 @@ def build_broll_short(broll_paths: list[Path],
             z_expr = "if(eq(on\\,0)\\,1.08\\,max(zoom-0.0008\\,1.00))"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
-        # ORIGINAL frame; once we scale to 2× the offset scales too.
+        # ORIGINAL frame; once we scale to 2Ã— the offset scales too.
         face = face_centers[i] if i < len(face_centers) else None
         if face is not None:
             fx, fy = face
-            # In the scaled space iw = source_w × 2. We want the crop
-            # window of width ow centred at fx × iw, clamped. Every
+            # In the scaled space iw = source_w Ã— 2. We want the crop
+            # window of width ow centred at fx Ã— iw, clamped. Every
             # comma inside the max(0,min(...)) expressions has to be
-            # backslash-escaped — see the zoompan note above.
+            # backslash-escaped â€” see the zoompan note above.
             crop_x = (f"max(0\\,min(iw-ow\\,"
                        f"{fx:.4f}*iw-(ow/2)))")
             crop_y = (f"max(0\\,min(ih-oh\\,"
@@ -191,7 +191,7 @@ def build_broll_short(broll_paths: list[Path],
             f"loop=loop=-1:size=10000:start=0,"  # cheap loop covers under-length clips
             f"scale={SHORT_W * 2}:{SHORT_H * 2}:force_original_aspect_ratio=increase,"
             f"{crop_expr},"
-            # Ken Burns push — `d=1` outputs one frame per input frame so
+            # Ken Burns push â€” `d=1` outputs one frame per input frame so
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
             # the output back down to Shorts native after the crop walk.
             f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
@@ -273,8 +273,8 @@ def build_broll_short(broll_paths: list[Path],
         )
         last_label = "withcta"
 
-    # Brand-bug watermark — drawn ALL THE TIME at the upper-right,
-    # offset to clear TikTok's likes/comments rail at the right side.
+    # Brand-bug watermark â€” drawn ALL THE TIME at the upper-right,
+    # offset to clear YouTube's interaction rail at the right side.
     # Standard practice on short-form video; lets reposters get traced.
     if watermark_text and font:
         safe = _ffmpeg_escape(watermark_text[:32])
@@ -330,12 +330,12 @@ def build_broll_short(broll_paths: list[Path],
     if result.returncode != 0:
         log.error("ffmpeg b-roll compose failed: %s", result.stderr[-1200:])
         return False
-    log.info("  🎬 B-roll Short ready (%s clips, %.1fs): %s",
+    log.info("  ðŸŽ¬ B-roll Short ready (%s clips, %.1fs): %s",
              n, audio_dur, output_path.name)
     return True
 
 
-# ── Static-image fallback pipeline ───────────────────────────────
+# â”€â”€ Static-image fallback pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def build_static_short(frame_path: Path,
                        audio_path: Path,
@@ -346,7 +346,7 @@ def build_static_short(frame_path: Path,
     """Single still image + audio, with optional burned captions.
 
     The legacy path. Used when no b-roll was acquired. We still burn
-    captions (huge retention lever) and overlay the hook text — even
+    captions (huge retention lever) and overlay the hook text â€” even
     a static Short benefits.
     """
     if not frame_path.exists() or not audio_path.exists():
@@ -355,9 +355,9 @@ def build_static_short(frame_path: Path,
     font = _font_path()
     parts: list[str] = []
     last = "0:v"
-    # Slow Ken Burns zoom-in (1.00 → 1.04 over the full audio
+    # Slow Ken Burns zoom-in (1.00 â†’ 1.04 over the full audio
     # duration). Without this the static-frame fallback shipped as
-    # a JPEG-with-audio Short — viewers swipe within 2 s because
+    # a JPEG-with-audio Short â€” viewers swipe within 2 s because
     # NOTHING moves. 4 % zoom is enough to register as motion without
     # cropping out the title or the 3 numbered points the title card
     # carries. The b-roll path applies the same trick per segment
@@ -423,5 +423,6 @@ def build_static_short(frame_path: Path,
     if result.returncode != 0:
         log.error("ffmpeg static compose failed: %s", result.stderr[-1200:])
         return False
-    log.info("  🎞  Static-frame Short ready (%.1fs): %s", audio_dur, output_path.name)
+    log.info("  ðŸŽž  Static-frame Short ready (%.1fs): %s", audio_dur, output_path.name)
     return True
+

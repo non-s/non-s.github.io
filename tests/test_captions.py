@@ -1,4 +1,4 @@
-"""Tests for utils/captions.py — pure logic, no live API."""
+"""Tests for utils/captions.py â€” pure logic, no live API."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,7 +10,7 @@ from utils import captions
 from utils.captions import Caption, group_words_into_phrases, write_ass
 
 
-# ── group_words_into_phrases ─────────────────────────────────────
+# â”€â”€ group_words_into_phrases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _w(word: str, start: float, end: float) -> Caption:
     return Caption(word=word, start=start, end=end)
@@ -48,7 +48,7 @@ def test_groups_handles_empty():
     assert group_words_into_phrases([]) == []
 
 
-# ── write_ass ────────────────────────────────────────────────────
+# â”€â”€ write_ass â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_write_ass_creates_valid_file(tmp_path):
     caps = [_w("Hello world", 0.0, 1.2), _w("How are you", 1.5, 2.8)]
@@ -80,7 +80,7 @@ def test_write_ass_empty_returns_false(tmp_path):
     assert not write_ass([], out)
 
 
-# ── transcribe_groq ──────────────────────────────────────────────
+# â”€â”€ transcribe_groq â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_transcribe_groq_returns_none_without_key(monkeypatch, tmp_path):
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
@@ -117,7 +117,7 @@ def test_transcribe_groq_handles_non_200(monkeypatch, tmp_path):
         assert captions.transcribe_groq(fake_audio) is None
 
 
-# ── transcribe (unified) ─────────────────────────────────────────
+# â”€â”€ transcribe (unified) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_transcribe_prefers_groq_when_available(monkeypatch, tmp_path):
     fake_audio = tmp_path / "a.mp3"
@@ -156,16 +156,16 @@ def test_transcribe_returns_none_for_missing_audio(tmp_path):
     assert captions.transcribe(missing) is None
 
 
-def test_write_ass_default_margin_v_clears_tiktok_ui(tmp_path):
-    """TikTok's bottom UI band (caption preview + sound link + share
-    rail) takes ~250 px; we keep margin_v ≥ 320 so captions land in
+def test_write_ass_default_margin_v_clears_shorts_ui(tmp_path):
+    """YouTube's bottom UI band (caption preview + sound link + share
+    rail) takes ~250 px; we keep margin_v â‰¥ 320 so captions land in
     the centre-safe zone, not under the UI."""
     import inspect
     sig = inspect.signature(write_ass)
     assert sig.parameters["margin_v"].default >= 320
 
 
-# ── language hint ─────────────────────────────────────────────────
+# â”€â”€ language hint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
 def test_whisper_language_defaults_to_en(monkeypatch):
@@ -183,13 +183,13 @@ def test_whisper_language_maps_locale_to_base(monkeypatch):
 
 
 def test_whisper_language_falls_through_for_unknown(monkeypatch):
-    """An unmapped LANGUAGE shouldn't poison the Whisper request — we
+    """An unmapped LANGUAGE shouldn't poison the Whisper request â€” we
     return "" so the caller omits the hint and Whisper auto-detects."""
     monkeypatch.setenv("LANGUAGE", "zz-ZZ")
     assert captions._whisper_language() == ""
 
 
-# ── Groq 429 retry ────────────────────────────────────────────────
+# â”€â”€ Groq 429 retry â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
 def test_transcribe_groq_retries_once_on_429(tmp_path, monkeypatch):
@@ -239,3 +239,4 @@ def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
     assert out is None
     # Original + 1 retry = 2 calls total.
     assert call_count["n"] == 2
+

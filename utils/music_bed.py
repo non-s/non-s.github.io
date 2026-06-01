@@ -1,11 +1,11 @@
 """
-utils/music_bed.py — Background music layer for Shorts.
+utils/music_bed.py â€” Background music layer for Shorts.
 
 Why this exists
 ---------------
 A naked TTS narration over b-roll sounds like a stock video. A subtle
 music bed at -22 dB (background level, well below the vocal) reads as
-"produced content" to viewers' subconscious — increasing perceived
+"produced content" to viewers' subconscious â€” increasing perceived
 quality and pulling retention up another 4-7 % per Mux/Streamyard 2026
 data.
 
@@ -26,7 +26,7 @@ always picks the same bed (idempotent reruns), and we rotate across
 the panel so the channel doesn't sound like a loop.
 
 If the music_bed download fails for any reason (network, etc.), the
-caller MUST still produce a Short — music is enhancement, not a
+caller MUST still produce a Short â€” music is enhancement, not a
 hard requirement.
 """
 from __future__ import annotations
@@ -45,14 +45,14 @@ log = logging.getLogger(__name__)
 MUSIC_CACHE_DIR = Path(os.environ.get("MUSIC_CACHE_DIR", "_data/music_cache"))
 MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "1") not in ("0", "false", "False")
 # Volume of the music bed relative to the TTS (in dB). -26 dB lands the
-# music perceptually background — the spoken voice dominates, which
-# (a) gives the speech clarity TikTok captions track best with,
-# (b) keeps the audio fingerprint dominated by spoken word so TikTok
+# music perceptually background â€” the spoken voice dominates, which
+# (a) gives the speech clarity YouTube captions track best with,
+# (b) keeps the audio fingerprint dominated by spoken word so YouTube
 #     classifies the Short closer to "original sound" (re-usable by
-#     other creators → compounding discovery).
+#     other creators â†’ compounding discovery).
 # Override with MUSIC_BED_VOLUME=-22 for punchier, -30 for near-silent.
 # Set MUSIC_BED_ENABLED=0 to drop music entirely (pure spoken word =
-# fully classifiable as Original Sound by TikTok).
+# fully classifiable as Original Sound by YouTube).
 MUSIC_BED_VOLUME_DB = float(os.environ.get("MUSIC_BED_VOLUME", "-26"))
 
 
@@ -65,7 +65,7 @@ class MusicTrack:
 
 
 # Pre-curated Pixabay panel. These are public-domain-equivalent tracks
-# (Pixabay Content License — no attribution required for commercial use).
+# (Pixabay Content License â€” no attribution required for commercial use).
 # If any URL 404s the caller falls through gracefully; we don't pin
 # specific tracks for survival.
 PANEL: tuple[MusicTrack, ...] = (
@@ -98,7 +98,7 @@ PANEL: tuple[MusicTrack, ...] = (
 
 
 def _mood_for_story(story: dict) -> str:
-    """Pick a mood by story signal. Breaking → tense; analysis → reflective; rest upbeat."""
+    """Pick a mood by story signal. Breaking â†’ tense; analysis â†’ reflective; rest upbeat."""
     if story.get("breaking"):
         return "tense"
     sentiment = (story.get("sentiment") or "").lower()
@@ -148,7 +148,7 @@ def download_track(track: MusicTrack) -> Path | None:
             if not chunk:
                 continue
             total += len(chunk)
-            # 15 MB cap — well above any 60s MP3 at 128 kbps.
+            # 15 MB cap â€” well above any 60s MP3 at 128 kbps.
             if total > 15 * 1024 * 1024:
                 log.debug("music_bed %s: aborting at 15 MB", track.name)
                 return None
@@ -170,7 +170,7 @@ def mix_tts_with_music(tts_path: Path, music_path: Path,
 
     Music is looped (the track is shorter than a 60s Short) and
     duck-mixed via `amix=duration=first` so the output is the length
-    of the TTS. Returns False on any FFmpeg failure — caller falls
+    of the TTS. Returns False on any FFmpeg failure â€” caller falls
     back to using `tts_path` directly.
     """
     if not tts_path.exists() or not music_path.exists():
@@ -205,7 +205,7 @@ def mix_tts_with_music(tts_path: Path, music_path: Path,
 
 def add_music_bed(tts_path: Path, story: dict,
                    tmp_dir: Path) -> Path:
-    """Convenience wrapper: pick track → download → mix.
+    """Convenience wrapper: pick track â†’ download â†’ mix.
 
     Returns either the mixed audio path or `tts_path` unchanged when
     music can't be added (download failed, ffmpeg failed, disabled, etc.).
@@ -221,5 +221,6 @@ def add_music_bed(tts_path: Path, story: dict,
     mixed = tmp_dir / "audio_with_music.mp3"
     if not mix_tts_with_music(tts_path, music, mixed):
         return tts_path
-    log.info("  🎵 Music bed mixed: %s (%s)", track.name, track.mood)
+    log.info("  ðŸŽµ Music bed mixed: %s (%s)", track.name, track.mood)
     return mixed
+

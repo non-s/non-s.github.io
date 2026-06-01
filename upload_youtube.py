@@ -70,7 +70,6 @@ def _youtube_title(meta: dict) -> str:
 
 def _youtube_description(meta: dict) -> str:
     description = (meta.get("description") or _youtube_title(meta)).strip()
-    description = " ".join(part for part in description.split() if part.lower() not in {"#fyp", "#foryou"})
     existing = {part.lower() for part in description.split() if part.startswith("#")}
     missing = [tag for tag in ("#Shorts", "#AnimalFacts", "#Wildlife") if tag.lower() not in existing]
     if missing:

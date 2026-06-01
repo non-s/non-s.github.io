@@ -1,9 +1,9 @@
 """
-utils/captions.py — Word-level captions for burned-in Shorts subtitles.
+utils/captions.py â€” Word-level captions for burned-in Shorts subtitles.
 
 Why captions matter for Shorts
 ------------------------------
-~80 % of TikTok Shorts are viewed muted in the first 2 seconds
+Many YouTube Shorts are viewed muted in the first 2 seconds
 (autoplay starts before the user taps unmute). Captions burned into
 the frame are the single biggest retention lever for AI-narrated
 Shorts: Zebracat's 2025 data shows +18 % watch time when the hook
@@ -11,16 +11,16 @@ appears as on-screen text.
 
 Provider order (free-tier first, paid never)
 --------------------------------------------
-  1. Groq Whisper API     — free, 2000 req/day, word-level timestamps,
+  1. Groq Whisper API     â€” free, 2000 req/day, word-level timestamps,
                             sub-second latency. Needs GROQ_API_KEY,
                             same key the AI fallback chain uses.
-  2. faster-whisper local — CPU-only on GitHub Actions runner, no
+  2. faster-whisper local â€” CPU-only on GitHub Actions runner, no
                             external dependency, accurate but ~5-15 s
                             per 50 s audio. Hard fallback.
 
 Output shape
 ------------
-Both providers return a `Caption` list — one entry per word, with
+Both providers return a `Caption` list â€” one entry per word, with
 absolute start/end seconds. FFmpeg's drawtext filter consumes them
 via the SRT writer below.
 """
@@ -48,7 +48,7 @@ class Caption:
     end: float
 
 
-# ── Groq Whisper provider ─────────────────────────────────────────
+# â”€â”€ Groq Whisper provider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 #
 # Endpoint:  POST https://api.groq.com/openai/v1/audio/transcriptions
 # Free tier: 2000 req/day, word-level timestamps supported.
@@ -58,17 +58,17 @@ _GROQ_STT_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 _GROQ_MODEL   = os.environ.get("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 
 # A single 429 retry recovers ~80 % of Groq blips without forcing the
-# ~10× slower local faster-whisper fallback.
+# ~10Ã— slower local faster-whisper fallback.
 _GROQ_RETRY_DELAY_S = 2.0
 
 
 def _whisper_language() -> str:
     """Map the active LANGUAGE env to a Whisper-compatible 2-char code.
 
-    Whisper accepts ISO-639-1 codes (`en`, `pt`, `es`, `fr`, …). Our
+    Whisper accepts ISO-639-1 codes (`en`, `pt`, `es`, `fr`, â€¦). Our
     sibling-channels convention is `pt-BR` / `es-MX` / `fr-FR` style.
     Unknown locales return "" so the caller drops the hint and lets
-    Whisper auto-detect — better than poisoning the request with an
+    Whisper auto-detect â€” better than poisoning the request with an
     invalid language code.
     """
     locale = (os.environ.get("LANGUAGE", "en") or "en").strip().lower()
@@ -147,9 +147,9 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
     return out or None
 
 
-# ── faster-whisper local fallback ─────────────────────────────────
+# â”€â”€ faster-whisper local fallback â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 #
-# Pip: faster-whisper >= 1.0. We DON'T pin it in requirements.txt — it
+# Pip: faster-whisper >= 1.0. We DON'T pin it in requirements.txt â€” it
 # pulls in CTranslate2 (~200 MB) which would inflate the cold-start of
 # every CI run. Instead, install it on-demand inside the workflow that
 # wants captions, and import inside this function so unrelated code
@@ -170,7 +170,7 @@ def transcribe_faster_whisper(audio_path: Path,
         return None
     try:
         model = WhisperModel(model_name, device="cpu", compute_type="int8")
-        # Empty `language` lets faster-whisper auto-detect — same fallback
+        # Empty `language` lets faster-whisper auto-detect â€” same fallback
         # policy as the Groq path for unknown locales.
         lang = _whisper_language() or None
         segments, _info = model.transcribe(
@@ -196,7 +196,7 @@ def transcribe_faster_whisper(audio_path: Path,
         return None
 
 
-# ── Unified entry point ───────────────────────────────────────────
+# â”€â”€ Unified entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def transcribe(audio_path: Path) -> list[Caption] | None:
     """Try Groq first, faster-whisper second. None if both fail."""
@@ -205,20 +205,20 @@ def transcribe(audio_path: Path) -> list[Caption] | None:
         return None
     out = transcribe_groq(audio_path)
     if out:
-        log.info("📝 Captions: %d words via Groq Whisper", len(out))
+        log.info("ðŸ“ Captions: %d words via Groq Whisper", len(out))
         return out
     out = transcribe_faster_whisper(audio_path)
     if out:
-        log.info("📝 Captions: %d words via faster-whisper", len(out))
+        log.info("ðŸ“ Captions: %d words via faster-whisper", len(out))
         return out
     return None
 
 
-# ── ASS / SRT writers ─────────────────────────────────────────────
+# â”€â”€ ASS / SRT writers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 #
 # FFmpeg's `subtitles=` filter consumes SRT, but we use ASS because
 # Shorts captions need bigger fonts, drop shadows, and per-word
-# highlighting — all of which ASS does cleanly. The .ass file is
+# highlighting â€” all of which ASS does cleanly. The .ass file is
 # fed to FFmpeg via `-vf "ass=captions.ass"`.
 
 def _format_ass_time(seconds: float) -> str:
@@ -283,8 +283,8 @@ def write_ass(captions: list[Caption], path: Path,
 
     Default style: bold white, thick black outline, dropped shadow,
     positioned in the upper-middle (margin_v from bottom). The 360px
-    margin clears TikTok's bottom UI band (caption preview + sound
-    link + share rail ≈ 250px) and leaves the captions in the dead-
+    margin clears YouTube's bottom UI band (caption preview + controls
+    link + share rail â‰ˆ 250px) and leaves the captions in the dead-
     centre safe zone where the eye lands first on a vertical feed.
     Tweak via
     args if you want a different look. Returns True on success.
@@ -321,3 +321,4 @@ def write_ass(captions: list[Caption], path: Path,
     except Exception as exc:
         log.warning("write_ass failed: %s", exc)
         return False
+

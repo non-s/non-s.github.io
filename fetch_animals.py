@@ -5,7 +5,7 @@ fetch_animals.py — Build the daily Shorts queue from animal Pexels clips.
 
 Replaces fetch_animals.py for the channel's content pivot from news to
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
-+ upload_tiktok.py) is unchanged — this script writes the same
++ upload_youtube.py) is unchanged — this script writes the same
 `_data/stories_queue.json` shape, so every existing consumer keeps
 working.
 
@@ -78,7 +78,7 @@ log = logging.getLogger(__name__)
 QUEUE_FILE = Path("_data/stories_queue.json")
 # Permanent ledger of Pexels clips we already published. Survives
 # `_prune_queue` and any queue rebuild, so a clip that was shipped
-# weeks ago can never re-enter the rotation. `upload_tiktok.py`
+# weeks ago can never re-enter the rotation. `upload_youtube.py`
 # appends to this on a successful upload (see
 # `record_published_clip()` below); `main()` filters Pexels candidates
 # against it before paying for AI enrichment.
@@ -95,11 +95,8 @@ KEEP_DAYS = int(os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 #                    same 4 phrases every time.
 #   * `topic_hashtag` — CamelCase channel hashtag for the description.
 #   * `tags`       — base evergreen tags appended after the AI-picked ones.
-#   * `discovery_hashtags` — TikTok-native lowercase hashtags. Each row
-#                    mixes broad (#fyp, #foryou), niche (#cattok), and
-#                    intent (#didyouknow) per the 2025 For You research:
-#                    5-7 tags is the sweet spot, the niche `*tok`
-#                    suffix tags dominate non-FYP discovery surfaces.
+#   * `discovery_hashtags` — YouTube Shorts search hashtags. Each row
+#                    mixes topic, niche, and educational intent.
 #   * `description_prefix` — handed to the AI as the "what this clip
 #                    shows" context. Keeps the prompt under control
 #                    without giving the model open license to invent.
@@ -112,7 +109,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "Cats",
         "tags": ["cats", "kittens", "cat facts", "feline"],
         "discovery_hashtags": [
-            "fyp", "foryou", "cats", "cattok", "catsoftiktok", "funfacts",
+            "cats", "kittens", "catfacts", "animals", "funfacts",
         ],
         "description_prefix": "A clip of cats / kittens",
     },
@@ -124,7 +121,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "Dogs",
         "tags": ["dogs", "puppies", "dog facts", "canine"],
         "discovery_hashtags": [
-            "fyp", "foryou", "dogs", "dogtok", "dogsoftiktok", "funfacts",
+            "dogs", "puppies", "dogfacts", "animals", "funfacts",
         ],
         "description_prefix": "A clip of dogs / puppies",
     },
@@ -136,7 +133,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "Ocean",
         "tags": ["ocean", "marine life", "sea animals", "underwater"],
         "discovery_hashtags": [
-            "fyp", "foryou", "ocean", "oceanlife", "marinelife", "funfacts",
+            "ocean", "oceanlife", "marinelife", "animalfacts", "funfacts",
         ],
         "description_prefix": "A clip of marine life in the ocean",
     },
@@ -148,7 +145,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "Wildlife",
         "tags": ["wildlife", "wild animals", "nature", "safari"],
         "discovery_hashtags": [
-            "fyp", "foryou", "wildlife", "wildanimals", "safari", "funfacts",
+            "wildlife", "wildanimals", "safari", "animalfacts", "funfacts",
         ],
         "description_prefix": "A clip of wild animals in nature",
     },
@@ -160,7 +157,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "Birds",
         "tags": ["birds", "bird facts", "avian", "wildlife"],
         "discovery_hashtags": [
-            "fyp", "foryou", "birds", "birdtok", "birdsoftiktok", "funfacts",
+            "birds", "birdfacts", "nature", "animals", "funfacts",
         ],
         "description_prefix": "A clip of birds",
     },
@@ -172,7 +169,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
         "topic_hashtag": "FarmAnimals",
         "tags": ["farm animals", "horses", "farm life", "countryside"],
         "discovery_hashtags": [
-            "fyp", "foryou", "farmanimals", "farmtok", "countrylife", "funfacts",
+            "farmanimals", "countrylife", "animalfacts", "nature", "funfacts",
         ],
         "description_prefix": "A clip of farm animals",
     },
@@ -182,7 +179,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
 # ── AI prompt ─────────────────────────────────────────────────────
 
 _AI_PROMPT_TEMPLATE = (
-    "You write fun, educational scripts about animals for TikTok "
+    "You write fun, educational scripts about animals for YouTube "
     "Shorts. Every Short combines stock footage of an animal with a "
     "30-second voice-over packed with surprising facts. The viewer "
     "should learn something they did not know. Tone: friendly, "
@@ -215,7 +212,7 @@ _AI_PROMPT_TEMPLATE = (
     "subject keyword. Sentence 2 is the single most surprising "
     "fact from the script. Last line is exactly "
     '\\"Source: Pexels\\". Do NOT include any hashtags — the build '
-    "step adds TikTok-tuned hashtags afterwards. No URLs.>\","
+    "step adds YouTube Shorts hashtags afterwards. No URLs.>\","
     '"thumbnail_text": "<2-4 word punchy phrase the thumbnail '
     "overlay will use. ALL CAPS allowed. "
     'E.g. WHY CATS PURR, DOLPHIN NAMES, FOX SECRETS.>",'
@@ -225,7 +222,7 @@ _AI_PROMPT_TEMPLATE = (
     'Good: \\"Dolphins call each other by name.\\". '
     'Bad: \\"Today I will tell you about cats.\\".>",'
     '"script": "<the full voice-over for a 25-35 second short. '
-    "70-90 words MAX (TikTok For You rewards completion-rate; "
+    "70-90 words MAX (YouTube Shorts rewards completion-rate; "
     "shorter wins). The script's FIRST WORDS MUST BE the hook, "
     "verbatim. Then 2-3 surprising facts about the subject, each "
     "as a short sentence. Close with a one-line question for the "
@@ -292,8 +289,7 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
     }
 
     # Hashtags are NOT injected here anymore — generate_shorts.py owns
-    # the TikTok hashtag block construction (it knows the locale-specific
-    # discovery tags and the For You-tuned mix). We just hand off a
+    # the YouTube Shorts hashtag block construction. We just hand off a
     # clean description body; any stray hashtag lines authored by the
     # model are stripped so the caption builder doesn't have to.
     raw_desc = out["yt_description"]
@@ -366,7 +362,7 @@ def record_published_clip(*, pexels_video_id: str = "",
                           **_legacy) -> None:
     """Append one record to the permanent published-clips ledger.
 
-    Called by upload_tiktok.py right after a successful publish, so a
+    Called by upload_youtube.py right after a successful publish, so a
     clip that ships can NEVER be re-enqueued. Atomic write via tmp +
     rename so a crash mid-write doesn't corrupt the file.
 
@@ -440,7 +436,7 @@ def _build_story(clip_subject: str,
     url = pexels_clip.url or f"https://www.pexels.com/video/{_story_id(pexels_clip.download_url)}"
     now = datetime.now(timezone.utc).isoformat()
     # Merge the AI-picked tags with the topic's evergreen tags,
-    # deduplicating. Capped at 8 to leave room for upload_tiktok's
+    # deduplicating. Capped at 8 to leave room for upload_youtube's
     # tag-packer + evergreens it adds later.
     merged_tags: list[str] = list(ai_out.get("yt_tags") or [])
     for t in topic_cfg.get("tags", []):
@@ -481,7 +477,7 @@ def _build_story(clip_subject: str,
         "script":         ai_out["script"],
         "lead":           ai_out["lead"],
         "sentiment":      ai_out["sentiment"],
-        # TikTok discovery hashtags (lowercase, mix broad+niche+intent).
+        # YouTube Shorts discovery hashtags.
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
         "discovery_hashtags": list(topic_cfg.get("discovery_hashtags") or []),
@@ -529,7 +525,7 @@ def main() -> int:
     #   1. Queue ids — anything still on the queue (pending or recently
     #      consumed, before prune).
     #   2. Published clips ledger — the permanent record of clips we
-    #      already shipped to TikTok. This is the line of defence
+    #      already shipped to YouTube. This is the line of defence
     #      against re-uploading the same Pexels clip after the queue
     #      pruned its consumed entry weeks later.
     #   3. The pexels_video_id of every queue entry — same defense,
