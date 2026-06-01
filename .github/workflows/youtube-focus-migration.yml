@@ -18,9 +18,8 @@ jobs:
       - name: Apply audited YouTube patch
         run: |
           cat .youtube-focus/chunk*.txt | base64 -d | gzip -d > /tmp/youtube-focus.patch
-          git apply /tmp/youtube-focus.patch
+          git apply --exclude=.github/workflows/fetch-content.yml /tmp/youtube-focus.patch
           rm -rf .youtube-focus
-          rm -f .github/workflows/youtube-focus-migration.yml
       - name: Commit clean repository state
         run: |
           git config user.name "Wild Brief Bot"
