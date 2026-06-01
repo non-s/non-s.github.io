@@ -19,12 +19,10 @@ jobs:
         run: |
           set -euo pipefail
           cat .animal-quality-patch/chunk*.txt | base64 -d | gzip -d > /tmp/animal-quality.patch
-          git apply --check /tmp/animal-quality.patch
-          git apply /tmp/animal-quality.patch
+          patch -p1 --batch --forward < /tmp/animal-quality.patch
           rm -rf .animal-quality-patch
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add -A
           git commit -m 'feat: refine Wild Brief animal quality and subscribe CTA'
           git push
-# Trigger after workflow registration.
