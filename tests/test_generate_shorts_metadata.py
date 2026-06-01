@@ -99,3 +99,20 @@ def test_queue_adapter_preserves_original_pexels_clip():
         "pexels_download_url": "https://files.pexels.com/video.mp4",
     })
     assert story["pexels_download_url"] == "https://files.pexels.com/video.mp4"
+
+
+def test_thumbnail_copy_is_short_and_uppercase():
+    from generate_shorts import _thumbnail_copy
+    assert _thumbnail_copy("Why cats really purr at night") == "WHY CATS REALLY PURR"
+
+
+def test_dynamic_thumbnails_change_with_story(tmp_path: Path):
+    from PIL import Image
+    from generate_shorts import create_short_thumbnail
+    frame = Image.new("RGB", (1080, 1920), (80, 120, 90))
+    cats = tmp_path / "cats.jpg"
+    birds = tmp_path / "birds.jpg"
+    create_short_thumbnail(frame, cats, "WHY CATS PURR", "cats")
+    create_short_thumbnail(frame, birds, "OWL NIGHT VISION", "birds")
+    assert cats.exists() and birds.exists()
+    assert cats.read_bytes() != birds.read_bytes()

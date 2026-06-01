@@ -202,10 +202,16 @@ def test_ffmpeg_escape_handles_empty():
     assert video_compose._ffmpeg_escape(None) == ""
 
 
+def test_overlay_copy_keeps_mobile_text_compact():
+    text = "Cats purr to heal their own bones and reduce stress after injuries."
+    compact = video_compose._overlay_copy(text)
+    assert len(compact) <= 42
+    assert compact.endswith("...")
+
+
 def test_max_duration_targets_shorts_completion_rate():
     """YouTube Shorts reward completion rate; we cap
     at 35s so a 90 % completion rate is achievable on every Short
     instead of a 50 % rate on 55s+ videos. Hard ceiling is 35s â€” the
     AI prompt is tuned to 70-90 words which renders to ~25-30s."""
     assert video_compose.MAX_DURATION_S <= 35.0
-
