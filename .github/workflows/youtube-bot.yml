@@ -23,6 +23,8 @@ jobs:
       # Spoken narration + captions only by default. This avoids
       # third-party Content ID surprises while keeping the pipeline free.
       MUSIC_BED_ENABLED: "0"
+      # Open immediately on the animal and hook in the Shorts feed.
+      BRAND_CARDS_ENABLED: "0"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4.2.2
