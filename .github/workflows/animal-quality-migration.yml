@@ -14,23 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Diagnose audited migration patch
+      - name: Verify write permission
         shell: bash
         run: |
-          set -uo pipefail
-          cat .animal-quality-patch/chunk*.txt | base64 -d | gzip -d > /tmp/animal-quality.patch
-          patch -p1 --batch --forward < /tmp/animal-quality.patch > /tmp/animal-quality-diagnostic.txt 2>&1
-          status=$?
+          set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          if [ "$status" -ne 0 ]; then
-            cp /tmp/animal-quality-diagnostic.txt .animal-quality-patch/diagnostic.txt
-            git add .animal-quality-patch/diagnostic.txt
-            git commit -m 'chore: capture animal migration diagnostic'
-            git push
-            exit "$status"
-          fi
-          rm -rf .animal-quality-patch
-          git add -A
-          git commit -m 'feat: refine Wild Brief animal quality and subscribe CTA'
+          echo ok > .animal-quality-patch/write-check.txt
+          git add .animal-quality-patch/write-check.txt
+          git commit -m 'chore: verify actions write permission'
           git push
