@@ -49,7 +49,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "total_views_14d": 12345,
         "avg_view_pct": 67.5,
         "below_60_pct": [],
-        "category_avg_view_pct": {"world": 72.0, "technology": 55.0},
+        "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
         "top_performers": [
             {"video_id": "abc", "title": "Major event today",
              "views": 5000, "view_pct": 82.0},

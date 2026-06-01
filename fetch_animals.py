@@ -3,7 +3,7 @@
 """
 fetch_animals.py — Build the daily Shorts queue from animal Pexels clips.
 
-Replaces fetch_animals.py for the channel's content pivot from news to
+Runs the channel's animal-facts queue from discovery to enrichment.
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
 + upload_youtube.py) is unchanged — this script writes the same
 `_data/stories_queue.json` shape, so every existing consumer keeps
@@ -35,8 +35,8 @@ What's intentionally NOT here
 =============================
 
 * No RSS / no feedparser — Pexels IS the discovery layer now.
-* No brand-safety filter — animal content has no political RPM risk.
-* No breaking-news classifier — same reason.
+* No brand-safety filter — every queue item is already animal content.
+* No urgency classifier — evergreen facts do not need one.
 * No translation — start with EN, PT-BR is a future pass.
 * No native-lang feeds — Pexels metadata is mostly English regardless.
 
@@ -431,7 +431,7 @@ def _build_story(clip_subject: str,
                  topic_cfg: dict,
                  pexels_clip: "BrollClip",
                  ai_out: dict) -> dict:
-    """Assemble the queue entry. Matches the news queue shape so
+    """Assemble the queue entry. Matches the shared queue shape so
     `generate_shorts.py` doesn't need to change."""
     url = pexels_clip.url or f"https://www.pexels.com/video/{_story_id(pexels_clip.download_url)}"
     now = datetime.now(timezone.utc).isoformat()

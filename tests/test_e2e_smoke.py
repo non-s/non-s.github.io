@@ -39,41 +39,40 @@ def fake_queue_story():
         "published_at":   "2026-05-18T11:00:00+00:00",
         "consumed":       False,
         "consumed_at":    None,
-        "title":          "Fed just cut rates â€” and that breaks the inflation story",
-        "url":            "https://news.example.com/fed-cut",
-        "source":         "Reuters",
-        "category":       "business",
-        "description":    "The Federal Reserve cut interest rates by 50 basis points today. "
-                          "Powell cited cooling inflation. Markets had priced in 25 bps; "
-                          "the surprise sent stocks higher.",
+        "title":          "Octopus camouflage happens faster than you think",
+        "url":            "https://www.pexels.com/video/octopus/",
+        "source":         "Pexels",
+        "category":       "ocean",
+        "description":    "Octopuses can rapidly change colour and skin texture. "
+                          "Specialised cells help them blend into reefs and rocks. "
+                          "The effect is a remarkable form of camouflage.",
         "image_url":      "",
         "breaking":       True,
         "relevance":      8.5,
         "native_lang":    "en",
         "score":          9,
-        "seo_title":      "Fed cuts rates 50 bps â€” markets blindsided",
-        "yt_tags":        ["fed", "powell", "rates", "world news", "breaking news"],
-        "geo_hashtag":    "USA",
-        "topic_hashtag":  "Markets",
-        "yt_description": "Fed surprised markets with a 50 bps cut today. The bond market "
-                          "had priced 25. Powell said inflation cooled fast.\n"
-                          "Source: Reuters\n#Shorts #WorldNews #USA #Markets",
-        "thumbnail_text": "FED CUTS 50BPS",
-        "hook":           "The Fed just cut rates 50 basis points.",
-        "script":         ("The Fed just cut rates 50 basis points. The bond market had "
-                            "priced 25 â€” half what Powell delivered. Markets are calling "
-                            "this a victory lap on inflation. Mortgage rates won't follow "
-                            "as fast. Watch credit-card delinquencies next."),
-        "lead":           "Fed surprised with 50 bps cut.",
-        "key_points":     ["50 bps cut surprise",
-                            "Markets priced 25 bps",
-                            "Powell cites cooling inflation"],
+        "seo_title":      "Octopus camouflage happens in seconds",
+        "yt_tags":        ["octopus", "camouflage", "cephalopod", "animal facts"],
+        "geo_hashtag":    "Ocean",
+        "topic_hashtag":  "Octopus",
+        "yt_description": "This octopus can change colour and skin texture in seconds.\n"
+                          "Source: Pexels\n#Shorts #AnimalFacts #Octopus",
+        "thumbnail_text": "INVISIBLE IN SECONDS",
+        "hook":           "This octopus can disappear against a reef in seconds.",
+        "script":         ("This octopus can disappear against a reef in seconds. "
+                           "Specialised skin cells shift colour while tiny muscles alter "
+                           "its texture. That lets it match rocks, coral, and sand. "
+                           "The wildest part is how quickly the whole disguise changes."),
+        "lead":           "Octopus camouflage changes in seconds.",
+        "key_points":     ["rapid colour shift",
+                           "skin texture changes",
+                           "reef camouflage"],
         "sentiment":      "positive",
         "experiments":    {
             "hook_style":      "outcome_first",
             "script_tone":     "opinionated",
             "thumbnail_style": "dynamic_text",
-            "cta_style":       "follow_handle",
+            "cta_style":       "subscribe_channel",
         },
     }
 
@@ -98,26 +97,16 @@ def _stub_image_chain(monkeypatch, gs):
     """Make the image-fallback chain claim it acquired a background.
     The path it writes to gets a real-looking JPEG so the size check passes."""
 
-    def fake_download(url, dest, timeout=15):
-        dest.write_bytes(b"\xff\xd8\xff" + b"x" * 8000)
-        return True
-
-    def fake_fetch_any(article_url, query, dest):
-        dest.write_bytes(b"\xff\xd8\xff" + b"x" * 8000)
-        return True
-
-    monkeypatch.setattr(gs, "download_image", fake_download)
-    monkeypatch.setattr(gs, "fetch_any_free_image", fake_fetch_any)
     # Pillow opens the JPEG â€” give it a real one. We use a 1x1 fake
     # that PIL will accept and create_short_frame will paste over.
     from PIL import Image
     real_jpeg = Image.new("RGB", (1080, 1920), (8, 8, 18))
 
-    def fake_generate_bg(title, category, dest):
+    def fake_solid_bg(category, dest):
         real_jpeg.save(str(dest), "JPEG", quality=80)
         return True
 
-    monkeypatch.setattr(gs, "generate_ai_background", fake_generate_bg)
+    monkeypatch.setattr(gs, "_render_solid_color_background", fake_solid_bg)
 
 
 def _stub_tts_and_captions(monkeypatch, gs):
@@ -225,14 +214,14 @@ def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
     _silence_ffmpeg(monkeypatch, gs)
 
     slop_story = dict(
-        slug="slop-slug", title="Federal Reserve announces rate decision",
-        description="Federal Reserve announces rate decision today.",
-        source="Reuters", source_url="https://e", image_url="",
-        tags=["business"], category="business", date="2026-05-18",
-        hook="Today the Fed announced rates.",  # weak opener
-        script="Today the Fed announced rates. This is a crucial pivotal moment.",
-        thumbnail_text="THE FED", key_points=[], yt_tags=[],
-        yt_description="x", geo_hashtag="USA", topic_hashtag="Markets",
+        slug="slop-slug", title="Octopus camouflage fact",
+        description="Octopus camouflage fact today.",
+        source="Pexels", source_url="https://e", image_url="",
+        tags=["octopus"], category="ocean", date="2026-05-18",
+        hook="Today this octopus changed colour.",  # weak opener
+        script="Today this octopus changed colour. This is a crucial pivotal moment.",
+        thumbnail_text="OCTOPUS", key_points=[], yt_tags=[],
+        yt_description="x", geo_hashtag="Ocean", topic_hashtag="Octopus",
         _queue_id="slop-id", native_lang="en",
         # seo_title same as RSS title â€” also a flag.
         experiments={},
@@ -241,4 +230,3 @@ def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
     tmp.mkdir()
     out = gs.generate_short(slop_story, tmp)
     assert out is None  # quality gate caught it
-

@@ -130,10 +130,10 @@ def test_build_broll_short_with_hook_overlay(tmp_path, stub_ffprobe, stub_ffmpeg
     video_compose.build_broll_short(
         broll_paths=clips, audio_path=audio,
         output_path=tmp_path / "out.mp4",
-        hook_text="China just banned the dollar",
+        hook_text="This octopus vanished against coral",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
-    assert "China just banned the dollar" in fg
+    assert "This octopus vanished against coral" in fg
     assert "between(t,0,3)" in fg
 
 
@@ -144,10 +144,10 @@ def test_build_broll_short_with_cta_overlay(tmp_path, stub_ffprobe, stub_ffmpeg_
     video_compose.build_broll_short(
         broll_paths=clips, audio_path=audio,
         output_path=tmp_path / "out.mp4",
-        cta_text="Follow @wildbrief",
+        cta_text="SUBSCRIBE FOR MORE ANIMAL FACTS",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
-    assert "Follow" in fg
+    assert "SUBSCRIBE" in fg
 
 
 def test_build_broll_short_with_ass_subtitles(tmp_path, stub_ffprobe, stub_ffmpeg_ok):

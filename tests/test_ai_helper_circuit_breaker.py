@@ -1,6 +1,6 @@
 """Tests for the in-run Mistral 429 circuit breaker in utils.ai_helper.
 
-The fetch-news workflow timed out at 25min on 2026-05-19 because
+The queue-refresh workflow timed out at 25min on 2026-05-19 because
 Mistral 429'd 36 times in a row and each give-up cost ~30s of
 retry-and-wait before falling back to Cerebras. The circuit breaker
 pulls Mistral out of the chain for the rest of the run after a

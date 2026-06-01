@@ -25,7 +25,7 @@ def test_levenshtein_symmetric():
 
 
 def test_titles_too_similar_identical():
-    assert titles_too_similar("Breaking news from Paris", "Breaking news from Paris")
+    assert titles_too_similar("Octopus fact from reef", "Octopus fact from reef")
 
 
 def test_titles_too_similar_very_different():
@@ -53,7 +53,7 @@ def test_title_similarity_empty():
 
 
 def test_title_similarity_partial():
-    score = title_similarity("Apple announces new iPhone", "Apple releases new iPhone model")
+    score = title_similarity("Octopus changes colour", "Octopus shifts colour near reef")
     assert 0.3 < score < 1.0
 
 

@@ -38,7 +38,7 @@ def test_banned_phrase_repeat_only_counted_once():
 
 def test_clean_script_has_no_banned_phrases():
     issues = check_banned_phrases(
-        "The Fed cut interest rates by 50 basis points after the meeting."
+        "This octopus changed colour and texture near the coral reef."
     )
     assert issues == []
 
@@ -46,22 +46,22 @@ def test_clean_script_has_no_banned_phrases():
 # ── hook openers ─────────────────────────────────────────────────
 
 def test_weak_hook_today_is_flagged():
-    issues = check_hook_opens_strong("Today the Fed announced rates")
+    issues = check_hook_opens_strong("Today the octopus changed colour")
     assert any(i.code == "weak_hook" for i in issues)
 
 
 def test_weak_hook_according_to_is_flagged():
-    issues = check_hook_opens_strong("According to Reuters, the bank failed.")
+    issues = check_hook_opens_strong("According to the source, the owl turned.")
     assert any(i.code == "weak_hook" for i in issues)
 
 
 def test_weak_hook_hi_everyone_is_flagged():
-    issues = check_hook_opens_strong("Hi everyone, breaking news today.")
+    issues = check_hook_opens_strong("Hi everyone, animal fact today.")
     assert any(i.code == "weak_hook" for i in issues)
 
 
 def test_strong_hook_passes():
-    issues = check_hook_opens_strong("The Fed just cut rates by 50 basis points.")
+    issues = check_hook_opens_strong("This octopus changes colour in seconds.")
     assert all(i.code != "weak_hook" for i in issues)
 
 
@@ -79,16 +79,16 @@ def test_missing_hook_is_block_severity():
 
 def test_script_must_start_with_hook():
     issues = check_script_starts_with_hook(
-        hook="The Fed cut rates",
-        script="In other news, the Fed cut rates by 50bps...",
+        hook="The octopus changed colour",
+        script="In another clip, the octopus changed colour...",
     )
     assert any(i.code == "script_hook_mismatch" for i in issues)
 
 
 def test_script_starts_correctly():
     issues = check_script_starts_with_hook(
-        hook="The Fed cut rates.",
-        script="The Fed cut rates. Inflation isn't done yet...",
+        hook="The octopus changed colour.",
+        script="The octopus changed colour. Its skin texture shifted too...",
     )
     assert issues == []
 
@@ -96,19 +96,19 @@ def test_script_starts_correctly():
 # ── transformation ───────────────────────────────────────────────
 
 def test_low_transformation_is_flagged():
-    src = ("the federal reserve cut interest rates by fifty basis points "
-           "powell said inflation cooling markets reacted")
+    src = ("the octopus changed colour and skin texture against the coral "
+           "reef while its camouflage became harder to notice")
     # Same words rearranged — high overlap.
-    script = "powell cut rates fifty basis points markets reacted inflation cooling federal reserve said"
+    script = "octopus colour skin texture coral reef camouflage changed harder notice"
     issues = check_transformation_present(script, src)
     assert any(i.code == "low_transformation" for i in issues)
 
 
 def test_high_transformation_passes():
-    src = "Federal Reserve raised rates today by fifty basis points said Powell."
-    script = ("Bottom line: tighter money means a recession is much more "
-              "likely now. Mortgage applications already collapsing two days "
-              "in a row. Watch credit-card delinquencies next.")
+    src = "The octopus changed colour and texture while hiding near a coral reef."
+    script = ("Bottom line: this disguise is more than a colour swap. Tiny "
+              "muscles reshape the skin surface while specialised cells "
+              "control the pattern underneath.")
     assert check_transformation_present(script, src) == []
 
 
@@ -138,14 +138,14 @@ def test_good_length_passes():
 
 def test_identical_seo_title_flagged():
     issues = check_title_diverges_from_headline(
-        "Fed cuts rates", "Fed cuts rates"
+        "Octopus changes colour", "Octopus changes colour"
     )
     assert any(i.code == "seo_title_unchanged" for i in issues)
 
 
 def test_different_seo_title_passes():
     issues = check_title_diverges_from_headline(
-        "Fed just cut rates — markets won", "Fed cuts interest rates today"
+        "Octopus camouflage works in seconds", "Octopus changes colour today"
     )
     assert issues == []
 
@@ -154,14 +154,14 @@ def test_different_seo_title_passes():
 
 def test_evaluate_clean_story_gets_high_grade():
     story = {
-        "hook":   "The Fed just cut rates 50bps.",
-        "script": ("The Fed just cut rates 50bps. Inflation isn't done yet. "
-                   "Markets had this priced in 6 weeks ago — Powell's "
-                   "catching up. Mortgage rates won't follow as fast. "
-                   "Watch credit-card delinquencies next. " * 2),
-        "description": "Federal Reserve announces rate decision today.",
-        "seo_title":   "Fed cut rates — but inflation isn't done",
-        "raw_title":   "Federal Reserve announces rate decision",
+        "hook":   "This octopus changes colour in seconds.",
+        "script": ("This octopus changes colour in seconds. Its camouflage "
+                   "is more than a colour swap. Tiny muscles reshape the "
+                   "skin while specialised cells shift the pattern. "
+                   "Watch how it disappears against the reef. " * 2),
+        "description": "Octopus camouflage changes near a coral reef.",
+        "seo_title":   "Octopus camouflage works in seconds",
+        "raw_title":   "Octopus changes colour near reef",
     }
     grade, issues = evaluate(story)
     assert grade >= 8
@@ -169,12 +169,12 @@ def test_evaluate_clean_story_gets_high_grade():
 
 def test_evaluate_slop_story_gets_low_grade():
     story = {
-        "hook":   "Today the Fed announced rates.",
-        "script": "Crucial economic news today. The Fed delved into "
-                  "pivotal rate policy.",
-        "description": "Federal Reserve announces rate decision",
-        "seo_title": "Federal Reserve announces rate decision",
-        "raw_title": "Federal Reserve announces rate decision",
+        "hook":   "Today this octopus changed colour.",
+        "script": "Crucial animal fact today. This octopus delved into "
+                  "a pivotal camouflage moment.",
+        "description": "Octopus camouflage changes near a coral reef",
+        "seo_title": "Octopus camouflage changes near a coral reef",
+        "raw_title": "Octopus camouflage changes near a coral reef",
     }
     grade, issues = evaluate(story)
     assert grade < 6

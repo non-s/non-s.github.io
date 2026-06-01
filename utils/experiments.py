@@ -24,7 +24,7 @@ Axes shipped today
   - hook_style: outcome_first | question | shocking_number | curiosity_gap
   - script_tone: opinionated | analytical | conversational
   - thumbnail_style: dynamic_text | category_color | brand_static
-  - cta_style: follow_handle | engage_comment | question_close
+  - cta_style: subscribe_channel
 
 Each axis defines its variants and an `is_significant()` heuristic so
 the analyser doesn't crown a winner on 3 data points.
@@ -67,10 +67,10 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="hook_style",
         variants=(
-            "outcome_first",     # "Markets dropped 2% before lunch."
-            "question",          # "Why did markets drop 2% before lunch?"
-            "shocking_number",   # "Two percent. Wiped out before lunch."
-            "curiosity_gap",     # "Markets did one thing nobody expected."
+            "outcome_first",     # "This octopus changes colour in seconds."
+            "question",          # "Why does this octopus change colour?"
+            "shocking_number",   # "Three hearts. One extraordinary animal."
+            "curiosity_gap",     # "This bird does one thing nobody expects."
         ),
         description="First-sentence shape â€” the single biggest retention lever.",
     ),
@@ -100,15 +100,11 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="cta_style",
         # Order matters: variants[0] is the production fallback when no
-        # A/B winner is declared yet. engage_comment is the
-        # YouTube-native default â€” Follow CTAs perform poorly on YouTube
-        # (the Follow button is right there in the UI; the CTA only
-        # adds friction). Comment prompts feed the engagement signal
-        # the For You algorithm reads first.
+        # A/B winner is declared yet. Channel subscription is the only
+        # production close: comments stay inside the script and pinned
+        # comment so the end card has one clear action.
         variants=(
-            "engage_comment",    # "Drop your favorite below ðŸ‘‡"
-            "question_close",    # "Which one surprised you?"
-            "follow_handle",     # "Follow Alex ðŸ¾"
+            "subscribe_channel",
         ),
         description="End-of-Short call-to-action.",
     ),
@@ -247,4 +243,3 @@ def axis_names() -> list[str]:
 def variant_choices(axis_name: str) -> tuple[str, ...]:
     ax = _axis_by_name(axis_name)
     return ax.variants if ax else ()
-

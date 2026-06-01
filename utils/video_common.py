@@ -73,14 +73,14 @@ def wrap_text(draw, text, font, max_width):
     return lines
 
 
-_DOWNLOAD_UA = "GlobalBR-Bot/2.0"
+_DOWNLOAD_UA = "WildBrief-Bot/2.0"
 
 
 def download_image(url: str, dest: Path, timeout: int = 12) -> bool:
     """GET an image into `dest`; True if the body is a valid image ≥2 KB.
 
     Validates HTTP 200 + Content-Type starts with `image/`. Without the
-    MIME check, a 2 KB HTML error page (think Pollinations rate-limit
+    MIME check, a 2 KB HTML error page (think upstream rate-limit
     HTML) would pass and only blow up later when Pillow tried to open
     the file.
 
@@ -93,7 +93,7 @@ def download_image(url: str, dest: Path, timeout: int = 12) -> bool:
             log.debug(f"Image download: HTTP {r.status_code} for {url[:60]}")
             return False
         ctype = (r.headers.get("Content-Type") or "").lower()
-        # `octet-stream` slips through because many CDNs (incl. Pollinations
+        # `octet-stream` slips through because many CDNs
         # on cache miss) don't set the type. Trust the body sniff instead.
         if not (ctype.startswith("image/") or ctype == "application/octet-stream"):
             log.debug(f"Image download: rejected non-image content-type {ctype!r}")

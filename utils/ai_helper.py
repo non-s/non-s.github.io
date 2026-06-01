@@ -44,7 +44,7 @@ def _host_persona_block() -> str:
 log = logging.getLogger(__name__)
 
 _session = requests.Session()
-_session.headers.update({"User-Agent": "GlobalBR-News-Bot/3.0 (+https://non-s.github.io)"})
+_session.headers.update({"User-Agent": "WildBrief-Bot/3.0 (+https://non-s.github.io)"})
 
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 _MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
@@ -83,7 +83,7 @@ _last_call_ts    = 0.0
 # `_MISTRAL_429_CIRCUIT_THRESHOLD` consecutive give-ups in the same
 # process, skip Mistral and go straight to the fallback chain for
 # the rest of the run. Successful Mistral call resets the streak.
-# Earlier fetch-news runs hit the 25-min workflow timeout exactly
+# Earlier queue-refresh runs hit the 25-min workflow timeout exactly
 # because we burned the whole budget on 36 consecutive Mistral 429s.
 _MISTRAL_429_CIRCUIT_THRESHOLD = int(os.environ.get("MISTRAL_429_CIRCUIT_THRESHOLD", "3"))
 _mistral_429_streak  = 0
@@ -245,9 +245,9 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
         # Host persona overlay — injected first so the rest of the
         # style rules are interpreted IN CHARACTER. The persona itself
         # is loaded from `_data/host_persona.json` and the default is
-        # the channel's recurring host "Alex" (configurable per
-        # operator). This is what turns the channel from "generic
-        # AI narrator" into "Alex's daily brief".
+        # the channel's recurring Wild Brief narrator (configurable per
+        # operator). This keeps the voice consistent without promoting
+        # an invented host as a third party.
         _host_persona_block() + " "
         "You explain the world the way a "
         "knowledgeable friend would — clearly, with specifics, in plain "
@@ -445,12 +445,12 @@ def quality_check(title: str, description: str) -> tuple[bool, str]:
 #
 # Used as a publish gate after AI enrichment. We don't want a binary
 # yes/no on description length anymore — we want to differentiate a
-# barebones RSS dump (low score) from a full AI-enhanced post with
+# barebones source dump (low score) from a full AI-enhanced post with
 # body + key_points + faq (high score). The gate then skips anything
 # below a configurable threshold.
 
 _VAGUE_TITLE_RE = re.compile(
-    r"^\s*(some|the|a|new|this|that|update|news|breaking)\s+(news|story|item|article)\s*$",
+    r"^\s*(some|the|a|new|this|that|update|animal)\s+(fact|story|item|article)\s*$",
     re.IGNORECASE,
 )
 

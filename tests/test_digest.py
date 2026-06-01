@@ -95,11 +95,11 @@ def test_render_digest_includes_analytics():
         "avg_view_pct": 67.5,
         "total_views_14d": 12345,
         "below_60_pct": ["v1", "v2"],
-        "category_avg_view_pct": {"world": 72.0, "technology": 55.0},
+        "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
     })
     assert "67.5" in out
     assert "12345" in out
-    assert "world" in out.lower()
+    assert "cats" in out.lower()
 
 
 # ── post_digest_issue ────────────────────────────────────────────

@@ -91,7 +91,7 @@ def test_ai_enhance_caps_tag_list_to_five(monkeypatch):
 
 # ── Story builder ─────────────────────────────────────────────────
 
-def test_build_story_shape_matches_news_queue_schema():
+def test_build_story_shape_matches_shared_queue_schema():
     """The downstream generate_shorts.py reads a fixed set of keys;
     pin them here so a future fetch_animals refactor can't silently
     drop one and break the rest of the pipeline."""

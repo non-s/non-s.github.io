@@ -14,7 +14,7 @@ def test_default_persona_has_required_fields():
     p = HostPersona()
     assert p.name
     assert p.pov
-    assert p.intro_line
+    assert p.intro_line == ""
     assert p.outro_line
     assert p.catchphrases
     assert "{name}" in p.first_comment_template
@@ -23,22 +23,22 @@ def test_default_persona_has_required_fields():
 def test_load_returns_defaults_without_file(tmp_path, monkeypatch):
     monkeypatch.setattr(host_persona, "PERSONA_FILE", tmp_path / "x.json")
     p = host_persona.load()
-    assert p.name == "Alex"
+    assert p.name == "Wild Brief"
 
 
 def test_load_merges_partial_override(tmp_path, monkeypatch):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({"name": "Beatriz", "handle": "globalbrnewsbr"}),
+    f.write_text(json.dumps({"name": "Beatriz", "handle": "wildbrief_alt"}),
                   encoding="utf-8")
     monkeypatch.setattr(host_persona, "PERSONA_FILE", f)
     p = host_persona.load()
     assert p.name == "Beatriz"
-    assert p.handle == "globalbrnewsbr"
+    assert p.handle == "wildbrief_alt"
     # Defaults preserved for fields the file didn't override.
     # The default intro_line is intentionally short (â‰¤ 1 s of audio)
     # so the hook lands inside YouTube's first-2-second engagement
     # window without burning half of it on branding.
-    assert p.intro_line == "Brief."
+    assert p.intro_line == ""
 
 
 def test_load_handles_malformed_json(tmp_path, monkeypatch):
@@ -46,7 +46,7 @@ def test_load_handles_malformed_json(tmp_path, monkeypatch):
     f.write_text("{not json", encoding="utf-8")
     monkeypatch.setattr(host_persona, "PERSONA_FILE", f)
     p = host_persona.load()
-    assert p.name == "Alex"   # default
+    assert p.name == "Wild Brief"   # default
 
 
 def test_load_rejects_non_list_catchphrases(tmp_path, monkeypatch):
@@ -96,4 +96,3 @@ def test_first_comment_text_substitutes_handle():
     # format kwarg â€” ensure no KeyError.
     assert isinstance(text, str)
     assert text
-

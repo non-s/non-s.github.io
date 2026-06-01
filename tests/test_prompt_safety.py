@@ -67,10 +67,10 @@ def test_handles_empty_input():
 
 
 def test_preserves_normal_text():
-    inp = "Fed cut rates by 25 basis points after the Friday meeting."
+    inp = "Octopus changed colour after reaching the coral reef."
     out = sanitize_for_prompt(inp)
-    assert "Fed cut rates" in out
-    assert "25 basis points" in out
+    assert "Octopus changed colour" in out
+    assert "coral reef" in out
 
 
 def test_strips_act_as_directive():
@@ -102,8 +102,8 @@ def test_looks_suspicious_flags_obvious_injection():
 
 
 def test_looks_suspicious_passes_clean_text():
-    assert not looks_suspicious("Federal Reserve cuts interest rates")
-    assert not looks_suspicious("China's economy slowed in Q1")
+    assert not looks_suspicious("Octopus changes colour near the coral reef")
+    assert not looks_suspicious("Owls can rotate their heads surprisingly far")
     assert not looks_suspicious("")
 
 

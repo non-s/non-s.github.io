@@ -1,5 +1,5 @@
 """
-utils/dedup.py — Title deduplication utilities for GlobalBR News.
+utils/dedup.py — Title deduplication utilities for Wild Brief.
 Pure functions, no global state, no external deps.
 """
 from __future__ import annotations

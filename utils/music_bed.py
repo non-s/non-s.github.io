@@ -16,9 +16,9 @@ Pixabay Music's free tier is the only major library with:
   * CC0-equivalent license (commercial use OK, no attribution required)
   * Direct MP3 URLs (we don't need their site or app)
 
-We ship 5 free Pixabay tracks pre-curated for news-Short pacing:
-  - Upbeat / news-anchor energy (3 tracks)
-  - Tense / breaking-news (1 track)
+We ship 5 free Pixabay tracks pre-curated for animal-Short pacing:
+  - Upbeat / discovery energy (3 tracks)
+  - Tense / suspenseful wildlife moment (1 track)
   - Reflective / analysis (1 track)
 
 Track selection is deterministic on the story slug so the same Short
@@ -85,7 +85,7 @@ PANEL: tuple[MusicTrack, ...] = (
         mood="upbeat",
     ),
     MusicTrack(
-        name="News Tension",
+        name="Wild Curiosity",
         url="https://cdn.pixabay.com/audio/2024/04/03/audio_2c1c0c0a3a.mp3",
         mood="tense",
     ),
@@ -138,7 +138,7 @@ def download_track(track: MusicTrack) -> Path | None:
         return dest
     try:
         r = requests.get(track.url, timeout=30, stream=True,
-                          headers={"User-Agent": "GlobalBR-News-Bot/4.0"})
+                          headers={"User-Agent": "WildBrief-Bot/4.0"})
         if r.status_code != 200:
             log.debug("music_bed %s: HTTP %d", track.name, r.status_code)
             return None
@@ -223,4 +223,3 @@ def add_music_bed(tts_path: Path, story: dict,
         return tts_path
     log.info("  ðŸŽµ Music bed mixed: %s (%s)", track.name, track.mood)
     return mixed
-

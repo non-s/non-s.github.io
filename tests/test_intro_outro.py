@@ -46,13 +46,11 @@ def test_wrap_with_intro_outro_falls_back_when_render_fails(tmp_path, monkeypatc
 
 def test_wrap_with_intro_outro_concats_when_renders_succeed(tmp_path, monkeypatch):
     monkeypatch.setattr(intro_outro, "ENABLED", True)
-    fake_intro = tmp_path / "intro.mp3"
-    fake_intro.write_bytes(b"INTRO")
     fake_outro = tmp_path / "outro.mp3"
     fake_outro.write_bytes(b"OUTRO")
 
     def fake_render(line, voice, fn=None):
-        return fake_intro if "brief" in line.lower() else fake_outro
+        return None if not line.strip() else fake_outro
 
     monkeypatch.setattr(intro_outro, "get_or_render", fake_render)
 
@@ -60,8 +58,8 @@ def test_wrap_with_intro_outro_concats_when_renders_succeed(tmp_path, monkeypatc
     body.write_bytes(b"BODY")
 
     def fake_concat(intro, body_p, outro, out):
-        # Verify both intro + outro flow through.
-        assert intro is not None
+        # Wild Brief starts on the hook and only appends the outro.
+        assert intro is None
         assert outro is not None
         out.write_bytes(b"WRAPPED")
         return True
