@@ -5,7 +5,7 @@ import pytest
 
 pytest.importorskip("googleapiclient")
 
-from upload_youtube import _normalise_tags, _video_url, _youtube_description, _youtube_title
+from upload_youtube import _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title
 
 
 def test_title_respects_youtube_limit():
@@ -25,3 +25,7 @@ def test_tags_are_deduplicated_case_insensitively():
 
 def test_short_url_is_canonical():
     assert _video_url("abc123") == "https://www.youtube.com/shorts/abc123"
+
+
+def test_orphan_metadata_is_not_uploadable(tmp_path):
+    assert not _is_uploadable_meta({"video": str(tmp_path / "missing.mp4")})
