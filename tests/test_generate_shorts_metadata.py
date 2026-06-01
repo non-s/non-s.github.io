@@ -76,3 +76,26 @@ def test_metadata_preserves_experiments(tmp_path: Path):
 
 def test_metadata_privacy_defaults_public(tmp_path: Path):
     assert _meta(tmp_path)["youtube_privacy"] == "public"
+
+
+def test_candidates_are_distributed_across_categories():
+    from generate_shorts import diversify_candidates
+    candidates = [
+        {"category": "cats", "title": "cat one"},
+        {"category": "cats", "title": "cat two"},
+        {"category": "dogs", "title": "dog one"},
+        {"category": "birds", "title": "bird one"},
+    ]
+    diversified = diversify_candidates(candidates)
+    assert [item["category"] for item in diversified] == [
+        "cats", "dogs", "birds", "cats",
+    ]
+
+
+def test_queue_adapter_preserves_original_pexels_clip():
+    from generate_shorts import _queue_to_story
+    story = _queue_to_story({
+        "id": "story-1",
+        "pexels_download_url": "https://files.pexels.com/video.mp4",
+    })
+    assert story["pexels_download_url"] == "https://files.pexels.com/video.mp4"
