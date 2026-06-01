@@ -1,13 +1,12 @@
 """Shared pytest fixtures.
 
-Keeps test files lean: every test that needs a fake Mistral or a
-sample feedparser entry pulls them from here. The blog post fixtures
-were removed when the Jekyll site was deleted (May 2026 pivot).
+Keeps test files lean: every test that needs a fake Mistral pulls it
+from here. The old site fixtures were removed during the animal-channel
+pivot.
 """
 from __future__ import annotations
 
 import sys
-import types
 from pathlib import Path
 
 import pytest
@@ -66,18 +65,6 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     except Exception:
         pass
 
-
-
-@pytest.fixture
-def sample_feedparser_entry():
-    """A dict that quacks like a feedparser entry."""
-    e = types.SimpleNamespace()
-    e.title = "Sample headline"
-    e.link = "https://example.com/article"
-    e.summary = "A short description."
-    e.published = "Thu, 15 May 2026 10:00:00 +0000"
-    e.tags = []
-    return e
 
 
 @pytest.fixture

@@ -618,7 +618,7 @@ def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
 # acquired b-roll clips.
 
 def _thumbnail_copy(thumbnail_text: str, fallback: str = "ANIMAL FACT") -> str:
-    """Return a compact, readable headline for a vertical preview tile."""
+    """Return compact, readable thumbnail copy for a vertical preview tile."""
     cleaned = re.sub(r"[^A-Za-z0-9 '&-]+", " ", thumbnail_text or "")
     words = [word for word in cleaned.upper().split() if word]
     return " ".join(words[:4]) or fallback
@@ -649,20 +649,20 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
               font=cat_font, fill=(0, 0, 0, 255))
 
     copy = _thumbnail_copy(thumbnail_text)
-    headline_font = get_font(156, bold=True)
-    lines = wrap_text(draw, copy, headline_font, SHORT_W - 154)
+    title_font = get_font(156, bold=True)
+    lines = wrap_text(draw, copy, title_font, SHORT_W - 154)
     if len(lines) > 3:
-        headline_font = get_font(132, bold=True)
-        lines = wrap_text(draw, copy, headline_font, SHORT_W - 154)
+        title_font = get_font(132, bold=True)
+        lines = wrap_text(draw, copy, title_font, SHORT_W - 154)
     lines = lines[:3]
     line_h = 176 if len(lines) <= 2 else 150
     y = 730 - (len(lines) * line_h // 2)
     for line in lines:
-        box = draw.textbbox((0, 0), line, font=headline_font)
+        box = draw.textbbox((0, 0), line, font=title_font)
         x = (SHORT_W - box[2]) // 2
-        draw.text((x + 7, y + 8), line, font=headline_font,
+        draw.text((x + 7, y + 8), line, font=title_font,
                   fill=(0, 0, 0, 230))
-        draw.text((x, y), line, font=headline_font,
+        draw.text((x, y), line, font=title_font,
                   fill=(*TEXT_WHITE, 255))
         y += line_h
 
@@ -1101,7 +1101,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     slug = story.get("slug") or f"unknown-{int(time.time())}"
     date_str = story.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = story.get("title") or "Animal fact of the day"
-    category = story.get("category", "TECH")
+    category = story.get("category", "wildlife")
 
     log.info(f"  Generating Short for: [{category}] {title[:60]}")
 

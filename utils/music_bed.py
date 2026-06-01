@@ -98,14 +98,14 @@ PANEL: tuple[MusicTrack, ...] = (
 
 
 def _mood_for_story(story: dict) -> str:
-    """Pick a mood by story signal. Breaking â†’ tense; analysis â†’ reflective; rest upbeat."""
+    """Pick a mood from the animal clip signal."""
     if story.get("breaking"):
         return "tense"
     sentiment = (story.get("sentiment") or "").lower()
     if sentiment == "negative":
         return "tense"
     cat = (story.get("category") or "").lower()
-    if cat in ("science", "health", "environment"):
+    if cat in ("ocean", "birds", "wildlife"):
         return "reflective"
     return "upbeat"
 

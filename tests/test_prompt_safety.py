@@ -124,9 +124,9 @@ def test_wrap_untrusted_sanitises_inside_wrapper():
 
 
 def test_wrap_untrusted_custom_label():
-    out = wrap_untrusted("hello", label="rss_summary")
-    assert out.startswith("<rss_summary>")
-    assert out.endswith("</rss_summary>")
+    out = wrap_untrusted("hello", label="animal_metadata")
+    assert out.startswith("<animal_metadata>")
+    assert out.endswith("</animal_metadata>")
 
 
 def test_wrap_untrusted_sanitises_label():

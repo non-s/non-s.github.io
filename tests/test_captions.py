@@ -51,7 +51,7 @@ def test_groups_handles_empty():
 # â”€â”€ write_ass â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_write_ass_creates_valid_file(tmp_path):
-    caps = [_w("Hello world", 0.0, 1.2), _w("How are you", 1.5, 2.8)]
+    caps = [_w("Octopus camouflage", 0.0, 1.2), _w("Owl night vision", 1.5, 2.8)]
     out = tmp_path / "subs.ass"
     assert write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
@@ -59,19 +59,19 @@ def test_write_ass_creates_valid_file(tmp_path):
     assert "[V4+ Styles]" in body
     assert "[Events]" in body
     # Words are uppercased.
-    assert "HELLO WORLD" in body
-    assert "HOW ARE YOU" in body
+    assert "OCTOPUS CAMOUFLAGE" in body
+    assert "OWL NIGHT VISION" in body
     # Timing format `0:00:00.00`.
     assert "0:00:00.00" in body
 
 
 def test_write_ass_escapes_curly_braces(tmp_path):
-    caps = [_w("hello {world}", 0.0, 1.0)]
+    caps = [_w("owl {night}", 0.0, 1.0)]
     out = tmp_path / "subs.ass"
     write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
     # Curly braces become parens so libass doesn't treat them as overrides.
-    assert "(WORLD)" in body or "(world)" in body.upper()
+    assert "(NIGHT)" in body or "(night)" in body.upper()
     assert "{" not in body.split("[Events]")[1]
 
 
@@ -239,4 +239,3 @@ def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
     assert out is None
     # Original + 1 retry = 2 calls total.
     assert call_count["n"] == 2
-

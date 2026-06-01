@@ -26,7 +26,6 @@ import pytest
 
 # These three modules depend on external libs that may be missing in
 # the sandbox. We skip cleanly when so; CI has them.
-pytest.importorskip("feedparser")
 pytest.importorskip("PIL")
 
 
@@ -62,7 +61,10 @@ def fake_queue_story():
         "script":         ("This octopus can disappear against a reef in seconds. "
                            "Specialised skin cells shift colour while tiny muscles alter "
                            "its texture. That lets it match rocks, coral, and sand. "
-                           "The wildest part is how quickly the whole disguise changes."),
+                           "The wildest part is how quickly the whole disguise changes. "
+                           "It can also reshape bumps across its skin to copy the surface "
+                           "around it. That combination makes the camouflage unusually "
+                           "convincing even when the animal is moving."),
         "lead":           "Octopus camouflage changes in seconds.",
         "key_points":     ["rapid colour shift",
                            "skin texture changes",
@@ -223,7 +225,7 @@ def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
         thumbnail_text="OCTOPUS", key_points=[], yt_tags=[],
         yt_description="x", geo_hashtag="Ocean", topic_hashtag="Octopus",
         _queue_id="slop-id", native_lang="en",
-        # seo_title same as RSS title â€” also a flag.
+        # seo_title same as source title is also a flag.
         experiments={},
     )
     tmp = tmp_path / "tmp_run"

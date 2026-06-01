@@ -25,7 +25,7 @@ def test_build_query_empty_input():
 
 
 def test_build_query_caps_tokens():
-    """Long headlines should still produce a short search query."""
+    """Long titles should still produce a short search query."""
     out = broll._build_query("Octopus Dolphin Whale Owl Eagle Cat Dog Horse Goat")
     assert len(out.split()) <= 6
 

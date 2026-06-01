@@ -87,7 +87,7 @@ AXES: tuple[Axis, ...] = (
         name="thumbnail_style",
         variants=(
             "dynamic_text",      # AI-authored thumbnail_text overlay (current default)
-            "category_color",    # solid category-color slab + headline
+            "category_color",    # solid category-color slab + title
             # `brand_static` (the shipped JPEG with no per-Short text) was
             # part of the A/B until the channel had enough volume to
             # learn from it. At <100 subs every Short is a first-

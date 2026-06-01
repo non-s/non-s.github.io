@@ -205,8 +205,8 @@ def check_length(script: str) -> list[Issue]:
     return []
 
 
-def check_title_diverges_from_headline(seo_title: str, raw_title: str) -> list[Issue]:
-    """The SEO title MUST be a rewrite, not a copy of the RSS headline."""
+def check_title_diverges_from_source(seo_title: str, raw_title: str) -> list[Issue]:
+    """The SEO title MUST be a rewrite, not a copy of the source title."""
     if not seo_title or not raw_title:
         return []
     a = re.sub(r"[^a-z0-9 ]", "", seo_title.lower()).strip()
@@ -215,7 +215,7 @@ def check_title_diverges_from_headline(seo_title: str, raw_title: str) -> list[I
         return [Issue(
             code="seo_title_unchanged",
             severity="warn",
-            message="seo_title is identical to the raw RSS title — no curiosity gap",
+            message="seo_title is identical to the raw source title — no curiosity gap",
             span=seo_title[:80],
         )]
     return []
@@ -235,7 +235,7 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
     issues += check_script_starts_with_hook(hook, script)
     issues += check_transformation_present(script, description)
     issues += check_length(script)
-    issues += check_title_diverges_from_headline(seo_title, raw_title)
+    issues += check_title_diverges_from_source(seo_title, raw_title)
 
     # Grade: start at 10, subtract per issue. Blocks weigh 4, warns 1.
     penalty = sum(4 if i.severity == "block" else 1 for i in issues)

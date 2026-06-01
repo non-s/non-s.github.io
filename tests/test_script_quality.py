@@ -6,7 +6,7 @@ from utils.script_quality import (
     check_hook_opens_strong,
     check_length,
     check_script_starts_with_hook,
-    check_title_diverges_from_headline,
+    check_title_diverges_from_source,
     check_transformation_present,
     evaluate,
     should_block,
@@ -137,14 +137,14 @@ def test_good_length_passes():
 # ── seo title diverges ──────────────────────────────────────────
 
 def test_identical_seo_title_flagged():
-    issues = check_title_diverges_from_headline(
+    issues = check_title_diverges_from_source(
         "Octopus changes colour", "Octopus changes colour"
     )
     assert any(i.code == "seo_title_unchanged" for i in issues)
 
 
 def test_different_seo_title_passes():
-    issues = check_title_diverges_from_headline(
+    issues = check_title_diverges_from_source(
         "Octopus camouflage works in seconds", "Octopus changes colour today"
     )
     assert issues == []

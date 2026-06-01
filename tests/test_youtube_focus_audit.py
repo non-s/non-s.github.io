@@ -15,6 +15,12 @@ BLOCKED = (
     "bird" + "tok",
     "farm" + "tok",
     "@wildbrief" + "_x",
+    "feed" + "parser",
+    "feed_" + "cache",
+    "feed_" + "health",
+    "pol" + "linations",
+    "internet " + "archive",
+    "na" + "sa",
 )
 
 

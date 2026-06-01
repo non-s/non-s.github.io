@@ -10,11 +10,11 @@ pytest.importorskip("PIL")
 
 def _story() -> dict:
     return {
-        "title": "Headline that will become the seo title",
+        "title": "How lions coordinate during a hunt",
         "category": "wildlife",
         "source": "Pexels",
         "source_url": "https://www.pexels.com/video/xyz",
-        "slug": "headline-that-will-become-the-seo-title-2026-05-19",
+        "slug": "how-lions-coordinate-during-a-hunt-2026-05-19",
         "yt_description": "AI-authored Short description. More info follows.",
         "yt_tags": ["lion", "wildlife", "savanna"],
         "topic_hashtag": "Wildlife",

@@ -183,7 +183,7 @@ _STOPWORDS = {
 
 
 def _build_query(text: str) -> str:
-    """Reduce a headline to b-roll-friendly keywords."""
+    """Reduce a title to b-roll-friendly keywords."""
     if not text:
         return ""
     toks = re.findall(r"[A-Za-z][A-Za-z\-']{2,}", text)

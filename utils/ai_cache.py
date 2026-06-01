@@ -6,8 +6,8 @@ window don't burn Mistral / Cerebras / Gemini / Groq quota.
 
 How it helps the free-tier budget
 ---------------------------------
-fetch_animals.py runs every 3h and reads the same RSS items repeatedly
-until they're consumed. Without caching, each retry of the same story
+fetch_animals.py runs every 3h and may revisit the same Pexels clips
+until they're consumed. Without caching, each retry of the same animal fact
 costs a fresh AI call. With caching, the first call is paid; reruns
 within `AI_CACHE_TTL_DAYS` (default 30) come back from disk for free.
 

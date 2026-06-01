@@ -92,7 +92,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         "",
         "Review checklist (30 seconds):",
         "- [ ] Each hook leads with action / number â€” no \"Today\" / \"In a recent\"",
-        "- [ ] Each script adds analysis beyond the source article",
+        "- [ ] Each script adds a memorable fact beyond the source metadata",
         "- [ ] No AI-tell phrases on display (\"crucial\", \"pivotal\", \"delve\")",
         "- [ ] Thumbnails read clearly at small size",
         "- [ ] Captions are accurate (open one and skim)",
