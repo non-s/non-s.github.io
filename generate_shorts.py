@@ -492,7 +492,7 @@ def create_short_frame(title: str, category: str, points: list[str],
     # ── LIVE dot ─────────────────────────────────────────────────
     live_font = get_font(38, bold=True)
     live_y = badge_y + badge_h + 28
-    live_text = "● LIVE"
+    live_text = "ANIMAL FACT"
     lbbox = draw.textbbox((0, 0), live_text, font=live_font)
     lx = (SHORT_W - lbbox[2]) // 2
     draw.text((lx, live_y), live_text, font=live_font, fill=RED_LIVE)
@@ -616,9 +616,9 @@ SHIPPED_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_s
 STATIC_THUMB_PATH = SHIPPED_THUMB_PATH
 
 
-def create_short_thumbnail(frame_img: Image.Image, output: Path,
-                            thumbnail_text: str = "",
-                            category: str = "") -> None:
+def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
+                                   thumbnail_text: str = "",
+                                   category: str = "") -> None:
     """
     Write the per-Short thumbnail.
 
@@ -661,6 +661,67 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
 # unit-tested in isolation. This wrapper is what `generate_short()`
 # calls; it picks the right pipeline based on whether we actually
 # acquired b-roll clips.
+
+def _thumbnail_copy(thumbnail_text: str, fallback: str = "ANIMAL FACT") -> str:
+    """Return a compact, readable headline for a vertical preview tile."""
+    cleaned = re.sub(r"[^A-Za-z0-9 '&-]+", " ", thumbnail_text or "")
+    words = [word for word in cleaned.upper().split() if word]
+    return " ".join(words[:4]) or fallback
+
+
+def create_short_thumbnail(frame_img: Image.Image, output: Path,
+                            thumbnail_text: str = "",
+                            category: str = "") -> None:
+    """Render a story-specific vertical preview with one instant idea."""
+    if frame_img is None:
+        return
+    thumb = frame_img.copy().convert("RGB").resize((SHORT_W, SHORT_H), Image.LANCZOS)
+    draw = ImageDraw.Draw(thumb, "RGBA")
+    cat_color = CATEGORY_COLORS.get((category or "").upper(), ACCENT_BLUE)
+
+    # Keep the animal visible, then create a clean mobile-readable text band.
+    draw.rectangle((0, 0, SHORT_W, SHORT_H), fill=(0, 0, 0, 82))
+    draw.rectangle((0, 420, SHORT_W, 1450), fill=(0, 0, 0, 132))
+    draw.rectangle((0, 1440, SHORT_W, SHORT_H), fill=(0, 0, 0, 178))
+    draw.rectangle((0, 0, 22, SHORT_H), fill=(*cat_color, 255))
+
+    cat_text = (category or "animals").upper()[:18]
+    cat_font = get_font(42, bold=True)
+    cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
+    pill = (76, 110, 76 + cat_box[2] + 46, 110 + cat_box[3] + 28)
+    draw_rounded_rect(draw, pill, radius=12, fill=(*cat_color, 245))
+    draw.text((pill[0] + 23, pill[1] + 14), cat_text,
+              font=cat_font, fill=(0, 0, 0, 255))
+
+    copy = _thumbnail_copy(thumbnail_text)
+    headline_font = get_font(156, bold=True)
+    lines = wrap_text(draw, copy, headline_font, SHORT_W - 154)
+    if len(lines) > 3:
+        headline_font = get_font(132, bold=True)
+        lines = wrap_text(draw, copy, headline_font, SHORT_W - 154)
+    lines = lines[:3]
+    line_h = 176 if len(lines) <= 2 else 150
+    y = 730 - (len(lines) * line_h // 2)
+    for line in lines:
+        box = draw.textbbox((0, 0), line, font=headline_font)
+        x = (SHORT_W - box[2]) // 2
+        draw.text((x + 7, y + 8), line, font=headline_font,
+                  fill=(0, 0, 0, 230))
+        draw.text((x, y), line, font=headline_font,
+                  fill=(*TEXT_WHITE, 255))
+        y += line_h
+
+    draw.rectangle((76, 1440, 310, 1454), fill=(*cat_color, 255))
+    brand_font = get_font(62, bold=True)
+    draw.text((76, 1502), "WILD BRIEF", font=brand_font,
+              fill=(*TEXT_WHITE, 255))
+    sub_font = get_font(38, bold=True)
+    draw.text((76, 1582), "ANIMAL FACTS", font=sub_font,
+              fill=(*cat_color, 255))
+
+    thumb.save(str(output), "JPEG", quality=94, optimize=True)
+    log.info("  Thumbnail (dynamic story preview): %s", output.name)
+
 
 def acquire_broll_clips(story: dict, tmp_dir: Path,
                          want_n: int = 3) -> list[Path]:

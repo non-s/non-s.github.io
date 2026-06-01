@@ -82,6 +82,20 @@ def _ffmpeg_escape(text: str) -> str:
 
 # â”€â”€ Multi-clip b-roll pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+def _overlay_copy(text: str, max_chars: int = 42) -> str:
+    """Compact spoken hooks for a single mobile-readable overlay line."""
+    cleaned = " ".join((text or "").strip().split())
+    if len(cleaned) <= max_chars:
+        return cleaned
+    words: list[str] = []
+    for word in cleaned.split():
+        candidate = " ".join(words + [word])
+        if len(candidate) > max_chars - 3:
+            break
+        words.append(word)
+    return (" ".join(words).rstrip(" .,;:-") + "...") if words else cleaned[:max_chars - 3] + "..."
+
+
 def build_broll_short(broll_paths: list[Path],
                       audio_path: Path,
                       output_path: Path,
@@ -247,7 +261,7 @@ def build_broll_short(broll_paths: list[Path],
     # Burn the hook text on the top half for the first 3 seconds.
     font = _font_path()
     if hook_text and font:
-        safe = _ffmpeg_escape(hook_text[:60])
+        safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
             f":text='{safe}':fontcolor=white:fontsize=78"
@@ -376,7 +390,7 @@ def build_static_short(frame_path: Path,
     )
     last = "scaled"
     if hook_text and font:
-        safe = _ffmpeg_escape(hook_text[:60])
+        safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
             f":text='{safe}':fontcolor=white:fontsize=78"
@@ -425,4 +439,3 @@ def build_static_short(frame_path: Path,
         return False
     log.info("  ðŸŽž  Static-frame Short ready (%.1fs): %s", audio_dur, output_path.name)
     return True
-
