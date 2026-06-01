@@ -689,10 +689,27 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
         return []
     log.info("  🎬 B-roll candidates: %d (query=%r)", len(candidates), query[:80])
 
+    preferred_url = (story.get("pexels_download_url") or "").strip()
+    if preferred_url:
+        candidates.insert(0, BrollClip(
+            source="pexels",
+            url=(story.get("source_url") or "").strip(),
+            download_url=preferred_url,
+            width=1080,
+            height=1920,
+            duration_s=10.0,
+            title=(story.get("title") or "").strip(),
+            license="Pexels License (free for commercial use)",
+        ))
+
     paths: list[Path] = []
+    seen_urls: set[str] = set()
     for i, clip in enumerate(candidates):
         if len(paths) >= want_n:
             break
+        if clip.download_url in seen_urls:
+            continue
+        seen_urls.add(clip.download_url)
         dest = tmp_dir / f"broll_{i}.mp4"
         if download_clip(clip, dest):
             paths.append(dest)
@@ -942,6 +959,7 @@ def _queue_to_story(qs: dict) -> dict:
         "yt_description": qs.get("yt_description", ""),
         "geo_hashtag":    qs.get("geo_hashtag", ""),
         "topic_hashtag":  qs.get("topic_hashtag", ""),
+        "pexels_download_url": qs.get("pexels_download_url", ""),
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
 
@@ -964,6 +982,24 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         reverse=True,
     )
     return [_queue_to_story(s) for s in pending], queue
+
+
+def diversify_candidates(candidates: list[dict]) -> list[dict]:
+    """Round-robin categories while preserving quality order within each one."""
+    buckets: dict[str, list[dict]] = {}
+    order: list[str] = []
+    for candidate in candidates:
+        category = candidate.get("category") or "wildlife"
+        if category not in buckets:
+            buckets[category] = []
+            order.append(category)
+        buckets[category].append(candidate)
+    diversified: list[dict] = []
+    while any(buckets.values()):
+        for category in order:
+            if buckets[category]:
+                diversified.append(buckets[category].pop(0))
+    return diversified
 
 
 def mark_consumed(queue: dict, queue_id: str) -> None:
@@ -1374,6 +1410,7 @@ def main():
             log.info("🚫 Filtered out %d blocked stories (operator /block)",
                      before - len(candidates))
 
+    candidates = diversify_candidates(candidates)
     log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
     if not candidates:
         log.info("Nothing to do.")
