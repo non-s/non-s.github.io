@@ -151,7 +151,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append(f"- {anomaly.get('reason', '')}")
             lines.append(
                 "- Likely causes: channel strike, YouTube rate-limit, "
-                "workflow failure, or slow news day. Investigate."
+                "workflow failure, or empty animal queue. Investigate."
             )
             lines.append("")
 
@@ -340,4 +340,3 @@ def harvest_block_commands(repo: str | None = None,
         except Exception:
             continue
     return blocked
-

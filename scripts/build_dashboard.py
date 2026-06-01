@@ -146,10 +146,10 @@ def render_html() -> str:
     out: list[str] = []
     out.append(f"<!doctype html><html lang='en'><head><meta charset='utf-8'>")
     out.append(f"<meta name='viewport' content='width=device-width,initial-scale=1'>")
-    out.append(f"<title>GlobalBR News — channel dashboard</title>")
+    out.append(f"<title>Wild Brief — channel dashboard</title>")
     out.append(f"<style>{CSS}</style></head><body>")
 
-    out.append("<h1>GlobalBR News — channel dashboard</h1>")
+    out.append("<h1>Wild Brief — channel dashboard</h1>")
     out.append(f"<small>Generated {html.escape(datetime.utcnow().isoformat())} UTC · "
                 f"last analytics snapshot {html.escape(str(pulled_at))}</small>")
 

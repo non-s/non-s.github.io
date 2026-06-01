@@ -35,7 +35,7 @@ def test_render_intro_card_caches(tmp_path, monkeypatch):
 
 def test_different_persona_renders_different_card(tmp_path, monkeypatch):
     monkeypatch.setattr(brand_card, "BRAND_CARD_CACHE", tmp_path / "cache")
-    a = brand_card.render_intro_card(HostPersona(name="Alex"))
+    a = brand_card.render_intro_card(HostPersona(name="Wild Brief"))
     b = brand_card.render_intro_card(HostPersona(name="Beatriz"))
     assert a != b
     assert a.exists() and b.exists()

@@ -21,21 +21,21 @@ def test_remember_appends_jsonl(isolated):
     channel_memory.remember({
         "id":          "story-abc",
         "slug":        "story-abc",
-        "title":       "Fed cuts rates",
-        "seo_title":   "Fed cuts rates today",
-        "hook":        "The Fed just cut rates.",
-        "category":    "business",
-        "geo_hashtag": "USA",
-        "topic_hashtag": "Markets",
-        "source":      "Reuters",
-        "yt_tags":     ["fed", "powell", "rates", "world news"],
+        "title":       "Octopus changes colour",
+        "seo_title":   "Octopus changes colour in seconds",
+        "hook":        "This octopus changes colour in seconds.",
+        "category":    "ocean",
+        "geo_hashtag": "Ocean",
+        "topic_hashtag": "Octopus",
+        "source":      "Pexels",
+        "yt_tags":     ["octopus", "cephalopod", "camouflage", "animal facts"],
     })
     entries = isolated.read_text(encoding="utf-8").strip().split("\n")
     assert len(entries) == 1
     e = json.loads(entries[0])
     assert e["slug"] == "story-abc"
-    assert e["title"] == "Fed cuts rates today"
-    assert e["entities"] == ["fed", "powell", "rates"]   # first 3 only
+    assert e["title"] == "Octopus changes colour in seconds"
+    assert e["entities"] == ["octopus", "cephalopod", "camouflage"]   # first 3 only
 
 
 def test_remember_skips_when_no_slug(isolated):
@@ -49,23 +49,23 @@ def test_find_callback_candidates_returns_empty_without_memory(isolated):
 
 
 def test_find_callback_candidates_matches_on_entities(isolated):
-    # Past: a Fed-Powell story.
+    # Past: an octopus-camouflage story.
     channel_memory.remember({
         "slug": "past-1", "id": "past-1",
-        "title": "Fed signals rate cut",
-        "hook": "Powell hinted at cutting rates.",
-        "yt_tags": ["fed", "powell", "rates", "x", "y"],
-        "geo_hashtag": "USA",
-        "topic_hashtag": "Markets",
+        "title": "Octopus shifts colour",
+        "hook": "This octopus changes its skin pattern.",
+        "yt_tags": ["octopus", "camouflage", "cephalopod", "x", "y"],
+        "geo_hashtag": "Ocean",
+        "topic_hashtag": "Octopus",
     })
     # New: shares entities with the past one.
     new_story = {
         "slug": "new-1",
-        "seo_title": "Fed actually cuts rates today",
-        "hook": "Powell did it — 50 bps cut.",
-        "yt_tags": ["fed", "powell", "rates"],
-        "geo_hashtag": "USA",
-        "topic_hashtag": "Markets",
+        "seo_title": "Octopus camouflage happens in seconds",
+        "hook": "This octopus just disappeared against the reef.",
+        "yt_tags": ["octopus", "camouflage", "cephalopod"],
+        "geo_hashtag": "Ocean",
+        "topic_hashtag": "Octopus",
     }
     candidates = channel_memory.find_callback_candidates(new_story)
     assert candidates
@@ -75,19 +75,19 @@ def test_find_callback_candidates_matches_on_entities(isolated):
 def test_find_callback_candidates_skips_unrelated(isolated):
     channel_memory.remember({
         "slug": "past-1", "id": "past-1",
-        "title": "Apple unveils iPhone",
-        "hook": "Apple shipped the new iPhone.",
-        "yt_tags": ["apple", "iphone", "tech"],
-        "geo_hashtag": "USA",
-        "topic_hashtag": "Tech",
+        "title": "Octopus changes colour",
+        "hook": "This octopus shifts colour in seconds.",
+        "yt_tags": ["octopus", "camouflage", "cephalopod"],
+        "geo_hashtag": "Ocean",
+        "topic_hashtag": "Octopus",
     })
     new_story = {
         "slug": "new-1",
-        "seo_title": "Ukraine peace talks resume",
-        "hook": "Zelensky agrees to ceasefire.",
-        "yt_tags": ["ukraine", "russia", "ceasefire"],
-        "geo_hashtag": "Ukraine",
-        "topic_hashtag": "Conflict",
+        "seo_title": "Owls rotate their heads farther than humans",
+        "hook": "This owl turns its head almost all the way around.",
+        "yt_tags": ["owl", "bird", "neck"],
+        "geo_hashtag": "Forest",
+        "topic_hashtag": "Birds",
     }
     assert channel_memory.find_callback_candidates(new_story) == []
 
@@ -109,15 +109,15 @@ def test_find_callback_candidates_caps_at_max(isolated):
     for i in range(5):
         channel_memory.remember({
             "slug": f"p-{i}", "id": f"p-{i}",
-            "title": "Powell rate decision",
-            "hook": "Fed cut rates.",
-            "yt_tags": ["fed", "powell", "rates"],
+            "title": "Octopus camouflage",
+            "hook": "Octopus changed colour.",
+            "yt_tags": ["octopus", "camouflage", "cephalopod"],
         })
     new_story = {
         "slug": "n",
-        "seo_title": "Fed news",
-        "hook": "Powell again on rates.",
-        "yt_tags": ["fed", "powell", "rates"],
+        "seo_title": "Octopus camouflage detail",
+        "hook": "Octopus changes colour again.",
+        "yt_tags": ["octopus", "camouflage", "cephalopod"],
     }
     out = channel_memory.find_callback_candidates(new_story, max_candidates=2)
     assert len(out) == 2

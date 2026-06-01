@@ -51,12 +51,10 @@ def test_variant_choices_includes_documented_variants():
     assert "opinionated" in experiments.variant_choices("script_tone")
 
 
-def test_cta_default_is_engage_comment():
-    """variants[0] is the production fallback when no A/B winner has
-    been declared yet. On YouTube the engagement-driving CTA
-    (`engage_comment`) outperforms a Follow CTA, so it sits first."""
+def test_cta_is_channel_subscription_only():
+    """End cards keep one unambiguous growth action."""
     cta_variants = experiments.variant_choices("cta_style")
-    assert cta_variants[0] == "engage_comment"
+    assert cta_variants == ("subscribe_channel",)
 
 
 # â”€â”€ winner computation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -108,17 +106,16 @@ def test_compute_winners_multi_axis(monkeypatch):
     monkeypatch.setattr(experiments, "MIN_SAMPLES_FOR_WINNER", 3)
     obs = (
         [{"experiments": {"hook_style": "outcome_first",
-                          "cta_style": "follow_handle"}, "score": 80}
+                          "script_tone": "curious"}, "score": 80}
          for _ in range(5)] +
         [{"experiments": {"hook_style": "outcome_first",
-                          "cta_style": "engage_comment"}, "score": 90}
+                          "script_tone": "opinionated"}, "score": 90}
          for _ in range(5)]
     )
     out = experiments.compute_winners(obs, min_samples=3)
     # hook_style only has one variant in the data, but it still "wins".
     assert out["winners"]["hook_style"] == "outcome_first"
-    # cta_style: engage_comment outperforms follow_handle.
-    assert out["winners"]["cta_style"] == "engage_comment"
+    assert out["winners"]["script_tone"] == "opinionated"
 
 
 # â”€â”€ read / write â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -142,4 +139,3 @@ def test_read_winners_handles_malformed(tmp_path, monkeypatch):
     p.write_text("{not json", encoding="utf-8")
     monkeypatch.setattr(experiments, "EXPERIMENTS_FILE", p)
     assert experiments.read_winners() == {}
-

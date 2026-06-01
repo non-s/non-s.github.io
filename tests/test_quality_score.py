@@ -5,7 +5,7 @@ from utils.ai_helper import quality_score
 _RICH_AI = {
     "article_body": "x" * 600,
     "key_points": ["k1", "k2", "k3"],
-    "tl_dr": "A sensible one-sentence summary of the news.",
+    "tl_dr": "A sensible one-sentence summary of the animal fact.",
     "faq": [
         {"q": "Q1?", "a": "A1"},
         {"q": "Q2?", "a": "A2"},
@@ -16,8 +16,8 @@ _RICH_AI = {
 
 def test_high_quality_passes():
     score, notes = quality_score(
-        title="UK confirms new drug halves dementia risk in landmark 10-year trial",
-        description="Researchers at the University of Cambridge report a 47 percent reduction in dementia incidence after 10 years.",
+        title="Octopus camouflage shifts colour and texture in only seconds",
+        description="Specialised skin cells and tiny muscles let an octopus blend into coral, rocks, and sand within seconds.",
         ai_payload=_RICH_AI,
         body_chars=900,
     )
@@ -27,7 +27,7 @@ def test_high_quality_passes():
 
 def test_thin_title_fails():
     score, _ = quality_score(
-        title="news",
+        title="animal fact",
         description="A reasonable description that has well over sixty characters of content here.",
         ai_payload=_RICH_AI,
         body_chars=900,
@@ -83,7 +83,7 @@ def test_partial_ai_passes_gate_at_6():
 
 def test_spammy_title_penalised():
     score, notes = quality_score(
-        title="Click here for the most shocking news you wont believe",
+        title="Click here for the most shocking animal fact you wont believe",
         description="A reasonable description that has well over sixty characters of content here.",
         ai_payload=_RICH_AI,
     )
@@ -95,7 +95,7 @@ def test_max_without_image_is_9():
     # The 10th point is reserved for a verified image, injected by the
     # caller — quality_score itself never sees the image.
     score, _ = quality_score(
-        title="A perfectly composed news headline with verbs and concrete subjects today",
+        title="A perfectly composed animal fact title with verbs and concrete subjects today",
         description="A descriptive paragraph that is clearly longer than 120 chars, contains a period, and clearly explains the story in plain prose so readers can understand the gist before clicking through to the full piece.",
         ai_payload=_RICH_AI,
         body_chars=1200,

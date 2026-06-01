@@ -17,7 +17,7 @@ def test_slugify_accents():
 
 
 def test_slugify_special_chars():
-    assert slugify("AI & Tech: 2025!") == "ai-tech-2025"
+    assert slugify("Cat Facts: 2025!") == "cat-facts-2025"
 
 
 def test_slugify_max_length():
@@ -55,7 +55,7 @@ def test_sanitize_empty():
 # ── humanize_for_tts ───────────────────────────────────────────────
 
 def test_humanize_strips_bold():
-    assert humanize_for_tts("This is **important** news") == "This is important news"
+    assert humanize_for_tts("This is an **important** fact") == "This is an important fact"
 
 
 def test_humanize_strips_italic():
@@ -132,7 +132,7 @@ def test_humanize_expands_ampersand():
 
 
 def test_humanize_expands_corporation():
-    assert humanize_for_tts("Apple Inc. acquired Foo Corp.") == "Apple Incorporated acquired Foo Corporation"
+    assert humanize_for_tts("Wild Brief Inc. acquired Foo Corp.") == "Wild Brief Incorporated acquired Foo Corporation"
 
 
 # ── parse_date with recency cap ─────────────────────────────────────

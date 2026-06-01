@@ -2,8 +2,7 @@
 
 The picker has to be deterministic (same title → same voice) AND well-
 distributed across the panel (so a year of stories doesn't all map to
-one voice). It also has to bias by category — high-stakes news to
-authoritative voices, lifestyle to lighter ones.
+one voice). It also has to stay stable across animal categories.
 """
 from __future__ import annotations
 
@@ -16,14 +15,14 @@ pytest.importorskip("PIL")
 
 def test_pick_voice_is_deterministic():
     from generate_shorts import pick_voice
-    seed = "Fed cuts interest rates — markets rally"
-    assert pick_voice(seed, "BUSINESS") == pick_voice(seed, "BUSINESS")
+    seed = "Octopus changes colour near reef"
+    assert pick_voice(seed, "OCEAN") == pick_voice(seed, "OCEAN")
 
 
 def test_pick_voice_returns_valid_panel_member():
     from generate_shorts import VOICE_PANEL, pick_voice
-    for title in ["Tech news today", "War in Ukraine", "Movie release"]:
-        for cat in ["AI", "WAR", "ENTERTAINMENT", "TECH", "UNKNOWN", ""]:
+    for title in ["Octopus fact", "Owl fact", "Dog fact"]:
+        for cat in ["OCEAN", "BIRDS", "DOGS", "WILDLIFE", "UNKNOWN", ""]:
             assert pick_voice(title, cat) in VOICE_PANEL
 
 

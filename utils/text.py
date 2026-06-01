@@ -1,5 +1,5 @@
 """
-utils/text.py — Pure text utilities for GlobalBR News.
+utils/text.py — Pure text utilities for Wild Brief.
 No global state, no external HTTP calls, fully testable.
 """
 from __future__ import annotations

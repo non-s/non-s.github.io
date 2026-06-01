@@ -4,7 +4,7 @@ start of every Short, plus a matching outro card at the end.
 
 Why this exists
 ---------------
-Top-tier news channels open every video with the SAME 1-2 second
+Recognisable Shorts channels can open every video with the SAME 1-2 second
 animated brand stamp. The repetition is conscious — viewers learn
 to associate that exact stamp with reliable content, and the
 algorithm reads "this is part of a series" through the visual

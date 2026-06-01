@@ -1,5 +1,5 @@
 """
-utils/retry.py — Exponential backoff with jitter for GlobalBR News network calls.
+utils/retry.py — Exponential backoff with jitter for Wild Brief network calls.
 """
 from __future__ import annotations
 

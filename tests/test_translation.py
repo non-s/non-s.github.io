@@ -10,31 +10,30 @@ import pytest
 def _english_story() -> dict:
     return {
         "id": "abc123",
-        "seo_title":      "Fed cuts rates — and that breaks the inflation story",
-        "hook":           "The Fed just cut rates by 50 basis points.",
-        "script":         "The Fed just cut rates by 50 basis points. "
-                          "Inflation isn't done yet. Markets called this 6 weeks "
-                          "ago — Powell's just catching up. Here's why mortgage "
-                          "rates won't follow.",
-        "thumbnail_text": "RATES CUT",
-        "yt_description": "The Fed just cut rates 50bps. Markets had priced this in. "
-                          "Source: Reuters\n#Shorts #WorldNews",
-        "yt_tags": ["fed", "powell", "rates", "world news"],
-        "category": "business",
+        "seo_title":      "Octopus camouflage happens in seconds",
+        "hook":           "This octopus can disappear against a reef in seconds.",
+        "script":         "This octopus can disappear against a reef in seconds. "
+                          "Its skin cells shift colour while tiny muscles alter "
+                          "texture. Here's how the disguise works.",
+        "thumbnail_text": "INVISIBLE IN SECONDS",
+        "yt_description": "This octopus changes colour and texture in seconds. "
+                          "Source: Pexels\n#Shorts #AnimalFacts",
+        "yt_tags": ["octopus", "camouflage", "cephalopod", "animal facts"],
+        "category": "ocean",
     }
 
 
 def _ptbr_json_response() -> str:
     return json.dumps({
-        "seo_title":      "Fed corta juros — e a história da inflação muda",
-        "hook":           "O Fed acabou de cortar 50 pontos-base.",
-        "script":         "O Fed acabou de cortar 50 pontos-base. "
-                          "A inflação ainda não acabou. Os mercados já tinham "
-                          "precificado isso há 6 semanas. Aqui está o porquê.",
-        "thumbnail_text": "JUROS CAÍRAM",
-        "yt_description": "O Fed cortou juros em 50pb. Os mercados já esperavam. "
-                          "Fonte: Reuters\n#Shorts #Noticias",
-        "lead":           "Fed corta juros, inflação ainda não acabou.",
+        "seo_title":      "Polvo muda de cor em segundos",
+        "hook":           "Este polvo desaparece no recife em segundos.",
+        "script":         "Este polvo desaparece no recife em segundos. "
+                          "As células da pele mudam de cor e pequenos músculos "
+                          "alteram a textura. Veja como funciona.",
+        "thumbnail_text": "INVISÍVEL EM SEGUNDOS",
+        "yt_description": "Este polvo muda de cor e textura em segundos. "
+                          "Fonte: Pexels\n#Shorts #Animais",
+        "lead":           "Polvo muda de cor e textura em segundos.",
     })
 
 
@@ -43,12 +42,12 @@ def test_translate_story_pt_br_happy_path():
     with patch("utils.translation.ai_text", return_value=_ptbr_json_response()):
         out = translation.translate_story(_english_story(), "pt-BR")
     assert out is not None
-    assert out["seo_title"].startswith("Fed corta juros")
-    assert out["hook"].startswith("O Fed")
-    assert out["thumbnail_text"] == "JUROS CAÍRAM"
+    assert out["seo_title"].startswith("Polvo muda")
+    assert out["hook"].startswith("Este polvo")
+    assert out["thumbnail_text"] == "INVISÍVEL EM SEGUNDOS"
     # English-only metadata preserved.
-    assert out["yt_tags"] == ["fed", "powell", "rates", "world news"]
-    assert out["category"] == "business"
+    assert out["yt_tags"] == ["octopus", "camouflage", "cephalopod", "animal facts"]
+    assert out["category"] == "ocean"
     # Locale metadata stamped.
     assert out["language"] == "pt-BR"
     assert out["voice_tag"] == "pt-BR"
@@ -89,12 +88,12 @@ def test_translate_story_strips_code_fences():
     with patch("utils.translation.ai_text", return_value=fenced):
         out = translation.translate_story(_english_story(), "pt-BR")
     assert out is not None
-    assert out["hook"].startswith("O Fed")
+    assert out["hook"].startswith("Este polvo")
 
 
 def test_translate_story_skips_when_no_translatable_fields():
     from utils import translation
-    empty_story = {"id": "x", "category": "world", "yt_tags": ["a"]}
+    empty_story = {"id": "x", "category": "ocean", "yt_tags": ["a"]}
     out = translation.translate_story(empty_story, "pt-BR")
     assert out is None
 

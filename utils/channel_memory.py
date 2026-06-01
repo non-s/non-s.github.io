@@ -16,8 +16,8 @@ This module:
      `find_callback_candidates()` to surface 0-2 recent past stories
      that share entities / topics with the new one.
   3. The candidates are injected into the AI prompt so the LLM can
-     OPTIONALLY weave a callback line in: "I covered the Fed cut
-     two weeks ago — and here's how it played out."
+     OPTIONALLY weave a callback line in: "I covered octopus camouflage
+     two weeks ago — and here's the detail I missed."
 
 Conservative by design: most stories DON'T get a callback (it'd feel
 forced). We only mention past coverage when there's a clear entity

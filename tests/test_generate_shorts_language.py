@@ -85,11 +85,11 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
         "id": "abc", "slug": "test-slug", "date": "2026-05-18",
         "title": "Manchete em português",
         "seo_title": "Manchete em português",
-        "hook": "O Fed cortou os juros.",
-        "script": "O Fed cortou os juros. " * 20,
-        "thumbnail_text": "JUROS CAÍRAM",
-        "yt_description": "x", "yt_tags": ["fed"],
-        "category": "business", "source": "Reuters",
+        "hook": "Este polvo muda de cor.",
+        "script": "Este polvo muda de cor. " * 20,
+        "thumbnail_text": "POLVO INVISÍVEL",
+        "yt_description": "x", "yt_tags": ["octopus"],
+        "category": "ocean", "source": "Pexels",
         "language": "pt-BR", "voice_tag": "pt-BR",
         "image_url": "", "source_url": "",
     }
@@ -102,14 +102,11 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
          patch.object(gs, "acquire_broll_clips", return_value=[]), \
          patch.object(gs, "generate_captions", return_value=None), \
          patch.object(gs, "text_to_speech") as tts, \
-         patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio), \
-         patch.object(gs, "download_image", return_value=False), \
-         patch.object(gs, "fetch_any_free_image", return_value=False), \
-         patch.object(gs, "generate_ai_background", return_value=False):
+         patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio):
         story = {
             "id": "abc", "slug": "test-slug", "date": "2026-05-18",
             "title": "English headline", "script": "x" * 200,
-            "category": "business", "source": "Reuters",
+            "category": "ocean", "source": "Pexels",
             "image_url": "", "source_url": "",
         }
         # generate_short will fail on missing background; that's fine —

@@ -20,7 +20,7 @@ In scope:
 
 Out of scope:
 
-- Third-party services we integrate with (YouTube, Mistral, Pollinations,
+- Third-party services we integrate with (YouTube, Mistral, Pexels,
   edge-tts). Report those upstream.
 - Issues already known and tracked publicly in the GitHub issue tracker.
 - Denial-of-service, social engineering, or physical attacks against

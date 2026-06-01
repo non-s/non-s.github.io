@@ -36,7 +36,7 @@ MAX_DURATION_S = 35.0
 
 # How long the branded intro / outro cards appear. These are PNGs
 # (not motion clips) loop-displayed for these durations. Total
-# intro+outro budget is bounded so the news content gets the
+# intro+outro budget is bounded so the animal fact gets the
 # remaining ~56 s.
 INTRO_CARD_S = 0.8
 OUTRO_CARD_S = 2.0

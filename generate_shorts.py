@@ -7,23 +7,21 @@ Formato: vídeo vertical 1080x1920, 25-35 segundos, uma história por vídeo.
 Máximo 3 vídeos por execução para respeitar limites de API.
 
 Estrutura de cada video (YouTube Shorts):
-  Intro       ~1s    "Here's today's brief." (cached, voice baseline)
-  Hook        ~3s    Surprising fact, on-screen text
+  Hook        ~3s    Surprising fact, starts immediately
   Fato 1     ~8s    Primeira surpresa
   Fato 2     ~8s    Segunda surpresa
   Fato 3     ~8s    Terceira surpresa (opcional)
-  CTA         ~2s    "Drop your favorite below 👇"
+  CTA         ~2s    "Subscribe for more animal facts."
 
 Total alvo: ~25-35 segundos. YouTube Shorts premia completion rate
 muito mais que duração — videos de 30s com 85% completion batem
 videos de 55s com 50% completion. We clip at 35s hard.
 """
 
-import os, re, json, asyncio, subprocess, logging, shutil, sys, time, urllib.parse, contextlib
+import os, re, json, asyncio, subprocess, logging, shutil, sys, time, contextlib
 from pathlib import Path
 from datetime import datetime, timezone
 
-import requests
 from PIL import Image, ImageDraw, ImageFont
 
 # fcntl is POSIX-only; we use it to serialise queue access against
@@ -41,7 +39,6 @@ from utils.captions import (
 )
 from utils.digest import load_blocked_slugs
 from utils.experiments import assign_variant
-from utils.free_images import fetch_any_free_image
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
 from utils.music_bed import add_music_bed
@@ -99,6 +96,15 @@ CATEGORY_COLORS = {
     "ANIMALS":     (200, 150, 90),
 }
 
+ANIMAL_BROLL_QUERIES = {
+    "CATS": "cat animal",
+    "DOGS": "dog animal",
+    "OCEAN": "marine animal underwater",
+    "WILDLIFE": "wild animal nature",
+    "BIRDS": "bird animal",
+    "FARM": "farm animal",
+}
+
 # ── TTS voice rotation ────────────────────────────────────────────
 #
 # Channel grew on Jenny's voice originally, but a single voice across
@@ -106,7 +112,7 @@ CATEGORY_COLORS = {
 # consecutive videos sound identical and skip the second
 # (the "session homogeneity" signal). Rotating between a small panel
 # of high-quality edge-tts voices keeps things fresh without dropping
-# the channel's recognisable bilingual-news tone.
+# the channel's recognisable animal-facts tone.
 #
 # We pick the voice deterministically from the story's title hash so a
 # given story always renders with the same voice (idempotent reruns)
@@ -115,8 +121,8 @@ CATEGORY_COLORS = {
 #
 # The audit data is clear: automated channels that monetize have ONE
 # recognizable voice. Six-voice rotation reads as randomness, not
-# editorial choice. The host "Alex" (configurable via host_persona)
-# now speaks in en-US-AriaNeural — crisp news-anchor delivery that
+# editorial choice. The Wild Brief narrator (configurable via
+# host_persona) now speaks in en-US-AriaNeural — crisp delivery that
 # doesn't fatigue across daily listening.
 #
 # The second voice (Guy) is the contingency: when Aria's edge-tts
@@ -179,7 +185,6 @@ from utils.video_common import (
     get_font,
     draw_rounded_rect,
     wrap_text,
-    download_image as _download_image_common,
 )
 
 
@@ -335,56 +340,6 @@ async def text_to_speech_hook_then_body(hook: str, body: str,
 # Keeping the legacy paths would burn extra free-tier tokens and create
 # divergent metadata between the queue and the upload sidecar. Removed
 # May 2026 as part of the b-roll + captions pivot.
-
-
-# ── AI background via Pollinations ───────────────────────────────
-def generate_ai_background(title: str, category: str, dest: Path) -> bool:
-    """Generate a 1080x1920 vertical background via Pollinations.ai (free).
-
-    Used only as the title-card / thumbnail backdrop when no Pexels
-    preview image is available — the actual Short's body is the
-    downloaded b-roll, not this image.
-    """
-    scene_map = {
-        "CATS":     "cute cat portrait, soft fur detail, warm sunlight, shallow depth of field, vertical composition",
-        "DOGS":     "happy dog portrait, expressive eyes, golden light, shallow depth of field, vertical composition",
-        "OCEAN":    "vibrant underwater scene, fish and coral reef, sun rays through blue water, vertical",
-        "WILDLIFE": "majestic wild animal on savanna, golden hour, cinematic wildlife portrait, vertical",
-        "BIRDS":    "colourful bird in flight, sharp feather detail, sky background, vertical",
-        "FARM":     "peaceful farm-animal portrait, green pasture, warm afternoon light, vertical",
-    }
-    scene = scene_map.get(category.upper(),
-                          "stunning animal portrait, sharp eyes, natural light, "
-                          "professional wildlife photography, vertical")
-    short_title = title[:60]
-    prompt = (
-        f"{scene}, ultra-high quality, cinematic lighting, vivid saturated "
-        f"colors, photorealistic, 4K, sharp focus, professional nature "
-        f"documentary aesthetic, inspired by: {short_title}"
-    )
-    encoded = urllib.parse.quote(prompt)
-    # Mix wall clock into the seed so consecutive Shorts in the same
-    # category don't fall on the same Pollinations background.
-    seed = (abs(hash(prompt)) + int(datetime.now().timestamp())) % 999999
-    url = (
-        f"https://image.pollinations.ai/prompt/{encoded}"
-        f"?width={SHORT_W}&height={SHORT_H}&nologo=true&seed={seed}&model=flux"
-    )
-    try:
-        log.info(f"  Generating AI background via Pollinations.ai...")
-        r = requests.get(url, timeout=90, headers={"User-Agent": "WildBrief-Bot/3.0"})
-        r.raise_for_status()
-        dest.write_bytes(r.content)
-        log.info(f"  AI background saved ({len(r.content) // 1024} KB)")
-        return True
-    except Exception as e:
-        log.warning(f"  Pollinations failed ({e}), using fallback background")
-        return False
-
-
-# Shorts use a 15s timeout (single image, more important not to fail).
-def download_image(url: str, dest: Path) -> bool:
-    return _download_image_common(url, dest, timeout=15)
 
 
 def _render_solid_color_background(category: str, dest: Path) -> bool:
@@ -579,7 +534,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 
     # CTA
     cta_font = get_font(38, bold=True)
-    cta_text = "Follow for more  |  non-s.github.io"
+    cta_text = "SUBSCRIBE FOR MORE ANIMAL FACTS"
     cta_y = src_y + 48
     ctabbox = draw.textbbox((0, 0), cta_text, font=cta_font)
     ctx = (SHORT_W - ctabbox[2]) // 2
@@ -723,28 +678,59 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     log.info("  Thumbnail (dynamic story preview): %s", output.name)
 
 
+def _animal_broll_query(story: dict) -> str:
+    """Build a conservative visual query for an animal-only channel."""
+    category = str(story.get("category", "")).strip().upper()
+    category_query = ANIMAL_BROLL_QUERIES.get(category, "animal wildlife")
+    tags = story.get("yt_tags") or []
+    if isinstance(tags, str):
+        tags = [tags]
+    for tag in tags:
+        clean = re.sub(r"[^A-Za-z -]", "", str(tag)).strip().lower()
+        if clean and len(clean.split()) <= 3:
+            return f"{clean} {category_query}"[:120]
+    return category_query
+
+
+def _extract_broll_thumbnail(video_path: Path, dest: Path) -> bool:
+    """Extract a still from the actual animal footage for the thumbnail."""
+    try:
+        result = subprocess.run([
+            "ffmpeg", "-y", "-ss", "0.5", "-i", str(video_path),
+            "-frames:v", "1", "-q:v", "2", str(dest),
+        ], capture_output=True, timeout=30)
+        return (
+            result.returncode == 0
+            and dest.exists()
+            and dest.stat().st_size >= 5 * 1024
+        )
+    except Exception as exc:
+        log.debug("broll thumbnail extraction failed: %s", exc)
+        return False
+
+
 def acquire_broll_clips(story: dict, tmp_dir: Path,
                          want_n: int = 3) -> list[Path]:
     """
     Pull `want_n` b-roll MP4s into `tmp_dir`. Returns local paths.
     Empty list = the caller falls back to a static frame.
 
-    Query construction: a story usually has either an AI-written
-    `seo_title` or the raw RSS `title`. We prefer the more search-
-    friendly one and supplement with the topic hashtag if present.
+    The primary clip is the exact Pexels clip stored with the story.
+    Supplemental discovery is conservative: Pexels animal queries only.
     """
     if want_n <= 0:
         return []
-    query_parts = [
-        story.get("seo_title") or story.get("title") or "",
-        story.get("topic_hashtag", ""),
-    ]
-    query = " ".join(p for p in query_parts if p)[:160]
+    query = _animal_broll_query(story)
     if not query:
         return []
     category = story.get("category", "")
     try:
-        candidates = fetch_broll_clips(query, want_n=want_n * 2, category=category)
+        candidates = fetch_broll_clips(
+            query,
+            want_n=want_n * 2,
+            category=category,
+            animal_only=True,
+        )
     except Exception as exc:
         log.debug("broll discovery failed: %s", exc)
         return []
@@ -1097,15 +1083,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     Pipeline (preferred path):
       1. TTS audio from the queue's `script` field
-      2. b-roll: 3 clips × ~15s each from Pexels/NASA/Internet Archive
+      2. b-roll: up to 3 related animal clips from Pexels
       3. captions: Groq Whisper → ASS file with word-level phrases
       4. compose: FFmpeg concats b-roll, burns captions + hook overlay
       5. thumbnail: dynamic, using AI-authored `thumbnail_text`
       6. metadata: from queue's seo_title / yt_tags / yt_description
 
     Fallback (b-roll unavailable):
-      • Acquire a single still image (existing chain: RSS img → OG →
-        Wikipedia → Openverse → Pollinations).
+      • Render a category-coloured static background with no unrelated
+        or generated imagery.
       • Compose with a static-frame FFmpeg pipeline; captions still burn.
 
     Returns (video_path, thumb_path, metadata) or None on failure.
@@ -1241,9 +1227,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 1.4. Intro / outro wrap with the host's recurring lines. ─
     # Pre-rendered once per voice and cached under
-    # `_data/intro_outro_cache/` so the SAME 2-second opening greets
-    # the viewer every Short — the channel-recognition signal humans
-    # respond to faster than any other branding move.
+    # `_data/intro_outro_cache/`. Wild Brief skips a spoken intro so
+    # the hook starts immediately, then adds the subscribe sign-off.
     audio_path = wrap_with_intro_outro(
         body_audio=audio_path,
         voice=voice,
@@ -1265,12 +1250,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         log.info("  ⚠ Captions skipped — Whisper providers unavailable")
 
     # ── 3. B-roll discovery + download ────────────────────────────
-    # More clips per Short = more pattern interrupts = higher retention.
-    # We aim for 6 clips so the visual cuts land every ~7-8 s in a 45 s
-    # Short — well inside the 2-3 s "pattern interrupt sweet spot" the
-    # algorithm research called out. Pexels 200 req/h covers this
-    # comfortably at 5 Shorts/day.
-    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=6)
+    # Three carefully-related clips beat a noisy montage. The exact
+    # source clip is preferred and supplemental footage stays inside
+    # animal-only Pexels search.
+    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=3)
 
     # ── 4. Output paths ───────────────────────────────────────────
     VIDEOS_DIR.mkdir(exist_ok=True)
@@ -1282,29 +1265,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # path doesn't use this for video but we still need a still for
     # the thumbnail composition.
     bg_path = tmp_dir / f"bg_{slug}.jpg"
-    img_ok = False
-    if story.get("image_url"):
-        img_ok = download_image(story["image_url"], bg_path)
-    if not img_ok:
-        try:
-            img_ok = fetch_any_free_image(
-                article_url=story.get("source_url", ""),
-                query=title,
-                dest=bg_path,
-            )
-        except Exception as exc:
-            log.debug("free_images fallback failed: %s", exc)
-            img_ok = False
-    if not img_ok:
-        img_ok = generate_ai_background(title, category, bg_path)
+    img_ok = bool(broll_paths) and _extract_broll_thumbnail(
+        broll_paths[0],
+        bg_path,
+    )
 
     # Final-fallback: synthesise a category-coloured gradient so a story
-    # without any usable image NEVER aborts the run. Used to be a hard
-    # skip, but that meant a single missing Wikipedia / Pollinations
-    # result took the whole 5-runs-per-day cadence down to 4. The b-roll
-    # path is the actual visual content of the Short — this bg only
-    # backs the dynamic thumbnail and the static-frame fallback compose,
-    # so a clean gradient is good enough.
+    # without usable animal footage NEVER introduces a random person,
+    # object, or generated scene. This background only backs the
+    # thumbnail and static-frame fallback compose.
     if not img_ok or not bg_path.exists() or bg_path.stat().st_size < 5 * 1024:
         try:
             img_ok = _render_solid_color_background(category, bg_path)
@@ -1357,18 +1326,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         return None
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
-    # CTA axis: rotate per-Short between comment prompt, closing
-    # question, and Follow-the-handle. Variant assignment is
-    # deterministic on the slug so re-renders are idempotent. Default
-    # fallback is engage_comment because native follow controls already
-    # exist in the Shorts UI; comment prompts encourage conversation.
-    cta_variant = experiments.get("cta_style") \
-                  or assign_variant("cta_style", slug)
-    cta_text = {
-        "follow_handle":   "Follow Alex 🐾",
-        "engage_comment":  "Drop your favorite below 👇",
-        "question_close":  "Which one surprised you?",
-    }.get(cta_variant, "Drop your favorite below 👇")
+    # Every Short closes with one unambiguous channel-growth action.
+    cta_text = "SUBSCRIBE FOR MORE ANIMAL FACTS"
     # Brand-bug watermark. Disabled by default because a second channel
     # mark adds visual noise to a compact Shorts frame.
     # Set CHANNEL_WATERMARK=@yourhandle to opt back in (useful if you're
