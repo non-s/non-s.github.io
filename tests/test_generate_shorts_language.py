@@ -105,7 +105,7 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
          patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio):
         story = {
             "id": "abc", "slug": "test-slug", "date": "2026-05-18",
-            "title": "English headline", "script": "x" * 200,
+            "title": "English octopus fact", "script": "x" * 200,
             "category": "ocean", "source": "Pexels",
             "image_url": "", "source_url": "",
         }

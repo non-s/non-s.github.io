@@ -359,7 +359,7 @@ def build_static_short(frame_path: Path,
                        watermark_text: str = "") -> bool:
     """Single still image + audio, with optional burned captions.
 
-    The legacy path. Used when no b-roll was acquired. We still burn
+    Used when no b-roll was acquired. We still burn
     captions (huge retention lever) and overlay the hook text â€” even
     a static Short benefits.
     """

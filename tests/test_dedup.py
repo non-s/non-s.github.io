@@ -29,22 +29,22 @@ def test_titles_too_similar_identical():
 
 
 def test_titles_too_similar_very_different():
-    assert not titles_too_similar("Space rocket launches today", "Local bakery wins award")
+    assert not titles_too_similar("Octopus vanishes near coral", "Owls fly without noise")
 
 
 def test_titles_too_similar_near_duplicate():
     assert titles_too_similar(
-        "Scientists discover new planet near Earth",
-        "Scientists discover new planet close to Earth",
+        "Octopus changes colour near the coral reef",
+        "Octopus changes colour close to the coral reef",
     )
 
 
 def test_titles_not_similar():
-    assert not titles_too_similar("Climate summit in Geneva", "Stock market hits record high")
+    assert not titles_too_similar("Cats purr during rest", "Owls hunt silently at night")
 
 
 def test_title_similarity_identical():
-    assert title_similarity("Climate change summit", "Climate change summit") == pytest.approx(1.0)
+    assert title_similarity("Octopus colour shift", "Octopus colour shift") == pytest.approx(1.0)
 
 
 def test_title_similarity_empty():

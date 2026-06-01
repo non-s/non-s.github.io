@@ -21,19 +21,19 @@ def test_mood_negative_picks_tense():
     assert music_bed._mood_for_story(story) == "tense"
 
 
-def test_mood_health_picks_reflective():
-    story = {"slug": "x", "category": "health"}
+def test_mood_ocean_picks_reflective():
+    story = {"slug": "x", "category": "ocean"}
     assert music_bed._mood_for_story(story) == "reflective"
 
 
 def test_mood_default_upbeat():
-    story = {"slug": "x", "category": "world"}
+    story = {"slug": "x", "category": "cats"}
     assert music_bed._mood_for_story(story) == "upbeat"
 
 
 def test_pick_track_is_deterministic(monkeypatch):
     monkeypatch.setattr(music_bed, "MUSIC_ENABLED", True)
-    story = {"slug": "abc-123", "category": "world"}
+    story = {"slug": "abc-123", "category": "cats"}
     a = music_bed.pick_track(story)
     b = music_bed.pick_track(story)
     assert a is not None
@@ -42,7 +42,7 @@ def test_pick_track_is_deterministic(monkeypatch):
 
 def test_pick_track_disabled_returns_none(monkeypatch):
     monkeypatch.setattr(music_bed, "MUSIC_ENABLED", False)
-    assert music_bed.pick_track({"slug": "x", "category": "world"}) is None
+    assert music_bed.pick_track({"slug": "x", "category": "cats"}) is None
 
 
 def test_pick_track_falls_back_when_no_mood_match(monkeypatch):

@@ -34,7 +34,7 @@ How it works
 What's intentionally NOT here
 =============================
 
-* No RSS / no feedparser — Pexels IS the discovery layer now.
+* Pexels is the only discovery layer.
 * No brand-safety filter — every queue item is already animal content.
 * No urgency classifier — evergreen facts do not need one.
 * No translation — start with EN, PT-BR is a future pass.

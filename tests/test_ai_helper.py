@@ -6,8 +6,8 @@ from utils.ai_helper import quality_check
 
 def test_quality_check_ok():
     ok, reason = quality_check(
-        "A reasonably-detailed headline about something",
-        "A short description that has enough characters to clear the limit.",
+        "How octopuses vanish against a coral reef",
+        "Octopuses can rapidly shift colour and skin texture near a reef.",
     )
     assert ok is True
     assert reason == ""
@@ -20,7 +20,7 @@ def test_quality_check_short_title():
 
 
 def test_quality_check_short_desc():
-    ok, reason = quality_check("A reasonable headline length here", "short")
+    ok, reason = quality_check("How owls hunt silently at night", "short")
     assert ok is False
     assert "description too short" in reason
 
