@@ -84,6 +84,10 @@ def _video_url(video_id: str) -> str:
     return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
 
 
+def _is_uploadable_meta(meta: dict) -> bool:
+    return Path(meta.get("video") or "").is_file()
+
+
 def _execute_resumable(request) -> dict:
     response, retry = None, 0
     while response is None:
@@ -136,7 +140,7 @@ def main() -> None:
         youtube = get_youtube_service()
     except Exception as exc:
         log.error("YouTube auth failed: %s", exc); sys.exit(2)
-    pending, uploaded = _collect_pending_meta(VIDEOS_DIR), 0
+    pending, attempted, uploaded = _collect_pending_meta(VIDEOS_DIR), 0, 0
     for meta_file in pending:
         try:
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
@@ -144,6 +148,10 @@ def main() -> None:
             log.error("Failed to read %s: %s", meta_file.name, exc); continue
         if not isinstance(meta, dict):
             continue
+        if not _is_uploadable_meta(meta):
+            log.warning("Skipping orphan metadata without video: %s", meta_file.name)
+            continue
+        attempted += 1
         video_id = upload_video(youtube, meta)
         if not video_id:
             continue
@@ -154,8 +162,8 @@ def main() -> None:
         except Exception as exc:
             log.warning("published_clips ledger update failed: %s", exc)
         meta_file.unlink(); uploaded += 1
-    log.info("%d/%d video(s) uploaded to YouTube.", uploaded, len(pending))
-    if pending and uploaded == 0:
+    log.info("%d/%d video(s) uploaded to YouTube.", uploaded, attempted)
+    if attempted and uploaded == 0:
         sys.exit(1)
 
 
