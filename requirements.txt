@@ -1,17 +1,8 @@
 # Pinned versions guarantee reproducible CI builds.
-# Bump deliberately via Dependabot or `pip install -U <pkg>` + manual verification.
 requests>=2.31.0,<3.0
 Pillow>=10.2.0,<12.0
 edge-tts>=6.1.10,<8.0
-# OpenCV (headless) for face-aware b-roll cropping. ~35 MB install,
-# adds ~10 s to cold-start. Used only inside utils/face_crop.py — that
-# module no-ops gracefully when the import fails, so OpenCV is
-# technically optional and the requirements pin lets us drop it
-# without code changes if we ever need to slim cold-start back down.
+google-api-python-client>=2.130.0,<3.0
+google-auth>=2.29.0,<3.0
+google-auth-oauthlib>=1.2.0,<2.0
 opencv-python-headless>=4.10.0,<5.0
-# libsodium bindings — used by upload_tiktok._persist_token_to_github_secret
-# to encrypt the rotated TikTok refresh_token before pushing it back to
-# the TIKTOK_TOKEN repository secret via the GitHub Actions Secrets API.
-# Without this the channel breaks within 24h of every manual re-auth,
-# because TikTok single-use-rotates refresh tokens on every refresh.
-pynacl>=1.5.0,<2.0
