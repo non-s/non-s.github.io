@@ -1,4 +1,4 @@
-"""Tests for utils/experiments.py — pure assignment + winner math."""
+"""Tests for utils/experiments.py â€” pure assignment + winner math."""
 from __future__ import annotations
 
 import json
@@ -9,7 +9,7 @@ import pytest
 from utils import experiments
 
 
-# ── assignment ───────────────────────────────────────────────────
+# â”€â”€ assignment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_assign_variant_is_deterministic():
     a = experiments.assign_variant("hook_style", "story-abc")
@@ -53,13 +53,13 @@ def test_variant_choices_includes_documented_variants():
 
 def test_cta_default_is_engage_comment():
     """variants[0] is the production fallback when no A/B winner has
-    been declared yet. On TikTok the engagement-driving CTA
+    been declared yet. On YouTube the engagement-driving CTA
     (`engage_comment`) outperforms a Follow CTA, so it sits first."""
     cta_variants = experiments.variant_choices("cta_style")
     assert cta_variants[0] == "engage_comment"
 
 
-# ── winner computation ──────────────────────────────────────────
+# â”€â”€ winner computation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_compute_winners_picks_highest_mean(monkeypatch):
     monkeypatch.setattr(experiments, "MIN_SAMPLES_FOR_WINNER", 3)
@@ -75,13 +75,13 @@ def test_compute_winners_picks_highest_mean(monkeypatch):
 
 
 def test_compute_winners_skips_below_min_samples():
-    # Only 2 observations per variant — below default 8.
+    # Only 2 observations per variant â€” below default 8.
     obs = (
         [{"experiments": {"hook_style": "outcome_first"}, "score": 80} for _ in range(2)] +
         [{"experiments": {"hook_style": "question"},      "score": 60} for _ in range(2)]
     )
     out = experiments.compute_winners(obs)
-    # No winner emitted — needs more data first.
+    # No winner emitted â€” needs more data first.
     assert out["winners"] == {}
 
 
@@ -121,7 +121,7 @@ def test_compute_winners_multi_axis(monkeypatch):
     assert out["winners"]["cta_style"] == "engage_comment"
 
 
-# ── read / write ─────────────────────────────────────────────────
+# â”€â”€ read / write â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def test_read_winners_handles_missing(tmp_path, monkeypatch):
     monkeypatch.setattr(experiments, "EXPERIMENTS_FILE", tmp_path / "exp.json")
@@ -142,3 +142,4 @@ def test_read_winners_handles_malformed(tmp_path, monkeypatch):
     p.write_text("{not json", encoding="utf-8")
     monkeypatch.setattr(experiments, "EXPERIMENTS_FILE", p)
     assert experiments.read_winners() == {}
+

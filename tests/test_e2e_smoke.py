@@ -2,18 +2,18 @@
 End-to-end smoke test for the Shorts pipeline.
 
 We don't need the full network or ffmpeg to validate that the modules
-wire together — we mock every external touchpoint (AI, edge-tts,
-Pexels, Whisper, FFmpeg, TikTok) and assert that:
+wire together â€” we mock every external touchpoint (AI, edge-tts,
+Pexels, Whisper, FFmpeg, YouTube) and assert that:
 
   1. `fetch_animals._enrich_story` produces a queue entry with the
      fields generate_shorts.py expects.
   2. `generate_shorts.generate_short` consumes that entry, calls
      each external service exactly once via mocks, and produces
-     a metadata sidecar with the right keys for upload_tiktok.py.
+     a metadata sidecar with the right keys for upload_youtube.py.
   3. The metadata sidecar contains the experiment tags so
-     tiktok_analytics.py can later compute winners.
+     channel analytics can later compute winners.
 
-When any wiring breaks, this test goes red — way faster than waiting
+When any wiring breaks, this test goes red â€” way faster than waiting
 for CI to fail in production.
 """
 from __future__ import annotations
@@ -39,7 +39,7 @@ def fake_queue_story():
         "published_at":   "2026-05-18T11:00:00+00:00",
         "consumed":       False,
         "consumed_at":    None,
-        "title":          "Fed just cut rates — and that breaks the inflation story",
+        "title":          "Fed just cut rates â€” and that breaks the inflation story",
         "url":            "https://news.example.com/fed-cut",
         "source":         "Reuters",
         "category":       "business",
@@ -51,7 +51,7 @@ def fake_queue_story():
         "relevance":      8.5,
         "native_lang":    "en",
         "score":          9,
-        "seo_title":      "Fed cuts rates 50 bps — markets blindsided",
+        "seo_title":      "Fed cuts rates 50 bps â€” markets blindsided",
         "yt_tags":        ["fed", "powell", "rates", "world news", "breaking news"],
         "geo_hashtag":    "USA",
         "topic_hashtag":  "Markets",
@@ -61,7 +61,7 @@ def fake_queue_story():
         "thumbnail_text": "FED CUTS 50BPS",
         "hook":           "The Fed just cut rates 50 basis points.",
         "script":         ("The Fed just cut rates 50 basis points. The bond market had "
-                            "priced 25 — half what Powell delivered. Markets are calling "
+                            "priced 25 â€” half what Powell delivered. Markets are calling "
                             "this a victory lap on inflation. Mortgage rates won't follow "
                             "as fast. Watch credit-card delinquencies next."),
         "lead":           "Fed surprised with 50 bps cut.",
@@ -108,7 +108,7 @@ def _stub_image_chain(monkeypatch, gs):
 
     monkeypatch.setattr(gs, "download_image", fake_download)
     monkeypatch.setattr(gs, "fetch_any_free_image", fake_fetch_any)
-    # Pillow opens the JPEG — give it a real one. We use a 1x1 fake
+    # Pillow opens the JPEG â€” give it a real one. We use a 1x1 fake
     # that PIL will accept and create_short_frame will paste over.
     from PIL import Image
     real_jpeg = Image.new("RGB", (1080, 1920), (8, 8, 18))
@@ -172,7 +172,7 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
         "geo_hashtag":    fake_queue_story["geo_hashtag"],
         "topic_hashtag":  fake_queue_story["topic_hashtag"],
         "discovery_hashtags": [
-            "fyp", "foryou", "wildlife", "wildanimals", "safari", "funfacts",
+            "wildlife", "wildanimals", "safari", "funfacts",
         ],
         "_queue_id":      fake_queue_story["id"],
         "native_lang":    "en",
@@ -185,17 +185,17 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
     assert out is not None
     video_path, thumb_path, metadata = out
 
-    # Verify the metadata sidecar has every field upload_tiktok.py reads.
+    # Verify the metadata sidecar has every field upload_youtube.py reads.
     required = {
-        "title", "description", "tags", "privacy_level",
+        "title", "description", "tags", "youtube_privacy", "youtube_category_id",
         "thumbnail", "video", "story_slug", "created_at",
         "thumbnail_hook", "source", "experiments", "channel_handle",
     }
     missing = required - metadata.keys()
     assert missing == set(), f"missing metadata fields: {missing}"
 
-    # TikTok caption hard limit.
-    assert len(metadata["description"]) <= 2200
+    # YouTube caption hard limit.
+    assert len(metadata["description"]) <= 5000
 
     # Experiment tags carried through.
     assert metadata["experiments"]["hook_style"] == "outcome_first"
@@ -234,10 +234,11 @@ def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
         thumbnail_text="THE FED", key_points=[], yt_tags=[],
         yt_description="x", geo_hashtag="USA", topic_hashtag="Markets",
         _queue_id="slop-id", native_lang="en",
-        # seo_title same as RSS title — also a flag.
+        # seo_title same as RSS title â€” also a flag.
         experiments={},
     )
     tmp = tmp_path / "tmp_run"
     tmp.mkdir()
     out = gs.generate_short(slop_story, tmp)
     assert out is None  # quality gate caught it
+

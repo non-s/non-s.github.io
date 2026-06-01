@@ -38,10 +38,8 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
 
     # Each (module, attribute, path-fragment) tuple gets isolated.
     overrides = [
-        ("utils.tiktok_quota",    "QUOTA_LOG",         "tiktok_quota_log.jsonl"),
         ("utils.provider_stats",  "STATS_LOG",         "provider_stats.jsonl"),
         ("utils.channel_memory",  "MEMORY_LOG",        "channel_memory.jsonl"),
-        ("utils.velocity",        "VELOCITY_LOG",      "velocity.jsonl"),
         ("utils.music_bed",       "MUSIC_CACHE_DIR",   "music_cache"),
         ("utils.broll",           "_CACHE_DIR",        "broll_cache"),
         ("utils.brand_card",      "BRAND_CARD_CACHE",  "brand_card_cache"),
@@ -68,9 +66,6 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     except Exception:
         pass
 
-    # No comment latch on TikTok (comment management isn't supported
-    # by the Open API), but keep the hook for backwards compat with
-    # tests that monkeypatch the upload module.
 
 
 @pytest.fixture

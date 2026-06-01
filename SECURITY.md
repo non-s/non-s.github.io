@@ -15,13 +15,13 @@ Only the current `main` branch is maintained. There are no LTS branches.
 In scope:
 
 - The Python automation pipeline (`fetch_animals.py`, `generate_shorts.py`,
-  `upload_tiktok.py`, `auth_tiktok.py`, `utils/`).
+  `upload_youtube.py`, `auth_youtube.py`, `utils/`).
 - The GitHub Actions workflows under `.github/workflows/`.
 
 Out of scope:
 
-- Third-party services we integrate with (Mistral, Pollinations, edge-tts,
-  TikTok). Report those upstream.
+- Third-party services we integrate with (YouTube, Mistral, Pollinations,
+  edge-tts). Report those upstream.
 - Issues already known and tracked publicly in the GitHub issue tracker.
 - Denial-of-service, social engineering, or physical attacks against
   infrastructure we don't control.

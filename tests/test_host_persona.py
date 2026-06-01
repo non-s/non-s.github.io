@@ -35,8 +35,8 @@ def test_load_merges_partial_override(tmp_path, monkeypatch):
     assert p.name == "Beatriz"
     assert p.handle == "globalbrnewsbr"
     # Defaults preserved for fields the file didn't override.
-    # The default intro_line is intentionally short (≤ 1 s of audio)
-    # so the hook lands inside TikTok's first-2-second engagement
+    # The default intro_line is intentionally short (â‰¤ 1 s of audio)
+    # so the hook lands inside YouTube's first-2-second engagement
     # window without burning half of it on branding.
     assert p.intro_line == "Brief."
 
@@ -93,6 +93,7 @@ def test_first_comment_text_substitutes_name():
 def test_first_comment_text_substitutes_handle():
     text = host_persona.first_comment_text(HostPersona(handle="myhandle"))
     # Template doesn't currently emit the handle but exposes it as a
-    # format kwarg — ensure no KeyError.
+    # format kwarg â€” ensure no KeyError.
     assert isinstance(text, str)
     assert text
+

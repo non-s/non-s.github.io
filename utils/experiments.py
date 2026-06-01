@@ -1,9 +1,9 @@
 """
-utils/experiments.py — Lightweight A/B testing for prompts, hooks, voices, etc.
+utils/experiments.py â€” Lightweight A/B testing for prompts, hooks, voices, etc.
 
 Without an experimentation loop, the channel is permanently capped at
 whatever the initial prompt template happens to produce. Real growth
-comes from iterating — and iteration without measurement is theatre.
+comes from iterating â€” and iteration without measurement is theatre.
 
 How it works
 ------------
@@ -11,10 +11,10 @@ How it works
    when they need to pick a variant for an experimentable axis (e.g.
    the hook style for THIS story, or the voice for THIS Short).
 2. The assignment is deterministic (hash(story_id + axis) mod n_buckets)
-   so a re-run yields the same variant — idempotent.
+   so a re-run yields the same variant â€” idempotent.
 3. The chosen variant is stamped on the queue entry (`experiments` dict)
    and persists into `_videos/*.done` after upload.
-4. The nightly analytics workflow correlates variant ↔ performance and
+4. The nightly analytics workflow correlates variant â†” performance and
    writes `_data/analytics/experiments.json` with the winner per axis.
 5. Future runs can `read_winner(axis)` to bias toward the winning
    variant (or stay in experiment mode to keep iterating).
@@ -72,7 +72,7 @@ AXES: tuple[Axis, ...] = (
             "shocking_number",   # "Two percent. Wiped out before lunch."
             "curiosity_gap",     # "Markets did one thing nobody expected."
         ),
-        description="First-sentence shape — the single biggest retention lever.",
+        description="First-sentence shape â€” the single biggest retention lever.",
     ),
     Axis(
         name="script_tone",
@@ -101,14 +101,14 @@ AXES: tuple[Axis, ...] = (
         name="cta_style",
         # Order matters: variants[0] is the production fallback when no
         # A/B winner is declared yet. engage_comment is the
-        # TikTok-native default — Follow CTAs perform poorly on TikTok
+        # YouTube-native default â€” Follow CTAs perform poorly on YouTube
         # (the Follow button is right there in the UI; the CTA only
         # adds friction). Comment prompts feed the engagement signal
         # the For You algorithm reads first.
         variants=(
-            "engage_comment",    # "Drop your favorite below 👇"
+            "engage_comment",    # "Drop your favorite below ðŸ‘‡"
             "question_close",    # "Which one surprised you?"
-            "follow_handle",     # "Follow Alex 🐾"
+            "follow_handle",     # "Follow Alex ðŸ¾"
         ),
         description="End-of-Short call-to-action.",
     ),
@@ -125,7 +125,7 @@ def _axis_by_name(name: str) -> Axis | None:
 def assign_variant(axis_name: str, key: str) -> str:
     """Deterministic variant assignment for `key` on `axis_name`.
 
-    Same key → same variant across reruns. Falls back to the first
+    Same key â†’ same variant across reruns. Falls back to the first
     variant if `axis_name` isn't registered.
     """
     ax = _axis_by_name(axis_name)
@@ -141,12 +141,12 @@ def assign_all(key: str) -> dict[str, str]:
     return {ax.name: assign_variant(ax.name, key) for ax in AXES}
 
 
-# ── Reading winners (set by the analyser) ────────────────────────
+# â”€â”€ Reading winners (set by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def read_winners(path: Path | None = None) -> dict[str, str]:
     """Return {axis_name: winning_variant}. Empty when not yet computed.
 
-    `path` defaults to `EXPERIMENTS_FILE` — resolved at call time so
+    `path` defaults to `EXPERIMENTS_FILE` â€” resolved at call time so
     monkeypatch in tests is honoured (a stale default would otherwise
     point at the production path forever).
     """
@@ -166,7 +166,7 @@ def read_winner(axis_name: str) -> str | None:
     return read_winners().get(axis_name) or None
 
 
-# ── Computing winners (called by the analyser) ───────────────────
+# â”€â”€ Computing winners (called by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def compute_winners(observations: Iterable[dict],
                      min_samples: int = MIN_SAMPLES_FOR_WINNER) -> dict:
@@ -179,8 +179,8 @@ def compute_winners(observations: Iterable[dict],
         "winners":     {axis: variant_with_best_mean OR omitted if too few samples}
       }
 
-    `score` is typically the TikTok engagement rate
-    (likes+comments+shares)/views from tiktok_analytics.py. The metric
+    `score` is typically the YouTube engagement rate
+    (likes+comments+shares)/views from channel analytics. The metric
     must be "higher = better".
     """
     stats: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
@@ -204,7 +204,7 @@ def compute_winners(observations: Iterable[dict],
             mean = sum(scores) / n if n else 0.0
             per_variant[variant] = {"n": n, "mean": round(mean, 2)}
         axis_stats[axis] = per_variant
-        # Pick the variant with the best mean — but ONLY if it has
+        # Pick the variant with the best mean â€” but ONLY if it has
         # enough samples to be trustworthy. Otherwise skip; the
         # generator stays in exploration mode.
         eligible = {v: d for v, d in per_variant.items() if d["n"] >= min_samples}
@@ -238,7 +238,7 @@ def write_winners(payload: dict, path: Path | None = None) -> None:
                   encoding="utf-8")
 
 
-# ── Helpers for the generator ────────────────────────────────────
+# â”€â”€ Helpers for the generator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def axis_names() -> list[str]:
     return [ax.name for ax in AXES]
@@ -247,3 +247,4 @@ def axis_names() -> list[str]:
 def variant_choices(axis_name: str) -> tuple[str, ...]:
     ax = _axis_by_name(axis_name)
     return ax.variants if ax else ()
+

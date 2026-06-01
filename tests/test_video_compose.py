@@ -1,4 +1,4 @@
-"""Tests for utils/video_compose.py — verify the FFmpeg filtergraph
+"""Tests for utils/video_compose.py â€” verify the FFmpeg filtergraph
 construction, no actual encoding."""
 from __future__ import annotations
 
@@ -144,7 +144,7 @@ def test_build_broll_short_with_cta_overlay(tmp_path, stub_ffprobe, stub_ffmpeg_
     video_compose.build_broll_short(
         broll_paths=clips, audio_path=audio,
         output_path=tmp_path / "out.mp4",
-        cta_text="Follow @wildbrief_x",
+        cta_text="Follow @wildbrief",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
     assert "Follow" in fg
@@ -192,7 +192,7 @@ def test_build_static_short_missing_frame(tmp_path):
 
 def test_ffmpeg_escape_handles_special_chars():
     out = video_compose._ffmpeg_escape("hello: world's 'test' \\path")
-    # ":" → "\:"; "'" → "\'"
+    # ":" â†’ "\:"; "'" â†’ "\'"
     assert "\\:" in out
     assert "\\'" in out
 
@@ -202,9 +202,10 @@ def test_ffmpeg_escape_handles_empty():
     assert video_compose._ffmpeg_escape(None) == ""
 
 
-def test_max_duration_targets_tiktok_completion_rate():
-    """TikTok For You rewards completion rate exponentially; we cap
+def test_max_duration_targets_shorts_completion_rate():
+    """YouTube Shorts reward completion rate; we cap
     at 35s so a 90 % completion rate is achievable on every Short
-    instead of a 50 % rate on 55s+ videos. Hard ceiling is 35s — the
+    instead of a 50 % rate on 55s+ videos. Hard ceiling is 35s â€” the
     AI prompt is tuned to 70-90 words which renders to ~25-30s."""
     assert video_compose.MAX_DURATION_S <= 35.0
+

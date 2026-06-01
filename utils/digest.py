@@ -1,8 +1,8 @@
 """
-utils/digest.py — Daily digest GitHub Issue for human-in-the-loop review.
+utils/digest.py â€” Daily digest GitHub Issue for human-in-the-loop review.
 
 The case-study research is unanimous: the #1 thing that gets automated
-channels terminated is "treating automation as abdication" — no human
+channels terminated is "treating automation as abdication" â€” no human
 reviewing the output. A 30-second daily glance is enough.
 
 This module renders a Markdown digest of everything published in the
@@ -45,7 +45,7 @@ def _read_done(done_path: Path) -> dict | None:
 
 def _read_meta_alongside(done_path: Path) -> dict:
     """If a metadata JSON sibling still exists, parse it for extra fields.
-    Most of the time it's been deleted by upload_tiktok.py after success."""
+    Most of the time it's been deleted by upload_youtube.py after success."""
     meta_path = done_path.with_suffix(".json")
     if not meta_path.exists():
         return {}
@@ -86,12 +86,12 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
     """Return a Markdown body for the GitHub Issue."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     lines: list[str] = [
-        f"## Daily Short Review — {today} UTC",
+        f"## Daily Short Review â€” {today} UTC",
         "",
         f"**{len(shorts)} Short(s) published in the last 24 hours.**",
         "",
         "Review checklist (30 seconds):",
-        "- [ ] Each hook leads with action / number — no \"Today\" / \"In a recent\"",
+        "- [ ] Each hook leads with action / number â€” no \"Today\" / \"In a recent\"",
         "- [ ] Each script adds analysis beyond the source article",
         "- [ ] No AI-tell phrases on display (\"crucial\", \"pivotal\", \"delve\")",
         "- [ ] Thumbnails read clearly at small size",
@@ -136,7 +136,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
                 lines.append(f"- **{axis}**: `{variant}`{lift_s}")
             lines.append("")
 
-    # Anomaly alert — surfaced at the TOP after the checklist when
+    # Anomaly alert â€” surfaced at the TOP after the checklist when
     # something looks wrong, so the operator sees it before scrolling
     # through the daily Shorts list.
     anomaly_path = Path("_data/analytics/anomaly.json")
@@ -146,11 +146,11 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         except Exception:
             anomaly = {}
         if anomaly.get("flagged"):
-            lines.append("### 🚨 Anomaly alert")
+            lines.append("### ðŸš¨ Anomaly alert")
             lines.append("")
             lines.append(f"- {anomaly.get('reason', '')}")
             lines.append(
-                "- Likely causes: channel strike, TikTok rate-limit, "
+                "- Likely causes: channel strike, YouTube rate-limit, "
                 "workflow failure, or slow news day. Investigate."
             )
             lines.append("")
@@ -169,7 +169,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             for s in slots:
                 lines.append(
                     f"- {s['country']} ({s['views']} views, "
-                    f"UTC{s['local_offset_h']:+d}) → **{s['utc_hour']:02d}:00 UTC**"
+                    f"UTC{s['local_offset_h']:+d}) â†’ **{s['utc_hour']:02d}:00 UTC**"
                 )
             lines.append("")
 
@@ -189,27 +189,27 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         lines.append(f"### [{lang}] {title}")
         lines.append("")
         if url:
-            lines.append(f"- 📺 {url}")
-        lines.append(f"- 🆔 `{slug}`")
-        lines.append(f"- ⏰ uploaded {uploaded}")
+            lines.append(f"- ðŸ“º {url}")
+        lines.append(f"- ðŸ†” `{slug}`")
+        lines.append(f"- â° uploaded {uploaded}")
         # Pull the hook + script preview from the sibling metadata file
         # if it was kept (we delete it on success today, but stay defensive).
         meta = _read_meta_alongside(Path(directory) / (slug + ".done"))
         hook = meta.get("hook") or ""
         if hook:
-            lines.append(f"- 🎯 hook: _{hook[:200]}_")
+            lines.append(f"- ðŸŽ¯ hook: _{hook[:200]}_")
         desc = s.get("description") or ""
         desc_lead = desc.split("\n", 1)[0][:240]
         if desc_lead:
-            lines.append(f"- 📝 description: {desc_lead}")
+            lines.append(f"- ðŸ“ description: {desc_lead}")
         tags = s.get("tags") or []
         if tags:
-            lines.append(f"- 🏷  tags: {', '.join(tags[:6])}")
+            lines.append(f"- ðŸ·  tags: {', '.join(tags[:6])}")
         lines.append("")
     return "\n".join(lines)
 
 
-# ── GitHub Issues API ────────────────────────────────────────────
+# â”€â”€ GitHub Issues API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def post_digest_issue(body: str, repo: str | None = None,
                        token: str | None = None,
@@ -224,9 +224,9 @@ def post_digest_issue(body: str, repo: str | None = None,
     repo = repo or os.environ.get("GITHUB_REPOSITORY", "").strip()
     token = token or os.environ.get("GITHUB_TOKEN", "").strip()
     if not repo or not token:
-        log.info("digest: GITHUB_REPOSITORY / GITHUB_TOKEN not set — skipping")
+        log.info("digest: GITHUB_REPOSITORY / GITHUB_TOKEN not set â€” skipping")
         return None
-    title = title or f"Daily Short review — {datetime.now(timezone.utc).strftime('%Y-%m-%d')}"
+    title = title or f"Daily Short review â€” {datetime.now(timezone.utc).strftime('%Y-%m-%d')}"
     try:
         r = requests.post(
             f"https://api.github.com/repos/{repo}/issues",
@@ -251,7 +251,7 @@ def post_digest_issue(body: str, repo: str | None = None,
         return None
 
 
-# ── /block <slug> harvesting ──────────────────────────────────────
+# â”€â”€ /block <slug> harvesting â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 #
 # The operator can comment `/block <slug>` on any digest issue to
 # stop the underlying story re-shipping. We accumulate those slugs
@@ -340,3 +340,4 @@ def harvest_block_commands(repo: str | None = None,
         except Exception:
             continue
     return blocked
+

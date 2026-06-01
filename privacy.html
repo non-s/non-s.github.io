@@ -26,17 +26,16 @@
 <div class="container">
 
 <h1>Privacy Policy</h1>
-<p class="meta">Wild Brief &middot; Last updated: May 20, 2026</p>
+<p class="meta">Wild Brief &middot; Last updated: June 1, 2026</p>
 
 <p>This Privacy Policy describes how Wild Brief ("the Service") collects,
-uses and protects information when it operates against third-party
-platforms such as TikTok and YouTube. Wild Brief is operated by the
+uses and protects information when it publishes to YouTube. Wild Brief is operated by the
 owner of the repository
 <a href="https://github.com/non-s/non-s.github.io">non-s/non-s.github.io</a>.</p>
 
 <h2>1. Scope</h2>
 <p>The Service is an automated publishing pipeline that posts to a single
-operator-owned account on each integrated platform. It does not collect
+operator-owned YouTube channel. It does not collect
 personal data from end users, does not display advertising, does not
 build profiles of viewers, and does not have any user-facing sign-up.</p>
 
@@ -44,11 +43,11 @@ build profiles of viewers, and does not have any user-facing sign-up.</p>
 <p>The Service handles only the following categories of data:</p>
 <ul>
   <li><strong>API credentials</strong> &mdash; OAuth access tokens, refresh
-  tokens and client secrets for the platforms the operator has connected.
+  tokens and client secrets for the YouTube account the operator connected.
   Stored exclusively as encrypted GitHub Actions secrets and shredded
   from process memory at the end of every workflow run.</li>
   <li><strong>Operator account metadata</strong> &mdash; the operator's own
-  TikTok / YouTube channel ID, video IDs of content the Service has
+  YouTube channel ID, video IDs of content the Service has
   published, and aggregate analytics (view counts, retention) returned
   by the platform APIs for the operator's own channel.</li>
   <li><strong>Source footage and AI-generated metadata</strong> &mdash; Pexels
@@ -57,7 +56,7 @@ build profiles of viewers, and does not have any user-facing sign-up.</p>
 
 <h2>3. Information We Do <em>Not</em> Process</h2>
 <ul>
-  <li>No data about third-party TikTok or YouTube users.</li>
+  <li>No data about third-party YouTube users.</li>
   <li>No comments, messages, follower lists or any other audience data
   beyond the operator's own channel-level aggregates.</li>
   <li>No biometric, facial recognition or location data.</li>
@@ -65,28 +64,27 @@ build profiles of viewers, and does not have any user-facing sign-up.</p>
 </ul>
 
 <h2>4. How We Use Information</h2>
-<p>API credentials are used solely to call the integrated platforms on the
+<p>API credentials are used solely to call the YouTube API on the
 operator's behalf &mdash; specifically to upload videos and to read back
 analytics for the operator's own channel. Credentials are never shared
 with any third party.</p>
 
 <h2>5. Sharing</h2>
 <p>Wild Brief does not sell or share data with third parties. The only
-external services contacted by the pipeline are the platform APIs the
-operator has authorized (TikTok, YouTube), the footage source (Pexels)
+external services contacted by the pipeline are the YouTube API, the footage source (Pexels)
 and AI inference providers (Mistral, Cerebras, Gemini, Groq) under
 their respective privacy policies.</p>
 
 <h2>6. Retention</h2>
 <p>Credentials are stored only for as long as the operator keeps them in
 GitHub Secrets. The operator can revoke access at any time from the
-TikTok Developer Portal or the YouTube account settings, at which
+YouTube account settings, at which
 point the Service will no longer be able to publish.</p>
 
 <h2>7. Your Choices</h2>
-<p>End viewers on TikTok and YouTube interact with the Service only by
+<p>End viewers on YouTube interact with the Service only by
 watching the videos it publishes. Their relationship is governed by
-each platform's own privacy policy. The Service does not store any data
+YouTube's own privacy policy. The Service does not store any data
 about them.</p>
 
 <h2>8. Security</h2>
