@@ -22,19 +22,26 @@ jobs:
       - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 1
-      - name: Apply audited cleanup package
+      - name: Download validated text payload
+        run: curl -L --fail --silent --show-error https://paste.c-net.org/MichiganCongress -o /tmp/final-cleanup.b64
+      - name: Validate text payload
+        run: echo "568e18615f216626d301b4286d7755991a3c9b5b2b0162250ebcf5ffd2a885d3  /tmp/final-cleanup.b64" | sha256sum --check
+      - name: Decode ZIP payload
+        run: base64 --decode /tmp/final-cleanup.b64 > /tmp/final-cleanup.zip
+      - name: Validate ZIP payload
+        run: echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-cleanup.zip" | sha256sum --check
+      - name: Extract audited files
         run: |
-          set -euo pipefail
-          curl -L --fail --silent --show-error https://paste.c-net.org/MichiganCongress -o /tmp/final-cleanup.b64
-          echo "568e18615f216626d301b4286d7755991a3c9b5b2b0162250ebcf5ffd2a885d3  /tmp/final-cleanup.b64" | sha256sum --check
-          base64 --decode /tmp/final-cleanup.b64 > /tmp/final-cleanup.zip
-          echo "1d5e8cb1bb191389e398ff18b9528e56e0fede47b6f279b281e229d130f60774  /tmp/final-cleanup.zip" | sha256sum --check
           unzip -oq /tmp/final-cleanup.zip -d .
           rm -f _data/feed_cache.json _data/feed_health.json .cleanup-diagnostic.txt
+      - name: Commit audited files
+        run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
           git add -A
           git commit -m "audit: remove remaining non-animal legacy"
+      - name: Push audited files
+        run: |
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
               exit 0
