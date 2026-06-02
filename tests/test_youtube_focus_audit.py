@@ -8,7 +8,7 @@ import fetch_animals
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_DIRS = {".git", "__pycache__", ".pytest_cache"}
+SKIP_DIRS = {".git", ".pytest_cache", ".venv", ".venv-latest", "__pycache__", "env", "venv"}
 BLOCKED = (
     "tik" + "tok",
     "f" + "yp",
