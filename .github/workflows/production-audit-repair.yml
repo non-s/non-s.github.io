@@ -26,7 +26,7 @@ jobs:
           cache: "pip"
       - name: "Apply locally validated repair payload"
         env:
-          PAYLOAD_URL: "https://paste.rs/ZcY3o"
+          PAYLOAD_URL: "https://paste.rs/ctbzd"
         run: |
           curl -fsSL "$PAYLOAD_URL" | base64 -d > /tmp/production-audit-repair.zip
           python - <<'PY'
@@ -34,6 +34,8 @@ jobs:
           from zipfile import ZipFile
           with ZipFile('/tmp/production-audit-repair.zip') as archive:
               archive.extractall('.')
+          Path('_data/stories_queue.json').write_text('{"updated_at": null, "stories": []}\n', encoding='utf-8')
+          Path('_data/ai_cache.jsonl').write_text('', encoding='utf-8')
           for raw in (
               'fetch_animals.log',
               'generate_shorts.log',
