@@ -11,9 +11,9 @@ name: "📬 Daily digest issue (human-in-the-loop review)"
 
 on:
   schedule:
-    # 04:00 UTC daily, after analytics has refreshed at 03:00 so the
+  # 04:37 UTC daily, after analytics has refreshed at 03:30 so the
     # digest can include the latest channel pulse.
-    - cron: "0 4 * * *"
+    - cron: "37 4 * * *"
   workflow_dispatch:
 
 # This workflow only writes to _data/blocked_slugs.json + GitHub Issues.
