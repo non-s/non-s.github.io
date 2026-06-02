@@ -8,13 +8,15 @@ narration-over-static-image Shorts as low-effort AI content. Channels
 have been demonetised / terminated for it. To stay on the right side
 of the bar we have to put MOTION on screen, ideally varied every 2-3s.
 
-This module keeps the Pexels animal footage path small and reusable.
-Wild Brief intentionally uses one vetted source:
+This module keeps animal footage discovery small and reusable.
+Wild Brief intentionally uses vetted free sources:
 
   1. Pexels Videos API   — best signal, requires a free key (no card)
 
 Each source returns a list of `BrollClip` objects sorted by relevance.
 `fetch_broll_clips(query, want_n)` is the unified entry point.
+
+Pixabay supplements Pexels coverage when `PIXABAY_API_KEY` is configured.
 
 Caching
 -------
@@ -108,6 +110,7 @@ def _cache_put(path: Path, clips: list[dict]) -> None:
 # Docs:     https://www.pexels.com/api/documentation/#videos
 
 _PEXELS_API = "https://api.pexels.com/videos/search"
+_PIXABAY_API = "https://pixabay.com/api/videos/"
 
 
 def _pexels_clip_title(url: str, uploader: str = "") -> str:
@@ -179,6 +182,51 @@ def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
     return out
 
 
+def fetch_pixabay(query: str, per_page: int = 8) -> list[BrollClip]:
+    """Search Pixabay Videos for `query`. Empty list on any failure."""
+    key = os.environ.get("PIXABAY_API_KEY", "")
+    if not key or not query:
+        return []
+    cache_path = _cache_key("pixabay", f"{query}|{per_page}")
+    cached = _cache_get(cache_path)
+    if cached is not None:
+        return [BrollClip(**c) for c in cached]
+    try:
+        r = _session().get(
+            _PIXABAY_API,
+            params={"key": key, "q": query[:100], "per_page": max(3, min(int(per_page), 200)),
+                    "safesearch": "true", "video_type": "all"},
+            timeout=_TIMEOUT,
+        )
+        if r.status_code != 200:
+            log.debug("pixabay %d for %r", r.status_code, query[:40])
+            return []
+        videos = r.json().get("hits", []) or []
+    except Exception as exc:
+        log.debug("pixabay error %s: %s", query[:40], exc)
+        return []
+    out: list[BrollClip] = []
+    for video in videos:
+        variants = [item for item in (video.get("videos") or {}).values()
+                    if item.get("url") and item.get("width") and item.get("height")]
+        variants.sort(key=lambda item: (
+            0 if int(item.get("height") or 0) >= int(item.get("width") or 0) else 1,
+            abs(int(item.get("height") or 0) - 1920),
+        ))
+        if not variants:
+            continue
+        item = variants[0]
+        out.append(BrollClip(
+            source="pixabay", url=video.get("pageURL", ""), download_url=item["url"],
+            width=int(item.get("width") or 0), height=int(item.get("height") or 0),
+            duration_s=float(video.get("duration") or 0),
+            title=str(video.get("tags") or "").strip(),
+            license="Pixabay Content License (free for commercial use)",
+        ))
+    _cache_put(cache_path, [dataclasses.asdict(c) for c in out])
+    return out
+
+
 # ── 2. Discovery ─────────────────────────────────────────────────
 
 # Strip filler words so "The octopus changes colour today" becomes
@@ -204,7 +252,7 @@ def _build_query(text: str) -> str:
 
 def fetch_broll_clips(query: str, want_n: int = 4, category: str = "",
                       animal_only: bool = False) -> list[BrollClip]:
-    """Collect up to `want_n` vetted Pexels animal clips."""
+    """Collect up to `want_n` vetted animal clips."""
     seen_urls: set[str] = set()
     collected: list[BrollClip] = []
     refined = _build_query(query)
@@ -216,9 +264,9 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "",
     # and operators can't tell whether a missing Pexels key, a quota
     # wall, or an unlucky query phrase pushed the run into the static
     # fallback.
-    per_source: dict[str, int] = {"pexels": 0}
+    per_source: dict[str, int] = {"pexels": 0, "pixabay": 0}
 
-    for fetcher in (fetch_pexels,):
+    for fetcher in (fetch_pexels, fetch_pixabay):
         if len(collected) >= want_n:
             break
         for q in queries:
@@ -239,6 +287,11 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "",
                     break
 
     pexels_key_present = bool(os.environ.get("PEXELS_API_KEY", "").strip())
+    log.info(
+        "  B-roll supplement: pixabay=%d (key %s)",
+        per_source["pixabay"],
+        "present" if os.environ.get("PIXABAY_API_KEY", "").strip() else "MISSING",
+    )
     log.info(
         "  🔎 B-roll source: pexels=%d (key %s) · total=%d/%d",
         per_source["pexels"],
