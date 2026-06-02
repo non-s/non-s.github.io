@@ -18,7 +18,7 @@ on:
 
 # This workflow only writes to _data/blocked_slugs.json + GitHub Issues.
 # It's safe to overlap with the publishing workflows; we still serialise
-# against fetch-news so `_data/` writes don't collide.
+# against fetch-content so `_data/` writes don't collide.
 concurrency:
   group: main-write
   cancel-in-progress: false

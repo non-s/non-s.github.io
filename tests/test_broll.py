@@ -10,6 +10,14 @@ import pytest
 from utils import broll
 
 
+def test_pexels_clip_title_uses_descriptive_url_slug():
+    title = broll._pexels_clip_title(
+        "https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+        "Uploader Name",
+    )
+    assert title == "sea turtle over coral reef"
+
+
 # ── _build_query ─────────────────────────────────────────────────
 
 def test_build_query_strips_stopwords():
