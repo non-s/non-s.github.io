@@ -64,6 +64,9 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert "git add _videos/*.done _videos/*.roundup" not in workflow
     assert "YOUTUBE_PRIVACY:" in workflow
     assert "YOUTTUBE_PRIVACY:" not in workflow
+    assert 'QUALITY_REQUIRE_MOTION_BROLL: "1"' in workflow
+    assert 'QUALITY_REQUIRE_CAPTIONS: "1"' in workflow
+    assert 'QUALITY_MIN_VISUAL_QA_SCORE: "6"' in workflow
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():

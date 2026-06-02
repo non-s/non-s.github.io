@@ -75,6 +75,15 @@ LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.
 MAX_SHORTS_PER_RUN = int(os.environ.get("MAX_SHORTS_PER_RUN", "3"))
 SHORT_W, SHORT_H = 1080, 1920  # vertical 9:16
 
+
+def _env_enabled(name: str, default: str = "0") -> bool:
+    return os.environ.get(name, default).strip().lower() in {"1", "true", "yes", "on"}
+
+
+QUALITY_REQUIRE_MOTION_BROLL = _env_enabled("QUALITY_REQUIRE_MOTION_BROLL")
+QUALITY_REQUIRE_CAPTIONS = _env_enabled("QUALITY_REQUIRE_CAPTIONS")
+QUALITY_MIN_VISUAL_QA_SCORE = int(os.environ.get("QUALITY_MIN_VISUAL_QA_SCORE", "1"))
+
 # Paleta de cores — identidade Wild Brief
 BG_DARK      = (8, 8, 18)
 ACCENT_BLUE  = (0, 195, 255)
@@ -1282,6 +1291,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 2. Captions (word-level) — biggest single retention lever. ─
     ass_path = generate_captions(audio_path, tmp_dir)
+    if not ass_path and QUALITY_REQUIRE_CAPTIONS:
+        log.warning("  Skipping Short - production quality requires captions")
+        return None
     if ass_path:
         log.info("  📝 Captions ready: %s", ass_path.name)
     else:
@@ -1292,6 +1304,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # source clip is preferred and supplemental footage stays inside
     # animal-only Pexels search.
     broll_paths = acquire_broll_clips(story, tmp_dir, want_n=3)
+    if not broll_paths and QUALITY_REQUIRE_MOTION_BROLL:
+        log.warning("  Skipping Short - production quality requires motion b-roll")
+        return None
 
     # ── 4. Output paths ───────────────────────────────────────────
     VIDEOS_DIR.mkdir(exist_ok=True)
@@ -1333,6 +1348,11 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if visual_qa.get("checked") and not visual_qa.get("approved"):
         log.warning("  Skipping Short - Gemini visual QA rejected frame: %s",
                     visual_qa.get("reason", "subject mismatch"))
+        return None
+    if (visual_qa.get("checked")
+            and int(visual_qa.get("thumbnail_quality", 0) or 0) < QUALITY_MIN_VISUAL_QA_SCORE):
+        log.warning("  Skipping Short - Gemini visual QA score %s is below %s",
+                    visual_qa.get("thumbnail_quality"), QUALITY_MIN_VISUAL_QA_SCORE)
         return None
 
     # Render the still frame used for (a) the static-video fallback,
@@ -1390,6 +1410,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             cta_text=cta_text,
             watermark_text=watermark_text,
         )
+        if not ok and QUALITY_REQUIRE_MOTION_BROLL:
+            log.warning("  Skipping Short - b-roll compose failed in strict production mode")
+            return None
         if not ok:
             log.info("  ⤵ B-roll compose failed — falling back to static frame.")
             ok = build_static_short(
@@ -1428,6 +1451,12 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["has_broll"] = bool(broll_paths)
     metadata["has_captions"] = bool(ass_path)
     metadata["visual_qa"] = visual_qa
+    metadata["script_quality_grade"] = grade
+    metadata["production_quality"] = {
+        "motion_broll_required": QUALITY_REQUIRE_MOTION_BROLL,
+        "captions_required": QUALITY_REQUIRE_CAPTIONS,
+        "min_visual_qa_score": QUALITY_MIN_VISUAL_QA_SCORE,
+    }
     metadata["editorial"] = editorial.to_dict()
     metadata["series"] = editorial.series
     meta_path = video_path.with_suffix(".json")

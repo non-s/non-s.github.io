@@ -25,6 +25,11 @@ jobs:
       MUSIC_BED_ENABLED: "0"
       # Open immediately on the animal and hook in the Shorts feed.
       BRAND_CARDS_ENABLED: "0"
+      # Monetization-first mode: skip a candidate instead of shipping a
+      # weak static video or a Short without retention-critical captions.
+      QUALITY_REQUIRE_MOTION_BROLL: "1"
+      QUALITY_REQUIRE_CAPTIONS: "1"
+      QUALITY_MIN_VISUAL_QA_SCORE: "6"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2

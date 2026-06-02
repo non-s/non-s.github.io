@@ -102,6 +102,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     retention = retention or {}
     observations: list[dict] = []
     category: dict[str, list[float]] = defaultdict(list)
+    category_retention: dict[str, list[float]] = defaultdict(list)
     series: dict[str, list[float]] = defaultdict(list)
     top: list[dict] = []
     total_views = 0
@@ -120,12 +121,14 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         total_subscribers_gained += subscribers_gained
         if average_view_percentage:
             retention_percentages.append(average_view_percentage)
+            category_retention[str(marker.get("category") or "unknown")].append(average_view_percentage)
         total_views += views
         category[str(marker.get("category") or "unknown")].append(score)
         series[str(marker.get("series") or "Unassigned")].append(score)
         observations.append({
             "video_id": video_id,
-            "score": score,
+            "score": average_view_percentage or score,
+            "engagement_score": score,
             "experiments": marker.get("experiments") or {},
             "average_view_percentage": average_view_percentage,
             "subscribers_gained": subscribers_gained,
@@ -137,6 +140,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "engagement_score": score,
             "share_url": marker.get("url", ""),
             "average_view_percentage": round(average_view_percentage, 3),
+            "view_pct": round(average_view_percentage, 3),
             "average_view_duration": round(average_view_duration, 3),
             "subscribers_gained": subscribers_gained,
         })
@@ -144,12 +148,20 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     average = lambda values: round(sum(values) / len(values), 3) if values else 0.0
     snapshot = {
         "pulled_at": datetime.now(timezone.utc).isoformat(),
-        "metric_scope": "public_video_statistics",
+        "metric_scope": "youtube_analytics_and_public_statistics" if retention else "public_video_statistics",
         "total_views": total_views,
         "shorts_tracked": len(markers),
-        "avg_engagement_score": average([o["score"] for o in observations]),
+        "avg_engagement_score": average([o["engagement_score"] for o in observations]),
         "avg_view_percentage": average(retention_percentages),
+        "avg_view_pct": average(retention_percentages),
         "subscribers_gained": total_subscribers_gained,
+        "below_60_pct": sorted([
+            video_id for video_id, item in retention.items()
+            if float(item.get("averageViewPercentage", 0) or 0) < 60
+        ]),
+        "category_avg_view_pct": {
+            key: average(values) for key, values in sorted(category_retention.items())
+        },
         "category_avg_engagement": {k: average(v) for k, v in sorted(category.items())},
         "series_avg_engagement": {k: average(v) for k, v in sorted(series.items())},
         "top_performers": top[:10],

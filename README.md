@@ -31,6 +31,7 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - records public YouTube engagement after uploads and feeds winning categories, series and experiments back into the dashboard.
 - uses Gemini visual QA to reject unrelated thumbnails when `GEMINI_API_KEY` is configured;
 - reads retention and subscriber conversion when the OAuth token includes YouTube Analytics access.
+- skips production candidates without real motion b-roll or burned captions instead of uploading low-retention fallbacks.
 
 ## Required secrets
 

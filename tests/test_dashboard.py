@@ -81,6 +81,22 @@ def test_dashboard_renders_ab_winners(dashboard, tmp_path):
     assert "+8.4" in body
 
 
+def test_dashboard_accepts_new_retention_field_name(dashboard, tmp_path):
+    analytics = tmp_path / "_data" / "analytics"
+    analytics.mkdir(parents=True)
+    (analytics / "latest.json").write_text(json.dumps({
+        "pulled_at": "2026-06-02",
+        "total_views": 321,
+        "avg_view_percentage": 74.2,
+        "top_performers": [{"title": "Octopus", "views": 100,
+                            "average_view_percentage": 81.5}],
+    }))
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+    assert "74.2" in body
+    assert "81.5" in body
+
+
 def test_dashboard_renders_cohort_timing(dashboard, tmp_path):
     analytics = tmp_path / "_data" / "analytics"
     analytics.mkdir(parents=True)
