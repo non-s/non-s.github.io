@@ -22,8 +22,9 @@ TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
 ANALYTICS_DIR = ROOT / "_data" / "analytics"
 UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
 ANALYTICS_SCOPE = "https://www.googleapis.com/auth/yt-analytics.readonly"
-SCOPES = [UPLOAD_SCOPE]
+SCOPES = [UPLOAD_SCOPE, READONLY_SCOPE]
 
 
 def _load_markers(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
