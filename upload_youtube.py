@@ -155,10 +155,10 @@ def main() -> None:
         video_id = upload_video(youtube, meta)
         if not video_id:
             continue
-        meta_file.with_suffix(".done").write_text(json.dumps({"video_id": video_id, "url": _video_url(video_id), "uploaded_at": datetime.now(timezone.utc).isoformat(), "platform": "youtube", "title": meta.get("title", ""), "description": meta.get("description", ""), "tags": meta.get("tags", []), "category": meta.get("category", ""), "series": meta.get("series", ""), "editorial": meta.get("editorial", {}), "is_short": meta.get("is_short", True), "pexels_video_id": meta.get("pexels_video_id", ""), "pexels_download_url": meta.get("pexels_download_url", ""), "experiments": meta.get("experiments", {}), "language": _LANGUAGE}, indent=2), encoding="utf-8")
+        meta_file.with_suffix(".done").write_text(json.dumps({"video_id": video_id, "url": _video_url(video_id), "uploaded_at": datetime.now(timezone.utc).isoformat(), "platform": "youtube", "title": meta.get("title", ""), "description": meta.get("description", ""), "tags": meta.get("tags", []), "category": meta.get("category", ""), "series": meta.get("series", ""), "editorial": meta.get("editorial", {}), "is_short": meta.get("is_short", True), "pexels_video_id": meta.get("pexels_video_id", ""), "pexels_download_url": meta.get("pexels_download_url", ""), "source_clip_id": meta.get("source_clip_id", ""), "source": meta.get("source", ""), "source_url": meta.get("source_url", ""), "source_license": meta.get("source_license", ""), "commons_page_url": meta.get("commons_page_url", ""), "commons_license": meta.get("commons_license", ""), "commons_artist": meta.get("commons_artist", ""), "gbif": meta.get("gbif", {}), "visual_qa": meta.get("visual_qa", {}), "experiments": meta.get("experiments", {}), "language": _LANGUAGE}, indent=2), encoding="utf-8")
         try:
             from fetch_animals import record_published_clip
-            record_published_clip(pexels_video_id=meta.get("pexels_video_id", ""), story_id=meta.get("story_id", ""), pexels_url=meta.get("pexels_download_url", ""), platform_video_id=video_id)
+            record_published_clip(pexels_video_id=meta.get("pexels_video_id", ""), story_id=meta.get("story_id", ""), pexels_url=meta.get("pexels_download_url", ""), source_clip_id=meta.get("source_clip_id", ""), source=meta.get("source", ""), source_url=meta.get("source_url", ""), platform_video_id=video_id)
         except Exception as exc:
             log.warning("published_clips ledger update failed: %s", exc)
         meta_file.unlink(); uploaded += 1

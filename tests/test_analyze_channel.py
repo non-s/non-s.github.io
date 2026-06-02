@@ -21,3 +21,17 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["shorts_tracked"] == 1
     assert snapshot["series_avg_engagement"]["Ocean Mysteries"] == 15
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"
+
+
+def test_snapshot_includes_optional_retention_metrics():
+    markers = [{"video_id": "abc", "category": "ocean", "series": "Ocean Mysteries"}]
+    stats = {"abc": {"statistics": {"viewCount": "100", "likeCount": "5"}}}
+    retention = {"abc": {
+        "averageViewPercentage": 82.5,
+        "averageViewDuration": 24.3,
+        "subscribersGained": 7,
+    }}
+    snapshot, observations = build_snapshot(markers, stats, retention)
+    assert snapshot["avg_view_percentage"] == 82.5
+    assert snapshot["subscribers_gained"] == 7
+    assert observations[0]["subscribers_gained"] == 7

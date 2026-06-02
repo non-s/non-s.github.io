@@ -34,7 +34,7 @@ How it works
 What's intentionally NOT here
 =============================
 
-* Pexels is the only discovery layer.
+* Video discovery stays inside vetted free providers.
 * No brand-safety filter — every queue item is already animal content.
 * No urgency classifier — evergreen facts do not need one.
 * No translation — start with EN, PT-BR is a future pass.
@@ -62,7 +62,8 @@ from pathlib import Path
 
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
-from utils.broll import fetch_pexels
+from utils.animal_enrichment import enrich_subject, taxonomy_prompt
+from utils.broll import fetch_pexels, fetch_pixabay
 
 logging.basicConfig(
     level=logging.INFO,
@@ -411,6 +412,13 @@ def _pexels_id_from_clip(clip) -> str:
         return ""
 
 
+def _source_clip_id(clip) -> str:
+    """Return a stable source-specific clip id for any video provider."""
+    source = (getattr(clip, "source", "") or "unknown").lower()
+    url = getattr(clip, "url", "") or getattr(clip, "download_url", "") or ""
+    return f"{source}:{_story_id(url)}" if url else ""
+
+
 # ── Published-clips ledger ────────────────────────────────────────
 
 def load_published_clip_keys() -> set[str]:
@@ -434,7 +442,7 @@ def load_published_clip_keys() -> set[str]:
     for entry in (data.get("clips") or []):
         if not isinstance(entry, dict):
             continue
-        for field in ("pexels_video_id", "story_id"):
+        for field in ("source_clip_id", "pexels_video_id", "story_id"):
             val = entry.get(field)
             if val:
                 keys.add(str(val))
@@ -444,6 +452,9 @@ def load_published_clip_keys() -> set[str]:
 def record_published_clip(*, pexels_video_id: str = "",
                           story_id: str = "",
                           pexels_url: str = "",
+                          source_clip_id: str = "",
+                          source: str = "",
+                          source_url: str = "",
                           platform_video_id: str = "",
                           **_legacy) -> None:
     """Append one record to the permanent published-clips ledger.
@@ -455,7 +466,7 @@ def record_published_clip(*, pexels_video_id: str = "",
     `**_legacy` swallows old kwargs (e.g. `youtube_video_id=`) so older
     callers don't crash; the value is stored in `platform_video_id`.
     """
-    if not pexels_video_id and not story_id:
+    if not source_clip_id and not pexels_video_id and not story_id:
         return  # nothing to record
     if not platform_video_id and _legacy.get("youtube_video_id"):
         platform_video_id = _legacy["youtube_video_id"]
@@ -472,6 +483,9 @@ def record_published_clip(*, pexels_video_id: str = "",
         "pexels_video_id":     pexels_video_id or "",
         "story_id":            story_id or "",
         "pexels_url":          pexels_url or "",
+        "source_clip_id":      source_clip_id or "",
+        "source":              source or "",
+        "source_url":          source_url or "",
         "platform_video_id":   platform_video_id or "",
         "uploaded_at":         datetime.now(timezone.utc).isoformat(),
     })
@@ -516,10 +530,15 @@ def _build_story(clip_subject: str,
                  topic_key: str,
                  topic_cfg: dict,
                  pexels_clip: "BrollClip",
-                 ai_out: dict) -> dict:
+                 ai_out: dict,
+                 enrichment: dict | None = None) -> dict:
     """Assemble the queue entry. Matches the shared queue shape so
     `generate_shorts.py` doesn't need to change."""
-    url = pexels_clip.url or f"https://www.pexels.com/video/{_story_id(pexels_clip.download_url)}"
+    enrichment = enrichment or {}
+    commons = enrichment.get("commons") or {}
+    gbif = enrichment.get("gbif") or {}
+    source_name = (pexels_clip.source or "unknown").title()
+    url = pexels_clip.url or pexels_clip.download_url
     now = datetime.now(timezone.utc).isoformat()
     # Merge the AI-picked tags with the topic's evergreen tags,
     # deduplicating. Capped at 8 to leave room for upload_youtube's
@@ -530,6 +549,11 @@ def _build_story(clip_subject: str,
             merged_tags.append(t)
         if len(merged_tags) >= 8:
             break
+    description = re.sub(
+        r"(?i)Source:\s*Pexels",
+        f"Source: {source_name}",
+        str(ai_out["yt_description"]),
+    )
     return {
         "id":             _story_id(url),
         "fetched_at":     now,
@@ -538,7 +562,11 @@ def _build_story(clip_subject: str,
         "consumed_at":    None,
         "title":          clip_subject,
         "url":            url,
-        "source":         "Pexels",
+        "source":         source_name,
+        "source_url":     url,
+        "source_license": pexels_clip.license,
+        "source_clip_id": _source_clip_id(pexels_clip),
+        "source_download_url": pexels_clip.download_url,
         "category":       topic_key,
         "description":    f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {pexels_clip.title or clip_subject}".strip(),
         # BrollClip doesn't carry a preview image — leave empty; the
@@ -557,7 +585,7 @@ def _build_story(clip_subject: str,
         "yt_tags":        merged_tags[:8],
         "geo_hashtag":    ai_out["geo_hashtag"],
         "topic_hashtag":  ai_out["topic_hashtag"],
-        "yt_description": ai_out["yt_description"],
+        "yt_description": description,
         "thumbnail_text": ai_out["thumbnail_text"],
         "hook":           ai_out["hook"],
         "script":         ai_out["script"],
@@ -572,6 +600,11 @@ def _build_story(clip_subject: str,
         # exact clip that informed the script.
         "pexels_video_id":     _pexels_id_from_clip(pexels_clip),
         "pexels_download_url": pexels_clip.download_url,
+        "gbif":                 gbif,
+        "commons_image_url":    commons.get("image_url", ""),
+        "commons_page_url":     commons.get("page_url", ""),
+        "commons_license":      commons.get("license", ""),
+        "commons_artist":       commons.get("artist", ""),
     }
 
 
@@ -599,7 +632,8 @@ def main() -> int:
     log.info("=" * 60)
 
     pexels_key = os.environ.get("PEXELS_API_KEY", "").strip()
-    if not pexels_key:
+    pixabay_key = os.environ.get("PIXABAY_API_KEY", "").strip()
+    if not pexels_key and not pixabay_key:
         log.error("❌ PEXELS_API_KEY not set — cannot fetch animal clips.")
         return 2
     if not os.environ.get("MISTRAL_API_KEY", "").strip():
@@ -621,8 +655,12 @@ def main() -> int:
         str(s.get("pexels_video_id", "")) for s in queue["stories"]
         if s.get("pexels_video_id")
     }
+    queue_source_ids: set[str] = {
+        str(s.get("source_clip_id", "")) for s in queue["stories"]
+        if s.get("source_clip_id")
+    }
     published_keys = load_published_clip_keys()
-    dedupe_keys: set[str] = queue_ids | queue_pexels_ids | published_keys
+    dedupe_keys: set[str] = queue_ids | queue_pexels_ids | queue_source_ids | published_keys
     script_keys: set[str] = {
         _script_key(s.get("script", "")) for s in queue["stories"]
         if _script_key(s.get("script", ""))
@@ -640,7 +678,10 @@ def main() -> int:
             if len(clips) >= per_topic_n:
                 break
             try:
-                clips.extend(fetch_pexels(q, per_page=4))
+                if pexels_key:
+                    clips.extend(fetch_pexels(q, per_page=4))
+                if pixabay_key:
+                    clips.extend(fetch_pixabay(q, per_page=4))
             except Exception as exc:
                 log.warning("pexels fetch failed for %r: %s", q, exc)
         # Cap, shuffle a little so consecutive runs don't always
@@ -652,14 +693,19 @@ def main() -> int:
         for clip in clips:
             sid = _story_id(clip.url or clip.download_url)
             pid = _pexels_id_from_clip(clip)
-            if sid in dedupe_keys or (pid and pid in dedupe_keys):
+            source_clip_id = _source_clip_id(clip)
+            if sid in dedupe_keys or (pid and pid in dedupe_keys) or source_clip_id in dedupe_keys:
                 continue
             subject = _subject_from_clip(clip, queries[0])
             if not _topic_accepts_subject(topic_cfg, subject):
                 log.warning("  skipping off-topic Pexels clip for %s: %s",
                             topic_key, subject[:80])
                 continue
+            enrichment = enrich_subject(subject)
             context = topic_cfg.get("description_prefix", "an animal clip")
+            taxonomy = taxonomy_prompt(enrichment)
+            if taxonomy:
+                context = f"{context}. {taxonomy}"
             ai_out = _ai_enhance_animal(subject, context)
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])
@@ -668,12 +714,14 @@ def main() -> int:
             if not script_key or script_key in script_keys:
                 log.warning("  skipping repeated or empty script for %s", subject[:60])
                 continue
-            story = _build_story(subject, topic_key, topic_cfg, clip, ai_out)
+            story = _build_story(subject, topic_key, topic_cfg, clip, ai_out, enrichment)
             new_entries.append(story)
             script_keys.add(script_key)
             dedupe_keys.add(story["id"])
             if pid:
                 dedupe_keys.add(pid)
+            if source_clip_id:
+                dedupe_keys.add(source_clip_id)
 
     # Merge + prune.
     queue["stories"].extend(new_entries)

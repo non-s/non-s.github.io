@@ -32,6 +32,7 @@ except ImportError:  # pragma: no cover
     fcntl = None
 
 from utils.broll import BrollClip, download_clip, fetch_broll_clips
+from utils.animal_enrichment import download_commons_image
 from utils.captions import (
     group_words_into_phrases,
     transcribe as captions_transcribe,
@@ -47,6 +48,7 @@ from utils.script_quality import evaluate as evaluate_script, should_block as qu
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
+from utils.visual_qa import evaluate_frame
 
 # ── Config ────────────────────────────────────────────────────────
 # Language axis. "en" is the default channel; setting LANGUAGE=pt-BR
@@ -716,8 +718,8 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
     Pull `want_n` b-roll MP4s into `tmp_dir`. Returns local paths.
     Empty list = the caller falls back to a static frame.
 
-    The primary clip is the exact Pexels clip stored with the story.
-    Supplemental discovery is conservative: Pexels animal queries only.
+    The primary clip is the exact source clip stored with the story.
+    Supplemental discovery is conservative: animal queries only.
     """
     if want_n <= 0:
         return []
@@ -737,17 +739,17 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
         return []
     log.info("  🎬 B-roll candidates: %d (query=%r)", len(candidates), query[:80])
 
-    preferred_url = (story.get("pexels_download_url") or "").strip()
+    preferred_url = (story.get("source_download_url") or story.get("pexels_download_url") or "").strip()
     if preferred_url:
         candidates.insert(0, BrollClip(
-            source="pexels",
+            source=(story.get("source") or "pexels").strip().lower(),
             url=(story.get("source_url") or "").strip(),
             download_url=preferred_url,
             width=1080,
             height=1920,
             duration_s=10.0,
             title=(story.get("title") or "").strip(),
-            license="Pexels License (free for commercial use)",
+            license=(story.get("source_license") or "Reusable source clip").strip(),
         ))
 
     paths: list[Path] = []
@@ -912,6 +914,13 @@ def build_short_metadata(story: dict, video_path: Path,
         # (`_data/published_clips.json`) on a successful upload.
         "pexels_video_id":     story.get("pexels_video_id", ""),
         "pexels_download_url": story.get("pexels_download_url", ""),
+        "source_clip_id":      story.get("source_clip_id", ""),
+        "source_download_url": story.get("source_download_url", ""),
+        "source_license":      story.get("source_license", ""),
+        "commons_page_url":    story.get("commons_page_url", ""),
+        "commons_license":     story.get("commons_license", ""),
+        "commons_artist":      story.get("commons_artist", ""),
+        "gbif":                dict(story.get("gbif") or {}),
         # Queue entry id (sha1 of the Pexels page URL). Second dedup
         # key after pexels_video_id; whichever the recorder has is fine.
         "story_id":            story.get("id", ""),
@@ -1014,6 +1023,14 @@ def _queue_to_story(qs: dict) -> dict:
         "experiments":    dict(qs.get("experiments") or assign_all_for_production(qs["id"])),
         "pexels_download_url": qs.get("pexels_download_url", ""),
         "pexels_video_id": qs.get("pexels_video_id", ""),
+        "source_clip_id": qs.get("source_clip_id", ""),
+        "source_download_url": qs.get("source_download_url", ""),
+        "source_license": qs.get("source_license", ""),
+        "commons_image_url": qs.get("commons_image_url", ""),
+        "commons_page_url": qs.get("commons_page_url", ""),
+        "commons_license": qs.get("commons_license", ""),
+        "commons_artist": qs.get("commons_artist", ""),
+        "gbif": dict(qs.get("gbif") or {}),
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
@@ -1290,6 +1307,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         broll_paths[0],
         bg_path,
     )
+    if not img_ok:
+        img_ok = download_commons_image(story, bg_path)
 
     # Final-fallback: synthesise a category-coloured gradient so a story
     # without usable animal footage NEVER introduces a random person,
@@ -1308,6 +1327,12 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             "including the solid-colour fallback (PIL not importable?): %s",
             title[:80],
         )
+        return None
+
+    visual_qa = evaluate_frame(bg_path, story.get("title") or display_title)
+    if visual_qa.get("checked") and not visual_qa.get("approved"):
+        log.warning("  Skipping Short - Gemini visual QA rejected frame: %s",
+                    visual_qa.get("reason", "subject mismatch"))
         return None
 
     # Render the still frame used for (a) the static-video fallback,
@@ -1402,6 +1427,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["altered_content"] = True
     metadata["has_broll"] = bool(broll_paths)
     metadata["has_captions"] = bool(ass_path)
+    metadata["visual_qa"] = visual_qa
     metadata["editorial"] = editorial.to_dict()
     metadata["series"] = editorial.series
     meta_path = video_path.with_suffix(".json")

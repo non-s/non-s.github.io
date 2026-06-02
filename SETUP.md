@@ -8,13 +8,18 @@ Open **Settings -> Secrets and variables -> Actions** and add:
 - `PEXELS_API_KEY` or `PEXELS`
 - `YOUTUBE_TOKEN`
 
-Optional AI fallbacks: `CEREBRAS_API_KEY`, `GEMINI_API_KEY`, `GROQ_API_KEY` or their short names.
+Recommended free quality extensions:
+
+- `PIXABAY_API_KEY` or `PIXABAY`
+- `GEMINI_API_KEY` or `GEMINI`
+
+GBIF and Wikimedia Commons need no key. Optional AI fallbacks: `CEREBRAS_API_KEY`, `GROQ_API_KEY` or their short names.
 
 ## Create YouTube OAuth credentials
 
 1. Open <https://console.cloud.google.com/>.
 2. Create or select a Google Cloud project.
-3. Enable **YouTube Data API v3**.
+3. Enable **YouTube Data API v3** and **YouTube Analytics API**.
 4. Configure the OAuth consent screen.
 5. Create an OAuth client ID of type **Desktop app**.
 6. Copy the client ID and client secret.
@@ -28,7 +33,7 @@ pip install -r requirements.txt
 python auth_youtube.py
 ```
 
-Approve access in the browser, then paste the printed JSON into the `YOUTUBE_TOKEN` repository secret.
+Approve upload and read-only Analytics access in the browser, then paste the printed JSON into the `YOUTUBE_TOKEN` repository secret. Regenerate an older token once to add Analytics retention metrics.
 
 On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflow, download the artifact and execute `auth_youtube.exe`.
 
