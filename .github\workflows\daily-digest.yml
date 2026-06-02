@@ -1,0 +1,104 @@
+name: "📬 Daily digest issue (human-in-the-loop review)"
+
+# Posts a daily GitHub Issue summarising every Short published in the
+# previous 24h. Hooks + scripts + retention metrics all in one place
+# so the operator can do the 30-second "automation as abdication"
+# review the case-study research recommends.
+#
+# Comments shaped `/block <slug>` on any digest issue stop the story
+# from re-running — harvested into `_data/blocked_slugs.json` on the
+# next run by `utils/digest.harvest_block_commands`.
+
+on:
+  schedule:
+    # 04:00 UTC daily, after analytics has refreshed at 03:00 so the
+    # digest can include the latest channel pulse.
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+# This workflow only writes to _data/blocked_slugs.json + GitHub Issues.
+# It's safe to overlap with the publishing workflows; we still serialise
+# against fetch-content so `_data/` writes don't collide.
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues:   write
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - run: pip install requests
+
+      - name: "Harvest /block commands from prior digests"
+        env:
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          from utils.digest import harvest_block_commands, load_blocked_slugs, save_blocked_slugs
+          incoming = harvest_block_commands()
+          existing = load_blocked_slugs()
+          merged = existing | incoming
+          save_blocked_slugs(merged)
+          print(f"📥 Blocked-slug list: {len(existing)} → {len(merged)} entries "
+                f"(+{len(merged) - len(existing)})")
+          PY
+
+      - name: "Render + post digest issue"
+        env:
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          from utils.digest import collect_recent_shorts, render_digest, post_digest_issue
+
+          analytics = None
+          latest = pathlib.Path("_data/analytics/latest.json")
+          if latest.exists():
+              try:
+                  analytics = json.loads(latest.read_text(encoding="utf-8"))
+              except Exception:
+                  analytics = None
+
+          shorts = collect_recent_shorts(lookback_hours=24)
+          body = render_digest(shorts, analytics_summary=analytics)
+          url = post_digest_issue(body)
+          if url:
+              print(f"✅ Posted: {url}")
+          else:
+              print("⚠ Digest not posted (token missing or API error). See logs.")
+          PY
+
+      - name: "Commit refreshed blocked-slug list"
+        run: |
+          git config user.name  "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          git add _data/blocked_slugs.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "✅ No new /block commands."
+          else
+            git commit -m "🚫 update blocked-slug list — $(date -u +'%Y-%m-%d')"
+            for attempt in 1 2 3; do
+              git push origin HEAD && exit 0
+              git pull --rebase --autostash origin main || git rebase --abort
+              sleep $((attempt * 5))
+            done
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

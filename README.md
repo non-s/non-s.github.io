@@ -5,7 +5,7 @@
 
 Automated pipeline that turns Pexels animal footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
-- Cadence: **5 Shorts/day**, posted at 01, 14, 17, 22 and 23 UTC.
+- Cadence: **3 Shorts/day**, posted at 14, 19 and 23 UTC.
 - Duration target: **25-35 seconds**.
 - Category: YouTube **Pets & Animals** (`categoryId=15`).
 
