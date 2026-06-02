@@ -11,8 +11,8 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-python@v5.3.0
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: "3.11"
       - name: "Install PyInstaller + auth deps"
@@ -25,7 +25,7 @@ jobs:
                       --name auth_youtube ^
                       auth_youtube.py
         shell: cmd
-      - uses: actions/upload-artifact@v4.4.3
+      - uses: actions/upload-artifact@v7.0.1
         with:
           name: auth_youtube-windows
           path: dist/auth_youtube.exe

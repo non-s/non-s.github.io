@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 1
 
       - name: "Set up Python 3.11"
-        uses: actions/setup-python@v5.3.0
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -74,7 +74,12 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          git add _data/stories_queue.json _data/ai_cache.jsonl 2>/dev/null || true
+          # Stage the queue first: optional generated files must never
+          # prevent the refreshed queue from being persisted.
+          git add _data/stories_queue.json
+          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl; do
+            [ -e "$path" ] && git add "$path"
+          done
           if git diff --cached --quiet; then
             echo "No new animal stories to commit."
             exit 0
@@ -95,7 +100,7 @@ jobs:
 
       - name: "Save execution log"
         if: always()
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: "fetch-animals-log-${{ github.run_number }}"
           path: fetch_animals.log
