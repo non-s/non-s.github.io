@@ -66,6 +66,6 @@ def test_youtube_workflow_stages_queue_before_optional_files():
 
 def test_refresh_workflow_stages_queue_before_optional_files():
     workflow = (ROOT / ".github" / "workflows" / "fetch-content.yml").read_text(encoding="utf-8")
-    assert "git add_data/stories_queue.json" in workflow
+    assert "git add _data/stories_queue.json" in workflow
     assert "git add _data/stories_queue.json _data/ai_cache.jsonl" not in workflow
     assert "_data/provider_stats.jsonl" in workflow
