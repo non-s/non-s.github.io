@@ -1,0 +1,42 @@
+name: "Cleanup merged branches now"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-merged-branches-now.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: "Delete old merged automation branches"
+        run: |
+          git fetch --prune
+          CUTOFF_EPOCH=$(date -u -d '14 days ago' +%s)
+          MERGED=$(git branch -r --merged origin/main \
+            | grep -v 'origin/main\|origin/master\|HEAD' \
+            | sed 's|origin/||')
+          COUNT=0
+          SKIPPED=0
+          for branch in $MERGED; do
+            if ! echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
+              continue
+            fi
+            LAST_EPOCH=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null || echo '')
+            if [ -z "$LAST_EPOCH" ] || [ "$LAST_EPOCH" -gt "$CUTOFF_EPOCH" ]; then
+              SKIPPED=$((SKIPPED+1))
+              continue
+            fi
+            if git push origin --delete "$branch"; then
+              COUNT=$((COUNT+1))
+            fi
+          done
+          echo "Deleted $COUNT merged automation branches; skipped $SKIPPED recent branches."
