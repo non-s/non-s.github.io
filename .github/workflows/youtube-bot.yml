@@ -4,7 +4,7 @@ name: "YouTube Bot - Shorts only"
 # Cadence: 3 Shorts/day, prioritising quality and channel variety.
 on:
   schedule:
-    - cron: "0 14,19,23 * * *"
+    - cron: "23 14,19,23 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -97,7 +97,7 @@ jobs:
             git push origin HEAD
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOEN }}
       - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v7.0.1
