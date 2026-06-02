@@ -16,7 +16,18 @@ Automated pipeline that turns Pexels animal footage into vertical YouTube Shorts
 Pexels clips -> fetch_animals.py -> _data/stories_queue.json
              -> generate_shorts.py -> _videos/*.mp4 + metadata
              -> upload_youtube.py -> YouTube Shorts + .done sidecar
+             -> analyze_channel.py -> free public performance feedback
 ```
+
+## Editorial system
+
+Every candidate passes through an automated editor-in-chief before rendering:
+
+- ranks specific animal stories by editorial quality;
+- blocks weak scripts and subjects repeated inside a three-day cooldown;
+- organizes videos into recurring series such as **Pet Secrets** and **Ocean Mysteries**;
+- renders a readable 2-4 word cover inside the opening frame and an end-screen CTA for channel subscriptions;
+- records public YouTube engagement after uploads and feeds winning categories, series and experiments back into the dashboard.
 
 ## Required secrets
 

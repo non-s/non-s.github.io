@@ -137,6 +137,24 @@ def assign_all(key: str) -> dict[str, str]:
     return {ax.name: assign_variant(ax.name, key) for ax in AXES}
 
 
+def assign_for_production(axis_name: str, key: str,
+                          exploration_percent: int = 20) -> str:
+    """Favor a measured winner while reserving deterministic exploration."""
+    baseline = assign_variant(axis_name, key)
+    winner = read_winner(axis_name)
+    if not winner or winner not in variant_choices(axis_name):
+        return baseline
+    bucket = int.from_bytes(
+        hashlib.sha1(f"explore:{axis_name}:{key}".encode("utf-8")).digest()[:2],
+        "big",
+    ) % 100
+    return baseline if bucket < exploration_percent else winner
+
+
+def assign_all_for_production(key: str) -> dict[str, str]:
+    return {ax.name: assign_for_production(ax.name, key) for ax in AXES}
+
+
 # â”€â”€ Reading winners (set by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def read_winners(path: Path | None = None) -> dict[str, str]:

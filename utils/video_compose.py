@@ -101,6 +101,7 @@ def build_broll_short(broll_paths: list[Path],
                       output_path: Path,
                       ass_subtitle_path: Path | None = None,
                       hook_text: str = "",
+                      cover_text: str = "",
                       cta_text: str = "",
                       watermark_text: str = "") -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
@@ -273,6 +274,19 @@ def build_broll_short(broll_paths: list[Path],
         )
         last_label = "withhook"
 
+    # Shorts do not accept an API-uploaded custom thumbnail. Put the
+    # strongest 2-4 word cover inside the opening second of the MP4.
+    if cover_text and font:
+        safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
+        parts.append(
+            f"[{last_label}]drawtext=fontfile={font}"
+            f":text='{safe}':fontcolor=white:fontsize=112"
+            f":box=1:boxcolor=black@0.68:boxborderw=26"
+            f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'"
+            f"[withcover]"
+        )
+        last_label = "withcover"
+
     # Bottom CTA for the last 6 seconds.
     if cta_text and font:
         safe = _ffmpeg_escape(cta_text[:50])
@@ -356,6 +370,8 @@ def build_static_short(frame_path: Path,
                        output_path: Path,
                        ass_subtitle_path: Path | None = None,
                        hook_text: str = "",
+                       cover_text: str = "",
+                       cta_text: str = "",
                        watermark_text: str = "") -> bool:
     """Single still image + audio, with optional burned captions.
 
@@ -398,6 +414,26 @@ def build_static_short(frame_path: Path,
             f":x=(w-text_w)/2:y=180:enable='between(t,0,3)'[withhook]"
         )
         last = "withhook"
+    if cover_text and font:
+        safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
+        parts.append(
+            f"[{last}]drawtext=fontfile={font}"
+            f":text='{safe}':fontcolor=white:fontsize=112"
+            f":box=1:boxcolor=black@0.68:boxborderw=26"
+            f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'[withcover]"
+        )
+        last = "withcover"
+    if cta_text and font:
+        safe = _ffmpeg_escape(cta_text[:50])
+        cta_start = max(0.0, audio_dur - 6.0)
+        parts.append(
+            f"[{last}]drawtext=fontfile={font}"
+            f":text='{safe}':fontcolor=white:fontsize=52"
+            f":box=1:boxcolor=black@0.65:boxborderw=18"
+            f":x=(w-text_w)/2:y=h-260"
+            f":enable='between(t,{cta_start:.2f},{audio_dur:.2f})'[withcta]"
+        )
+        last = "withcta"
     if watermark_text and font:
         safe = _ffmpeg_escape(watermark_text[:32])
         parts.append(

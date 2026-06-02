@@ -137,10 +137,14 @@ def render_html() -> str:
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
+    total_views      = latest.get("total_views", total_views_14d)
     avg_view_pct    = latest.get("avg_view_pct", 0)
+    avg_engagement  = latest.get("avg_engagement_score", 0)
     pulled_at       = latest.get("pulled_at", "—")
     underperformers = latest.get("below_60_pct") or []
     cat_perf        = latest.get("category_avg_view_pct") or {}
+    cat_engagement  = latest.get("category_avg_engagement") or {}
+    series_engagement = latest.get("series_avg_engagement") or {}
     top_performers  = latest.get("top_performers") or []
 
     out: list[str] = []
@@ -156,8 +160,12 @@ def render_html() -> str:
     # ── Top-line metrics ───────────────────────────────────────
     out.append("<section class='row'>")
     out.append(
-        f"<div class='card'><small>Total views (14 d)</small>"
-        f"<div class='metric'>{int(total_views_14d):,}</div></div>"
+        f"<div class='card'><small>Total tracked views</small>"
+        f"<div class='metric'>{int(total_views):,}</div></div>"
+    )
+    out.append(
+        f"<div class='card'><small>Public engagement score</small>"
+        f"<div class='metric'>{avg_engagement}</div></div>"
     )
     out.append(
         f"<div class='card'><small>Avg view %</small>"
@@ -202,6 +210,20 @@ def render_html() -> str:
             cls = "green" if pct >= 60 else ("red" if pct < 30 else "")
             out.append(f"<tr><td>{html.escape(str(cat))}</td>"
                         f"<td class='{cls}'>{pct} %</td></tr>")
+        out.append("</table></div>")
+
+    if cat_engagement:
+        out.append("<div class='card'><h2>Public engagement by category</h2>")
+        out.append("<table><tr><th>Category</th><th>Score</th></tr>")
+        for cat, score in sorted(cat_engagement.items(), key=lambda kv: kv[1], reverse=True):
+            out.append(f"<tr><td>{html.escape(str(cat))}</td><td>{score}</td></tr>")
+        out.append("</table></div>")
+
+    if series_engagement:
+        out.append("<div class='card'><h2>Editorial series performance</h2>")
+        out.append("<table><tr><th>Series</th><th>Score</th></tr>")
+        for series_name, score in sorted(series_engagement.items(), key=lambda kv: kv[1], reverse=True):
+            out.append(f"<tr><td>{html.escape(str(series_name))}</td><td>{score}</td></tr>")
         out.append("</table></div>")
 
     # ── A/B winners ──────────────────────────────────────────

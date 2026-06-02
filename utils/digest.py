@@ -111,6 +111,14 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         lines.append("")
         lines.append(f"- Avg view %: **{analytics_summary.get('avg_view_pct', '?')}**")
         lines.append(f"- Total views (14d): {analytics_summary.get('total_views_14d', '?')}")
+        if "avg_engagement_score" in analytics_summary:
+            lines.append(f"- Public engagement score: **{analytics_summary.get('avg_engagement_score')}**")
+        series = analytics_summary.get("series_avg_engagement") or {}
+        if series:
+            top_series = sorted(series.items(), key=lambda kv: kv[1], reverse=True)[:3]
+            lines.append("- Top editorial series: " + ", ".join(
+                f"{name} ({score:.2f})" for name, score in top_series
+            ))
         underperf = analytics_summary.get("below_60_pct") or []
         lines.append(f"- Underperforming (<60 % retention): {len(underperf)}")
         cat = analytics_summary.get("category_avg_view_pct") or {}

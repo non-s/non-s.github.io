@@ -55,6 +55,8 @@ def remember(story: dict) -> None:
         "category":    story.get("category", ""),
         "geo":         story.get("geo_hashtag", ""),
         "topic":       story.get("topic_hashtag", ""),
+        "subject":     story.get("editorial", {}).get("subject", ""),
+        "series":      story.get("series", ""),
         "source":      story.get("source", ""),
         "language":    story.get("language", "en"),
         # Entities = the AI-picked search tags from yt_tags. The first

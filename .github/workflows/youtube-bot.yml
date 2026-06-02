@@ -77,6 +77,8 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      - name: "Atualizar aprendizado editorial gratuito"
+        run: python scripts/analyze_channel.py
       - name: "Salvar marcadores no git"
         run: |
           git config user.name "Wild Brief Bot"
@@ -84,7 +86,7 @@ jobs:
           # Stage the queue first: unmatched optional globs must never
           # prevent consumed stories from being persisted.
           git add _data/stories_queue.json
-          for path in _data/published_clips.json _data/channel_memory.jsonl; do
+          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _videos -maxdepth 1 -type f \
@@ -97,7 +99,7 @@ jobs:
             git push origin HEAD
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v7.0.1

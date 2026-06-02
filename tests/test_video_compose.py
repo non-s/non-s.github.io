@@ -150,6 +150,32 @@ def test_build_broll_short_with_cta_overlay(tmp_path, stub_ffprobe, stub_ffmpeg_
     assert "SUBSCRIBE" in fg
 
 
+def test_build_broll_short_with_opening_cover(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monkeypatch):
+    monkeypatch.setattr(video_compose, "_font_path", lambda: "/tmp/fake-font.ttf")
+    audio = _touch(tmp_path / "a.mp3")
+    clips = [_touch(tmp_path / "c.mp4")]
+    video_compose.build_broll_short(
+        broll_paths=clips, audio_path=audio, output_path=tmp_path / "out.mp4",
+        cover_text="OCTOPUS VANISHES",
+    )
+    fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
+    assert "OCTOPUS VANISHES" in fg
+    assert "between(t,0,1.2)" in fg
+
+
+def test_static_fallback_keeps_channel_cta(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monkeypatch):
+    monkeypatch.setattr(video_compose, "_font_path", lambda: "/tmp/fake-font.ttf")
+    frame = _touch(tmp_path / "frame.png")
+    audio = _touch(tmp_path / "a.mp3")
+    video_compose.build_static_short(
+        frame_path=frame, audio_path=audio, output_path=tmp_path / "out.mp4",
+        cover_text="OWL NIGHT VISION", cta_text="SUBSCRIBE FOR MORE ANIMAL FACTS",
+    )
+    fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
+    assert "OWL NIGHT VISION" in fg
+    assert "SUBSCRIBE" in fg
+
+
 def test_build_broll_short_with_ass_subtitles(tmp_path, stub_ffprobe, stub_ffmpeg_ok):
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / "c.mp4")]
