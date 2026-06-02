@@ -164,7 +164,7 @@ ANIMAL_TOPICS: dict[str, dict] = {
     "farm": {
         "queries": [
             "horse running", "baby goat", "cow", "sheep",
-            "duckling", "farm animals",
+            "duckling", "chicken", "farm animals",
         ],
         "topic_hashtag": "FarmAnimals",
         "tags": ["farm animals", "horses", "farm life", "countryside"],
@@ -190,6 +190,12 @@ _AI_PROMPT_TEMPLATE = (
     "Clip:\n"
     "Subject: {subject}\n"
     "Context: {context}\n\n"
+    "EDITORIAL REQUIREMENT: the narration, hook, title, and thumbnail "
+    "MUST be about the animal visibly named in Subject. Never switch to "
+    "a different animal just because it has a more surprising fact. "
+    "For example: turtle footage requires turtle facts, goat footage "
+    "requires goat facts, and elephant footage requires elephant facts. "
+    "If multiple animals are named, choose one that is visibly present.\n\n"
     "Return this exact JSON shape:\n"
     "{{"
     '"score": <int 1-10 — how interesting is this subject for a '
@@ -231,6 +237,81 @@ _AI_PROMPT_TEMPLATE = (
     '"sentiment": "positive"'
     "}}"
 )
+
+
+_ANIMAL_ALIASES = {
+    "bear": "bear", "bears": "bear",
+    "bird": "bird", "birds": "bird", "cockatoo": "bird", "eagle": "bird",
+    "flamingo": "bird", "hummingbird": "bird", "macaw": "bird",
+    "owl": "bird", "parrot": "bird", "penguin": "bird", "pigeon": "bird",
+    "binturong": "binturong",
+    "cat": "cat", "cats": "cat", "feline": "cat", "kitten": "cat", "kittens": "cat",
+    "chicken": "chicken", "chickens": "chicken", "duck": "duck", "duckling": "duck",
+    "cow": "cow", "cows": "cow", "cattle": "cow",
+    "deer": "deer",
+    "dog": "dog", "dogs": "dog", "husky": "dog", "puppy": "dog", "puppies": "dog",
+    "dolphin": "dolphin", "dolphins": "dolphin",
+    "elephant": "elephant", "elephants": "elephant",
+    "fish": "fish", "fishes": "fish",
+    "fox": "fox", "foxes": "fox",
+    "goat": "goat", "goats": "goat",
+    "horse": "horse", "horses": "horse",
+    "jellyfish": "jellyfish",
+    "leopard": "leopard", "leopards": "leopard",
+    "lion": "lion", "lions": "lion",
+    "octopus": "octopus", "octopuses": "octopus",
+    "pig": "pig", "pigs": "pig",
+    "shark": "shark", "sharks": "shark",
+    "sheep": "sheep",
+    "tiger": "tiger", "tigers": "tiger",
+    "turtle": "turtle", "turtles": "turtle",
+    "whale": "whale", "whales": "whale",
+    "wolf": "wolf", "wolves": "wolf",
+}
+
+
+def _animal_terms(text: str) -> set[str]:
+    """Return canonical animal names explicitly present in text."""
+    words = re.findall(r"[a-z]+", (text or "").lower())
+    return {_ANIMAL_ALIASES[word] for word in words if word in _ANIMAL_ALIASES}
+
+
+def _script_matches_visible_subject(subject: str, script: str) -> bool:
+    """Reject narration that changes animal when the clip title is explicit."""
+    visible = _animal_terms(subject)
+    return not visible or bool(visible & _animal_terms(script))
+
+
+def _script_key(script: str) -> str:
+    """Normalised full-script key used to prevent repeated Shorts."""
+    return re.sub(r"[^a-z0-9]+", " ", (script or "").lower()).strip()
+
+
+def _subject_from_clip(clip, fallback_query: str) -> str:
+    """Prefer the descriptive Pexels URL slug over uploader metadata."""
+    url = getattr(clip, "url", "") or ""
+    parts = url.rstrip("/").split("/")
+    tail = parts[-1] if parts else ""
+    if tail.isdigit() and len(parts) >= 2:
+        slug = parts[-2]
+    else:
+        slug = re.sub(r"-\d+$", "", tail)
+    slug = re.sub(r"[-_]+", " ", slug).strip()
+    title = (getattr(clip, "title", "") or "").strip()
+    if _animal_terms(slug):
+        return slug
+    if _animal_terms(title):
+        return title
+    return f"{fallback_query}: {slug or title}".strip(": ")
+
+
+def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
+    """Reject explicit animals returned outside the configured topic."""
+    visible = _animal_terms(subject)
+    allowed = set().union(*(
+        _animal_terms(query) for query in topic_cfg.get("queries", [])
+    ))
+    return not visible or not allowed or bool(visible & allowed)
 
 
 def _ai_enhance_animal(subject: str, context: str) -> dict | None:
@@ -287,6 +368,10 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
         "lead":           str(data.get("script", subject))[:400],
         "sentiment":      "positive",  # animal content is always positive
     }
+    if not _script_matches_visible_subject(subject, out["script"]):
+        log.warning("AI script changed visible animal: subject=%r script=%r",
+                    subject[:100], out["script"][:140])
+        return None
 
     # Hashtags are NOT injected here anymore — generate_shorts.py owns
     # the YouTube Shorts hashtag block construction. We just hand off a
@@ -320,7 +405,8 @@ def _pexels_id_from_clip(clip) -> str:
         candidate = url.rstrip("/").rsplit("/", 1)[-1]
         if candidate.isdigit():
             return candidate
-        return url.rsplit("/", 2)[-2]
+        match = re.search(r"-(\d+)$", candidate)
+        return match.group(1) if match else ""
     except Exception:
         return ""
 
@@ -537,6 +623,10 @@ def main() -> int:
     }
     published_keys = load_published_clip_keys()
     dedupe_keys: set[str] = queue_ids | queue_pexels_ids | published_keys
+    script_keys: set[str] = {
+        _script_key(s.get("script", "")) for s in queue["stories"]
+        if _script_key(s.get("script", ""))
+    }
     log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
              len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
@@ -564,14 +654,23 @@ def main() -> int:
             pid = _pexels_id_from_clip(clip)
             if sid in dedupe_keys or (pid and pid in dedupe_keys):
                 continue
-            subject = clip.title or queries[0]
+            subject = _subject_from_clip(clip, queries[0])
+            if not _topic_accepts_subject(topic_cfg, subject):
+                log.warning("  skipping off-topic Pexels clip for %s: %s",
+                            topic_key, subject[:80])
+                continue
             context = topic_cfg.get("description_prefix", "an animal clip")
             ai_out = _ai_enhance_animal(subject, context)
             if not ai_out:
-                log.debug("  ⏭  AI enrichment failed for %s", subject[:60])
+                log.debug("  AI enrichment failed for %s", subject[:60])
+                continue
+            script_key = _script_key(ai_out.get("script", ""))
+            if not script_key or script_key in script_keys:
+                log.warning("  skipping repeated or empty script for %s", subject[:60])
                 continue
             story = _build_story(subject, topic_key, topic_cfg, clip, ai_out)
             new_entries.append(story)
+            script_keys.add(script_key)
             dedupe_keys.add(story["id"])
             if pid:
                 dedupe_keys.add(pid)
