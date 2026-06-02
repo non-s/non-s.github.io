@@ -76,7 +76,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          YOUTTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+          YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       - name: "Salvar marcadores no git"
         run: |
           git config user.name "Wild Brief Bot"

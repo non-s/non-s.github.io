@@ -42,7 +42,7 @@ def test_repository_is_focused_on_youtube():
 
 
 def test_animal_queue_has_unique_visually_aligned_scripts():
-    queue = json.loads((ROOT / "_data" / "stories_queue.json").read_text(encoding="utf-8"))
+    queue = json.loads((ROOT/"_data"/"stories_queue.json").read_text(encoding="utf-8"))
     scripts: set[str] = set()
     for story in queue.get("stories", []):
         clip = type("Clip", (), {"url": story.get("url", ""), "title": story.get("title", "")})()
@@ -62,6 +62,8 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     workflow = (ROOT / ".github" / "workflows" / "youtube-bot.yml").read_text(encoding="utf-8")
     assert "git add _data/stories_queue.json" in workflow
     assert "git add _videos/*.done _videos/*.roundup" not in workflow
+    assert "YOUTUBE_PRIVACY:" in workflow
+    assert "YOUTTUBE_PRIVACY:" not in workflow
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():
