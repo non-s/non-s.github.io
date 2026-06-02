@@ -102,6 +102,19 @@ def test_render_digest_includes_analytics():
     assert "cats" in out.lower()
 
 
+def test_render_digest_includes_production_quality_signals():
+    out = digest.render_digest([{
+        "title": "Octopus", "_slug": "octopus-123", "_dir": "_videos",
+        "uploaded_at": "2026-06-02T10:00:00+00:00",
+        "has_broll": True, "has_captions": True, "script_quality_grade": 9,
+        "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
+    }])
+    assert "b-roll=yes" in out
+    assert "captions=yes" in out
+    assert "script grade=9" in out
+    assert "visual QA: 8/10" in out
+
+
 # ── post_digest_issue ────────────────────────────────────────────
 
 def test_post_issue_skips_without_token(monkeypatch):

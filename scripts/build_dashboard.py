@@ -138,7 +138,7 @@ def render_html() -> str:
 
     total_views_14d = latest.get("total_views_14d", 0)
     total_views      = latest.get("total_views", total_views_14d)
-    avg_view_pct    = latest.get("avg_view_pct", 0)
+    avg_view_pct    = latest.get("avg_view_pct", latest.get("avg_view_percentage", 0))
     avg_engagement  = latest.get("avg_engagement_score", 0)
     pulled_at       = latest.get("pulled_at", "—")
     underperformers = latest.get("below_60_pct") or []
@@ -198,7 +198,7 @@ def render_html() -> str:
                 f"<tr><td><a href='{html.escape(url)}'>"
                 f"{html.escape(t.get('title', '')[:90])}</a></td>"
                 f"<td>{int(t.get('views', 0)):,}</td>"
-                f"<td>{t.get('view_pct', 0)} %</td></tr>"
+                f"<td>{t.get('view_pct', t.get('average_view_percentage', 0))} %</td></tr>"
             )
         out.append("</table></div>")
 
@@ -279,7 +279,7 @@ def render_html() -> str:
 def main() -> None:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     OUT.write_text(render_html(), encoding="utf-8")
-    print(f"✅ Wrote {OUT}")
+    print(f"Wrote {OUT}")
 
 
 if __name__ == "__main__":

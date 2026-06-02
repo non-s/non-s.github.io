@@ -110,7 +110,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         lines.append("### Channel pulse (last 14 days, from analytics workflow)")
         lines.append("")
         lines.append(f"- Avg view %: **{analytics_summary.get('avg_view_pct', '?')}**")
-        lines.append(f"- Total views (14d): {analytics_summary.get('total_views_14d', '?')}")
+        lines.append(f"- Total tracked views: {analytics_summary.get('total_views', analytics_summary.get('total_views_14d', '?'))}")
         if "avg_engagement_score" in analytics_summary:
             lines.append(f"- Public engagement score: **{analytics_summary.get('avg_engagement_score')}**")
         series = analytics_summary.get("series_avg_engagement") or {}
@@ -213,6 +213,13 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         tags = s.get("tags") or []
         if tags:
             lines.append(f"- ðŸ·  tags: {', '.join(tags[:6])}")
+        lines.append(f"- quality: b-roll={'yes' if s.get('has_broll') else 'no'}, "
+                     f"captions={'yes' if s.get('has_captions') else 'no'}, "
+                     f"script grade={s.get('script_quality_grade', '?')}")
+        visual = s.get("visual_qa") or {}
+        if visual.get("checked"):
+            lines.append(f"- visual QA: {visual.get('thumbnail_quality', '?')}/10 "
+                         f"({'approved' if visual.get('approved') else 'rejected'})")
         lines.append("")
     return "\n".join(lines)
 

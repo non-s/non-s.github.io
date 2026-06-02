@@ -43,7 +43,8 @@ What's intentionally NOT here
 Operator knobs (env vars)
 =========================
 
-  PEXELS_API_KEY          (required) — same secret used by utils/broll.py
+  PEXELS_API_KEY          (required unless PIXABAY_API_KEY is set)
+  PIXABAY_API_KEY         (optional supplemental video provider)
   MISTRAL_API_KEY         (required) — AI enhancement
   ANIMALS_MAX_PER_TOPIC   (default 4) — clips fetched per topic per run
   ANIMALS_KEEP_DAYS       (default 14) — prune older entries
@@ -399,6 +400,8 @@ def _pexels_id_from_clip(clip) -> str:
     page URLs look like `https://www.pexels.com/video/<slug>/<id>/`
     — `rsplit("/", 2)[-2]` is the id, regardless of which slug Pexels
     chose for that clip. Empty string if we can't extract one."""
+    if (getattr(clip, "source", "") or "").lower() != "pexels":
+        return ""
     url = getattr(clip, "url", "") or ""
     if not url:
         return ""
@@ -634,7 +637,7 @@ def main() -> int:
     pexels_key = os.environ.get("PEXELS_API_KEY", "").strip()
     pixabay_key = os.environ.get("PIXABAY_API_KEY", "").strip()
     if not pexels_key and not pixabay_key:
-        log.error("❌ PEXELS_API_KEY not set — cannot fetch animal clips.")
+        log.error("No video provider configured. Set PEXELS_API_KEY or PIXABAY_API_KEY.")
         return 2
     if not os.environ.get("MISTRAL_API_KEY", "").strip():
         log.error("❌ MISTRAL_API_KEY not set — cannot enrich scripts.")
@@ -683,12 +686,12 @@ def main() -> int:
                 if pixabay_key:
                     clips.extend(fetch_pixabay(q, per_page=4))
             except Exception as exc:
-                log.warning("pexels fetch failed for %r: %s", q, exc)
+                log.warning("video provider fetch failed for %r: %s", q, exc)
         # Cap, shuffle a little so consecutive runs don't always
         # consume the same top-of-results clip.
         random.shuffle(clips)
         clips = clips[:per_topic_n]
-        log.info("📹 %s: %d clip(s) returned by Pexels", topic_key, len(clips))
+        log.info("📹 %s: %d vetted video clip(s) returned", topic_key, len(clips))
 
         for clip in clips:
             sid = _story_id(clip.url or clip.download_url)
@@ -698,7 +701,7 @@ def main() -> int:
                 continue
             subject = _subject_from_clip(clip, queries[0])
             if not _topic_accepts_subject(topic_cfg, subject):
-                log.warning("  skipping off-topic Pexels clip for %s: %s",
+                log.warning("  skipping off-topic video clip for %s: %s",
                             topic_key, subject[:80])
                 continue
             enrichment = enrich_subject(subject)

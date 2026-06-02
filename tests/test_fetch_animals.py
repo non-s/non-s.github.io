@@ -382,3 +382,11 @@ def test_pexels_id_from_clip_handles_missing_url():
     clip = BrollClip(source="pexels", url="", download_url="x",
                      width=1080, height=1920, duration_s=10)
     assert fetch_animals._pexels_id_from_clip(clip) == ""
+
+
+def test_pexels_id_from_clip_rejects_pixabay_id():
+    clip = BrollClip(source="pixabay",
+                     url="https://pixabay.com/videos/octopus-12345/",
+                     download_url="https://cdn.pixabay.com/v/octopus.mp4",
+                     width=1080, height=1920, duration_s=10)
+    assert fetch_animals._pexels_id_from_clip(clip) == ""

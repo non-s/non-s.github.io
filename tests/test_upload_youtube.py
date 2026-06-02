@@ -5,7 +5,7 @@ import pytest
 
 pytest.importorskip("googleapiclient")
 
-from upload_youtube import _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title
+from upload_youtube import _done_marker, _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title
 
 
 def test_title_respects_youtube_limit():
@@ -29,3 +29,16 @@ def test_short_url_is_canonical():
 
 def test_orphan_metadata_is_not_uploadable(tmp_path):
     assert not _is_uploadable_meta({"video": str(tmp_path / "missing.mp4")})
+
+
+def test_done_marker_preserves_production_quality_signals():
+    marker = _done_marker("abc123", {
+        "title": "Octopus", "has_broll": True, "has_captions": True,
+        "script_quality_grade": 9,
+        "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
+    })
+    assert marker["url"] == "https://www.youtube.com/shorts/abc123"
+    assert marker["has_broll"] is True
+    assert marker["has_captions"] is True
+    assert marker["script_quality_grade"] == 9
+    assert marker["visual_qa"]["thumbnail_quality"] == 8
