@@ -38,7 +38,8 @@ from utils.captions import (
     write_ass,
 )
 from utils.digest import load_blocked_slugs
-from utils.experiments import assign_variant
+from utils.editorial import rank_candidates, review as editorial_review
+from utils.experiments import assign_all_for_production, assign_variant
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
 from utils.music_bed import add_music_bed
@@ -926,6 +927,8 @@ def build_short_metadata(story: dict, video_path: Path,
         # A/B variant tags ride along all the way to the .done sidecar
         # after upload so analytics can correlate them with engagement.
         "experiments":    dict(story.get("experiments") or {}),
+        "editorial":      dict(story.get("editorial") or {}),
+        "series":         story.get("series", ""),
     }
 
 
@@ -1006,7 +1009,12 @@ def _queue_to_story(qs: dict) -> dict:
         "yt_description": qs.get("yt_description", ""),
         "geo_hashtag":    qs.get("geo_hashtag", ""),
         "topic_hashtag":  qs.get("topic_hashtag", ""),
+        "discovery_hashtags": list(qs.get("discovery_hashtags") or []),
+        "score":          qs.get("score", 0),
+        "experiments":    dict(qs.get("experiments") or assign_all_for_production(qs["id"])),
         "pexels_download_url": qs.get("pexels_download_url", ""),
+        "pexels_video_id": qs.get("pexels_video_id", ""),
+        "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
 
@@ -1028,7 +1036,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         ),
         reverse=True,
     )
-    return [_queue_to_story(s) for s in pending], queue
+    return rank_candidates([_queue_to_story(s) for s in pending]), queue
 
 
 def diversify_candidates(candidates: list[dict]) -> list[dict]:
@@ -1148,6 +1156,19 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     queue_script = (story.get("script") or "").strip()
     if not queue_script:
         log.warning("  ⏭  Skipping Short — no AI script on queue entry: %s", title[:80])
+        return None
+
+    # The editor-in-chief is stricter than the script linter: it also
+    # considers thumbnail readability, source footage and recent channel
+    # memory before spending free-tier resources on rendering.
+    editorial = editorial_review(story)
+    story["editorial"] = editorial.to_dict()
+    story["series"] = editorial.series
+    if not editorial.approved:
+        log.warning(
+            "  Skipping Short - editor-in-chief rejected score=%d subject=%s reasons=%s",
+            editorial.score, editorial.subject, "; ".join(editorial.reasons),
+        )
         return None
 
     # ── Pre-flight quality gate ──────────────────────────────────
@@ -1340,6 +1361,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             output_path=video_path,
             ass_subtitle_path=ass_path,
             hook_text=hook_text or display_title,
+            cover_text=thumbnail_text,
             cta_text=cta_text,
             watermark_text=watermark_text,
         )
@@ -1351,6 +1373,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
                 output_path=video_path,
                 ass_subtitle_path=ass_path,
                 hook_text=hook_text or display_title,
+                cover_text=thumbnail_text,
+                cta_text=cta_text,
                 watermark_text=watermark_text,
             )
     else:
@@ -1360,6 +1384,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             output_path=video_path,
             ass_subtitle_path=ass_path,
             hook_text=hook_text or display_title,
+            cover_text=thumbnail_text,
+            cta_text=cta_text,
             watermark_text=watermark_text,
         )
     if not ok:
@@ -1376,6 +1402,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["altered_content"] = True
     metadata["has_broll"] = bool(broll_paths)
     metadata["has_captions"] = bool(ass_path)
+    metadata["editorial"] = editorial.to_dict()
+    metadata["series"] = editorial.series
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")

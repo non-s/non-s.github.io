@@ -30,6 +30,13 @@ def test_assign_variant_unknown_axis_returns_empty():
     assert experiments.assign_variant("not.a.real.axis", "story") == ""
 
 
+def test_production_assignment_favors_winner(monkeypatch):
+    monkeypatch.setattr(experiments, "read_winner", lambda axis: "outcome_first")
+    assert experiments.assign_for_production(
+        "hook_style", "story", exploration_percent=0,
+    ) == "outcome_first"
+
+
 def test_assign_all_returns_one_variant_per_axis():
     out = experiments.assign_all("story-key-123")
     assert set(out.keys()) == set(experiments.axis_names())
