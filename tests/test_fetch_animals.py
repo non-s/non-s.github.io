@@ -89,6 +89,47 @@ def test_ai_enhance_caps_tag_list_to_five(monkeypatch):
     assert len(out["yt_tags"]) <= 5
 
 
+def test_ai_enhance_rejects_script_about_different_visible_animal(monkeypatch):
+    mismatch = dict(json.loads(_AI_OK_PAYLOAD))
+    mismatch["script"] = "Jellyfish drift through the ocean without a brain."
+    monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(mismatch))
+    assert fetch_animals._ai_enhance_animal("Sea turtle swimming over coral", "ocean") is None
+
+
+def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
+    dog = dict(json.loads(_AI_OK_PAYLOAD))
+    dog["script"] = "Dogs see blues and yellows better than reds and greens."
+    monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(dog))
+    assert fetch_animals._ai_enhance_animal("Husky running through snow", "dogs") is not None
+
+
+def test_script_key_normalises_case_and_punctuation():
+    assert fetch_animals._script_key("Cats purr. Really!") == \
+        fetch_animals._script_key("  CATS PURR -- really  ")
+
+
+def test_subject_from_clip_prefers_descriptive_pexels_slug():
+    clip = _clip(url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+                 title="Uploader Name")
+    assert fetch_animals._subject_from_clip(clip, "ocean") == \
+        "sea turtle over coral reef"
+
+
+def test_topic_rejects_explicit_animal_from_wrong_category():
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch"
+    )
+
+
+def test_topic_accepts_visible_animal_from_category():
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["farm"], "baby goat in the grass"
+    )
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["farm"], "close up on chickens"
+    )
+
+
 # ── Story builder ─────────────────────────────────────────────────
 
 def test_build_story_shape_matches_shared_queue_schema():
@@ -325,6 +366,14 @@ def test_pexels_id_from_clip_extracts_canonical_id():
     clip = BrollClip(source="pexels",
                      url="https://www.pexels.com/video/cat/12345/",
                      download_url="https://files.pexels.com/v/cat-1.mp4",
+                     width=1080, height=1920, duration_s=10)
+    assert fetch_animals._pexels_id_from_clip(clip) == "12345"
+
+
+def test_pexels_id_from_clip_extracts_id_appended_to_slug():
+    clip = BrollClip(source="pexels",
+                     url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+                     download_url="https://files.pexels.com/v/turtle.mp4",
                      width=1080, height=1920, duration_s=10)
     assert fetch_animals._pexels_id_from_clip(clip) == "12345"
 

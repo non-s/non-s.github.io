@@ -110,6 +110,14 @@ def _cache_put(path: Path, clips: list[dict]) -> None:
 _PEXELS_API = "https://api.pexels.com/videos/search"
 
 
+def _pexels_clip_title(url: str, uploader: str = "") -> str:
+    """Extract the descriptive clip slug; uploader names are not subjects."""
+    parts = (url or "").rstrip("/").split("/")
+    tail = parts[-1] if parts else ""
+    slug = parts[-2] if tail.isdigit() and len(parts) >= 2 else re.sub(r"-\d+$", "", tail)
+    return re.sub(r"[-_]+", " ", slug).strip() or uploader.strip()
+
+
 def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
     """Search Pexels Videos for `query`. Empty list on any failure."""
     key = os.environ.get("PEXELS_API_KEY", "")
@@ -161,7 +169,10 @@ def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
             width=int(f.get("width") or 0),
             height=int(f.get("height") or 0),
             duration_s=float(v.get("duration") or 0),
-            title=(v.get("user", {}) or {}).get("name", "") + " — pexels",
+            title=_pexels_clip_title(
+                v.get("url", ""),
+                (v.get("user", {}) or {}).get("name", ""),
+            ),
             license="Pexels License (free for commercial use)",
         ))
     _cache_put(cache_path, [dataclasses.asdict(c) for c in out])
