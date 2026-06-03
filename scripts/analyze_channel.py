@@ -24,6 +24,7 @@ ANALYTICS_DIR = ROOT / "_data" / "analytics"
 UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
 READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
 ANALYTICS_SCOPE = "https://www.googleapis.com/auth/yt-analytics.readonly"
+FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 SCOPES = [UPLOAD_SCOPE, READONLY_SCOPE]
 
 
@@ -42,8 +43,16 @@ def _load_markers(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
     return rows
 
 
+def _token_grants(data: dict, *accepted_scopes: str) -> bool:
+    granted = set(data.get("scopes") or [])
+    return bool(granted.intersection(accepted_scopes))
+
+
 def _load_service(token_file: Path = TOKEN_FILE):
     data = json.loads(token_file.read_text(encoding="utf-8"))
+    if not _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+        print("analytics: token lacks youtube.readonly; skipping public-stat refresh")
+        return None
     creds = Credentials.from_authorized_user_info(data, SCOPES)
     if not creds.valid and creds.expired and creds.refresh_token:
         creds.refresh(Request())
@@ -52,8 +61,8 @@ def _load_service(token_file: Path = TOKEN_FILE):
 
 def _load_analytics_service(token_file: Path = TOKEN_FILE):
     data = json.loads(token_file.read_text(encoding="utf-8"))
-    granted = data.get("scopes") or []
-    if ANALYTICS_SCOPE not in granted:
+    if not _token_grants(data, ANALYTICS_SCOPE, FULL_YOUTUBE_SCOPE):
+        print("analytics: token lacks yt-analytics.readonly; skipping retention refresh")
         return None
     creds = Credentials.from_authorized_user_info(data, [ANALYTICS_SCOPE])
     if not creds.valid and creds.expired and creds.refresh_token:
@@ -178,8 +187,11 @@ def main() -> int:
     if not TOKEN_FILE.exists():
         print("analytics: youtube_token.json missing; keeping existing snapshots")
         return 0
+    youtube = _load_service()
+    if youtube is None:
+        return 0
     try:
-        stats = _fetch_statistics(_load_service(), [m["video_id"] for m in markers])
+        stats = _fetch_statistics(youtube, [m["video_id"] for m in markers])
     except Exception as exc:
         print(f"analytics: public-stat refresh skipped: {exc}")
         return 0
