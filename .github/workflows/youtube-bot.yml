@@ -1,11 +1,17 @@
 name: "YouTube Bot - Shorts only"
 
 # Shorts-only pipeline for YouTube.
-# Cadence: 3 Shorts/day, prioritising quality and channel variety.
+# Primary cadence: 3 Shorts/day, with a watchdog workflow that backfills
+# missed GitHub schedule events after a grace window.
 on:
   schedule:
     - cron: "23 14,19,23 * * *"
   workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this publishing run was started"
+        required: false
+        default: "manual"
 
 concurrency:
   group: main-write
@@ -99,16 +105,24 @@ jobs:
             \( -name '*.done' -o -name '*.roundup' \) \
             -print0 | xargs -0 -r git add --
           for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json; do
-            [ -e "$path" ] && git add "$path"
+            [ -e "$path" ] && git add -f "$path"
           done
           if git diff --cached --quiet; then
             echo "Nenhum arquivo novo para salvar."
-          else
-            git commit -m "YouTube Shorts - $(date -u +'%Y-%m-%d')"
-            git push origin HEAD
+            exit 0
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "YouTube Shorts - $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then
+              exit 0
+            fi
+            echo "Push rejected on attempt ${attempt}; rebasing before retry."
+            if ! git pull --rebase --autostash origin main; then
+              git rebase --abort 2>/dev/null || true
+              [ "$attempt" = "3" ] && exit 1
+            fi
+            sleep $((attempt * 5))
+          done
       - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v7.0.1
