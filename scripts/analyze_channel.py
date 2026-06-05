@@ -144,6 +144,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     category_growth: dict[str, list[float]] = defaultdict(list)
     format_growth: dict[str, list[float]] = defaultdict(list)
     series: dict[str, list[float]] = defaultdict(list)
+    humanity_scores: list[float] = []
+    humanity_by_label: dict[str, int] = defaultdict(int)
     top: list[dict] = []
     total_views = 0
     total_subscribers_gained = 0
@@ -157,6 +159,15 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         title = str(marker.get("title", ""))
         hook = str(marker.get("hook", ""))
         story_format = str(marker.get("story_format") or classify_format(f"{title} {hook}"))
+        humanity = marker.get("humanity") or (marker.get("editorial") or {}).get("humanity") or {}
+        try:
+            humanity_score = float(humanity.get("score", 0) or 0)
+        except Exception:
+            humanity_score = 0.0
+        humanity_label = str(humanity.get("label") or "unknown")
+        if humanity_score:
+            humanity_scores.append(humanity_score)
+            humanity_by_label[humanity_label] += 1
         analytics = retention.get(video_id, {})
         subscribers_gained = int(analytics.get("subscribersGained", 0) or 0)
         average_view_percentage = float(analytics.get("averageViewPercentage", 0) or 0)
@@ -189,6 +200,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "views_per_hour": vph,
             "growth_score": growth_score,
             "story_format": story_format,
+            "humanity_score": humanity_score,
+            "humanity_label": humanity_label,
         })
         top.append({
             "video_id": video_id,
@@ -200,6 +213,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "share_url": marker.get("url", ""),
             "category": cat_key,
             "story_format": story_format,
+            "humanity_score": round(humanity_score, 3),
+            "humanity_label": humanity_label,
             "average_view_percentage": round(average_view_percentage, 3),
             "view_pct": round(average_view_percentage, 3),
             "average_view_duration": round(average_view_duration, 3),
@@ -248,6 +263,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "total_views": total_views,
         "shorts_tracked": len(markers),
         "avg_engagement_score": average([o["engagement_score"] for o in observations]),
+        "avg_humanity_score": average(humanity_scores),
+        "humanity_label_counts": dict(sorted(humanity_by_label.items())),
         "avg_view_percentage": average(retention_percentages),
         "avg_view_pct": average(retention_percentages),
         "subscribers_gained": total_subscribers_gained,
@@ -278,6 +295,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "next_actions": [
                 "Favor categories with the highest growth score for the next production day.",
                 "Keep Shorts tight: one strong hook, one animal, one payoff.",
+                "Prefer stories with a high humanity score: host presence, visible detail, tension, payoff.",
                 "Review any Short below 60 percent average view percentage before repeating its subject.",
             ],
         },

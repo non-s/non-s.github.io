@@ -36,9 +36,11 @@ def test_done_marker_preserves_production_quality_signals():
         "title": "Octopus", "has_broll": True, "has_captions": True,
         "script_quality_grade": 9,
         "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
+        "humanity": {"score": 88, "label": "signature"},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
     assert marker["has_captions"] is True
     assert marker["script_quality_grade"] == 9
     assert marker["visual_qa"]["thumbnail_quality"] == 8
+    assert marker["humanity"]["label"] == "signature"

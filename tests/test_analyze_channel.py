@@ -15,6 +15,7 @@ def test_snapshot_aggregates_series_and_experiments():
         "series": "Ocean Mysteries",
         "hook": "Octopuses use tools.",
         "experiments": {"hook_style": "outcome_first"},
+        "humanity": {"score": 81, "label": "human"},
     }]
     stats = {"abc": {"statistics": {"viewCount": "200", "likeCount": "20", "commentCount": "5"}}}
     snapshot, observations = build_snapshot(markers, stats)
@@ -23,11 +24,15 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["series_avg_engagement"]["Ocean Mysteries"] == 15
     assert snapshot["category_avg_growth_score"]["ocean"] > 0
     assert snapshot["format_avg_growth_score"]["animal_intelligence"] > 0
+    assert snapshot["avg_humanity_score"] == 81
+    assert snapshot["humanity_label_counts"] == {"human": 1}
+    assert snapshot["top_performers"][0]["humanity_label"] == "human"
     assert snapshot["production_recommendations"]["hot_categories"] == ["ocean"]
     assert snapshot["production_recommendations"]["hot_formats"] == ["animal_intelligence"]
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"
     assert observations[0]["growth_score"] > 0
     assert observations[0]["story_format"] == "animal_intelligence"
+    assert observations[0]["humanity_score"] == 81
 
 
 def test_snapshot_includes_optional_retention_metrics():

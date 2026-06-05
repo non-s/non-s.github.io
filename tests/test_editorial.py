@@ -30,6 +30,7 @@ def test_editor_approves_specific_non_repeated_story(monkeypatch):
     assert out.score >= editorial.MIN_EDITORIAL_SCORE
     assert out.subject == "octopus"
     assert out.series == "Ocean Mysteries"
+    assert out.humanity["score"] >= 58
 
 
 def test_editor_blocks_recent_subject_repeat(monkeypatch):
@@ -49,6 +50,7 @@ def test_rank_candidates_puts_approved_story_first(monkeypatch):
     ranked = editorial.rank_candidates([weak, _story()])
     assert ranked[0]["editorial"]["approved"] is True
     assert ranked[0]["series"] == "Ocean Mysteries"
+    assert ranked[0]["editorial"]["humanity"]["label"] in {"human", "signature"}
 
 
 def test_subject_normalises_plural_and_ignores_habitat_tag():

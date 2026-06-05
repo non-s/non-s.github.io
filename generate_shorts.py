@@ -42,6 +42,7 @@ from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_strategy import rank_for_growth
+from utils.humanity_engine import score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
@@ -934,6 +935,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "hook_audit":     audit_hook(story.get("hook", "")).to_dict(),
         "title_audit":    audit_title(base_title).to_dict(),
         "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
+        "humanity":       score_humanity_story(story).to_dict(),
         "narrator_voice": story.get("narrator_voice", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
@@ -1483,6 +1485,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         "min_visual_qa_score": QUALITY_MIN_VISUAL_QA_SCORE,
     }
     metadata["editorial"] = editorial.to_dict()
+    metadata["humanity"] = editorial.humanity
     metadata["series"] = editorial.series
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
