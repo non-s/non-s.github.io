@@ -175,6 +175,66 @@ ANIMAL_TOPICS: dict[str, dict] = {
         ],
         "description_prefix": "A clip of farm animals",
     },
+    "reptiles": {
+        "queries": [
+            "snake", "lizard", "chameleon", "crocodile",
+            "turtle", "iguana", "gecko",
+        ],
+        "topic_hashtag": "Reptiles",
+        "tags": ["reptiles", "snake facts", "lizard facts", "wildlife"],
+        "discovery_hashtags": [
+            "reptiles", "snakefacts", "lizardfacts", "animalfacts", "funfacts",
+        ],
+        "description_prefix": "A clip of reptiles",
+    },
+    "insects": {
+        "queries": [
+            "butterfly", "bee", "ant", "dragonfly",
+            "mantis", "beetle", "ladybug",
+        ],
+        "topic_hashtag": "Insects",
+        "tags": ["insects", "bugs", "insect facts", "nature"],
+        "discovery_hashtags": [
+            "insects", "bugfacts", "naturefacts", "animalfacts", "funfacts",
+        ],
+        "description_prefix": "A close clip of insects",
+    },
+    "primates": {
+        "queries": [
+            "monkey", "chimpanzee", "gorilla", "orangutan",
+            "lemur", "macaque",
+        ],
+        "topic_hashtag": "Primates",
+        "tags": ["primates", "monkeys", "ape facts", "wildlife"],
+        "discovery_hashtags": [
+            "primates", "monkeyfacts", "apefacts", "animalfacts", "funfacts",
+        ],
+        "description_prefix": "A clip of primates",
+    },
+    "nocturnal": {
+        "queries": [
+            "bat", "owl night", "night animals", "hedgehog",
+            "nocturnal wildlife", "fox night",
+        ],
+        "topic_hashtag": "NocturnalAnimals",
+        "tags": ["nocturnal animals", "night wildlife", "animal facts", "nature"],
+        "discovery_hashtags": [
+            "nocturnal", "nightanimals", "wildlife", "animalfacts", "funfacts",
+        ],
+        "description_prefix": "A clip of nocturnal animals",
+    },
+    "arctic": {
+        "queries": [
+            "polar bear", "arctic fox", "seal", "walrus",
+            "snowy owl", "penguin snow",
+        ],
+        "topic_hashtag": "ArcticAnimals",
+        "tags": ["arctic animals", "polar wildlife", "animal facts", "nature"],
+        "discovery_hashtags": [
+            "arctic", "polaranimals", "wildlife", "animalfacts", "funfacts",
+        ],
+        "description_prefix": "A clip of cold-climate animals",
+    },
 }
 
 
@@ -252,12 +312,20 @@ _AI_PROMPT_TEMPLATE = (
 
 _ANIMAL_ALIASES = {
     "bear": "bear", "bears": "bear",
+    "ant": "ant", "ants": "ant",
+    "bat": "bat", "bats": "bat",
+    "bee": "bee", "bees": "bee",
+    "beetle": "beetle", "beetles": "beetle",
     "bird": "bird", "birds": "bird", "cockatoo": "bird", "eagle": "bird",
+    "butterfly": "butterfly", "butterflies": "butterfly",
+    "chameleon": "chameleon", "chameleons": "chameleon",
     "flamingo": "bird", "hummingbird": "bird", "macaw": "bird",
     "owl": "bird", "parrot": "bird", "penguin": "bird", "pigeon": "bird",
     "binturong": "binturong",
     "cat": "cat", "cats": "cat", "feline": "cat", "kitten": "cat", "kittens": "cat",
     "chicken": "chicken", "chickens": "chicken", "duck": "duck", "duckling": "duck",
+    "chimpanzee": "chimpanzee", "chimpanzees": "chimpanzee",
+    "crocodile": "crocodile", "crocodiles": "crocodile",
     "cow": "cow", "cows": "cow", "cattle": "cow",
     "deer": "deer",
     "dog": "dog", "dogs": "dog", "husky": "dog", "puppy": "dog", "puppies": "dog",
@@ -265,17 +333,30 @@ _ANIMAL_ALIASES = {
     "elephant": "elephant", "elephants": "elephant",
     "fish": "fish", "fishes": "fish",
     "fox": "fox", "foxes": "fox",
+    "gecko": "gecko", "geckos": "gecko",
     "goat": "goat", "goats": "goat",
+    "gorilla": "gorilla", "gorillas": "gorilla",
+    "hedgehog": "hedgehog", "hedgehogs": "hedgehog",
     "horse": "horse", "horses": "horse",
+    "iguana": "iguana", "iguanas": "iguana",
     "jellyfish": "jellyfish",
     "leopard": "leopard", "leopards": "leopard",
+    "lemur": "lemur", "lemurs": "lemur",
     "lion": "lion", "lions": "lion",
+    "lizard": "lizard", "lizards": "lizard",
+    "macaque": "macaque", "macaques": "macaque",
+    "mantis": "mantis", "mantises": "mantis",
+    "monkey": "monkey", "monkeys": "monkey",
     "octopus": "octopus", "octopuses": "octopus",
+    "orangutan": "orangutan", "orangutans": "orangutan",
     "pig": "pig", "pigs": "pig",
+    "seal": "seal", "seals": "seal",
     "shark": "shark", "sharks": "shark",
     "sheep": "sheep",
+    "snake": "snake", "snakes": "snake",
     "tiger": "tiger", "tigers": "tiger",
     "turtle": "turtle", "turtles": "turtle",
+    "walrus": "walrus", "walruses": "walrus",
     "whale": "whale", "whales": "whale",
     "wolf": "wolf", "wolves": "wolf",
 }
@@ -634,6 +715,62 @@ def _rotate_queries(topic_key: str, queries: list[str], take: int) -> list[str]:
     return [queries[(start + i) % len(queries)] for i in range(take)]
 
 
+def _latest_strategy(path: Path = Path("_data/analytics/latest.json")) -> dict:
+    """Read the latest free analytics strategy, if the dashboard made one."""
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    strategy = data.get("production_recommendations") or {}
+    return strategy if isinstance(strategy, dict) else {}
+
+
+def _pending_category_counts(queue: dict) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for story in queue.get("stories") or []:
+        if not isinstance(story, dict) or story.get("consumed"):
+            continue
+        category = str(story.get("category") or "wildlife").strip().lower()
+        counts[category] = counts.get(category, 0) + 1
+    return counts
+
+
+def _topic_fetch_plan(queue: dict,
+                      strategy: dict | None = None,
+                      max_per_topic: int = MAX_PER_TOPIC) -> dict[str, dict[str, int]]:
+    """Return per-topic fetch budgets tuned by queue pressure + analytics."""
+    pending = _pending_category_counts(queue)
+    weights = (strategy or {}).get("category_weights") or {}
+    plan: dict[str, dict[str, int]] = {}
+    base = max(1, int(max_per_topic))
+    for topic_key, cfg in ANIMAL_TOPICS.items():
+        count = pending.get(topic_key, 0)
+        budget = base
+        if count <= 3:
+            budget += 2
+        elif count <= 7:
+            budget += 1
+        elif count >= 18:
+            budget = max(1, base - 2)
+        elif count >= 12:
+            budget = max(1, base - 1)
+        try:
+            weight = float(weights.get(topic_key, 1.0) or 1.0)
+        except (TypeError, ValueError):
+            weight = 1.0
+        if weight >= 1.35:
+            budget += 1
+        elif weight <= 0.85 and count >= 8:
+            budget = max(1, budget - 1)
+        query_take = min(len(cfg.get("queries") or []), max(2, min(4, budget)))
+        plan[topic_key] = {"budget": max(1, budget), "query_take": query_take}
+    return plan
+
+
 def main() -> int:
     from utils.panic import abort_if_halted
     abort_if_halted("fetch_animals")
@@ -680,11 +817,17 @@ def main() -> int:
     log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
              len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
+    fetch_plan = _topic_fetch_plan(queue, _latest_strategy())
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
-        per_topic_n = MAX_PER_TOPIC
-        queries = _rotate_queries(topic_key, topic_cfg["queries"], take=2)
-        log.info("🔎 %s: queries=%s", topic_key, queries)
+        plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
+        per_topic_n = int(plan.get("budget") or MAX_PER_TOPIC)
+        queries = _rotate_queries(
+            topic_key,
+            topic_cfg["queries"],
+            take=int(plan.get("query_take") or 2),
+        )
+        log.info("🔎 %s: budget=%d queries=%s", topic_key, per_topic_n, queries)
         clips: list = []
         for q in queries:
             if len(clips) >= per_topic_n:

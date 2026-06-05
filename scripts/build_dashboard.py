@@ -69,6 +69,47 @@ def _safe_json(path: Path) -> dict:
         return {}
 
 
+def _queue_commands(*,
+                    pending: int,
+                    approved: int,
+                    states: Counter[str],
+                    categories: dict[str, Counter[str]]) -> list[str]:
+    """Translate queue health into concrete operator commands."""
+    commands: list[str] = []
+    if pending and approved == 0:
+        commands.append("No approved story is ready: run the fetch + polish pipeline before publishing.")
+    elif pending and approved < 3:
+        commands.append("Approved queue is thin: refresh discovery before the next publish window.")
+    cooldown = states.get("cooldown_subject", 0)
+    if pending and cooldown / max(1, pending) >= 0.45:
+        commands.append("Too many stories are in cooldown: expand fresh subjects instead of reusing recent angles.")
+    weak_categories = [
+        cat for cat, by_state in sorted(categories.items())
+        if by_state.get("publish_now", 0) + by_state.get("polished", 0) == 0
+    ]
+    if weak_categories:
+        commands.append(
+            "Search more approved candidates for: "
+            + ", ".join(weak_categories[:5])
+            + "."
+        )
+    strong_categories = [
+        cat for cat, by_state in sorted(
+            categories.items(),
+            key=lambda kv: kv[1].get("publish_now", 0) + kv[1].get("polished", 0),
+            reverse=True,
+        )
+        if by_state.get("publish_now", 0) + by_state.get("polished", 0) >= 2
+    ]
+    if strong_categories:
+        commands.append(
+            "Use the next publish slot from: "
+            + ", ".join(strong_categories[:3])
+            + "."
+        )
+    return commands[:5]
+
+
 def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     data = _safe_json(path)
     stories = [
@@ -82,6 +123,7 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     labels: Counter[str] = Counter()
     states: Counter[str] = Counter()
     reasons: Counter[str] = Counter()
+    categories: dict[str, Counter[str]] = {}
     approved = 0
     rescued = 0
     top: list[dict] = []
@@ -95,6 +137,8 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         state = str(editorial.get("state") or item.get("studio_state") or "unknown")
         labels[label] += 1
         states[state] += 1
+        category = str(item.get("category") or "unknown")
+        categories.setdefault(category, Counter())[state] += 1
         reasons.update(str(reason) for reason in (editorial.get("reasons") or []))
         if editorial.get("approved"):
             approved += 1
@@ -112,6 +156,16 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         "rescued": rescued,
         "labels": dict(sorted(labels.items())),
         "states": dict(sorted(states.items())),
+        "categories": {
+            key: dict(sorted(value.items()))
+            for key, value in sorted(categories.items())
+        },
+        "commands": _queue_commands(
+            pending=len(stories),
+            approved=approved,
+            states=states,
+            categories=categories,
+        ),
         "reasons": dict(reasons.most_common(8)),
         "top": top,
     }
@@ -301,6 +355,28 @@ def render_html() -> str:
             out.append("<h3>Editorial states</h3><table><tr><th>State</th><th>Stories</th></tr>")
             for state, count in states.items():
                 out.append(f"<tr><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
+        commands = queue_studio.get("commands") or []
+        if commands:
+            out.append("<h3>Command center</h3><ul>")
+            for command in commands:
+                out.append(f"<li>{html.escape(str(command))}</li>")
+            out.append("</ul>")
+        categories = queue_studio.get("categories") or {}
+        if categories:
+            all_states = sorted({
+                state for by_state in categories.values()
+                for state in (by_state or {}).keys()
+            })
+            out.append("<h3>Queue by category</h3><table><tr><th>Category</th>")
+            for state in all_states:
+                out.append(f"<th>{html.escape(str(state))}</th>")
+            out.append("</tr>")
+            for category, by_state in categories.items():
+                out.append(f"<tr><td>{html.escape(str(category))}</td>")
+                for state in all_states:
+                    out.append(f"<td>{int((by_state or {}).get(state, 0) or 0)}</td>")
+                out.append("</tr>")
             out.append("</table>")
         reasons = queue_studio.get("reasons") or {}
         if reasons:

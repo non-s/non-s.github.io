@@ -114,6 +114,8 @@ def test_dashboard_renders_studio_queue_health(dashboard, tmp_path, monkeypatch)
     assert "Studio queue health" in body
     assert "Studio-polished" in body
     assert "Editorial states" in body
+    assert "Command center" in body
+    assert "Queue by category" in body
     assert "Next best candidates" in body
     assert "Chickens remember your face" in body
 

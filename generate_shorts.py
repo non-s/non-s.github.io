@@ -106,6 +106,11 @@ CATEGORY_COLORS = {
     "WILDLIFE":    (180, 130, 60),   # savanna ochre
     "BIRDS":       (90, 200, 255),   # sky blue
     "FARM":        (140, 180, 90),   # field green
+    "REPTILES":    (90, 185, 115),   # scale green
+    "INSECTS":     (245, 185, 60),   # amber macro
+    "PRIMATES":    (210, 145, 95),   # warm forest
+    "NOCTURNAL":   (120, 120, 210),  # night violet-blue
+    "ARCTIC":      (150, 220, 245),  # ice blue
     # Generic animal fallback — used when a queue entry slips through
     # without a recognised category, so the gradient renders something
     # warm and on-brand instead of a default blue.
@@ -120,6 +125,11 @@ ANIMAL_BROLL_QUERIES = {
     "WILDLIFE": "wild animal nature",
     "BIRDS": "bird animal",
     "FARM": "farm animal",
+    "REPTILES": "reptile animal",
+    "INSECTS": "insect macro nature",
+    "PRIMATES": "monkey primate wildlife",
+    "NOCTURNAL": "nocturnal animal night",
+    "ARCTIC": "arctic animal snow",
 }
 
 # ── TTS voice rotation ────────────────────────────────────────────

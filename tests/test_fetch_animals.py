@@ -283,6 +283,27 @@ def test_every_topic_has_queries_and_hashtag():
 
 # ── Permanent published-clips dedup ledger ───────────────────────
 
+def test_topic_table_expands_discovery_surface():
+    expected = {"reptiles", "insects", "primates", "nocturnal", "arctic"}
+    assert expected.issubset(set(fetch_animals.ANIMAL_TOPICS))
+
+
+def test_topic_fetch_plan_boosts_thin_hot_topics():
+    queue = {"stories": [
+        {"category": "cats", "consumed": False},
+        {"category": "cats", "consumed": False},
+        *({"category": "farm", "consumed": False} for _ in range(14)),
+    ]}
+    plan = fetch_animals._topic_fetch_plan(
+        queue,
+        {"category_weights": {"cats": 1.5, "farm": 0.75}},
+        max_per_topic=4,
+    )
+    assert plan["cats"]["budget"] > 4
+    assert plan["farm"]["budget"] < 4
+    assert plan["cats"]["query_take"] >= 2
+
+
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE",
                         tmp_path / "missing.json")

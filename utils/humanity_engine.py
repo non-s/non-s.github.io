@@ -38,10 +38,15 @@ _GENERIC_TITLE_RE = re.compile(
     re.IGNORECASE,
 )
 _ANIMAL_RE = re.compile(
-    r"\b(bear|bears|bird|birds|cat|cats|chicken|chickens|cow|cows|deer|"
-    r"dog|dogs|dolphin|dolphins|duck|ducklings|eagle|elephant|elephants|"
-    r"fish|fox|goat|goats|horse|horses|leopard|lion|octopus|owl|owls|"
-    r"parrot|parrots|penguin|penguins|shark|sheep|tiger|turtle|whale|wolf)\b",
+    r"\b(ant|ants|bat|bats|bear|bears|bee|bees|beetle|beetles|bird|birds|"
+    r"butterfly|butterflies|cat|cats|chameleon|chameleons|chicken|chickens|"
+    r"chimpanzee|chimpanzees|cow|cows|crocodile|crocodiles|deer|dog|dogs|"
+    r"dolphin|dolphins|duck|ducklings|eagle|elephant|elephants|fish|fox|"
+    r"gecko|geckos|goat|goats|gorilla|gorillas|hedgehog|hedgehogs|horse|"
+    r"horses|iguana|iguanas|lemur|lemurs|leopard|lion|lizard|lizards|"
+    r"macaque|macaques|mantis|mantises|monkey|monkeys|octopus|orangutan|"
+    r"orangutans|owl|owls|parrot|parrots|penguin|penguins|seal|seals|"
+    r"shark|sheep|snake|snakes|tiger|turtle|walrus|walruses|whale|wolf)\b",
     re.IGNORECASE,
 )
 
