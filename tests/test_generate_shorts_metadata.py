@@ -101,6 +101,18 @@ def test_queue_adapter_preserves_original_pexels_clip():
     assert story["pexels_download_url"] == "https://files.pexels.com/video.mp4"
 
 
+def test_queue_adapter_backfills_new_experiment_axes():
+    from generate_shorts import _queue_to_story
+    story = _queue_to_story({
+        "id": "story-1",
+        "seo_title": "Chickens remember faces",
+        "category": "farm",
+        "experiments": {"hook_style": "outcome_first"},
+    })
+    assert story["experiments"]["hook_style"] == "outcome_first"
+    assert "narrator_voice" in story["experiments"]
+
+
 def test_thumbnail_copy_is_short_and_uppercase():
     from generate_shorts import _thumbnail_copy
     assert _thumbnail_copy("Why cats really purr at night") == "WHY CATS REALLY PURR"

@@ -76,9 +76,17 @@ _WEAK_HOOK_OPENERS = (
 
 # Verbs/numbers that signal an outcome-first hook (preferred shape).
 _OUTCOME_INDICATORS_RE = re.compile(
-    r"\b(just|now|today|after|already)\s+\w+ed\b"  # "just banned", "now signed"
-    r"|\b\d+\s*(percent|%|million|billion|killed|dead|injured|fired|cut|raised|dropped)\b"
-    r"|\b(?:cut|raised|dropped|banned|signed|fired|killed|launched|won|lost|hit|stole|leaked)\b",
+    r"\b(just|now|today|after|already)\s+\w+ed\b"
+    r"|\b\d+\s*(percent|%|times|seconds|minutes|hours|days|miles|kilometers)\b"
+    r"|\b(?:change|changes|changed|remember|remembers|recognize|recognizes|"
+    r"use|uses|used|survive|survives|escape|escapes|heal|heals|call|calls|"
+    r"plan|plans|love|loves|hide|hides|hunt|hunts|crush|crushes|breathe|"
+    r"breathes|save|saves|protect|protects|track|tracks|see|sees|hear|hears|"
+    r"keep|keeps|act|acts|bleed|bleeds|swim|swims|touch|touches|build|builds|"
+    r"disappear|disappears|climb|climbs|bray|brays|chew|chews|have|has|"
+    r"stop|stops|sleep|sleeps|groom|grooms|lie|lies|chase|chases|pant|pants|"
+    r"fool|fools|hold|holds|cool|cools|turn|turns|born|wear|wears|wag|wags|"
+    r"aren't|isn't|don't|can't)\b",
     re.IGNORECASE,
 )
 
@@ -242,7 +250,7 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
     script      = story.get("script", "")
     description = story.get("description", "")
     seo_title   = story.get("seo_title") or story.get("title", "")
-    raw_title   = story.get("raw_title", "") or story.get("title", "")
+    raw_title   = story.get("raw_title", "")
 
     issues: list[Issue] = []
     issues += check_banned_phrases(script)
