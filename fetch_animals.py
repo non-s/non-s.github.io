@@ -183,11 +183,15 @@ ANIMAL_TOPICS: dict[str, dict] = {
 _AI_PROMPT_TEMPLATE = (
     "You write fun, educational scripts about animals for YouTube "
     "Shorts. Every Short combines stock footage of an animal with a "
-    "30-second voice-over packed with surprising facts. The viewer "
+    "fast voice-over packed with one surprising animal fact. The viewer "
     "should learn something they did not know. Tone: friendly, "
     '"did you know..." energy, no clickbait, no AI-isms (avoid '
     "'pivotal', 'unprecedented', 'paradigm shift', 'delve', 'in the "
     "realm of'). Contractions are fine. Speak directly to camera. "
+    "Sound like one curious host, not a narrator reading a fact card: "
+    "include one small human reaction or observation, one concrete "
+    "visual/body detail, and no generic phrases like 'animal kingdom' "
+    "or 'nature is amazing'. "
     "Respond ONLY with valid JSON.\n\n"
     "Clip:\n"
     "Subject: {subject}\n"
@@ -229,11 +233,13 @@ _AI_PROMPT_TEMPLATE = (
     'Good: \\"Cats purr to heal their own bones.\\". '
     'Good: \\"Dolphins call each other by name.\\". '
     'Bad: \\"Today I will tell you about cats.\\".>",'
-    '"script": "<the full voice-over for a 25-35 second short. '
-    "70-90 words MAX (YouTube Shorts rewards completion-rate; "
+    '"script": "<the full voice-over for a 12-20 second short. '
+    "42-58 words MAX (YouTube Shorts rewards completion-rate; "
     "shorter wins). The script's FIRST WORDS MUST BE the hook, "
-    "verbatim. Then 2-3 surprising facts about the subject, each "
-    "as a short sentence. Close with a one-line question for the "
+    "verbatim. Then 1-2 surprising facts about the subject, each "
+    "as a short sentence. Include one brief host reaction such as "
+    '\\"I love this detail\\" or \\"Watch the eyes\\" only if it fits. '
+    "Close with a tiny question for the "
     'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
     "no stage directions, no URLs.>\","
     '"sentiment": "positive"'

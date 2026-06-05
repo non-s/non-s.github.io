@@ -144,8 +144,11 @@ def render_html() -> str:
     underperformers = latest.get("below_60_pct") or []
     cat_perf        = latest.get("category_avg_view_pct") or {}
     cat_engagement  = latest.get("category_avg_engagement") or {}
+    cat_growth      = latest.get("category_avg_growth_score") or {}
+    format_growth   = latest.get("format_avg_growth_score") or {}
     series_engagement = latest.get("series_avg_engagement") or {}
     top_performers  = latest.get("top_performers") or []
+    recommendations = latest.get("production_recommendations") or {}
 
     out: list[str] = []
     out.append(f"<!doctype html><html lang='en'><head><meta charset='utf-8'>")
@@ -187,9 +190,36 @@ def render_html() -> str:
         out.append("</div>")
 
     # ── Top performers ────────────────────────────────────────
+    if recommendations:
+        hot = recommendations.get("hot_categories") or []
+        slow = recommendations.get("slow_categories") or []
+        actions = recommendations.get("next_actions") or []
+        titles = recommendations.get("double_down_titles") or []
+        formats = recommendations.get("hot_formats") or []
+        out.append("<div class='card'><h2>Production recommendations</h2>")
+        if hot:
+            out.append("<p><strong>Prioritize:</strong> " + html.escape(", ".join(map(str, hot))) + "</p>")
+        if slow:
+            out.append("<p><strong>Watch carefully:</strong> " + html.escape(", ".join(map(str, slow))) + "</p>")
+        if formats:
+            out.append("<p><strong>Winning formats:</strong> " + html.escape(", ".join(map(str, formats))) + "</p>")
+        if recommendations.get("exploit_mode"):
+            out.append("<p><span class='badge green'>Exploit mode active</span></p>")
+        if titles:
+            out.append("<h3>Double down on story shapes</h3><ul>")
+            for title in titles[:5]:
+                out.append(f"<li>{html.escape(str(title)[:120])}</li>")
+            out.append("</ul>")
+        if actions:
+            out.append("<h3>Next actions</h3><ul>")
+            for action in actions[:5]:
+                out.append(f"<li>{html.escape(str(action))}</li>")
+            out.append("</ul>")
+        out.append("</div>")
+
     if top_performers:
         out.append("<div class='card'><h2>Top performers (last 14 d)</h2>")
-        out.append("<table><tr><th>Title</th><th>Views</th><th>Retention</th></tr>")
+        out.append("<table><tr><th>Title</th><th>Format</th><th>Views</th><th>Velocity</th><th>Growth</th><th>Retention</th></tr>")
         for t in top_performers[:10]:
             url = t.get("share_url") or (
                 f"https://www.youtube.com/shorts/{t.get('video_id', '')}"
@@ -197,7 +227,10 @@ def render_html() -> str:
             out.append(
                 f"<tr><td><a href='{html.escape(url)}'>"
                 f"{html.escape(t.get('title', '')[:90])}</a></td>"
+                f"<td>{html.escape(str(t.get('story_format', '')))}</td>"
                 f"<td>{int(t.get('views', 0)):,}</td>"
+                f"<td>{float(t.get('views_per_hour', 0) or 0):.1f}/h</td>"
+                f"<td>{float(t.get('growth_score', 0) or 0):.1f}</td>"
                 f"<td>{t.get('view_pct', t.get('average_view_percentage', 0))} %</td></tr>"
             )
         out.append("</table></div>")
@@ -217,6 +250,20 @@ def render_html() -> str:
         out.append("<table><tr><th>Category</th><th>Score</th></tr>")
         for cat, score in sorted(cat_engagement.items(), key=lambda kv: kv[1], reverse=True):
             out.append(f"<tr><td>{html.escape(str(cat))}</td><td>{score}</td></tr>")
+        out.append("</table></div>")
+
+    if cat_growth:
+        out.append("<div class='card'><h2>Growth score by category</h2>")
+        out.append("<table><tr><th>Category</th><th>Score</th></tr>")
+        for cat, score in sorted(cat_growth.items(), key=lambda kv: kv[1], reverse=True):
+            out.append(f"<tr><td>{html.escape(str(cat))}</td><td>{score}</td></tr>")
+        out.append("</table></div>")
+
+    if format_growth:
+        out.append("<div class='card'><h2>Growth score by story format</h2>")
+        out.append("<table><tr><th>Format</th><th>Score</th></tr>")
+        for fmt, score in sorted(format_growth.items(), key=lambda kv: kv[1], reverse=True):
+            out.append(f"<tr><td>{html.escape(str(fmt))}</td><td>{score}</td></tr>")
         out.append("</table></div>")
 
     if series_engagement:

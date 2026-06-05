@@ -48,6 +48,7 @@ def test_axis_names_matches_registry():
     names = experiments.axis_names()
     assert "hook_style" in names
     assert "script_tone" in names
+    assert "narrator_voice" in names
     assert "thumbnail_style" in names
     assert "cta_style" in names
 
@@ -56,6 +57,7 @@ def test_variant_choices_includes_documented_variants():
     assert "outcome_first" in experiments.variant_choices("hook_style")
     assert "question" in experiments.variant_choices("hook_style")
     assert "opinionated" in experiments.variant_choices("script_tone")
+    assert "aria" in experiments.variant_choices("narrator_voice")
 
 
 def test_cta_is_channel_subscription_only():

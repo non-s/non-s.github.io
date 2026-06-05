@@ -73,6 +73,7 @@ def test_save_writes_canonical_json(tmp_path, monkeypatch):
 def test_system_prompt_overlay_includes_first_person_directive():
     overlay = host_persona.system_prompt_overlay()
     assert "first person" in overlay.lower() or "first-person" in overlay.lower()
+    assert "concrete" in overlay.lower()
     # Must explicitly forbid AI/bot self-reference.
     assert "ai" in overlay.lower() or "bot" in overlay.lower()
 

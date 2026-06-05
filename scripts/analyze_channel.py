@@ -17,6 +17,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from utils.experiments import compute_winners, write_winners
+from utils.story_intelligence import classify_format, postmortem
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
@@ -107,12 +108,41 @@ def _engagement_score(stats: dict) -> float:
     return round((likes + comments * 2) * 100 / views, 3)
 
 
+def _parse_dt(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except Exception:
+        return None
+
+
+def _views_per_hour(views: int, uploaded_at: str) -> float:
+    uploaded = _parse_dt(uploaded_at)
+    if not uploaded:
+        return 0.0
+    age_hours = max(1.0, (datetime.now(timezone.utc) - uploaded).total_seconds() / 3600)
+    return round(views / age_hours, 3)
+
+
+def _growth_score(*, views: int, views_per_hour: float, engagement_score: float,
+                  average_view_percentage: float,
+                  subscribers_gained: int) -> float:
+    retention_bonus = average_view_percentage * 0.9 if average_view_percentage else 0.0
+    subscriber_bonus = subscribers_gained * 20
+    velocity_bonus = min(500.0, views_per_hour * 6)
+    view_bonus = min(300.0, views / 20)
+    return round(view_bonus + velocity_bonus + retention_bonus + engagement_score + subscriber_bonus, 3)
+
+
 def build_snapshot(markers: list[dict], statistics: dict[str, dict],
                    retention: dict[str, dict] | None = None) -> tuple[dict, list[dict]]:
     retention = retention or {}
     observations: list[dict] = []
     category: dict[str, list[float]] = defaultdict(list)
     category_retention: dict[str, list[float]] = defaultdict(list)
+    category_growth: dict[str, list[float]] = defaultdict(list)
+    format_growth: dict[str, list[float]] = defaultdict(list)
     series: dict[str, list[float]] = defaultdict(list)
     top: list[dict] = []
     total_views = 0
@@ -124,38 +154,94 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         stats = resource.get("statistics") or {}
         views = int(stats.get("viewCount", 0) or 0)
         score = _engagement_score(stats)
+        title = str(marker.get("title", ""))
+        hook = str(marker.get("hook", ""))
+        story_format = str(marker.get("story_format") or classify_format(f"{title} {hook}"))
         analytics = retention.get(video_id, {})
         subscribers_gained = int(analytics.get("subscribersGained", 0) or 0)
         average_view_percentage = float(analytics.get("averageViewPercentage", 0) or 0)
         average_view_duration = float(analytics.get("averageViewDuration", 0) or 0)
+        vph = _views_per_hour(views, str(marker.get("uploaded_at") or ""))
+        growth_score = _growth_score(
+            views=views,
+            views_per_hour=vph,
+            engagement_score=score,
+            average_view_percentage=average_view_percentage,
+            subscribers_gained=subscribers_gained,
+        )
         total_subscribers_gained += subscribers_gained
         if average_view_percentage:
             retention_percentages.append(average_view_percentage)
             category_retention[str(marker.get("category") or "unknown")].append(average_view_percentage)
         total_views += views
-        category[str(marker.get("category") or "unknown")].append(score)
+        cat_key = str(marker.get("category") or "unknown")
+        category[cat_key].append(score)
+        category_growth[cat_key].append(growth_score)
+        format_growth[story_format].append(growth_score)
         series[str(marker.get("series") or "Unassigned")].append(score)
         observations.append({
             "video_id": video_id,
-            "score": average_view_percentage or score,
+            "score": growth_score or average_view_percentage or score,
             "engagement_score": score,
             "experiments": marker.get("experiments") or {},
             "average_view_percentage": average_view_percentage,
             "subscribers_gained": subscribers_gained,
+            "views_per_hour": vph,
+            "growth_score": growth_score,
+            "story_format": story_format,
         })
         top.append({
             "video_id": video_id,
-            "title": marker.get("title", ""),
+            "title": title,
             "views": views,
             "engagement_score": score,
+            "growth_score": growth_score,
+            "views_per_hour": vph,
             "share_url": marker.get("url", ""),
+            "category": cat_key,
+            "story_format": story_format,
             "average_view_percentage": round(average_view_percentage, 3),
             "view_pct": round(average_view_percentage, 3),
             "average_view_duration": round(average_view_duration, 3),
             "subscribers_gained": subscribers_gained,
+            "postmortem": postmortem(
+                title=title,
+                hook=hook,
+                views=views,
+                views_per_hour=vph,
+                average_view_percentage=average_view_percentage,
+                growth_score=growth_score,
+            ),
         })
-    top.sort(key=lambda item: (item["views"], item["engagement_score"]), reverse=True)
+    top.sort(key=lambda item: (item["growth_score"], item["views"], item["engagement_score"]), reverse=True)
     average = lambda values: round(sum(values) / len(values), 3) if values else 0.0
+    category_avg_growth = {k: average(v) for k, v in sorted(category_growth.items())}
+    format_avg_growth = {k: average(v) for k, v in sorted(format_growth.items())}
+    ranked_categories = sorted(category_avg_growth.items(), key=lambda kv: kv[1], reverse=True)
+    ranked_formats = sorted(format_avg_growth.items(), key=lambda kv: kv[1], reverse=True)
+    best = ranked_categories[0][1] if ranked_categories else 0.0
+    category_weights = {
+        key: round(1.0 + min(0.8, (score / best) * 0.8), 3) if best else 1.0
+        for key, score in ranked_categories
+    }
+    for key, score_value in ranked_categories[-2:]:
+        if best and score_value < best * 0.35:
+            category_weights[key] = 0.75
+    format_best = ranked_formats[0][1] if ranked_formats else 0.0
+    format_weights = {
+        key: round(1.0 + min(0.6, (score / format_best) * 0.6), 3) if format_best else 1.0
+        for key, score in ranked_formats
+    }
+    exploit_keywords: list[str] = []
+    for item in top[:5]:
+        for token in str(item.get("title", "")).lower().split():
+            clean = "".join(ch for ch in token if ch.isalnum())
+            if len(clean) >= 5 and clean not in exploit_keywords:
+                exploit_keywords.append(clean)
+            if len(exploit_keywords) >= 12:
+                break
+        if len(exploit_keywords) >= 12:
+            break
     snapshot = {
         "pulled_at": datetime.now(timezone.utc).isoformat(),
         "metric_scope": "youtube_analytics_and_public_statistics" if retention else "public_video_statistics",
@@ -173,8 +259,28 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             key: average(values) for key, values in sorted(category_retention.items())
         },
         "category_avg_engagement": {k: average(v) for k, v in sorted(category.items())},
+        "category_avg_growth_score": category_avg_growth,
+        "format_avg_growth_score": format_avg_growth,
         "series_avg_engagement": {k: average(v) for k, v in sorted(series.items())},
         "top_performers": top[:10],
+        "production_recommendations": {
+            "hot_categories": [key for key, _ in ranked_categories[:3]],
+            "slow_categories": [key for key, _ in ranked_categories[-3:]] if len(ranked_categories) >= 3 else [],
+            "hot_formats": [key for key, _ in ranked_formats[:3]],
+            "category_weights": category_weights,
+            "format_weights": format_weights,
+            "exploit_mode": bool(top and top[0].get("growth_score", 0) >= 120),
+            "exploit_keywords": exploit_keywords,
+            "double_down_titles": [
+                item["title"] for item in top[:5]
+                if item.get("views", 0) > 0
+            ],
+            "next_actions": [
+                "Favor categories with the highest growth score for the next production day.",
+                "Keep Shorts tight: one strong hook, one animal, one payoff.",
+                "Review any Short below 60 percent average view percentage before repeating its subject.",
+            ],
+        },
     }
     return snapshot, observations
 

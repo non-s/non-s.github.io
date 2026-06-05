@@ -7,7 +7,7 @@
 Automated pipeline that turns vetted animal footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
 - Cadence: **3 Shorts/day**, posted at 14:23, 19:23 and 23:23 UTC.
-- Duration target: **25-35 seconds**.
+- Duration target: **12-24 seconds**, biased toward high completion rate.
 - Category: YouTube **Pets & Animals** (`categoryId=15`).
 
 ## Pipeline

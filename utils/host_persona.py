@@ -53,7 +53,10 @@ class HostPersona:
         "you are speaking directly to a friend who follows the channel "
         "daily. Build on the channel's running tone: "
         "curious, warm, surprising, anti-clickbait, the angle nobody "
-        "tells you. NEVER write in third person ('this channel', 'we "
+        "tells you. Add one small host reaction or observation, but do "
+        "not invent personal field experience. Prefer plain spoken "
+        "phrases, contractions, and concrete body/behavior details over "
+        "encyclopedia language. NEVER write in third person ('this channel', 'we "
         "cover'). NEVER mention a host name, promote a third party, or "
         "drift away from the featured animal. NEVER refer to yourself "
         "as an AI, bot, or assistant."
@@ -75,8 +78,9 @@ class HostPersona:
     # so the LLM uses them sparingly.
     catchphrases: list[str] = field(default_factory=lambda: [
         "Here's the part nobody tells you:",
-        "My favourite part:",
+        "My favorite part:",
         "Watch this one twice:",
+        "I love this detail:",
     ])
 
     # Pinned-first-comment template. `{handle}` interpolates the

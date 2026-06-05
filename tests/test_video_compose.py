@@ -240,4 +240,4 @@ def test_max_duration_targets_shorts_completion_rate():
     at 35s so a 90 % completion rate is achievable on every Short
     instead of a 50 % rate on 55s+ videos. Hard ceiling is 35s â€” the
     AI prompt is tuned to 70-90 words which renders to ~25-30s."""
-    assert video_compose.MAX_DURATION_S <= 35.0
+    assert video_compose.MAX_DURATION_S <= 24.0

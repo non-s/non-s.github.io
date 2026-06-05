@@ -74,3 +74,9 @@ def test_refresh_workflow_stages_queue_before_optional_files():
     assert "git add _data/stories_queue.json" in workflow
     assert "git add _data/stories_queue.json _data/ai_cache.jsonl" not in workflow
     assert "_data/provider_stats.jsonl" in workflow
+
+
+def test_dashboard_workflow_refreshes_analytics_before_build():
+    workflow = (ROOT / ".github" / "workflows" / "dashboard.yml").read_text(encoding="utf-8")
+    assert "python scripts/analyze_channel.py" in workflow
+    assert "python scripts/build_dashboard.py" in workflow

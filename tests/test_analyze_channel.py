@@ -13,6 +13,7 @@ def test_snapshot_aggregates_series_and_experiments():
         "url": "https://youtube.com/shorts/abc",
         "category": "ocean",
         "series": "Ocean Mysteries",
+        "hook": "Octopuses use tools.",
         "experiments": {"hook_style": "outcome_first"},
     }]
     stats = {"abc": {"statistics": {"viewCount": "200", "likeCount": "20", "commentCount": "5"}}}
@@ -20,7 +21,13 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["total_views"] == 200
     assert snapshot["shorts_tracked"] == 1
     assert snapshot["series_avg_engagement"]["Ocean Mysteries"] == 15
+    assert snapshot["category_avg_growth_score"]["ocean"] > 0
+    assert snapshot["format_avg_growth_score"]["animal_intelligence"] > 0
+    assert snapshot["production_recommendations"]["hot_categories"] == ["ocean"]
+    assert snapshot["production_recommendations"]["hot_formats"] == ["animal_intelligence"]
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"
+    assert observations[0]["growth_score"] > 0
+    assert observations[0]["story_format"] == "animal_intelligence"
 
 
 def test_snapshot_includes_optional_retention_metrics():
@@ -39,7 +46,8 @@ def test_snapshot_includes_optional_retention_metrics():
     assert snapshot["category_avg_view_pct"]["ocean"] == 82.5
     assert snapshot["below_60_pct"] == []
     assert snapshot["top_performers"][0]["view_pct"] == 82.5
-    assert observations[0]["score"] == 82.5
+    assert snapshot["top_performers"][0]["growth_score"] > 0
+    assert observations[0]["score"] == observations[0]["growth_score"]
     assert observations[0]["subscribers_gained"] == 7
 
 

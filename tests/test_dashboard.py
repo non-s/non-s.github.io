@@ -50,9 +50,21 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "avg_view_pct": 67.5,
         "below_60_pct": [],
         "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
+        "category_avg_growth_score": {"cats": 180.0, "ocean": 90.0},
+        "format_avg_growth_score": {"animal_memory": 210.0},
+        "production_recommendations": {
+            "hot_categories": ["cats"],
+            "slow_categories": ["ocean"],
+            "hot_formats": ["animal_memory"],
+            "exploit_mode": True,
+            "double_down_titles": ["Major event today"],
+            "next_actions": ["Make the next Short shorter."],
+        },
         "top_performers": [
             {"video_id": "abc", "title": "Major event today",
-             "views": 5000, "view_pct": 82.0},
+             "story_format": "animal_memory",
+             "views": 5000, "view_pct": 82.0,
+             "views_per_hour": 120.5, "growth_score": 420.0},
         ],
     }))
     dashboard.main()
@@ -60,6 +72,11 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Major event today" in body
     assert "5,000" in body or "5000" in body
     assert "82.0" in body or "82" in body
+    assert "Production recommendations" in body
+    assert "Growth score by category" in body
+    assert "Growth score by story format" in body
+    assert "Exploit mode active" in body
+    assert "120.5/h" in body
 
 
 def test_dashboard_renders_ab_winners(dashboard, tmp_path):
