@@ -107,12 +107,27 @@ def test_render_digest_includes_production_quality_signals():
         "title": "Octopus", "_slug": "octopus-123", "_dir": "_videos",
         "uploaded_at": "2026-06-02T10:00:00+00:00",
         "has_broll": True, "has_captions": True, "script_quality_grade": 9,
+        "monetization_audit": {"state": "monetization_ready", "score": 94},
         "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
     }])
     assert "b-roll=yes" in out
     assert "captions=yes" in out
     assert "script grade=9" in out
+    assert "monetization_ready" in out
     assert "visual QA: 8/10" in out
+
+
+def test_render_digest_includes_audience_requests(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    comments = tmp_path / "_data" / "analytics" / "comments.json"
+    comments.parent.mkdir(parents=True)
+    comments.write_text(json.dumps({
+        "requested_animals": ["shark"],
+        "content_prompts": ["Answer this viewer question: Can you do sharks?"],
+    }), encoding="utf-8")
+    out = digest.render_digest([])
+    assert "Audience requests" in out
+    assert "Can you do sharks" in out
 
 
 # ── post_digest_issue ────────────────────────────────────────────

@@ -78,6 +78,13 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
              "views_per_hour": 120.5, "growth_score": 420.0},
         ],
     }))
+    (analytics / "comments.json").write_text(json.dumps({
+        "comments_sampled": 3,
+        "question_count": 2,
+        "requested_animals": ["shark"],
+        "topic_keywords": ["camouflage"],
+        "content_prompts": ["Answer this viewer question: Can you do sharks?"],
+    }))
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
     assert "Major event today" in body
@@ -93,6 +100,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Humanity mix" in body
     assert "Learning profile" in body
     assert "Winning title keywords" in body
+    assert "Audience requests" in body
+    assert "Can you do sharks" in body
 
 
 def test_dashboard_renders_studio_queue_health(dashboard, tmp_path, monkeypatch):
