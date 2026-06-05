@@ -48,6 +48,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "pulled_at": "2026-05-18",
         "total_views_14d": 12345,
         "avg_view_pct": 67.5,
+        "avg_humanity_score": 79.2,
+        "humanity_label_counts": {"human": 3, "signature": 1},
         "below_60_pct": [],
         "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
         "category_avg_growth_score": {"cats": 180.0, "ocean": 90.0},
@@ -64,6 +66,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
             {"video_id": "abc", "title": "Major event today",
              "story_format": "animal_memory",
              "views": 5000, "view_pct": 82.0,
+             "humanity_score": 91, "humanity_label": "signature",
              "views_per_hour": 120.5, "growth_score": 420.0},
         ],
     }))
@@ -77,6 +80,9 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Growth score by story format" in body
     assert "Exploit mode active" in body
     assert "120.5/h" in body
+    assert "Avg humanity score" in body
+    assert "signature" in body
+    assert "Humanity mix" in body
 
 
 def test_dashboard_renders_ab_winners(dashboard, tmp_path):

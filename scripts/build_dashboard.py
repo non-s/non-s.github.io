@@ -140,6 +140,8 @@ def render_html() -> str:
     total_views      = latest.get("total_views", total_views_14d)
     avg_view_pct    = latest.get("avg_view_pct", latest.get("avg_view_percentage", 0))
     avg_engagement  = latest.get("avg_engagement_score", 0)
+    avg_humanity    = latest.get("avg_humanity_score", 0)
+    humanity_counts = latest.get("humanity_label_counts") or {}
     pulled_at       = latest.get("pulled_at", "—")
     underperformers = latest.get("below_60_pct") or []
     cat_perf        = latest.get("category_avg_view_pct") or {}
@@ -173,6 +175,10 @@ def render_html() -> str:
     out.append(
         f"<div class='card'><small>Avg view %</small>"
         f"<div class='metric'>{avg_view_pct}</div></div>"
+    )
+    out.append(
+        f"<div class='card'><small>Avg humanity score</small>"
+        f"<div class='metric'>{avg_humanity}</div></div>"
     )
     out.append(
         f"<div class='card'><small>Shorts under 60 % retention</small>"
@@ -219,7 +225,7 @@ def render_html() -> str:
 
     if top_performers:
         out.append("<div class='card'><h2>Top performers (last 14 d)</h2>")
-        out.append("<table><tr><th>Title</th><th>Format</th><th>Views</th><th>Velocity</th><th>Growth</th><th>Retention</th></tr>")
+        out.append("<table><tr><th>Title</th><th>Format</th><th>Views</th><th>Velocity</th><th>Growth</th><th>Humanity</th><th>Retention</th></tr>")
         for t in top_performers[:10]:
             url = t.get("share_url") or (
                 f"https://www.youtube.com/shorts/{t.get('video_id', '')}"
@@ -231,8 +237,18 @@ def render_html() -> str:
                 f"<td>{int(t.get('views', 0)):,}</td>"
                 f"<td>{float(t.get('views_per_hour', 0) or 0):.1f}/h</td>"
                 f"<td>{float(t.get('growth_score', 0) or 0):.1f}</td>"
+                f"<td>{float(t.get('humanity_score', 0) or 0):.0f} "
+                f"<span class='badge'>{html.escape(str(t.get('humanity_label', '')))}</span></td>"
                 f"<td>{t.get('view_pct', t.get('average_view_percentage', 0))} %</td></tr>"
             )
+        out.append("</table></div>")
+
+    if humanity_counts:
+        out.append("<div class='card'><h2>Humanity mix</h2>")
+        out.append("<table><tr><th>Label</th><th>Shorts</th></tr>")
+        for label, count in sorted(humanity_counts.items(), key=lambda kv: str(kv[0])):
+            out.append(f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td>"
+                       f"<td>{int(count)}</td></tr>")
         out.append("</table></div>")
 
     # ── Category retention ────────────────────────────────────

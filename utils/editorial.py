@@ -5,6 +5,7 @@ import re
 from dataclasses import asdict, dataclass
 
 from utils import channel_memory
+from utils.humanity_engine import score_story as score_humanity
 from utils.script_quality import evaluate as evaluate_script
 from utils.script_quality import should_block as script_should_block
 
@@ -47,6 +48,7 @@ class EditorialReview:
     score: int
     series: str
     subject: str
+    humanity: dict
     reasons: tuple[str, ...]
 
     def to_dict(self) -> dict:
@@ -102,8 +104,10 @@ def review(story: dict) -> EditorialReview:
     """Approve only Shorts that look deliberate, specific and non-repetitive."""
     reasons: list[str] = []
     grade, script_issues = evaluate_script(story)
+    humanity = score_humanity(story)
     score = grade * 6
     score += min(20, max(0, int(story.get("score", 0) or 0) * 2))
+    score += round((humanity.score - 50) * 0.3)
 
     thumb_words = re.findall(r"[A-Za-z0-9]+", str(story.get("thumbnail_text") or ""))
     if 2 <= len(thumb_words) <= 4:
@@ -130,11 +134,14 @@ def review(story: dict) -> EditorialReview:
     score = max(0, min(100, score))
     if script_should_block(script_issues):
         reasons.append("script quality gate blocked the narration")
+    if humanity.score < 35:
+        reasons.append("humanity score is too low")
     if score < MIN_EDITORIAL_SCORE:
         reasons.append(f"editorial score {score} is below {MIN_EDITORIAL_SCORE}")
 
     approved = not reasons or (
         score >= MIN_EDITORIAL_SCORE
+        and humanity.score >= 35
         and not repeat
         and not script_should_block(script_issues)
         and 2 <= len(thumb_words) <= 4
@@ -144,6 +151,7 @@ def review(story: dict) -> EditorialReview:
         score=score,
         series=series_for_story(story),
         subject=subject,
+        humanity=humanity.to_dict(),
         reasons=tuple(reasons),
     )
 
