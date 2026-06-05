@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+import os
 from dataclasses import asdict, dataclass
 
 from utils import channel_memory
@@ -10,6 +11,7 @@ from utils.script_quality import evaluate as evaluate_script
 from utils.script_quality import should_block as script_should_block
 
 MIN_EDITORIAL_SCORE = 62
+MIN_HUMANITY_SCORE = int(os.environ.get("WILD_BRIEF_MIN_HUMANITY_SCORE", "58"))
 SUBJECT_COOLDOWN_DAYS = 3
 
 SERIES_BY_CATEGORY = {
@@ -134,14 +136,14 @@ def review(story: dict) -> EditorialReview:
     score = max(0, min(100, score))
     if script_should_block(script_issues):
         reasons.append("script quality gate blocked the narration")
-    if humanity.score < 35:
+    if humanity.score < MIN_HUMANITY_SCORE:
         reasons.append("humanity score is too low")
     if score < MIN_EDITORIAL_SCORE:
         reasons.append(f"editorial score {score} is below {MIN_EDITORIAL_SCORE}")
 
     approved = not reasons or (
         score >= MIN_EDITORIAL_SCORE
-        and humanity.score >= 35
+        and humanity.score >= MIN_HUMANITY_SCORE
         and not repeat
         and not script_should_block(script_issues)
         and 2 <= len(thumb_words) <= 4
@@ -169,6 +171,7 @@ def rank_candidates(candidates: list[dict]) -> list[dict]:
         ranked,
         key=lambda item: (
             bool((item.get("editorial") or {}).get("approved")),
+            int(((item.get("editorial") or {}).get("humanity") or {}).get("score", 0)),
             int((item.get("editorial") or {}).get("score", 0)),
             int(item.get("score", 0) or 0),
         ),

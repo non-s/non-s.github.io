@@ -22,12 +22,21 @@ from __future__ import annotations
 import csv
 import html
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
+from collections import Counter
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from utils.editorial import rank_candidates
 
 ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR      = Path("_site")
 OUT           = SITE_DIR / "index.html"
+QUEUE_FILE    = Path("_data/stories_queue.json")
 
 
 def _read_csvs() -> list[dict]:
@@ -53,9 +62,45 @@ def _safe_json(path: Path) -> dict:
     if not path.exists():
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
+    data = _safe_json(path)
+    stories = [
+        item for item in (data.get("stories") or [])
+        if isinstance(item, dict) and not item.get("consumed")
+    ]
+    if not stories:
+        return {"pending": 0, "approved": 0, "labels": {}, "top": []}
+    ranked = rank_candidates(stories)
+    labels: Counter[str] = Counter()
+    approved = 0
+    top: list[dict] = []
+    for item in ranked:
+        editorial = item.get("editorial") or {}
+        humanity = editorial.get("humanity") or {}
+        label = str(humanity.get("label") or "unknown")
+        labels[label] += 1
+        if editorial.get("approved"):
+            approved += 1
+        if len(top) < 8 and editorial.get("approved"):
+            top.append({
+                "title": item.get("seo_title") or item.get("title") or "",
+                "category": item.get("category") or "",
+                "editorial_score": editorial.get("score", 0),
+                "humanity_score": humanity.get("score", 0),
+                "humanity_label": label,
+            })
+    return {
+        "pending": len(stories),
+        "approved": approved,
+        "labels": dict(sorted(labels.items())),
+        "top": top,
+    }
 
 
 def _series_by_day(rows: list[dict]) -> tuple[list[str], list[int], list[float]]:
@@ -151,6 +196,7 @@ def render_html() -> str:
     series_engagement = latest.get("series_avg_engagement") or {}
     top_performers  = latest.get("top_performers") or []
     recommendations = latest.get("production_recommendations") or {}
+    queue_studio = _queue_studio_snapshot()
 
     out: list[str] = []
     out.append(f"<!doctype html><html lang='en'><head><meta charset='utf-8'>")
@@ -221,6 +267,32 @@ def render_html() -> str:
             for action in actions[:5]:
                 out.append(f"<li>{html.escape(str(action))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if queue_studio.get("pending"):
+        out.append("<div class='card'><h2>Studio queue health</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Pending stories</small><div class='metric'>{int(queue_studio.get('pending', 0))}</div></div>")
+        out.append(f"<div><small>Editor-approved</small><div class='metric'>{int(queue_studio.get('approved', 0))}</div></div>")
+        out.append("</section>")
+        labels = queue_studio.get("labels") or {}
+        if labels:
+            out.append("<h3>Humanity labels in queue</h3><table><tr><th>Label</th><th>Stories</th></tr>")
+            for label, count in labels.items():
+                out.append(f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
+        top_queue = queue_studio.get("top") or []
+        if top_queue:
+            out.append("<h3>Next best candidates</h3><table><tr><th>Title</th><th>Category</th><th>Editorial</th><th>Humanity</th></tr>")
+            for item in top_queue:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{int(item.get('editorial_score', 0) or 0)}</td>"
+                    f"<td>{int(item.get('humanity_score', 0) or 0)} "
+                    f"<span class='badge'>{html.escape(str(item.get('humanity_label', '')))}</span></td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if top_performers:

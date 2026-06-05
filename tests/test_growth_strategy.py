@@ -13,7 +13,7 @@ def test_score_story_uses_editorial_and_category_weight():
     story = {
         "category": "farm",
         "score": 9,
-        "editorial": {"approved": True, "score": 80},
+        "editorial": {"approved": True, "score": 80, "humanity": {"score": 86}},
     }
     boosted = score_story(story, {"category_weights": {"farm": 1.5}})
     plain = score_story(story, {"category_weights": {"farm": 1.0}})
@@ -27,7 +27,7 @@ def test_score_story_uses_format_weight_and_exploit_keywords():
         "title": "Chickens remember faces",
         "hook": "Chickens remember your face.",
         "score": 8,
-        "editorial": {"approved": True, "score": 75},
+        "editorial": {"approved": True, "score": 75, "humanity": {"score": 78}},
     }
     strategy = {
         "category_weights": {"farm": 1.0},
@@ -39,9 +39,23 @@ def test_score_story_uses_format_weight_and_exploit_keywords():
 
 def test_rank_for_growth_keeps_approved_stories_first():
     candidates = [
-        {"category": "farm", "score": 10, "editorial": {"approved": False, "score": 90}},
-        {"category": "cats", "score": 7, "editorial": {"approved": True, "score": 70}},
+        {"category": "farm", "score": 10, "editorial": {"approved": False, "score": 90, "humanity": {"score": 95}}},
+        {"category": "cats", "score": 7, "editorial": {"approved": True, "score": 70, "humanity": {"score": 70}}},
     ]
     ranked = rank_for_growth(candidates, {"category_weights": {"farm": 2.5, "cats": 1.0}})
     assert ranked[0]["category"] == "cats"
     assert "growth_priority" in ranked[0]
+
+
+def test_score_story_rewards_signature_humanity():
+    base = {
+        "category": "cats",
+        "score": 8,
+        "editorial": {"approved": True, "score": 72, "humanity": {"score": 62}},
+    }
+    signature = {
+        **base,
+        "editorial": {"approved": True, "score": 72, "humanity": {"score": 92}},
+    }
+    assert score_story(signature, {"category_weights": {"cats": 1.0}}) > \
+        score_story(base, {"category_weights": {"cats": 1.0}})

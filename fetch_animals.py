@@ -189,9 +189,10 @@ _AI_PROMPT_TEMPLATE = (
     "'pivotal', 'unprecedented', 'paradigm shift', 'delve', 'in the "
     "realm of'). Contractions are fine. Speak directly to camera. "
     "Sound like one curious host, not a narrator reading a fact card: "
-    "include one small human reaction or observation, one concrete "
-    "visual/body detail, and no generic phrases like 'animal kingdom' "
-    "or 'nature is amazing'. "
+    "include one small human reaction or observation, two concrete "
+    "visual/body details the viewer can notice, one tension beat "
+    "(but/because/that's why), and no generic phrases like 'animal "
+    "kingdom' or 'nature is amazing'. "
     "Respond ONLY with valid JSON.\n\n"
     "Clip:\n"
     "Subject: {subject}\n"
@@ -239,6 +240,8 @@ _AI_PROMPT_TEMPLATE = (
     "verbatim. Then 1-2 surprising facts about the subject, each "
     "as a short sentence. Include one brief host reaction such as "
     '\\"I love this detail\\" or \\"Watch the eyes\\" only if it fits. '
+    'Include a clear payoff phrase such as "that\'s why" or '
+    '"because" so the fact resolves, not just describes. '
     "Close with a tiny question for the "
     'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
     "no stage directions, no URLs.>\","

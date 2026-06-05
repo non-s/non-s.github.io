@@ -85,6 +85,37 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Humanity mix" in body
 
 
+def test_dashboard_renders_studio_queue_health(dashboard, tmp_path, monkeypatch):
+    from utils import editorial
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
+    queue = tmp_path / "_data" / "stories_queue.json"
+    queue.parent.mkdir(parents=True)
+    queue.write_text(json.dumps({"stories": [{
+        "id": "a",
+        "seo_title": "Chickens remember your face",
+        "title": "Chickens remember your face",
+        "category": "farm",
+        "description": "A clip of chickens walking around a farmyard.",
+        "hook": "Chickens remember your face.",
+        "script": (
+            "Chickens remember your face. I love this detail: they watch "
+            "your eyes and voice, because familiar people make the flock "
+            "calmer. That's why one farmer can walk in quietly while a "
+            "stranger makes them freeze. Which farm animal should we "
+            "decode next?"
+        ),
+        "thumbnail_text": "CHICKEN MEMORY",
+        "yt_tags": ["chickens", "memory"],
+        "score": 9,
+        "source_url": "https://www.pexels.com/video/chickens/",
+    }]}), encoding="utf-8")
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+    assert "Studio queue health" in body
+    assert "Next best candidates" in body
+    assert "Chickens remember your face" in body
+
+
 def test_dashboard_renders_ab_winners(dashboard, tmp_path):
     analytics = tmp_path / "_data" / "analytics"
     analytics.mkdir(parents=True)
