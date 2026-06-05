@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: actions/setup-python@v6.2.0
@@ -43,6 +43,26 @@ jobs:
           rm -f youtube_token.json
       - name: "Build dashboard HTML"
         run: python scripts/build_dashboard.py
+      - name: "Persist refreshed analytics"
+        run: |
+          git config user.name "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          for path in _data/analytics/latest.json _data/analytics/experiments.json; do
+            [ -e "$path" ] && git add "$path"
+          done
+          if git diff --cached --quiet; then
+            echo "No analytics changes to persist."
+            exit 0
+          fi
+          git commit -m "analytics refresh: $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then
+              exit 0
+            fi
+            git pull --rebase --autostash origin main || git rebase --abort
+            sleep $((attempt * 5))
+          done
+          exit 1
       - name: "Copy static pages"
         run: |
           mkdir -p _site

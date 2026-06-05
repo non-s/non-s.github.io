@@ -78,5 +78,8 @@ def test_refresh_workflow_stages_queue_before_optional_files():
 
 def test_dashboard_workflow_refreshes_analytics_before_build():
     workflow = (ROOT / ".github" / "workflows" / "dashboard.yml").read_text(encoding="utf-8")
+    assert "contents: write" in workflow
     assert "python scripts/analyze_channel.py" in workflow
     assert "python scripts/build_dashboard.py" in workflow
+    assert "git add \"$path\"" in workflow
+    assert "_data/analytics/latest.json" in workflow

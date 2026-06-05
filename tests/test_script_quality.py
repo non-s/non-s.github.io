@@ -79,7 +79,12 @@ def test_weak_hook_hi_everyone_is_flagged():
 
 def test_strong_hook_passes():
     issues = check_hook_opens_strong("This octopus changes colour in seconds.")
-    assert all(i.code != "weak_hook" for i in issues)
+    assert issues == []
+
+
+def test_animal_action_hook_passes():
+    issues = check_hook_opens_strong("Chickens remember your face.")
+    assert issues == []
 
 
 def test_vague_hook_without_outcome_is_flagged():
@@ -165,6 +170,17 @@ def test_different_seo_title_passes():
         "Octopus camouflage works in seconds", "Octopus changes colour today"
     )
     assert issues == []
+
+
+def test_missing_raw_title_does_not_self_compare():
+    story = {
+        "hook": "Chickens remember your face.",
+        "script": "Chickens remember your face. I love this detail: they watch eyes and voices, then act differently around strangers.",
+        "description": "A clip of chickens walking in a farmyard.",
+        "seo_title": "Chickens remember faces",
+    }
+    _, issues = evaluate(story)
+    assert all(i.code != "seo_title_unchanged" for i in issues)
 
 
 # ── evaluate ────────────────────────────────────────────────────

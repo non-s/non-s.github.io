@@ -1022,10 +1022,14 @@ def _queue_to_story(qs: dict) -> dict:
     Falls back to source-feed metadata when the AI fields are missing.
     """
     title = qs.get("seo_title") or qs.get("title", "")
+    experiments = assign_all_for_production(qs["id"])
+    experiments.update(dict(qs.get("experiments") or {}))
     return {
         "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
         "title":          title,
-        "description":    qs.get("lead") or qs.get("description", ""),
+        "description":    qs.get("description", ""),
+        "lead":           qs.get("lead", ""),
+        "raw_title":      qs.get("title", ""),
         "source":         qs.get("source", "Pexels"),
         "source_url":     qs.get("url", ""),
         "image_url":      qs.get("image_url", ""),
@@ -1048,7 +1052,7 @@ def _queue_to_story(qs: dict) -> dict:
         "topic_hashtag":  qs.get("topic_hashtag", ""),
         "discovery_hashtags": list(qs.get("discovery_hashtags") or []),
         "score":          qs.get("score", 0),
-        "experiments":    dict(qs.get("experiments") or assign_all_for_production(qs["id"])),
+        "experiments":    experiments,
         "pexels_download_url": qs.get("pexels_download_url", ""),
         "pexels_video_id": qs.get("pexels_video_id", ""),
         "source_clip_id": qs.get("source_clip_id", ""),
