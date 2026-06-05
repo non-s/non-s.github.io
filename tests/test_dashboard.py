@@ -62,6 +62,14 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
             "double_down_titles": ["Major event today"],
             "next_actions": ["Make the next Short shorter."],
         },
+        "learning_profile": {
+            "retention_tiers": {"excellent": 1},
+            "winning_categories": ["cats"],
+            "winning_formats": ["animal_memory"],
+            "winning_title_keywords": ["major"],
+            "winning_humanity_labels": ["signature"],
+            "rules": ["Open with the animal and the outcome."],
+        },
         "top_performers": [
             {"video_id": "abc", "title": "Major event today",
              "story_format": "animal_memory",
@@ -83,6 +91,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Avg humanity score" in body
     assert "signature" in body
     assert "Humanity mix" in body
+    assert "Learning profile" in body
+    assert "Winning title keywords" in body
 
 
 def test_dashboard_renders_studio_queue_health(dashboard, tmp_path, monkeypatch):

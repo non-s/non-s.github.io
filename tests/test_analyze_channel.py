@@ -34,6 +34,9 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["top_performers"][0]["studio_polished"] is True
     assert snapshot["production_recommendations"]["hot_categories"] == ["ocean"]
     assert snapshot["production_recommendations"]["hot_formats"] == ["animal_intelligence"]
+    assert snapshot["learning_profile"]["winning_categories"] == ["ocean"]
+    assert "animal_intelligence" in snapshot["learning_profile"]["winning_formats"]
+    assert snapshot["production_recommendations"]["learning_profile"]["winning_categories"] == ["ocean"]
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"
     assert observations[0]["growth_score"] > 0
     assert observations[0]["story_format"] == "animal_intelligence"
@@ -59,6 +62,8 @@ def test_snapshot_includes_optional_retention_metrics():
     assert snapshot["top_performers"][0]["growth_score"] > 0
     assert observations[0]["score"] == observations[0]["growth_score"]
     assert observations[0]["subscribers_gained"] == 7
+    assert observations[0]["retention_tier"] == "excellent"
+    assert snapshot["learning_profile"]["retention_tiers"]["excellent"] == 1
 
 
 def test_snapshot_tracks_below_sixty_percent_retention():
@@ -67,3 +72,4 @@ def test_snapshot_tracks_below_sixty_percent_retention():
     retention = {"abc": {"averageViewPercentage": 42.0}}
     snapshot, _ = build_snapshot(markers, stats, retention)
     assert snapshot["below_60_pct"] == ["abc"]
+    assert snapshot["learning_profile"]["avoid_repeating_video_ids"] == ["abc"]

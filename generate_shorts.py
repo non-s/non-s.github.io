@@ -48,6 +48,7 @@ from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
 from utils.studio_rewrite import rewrite_if_needed
 from utils.music_bed import add_music_bed
+from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
@@ -1504,6 +1505,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["humanity"] = editorial.humanity
     metadata["studio_state"] = editorial.state
     metadata["series"] = editorial.series
+    metadata["pre_publish_audit"] = audit_publish_package(metadata)
+    if not metadata["pre_publish_audit"].get("approved"):
+        log.warning(
+            "  Skipping Short - final pre-publish audit rejected score=%s reasons=%s",
+            metadata["pre_publish_audit"].get("score"),
+            "; ".join(metadata["pre_publish_audit"].get("reasons") or []),
+        )
+        return None
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")

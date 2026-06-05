@@ -264,6 +264,7 @@ def render_html() -> str:
     series_engagement = latest.get("series_avg_engagement") or {}
     top_performers  = latest.get("top_performers") or []
     recommendations = latest.get("production_recommendations") or {}
+    learning_profile = latest.get("learning_profile") or recommendations.get("learning_profile") or {}
     queue_studio = _queue_studio_snapshot()
 
     out: list[str] = []
@@ -396,6 +397,31 @@ def render_html() -> str:
                     f"<span class='badge'>{html.escape(str(item.get('humanity_label', '')))}</span></td></tr>"
                 )
             out.append("</table>")
+        out.append("</div>")
+
+    if learning_profile:
+        out.append("<div class='card'><h2>Learning profile</h2>")
+        tiers = learning_profile.get("retention_tiers") or {}
+        if tiers:
+            out.append("<h3>Retention tiers</h3><table><tr><th>Tier</th><th>Shorts</th></tr>")
+            for tier, count in tiers.items():
+                out.append(f"<tr><td><span class='badge'>{html.escape(str(tier))}</span></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
+        for label, key in (
+            ("Winning categories", "winning_categories"),
+            ("Winning formats", "winning_formats"),
+            ("Winning title keywords", "winning_title_keywords"),
+            ("Winning humanity labels", "winning_humanity_labels"),
+        ):
+            values = learning_profile.get(key) or []
+            if values:
+                out.append(f"<p><strong>{label}:</strong> {html.escape(', '.join(map(str, values[:12])))}</p>")
+        rules = learning_profile.get("rules") or []
+        if rules:
+            out.append("<h3>Production rules</h3><ul>")
+            for rule in rules[:5]:
+                out.append(f"<li>{html.escape(str(rule))}</li>")
+            out.append("</ul>")
         out.append("</div>")
 
     if top_performers:
