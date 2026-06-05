@@ -41,10 +41,13 @@ from utils.captions import (
 from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
+from utils.growth_strategy import rank_for_growth
+from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
 from utils.music_bed import add_music_bed
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
+from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
@@ -142,8 +145,13 @@ ANIMAL_BROLL_QUERIES = {
 # render. Listeners on the channel hear Aria 99 % of the time.
 HOST_VOICE_PRIMARY   = "en-US-AriaNeural"
 HOST_VOICE_BACKUP    = "en-US-GuyNeural"
+HOST_VOICE_VARIANTS = {
+    "aria": HOST_VOICE_PRIMARY,
+    "jenny": "en-US-JennyNeural",
+    "guy": HOST_VOICE_BACKUP,
+}
 
-VOICE_PANEL = [HOST_VOICE_PRIMARY, HOST_VOICE_BACKUP]
+VOICE_PANEL = [HOST_VOICE_PRIMARY, "en-US-JennyNeural", HOST_VOICE_BACKUP]
 # Backwards-compat alias — kept for any caller still importing it.
 VOICE_SHORT = HOST_VOICE_PRIMARY
 
@@ -179,6 +187,9 @@ def pick_voice(seed_text: str, category: str = "",
         voice_tag if voice_tag and voice_tag != "en" else "en",
         VOICE_PANEL,
     )
+    if not voice_tag or voice_tag == "en":
+        variant = assign_variant("narrator_voice", seed_text or category or "wildbrief")
+        return HOST_VOICE_VARIANTS.get(variant, HOST_VOICE_PRIMARY)
     return panel[0] if panel else HOST_VOICE_PRIMARY
 
 
@@ -916,6 +927,14 @@ def build_short_metadata(story: dict, video_path: Path,
         "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
+        "hook":           story.get("hook", "").strip(),
+        "story_format":   story.get("story_format") or classify_format(
+            f"{base_title} {story.get('hook', '')} {story.get('script', '')}"
+        ),
+        "hook_audit":     audit_hook(story.get("hook", "")).to_dict(),
+        "title_audit":    audit_title(base_title).to_dict(),
+        "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
+        "narrator_voice": story.get("narrator_voice", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
         # Pexels source-clip identity. Propagated so upload_youtube can
@@ -1062,7 +1081,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         ),
         reverse=True,
     )
-    return rank_candidates([_queue_to_story(s) for s in pending]), queue
+    return rank_for_growth(rank_candidates([_queue_to_story(s) for s in pending])), queue
 
 
 def diversify_candidates(candidates: list[dict]) -> list[dict]:
@@ -1228,6 +1247,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # so pick_voice falls through to the default panel.
     voice_tag = story.get("voice_tag", "")
     voice = pick_voice(seed_text=title, category=category, voice_tag=voice_tag)
+    story["narrator_voice"] = voice
+    story["story_format"] = classify_format(f"{display_title} {hook_text} {queue_script}")
     log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")
 
     # Split-rate TTS: render the hook at a calmer rate (≈ 4 pp slower)

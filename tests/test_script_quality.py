@@ -5,6 +5,7 @@ from utils.script_quality import (
     check_banned_phrases,
     check_hook_opens_strong,
     check_length,
+    check_human_voice,
     check_script_starts_with_hook,
     check_title_diverges_from_source,
     check_transformation_present,
@@ -39,6 +40,22 @@ def test_banned_phrase_repeat_only_counted_once():
 def test_clean_script_has_no_banned_phrases():
     issues = check_banned_phrases(
         "This octopus changed colour and texture near the coral reef."
+    )
+    assert issues == []
+
+
+def test_low_human_voice_is_flagged():
+    issues = check_human_voice(
+        "Animals have fascinating adaptations in the animal kingdom. "
+        "This remarkable creature plays a vital role in nature."
+    )
+    assert any(i.code == "low_human_voice" for i in issues)
+
+
+def test_human_voice_passes_with_host_detail():
+    issues = check_human_voice(
+        "Chickens remember your face. I love this detail: they watch eyes "
+        "and voices, then act differently around strangers."
     )
     assert issues == []
 

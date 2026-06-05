@@ -84,6 +84,15 @@ AXES: tuple[Axis, ...] = (
         description="Voice-over register.",
     ),
     Axis(
+        name="narrator_voice",
+        variants=(
+            "aria",
+            "jenny",
+            "guy",
+        ),
+        description="Small host-voice panel for measured narrator variety.",
+    ),
+    Axis(
         name="thumbnail_style",
         variants=(
             "dynamic_text",      # AI-authored thumbnail_text overlay (current default)

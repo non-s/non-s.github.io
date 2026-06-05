@@ -27,12 +27,9 @@ log = logging.getLogger(__name__)
 
 SHORT_W, SHORT_H = 1080, 1920
 TARGET_FPS = 30
-# YouTube Shorts favor concise videos, and completion rewards
-# COMPLETION RATE far more than total information density. 2025 data:
-# 25-35s videos hit ~85% completion vs ~45% for 50-60s. A 30s short
-# with high completion outperforms a 55s short with mediocre completion
-# every time. We clip the audio (and so the video) at 35s.
-MAX_DURATION_S = 35.0
+# Fast Shorts are easier to finish, replay, and recommend. Keep a hard
+# ceiling so TTS variance never turns a tight script into a slow one.
+MAX_DURATION_S = 24.0
 
 # How long the branded intro / outro cards appear. These are PNGs
 # (not motion clips) loop-displayed for these durations. Total

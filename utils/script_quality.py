@@ -32,6 +32,8 @@ import dataclasses
 import re
 from typing import Iterable
 
+from utils.human_voice import score_text
+
 # ── Banned phrases ────────────────────────────────────────────────
 #
 # AI-tell phrases the system prompt already forbids. We re-check the
@@ -221,6 +223,19 @@ def check_title_diverges_from_source(seo_title: str, raw_title: str) -> list[Iss
     return []
 
 
+def check_human_voice(script: str) -> list[Issue]:
+    """Flag narration that reads like anonymous generated copy."""
+    result = score_text(script)
+    if result.score >= 58:
+        return []
+    return [Issue(
+        code="low_human_voice",
+        severity="warn",
+        message=f"Narration feels too generic/hands-off (human_voice={result.score})",
+        span=", ".join(result.issues[:3]),
+    )]
+
+
 def evaluate(story: dict) -> tuple[int, list[Issue]]:
     """Run every check. Returns (grade_0_10, issues)."""
     hook        = story.get("hook", "")
@@ -236,6 +251,7 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
     issues += check_transformation_present(script, description)
     issues += check_length(script)
     issues += check_title_diverges_from_source(seo_title, raw_title)
+    issues += check_human_voice(script)
 
     # Grade: start at 10, subtract per issue. Blocks weigh 4, warns 1.
     penalty = sum(4 if i.severity == "block" else 1 for i in issues)
