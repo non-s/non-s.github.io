@@ -125,7 +125,27 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         if cat:
             top = sorted(cat.items(), key=lambda kv: kv[1], reverse=True)[:5]
             lines.append("- Top categories: " + ", ".join(f"{k} ({v:.0f}%)" for k, v in top))
+        learning = analytics_summary.get("learning_profile") or {}
+        if learning.get("winning_title_keywords"):
+            lines.append("- Winning title keywords: " + ", ".join(learning["winning_title_keywords"][:8]))
         lines.append("")
+
+    comments_path = Path("_data/analytics/comments.json")
+    if comments_path.exists():
+        try:
+            comments = json.loads(comments_path.read_text(encoding="utf-8"))
+        except Exception:
+            comments = {}
+        prompts = comments.get("content_prompts") or []
+        animals = comments.get("requested_animals") or []
+        if prompts or animals:
+            lines.append("### Audience requests")
+            lines.append("")
+            if animals:
+                lines.append("- Requested animals: " + ", ".join(map(str, animals[:8])))
+            for prompt in prompts[:5]:
+                lines.append(f"- {prompt}")
+            lines.append("")
 
     # A/B experiment winners (set by the analytics workflow).
     exp_path = Path("_data/analytics/experiments.json")
@@ -216,6 +236,12 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         lines.append(f"- quality: b-roll={'yes' if s.get('has_broll') else 'no'}, "
                      f"captions={'yes' if s.get('has_captions') else 'no'}, "
                      f"script grade={s.get('script_quality_grade', '?')}")
+        monetization = s.get("monetization_audit") or {}
+        if monetization:
+            lines.append(
+                f"- monetization: {monetization.get('state', '?')} "
+                f"({monetization.get('score', '?')}/100)"
+            )
         visual = s.get("visual_qa") or {}
         if visual.get("checked"):
             lines.append(f"- visual QA: {visual.get('thumbnail_quality', '?')}/10 "

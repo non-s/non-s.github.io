@@ -245,6 +245,7 @@ code { background: #1f2433; padding: 1px 6px; border-radius: 4px; }
 def render_html() -> str:
     rows = _read_csvs()
     latest = _safe_json(ANALYTICS_DIR / "latest.json")
+    comments = _safe_json(ANALYTICS_DIR / "comments.json")
     experiments = _safe_json(ANALYTICS_DIR / "experiments.json")
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
     days, views_series, view_pct_series = _series_by_day(rows)
@@ -421,6 +422,27 @@ def render_html() -> str:
             out.append("<h3>Production rules</h3><ul>")
             for rule in rules[:5]:
                 out.append(f"<li>{html.escape(str(rule))}</li>")
+            out.append("</ul>")
+        out.append("</div>")
+
+    if comments:
+        out.append("<div class='card'><h2>Audience requests</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Comments sampled</small><div class='metric'>{int(comments.get('comments_sampled', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Viewer questions</small><div class='metric'>{int(comments.get('question_count', 0) or 0)}</div></div>")
+        out.append("</section>")
+        for label, key in (
+            ("Requested animals", "requested_animals"),
+            ("Comment keywords", "topic_keywords"),
+        ):
+            values = comments.get(key) or []
+            if values:
+                out.append(f"<p><strong>{label}:</strong> {html.escape(', '.join(map(str, values[:12])))}</p>")
+        prompts = comments.get("content_prompts") or []
+        if prompts:
+            out.append("<h3>Viewer-led prompts</h3><ul>")
+            for prompt in prompts[:5]:
+                out.append(f"<li>{html.escape(str(prompt))}</li>")
             out.append("</ul>")
         out.append("</div>")
 

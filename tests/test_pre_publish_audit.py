@@ -37,3 +37,9 @@ def test_pre_publish_audit_penalizes_missing_retention_basics():
     assert out["approved"] is False
     assert "captions are missing" in out["reasons"]
     assert "motion b-roll is missing" in out["reasons"]
+
+
+def test_pre_publish_audit_blocks_monetization_review():
+    out = audit_package(_meta(monetization_audit={"approved": False, "score": 45}))
+    assert out["approved"] is False
+    assert "monetization audit needs review" in out["reasons"]

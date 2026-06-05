@@ -50,6 +50,7 @@ def test_done_marker_preserves_production_quality_signals():
         "studio_state": "polished",
         "ai_rewrite": {"attempted": True, "accepted": True},
         "pre_publish_audit": {"approved": True, "score": 92},
+        "monetization_audit": {"approved": True, "score": 94},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
@@ -61,3 +62,4 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["studio_state"] == "polished"
     assert marker["ai_rewrite"]["accepted"] is True
     assert marker["pre_publish_audit"]["score"] == 92
+    assert marker["monetization_audit"]["score"] == 94

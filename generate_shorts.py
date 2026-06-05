@@ -47,6 +47,7 @@ from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
 from utils.studio_rewrite import rewrite_if_needed
+from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
@@ -1505,6 +1506,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["humanity"] = editorial.humanity
     metadata["studio_state"] = editorial.state
     metadata["series"] = editorial.series
+    metadata["monetization_audit"] = audit_monetization(metadata)
     metadata["pre_publish_audit"] = audit_publish_package(metadata)
     if not metadata["pre_publish_audit"].get("approved"):
         log.warning(

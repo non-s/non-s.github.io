@@ -123,6 +123,10 @@ def audit_package(meta: dict) -> dict:
     if _score_dict(meta, "title_audit").get("approved") is False:
         score -= 8
         reasons.append("title audit flagged the metadata")
+    monetization = _score_dict(meta, "monetization_audit")
+    if monetization and monetization.get("approved") is False:
+        score -= 18
+        reasons.append("monetization audit needs review")
 
     score = max(0, min(100, score))
     blocking = {
@@ -132,6 +136,7 @@ def audit_package(meta: dict) -> dict:
         "script quality grade is too low",
         "visual QA rejected the frame",
         "retention basics are missing",
+        "monetization audit needs review",
     }
     approved = score >= MIN_AUDIT_SCORE and not any(reason in blocking for reason in reasons)
     state = "publish_ready" if approved else ("hold_review" if score >= 55 else "blocked")
