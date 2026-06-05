@@ -151,3 +151,27 @@ def test_lookback_window_excludes_old_entries(isolated, monkeypatch):
     }, days=30)
     # Outside the 30-day window.
     assert out == []
+
+
+def test_angle_key_is_stable_for_same_subject_angle():
+    a = {"topic_hashtag": "Cats", "title": "Why cats purr to heal bones"}
+    b = {"topic_hashtag": "Cats", "seo_title": "Cats purr to heal faster"}
+    assert channel_memory.angle_key(a).startswith("cats-")
+    assert "purr" in channel_memory.angle_key(a)
+    assert channel_memory.angle_key(a).split("-")[:2] == channel_memory.angle_key(b).split("-")[:2]
+
+
+def test_recent_angle_repeat_detects_same_angle(tmp_path):
+    story = {
+        "slug": "new",
+        "topic_hashtag": "Cats",
+        "title": "Why cats purr to heal bones",
+    }
+    past = {
+        "ts": time.time(),
+        "slug": "old",
+        "angle_key": channel_memory.angle_key(story),
+    }
+    path = tmp_path / "memory.jsonl"
+    path.write_text(json.dumps(past) + "\n", encoding="utf-8")
+    assert channel_memory.recent_angle_repeat(story, path=path)

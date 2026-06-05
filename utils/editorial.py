@@ -13,6 +13,7 @@ from utils.script_quality import should_block as script_should_block
 MIN_EDITORIAL_SCORE = 62
 MIN_HUMANITY_SCORE = int(os.environ.get("WILD_BRIEF_MIN_HUMANITY_SCORE", "58"))
 SUBJECT_COOLDOWN_DAYS = 3
+ANGLE_COOLDOWN_DAYS = 10
 
 SERIES_BY_CATEGORY = {
     "cats": "Pet Secrets",
@@ -133,6 +134,13 @@ def review(story: dict) -> EditorialReview:
     if repeat:
         score -= 35
         reasons.append(f"subject repeated inside {SUBJECT_COOLDOWN_DAYS}-day cooldown")
+    try:
+        angle_repeat = channel_memory.recent_angle_repeat(story, days=ANGLE_COOLDOWN_DAYS)
+    except Exception:
+        angle_repeat = False
+    if angle_repeat:
+        score -= 25
+        reasons.append(f"story angle repeated inside {ANGLE_COOLDOWN_DAYS}-day cooldown")
 
     score = max(0, min(100, score))
     if script_should_block(script_issues):
@@ -146,6 +154,7 @@ def review(story: dict) -> EditorialReview:
         score >= MIN_EDITORIAL_SCORE
         and humanity.score >= MIN_HUMANITY_SCORE
         and not repeat
+        and not angle_repeat
         and not script_should_block(script_issues)
         and 2 <= len(thumb_words) <= 4
     )
@@ -153,7 +162,7 @@ def review(story: dict) -> EditorialReview:
         state = "polished"
     elif approved:
         state = "publish_now"
-    elif repeat:
+    elif repeat or angle_repeat:
         state = "cooldown_subject"
     elif score < 45 or humanity.score < 35 or "animal subject is too generic" in reasons:
         state = "discard"

@@ -39,6 +39,7 @@ def test_done_marker_preserves_production_quality_signals():
         "humanity": {"score": 88, "label": "signature"},
         "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
         "studio_state": "polished",
+        "ai_rewrite": {"attempted": True, "accepted": True},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
@@ -48,3 +49,4 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["humanity"]["label"] == "signature"
     assert marker["studio_polish"]["applied"] is True
     assert marker["studio_state"] == "polished"
+    assert marker["ai_rewrite"]["accepted"] is True

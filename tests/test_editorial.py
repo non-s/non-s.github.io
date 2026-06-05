@@ -46,6 +46,15 @@ def test_editor_blocks_recent_subject_repeat(monkeypatch):
     assert any("cooldown" in reason for reason in out.reasons)
 
 
+def test_editor_blocks_recent_angle_repeat(monkeypatch):
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
+    monkeypatch.setattr(editorial.channel_memory, "recent_angle_repeat", lambda story, days: True)
+    out = editorial.review(_story())
+    assert not out.approved
+    assert out.state == "cooldown_subject"
+    assert any("angle repeated" in reason for reason in out.reasons)
+
+
 def test_rank_candidates_puts_approved_story_first(monkeypatch):
     monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
     weak = dict(_story(), thumbnail_text="", score=1)
