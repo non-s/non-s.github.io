@@ -31,6 +31,15 @@ def test_orphan_metadata_is_not_uploadable(tmp_path):
     assert not _is_uploadable_meta({"video": str(tmp_path / "missing.mp4")})
 
 
+def test_rejected_pre_publish_audit_is_not_uploadable(tmp_path):
+    video = tmp_path / "short.mp4"
+    video.write_bytes(b"fake")
+    assert not _is_uploadable_meta({
+        "video": str(video),
+        "pre_publish_audit": {"approved": False, "score": 40},
+    })
+
+
 def test_done_marker_preserves_production_quality_signals():
     marker = _done_marker("abc123", {
         "title": "Octopus", "has_broll": True, "has_captions": True,
@@ -40,6 +49,7 @@ def test_done_marker_preserves_production_quality_signals():
         "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
         "studio_state": "polished",
         "ai_rewrite": {"attempted": True, "accepted": True},
+        "pre_publish_audit": {"approved": True, "score": 92},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
@@ -50,3 +60,4 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["studio_polish"]["applied"] is True
     assert marker["studio_state"] == "polished"
     assert marker["ai_rewrite"]["accepted"] is True
+    assert marker["pre_publish_audit"]["score"] == 92

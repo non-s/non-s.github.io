@@ -85,6 +85,9 @@ def _video_url(video_id: str) -> str:
 
 
 def _is_uploadable_meta(meta: dict) -> bool:
+    audit = meta.get("pre_publish_audit")
+    if isinstance(audit, dict) and audit.get("approved") is False:
+        return False
     return Path(meta.get("video") or "").is_file()
 
 
@@ -99,6 +102,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "visual_qa", "experiments",
         "hook", "story_format", "hook_audit", "title_audit", "narrator_voice",
         "human_voice", "humanity", "studio_polish", "studio_state", "ai_rewrite",
+        "pre_publish_audit",
     )
     defaults = {
         "title": "", "description": "", "tags": [], "category": "",
@@ -111,7 +115,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "hook": "", "story_format": "", "hook_audit": {}, "title_audit": {},
         "narrator_voice": "",
         "human_voice": {}, "humanity": {}, "studio_polish": {}, "studio_state": "",
-        "ai_rewrite": {},
+        "ai_rewrite": {}, "pre_publish_audit": {},
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
     marker.update({

@@ -135,6 +135,77 @@ def _growth_score(*, views: int, views_per_hour: float, engagement_score: float,
     return round(view_bonus + velocity_bonus + retention_bonus + engagement_score + subscriber_bonus, 3)
 
 
+def _retention_tier(value: float) -> str:
+    if value >= 80:
+        return "excellent"
+    if value >= 60:
+        return "solid"
+    if value > 0:
+        return "weak"
+    return "unknown"
+
+
+def _keywords_from_titles(items: list[dict], limit: int = 12) -> list[str]:
+    stop = {
+        "about", "after", "animal", "animals", "brief", "their", "there",
+        "these", "thing", "things", "watch", "where", "which", "while",
+        "wild", "with", "without", "really", "secret", "secrets",
+    }
+    out: list[str] = []
+    for item in items:
+        for token in str(item.get("title") or "").lower().split():
+            clean = "".join(ch for ch in token if ch.isalnum())
+            if len(clean) < 5 or clean in stop or clean in out:
+                continue
+            out.append(clean)
+            if len(out) >= limit:
+                return out
+    return out
+
+
+def _learning_profile(top: list[dict], observations: list[dict],
+                      category_growth: dict[str, float],
+                      format_growth: dict[str, float]) -> dict:
+    retention_tiers: dict[str, int] = defaultdict(int)
+    for item in top:
+        retention_tiers[_retention_tier(float(item.get("view_pct", 0) or 0))] += 1
+    winners = [item for item in top if item.get("growth_score", 0) > 0][:5]
+    weak = [
+        item for item in top
+        if 0 < float(item.get("view_pct", 0) or 0) < 60
+    ]
+    label_scores: dict[str, list[float]] = defaultdict(list)
+    for item in observations:
+        label_scores[str(item.get("humanity_label") or "unknown")].append(
+            float(item.get("growth_score", 0) or 0)
+        )
+    avg = lambda values: round(sum(values) / len(values), 3) if values else 0.0
+    return {
+        "retention_tiers": dict(sorted(retention_tiers.items())),
+        "winning_categories": [
+            key for key, _ in sorted(category_growth.items(), key=lambda kv: kv[1], reverse=True)[:5]
+        ],
+        "winning_formats": [
+            key for key, _ in sorted(format_growth.items(), key=lambda kv: kv[1], reverse=True)[:5]
+        ],
+        "winning_humanity_labels": [
+            key for key, _ in sorted(
+                ((key, avg(values)) for key, values in label_scores.items()),
+                key=lambda kv: kv[1],
+                reverse=True,
+            )[:3]
+        ],
+        "winning_title_keywords": _keywords_from_titles(winners),
+        "avoid_repeating_video_ids": [str(item.get("video_id")) for item in weak[:8]],
+        "rules": [
+            "Open with the animal and the surprising outcome in the first sentence.",
+            "Prefer one visible animal, one concrete body detail, one because/that-is-why payoff.",
+            "Repeat winning categories and formats only with a new subject angle.",
+            "Do not repeat subjects from weak-retention videos until the hook shape changes.",
+        ],
+    }
+
+
 def build_snapshot(markers: list[dict], statistics: dict[str, dict],
                    retention: dict[str, dict] | None = None) -> tuple[dict, list[dict]]:
     retention = retention or {}
@@ -212,6 +283,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "humanity_label": humanity_label,
             "studio_polished": studio_polished,
             "studio_state": studio_state,
+            "retention_tier": _retention_tier(average_view_percentage),
         })
         top.append({
             "video_id": video_id,
@@ -269,6 +341,12 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
                 break
         if len(exploit_keywords) >= 12:
             break
+    learning_profile = _learning_profile(
+        top,
+        observations,
+        category_avg_growth,
+        format_avg_growth,
+    )
     snapshot = {
         "pulled_at": datetime.now(timezone.utc).isoformat(),
         "metric_scope": "youtube_analytics_and_public_statistics" if retention else "public_video_statistics",
@@ -294,6 +372,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "format_avg_growth_score": format_avg_growth,
         "series_avg_engagement": {k: average(v) for k, v in sorted(series.items())},
         "top_performers": top[:10],
+        "learning_profile": learning_profile,
         "production_recommendations": {
             "hot_categories": [key for key, _ in ranked_categories[:3]],
             "slow_categories": [key for key, _ in ranked_categories[-3:]] if len(ranked_categories) >= 3 else [],
@@ -302,6 +381,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "format_weights": format_weights,
             "exploit_mode": bool(top and top[0].get("growth_score", 0) >= 120),
             "exploit_keywords": exploit_keywords,
+            "learning_profile": learning_profile,
             "double_down_titles": [
                 item["title"] for item in top[:5]
                 if item.get("views", 0) > 0
@@ -311,6 +391,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
                 "Keep Shorts tight: one strong hook, one animal, one payoff.",
                 "Prefer stories with a high humanity score: host presence, visible detail, tension, payoff.",
                 "Review any Short below 60 percent average view percentage before repeating its subject.",
+                "Use the learning profile before fetch: winning keywords/categories are the next discovery bias.",
             ],
         },
     }

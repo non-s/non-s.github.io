@@ -111,18 +111,27 @@ def _stub_image_chain(monkeypatch, gs):
 
 def _stub_tts_and_captions(monkeypatch, gs):
     """No real TTS, no real Whisper, no real Pixabay download."""
-    async def fake_tts(text, output_path, voice):
+    async def fake_tts(text, output_path, voice, **_kw):
         output_path.write_bytes(b"ID3" + b"\x00" * 10_000)
 
+    def fake_captions(audio, tmp):
+        ass = tmp / "captions.ass"
+        ass.write_text("[Script Info]\nTitle: fake\n", encoding="utf-8")
+        return ass
+
     monkeypatch.setattr(gs, "text_to_speech", fake_tts)
-    monkeypatch.setattr(gs, "generate_captions", lambda audio, tmp: None)
+    monkeypatch.setattr(gs, "generate_captions", fake_captions)
     # Music bed: return the unchanged audio path, no network.
     monkeypatch.setattr(gs, "add_music_bed", lambda audio, story, tmp: audio)
 
 
 def _stub_broll_acquisition(monkeypatch, gs):
-    monkeypatch.setattr(gs, "acquire_broll_clips",
-                         lambda story, tmp, want_n=3: [])
+    def fake_broll(story, tmp, want_n=3):
+        path = tmp / "broll.mp4"
+        path.write_bytes(b"\x00\x00\x00\x18ftypmp42" + b"x" * 1000)
+        return [path]
+
+    monkeypatch.setattr(gs, "acquire_broll_clips", fake_broll)
 
 
 def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
