@@ -16,6 +16,7 @@ def test_snapshot_aggregates_series_and_experiments():
         "hook": "Octopuses use tools.",
         "experiments": {"hook_style": "outcome_first"},
         "humanity": {"score": 81, "label": "human"},
+        "studio_polish": {"applied": True},
     }]
     stats = {"abc": {"statistics": {"viewCount": "200", "likeCount": "20", "commentCount": "5"}}}
     snapshot, observations = build_snapshot(markers, stats)
@@ -26,7 +27,9 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["format_avg_growth_score"]["animal_intelligence"] > 0
     assert snapshot["avg_humanity_score"] == 81
     assert snapshot["humanity_label_counts"] == {"human": 1}
+    assert snapshot["studio_polished_count"] == 1
     assert snapshot["top_performers"][0]["humanity_label"] == "human"
+    assert snapshot["top_performers"][0]["studio_polished"] is True
     assert snapshot["production_recommendations"]["hot_categories"] == ["ocean"]
     assert snapshot["production_recommendations"]["hot_formats"] == ["animal_intelligence"]
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"

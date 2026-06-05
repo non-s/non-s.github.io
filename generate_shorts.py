@@ -42,7 +42,7 @@ from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_strategy import rank_for_growth
-from utils.humanity_engine import score_story as score_humanity_story
+from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
@@ -936,6 +936,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "title_audit":    audit_title(base_title).to_dict(),
         "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
         "humanity":       score_humanity_story(story).to_dict(),
+        "studio_polish":  dict(story.get("studio_polish") or {}),
         "narrator_voice": story.get("narrator_voice", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
@@ -1026,7 +1027,7 @@ def _queue_to_story(qs: dict) -> dict:
     title = qs.get("seo_title") or qs.get("title", "")
     experiments = assign_all_for_production(qs["id"])
     experiments.update(dict(qs.get("experiments") or {}))
-    return {
+    story = {
         "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
         "title":          title,
         "description":    qs.get("description", ""),
@@ -1068,6 +1069,7 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
+    return polish_story(story)
 
 
 def load_pending_stories() -> tuple[list[dict], dict]:

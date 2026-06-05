@@ -1,7 +1,7 @@
 """Tests for the local human editorial signal."""
 from __future__ import annotations
 
-from utils.humanity_engine import score_story
+from utils.humanity_engine import polish_story, score_story
 
 
 def _human_story() -> dict:
@@ -48,3 +48,30 @@ def test_humanity_is_serializable():
     payload = score_story(_human_story()).to_dict()
     assert payload["score"] >= 0
     assert isinstance(payload["strengths"], tuple)
+
+
+def test_polish_story_rescues_robotic_fact_card():
+    story = {
+        "title": "Cats purr for more than happiness",
+        "hook": "Did you know cats are amazing?",
+        "script": (
+            "Did you know cats are amazing? They have fascinating adaptations "
+            "in the animal kingdom and play a vital role in nature."
+        ),
+        "description": "A close video of a cat face and body while it purrs.",
+        "thumbnail_text": "",
+    }
+    before = score_story(story)
+    out = polish_story(story)
+    after = score_story(out)
+    assert out["studio_polish"]["applied"] is True
+    assert after.score >= 58
+    assert after.label == "human"
+    assert after.score > before.score
+    assert out["script"].startswith(out["hook"])
+
+
+def test_polish_story_leaves_human_story_alone():
+    story = _human_story()
+    out = polish_story(story)
+    assert out == story

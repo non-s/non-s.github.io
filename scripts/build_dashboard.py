@@ -32,6 +32,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.editorial import rank_candidates
+from utils.humanity_engine import polish_story
 
 ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR      = Path("_site")
@@ -76,13 +77,18 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     ]
     if not stories:
         return {"pending": 0, "approved": 0, "labels": {}, "top": []}
-    ranked = rank_candidates(stories)
+    polished_stories = [polish_story(item) for item in stories]
+    ranked = rank_candidates(polished_stories)
     labels: Counter[str] = Counter()
     approved = 0
+    rescued = 0
     top: list[dict] = []
     for item in ranked:
         editorial = item.get("editorial") or {}
         humanity = editorial.get("humanity") or {}
+        studio_polish = item.get("studio_polish") or {}
+        if studio_polish.get("applied"):
+            rescued += 1
         label = str(humanity.get("label") or "unknown")
         labels[label] += 1
         if editorial.get("approved"):
@@ -98,6 +104,7 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     return {
         "pending": len(stories),
         "approved": approved,
+        "rescued": rescued,
         "labels": dict(sorted(labels.items())),
         "top": top,
     }
@@ -274,6 +281,7 @@ def render_html() -> str:
         out.append("<section class='row'>")
         out.append(f"<div><small>Pending stories</small><div class='metric'>{int(queue_studio.get('pending', 0))}</div></div>")
         out.append(f"<div><small>Editor-approved</small><div class='metric'>{int(queue_studio.get('approved', 0))}</div></div>")
+        out.append(f"<div><small>Studio-polished</small><div class='metric'>{int(queue_studio.get('rescued', 0))}</div></div>")
         out.append("</section>")
         labels = queue_studio.get("labels") or {}
         if labels:

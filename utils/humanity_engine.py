@@ -37,6 +37,13 @@ _GENERIC_TITLE_RE = re.compile(
     r"animal fact|did you know)\b",
     re.IGNORECASE,
 )
+_ANIMAL_RE = re.compile(
+    r"\b(bear|bears|bird|birds|cat|cats|chicken|chickens|cow|cows|deer|"
+    r"dog|dogs|dolphin|dolphins|duck|ducklings|eagle|elephant|elephants|"
+    r"fish|fox|goat|goats|horse|horses|leopard|lion|octopus|owl|owls|"
+    r"parrot|parrots|penguin|penguins|shark|sheep|tiger|turtle|whale|wolf)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -53,6 +60,49 @@ class HumanityScore:
 
 def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-z0-9']+", text or ""))
+
+
+def _sentence(text: str) -> str:
+    text = re.sub(r"\s+", " ", (text or "")).strip(" .")
+    return text[:1].upper() + text[1:] if text else ""
+
+
+def _animal_name(story: dict) -> str:
+    haystack = " ".join(str(story.get(k) or "") for k in (
+        "title", "seo_title", "hook", "script", "description", "category",
+    ))
+    match = _ANIMAL_RE.search(haystack)
+    return match.group(0).lower() if match else "this animal"
+
+
+def _best_hook(story: dict) -> str:
+    hook = _sentence(str(story.get("hook") or ""))
+    if 4 <= _word_count(hook) <= 12 and not hook.lower().startswith(("today", "did you know")):
+        return hook.rstrip(".!?") + "."
+    title = _sentence(str(story.get("title") or story.get("seo_title") or ""))
+    if 4 <= _word_count(title) <= 12:
+        return title.rstrip(".!?") + "."
+    animal = _animal_name(story)
+    return f"{animal.capitalize()} have one detail most people miss."
+
+
+def _details(story: dict) -> tuple[str, str]:
+    text = " ".join(str(story.get(k) or "") for k in ("script", "description", "title", "hook"))
+    found = list(dict.fromkeys(m.group(0).lower() for m in _BODY_DETAIL_RE.finditer(text)))
+    defaults = ["eyes", "body"]
+    while len(found) < 2:
+        found.append(defaults[len(found)])
+    return found[0], found[1]
+
+
+def _thumbnail_from_hook(hook: str, animal: str) -> str:
+    words = [
+        w.upper() for w in re.findall(r"[A-Za-z0-9]+", hook)
+        if w.lower() not in {"this", "that", "your", "their", "they", "can", "the", "and", "why"}
+    ]
+    if len(words) >= 2:
+        return " ".join(words[:3])
+    return f"{animal.upper()} SECRET"[:30]
 
 
 def _label(score: int) -> str:
@@ -152,6 +202,8 @@ def score_story(story: dict) -> HumanityScore:
         rewrite.append("Make the title name the animal plus the exact surprise.")
 
     score = max(0, min(100, score))
+    if (story.get("studio_polish") or {}).get("applied"):
+        score = min(score, 84)
     return HumanityScore(
         score=score,
         label=_label(score),
@@ -159,3 +211,46 @@ def score_story(story: dict) -> HumanityScore:
         issues=tuple(dict.fromkeys(issues)),
         rewrite_brief=tuple(dict.fromkeys(rewrite[:4])),
     )
+
+
+def polish_story(story: dict, *, min_gain: int = 12) -> dict:
+    """Return a locally polished story when it clearly improves humanity."""
+    original = dict(story)
+    before = score_story(original)
+    if before.score >= 72:
+        return original
+
+    animal = _animal_name(original)
+    hook = _best_hook(original)
+    detail_one, detail_two = _details(original)
+    script = (
+        f"{hook} I love this detail: watch the {detail_one} and the {detail_two}. "
+        f"Because those tiny cues explain what the {animal} is doing before the big move. "
+        f"That's why this clip feels small at first, but gets stranger when you notice it. "
+        f"Which animal should we decode next?"
+    )
+    polished = dict(original)
+    polished["hook"] = hook
+    polished["script"] = script
+    if not str(polished.get("thumbnail_text") or "").strip() or before.score < 58:
+        polished["thumbnail_text"] = _thumbnail_from_hook(hook, animal)
+    after = score_story(polished)
+    if after.score >= 58 and after.score >= before.score + min_gain:
+        polished["studio_polish"] = {
+            "applied": True,
+            "before_score": before.score,
+            "after_score": after.score,
+            "before_label": before.label,
+            "after_label": after.label,
+            "original_hook": original.get("hook", ""),
+            "original_script": original.get("script", ""),
+        }
+        return polished
+    original["studio_polish"] = {
+        "applied": False,
+        "before_score": before.score,
+        "after_score": after.score,
+        "before_label": before.label,
+        "after_label": after.label,
+    }
+    return original

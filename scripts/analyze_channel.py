@@ -146,6 +146,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     series: dict[str, list[float]] = defaultdict(list)
     humanity_scores: list[float] = []
     humanity_by_label: dict[str, int] = defaultdict(int)
+    studio_polished_count = 0
     top: list[dict] = []
     total_views = 0
     total_subscribers_gained = 0
@@ -168,6 +169,10 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         if humanity_score:
             humanity_scores.append(humanity_score)
             humanity_by_label[humanity_label] += 1
+        studio_polish = marker.get("studio_polish") or {}
+        studio_polished = bool(studio_polish.get("applied"))
+        if studio_polished:
+            studio_polished_count += 1
         analytics = retention.get(video_id, {})
         subscribers_gained = int(analytics.get("subscribersGained", 0) or 0)
         average_view_percentage = float(analytics.get("averageViewPercentage", 0) or 0)
@@ -202,6 +207,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "story_format": story_format,
             "humanity_score": humanity_score,
             "humanity_label": humanity_label,
+            "studio_polished": studio_polished,
         })
         top.append({
             "video_id": video_id,
@@ -215,6 +221,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "story_format": story_format,
             "humanity_score": round(humanity_score, 3),
             "humanity_label": humanity_label,
+            "studio_polished": studio_polished,
             "average_view_percentage": round(average_view_percentage, 3),
             "view_pct": round(average_view_percentage, 3),
             "average_view_duration": round(average_view_duration, 3),
@@ -265,6 +272,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "avg_engagement_score": average([o["engagement_score"] for o in observations]),
         "avg_humanity_score": average(humanity_scores),
         "humanity_label_counts": dict(sorted(humanity_by_label.items())),
+        "studio_polished_count": studio_polished_count,
         "avg_view_percentage": average(retention_percentages),
         "avg_view_pct": average(retention_percentages),
         "subscribers_gained": total_subscribers_gained,
