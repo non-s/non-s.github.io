@@ -113,6 +113,22 @@ def test_queue_adapter_backfills_new_experiment_axes():
     assert "narrator_voice" in story["experiments"]
 
 
+def test_queue_adapter_polishes_robotic_story():
+    from generate_shorts import _queue_to_story
+    story = _queue_to_story({
+        "id": "story-robotic",
+        "title": "Cats purr for more than happiness",
+        "seo_title": "Cats purr for more than happiness",
+        "category": "cats",
+        "description": "A close video of a cat face and body while it purrs.",
+        "hook": "Did you know cats are amazing?",
+        "script": "Did you know cats are amazing? Animals have incredible adaptations.",
+        "thumbnail_text": "",
+    })
+    assert story["studio_polish"]["applied"] is True
+    assert "I love this detail" in story["script"]
+
+
 def test_thumbnail_copy_is_short_and_uppercase():
     from generate_shorts import _thumbnail_copy
     assert _thumbnail_copy("Why cats really purr at night") == "WHY CATS REALLY PURR"

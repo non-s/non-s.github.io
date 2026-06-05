@@ -37,6 +37,7 @@ def test_done_marker_preserves_production_quality_signals():
         "script_quality_grade": 9,
         "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
         "humanity": {"score": 88, "label": "signature"},
+        "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
@@ -44,3 +45,4 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["script_quality_grade"] == 9
     assert marker["visual_qa"]["thumbnail_quality"] == 8
     assert marker["humanity"]["label"] == "signature"
+    assert marker["studio_polish"]["applied"] is True
