@@ -43,6 +43,12 @@ LOOKBACK_DAYS = int(os.environ.get("CHANNEL_MEMORY_LOOKBACK_DAYS", "30"))
 # Max entries we keep on disk. Older ones get pruned.
 MAX_ENTRIES = int(os.environ.get("CHANNEL_MEMORY_MAX_ENTRIES", "500"))
 
+_ANGLE_STOPWORDS = {
+    "animal", "animals", "brief", "secret", "secrets", "facts", "fact",
+    "here", "really", "this", "that", "their", "your", "with", "from",
+    "why", "how", "what", "when", "they", "them", "because",
+}
+
 
 def remember(story: dict) -> None:
     """Append a story's core facts to the memory ledger. Best-effort."""
@@ -56,6 +62,7 @@ def remember(story: dict) -> None:
         "geo":         story.get("geo_hashtag", ""),
         "topic":       story.get("topic_hashtag", ""),
         "subject":     story.get("editorial", {}).get("subject", ""),
+        "angle_key":   angle_key(story),
         "series":      story.get("series", ""),
         "source":      story.get("source", ""),
         "language":    story.get("language", "en"),
@@ -107,6 +114,27 @@ def _tokenise(text: str) -> set[str]:
                                     "has", "had", "they", "them", "into"}}
 
 
+def angle_key(story: dict) -> str:
+    """Stable coarse angle key: subject + strongest non-generic terms."""
+    title_text = " ".join(str(story.get(k) or "") for k in (
+        "seo_title", "title", "hook", "thumbnail_text",
+    ))
+    tokens = []
+    for token in _WORD_RE.findall(title_text):
+        token = token.lower()
+        if token in _ANGLE_STOPWORDS or len(token) < 4 or token in tokens:
+            continue
+        tokens.append(token)
+    subject = str((story.get("editorial") or {}).get("subject") or story.get("topic_hashtag") or "").lower()
+    base = [subject] if subject else []
+    for token in tokens:
+        if token not in base:
+            base.append(token)
+        if len(base) >= 4:
+            break
+    return "-".join(base)
+
+
 def find_callback_candidates(story: dict, max_candidates: int = 2,
                               path: Path | None = None,
                               days: int = LOOKBACK_DAYS) -> list[dict]:
@@ -152,6 +180,20 @@ def find_callback_candidates(story: dict, max_candidates: int = 2,
 
     scored.sort(key=lambda t: (-t[0], -t[1].get("ts", 0)))
     return [s[1] for s in scored[:max_candidates]]
+
+
+def recent_angle_repeat(story: dict, days: int = 10,
+                        path: Path | None = None) -> bool:
+    """Return True when the same coarse angle appeared recently."""
+    key = angle_key(story)
+    if not key:
+        return False
+    for past in _iter_recent(path or MEMORY_LOG, days=days):
+        if past.get("slug") == (story.get("slug") or story.get("id")):
+            continue
+        if past.get("angle_key") == key:
+            return True
+    return False
 
 
 def callback_prompt_block(candidates: list[dict]) -> str:

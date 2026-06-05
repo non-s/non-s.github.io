@@ -46,6 +46,7 @@ from utils.humanity_engine import polish_story, score_story as score_humanity_st
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
+from utils.studio_rewrite import rewrite_if_needed
 from utils.music_bed import add_music_bed
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.story_intelligence import audit_hook, audit_title, classify_format
@@ -937,6 +938,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
         "humanity":       score_humanity_story(story).to_dict(),
         "studio_polish":  dict(story.get("studio_polish") or {}),
+        "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
         "narrator_voice": story.get("narrator_voice", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
@@ -969,6 +971,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "experiments":    dict(story.get("experiments") or {}),
         "editorial":      dict(story.get("editorial") or {}),
         "studio_state":   story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
+        "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
         "series":         story.get("series", ""),
     }
 
@@ -1070,7 +1073,7 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
-    return polish_story(story)
+    return rewrite_if_needed(polish_story(story))
 
 
 def load_pending_stories() -> tuple[list[dict], dict]:
