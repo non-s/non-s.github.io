@@ -80,6 +80,8 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     polished_stories = [polish_story(item) for item in stories]
     ranked = rank_candidates(polished_stories)
     labels: Counter[str] = Counter()
+    states: Counter[str] = Counter()
+    reasons: Counter[str] = Counter()
     approved = 0
     rescued = 0
     top: list[dict] = []
@@ -90,7 +92,10 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         if studio_polish.get("applied"):
             rescued += 1
         label = str(humanity.get("label") or "unknown")
+        state = str(editorial.get("state") or item.get("studio_state") or "unknown")
         labels[label] += 1
+        states[state] += 1
+        reasons.update(str(reason) for reason in (editorial.get("reasons") or []))
         if editorial.get("approved"):
             approved += 1
         if len(top) < 8 and editorial.get("approved"):
@@ -106,6 +111,8 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         "approved": approved,
         "rescued": rescued,
         "labels": dict(sorted(labels.items())),
+        "states": dict(sorted(states.items())),
+        "reasons": dict(reasons.most_common(8)),
         "top": top,
     }
 
@@ -288,6 +295,18 @@ def render_html() -> str:
             out.append("<h3>Humanity labels in queue</h3><table><tr><th>Label</th><th>Stories</th></tr>")
             for label, count in labels.items():
                 out.append(f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
+        states = queue_studio.get("states") or {}
+        if states:
+            out.append("<h3>Editorial states</h3><table><tr><th>State</th><th>Stories</th></tr>")
+            for state, count in states.items():
+                out.append(f"<tr><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
+        reasons = queue_studio.get("reasons") or {}
+        if reasons:
+            out.append("<h3>Top blocking reasons</h3><table><tr><th>Reason</th><th>Stories</th></tr>")
+            for reason, count in reasons.items():
+                out.append(f"<tr><td>{html.escape(str(reason))}</td><td>{int(count)}</td></tr>")
             out.append("</table>")
         top_queue = queue_studio.get("top") or []
         if top_queue:

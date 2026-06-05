@@ -17,6 +17,7 @@ def test_snapshot_aggregates_series_and_experiments():
         "experiments": {"hook_style": "outcome_first"},
         "humanity": {"score": 81, "label": "human"},
         "studio_polish": {"applied": True},
+        "studio_state": "polished",
     }]
     stats = {"abc": {"statistics": {"viewCount": "200", "likeCount": "20", "commentCount": "5"}}}
     snapshot, observations = build_snapshot(markers, stats)
@@ -28,6 +29,7 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["avg_humanity_score"] == 81
     assert snapshot["humanity_label_counts"] == {"human": 1}
     assert snapshot["studio_polished_count"] == 1
+    assert snapshot["studio_state_counts"] == {"polished": 1}
     assert snapshot["top_performers"][0]["humanity_label"] == "human"
     assert snapshot["top_performers"][0]["studio_polished"] is True
     assert snapshot["production_recommendations"]["hot_categories"] == ["ocean"]

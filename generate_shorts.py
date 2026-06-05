@@ -968,6 +968,7 @@ def build_short_metadata(story: dict, video_path: Path,
         # after upload so analytics can correlate them with engagement.
         "experiments":    dict(story.get("experiments") or {}),
         "editorial":      dict(story.get("editorial") or {}),
+        "studio_state":   story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
         "series":         story.get("series", ""),
     }
 
@@ -1488,6 +1489,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     }
     metadata["editorial"] = editorial.to_dict()
     metadata["humanity"] = editorial.humanity
+    metadata["studio_state"] = editorial.state
     metadata["series"] = editorial.series
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),

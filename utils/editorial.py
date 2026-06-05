@@ -48,6 +48,7 @@ _ANIMAL_ALIASES = {
 class EditorialReview:
     approved: bool
     score: int
+    state: str
     series: str
     subject: str
     humanity: dict
@@ -148,9 +149,20 @@ def review(story: dict) -> EditorialReview:
         and not script_should_block(script_issues)
         and 2 <= len(thumb_words) <= 4
     )
+    if approved and (story.get("studio_polish") or {}).get("applied"):
+        state = "polished"
+    elif approved:
+        state = "publish_now"
+    elif repeat:
+        state = "cooldown_subject"
+    elif score < 45 or humanity.score < 35 or "animal subject is too generic" in reasons:
+        state = "discard"
+    else:
+        state = "needs_ai_rewrite"
     return EditorialReview(
         approved=approved,
         score=score,
+        state=state,
         series=series_for_story(story),
         subject=subject,
         humanity=humanity.to_dict(),
@@ -165,6 +177,7 @@ def rank_candidates(candidates: list[dict]) -> list[dict]:
         item = dict(story)
         editorial = review(item)
         item["editorial"] = editorial.to_dict()
+        item["studio_state"] = editorial.state
         item["series"] = editorial.series
         ranked.append(item)
     return sorted(
