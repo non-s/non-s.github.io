@@ -56,8 +56,13 @@ def score_story(story: dict, strategy: dict | None = None) -> float:
     category = str(story.get("category") or "wildlife")
     editorial = story.get("editorial") or {}
     editorial_score = float(editorial.get("score", 0) or 0)
+    humanity = editorial.get("humanity") or story.get("humanity") or {}
+    try:
+        humanity_score = float(humanity.get("score", 0) or 0)
+    except Exception:
+        humanity_score = 0.0
     ai_score = float(story.get("score", 0) or 0)
-    base = editorial_score + ai_score * 3
+    base = editorial_score + humanity_score * 0.55 + ai_score * 3
     story_format = str(story.get("story_format") or classify_format(
         f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
     ))
@@ -73,6 +78,12 @@ def score_story(story: dict, strategy: dict | None = None) -> float:
     title_hook = f"{story.get('title', '')} {story.get('hook', '')}".lower()
     if exploit_keywords and any(word in title_hook for word in exploit_keywords):
         base *= 1.18
+    if humanity_score >= 86:
+        base *= 1.16
+    elif humanity_score >= 72:
+        base *= 1.08
+    elif humanity_score < 58:
+        base *= 0.62
     if editorial and not editorial.get("approved", False):
         base *= 0.35
     return round(base * weights.get(category, 1.0) * max(0.7, min(1.8, format_weight)), 3)
@@ -92,6 +103,7 @@ def rank_for_growth(candidates: list[dict],
         key=lambda item: (
             bool((item.get("editorial") or {}).get("approved")),
             float(item.get("growth_priority", 0) or 0),
+            int(((item.get("editorial") or {}).get("humanity") or {}).get("score", 0) or 0),
             int((item.get("editorial") or {}).get("score", 0) or 0),
             int(item.get("score", 0) or 0),
         ),

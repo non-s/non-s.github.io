@@ -59,12 +59,10 @@ def fake_queue_story():
         "thumbnail_text": "INVISIBLE IN SECONDS",
         "hook":           "This octopus can disappear against a reef in seconds.",
         "script":         ("This octopus can disappear against a reef in seconds. "
-                           "Specialised skin cells shift colour while tiny muscles alter "
-                           "its texture. That lets it match rocks, coral, and sand. "
-                           "The wildest part is how quickly the whole disguise changes. "
-                           "It can also reshape bumps across its skin to copy the surface "
-                           "around it. That combination makes the camouflage unusually "
-                           "convincing even when the animal is moving."),
+                           "I love this detail: its skin cells shift colour while "
+                           "tiny muscles roughen the texture. That's why it can "
+                           "match coral, rocks, and sand even while moving. "
+                           "Which ocean animal should we decode next?"),
         "lead":           "Octopus camouflage changes in seconds.",
         "key_points":     ["rapid colour shift",
                            "skin texture changes",
