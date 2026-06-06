@@ -72,7 +72,9 @@ jobs:
         run: python -c "from utils import ai_cache; print('kept', ai_cache.prune(), 'entries')" || true
 
       - name: "Audit queue automation health"
-        run: python scripts/audit_automation.py
+        run: |
+          python scripts/audit_automation.py
+          python scripts/ops_guardian.py
 
       - name: "Commit queue state"
         run: |
@@ -81,7 +83,7 @@ jobs:
           # Stage the queue first: optional generated files must never
           # prevent the refreshed queue from being persisted.
           git add _data/stories_queue.json
-          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl _data/automation_health.json; do
+          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl _data/automation_health.json _data/ops_guardian.json; do
             [ -e "$path" ] && git add "$path"
           done
           if git diff --cached --quiet; then

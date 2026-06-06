@@ -107,6 +107,14 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "topic_keywords": ["camouflage"],
         "content_prompts": ["Answer this viewer question: Can you do sharks?"],
     }))
+    (tmp_path / "_data" / "ops_guardian.json").write_text(json.dumps({
+        "risk": {"level": "watch", "score": 27, "avg_retention": 57.5, "weak_retention_ratio": 0.4},
+        "paused_topics": [{"category": "farm", "reason": "retention_below_45", "retention": 34.2, "growth_score": 44.0}],
+        "scheduler": {"recommended_utc_hours": [{"utc_hour": 23, "country": "US", "reason": "audience_cohort"}]},
+        "visual_quality": {"checked": 2, "rejected": 0, "low_quality": 1},
+        "series_plan": {"series_to_scale": ["Pet Secrets"]},
+        "executive_report": {"summary": "Watch retention.", "next_actions": ["Pause weak topics."]},
+    }), encoding="utf-8")
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
     assert "Major event today" in body
@@ -128,6 +136,10 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Winner map" in body
     assert "Remake candidates" in body
     assert "70% exploit" in body
+    assert "Operations guardian" in body
+    assert "Paused topics" in body
+    assert "23:00 UTC" in body
+    assert "Pet Secrets" in body
     assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body

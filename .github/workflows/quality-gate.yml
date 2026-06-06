@@ -60,4 +60,6 @@ jobs:
         run: python -m pytest -q
 
       - name: "Run automation health audit"
-        run: python scripts/audit_automation.py
+        run: |
+          python scripts/audit_automation.py
+          python scripts/ops_guardian.py

@@ -251,6 +251,7 @@ def render_html() -> str:
     comments = _safe_json(ANALYTICS_DIR / "comments.json")
     experiments = _safe_json(ANALYTICS_DIR / "experiments.json")
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
+    ops_guardian = _safe_json(Path("_data/ops_guardian.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -416,6 +417,59 @@ def render_html() -> str:
                     f"<td>{html.escape(str(item.get('action', '')))}</td></tr>"
                 )
             out.append("</table>")
+        out.append("</div>")
+
+    if ops_guardian:
+        risk = ops_guardian.get("risk") or {}
+        scheduler = ops_guardian.get("scheduler") or {}
+        visual = ops_guardian.get("visual_quality") or {}
+        series_plan = ops_guardian.get("series_plan") or {}
+        executive = ops_guardian.get("executive_report") or {}
+        out.append("<div class='card'><h2>Operations guardian</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Risk level</small><div class='metric'>{html.escape(str(risk.get('level', 'unknown')))}</div></div>")
+        out.append(f"<div><small>Risk score</small><div class='metric'>{int(risk.get('score', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Avg retention</small><div class='metric'>{float(risk.get('avg_retention', 0) or 0):.1f}</div></div>")
+        out.append(f"<div><small>Weak ratio</small><div class='metric'>{float(risk.get('weak_retention_ratio', 0) or 0):.2f}</div></div>")
+        out.append("</section>")
+        if executive.get("summary"):
+            out.append(f"<p><strong>Executive read:</strong> {html.escape(str(executive.get('summary')))}</p>")
+        paused = ops_guardian.get("paused_topics") or []
+        if paused:
+            out.append("<h3>Paused topics</h3><table><tr><th>Category</th><th>Reason</th><th>Retention</th><th>Growth</th></tr>")
+            for item in paused[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td><code>{html.escape(str(item.get('reason', '')))}</code></td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}</td>"
+                    f"<td>{float(item.get('growth_score', 0) or 0):.1f}</td></tr>"
+                )
+            out.append("</table>")
+        hours = scheduler.get("recommended_utc_hours") or []
+        if hours:
+            out.append("<h3>Recommended publish windows</h3><table><tr><th>UTC hour</th><th>Country</th><th>Reason</th></tr>")
+            for item in hours[:5]:
+                out.append(
+                    f"<tr><td>{int(item.get('utc_hour', 0) or 0):02d}:00 UTC</td>"
+                    f"<td>{html.escape(str(item.get('country', 'global')))}</td>"
+                    f"<td>{html.escape(str(item.get('reason', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("<h3>Visual quality</h3>")
+        out.append(
+            f"<p>Checked: {int(visual.get('checked', 0) or 0)} · "
+            f"Rejected: {int(visual.get('rejected', 0) or 0)} · "
+            f"Low quality: {int(visual.get('low_quality', 0) or 0)}</p>"
+        )
+        top_series = series_plan.get("series_to_scale") or []
+        if top_series:
+            out.append("<p><strong>Series to scale:</strong> " + html.escape(", ".join(map(str, top_series))) + "</p>")
+        actions = executive.get("next_actions") or []
+        if actions:
+            out.append("<h3>Guardian actions</h3><ul>")
+            for action in actions[:5]:
+                out.append(f"<li>{html.escape(str(action))}</li>")
+            out.append("</ul>")
         out.append("</div>")
 
     if mission_control:

@@ -67,6 +67,8 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert 'QUALITY_REQUIRE_MOTION_BROLL: "1"' in workflow
     assert 'QUALITY_REQUIRE_CAPTIONS: "1"' in workflow
     assert 'QUALITY_MIN_VISUAL_QA_SCORE: "6"' in workflow
+    assert "python scripts/ops_guardian.py" in workflow
+    assert "_data/ops_guardian.json" in workflow
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():
@@ -74,6 +76,7 @@ def test_refresh_workflow_stages_queue_before_optional_files():
     assert "git add _data/stories_queue.json" in workflow
     assert "git add _data/stories_queue.json _data/ai_cache.jsonl" not in workflow
     assert "_data/provider_stats.jsonl" in workflow
+    assert "_data/ops_guardian.json" in workflow
 
 
 def test_dashboard_workflow_refreshes_analytics_before_build():
@@ -83,3 +86,5 @@ def test_dashboard_workflow_refreshes_analytics_before_build():
     assert "python scripts/build_dashboard.py" in workflow
     assert "git add \"$path\"" in workflow
     assert "_data/analytics/latest.json" in workflow
+    assert "python scripts/ops_guardian.py" in workflow
+    assert "_data/ops_guardian.json" in workflow
