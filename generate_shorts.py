@@ -1089,7 +1089,9 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
-    return optimise_story(rewrite_if_needed(polish_story(story)))
+    # Keep queue adaptation deterministic and cheap. AI rescue happens
+    # only when a candidate is actually attempted for production.
+    return optimise_story(polish_story(story))
 
 
 def load_pending_stories() -> tuple[list[dict], dict]:
@@ -1230,6 +1232,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not queue_script:
         log.warning("  ⏭  Skipping Short — no AI script on queue entry: %s", title[:80])
         return None
+
+    story = optimise_story(rewrite_if_needed(story))
 
     # The editor-in-chief is stricter than the script linter: it also
     # considers thumbnail readability, source footage and recent channel

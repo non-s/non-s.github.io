@@ -14,6 +14,11 @@ import re
 from utils.ai_helper import ai_text
 
 ENABLED = os.environ.get("WILD_BRIEF_AI_REWRITE_ENABLED", "1") not in ("0", "false", "False")
+_AI_ENV_KEYS = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
+
+
+def _ai_available() -> bool:
+    return any(os.environ.get(key, "").strip() for key in _AI_ENV_KEYS)
 
 
 def _extract_json(raw: str) -> dict:
@@ -56,7 +61,7 @@ def _prompt(story: dict, review: dict) -> str:
 
 def rewrite_if_needed(story: dict) -> dict:
     """Best-effort AI rewrite for stories that local polish cannot approve."""
-    if not ENABLED:
+    if not ENABLED or not _ai_available():
         return story
     from utils.editorial import review
 

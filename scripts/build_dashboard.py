@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.automation_health import build_health
 from utils.editorial import rank_candidates
 from utils.humanity_engine import polish_story
 from utils.mission_control import build_mission_control
@@ -246,6 +247,7 @@ code { background: #1f2433; padding: 1px 6px; border-radius: 4px; }
 def render_html() -> str:
     rows = _read_csvs()
     latest = _safe_json(ANALYTICS_DIR / "latest.json")
+    health = _safe_json(ROOT / "_data" / "automation_health.json") or build_health(ROOT)
     comments = _safe_json(ANALYTICS_DIR / "comments.json")
     experiments = _safe_json(ANALYTICS_DIR / "experiments.json")
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
@@ -307,6 +309,24 @@ def render_html() -> str:
         f"<div class='metric'>{len(underperformers)}</div></div>"
     )
     out.append("</section>")
+
+    if health:
+        queue_health = health.get("queue") or {}
+        seo_health = health.get("seo") or {}
+        out.append("<div class='card'><h2>Automation health</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Health score</small><div class='metric'>{int(health.get('score', 0) or 0)}</div></div>")
+        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(health.get('state', 'unknown')))}</div></div>")
+        out.append(f"<div><small>Pending queue</small><div class='metric'>{int(queue_health.get('pending', 0) or 0)}</div></div>")
+        out.append(f"<div><small>SEO avg</small><div class='metric'>{float(seo_health.get('average_score', 0) or 0):.1f}</div></div>")
+        out.append("</section>")
+        issues = health.get("issues") or []
+        if issues:
+            out.append("<h3>Health issues</h3><ul>")
+            for issue in issues[:8]:
+                out.append(f"<li><code>{html.escape(str(issue))}</code></li>")
+            out.append("</ul>")
+        out.append("</div>")
 
     # ── Sparklines ─────────────────────────────────────────────
     if days:

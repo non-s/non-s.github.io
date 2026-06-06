@@ -58,3 +58,6 @@ jobs:
 
       - name: "Run test suite"
         run: python -m pytest -q
+
+      - name: "Run automation health audit"
+        run: python scripts/audit_automation.py

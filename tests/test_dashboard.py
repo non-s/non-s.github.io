@@ -91,6 +91,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "5,000" in body or "5000" in body
     assert "82.0" in body or "82" in body
     assert "Production recommendations" in body
+    assert "Automation health" in body
     assert "Growth score by category" in body
     assert "Growth score by story format" in body
     assert "Exploit mode active" in body
