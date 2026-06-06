@@ -52,6 +52,7 @@ from utils.studio_rewrite import rewrite_if_needed
 from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
 from utils.pre_publish_audit import audit_package as audit_publish_package
+from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.seo_optimizer import optimise_story, seo_score
 from utils.story_intelligence import audit_hook, audit_title, classify_format
@@ -964,6 +965,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "production_mode": story.get("production_mode", ""),
         "trend_context":  dict(story.get("trend_context") or {}),
         "agency":         dict(story.get("agency") or {}),
+        "retention_surgery": diagnose_retention(story),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
         # Pexels source-clip identity. Propagated so upload_youtube can

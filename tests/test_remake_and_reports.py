@@ -28,6 +28,23 @@ def test_remake_engine_builds_backlog(tmp_path: Path):
     assert out["count"] == 1
     assert out["remakes"][0]["source_video_id"] == "abc"
     assert out["remakes"][0]["candidate_titles"]
+    assert "retention_surgery" in out["remakes"][0]
+
+
+def test_remake_engine_falls_back_to_top_performers(tmp_path: Path):
+    _write(tmp_path / "_data" / "analytics" / "latest.json", {
+        "top_performers": [{
+            "video_id": "top1",
+            "title": "Ducklings know math before they swim",
+            "views": 1200,
+            "view_pct": 0,
+            "growth_score": 500,
+            "postmortem": {"likely_causes": ["hook_needs_work"]},
+        }]
+    })
+    out = build_backlog(tmp_path)
+    assert out["count"] == 1
+    assert out["remakes"][0]["source_video_id"] == "top1"
 
 
 def test_weekly_report_contains_core_sections(tmp_path: Path):

@@ -92,6 +92,12 @@ def test_metadata_preserves_agency_decision(tmp_path: Path):
     assert _meta(tmp_path)["agency"]["decision"] == "publish_now"
 
 
+def test_metadata_includes_retention_surgery(tmp_path: Path):
+    surgery = _meta(tmp_path)["retention_surgery"]
+    assert "score" in surgery
+    assert "verdict" in surgery
+
+
 def test_metadata_privacy_defaults_public(tmp_path: Path):
     assert _meta(tmp_path)["youtube_privacy"] == "public"
 

@@ -125,6 +125,22 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "topics": [{"animal": "orca", "category": "ocean", "trend_score": 88,
                     "mentions": 3, "top_titles": ["Rare orca behavior caught on camera"]}],
     }), encoding="utf-8")
+    (tmp_path / "_data" / "agency_plan.json").write_text(json.dumps({
+        "status": "aggressive_growth",
+        "weekly_goal": "Raise retention.",
+        "days": [{"day": 1, "focus": "farm", "trend_animal": "orca", "mix": "2 exploit + 1 explore", "goal": "raise retention"}],
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "visual_quality_report.json").write_text(json.dumps({
+        "coverage_pct": 50, "checked": 4, "rejected": 1,
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "narrator_report.json").write_text(json.dumps({
+        "winner": "aria",
+        "voices": [{"voice": "aria", "n": 3, "mean_growth": 120, "mean_retention": 70}],
+    }), encoding="utf-8")
+    (analytics / "legacy_backfill.json").write_text(json.dumps({
+        "count": 1,
+        "markers": [{"title": "Old short", "missing": ["hook"], "derived": {"story_format": "single_fact", "retention_surgery": {"fixes": ["Rewrite hook."]}}}],
+    }), encoding="utf-8")
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
     assert "Major event today" in body
@@ -154,6 +170,10 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Remake engine" in body
     assert "Trend radar" in body
     assert "Rare orca behavior" in body
+    assert "7-day agency plan" in body
+    assert "Visual QA coverage" in body
+    assert "Narrator optimizer" in body
+    assert "Legacy analytics backfill" in body
     assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body

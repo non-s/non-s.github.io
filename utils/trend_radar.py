@@ -18,6 +18,8 @@ from urllib.parse import quote_plus
 
 import requests
 
+from utils.trend_safety import enrich_topics
+
 TREND_FILE = Path("_data/trend_radar.json")
 TIMEOUT = 12
 
@@ -153,6 +155,7 @@ def score_trends(items: list[dict]) -> dict:
             "query": f"{animal} animal {(' '.join(top[0].get('terms') or [])).strip()}".strip(),
         })
     topics.sort(key=lambda r: (r["trend_score"], r["mentions"]), reverse=True)
+    topics = enrich_topics(topics)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source": "public_rss",
