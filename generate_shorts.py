@@ -41,6 +41,7 @@ from utils.captions import (
 from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
+from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import rank_for_growth
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
@@ -183,7 +184,7 @@ VOICE_PANEL_BY_LOCALE: dict[str, list[str]] = {
 
 
 def pick_voice(seed_text: str, category: str = "",
-                voice_tag: str = "") -> str:
+                voice_tag: str = "", narrator_variant: str = "") -> str:
     """Pick the host's signature voice for this Short.
 
     With the post-May-2026 humanization shift, the channel is committed
@@ -203,7 +204,7 @@ def pick_voice(seed_text: str, category: str = "",
         VOICE_PANEL,
     )
     if not voice_tag or voice_tag == "en":
-        variant = assign_variant("narrator_voice", seed_text or category or "wildbrief")
+        variant = narrator_variant or assign_variant("narrator_voice", seed_text or category or "wildbrief")
         return HOST_VOICE_VARIANTS.get(variant, HOST_VOICE_PRIMARY)
     return panel[0] if panel else HOST_VOICE_PRIMARY
 
@@ -956,6 +957,10 @@ def build_short_metadata(story: dict, video_path: Path,
         "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
         "seo_optimisation": dict(story.get("seo_optimisation") or {}),
         "narrator_voice": story.get("narrator_voice", ""),
+        "narrator_profile": dict(((story.get("growth_studio") or {}).get("narrator")) or {}),
+        "narrative_template": dict(story.get("narrative_template") or {}),
+        "growth_studio":   dict(story.get("growth_studio") or {}),
+        "production_mode": story.get("production_mode", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
         # Pexels source-clip identity. Propagated so upload_youtube can
@@ -1089,6 +1094,13 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
+    growth_studio = studio_brief_for_story(story)
+    narrator_variant = (growth_studio.get("narrator") or {}).get("variant", "")
+    if narrator_variant:
+        story["experiments"]["narrator_voice"] = narrator_variant
+    story["growth_studio"] = growth_studio
+    story["narrative_template"] = growth_studio.get("narrative_template") or {}
+    story["production_mode"] = growth_studio.get("production_mode", "")
     # Keep queue adaptation deterministic and cheap. AI rescue happens
     # only when a candidate is actually attempted for production.
     return optimise_story(polish_story(story))
@@ -1278,7 +1290,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # utils.translation.translate_story. English stories don't set it,
     # so pick_voice falls through to the default panel.
     voice_tag = story.get("voice_tag", "")
-    voice = pick_voice(seed_text=title, category=category, voice_tag=voice_tag)
+    narrator_variant = (
+        ((story.get("growth_studio") or {}).get("narrator") or {}).get("variant")
+        or (story.get("experiments") or {}).get("narrator_voice", "")
+    )
+    voice = pick_voice(
+        seed_text=title,
+        category=category,
+        voice_tag=voice_tag,
+        narrator_variant=narrator_variant,
+    )
     story["narrator_voice"] = voice
     story["story_format"] = classify_format(f"{display_title} {hook_text} {queue_script}")
     log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")

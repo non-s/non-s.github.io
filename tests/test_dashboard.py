@@ -70,6 +70,28 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
             "winning_humanity_labels": ["signature"],
             "rules": ["Open with the animal and the outcome."],
         },
+        "weekly_brief": {
+            "headline": "Scale what retains.",
+            "best_category": "cats",
+            "best_format": "animal_memory",
+            "best_narrator": "en-US-JennyNeural",
+            "production_mix": {"exploit": 70, "explore": 20, "moonshot": 10},
+            "next_actions": ["Make a sequel."],
+        },
+        "winner_loser_map": {
+            "winners": {
+                "category": {
+                    "value": "cats", "mean_growth": 180.0,
+                    "mean_retention": 72.0, "n": 3,
+                }
+            }
+        },
+        "remake_candidates": [{
+            "title": "Major event today",
+            "retention": 82.0,
+            "views": 5000,
+            "action": "make sequel with a new animal in the same story shape",
+        }],
         "top_performers": [
             {"video_id": "abc", "title": "Major event today",
              "story_format": "animal_memory",
@@ -102,6 +124,10 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Learning profile" in body
     assert "Winning title keywords" in body
     assert "Mission control" in body
+    assert "Growth studio" in body
+    assert "Winner map" in body
+    assert "Remake candidates" in body
+    assert "70% exploit" in body
     assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body

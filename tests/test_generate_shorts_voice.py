@@ -38,6 +38,12 @@ def test_pick_voice_handles_empty_seed():
     assert pick_voice("", "OCEAN") in VOICE_PANEL
 
 
+def test_pick_voice_accepts_narrator_variant():
+    from generate_shorts import pick_voice
+    assert pick_voice("cat fact", "CATS", narrator_variant="jenny") == "en-US-JennyNeural"
+    assert pick_voice("snake fact", "REPTILES", narrator_variant="guy") == "en-US-GuyNeural"
+
+
 def test_pick_voice_pt_br_uses_locale_panel():
     from generate_shorts import pick_voice, VOICE_PANEL_BY_LOCALE
     for title in ("polvo 1", "coruja 2", "gato 3", "golfinho 4"):

@@ -269,6 +269,9 @@ def render_html() -> str:
     top_performers  = latest.get("top_performers") or []
     recommendations = latest.get("production_recommendations") or {}
     learning_profile = latest.get("learning_profile") or recommendations.get("learning_profile") or {}
+    weekly_brief = latest.get("weekly_brief") or {}
+    winner_loser = latest.get("winner_loser_map") or recommendations.get("winner_loser_map") or {}
+    remake_candidates = latest.get("remake_candidates") or recommendations.get("remake_candidates") or []
     queue_studio = _queue_studio_snapshot()
     mission_control = build_mission_control(
         latest=latest,
@@ -363,6 +366,56 @@ def render_html() -> str:
             for action in actions[:5]:
                 out.append(f"<li>{html.escape(str(action))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if weekly_brief or winner_loser or remake_candidates:
+        out.append("<div class='card'><h2>Growth studio</h2>")
+        if weekly_brief:
+            out.append(f"<p><strong>Weekly brief:</strong> {html.escape(str(weekly_brief.get('headline', '')))}</p>")
+            mix = weekly_brief.get("production_mix") or {}
+            if mix:
+                out.append(
+                    "<p><strong>Production mix:</strong> "
+                    f"{int(mix.get('exploit', 0) or 0)}% exploit, "
+                    f"{int(mix.get('explore', 0) or 0)}% explore, "
+                    f"{int(mix.get('moonshot', 0) or 0)}% moonshot</p>"
+                )
+            for label, key in (
+                ("Best category", "best_category"),
+                ("Best format", "best_format"),
+                ("Best narrator", "best_narrator"),
+            ):
+                value = weekly_brief.get(key)
+                if value:
+                    out.append(f"<p><strong>{label}:</strong> {html.escape(str(value))}</p>")
+            actions = weekly_brief.get("next_actions") or []
+            if actions:
+                out.append("<h3>Studio actions</h3><ul>")
+                for action in actions[:5]:
+                    out.append(f"<li>{html.escape(str(action))}</li>")
+                out.append("</ul>")
+        winners = winner_loser.get("winners") or {}
+        if winners:
+            out.append("<h3>Winner map</h3><table><tr><th>Axis</th><th>Winner</th><th>Growth</th><th>Retention</th><th>n</th></tr>")
+            for axis, item in winners.items():
+                out.append(
+                    f"<tr><td>{html.escape(str(axis))}</td>"
+                    f"<td><span class='badge green'>{html.escape(str(item.get('value', '')))}</span></td>"
+                    f"<td>{float(item.get('mean_growth', 0) or 0):.1f}</td>"
+                    f"<td>{float(item.get('mean_retention', 0) or 0):.1f}</td>"
+                    f"<td>{int(item.get('n', 0) or 0)}</td></tr>"
+                )
+            out.append("</table>")
+        if remake_candidates:
+            out.append("<h3>Remake candidates</h3><table><tr><th>Title</th><th>Retention</th><th>Views</th><th>Action</th></tr>")
+            for item in remake_candidates[:6]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}%</td>"
+                    f"<td>{int(item.get('views', 0) or 0):,}</td>"
+                    f"<td>{html.escape(str(item.get('action', '')))}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if mission_control:

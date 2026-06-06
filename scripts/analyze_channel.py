@@ -17,6 +17,12 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from utils.experiments import compute_winners, write_winners
+from utils.growth_studio import (
+    build_performance_matrix,
+    remake_candidates,
+    weekly_brief,
+    winners_and_losers,
+)
 from utils.story_intelligence import classify_format, postmortem
 
 TOKEN_FILE = ROOT / "youtube_token.json"
@@ -271,6 +277,9 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         series[str(marker.get("series") or "Unassigned")].append(score)
         observations.append({
             "video_id": video_id,
+            "title": title,
+            "category": cat_key,
+            "series": str(marker.get("series") or "Unassigned"),
             "score": growth_score or average_view_percentage or score,
             "engagement_score": score,
             "experiments": marker.get("experiments") or {},
@@ -279,6 +288,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "views_per_hour": vph,
             "growth_score": growth_score,
             "story_format": story_format,
+            "narrator_voice": str(marker.get("narrator_voice") or ""),
             "humanity_score": humanity_score,
             "humanity_label": humanity_label,
             "studio_polished": studio_polished,
@@ -347,6 +357,16 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         category_avg_growth,
         format_avg_growth,
     )
+    performance_matrix = build_performance_matrix(observations)
+    win_loss = winners_and_losers(performance_matrix)
+    remakes = remake_candidates(top)
+    brief_seed = {
+        "total_views": total_views,
+        "avg_view_pct": average(retention_percentages),
+        "avg_view_percentage": average(retention_percentages),
+        "subscribers_gained": total_subscribers_gained,
+    }
+    brief = weekly_brief(brief_seed, observations, performance_matrix, remakes)
     snapshot = {
         "pulled_at": datetime.now(timezone.utc).isoformat(),
         "metric_scope": "youtube_analytics_and_public_statistics" if retention else "public_video_statistics",
@@ -373,6 +393,10 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "series_avg_engagement": {k: average(v) for k, v in sorted(series.items())},
         "top_performers": top[:10],
         "learning_profile": learning_profile,
+        "performance_matrix": performance_matrix,
+        "winner_loser_map": win_loss,
+        "remake_candidates": remakes,
+        "weekly_brief": brief,
         "production_recommendations": {
             "hot_categories": [key for key, _ in ranked_categories[:3]],
             "slow_categories": [key for key, _ in ranked_categories[-3:]] if len(ranked_categories) >= 3 else [],
@@ -382,6 +406,10 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "exploit_mode": bool(top and top[0].get("growth_score", 0) >= 120),
             "exploit_keywords": exploit_keywords,
             "learning_profile": learning_profile,
+            "performance_matrix": performance_matrix,
+            "winner_loser_map": win_loss,
+            "remake_candidates": remakes,
+            "production_mix": brief.get("production_mix", {}),
             "double_down_titles": [
                 item["title"] for item in top[:5]
                 if item.get("views", 0) > 0

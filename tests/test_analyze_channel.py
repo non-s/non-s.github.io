@@ -15,6 +15,7 @@ def test_snapshot_aggregates_series_and_experiments():
         "series": "Ocean Mysteries",
         "hook": "Octopuses use tools.",
         "experiments": {"hook_style": "outcome_first"},
+        "narrator_voice": "en-US-JennyNeural",
         "humanity": {"score": 81, "label": "human"},
         "studio_polish": {"applied": True},
         "studio_state": "polished",
@@ -37,7 +38,12 @@ def test_snapshot_aggregates_series_and_experiments():
     assert snapshot["learning_profile"]["winning_categories"] == ["ocean"]
     assert "animal_intelligence" in snapshot["learning_profile"]["winning_formats"]
     assert snapshot["production_recommendations"]["learning_profile"]["winning_categories"] == ["ocean"]
+    assert snapshot["performance_matrix"]["category"]["ocean"]["n"] == 1
+    assert snapshot["winner_loser_map"]["winners"]["category"]["value"] == "ocean"
+    assert snapshot["weekly_brief"]["best_category"] == "ocean"
+    assert snapshot["production_recommendations"]["production_mix"]["exploit"] >= 50
     assert observations[0]["experiments"]["hook_style"] == "outcome_first"
+    assert observations[0]["narrator_voice"] == "en-US-JennyNeural"
     assert observations[0]["growth_score"] > 0
     assert observations[0]["story_format"] == "animal_intelligence"
     assert observations[0]["humanity_score"] == 81
@@ -64,6 +70,7 @@ def test_snapshot_includes_optional_retention_metrics():
     assert observations[0]["subscribers_gained"] == 7
     assert observations[0]["retention_tier"] == "excellent"
     assert snapshot["learning_profile"]["retention_tiers"]["excellent"] == 1
+    assert snapshot["remake_candidates"][0]["action"].startswith("remake")
 
 
 def test_snapshot_tracks_below_sixty_percent_retention():
