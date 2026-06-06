@@ -41,14 +41,17 @@ jobs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           python scripts/analyze_channel.py || true
           python scripts/analyze_comments.py || true
+          python scripts/audit_automation.py || true
           rm -f youtube_token.json
+      - name: "Audit local automation health"
+        run: python scripts/audit_automation.py
       - name: "Build dashboard HTML"
         run: python scripts/build_dashboard.py
       - name: "Persist refreshed analytics"
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json; do
             [ -e "$path" ] && git add "$path"
           done
           if git diff --cached --quiet; then
