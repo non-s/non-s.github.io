@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from utils.growth_strategy import category_weights, rank_for_growth, score_story
+from utils.growth_strategy import category_weights, paused_categories, rank_for_growth, score_story
 
 
 def test_category_weights_are_bounded():
@@ -59,3 +59,19 @@ def test_score_story_rewards_signature_humanity():
     }
     assert score_story(signature, {"category_weights": {"cats": 1.0}}) > \
         score_story(base, {"category_weights": {"cats": 1.0}})
+
+
+def test_paused_category_reduces_growth_priority(tmp_path, monkeypatch):
+    ops = tmp_path / "ops.json"
+    ops.write_text('{"paused_topics":[{"category":"cats"}]}', encoding="utf-8")
+    monkeypatch.setattr("utils.growth_strategy.OPS_FILE", ops)
+    story = {
+        "category": "cats",
+        "score": 8,
+        "editorial": {"approved": True, "score": 80, "humanity": {"score": 85}},
+    }
+    paused = score_story(story, {"category_weights": {"cats": 1.0}})
+    monkeypatch.setattr("utils.growth_strategy.OPS_FILE", tmp_path / "missing.json")
+    normal = score_story(story, {"category_weights": {"cats": 1.0}})
+    assert paused < normal
+    assert paused_categories(ops)["cats"]["category"] == "cats"

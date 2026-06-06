@@ -109,11 +109,16 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     }))
     (tmp_path / "_data" / "ops_guardian.json").write_text(json.dumps({
         "risk": {"level": "watch", "score": 27, "avg_retention": 57.5, "weak_retention_ratio": 0.4},
+        "inventory_forecast": {"days_remaining": 12.5, "daily_posts": 3, "state": "watch"},
         "paused_topics": [{"category": "farm", "reason": "retention_below_45", "retention": 34.2, "growth_score": 44.0}],
         "scheduler": {"recommended_utc_hours": [{"utc_hour": 23, "country": "US", "reason": "audience_cohort"}]},
-        "visual_quality": {"checked": 2, "rejected": 0, "low_quality": 1},
+        "visual_quality": {"checked": 2, "rejected": 0, "low_quality": 1, "local_checked": 2, "local_low_quality": 1},
         "series_plan": {"series_to_scale": ["Pet Secrets"]},
         "executive_report": {"summary": "Watch retention.", "next_actions": ["Pause weak topics."]},
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "remake_backlog.json").write_text(json.dumps({
+        "count": 1,
+        "remakes": [{"source_title": "Major event today", "retention": 82, "views": 5000, "action": "make sequel"}],
     }), encoding="utf-8")
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
@@ -137,9 +142,11 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Remake candidates" in body
     assert "70% exploit" in body
     assert "Operations guardian" in body
+    assert "Inventory forecast" in body
     assert "Paused topics" in body
     assert "23:00 UTC" in body
     assert "Pet Secrets" in body
+    assert "Remake engine" in body
     assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body

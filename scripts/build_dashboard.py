@@ -252,6 +252,7 @@ def render_html() -> str:
     experiments = _safe_json(ANALYTICS_DIR / "experiments.json")
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
     ops_guardian = _safe_json(Path("_data/ops_guardian.json"))
+    remake_backlog = _safe_json(Path("_data/remake_backlog.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -424,6 +425,7 @@ def render_html() -> str:
         scheduler = ops_guardian.get("scheduler") or {}
         visual = ops_guardian.get("visual_quality") or {}
         series_plan = ops_guardian.get("series_plan") or {}
+        inventory = ops_guardian.get("inventory_forecast") or {}
         executive = ops_guardian.get("executive_report") or {}
         out.append("<div class='card'><h2>Operations guardian</h2>")
         out.append("<section class='row'>")
@@ -432,6 +434,12 @@ def render_html() -> str:
         out.append(f"<div><small>Avg retention</small><div class='metric'>{float(risk.get('avg_retention', 0) or 0):.1f}</div></div>")
         out.append(f"<div><small>Weak ratio</small><div class='metric'>{float(risk.get('weak_retention_ratio', 0) or 0):.2f}</div></div>")
         out.append("</section>")
+        if inventory:
+            out.append(
+                f"<p><strong>Inventory forecast:</strong> {float(inventory.get('days_remaining', 0) or 0):.1f} days "
+                f"at {int(inventory.get('daily_posts', 0) or 0)} posts/day "
+                f"(<span class='badge'>{html.escape(str(inventory.get('state', 'unknown')))}</span>)</p>"
+            )
         if executive.get("summary"):
             out.append(f"<p><strong>Executive read:</strong> {html.escape(str(executive.get('summary')))}</p>")
         paused = ops_guardian.get("paused_topics") or []
@@ -459,7 +467,9 @@ def render_html() -> str:
         out.append(
             f"<p>Checked: {int(visual.get('checked', 0) or 0)} · "
             f"Rejected: {int(visual.get('rejected', 0) or 0)} · "
-            f"Low quality: {int(visual.get('low_quality', 0) or 0)}</p>"
+            f"Low quality: {int(visual.get('low_quality', 0) or 0)} · "
+            f"Local checked: {int(visual.get('local_checked', 0) or 0)} · "
+            f"Local low quality: {int(visual.get('local_low_quality', 0) or 0)}</p>"
         )
         top_series = series_plan.get("series_to_scale") or []
         if top_series:
@@ -470,6 +480,25 @@ def render_html() -> str:
             for action in actions[:5]:
                 out.append(f"<li>{html.escape(str(action))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if remake_backlog:
+        remakes = remake_backlog.get("remakes") or []
+        out.append("<div class='card'><h2>Remake engine</h2>")
+        out.append(f"<p><strong>Backlog:</strong> {int(remake_backlog.get('count', len(remakes)) or 0)} candidate(s)</p>")
+        if remakes:
+            out.append("<table><tr><th>Source title</th><th>Retention</th><th>Views</th><th>Action</th></tr>")
+            for item in remakes[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('source_title', ''))[:100])}</td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}%</td>"
+                    f"<td>{int(item.get('views', 0) or 0):,}</td>"
+                    f"<td>{html.escape(str(item.get('action', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        reports = sorted(Path("_data/reports").glob("weekly-*.md"))
+        if reports:
+            out.append(f"<p><strong>Latest weekly report:</strong> <code>{html.escape(str(reports[-1]))}</code></p>")
         out.append("</div>")
 
     if mission_control:

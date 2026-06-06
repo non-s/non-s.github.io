@@ -42,7 +42,7 @@ from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_studio import studio_brief_for_story
-from utils.growth_strategy import rank_for_growth
+from utils.growth_strategy import paused_categories, rank_for_growth
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
@@ -57,7 +57,7 @@ from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
-from utils.visual_qa import evaluate_frame
+from utils.visual_qa import evaluate_frame, evaluate_local_frame
 
 # ── Config ────────────────────────────────────────────────────────
 # Language axis. "en" is the default channel; setting LANGUAGE=pt-BR
@@ -1123,7 +1123,18 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         ),
         reverse=True,
     )
-    return rank_for_growth(rank_candidates([_queue_to_story(s) for s in pending])), queue
+    candidates = [_queue_to_story(s) for s in pending]
+    if os.environ.get("OPS_GUARDIAN_ENFORCE", "0") in {"1", "true", "True"}:
+        paused = set(paused_categories().keys())
+        if paused:
+            before = len(candidates)
+            candidates = [
+                story for story in candidates
+                if str(story.get("category") or "").lower() not in paused
+            ]
+            log.info("  Ops guardian enforcement removed %d paused-category candidate(s)",
+                     before - len(candidates))
+    return rank_for_growth(rank_candidates(candidates)), queue
 
 
 def diversify_candidates(candidates: list[dict]) -> list[dict]:
@@ -1418,6 +1429,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         )
         return None
 
+    local_visual_qa = evaluate_local_frame(bg_path)
+    if local_visual_qa.get("checked") and not local_visual_qa.get("approved"):
+        log.warning("  Local visual QA warning score=%s reason=%s",
+                    local_visual_qa.get("score"), local_visual_qa.get("reason"))
     visual_qa = evaluate_frame(bg_path, story.get("title") or display_title)
     if visual_qa.get("checked") and not visual_qa.get("approved"):
         log.warning("  Skipping Short - Gemini visual QA rejected frame: %s",
@@ -1524,6 +1539,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["altered_content"] = True
     metadata["has_broll"] = bool(broll_paths)
     metadata["has_captions"] = bool(ass_path)
+    metadata["local_visual_qa"] = local_visual_qa
     metadata["visual_qa"] = visual_qa
     metadata["script_quality_grade"] = grade
     metadata["production_quality"] = {

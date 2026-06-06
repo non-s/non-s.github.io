@@ -25,6 +25,7 @@ def test_ops_guardian_normal_with_healthy_retention(tmp_path: Path):
     out = build_ops_report(tmp_path)
     assert out["risk"]["level"] == "normal"
     assert out["scheduler"]["recommended_utc_hours"][0]["utc_hour"] == 14
+    assert out["inventory_forecast"]["state"] == "thin"
     assert out["executive_report"]["what_to_scale"] == ["cats"]
     assert not should_enforce_pause(out)
 
@@ -67,7 +68,8 @@ def test_ops_guardian_aggregates_visual_qa(tmp_path: Path):
             "approved": False,
             "thumbnail_quality": 4,
             "reason": "unrelated animal",
-        }
+        },
+        "local_visual_qa": {"checked": True, "score": 4, "reason": "too_dark"},
     }
     _write(tmp_path / "_videos" / "a.done", marker)
     _write(tmp_path / "_data" / "analytics" / "latest.json", {"avg_view_pct": 70, "shorts_tracked": 1})
@@ -75,7 +77,9 @@ def test_ops_guardian_aggregates_visual_qa(tmp_path: Path):
     assert out["visual_quality"]["checked"] == 1
     assert out["visual_quality"]["rejected"] == 1
     assert out["visual_quality"]["low_quality"] == 1
-    assert out["visual_quality"]["top_reasons"] == {"unrelated animal": 1}
+    assert out["visual_quality"]["local_checked"] == 1
+    assert out["visual_quality"]["local_low_quality"] == 1
+    assert out["visual_quality"]["top_reasons"] == {"unrelated animal": 1, "too_dark": 1}
 
 
 def test_ops_guardian_series_plan_reads_queue(tmp_path: Path):

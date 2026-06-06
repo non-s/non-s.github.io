@@ -68,7 +68,11 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert 'QUALITY_REQUIRE_CAPTIONS: "1"' in workflow
     assert 'QUALITY_MIN_VISUAL_QA_SCORE: "6"' in workflow
     assert "python scripts/ops_guardian.py" in workflow
+    assert "python scripts/publish_window.py" in workflow
+    assert "python scripts/remake_engine.py" in workflow
+    assert "python scripts/weekly_report.py" in workflow
     assert "_data/ops_guardian.json" in workflow
+    assert "_data/remake_backlog.json" in workflow
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():

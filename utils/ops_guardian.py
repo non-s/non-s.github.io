@@ -97,25 +97,37 @@ def _paused_topics(latest: dict) -> list[dict]:
 
 def _visual_quality(markers: list[dict]) -> dict:
     checked = rejected = low_quality = 0
+    local_checked = local_low_quality = 0
     reasons: Counter[str] = Counter()
     for marker in markers:
         qa = marker.get("visual_qa") or {}
-        if not isinstance(qa, dict) or not qa.get("checked"):
-            continue
-        checked += 1
-        if not qa.get("approved", True):
-            rejected += 1
-            reasons[str(qa.get("reason") or "rejected")] += 1
-        try:
-            score = int(qa.get("thumbnail_quality", 0) or 0)
-        except Exception:
-            score = 0
-        if score and score < 6:
-            low_quality += 1
+        if isinstance(qa, dict) and qa.get("checked"):
+            checked += 1
+            if not qa.get("approved", True):
+                rejected += 1
+                reasons[str(qa.get("reason") or "rejected")] += 1
+            try:
+                score = int(qa.get("thumbnail_quality", 0) or 0)
+            except Exception:
+                score = 0
+            if score and score < 6:
+                low_quality += 1
+        local = marker.get("local_visual_qa") or {}
+        if isinstance(local, dict) and local.get("checked"):
+            local_checked += 1
+            try:
+                local_score = int(local.get("score", 0) or 0)
+            except Exception:
+                local_score = 0
+            if local_score and local_score < 6:
+                local_low_quality += 1
+                reasons[str(local.get("reason") or "local_low_quality")] += 1
     return {
         "checked": checked,
         "rejected": rejected,
         "low_quality": low_quality,
+        "local_checked": local_checked,
+        "local_low_quality": local_low_quality,
         "top_reasons": dict(reasons.most_common(5)),
     }
 
@@ -139,6 +151,31 @@ def _series_plan(latest: dict, queue: dict) -> dict:
         "queue_categories": dict(sorted(queue_categories.items())),
         "series_to_scale": top_series[:3],
         "identity_rule": "Keep series labels stable so viewers feel a programmed channel, not random uploads.",
+    }
+
+
+def _inventory_forecast(queue: dict, scheduler: dict) -> dict:
+    stories = [
+        item for item in (queue.get("stories") or [])
+        if isinstance(item, dict) and not item.get("consumed")
+    ]
+    pending = len(stories)
+    windows = scheduler.get("recommended_utc_hours") or []
+    daily_posts = max(1, min(4, len(windows) or 3))
+    days_remaining = round(pending / daily_posts, 1) if daily_posts else 0.0
+    if days_remaining >= 30:
+        state = "excellent"
+    elif days_remaining >= 14:
+        state = "healthy"
+    elif days_remaining >= 7:
+        state = "watch"
+    else:
+        state = "thin"
+    return {
+        "pending": pending,
+        "daily_posts": daily_posts,
+        "days_remaining": days_remaining,
+        "state": state,
     }
 
 
@@ -184,6 +221,12 @@ def build_ops_report(root: Path | str = ".") -> dict:
         "spacing_hours": 4 if risk_level == "normal" else 6,
         "policy": "Publish in recommended windows; widen spacing while risk is watch/critical.",
     }
+    inventory = _inventory_forecast(queue, scheduler)
+    paused_names = {item["category"] for item in paused}
+    scale_categories = [
+        item for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:5]
+        if str(item) not in paused_names
+    ]
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "risk": {
@@ -195,6 +238,7 @@ def build_ops_report(root: Path | str = ".") -> dict:
         },
         "paused_topics": paused,
         "scheduler": scheduler,
+        "inventory_forecast": inventory,
         "visual_quality": visual,
         "series_plan": _series_plan(latest, queue),
         "executive_report": {
@@ -203,9 +247,10 @@ def build_ops_report(root: Path | str = ".") -> dict:
                 if risk_level == "normal"
                 else "Automation is running, but editorial risk needs attention."
             ),
-            "what_to_scale": (latest.get("production_recommendations") or {}).get("hot_categories", [])[:5],
+            "what_to_scale": scale_categories,
             "what_to_pause": [item["category"] for item in paused],
             "what_to_remake": (latest.get("remake_candidates") or [])[:8],
+            "inventory_state": inventory.get("state"),
             "next_actions": [
                 "Favor high-retention categories and formats in the next queue refresh.",
                 "Avoid paused topics until the hook or visual angle changes.",
