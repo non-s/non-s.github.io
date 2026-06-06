@@ -41,6 +41,7 @@ jobs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           python scripts/analyze_channel.py || true
           python scripts/analyze_comments.py || true
+          python scripts/trend_radar.py || true
           python scripts/audit_automation.py || true
           python scripts/ops_guardian.py || true
           python scripts/remake_engine.py || true
@@ -49,6 +50,7 @@ jobs:
       - name: "Audit local automation health"
         run: |
           python scripts/audit_automation.py
+          python scripts/trend_radar.py
           python scripts/ops_guardian.py
           python scripts/remake_engine.py
           python scripts/weekly_report.py
@@ -58,7 +60,7 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
