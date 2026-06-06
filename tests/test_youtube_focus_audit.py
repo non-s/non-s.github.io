@@ -71,8 +71,10 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert "python scripts/publish_window.py" in workflow
     assert "python scripts/remake_engine.py" in workflow
     assert "python scripts/weekly_report.py" in workflow
+    assert "python scripts/trend_radar.py" in workflow
     assert "_data/ops_guardian.json" in workflow
     assert "_data/remake_backlog.json" in workflow
+    assert "_data/trend_radar.json" in workflow
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():
@@ -81,6 +83,7 @@ def test_refresh_workflow_stages_queue_before_optional_files():
     assert "git add _data/stories_queue.json _data/ai_cache.jsonl" not in workflow
     assert "_data/provider_stats.jsonl" in workflow
     assert "_data/ops_guardian.json" in workflow
+    assert "_data/trend_radar.json" in workflow
 
 
 def test_dashboard_workflow_refreshes_analytics_before_build():
@@ -91,4 +94,6 @@ def test_dashboard_workflow_refreshes_analytics_before_build():
     assert "git add \"$path\"" in workflow
     assert "_data/analytics/latest.json" in workflow
     assert "python scripts/ops_guardian.py" in workflow
+    assert "python scripts/trend_radar.py" in workflow
     assert "_data/ops_guardian.json" in workflow
+    assert "_data/trend_radar.json" in workflow

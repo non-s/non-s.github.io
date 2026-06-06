@@ -120,6 +120,11 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "count": 1,
         "remakes": [{"source_title": "Major event today", "retention": 82, "views": 5000, "action": "make sequel"}],
     }), encoding="utf-8")
+    (tmp_path / "_data" / "trend_radar.json").write_text(json.dumps({
+        "summary": {"items_scanned": 10, "animal_topics": 1, "top_animal": "orca", "top_category": "ocean"},
+        "topics": [{"animal": "orca", "category": "ocean", "trend_score": 88,
+                    "mentions": 3, "top_titles": ["Rare orca behavior caught on camera"]}],
+    }), encoding="utf-8")
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
     assert "Major event today" in body
@@ -147,6 +152,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "23:00 UTC" in body
     assert "Pet Secrets" in body
     assert "Remake engine" in body
+    assert "Trend radar" in body
+    assert "Rare orca behavior" in body
     assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body

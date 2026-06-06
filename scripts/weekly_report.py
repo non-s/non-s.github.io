@@ -29,6 +29,7 @@ def build_markdown(root: Path = ROOT) -> str:
     ops = _safe_json(root / "_data" / "ops_guardian.json")
     health = _safe_json(root / "_data" / "automation_health.json")
     remakes = _safe_json(root / "_data" / "remake_backlog.json")
+    trends = _safe_json(root / "_data" / "trend_radar.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -61,6 +62,18 @@ def build_markdown(root: Path = ROOT) -> str:
             lines.append(f"- {item.get('category')}: {item.get('reason')} ({item.get('retention')}% retention)")
     else:
         lines.append("- Nothing paused.")
+    lines.extend(["", "## Trend Radar"])
+    topics = trends.get("topics") or []
+    if topics:
+        for item in topics[:5]:
+            title = (item.get("top_titles") or [""])[0]
+            lines.append(
+                f"- {item.get('animal')} ({item.get('category')}): "
+                f"{item.get('trend_score')} score, {item.get('mentions')} mentions"
+                + (f" - {title}" if title else "")
+            )
+    else:
+        lines.append("- No public trend signal captured yet.")
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
         lines.append(f"- {item.get('source_title')} -> {item.get('action')}")

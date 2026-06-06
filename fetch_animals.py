@@ -66,6 +66,7 @@ from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.broll import fetch_pexels, fetch_pixabay
 from utils.growth_studio import studio_brief_for_story
+from utils.trend_radar import load_trends, trend_queries_for_category, trend_weight_for_category
 
 logging.basicConfig(
     level=logging.INFO,
@@ -768,6 +769,7 @@ def _pending_category_counts(queue: dict) -> dict[str, int]:
 def _topic_fetch_plan(queue: dict,
                       strategy: dict | None = None,
                       comments: dict | None = None,
+                      trends: dict | None = None,
                       max_per_topic: int = MAX_PER_TOPIC) -> dict[str, dict[str, int]]:
     """Return per-topic fetch budgets tuned by queue pressure + analytics."""
     pending = _pending_category_counts(queue)
@@ -803,8 +805,18 @@ def _topic_fetch_plan(queue: dict,
         ))
         if requested and topic_animals & requested:
             budget += 2
+        trend_weight = trend_weight_for_category(topic_key, trends)
+        if trend_weight >= 1.4:
+            budget += 2
+        elif trend_weight >= 1.2:
+            budget += 1
         query_take = min(len(cfg.get("queries") or []), max(2, min(4, budget)))
-        plan[topic_key] = {"budget": max(1, budget), "query_take": query_take}
+        plan[topic_key] = {
+            "budget": max(1, budget),
+            "query_take": query_take,
+            "trend_queries": trend_queries_for_category(topic_key, trends),
+            "trend_weight": trend_weight,
+        }
     return plan
 
 
@@ -854,7 +866,7 @@ def main() -> int:
     log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
              len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
-    fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments())
+    fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), load_trends())
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
@@ -864,6 +876,10 @@ def main() -> int:
             topic_cfg["queries"],
             take=int(plan.get("query_take") or 2),
         )
+        for query in plan.get("trend_queries") or []:
+            if query not in queries:
+                queries.insert(0, query)
+        queries = queries[:max(2, int(plan.get("query_take") or 2))]
         log.info("🔎 %s: budget=%d queries=%s", topic_key, per_topic_n, queries)
         clips: list = []
         for q in queries:

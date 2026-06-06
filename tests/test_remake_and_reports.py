@@ -46,8 +46,14 @@ def test_weekly_report_contains_core_sections(tmp_path: Path):
     _write(tmp_path / "_data" / "remake_backlog.json", {
         "remakes": [{"source_title": "Cows remember faces", "action": "make sequel"}],
     })
+    _write(tmp_path / "_data" / "trend_radar.json", {
+        "topics": [{"animal": "orca", "category": "ocean", "trend_score": 88,
+                    "mentions": 3, "top_titles": ["Rare orca behavior"]}],
+    })
     body = build_markdown(tmp_path)
     assert "# Wild Brief Weekly Report" in body
     assert "## What To Scale" in body
     assert "farm" in body
+    assert "## Trend Radar" in body
+    assert "orca" in body
     assert "Cows remember faces" in body

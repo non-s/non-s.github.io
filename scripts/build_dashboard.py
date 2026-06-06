@@ -253,6 +253,7 @@ def render_html() -> str:
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
     ops_guardian = _safe_json(Path("_data/ops_guardian.json"))
     remake_backlog = _safe_json(Path("_data/remake_backlog.json"))
+    trend_radar = _safe_json(Path("_data/trend_radar.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -480,6 +481,30 @@ def render_html() -> str:
             for action in actions[:5]:
                 out.append(f"<li>{html.escape(str(action))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if trend_radar:
+        summary = trend_radar.get("summary") or {}
+        topics = trend_radar.get("topics") or []
+        out.append("<div class='card'><h2>Trend radar</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Items scanned</small><div class='metric'>{int(summary.get('items_scanned', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Animal topics</small><div class='metric'>{int(summary.get('animal_topics', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Top animal</small><div class='metric'>{html.escape(str(summary.get('top_animal', '') or 'none'))}</div></div>")
+        out.append(f"<div><small>Top category</small><div class='metric'>{html.escape(str(summary.get('top_category', '') or 'none'))}</div></div>")
+        out.append("</section>")
+        if topics:
+            out.append("<table><tr><th>Animal</th><th>Category</th><th>Score</th><th>Mentions</th><th>Why now</th></tr>")
+            for item in topics[:8]:
+                titles = item.get("top_titles") or []
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('animal', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{float(item.get('trend_score', 0) or 0):.1f}</td>"
+                    f"<td>{int(item.get('mentions', 0) or 0)}</td>"
+                    f"<td>{html.escape(str(titles[0] if titles else '')[:120])}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if remake_backlog:
