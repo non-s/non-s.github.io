@@ -51,6 +51,7 @@ from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
+from utils.seo_optimizer import optimise_story, seo_score
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
@@ -930,6 +931,7 @@ def build_short_metadata(story: dict, video_path: Path,
         if len(all_tags) >= 15:
             break
 
+    seo = seo_score(base_title)
     return {
         "title":          base_title,
         "description":    caption,
@@ -947,10 +949,12 @@ def build_short_metadata(story: dict, video_path: Path,
         ),
         "hook_audit":     audit_hook(story.get("hook", "")).to_dict(),
         "title_audit":    audit_title(base_title).to_dict(),
+        "seo_score":      seo,
         "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
         "humanity":       score_humanity_story(story).to_dict(),
         "studio_polish":  dict(story.get("studio_polish") or {}),
         "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
+        "seo_optimisation": dict(story.get("seo_optimisation") or {}),
         "narrator_voice": story.get("narrator_voice", ""),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
@@ -1085,7 +1089,7 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
-    return rewrite_if_needed(polish_story(story))
+    return optimise_story(rewrite_if_needed(polish_story(story)))
 
 
 def load_pending_stories() -> tuple[list[dict], dict]:
