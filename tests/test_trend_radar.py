@@ -46,6 +46,38 @@ def test_load_trends_and_category_helpers(tmp_path):
     assert trend_radar.trend_weight_for_category("cats", payload) == 1.0
 
 
+def test_trend_context_picks_best_category_topic():
+    payload = {
+        "topics": [
+            {
+                "category": "dogs",
+                "animal": "dog",
+                "trend_score": 40,
+                "mentions": 1,
+                "terms": ["rescue"],
+                "top_titles": ["Low dog item"],
+                "top_urls": ["https://example.com/low"],
+                "query": "dog animal rescue",
+            },
+            {
+                "category": "dogs",
+                "animal": "dog",
+                "trend_score": 90,
+                "mentions": 5,
+                "terms": ["viral", "rescue"],
+                "top_titles": ["Viral dog rescue"],
+                "top_urls": ["https://example.com/high"],
+                "query": "dog animal viral rescue",
+            },
+        ]
+    }
+    ctx = trend_radar.trend_context_for_category("dogs", payload)
+    assert ctx["trend_score"] == 90
+    assert ctx["mentions"] == 5
+    assert ctx["headline"] == "Viral dog rescue"
+    assert ctx["query"] == "dog animal viral rescue"
+
+
 def test_animal_classifier_avoids_media_name_false_positives():
     payload = trend_radar.score_trends([
         {"title": "Animal shelter trending in right direction - FOX 2",

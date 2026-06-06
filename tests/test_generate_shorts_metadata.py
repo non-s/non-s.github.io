@@ -20,6 +20,11 @@ def _story() -> dict:
         "topic_hashtag": "Wildlife",
         "discovery_hashtags": ["wildlife", "wildanimals", "safari", "funfacts"],
         "experiments": {"hook_style": "outcome_first"},
+        "trend_context": {
+            "animal": "lion",
+            "trend_score": 70,
+            "headline": "Rare mountain lion sighting draws attention",
+        },
     }
 
 
@@ -74,6 +79,10 @@ def test_metadata_preserves_experiments(tmp_path: Path):
     assert _meta(tmp_path)["experiments"] == {"hook_style": "outcome_first"}
 
 
+def test_metadata_preserves_trend_context(tmp_path: Path):
+    assert _meta(tmp_path)["trend_context"]["animal"] == "lion"
+
+
 def test_metadata_privacy_defaults_public(tmp_path: Path):
     assert _meta(tmp_path)["youtube_privacy"] == "public"
 
@@ -99,6 +108,15 @@ def test_queue_adapter_preserves_original_pexels_clip():
         "pexels_download_url": "https://files.pexels.com/video.mp4",
     })
     assert story["pexels_download_url"] == "https://files.pexels.com/video.mp4"
+
+
+def test_queue_adapter_preserves_trend_context():
+    from generate_shorts import _queue_to_story
+    story = _queue_to_story({
+        "id": "story-trend",
+        "trend_context": {"animal": "dog", "trend_score": 88},
+    })
+    assert story["trend_context"]["animal"] == "dog"
 
 
 def test_queue_adapter_backfills_new_experiment_axes():

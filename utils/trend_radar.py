@@ -198,6 +198,31 @@ def trend_queries_for_category(category: str, trends: dict | None = None,
     return out
 
 
+def trend_context_for_category(category: str, trends: dict | None = None) -> dict:
+    trends = trends or load_trends()
+    matches = [
+        item for item in trends.get("topics") or []
+        if str(item.get("category") or "").lower() == category.lower()
+    ]
+    if not matches:
+        return {}
+    best = sorted(
+        matches,
+        key=lambda item: (float(item.get("trend_score", 0) or 0), int(item.get("mentions", 0) or 0)),
+        reverse=True,
+    )[0]
+    return {
+        "category": best.get("category", ""),
+        "animal": best.get("animal", ""),
+        "trend_score": best.get("trend_score", 0),
+        "mentions": best.get("mentions", 0),
+        "terms": list(best.get("terms") or [])[:8],
+        "headline": (best.get("top_titles") or [""])[0],
+        "source_urls": list(best.get("top_urls") or [])[:3],
+        "query": best.get("query", ""),
+    }
+
+
 def trend_weight_for_category(category: str, trends: dict | None = None) -> float:
     trends = trends or load_trends()
     scores = [

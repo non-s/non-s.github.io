@@ -64,6 +64,36 @@ def test_ai_enhance_animal_parses_valid_json(monkeypatch):
     assert out["sentiment"] == "positive"
 
 
+def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
+    seen = {}
+    dog_payload = dict(json.loads(_AI_OK_PAYLOAD))
+    dog_payload["script"] = "Dogs can read human gestures and remember social cues from people."
+    dog_payload["hook"] = "Dogs read people better than most animals."
+    dog_payload["seo_title"] = "Why dogs read people so well"
+
+    def fake_ai(prompt, *args, **kwargs):
+        seen["prompt"] = prompt
+        return json.dumps(dog_payload)
+
+    monkeypatch.setattr(fetch_animals, "ai_text", fake_ai)
+    out = fetch_animals._ai_enhance_animal(
+        "dog running",
+        "A clip of dogs",
+        {
+            "animal": "dog",
+            "trend_score": 91,
+            "terms": ["rescue", "viral"],
+            "headline": "Viral dog rescue draws attention",
+            "source_urls": ["https://example.com/dog"],
+            "query": "dog animal rescue",
+        },
+    )
+    assert out is not None
+    assert out["trend_context"]["animal"] == "dog"
+    assert "Viral dog rescue draws attention" in seen["prompt"]
+    assert "not as a claim about the exact clip" in seen["prompt"]
+
+
 def test_ai_enhance_returns_none_on_empty_response(monkeypatch):
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: "")
     assert fetch_animals._ai_enhance_animal("cat", "a cat clip") is None
@@ -140,6 +170,7 @@ def test_build_story_shape_matches_shared_queue_schema():
     # Reproduce the post-parse normalisation _ai_enhance_animal does.
     ai_out["geo_hashtag"] = "Global"
     ai_out["lead"] = ai_out["script"][:400]
+    ai_out["trend_context"] = {"animal": "cat", "trend_score": 77}
     # No hashtag injection anymore — generate_shorts owns that step.
     story = fetch_animals._build_story(
         clip_subject="cat playing",
@@ -158,13 +189,14 @@ def test_build_story_shape_matches_shared_queue_schema():
         # AI-enriched fields generate_shorts reads directly
         "seo_title", "yt_tags", "geo_hashtag", "topic_hashtag",
         "yt_description", "thumbnail_text", "hook", "script", "lead",
-        "sentiment",
+        "sentiment", "trend_context",
         # YouTube Shorts discovery hashtag bundle (set from ANIMAL_TOPICS).
         "discovery_hashtags",
     ):
         assert required in story, f"missing field: {required}"
     # Each topic ships a non-empty discovery_hashtag list.
     assert "cats" in story["discovery_hashtags"]
+    assert story["trend_context"]["animal"] == "cat"
 
 
 def test_build_story_starts_unconsumed():
