@@ -30,6 +30,7 @@ def test_automation_health_scores_queue_and_analytics(tmp_path: Path):
     out = build_health(tmp_path)
     assert out["queue"]["pending"] == 1
     assert out["seo"]["average_score"] >= 90
+    assert "agency" in out
     assert out["analytics"]["metric_scope"] == "youtube_analytics_and_public_statistics"
 
 

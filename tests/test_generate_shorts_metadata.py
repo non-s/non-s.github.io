@@ -25,6 +25,11 @@ def _story() -> dict:
             "trend_score": 70,
             "headline": "Rare mountain lion sighting draws attention",
         },
+        "agency": {
+            "score": 84,
+            "decision": "publish_now",
+            "strengths": ["strong_quality", "timely_trend"],
+        },
     }
 
 
@@ -81,6 +86,10 @@ def test_metadata_preserves_experiments(tmp_path: Path):
 
 def test_metadata_preserves_trend_context(tmp_path: Path):
     assert _meta(tmp_path)["trend_context"]["animal"] == "lion"
+
+
+def test_metadata_preserves_agency_decision(tmp_path: Path):
+    assert _meta(tmp_path)["agency"]["decision"] == "publish_now"
 
 
 def test_metadata_privacy_defaults_public(tmp_path: Path):

@@ -42,7 +42,8 @@ from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_studio import studio_brief_for_story
-from utils.growth_strategy import paused_categories, rank_for_growth
+from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
+from utils.content_agency import rank_for_agency
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
@@ -962,6 +963,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "growth_studio":   dict(story.get("growth_studio") or {}),
         "production_mode": story.get("production_mode", ""),
         "trend_context":  dict(story.get("trend_context") or {}),
+        "agency":         dict(story.get("agency") or {}),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
         # Pexels source-clip identity. Propagated so upload_youtube can
@@ -1136,7 +1138,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             ]
             log.info("  Ops guardian enforcement removed %d paused-category candidate(s)",
                      before - len(candidates))
-    return rank_for_growth(rank_candidates(candidates)), queue
+    strategy = load_strategy()
+    growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
+    return rank_for_agency(growth_ranked, strategy), queue
 
 
 def diversify_candidates(candidates: list[dict]) -> list[dict]:
