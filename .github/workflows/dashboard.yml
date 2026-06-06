@@ -51,6 +51,8 @@ jobs:
           python scripts/narrator_report.py || true
           python scripts/agency_plan.py || true
           python scripts/retention_rewrite_queue.py || true
+          python scripts/retention_rewriter.py || true
+          python scripts/retention_rewrite_queue.py || true
           python scripts/category_recovery.py || true
           python scripts/agency_gate_report.py || true
           python scripts/daily_brief.py || true
@@ -68,6 +70,8 @@ jobs:
           python scripts/narrator_report.py
           python scripts/agency_plan.py
           python scripts/retention_rewrite_queue.py
+          python scripts/retention_rewriter.py
+          python scripts/retention_rewrite_queue.py
           python scripts/category_recovery.py
           python scripts/agency_gate_report.py
           python scripts/daily_brief.py
@@ -78,7 +82,7 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/visual_quality_report.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/agency_gate.json _data/daily_brief.json _data/stories_queue.json; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/visual_quality_report.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewriter.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/agency_gate.json _data/daily_brief.json _data/stories_queue.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --

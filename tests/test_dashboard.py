@@ -143,6 +143,10 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "count": 1,
         "items": [{"title": "Weak hook", "category": "cats", "score": 42, "fixes": ["Rewrite hook."]}],
     }), encoding="utf-8")
+    (tmp_path / "_data" / "retention_rewriter.json").write_text(json.dumps({
+        "rewritten": 1,
+        "items": [{"title": "Weak hook", "before": 42, "after": 82}],
+    }), encoding="utf-8")
     (tmp_path / "_data" / "category_recovery.json").write_text(json.dumps({
         "plans": [{"category": "cats", "retention": 37, "allowed_formats": ["myth_buster"], "rules": ["Use outcome hooks."]}],
     }), encoding="utf-8")
@@ -195,6 +199,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Daily agency brief" in body
     assert "Remake factory" in body
     assert "Retention rewrite queue" in body
+    assert "Retention rewriter" in body
     assert "Category recovery" in body
     assert "Agency publish gate" in body
     assert "Visual QA coverage" in body

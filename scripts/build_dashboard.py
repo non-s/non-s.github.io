@@ -268,6 +268,7 @@ def render_html() -> str:
     legacy_backfill = _safe_json(Path("_data/analytics/legacy_backfill.json"))
     remake_factory = _safe_json(Path("_data/remake_factory.json"))
     rewrite_queue = _safe_json(Path("_data/retention_rewrite_queue.json"))
+    retention_rewriter = _safe_json(Path("_data/retention_rewriter.json"))
     category_recovery = _safe_json(Path("_data/category_recovery.json"))
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
@@ -668,6 +669,21 @@ def render_html() -> str:
                     f"<td>{html.escape(str(item.get('category', '')))}</td>"
                     f"<td>{int(item.get('score', 0) or 0)}</td>"
                     f"<td>{html.escape('; '.join(map(str, item.get('fixes') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
+    if retention_rewriter:
+        out.append("<div class='card'><h2>Retention rewriter</h2>")
+        out.append(f"<p><strong>Rewritten:</strong> {int(retention_rewriter.get('rewritten', 0) or 0)}</p>")
+        items = retention_rewriter.get("items") or []
+        if items:
+            out.append("<table><tr><th>Title</th><th>Before</th><th>After</th></tr>")
+            for item in items[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<td>{int(item.get('before', 0) or 0)}</td>"
+                    f"<td>{int(item.get('after', 0) or 0)}</td></tr>"
                 )
             out.append("</table>")
         out.append("</div>")
