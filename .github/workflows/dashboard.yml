@@ -42,16 +42,19 @@ jobs:
           python scripts/analyze_channel.py || true
           python scripts/analyze_comments.py || true
           python scripts/audit_automation.py || true
+          python scripts/ops_guardian.py || true
           rm -f youtube_token.json
       - name: "Audit local automation health"
-        run: python scripts/audit_automation.py
+        run: |
+          python scripts/audit_automation.py
+          python scripts/ops_guardian.py
       - name: "Build dashboard HTML"
         run: python scripts/build_dashboard.py
       - name: "Persist refreshed analytics"
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json; do
             [ -e "$path" ] && git add "$path"
           done
           if git diff --cached --quiet; then

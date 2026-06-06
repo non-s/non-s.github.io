@@ -72,7 +72,9 @@ jobs:
           chmod 600 youtube_token.json
           python -m json.tool < youtube_token.json > /dev/null
       - name: "Gerar Shorts"
-        run: python generate_shorts.py
+        run: |
+          python scripts/ops_guardian.py || true
+          python generate_shorts.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
@@ -94,6 +96,7 @@ jobs:
           python scripts/analyze_channel.py
           python scripts/analyze_comments.py || true
           python scripts/audit_automation.py || true
+          python scripts/ops_guardian.py || true
       - name: "Salvar marcadores no git"
         run: |
           git config user.name "Wild Brief Bot"
@@ -101,7 +104,7 @@ jobs:
           # Stage the queue first: unmatched optional globs must never
           # prevent consumed stories from being persisted.
           git add _data/stories_queue.json
-          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json; do
+          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _videos -maxdepth 1 -type f \

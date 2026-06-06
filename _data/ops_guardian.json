@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-06-06T12:16:18.286242+00:00",
+  "risk": {
+    "level": "normal",
+    "score": 12,
+    "reasons": [
+      "average_retention_watch"
+    ],
+    "weak_retention_ratio": 0.438,
+    "avg_retention": 57.564
+  },
+  "paused_topics": [
+    {
+      "category": "cats",
+      "reason": "retention_below_45",
+      "retention": 37.48,
+      "growth_score": 108.589
+    }
+  ],
+  "scheduler": {
+    "recommended_utc_hours": [
+      {
+        "utc_hour": 14,
+        "country": "global",
+        "views": 10128,
+        "reason": "default_midday"
+      },
+      {
+        "utc_hour": 19,
+        "country": "global",
+        "views": 10128,
+        "reason": "default_evening"
+      },
+      {
+        "utc_hour": 23,
+        "country": "global",
+        "views": 10128,
+        "reason": "default_late_evening"
+      }
+    ],
+    "spacing_hours": 4,
+    "policy": "Publish in recommended windows; widen spacing while risk is watch/critical."
+  },
+  "visual_quality": {
+    "checked": 0,
+    "rejected": 0,
+    "low_quality": 0,
+    "top_reasons": {}
+  },
+  "series_plan": {
+    "top_series": [
+      "Pet Secrets",
+      "Farmyard Surprises",
+      "Sky Intelligence",
+      "Animal Superpowers",
+      "Ocean Mysteries"
+    ],
+    "queue_categories": {
+      "arctic": 9,
+      "birds": 15,
+      "cats": 25,
+      "dogs": 21,
+      "farm": 22,
+      "insects": 15,
+      "nocturnal": 11,
+      "ocean": 25,
+      "primates": 10,
+      "reptiles": 12,
+      "wildlife": 16
+    },
+    "series_to_scale": [
+      "Pet Secrets",
+      "Farmyard Surprises",
+      "Sky Intelligence"
+    ],
+    "identity_rule": "Keep series labels stable so viewers feel a programmed channel, not random uploads."
+  },
+  "executive_report": {
+    "summary": "Automation is healthy; scale winners carefully.",
+    "what_to_scale": [
+      "farm",
+      "wildlife",
+      "cats"
+    ],
+    "what_to_pause": [
+      "cats"
+    ],
+    "what_to_remake": [],
+    "next_actions": [
+      "Favor high-retention categories and formats in the next queue refresh.",
+      "Avoid paused topics until the hook or visual angle changes.",
+      "Use recommended publish windows unless a manual campaign overrides them.",
+      "Review visual QA failures before repeating that source style."
+    ]
+  }
+}
