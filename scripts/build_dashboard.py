@@ -270,6 +270,7 @@ def render_html() -> str:
     rewrite_queue = _safe_json(Path("_data/retention_rewrite_queue.json"))
     category_recovery = _safe_json(Path("_data/category_recovery.json"))
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
+    agency_gate = _safe_json(Path("_data/agency_gate.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -631,6 +632,20 @@ def render_html() -> str:
             for order in orders[:5]:
                 out.append(f"<li>{html.escape(str(order))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if agency_gate:
+        out.append("<div class='card'><h2>Agency publish gate</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Approved</small><div class='metric'>{int(agency_gate.get('approved', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Held</small><div class='metric'>{int(agency_gate.get('held', 0) or 0)}</div></div>")
+        out.append("</section>")
+        reasons = agency_gate.get("reasons") or {}
+        if reasons:
+            out.append("<h3>Hold reasons</h3><table><tr><th>Reason</th><th>Stories</th></tr>")
+            for reason, count in reasons.items():
+                out.append(f"<tr><td><code>{html.escape(str(reason))}</code></td><td>{int(count)}</td></tr>")
+            out.append("</table>")
         out.append("</div>")
 
     if remake_factory:

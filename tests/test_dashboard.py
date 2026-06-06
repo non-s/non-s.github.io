@@ -146,6 +146,11 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     (tmp_path / "_data" / "category_recovery.json").write_text(json.dumps({
         "plans": [{"category": "cats", "retention": 37, "allowed_formats": ["myth_buster"], "rules": ["Use outcome hooks."]}],
     }), encoding="utf-8")
+    (tmp_path / "_data" / "agency_gate.json").write_text(json.dumps({
+        "approved": 10,
+        "held": 2,
+        "reasons": {"retention_rewrite_required": 2},
+    }), encoding="utf-8")
     (tmp_path / "_data" / "visual_quality_report.json").write_text(json.dumps({
         "coverage_pct": 50, "checked": 4, "rejected": 1,
     }), encoding="utf-8")
@@ -191,6 +196,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Remake factory" in body
     assert "Retention rewrite queue" in body
     assert "Category recovery" in body
+    assert "Agency publish gate" in body
     assert "Visual QA coverage" in body
     assert "Narrator optimizer" in body
     assert "Legacy analytics backfill" in body

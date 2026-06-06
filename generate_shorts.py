@@ -33,6 +33,7 @@ except ImportError:  # pragma: no cover
 
 from utils.broll import BrollClip, download_clip, fetch_broll_clips
 from utils.animal_enrichment import download_commons_image
+from utils.agency_gate import filter_candidates
 from utils.captions import (
     group_words_into_phrases,
     transcribe as captions_transcribe,
@@ -965,6 +966,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "production_mode": story.get("production_mode", ""),
         "trend_context":  dict(story.get("trend_context") or {}),
         "agency":         dict(story.get("agency") or {}),
+        "agency_gate":    dict(story.get("agency_gate") or {}),
         "retention_surgery": diagnose_retention(story),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
@@ -1140,6 +1142,15 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             ]
             log.info("  Ops guardian enforcement removed %d paused-category candidate(s)",
                      before - len(candidates))
+    candidates, held = filter_candidates(candidates)
+    if held:
+        log.info("  Agency gate held %d candidate(s): %s",
+                 len(held),
+                 ", ".join(sorted({
+                     reason
+                     for item in held
+                     for reason in (item.get("agency_gate") or {}).get("reasons", [])
+                 }))[:160])
     strategy = load_strategy()
     growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
     return rank_for_agency(growth_ranked, strategy), queue
