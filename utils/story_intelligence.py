@@ -25,6 +25,9 @@ _ANIMAL_WORDS = {
     "bear", "bears", "cat", "cats", "chicken", "chickens", "deer", "dog", "dogs",
     "dolphin", "dolphins", "eagle", "elephant", "elephants", "goat", "goats",
     "macaw", "owl", "shark", "tiger", "whale", "whales", "wolf", "wolves",
+    "cow", "cows", "duck", "duckling", "ducklings", "fox", "horse", "horses",
+    "lion", "lions", "octopus", "octopuses", "parrot", "parrots", "penguin",
+    "penguins", "seal", "seals", "snake", "snakes", "turtle", "turtles",
 }
 
 
@@ -89,6 +92,9 @@ def audit_title(title: str) -> Audit:
     if not any(word in lower for word in _ANIMAL_WORDS):
         score -= 18
         issues.append("missing_animal_keyword")
+    if not any(word.lower() in _ANIMAL_WORDS for word in words[:3]):
+        score -= 16
+        issues.append("animal_not_front_loaded")
     if any(token in lower for token in ("won't believe", "shocking", "insane", "crazy")):
         score -= 20
         issues.append("clickbait_language")

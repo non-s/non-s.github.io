@@ -267,8 +267,8 @@ _AI_PROMPT_TEMPLATE = (
     "{{"
     '"score": <int 1-10 — how interesting is this subject for a '
     "global animal-fact Short>,"
-    '"seo_title": "<40-55 chars. Front-load the search keyword '
-    "(the animal name + the curious angle). At most 1 relevant "
+    '"seo_title": "<38-58 chars. Start with the animal name or animal group, '
+    "then the curious angle. Avoid starting with Why/How/This/These. At most 1 relevant "
     "emoji (🐱🐶🦅🐬 etc.) and only if it adds info. NO all-caps, "
     "NO multiple punctuation. "
     'Good: \\"Why cats really purr — it is not just happiness\\". '
@@ -328,7 +328,8 @@ _ANIMAL_ALIASES = {
     "crocodile": "crocodile", "crocodiles": "crocodile",
     "cow": "cow", "cows": "cow", "cattle": "cow",
     "deer": "deer",
-    "dog": "dog", "dogs": "dog", "husky": "dog", "puppy": "dog", "puppies": "dog",
+    "dog": "dog", "dogs": "dog", "golden": "dog", "husky": "dog",
+    "retriever": "dog", "retrievers": "dog", "puppy": "dog", "puppies": "dog",
     "dolphin": "dolphin", "dolphins": "dolphin",
     "elephant": "elephant", "elephants": "elephant",
     "fish": "fish", "fishes": "fish",

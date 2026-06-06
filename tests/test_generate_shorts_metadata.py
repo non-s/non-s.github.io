@@ -41,7 +41,7 @@ def test_metadata_carries_required_youtube_fields(tmp_path: Path):
     for required in (
         "title", "description", "tags", "youtube_privacy",
         "youtube_category_id", "thumbnail", "video", "is_short",
-        "channel_handle",
+        "channel_handle", "seo_score",
     ):
         assert required in meta, f"missing required field: {required}"
 
@@ -127,6 +127,24 @@ def test_queue_adapter_polishes_robotic_story():
     })
     assert story["studio_polish"]["applied"] is True
     assert "I love this detail" in story["script"]
+
+
+def test_queue_adapter_frontloads_seo_title():
+    from generate_shorts import _queue_to_story
+    story = _queue_to_story({
+        "id": "story-seo",
+        "title": "cats playing outside",
+        "seo_title": "Why cats play like this — it is not just fun",
+        "category": "cats",
+        "hook": "Cats play to practice hunting.",
+        "script": "Cats play to practice hunting. Watch their paws and tail because each pounce builds timing. That's why play matters.",
+        "thumbnail_text": "CATS PLAY TO SURVIVE",
+        "yt_tags": ["cats", "play behavior"],
+        "source_url": "https://www.pexels.com/video/cats/",
+        "score": 9,
+    })
+    assert story["title"].startswith("Cats ")
+    assert story["seo_optimisation"]["score"] >= 80
 
 
 def test_thumbnail_copy_is_short_and_uppercase():
