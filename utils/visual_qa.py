@@ -10,9 +10,60 @@ import re
 from pathlib import Path
 
 import requests
+from PIL import Image, ImageFilter, ImageStat
 
 log = logging.getLogger(__name__)
 _TIMEOUT = 25
+
+
+def evaluate_local_frame(image_path: Path) -> dict:
+    """Free local image-quality check for the generated frame/thumbnail.
+
+    It does not try to identify the animal. That remains Gemini's job
+    when a key exists. This catches cheap production problems that are
+    visible without any API: very dark frames, flat contrast, blur-like
+    low detail, and empty/corrupt files.
+    """
+    try:
+        with Image.open(image_path) as im:
+            rgb = im.convert("RGB")
+            gray = rgb.convert("L")
+            stat = ImageStat.Stat(gray)
+            mean = float(stat.mean[0])
+            contrast = float(stat.stddev[0])
+            edges = gray.resize((96, 96)).filter(ImageFilter.FIND_EDGES)
+            edge_mean = float(ImageStat.Stat(edges).mean[0])
+    except Exception as exc:
+        return {
+            "checked": False,
+            "approved": True,
+            "score": 5,
+            "reason": f"local visual QA unavailable: {type(exc).__name__}",
+        }
+    score = 10
+    reasons: list[str] = []
+    if mean < 35:
+        score -= 3
+        reasons.append("too_dark")
+    elif mean > 235:
+        score -= 2
+        reasons.append("too_bright")
+    if contrast < 28:
+        score -= 3
+        reasons.append("low_contrast")
+    if edge_mean < 3.0:
+        score -= 2
+        reasons.append("low_detail")
+    score = max(1, min(10, score))
+    return {
+        "checked": True,
+        "approved": score >= 5,
+        "score": score,
+        "brightness": round(mean, 2),
+        "contrast": round(contrast, 2),
+        "edge_detail": round(edge_mean, 2),
+        "reason": ",".join(reasons) or "ok",
+    }
 
 
 def evaluate_frame(image_path: Path, expected_subject: str) -> dict:

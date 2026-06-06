@@ -13,6 +13,7 @@ from pathlib import Path
 from utils.story_intelligence import classify_format
 
 ANALYTICS_FILE = Path("_data/analytics/latest.json")
+OPS_FILE = Path("_data/ops_guardian.json")
 
 
 def load_strategy(path: Path | None = None) -> dict:
@@ -42,6 +43,24 @@ def category_weights(strategy: dict | None = None) -> dict[str, float]:
             out[str(key)] = max(0.5, min(2.5, float(value)))
         except Exception:
             continue
+    return out
+
+
+def paused_categories(path: Path | None = None) -> dict[str, dict]:
+    p = path or OPS_FILE
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, dict] = {}
+    for item in data.get("paused_topics") or []:
+        if not isinstance(item, dict):
+            continue
+        category = str(item.get("category") or "").strip().lower()
+        if category:
+            out[category] = item
     return out
 
 
@@ -86,6 +105,9 @@ def score_story(story: dict, strategy: dict | None = None) -> float:
         base *= 0.62
     if editorial and not editorial.get("approved", False):
         base *= 0.35
+    paused = paused_categories()
+    if category.lower() in paused:
+        base *= 0.42
     return round(base * weights.get(category, 1.0) * max(0.7, min(1.8, format_weight)), 3)
 
 
