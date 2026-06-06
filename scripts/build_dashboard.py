@@ -262,6 +262,10 @@ def render_html() -> str:
     ops_guardian = _safe_json(Path("_data/ops_guardian.json"))
     remake_backlog = _safe_json(Path("_data/remake_backlog.json"))
     trend_radar = _safe_json(Path("_data/trend_radar.json"))
+    agency_plan = _safe_json(Path("_data/agency_plan.json"))
+    visual_report = _safe_json(Path("_data/visual_quality_report.json"))
+    narrator_report = _safe_json(Path("_data/narrator_report.json"))
+    legacy_backfill = _safe_json(Path("_data/analytics/legacy_backfill.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -502,14 +506,16 @@ def render_html() -> str:
         out.append(f"<div><small>Top category</small><div class='metric'>{html.escape(str(summary.get('top_category', '') or 'none'))}</div></div>")
         out.append("</section>")
         if topics:
-            out.append("<table><tr><th>Animal</th><th>Category</th><th>Score</th><th>Mentions</th><th>Why now</th></tr>")
+            out.append("<table><tr><th>Animal</th><th>Category</th><th>Score</th><th>Opportunity</th><th>Posture</th><th>Why now</th></tr>")
             for item in topics[:8]:
                 titles = item.get("top_titles") or []
+                safety = item.get("trend_safety") or {}
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('animal', '')))}</td>"
                     f"<td>{html.escape(str(item.get('category', '')))}</td>"
                     f"<td>{float(item.get('trend_score', 0) or 0):.1f}</td>"
-                    f"<td>{int(item.get('mentions', 0) or 0)}</td>"
+                    f"<td>{float(safety.get('opportunity_score', 0) or 0):.1f}</td>"
+                    f"<td><span class='badge'>{html.escape(str(safety.get('posture', 'unknown')))}</span></td>"
                     f"<td>{html.escape(str(titles[0] if titles else '')[:120])}</td></tr>"
                 )
             out.append("</table>")
@@ -584,6 +590,67 @@ def render_html() -> str:
                     f"<td>{int(item.get('score', 0) or 0)}</td>"
                     f"<td><span class='badge'>{html.escape(str(item.get('decision', '')))}</span></td>"
                     f"<td>{html.escape(', '.join(map(str, item.get('strengths') or [])))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
+    if agency_plan:
+        out.append("<div class='card'><h2>7-day agency plan</h2>")
+        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(agency_plan.get('status', '')))}</span></p>")
+        out.append(f"<p>{html.escape(str(agency_plan.get('weekly_goal', '')))}</p>")
+        days_plan = agency_plan.get("days") or []
+        if days_plan:
+            out.append("<table><tr><th>Day</th><th>Focus</th><th>Trend</th><th>Mix</th><th>Goal</th></tr>")
+            for item in days_plan[:7]:
+                out.append(
+                    f"<tr><td>{int(item.get('day', 0) or 0)}</td>"
+                    f"<td>{html.escape(str(item.get('focus', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('trend_animal', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('mix', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('goal', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
+    if visual_report:
+        out.append("<div class='card'><h2>Visual QA coverage</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Coverage</small><div class='metric'>{float(visual_report.get('coverage_pct', 0) or 0):.1f}%</div></div>")
+        out.append(f"<div><small>Checked</small><div class='metric'>{int(visual_report.get('checked', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>")
+        out.append("</section></div>")
+
+    if narrator_report:
+        out.append("<div class='card'><h2>Narrator optimizer</h2>")
+        winner = narrator_report.get("winner") or "exploring"
+        out.append(f"<p><strong>Current winner:</strong> <span class='badge'>{html.escape(str(winner))}</span></p>")
+        voices = narrator_report.get("voices") or []
+        if voices:
+            out.append("<table><tr><th>Voice</th><th>n</th><th>Growth</th><th>Retention</th></tr>")
+            for item in voices[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('voice', '')))}</td>"
+                    f"<td>{int(item.get('n', 0) or 0)}</td>"
+                    f"<td>{float(item.get('mean_growth', 0) or 0):.1f}</td>"
+                    f"<td>{float(item.get('mean_retention', 0) or 0):.1f}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
+    if legacy_backfill:
+        out.append("<div class='card'><h2>Legacy analytics backfill</h2>")
+        out.append(f"<p><strong>Markers needing derived metadata:</strong> {int(legacy_backfill.get('count', 0) or 0)}</p>")
+        markers = legacy_backfill.get("markers") or []
+        if markers:
+            out.append("<table><tr><th>Title</th><th>Missing</th><th>Derived format</th><th>Retention fix</th></tr>")
+            for item in markers[:8]:
+                derived = item.get("derived") or {}
+                surgery = derived.get("retention_surgery") or {}
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get('missing') or [])))}</td>"
+                    f"<td>{html.escape(str(derived.get('story_format', '')))}</td>"
+                    f"<td>{html.escape('; '.join(map(str, surgery.get('fixes') or []))[:120])}</td></tr>"
                 )
             out.append("</table>")
         out.append("</div>")

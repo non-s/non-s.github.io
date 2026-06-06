@@ -24,6 +24,7 @@ def test_score_trends_extracts_animal_topics():
     ])
     assert payload["summary"]["animal_topics"] == 2
     assert payload["topics"][0]["trend_score"] >= payload["topics"][1]["trend_score"]
+    assert "trend_safety" in payload["topics"][0]
     assert payload["category_scores"]["ocean"] > 0
 
 
