@@ -100,6 +100,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Humanity mix" in body
     assert "Learning profile" in body
     assert "Winning title keywords" in body
+    assert "Mission control" in body
+    assert "Priority topics" in body
     assert "Audience requests" in body
     assert "Can you do sharks" in body
 

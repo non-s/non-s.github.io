@@ -31,6 +31,8 @@ from pathlib import Path
 
 import requests
 
+from utils.mission_control import build_mission_control
+
 log = logging.getLogger(__name__)
 
 VIDEOS_DIRS = (Path("_videos"), Path("_videos_pt-BR"))
@@ -128,6 +130,25 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         learning = analytics_summary.get("learning_profile") or {}
         if learning.get("winning_title_keywords"):
             lines.append("- Winning title keywords: " + ", ".join(learning["winning_title_keywords"][:8]))
+        lines.append("")
+
+    if analytics_summary:
+        comments = {}
+        comments_path = Path("_data/analytics/comments.json")
+        if comments_path.exists():
+            try:
+                comments = json.loads(comments_path.read_text(encoding="utf-8"))
+            except Exception:
+                comments = {}
+        mission = build_mission_control(latest=analytics_summary, comments=comments, queue={})
+        lines.append("### Mission control")
+        lines.append("")
+        lines.append(f"- Status: **{mission.get('status', 'steady')}**")
+        topics = mission.get("priority_topics") or []
+        if topics:
+            lines.append("- Priority topics: " + ", ".join(map(str, topics[:10])))
+        for task in (mission.get("next_tasks") or [])[:5]:
+            lines.append(f"- [{task.get('priority', 'normal')}] {task.get('task')} — {task.get('why')}")
         lines.append("")
 
     comments_path = Path("_data/analytics/comments.json")

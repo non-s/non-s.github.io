@@ -304,6 +304,18 @@ def test_topic_fetch_plan_boosts_thin_hot_topics():
     assert plan["cats"]["query_take"] >= 2
 
 
+def test_topic_fetch_plan_boosts_viewer_requested_animals():
+    queue = {"stories": [{"category": "ocean", "consumed": False} for _ in range(10)]}
+    plain = fetch_animals._topic_fetch_plan(queue, {}, {}, max_per_topic=4)
+    requested = fetch_animals._topic_fetch_plan(
+        queue,
+        {},
+        {"requested_animals": ["shark"]},
+        max_per_topic=4,
+    )
+    assert requested["ocean"]["budget"] > plain["ocean"]["budget"]
+
+
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE",
                         tmp_path / "missing.json")
