@@ -7,6 +7,10 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.content_agency import agency_snapshot
+from utils.editorial import rank_candidates
+from utils.growth_strategy import load_strategy
+from utils.humanity_engine import polish_story
 from utils.seo_optimizer import _ANIMAL_WORDS, optimise_title, seo_score
 
 
@@ -59,9 +63,14 @@ def build_health(root: Path | str = ".") -> dict:
     pending = len(stories)
     avg_seo = round(sum(seo_scores) / len(seo_scores), 2) if seo_scores else 0.0
     frontloaded_pct = round(frontloaded * 100 / pending, 2) if pending else 0.0
+    polished = [polish_story(item) for item in stories]
+    agency = agency_snapshot(rank_candidates(polished), load_strategy(root / "_data" / "analytics" / "latest.json"))
+    agency_ready = int((agency.get("decisions") or {}).get("publish_now", 0) or 0)
     issues: list[str] = []
     if pending < 20:
         issues.append("queue_inventory_low")
+    if pending and agency_ready == 0:
+        issues.append("no_agency_publish_now_candidate")
     if duplicate_scripts:
         issues.append("duplicate_scripts_in_queue")
     if avg_seo < 90:
@@ -76,6 +85,7 @@ def build_health(root: Path | str = ".") -> dict:
     score = 100
     score -= min(20, duplicate_scripts * 4)
     score -= 15 if pending < 20 else 0
+    score -= 12 if "no_agency_publish_now_candidate" in issues else 0
     score -= max(0, int(90 - avg_seo))
     score -= max(0, int(95 - frontloaded_pct))
     score -= 10 if "youtube_analytics_scope_incomplete" in issues else 0
@@ -97,6 +107,7 @@ def build_health(root: Path | str = ".") -> dict:
             "average_score": avg_seo,
             "animal_frontloaded_pct": frontloaded_pct,
         },
+        "agency": agency,
         "analytics": {
             "pulled_at": latest.get("pulled_at", ""),
             "metric_scope": latest.get("metric_scope", ""),

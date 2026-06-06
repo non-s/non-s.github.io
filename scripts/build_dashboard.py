@@ -32,7 +32,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.automation_health import build_health
+from utils.content_agency import agency_snapshot, rank_for_agency
 from utils.editorial import rank_candidates
+from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
 from utils.mission_control import build_mission_control
 
@@ -122,6 +124,9 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         return {"pending": 0, "approved": 0, "labels": {}, "top": []}
     polished_stories = [polish_story(item) for item in stories]
     ranked = rank_candidates(polished_stories)
+    strategy = load_strategy()
+    agency_ranked = rank_for_agency(ranked, strategy)
+    agency = agency_snapshot(ranked, strategy)
     labels: Counter[str] = Counter()
     states: Counter[str] = Counter()
     reasons: Counter[str] = Counter()
@@ -129,7 +134,7 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     approved = 0
     rescued = 0
     top: list[dict] = []
-    for item in ranked:
+    for item in agency_ranked:
         editorial = item.get("editorial") or {}
         humanity = editorial.get("humanity") or {}
         studio_polish = item.get("studio_polish") or {}
@@ -151,6 +156,8 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
                 "editorial_score": editorial.get("score", 0),
                 "humanity_score": humanity.get("score", 0),
                 "humanity_label": label,
+                "agency_score": (item.get("agency") or {}).get("score", 0),
+                "agency_decision": (item.get("agency") or {}).get("decision", ""),
             })
     return {
         "pending": len(stories),
@@ -168,6 +175,7 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
             states=states,
             categories=categories,
         ),
+        "agency": agency,
         "reasons": dict(reasons.most_common(8)),
         "top": top,
     }
@@ -554,6 +562,32 @@ def render_html() -> str:
             out.append("</table>")
         out.append("</div>")
 
+    agency = queue_studio.get("agency") or {}
+    if agency:
+        out.append("<div class='card'><h2>Agency brain</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Average agency score</small><div class='metric'>{float(agency.get('average_score', 0) or 0):.1f}</div></div>")
+        decisions = agency.get("decisions") or {}
+        for label in ("publish_now", "strong_candidate", "needs_polish", "hold"):
+            out.append(
+                f"<div><small>{html.escape(label.replace('_', ' ').title())}</small>"
+                f"<div class='metric'>{int(decisions.get(label, 0) or 0)}</div></div>"
+            )
+        out.append("</section>")
+        top_agency = agency.get("top") or []
+        if top_agency:
+            out.append("<h3>Best agency bets</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>Decision</th><th>Strengths</th></tr>")
+            for item in top_agency[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{int(item.get('score', 0) or 0)}</td>"
+                    f"<td><span class='badge'>{html.escape(str(item.get('decision', '')))}</span></td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get('strengths') or [])))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
     if queue_studio.get("pending"):
         out.append("<div class='card'><h2>Studio queue health</h2>")
         out.append("<section class='row'>")
@@ -603,14 +637,16 @@ def render_html() -> str:
             out.append("</table>")
         top_queue = queue_studio.get("top") or []
         if top_queue:
-            out.append("<h3>Next best candidates</h3><table><tr><th>Title</th><th>Category</th><th>Editorial</th><th>Humanity</th></tr>")
+            out.append("<h3>Next best candidates</h3><table><tr><th>Title</th><th>Category</th><th>Editorial</th><th>Humanity</th><th>Agency</th></tr>")
             for item in top_queue:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
                     f"<td>{html.escape(str(item.get('category', '')))}</td>"
                     f"<td>{int(item.get('editorial_score', 0) or 0)}</td>"
                     f"<td>{int(item.get('humanity_score', 0) or 0)} "
-                    f"<span class='badge'>{html.escape(str(item.get('humanity_label', '')))}</span></td></tr>"
+                    f"<span class='badge'>{html.escape(str(item.get('humanity_label', '')))}</span></td>"
+                    f"<td>{int(item.get('agency_score', 0) or 0)} "
+                    f"<span class='badge'>{html.escape(str(item.get('agency_decision', '')))}</span></td></tr>"
                 )
             out.append("</table>")
         out.append("</div>")

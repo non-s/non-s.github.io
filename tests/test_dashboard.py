@@ -191,6 +191,8 @@ def test_dashboard_renders_studio_queue_health(dashboard, tmp_path, monkeypatch)
     assert "Command center" in body
     assert "Queue by category" in body
     assert "Next best candidates" in body
+    assert "Agency brain" in body
+    assert "Best agency bets" in body
     assert "Chickens remember your face" in body
 
 
