@@ -266,6 +266,10 @@ def render_html() -> str:
     visual_report = _safe_json(Path("_data/visual_quality_report.json"))
     narrator_report = _safe_json(Path("_data/narrator_report.json"))
     legacy_backfill = _safe_json(Path("_data/analytics/legacy_backfill.json"))
+    remake_factory = _safe_json(Path("_data/remake_factory.json"))
+    rewrite_queue = _safe_json(Path("_data/retention_rewrite_queue.json"))
+    category_recovery = _safe_json(Path("_data/category_recovery.json"))
+    daily_brief = _safe_json(Path("_data/daily_brief.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -610,6 +614,64 @@ def render_html() -> str:
                     f"<td>{html.escape(str(item.get('goal', '')))}</td></tr>"
                 )
             out.append("</table>")
+        out.append("</div>")
+
+    if daily_brief:
+        out.append("<div class='card'><h2>Daily agency brief</h2>")
+        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(daily_brief.get('status', '')))}</span></p>")
+        today = daily_brief.get("today") or {}
+        if today:
+            out.append(
+                f"<p><strong>Today:</strong> focus {html.escape(str(today.get('focus', '')))} "
+                f"with {html.escape(str(today.get('mix', '')))}.</p>"
+            )
+        orders = daily_brief.get("orders") or []
+        if orders:
+            out.append("<ul>")
+            for order in orders[:5]:
+                out.append(f"<li>{html.escape(str(order))}</li>")
+            out.append("</ul>")
+        out.append("</div>")
+
+    if remake_factory:
+        out.append("<div class='card'><h2>Remake factory</h2>")
+        out.append(f"<p><strong>Drafts created:</strong> {int(remake_factory.get('created', 0) or 0)}</p>")
+        ids = remake_factory.get("created_ids") or []
+        if ids:
+            out.append("<p><strong>Queue ids:</strong> " + html.escape(", ".join(map(str, ids[:8]))) + "</p>")
+        out.append("</div>")
+
+    if rewrite_queue:
+        out.append("<div class='card'><h2>Retention rewrite queue</h2>")
+        out.append(f"<p><strong>Needs rewrite:</strong> {int(rewrite_queue.get('count', 0) or 0)}</p>")
+        items = rewrite_queue.get("items") or []
+        if items:
+            out.append("<table><tr><th>Title</th><th>Category</th><th>Score</th><th>Fixes</th></tr>")
+            for item in items[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{int(item.get('score', 0) or 0)}</td>"
+                    f"<td>{html.escape('; '.join(map(str, item.get('fixes') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
+    if category_recovery:
+        out.append("<div class='card'><h2>Category recovery</h2>")
+        plans = category_recovery.get("plans") or []
+        if plans:
+            out.append("<table><tr><th>Category</th><th>Retention</th><th>Allowed formats</th><th>Rules</th></tr>")
+            for item in plans[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}</td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get('allowed_formats') or [])))}</td>"
+                    f"<td>{html.escape('; '.join(map(str, item.get('rules') or []))[:150])}</td></tr>"
+                )
+            out.append("</table>")
+        else:
+            out.append("<p>No paused categories need recovery.</p>")
         out.append("</div>")
 
     if visual_report:

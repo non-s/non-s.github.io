@@ -130,6 +130,22 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "weekly_goal": "Raise retention.",
         "days": [{"day": 1, "focus": "farm", "trend_animal": "orca", "mix": "2 exploit + 1 explore", "goal": "raise retention"}],
     }), encoding="utf-8")
+    (tmp_path / "_data" / "daily_brief.json").write_text(json.dumps({
+        "status": "aggressive_growth",
+        "today": {"focus": "farm", "mix": "2 exploit + 1 explore"},
+        "orders": ["Publish agency candidates."],
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "remake_factory.json").write_text(json.dumps({
+        "created": 2,
+        "created_ids": ["remake-a", "remake-b"],
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "retention_rewrite_queue.json").write_text(json.dumps({
+        "count": 1,
+        "items": [{"title": "Weak hook", "category": "cats", "score": 42, "fixes": ["Rewrite hook."]}],
+    }), encoding="utf-8")
+    (tmp_path / "_data" / "category_recovery.json").write_text(json.dumps({
+        "plans": [{"category": "cats", "retention": 37, "allowed_formats": ["myth_buster"], "rules": ["Use outcome hooks."]}],
+    }), encoding="utf-8")
     (tmp_path / "_data" / "visual_quality_report.json").write_text(json.dumps({
         "coverage_pct": 50, "checked": 4, "rejected": 1,
     }), encoding="utf-8")
@@ -171,6 +187,10 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Trend radar" in body
     assert "Rare orca behavior" in body
     assert "7-day agency plan" in body
+    assert "Daily agency brief" in body
+    assert "Remake factory" in body
+    assert "Retention rewrite queue" in body
+    assert "Category recovery" in body
     assert "Visual QA coverage" in body
     assert "Narrator optimizer" in body
     assert "Legacy analytics backfill" in body
