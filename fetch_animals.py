@@ -65,6 +65,7 @@ from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.broll import fetch_pexels, fetch_pixabay
+from utils.growth_studio import studio_brief_for_story
 
 logging.basicConfig(
     level=logging.INFO,
@@ -256,7 +257,8 @@ _AI_PROMPT_TEMPLATE = (
     "Respond ONLY with valid JSON.\n\n"
     "Clip:\n"
     "Subject: {subject}\n"
-    "Context: {context}\n\n"
+    "Context: {context}\n"
+    "Studio direction: {studio_direction}\n\n"
     "EDITORIAL REQUIREMENT: the narration, hook, title, and thumbnail "
     "MUST be about the animal visibly named in Subject. Never switch to "
     "a different animal just because it has a more surprising fact. "
@@ -412,7 +414,17 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
     parsed JSON, or None on parse failure. Mirrors the shape of
     fetch_animals._ai_enhance so downstream code is unchanged.
     """
-    prompt = _AI_PROMPT_TEMPLATE.format(subject=subject, context=context)
+    growth_studio = studio_brief_for_story({
+        "id": _story_id(subject + context),
+        "title": subject,
+        "description": context,
+        "category": "wildlife",
+    })
+    prompt = _AI_PROMPT_TEMPLATE.format(
+        subject=subject,
+        context=context,
+        studio_direction=growth_studio.get("prompt_overlay", ""),
+    )
     raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25,
                   json_mode=True)
     if not raw:
@@ -460,6 +472,9 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
         "script":         str(data.get("script", "")).strip()[:900],
         "lead":           str(data.get("script", subject))[:400],
         "sentiment":      "positive",  # animal content is always positive
+        "growth_studio":   growth_studio,
+        "narrative_template": growth_studio.get("narrative_template") or {},
+        "production_mode": growth_studio.get("production_mode", ""),
     }
     if not _script_matches_visible_subject(subject, out["script"]):
         log.warning("AI script changed visible animal: subject=%r script=%r",
