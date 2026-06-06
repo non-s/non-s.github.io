@@ -66,7 +66,12 @@ from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.broll import fetch_pexels, fetch_pixabay
 from utils.growth_studio import studio_brief_for_story
-from utils.trend_radar import load_trends, trend_queries_for_category, trend_weight_for_category
+from utils.trend_radar import (
+    load_trends,
+    trend_context_for_category,
+    trend_queries_for_category,
+    trend_weight_for_category,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -259,6 +264,7 @@ _AI_PROMPT_TEMPLATE = (
     "Clip:\n"
     "Subject: {subject}\n"
     "Context: {context}\n"
+    "Trend context: {trend_context}\n"
     "Studio direction: {studio_direction}\n\n"
     "EDITORIAL REQUIREMENT: the narration, hook, title, and thumbnail "
     "MUST be about the animal visibly named in Subject. Never switch to "
@@ -410,7 +416,8 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     return not visible or not allowed or bool(visible & allowed)
 
 
-def _ai_enhance_animal(subject: str, context: str) -> dict | None:
+def _ai_enhance_animal(subject: str, context: str,
+                       trend_context: dict | None = None) -> dict | None:
     """Run the AI enhancement for an animal subject + return the
     parsed JSON, or None on parse failure. Mirrors the shape of
     fetch_animals._ai_enhance so downstream code is unchanged.
@@ -421,9 +428,21 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
         "description": context,
         "category": "wildlife",
     })
+    trend_context = trend_context or {}
+    trend_line = ""
+    if trend_context:
+        headline = str(trend_context.get("headline") or "")[:180]
+        terms = ", ".join(str(t) for t in (trend_context.get("terms") or [])[:6])
+        trend_line = (
+            f"{trend_context.get('animal', '')} is currently showing public-interest signals "
+            f"(score {trend_context.get('trend_score', 0)}, terms: {terms}). "
+            f"Use this only as timely context, not as a claim about the exact clip. "
+            f"Representative headline: {headline}"
+        ).strip()
     prompt = _AI_PROMPT_TEMPLATE.format(
         subject=subject,
         context=context,
+        trend_context=trend_line or "No specific trend context.",
         studio_direction=growth_studio.get("prompt_overlay", ""),
     )
     raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25,
@@ -476,6 +495,7 @@ def _ai_enhance_animal(subject: str, context: str) -> dict | None:
         "growth_studio":   growth_studio,
         "narrative_template": growth_studio.get("narrative_template") or {},
         "production_mode": growth_studio.get("production_mode", ""),
+        "trend_context":   trend_context,
     }
     if not _script_matches_visible_subject(subject, out["script"]):
         log.warning("AI script changed visible animal: subject=%r script=%r",
@@ -701,6 +721,7 @@ def _build_story(clip_subject: str,
         "script":         ai_out["script"],
         "lead":           ai_out["lead"],
         "sentiment":      ai_out["sentiment"],
+        "trend_context":  dict(ai_out.get("trend_context") or {}),
         # YouTube Shorts discovery hashtags.
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
@@ -866,7 +887,8 @@ def main() -> int:
     log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
              len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
-    fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), load_trends())
+    trends = load_trends()
+    fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
@@ -914,7 +936,11 @@ def main() -> int:
             taxonomy = taxonomy_prompt(enrichment)
             if taxonomy:
                 context = f"{context}. {taxonomy}"
-            ai_out = _ai_enhance_animal(subject, context)
+            ai_out = _ai_enhance_animal(
+                subject,
+                context,
+                trend_context_for_category(topic_key, trends),
+            )
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])
                 continue

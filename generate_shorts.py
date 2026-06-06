@@ -961,6 +961,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "narrative_template": dict(story.get("narrative_template") or {}),
         "growth_studio":   dict(story.get("growth_studio") or {}),
         "production_mode": story.get("production_mode", ""),
+        "trend_context":  dict(story.get("trend_context") or {}),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,
         # Pexels source-clip identity. Propagated so upload_youtube can
@@ -1086,6 +1087,7 @@ def _queue_to_story(qs: dict) -> dict:
         "source_clip_id": qs.get("source_clip_id", ""),
         "source_download_url": qs.get("source_download_url", ""),
         "source_license": qs.get("source_license", ""),
+        "trend_context": dict(qs.get("trend_context") or {}),
         "commons_image_url": qs.get("commons_image_url", ""),
         "commons_page_url": qs.get("commons_page_url", ""),
         "commons_license": qs.get("commons_license", ""),
