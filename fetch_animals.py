@@ -729,6 +729,16 @@ def _latest_strategy(path: Path = Path("_data/analytics/latest.json")) -> dict:
     return strategy if isinstance(strategy, dict) else {}
 
 
+def _latest_comments(path: Path = Path("_data/analytics/comments.json")) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def _pending_category_counts(queue: dict) -> dict[str, int]:
     counts: dict[str, int] = {}
     for story in queue.get("stories") or []:
@@ -741,10 +751,16 @@ def _pending_category_counts(queue: dict) -> dict[str, int]:
 
 def _topic_fetch_plan(queue: dict,
                       strategy: dict | None = None,
+                      comments: dict | None = None,
                       max_per_topic: int = MAX_PER_TOPIC) -> dict[str, dict[str, int]]:
     """Return per-topic fetch budgets tuned by queue pressure + analytics."""
     pending = _pending_category_counts(queue)
     weights = (strategy or {}).get("category_weights") or {}
+    requested = {
+        str(item).strip().lower()
+        for item in ((comments or {}).get("requested_animals") or [])
+        if str(item).strip()
+    }
     plan: dict[str, dict[str, int]] = {}
     base = max(1, int(max_per_topic))
     for topic_key, cfg in ANIMAL_TOPICS.items():
@@ -766,6 +782,11 @@ def _topic_fetch_plan(queue: dict,
             budget += 1
         elif weight <= 0.85 and count >= 8:
             budget = max(1, budget - 1)
+        topic_animals = set().union(*(
+            _animal_terms(query) for query in cfg.get("queries", [])
+        ))
+        if requested and topic_animals & requested:
+            budget += 2
         query_take = min(len(cfg.get("queries") or []), max(2, min(4, budget)))
         plan[topic_key] = {"budget": max(1, budget), "query_take": query_take}
     return plan
@@ -817,7 +838,7 @@ def main() -> int:
     log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
              len(queue_ids), len(published_keys), len(dedupe_keys))
     new_entries: list[dict] = []
-    fetch_plan = _topic_fetch_plan(queue, _latest_strategy())
+    fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments())
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})

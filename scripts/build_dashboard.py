@@ -33,6 +33,7 @@ if str(ROOT) not in sys.path:
 
 from utils.editorial import rank_candidates
 from utils.humanity_engine import polish_story
+from utils.mission_control import build_mission_control
 
 ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR      = Path("_site")
@@ -267,6 +268,11 @@ def render_html() -> str:
     recommendations = latest.get("production_recommendations") or {}
     learning_profile = latest.get("learning_profile") or recommendations.get("learning_profile") or {}
     queue_studio = _queue_studio_snapshot()
+    mission_control = build_mission_control(
+        latest=latest,
+        comments=comments,
+        queue=queue_studio,
+    )
 
     out: list[str] = []
     out.append(f"<!doctype html><html lang='en'><head><meta charset='utf-8'>")
@@ -337,6 +343,34 @@ def render_html() -> str:
             for action in actions[:5]:
                 out.append(f"<li>{html.escape(str(action))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if mission_control:
+        out.append("<div class='card'><h2>Mission control</h2>")
+        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(mission_control.get('status', 'steady')))}</span></p>")
+        priority_topics = mission_control.get("priority_topics") or []
+        if priority_topics:
+            out.append("<p><strong>Priority topics:</strong> " + html.escape(", ".join(map(str, priority_topics[:12]))) + "</p>")
+        tasks = mission_control.get("next_tasks") or []
+        if tasks:
+            out.append("<h3>Next moves</h3><table><tr><th>Priority</th><th>Task</th><th>Why</th></tr>")
+            for task in tasks[:8]:
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(task.get('priority', 'normal')))}</span></td>"
+                    f"<td>{html.escape(str(task.get('task', '')))}</td>"
+                    f"<td>{html.escape(str(task.get('why', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        review = mission_control.get("review_queue") or []
+        if review:
+            out.append("<h3>Human review queue</h3><table><tr><th>Video</th><th>Title</th><th>Reason</th></tr>")
+            for item in review[:8]:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('video_id', '')))}</code></td>"
+                    f"<td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<td>{html.escape(str(item.get('reason', '')))}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if queue_studio.get("pending"):

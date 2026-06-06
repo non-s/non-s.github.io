@@ -96,10 +96,12 @@ def test_render_digest_includes_analytics():
         "total_views_14d": 12345,
         "below_60_pct": ["v1", "v2"],
         "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
+        "production_recommendations": {"hot_categories": ["cats"]},
     })
     assert "67.5" in out
     assert "12345" in out
     assert "cats" in out.lower()
+    assert "Mission control" in out
 
 
 def test_render_digest_includes_production_quality_signals():
