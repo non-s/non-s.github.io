@@ -75,6 +75,10 @@ jobs:
         run: |
           python scripts/ops_guardian.py || true
           python scripts/trend_radar.py || true
+          python scripts/category_recovery.py || true
+          python scripts/category_recovery_rewriter.py || true
+          python scripts/fact_ledger.py || true
+          python scripts/agency_gate_report.py || true
           python scripts/publish_window.py
           python generate_shorts.py
         env:
@@ -101,6 +105,10 @@ jobs:
           python scripts/audit_automation.py || true
           python scripts/ops_guardian.py || true
           python scripts/remake_engine.py || true
+          python scripts/category_recovery.py || true
+          python scripts/category_recovery_rewriter.py || true
+          python scripts/fact_ledger.py || true
+          python scripts/agency_gate_report.py || true
           python scripts/weekly_report.py || true
       - name: "Salvar marcadores no git"
         run: |
@@ -109,7 +117,7 @@ jobs:
           # Stage the queue first: unmatched optional globs must never
           # prevent consumed stories from being persisted.
           git add _data/stories_queue.json
-          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json; do
+          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --

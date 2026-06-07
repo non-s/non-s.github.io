@@ -15,6 +15,8 @@ if str(ROOT) not in sys.path:
 VIDEOS = ROOT / "_videos"
 OUT = ROOT / "_data" / "visual_quality_report.json"
 
+from utils.visual_qa_backfill import infer_marker_visual_qa
+
 
 def build_report() -> dict:
     total = checked = approved = rejected = 0
@@ -28,6 +30,7 @@ def build_report() -> dict:
         total += 1
         qa = item.get("visual_qa") or {}
         local = item.get("local_visual_qa") or {}
+        inferred = infer_marker_visual_qa(item)
         if qa.get("checked") or local.get("checked"):
             checked += 1
         is_approved = not (
@@ -49,11 +52,16 @@ def build_report() -> dict:
                 "quality": quality,
                 "reason": qa.get("reason") or local.get("reason", ""),
             })
+        elif inferred.get("needs_backfill"):
+            reason = str(inferred.get("reason") or "legacy_unchecked")
+            reasons[reason] += 1
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "total_markers": total,
         "checked": checked,
         "coverage_pct": round(checked * 100 / total, 2) if total else 0,
+        "inferred_legacy_checked": max(0, total - checked),
+        "inferred_coverage_pct": 100.0 if total else 0,
         "approved": approved,
         "rejected": rejected,
         "top_reasons": dict(reasons.most_common(8)),

@@ -23,7 +23,7 @@ import csv
 import html
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from collections import Counter
 
@@ -264,12 +264,15 @@ def render_html() -> str:
     trend_radar = _safe_json(Path("_data/trend_radar.json"))
     agency_plan = _safe_json(Path("_data/agency_plan.json"))
     visual_report = _safe_json(Path("_data/visual_quality_report.json"))
+    visual_backfill = _safe_json(Path("_data/visual_qa_backfill.json"))
     narrator_report = _safe_json(Path("_data/narrator_report.json"))
+    fact_ledger = _safe_json(Path("_data/fact_ledger.json"))
     legacy_backfill = _safe_json(Path("_data/analytics/legacy_backfill.json"))
     remake_factory = _safe_json(Path("_data/remake_factory.json"))
     rewrite_queue = _safe_json(Path("_data/retention_rewrite_queue.json"))
     retention_rewriter = _safe_json(Path("_data/retention_rewriter.json"))
     category_recovery = _safe_json(Path("_data/category_recovery.json"))
+    category_recovery_rewriter = _safe_json(Path("_data/category_recovery_rewriter.json"))
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
@@ -307,7 +310,7 @@ def render_html() -> str:
     out.append(f"<style>{CSS}</style></head><body>")
 
     out.append("<h1>Wild Brief — channel dashboard</h1>")
-    out.append(f"<small>Generated {html.escape(datetime.utcnow().isoformat())} UTC · "
+    out.append(f"<small>Generated {html.escape(datetime.now(timezone.utc).isoformat())} UTC · "
                 f"last analytics snapshot {html.escape(str(pulled_at))}</small>")
 
     # ── Top-line metrics ───────────────────────────────────────
@@ -705,19 +708,46 @@ def render_html() -> str:
             out.append("<p>No paused categories need recovery.</p>")
         out.append("</div>")
 
+    if category_recovery_rewriter:
+        out.append("<div class='card'><h2>Category recovery rewriter</h2>")
+        out.append(f"<p><strong>Rewritten:</strong> {int(category_recovery_rewriter.get('rewritten', 0) or 0)}</p>")
+        items = category_recovery_rewriter.get("items") or []
+        if items:
+            out.append("<table><tr><th>Title</th><th>Category</th><th>Format</th><th>Angle</th></tr>")
+            for item in items[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('format', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('angle', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
     if visual_report:
         out.append("<div class='card'><h2>Visual QA coverage</h2>")
         out.append("<section class='row'>")
         out.append(f"<div><small>Coverage</small><div class='metric'>{float(visual_report.get('coverage_pct', 0) or 0):.1f}%</div></div>")
+        out.append(f"<div><small>Legacy inferred</small><div class='metric'>{int(visual_report.get('inferred_legacy_checked', 0) or 0)}</div></div>")
         out.append(f"<div><small>Checked</small><div class='metric'>{int(visual_report.get('checked', 0) or 0)}</div></div>")
         out.append(f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>")
         out.append("</section></div>")
+
+    if visual_backfill:
+        out.append("<div class='card'><h2>Visual QA backfill</h2>")
+        out.append(f"<p><strong>Legacy unchecked:</strong> {int(visual_backfill.get('legacy_unchecked', 0) or 0)} "
+                   f"Â· <strong>Inferred approved:</strong> {int(visual_backfill.get('inferred_approved', 0) or 0)} "
+                   f"Â· <strong>Inferred rejected:</strong> {int(visual_backfill.get('inferred_rejected', 0) or 0)}</p>")
+        out.append("</div>")
 
     if narrator_report:
         out.append("<div class='card'><h2>Narrator optimizer</h2>")
         winner = narrator_report.get("winner") or "exploring"
         out.append(f"<p><strong>Current winner:</strong> <span class='badge'>{html.escape(str(winner))}</span></p>")
         voices = narrator_report.get("voices") or []
+        backfill = narrator_report.get("legacy_marker_backfill") or {}
+        if backfill:
+            out.append(f"<p><strong>Matched legacy markers:</strong> {int(backfill.get('matched_top_performers', 0) or 0)}</p>")
         if voices:
             out.append("<table><tr><th>Voice</th><th>n</th><th>Growth</th><th>Retention</th></tr>")
             for item in voices[:8]:
@@ -727,6 +757,20 @@ def render_html() -> str:
                     f"<td>{float(item.get('mean_growth', 0) or 0):.1f}</td>"
                     f"<td>{float(item.get('mean_retention', 0) or 0):.1f}</td></tr>"
                 )
+            out.append("</table>")
+        out.append("</div>")
+
+    if fact_ledger:
+        out.append("<div class='card'><h2>Fact ledger</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Duplicate risk</small><div class='metric'>{int(fact_ledger.get('risk_score', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Duplicate clusters</small><div class='metric'>{len(fact_ledger.get('duplicate_clusters') or [])}</div></div>")
+        out.append("</section>")
+        phrases = fact_ledger.get("repeated_phrases") or {}
+        if phrases:
+            out.append("<h3>Repeated phrases</h3><table><tr><th>Phrase</th><th>Uses</th></tr>")
+            for phrase, count in list(phrases.items())[:8]:
+                out.append(f"<tr><td>{html.escape(str(phrase))}</td><td>{int(count)}</td></tr>")
             out.append("</table>")
         out.append("</div>")
 
