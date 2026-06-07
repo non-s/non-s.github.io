@@ -68,9 +68,10 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
     hook = suggested if re.search(rf"\b{re.escape(animal)}s?\b", suggested.lower()) else ""
     hook = hook or f"{animal.capitalize()} do this for one hidden reason."
     hook = _clean(hook).rstrip(".") + "."
+    source_signal = _clean(source_title)[:90] or seo_title
     script = (
         f"{hook} Watch the first movement, because the detail is easy to miss. "
-        f"The original topic already pulled attention, but this remake cuts straight "
+        f"The original topic pulled attention with this angle: {source_signal}. This remake cuts straight "
         f"to the animal's visible payoff. One body cue, one reason, one surprise: "
         f"that is the version viewers can understand before they swipe."
     )

@@ -276,6 +276,8 @@ def render_html() -> str:
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
     youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
+    autonomous_director = _safe_json(Path("_data/autonomous_director.json"))
+    winner_sequels = _safe_json(Path("_data/winner_sequel_factory.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -691,6 +693,53 @@ def render_html() -> str:
             for issue in issues[:8]:
                 out.append(f"<li><code>{html.escape(str(issue))}</code></li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if autonomous_director:
+        out.append("<div class='card'><h2>Autonomous director</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Autonomy score</small><div class='metric'>{int(autonomous_director.get('autonomy_score', 0) or 0)}</div></div>")
+        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(autonomous_director.get('state', 'unknown')))}</div></div>")
+        conversion = autonomous_director.get("subscriber_conversion") or {}
+        out.append(f"<div><small>Subs / 1k views</small><div class='metric'>{float(conversion.get('subs_per_1000_views', 0) or 0):.2f}</div></div>")
+        quota = autonomous_director.get("quota_budget") or {}
+        out.append(f"<div><small>API quota risk</small><div class='metric'>{int(quota.get('risk_score', 0) or 0)}</div></div>")
+        out.append("</section>")
+        decisions = autonomous_director.get("decisions") or []
+        if decisions:
+            out.append("<h3>Decisions</h3><ul>")
+            for decision in decisions[:8]:
+                out.append(f"<li>{html.escape(str(decision))}</li>")
+            out.append("</ul>")
+        mix = autonomous_director.get("publish_mix") or {}
+        if mix:
+            out.append("<h3>Publish mix</h3><table><tr><th>Lane</th><th>%</th></tr>")
+            for lane, pct in mix.items():
+                out.append(f"<tr><td>{html.escape(str(lane))}</td><td>{int(pct or 0)}</td></tr>")
+            out.append("</table>")
+        priorities = autonomous_director.get("category_priorities") or []
+        if priorities:
+            out.append("<h3>Category priorities</h3><table><tr><th>Category</th><th>Score</th></tr>")
+            for item in priorities[:6]:
+                out.append(f"<tr><td>{html.escape(str(item.get('value', '')))}</td><td>{float(item.get('score', 0) or 0):.1f}</td></tr>")
+            out.append("</table>")
+        out.append("</div>")
+
+    if winner_sequels:
+        out.append("<div class='card'><h2>Winner sequel factory</h2>")
+        out.append(f"<p><strong>Created:</strong> {int(winner_sequels.get('created', 0) or 0)} "
+                   f"from {int(winner_sequels.get('candidate_count', 0) or 0)} candidate(s).</p>")
+        candidates = winner_sequels.get("candidates") or []
+        if candidates:
+            out.append("<table><tr><th>Source</th><th>Category</th><th>Growth</th><th>Views</th></tr>")
+            for item in candidates[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('source_title', ''))[:90])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{float(item.get('growth_score', 0) or 0):.1f}</td>"
+                    f"<td>{int(item.get('views', 0) or 0):,}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if remake_factory:

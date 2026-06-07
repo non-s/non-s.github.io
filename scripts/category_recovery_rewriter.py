@@ -27,7 +27,7 @@ def main() -> int:
         for story in queue.get("stories") or []
         if not story.get("consumed") and not evaluate_story(story, rewrite_ids, recovery)["approved"]
     }
-    updated, changed = recover_queue(queue, held_ids, recovery)
+    updated, changed = recover_queue(queue, held_ids, recovery, limit=200)
     if changed:
         QUEUE.write_text(json.dumps(updated, indent=2, ensure_ascii=False), encoding="utf-8")
     payload = {

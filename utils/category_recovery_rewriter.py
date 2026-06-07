@@ -76,6 +76,65 @@ CAT_RECOVERY_ANGLES = [
     },
 ]
 
+DOG_RECOVERY_ANGLES = [
+    {
+        "key": "nose",
+        "title": "Why a dog's nose changes the whole story",
+        "hook": "Dogs read the world through scent before sight.",
+        "format": "body_superpower",
+        "thumb": "NOSE CLUE",
+        "visible": "nose",
+    },
+    {
+        "key": "tail",
+        "title": "What a dog's tail says before the bark",
+        "hook": "A dog's tail is a signal, not a simple happiness meter.",
+        "format": "animal_memory",
+        "thumb": "TAIL SIGNAL",
+        "visible": "tail",
+    },
+    {
+        "key": "paws",
+        "title": "Why dog paws explain the move",
+        "hook": "Dog paws carry more information than most people notice.",
+        "format": "body_superpower",
+        "thumb": "PAW CLUE",
+        "visible": "paws",
+    },
+    {
+        "key": "play",
+        "title": "Why dog play is more serious than it looks",
+        "hook": "Dogs use play to practice timing, trust, and control.",
+        "format": "animal_memory",
+        "thumb": "PLAY SIGNAL",
+        "visible": "first playful move",
+    },
+    {
+        "key": "memory",
+        "title": "Why dogs remember more than the moment",
+        "hook": "Dogs connect faces, voices, and routines into memory.",
+        "format": "animal_memory",
+        "thumb": "DOG MEMORY",
+        "visible": "face and posture",
+    },
+    {
+        "key": "cool",
+        "title": "How dogs cool down without sweating like us",
+        "hook": "Dogs cool themselves through panting, paws, and posture.",
+        "format": "body_superpower",
+        "thumb": "COOLING TRICK",
+        "visible": "mouth and paws",
+    },
+    {
+        "key": "yawn",
+        "title": "Why a dog yawn can calm the room",
+        "hook": "A dog yawn can be a calming signal, not just tiredness.",
+        "format": "animal_memory",
+        "thumb": "YAWN SIGNAL",
+        "visible": "yawn",
+    },
+]
+
 RECOVERY_VARIANTS = [
     {
         "title_suffix": "in the first second",
@@ -109,14 +168,14 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-z0-9']+", text or ""))
 
 
-def _cat_angle(story: dict) -> dict:
+def _recovery_angle(story: dict, angles: list[dict]) -> dict:
     text = f"{story.get('seo_title', '')} {story.get('title', '')} {story.get('script', '')}".lower()
-    for angle in CAT_RECOVERY_ANGLES:
+    for angle in angles:
         if angle["key"] in text:
             return angle
-    seed = str(story.get("id") or story.get("title") or "cat")
-    idx = int(hashlib.sha1(seed.encode("utf-8")).hexdigest(), 16) % len(CAT_RECOVERY_ANGLES)
-    return CAT_RECOVERY_ANGLES[idx]
+    seed = str(story.get("id") or story.get("title") or "animal")
+    idx = int(hashlib.sha1(seed.encode("utf-8")).hexdigest(), 16) % len(angles)
+    return angles[idx]
 
 
 def _variant(story: dict) -> dict:
@@ -145,10 +204,12 @@ def recover_story(story: dict, plan: dict | None = None) -> tuple[dict, bool]:
     """Return a recovery-safe story copy for paused categories."""
     plan = plan or {}
     category = str(story.get("category") or "").lower()
-    if category != "cats":
+    if category not in {"cats", "dogs"}:
         return dict(story), False
     out = dict(story)
-    angle = _cat_angle(story)
+    angles = CAT_RECOVERY_ANGLES if category == "cats" else DOG_RECOVERY_ANGLES
+    subject = "cat" if category == "cats" else "dog"
+    angle = _recovery_angle(story, angles)
     variant = _variant(story)
     source_signal = _source_signal(story)
     title = f"{angle['title']} {variant['title_suffix']}"
@@ -156,7 +217,7 @@ def recover_story(story: dict, plan: dict | None = None) -> tuple[dict, bool]:
     script = (
         f"{hook} Watch the first second: the body pauses, then the {angle['visible']} gives the clue. "
         f"In this clip, the recovery angle is {source_signal}. {variant['body']} "
-        "That visible cue is the whole story, so the Short opens on the animal "
+        f"That visible cue is the whole story, so the Short opens on the {subject} "
         f"instead of stretching the setup. {variant['payoff']}"
     )
     if _word_count(script) > 95:
