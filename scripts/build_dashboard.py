@@ -275,6 +275,7 @@ def render_html() -> str:
     category_recovery_rewriter = _safe_json(Path("_data/category_recovery_rewriter.json"))
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
+    youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -650,6 +651,46 @@ def render_html() -> str:
             for reason, count in reasons.items():
                 out.append(f"<tr><td><code>{html.escape(str(reason))}</code></td><td>{int(count)}</td></tr>")
             out.append("</table>")
+        out.append("</div>")
+
+    if youtube_intelligence:
+        out.append("<div class='card'><h2>YouTube API intelligence</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>API coverage</small><div class='metric'>{int(youtube_intelligence.get('coverage_score', 0) or 0)}</div></div>")
+        channel = youtube_intelligence.get("channel") or {}
+        out.append(f"<div><small>Subscribers</small><div class='metric'>{int(channel.get('subscriber_count', 0) or 0):,}</div></div>")
+        uploads = youtube_intelligence.get("uploads_inventory") or {}
+        out.append(f"<div><small>Uploads checked</small><div class='metric'>{int(uploads.get('uploads_checked', 0) or 0)}</div></div>")
+        video_audit = youtube_intelligence.get("video_audit") or {}
+        out.append(f"<div><small>Videos checked</small><div class='metric'>{int(video_audit.get('videos_checked', 0) or 0)}</div></div>")
+        out.append("</section>")
+        reports = youtube_intelligence.get("analytics_reports") or []
+        if reports:
+            out.append("<h3>Analytics reports</h3><table><tr><th>Report</th><th>Status</th><th>Rows</th><th>Use</th></tr>")
+            for item in reports[:8]:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('id', '')))}</code></td>"
+                    f"<td>{html.escape(str(item.get('status', '')))}</td>"
+                    f"<td>{int(item.get('rows', 0) or 0)}</td>"
+                    f"<td>{html.escape(str(item.get('use', ''))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        capabilities = youtube_intelligence.get("capabilities") or []
+        if capabilities:
+            out.append("<h3>Data API coverage</h3><table><tr><th>Feature</th><th>Coverage</th><th>Risk</th></tr>")
+            for item in capabilities[:10]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('id', '')))}</td>"
+                    f"<td><span class='badge'>{html.escape(str(item.get('coverage', '')))}</span></td>"
+                    f"<td>{html.escape(str(item.get('risk', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        issues = youtube_intelligence.get("issues") or []
+        if issues:
+            out.append("<h3>API issues</h3><ul>")
+            for issue in issues[:8]:
+                out.append(f"<li><code>{html.escape(str(issue))}</code></li>")
+            out.append("</ul>")
         out.append("</div>")
 
     if remake_factory:

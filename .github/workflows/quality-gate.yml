@@ -62,6 +62,7 @@ jobs:
       - name: "Run automation health audit"
         run: |
           python scripts/audit_automation.py
+          python scripts/youtube_intelligence.py
           python scripts/trend_radar.py
           python scripts/ops_guardian.py
           python scripts/remake_engine.py

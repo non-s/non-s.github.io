@@ -77,6 +77,7 @@ jobs:
       - name: "Audit queue automation health"
         run: |
           python scripts/audit_automation.py
+          python scripts/youtube_intelligence.py || true
           python scripts/ops_guardian.py
           python scripts/remake_engine.py
           python scripts/category_recovery.py
@@ -92,7 +93,7 @@ jobs:
           # Stage the queue first: optional generated files must never
           # prevent the refreshed queue from being persisted.
           git add _data/stories_queue.json
-          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json; do
+          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl _data/youtube_intelligence.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
