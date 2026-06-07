@@ -12,7 +12,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.agency_gate import evaluate_story, load_recovery_plans, load_rewrite_ids
+from utils.agency_gate import (
+    evaluate_story,
+    load_duplicate_ids,
+    load_recovery_plans,
+    load_rewrite_ids,
+    load_success_plan,
+)
 
 QUEUE = ROOT / "_data" / "stories_queue.json"
 OUT = ROOT / "_data" / "agency_gate.json"
@@ -22,13 +28,15 @@ def main() -> int:
     queue = json.loads(QUEUE.read_text(encoding="utf-8")) if QUEUE.exists() else {"stories": []}
     rewrite_ids = load_rewrite_ids(ROOT / "_data" / "retention_rewrite_queue.json")
     recovery = load_recovery_plans(ROOT / "_data" / "category_recovery.json")
+    duplicate_ids = load_duplicate_ids(QUEUE)
+    success_plan = load_success_plan(ROOT / "_data" / "channel_success.json")
     held = []
     approved = 0
     reasons = Counter()
     for story in queue.get("stories") or []:
         if story.get("consumed"):
             continue
-        verdict = evaluate_story(story, rewrite_ids, recovery)
+        verdict = evaluate_story(story, rewrite_ids, recovery, duplicate_ids, success_plan)
         if verdict["approved"]:
             approved += 1
         else:

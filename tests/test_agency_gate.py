@@ -1,4 +1,4 @@
-from utils.agency_gate import evaluate_story, filter_candidates, recovery_allows
+from utils.agency_gate import evaluate_story, filter_candidates, recovery_allows, success_allows
 
 
 def _story(**extra):
@@ -20,7 +20,13 @@ def _story(**extra):
 
 
 def test_agency_gate_holds_rewrite_ids():
-    verdict = evaluate_story(_story(id="bad"), rewrite_ids={"bad"}, recovery_plans={})
+    verdict = evaluate_story(
+        _story(id="bad"),
+        rewrite_ids={"bad"},
+        recovery_plans={},
+        duplicate_ids=set(),
+        success_plan={},
+    )
     assert verdict["approved"] is False
     assert "retention_rewrite_required" in verdict["reasons"]
 
@@ -40,7 +46,44 @@ def test_filter_candidates_splits_approved_and_held():
         [_story(id="a"), _story(id="b")],
         rewrite_ids={"b"},
         recovery_plans={},
+        duplicate_ids=set(),
+        success_plan={},
     )
     assert [item["id"] for item in approved] == ["a"]
     assert [item["id"] for item in held] == ["b"]
     assert held[0]["agency_gate"]["state"] == "held"
+
+
+def test_agency_gate_holds_duplicate_angles():
+    verdict = evaluate_story(
+        _story(id="copy"),
+        rewrite_ids=set(),
+        recovery_plans={},
+        duplicate_ids={"copy"},
+        success_plan={},
+    )
+    assert verdict["approved"] is False
+    assert "duplicate_angle_rewrite_required" in verdict["reasons"]
+
+
+def test_success_gate_blocks_overused_phrase_pressure():
+    ok, reasons = success_allows(
+        _story(title="Cats have a secret signal"),
+        {"retention": {"phrase_pressure": [{"phrase": "secret", "uses": 12}]}},
+    )
+    assert ok is False
+    assert "overused_phrase_pressure" in reasons
+
+
+def test_success_gate_blocks_recovery_category_with_weak_shape():
+    ok, reasons = success_allows(
+        _story(
+            category="dogs",
+            story_format="cute_behavior",
+            experiments={"hook_style": "question"},
+        ),
+        {"retention": {"recovery_categories": [{"category": "dogs"}]}},
+    )
+    assert ok is False
+    assert "success_recovery_format_required" in reasons
+    assert "success_recovery_hook_required" in reasons

@@ -71,7 +71,7 @@ class HostPersona:
 
     # Closing sign-off â€” kept to ~1 second so a 30 s Short doesn't lose
     # 7% of its airtime to outro chatter. Punchy is the goal.
-    outro_line: str = "Subscribe for more animal facts."
+    outro_line: str = "Follow for one animal signal a day."
 
     # Signature catchphrases the AI should weave in occasionally.
     # NOT every Short â€” overused they grate. Mention in the prompt
