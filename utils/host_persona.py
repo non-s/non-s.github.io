@@ -86,8 +86,8 @@ class HostPersona:
     # Pinned-first-comment template. `{handle}` interpolates the
     # channel handle from the upload metadata.
     first_comment_template: str = (
-        "New here? Subscribe to {name} for one weird animal fact every "
-        "morning, lunch, and evening UTC.\n\n"
+        "New here? Follow {name} for one animal signal a day.\n\n"
+        ""
         "Which animal should I cover next? Drop it below ðŸ‘‡"
     )
 
@@ -163,7 +163,7 @@ def system_prompt_overlay(persona: HostPersona | None = None) -> str:
 def first_comment_text(persona: HostPersona | None = None) -> str:
     """Render the pinned first-comment text."""
     persona = persona or load()
-    return persona.first_comment_template.format(
-        name=persona.name,
-        handle=persona.handle,
+    return (
+        f"New here? Follow {persona.name} for one animal signal a day.\n\n"
+        "Which animal should I decode next? Drop it below."
     )
