@@ -1,20 +1,28 @@
 {
-  "generated_at": "2026-06-07T05:00:06.830222+00:00",
+  "generated_at": "2026-06-07T07:42:04.571369+00:00",
   "risk": {
-    "level": "normal",
-    "score": 12,
+    "level": "watch",
+    "score": 57,
     "reasons": [
-      "average_retention_watch"
+      "automation_health_not_excellent",
+      "average_retention_watch",
+      "many_shorts_below_60_retention"
     ],
-    "weak_retention_ratio": 0.438,
-    "avg_retention": 57.564
+    "weak_retention_ratio": 0.526,
+    "avg_retention": 52.981
   },
   "paused_topics": [
     {
       "category": "cats",
       "reason": "retention_below_45",
-      "retention": 37.48,
-      "growth_score": 108.589
+      "retention": 37.5,
+      "growth_score": 98.439
+    },
+    {
+      "category": "dogs",
+      "reason": "retention_below_45",
+      "retention": 41.92,
+      "growth_score": 56.114
     }
   ],
   "scheduler": {
@@ -22,29 +30,29 @@
       {
         "utc_hour": 14,
         "country": "global",
-        "views": 10128,
+        "views": 13175,
         "reason": "default_midday"
       },
       {
         "utc_hour": 19,
         "country": "global",
-        "views": 10128,
+        "views": 13175,
         "reason": "default_evening"
       },
       {
         "utc_hour": 23,
         "country": "global",
-        "views": 10128,
+        "views": 13175,
         "reason": "default_late_evening"
       }
     ],
-    "spacing_hours": 4,
+    "spacing_hours": 6,
     "policy": "Publish in recommended windows; widen spacing while risk is watch/critical."
   },
   "inventory_forecast": {
-    "pending": 224,
+    "pending": 229,
     "daily_posts": 3,
-    "days_remaining": 74.7,
+    "days_remaining": 76.3,
     "state": "excellent"
   },
   "visual_quality": {
@@ -58,41 +66,108 @@
   "series_plan": {
     "top_series": [
       "Pet Secrets",
-      "Farmyard Surprises",
       "Sky Intelligence",
       "Animal Superpowers",
+      "Farmyard Surprises",
       "Ocean Mysteries"
     ],
     "queue_categories": {
       "arctic": 10,
-      "birds": 18,
+      "birds": 19,
       "cats": 29,
       "dogs": 26,
       "farm": 30,
       "insects": 22,
       "nocturnal": 15,
-      "ocean": 25,
+      "ocean": 26,
       "primates": 16,
       "reptiles": 17,
-      "wildlife": 16
+      "wildlife": 19
     },
     "series_to_scale": [
       "Pet Secrets",
-      "Farmyard Surprises",
-      "Sky Intelligence"
+      "Sky Intelligence",
+      "Animal Superpowers"
     ],
     "identity_rule": "Keep series labels stable so viewers feel a programmed channel, not random uploads."
   },
   "executive_report": {
-    "summary": "Automation is healthy; scale winners carefully.",
+    "summary": "Automation is running, but editorial risk needs attention.",
     "what_to_scale": [
       "farm",
+      "birds",
       "wildlife"
     ],
     "what_to_pause": [
-      "cats"
+      "cats",
+      "dogs"
     ],
-    "what_to_remake": [],
+    "what_to_remake": [
+      {
+        "video_id": "kOV3R1xPn30",
+        "title": "Chickens remember faces and hold grudges 🐔",
+        "views": 1050,
+        "retention": 60.78,
+        "growth_score": 286.804,
+        "action": "make sequel with a new animal in the same story shape"
+      },
+      {
+        "video_id": "2ndbAhlpL-U",
+        "title": "Baby goats love bottle feeding — here's why 🐐",
+        "views": 1951,
+        "retention": 35.6,
+        "growth_score": 240.862,
+        "action": "reuse topic only after changing the hook format"
+      },
+      {
+        "video_id": "0lGzMNN9mTM",
+        "title": "Why bears love rolling in flowers 🐻",
+        "views": 1136,
+        "retention": 53.98,
+        "growth_score": 210.407,
+        "action": "reuse topic only after changing the hook format"
+      },
+      {
+        "video_id": "rw7qqVpWNvc",
+        "title": "Asian elephants can recognize themselves in mirrors 🐘",
+        "views": 905,
+        "retention": 47.71,
+        "growth_score": 176.387,
+        "action": "reuse topic only after changing the hook format"
+      },
+      {
+        "video_id": "3q5vIbVH1xU",
+        "title": "Why snow leopards don’t roar 🐆",
+        "views": 635,
+        "retention": 48.32,
+        "growth_score": 145.154,
+        "action": "reuse topic only after changing the hook format"
+      },
+      {
+        "video_id": "QCTZebL-XIQ",
+        "title": "Eurasian eagle owl secrets — eyes that don't move",
+        "views": 343,
+        "retention": 91.05,
+        "growth_score": 140.225,
+        "action": "make sequel with a new animal in the same story shape"
+      },
+      {
+        "video_id": "pEyYUjNIDAM",
+        "title": "Whales can talk in dialects that change like pop songs",
+        "views": 781,
+        "retention": 43.83,
+        "growth_score": 138.002,
+        "action": "reuse topic only after changing the hook format"
+      },
+      {
+        "video_id": "GSebGyM4lvw",
+        "title": "Why cats land so quietly — and how they do it",
+        "views": 352,
+        "retention": 37.5,
+        "growth_score": 98.439,
+        "action": "reuse topic only after changing the hook format"
+      }
+    ],
     "inventory_state": "excellent",
     "next_actions": [
       "Favor high-retention categories and formats in the next queue refresh.",
