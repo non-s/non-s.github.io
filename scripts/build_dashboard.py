@@ -278,6 +278,7 @@ def render_html() -> str:
     youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
     autonomous_director = _safe_json(Path("_data/autonomous_director.json"))
     channel_success = _safe_json(Path("_data/channel_success.json"))
+    success_rewriter = _safe_json(Path("_data/success_rewriter.json"))
     winner_sequels = _safe_json(Path("_data/winner_sequel_factory.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
@@ -781,6 +782,38 @@ def render_html() -> str:
         identity = channel_success.get("identity") or {}
         if identity:
             out.append(f"<p><strong>Brand promise:</strong> {html.escape(str(identity.get('brand_promise', '')))}</p>")
+        out.append("</div>")
+
+    if success_rewriter:
+        out.append("<div class='card'><h2>Success rewriter</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Rewritten</small><div class='metric'>{int(success_rewriter.get('rewritten', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Held before</small><div class='metric'>{int(success_rewriter.get('before_held', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Held after</small><div class='metric'>{int(success_rewriter.get('after_held', 0) or 0)}</div></div>")
+        out.append("</section>")
+        before_reasons = success_rewriter.get("before_reasons") or {}
+        after_reasons = success_rewriter.get("after_reasons") or {}
+        if before_reasons or after_reasons:
+            out.append("<h3>Gate reasons</h3><table><tr><th>Reason</th><th>Before</th><th>After</th></tr>")
+            reason_keys = sorted(set(before_reasons) | set(after_reasons))
+            for reason in reason_keys[:10]:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(reason))}</code></td>"
+                    f"<td>{int(before_reasons.get(reason, 0) or 0)}</td>"
+                    f"<td>{int(after_reasons.get(reason, 0) or 0)}</td></tr>"
+                )
+            out.append("</table>")
+        items = success_rewriter.get("items") or []
+        if items:
+            out.append("<h3>Recovered candidates</h3><table><tr><th>Title</th><th>Category</th><th>Words</th><th>Reasons</th></tr>")
+            for item in items[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{int(item.get('script_words', 0) or 0)}</td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get('reasons') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if winner_sequels:

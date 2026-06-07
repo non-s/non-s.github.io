@@ -10,7 +10,14 @@ _STOPWORDS = {
     "animal", "animals", "wildlife", "shorts", "facts", "fact", "why", "this",
     "that", "they", "their", "them", "with", "from", "just", "like", "here",
     "real", "reason", "secret", "really", "because", "what", "when", "your",
-    "it's", "isnt", "isn't", "dont", "don't",
+    "it's", "isnt", "isn't", "dont", "don't", "one", "first", "watch",
+    "show", "shows", "reveal", "reveals", "visible", "cue", "clip", "short",
+    "movement", "payoff", "viewer", "viewers", "miss", "most", "in", "on",
+    "of", "at", "to", "for", "by", "before", "after",
+    "cat", "cats", "dog", "dogs", "seal", "seals", "paw", "paws",
+    "landing", "ear", "ears", "turn", "nose", "check", "tail", "pause",
+    "grooming", "reset", "whisker", "whiskers", "map", "white",
+    "camouflage", "body", "freeze",
 }
 
 
