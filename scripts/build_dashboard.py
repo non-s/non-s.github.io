@@ -277,6 +277,7 @@ def render_html() -> str:
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
     youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
     autonomous_director = _safe_json(Path("_data/autonomous_director.json"))
+    channel_success = _safe_json(Path("_data/channel_success.json"))
     winner_sequels = _safe_json(Path("_data/winner_sequel_factory.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
@@ -723,6 +724,63 @@ def render_html() -> str:
             for item in priorities[:6]:
                 out.append(f"<tr><td>{html.escape(str(item.get('value', '')))}</td><td>{float(item.get('score', 0) or 0):.1f}</td></tr>")
             out.append("</table>")
+        out.append("</div>")
+
+    if channel_success:
+        out.append("<div class='card'><h2>Channel success engine</h2>")
+        out.append("<section class='row'>")
+        out.append(f"<div><small>Success score</small><div class='metric'>{float(channel_success.get('success_score', 0) or 0):.1f}</div></div>")
+        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(channel_success.get('state', 'unknown')))}</div></div>")
+        retention = channel_success.get("retention") or {}
+        out.append(f"<div><small>Retention gap</small><div class='metric'>{float(retention.get('gap_to_floor', 0) or 0):.1f}</div></div>")
+        conversion = channel_success.get("subscriber_conversion") or {}
+        out.append(f"<div><small>Subs / 1k target gap</small><div class='metric'>{float(conversion.get('gap_to_target', 0) or 0):.2f}</div></div>")
+        out.append("</section>")
+        principle = channel_success.get("operating_principle")
+        if principle:
+            out.append(f"<p><strong>Principle:</strong> {html.escape(str(principle))}</p>")
+        actions = channel_success.get("next_actions") or []
+        if actions:
+            out.append("<h3>Success actions</h3><ul>")
+            for action in actions[:10]:
+                out.append(f"<li>{html.escape(str(action))}</li>")
+            out.append("</ul>")
+        first_day = channel_success.get("first_24h") or {}
+        winners_24h = first_day.get("winners") or []
+        rework_24h = first_day.get("rework") or []
+        if winners_24h or rework_24h:
+            out.append("<h3>First 24h reactions</h3><table><tr><th>Lane</th><th>Title</th><th>Views</th><th>Growth</th><th>Retention</th></tr>")
+            for lane, items in (("Winner", winners_24h), ("Rework hook", rework_24h)):
+                for item in items[:4]:
+                    out.append(
+                        f"<tr><td><span class='badge'>{html.escape(lane)}</span></td>"
+                        f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                        f"<td>{int(item.get('views', 0) or 0):,}</td>"
+                        f"<td>{float(item.get('growth_score', 0) or 0):.1f}</td>"
+                        f"<td>{float(item.get('retention', 0) or 0):.1f}%</td></tr>"
+                    )
+            out.append("</table>")
+        series = (channel_success.get("series_system") or {}).get("lanes") or []
+        if series:
+            out.append("<h3>Series lanes</h3><table><tr><th>Series</th><th>State</th><th>Score</th><th>Promise</th></tr>")
+            for item in series[:6]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('series', '')))}</td>"
+                    f"<td><span class='badge'>{html.escape(str(item.get('state', '')))}</span></td>"
+                    f"<td>{float(item.get('priority_score', 0) or 0):.1f}</td>"
+                    f"<td>{html.escape(str(item.get('promise', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        audience = channel_success.get("audience_loop") or {}
+        prompts = audience.get("prompts") or []
+        if prompts:
+            out.append("<h3>Audience loop prompts</h3><ul>")
+            for prompt in prompts[:5]:
+                out.append(f"<li>{html.escape(str(prompt))}</li>")
+            out.append("</ul>")
+        identity = channel_success.get("identity") or {}
+        if identity:
+            out.append(f"<p><strong>Brand promise:</strong> {html.escape(str(identity.get('brand_promise', '')))}</p>")
         out.append("</div>")
 
     if winner_sequels:
