@@ -576,7 +576,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 
     # CTA
     cta_font = get_font(38, bold=True)
-    cta_text = "SUBSCRIBE FOR MORE ANIMAL FACTS"
+    cta_text = "FOLLOW FOR ONE ANIMAL SIGNAL A DAY"
     cta_y = src_y + 48
     ctabbox = draw.textbbox((0, 0), cta_text, font=cta_font)
     ctx = (SHORT_W - ctabbox[2]) // 2

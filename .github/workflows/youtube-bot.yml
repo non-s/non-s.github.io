@@ -79,9 +79,9 @@ jobs:
           python scripts/category_recovery_rewriter.py || true
           python scripts/winner_sequel_factory.py || true
           python scripts/fact_ledger.py || true
-          python scripts/agency_gate_report.py || true
           python scripts/autonomous_director.py || true
           python scripts/channel_success.py || true
+          python scripts/agency_gate_report.py || true
           python scripts/publish_window.py
           python generate_shorts.py
         env:
@@ -113,9 +113,9 @@ jobs:
           python scripts/category_recovery.py || true
           python scripts/category_recovery_rewriter.py || true
           python scripts/fact_ledger.py || true
-          python scripts/agency_gate_report.py || true
           python scripts/autonomous_director.py || true
           python scripts/channel_success.py || true
+          python scripts/agency_gate_report.py || true
           python scripts/weekly_report.py || true
       - name: "Salvar marcadores no git"
         run: |
