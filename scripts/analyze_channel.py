@@ -71,7 +71,10 @@ def _load_analytics_service(token_file: Path = TOKEN_FILE):
     if not _token_grants(data, ANALYTICS_SCOPE, FULL_YOUTUBE_SCOPE):
         print("analytics: token lacks yt-analytics.readonly; skipping retention refresh")
         return None
-    creds = Credentials.from_authorized_user_info(data, [ANALYTICS_SCOPE])
+    scopes = [ANALYTICS_SCOPE]
+    if _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+        scopes.append(READONLY_SCOPE)
+    creds = Credentials.from_authorized_user_info(data, scopes)
     if not creds.valid and creds.expired and creds.refresh_token:
         creds.refresh(Request())
     return build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
