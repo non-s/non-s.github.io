@@ -174,13 +174,13 @@ def _recovery_angle(story: dict, angles: list[dict]) -> dict:
         if angle["key"] in text:
             return angle
     seed = str(story.get("id") or story.get("title") or "animal")
-    idx = int(hashlib.sha1(seed.encode("utf-8")).hexdigest(), 16) % len(angles)
+    idx = int(hashlib.sha256(seed.encode("utf-8")).hexdigest(), 16) % len(angles)
     return angles[idx]
 
 
 def _variant(story: dict) -> dict:
     seed = str(story.get("id") or story.get("title") or "cat")
-    idx = int(hashlib.sha1(f"variant:{seed}".encode("utf-8")).hexdigest(), 16) % len(RECOVERY_VARIANTS)
+    idx = int(hashlib.sha256(f"variant:{seed}".encode("utf-8")).hexdigest(), 16) % len(RECOVERY_VARIANTS)
     return RECOVERY_VARIANTS[idx]
 
 

@@ -33,7 +33,7 @@ ENABLED = os.environ.get("INTRO_OUTRO_ENABLED", "1") not in ("0", "false", "Fals
 
 
 def _cache_key(line: str, voice: str) -> str:
-    return hashlib.sha1(f"{line}|{voice}".encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha256(f"{line}|{voice}".encode("utf-8")).hexdigest()[:16]
 
 
 async def _render_line(line: str, voice: str, output_path: Path,

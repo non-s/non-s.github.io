@@ -5,6 +5,7 @@ from utils.publish_score import score_story
 from utils.rejected_queue import load_rejections, record_rejection
 from utils.rights_audit import audit_rights
 from utils.sequence_factory import build_sequence_plan
+from scripts.backfill_done_markers import backfill_marker
 
 
 def _strong_story(**overrides):
@@ -78,6 +79,18 @@ def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):
     assert items[0]["reasons"] == ["duplicate_script"]
 
 
+def test_rejected_queue_jsonl_default_format_records_deduped_items(tmp_path):
+    path = tmp_path / "rejected_queue.jsonl"
+    story = {"id": "abc", "title": "Weak story"}
+
+    record_rejection(story, ["weak_packaging"], path=path, stage="youtube_brain")
+    record_rejection(story, ["generic_packaging"], path=path, stage="youtube_brain")
+
+    items = load_rejections(path)
+    assert len(items) == 1
+    assert items[0]["reasons"] == ["generic_packaging"]
+
+
 def test_rights_audit_requires_known_source_license_and_url():
     approved = audit_rights({
         "source": "Pexels",
@@ -90,6 +103,29 @@ def test_rights_audit_requires_known_source_license_and_url():
     assert rejected["approved"] is False
     assert "unknown_source" in rejected["reasons"]
     assert "missing_source_url" in rejected["reasons"]
+
+
+def test_backfill_done_marker_preserves_upload_identity_fields():
+    marker = {
+        "video_id": "yt123",
+        "uploaded_at": "2026-01-01T00:00:00Z",
+        "url": "https://youtube.com/shorts/yt123",
+        "title": "Mallard ducks fake injuries to protect young",
+        "seo_title": "Mallard ducks fake injuries to protect young",
+        "script": "Mallard ducks fake injuries. Watch the wing cue first because it pulls predators away.",
+        "thumbnail_text": "WATCH THE WING",
+        "category": "birds",
+    }
+
+    updated, changed = backfill_marker(marker)
+
+    assert changed is True
+    assert updated["video_id"] == marker["video_id"]
+    assert updated["uploaded_at"] == marker["uploaded_at"]
+    assert updated["url"] == marker["url"]
+    assert updated["packaging"]
+    assert updated["publish_score"]
+    assert updated["youtube_brain"]
 
 
 def test_sequence_plan_generates_three_variants_per_winner():

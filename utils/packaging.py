@@ -22,11 +22,13 @@ ACTION_VERBS = (
 CUE_WORDS = (
     "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
-    "nose", "face", "head",
+    "nose", "face", "head", "pupil", "pupils", "hoof", "hooves", "fin", "fins",
+    "gill", "gills", "antenna", "antennae",
 )
 GENERIC_PHRASES = (
     "hiding in plain sight", "another secret", "another signal",
     "amazing fact", "incredible animal", "you won't believe",
+    "one visible cue for a reason", "secret hiding in plain sight",
 )
 
 
@@ -82,6 +84,8 @@ def title_options(story: dict) -> list[str]:
     current = _clean_title(str(story.get("seo_title") or story.get("title") or ""))
     options = [
         current,
+        f"Watch the {cue} when {animal.lower()} {action}",
+        f"{animal} {action} because of this {cue}",
         f"{animal} {action} for one reason most people miss",
         f"Why {animal.lower()} {action} is not random",
         f"{animal} {action}: watch the {cue}",
@@ -107,8 +111,9 @@ def thumbnail_options(story: dict) -> list[str]:
         raw,
         f"WATCH THE {cue}",
         f"{animal} {action}",
+        f"{cue} EXPLAINS IT",
+        f"{animal} {cue}",
         "NOT RANDOM",
-        "TINY CUE",
     ]
     out: list[str] = []
     seen = set()
@@ -140,6 +145,13 @@ def score_packaging(story: dict) -> dict:
         strengths.append("thumbnail_scannable")
     else:
         risks.append("thumbnail_not_2_4_words")
+    has_animal = any(re.search(r"\b" + re.escape(a) + r"\b", text) for a in ANIMALS)
+    if has_animal:
+        score += 10
+        strengths.append("animal_clear")
+    else:
+        score -= 10
+        risks.append("animal_not_clear")
     if any(re.search(r"\b" + re.escape(v) + r"\b", text) for v in ACTION_VERBS):
         score += 12
         strengths.append("action_word")
@@ -151,7 +163,7 @@ def score_packaging(story: dict) -> dict:
     else:
         risks.append("missing_visible_cue")
     if any(phrase in text for phrase in GENERIC_PHRASES):
-        score -= 18
+        score -= 28
         risks.append("generic_clickbait_language")
     if "?" in title:
         score += 4
@@ -159,7 +171,7 @@ def score_packaging(story: dict) -> dict:
     score = max(0, min(100, score))
     return {
         "score": score,
-        "state": "magnetic" if score >= 78 else ("usable" if score >= 62 else "rewrite_packaging"),
+        "state": "magnetic" if score >= 82 else ("usable" if score >= 68 else "rewrite_packaging"),
         "strengths": strengths,
         "risks": risks,
     }
@@ -183,13 +195,18 @@ def package_story(story: dict) -> dict:
     out = dict(story)
     titles = title_options(out)
     thumbs = thumbnail_options(out)
-    current_score = score_packaging(out)
-    best_title = max(titles, key=lambda t: audit_title(t).score) if titles else out.get("title", "")
-    if current_score["state"] == "rewrite_packaging" and best_title:
+    best: tuple[int, str, str] | None = None
+    for title in titles or [out.get("seo_title") or out.get("title") or ""]:
+        for thumb in thumbs or [out.get("thumbnail_text") or ""]:
+            candidate = {**out, "seo_title": title, "title": title, "thumbnail_text": thumb}
+            score = score_packaging(candidate)["score"]
+            if best is None or score > best[0]:
+                best = (score, title, thumb)
+    if best:
+        _, best_title, best_thumb = best
         out["seo_title"] = best_title
         out["title"] = best_title
-    if thumbs and ("thumbnail_not_2_4_words" in current_score["risks"] or not out.get("thumbnail_text")):
-        out["thumbnail_text"] = thumbs[0] if 2 <= len(thumbs[0].split()) <= 4 else thumbs[1]
+        out["thumbnail_text"] = best_thumb
     packaged_score = score_packaging(out)
     out["packaging"] = {
         **packaged_score,

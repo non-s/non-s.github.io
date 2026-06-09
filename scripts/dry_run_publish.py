@@ -10,8 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.publish_score import score_story
-from utils.rights_audit import audit_rights
+from utils.queue_pruner import enriched_score
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
@@ -23,17 +22,20 @@ def main() -> int:
     for story in data.get("stories") or []:
         if story.get("consumed"):
             continue
-        score = score_story(story)
-        rights = audit_rights(story)
-        if score["state"] != "reject" and rights["approved"]:
+        enriched = enriched_score(story)
+        rights = enriched["rights_audit"]
+        if enriched["state"] == "publish_ready" and rights["approved"]:
             items.append({
                 "id": story.get("id", ""),
-                "title": story.get("seo_title") or story.get("title") or "",
-                "category": story.get("category", ""),
-                "publish_score": score,
+                "title": enriched["story"].get("seo_title") or enriched["story"].get("title") or "",
+                "category": enriched["story"].get("category", ""),
+                "queue_score": enriched["score"],
+                "publish_score": enriched["publish_score"],
+                "youtube_brain": enriched["youtube_brain"],
+                "packaging": enriched["packaging"],
                 "rights_audit": rights,
             })
-    items = sorted(items, key=lambda item: item["publish_score"]["score"], reverse=True)
+    items = sorted(items, key=lambda item: item["queue_score"], reverse=True)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"would_publish": items[:10], "eligible_count": len(items)}, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"dry_run_publish: {len(items)} eligible candidates")

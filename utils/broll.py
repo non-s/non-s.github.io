@@ -76,7 +76,7 @@ def _session() -> requests.Session:
 # ── On-disk cache for discovery results ──────────────────────────
 
 def _cache_key(source: str, query: str) -> Path:
-    h = hashlib.sha1(f"{source}\x00{query}".lower().encode()).hexdigest()[:16]
+    h = hashlib.sha256(f"{source}\x00{query}".lower().encode()).hexdigest()[:16]
     return _CACHE_DIR / f"{source}-{h}.json"
 
 

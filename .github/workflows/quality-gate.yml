@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install "pytest>=8,<10" "PyYAML>=6,<7"
+          pip install "pytest>=8,<10" "PyYAML>=6,<7" "bandit>=1.8,<2" "pip-audit>=2.9,<3"
 
       - name: "Compile Python"
         run: python -m compileall -q .
@@ -59,36 +59,12 @@ jobs:
       - name: "Run test suite"
         run: python -m pytest -q
 
+      - name: "Audit dependencies"
+        run: python -m pip_audit -r requirements.txt
+
+      - name: "Run high-severity security scan"
+        run: python -m bandit -q -lll -r fetch_animals.py generate_shorts.py upload_youtube.py utils scripts -x tests
+
       - name: "Run automation health audit"
         run: |
-          python scripts/audit_automation.py
-          python scripts/youtube_intelligence.py
-          python scripts/trend_radar.py
-          python scripts/ops_guardian.py
-          python scripts/remake_engine.py
-          python scripts/remake_factory.py
-          python scripts/winner_sequel_factory.py
-          python scripts/backfill_legacy_analytics.py
-          python scripts/visual_qa_report.py
-          python scripts/visual_qa_backfill.py
-          python scripts/narrator_report.py
-          python scripts/agency_plan.py
-          python scripts/autonomous_director.py
-          python scripts/channel_success.py
-          python scripts/success_rewriter.py
-          python scripts/fact_ledger.py
-          python scripts/retention_rewrite_queue.py
-          python scripts/retention_rewriter.py
-          python scripts/retention_rewrite_queue.py
-          python scripts/category_recovery.py
-          python scripts/category_recovery_rewriter.py
-          python scripts/fact_ledger.py
-          python scripts/agency_gate_report.py
-          python scripts/ai_provider_report.py
-          python scripts/packaging_report.py
-          python scripts/youtube_brain_report.py
-          python scripts/post24_review.py
-          python scripts/publish_schedule.py
-          python scripts/autonomous_growth_loop.py
-          python scripts/daily_brief.py
-          python scripts/weekly_report.py
+          python scripts/run_intelligence_suite.py dashboard --strict

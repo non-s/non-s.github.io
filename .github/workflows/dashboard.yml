@@ -39,80 +39,18 @@ jobs:
           fi
           umask 077
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-          python scripts/analyze_channel.py || true
-          python scripts/analyze_comments.py || true
-          python scripts/youtube_intelligence.py || true
-          python scripts/trend_radar.py || true
-          python scripts/audit_automation.py || true
-          python scripts/ops_guardian.py || true
-          python scripts/remake_engine.py || true
-          python scripts/remake_factory.py || true
-          python scripts/winner_sequel_factory.py || true
-          python scripts/backfill_legacy_analytics.py || true
-          python scripts/visual_qa_report.py || true
-          python scripts/visual_qa_backfill.py || true
-          python scripts/narrator_report.py || true
-          python scripts/agency_plan.py || true
-          python scripts/autonomous_director.py || true
-          python scripts/channel_success.py || true
-          python scripts/success_rewriter.py || true
-          python scripts/fact_ledger.py || true
-          python scripts/retention_rewrite_queue.py || true
-          python scripts/retention_rewriter.py || true
-          python scripts/retention_rewrite_queue.py || true
-          python scripts/category_recovery.py || true
-          python scripts/category_recovery_rewriter.py || true
-          python scripts/fact_ledger.py || true
-          python scripts/agency_gate_report.py || true
-          python scripts/ai_provider_report.py || true
-          python scripts/packaging_report.py || true
-          python scripts/youtube_brain_report.py || true
-          python scripts/post24_review.py || true
-          python scripts/publish_schedule.py || true
-          python scripts/autonomous_growth_loop.py || true
-          python scripts/daily_brief.py || true
-          python scripts/weekly_report.py || true
+          python scripts/run_intelligence_suite.py dashboard
           rm -f youtube_token.json
       - name: "Audit local automation health"
         run: |
-          python scripts/audit_automation.py
-          python scripts/youtube_intelligence.py
-          python scripts/trend_radar.py
-          python scripts/ops_guardian.py
-          python scripts/remake_engine.py
-          python scripts/remake_factory.py
-          python scripts/winner_sequel_factory.py
-          python scripts/backfill_legacy_analytics.py
-          python scripts/visual_qa_report.py
-          python scripts/visual_qa_backfill.py
-          python scripts/narrator_report.py
-          python scripts/agency_plan.py
-          python scripts/autonomous_director.py
-          python scripts/channel_success.py
-          python scripts/success_rewriter.py
-          python scripts/fact_ledger.py
-          python scripts/retention_rewrite_queue.py
-          python scripts/retention_rewriter.py
-          python scripts/retention_rewrite_queue.py
-          python scripts/category_recovery.py
-          python scripts/category_recovery_rewriter.py
-          python scripts/fact_ledger.py
-          python scripts/agency_gate_report.py
-          python scripts/ai_provider_report.py
-          python scripts/packaging_report.py
-          python scripts/youtube_brain_report.py
-          python scripts/post24_review.py
-          python scripts/publish_schedule.py
-          python scripts/autonomous_growth_loop.py
-          python scripts/daily_brief.py
-          python scripts/weekly_report.py
+          python scripts/run_intelligence_suite.py dashboard --strict
       - name: "Build dashboard HTML"
         run: python scripts/build_dashboard.py
       - name: "Persist refreshed analytics"
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/youtube_intelligence.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/visual_quality_report.json _data/visual_qa_backfill.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewriter.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json _data/post24_review.json _data/publish_schedule.json _data/daily_brief.json _data/stories_queue.json; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/youtube_intelligence.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/visual_quality_report.json _data/visual_qa_backfill.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewriter.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json _data/post24_review.json _data/publish_schedule.json _data/daily_brief.json _data/stories_queue.json _data/queue_prune_report.json _data/rejected_queue.jsonl; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --

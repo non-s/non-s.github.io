@@ -121,12 +121,12 @@ def pick_track(story: dict) -> MusicTrack | None:
     if not eligible:
         return None
     seed = story.get("slug") or story.get("id") or story.get("title", "")
-    idx = int(hashlib.sha1(seed.encode("utf-8", "replace")).hexdigest()[:8], 16) % len(eligible)
+    idx = int(hashlib.sha256(seed.encode("utf-8", "replace")).hexdigest()[:8], 16) % len(eligible)
     return eligible[idx]
 
 
 def _cache_path(track: MusicTrack) -> Path:
-    h = hashlib.sha1(track.url.encode()).hexdigest()[:16]
+    h = hashlib.sha256(track.url.encode()).hexdigest()[:16]
     return MUSIC_CACHE_DIR / f"{h}.mp3"
 
 

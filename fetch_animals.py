@@ -28,7 +28,7 @@ How it works
    schema is identical.
 
 4. Merges new entries onto the existing `stories_queue.json`,
-   deduplicating by `id` (= sha1 of the Pexels clip URL). Older,
+   deduplicating by `id` (= SHA-256-derived key of the Pexels clip URL). Older,
    consumed entries are pruned to keep the file bounded.
 
 What's intentionally NOT here
@@ -45,7 +45,7 @@ Operator knobs (env vars)
 
   PEXELS_API_KEY          (required unless PIXABAY_API_KEY is set)
   PIXABAY_API_KEY         (optional supplemental video provider)
-  MISTRAL_API_KEY         (required) — AI enhancement
+  MISTRAL/CEREBRAS/GEMINI/GROQ key (one required) — AI enhancement
   ANIMALS_MAX_PER_TOPIC   (default 4) — clips fetched per topic per run
   ANIMALS_KEEP_DAYS       (default 14) — prune older entries
 """
@@ -332,7 +332,8 @@ _ANIMAL_ALIASES = {
     "owl": "bird", "parrot": "bird", "penguin": "bird", "pigeon": "bird",
     "binturong": "binturong",
     "cat": "cat", "cats": "cat", "feline": "cat", "kitten": "cat", "kittens": "cat",
-    "chicken": "chicken", "chickens": "chicken", "duck": "duck", "duckling": "duck",
+    "chicken": "chicken", "chickens": "chicken", "duck": "duck", "ducks": "duck",
+    "duckling": "duck", "ducklings": "duck",
     "chimpanzee": "chimpanzee", "chimpanzees": "chimpanzee",
     "crocodile": "crocodile", "crocodiles": "crocodile",
     "cow": "cow", "cows": "cow", "cattle": "cow",
@@ -554,7 +555,7 @@ def _source_clip_id(clip) -> str:
 def load_published_clip_keys() -> set[str]:
     """Return the permanent set of Pexels clip identifiers we already
     shipped. Each entry is matched by BOTH `pexels_video_id` (Pexels
-    canonical id) and the queue-side `story_id` (sha1 of the page
+    canonical id) and the queue-side `story_id` (SHA-256-derived page
     URL) — whichever is recorded survives schema variations.
 
     Empty set if the ledger doesn't exist yet.
@@ -857,7 +858,7 @@ def main() -> int:
         return 2
     ai_keys = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
     if not any(os.environ.get(key, "").strip() for key in ai_keys):
-        log.error("❌ MISTRAL_API_KEY not set — cannot enrich scripts.")
+        log.error("❌ No AI provider key set — configure MISTRAL, CEREBRAS, GEMINI or GROQ.")
         return 2
 
     queue = _load_queue()

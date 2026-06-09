@@ -54,7 +54,7 @@ BRAND_DIM       = (160, 165, 190)       # Muted: secondary text
 
 def _persona_hash(persona: HostPersona) -> str:
     blob = "|".join(str(v) for v in asdict(persona).values())
-    return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:12]
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
 
 
 def render_intro_card(persona: HostPersona | None = None,

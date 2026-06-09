@@ -136,7 +136,7 @@ def assign_variant(axis_name: str, key: str) -> str:
     ax = _axis_by_name(axis_name)
     if not ax or not ax.variants:
         return ""
-    h = hashlib.sha1(f"{axis_name}:{key}".encode("utf-8")).digest()
+    h = hashlib.sha256(f"{axis_name}:{key}".encode("utf-8")).digest()
     idx = int.from_bytes(h[:4], "big") % len(ax.variants)
     return ax.variants[idx]
 
@@ -154,7 +154,7 @@ def assign_for_production(axis_name: str, key: str,
     if not winner or winner not in variant_choices(axis_name):
         return baseline
     bucket = int.from_bytes(
-        hashlib.sha1(f"explore:{axis_name}:{key}".encode("utf-8")).digest()[:2],
+        hashlib.sha256(f"explore:{axis_name}:{key}".encode("utf-8")).digest()[:2],
         "big",
     ) % 100
     return baseline if bucket < exploration_percent else winner

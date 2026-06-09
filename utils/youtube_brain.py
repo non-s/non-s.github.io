@@ -14,12 +14,13 @@ from utils.story_intelligence import audit_hook, audit_title, classify_format
 ACTION_WORDS = {
     "fake", "protect", "escape", "remember", "recognize", "call", "hear",
     "hide", "slide", "hunt", "plan", "trick", "use", "warn", "follow",
-    "choose", "save", "signal", "learn",
+    "choose", "save", "signal", "learn", "change", "disappear", "blend",
 }
 WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thing"}
 VISIBLE_CUE_WORDS = {
     "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
+    "skin", "texture", "colour", "color",
 }
 
 
@@ -43,7 +44,7 @@ def _animal_from_text(text: str, category: str = "") -> str:
         "goat", "goats", "wolf", "wolves", "bear", "bears", "bird",
         "birds", "owl", "owls", "cat", "cats", "dog", "dogs", "lion",
         "lions", "elephant", "elephants", "dolphin", "dolphins", "whale",
-        "whales", "parrot", "parrots", "macaw", "macaws",
+        "whales", "parrot", "parrots", "macaw", "macaws", "octopus", "octopuses",
     )
     for token in _words(text.lower()):
         if token in animals:

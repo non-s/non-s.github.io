@@ -4,16 +4,18 @@
 
 Open **Settings -> Secrets and variables -> Actions** and add:
 
-- `MISTRAL_API_KEY`
 - `PEXELS_API_KEY` or `PEXELS`
 - `YOUTUBE_TOKEN`
+- At least one AI text provider:
+  `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
 Recommended free quality extensions:
 
 - `PIXABAY_API_KEY` or `PIXABAY`
 - `GEMINI_API_KEY` or `GEMINI`
 
-GBIF and Wikimedia Commons need no key. Optional AI fallbacks: `CEREBRAS_API_KEY`, `GROQ_API_KEY` or their short names.
+GBIF and Wikimedia Commons need no key. AI image generation is not enabled because
+the project is optimized for zero-cost operation.
 
 ## Create YouTube OAuth credentials
 

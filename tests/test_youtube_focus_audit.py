@@ -67,14 +67,17 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert 'QUALITY_REQUIRE_MOTION_BROLL: "1"' in workflow
     assert 'QUALITY_REQUIRE_CAPTIONS: "1"' in workflow
     assert 'QUALITY_MIN_VISUAL_QA_SCORE: "6"' in workflow
-    assert "python scripts/ops_guardian.py" in workflow
+    assert "python scripts/run_intelligence_suite.py pre_generate" in workflow
+    assert "python scripts/run_intelligence_suite.py post_publish" in workflow
     assert "python scripts/publish_window.py" in workflow
-    assert "python scripts/remake_engine.py" in workflow
-    assert "python scripts/weekly_report.py" in workflow
-    assert "python scripts/trend_radar.py" in workflow
     assert "_data/ops_guardian.json" in workflow
     assert "_data/remake_backlog.json" in workflow
     assert "_data/trend_radar.json" in workflow
+    suite = (ROOT / "scripts" / "run_intelligence_suite.py").read_text(encoding="utf-8")
+    assert "scripts/ops_guardian.py" in suite
+    assert "scripts/remake_engine.py" in suite
+    assert "scripts/weekly_report.py" in suite
+    assert "scripts/trend_radar.py" in suite
 
 
 def test_refresh_workflow_stages_queue_before_optional_files():
@@ -89,11 +92,13 @@ def test_refresh_workflow_stages_queue_before_optional_files():
 def test_dashboard_workflow_refreshes_analytics_before_build():
     workflow = (ROOT / ".github" / "workflows" / "dashboard.yml").read_text(encoding="utf-8")
     assert "contents: write" in workflow
-    assert "python scripts/analyze_channel.py" in workflow
+    assert "python scripts/run_intelligence_suite.py dashboard" in workflow
     assert "python scripts/build_dashboard.py" in workflow
     assert "git add \"$path\"" in workflow
     assert "_data/analytics/latest.json" in workflow
-    assert "python scripts/ops_guardian.py" in workflow
-    assert "python scripts/trend_radar.py" in workflow
     assert "_data/ops_guardian.json" in workflow
     assert "_data/trend_radar.json" in workflow
+    suite = (ROOT / "scripts" / "run_intelligence_suite.py").read_text(encoding="utf-8")
+    assert "scripts/analyze_channel.py" in suite
+    assert "scripts/ops_guardian.py" in suite
+    assert "scripts/trend_radar.py" in suite

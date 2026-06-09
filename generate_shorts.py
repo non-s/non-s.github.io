@@ -55,6 +55,7 @@ from utils.music_bed import add_music_bed
 from utils.packaging import package_story
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.publish_score import score_metadata, score_story as publish_score_story
+from utils.queue_pruner import prune_queue
 from utils.rejected_queue import record_rejection
 from utils.local_rewriter import rescue_story
 from utils.retention_surgeon import diagnose as diagnose_retention
@@ -1041,6 +1042,8 @@ def build_short_metadata(story: dict, video_path: Path,
         "video":          str(video_path),
         "story_slug":     story.get("slug", ""),
         "created_at":     datetime.now(timezone.utc).isoformat(),
+        "script":         story.get("script", "").strip(),
+        "thumbnail_text": story.get("thumbnail_text", "").strip(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
         "hook":           story.get("hook", "").strip(),
         "story_format":   story.get("story_format") or classify_format(
@@ -1080,7 +1083,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "commons_license":     story.get("commons_license", ""),
         "commons_artist":      story.get("commons_artist", ""),
         "gbif":                dict(story.get("gbif") or {}),
-        # Queue entry id (sha1 of the Pexels page URL). Second dedup
+        # Queue entry id (SHA-256-derived Pexels page URL). Second dedup
         # key after pexels_video_id; whichever the recorder has is fine.
         "story_id":            story.get("id", ""),
         # Source metadata (kept for analytics / dashboard).
@@ -1170,7 +1173,7 @@ def _queue_to_story(qs: dict) -> dict:
         "lead":           qs.get("lead", ""),
         "raw_title":      qs.get("title", ""),
         "source":         qs.get("source", "Pexels"),
-        "source_url":     qs.get("url", ""),
+        "source_url":     qs.get("source_url") or qs.get("url", ""),
         "image_url":      qs.get("image_url", ""),
         "tags":           [qs.get("category", "wildlife")],
         "category":       qs.get("category", "wildlife"),
@@ -1228,6 +1231,18 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     handled by the caller). Stories sorted by AI quality score desc.
     """
     queue = _load_queue()
+    pruned_queue, pruned_rejections, prune_summary = prune_queue(queue, analytics_strategy=load_strategy())
+    if pruned_rejections:
+        for item in pruned_rejections:
+            record_rejection(item["story"], item["reasons"], stage=item.get("stage", "queue_prune"))
+        queue = pruned_queue
+        _save_queue(queue)
+        log.info(
+            "  Queue pruned: %d -> %d pending (%d rejected)",
+            prune_summary["pending_before"],
+            prune_summary["pending_after"],
+            prune_summary["rejected"],
+        )
     stories = queue.get("stories", [])
     pending = [s for s in stories if not s.get("consumed")]
     seen_scripts: set[str] = set()
@@ -1282,7 +1297,22 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         item = dict(candidate)
         item["publish_score"] = score
         item = package_story(item)
-        item["youtube_brain"] = creator_premortem(item)
+        brain = creator_premortem(item)
+        packaging = item.get("packaging") or {}
+        if brain["state"] == "do_not_publish":
+            record_rejection(item, brain.get("risks") or [], stage="youtube_brain")
+            continue
+        if brain["state"] == "rewrite_before_publish" or packaging.get("state") == "rewrite_packaging":
+            reasons = list(dict.fromkeys((brain.get("risks") or []) + (packaging.get("risks") or ["rewrite_packaging"])))
+            rescued, applied = rescue_story(item, reasons)
+            if applied:
+                item = package_story(rescued)
+                brain = creator_premortem(item)
+                packaging = item.get("packaging") or {}
+            if brain["state"] != "publish_minded" or packaging.get("state") == "rewrite_packaging":
+                record_rejection(item, reasons, stage="youtube_brain_rewrite")
+                continue
+        item["youtube_brain"] = brain
         scored_candidates.append(item)
     candidates = scored_candidates
     if os.environ.get("OPS_GUARDIAN_ENFORCE", "0") in {"1", "true", "True"}:
@@ -1741,7 +1771,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["pre_publish_audit"] = audit_publish_package(metadata)
     metadata["publish_score"] = score_metadata(metadata)
     metadata["youtube_brain"] = publish_brain(metadata)
-    if metadata["youtube_brain"].get("state") == "hold":
+    if metadata["youtube_brain"].get("state") in {"hold", "rewrite"}:
         log.warning(
             "  Skipping Short - YouTube brain held score=%s risks=%s",
             metadata["youtube_brain"].get("score"),

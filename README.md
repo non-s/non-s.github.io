@@ -35,9 +35,10 @@ Every candidate passes through an automated editor-in-chief before rendering:
 
 ## Required secrets
 
-- `MISTRAL_API_KEY`
 - `PEXELS_API_KEY` or `PEXELS`
 - `YOUTUBE_TOKEN`
+- At least one AI text provider:
+  `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
 Recommended free quality extensions:
 
@@ -45,5 +46,7 @@ Recommended free quality extensions:
 - `GEMINI_API_KEY` or `GEMINI`
 
 GBIF and Wikimedia Commons enrichment do not require secrets.
+AI image generation is intentionally disabled because current free-tier
+availability is not reliable enough for the zero-cost goal.
 
 `YOUTUBE_TOKEN` is an OAuth JSON token, not an API key. Generate it once with `auth_youtube.py` or the `Build auth_youtube.exe (Windows)` workflow. See [SETUP.md](SETUP.md).

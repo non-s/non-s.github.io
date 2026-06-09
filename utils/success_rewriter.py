@@ -62,7 +62,7 @@ def _word_count(text: str) -> int:
 
 def _stable_choice(story: dict, values: list[str], salt: str = "") -> str:
     seed = f"{story.get('id') or story.get('title') or 'wildbrief'}:{salt}"
-    idx = int(hashlib.sha1(seed.encode("utf-8")).hexdigest(), 16) % len(values)
+    idx = int(hashlib.sha256(seed.encode("utf-8")).hexdigest(), 16) % len(values)
     return values[idx]
 
 

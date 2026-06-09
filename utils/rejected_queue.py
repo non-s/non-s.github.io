@@ -5,23 +5,59 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-REJECTED_QUEUE = Path("_data/rejected_queue.json")
+REJECTED_QUEUE = Path("_data/rejected_queue.jsonl")
+LEGACY_REJECTED_QUEUE = Path("_data/rejected_queue.json")
 
 
-def _read(path: Path = REJECTED_QUEUE) -> dict:
+def _read_jsonl(path: Path) -> list[dict]:
+    items: list[dict] = []
+    if not path.exists():
+        return items
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            item = json.loads(line)
+            if isinstance(item, dict):
+                items.append(item)
+        except Exception:
+            continue
+    return items
+
+
+def _read_legacy(path: Path = LEGACY_REJECTED_QUEUE) -> list[dict]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-        return data if isinstance(data, dict) else {}
+        if isinstance(data, dict):
+            return list(data.get("items") or [])
     except Exception:
-        return {}
+        pass
+    return []
+
+
+def _read(path: Path = REJECTED_QUEUE) -> list[dict]:
+    if path.suffix == ".jsonl":
+        items = _read_jsonl(path)
+        if items:
+            return items
+        return _read_legacy()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            return list(data.get("items") or [])
+        if isinstance(data, list):
+            return data
+    except Exception:
+        return []
+    return []
 
 
 def record_rejection(story: dict, reasons: list[str], *, path: Path = REJECTED_QUEUE,
                      stage: str = "queue_quality") -> None:
     if not reasons:
         return
-    payload = _read(path)
-    items = list(payload.get("items") or [])
+    items = _read(path)
     story_id = str(story.get("id") or story.get("_queue_id") or story.get("title") or "")
     items = [
         item for item in items
@@ -38,8 +74,13 @@ def record_rejection(story: dict, reasons: list[str], *, path: Path = REJECTED_Q
         "rewrite_attempted": False,
     })
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({"updated_at": datetime.now(timezone.utc).isoformat(), "items": items[-500:]}, indent=2, ensure_ascii=False), encoding="utf-8")
+    if path.suffix == ".jsonl":
+        lines = [json.dumps(item, ensure_ascii=False) for item in items[-1000:]]
+        path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    else:
+        payload = {"updated_at": datetime.now(timezone.utc).isoformat(), "items": items[-500:]}
+        path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 def load_rejections(path: Path = REJECTED_QUEUE) -> list[dict]:
-    return list((_read(path).get("items") or []))
+    return _read(path)

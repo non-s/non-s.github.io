@@ -26,7 +26,11 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         return story, False
     if not any(reason in reasons for reason in (
         "repetitive_title_template", "generic_script_template", "script_word_loop",
-        "duplicate_script",
+        "duplicate_script", "rewrite_packaging", "missing_visible_cue",
+        "missing_action_word", "title_needs_stronger_shape",
+        "animal_not_immediately_clear", "no_action_promise",
+        "payoff_not_explicit", "missing_visual_cue",
+        "generic_creator_language", "hook_shape_weak", "title_shape_weak",
     )):
         return story, False
     out = dict(story)
@@ -40,12 +44,12 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         title = f"{animal} use one body trick to survive"
         hook = f"{animal} use one body trick for a clear reason."
     else:
-        title = f"{animal} show one behavior with a hidden payoff"
-        hook = f"{animal} show one behavior with a hidden payoff."
+        title = f"{animal} show one cue that explains the behavior"
+        hook = f"{animal} show one cue that explains the behavior."
     script = (
-        f"{hook} Watch the visible cue first, because that is where the story starts. "
-        f"The movement is not random: it helps the animal solve one simple problem. "
-        f"One animal, one cue, one payoff. Follow for one animal signal a day."
+        f"{hook} Watch the body cue first, because that is where the story starts. "
+        f"The movement is not random: it helps this animal solve one simple problem. "
+        f"That is why the cue matters before the payoff. Follow for one animal signal a day."
     )
     out.update({
         "seo_title": title[:60],
@@ -53,7 +57,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         "hook": hook,
         "script": script,
         "lead": script[:400],
-        "thumbnail_text": "VISIBLE PAYOFF",
+        "thumbnail_text": "WATCH THE CUE",
         "local_rewrite": {"applied": True, "reasons": reasons, "method": "deterministic_rescue"},
     })
     return out, True

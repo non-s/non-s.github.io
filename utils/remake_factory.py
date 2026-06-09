@@ -76,7 +76,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         f"that is the version viewers can understand before they swipe."
     )
     source_id = str(remake.get("source_video_id") or source_title)
-    digest = hashlib.sha1(f"remake:{source_id}:{seo_title}".encode("utf-8")).hexdigest()[:16]
+    digest = hashlib.sha256(f"remake:{source_id}:{seo_title}".encode("utf-8")).hexdigest()[:16]
     return {
         "id": f"remake-{digest}",
         "fetched_at": generated_at,

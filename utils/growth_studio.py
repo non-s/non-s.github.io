@@ -106,7 +106,7 @@ _NARRATOR_BY_VARIANT = {
 
 
 def _hash_bucket(key: str, modulo: int = 100) -> int:
-    digest = hashlib.sha1(key.encode("utf-8")).digest()
+    digest = hashlib.sha256(key.encode("utf-8")).digest()
     return int.from_bytes(digest[:4], "big") % modulo
 
 
