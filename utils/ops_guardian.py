@@ -12,6 +12,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.audience_expansion import GLOBAL_PUBLISH_WINDOWS
+
 
 def _safe_json(path: Path) -> dict:
     if not path.exists():
@@ -57,13 +59,19 @@ def _recommended_hours(root: Path, latest: dict) -> list[dict]:
             continue
     if out:
         return out[:5]
-    # Conservative Shorts windows when country-level cohorts are not
-    # available yet. These align with the existing workflow cadence and
-    # keep US/Brazil evening visibility covered.
+    # Conservative global Shorts windows when country-level cohorts are not
+    # available yet. These spread discovery across Asia/Oceania,
+    # Europe/Africa and the Americas instead of overfitting one country.
     return [
-        {"utc_hour": 14, "country": "global", "views": int(latest.get("total_views", 0) or 0), "reason": "default_midday"},
-        {"utc_hour": 19, "country": "global", "views": int(latest.get("total_views", 0) or 0), "reason": "default_evening"},
-        {"utc_hour": 23, "country": "global", "views": int(latest.get("total_views", 0) or 0), "reason": "default_late_evening"},
+        {
+            "utc_hour": int(item["utc_hour"]),
+            "country": "global",
+            "views": int(latest.get("total_views", 0) or 0),
+            "reason": "default_global_daypart",
+            "label": str(item["label"]),
+            "regions": list(item["regions"]),
+        }
+        for item in GLOBAL_PUBLISH_WINDOWS
     ]
 
 

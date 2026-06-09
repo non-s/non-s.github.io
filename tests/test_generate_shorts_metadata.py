@@ -61,6 +61,8 @@ def test_metadata_caption_uses_youtube_shorts_hashtags(tmp_path: Path):
     assert "#Shorts" in desc
     assert "#AnimalFacts" in desc
     assert "#Wildlife" in desc
+    assert "#Animals" in desc
+    assert "#Nature" in desc
 
 
 def test_metadata_caption_respects_youtube_limit(tmp_path: Path):
@@ -90,6 +92,12 @@ def test_metadata_preserves_trend_context(tmp_path: Path):
 
 def test_metadata_preserves_agency_decision(tmp_path: Path):
     assert _meta(tmp_path)["agency"]["decision"] == "publish_now"
+
+
+def test_metadata_includes_global_audience_strategy(tmp_path: Path):
+    meta = _meta(tmp_path)
+    assert meta["audience_strategy"]["mode"] == "global"
+    assert len(meta["audience_strategy"]["publish_windows"]) == 4
 
 
 def test_metadata_includes_youtube_brain(tmp_path: Path):

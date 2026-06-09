@@ -45,6 +45,7 @@ from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
 from utils.content_agency import rank_for_agency
+from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
@@ -983,19 +984,7 @@ def build_short_metadata(story: dict, video_path: Path,
         topic_tag = (story.get("topic_hashtag") or category or "animals").lower()
         topic_tag = "".join(ch for ch in topic_tag if ch.isalnum())
         discovery = [cat, topic_tag, "animals", "wildlife", "funfacts"]
-    discovery = ["Shorts", "AnimalFacts", "Wildlife"] + discovery
-    # Dedupe while preserving order; cap at 5.
-    seen_h: set[str] = set()
-    final_tags: list[str] = []
-    for tag in discovery:
-        t = str(tag).strip().lstrip("#")
-        t = "".join(ch for ch in t if ch.isalnum())
-        if not t or t.lower() in seen_h:
-            continue
-        final_tags.append(t)
-        seen_h.add(t.lower())
-        if len(final_tags) >= 5:
-            break
+    final_tags = merge_hashtags(discovery)
     hashtag_block = " ".join(f"#{t}" for t in final_tags)
 
     raw_desc = (story.get("yt_description") or "").strip()
@@ -1016,21 +1005,7 @@ def build_short_metadata(story: dict, video_path: Path,
     # Tag list kept for analytics back-compat (the digest + dashboard
     # both read `meta['tags']`).
     queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
-    evergreen = [
-        "youtube shorts", "shorts", "animals", "animal facts", "wildlife", "nature",
-        category.lower(), f"{category.lower()} facts",
-        "wild brief", "cute animals", "did you know",
-    ]
-    seen: set[str] = set()
-    all_tags: list[str] = []
-    for tag in queue_tags + evergreen:
-        t = tag.strip().lower().lstrip("#")
-        if not t or t in seen:
-            continue
-        all_tags.append(t)
-        seen.add(t)
-        if len(all_tags) >= 15:
-            break
+    all_tags = merge_search_tags(queue_tags, category)
 
     seo = seo_score(base_title)
     return {
@@ -1069,6 +1044,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "trend_context":  dict(story.get("trend_context") or {}),
         "agency":         dict(story.get("agency") or {}),
         "agency_gate":    dict(story.get("agency_gate") or {}),
+        "audience_strategy": global_strategy(),
         "retention_surgery": diagnose_retention(story),
         # Vertical 9:16 + short duration = a YouTube Short.
         "is_short":       True,

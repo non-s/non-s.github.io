@@ -201,4 +201,6 @@ def test_publish_schedule_adapts_to_retention_health():
 
     assert low["recommended_shorts_per_day"] == 2
     assert high["recommended_shorts_per_day"] == 4
+    assert high["recommended_slots"] == ["05:23", "14:23", "19:23", "23:23"]
+    assert high["reason"] == "global_daypart_retention_based_until_country_analytics_available"
     assert len(high["recommended_slots"]) > len(low["recommended_slots"])

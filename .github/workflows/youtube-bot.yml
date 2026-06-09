@@ -1,11 +1,11 @@
 name: "YouTube Bot - Shorts only"
 
 # Shorts-only pipeline for YouTube.
-# Primary cadence: 3 Shorts/day, with a watchdog workflow that backfills
+# Primary cadence: 4 global Shorts/day, with a watchdog workflow that backfills
 # missed GitHub schedule events after a grace window.
 on:
   schedule:
-    - cron: "23 14,19,23 * * *"
+    - cron: "23 5,14,19,23 * * *"
   workflow_dispatch:
     inputs:
       reason:

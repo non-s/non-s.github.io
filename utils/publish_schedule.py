@@ -5,6 +5,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.audience_expansion import GLOBAL_PUBLISH_WINDOWS
+
 ANALYTICS_FILE = Path("_data/analytics/latest.json")
 SCHEDULE_FILE = Path("_data/publish_schedule.json")
 
@@ -19,16 +21,18 @@ def _safe_json(path: Path) -> dict:
 
 def recommend_schedule(analytics: dict | None = None) -> dict:
     analytics = analytics or _safe_json(ANALYTICS_FILE)
-    # Until traffic-source/daypart data exists, keep proven UTC slots and
-    # adapt cadence based on retention health.
+    # Until traffic-source/daypart data exists, use global UTC windows:
+    # Asia/Oceania evening, Europe/Africa afternoon, Americas midday and
+    # Americas evening. Cadence still adapts to retention health.
     retention = float(analytics.get("avg_view_percentage") or analytics.get("avg_view_pct") or 0)
-    slots = ["14:23", "19:23", "23:23"]
+    global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
+    slots = [global_slots[0], global_slots[1], global_slots[-1]]
     if retention < 52:
         cadence = 2
-        slots = ["14:23", "23:23"]
+        slots = [global_slots[0], global_slots[-1]]
     elif retention >= 70:
         cadence = 4
-        slots = ["11:23", "14:23", "19:23", "23:23"]
+        slots = global_slots
     else:
         cadence = 3
     return {
@@ -36,7 +40,8 @@ def recommend_schedule(analytics: dict | None = None) -> dict:
         "timezone": "UTC",
         "recommended_slots": slots,
         "recommended_shorts_per_day": cadence,
-        "reason": "retention_based_until_daypart_analytics_available",
+        "target_regions": GLOBAL_PUBLISH_WINDOWS,
+        "reason": "global_daypart_retention_based_until_country_analytics_available",
     }
 
 

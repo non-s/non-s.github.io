@@ -1,0 +1,101 @@
+"""Global audience helpers for Wild Brief Shorts.
+
+The channel should feel international by default: simple English,
+universal animal discovery terms and publish windows spread across
+major time zones. This module keeps those choices in one place so the
+automation can expand globally without hard-coding one target country.
+"""
+from __future__ import annotations
+
+from datetime import datetime, timezone
+
+
+GLOBAL_HASHTAGS = ["Shorts", "AnimalFacts", "Wildlife", "Animals", "Nature"]
+
+GLOBAL_SEARCH_TAGS = [
+    "animal facts",
+    "wildlife",
+    "wild animals",
+    "nature",
+    "nature shorts",
+    "animal behavior",
+    "amazing animals",
+    "world animals",
+]
+
+GLOBAL_PUBLISH_WINDOWS = [
+    {
+        "slot": "05:23",
+        "utc_hour": 5,
+        "label": "Asia/Oceania evening",
+        "regions": ["India", "Southeast Asia", "Australia"],
+    },
+    {
+        "slot": "14:23",
+        "utc_hour": 14,
+        "label": "Europe/Africa afternoon",
+        "regions": ["Europe", "Africa", "Middle East"],
+    },
+    {
+        "slot": "19:23",
+        "utc_hour": 19,
+        "label": "Americas midday",
+        "regions": ["North America", "Latin America"],
+    },
+    {
+        "slot": "23:23",
+        "utc_hour": 23,
+        "label": "Americas evening",
+        "regions": ["North America", "Latin America"],
+    },
+]
+
+
+def _clean_token(value: str) -> str:
+    return "".join(ch for ch in str(value).strip().lstrip("#") if ch.isalnum())
+
+
+def merge_hashtags(discovery: list[str] | tuple[str, ...] | None, *, limit: int = 6) -> list[str]:
+    """Return globally useful hashtags while preserving topic signals."""
+    seen: set[str] = set()
+    out: list[str] = []
+    for tag in [*GLOBAL_HASHTAGS, *(discovery or [])]:
+        cleaned = _clean_token(str(tag))
+        key = cleaned.lower()
+        if not cleaned or key in seen:
+            continue
+        out.append(cleaned)
+        seen.add(key)
+        if len(out) >= limit:
+            break
+    return out
+
+
+def merge_search_tags(queue_tags: list[str] | tuple[str, ...] | None, category: str) -> list[str]:
+    """Blend subject tags with global discovery tags for YouTube search."""
+    evergreen = [str(category or "").lower(), f"{str(category or '').lower()} facts"]
+    seen: set[str] = set()
+    out: list[str] = []
+    for tag in [*(queue_tags or []), *GLOBAL_SEARCH_TAGS, *evergreen, "wild brief", "shorts"]:
+        cleaned = str(tag).strip().lower().lstrip("#")
+        if not cleaned or cleaned in seen:
+            continue
+        out.append(cleaned)
+        seen.add(cleaned)
+        if len(out) >= 15:
+            break
+    return out
+
+
+def global_strategy() -> dict:
+    """Public metadata for reports and .done markers."""
+    return {
+        "mode": "global",
+        "language_strategy": "simple_english_global",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "publish_windows": GLOBAL_PUBLISH_WINDOWS,
+        "principle": (
+            "Do not target one country; publish and package for viewers across "
+            "Asia/Oceania, Europe/Africa and the Americas."
+        ),
+    }
