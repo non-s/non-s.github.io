@@ -32,13 +32,23 @@ def test_build_plan_creates_hypotheses_and_prioritises_queue():
         },
         experiments={"winners": {"hook_style": "outcome_first"}, "axis_stats": {}},
         post24={"counts": {"rewrite_hook": 2}},
+        sequence_plan={"source_winners": 1, "variants": [{
+            "id": "seq-1",
+            "title": "Ducks part 2",
+            "sequence_variant": "same_format_new_animal",
+            "category": "farm",
+        }]},
+        comments={"requested_animals": ["shark"], "content_prompts": ["do sharks remember?"]},
         queue={"stories": [_story("farm-1"), _story("cats-1", category="cats")]},
     )
 
     assert plan["autonomy_score"] >= 80
     assert plan["state"] == "fully_autonomous"
     assert plan["experiment_bank"]["hypotheses"]
+    assert plan["sequence_bank"]["variant_count"] == 1
+    assert plan["audience_requests"]["requested_animals"] == ["shark"]
     assert plan["queue"]["top_candidates"][0]["id"] == "farm-1"
+    assert plan["queue"]["top_candidates"][0]["packaging_lab"]["title_variants"]
     assert any("Bias production" in item for item in plan["decisions"])
 
 
@@ -59,3 +69,4 @@ def test_apply_plan_to_queue_writes_autonomy_annotations():
     assert annotation["priority"] > 0
     assert annotation["lane"] in {"proven_category", "fresh_experiment", "sequence"}
     assert annotation["state"] != "reject"
+    assert annotation["packaging_lab"]["thumbnail_variants"]

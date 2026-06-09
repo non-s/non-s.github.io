@@ -26,7 +26,7 @@ def build_sequence_plan(analytics: dict | None = None, *, limit: int = 5) -> dic
         retention = float(item.get("view_pct") or item.get("average_view_percentage") or 0)
         growth = float(item.get("growth_score") or 0)
         views = int(item.get("views") or 0)
-        if (retention >= 60 and growth >= 180) or views >= 1200:
+        if (retention >= 62 and growth >= 180) or views >= 1200:
             winners.append(item)
     variants = []
     for winner in winners[:limit]:

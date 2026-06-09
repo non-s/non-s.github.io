@@ -6,6 +6,7 @@ from utils.rejected_queue import load_rejections, record_rejection
 from utils.rights_audit import audit_rights
 from utils.sequence_factory import build_sequence_plan
 from scripts.backfill_done_markers import backfill_marker
+from scripts.dry_run_publish import build_dry_run
 
 
 def _strong_story(**overrides):
@@ -151,12 +152,47 @@ def test_sequence_plan_generates_three_variants_per_winner():
 
 def test_post24_review_classifies_scale_rewrite_pause_and_watch():
     assert classify_video({"views": 1200, "view_pct": 70, "growth_score": 250}) == "scale"
+    assert classify_video({"views": 1200, "view_pct": 61, "growth_score": 250}) == "rewrite_hook"
     assert classify_video({"views": 1000, "view_pct": 45, "growth_score": 120}) == "rewrite_hook"
     assert classify_video({"views": 200, "view_pct": 40, "growth_score": 20}) == "pause_topic"
     assert classify_video({"views": 700, "view_pct": 55, "growth_score": 100}) == "watch"
 
     review = build_review({"top_performers": [{"video_id": "x", "title": "X", "views": 1200, "view_pct": 70, "growth_score": 250}]})
     assert review["counts"]["scale"] == 1
+    assert "62" in review["rules"]["scale"]
+
+
+def test_dry_run_publish_uses_autonomy_priority_before_queue_score():
+    base = {
+        "seo_title": "Ducks fake injuries to protect young",
+        "title": "Ducks fake injuries to protect young",
+        "hook": "Ducks fake injuries to protect their young.",
+        "script": (
+            "Ducks fake injuries when danger gets close. Watch the wing movement first, "
+            "because that cue pulls predators away from the nest. That is why the young "
+            "get time to hide before the payoff."
+        ),
+        "thumbnail_text": "DUCK WING",
+        "yt_tags": ["ducks", "animal facts"],
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/duck-1/",
+        "source_license": "Pexels License",
+        "category": "farm",
+        "score": 9,
+    }
+    payload = build_dry_run({"stories": [
+        {**base, "id": "low", "autonomy": {"priority": 10, "lane": "fresh_experiment"}},
+        {
+            **base,
+            "id": "high",
+            "source_url": "https://www.pexels.com/video/duck-2/",
+            "autonomy": {"priority": 130, "lane": "proven_category"},
+        },
+    ]})
+
+    assert payload["would_publish"][0]["id"] == "high"
+    assert payload["would_publish"][0]["autonomy_lane"] == "proven_category"
+    assert payload["selection_rule"].startswith("autonomy_priority")
 
 
 def test_publish_schedule_adapts_to_retention_health():

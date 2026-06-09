@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T16:25:30.580159+00:00",
+  "generated_at": "2026-06-09T17:55:59.609800+00:00",
   "items": [
     {
       "video_id": "7-ADzNJ9TH0",
@@ -7,43 +7,16 @@
       "category": "farm",
       "views": 1928,
       "retention": 0,
-      "growth_score": 490.182,
+      "growth_score": 388.932,
       "decision": "rewrite_hook"
     },
     {
       "video_id": "x5WHIOr3fbQ",
       "title": "Mallard ducks fake injuries to trick predators",
       "category": "farm",
-      "views": 1470,
+      "views": 1542,
       "retention": 118.22,
-      "growth_score": 320.641,
-      "decision": "scale"
-    },
-    {
-      "video_id": "KHNEgmGZgKg",
-      "title": "Cows have another signal hiding in plain sight",
-      "category": "farm",
-      "views": 335,
-      "retention": 0,
-      "growth_score": 316.921,
-      "decision": "pause_topic"
-    },
-    {
-      "video_id": "3fmmBeCj73M",
-      "title": "Horses White horses and how they see in color",
-      "category": "farm",
-      "views": 611,
-      "retention": 0,
-      "growth_score": 303.119,
-      "decision": "watch"
-    },
-    {
-      "video_id": "K4gDWvXJ_cI",
-      "title": "Cows remember faces for years 🐄",
-      "category": "farm",
-      "views": 1179,
-      "retention": 93.85,
-      "growth_score": 254.112,
+      "growth_score": 310.769,
       "decision": "scale"
     },
     {
@@ -51,8 +24,17 @@
       "title": "Chickens remember faces and hold grudges 🐔",
       "category": "farm",
       "views": 1055,
-      "retention": 61.04,
-      "growth_score": 253.374,
+      "retention": 61.13,
+      "growth_score": 247.755,
+      "decision": "rewrite_hook"
+    },
+    {
+      "video_id": "K4gDWvXJ_cI",
+      "title": "Cows remember faces for years 🐄",
+      "category": "farm",
+      "views": 1179,
+      "retention": 93.85,
+      "growth_score": 244.578,
       "decision": "scale"
     },
     {
@@ -61,8 +43,17 @@
       "category": "farm",
       "views": 1338,
       "retention": 41.83,
-      "growth_score": 220.342,
+      "growth_score": 210.502,
       "decision": "rewrite_hook"
+    },
+    {
+      "video_id": "85VdygIXPBo",
+      "title": "Tigers never roar at their prey — here's",
+      "category": "wildlife",
+      "views": 689,
+      "retention": 75.42,
+      "growth_score": 207.067,
+      "decision": "scale"
     },
     {
       "video_id": "JwXcPUwBmzM",
@@ -70,32 +61,46 @@
       "category": "birds",
       "views": 753,
       "retention": 57.81,
-      "growth_score": 217.901,
+      "growth_score": 204.353,
       "decision": "watch"
     },
     {
-      "video_id": "85VdygIXPBo",
-      "title": "Tigers never roar at their prey — here's",
-      "category": "wildlife",
-      "views": 681,
-      "retention": 75.42,
-      "growth_score": 216.428,
-      "decision": "scale"
+      "video_id": "KHNEgmGZgKg",
+      "title": "Cows have another signal hiding in plain sight",
+      "category": "farm",
+      "views": 500,
+      "retention": 0,
+      "growth_score": 204.042,
+      "decision": "watch"
     },
     {
-      "video_id": "SwXeYBoO6ko",
-      "title": "Penguins slide on their bellies like sleds",
-      "category": "birds",
-      "views": 1021,
-      "retention": 0,
-      "growth_score": 207.955,
+      "video_id": "2ndbAhlpL-U",
+      "title": "Baby goats love bottle feeding — here's why 🐐",
+      "category": "farm",
+      "views": 1955,
+      "retention": 35.65,
+      "growth_score": 202.193,
       "decision": "rewrite_hook"
+    },
+    {
+      "video_id": "3fmmBeCj73M",
+      "title": "Horses White horses and how they see in color",
+      "category": "farm",
+      "views": 620,
+      "retention": 0,
+      "growth_score": 189.1,
+      "decision": "watch"
     }
   ],
   "counts": {
-    "scale": 4,
-    "rewrite_hook": 3,
-    "pause_topic": 1,
-    "watch": 2
+    "scale": 3,
+    "rewrite_hook": 4,
+    "pause_topic": 0,
+    "watch": 3
+  },
+  "rules": {
+    "scale": "retention >= 62 and growth_score >= 180",
+    "rewrite_hook": "views >= 900 and retention < 62",
+    "pause_topic": "views < 500 and retention < 50"
   }
 }

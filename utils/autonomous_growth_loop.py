@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from utils.experiments import axis_names, variant_choices
+from utils.packaging import package_story
 from utils.publish_score import score_story
 from utils.story_intelligence import classify_format
 
@@ -21,6 +22,8 @@ QUEUE_FILE = Path("_data/stories_queue.json")
 LATEST_FILE = Path("_data/analytics/latest.json")
 EXPERIMENTS_FILE = Path("_data/analytics/experiments.json")
 POST24_FILE = Path("_data/post24_review.json")
+SEQUENCE_FILE = Path("_data/sequence_plan.json")
+COMMENTS_FILE = Path("_data/analytics/comments.json")
 
 
 def _safe_json(path: Path) -> dict:
@@ -85,11 +88,15 @@ def build_plan(*,
                latest: dict | None = None,
                experiments: dict | None = None,
                post24: dict | None = None,
-               queue: dict | None = None) -> dict:
+               queue: dict | None = None,
+               sequence_plan: dict | None = None,
+               comments: dict | None = None) -> dict:
     latest = latest or _safe_json(LATEST_FILE)
     experiments = experiments or _safe_json(EXPERIMENTS_FILE)
     post24 = post24 or _safe_json(POST24_FILE)
     queue = queue or _safe_json(QUEUE_FILE)
+    sequence_plan = sequence_plan or _safe_json(SEQUENCE_FILE)
+    comments = comments or _safe_json(COMMENTS_FILE)
 
     category_rank = _rank_map(latest.get("category_avg_growth_score") or {})
     format_rank = _rank_map(latest.get("format_avg_growth_score") or {})
@@ -107,6 +114,12 @@ def build_plan(*,
         / max(1, int(latest.get("total_views", 0) or 0))
     )
     post_counts = post24.get("counts") or {}
+    sequence_variants = sequence_plan.get("variants") or []
+    requested_animals = [
+        str(item).strip().lower()
+        for item in (comments.get("requested_animals") or [])
+        if str(item).strip()
+    ][:8]
     top_titles = " ".join(str(item.get("title") or "") for item in latest.get("top_performers") or [])
     winning_terms = sorted(_tokens(top_titles))[:12]
 
@@ -151,6 +164,22 @@ def build_plan(*,
             "success_metric": "view_pct",
             "target": 55,
         })
+    if sequence_variants:
+        hypotheses.append({
+            "id": "H6_SEQUENCE_WINNERS",
+            "lane": "sequence",
+            "statement": "Turn top performers into sourced sequence/remake candidates before cold discovery.",
+            "success_metric": "growth_score",
+            "target": 180,
+        })
+    if requested_animals:
+        hypotheses.append({
+            "id": "H7_AUDIENCE_REQUESTS",
+            "lane": "audience_request",
+            "statement": "Viewer-requested animals should earn more comments and subscribers when packaging is strong.",
+            "success_metric": "comments_plus_subscribers",
+            "target": 1.5,
+        })
 
     pending = [item for item in queue.get("stories") or [] if isinstance(item, dict) and not item.get("consumed")]
     queue_snapshot = _score_queue(
@@ -194,6 +223,24 @@ def build_plan(*,
             "winners": experiments.get("winners") or {},
             "gaps": _experiment_gaps(experiments),
             "hypotheses": hypotheses,
+        },
+        "sequence_bank": {
+            "source_winners": int(sequence_plan.get("source_winners", 0) or 0),
+            "variant_count": len(sequence_variants),
+            "next_variants": [
+                {
+                    "id": item.get("id", ""),
+                    "title": item.get("seo_title") or item.get("title") or "",
+                    "variant": item.get("sequence_variant", ""),
+                    "category": item.get("category", ""),
+                }
+                for item in sequence_variants[:8]
+                if isinstance(item, dict)
+            ],
+        },
+        "audience_requests": {
+            "requested_animals": requested_animals,
+            "comment_prompts": [str(item) for item in (comments.get("content_prompts") or [])[:5]],
         },
         "production_policy": {
             "exploit_percent": 55 if mode == "exploit" else 40,
@@ -251,6 +298,7 @@ def _score_queue(pending: list[dict], *, hot_categories: list[str],
             "hypothesis_id": hypothesis_by_lane.get(lane, hypothesis_by_lane.get("proven_category", "")),
             "publish_score": publish,
             "autonomy_priority": priority,
+            "packaging_lab": _packaging_lab(story),
         })
     rows.sort(key=lambda item: item["autonomy_priority"], reverse=True)
     return {
@@ -279,6 +327,34 @@ def _decisions(mode: str, hot_categories: list[str], hot_formats: list[str],
     return decisions
 
 
+def _packaging_lab(story: dict) -> dict:
+    packaged = package_story(story)
+    packaging = packaged.get("packaging") or {}
+    titles = [str(item) for item in packaging.get("title_options") or [] if str(item).strip()]
+    thumbs = [str(item) for item in packaging.get("thumbnail_options") or [] if str(item).strip()]
+    hook = str(packaged.get("hook") or story.get("hook") or "").strip()
+    hook_variants = [
+        hook,
+        str(packaged.get("seo_title") or packaged.get("title") or "").strip(),
+        str(packaging.get("pinned_comment") or "").split("?")[0].strip(),
+    ]
+    clean_hooks = []
+    seen = set()
+    for item in hook_variants:
+        clean = " ".join(item.split())[:110]
+        key = clean.lower()
+        if clean and key not in seen:
+            clean_hooks.append(clean)
+            seen.add(key)
+    return {
+        "title_variants": titles[:3],
+        "thumbnail_variants": thumbs[:3],
+        "hook_variants": clean_hooks[:3],
+        "pinned_comment": packaging.get("pinned_comment", ""),
+        "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target.",
+    }
+
+
 def apply_plan_to_queue(queue: dict, plan: dict, *, limit: int = 80) -> tuple[dict, int]:
     top = {str(item.get("id")): item for item in (plan.get("queue") or {}).get("top_candidates") or []}
     if not top:
@@ -299,6 +375,7 @@ def apply_plan_to_queue(queue: dict, plan: dict, *, limit: int = 80) -> tuple[di
             "hypothesis_id": item.get("hypothesis_id", ""),
             "publish_score": item["publish_score"]["score"],
             "state": item["publish_score"]["state"],
+            "packaging_lab": item.get("packaging_lab") or {},
             "updated_at": plan.get("generated_at", ""),
         }
         if story.get("autonomy") != annotation:

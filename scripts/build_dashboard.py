@@ -835,6 +835,15 @@ def render_html() -> str:
             for key in ("exploit_percent", "sequence_percent", "experiment_percent", "recovery_percent"):
                 out.append(f"<tr><td>{html.escape(str(key).replace('_percent', ''))}</td><td>{int(policy.get(key, 0) or 0)}</td></tr>")
             out.append("</table>")
+        sequence_bank = autonomous_growth_plan.get("sequence_bank") or {}
+        audience_requests = autonomous_growth_plan.get("audience_requests") or {}
+        if sequence_bank or audience_requests:
+            out.append("<section class='row'>")
+            out.append(f"<div><small>Sequence variants</small><div class='metric'>{int(sequence_bank.get('variant_count', 0) or 0)}</div></div>")
+            out.append(f"<div><small>Source winners</small><div class='metric'>{int(sequence_bank.get('source_winners', 0) or 0)}</div></div>")
+            requested = audience_requests.get("requested_animals") or []
+            out.append(f"<div><small>Viewer animal requests</small><div class='metric'>{len(requested)}</div></div>")
+            out.append("</section>")
         hypotheses = ((autonomous_growth_plan.get("experiment_bank") or {}).get("hypotheses") or [])
         if hypotheses:
             out.append("<h3>Active hypotheses</h3><table><tr><th>ID</th><th>Lane</th><th>Statement</th><th>Target</th></tr>")
@@ -849,12 +858,15 @@ def render_html() -> str:
         loop_queue = autonomous_growth_plan.get("queue") or {}
         candidates = loop_queue.get("top_candidates") or []
         if candidates:
-            out.append("<h3>Autonomous queue order</h3><table><tr><th>Title</th><th>Lane</th><th>Hypothesis</th><th>Priority</th></tr>")
+            out.append("<h3>Autonomous queue order</h3><table><tr><th>Title</th><th>Lane</th><th>Hypothesis</th><th>Test title</th><th>Priority</th></tr>")
             for item in candidates[:8]:
+                lab = item.get("packaging_lab") or {}
+                test_titles = lab.get("title_variants") or []
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
                     f"<td><span class='badge'>{html.escape(str(item.get('lane', '')))}</span></td>"
                     f"<td><code>{html.escape(str(item.get('hypothesis_id', '')))}</code></td>"
+                    f"<td>{html.escape(str((test_titles or [''])[0])[:80])}</td>"
                     f"<td>{float(item.get('autonomy_priority', 0) or 0):.1f}</td></tr>"
                 )
             out.append("</table>")
