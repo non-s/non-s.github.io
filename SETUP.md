@@ -37,6 +37,14 @@ python auth_youtube.py
 
 Approve upload, YouTube read-only and read-only Analytics access in the browser, then paste the printed JSON into the `YOUTUBE_TOKEN` repository secret. Regenerate an older token once to add Analytics retention metrics and the full YouTube API intelligence layer.
 
+If you downloaded the OAuth desktop-client JSON from Google Cloud and have `gh` authenticated, use the safer direct secret update:
+
+```bash
+python auth_youtube.py --client-secrets-file client_secret.json --set-github-secret
+```
+
+This writes `youtube_token.json` locally and updates the repository secret without printing the token JSON in the terminal.
+
 Expected free scopes:
 
 - `https://www.googleapis.com/auth/youtube.upload`

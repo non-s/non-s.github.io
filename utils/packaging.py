@@ -12,7 +12,12 @@ ANIMALS = {
     "birds", "owl", "owls", "cat", "cats", "dog", "dogs", "lion",
     "lions", "elephant", "elephants", "dolphin", "dolphins", "whale",
     "whales", "parrot", "parrots", "macaw", "macaws", "donkey",
-    "donkeys", "sheep", "shark", "sharks",
+    "donkeys", "sheep", "shark", "sharks", "bee", "bees",
+    "butterfly", "butterflies", "ant", "ants", "beetle", "beetles",
+    "mantis", "mantises", "dragonfly", "dragonflies", "octopus",
+    "octopuses", "seal", "seals", "fox", "foxes", "snake", "snakes",
+    "chameleon", "chameleons", "turtle", "turtles", "orangutan",
+    "orangutans", "monkey", "monkeys",
 }
 ACTION_VERBS = (
     "fake", "protect", "escape", "remember", "recognize", "call", "hear",

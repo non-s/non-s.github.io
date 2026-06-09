@@ -6,6 +6,7 @@ from collections import Counter
 from datetime import datetime, timezone
 
 import fetch_animals
+from utils.local_rewriter import rescue_story
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
 from utils.publish_score import score_story
 from utils.rights_audit import audit_rights
@@ -19,6 +20,14 @@ GENERIC_TITLE_PHRASES = (
 )
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
+HARD_QUALITY_ISSUES = {
+    "missing_source_url",
+    "off_topic_visual",
+    "duplicate_title",
+    "duplicate_source",
+    "duplicate_angle",
+    "subject_alignment_check_failed",
+}
 
 
 def normalise_title(story: dict) -> str:
@@ -91,6 +100,18 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     brain = creator_premortem(packaged)
     rights = audit_rights(packaged)
     pkg = packaged.get("packaging") or {}
+    repaired = False
+    repair_reasons: list[str] = []
+    if brain.get("state") == "rewrite_before_publish" or pkg.get("state") == "rewrite_packaging":
+        repair_reasons = list(dict.fromkeys((brain.get("risks") or []) + (pkg.get("risks") or [])))
+        rescued, applied = rescue_story(packaged, repair_reasons)
+        if applied:
+            repaired = True
+            packaged = package_story(rescued)
+            publish = score_story(packaged, analytics_strategy=analytics_strategy)
+            brain = creator_premortem(packaged)
+            rights = audit_rights(packaged)
+            pkg = packaged.get("packaging") or {}
     penalty = 0
     if not rights.get("approved"):
         penalty += 30
@@ -114,6 +135,11 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         "youtube_brain": brain,
         "packaging": pkg,
         "rights_audit": rights,
+        "repair": {
+            "attempted": bool(repair_reasons),
+            "applied": repaired,
+            "reasons": repair_reasons,
+        },
     }
 
 
@@ -126,6 +152,7 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
     seen_angles: set[str] = set()
     seen_sources: set[str] = set()
     rejected: list[dict] = []
+    repair: list[dict] = []
     accepted: list[dict] = []
     reasons = Counter()
 
@@ -136,10 +163,34 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
             seen_angles=seen_angles,
             seen_sources=seen_sources,
         )
-        scored = enriched_score(story, analytics_strategy=analytics_strategy)
         if issues:
-            reasons.update(issues)
-            rejected.append({"story": story, "reasons": issues, "stage": "queue_prune"})
+            if not (set(issues) & HARD_QUALITY_ISSUES):
+                rescued, applied = rescue_story(story, issues)
+                if applied:
+                    retry_issues = quality_issues(
+                        rescued,
+                        seen_titles=seen_titles,
+                        seen_angles=seen_angles,
+                        seen_sources=seen_sources,
+                    )
+                    if not retry_issues:
+                        story = rescued
+                        issues = []
+            if issues:
+                reasons.update(issues)
+                rejected.append({"story": story, "reasons": issues, "stage": "queue_prune"})
+                continue
+        scored = enriched_score(story, analytics_strategy=analytics_strategy)
+        if scored["state"] == "reject":
+            reject_reasons = list(dict.fromkeys(
+                (scored["youtube_brain"].get("risks") or [])
+                + (scored["packaging"].get("risks") or [])
+                + (scored["rights_audit"].get("reasons") or [])
+                + ["queue_score_reject"]
+            ))
+            reasons.update(reject_reasons)
+            repair.append({"story": scored["story"], "reasons": reject_reasons, "stage": "queue_repair"})
+            rejected.append({"story": scored["story"], "reasons": reject_reasons, "stage": "queue_repair"})
             continue
         accepted.append(scored)
 
@@ -160,6 +211,7 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
         story["publish_score"] = item["publish_score"]
         story["youtube_brain"] = item["youtube_brain"]
         story["packaging"] = item["packaging"]
+        story["queue_repair"] = item["repair"]
         story["queue_prune"] = {
             "score": item["score"],
             "state": item["state"],
@@ -174,6 +226,8 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
         "pending_before": len(pending),
         "pending_after": len(kept),
         "rejected": len(rejected),
+        "repair_needed": len(repair),
+        "repaired": sum(1 for item in accepted if (item.get("repair") or {}).get("applied")),
         "reasons": dict(reasons.most_common()),
     }
     return out, rejected, summary

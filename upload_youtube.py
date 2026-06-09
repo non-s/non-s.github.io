@@ -22,7 +22,11 @@ _LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
 LOG_FILE = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
 VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
 TOKEN_FILE = Path("youtube_token.json")
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+SCOPES = [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+]
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
 

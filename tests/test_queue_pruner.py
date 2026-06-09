@@ -96,11 +96,34 @@ def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
 
     kept = [story for story in pruned["stories"] if not story.get("consumed")]
     assert len(kept) == 1
-    assert kept[0]["queue_prune"]["state"] in {"publish_ready", "rewrite", "reject"}
+    assert kept[0]["queue_prune"]["state"] in {"publish_ready", "rewrite"}
     assert kept[0]["packaging"]
     assert kept[0]["youtube_brain"]
+    assert "queue_repair" in kept[0]
     assert summary["pending_before"] == 3
     assert summary["pending_after"] == 1
     assert len(rejected) == 2
     assert any("missing_source_url" in item["reasons"] for item in rejected)
     assert any("queue_pruned_low_priority" in item["reasons"] for item in rejected)
+
+
+def test_prune_queue_repairs_editorial_do_not_publish_candidates_when_possible():
+    weak = _story(
+        "weak",
+        title="Animals have another amazing secret",
+        seo_title="Animals have another amazing secret",
+        hook="Animals are amazing.",
+        script="Animals are amazing and interesting.",
+        thumbnail_text="AMAZING SECRET TODAY",
+        category="wildlife",
+        source_url="https://www.pexels.com/video/lion-resting/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [weak]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert len(kept) == 1
+    assert kept[0]["queue_repair"]["applied"] is True
+    assert kept[0]["queue_prune"]["state"] in {"publish_ready", "rewrite"}
+    assert summary["repaired"] == 1
+    assert rejected == []
