@@ -71,6 +71,11 @@ jobs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           chmod 600 youtube_token.json
           python -m json.tool < youtube_token.json > /dev/null
+      - name: "Validar autenticacao do YouTube"
+        run: python upload_youtube.py --check-auth
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
       - name: "Gerar Shorts"
         run: |
           python scripts/run_intelligence_suite.py pre_generate

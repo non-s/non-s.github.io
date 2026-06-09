@@ -53,6 +53,13 @@ def get_youtube_service():
     return build("youtube", "v3", credentials=_load_credentials(), cache_discovery=False)
 
 
+def check_auth() -> bool:
+    """Validate OAuth credentials before spending time rendering a Short."""
+    _load_credentials()
+    log.info("YouTube auth preflight OK.")
+    return True
+
+
 def _collect_pending_meta(videos_dir: Path) -> list[Path]:
     return sorted(p for p in videos_dir.glob("*.json") if p.stem.startswith(("short-", "roundup-")))
 
@@ -184,6 +191,13 @@ def upload_video(youtube, meta: dict) -> str | None:
 def main() -> None:
     from utils.panic import abort_if_halted
     abort_if_halted("upload_youtube")
+    if "--check-auth" in sys.argv:
+        try:
+            check_auth()
+        except Exception as exc:
+            log.error("YouTube auth preflight failed: %s", exc)
+            sys.exit(2)
+        return
     try:
         youtube = get_youtube_service()
     except Exception as exc:

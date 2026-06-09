@@ -5,7 +5,7 @@ import pytest
 
 pytest.importorskip("googleapiclient")
 
-from upload_youtube import _done_marker, _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title
+from upload_youtube import _done_marker, _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title, check_auth
 
 
 def test_title_respects_youtube_limit():
@@ -25,6 +25,19 @@ def test_tags_are_deduplicated_case_insensitively():
 
 def test_short_url_is_canonical():
     assert _video_url("abc123") == "https://www.youtube.com/shorts/abc123"
+
+
+def test_check_auth_loads_credentials(monkeypatch):
+    called = {"value": False}
+
+    def fake_load():
+        called["value"] = True
+        return object()
+
+    monkeypatch.setattr("upload_youtube._load_credentials", fake_load)
+
+    assert check_auth() is True
+    assert called["value"] is True
 
 
 def test_orphan_metadata_is_not_uploadable(tmp_path):
