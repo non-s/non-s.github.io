@@ -25,6 +25,7 @@ TOKEN_FILE = Path("youtube_token.json")
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/youtube.force-ssl",
     "https://www.googleapis.com/auth/yt-analytics.readonly",
 ]
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}

@@ -22,6 +22,7 @@ VIDEOS_DIR = ROOT / "_videos"
 ANALYTICS_DIR = ROOT / "_data" / "analytics"
 OUT_FILE = ANALYTICS_DIR / "comments.json"
 READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
+COMMENTS_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
 FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 
 
@@ -46,10 +47,13 @@ def _token_grants(data: dict, *accepted_scopes: str) -> bool:
 
 def _load_service(token_file: Path = TOKEN_FILE):
     data = json.loads(token_file.read_text(encoding="utf-8"))
-    if not _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
-        print("comments: token lacks youtube.readonly; skipping comment refresh")
+    if not _token_grants(data, COMMENTS_SCOPE, FULL_YOUTUBE_SCOPE):
+        print("comments: token lacks youtube.force-ssl; skipping comment refresh")
         return None
-    creds = Credentials.from_authorized_user_info(data, [READONLY_SCOPE])
+    scopes = [COMMENTS_SCOPE]
+    if _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+        scopes.append(READONLY_SCOPE)
+    creds = Credentials.from_authorized_user_info(data, scopes)
     if not creds.valid and creds.expired and creds.refresh_token:
         creds.refresh(Request())
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
