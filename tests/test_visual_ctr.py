@@ -23,6 +23,8 @@ def test_score_ctr_frame_prefers_detailed_center_subject(tmp_path):
     assert strong_score["checked"]
     assert strong_score["score"] > weak_score["score"]
     assert strong_score["approved"]
+    assert strong_score["profile"]["quality"] in {"hero_frame", "usable_frame"}
+    assert strong_score["profile"]["buckets"]
 
 
 def test_score_ctr_frame_reports_dark_flat_preview(tmp_path):
@@ -34,3 +36,4 @@ def test_score_ctr_frame_reports_dark_flat_preview(tmp_path):
     assert result["checked"]
     assert not result["approved"]
     assert "poor_brightness_for_feed" in result["reason"]
+    assert result["profile"]["quality"] == "weak_frame"

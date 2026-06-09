@@ -76,8 +76,51 @@ def score_ctr_frame(image_path: Path) -> dict:
         "center_strength": round(center_strength, 3),
         "brightness_fit": round(brightness_fit, 3),
         "contrast_fit": round(contrast_fit, 3),
+        "profile": classify_visual_profile(
+            center_strength=center_strength,
+            brightness_fit=brightness_fit,
+            contrast_fit=contrast_fit,
+            score=score,
+        ),
         "reason": ",".join(reasons) or "strong_preview_frame",
         "local_visual_qa": local,
+    }
+
+
+def classify_visual_profile(*, center_strength: float,
+                            brightness_fit: float,
+                            contrast_fit: float,
+                            score: int) -> dict:
+    """Map numeric frame signals into learnable visual buckets."""
+    buckets: list[str] = []
+    if center_strength >= 0.72:
+        buckets.append("close_subject")
+    elif center_strength >= 0.42:
+        buckets.append("subject_rich")
+    else:
+        buckets.append("weak_subject")
+    if brightness_fit >= 0.72:
+        buckets.append("feed_bright")
+    elif brightness_fit < 0.32:
+        buckets.append("dark_or_washed")
+    else:
+        buckets.append("usable_light")
+    if contrast_fit >= 0.68:
+        buckets.append("high_contrast")
+    elif contrast_fit < 0.38:
+        buckets.append("flat_contrast")
+    else:
+        buckets.append("medium_contrast")
+    if score >= 78:
+        quality = "hero_frame"
+    elif score >= 58:
+        quality = "usable_frame"
+    else:
+        quality = "weak_frame"
+    return {
+        "quality": quality,
+        "buckets": buckets,
+        "primary": "|".join((buckets[0], buckets[1], buckets[2])),
     }
 
 
@@ -131,6 +174,7 @@ def select_best_frame(video_path: Path, tmp_dir: Path,
         "reason": best.get("reason", ""),
         "best_frame": best.get("path", ""),
         "best_timestamp": best.get("timestamp", 0),
+        "profile": best.get("profile") or {},
         "candidates": [
             {
                 key: value for key, value in item.items()

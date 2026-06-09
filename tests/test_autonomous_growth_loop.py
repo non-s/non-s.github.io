@@ -28,6 +28,10 @@ def test_build_plan_creates_hypotheses_and_prioritises_queue():
             "avg_view_pct": 58,
             "category_avg_growth_score": {"farm": 400, "cats": 40},
             "format_avg_growth_score": {"animal_memory": 300, "single_fact": 80},
+            "visual_learning": {
+                "winner": "close_subject|feed_bright|high_contrast",
+                "profiles": [{"profile": "close_subject|feed_bright|high_contrast", "n": 2}],
+            },
             "top_performers": [{"title": "Ducks fake injuries to protect young"}],
         },
         experiments={"winners": {"hook_style": "outcome_first"}, "axis_stats": {}},
@@ -47,6 +51,7 @@ def test_build_plan_creates_hypotheses_and_prioritises_queue():
     assert plan["experiment_bank"]["hypotheses"]
     assert plan["sequence_bank"]["variant_count"] == 1
     assert plan["audience_requests"]["requested_animals"] == ["shark"]
+    assert plan["visual_policy"]["winner"] == "close_subject|feed_bright|high_contrast"
     assert plan["queue"]["top_candidates"][0]["id"] == "farm-1"
     assert plan["queue"]["top_candidates"][0]["packaging_lab"]["title_variants"]
     assert any("Bias production" in item for item in plan["decisions"])

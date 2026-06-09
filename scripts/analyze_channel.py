@@ -24,6 +24,7 @@ from utils.growth_studio import (
     winners_and_losers,
 )
 from utils.story_intelligence import classify_format, postmortem
+from utils.visual_learning import build_visual_learning, visual_profile_key
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
@@ -268,6 +269,9 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             average_view_percentage=average_view_percentage,
             subscribers_gained=subscribers_gained,
         )
+        visual_ctr = marker.get("visual_ctr") or {}
+        visual_profile = visual_profile_key(marker)
+        visual_ctr_score = visual_ctr.get("score") if visual_ctr.get("checked") else None
         total_subscribers_gained += subscribers_gained
         if average_view_percentage:
             retention_percentages.append(average_view_percentage)
@@ -290,6 +294,9 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "subscribers_gained": subscribers_gained,
             "views_per_hour": vph,
             "growth_score": growth_score,
+            "views": views,
+            "visual_profile": visual_profile,
+            "visual_ctr_score": visual_ctr_score,
             "story_format": story_format,
             "narrator_voice": str(marker.get("narrator_voice") or ""),
             "humanity_score": humanity_score,
@@ -316,6 +323,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "view_pct": round(average_view_percentage, 3),
             "average_view_duration": round(average_view_duration, 3),
             "subscribers_gained": subscribers_gained,
+            "visual_profile": visual_profile,
+            "visual_ctr_score": visual_ctr_score,
             "postmortem": postmortem(
                 title=title,
                 hook=hook,
@@ -361,6 +370,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         format_avg_growth,
     )
     performance_matrix = build_performance_matrix(observations)
+    visual_learning = build_visual_learning(observations)
     win_loss = winners_and_losers(performance_matrix)
     remakes = remake_candidates(top)
     brief_seed = {
@@ -401,6 +411,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "top_performers": top[:10],
         "learning_profile": learning_profile,
         "performance_matrix": performance_matrix,
+        "visual_learning": visual_learning,
         "winner_loser_map": win_loss,
         "remake_candidates": remakes,
         "weekly_brief": brief,
@@ -414,6 +425,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "exploit_keywords": exploit_keywords,
             "learning_profile": learning_profile,
             "performance_matrix": performance_matrix,
+            "visual_learning": visual_learning,
             "winner_loser_map": win_loss,
             "remake_candidates": remakes,
             "production_mix": brief.get("production_mix", {}),

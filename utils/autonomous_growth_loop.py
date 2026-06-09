@@ -115,6 +115,8 @@ def build_plan(*,
     )
     post_counts = post24.get("counts") or {}
     sequence_variants = sequence_plan.get("variants") or []
+    visual_learning = latest.get("visual_learning") or (latest.get("production_recommendations") or {}).get("visual_learning") or {}
+    visual_winner = str(visual_learning.get("winner") or "")
     requested_animals = [
         str(item).strip().lower()
         for item in (comments.get("requested_animals") or [])
@@ -180,6 +182,14 @@ def build_plan(*,
             "success_metric": "comments_plus_subscribers",
             "target": 1.5,
         })
+    if visual_winner:
+        hypotheses.append({
+            "id": "H8_VISUAL_PROFILE",
+            "lane": "visual_ctr",
+            "statement": f"Favor frame profile {visual_winner} for stronger click and retention signals.",
+            "success_metric": "growth_score_plus_retention",
+            "target": visual_winner,
+        })
 
     pending = [item for item in queue.get("stories") or [] if isinstance(item, dict) and not item.get("consumed")]
     queue_snapshot = _score_queue(
@@ -241,6 +251,11 @@ def build_plan(*,
         "audience_requests": {
             "requested_animals": requested_animals,
             "comment_prompts": [str(item) for item in (comments.get("content_prompts") or [])[:5]],
+        },
+        "visual_policy": {
+            "winner": visual_winner,
+            "profiles": (visual_learning.get("profiles") or [])[:8],
+            "rule": visual_learning.get("policy") or "Collect visual CTR samples before locking a frame profile.",
         },
         "production_policy": {
             "exploit_percent": 55 if mode == "exploit" else 40,

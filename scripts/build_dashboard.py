@@ -1065,7 +1065,23 @@ def render_html() -> str:
         out.append(f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>")
         out.append(f"<div><small>CTR frames</small><div class='metric'>{int(visual_report.get('ctr_checked', 0) or 0)}</div></div>")
         out.append(f"<div><small>Strong CTR</small><div class='metric'>{int(visual_report.get('ctr_strong', 0) or 0)}</div></div>")
-        out.append("</section></div>")
+        out.append("</section>")
+        visual_learning = visual_report.get("visual_learning") or {}
+        if visual_learning:
+            out.append(f"<p><strong>Winning visual profile:</strong> <code>{html.escape(str(visual_learning.get('winner') or 'collecting samples'))}</code></p>")
+            profiles = visual_learning.get("profiles") or []
+            if profiles:
+                out.append("<table><tr><th>Profile</th><th>n</th><th>Growth</th><th>Retention</th><th>CTR score</th></tr>")
+                for item in profiles[:6]:
+                    out.append(
+                        f"<tr><td><code>{html.escape(str(item.get('profile', '')))}</code></td>"
+                        f"<td>{int(item.get('n', 0) or 0)}</td>"
+                        f"<td>{float(item.get('mean_growth_score', 0) or 0):.1f}</td>"
+                        f"<td>{float(item.get('mean_retention', 0) or 0):.1f}</td>"
+                        f"<td>{float(item.get('mean_visual_ctr_score', 0) or 0):.1f}</td></tr>"
+                    )
+                out.append("</table>")
+        out.append("</div>")
 
     if visual_backfill:
         out.append("<div class='card'><h2>Visual QA backfill</h2>")

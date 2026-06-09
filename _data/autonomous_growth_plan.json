@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T17:56:00.558572+00:00",
+  "generated_at": "2026-06-09T18:13:55.526170+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -7,50 +7,50 @@
     "metric_scope": "youtube_analytics_and_public_statistics",
     "shorts_tracked": 28,
     "avg_view_pct": 59.961,
-    "subs_per_1000_views": 1.127
+    "subs_per_1000_views": 1.123
   },
   "category_priorities": [
     {
       "name": "farm",
-      "score": 214.571
+      "score": 214.149
     },
     {
       "name": "birds",
-      "score": 141.804
+      "score": 140.916
     },
     {
       "name": "wildlife",
-      "score": 136.352
+      "score": 135.722
     },
     {
       "name": "cats",
-      "score": 108.977
+      "score": 108.875
     },
     {
       "name": "ocean",
-      "score": 88.159
+      "score": 88.028
     }
   ],
   "format_priorities": [
     {
       "name": "animal_memory",
-      "score": 227.763
+      "score": 227.267
     },
     {
       "name": "cute_behavior",
-      "score": 160.824
+      "score": 160.536
     },
     {
       "name": "body_superpower",
-      "score": 157.454
+      "score": 155.598
     },
     {
       "name": "single_fact",
-      "score": 129.062
+      "score": 128.613
     },
     {
       "name": "survival_trick",
-      "score": 106.876
+      "score": 106.74
     }
   ],
   "winning_terms": [
@@ -63,8 +63,8 @@
     "black",
     "bottle",
     "chickens",
-    "color",
     "cows",
+    "deer",
     "ducklings"
   ],
   "experiment_bank": {
@@ -125,14 +125,14 @@
         "lane": "proven_category",
         "statement": "Next Shorts in farm, birds should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 214.571
+        "target": 214.149
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "animal_memory is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 227.763
+        "target": 227.267
       },
       {
         "id": "H3_REWRITE_HOOKS",
@@ -233,6 +233,20 @@
       "Answer this viewer question: What big cat or predator makes noise when hunting?",
       "Answer this viewer question: 5 is best number for a clutch of ducklings?"
     ]
+  },
+  "visual_policy": {
+    "winner": "",
+    "profiles": [
+      {
+        "profile": "unknown",
+        "n": 28,
+        "mean_growth_score": 153.711,
+        "mean_retention": 40.688,
+        "mean_views": 699.714,
+        "mean_visual_ctr_score": 0.0
+      }
+    ],
+    "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
   },
   "production_policy": {
     "exploit_percent": 55,
@@ -722,7 +736,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 128.63,
+        "autonomy_priority": 128.61,
         "packaging_lab": {
           "title_variants": [
             "Elephant remember faces by watching the movement",
@@ -763,7 +777,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 127.53,
+        "autonomy_priority": 127.48,
         "packaging_lab": {
           "title_variants": [
             "Watch the tail when cows signal",
@@ -804,7 +818,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 127.53,
+        "autonomy_priority": 127.48,
         "packaging_lab": {
           "title_variants": [
             "Watch the eyes when cows trick",
@@ -845,7 +859,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 125.93,
+        "autonomy_priority": 125.9,
         "packaging_lab": {
           "title_variants": [
             "Macaws groom each other with signal rules 🦜",
@@ -886,7 +900,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 125.63,
+        "autonomy_priority": 125.61,
         "packaging_lab": {
           "title_variants": [
             "Asian elephants remember friends for decades 🐘",
@@ -927,7 +941,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 125.63,
+        "autonomy_priority": 125.61,
         "packaging_lab": {
           "title_variants": [
             "Watch the cue when bears remember",
@@ -1050,7 +1064,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 123.16,
+        "autonomy_priority": 123.08,
         "packaging_lab": {
           "title_variants": [
             "Watch the cue when lion hunt",
@@ -1068,47 +1082,6 @@
             "Did you spot the cue before the reveal"
           ],
           "pinned_comment": "Did you spot the cue before the reveal? Comment the next animal you want me to decode after lion.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "072321aef6505fc9",
-        "title": "Watch the tail when birds signal",
-        "category": "birds",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 99.7,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "birds",
-          "story_format": "body_superpower",
-          "hook_score": 58,
-          "title_score": 56,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 123.16,
-        "packaging_lab": {
-          "title_variants": [
-            "Watch the tail when birds signal",
-            "Birds signal because of this tail",
-            "Birds signal for one reason most people miss"
-          ],
-          "thumbnail_variants": [
-            "150 KNOTS IN A",
-            "WATCH THE TAIL",
-            "BIRDS SIGNAL"
-          ],
-          "hook_variants": [
-            "These birds tie 150 knots.",
-            "Watch the tail when birds signal",
-            "Did you spot the tail before the reveal"
-          ],
-          "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after birds.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1132,7 +1105,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 123.16,
+        "autonomy_priority": 123.08,
         "packaging_lab": {
           "title_variants": [
             "Watch the tail when bears signal",
@@ -1173,7 +1146,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 123.16,
+        "autonomy_priority": 123.08,
         "packaging_lab": {
           "title_variants": [
             "Watch the tail when deer signal",
@@ -1191,6 +1164,47 @@
             "Did you spot the tail before the reveal"
           ],
           "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after deer.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "072321aef6505fc9",
+        "title": "Watch the tail when birds signal",
+        "category": "birds",
+        "story_format": "body_superpower",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 99.7,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "birds",
+          "story_format": "body_superpower",
+          "hook_score": 58,
+          "title_score": 56,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 123.07,
+        "packaging_lab": {
+          "title_variants": [
+            "Watch the tail when birds signal",
+            "Birds signal because of this tail",
+            "Birds signal for one reason most people miss"
+          ],
+          "thumbnail_variants": [
+            "150 KNOTS IN A",
+            "WATCH THE TAIL",
+            "BIRDS SIGNAL"
+          ],
+          "hook_variants": [
+            "These birds tie 150 knots.",
+            "Watch the tail when birds signal",
+            "Did you spot the tail before the reveal"
+          ],
+          "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after birds.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1214,7 +1228,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.16,
+        "autonomy_priority": 122.07,
         "packaging_lab": {
           "title_variants": [
             "Watch the eyes when penguins hunt",
@@ -1460,7 +1474,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 121.16,
+        "autonomy_priority": 121.13,
         "packaging_lab": {
           "title_variants": [
             "Asian elephants feel through their feet",

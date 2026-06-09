@@ -16,6 +16,7 @@ VIDEOS = ROOT / "_videos"
 OUT = ROOT / "_data" / "visual_quality_report.json"
 
 from utils.visual_qa_backfill import infer_marker_visual_qa
+from utils.visual_learning import build_visual_learning, visual_profile_key
 
 
 def build_report() -> dict:
@@ -23,6 +24,7 @@ def build_report() -> dict:
     ctr_checked = ctr_strong = ctr_weak = 0
     reasons: Counter[str] = Counter()
     weak = []
+    observations = []
     for path in sorted(VIDEOS.glob("*.done")) if VIDEOS.exists() else []:
         try:
             item = json.loads(path.read_text(encoding="utf-8"))
@@ -47,6 +49,13 @@ def build_report() -> dict:
                 reasons[reason] += 1
         quality = int(qa.get("thumbnail_quality", local.get("score", 0)) or 0)
         ctr = item.get("visual_ctr") or {}
+        observations.append({
+            "visual_profile": visual_profile_key(item),
+            "visual_ctr_score": ctr.get("score") if ctr.get("checked") else None,
+            "growth_score": item.get("growth_score", 0),
+            "average_view_percentage": item.get("view_pct", item.get("average_view_percentage", 0)),
+            "views": item.get("views", 0),
+        })
         if ctr.get("checked"):
             ctr_checked += 1
             ctr_score = int(ctr.get("score", 0) or 0)
@@ -77,6 +86,7 @@ def build_report() -> dict:
         "ctr_checked": ctr_checked,
         "ctr_strong": ctr_strong,
         "ctr_weak": ctr_weak,
+        "visual_learning": build_visual_learning(observations),
         "top_reasons": dict(reasons.most_common(8)),
         "weak_visuals": weak[:20],
     }
