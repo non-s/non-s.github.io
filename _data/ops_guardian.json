@@ -1,54 +1,84 @@
 {
-  "generated_at": "2026-06-09T16:25:28.390040+00:00",
+  "generated_at": "2026-06-09T20:26:40.504259+00:00",
   "risk": {
     "level": "normal",
-    "score": 0,
-    "reasons": [],
-    "weak_retention_ratio": 0.444,
-    "avg_retention": 59.951
+    "score": 20,
+    "reasons": [
+      "many_shorts_below_target_retention"
+    ],
+    "weak_retention_ratio": 0.5,
+    "avg_retention": 59.961
   },
   "paused_topics": [
     {
       "category": "cats",
       "reason": "retention_below_45",
       "retention": 37.61,
-      "growth_score": 110.129
+      "growth_score": 108.875
     },
     {
       "category": "dogs",
       "reason": "retention_below_45",
       "retention": 41.24,
-      "growth_score": 47.256
+      "growth_score": 46.159
     }
   ],
   "scheduler": {
     "recommended_utc_hours": [
       {
+        "utc_hour": 5,
+        "country": "global",
+        "views": 19592,
+        "reason": "default_global_daypart",
+        "label": "Asia/Oceania evening",
+        "regions": [
+          "India",
+          "Southeast Asia",
+          "Australia"
+        ]
+      },
+      {
         "utc_hour": 14,
         "country": "global",
-        "views": 19067,
-        "reason": "default_midday"
+        "views": 19592,
+        "reason": "default_global_daypart",
+        "label": "Europe/Africa afternoon",
+        "regions": [
+          "Europe",
+          "Africa",
+          "Middle East"
+        ]
       },
       {
         "utc_hour": 19,
         "country": "global",
-        "views": 19067,
-        "reason": "default_evening"
+        "views": 19592,
+        "reason": "default_global_daypart",
+        "label": "Americas midday",
+        "regions": [
+          "North America",
+          "Latin America"
+        ]
       },
       {
         "utc_hour": 23,
         "country": "global",
-        "views": 19067,
-        "reason": "default_late_evening"
+        "views": 19592,
+        "reason": "default_global_daypart",
+        "label": "Americas evening",
+        "regions": [
+          "North America",
+          "Latin America"
+        ]
       }
     ],
     "spacing_hours": 4,
     "policy": "Publish in recommended windows; widen spacing while risk is watch/critical."
   },
   "inventory_forecast": {
-    "pending": 116,
-    "daily_posts": 3,
-    "days_remaining": 38.7,
+    "pending": 124,
+    "daily_posts": 4,
+    "days_remaining": 31.0,
     "state": "excellent"
   },
   "visual_quality": {
@@ -70,15 +100,15 @@
     "queue_categories": {
       "arctic": 10,
       "birds": 15,
-      "cats": 10,
-      "dogs": 5,
-      "farm": 28,
-      "insects": 8,
-      "nocturnal": 6,
-      "ocean": 6,
-      "primates": 2,
-      "reptiles": 5,
-      "wildlife": 21
+      "cats": 15,
+      "dogs": 10,
+      "farm": 22,
+      "insects": 5,
+      "nocturnal": 8,
+      "ocean": 8,
+      "primates": 5,
+      "reptiles": 6,
+      "wildlife": 20
     },
     "series_to_scale": [
       "Pet Secrets",
@@ -102,9 +132,17 @@
       {
         "video_id": "x5WHIOr3fbQ",
         "title": "Mallard ducks fake injuries to trick predators",
-        "views": 1470,
+        "views": 1548,
         "retention": 118.22,
-        "growth_score": 320.641,
+        "growth_score": 309.893,
+        "action": "make sequel with a new animal in the same story shape"
+      },
+      {
+        "video_id": "kOV3R1xPn30",
+        "title": "Chickens remember faces and hold grudges 🐔",
+        "views": 1055,
+        "retention": 61.13,
+        "growth_score": 247.263,
         "action": "make sequel with a new animal in the same story shape"
       },
       {
@@ -112,15 +150,7 @@
         "title": "Cows remember faces for years 🐄",
         "views": 1179,
         "retention": 93.85,
-        "growth_score": 254.112,
-        "action": "make sequel with a new animal in the same story shape"
-      },
-      {
-        "video_id": "kOV3R1xPn30",
-        "title": "Chickens remember faces and hold grudges 🐔",
-        "views": 1055,
-        "retention": 61.04,
-        "growth_score": 253.374,
+        "growth_score": 243.774,
         "action": "make sequel with a new animal in the same story shape"
       },
       {
@@ -128,15 +158,15 @@
         "title": "Ducklings know math before they can swim 🦆",
         "views": 1338,
         "retention": 41.83,
-        "growth_score": 220.342,
+        "growth_score": 209.668,
         "action": "reuse topic only after changing the hook format"
       },
       {
         "video_id": "85VdygIXPBo",
         "title": "Tigers never roar at their prey — here's",
-        "views": 681,
+        "views": 689,
         "retention": 75.42,
-        "growth_score": 216.428,
+        "growth_score": 206.221,
         "action": "make sequel with a new animal in the same story shape"
       },
       {
@@ -144,7 +174,7 @@
         "title": "Baby goats love bottle feeding — here's why 🐐",
         "views": 1955,
         "retention": 35.65,
-        "growth_score": 206.993,
+        "growth_score": 201.767,
         "action": "reuse topic only after changing the hook format"
       },
       {
@@ -152,7 +182,7 @@
         "title": "Deer don’t just flee — they plan their escape",
         "views": 598,
         "retention": 62.68,
-        "growth_score": 190.064,
+        "growth_score": 185.396,
         "action": "make sequel with a new animal in the same story shape"
       },
       {
@@ -160,7 +190,7 @@
         "title": "Why bears love rolling in flowers 🐻",
         "views": 1138,
         "retention": 48.3,
-        "growth_score": 175.167,
+        "growth_score": 170.967,
         "action": "reuse topic only after changing the hook format"
       }
     ],

@@ -1,11 +1,51 @@
 {
-  "generated_at": "2026-06-09T16:25:30.605540+00:00",
+  "generated_at": "2026-06-09T20:26:42.990781+00:00",
   "timezone": "UTC",
   "recommended_slots": [
+    "05:23",
     "14:23",
-    "19:23",
     "23:23"
   ],
   "recommended_shorts_per_day": 3,
-  "reason": "retention_based_until_daypart_analytics_available"
+  "target_regions": [
+    {
+      "slot": "05:23",
+      "utc_hour": 5,
+      "label": "Asia/Oceania evening",
+      "regions": [
+        "India",
+        "Southeast Asia",
+        "Australia"
+      ]
+    },
+    {
+      "slot": "14:23",
+      "utc_hour": 14,
+      "label": "Europe/Africa afternoon",
+      "regions": [
+        "Europe",
+        "Africa",
+        "Middle East"
+      ]
+    },
+    {
+      "slot": "19:23",
+      "utc_hour": 19,
+      "label": "Americas midday",
+      "regions": [
+        "North America",
+        "Latin America"
+      ]
+    },
+    {
+      "slot": "23:23",
+      "utc_hour": 23,
+      "label": "Americas evening",
+      "regions": [
+        "North America",
+        "Latin America"
+      ]
+    }
+  ],
+  "reason": "global_daypart_retention_based_until_country_analytics_available"
 }

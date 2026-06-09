@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-09T18:13:20.374781+00:00",
-  "autonomy_score": 100,
+  "generated_at": "2026-06-09T20:26:42.091650+00:00",
+  "autonomy_score": 85,
   "state": "autonomous_ready",
   "publish_mix": {
     "winner_sequels": 40,
@@ -9,39 +9,50 @@
     "recovery_categories": 10
   },
   "subscriber_conversion": {
-    "views": 19590,
+    "views": 19592,
     "subscribers_gained": 22,
     "subs_per_1000_views": 1.123,
     "state": "strong"
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "traffic_source_report_not_ready",
+    "reason": "yt-analytics.readonly scope missing",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 0,
-    "state": "normal",
-    "issues": [],
-    "unavailable_reports": [],
+    "risk_score": 87,
+    "state": "watch",
+    "issues": [
+      "youtube_token_missing",
+      "youtube_readonly_scope_missing",
+      "youtube_analytics_scope_missing"
+    ],
+    "unavailable_reports": [
+      "video_core",
+      "daily_channel",
+      "country",
+      "traffic_source",
+      "device_type",
+      "subscriber_status"
+    ],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
   "category_priorities": [
     {
       "value": "farm",
-      "score": 214.123
+      "score": 214.149
     },
     {
       "value": "birds",
-      "score": 140.933
+      "score": 140.916
     },
     {
       "value": "wildlife",
-      "score": 135.741
+      "score": 135.722
     },
     {
       "value": "cats",
-      "score": 108.881
+      "score": 108.875
     },
     {
       "value": "ocean",
@@ -51,23 +62,23 @@
   "format_priorities": [
     {
       "value": "animal_memory",
-      "score": 227.191
+      "score": 227.267
     },
     {
       "value": "cute_behavior",
-      "score": 160.542
+      "score": 160.536
     },
     {
       "value": "body_superpower",
-      "score": 155.63
+      "score": 155.598
     },
     {
       "value": "single_fact",
-      "score": 128.62
+      "score": 128.613
     },
     {
       "value": "survival_trick",
-      "score": 106.779
+      "score": 106.74
     }
   ],
   "sequel_candidates": [
@@ -76,7 +87,7 @@
       "source_title": "Chickens have another signal hiding in plain sight",
       "category": "farm",
       "story_format": "animal_memory",
-      "growth_score": 382.02,
+      "growth_score": 381.912,
       "views": 1928,
       "sequel_brief": "Create a fresh follow-up to 'Chickens have another signal hiding in plain sight' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-a5aecb0001971bc6"
@@ -86,7 +97,7 @@
       "source_title": "Mallard ducks fake injuries to trick predators",
       "category": "farm",
       "story_format": "body_superpower",
-      "growth_score": 309.923,
+      "growth_score": 309.893,
       "views": 1548,
       "sequel_brief": "Create a fresh follow-up to 'Mallard ducks fake injuries to trick predators' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-eee1318c4fd61917"
@@ -96,7 +107,7 @@
       "source_title": "Chickens remember faces and hold grudges 🐔",
       "category": "farm",
       "story_format": "animal_memory",
-      "growth_score": 247.275,
+      "growth_score": 247.263,
       "views": 1055,
       "sequel_brief": "Create a fresh follow-up to 'Chickens remember faces and hold grudges 🐔' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-03158d9bb49ecf6e"
@@ -106,37 +117,37 @@
       "source_title": "Cows remember faces for years 🐄",
       "category": "farm",
       "story_format": "animal_memory",
-      "growth_score": 243.786,
+      "growth_score": 243.774,
       "views": 1179,
       "sequel_brief": "Create a fresh follow-up to 'Cows remember faces for years 🐄' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-4711168f2738f897"
-    },
-    {
-      "source_video_id": "bA9NB3s1-wo",
-      "source_title": "Ducklings know math before they can swim 🦆",
-      "category": "farm",
-      "story_format": "single_fact",
-      "growth_score": 209.68,
-      "views": 1338,
-      "sequel_brief": "Create a fresh follow-up to 'Ducklings know math before they can swim 🦆' with a new animal detail, not the same fact.",
-      "sequel_id": "sequel-9c8f2a8681c5f41f"
     },
     {
       "source_video_id": "KHNEgmGZgKg",
       "source_title": "Cows have another signal hiding in plain sight",
       "category": "farm",
       "story_format": "animal_memory",
-      "growth_score": 209.603,
-      "views": 540,
+      "growth_score": 210.207,
+      "views": 542,
       "sequel_brief": "Create a fresh follow-up to 'Cows have another signal hiding in plain sight' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-d67570d3178f3326"
+    },
+    {
+      "source_video_id": "bA9NB3s1-wo",
+      "source_title": "Ducklings know math before they can swim 🦆",
+      "category": "farm",
+      "story_format": "single_fact",
+      "growth_score": 209.668,
+      "views": 1338,
+      "sequel_brief": "Create a fresh follow-up to 'Ducklings know math before they can swim 🦆' with a new animal detail, not the same fact.",
+      "sequel_id": "sequel-9c8f2a8681c5f41f"
     },
     {
       "source_video_id": "85VdygIXPBo",
       "source_title": "Tigers never roar at their prey — here's",
       "category": "wildlife",
       "story_format": "single_fact",
-      "growth_score": 206.233,
+      "growth_score": 206.221,
       "views": 689,
       "sequel_brief": "Create a fresh follow-up to 'Tigers never roar at their prey — here's' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-6a4c7be257da056c"
@@ -146,13 +157,13 @@
       "source_title": "Birds This black bird's ear tufts aren't ears at all",
       "category": "birds",
       "story_format": "body_superpower",
-      "growth_score": 203.297,
+      "growth_score": 203.279,
       "views": 753,
       "sequel_brief": "Create a fresh follow-up to 'Birds This black bird's ear tufts aren't ears at all' with a new animal detail, not the same fact.",
       "sequel_id": "sequel-6bd418c3798bacc5"
     }
   ],
-  "duplicate_risk": 0,
+  "duplicate_risk": 24,
   "decisions": [
     "Double down on farm until another category beats its growth score.",
     "Favor animal_memory as the next story format.",
