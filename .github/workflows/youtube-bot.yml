@@ -104,10 +104,67 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
+          state_dir="$(mktemp -d)"
+          state_paths=(
+            _data/stories_queue.json
+            _data/published_clips.json
+            _data/channel_memory.jsonl
+            _data/analytics/latest.json
+            _data/analytics/experiments.json
+            _data/analytics/comments.json
+            _data/ai_provider_report.json
+            _data/packaging_report.json
+            _data/youtube_brain_report.json
+            _data/youtube_intelligence.json
+            _data/autonomous_director.json
+            _data/autonomous_growth_plan.json
+            _data/channel_success.json
+            _data/success_rewriter.json
+            _data/winner_sequel_factory.json
+            _data/automation_health.json
+            _data/ops_guardian.json
+            _data/remake_backlog.json
+            _data/trend_radar.json
+            _data/category_recovery.json
+            _data/category_recovery_rewriter.json
+            _data/fact_ledger.json
+            _data/agency_gate.json
+            _data/post24_review.json
+            _data/sequence_plan.json
+            _data/publish_schedule.json
+            _data/queue_prune_report.json
+            _data/repair_queue.jsonl
+          )
+          for path in "${state_paths[@]}"; do
+            if [ -e "$path" ]; then
+              mkdir -p "$state_dir/$(dirname "$path")"
+              cp "$path" "$state_dir/$path"
+            fi
+          done
+          find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+            mkdir -p "$state_dir/$(dirname "$path")"
+            cp "$path" "$state_dir/$path"
+          done
+          find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 | while IFS= read -r -d '' path; do
+            mkdir -p "$state_dir/$(dirname "$path")"
+            cp "$path" "$state_dir/$path"
+          done
+          for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json; do
+            if [ -e "$path" ]; then
+              mkdir -p "$state_dir/$(dirname "$path")"
+              cp "$path" "$state_dir/$path"
+            fi
+          done
+          git fetch origin main
+          git reset --hard origin/main
+          cp -R "$state_dir"/. .
+          rm -rf "$state_dir"
           # Stage the queue first: unmatched optional globs must never
-          # prevent consumed stories from being persisted.
+          # prevent consumed stories from being persisted. The rejected queue
+          # is diagnostic-only and is omitted here to avoid append-log conflicts
+          # after a successful upload.
           git add _data/stories_queue.json
-          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/youtube_intelligence.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json _data/post24_review.json _data/sequence_plan.json _data/publish_schedule.json _data/queue_prune_report.json _data/repair_queue.jsonl _data/rejected_queue.jsonl; do
+          for path in "${state_paths[@]}"; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
@@ -127,12 +184,11 @@ jobs:
               exit 0
             fi
             echo "Push rejected on attempt ${attempt}; rebasing before retry."
-            if ! git pull --rebase --autostash origin main; then
-              git rebase --abort 2>/dev/null || true
-              [ "$attempt" = "3" ] && exit 1
-            fi
+            git pull --rebase --autostash origin main
             sleep $((attempt * 5))
           done
+          echo "Push failed after retries."
+          exit 1
       - name: "Log de execucao"
         if: always()
         uses: actions/upload-artifact@v7.0.1
