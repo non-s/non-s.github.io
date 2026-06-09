@@ -41,6 +41,15 @@ WINDOW_SIZE = int(os.environ.get("PROVIDER_STATS_WINDOW", "50"))
 # Canonical ordering when we have no data yet (or the file is
 # unreadable). Matches the historical chain in ai_helper.py.
 DEFAULT_ORDER: tuple[str, ...] = ("mistral", "cerebras", "gemini", "groq")
+TASK_DEFAULTS: dict[str, tuple[str, ...]] = {
+    "json": ("gemini", "cerebras", "groq", "mistral"),
+    "longform": ("gemini", "cerebras", "mistral", "groq"),
+    "rewrite": ("groq", "cerebras", "mistral", "gemini"),
+    "classification": ("groq", "cerebras", "gemini", "mistral"),
+    "creative": ("gemini", "mistral", "cerebras", "groq"),
+    "auto": DEFAULT_ORDER,
+}
+COOLDOWN_SECONDS = int(os.environ.get("PROVIDER_COOLDOWN_SECONDS", "900"))
 
 _write_lock = threading.Lock()
 
@@ -92,6 +101,24 @@ def _load_recent(path: Path = STATS_LOG) -> dict[str, list[bool]]:
     return dict(by_provider)
 
 
+def _load_recent_rows(path: Path = STATS_LOG) -> list[dict]:
+    if not path.exists():
+        return []
+    rows: list[dict] = []
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rows.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    except Exception:
+        return []
+    return rows
+
+
 def success_rate(provider: str, path: Path | None = None) -> float | None:
     """Return success rate (0-1) for `provider`, or None if no data."""
     recent = _load_recent(path or STATS_LOG)
@@ -99,6 +126,35 @@ def success_rate(provider: str, path: Path | None = None) -> float | None:
     if not samples:
         return None
     return sum(1 for ok in samples if ok) / len(samples)
+
+
+def cooldown_until(provider: str, path: Path | None = None,
+                   now: float | None = None) -> float:
+    """Return unix timestamp until which provider should be avoided."""
+    now = time.time() if now is None else now
+    rows = _load_recent_rows(path or STATS_LOG)
+    consecutive_429 = 0
+    latest_ts = 0.0
+    for row in reversed(rows):
+        if row.get("provider") != provider:
+            continue
+        latest_ts = float(row.get("ts") or 0.0)
+        if row.get("ok"):
+            break
+        if int(row.get("status") or 0) == 429:
+            consecutive_429 += 1
+            if consecutive_429 >= 2:
+                return max(0.0, latest_ts + COOLDOWN_SECONDS)
+        else:
+            break
+    return 0.0 if latest_ts <= now else latest_ts
+
+
+def is_in_cooldown(provider: str, path: Path | None = None,
+                   now: float | None = None) -> bool:
+    now = time.time() if now is None else now
+    until = cooldown_until(provider, path=path, now=now)
+    return bool(until and until > now)
 
 
 def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER,
@@ -122,7 +178,11 @@ def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER,
         return list(default)
     default_idx = {p: i for i, p in enumerate(default)}
 
+    now = time.time()
+
     def _key(p: str) -> tuple:
+        if is_in_cooldown(p, path=path or STATS_LOG, now=now):
+            return (3, default_idx[p])
         samples = recent.get(p, [])
         if not samples:
             return (1, default_idx[p])               # unknown: middle band
@@ -132,6 +192,23 @@ def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER,
         return (2, default_idx[p])                    # dead: back
 
     return sorted(default, key=_key)
+
+
+def preferred_chain_for_task(task: str = "auto", *, json_mode: bool = False,
+                             prompt_chars: int = 0,
+                             path: Path | None = None) -> list[str]:
+    """Choose provider order for the actual job, then adapt by health.
+
+    The task hint keeps expensive/slow providers for high-value work and
+    sends simple rewrites/classification to faster providers. Recent
+    failures still reshuffle the order.
+    """
+    if json_mode:
+        task = "json"
+    elif task == "auto" and prompt_chars >= 4500:
+        task = "longform"
+    default = TASK_DEFAULTS.get(task, TASK_DEFAULTS["auto"])
+    return preferred_chain(default=default, path=path)
 
 
 def prune_older_than(days: int = 7, path: Path | None = None) -> int:

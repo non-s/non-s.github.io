@@ -63,6 +63,7 @@ def test_sequel_factory_builds_and_dedupes():
     story = build_sequel_story(candidates[0])
     assert story["id"].startswith("sequel-")
     assert story["sequel_of"]["video_id"] == "abc"
+    assert "hiding in plain sight" not in story["seo_title"].lower()
     updated, created = append_sequels({"stories": []}, candidates)
     assert len(created) == 1
     updated2, created2 = append_sequels(updated, candidates)

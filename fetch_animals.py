@@ -519,7 +519,7 @@ def _ai_enhance_animal(subject: str, context: str,
 
 def _story_id(url: str) -> str:
     """Short stable id from the Pexels page URL — used for dedupe."""
-    return hashlib.sha1(url.encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
 
 
 def _pexels_id_from_clip(clip) -> str:
@@ -855,7 +855,8 @@ def main() -> int:
     if not pexels_key and not pixabay_key:
         log.error("No video provider configured. Set PEXELS_API_KEY or PIXABAY_API_KEY.")
         return 2
-    if not os.environ.get("MISTRAL_API_KEY", "").strip():
+    ai_keys = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
+    if not any(os.environ.get(key, "").strip() for key in ai_keys):
         log.error("❌ MISTRAL_API_KEY not set — cannot enrich scripts.")
         return 2
 

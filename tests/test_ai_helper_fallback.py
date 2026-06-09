@@ -126,18 +126,18 @@ def test_400_status_skips_fallbacks(monkeypatch, fast_sleep):
     gr.assert_not_called()
 
 
-def test_no_mistral_key_short_circuits(monkeypatch, fast_sleep):
+def test_no_mistral_key_routes_to_configured_provider(monkeypatch, fast_sleep):
     # Without MISTRAL_API_KEY we don't even reach the fallback chain —
     # the chain triggers only on a transient Mistral failure.
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
     with patch.object(ai_helper, "_call_mistral") as m, \
-         patch.object(ai_helper, "_call_cerebras") as ce, \
+         patch.object(ai_helper, "_call_cerebras", return_value="ok-cerebras") as ce, \
          patch.object(ai_helper, "_call_gemini") as ge:
         out = ai_helper.ai_text("x")
-    assert out == ""
+    assert out == "ok-cerebras"
     m.assert_not_called()
-    ce.assert_not_called()
+    ce.assert_called()
     ge.assert_not_called()
 
 
@@ -152,6 +152,17 @@ def test_skips_provider_without_key(monkeypatch, fast_sleep):
     assert out == "ok-gemini"
     ce.assert_not_called()
     ge.assert_called()
+
+
+def test_json_task_prefers_gemini_when_configured(monkeypatch, fast_sleep):
+    monkeypatch.setenv("MISTRAL_API_KEY", "m")
+    monkeypatch.setenv("GEMINI_API_KEY", "g")
+    with patch.object(ai_helper, "_call_mistral") as m, \
+         patch.object(ai_helper, "_call_gemini", return_value='{"ok": true}') as ge:
+        out = ai_helper.ai_text("return JSON", json_mode=True)
+    assert out == '{"ok": true}'
+    ge.assert_called_once()
+    m.assert_not_called()
 
 
 # ── Cache integration ────────────────────────────────────────────

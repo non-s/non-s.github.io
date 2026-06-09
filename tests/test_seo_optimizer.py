@@ -30,3 +30,23 @@ def test_optimise_story_records_before_and_after():
     assert story["title"].startswith("Dogs ")
     assert story["seo_title"] == story["title"]
     assert story["seo_optimisation"]["applied"] is True
+
+
+def test_optimise_title_removes_redundant_category_prefix():
+    title = optimise_title(
+        "Birds This black bird's ear tufts aren't ears at all",
+        hook="This black bird's ear tufts are feathers.",
+        tags=["birds"],
+    )
+    assert title.startswith("This black bird")
+    assert not title.startswith("Birds This")
+
+
+def test_optimise_title_cleans_duplicate_animal_prefix():
+    title = optimise_title(
+        "Horses White horses and how they see in color",
+        hook="White horses can see colors differently.",
+        tags=["horses"],
+    )
+    assert title.startswith("White horses")
+    assert not title.startswith("Horses White horses")

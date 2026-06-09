@@ -98,7 +98,17 @@ def audit_title(title: str) -> Audit:
     if any(token in lower for token in ("won't believe", "shocking", "insane", "crazy")):
         score -= 20
         issues.append("clickbait_language")
-    if not any(token in lower for token in ("why", "can", "remember", "recognize", "use", "not", "love", "secret")):
+    if any(token in lower for token in (
+        "another signal hiding in plain sight",
+        "another secret hiding in plain sight",
+        "secret hiding in plain sight",
+    )):
+        score -= 22
+        issues.append("repetitive_template")
+    if not any(token in lower for token in (
+        "why", "can", "remember", "recognize", "use", "not", "love",
+        "fake", "plan", "escape", "slide", "call", "hear", "hold", "roar",
+    )):
         score -= 10
         issues.append("weak_curiosity_shape")
     return Audit(score=max(0, score), issues=tuple(issues))

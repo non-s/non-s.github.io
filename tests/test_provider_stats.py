@@ -64,6 +64,27 @@ def test_preferred_chain_sorts_by_rate(isolated_log):
     assert chain.index("gemini") < chain.index("mistral")
 
 
+def test_preferred_chain_for_json_starts_with_json_strength_provider(isolated_log):
+    chain = provider_stats.preferred_chain_for_task("auto", json_mode=True)
+    assert chain[0] == "gemini"
+    assert chain.index("cerebras") < chain.index("mistral")
+
+
+def test_provider_cooldown_pushes_recent_429_to_back(isolated_log, monkeypatch):
+    monkeypatch.setattr(provider_stats, "COOLDOWN_SECONDS", 900)
+    now = time.time()
+    isolated_log.write_text(
+        json.dumps({"ts": now - 20, "provider": "gemini", "ok": False, "status": 429}) + "\n"
+        + json.dumps({"ts": now - 10, "provider": "gemini", "ok": False, "status": 429}) + "\n"
+        + json.dumps({"ts": now - 5, "provider": "cerebras", "ok": True, "status": None}) + "\n",
+        encoding="utf-8",
+    )
+
+    assert provider_stats.is_in_cooldown("gemini", path=isolated_log, now=now)
+    chain = provider_stats.preferred_chain_for_task("json", path=isolated_log)
+    assert chain[-1] == "gemini"
+
+
 def test_preferred_chain_unknown_providers_keep_default_rank(isolated_log):
     # Only one provider has data — the others should appear in default order.
     for _ in range(5):

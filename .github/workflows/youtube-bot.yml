@@ -80,6 +80,12 @@ jobs:
           python scripts/winner_sequel_factory.py || true
           python scripts/fact_ledger.py || true
           python scripts/autonomous_director.py || true
+          python scripts/ai_provider_report.py || true
+          python scripts/packaging_report.py || true
+          python scripts/youtube_brain_report.py || true
+          python scripts/post24_review.py || true
+          python scripts/publish_schedule.py || true
+          python scripts/autonomous_growth_loop.py || true
           python scripts/channel_success.py || true
           python scripts/success_rewriter.py || true
           python scripts/fact_ledger.py || true
@@ -116,6 +122,12 @@ jobs:
           python scripts/category_recovery_rewriter.py || true
           python scripts/fact_ledger.py || true
           python scripts/autonomous_director.py || true
+          python scripts/ai_provider_report.py || true
+          python scripts/packaging_report.py || true
+          python scripts/youtube_brain_report.py || true
+          python scripts/post24_review.py || true
+          python scripts/publish_schedule.py || true
+          python scripts/autonomous_growth_loop.py || true
           python scripts/channel_success.py || true
           python scripts/success_rewriter.py || true
           python scripts/fact_ledger.py || true
@@ -128,7 +140,7 @@ jobs:
           # Stage the queue first: unmatched optional globs must never
           # prevent consumed stories from being persisted.
           git add _data/stories_queue.json
-          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/youtube_intelligence.json _data/autonomous_director.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json; do
+          for path in _data/published_clips.json _data/channel_memory.jsonl _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/youtube_intelligence.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/agency_gate.json _data/post24_review.json _data/publish_schedule.json; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --

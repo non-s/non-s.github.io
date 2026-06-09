@@ -22,6 +22,18 @@ def test_audit_title_flags_missing_animal_keyword():
     assert "missing_animal_keyword" in audit.issues
 
 
+def test_audit_title_penalizes_repetitive_template():
+    audit = audit_title("Cows have another signal hiding in plain sight")
+    assert "repetitive_template" in audit.issues
+    assert audit.score < 90
+
+
+def test_audit_title_rewards_specific_action():
+    audit = audit_title("Ducks fake injuries to trick predators")
+    assert "weak_curiosity_shape" not in audit.issues
+    assert audit.score >= 80
+
+
 def test_postmortem_collects_likely_causes():
     out = postmortem(
         title="A secret nobody tells you",

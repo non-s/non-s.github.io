@@ -103,6 +103,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "hook", "story_format", "hook_audit", "title_audit", "narrator_voice",
         "human_voice", "humanity", "studio_polish", "studio_state", "ai_rewrite",
         "pre_publish_audit", "monetization_audit", "seo_score", "seo_optimisation",
+        "publish_score", "youtube_brain", "packaging", "pinned_comment",
     )
     defaults = {
         "title": "", "description": "", "tags": [], "category": "",
@@ -117,6 +118,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "human_voice": {}, "humanity": {}, "studio_polish": {}, "studio_state": "",
         "ai_rewrite": {}, "pre_publish_audit": {}, "monetization_audit": {},
         "seo_score": {}, "seo_optimisation": {},
+        "publish_score": {}, "youtube_brain": {}, "packaging": {}, "pinned_comment": "",
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
     marker.update({

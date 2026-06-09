@@ -18,7 +18,7 @@ muito mais que duração — videos de 30s com 85% completion batem
 videos de 55s com 50% completion. We clip at 35s hard.
 """
 
-import os, re, json, asyncio, subprocess, logging, shutil, sys, time, contextlib
+import os, re, json, asyncio, subprocess, logging, shutil, sys, time, contextlib, tempfile
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -52,8 +52,13 @@ from utils.intro_outro import wrap_with_intro_outro
 from utils.studio_rewrite import rewrite_if_needed
 from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
+from utils.packaging import package_story
 from utils.pre_publish_audit import audit_package as audit_publish_package
+from utils.publish_score import score_metadata, score_story as publish_score_story
+from utils.rejected_queue import record_rejection
+from utils.local_rewriter import rescue_story
 from utils.retention_surgeon import diagnose as diagnose_retention
+from utils.rights_audit import audit_rights
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
 from utils.seo_optimizer import optimise_story, seo_score
 from utils.story_intelligence import audit_hook, audit_title, classify_format
@@ -61,6 +66,7 @@ from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
 from utils.visual_qa import evaluate_frame, evaluate_local_frame
+from utils.youtube_brain import creator_premortem, publish_brain
 
 # ── Config ────────────────────────────────────────────────────────
 # Language axis. "en" is the default channel; setting LANGUAGE=pt-BR
@@ -95,6 +101,17 @@ def _env_enabled(name: str, default: str = "0") -> bool:
 QUALITY_REQUIRE_MOTION_BROLL = _env_enabled("QUALITY_REQUIRE_MOTION_BROLL")
 QUALITY_REQUIRE_CAPTIONS = _env_enabled("QUALITY_REQUIRE_CAPTIONS")
 QUALITY_MIN_VISUAL_QA_SCORE = int(os.environ.get("QUALITY_MIN_VISUAL_QA_SCORE", "1"))
+
+REPETITIVE_TITLE_PHRASES = (
+    "another signal hiding in plain sight",
+    "another secret hiding in plain sight",
+    "secret hiding in plain sight",
+)
+GENERIC_SCRIPT_PHRASES = (
+    "reveal the reason in one tiny movement",
+    "not just hunting",
+    "one hidden reason",
+)
 
 # Paleta de cores — identidade Wild Brief
 BG_DARK      = (8, 8, 18)
@@ -234,6 +251,84 @@ def clean_text(text: str, max_chars: int = 500) -> str:
     t = re.sub(r'<[^>]+>', ' ', text)
     t = re.sub(r'\s+', ' ', t).strip()
     return t[:max_chars]
+
+
+def _normalise_editorial_text(text: str) -> str:
+    """Clean encoding scars and repeated spaces without changing meaning."""
+    out = str(text or "")
+    replacements = {
+        "â€™": "'",
+        "â€”": "-",
+        "â€“": "-",
+        "ðŸ„": "",
+        "ðŸ”": "",
+        "ðŸ¦†": "",
+        "ðŸ": "",
+        "ðŸ»": "",
+    }
+    for bad, good in replacements.items():
+        out = out.replace(bad, good)
+    out = re.sub(r"\s+", " ", out).strip()
+    return out
+
+
+def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "") -> str:
+    """Make the cover text read like an action label, not generated prose."""
+    raw = _normalise_editorial_text(text).upper()
+    raw = re.sub(r"[^A-Z0-9\s'-]", " ", raw)
+    raw = re.sub(r"\b(SURPRISE|ANOTHER|SECRET|SIGNAL|PLAIN|SIGHT)\b", " ", raw)
+    raw = re.sub(r"\s+", " ", raw).strip(" -'")
+    words = raw.split()
+    if not words:
+        fallback = _normalise_editorial_text(hook or title).upper()
+        fallback = re.sub(r"[^A-Z0-9\s'-]", " ", fallback)
+        words = [w for w in fallback.split() if w not in {"THE", "THIS", "THAT", "THEY", "HAVE", "HAS"}]
+    compact = " ".join(words[:4]).strip()
+    return compact[:30] or "ANIMAL SIGNAL"
+
+
+def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str]:
+    """Hard reject queue entries that would make the channel look automated."""
+    issues: list[str] = []
+    try:
+        import fetch_animals
+    except Exception as exc:  # pragma: no cover - import is stable in CI
+        return [f"validator_unavailable:{exc}"]
+    category = str(qs.get("category") or "")
+    topic = fetch_animals.ANIMAL_TOPICS.get(category)
+    if not topic:
+        issues.append("unknown_category")
+        return issues
+    clip = type("Clip", (), {
+        "url": qs.get("url", ""),
+        "title": qs.get("title", ""),
+    })()
+    subject = fetch_animals._subject_from_clip(clip, category)
+    script = str(qs.get("script") or "")
+    title = str(qs.get("seo_title") or qs.get("title") or "")
+    if not fetch_animals._topic_accepts_subject(topic, subject):
+        issues.append("off_topic_visual")
+    if not fetch_animals._script_matches_visible_subject(subject, script):
+        issues.append("script_subject_mismatch")
+    script_key = fetch_animals._script_key(script)
+    if not script_key:
+        issues.append("empty_script")
+    elif script_key in seen_scripts:
+        issues.append("duplicate_script")
+    lower_title = title.lower()
+    lower_script = script.lower()
+    if any(phrase in lower_title for phrase in REPETITIVE_TITLE_PHRASES):
+        issues.append("repetitive_title_template")
+    if any(phrase in lower_script for phrase in GENERIC_SCRIPT_PHRASES):
+        issues.append("generic_script_template")
+    words = re.findall(r"[a-z]+", lower_script)
+    if words:
+        top_word_count = max(words.count(word) for word in set(words))
+        if top_word_count >= 10:
+            issues.append("script_word_loop")
+    if not issues and script_key:
+        seen_scripts.add(script_key)
+    return issues
 
 
 # ── Extrai 3 bullet points da descrição ───────────────────────────
@@ -865,7 +960,7 @@ def build_short_metadata(story: dict, video_path: Path,
       - description: 5,000 characters
       - tags: a focused list for YouTube search and Shorts discovery
     """
-    base_title = (story.get("title") or "").strip()
+    base_title = _normalise_editorial_text(story.get("title") or "")
     category   = story.get("category", "wildlife")
     source     = story.get("source", "Pexels")
 
@@ -964,6 +1059,9 @@ def build_short_metadata(story: dict, video_path: Path,
         "narrative_template": dict(story.get("narrative_template") or {}),
         "growth_studio":   dict(story.get("growth_studio") or {}),
         "production_mode": story.get("production_mode", ""),
+        "youtube_brain":  dict(story.get("youtube_brain") or {}),
+        "packaging":      dict(story.get("packaging") or {}),
+        "pinned_comment": (story.get("packaging") or {}).get("pinned_comment", ""),
         "trend_context":  dict(story.get("trend_context") or {}),
         "agency":         dict(story.get("agency") or {}),
         "agency_gate":    dict(story.get("agency_gate") or {}),
@@ -997,6 +1095,7 @@ def build_short_metadata(story: dict, video_path: Path,
         # A/B variant tags ride along all the way to the .done sidecar
         # after upload so analytics can correlate them with engagement.
         "experiments":    dict(story.get("experiments") or {}),
+        "autonomy":       dict(story.get("autonomy") or {}),
         "editorial":      dict(story.get("editorial") or {}),
         "studio_state":   story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
         "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
@@ -1056,7 +1155,12 @@ def _queue_to_story(qs: dict) -> dict:
     Map a queue entry to the dict shape `generate_short()` expects.
     Falls back to source-feed metadata when the AI fields are missing.
     """
-    title = qs.get("seo_title") or qs.get("title", "")
+    title = _normalise_editorial_text(qs.get("seo_title") or qs.get("title", ""))
+    thumbnail_text = _clean_thumbnail_text(
+        qs.get("thumbnail_text", ""),
+        title=title,
+        hook=qs.get("hook", ""),
+    )
     experiments = assign_all_for_production(qs["id"])
     experiments.update(dict(qs.get("experiments") or {}))
     story = {
@@ -1076,7 +1180,7 @@ def _queue_to_story(qs: dict) -> dict:
         # by fetch_animals.py's AI prompt. generate_short() will TTS this
         # directly instead of rebuilding from key_points.
         "script":         qs.get("script", ""),
-        "thumbnail_text": qs.get("thumbnail_text", ""),
+        "thumbnail_text": thumbnail_text,
         "key_points":     qs.get("key_points", []),
         # SEO fields authored by fetch_animals.py — used as-is by
         # build_short_metadata. Each is allowed to be empty; the
@@ -1087,6 +1191,7 @@ def _queue_to_story(qs: dict) -> dict:
         "topic_hashtag":  qs.get("topic_hashtag", ""),
         "discovery_hashtags": list(qs.get("discovery_hashtags") or []),
         "score":          qs.get("score", 0),
+        "autonomy":       dict(qs.get("autonomy") or {}),
         "experiments":    experiments,
         "pexels_download_url": qs.get("pexels_download_url", ""),
         "pexels_video_id": qs.get("pexels_video_id", ""),
@@ -1102,6 +1207,7 @@ def _queue_to_story(qs: dict) -> dict:
         "id":             qs["id"],
         "_queue_id":      qs["id"],  # used to mark consumed after success
     }
+    story = package_story(story)
     growth_studio = studio_brief_for_story(story)
     narrator_variant = (growth_studio.get("narrator") or {}).get("variant", "")
     if narrator_variant:
@@ -1109,6 +1215,7 @@ def _queue_to_story(qs: dict) -> dict:
     story["growth_studio"] = growth_studio
     story["narrative_template"] = growth_studio.get("narrative_template") or {}
     story["production_mode"] = growth_studio.get("production_mode", "")
+    story["youtube_brain"] = creator_premortem(story)
     # Keep queue adaptation deterministic and cheap. AI rescue happens
     # only when a candidate is actually attempted for production.
     return optimise_story(polish_story(story))
@@ -1123,8 +1230,41 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     queue = _load_queue()
     stories = queue.get("stories", [])
     pending = [s for s in stories if not s.get("consumed")]
+    seen_scripts: set[str] = set()
+    clean_pending: list[dict] = []
+    held_reasons: dict[str, int] = {}
+    rescued_pending: list[dict] = []
+    for story in pending:
+        issues = _queue_story_quality_issues(story, seen_scripts=seen_scripts)
+        if issues:
+            rescued, applied = rescue_story(story, issues)
+            if applied:
+                retry_issues = _queue_story_quality_issues(rescued, seen_scripts=seen_scripts)
+                if not retry_issues:
+                    rescued_pending.append(rescued)
+                    clean_pending.append(rescued)
+                    continue
+                issues = retry_issues
+            for issue in issues:
+                held_reasons[issue] = held_reasons.get(issue, 0) + 1
+            log.warning(
+                "  Holding queue story %s - %s",
+                story.get("id") or story.get("title", "")[:60],
+                ", ".join(issues),
+            )
+            record_rejection(story, issues)
+            continue
+        clean_pending.append(story)
+    if held_reasons:
+        log.info("  Queue quality held %d candidate(s): %s",
+                 len(pending) - len(clean_pending),
+                 ", ".join(f"{k}={v}" for k, v in sorted(held_reasons.items())))
+    if rescued_pending:
+        log.info("  Queue quality rescued %d candidate(s) with local rewrites", len(rescued_pending))
+    pending = clean_pending
     pending.sort(
         key=lambda s: (
+            float((s.get("autonomy") or {}).get("priority", 0) or 0),
             bool(s.get("breaking", False)),
             int(s.get("score", 0) or 0),
             s.get("fetched_at", ""),
@@ -1132,6 +1272,19 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         reverse=True,
     )
     candidates = [_queue_to_story(s) for s in pending]
+    strategy = load_strategy()
+    scored_candidates: list[dict] = []
+    for candidate in candidates:
+        score = publish_score_story(candidate, analytics_strategy=strategy)
+        if score["state"] == "reject":
+            record_rejection(candidate, [f"publish_score_{score['state']}"], stage="publish_score")
+            continue
+        item = dict(candidate)
+        item["publish_score"] = score
+        item = package_story(item)
+        item["youtube_brain"] = creator_premortem(item)
+        scored_candidates.append(item)
+    candidates = scored_candidates
     if os.environ.get("OPS_GUARDIAN_ENFORCE", "0") in {"1", "true", "True"}:
         paused = set(paused_categories().keys())
         if paused:
@@ -1151,7 +1304,6 @@ def load_pending_stories() -> tuple[list[dict], dict]:
                      for item in held
                      for reason in (item.get("agency_gate") or {}).get("reasons", [])
                  }))[:160])
-    strategy = load_strategy()
     growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
     return rank_for_agency(growth_ranked, strategy), queue
 
@@ -1309,9 +1461,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             sum(1 for i in issues if i.severity == "warn"),
         )
         return None
-    hook_text       = (story.get("hook") or "").strip()
-    thumbnail_text  = (story.get("thumbnail_text") or "").strip()
-    display_title   = (story.get("title") or "").strip()  # already seo_title from queue
+    hook_text       = _normalise_editorial_text(story.get("hook") or "")
+    display_title   = _normalise_editorial_text(story.get("title") or "")  # already seo_title from queue
+    thumbnail_text  = _clean_thumbnail_text(
+        story.get("thumbnail_text") or "",
+        title=display_title,
+        hook=hook_text,
+    )
+    story["hook"] = hook_text
+    story["title"] = display_title
+    story["thumbnail_text"] = thumbnail_text
 
     # ── 1. TTS narration ──────────────────────────────────────────
     script = humanize_for_tts(queue_script)
@@ -1571,7 +1730,33 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["studio_state"] = editorial.state
     metadata["series"] = editorial.series
     metadata["monetization_audit"] = audit_monetization(metadata)
+    metadata["rights_audit"] = audit_rights(metadata)
+    if not metadata["rights_audit"].get("approved"):
+        log.warning(
+            "  Skipping Short - rights audit rejected: %s",
+            "; ".join(metadata["rights_audit"].get("reasons") or []),
+        )
+        record_rejection(metadata, metadata["rights_audit"].get("reasons") or [], stage="rights_audit")
+        return None
     metadata["pre_publish_audit"] = audit_publish_package(metadata)
+    metadata["publish_score"] = score_metadata(metadata)
+    metadata["youtube_brain"] = publish_brain(metadata)
+    if metadata["youtube_brain"].get("state") == "hold":
+        log.warning(
+            "  Skipping Short - YouTube brain held score=%s risks=%s",
+            metadata["youtube_brain"].get("score"),
+            "; ".join(metadata["youtube_brain"].get("risks") or []),
+        )
+        record_rejection(metadata, metadata["youtube_brain"].get("risks") or [], stage="youtube_brain")
+        return None
+    if not metadata["publish_score"].get("approved"):
+        log.warning(
+            "  Skipping Short - publish score rejected score=%s state=%s",
+            metadata["publish_score"].get("score"),
+            metadata["publish_score"].get("state"),
+        )
+        record_rejection(metadata, [f"publish_score_{metadata['publish_score'].get('state')}"], stage="final_publish_score")
+        return None
     if not metadata["pre_publish_audit"].get("approved"):
         log.warning(
             "  Skipping Short - final pre-publish audit rejected score=%s reasons=%s",
@@ -1653,8 +1838,7 @@ def main():
     for i, s in enumerate(pool[:MAX_SHORTS_PER_RUN], 1):
         log.info(f"  {i}. [{s['category']}] {s['title'][:70]}")
 
-    tmp = Path(f"/tmp/yt_shorts_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
-    tmp.mkdir(exist_ok=True)
+    tmp = Path(tempfile.mkdtemp(prefix="yt_shorts_"))
 
     created = 0
     attempted = 0

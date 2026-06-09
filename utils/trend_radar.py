@@ -10,13 +10,13 @@ import html
 import json
 import re
 import time
-import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote_plus
 
 import requests
+from defusedxml import ElementTree as ET
 
 from utils.trend_safety import enrich_topics
 

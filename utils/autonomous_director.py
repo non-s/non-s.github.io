@@ -115,7 +115,7 @@ def sequel_candidates(latest: dict, limit: int = 8) -> list[dict]:
             "growth_score": round(growth, 3),
             "views": views,
             "sequel_brief": f"Create a fresh follow-up to '{title}' with a new animal detail, not the same fact.",
-            "sequel_id": "sequel-" + hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16],
+            "sequel_id": "sequel-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16],
         })
         if len(out) >= limit:
             break
@@ -128,13 +128,14 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
     source_title = str(candidate.get("source_title") or "Animal behavior")
     animal = _animal_from_title(source_title, category)
     source_signal = re.sub(r"[^A-Za-z0-9' ]+", " ", source_title).strip()[:80]
-    title = f"{animal.capitalize()} have another secret hiding in plain sight"
-    hook = f"{animal.capitalize()} have another secret hiding in plain sight."
+    action = "remember" if str(candidate.get("story_format")) == "animal_memory" else "use"
+    title = f"{animal.capitalize()} {action} one visible cue for a reason"
+    hook = f"{animal.capitalize()} {action} one visible cue for a reason."
     script = (
-        f"{hook} The previous {animal} Short worked because it gave one visible animal, one surprise, "
-        f"and one payoff: {source_signal}. This sequel keeps the {animal} on screen but changes the detail: watch the "
-        "first movement, then the small body cue that explains the behavior. Same winning shape, "
-        "new fact, no repeat."
+        f"{hook} The previous {animal} Short worked because it gave one visible animal, "
+        f"one surprise, and one payoff: {source_signal}. This sequel keeps that winning "
+        "shape but changes the detail. Watch the first movement, then the body cue "
+        "that explains the behavior. Same proven pattern, new fact, no repeat."
     )
     return {
         "id": str(candidate.get("sequel_id") or "sequel-" + _slug(source_title)),

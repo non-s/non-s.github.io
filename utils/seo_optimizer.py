@@ -86,8 +86,16 @@ def _frontload_title(title: str, animal: str) -> str:
     cleaned = _clean_title(title)
     if not animal:
         return cleaned
+    cleaned = _drop_redundant_category_prefix(cleaned, animal)
     first_words = [w.lower() for w in _words(cleaned)[:3]]
     if first_words and first_words[0] in _ANIMAL_WORDS:
+        return cleaned
+    animal_root = animal.lower()[:-1] if animal.lower().endswith("s") else animal.lower()
+    if any(
+        word.replace("'s", "") == animal_root
+        or word.replace("'s", "") == animal_root + "s"
+        for word in first_words
+    ):
         return cleaned
     lower = cleaned.lower()
     for prefix in ("why ", "how "):
@@ -100,6 +108,24 @@ def _frontload_title(title: str, animal: str) -> str:
     if lower.startswith(("this ", "these ", "they ")):
         return f"{animal} {cleaned}".strip()
     return f"{animal} {cleaned}".strip()
+
+
+def _drop_redundant_category_prefix(title: str, animal: str) -> str:
+    """Remove generic category prefixes such as 'Birds This black bird...'."""
+    words = _words(title)
+    if len(words) < 2:
+        return title
+    first = words[0].lower()
+    canonical = animal.lower()
+    singular = canonical[:-1] if canonical.endswith("s") else canonical
+    if first not in {canonical, singular}:
+        return title
+    next_window = " ".join(words[1:5]).lower().replace("'s", "")
+    if re.search(rf"\b{re.escape(singular)}s?\b", next_window):
+        return re.sub(r"^\s*\S+\s+", "", title, count=1).strip()
+    if words[1].lower() in {"this", "these", "white", "black", "gray", "grey", "baby"}:
+        return re.sub(r"^\s*\S+\s+", "", title, count=1).strip()
+    return title
 
 
 def optimise_title(title: str, *, hook: str = "", script: str = "",

@@ -92,6 +92,44 @@ def test_metadata_preserves_agency_decision(tmp_path: Path):
     assert _meta(tmp_path)["agency"]["decision"] == "publish_now"
 
 
+def test_metadata_includes_youtube_brain(tmp_path: Path):
+    from generate_shorts import _queue_to_story, build_short_metadata
+    story = _queue_to_story({
+        "id": "brain-story",
+        "seo_title": "Ducks fake injuries to protect young",
+        "title": "Ducks fake injuries to protect young",
+        "hook": "Ducks fake injuries to protect their young.",
+        "script": (
+            "Ducks fake injuries to protect their young. Watch the wing movement first, "
+            "because that cue pulls predators away from the nest. The duck escapes after "
+            "the chicks have cover."
+        ),
+        "thumbnail_text": "WATCH THE WING",
+        "category": "birds",
+    })
+    meta = build_short_metadata(story, tmp_path / "short.mp4", tmp_path / "thumb.jpg")
+    assert meta["youtube_brain"]["viewer_promise"]
+
+
+def test_metadata_includes_packaging_and_pinned_comment(tmp_path: Path):
+    from generate_shorts import _queue_to_story, build_short_metadata
+    story = _queue_to_story({
+        "id": "package-story",
+        "seo_title": "Ducks fake injuries to protect young",
+        "title": "Ducks fake injuries to protect young",
+        "hook": "Ducks fake injuries to protect their young.",
+        "script": (
+            "Ducks fake injuries to protect their young. Watch the wing movement first, "
+            "because that cue pulls predators away from the nest."
+        ),
+        "thumbnail_text": "WATCH THE WING",
+        "category": "birds",
+    })
+    meta = build_short_metadata(story, tmp_path / "short.mp4", tmp_path / "thumb.jpg")
+    assert meta["packaging"]["pinned_comment"]
+    assert meta["pinned_comment"] == meta["packaging"]["pinned_comment"]
+
+
 def test_metadata_includes_retention_surgery(tmp_path: Path):
     surgery = _meta(tmp_path)["retention_surgery"]
     assert "score" in surgery
