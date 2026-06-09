@@ -101,6 +101,7 @@ def score_metadata(meta: dict) -> dict:
     base = score_story(meta)
     audit = _score_dict(meta, "pre_publish_audit")
     visual = _score_dict(meta, "visual_qa")
+    visual_ctr = _score_dict(meta, "visual_ctr")
     monetization = _score_dict(meta, "monetization_audit")
     score = base["score"]
     score += _as_score(audit.get("score"), 70) * 0.12 - 8
@@ -110,6 +111,12 @@ def score_metadata(meta: dict) -> dict:
         score += 5
     if visual.get("checked") and not visual.get("approved"):
         score -= 35
+    if visual_ctr.get("checked"):
+        ctr_score = _as_score(visual_ctr.get("score"), 50)
+        if ctr_score >= 72:
+            score += 4
+        elif ctr_score < 52:
+            score -= 8
     if monetization.get("approved") is False:
         score -= 20
     score = round(max(0, min(100, score)), 1)

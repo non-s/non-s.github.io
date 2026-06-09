@@ -66,6 +66,7 @@ from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
+from utils.visual_ctr import select_best_frame
 from utils.visual_qa import evaluate_frame, evaluate_local_frame
 from utils.youtube_brain import creator_premortem, publish_brain
 
@@ -1611,10 +1612,28 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # path doesn't use this for video but we still need a still for
     # the thumbnail composition.
     bg_path = tmp_dir / f"bg_{slug}.jpg"
-    img_ok = bool(broll_paths) and _extract_broll_thumbnail(
-        broll_paths[0],
-        bg_path,
-    )
+    visual_ctr = {
+        "checked": False,
+        "approved": True,
+        "score": 0,
+        "reason": "no_broll_for_ctr_frame_selection",
+    }
+    img_ok = False
+    if broll_paths:
+        visual_ctr = select_best_frame(broll_paths[0], tmp_dir)
+        best_frame = str(visual_ctr.get("best_frame") or "")
+        if best_frame and Path(best_frame).exists():
+            try:
+                shutil.copyfile(best_frame, bg_path)
+                img_ok = bg_path.exists() and bg_path.stat().st_size >= 5 * 1024
+            except Exception as exc:
+                log.debug("best CTR frame copy failed: %s", exc)
+                img_ok = False
+        if not img_ok:
+            img_ok = _extract_broll_thumbnail(
+                broll_paths[0],
+                bg_path,
+            )
     if not img_ok:
         img_ok = download_commons_image(story, bg_path)
 
@@ -1749,6 +1768,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["has_captions"] = bool(ass_path)
     metadata["local_visual_qa"] = local_visual_qa
     metadata["visual_qa"] = visual_qa
+    metadata["visual_ctr"] = visual_ctr
     metadata["script_quality_grade"] = grade
     metadata["production_quality"] = {
         "motion_broll_required": QUALITY_REQUIRE_MOTION_BROLL,

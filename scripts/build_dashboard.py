@@ -1063,6 +1063,8 @@ def render_html() -> str:
         out.append(f"<div><small>Legacy inferred</small><div class='metric'>{int(visual_report.get('inferred_legacy_checked', 0) or 0)}</div></div>")
         out.append(f"<div><small>Checked</small><div class='metric'>{int(visual_report.get('checked', 0) or 0)}</div></div>")
         out.append(f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>")
+        out.append(f"<div><small>CTR frames</small><div class='metric'>{int(visual_report.get('ctr_checked', 0) or 0)}</div></div>")
+        out.append(f"<div><small>Strong CTR</small><div class='metric'>{int(visual_report.get('ctr_strong', 0) or 0)}</div></div>")
         out.append("</section></div>")
 
     if visual_backfill:

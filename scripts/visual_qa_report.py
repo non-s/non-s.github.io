@@ -20,6 +20,7 @@ from utils.visual_qa_backfill import infer_marker_visual_qa
 
 def build_report() -> dict:
     total = checked = approved = rejected = 0
+    ctr_checked = ctr_strong = ctr_weak = 0
     reasons: Counter[str] = Counter()
     weak = []
     for path in sorted(VIDEOS.glob("*.done")) if VIDEOS.exists() else []:
@@ -45,6 +46,15 @@ def build_report() -> dict:
                 reason = str(qa.get("reason") or local.get("reason") or "visual_rejected")
                 reasons[reason] += 1
         quality = int(qa.get("thumbnail_quality", local.get("score", 0)) or 0)
+        ctr = item.get("visual_ctr") or {}
+        if ctr.get("checked"):
+            ctr_checked += 1
+            ctr_score = int(ctr.get("score", 0) or 0)
+            if ctr_score >= 72:
+                ctr_strong += 1
+            elif ctr_score < 58:
+                ctr_weak += 1
+                reasons[str(ctr.get("reason") or "weak_ctr_frame")] += 1
         if quality and quality < 6:
             weak.append({
                 "video_id": item.get("video_id", ""),
@@ -64,6 +74,9 @@ def build_report() -> dict:
         "inferred_coverage_pct": 100.0 if total else 0,
         "approved": approved,
         "rejected": rejected,
+        "ctr_checked": ctr_checked,
+        "ctr_strong": ctr_strong,
+        "ctr_weak": ctr_weak,
         "top_reasons": dict(reasons.most_common(8)),
         "weak_visuals": weak[:20],
     }
