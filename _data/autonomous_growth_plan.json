@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T15:31:03.345950+00:00",
+  "generated_at": "2026-06-09T16:25:30.672151+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -165,39 +165,17 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 276,
-    "approved_candidates": 275,
+    "pending": 121,
+    "approved_candidates": 121,
     "lane_counts": {
-      "fresh_experiment": 43,
-      "proven_category": 145,
-      "recovery": 61,
-      "sequence": 27
+      "fresh_experiment": 12,
+      "proven_category": 74,
+      "recovery": 14,
+      "sequence": 21
     },
     "top_candidates": [
       {
-        "id": "sequel-03158d9bb49ecf6e",
-        "title": "Chickens remember one visible cue for a reason",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "sequence",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 133.0
-      },
-      {
-        "id": "sequel-4711168f2738f897",
+        "id": "sequel-d67570d3178f3326",
         "title": "Cows remember one visible cue for a reason",
         "category": "farm",
         "story_format": "animal_memory",
@@ -205,15 +183,20 @@
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
           "score": 100,
-          "approved": true,
-          "state": "publish_ready",
+          "approved": false,
+          "state": "rewrite",
           "category": "farm",
           "story_format": "animal_memory",
           "hook_score": 100,
           "title_score": 100,
           "phrase_risk": {
-            "penalty": 0,
-            "hits": []
+            "penalty": 8,
+            "hits": [
+              {
+                "phrase": "another signal hiding in plain sight",
+                "count": 1
+              }
+            ]
           }
         },
         "autonomy_priority": 133.0
@@ -246,7 +229,7 @@
         "autonomy_priority": 133.0
       },
       {
-        "id": "sequel-d67570d3178f3326",
+        "id": "sequel-4711168f2738f897",
         "title": "Cows remember one visible cue for a reason",
         "category": "farm",
         "story_format": "animal_memory",
@@ -254,20 +237,37 @@
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
           "score": 100,
-          "approved": false,
-          "state": "rewrite",
+          "approved": true,
+          "state": "publish_ready",
           "category": "farm",
           "story_format": "animal_memory",
           "hook_score": 100,
           "title_score": 100,
           "phrase_risk": {
-            "penalty": 8,
-            "hits": [
-              {
-                "phrase": "another signal hiding in plain sight",
-                "count": 1
-              }
-            ]
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 133.0
+      },
+      {
+        "id": "sequel-03158d9bb49ecf6e",
+        "title": "Chickens remember one visible cue for a reason",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "sequence",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
           }
         },
         "autonomy_priority": 133.0
@@ -317,52 +317,8 @@
         "autonomy_priority": 130.6
       },
       {
-        "id": "e3c7ee27c2bd2282",
-        "title": "Why donkeys bray — the sound travels for miles",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 74,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "19bab96f2433db3e",
-        "title": "Sheep can recognise human faces 🐑",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 88,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "afcbf12bd83ef465",
-        "title": "Cows grunting secrets — they have best friends",
+        "id": "b59e5d76362e16be",
+        "title": "Watch the ears when cows remember",
         "category": "farm",
         "story_format": "animal_memory",
         "lane": "proven_category",
@@ -374,117 +330,7 @@
           "category": "farm",
           "story_format": "animal_memory",
           "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "94d4c5a394169bbf",
-        "title": "Dairy cows remember faces for years 🐄",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "6fd688d234ccbb71",
-        "title": "Why baby goats play — it’s not just for fun 🐐",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "78c2cdb7babf4661",
-        "title": "Horses know when you're lying — science proves it 🐴",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "f88b644aa4af0b5b",
-        "title": "Chickens can recognise each other by face 🐓",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.0
-      },
-      {
-        "id": "873806e4b5b332c5",
-        "title": "Ducklings beg for food — but that’s not why they chirp",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
+          "title_score": 84,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -515,8 +361,52 @@
         "autonomy_priority": 130.0
       },
       {
-        "id": "2aedfa9831a6957b",
-        "title": "Horses recognize each other's faces like humans 🐴",
+        "id": "78c2cdb7babf4661",
+        "title": "Watch the cue when horses remember",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 84,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "afcbf12bd83ef465",
+        "title": "Cows grunting secrets — they have best friends",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "873806e4b5b332c5",
+        "title": "Ducklings beg for food — but that’s not why they chirp",
         "category": "farm",
         "story_format": "animal_memory",
         "lane": "proven_category",
@@ -537,26 +427,114 @@
         "autonomy_priority": 130.0
       },
       {
-        "id": "b59e5d76362e16be",
-        "title": "Cows have best friends and it shows in the barn 🐄",
+        "id": "6fd688d234ccbb71",
+        "title": "Watch the cue when goats remember",
         "category": "farm",
         "story_format": "animal_memory",
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 99.8,
+          "score": 100,
           "approved": true,
           "state": "publish_ready",
           "category": "farm",
           "story_format": "animal_memory",
           "hook_score": 86,
-          "title_score": 90,
+          "title_score": 84,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
           }
         },
-        "autonomy_priority": 129.8
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "e3c7ee27c2bd2282",
+        "title": "Why donkeys bray — the sound travels for miles",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 74,
+          "title_score": 66,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "f88b644aa4af0b5b",
+        "title": "Chickens can recognise each other by face 🐓",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "94d4c5a394169bbf",
+        "title": "Dairy cows remember faces for years 🐄",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
+      },
+      {
+        "id": "19bab96f2433db3e",
+        "title": "Sheep can recognise human faces 🐑",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 88,
+          "title_score": 66,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.0
       },
       {
         "id": "sequel-9c8f2a8681c5f41f",
@@ -635,30 +613,8 @@
         "autonomy_priority": 128.6
       },
       {
-        "id": "a5e2189bee2dfbab",
-        "title": "Goats have rectangular pupils — here's why 🐐",
-        "category": "farm",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "body_superpower",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 127.6
-      },
-      {
         "id": "75733dc684624166",
-        "title": "Cows yawn for a surprising reason 🐄",
+        "title": "Watch the tail when cows signal",
         "category": "farm",
         "story_format": "body_superpower",
         "lane": "proven_category",
@@ -670,7 +626,7 @@
           "category": "farm",
           "story_format": "body_superpower",
           "hook_score": 86,
-          "title_score": 90,
+          "title_score": 74,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -680,7 +636,29 @@
       },
       {
         "id": "0da0318c3d4ad0da",
-        "title": "Cows can’t see red — but they still know when you’re angry",
+        "title": "Watch the eyes when cows trick",
+        "category": "farm",
+        "story_format": "body_superpower",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 127.6
+      },
+      {
+        "id": "a5e2189bee2dfbab",
+        "title": "Goats have rectangular pupils — here's why 🐐",
         "category": "farm",
         "story_format": "body_superpower",
         "lane": "proven_category",
@@ -777,74 +755,8 @@
         "autonomy_priority": 126.2
       },
       {
-        "id": "9be07040768b8603",
-        "title": "Why chickens dust bathe — it’s a spa day",
-        "category": "farm",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "animal_intelligence",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 125.8
-      },
-      {
-        "id": "49df32c5f3c28c33",
-        "title": "Horses run like pendulums because they can't jump 🐎",
-        "category": "farm",
-        "story_format": "single_fact",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 99.2,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "single_fact",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 125.22
-      },
-      {
-        "id": "sequel-6bd418c3798bacc5",
-        "title": "Birds use one visible cue for a reason",
-        "category": "birds",
-        "story_format": "body_superpower",
-        "lane": "sequence",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "birds",
-          "story_format": "body_superpower",
-          "hook_score": 88,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 125.18
-      },
-      {
         "id": "sequel-cf3aa2d1d0e94065",
-        "title": "Birds show the wing timing in birds have another signal hiding in plain",
+        "title": "Birds show the beak pressure in watch the wing when birds signal",
         "category": "birds",
         "story_format": "body_superpower",
         "lane": "sequence",
@@ -856,13 +768,101 @@
           "category": "birds",
           "story_format": "body_superpower",
           "hook_score": 74,
-          "title_score": 52,
+          "title_score": 56,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
           }
         },
         "autonomy_priority": 125.18
+      },
+      {
+        "id": "ce22715fff4c46c5",
+        "title": "Macaws groom each other with signal rules 🦜",
+        "category": "birds",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "birds",
+          "story_format": "animal_memory",
+          "hook_score": 74,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 124.58
+      },
+      {
+        "id": "9be07040768b8603",
+        "title": "Watch the feathers when chickens roll",
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 98.7,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_intelligence",
+          "hook_score": 86,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 124.5
+      },
+      {
+        "id": "e69850968bda1fc8",
+        "title": "Asian elephants remember friends for decades 🐘",
+        "category": "wildlife",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "wildlife",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 124.17
+      },
+      {
+        "id": "9e9ce515f9f74f38",
+        "title": "Watch the cue when bears remember",
+        "category": "wildlife",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "wildlife",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 84,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 124.17
       }
     ]
   },
