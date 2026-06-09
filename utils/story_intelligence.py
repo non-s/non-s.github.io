@@ -28,6 +28,10 @@ _ANIMAL_WORDS = {
     "cow", "cows", "duck", "duckling", "ducklings", "fox", "horse", "horses",
     "lion", "lions", "octopus", "octopuses", "parrot", "parrots", "penguin",
     "penguins", "seal", "seals", "snake", "snakes", "turtle", "turtles",
+    "donkey", "donkeys", "sheep", "bee", "bees", "butterfly", "butterflies",
+    "ant", "ants", "beetle", "beetles", "mantis", "mantises", "dragonfly",
+    "dragonflies", "chameleon", "chameleons", "orangutan", "orangutans",
+    "monkey", "monkeys",
 }
 
 

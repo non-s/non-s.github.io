@@ -20,7 +20,9 @@ WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thin
 VISIBLE_CUE_WORDS = {
     "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
-    "skin", "texture", "colour", "color",
+    "skin", "texture", "colour", "color", "nose", "face", "head",
+    "hoof", "hooves", "fin", "fins", "gill", "gills", "antenna",
+    "antennae", "pupil", "pupils",
 }
 
 
@@ -45,6 +47,10 @@ def _animal_from_text(text: str, category: str = "") -> str:
         "birds", "owl", "owls", "cat", "cats", "dog", "dogs", "lion",
         "lions", "elephant", "elephants", "dolphin", "dolphins", "whale",
         "whales", "parrot", "parrots", "macaw", "macaws", "octopus", "octopuses",
+        "donkey", "donkeys", "sheep", "shark", "sharks", "bee", "bees",
+        "butterfly", "butterflies", "ant", "ants", "beetle", "beetles",
+        "mantis", "mantises", "dragonfly", "dragonflies", "chameleon",
+        "chameleons", "orangutan", "orangutans", "monkey", "monkeys",
     )
     for token in _words(text.lower()):
         if token in animals:

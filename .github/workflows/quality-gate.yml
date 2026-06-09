@@ -63,7 +63,7 @@ jobs:
         run: python -m pip_audit -r requirements.txt
 
       - name: "Run high-severity security scan"
-        run: python -m bandit -q -lll -r fetch_animals.py generate_shorts.py upload_youtube.py utils scripts -x tests
+        run: python -m bandit -q -lll -r fetch_animals.py generate_shorts.py upload_youtube.py auth_youtube.py utils scripts -x tests
 
       - name: "Run automation health audit"
         run: |

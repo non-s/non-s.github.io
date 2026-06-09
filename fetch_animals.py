@@ -800,7 +800,7 @@ def _topic_fetch_plan(queue: dict,
     pending = _pending_category_counts(queue)
     weights = (strategy or {}).get("category_weights") or {}
     requested = {
-        str(item).strip().lower()
+        _ANIMAL_ALIASES.get(str(item).strip().lower(), str(item).strip().lower())
         for item in ((comments or {}).get("requested_animals") or [])
         if str(item).strip()
     }
@@ -828,7 +828,8 @@ def _topic_fetch_plan(queue: dict,
         topic_animals = set().union(*(
             _animal_terms(query) for query in cfg.get("queries", [])
         ))
-        if requested and topic_animals & requested:
+        requested_for_topic = sorted(topic_animals & requested)
+        if requested_for_topic:
             budget += 2
         trend_weight = trend_weight_for_category(topic_key, trends)
         if trend_weight >= 1.4:
@@ -840,6 +841,7 @@ def _topic_fetch_plan(queue: dict,
             "budget": max(1, budget),
             "query_take": query_take,
             "trend_queries": trend_queries_for_category(topic_key, trends),
+            "comment_queries": [f"{animal} animal behavior" for animal in requested_for_topic[:2]],
             "trend_weight": trend_weight,
         }
     return plan
@@ -904,6 +906,9 @@ def main() -> int:
             take=int(plan.get("query_take") or 2),
         )
         for query in plan.get("trend_queries") or []:
+            if query not in queries:
+                queries.insert(0, query)
+        for query in plan.get("comment_queries") or []:
             if query not in queries:
                 queries.insert(0, query)
         queries = queries[:max(2, int(plan.get("query_take") or 2))]

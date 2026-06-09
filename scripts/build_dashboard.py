@@ -300,7 +300,7 @@ def render_html() -> str:
     avg_humanity    = latest.get("avg_humanity_score", 0)
     humanity_counts = latest.get("humanity_label_counts") or {}
     pulled_at       = latest.get("pulled_at", "—")
-    underperformers = latest.get("below_60_pct") or []
+    underperformers = latest.get("below_62_pct") or latest.get("below_60_pct") or []
     cat_perf        = latest.get("category_avg_view_pct") or {}
     cat_engagement  = latest.get("category_avg_engagement") or {}
     cat_growth      = latest.get("category_avg_growth_score") or {}
@@ -348,7 +348,7 @@ def render_html() -> str:
         f"<div class='metric'>{avg_humanity}</div></div>"
     )
     out.append(
-        f"<div class='card'><small>Shorts under 60 % retention</small>"
+        f"<div class='card'><small>Shorts under 62 % retention</small>"
         f"<div class='metric'>{len(underperformers)}</div></div>"
     )
     out.append("</section>")

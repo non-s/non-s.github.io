@@ -31,7 +31,7 @@ def build_plan(*, latest: dict, health: dict, ops: dict, trend: dict) -> dict:
             "trend_animal": trend_item.get("animal", ""),
             "mix": "2 exploit + 1 explore" if publish_now >= 21 else "1 exploit + 2 explore",
             "avoid": paused[:3],
-            "goal": "raise retention above 60%" if float(latest.get("avg_view_pct", 0) or 0) < 60 else "scale strongest series",
+            "goal": "raise retention above 62%" if float(latest.get("avg_view_pct", 0) or 0) < 62 else "scale strongest series",
         })
     return {
         "status": "aggressive_growth" if publish_now >= 21 else "build_inventory_quality",

@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 
-RETENTION_FLOOR = 60.0
+RETENTION_FLOOR = 62.0
 RETENTION_STRETCH = 70.0
 SUBS_PER_1000_TARGET = 1.5
 
@@ -40,7 +40,7 @@ def _rank_map(mapping: dict, limit: int = 5) -> list[dict]:
 def retention_command_center(latest: dict, fact_ledger: dict) -> dict:
     avg = _float(latest.get("avg_view_pct", latest.get("avg_view_percentage", 0)))
     categories = latest.get("category_avg_view_pct") or {}
-    below_60 = latest.get("below_60_pct") or []
+    below_floor = latest.get("below_62_pct") or latest.get("below_60_pct") or []
     recovery = []
     watch = []
     scale = []
@@ -67,7 +67,7 @@ def retention_command_center(latest: dict, fact_ledger: dict) -> dict:
     if recovery:
         commands.append("Put recovery categories through stricter hooks before they can publish.")
     if scale:
-        commands.append("Scale the categories already above 60% retention before adding new experiments.")
+        commands.append("Scale the categories already above 62% retention before adding new experiments.")
     if phrase_pressure:
         commands.append("Rotate repeated title/script phrases so the channel does not feel templated.")
 
@@ -77,7 +77,7 @@ def retention_command_center(latest: dict, fact_ledger: dict) -> dict:
         "average_retention": round(avg, 3),
         "gap_to_floor": round(max(0.0, RETENTION_FLOOR - avg), 3),
         "state": "scale" if avg >= RETENTION_FLOOR else "needs_retention_work",
-        "below_floor_count": len(below_60),
+        "below_floor_count": len(below_floor),
         "scale_categories": scale,
         "watch_categories": watch,
         "recovery_categories": recovery,
@@ -172,8 +172,8 @@ def first_24h_engine(latest: dict) -> dict:
     return {
         "state": "winner_found" if winners else "monitoring",
         "winner_rules": [
-            "If retention is above 60% and growth beats 180, make a sequel before chasing a new topic.",
-            "If views are high but retention is below 60%, remake the hook instead of copying the topic.",
+            "If retention is above 62% and growth beats 180, make a sequel before chasing a new topic.",
+            "If views are high but retention is below 62%, remake the hook instead of copying the topic.",
             "If both views and retention are low, retire the angle for 14 days.",
         ],
         "winners": winners[:6],

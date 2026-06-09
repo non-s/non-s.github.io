@@ -22,6 +22,7 @@ REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
+    "unknown_source",
     "off_topic_visual",
     "duplicate_title",
     "duplicate_source",
@@ -66,6 +67,9 @@ def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
             issues.append(f"missing_{field}")
     if not (story.get("source_url") or story.get("url")):
         issues.append("missing_source_url")
+    rights = audit_rights(story)
+    if not rights.get("approved"):
+        issues.extend(str(reason) for reason in rights.get("reasons") or [])
     try:
         clip = type("Clip", (), {"url": story.get("url", ""), "title": story.get("title", "")})()
         subject = fetch_animals._subject_from_clip(clip, str(story.get("category") or ""))
@@ -102,8 +106,15 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     pkg = packaged.get("packaging") or {}
     repaired = False
     repair_reasons: list[str] = []
-    if brain.get("state") == "rewrite_before_publish" or pkg.get("state") == "rewrite_packaging":
-        repair_reasons = list(dict.fromkeys((brain.get("risks") or []) + (pkg.get("risks") or [])))
+    publish_risks = []
+    if publish.get("state") == "rewrite" or not publish.get("approved"):
+        publish_risks.append("publish_score_rewrite")
+    if (publish.get("phrase_risk") or {}).get("hits"):
+        publish_risks.append("repetitive_title_template")
+    if brain.get("state") == "rewrite_before_publish" or pkg.get("state") == "rewrite_packaging" or publish_risks:
+        repair_reasons = list(dict.fromkeys(
+            (brain.get("risks") or []) + (pkg.get("risks") or []) + publish_risks
+        ))
         rescued, applied = rescue_story(packaged, repair_reasons)
         if applied:
             repaired = True

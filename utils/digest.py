@@ -121,8 +121,8 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append("- Top editorial series: " + ", ".join(
                 f"{name} ({score:.2f})" for name, score in top_series
             ))
-        underperf = analytics_summary.get("below_60_pct") or []
-        lines.append(f"- Underperforming (<60 % retention): {len(underperf)}")
+        underperf = analytics_summary.get("below_62_pct") or analytics_summary.get("below_60_pct") or []
+        lines.append(f"- Underperforming (<62 % retention): {len(underperf)}")
         cat = analytics_summary.get("category_avg_view_pct") or {}
         if cat:
             top = sorted(cat.items(), key=lambda kv: kv[1], reverse=True)[:5]

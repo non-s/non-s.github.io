@@ -187,9 +187,9 @@ def build_ops_report(root: Path | str = ".") -> dict:
     markers = _load_markers(root)
 
     avg_retention = float(latest.get("avg_view_pct", latest.get("avg_view_percentage", 0)) or 0)
-    below_60 = latest.get("below_60_pct") or []
+    below_floor = latest.get("below_62_pct") or latest.get("below_60_pct") or []
     shorts_tracked = int(latest.get("shorts_tracked", 0) or 0)
-    weak_ratio = (len(below_60) / shorts_tracked) if shorts_tracked else 0.0
+    weak_ratio = (len(below_floor) / shorts_tracked) if shorts_tracked else 0.0
     paused = _paused_topics(latest)
     visual = _visual_quality(markers)
 
@@ -206,7 +206,7 @@ def build_ops_report(root: Path | str = ".") -> dict:
         reasons.append("average_retention_watch")
     if weak_ratio >= 0.5:
         risk_points += 20
-        reasons.append("many_shorts_below_60_retention")
+        reasons.append("many_shorts_below_target_retention")
     if len(paused) >= 3:
         risk_points += 15
         reasons.append("multiple_topics_paused")

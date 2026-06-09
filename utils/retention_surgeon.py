@@ -138,7 +138,7 @@ def remake_brief(item: dict) -> dict:
         "rewrite_instructions": [
             "Open with the animal plus outcome in the first two seconds.",
             "Remove setup; explain only the mechanism viewers can see or imagine.",
-            "Keep the remake shorter than the original if retention was below 60%.",
+            "Keep the remake shorter than the original if retention was below 62%.",
             "Change the thumbnail promise, not just the wording.",
         ],
     }

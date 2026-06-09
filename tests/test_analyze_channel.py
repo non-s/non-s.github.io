@@ -64,6 +64,7 @@ def test_snapshot_includes_optional_retention_metrics():
     assert snapshot["subscribers_gained"] == 7
     assert snapshot["category_avg_view_pct"]["ocean"] == 82.5
     assert snapshot["below_60_pct"] == []
+    assert snapshot["below_62_pct"] == []
     assert snapshot["top_performers"][0]["view_pct"] == 82.5
     assert snapshot["top_performers"][0]["growth_score"] > 0
     assert observations[0]["score"] == observations[0]["growth_score"]
@@ -79,4 +80,5 @@ def test_snapshot_tracks_below_sixty_percent_retention():
     retention = {"abc": {"averageViewPercentage": 42.0}}
     snapshot, _ = build_snapshot(markers, stats, retention)
     assert snapshot["below_60_pct"] == ["abc"]
+    assert snapshot["below_62_pct"] == ["abc"]
     assert snapshot["learning_profile"]["avoid_repeating_video_ids"] == ["abc"]

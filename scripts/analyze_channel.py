@@ -387,6 +387,10 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             video_id for video_id, item in retention.items()
             if float(item.get("averageViewPercentage", 0) or 0) < 60
         ]),
+        "below_62_pct": sorted([
+            video_id for video_id, item in retention.items()
+            if float(item.get("averageViewPercentage", 0) or 0) < 62
+        ]),
         "category_avg_view_pct": {
             key: average(values) for key, values in sorted(category_retention.items())
         },
@@ -421,7 +425,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
                 "Favor categories with the highest growth score for the next production day.",
                 "Keep Shorts tight: one strong hook, one animal, one payoff.",
                 "Prefer stories with a high humanity score: host presence, visible detail, tension, payoff.",
-                "Review any Short below 60 percent average view percentage before repeating its subject.",
+                "Review any Short below 62 percent average view percentage before repeating its subject.",
                 "Use the learning profile before fetch: winning keywords/categories are the next discovery bias.",
             ],
         },
