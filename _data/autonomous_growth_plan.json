@@ -1,71 +1,71 @@
 {
-  "generated_at": "2026-06-10T07:53:03.754221+00:00",
+  "generated_at": "2026-06-10T09:04:18.533272+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "youtube_analytics_and_public_statistics",
-    "shorts_tracked": 30,
+    "shorts_tracked": 31,
     "avg_view_pct": 59.847,
-    "subs_per_1000_views": 1.279
+    "subs_per_1000_views": 1.231
   },
   "category_priorities": [
     {
-      "name": "primates",
-      "score": 528.4
+      "name": "farm",
+      "score": 211.359
     },
     {
-      "name": "farm",
-      "score": 216.408
+      "name": "primates",
+      "score": 189.577
+    },
+    {
+      "name": "ocean",
+      "score": 160.507
     },
     {
       "name": "birds",
-      "score": 150.189
+      "score": 145.514
     },
     {
       "name": "wildlife",
-      "score": 139.687
-    },
-    {
-      "name": "cats",
-      "score": 108.155
+      "score": 135.601
     }
   ],
   "format_priorities": [
     {
       "name": "animal_memory",
-      "score": 232.201
-    },
-    {
-      "name": "animal_intelligence",
-      "score": 207.376
-    },
-    {
-      "name": "cute_behavior",
-      "score": 158.466
+      "score": 218.91
     },
     {
       "name": "body_superpower",
-      "score": 138.592
+      "score": 169.949
+    },
+    {
+      "name": "cute_behavior",
+      "score": 156.554
+    },
+    {
+      "name": "animal_intelligence",
+      "score": 148.704
     },
     {
       "name": "single_fact",
-      "score": 137.298
+      "score": 134.689
     }
   ],
   "winning_terms": [
     "another",
-    "aren't",
+    "aquariums",
     "baby",
     "before",
     "bellies",
-    "bird's",
-    "birds",
-    "black",
     "bottle",
     "chickens",
     "cows",
-    "ducklings"
+    "ducklings",
+    "ducks",
+    "faces",
+    "fake"
   ],
   "experiment_bank": {
     "winners": {
@@ -123,16 +123,16 @@
       {
         "id": "H1_DOUBLE_DOWN_CATEGORY",
         "lane": "proven_category",
-        "statement": "Next Shorts in primates, farm should outperform cold topics.",
+        "statement": "Next Shorts in farm, primates should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 528.4
+        "target": 211.359
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "animal_memory is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 232.201
+        "target": 218.91
       },
       {
         "id": "H3_REWRITE_HOOKS",
@@ -147,13 +147,6 @@
         "statement": "A clearer one-line follow CTA should improve subscribers per 1k views.",
         "success_metric": "subs_per_1000_views",
         "target": 1.5
-      },
-      {
-        "id": "H5_RECOVER_OR_PAUSE",
-        "lane": "recovery",
-        "statement": "wildlife, cats should only run with stronger hooks or remakes.",
-        "success_metric": "view_pct",
-        "target": 55
       },
       {
         "id": "H6_SEQUENCE_WINNERS",
@@ -227,7 +220,8 @@
   },
   "audience_requests": {
     "requested_animals": [
-      "cat"
+      "cat",
+      "shark"
     ],
     "comment_prompts": [
       "Answer this viewer question: What big cat or predator makes noise when hunting?",
@@ -240,26 +234,34 @@
       {
         "profile": "unknown",
         "n": 28,
-        "mean_growth_score": 158.467,
+        "mean_growth_score": 154.555,
         "mean_retention": 49.16,
-        "mean_views": 708.214,
+        "mean_views": 717.5,
         "mean_visual_ctr_score": 0.0
       },
       {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 1,
-        "mean_growth_score": 528.4,
+        "mean_growth_score": 379.155,
         "mean_retention": 0.0,
-        "mean_views": 500.0,
+        "mean_views": 673.0,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "subject_rich|feed_bright|medium_contrast",
         "n": 1,
+        "mean_growth_score": 309.206,
+        "mean_retention": 0.0,
+        "mean_views": 360.0,
+        "mean_visual_ctr_score": 78.0
+      },
+      {
+        "profile": "close_subject|dark_or_washed|flat_contrast",
+        "n": 1,
         "mean_growth_score": 0.0,
         "mean_retention": 0.0,
         "mean_views": 0.0,
-        "mean_visual_ctr_score": 78.0
+        "mean_visual_ctr_score": 44.0
       }
     ],
     "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
@@ -272,68 +274,26 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 130,
-    "approved_candidates": 130,
+    "pending": 123,
+    "approved_candidates": 123,
     "lane_counts": {
-      "fresh_experiment": 12,
-      "proven_category": 70,
-      "recovery": 26,
-      "sequence": 22
+      "fresh_experiment": 43,
+      "proven_category": 61,
+      "sequence": 19
     },
     "top_candidates": [
       {
-        "id": "sequel-b8d7bd89d4323472",
-        "title": "Primates use one visible cue for a reason",
-        "category": "primates",
-        "story_format": "animal_intelligence",
+        "id": "remake-78f7a6e274355f6b",
+        "title": "Cow remember faces by watching the movement",
+        "category": "farm",
+        "story_format": "animal_memory",
         "lane": "sequence",
         "hypothesis_id": "H6_SEQUENCE_WINNERS",
         "publish_score": {
-          "score": 98.1,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "primates",
-          "story_format": "animal_intelligence",
-          "hook_score": 88,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 130.24,
-        "packaging_lab": {
-          "title_variants": [
-            "Primates use one visible cue for a reason",
-            "Watch the tail when monkeys signal",
-            "Monkeys signal because of this tail"
-          ],
-          "thumbnail_variants": [
-            "PRIMATES PART 2",
-            "WATCH THE TAIL",
-            "MONKEYS SIGNAL"
-          ],
-          "hook_variants": [
-            "Primates use one visible cue for a reason.",
-            "Watch the tail when monkeys signal",
-            "Did you spot the tail before the reveal"
-          ],
-          "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after monkeys.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "c59938d967704741",
-        "title": "Monkeys remember because of this eyes",
-        "category": "primates",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
           "score": 100,
           "approved": true,
           "state": "publish_ready",
-          "category": "primates",
+          "category": "farm",
           "story_format": "animal_memory",
           "hook_score": 100,
           "title_score": 100,
@@ -342,81 +302,40 @@
             "hits": []
           }
         },
-        "autonomy_priority": 130.0,
+        "autonomy_priority": 133.0,
         "packaging_lab": {
           "title_variants": [
-            "Monkeys remember because of this eyes",
-            "Watch the eyes when monkeys remember",
-            "Monkeys remember for one reason most people miss"
+            "Cow remember faces by watching the movement",
+            "Watch the movement when cow remember",
+            "Cow remember because of this movement"
           ],
           "thumbnail_variants": [
-            "WATCH THE EYES",
-            "MONKEYS REMEMBER",
-            "EYES EXPLAINS IT"
+            "COW MOVEMENT",
+            "WATCH THE MOVEMENT",
+            "COW REMEMBER"
           ],
           "hook_variants": [
-            "Monkeys remember by using one visible eyes.",
-            "Monkeys remember because of this eyes",
-            "Did you spot the eyes before the reveal"
+            "Cow remember by using one visible movement.",
+            "Cow remember faces by watching the movement",
+            "Did you spot the movement before the reveal"
           ],
-          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after monkeys.",
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after cow.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
       {
-        "id": "79473a20b6c7711f",
-        "title": "Orangutans build rain hats — here's how",
-        "category": "primates",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100.0,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "primates",
-          "story_format": "animal_intelligence",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 129.14,
-        "packaging_lab": {
-          "title_variants": [
-            "Orangutans build rain hats — here's how",
-            "Watch the cue when orangutans show",
-            "Orangutans show because of this cue"
-          ],
-          "thumbnail_variants": [
-            "WATCH THE CUE",
-            "ORANGUTANS SHOW",
-            "CUE EXPLAINS IT"
-          ],
-          "hook_variants": [
-            "Check out this orangutan’s rain hat.",
-            "Orangutans build rain hats — here's how",
-            "Did you spot the cue before the reveal"
-          ],
-          "pinned_comment": "Did you spot the cue before the reveal? Comment the next animal you want me to decode after orangutans.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "697e68d357a0cebe",
-        "title": "Orangutans use their body to use",
-        "category": "primates",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "id": "remake-9335f313ffaf3f12",
+        "title": "Chicken remember faces by watching the movement",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
         "publish_score": {
           "score": 100,
           "approved": true,
           "state": "publish_ready",
-          "category": "primates",
-          "story_format": "animal_intelligence",
+          "category": "farm",
+          "story_format": "animal_memory",
           "hook_score": 100,
           "title_score": 100,
           "phrase_risk": {
@@ -424,65 +343,24 @@
             "hits": []
           }
         },
-        "autonomy_priority": 129.14,
+        "autonomy_priority": 133.0,
         "packaging_lab": {
           "title_variants": [
-            "Orangutans use their body to use",
-            "Watch the body when orangutans signal",
-            "Orangutans signal because of this body"
+            "Chicken remember faces by watching the movement",
+            "Watch the movement when chicken remember",
+            "Chicken remember because of this movement"
           ],
           "thumbnail_variants": [
-            "ORANGUTANS SIGNAL",
-            "WATCH THE BODY",
-            "BODY EXPLAINS IT"
+            "CHICKEN MOVEMENT",
+            "WATCH THE MOVEMENT",
+            "CHICKEN REMEMBER"
           ],
           "hook_variants": [
-            "Orangutans use their body to use for a clear reason.",
-            "Orangutans use their body to use",
-            "Did you spot the body before the reveal"
+            "Chicken remember by using one visible movement.",
+            "Chicken remember faces by watching the movement",
+            "Did you spot the movement before the reveal"
           ],
-          "pinned_comment": "Did you spot the body before the reveal? Comment the next animal you want me to decode after orangutans.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "5cdbbefbc7f7bf56",
-        "title": "Primates remember faces by watching the eyes",
-        "category": "primates",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 98.1,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "primates",
-          "story_format": "animal_memory",
-          "hook_score": 88,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 128.1,
-        "packaging_lab": {
-          "title_variants": [
-            "Primates remember faces by watching the eyes",
-            "Watch the eyes when primates remember",
-            "Primates remember because of this eyes"
-          ],
-          "thumbnail_variants": [
-            "PRIMATES EYES",
-            "WATCH THE EYES",
-            "PRIMATES REMEMBER"
-          ],
-          "hook_variants": [
-            "Primates remember by using one visible eyes.",
-            "Primates remember faces by watching the eyes",
-            "Did you spot the eyes before the reveal"
-          ],
-          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after primates.",
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after chicken.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -511,7 +389,7 @@
             ]
           }
         },
-        "autonomy_priority": 125.91,
+        "autonomy_priority": 133.0,
         "packaging_lab": {
           "title_variants": [
             "Chickens remember one visible cue for a reason",
@@ -552,7 +430,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 125.91,
+        "autonomy_priority": 133.0,
         "packaging_lab": {
           "title_variants": [
             "Cows remember one visible cue for a reason",
@@ -574,10 +452,10 @@
         }
       },
       {
-        "id": "sequel-03158d9bb49ecf6e",
-        "title": "Chickens remember one visible cue for a reason",
+        "id": "sequel-eee1318c4fd61917",
+        "title": "Ducks use one visible cue for a reason",
         "category": "farm",
-        "story_format": "animal_memory",
+        "story_format": "body_superpower",
         "lane": "sequence",
         "hypothesis_id": "H6_SEQUENCE_WINNERS",
         "publish_score": {
@@ -585,7 +463,48 @@
           "approved": true,
           "state": "publish_ready",
           "category": "farm",
-          "story_format": "animal_memory",
+          "story_format": "body_superpower",
+          "hook_score": 88,
+          "title_score": 84,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 131.21,
+        "packaging_lab": {
+          "title_variants": [
+            "Ducks use one visible cue for a reason",
+            "Watch the movement when ducks fake",
+            "Ducks fake because of this movement"
+          ],
+          "thumbnail_variants": [
+            "DUCKS PART 2",
+            "WATCH THE MOVEMENT",
+            "DUCKS FAKE"
+          ],
+          "hook_variants": [
+            "Ducks use one visible cue for a reason.",
+            "Ducks use one visible cue for a reason",
+            "Did you spot the movement before the reveal"
+          ],
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after ducks.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "remake-6de9d5201195effa",
+        "title": "Chicken use their movement to trick",
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_intelligence",
           "hook_score": 100,
           "title_score": 100,
           "phrase_risk": {
@@ -593,24 +512,106 @@
             "hits": []
           }
         },
-        "autonomy_priority": 125.91,
+        "autonomy_priority": 130.43,
         "packaging_lab": {
           "title_variants": [
-            "Chickens remember one visible cue for a reason",
-            "Watch the movement when chickens remember",
-            "Chickens remember because of this movement"
+            "Chicken use their movement to trick",
+            "Watch the movement when chicken trick",
+            "Chicken trick because of this movement"
           ],
           "thumbnail_variants": [
-            "CHICKENS PART 2",
+            "CHICKEN MOVEMENT",
             "WATCH THE MOVEMENT",
-            "CHICKENS REMEMBER"
+            "CHICKEN TRICK"
           ],
           "hook_variants": [
-            "Chickens remember one visible cue for a reason.",
-            "Chickens remember one visible cue for a reason",
+            "Chicken use their movement to trick for a clear reason.",
+            "Chicken use their movement to trick",
             "Did you spot the movement before the reveal"
           ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after chickens.",
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after chicken.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "remake-dec45f9ad2a1e7f4",
+        "title": "Farm use their movement to use",
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_intelligence",
+          "hook_score": 88,
+          "title_score": 66,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.43,
+        "packaging_lab": {
+          "title_variants": [
+            "Farm use their movement to use",
+            "Watch the movement when farm signal",
+            "Farm signal because of this movement"
+          ],
+          "thumbnail_variants": [
+            "FARM SIGNAL",
+            "WATCH THE MOVEMENT",
+            "MOVEMENT EXPLAINS IT"
+          ],
+          "hook_variants": [
+            "Farm use their movement to use for a clear reason.",
+            "Farm use their movement to use",
+            "Did you spot the movement before the reveal"
+          ],
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after farm.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "remake-aa62a1580f608230",
+        "title": "Goat use their movement to use",
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_intelligence",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 130.43,
+        "packaging_lab": {
+          "title_variants": [
+            "Goat use their movement to use",
+            "Watch the movement when goat signal",
+            "Goat signal because of this movement"
+          ],
+          "thumbnail_variants": [
+            "GOAT SIGNAL",
+            "WATCH THE MOVEMENT",
+            "MOVEMENT EXPLAINS IT"
+          ],
+          "hook_variants": [
+            "Goat use their movement to use for a clear reason.",
+            "Goat use their movement to use",
+            "Did you spot the movement before the reveal"
+          ],
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after goat.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -634,7 +635,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "duck remember because of this cue",
@@ -675,7 +676,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "goats remember because of this cue",
@@ -716,7 +717,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "donkeys remember because of this ears",
@@ -757,7 +758,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "Watch the ears when cows remember",
@@ -798,7 +799,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "Horses remember every person they meet",
@@ -839,7 +840,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "chickens remember because of this face",
@@ -880,7 +881,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "Watch the cue when horses remember",
@@ -921,7 +922,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "cows remember because of this face",
@@ -962,7 +963,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.91,
+        "autonomy_priority": 130.0,
         "packaging_lab": {
           "title_variants": [
             "Cows grunting secrets — they have best friends",
@@ -984,59 +985,18 @@
         }
       },
       {
-        "id": "sequel-eee1318c4fd61917",
-        "title": "Ducks use one visible cue for a reason",
-        "category": "farm",
-        "story_format": "body_superpower",
-        "lane": "sequence",
-        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "id": "c59938d967704741",
+        "title": "Monkeys remember because of this eyes",
+        "category": "primates",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
           "score": 100,
           "approved": true,
           "state": "publish_ready",
-          "category": "farm",
-          "story_format": "body_superpower",
-          "hook_score": 88,
-          "title_score": 84,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 122.69,
-        "packaging_lab": {
-          "title_variants": [
-            "Ducks use one visible cue for a reason",
-            "Watch the movement when ducks fake",
-            "Ducks fake because of this movement"
-          ],
-          "thumbnail_variants": [
-            "DUCKS PART 2",
-            "WATCH THE MOVEMENT",
-            "DUCKS FAKE"
-          ],
-          "hook_variants": [
-            "Ducks use one visible cue for a reason.",
-            "Ducks use one visible cue for a reason",
-            "Did you spot the movement before the reveal"
-          ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after ducks.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "sequel-9c8f2a8681c5f41f",
-        "title": "Ducklings use one visible cue for a reason",
-        "category": "farm",
-        "story_format": "single_fact",
-        "lane": "sequence",
-        "hypothesis_id": "H6_SEQUENCE_WINNERS",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "farm",
-          "story_format": "single_fact",
+          "category": "primates",
+          "story_format": "animal_memory",
           "hook_score": 100,
           "title_score": 100,
           "phrase_risk": {
@@ -1044,24 +1004,147 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.64,
+        "autonomy_priority": 128.76,
         "packaging_lab": {
           "title_variants": [
-            "Ducklings use one visible cue for a reason",
-            "Watch the movement when farm use",
-            "Farm use because of this movement"
+            "Monkeys remember because of this eyes",
+            "Watch the eyes when monkeys remember",
+            "Monkeys remember for one reason most people miss"
           ],
           "thumbnail_variants": [
-            "DUCKLINGS PART 2",
-            "WATCH THE MOVEMENT",
-            "FARM USE"
+            "WATCH THE EYES",
+            "MONKEYS REMEMBER",
+            "EYES EXPLAINS IT"
           ],
           "hook_variants": [
-            "Ducklings use one visible cue for a reason.",
-            "Ducklings use one visible cue for a reason",
+            "Monkeys remember by using one visible eyes.",
+            "Monkeys remember because of this eyes",
+            "Did you spot the eyes before the reveal"
+          ],
+          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after monkeys.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "remake-ff62da62dfab7125",
+        "title": "Elephant remember faces by watching the movement",
+        "category": "wildlife",
+        "story_format": "animal_memory",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "wildlife",
+          "story_format": "animal_memory",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 128.7,
+        "packaging_lab": {
+          "title_variants": [
+            "Elephant remember faces by watching the movement",
+            "Watch the movement when elephant remember",
+            "Elephant remember because of this movement"
+          ],
+          "thumbnail_variants": [
+            "ELEPHANT MOVEMENT",
+            "WATCH THE MOVEMENT",
+            "ELEPHANT REMEMBER"
+          ],
+          "hook_variants": [
+            "Elephant remember by using one visible movement.",
+            "Elephant remember faces by watching the movement",
             "Did you spot the movement before the reveal"
           ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after farm.",
+          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after elephant.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "75733dc684624166",
+        "title": "Watch the tail when cows signal",
+        "category": "farm",
+        "story_format": "body_superpower",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "body_superpower",
+          "hook_score": 86,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 128.21,
+        "packaging_lab": {
+          "title_variants": [
+            "Watch the tail when cows signal",
+            "Cows signal because of this tail",
+            "Cows signal for one reason most people miss"
+          ],
+          "thumbnail_variants": [
+            "COWS YAWN TO COOL",
+            "WATCH THE TAIL",
+            "COWS SIGNAL"
+          ],
+          "hook_variants": [
+            "A cow’s yawn cools its brain.",
+            "Watch the tail when cows signal",
+            "Did you spot the tail before the reveal"
+          ],
+          "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after cows.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "0da0318c3d4ad0da",
+        "title": "Watch the eyes when cows trick",
+        "category": "farm",
+        "story_format": "body_superpower",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 128.21,
+        "packaging_lab": {
+          "title_variants": [
+            "Watch the eyes when cows trick",
+            "Cows trick because of this eyes",
+            "Cows trick for one reason most people miss"
+          ],
+          "thumbnail_variants": [
+            "COWS DON'T SEE RED",
+            "WATCH THE EYES",
+            "COWS TRICK"
+          ],
+          "hook_variants": [
+            "Cows can’t see red at all.",
+            "Watch the eyes when cows trick",
+            "Did you spot the eyes before the reveal"
+          ],
+          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after cows.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1085,7 +1168,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 127.43,
         "packaging_lab": {
           "title_variants": [
             "Watch the feathers when chickens roll",
@@ -1126,7 +1209,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 127.43,
         "packaging_lab": {
           "title_variants": [
             "goats use their eyes to use",
@@ -1144,6 +1227,47 @@
             "Did you spot the eyes before the reveal"
           ],
           "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after goats.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "f92732943b17bae3",
+        "title": "Sheep use their hooves to use",
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "farm",
+          "story_format": "animal_intelligence",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 127.43,
+        "packaging_lab": {
+          "title_variants": [
+            "Sheep use their hooves to use",
+            "Watch the hooves when sheep signal",
+            "Sheep signal because of this hooves"
+          ],
+          "thumbnail_variants": [
+            "SHEEP SIGNAL",
+            "WATCH THE HOOVES",
+            "HOOVES EXPLAINS IT"
+          ],
+          "hook_variants": [
+            "Sheep use their hooves to use for a clear reason.",
+            "Sheep use their hooves to use",
+            "Did you spot the hooves before the reveal"
+          ],
+          "pinned_comment": "Did you spot the hooves before the reveal? Comment the next animal you want me to decode after sheep.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1167,7 +1291,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 127.43,
         "packaging_lab": {
           "title_variants": [
             "cows use their cue to use",
@@ -1208,7 +1332,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 127.43,
         "packaging_lab": {
           "title_variants": [
             "Watch the face when cows show",
@@ -1249,7 +1373,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 127.43,
         "packaging_lab": {
           "title_variants": [
             "Watch the hooves when sheep trick",
@@ -1271,17 +1395,58 @@
         }
       },
       {
-        "id": "f92732943b17bae3",
-        "title": "Sheep use their hooves to use",
-        "category": "farm",
+        "id": "sequel-b8d7bd89d4323472",
+        "title": "Primates use one visible cue for a reason",
+        "category": "primates",
         "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 98.1,
+          "approved": true,
+          "state": "publish_ready",
+          "category": "primates",
+          "story_format": "animal_intelligence",
+          "hook_score": 88,
+          "title_score": 66,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 127.3,
+        "packaging_lab": {
+          "title_variants": [
+            "Primates use one visible cue for a reason",
+            "Watch the tail when monkeys signal",
+            "Monkeys signal because of this tail"
+          ],
+          "thumbnail_variants": [
+            "PRIMATES PART 2",
+            "WATCH THE TAIL",
+            "MONKEYS SIGNAL"
+          ],
+          "hook_variants": [
+            "Primates use one visible cue for a reason.",
+            "Watch the tail when monkeys signal",
+            "Did you spot the tail before the reveal"
+          ],
+          "pinned_comment": "Did you spot the tail before the reveal? Comment the next animal you want me to decode after monkeys.",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "remake-e418b64dc519e79b",
+        "title": "Owl use their eyes to trick",
+        "category": "birds",
+        "story_format": "animal_intelligence",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
         "publish_score": {
           "score": 100,
           "approved": true,
           "state": "publish_ready",
-          "category": "farm",
+          "category": "birds",
           "story_format": "animal_intelligence",
           "hook_score": 100,
           "title_score": 100,
@@ -1290,116 +1455,24 @@
             "hits": []
           }
         },
-        "autonomy_priority": 122.06,
+        "autonomy_priority": 126.7,
         "packaging_lab": {
           "title_variants": [
-            "Sheep use their hooves to use",
-            "Watch the hooves when sheep signal",
-            "Sheep signal because of this hooves"
+            "Owl use their eyes to trick",
+            "Watch the eyes when owl trick",
+            "Owl trick because of this eyes"
           ],
           "thumbnail_variants": [
-            "SHEEP SIGNAL",
-            "WATCH THE HOOVES",
-            "HOOVES EXPLAINS IT"
+            "OWL EYES",
+            "WATCH THE EYES",
+            "OWL TRICK"
           ],
           "hook_variants": [
-            "Sheep use their hooves to use for a clear reason.",
-            "Sheep use their hooves to use",
-            "Did you spot the hooves before the reveal"
+            "Owl use their eyes to trick for a clear reason.",
+            "Owl use their eyes to trick",
+            "Did you spot the eyes before the reveal"
           ],
-          "pinned_comment": "Did you spot the hooves before the reveal? Comment the next animal you want me to decode after sheep.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "remake-78f7a6e274355f6b",
-        "title": "Cow remember more than you think",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "sequence",
-        "hypothesis_id": "H6_SEQUENCE_WINNERS",
-        "publish_score": {
-          "score": 95.6,
-          "approved": false,
-          "state": "rewrite",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 16,
-            "hits": [
-              {
-                "phrase": "hidden reason",
-                "count": 2
-              }
-            ]
-          }
-        },
-        "autonomy_priority": 121.51,
-        "packaging_lab": {
-          "title_variants": [
-            "Cow remember more than you think",
-            "Watch the movement when cow remember",
-            "Cow remember because of this movement"
-          ],
-          "thumbnail_variants": [
-            "COW REMEMBER MORE THAN",
-            "WATCH THE MOVEMENT",
-            "COW REMEMBER"
-          ],
-          "hook_variants": [
-            "Cows do this for one hidden reason.",
-            "Cow remember more than you think",
-            "Did you spot the movement before the reveal"
-          ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after cow.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "remake-9335f313ffaf3f12",
-        "title": "Chicken remember more than you think",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "sequence",
-        "hypothesis_id": "H6_SEQUENCE_WINNERS",
-        "publish_score": {
-          "score": 95.6,
-          "approved": false,
-          "state": "rewrite",
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 16,
-            "hits": [
-              {
-                "phrase": "hidden reason",
-                "count": 2
-              }
-            ]
-          }
-        },
-        "autonomy_priority": 121.51,
-        "packaging_lab": {
-          "title_variants": [
-            "Chicken remember more than you think",
-            "Watch the movement when chicken remember",
-            "Chicken remember because of this movement"
-          ],
-          "thumbnail_variants": [
-            "CHICKEN REMEMBER MORE THAN",
-            "WATCH THE MOVEMENT",
-            "CHICKEN REMEMBER"
-          ],
-          "hook_variants": [
-            "Chickens do this for one hidden reason.",
-            "Chicken remember more than you think",
-            "Did you spot the movement before the reveal"
-          ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after chicken.",
+          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after owl.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1423,7 +1496,7 @@
             "hits": []
           }
         },
-        "autonomy_priority": 121.41,
+        "autonomy_priority": 126.26,
         "packaging_lab": {
           "title_variants": [
             "Macaws groom each other with signal rules 🦜",
@@ -1443,95 +1516,12 @@
           "pinned_comment": "Did you spot the beak before the reveal? Comment the next animal you want me to decode after macaws.",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
-      },
-      {
-        "id": "sequel-45679de55b50897e",
-        "title": "Birds use one visible cue for a reason",
-        "category": "birds",
-        "story_format": "body_superpower",
-        "lane": "sequence",
-        "hypothesis_id": "H6_SEQUENCE_WINNERS",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "birds",
-          "story_format": "body_superpower",
-          "hook_score": 88,
-          "title_score": 66,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 121.19,
-        "packaging_lab": {
-          "title_variants": [
-            "Birds use one visible cue for a reason",
-            "Watch the movement when birds slide",
-            "Birds slide because of this movement"
-          ],
-          "thumbnail_variants": [
-            "BIRDS PART 2",
-            "WATCH THE MOVEMENT",
-            "BIRDS SLIDE"
-          ],
-          "hook_variants": [
-            "Birds use one visible cue for a reason.",
-            "Birds use one visible cue for a reason",
-            "Did you spot the movement before the reveal"
-          ],
-          "pinned_comment": "Did you spot the movement before the reveal? Comment the next animal you want me to decode after birds.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "52d1385383f17416",
-        "title": "Watch the eyes when orangutans remember",
-        "category": "primates",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 91.1,
-          "approved": true,
-          "state": "publish_ready",
-          "category": "primates",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 84,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 121.1,
-        "packaging_lab": {
-          "title_variants": [
-            "Watch the eyes when orangutans remember",
-            "Orangutans remember because of this eyes",
-            "Orangutans remember for one reason most people miss"
-          ],
-          "thumbnail_variants": [
-            "ORANGUTAN GPS",
-            "WATCH THE EYES",
-            "ORANGUTANS REMEMBER"
-          ],
-          "hook_variants": [
-            "Orangutans keep mental grocery lists.",
-            "Watch the eyes when orangutans remember",
-            "Did you spot the eyes before the reveal"
-          ],
-          "pinned_comment": "Did you spot the eyes before the reveal? Comment the next animal you want me to decode after orangutans.",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
       }
     ]
   },
   "decisions": [
-    "Prioritize categories: primates, farm, birds.",
-    "Use formats first: animal_memory, animal_intelligence, cute_behavior.",
-    "Keep weak categories in recovery mode: wildlife, cats.",
+    "Prioritize categories: farm, primates, ocean.",
+    "Use formats first: animal_memory, body_superpower, cute_behavior.",
     "Bias production toward experiment winners: hook_style=outcome_first, script_tone=conversational, thumbnail_style=dynamic_text, cta_style=subscribe_channel.",
     "Current operating mode: exploit."
   ],
