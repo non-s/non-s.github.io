@@ -145,17 +145,31 @@ def build_format_memory(markers: list[dict]) -> dict:
     format_counts: Counter[str] = Counter()
     weak_patterns: Counter[str] = Counter()
     experiment_scores: dict[str, list[float]] = defaultdict(list)
+    series_counts: Counter[str] = Counter()
+    category_sub_rates: dict[str, list[float]] = defaultdict(list)
+    format_sub_rates: dict[str, list[float]] = defaultdict(list)
 
     for marker in markers:
         category = str(marker.get("category") or "").lower()
         fmt = str(marker.get("story_format") or "").lower()
+        stats = marker.get("analytics") if isinstance(marker.get("analytics"), dict) else {}
+        views = _metric(marker, stats, "views", "viewCount")
+        subs = _metric(marker, stats, "subscribersGained", "subscribers_gained")
+        comments = _metric(marker, stats, "comments", "commentCount")
+        subs_per_1k = subs * 1000 / max(views, 1)
+        comments_per_1k = comments * 1000 / max(views, 1)
         quality = _performance_score(marker)
         if category:
             category_scores[category].append(quality)
             category_counts[category] += 1
+            category_sub_rates[category].append(subs_per_1k + comments_per_1k * 0.12)
         if fmt:
             format_scores[fmt].append(quality)
             format_counts[fmt] += 1
+            format_sub_rates[fmt].append(subs_per_1k + comments_per_1k * 0.12)
+        series = str(marker.get("series") or "").strip()
+        if series:
+            series_counts[re.sub(r"\s+#\d+$", "", series)] += 1
         title = str(marker.get("title") or "")
         thumb = str(marker.get("thumbnail_text") or "")
         hook = str(marker.get("hook") or "")
@@ -183,6 +197,8 @@ def build_format_memory(markers: list[dict]) -> dict:
     category_avg = _avg_map(category_scores)
     format_avg = _avg_map(format_scores)
     experiment_avg = _avg_map(experiment_scores)
+    category_sub_avg = _avg_map(category_sub_rates)
+    format_sub_avg = _avg_map(format_sub_rates)
     enough_category_data = sum(category_counts.values()) >= 8
     enough_format_data = sum(format_counts.values()) >= 8
 
@@ -195,14 +211,28 @@ def build_format_memory(markers: list[dict]) -> dict:
             out[key] = round(1 + ((score - 62) / 100) * confidence, 3)
         return out
 
+    def _subscriber_weights(scores: dict[str, float], counts: Counter[str], enough: bool) -> dict[str, float]:
+        if not enough:
+            return {}
+        out = {}
+        for key, score in scores.items():
+            confidence = min(1.0, counts[key] / 5)
+            out[key] = round(max(0.85, min(1.25, 1 + ((score - 1.5) / 10) * confidence)), 3)
+        return out
+
     return {
         "sample_count": len(markers),
         "category_counts": dict(category_counts),
         "format_counts": dict(format_counts),
+        "series_counts": dict(series_counts),
         "category_scores": category_avg,
         "format_scores": format_avg,
+        "category_subscriber_rates": category_sub_avg,
+        "format_subscriber_rates": format_sub_avg,
         "category_weights": _weights(category_avg, category_counts, enough_category_data),
         "format_weights": _weights(format_avg, format_counts, enough_format_data),
+        "subscriber_category_weights": _subscriber_weights(category_sub_avg, category_counts, enough_category_data),
+        "subscriber_format_weights": _subscriber_weights(format_sub_avg, format_counts, enough_format_data),
         "winning_title_patterns": dict(title_patterns.most_common(12)),
         "winning_thumbnail_patterns": dict(thumbnail_patterns.most_common(12)),
         "winning_hook_patterns": dict(hook_patterns.most_common(12)),
@@ -424,12 +454,12 @@ def generate_packaging_options(story: dict) -> dict:
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
     titles = [
         current_title,
-        f"{subject} {action} for one strange reason",
+        f"{subject} turns the {cue} into the clue",
         f"Watch the {cue} when {subject.lower()} {action}",
         f"{subject} is not doing this by accident",
         f"The {cue} that explains {subject.lower()}",
-        f"{subject} hides a tiny nature trick",
-        f"{subject} does this before the reveal",
+        f"{subject} makes nature feel engineered",
+        f"{subject} changes the story in seconds",
         f"Why {subject.lower()} {action} is not random",
         f"{subject}: watch this {cue}",
         f"This {cue} changes the whole story",
@@ -448,10 +478,10 @@ def generate_packaging_options(story: dict) -> dict:
     ]
     hooks = [
         str(story.get("hook") or "").strip(),
-        f"{subject} {action} because of one tiny {cue}.",
-        f"Watch the {cue}; it gives away the whole trick.",
+        f"{subject} {action} because the {cue} changes the outcome.",
+        f"Watch the {cue}; it gives away the mechanism.",
         f"This {cue} is not random.",
-        f"{subject} has a shortcut most people miss.",
+        f"{subject} turns one detail into the whole explanation.",
     ]
 
     def _dedupe(items: list[str], limit: int) -> list[str]:

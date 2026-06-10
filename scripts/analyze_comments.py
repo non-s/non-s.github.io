@@ -82,6 +82,8 @@ def _fetch_comments(youtube, video_ids: list[str], per_video: int = 40) -> list[
             )
             comments.append({
                 "video_id": video_id,
+                "author": snippet.get("authorDisplayName", ""),
+                "author_channel_id": ((snippet.get("authorChannelId") or {}).get("value") or ""),
                 "text": snippet.get("textDisplay") or snippet.get("textOriginal") or "",
                 "likeCount": snippet.get("likeCount", 0),
                 "publishedAt": snippet.get("publishedAt", ""),
@@ -94,6 +96,7 @@ def build_payload(comments: list[dict]) -> dict:
     summary.update({
         "pulled_at": datetime.now(timezone.utc).isoformat(),
         "source": "youtube_comments",
+        "raw_comments": comments[:500],
     })
     return summary
 

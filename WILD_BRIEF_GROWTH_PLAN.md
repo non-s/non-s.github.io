@@ -91,13 +91,33 @@ Use repeatable series so viewers recognize the brand:
 The production gate now rejects candidates with low opportunity or retention
 before spending render/upload time, and stores the reason for future audits.
 
+## Subscriber Conversion Engine
+
+Distribution is no longer the only target. Wild Brief now scores every Short
+for audience creation:
+
+- `utils/subscriber_conversion.py` estimates subscription, return, and comment
+  probability from the hook, CTA, pinned comment, final prompt, and series.
+- CTAs are category-specific identity prompts, such as fungi science-fiction,
+  Earth forces, hidden ocean worlds, and ecosystem systems thinking.
+- Pinned comments ask opinion/debate questions instead of generic "what next"
+  prompts.
+- Series can carry episode identity such as `Earth Engine #12` and
+  `Hidden Network #7`, using `_data/format_memory.json` counts.
+- Robotic title patterns such as "does this for one reason" and "uses one
+  trick" are detected before upload.
+- `_data/fan_growth.json` ranks videos, categories, formats, and recurring
+  commenters by subscribers per 1,000 views and comments per 1,000 views.
+- Format memory now gives extra learning weight to videos that convert viewers
+  into subscribers, not only videos that get views.
+
 ## Scale Plan
 
 1. Build queue volume across all nature pillars.
 2. Publish 3-5 Shorts/day only if strict quality gates pass.
 3. Track completion rate, average view percentage, shares, comments, and subs
    per 1,000 views by category and format.
-4. Double down on winners by format, not just subject. A winning volcano hook
+4. Double down on winners by subscriber conversion, not just reach. A winning volcano hook
    pattern can become a river, storm, fungi, or forest format.
 5. Remake weak videos only when the source clip has strong visual motion; bad
    footage cannot be rescued by better copy.

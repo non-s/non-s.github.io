@@ -10,6 +10,12 @@ from utils.growth_engine import (
     select_best_packaging,
 )
 from utils.story_intelligence import audit_title, classify_format
+from utils.subscriber_conversion import (
+    contextual_cta,
+    debate_prompt,
+    score_subscriber_conversion,
+    series_identity,
+)
 
 SUBJECT_TERMS = {
     "cow", "cows", "duck", "ducks", "chicken", "chickens", "deer",
@@ -199,10 +205,10 @@ def score_packaging(story: dict) -> dict:
 def pinned_comment(story: dict) -> str:
     subject = extract_subject(story)
     cue = extract_cue(story)
-    return (
-        f"Did you spot the {cue} before the reveal? "
-        f"Comment the next nature topic you want after {subject}."
-    )[:280]
+    prompt = debate_prompt(story)
+    if cue != "cue":
+        return f"Watch the {cue} again. {prompt}"[:280]
+    return f"{_title_case_subject(subject)} is the example. {prompt}"[:280]
 
 
 def community_prompt(story: dict) -> str:
@@ -225,15 +231,15 @@ def series_name(story: dict) -> str:
     return SERIES_CATALOG["default"]
 
 
+def series_package(story: dict, memory: dict | None = None) -> dict:
+    base = dict(story)
+    if not base.get("series"):
+        base["series"] = series_name(base)
+    return series_identity(base, memory=memory)
+
+
 def cta_prompt(story: dict) -> str:
-    subject = extract_subject(story)
-    cue = extract_cue(story)
-    cta = (
-        f"Follow for more wild nature science. Comment the next topic after {subject}."
-        if cue == "cue"
-        else f"Follow for more wild nature facts. Did you catch the {cue}?"
-    )
-    return cta[:140]
+    return contextual_cta(story)[:140]
 
 
 def replay_prompt(story: dict) -> str:
@@ -257,10 +263,20 @@ def package_story(story: dict) -> dict:
     titles = [_clean_title(title) for title in selected["options"]["titles"][:10]]
     thumbs = selected["options"]["thumbnail_texts"][:10]
     hooks = selected["options"]["hooks"][:5]
-    out["series"] = series_name(out)
+    series_info = series_package(out, memory=memory)
+    out["series"] = series_info["label"]
     out["cta_prompt"] = cta_prompt(out)
     out["replay_prompt"] = replay_prompt(out)
+    out["pinned_comment"] = pinned_comment(out)
+    out["community_prompt"] = community_prompt(out)
     packaged_score = score_packaging(out)
+    subscriber_score = score_subscriber_conversion({
+        **out,
+        "packaging": {
+            "pinned_comment": out["pinned_comment"],
+            "series_label": series_info["label"],
+        },
+    }, memory=memory)
     out["packaging"] = {
         **packaged_score,
         "title_options": titles,
@@ -270,11 +286,14 @@ def package_story(story: dict) -> dict:
         "top_variants": selected["top_variants"],
         "retention": analyze_retention(out),
         "experiment": experiment_plan(out, memory=memory),
-        "pinned_comment": pinned_comment(out),
-        "community_prompt": community_prompt(out),
+        "series_identity": series_info,
+        "pinned_comment": out["pinned_comment"],
+        "community_prompt": out["community_prompt"],
         "series": out["series"],
         "cta_prompt": out["cta_prompt"],
         "replay_prompt": out["replay_prompt"],
+        "subscriber_conversion": subscriber_score,
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
     }
+    out["subscriber_conversion"] = out["packaging"]["subscriber_conversion"]
     return out

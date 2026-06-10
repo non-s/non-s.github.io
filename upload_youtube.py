@@ -146,7 +146,7 @@ def _comment_text(meta: dict) -> str:
     packaging = meta.get("packaging") if isinstance(meta.get("packaging"), dict) else {}
     text = str(meta.get("pinned_comment") or packaging.get("pinned_comment") or meta.get("cta_prompt") or "").strip()
     if not text:
-        text = "Which wild nature subject should Wild Brief decode next?"
+        text = "Which part of nature feels the most impossible but real?"
     return text[:500]
 
 
@@ -171,6 +171,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "pre_publish_audit", "monetization_audit", "seo_score", "seo_optimisation",
         "publish_score", "youtube_brain", "packaging", "pinned_comment",
         "opportunity_score", "retention_score", "weak_content",
+        "subscriber_conversion",
         "cta_prompt", "replay_prompt", "youtube_operations",
         "audience_strategy",
     )
@@ -189,10 +190,13 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "seo_score": {}, "seo_optimisation": {},
         "publish_score": {}, "youtube_brain": {}, "packaging": {}, "pinned_comment": "",
         "opportunity_score": {}, "retention_score": {}, "weak_content": {},
+        "subscriber_conversion": {},
         "cta_prompt": "", "replay_prompt": "", "youtube_operations": {},
         "audience_strategy": {},
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
+    if not marker.get("subscriber_conversion") and isinstance(marker.get("packaging"), dict):
+        marker["subscriber_conversion"] = marker["packaging"].get("subscriber_conversion", {})
     marker.update({
         "video_id": video_id,
         "url": _video_url(video_id),

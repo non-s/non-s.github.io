@@ -29,10 +29,13 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - blocks low-opportunity topics before rendering or upload;
 - blocks weak content patterns such as generic thumbnails, generic hooks, repetitive scripts and recycled topics;
 - predicts retention with hook, curiosity, visual, replay and completion scores;
+- predicts subscriber conversion from hook, CTA, pinned comment, final prompt and series continuity;
 - generates 10 titles, 10 thumbnail texts and 5 alternate hooks, then ships the best-scored package;
 - caches packaging selection per story to avoid repeated scoring work;
 - learns from `_videos/*.done` markers into `_data/format_memory.json`, including real views, likes, comments, retention and subscriber gains when available;
 - records lightweight explore/exploit experiments for formats, hooks, thumbnails and CTAs;
+- writes `_data/fan_growth.json` to rank videos, categories and formats by subscribers per 1,000 views and comments per 1,000 views;
+- blocks robotic title shapes such as repeated "one trick / one reason" templates;
 - ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;
 - organizes videos into recurring series such as **Earth Engine**, **Hidden Network** and **Rare Earth**;

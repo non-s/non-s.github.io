@@ -62,12 +62,12 @@ def test_package_story_adds_comment_and_community_hook():
     assert packaged["packaging"]["replay_prompt"]
     assert packaged["series"]
     assert packaged["thumbnail_text"]
-    assert "next nature topic" in pinned_comment(packaged).lower()
+    assert "adaptation" in pinned_comment(packaged).lower()
 
 
 def test_packaging_assigns_repeatable_series_cta_and_loop_prompt():
     story = _story()
 
     assert series_name(story) in {"Survival Tricks", "Watch The Cue", "Nature Signals"}
-    assert "Follow" in cta_prompt(story)
+    assert "Want" in cta_prompt(story)
     assert "rewatch" in replay_prompt(story).lower()

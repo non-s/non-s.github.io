@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
 
 from utils.packaging import package_story
 from utils.publish_score import score_metadata
+from utils.subscriber_conversion import score_subscriber_conversion
 from utils.youtube_brain import publish_brain
 
 
@@ -25,6 +26,12 @@ def backfill_marker(marker: dict) -> tuple[dict, bool]:
         changed = True
     if not out.get("publish_score"):
         out["publish_score"] = score_metadata(out)
+        changed = True
+    if not out.get("subscriber_conversion"):
+        out["subscriber_conversion"] = (
+            (out.get("packaging") or {}).get("subscriber_conversion")
+            or score_subscriber_conversion(out)
+        )
         changed = True
     if not out.get("youtube_brain"):
         out["youtube_brain"] = publish_brain(out)

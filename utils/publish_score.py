@@ -5,6 +5,7 @@ import re
 
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
+from utils.subscriber_conversion import score_subscriber_conversion
 
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
@@ -65,6 +66,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     opportunity = score_topic(story, memory=memory)
     retention = analyze_retention(story)
     weak = detect_weak_content(story, memory=memory)
+    subscriber = score_subscriber_conversion(story, memory=memory)
 
     score = 38
     score += hook_audit.score * 0.16
@@ -72,6 +74,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score += min(12, _as_score(story.get("score")) * 1.2)
     score += opportunity["score"] * 0.16 - 8
     score += retention["score"] * 0.20 - 10
+    score += subscriber["score"] * 0.12 - 7
     if category in WINNING_CATEGORIES:
         score += 9
     elif category in RECOVERY_CATEGORIES:
@@ -99,6 +102,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         and opportunity["verdict"] != "discard"
         and retention["verdict"] != "discard"
         and weak["state"] != "block"
+        and subscriber["robotic_title"]["state"] != "block"
     )
     return {
         "score": score,
@@ -107,6 +111,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "opportunity": opportunity,
         "retention": retention,
         "weak_content": weak,
+        "subscriber_conversion": subscriber,
         "category": category,
         "story_format": story_format,
         "hook_score": hook_audit.score,

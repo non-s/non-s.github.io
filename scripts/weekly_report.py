@@ -31,6 +31,7 @@ def build_markdown(root: Path = ROOT) -> str:
     remakes = _safe_json(root / "_data" / "remake_backlog.json")
     trends = _safe_json(root / "_data" / "trend_radar.json")
     memory = _safe_json(root / "_data" / "format_memory.json")
+    fan = _safe_json(root / "_data" / "fan_growth.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -97,6 +98,20 @@ def build_markdown(root: Path = ROOT) -> str:
     hooks = list((memory.get("winning_hook_patterns") or {}).keys())[:3]
     if hooks:
         lines.append("- Hook patterns to reuse: " + "; ".join(hooks))
+    lines.extend(["", "## Subscriber Conversion"])
+    fan_rows = fan.get("videos_ranked_by_subs_per_1k") or []
+    if fan_rows:
+        for item in fan_rows[:5]:
+            lines.append(
+                f"- {item.get('title')}: {item.get('subs_per_1k_views')} subs/1k views, "
+                f"{item.get('comments_per_1k_views')} comments/1k"
+            )
+    else:
+        lines.append("- No subscriber conversion ranking yet.")
+    cat_rates = fan.get("category_subscriber_rates") or memory.get("category_subscriber_rates") or {}
+    if cat_rates:
+        top = sorted(cat_rates.items(), key=lambda item: item[1], reverse=True)[:5]
+        lines.append("- Best converting categories: " + ", ".join(f"{k} ({v})" for k, v in top))
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
         lines.append(f"- {item.get('source_title')} -> {item.get('action')}")
