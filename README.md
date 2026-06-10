@@ -27,9 +27,12 @@ Every candidate passes through an automated editor-in-chief before rendering:
 
 - scores topic opportunity across viral, visual, replay, comment, education, emotion and novelty signals;
 - blocks low-opportunity topics before rendering or upload;
+- blocks weak content patterns such as generic thumbnails, generic hooks, repetitive scripts and recycled topics;
 - predicts retention with hook, curiosity, visual, replay and completion scores;
 - generates 10 titles, 10 thumbnail texts and 5 alternate hooks, then ships the best-scored package;
-- learns from `_videos/*.done` markers into `_data/format_memory.json`;
+- caches packaging selection per story to avoid repeated scoring work;
+- learns from `_videos/*.done` markers into `_data/format_memory.json`, including real views, likes, comments, retention and subscriber gains when available;
+- records lightweight explore/exploit experiments for formats, hooks, thumbnails and CTAs;
 - ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;
 - organizes videos into recurring series such as **Earth Engine**, **Hidden Network** and **Rare Earth**;

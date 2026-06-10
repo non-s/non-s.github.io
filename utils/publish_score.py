@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 from utils.story_intelligence import audit_hook, audit_title, classify_format
-from utils.growth_engine import analyze_retention, load_format_memory, score_topic
+from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
 
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
@@ -13,6 +13,8 @@ WINNING_FORMATS = {"earth_engine", "hidden_network", "rare_nature", "body_superp
 ACTION_WORDS = {
     "fake", "remember", "recognize", "plan", "escape", "slide", "call",
     "hear", "hold", "roar", "use", "hide", "protect", "trick",
+    "erupt", "glow", "form", "freeze", "melt", "recover", "connect",
+    "signal", "collapse", "flow", "grow",
 }
 
 
@@ -62,6 +64,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     memory = load_format_memory()
     opportunity = score_topic(story, memory=memory)
     retention = analyze_retention(story)
+    weak = detect_weak_content(story, memory=memory)
 
     score = 38
     score += hook_audit.score * 0.16
@@ -83,9 +86,10 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     elif len(words) > 115:
         score -= 12
     score -= risk["penalty"]
+    score -= weak["risk"] * 0.22
 
-    category_weights = analytics_strategy.get("category_weights") or {}
-    format_weights = analytics_strategy.get("format_weights") or {}
+    category_weights = (memory.get("category_weights") or {}) | (analytics_strategy.get("category_weights") or {})
+    format_weights = (memory.get("format_weights") or {}) | (analytics_strategy.get("format_weights") or {})
     score *= max(0.75, min(1.25, _as_score(category_weights.get(category), 1.0)))
     score *= max(0.75, min(1.2, _as_score(format_weights.get(story_format), 1.0)))
     score = round(max(0, min(100, score)), 1)
@@ -94,6 +98,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         and not risk["hits"][:1]
         and opportunity["verdict"] != "discard"
         and retention["verdict"] != "discard"
+        and weak["state"] != "block"
     )
     return {
         "score": score,
@@ -101,6 +106,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "state": "publish_ready" if approved else ("rewrite" if score >= 55 else "reject"),
         "opportunity": opportunity,
         "retention": retention,
+        "weak_content": weak,
         "category": category,
         "story_format": story_format,
         "hook_score": hook_audit.score,

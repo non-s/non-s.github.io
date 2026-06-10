@@ -1,17 +1,17 @@
-"""Magnetic Shorts packaging: title, thumbnail, comment and community hook."""
+"""Magnetic Shorts packaging: title, thumbnail, comment and topic hook."""
 from __future__ import annotations
 
 import re
 
 from utils.growth_engine import (
     analyze_retention,
+    experiment_plan,
     load_format_memory,
-    score_package_variant,
     select_best_packaging,
 )
 from utils.story_intelligence import audit_title, classify_format
 
-ANIMALS = {
+SUBJECT_TERMS = {
     "cow", "cows", "duck", "ducks", "chicken", "chickens", "deer",
     "horse", "horses", "tiger", "tigers", "penguin", "penguins",
     "goat", "goats", "wolf", "wolves", "bear", "bears", "bird",
@@ -62,23 +62,29 @@ SERIES_CATALOG = {
     "conservation_signal": "Planet Repair",
     "default": "Nature Signals",
 }
+_PACKAGING_CACHE: dict[tuple[str, str], dict] = {}
 
 
 def _words(text: str) -> list[str]:
     return re.findall(r"[A-Za-z][A-Za-z'-]+", text or "")
 
 
-def _title_case_animal(value: str) -> str:
-    return value[:1].upper() + value[1:] if value else "Animals"
+def _title_case_subject(value: str) -> str:
+    return value[:1].upper() + value[1:] if value else "Nature"
+
+
+def extract_subject(story: dict) -> str:
+    text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script", "category", "topic_hashtag"))
+    for token in _words(text.lower()):
+        clean = token.replace("'s", "")
+        if clean in SUBJECT_TERMS:
+            return clean
+    return str(story.get("category") or "nature").replace("_", " ").lower()
 
 
 def extract_animal(story: dict) -> str:
-    text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script", "category"))
-    for token in _words(text.lower()):
-        clean = token.replace("'s", "")
-        if clean in ANIMALS:
-            return clean
-    return str(story.get("category") or "animals").lower()
+    """Backward-compatible alias; returns the generic subject/topic."""
+    return extract_subject(story)
 
 
 def extract_action(story: dict) -> str:
@@ -110,15 +116,32 @@ def _clean_title(title: str) -> str:
 
 
 def title_options(story: dict) -> list[str]:
-    return [_clean_title(title) for title in select_best_packaging(story)["options"]["titles"][:10]]
+    return [_clean_title(title) for title in _select_packaging(story)["options"]["titles"][:10]]
 
 
 def thumbnail_options(story: dict) -> list[str]:
-    return select_best_packaging(story)["options"]["thumbnail_texts"][:10]
+    return _select_packaging(story)["options"]["thumbnail_texts"][:10]
 
 
 def hook_options(story: dict) -> list[str]:
-    return select_best_packaging(story)["options"]["hooks"][:5]
+    return _select_packaging(story)["options"]["hooks"][:5]
+
+
+def _cache_key(story: dict) -> tuple[str, str]:
+    identity = str(story.get("id") or story.get("_queue_id") or story.get("source_url") or "")
+    if not identity:
+        identity = "|".join(str(story.get(k) or "") for k in ("title", "hook", "script", "thumbnail_text", "category"))
+    return (
+        identity[:240],
+        "|".join(str(story.get(k) or "")[:120] for k in ("title", "hook", "thumbnail_text")),
+    )
+
+
+def _select_packaging(story: dict, memory: dict | None = None) -> dict:
+    key = _cache_key(story)
+    if key not in _PACKAGING_CACHE:
+        _PACKAGING_CACHE[key] = select_best_packaging(story, memory=memory or load_format_memory())
+    return _PACKAGING_CACHE[key]
 
 
 def score_packaging(story: dict) -> dict:
@@ -139,7 +162,7 @@ def score_packaging(story: dict) -> dict:
         strengths.append("thumbnail_scannable")
     else:
         risks.append("thumbnail_not_2_4_words")
-    has_subject = any(re.search(r"\b" + re.escape(a) + r"\b", text) for a in ANIMALS)
+    has_subject = any(re.search(r"\b" + re.escape(a) + r"\b", text) for a in SUBJECT_TERMS)
     if has_subject:
         score += 10
         strengths.append("subject_clear")
@@ -174,17 +197,17 @@ def score_packaging(story: dict) -> dict:
 
 
 def pinned_comment(story: dict) -> str:
-    animal = extract_animal(story)
+    subject = extract_subject(story)
     cue = extract_cue(story)
     return (
         f"Did you spot the {cue} before the reveal? "
-        f"Comment the next animal you want me to decode after {animal}."
+        f"Comment the next nature topic you want after {subject}."
     )[:280]
 
 
 def community_prompt(story: dict) -> str:
-    animal = extract_animal(story)
-    return f"Which {animal} behavior should Wild Brief decode next?"
+    subject = extract_subject(story)
+    return f"Which nature topic should Wild Brief explain next after {subject}?"
 
 
 def series_name(story: dict) -> str:
@@ -203,10 +226,10 @@ def series_name(story: dict) -> str:
 
 
 def cta_prompt(story: dict) -> str:
-    subject = extract_animal(story)
+    subject = extract_subject(story)
     cue = extract_cue(story)
     cta = (
-        f"Follow for more wild nature clues. Comment the next subject after {subject}."
+        f"Follow for more wild nature science. Comment the next topic after {subject}."
         if cue == "cue"
         else f"Follow for more wild nature facts. Did you catch the {cue}?"
     )
@@ -215,7 +238,7 @@ def cta_prompt(story: dict) -> str:
 
 def replay_prompt(story: dict) -> str:
     cue = extract_cue(story)
-    subject = extract_animal(story)
+    subject = extract_subject(story)
     if cue != "cue":
         return f"End by pointing back to the {cue}, so viewers rewatch the {subject} clip."
     return f"End with the first visual moment again, so viewers rewatch the {subject} clip."
@@ -224,16 +247,16 @@ def replay_prompt(story: dict) -> str:
 def package_story(story: dict) -> dict:
     out = dict(story)
     memory = load_format_memory()
-    selected = select_best_packaging(out, memory=memory)
+    selected = _select_packaging(out, memory=memory)
     best_variant = selected["best"]
     if best_variant:
         out["seo_title"] = best_variant["title"]
         out["title"] = best_variant["title"]
         out["thumbnail_text"] = best_variant["thumbnail_text"]
         out["hook"] = best_variant["hook"]
-    titles = title_options(out)
-    thumbs = thumbnail_options(out)
-    hooks = hook_options(out)
+    titles = [_clean_title(title) for title in selected["options"]["titles"][:10]]
+    thumbs = selected["options"]["thumbnail_texts"][:10]
+    hooks = selected["options"]["hooks"][:5]
     out["series"] = series_name(out)
     out["cta_prompt"] = cta_prompt(out)
     out["replay_prompt"] = replay_prompt(out)
@@ -246,6 +269,7 @@ def package_story(story: dict) -> dict:
         "selected_variant": best_variant,
         "top_variants": selected["top_variants"],
         "retention": analyze_retention(out),
+        "experiment": experiment_plan(out, memory=memory),
         "pinned_comment": pinned_comment(out),
         "community_prompt": community_prompt(out),
         "series": out["series"],

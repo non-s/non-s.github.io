@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import hashlib
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -61,6 +62,12 @@ PAYOFF_TERMS = {
 WEAK_PHRASES = {
     "did you know", "in this video", "today we", "nature is amazing",
     "you won't believe", "hidden secret", "animal kingdom",
+    "amazing fact", "incredible", "mind blowing", "this will shock you",
+}
+
+SATURATED_PATTERNS = {
+    "another secret", "hidden reason", "hiding in plain sight",
+    "one tiny movement", "you won't believe", "wait for it",
 }
 
 
@@ -98,46 +105,110 @@ def load_format_memory(path: Path = MEMORY_PATH) -> dict:
         return {}
 
 
+def _metric(marker: dict, stats: dict, *names: str) -> float:
+    for name in names:
+        if name in stats:
+            value = stats.get(name)
+        else:
+            value = marker.get(name)
+        try:
+            if value not in (None, ""):
+                return float(value)
+        except Exception:
+            continue
+    return 0.0
+
+
+def _performance_score(marker: dict) -> float:
+    stats = marker.get("analytics") if isinstance(marker.get("analytics"), dict) else {}
+    views = _metric(marker, stats, "views", "viewCount")
+    likes = _metric(marker, stats, "likes", "likeCount")
+    comments = _metric(marker, stats, "comments", "commentCount")
+    avg_view = _metric(marker, stats, "averageViewPercentage", "avg_view_pct", "avg_view_percentage")
+    subs = _metric(marker, stats, "subscribersGained", "subscribers_gained")
+    like_rate = likes / max(views, 1)
+    comment_rate = comments / max(views, 1)
+    sub_rate = subs / max(views, 1)
+    retention = avg_view if avg_view else 45
+    reach = min(18, math.log10(max(views, 1)) * 4)
+    engagement = min(20, like_rate * 550 + comment_rate * 1200 + sub_rate * 2500)
+    return round(retention * 0.58 + reach + engagement, 2)
+
+
 def build_format_memory(markers: list[dict]) -> dict:
     category_scores: dict[str, list[float]] = defaultdict(list)
     format_scores: dict[str, list[float]] = defaultdict(list)
     title_patterns: Counter[str] = Counter()
     thumbnail_patterns: Counter[str] = Counter()
     hook_patterns: Counter[str] = Counter()
+    category_counts: Counter[str] = Counter()
+    format_counts: Counter[str] = Counter()
+    weak_patterns: Counter[str] = Counter()
+    experiment_scores: dict[str, list[float]] = defaultdict(list)
 
     for marker in markers:
         category = str(marker.get("category") or "").lower()
         fmt = str(marker.get("story_format") or "").lower()
-        stats = marker.get("analytics") if isinstance(marker.get("analytics"), dict) else {}
-        views = float(stats.get("views") or marker.get("views") or 0)
-        avg_view = float(stats.get("averageViewPercentage") or stats.get("avg_view_pct") or marker.get("avg_view_pct") or 0)
-        likes = float(stats.get("likes") or marker.get("likes") or 0)
-        comments = float(stats.get("comments") or marker.get("comments") or 0)
-        subs = float(stats.get("subscribersGained") or marker.get("subscribers_gained") or 0)
-        quality = avg_view + min(20, math.log10(max(views, 1)) * 5) + comments * 1.5 + likes * 0.2 + subs * 4
+        quality = _performance_score(marker)
         if category:
             category_scores[category].append(quality)
+            category_counts[category] += 1
         if fmt:
             format_scores[fmt].append(quality)
+            format_counts[fmt] += 1
         title = str(marker.get("title") or "")
         thumb = str(marker.get("thumbnail_text") or "")
         hook = str(marker.get("hook") or "")
+        weight = max(1, int(quality // 16))
         if title:
-            title_patterns[_pattern(title)] += max(1, int(quality // 20))
+            title_patterns[_pattern(title)] += weight
         if thumb:
-            thumbnail_patterns[_pattern(thumb)] += max(1, int(quality // 20))
+            thumbnail_patterns[_pattern(thumb)] += weight
         if hook:
-            hook_patterns[_pattern(hook)] += max(1, int(quality // 20))
+            hook_patterns[_pattern(hook)] += weight
+        if quality < 48:
+            for value in (title, thumb, hook):
+                if value:
+                    weak_patterns[_pattern(value)] += 1
+        packaging = marker.get("packaging") if isinstance(marker.get("packaging"), dict) else {}
+        experiment = packaging.get("experiment") if isinstance(packaging.get("experiment"), dict) else {}
+        assignment = experiment.get("assignment") if isinstance(experiment.get("assignment"), dict) else {}
+        for axis, variant in assignment.items():
+            if variant:
+                experiment_scores[f"{axis}:{variant}"].append(quality)
 
     def _avg_map(values: dict[str, list[float]]) -> dict[str, float]:
         return {k: round(sum(v) / len(v), 2) for k, v in values.items() if v}
 
+    category_avg = _avg_map(category_scores)
+    format_avg = _avg_map(format_scores)
+    experiment_avg = _avg_map(experiment_scores)
+    enough_category_data = sum(category_counts.values()) >= 8
+    enough_format_data = sum(format_counts.values()) >= 8
+
+    def _weights(scores: dict[str, float], counts: Counter[str], enough: bool) -> dict[str, float]:
+        if not enough:
+            return {}
+        out = {}
+        for key, score in scores.items():
+            confidence = min(1.0, counts[key] / 5)
+            out[key] = round(1 + ((score - 62) / 100) * confidence, 3)
+        return out
+
     return {
-        "category_scores": _avg_map(category_scores),
-        "format_scores": _avg_map(format_scores),
+        "sample_count": len(markers),
+        "category_counts": dict(category_counts),
+        "format_counts": dict(format_counts),
+        "category_scores": category_avg,
+        "format_scores": format_avg,
+        "category_weights": _weights(category_avg, category_counts, enough_category_data),
+        "format_weights": _weights(format_avg, format_counts, enough_format_data),
         "winning_title_patterns": dict(title_patterns.most_common(12)),
         "winning_thumbnail_patterns": dict(thumbnail_patterns.most_common(12)),
         "winning_hook_patterns": dict(hook_patterns.most_common(12)),
+        "weak_patterns": dict(weak_patterns.most_common(12)),
+        "experiment_scores": experiment_avg,
+        "winning_experiments": dict(sorted(experiment_avg.items(), key=lambda item: item[1], reverse=True)[:12]),
     }
 
 
@@ -209,6 +280,50 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         reasons.append("low_opportunity_score")
     verdict = "scale" if score >= 78 else ("produce" if score >= 64 else ("rewrite" if score >= 58 else "discard"))
     return ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
+
+
+def detect_weak_content(story: dict, memory: dict | None = None) -> dict:
+    memory = memory or {}
+    text = _text(story)
+    title = str(story.get("seo_title") or story.get("title") or "")
+    hook = str(story.get("hook") or "")
+    thumb = str(story.get("thumbnail_text") or "")
+    script_words = _words(str(story.get("script") or "").lower())
+    risk = 0
+    reasons: list[str] = []
+    for phrase in WEAK_PHRASES | SATURATED_PATTERNS:
+        if phrase in text:
+            risk += 14
+            reasons.append("generic_or_saturated_language")
+            break
+    if len(_words(thumb)) > 4 or any(word in thumb.lower() for word in ("amazing", "secret", "today")):
+        risk += 18
+        reasons.append("generic_thumbnail")
+    if hook and len(set(_words(hook.lower()))) <= 3:
+        risk += 18
+        reasons.append("generic_hook")
+    if script_words:
+        common = Counter(script_words).most_common(1)[0]
+        if common[1] >= 7 or len(set(script_words)) / max(1, len(script_words)) < 0.48:
+            risk += 22
+            reasons.append("repetitive_script")
+    weak_patterns = memory.get("weak_patterns") or {}
+    for value, label in ((title, "weak_title_pattern"), (thumb, "weak_thumbnail_pattern"), (hook, "weak_hook_pattern")):
+        pattern = _pattern(value)
+        if pattern and weak_patterns.get(pattern, 0) >= 2:
+            risk += 14
+            reasons.append(label)
+    recent = memory.get("recent_topics") or []
+    key = re.sub(r"\s+", " ", f"{story.get('category', '')} {title}".lower()).strip()
+    if key and key in recent:
+        risk += 24
+        reasons.append("recently_recycled_topic")
+    risk = max(0, min(100, risk))
+    return {
+        "risk": risk,
+        "state": "block" if risk >= 55 else ("watch" if risk >= 30 else "clear"),
+        "reasons": tuple(dict.fromkeys(reasons)),
+    }
 
 
 def analyze_retention(story: dict) -> dict:
@@ -391,4 +506,35 @@ def select_best_packaging(story: dict, memory: dict | None = None) -> dict:
         "best": best or {"score": 0, "title": story.get("title", ""), "thumbnail_text": story.get("thumbnail_text", ""), "hook": story.get("hook", "")},
         "top_variants": scored[:10],
         "options": options,
+    }
+
+
+def experiment_plan(story: dict, memory: dict | None = None) -> dict:
+    memory = memory or {}
+    winners = {
+        "title_pattern": next(iter((memory.get("winning_title_patterns") or {}).keys()), ""),
+        "thumbnail_pattern": next(iter((memory.get("winning_thumbnail_patterns") or {}).keys()), ""),
+        "hook_pattern": next(iter((memory.get("winning_hook_patterns") or {}).keys()), ""),
+    }
+    winning_experiments = memory.get("winning_experiments") or {}
+    sample_count = int(memory.get("sample_count") or 0)
+    explore_rate = 0.35 if sample_count < 12 else 0.18
+    if sample_count >= 30:
+        explore_rate = 0.10
+    category = str(story.get("category") or "nature").lower()
+    digest = hashlib.sha1(f"{story.get('id') or story.get('title')}-{category}".encode("utf-8", errors="ignore")).hexdigest()
+    axis_seed = int(digest[:8], 16) % 100
+    mode = "explore" if axis_seed < int(explore_rate * 100) else "exploit"
+    return {
+        "mode": mode,
+        "explore_rate": explore_rate,
+        "winners": winners,
+        "winning_experiments": dict(list(winning_experiments.items())[:5]),
+        "sample_count": sample_count,
+        "assignment": {
+            "format": "winner_inspired" if mode == "exploit" and winners["hook_pattern"] else "fresh_variant",
+            "hook": "pattern_reuse" if mode == "exploit" and winners["hook_pattern"] else "new_hook",
+            "thumbnail": "pattern_reuse" if mode == "exploit" and winners["thumbnail_pattern"] else "new_thumbnail",
+            "cta": "specific_question" if mode == "explore" else "follow_for_more",
+        },
     }

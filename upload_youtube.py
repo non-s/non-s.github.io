@@ -170,7 +170,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "human_voice", "humanity", "studio_polish", "studio_state", "ai_rewrite",
         "pre_publish_audit", "monetization_audit", "seo_score", "seo_optimisation",
         "publish_score", "youtube_brain", "packaging", "pinned_comment",
-        "opportunity_score", "retention_score",
+        "opportunity_score", "retention_score", "weak_content",
         "cta_prompt", "replay_prompt", "youtube_operations",
         "audience_strategy",
     )
@@ -188,7 +188,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "ai_rewrite": {}, "pre_publish_audit": {}, "monetization_audit": {},
         "seo_score": {}, "seo_optimisation": {},
         "publish_score": {}, "youtube_brain": {}, "packaging": {}, "pinned_comment": "",
-        "opportunity_score": {}, "retention_score": {},
+        "opportunity_score": {}, "retention_score": {}, "weak_content": {},
         "cta_prompt": "", "replay_prompt": "", "youtube_operations": {},
         "audience_strategy": {},
     }

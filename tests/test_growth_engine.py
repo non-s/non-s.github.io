@@ -1,5 +1,8 @@
 from utils.growth_engine import (
     analyze_retention,
+    build_format_memory,
+    detect_weak_content,
+    experiment_plan,
     generate_packaging_options,
     score_topic,
     select_best_packaging,
@@ -56,3 +59,49 @@ def test_packaging_selector_returns_scored_variants():
 
     assert selected["best"]["score"] > 0
     assert len(selected["top_variants"]) == 10
+
+
+def test_format_memory_uses_real_performance_when_available():
+    markers = [
+        {
+            "category": "fungi",
+            "story_format": "hidden_network",
+            "title": "Mushrooms signal through roots",
+            "thumbnail_text": "FUNGAL INTERNET",
+            "hook": "Mushrooms signal below the forest.",
+            "analytics": {
+                "views": 10000,
+                "likes": 700,
+                "comments": 90,
+                "averageViewPercentage": 88,
+                "subscribersGained": 40,
+            },
+        }
+        for _ in range(8)
+    ]
+
+    memory = build_format_memory(markers)
+
+    assert memory["sample_count"] == 8
+    assert memory["category_weights"]["fungi"] > 1
+    assert memory["format_weights"]["hidden_network"] > 1
+
+
+def test_weak_content_detector_blocks_generic_recycled_packaging():
+    weak = detect_weak_content({
+        "title": "Animals have another amazing secret",
+        "hook": "Animals are amazing.",
+        "script": "Animals are amazing. Animals are amazing. Animals are amazing.",
+        "thumbnail_text": "AMAZING SECRET TODAY",
+        "category": "wildlife",
+    })
+
+    assert weak["state"] == "block"
+    assert weak["risk"] >= 55
+
+
+def test_experiment_plan_records_lightweight_assignment():
+    plan = experiment_plan(_story(), {"sample_count": 20, "winning_hook_patterns": {"{subject} {action}": 4}})
+
+    assert plan["mode"] in {"explore", "exploit"}
+    assert "hook" in plan["assignment"]

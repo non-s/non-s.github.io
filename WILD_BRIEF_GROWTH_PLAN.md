@@ -78,9 +78,18 @@ Use repeatable series so viewers recognize the brand:
   hooks, scores each combination, and selects the strongest package.
 - `_data/format_memory.json` stores learned category, format, title,
   thumbnail, and hook patterns from finished videos.
+- When enough `.done` markers include views, likes, comments, retention, and
+  subscriber gains, the engine derives category and format weights from real
+  performance instead of only fixed editorial priors.
+- Weak Content Detection blocks saturated topics, generic hooks, generic
+  thumbnails, repetitive scripts, and recently recycled angles before render.
+- Packaging V2 caches each story's packaging matrix so title, thumbnail, hook,
+  score, and report calls reuse the same selection instead of recomputing it.
+- The experiment layer records whether a Short is exploring a fresh variant or
+  exploiting winning hook/thumbnail patterns from memory.
 
 The production gate now rejects candidates with low opportunity or retention
-before spending render/upload time.
+before spending render/upload time, and stores the reason for future audits.
 
 ## Scale Plan
 

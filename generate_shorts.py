@@ -11,7 +11,7 @@ Estrutura de cada video (YouTube Shorts):
   Fato 1     ~8s    Primeira surpresa
   Fato 2     ~8s    Segunda surpresa
   Fato 3     ~8s    Terceira surpresa (opcional)
-  CTA         ~2s    "Subscribe for more animal facts."
+  CTA         ~2s    "Follow for more wild nature facts."
 
 Total alvo: ~25-35 segundos. YouTube Shorts premia completion rate
 muito mais que duração — videos de 30s com 85% completion batem
@@ -44,7 +44,7 @@ from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
-from utils.growth_engine import analyze_retention, load_format_memory, score_topic
+from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.content_agency import rank_for_agency
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
@@ -604,7 +604,7 @@ def create_short_frame(title: str, category: str, points: list[str],
     # ── LIVE dot ─────────────────────────────────────────────────
     live_font = get_font(38, bold=True)
     live_y = badge_y + badge_h + 28
-    live_text = "ANIMAL FACT"
+    live_text = "NATURE BRIEF"
     lbbox = draw.textbbox((0, 0), live_text, font=live_font)
     lx = (SHORT_W - lbbox[2]) // 2
     draw.text((lx, live_y), live_text, font=live_font, fill=RED_LIVE)
@@ -774,7 +774,7 @@ def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
 # calls; it picks the right pipeline based on whether we actually
 # acquired b-roll clips.
 
-def _thumbnail_copy(thumbnail_text: str, fallback: str = "ANIMAL FACT") -> str:
+def _thumbnail_copy(thumbnail_text: str, fallback: str = "NATURE SIGNAL") -> str:
     """Return compact, readable thumbnail copy for a vertical preview tile."""
     cleaned = re.sub(r"[^A-Za-z0-9 '&-]+", " ", thumbnail_text or "")
     words = [word for word in cleaned.upper().split() if word]
@@ -791,13 +791,13 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     draw = ImageDraw.Draw(thumb, "RGBA")
     cat_color = CATEGORY_COLORS.get((category or "").upper(), ACCENT_BLUE)
 
-    # Keep the animal visible, then create a clean mobile-readable text band.
+    # Keep the subject visible, then create a clean mobile-readable text band.
     draw.rectangle((0, 0, SHORT_W, SHORT_H), fill=(0, 0, 0, 82))
     draw.rectangle((0, 420, SHORT_W, 1450), fill=(0, 0, 0, 132))
     draw.rectangle((0, 1440, SHORT_W, SHORT_H), fill=(0, 0, 0, 178))
     draw.rectangle((0, 0, 22, SHORT_H), fill=(*cat_color, 255))
 
-    cat_text = (category or "animals").upper()[:18]
+    cat_text = (category or "nature").upper()[:18]
     cat_font = get_font(42, bold=True)
     cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
     pill = (76, 110, 76 + cat_box[2] + 46, 110 + cat_box[3] + 28)
@@ -828,14 +828,14 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     draw.text((76, 1502), "WILD BRIEF", font=brand_font,
               fill=(*TEXT_WHITE, 255))
     sub_font = get_font(38, bold=True)
-    draw.text((76, 1582), "ANIMAL FACTS", font=sub_font,
+    draw.text((76, 1582), "NATURE SCIENCE", font=sub_font,
               fill=(*cat_color, 255))
 
     thumb.save(str(output), "JPEG", quality=94, optimize=True)
     log.info("  Thumbnail (dynamic story preview): %s", output.name)
 
 
-def _animal_broll_query(story: dict) -> str:
+def _nature_broll_query(story: dict) -> str:
     """Build a conservative visual query for Wild Brief nature footage."""
     category = str(story.get("category", "")).strip().upper()
     category_query = NATURE_BROLL_QUERY_MAP.get(category, "nature science")
@@ -849,8 +849,13 @@ def _animal_broll_query(story: dict) -> str:
     return category_query
 
 
+def _animal_broll_query(story: dict) -> str:
+    """Backward-compatible alias for the generic nature b-roll query."""
+    return _nature_broll_query(story)
+
+
 def _extract_broll_thumbnail(video_path: Path, dest: Path) -> bool:
-    """Extract a still from the actual animal footage for the thumbnail."""
+    """Extract a still from the actual source footage for the thumbnail."""
     try:
         result = subprocess.run([
             "ffmpeg", "-y", "-ss", "0.5", "-i", str(video_path),
@@ -877,7 +882,7 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
     """
     if want_n <= 0:
         return []
-    query = _animal_broll_query(story)
+    query = _nature_broll_query(story)
     if not query:
         return []
     category = story.get("category", "")
@@ -1063,6 +1068,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "packaging":      dict(story.get("packaging") or {}),
         "opportunity_score": dict(story.get("opportunity_score") or {}),
         "retention_score": dict(story.get("retention_score") or {}),
+        "weak_content":   dict(story.get("weak_content") or {}),
         "pinned_comment": (story.get("packaging") or {}).get("pinned_comment", ""),
         "cta_prompt":     story.get("cta_prompt") or (story.get("packaging") or {}).get("cta_prompt", ""),
         "replay_prompt":  story.get("replay_prompt") or (story.get("packaging") or {}).get("replay_prompt", ""),
@@ -1297,6 +1303,10 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         if opportunity["verdict"] == "discard":
             record_rejection(candidate, opportunity.get("reasons") or ["low_opportunity_score"], stage="opportunity_score")
             continue
+        weak = detect_weak_content(candidate, memory=format_memory)
+        if weak["state"] == "block":
+            record_rejection(candidate, weak.get("reasons") or ["weak_content"], stage="weak_content")
+            continue
         retention = analyze_retention(candidate)
         if retention["verdict"] == "discard":
             rescued, applied = rescue_story(candidate, retention.get("reasons") or ["retention_discard"])
@@ -1313,6 +1323,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         item = dict(candidate)
         item["opportunity_score"] = opportunity
         item["retention_score"] = retention
+        item["weak_content"] = weak
         item["publish_score"] = score
         item = package_story(item)
         brain = creator_premortem(item)

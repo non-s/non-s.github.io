@@ -21,6 +21,8 @@ PAYOFF_VERBS = {
     "use", "uses", "plan", "plans", "love", "loves", "see", "sees",
     "hear", "hears", "change", "changes", "protect", "protects",
     "choose", "chooses", "catch", "catches", "talk", "calls",
+    "erupt", "erupts", "form", "forms", "freeze", "freezes", "melt",
+    "melts", "recover", "recovers", "connect", "connects", "flow", "flows",
 }
 
 
@@ -51,7 +53,7 @@ def diagnose(story: dict) -> dict:
     if not hook:
         score -= 35
         issues.append("missing_hook")
-        fixes.append("Start with one concrete animal action and a payoff.")
+        fixes.append("Start with one concrete subject, visible action, and payoff.")
     elif len(hook_words) > 12:
         score -= 12
         issues.append("hook_too_long")
@@ -62,12 +64,12 @@ def diagnose(story: dict) -> dict:
     if any(lower_hook.startswith(prefix) for prefix in WEAK_OPENERS):
         score -= 14
         issues.append("weak_opener")
-        fixes.append("Remove generic openers; start with the animal and what changes.")
+        fixes.append("Remove generic openers; start with the subject and what changes.")
 
     if hook and not any(verb in lower_hook.split() for verb in PAYOFF_VERBS):
         score -= 12
         issues.append("missing_payoff_verb")
-        fixes.append("Add an action verb such as remember, escape, heal, use, or choose.")
+        fixes.append("Add an action verb such as erupt, form, escape, recover, use, or change.")
     else:
         strengths.append("payoff_action")
 
@@ -91,7 +93,7 @@ def diagnose(story: dict) -> dict:
     elif len(words) > 125:
         score -= 10
         issues.append("script_too_long")
-        fixes.append("Trim to one animal, one mechanism, one payoff.")
+        fixes.append("Trim to one subject, one mechanism, one payoff.")
     else:
         strengths.append("shorts_length")
 
@@ -128,18 +130,18 @@ def diagnose(story: dict) -> dict:
 
 def suggest_hook(story: dict, issues: list[str] | None = None) -> str:
     title = str(story.get("seo_title") or story.get("title") or "").strip()
-    category = str(story.get("category") or "animal")
-    animal = ""
+    category = str(story.get("category") or "nature")
+    subject = ""
     for token in _words(title):
         if token.lower() not in {"why", "this", "that", "really", "secret", "secrets"}:
-            animal = token
+            subject = token
             break
-    animal = animal or category.rstrip("s") or "animal"
+    subject = subject or category.rstrip("s") or "nature"
     hook = str(story.get("hook") or "").strip()
     lower = hook.lower()
     if hook and not any(lower.startswith(prefix) for prefix in WEAK_OPENERS):
         return hook[:96]
-    return f"{animal.capitalize()} do this for one hidden reason."
+    return f"{subject.capitalize()} changes for one visible reason."
 
 
 def remake_brief(item: dict) -> dict:
@@ -147,7 +149,7 @@ def remake_brief(item: dict) -> dict:
     return {
         "retention_surgery": diagnosis,
         "rewrite_instructions": [
-            "Open with the animal plus outcome in the first two seconds.",
+            "Open with the subject plus outcome in the first two seconds.",
             "Remove setup; explain only the mechanism viewers can see or imagine.",
             "Keep the remake shorter than the original if retention was below 62%.",
             "Change the thumbnail promise, not just the wording.",
