@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-10T01:35:50.575321+00:00",
-  "autonomy_score": 100,
+  "generated_at": "2026-06-10T04:54:20.551770+00:00",
+  "autonomy_score": 83,
   "state": "autonomous_ready",
   "publish_mix": {
     "winner_sequels": 40,
@@ -16,14 +16,25 @@
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "traffic_source_report_not_ready",
+    "reason": "yt-analytics.readonly scope missing",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 0,
-    "state": "normal",
-    "issues": [],
-    "unavailable_reports": [],
+    "risk_score": 87,
+    "state": "watch",
+    "issues": [
+      "youtube_token_missing",
+      "youtube_readonly_scope_missing",
+      "youtube_analytics_scope_missing"
+    ],
+    "unavailable_reports": [
+      "video_core",
+      "daily_channel",
+      "country",
+      "traffic_source",
+      "device_type",
+      "subscriber_status"
+    ],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
   "category_priorities": [
@@ -152,7 +163,7 @@
       "sequel_id": "sequel-6a4c7be257da056c"
     }
   ],
-  "duplicate_risk": 8,
+  "duplicate_risk": 24,
   "decisions": [
     "Double down on primates until another category beats its growth score.",
     "Favor animal_memory as the next story format.",
