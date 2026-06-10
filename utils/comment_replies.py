@@ -47,7 +47,7 @@ def classify_comment(text: str) -> str:
 
 def _pick(options: list[str], seed: str, recent: set[str]) -> str:
     ordered = list(options)
-    start = int(hashlib.sha1(seed.encode("utf-8", errors="ignore")).hexdigest()[:8], 16) % len(ordered)
+    start = int(hashlib.sha256(seed.encode("utf-8", errors="ignore")).hexdigest()[:8], 16) % len(ordered)
     for idx in range(len(ordered)):
         candidate = ordered[(start + idx) % len(ordered)]
         if candidate not in recent:

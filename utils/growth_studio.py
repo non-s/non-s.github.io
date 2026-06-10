@@ -147,17 +147,17 @@ def choose_narrative_template(story: dict, strategy: dict | None = None) -> dict
 
 def choose_narrator_profile(story: dict, strategy: dict | None = None) -> dict:
     strategy = _strategy_or_latest(strategy)
-    winners = read_winners()
-    variant = winners.get("narrator_voice")
-    if not variant:
-        variant = (story.get("experiments") or {}).get("narrator_voice")
-    if not variant:
-        category = str(story.get("category") or "").lower()
-        if category in {"cats", "dogs", "farm"}:
-            variant = "jenny"
-        elif category in {"reptiles", "wildlife", "arctic", "nocturnal"}:
-            variant = "guy"
-        else:
+    category = str(story.get("category") or "").lower()
+    if category in {"cats", "dogs", "farm"}:
+        variant = "jenny"
+    elif category in {"reptiles", "wildlife", "arctic", "nocturnal"}:
+        variant = "guy"
+    else:
+        winners = read_winners()
+        variant = winners.get("narrator_voice")
+        if not variant:
+            variant = (story.get("experiments") or {}).get("narrator_voice")
+        if not variant:
             variant = assign_for_production(
                 "narrator_voice",
                 str(story.get("id") or story.get("title") or category or "wildbrief"),

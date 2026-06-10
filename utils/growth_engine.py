@@ -672,7 +672,7 @@ def experiment_plan(story: dict, memory: dict | None = None) -> dict:
     if sample_count >= 30:
         explore_rate = 0.10
     category = str(story.get("category") or "nature").lower()
-    digest = hashlib.sha1(f"{story.get('id') or story.get('title')}-{category}".encode("utf-8", errors="ignore")).hexdigest()
+    digest = hashlib.sha256(f"{story.get('id') or story.get('title')}-{category}".encode("utf-8", errors="ignore")).hexdigest()
     axis_seed = int(digest[:8], 16) % 100
     mode = "explore" if axis_seed < int(explore_rate * 100) else "exploit"
     return {
