@@ -26,8 +26,9 @@ def test_title_respects_youtube_limit():
 def test_description_adds_shorts_discovery_tags():
     desc = _youtube_description({"title": "Cats are surprising", "description": "Body"})
     assert "#Shorts" in desc
-    assert "#AnimalFacts" in desc
-    assert "#Wildlife" in desc
+    assert "#NatureFacts" in desc
+    assert "#WildBrief" in desc
+    assert "#EarthScience" in desc
 
 
 def test_tags_are_deduplicated_case_insensitively():
@@ -102,7 +103,11 @@ def test_done_marker_preserves_production_quality_signals():
 def test_playlist_titles_use_series_and_category():
     titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
 
-    assert titles == ["Wild Brief | Watch The Cue", "Wild Brief | Birds"]
+    assert titles == [
+        "Wild Brief | Start Here",
+        "Wild Brief | Watch The Cue",
+        "Wild Brief | Birds",
+    ]
 
 
 def test_comment_text_prefers_packaging_comment():
@@ -193,11 +198,12 @@ def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
 
     assert result["enabled"] is True
     assert [item["title"] for item in result["playlists"]] == [
+        "Wild Brief | Start Here",
         "Wild Brief | Watch The Cue",
         "Wild Brief | Birds",
     ]
     assert all(item["added"] for item in result["playlists"])
-    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123")]
+    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123"), ("PL-3", "VID123")]
     assert youtube._comment_threads.comments == [("VID123", "Did you catch the wing?")]
     assert result["comment"]["posted"] is True
     assert result["comment"]["pin_status"] == "not_supported_by_youtube_data_api"

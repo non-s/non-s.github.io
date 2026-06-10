@@ -220,22 +220,22 @@ def series_name(story: dict) -> str:
 
 
 def cta_prompt(story: dict) -> str:
-    animal = extract_animal(story)
+    subject = extract_animal(story)
     cue = extract_cue(story)
     cta = (
-        f"Follow for more animal clues. Comment the next animal after {animal}."
+        f"Follow for more wild nature clues. Comment the next subject after {subject}."
         if cue == "cue"
-        else f"Follow for more animal facts. Did you catch the {cue}?"
+        else f"Follow for more wild nature facts. Did you catch the {cue}?"
     )
     return cta[:140]
 
 
 def replay_prompt(story: dict) -> str:
     cue = extract_cue(story)
-    animal = extract_animal(story)
+    subject = extract_animal(story)
     if cue != "cue":
-        return f"End by pointing back to the {cue}, so viewers rewatch the {animal} clip."
-    return f"End with the first visual moment again, so viewers rewatch the {animal} clip."
+        return f"End by pointing back to the {cue}, so viewers rewatch the {subject} clip."
+    return f"End with the first visual moment again, so viewers rewatch the {subject} clip."
 
 
 def package_story(story: dict) -> dict:

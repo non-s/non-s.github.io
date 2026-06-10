@@ -176,9 +176,9 @@ def build_broll_short(broll_paths: list[Path],
         # "Filter not found" hard error. Unescaped commas were silently
         # falling back to static-frame compose for every b-roll Short.
         if zoom_in:
-            z_expr = "min(zoom+0.0008\\,1.08)"
+            z_expr = "min(zoom+0.00125\\,1.12)"
         else:
-            z_expr = "if(eq(on\\,0)\\,1.08\\,max(zoom-0.0008\\,1.00))"
+            z_expr = "if(eq(on\\,0)\\,1.12\\,max(zoom-0.00125\\,1.00))"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2Ã— the offset scales too.
@@ -208,6 +208,9 @@ def build_broll_short(broll_paths: list[Path],
             # the output back down to Shorts native after the crop walk.
             f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
             f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
+            f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
+            f"unsharp=5:5:0.55:3:3:0.25,"
+            f"fade=t=in:st=0:d=0.08,fade=t=out:st={max(seg_dur - 0.08, 0):.3f}:d=0.08,"
             f"setsar=1,"
             f"trim=duration={seg_dur:.3f},setpts=PTS-STARTPTS"
             f"[v{i}]"
@@ -262,8 +265,8 @@ def build_broll_short(broll_paths: list[Path],
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=78"
-            f":box=1:boxcolor=black@0.55:boxborderw=22"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=82"
+            f":box=1:boxcolor=black@0.62:boxborderw=24"
             f":x=(w-text_w)/2:y=180"
             # Visible 0-3s with a quick fade-out 2.7-3s.
             f":enable='between(t,0,3)'"
@@ -277,7 +280,7 @@ def build_broll_short(broll_paths: list[Path],
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=112"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=116"
             f":box=1:boxcolor=black@0.68:boxborderw=26"
             f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'"
             f"[withcover]"
@@ -290,7 +293,7 @@ def build_broll_short(broll_paths: list[Path],
         cta_start = max(0.0, audio_dur - 6.0)
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=52"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=54"
             f":box=1:boxcolor=black@0.65:boxborderw=18"
             f":x=(w-text_w)/2:y=h-260"
             f":enable='between(t,{cta_start:.2f},{audio_dur:.2f})'"
@@ -391,23 +394,25 @@ def build_static_short(frame_path: Path,
     # (utils/video_compose.py:build_broll_short); this just mirrors
     # it for the fallback so every Short has motion.
     zoom_frames = max(int(audio_dur * TARGET_FPS), 1)
-    zoom_step = 0.04 / zoom_frames  # total magnification over the clip
+    zoom_step = 0.07 / zoom_frames  # total magnification over the clip
     # Commas inside the zoompan z-expression have to be backslash-
     # escaped so FFmpeg doesn't parse them as filter separators.
     parts.append(
         f"[{last}]scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
         f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
-        f"zoompan=z='min(zoom+{zoom_step:.6f}\\,1.04)':"
+        f"zoompan=z='min(zoom+{zoom_step:.6f}\\,1.07)':"
         f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-        f"d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS}[scaled]"
+        f"d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
+        f"eq=contrast=1.06:saturation=1.12:brightness=0.012,"
+        f"unsharp=5:5:0.45:3:3:0.20[scaled]"
     )
     last = "scaled"
     if hook_text and font:
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=78"
-            f":box=1:boxcolor=black@0.55:boxborderw=22"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=82"
+            f":box=1:boxcolor=black@0.62:boxborderw=24"
             f":x=(w-text_w)/2:y=180:enable='between(t,0,3)'[withhook]"
         )
         last = "withhook"
@@ -415,7 +420,7 @@ def build_static_short(frame_path: Path,
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=112"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=116"
             f":box=1:boxcolor=black@0.68:boxborderw=26"
             f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'[withcover]"
         )
@@ -425,7 +430,7 @@ def build_static_short(frame_path: Path,
         cta_start = max(0.0, audio_dur - 6.0)
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=white:fontsize=52"
+            f":text='{safe}':fontcolor=0xFFF200:fontsize=54"
             f":box=1:boxcolor=black@0.65:boxborderw=18"
             f":x=(w-text_w)/2:y=h-260"
             f":enable='between(t,{cta_start:.2f},{audio_dur:.2f})'[withcta]"

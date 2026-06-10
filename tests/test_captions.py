@@ -10,6 +10,11 @@ from utils import captions
 from utils.captions import Caption, group_words_into_phrases, write_ass
 
 
+def _strip_ass_overrides(text: str) -> str:
+    import re
+    return re.sub(r"\{[^}]*\}", "", text)
+
+
 # â”€â”€ group_words_into_phrases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _w(word: str, start: float, end: float) -> Caption:
@@ -59,8 +64,9 @@ def test_write_ass_creates_valid_file(tmp_path):
     assert "[V4+ Styles]" in body
     assert "[Events]" in body
     # Words are uppercased.
-    assert "OCTOPUS CAMOUFLAGE" in body
-    assert "OWL NIGHT VISION" in body
+    plain = _strip_ass_overrides(body)
+    assert "OCTOPUS CAMOUFLAGE" in plain
+    assert "OWL NIGHT VISION" in plain
     # Timing format `0:00:00.00`.
     assert "0:00:00.00" in body
 
@@ -71,8 +77,9 @@ def test_write_ass_escapes_curly_braces(tmp_path):
     write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
     # Curly braces become parens so libass doesn't treat them as overrides.
-    assert "(NIGHT)" in body or "(night)" in body.upper()
-    assert "{" not in body.split("[Events]")[1]
+    plain_events = _strip_ass_overrides(body.split("[Events]")[1])
+    assert "(NIGHT)" in plain_events or "(night)" in plain_events.upper()
+    assert "{night}" not in plain_events
 
 
 def test_write_ass_empty_returns_false(tmp_path):

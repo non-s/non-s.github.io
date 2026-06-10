@@ -1,7 +1,7 @@
 """Global audience helpers for Wild Brief Shorts.
 
 The channel should feel international by default: simple English,
-universal animal discovery terms and publish windows spread across
+universal nature discovery terms and publish windows spread across
 major time zones. This module keeps those choices in one place so the
 automation can expand globally without hard-coding one target country.
 """
@@ -10,17 +10,18 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 
-GLOBAL_HASHTAGS = ["Shorts", "AnimalFacts", "Wildlife", "Animals", "Nature"]
+GLOBAL_HASHTAGS = ["Shorts", "NatureFacts", "WildBrief", "EarthScience", "Nature"]
 
 GLOBAL_SEARCH_TAGS = [
-    "animal facts",
+    "nature facts",
+    "earth science",
     "wildlife",
-    "wild animals",
+    "natural phenomena",
     "nature",
     "nature shorts",
-    "animal behavior",
-    "amazing animals",
-    "world animals",
+    "biology",
+    "geology",
+    "wild brief",
 ]
 
 GLOBAL_PUBLISH_WINDOWS = [

@@ -100,6 +100,14 @@ jobs:
       - name: "Atualizar aprendizado editorial gratuito"
         run: |
           python scripts/run_intelligence_suite.py post_publish
+      - name: "Engajar comentarios"
+        run: |
+          python scripts/reply_comments.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          YOUTUBE_AUTO_REPLY_COMMENTS: ${{ vars.YOUTUBE_AUTO_REPLY_COMMENTS || '1' }}
+          YOUTUBE_COMMENT_REPLY_LIMIT: ${{ vars.YOUTUBE_COMMENT_REPLY_LIMIT || '30' }}
       - name: "Salvar marcadores no git"
         run: |
           git config user.name "Wild Brief Bot"
@@ -112,6 +120,7 @@ jobs:
             _data/analytics/latest.json
             _data/analytics/experiments.json
             _data/analytics/comments.json
+            _data/comment_replies.json
             _data/ai_provider_report.json
             _data/packaging_report.json
             _data/youtube_brain_report.json

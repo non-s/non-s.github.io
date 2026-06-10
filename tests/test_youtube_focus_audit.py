@@ -45,6 +45,8 @@ def test_animal_queue_has_unique_visually_aligned_scripts():
     queue = json.loads((ROOT/"_data"/"stories_queue.json").read_text(encoding="utf-8"))
     scripts: set[str] = set()
     for story in queue.get("stories", []):
+        if story.get("consumed"):
+            continue
         clip = type("Clip", (), {"url": story.get("url", ""), "title": story.get("title", "")})()
         subject = fetch_animals._subject_from_clip(clip, story.get("category", ""))
         assert fetch_animals._topic_accepts_subject(

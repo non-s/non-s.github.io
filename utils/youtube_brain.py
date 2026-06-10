@@ -15,6 +15,8 @@ ACTION_WORDS = {
     "fake", "protect", "escape", "remember", "recognize", "call", "hear",
     "hide", "slide", "hunt", "plan", "trick", "use", "warn", "follow",
     "choose", "save", "signal", "learn", "change", "disappear", "blend",
+    "erupt", "glow", "flow", "form", "grow", "freeze", "melt", "restore",
+    "recover", "connect", "communicate", "build", "collapse",
 }
 WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thing"}
 VISIBLE_CUE_WORDS = {
@@ -23,6 +25,9 @@ VISIBLE_CUE_WORDS = {
     "skin", "texture", "colour", "color", "nose", "face", "head",
     "hoof", "hooves", "fin", "fins", "gill", "gills", "antenna",
     "antennae", "pupil", "pupils",
+    "leaf", "leaves", "roots", "bark", "canopy", "mushroom", "mycelium",
+    "lava", "crater", "ash", "cloud", "lightning", "wave", "current",
+    "glacier", "rock", "rings", "reef", "coral", "sky", "ice",
 }
 
 
@@ -39,8 +44,8 @@ def _first_sentence(text: str) -> str:
     return re.split(r"[.!?]\s+", str(text or "").strip(), maxsplit=1)[0]
 
 
-def _animal_from_text(text: str, category: str = "") -> str:
-    animals = (
+def _subject_from_text(text: str, category: str = "") -> str:
+    subjects = (
         "cow", "cows", "duck", "ducks", "chicken", "chickens", "deer",
         "horse", "horses", "tiger", "tigers", "penguin", "penguins",
         "goat", "goats", "wolf", "wolves", "bear", "bears", "bird",
@@ -51,11 +56,18 @@ def _animal_from_text(text: str, category: str = "") -> str:
         "butterfly", "butterflies", "ant", "ants", "beetle", "beetles",
         "mantis", "mantises", "dragonfly", "dragonflies", "chameleon",
         "chameleons", "orangutan", "orangutans", "monkey", "monkeys",
+        "plant", "plants", "tree", "trees", "forest", "forests",
+        "fungi", "mushroom", "mushrooms", "mycelium", "ocean", "coral",
+        "reef", "river", "rivers", "mountain", "mountains", "glacier",
+        "volcano", "volcanoes", "lava", "storm", "storms", "lightning",
+        "aurora", "eclipse", "rock", "rocks", "mineral", "minerals",
+        "ecosystem", "ecosystems", "earth", "atmosphere", "conservation",
+        "biodiversity", "fossil",
     )
     for token in _words(text.lower()):
-        if token in animals:
+        if token in subjects:
             return token
-    return category or "animal"
+    return category or "nature"
 
 
 def creator_premortem(story: dict) -> dict:
@@ -65,7 +77,7 @@ def creator_premortem(story: dict) -> dict:
     thumb = str(story.get("thumbnail_text") or "")
     category = str(story.get("category") or "")
     text = f"{title} {hook} {script} {thumb}"
-    animal = _animal_from_text(text, category)
+    subject = _subject_from_text(text, category)
     story_format = str(story.get("story_format") or classify_format(text))
     hook_audit = audit_hook(hook)
     title_audit = audit_title(title)
@@ -76,13 +88,13 @@ def creator_premortem(story: dict) -> dict:
     commands: list[str] = []
 
     first = _first_sentence(script or hook)
-    if animal and animal in first.lower():
+    if subject and subject in first.lower():
         score += 8
-        strengths.append("animal_visible_in_first_sentence")
+        strengths.append("subject_visible_in_first_sentence")
     else:
         score -= 8
-        risks.append("animal_not_immediately_clear")
-        commands.append("Open with the animal name before the behavior.")
+        risks.append("subject_not_immediately_clear")
+        commands.append("Open with the visible subject before the behavior.")
 
     if _contains_any(text, ACTION_WORDS):
         score += 10
@@ -141,20 +153,21 @@ def creator_premortem(story: dict) -> dict:
         commands.append("Replace generic curiosity words with a specific behavior or body cue.")
 
     replay_reason = "watch_the_cue_again" if _contains_any(text, VISIBLE_CUE_WORDS) else "weak"
-    viewer_promise = f"See why {animal} {story_format.replace('_', ' ')} matters."
+    viewer_promise = f"See why {subject} {story_format.replace('_', ' ')} matters."
     satisfaction_bet = "The viewer gets one visible behavior and one reason, fast."
     score = max(0, min(100, score))
     state = "publish_minded" if score >= 78 else ("rewrite_before_publish" if score >= 60 else "do_not_publish")
     return {
         "score": score,
         "state": state,
-        "animal": animal,
+        "animal": subject,
+        "subject": subject,
         "story_format": story_format,
         "viewer_promise": viewer_promise,
         "satisfaction_bet": satisfaction_bet,
         "replay_reason": replay_reason,
         "retention_path": [
-            "0-1s: animal and outcome",
+            "0-1s: visible subject and outcome",
             "1-4s: visible cue",
             "4-18s: mechanism",
             "last 2s: payoff and follow signal",

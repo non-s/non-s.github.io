@@ -7,7 +7,7 @@ from utils.audience_expansion import global_strategy, merge_hashtags, merge_sear
 def test_merge_hashtags_keeps_global_discovery_first():
     tags = merge_hashtags(["wildlife", "safari", "animalfacts"])
 
-    assert tags[:5] == ["Shorts", "AnimalFacts", "Wildlife", "Animals", "Nature"]
+    assert tags[:5] == ["Shorts", "NatureFacts", "WildBrief", "EarthScience", "Nature"]
     assert len(tags) == len(set(tag.lower() for tag in tags))
 
 
@@ -15,8 +15,8 @@ def test_merge_search_tags_blends_subject_and_global_terms():
     tags = merge_search_tags(["lion", "wildlife"], "wildlife")
 
     assert tags[:2] == ["lion", "wildlife"]
-    assert "world animals" in tags
-    assert "animal behavior" in tags
+    assert "earth science" in tags
+    assert "natural phenomena" in tags
     assert len(tags) <= 15
 
 

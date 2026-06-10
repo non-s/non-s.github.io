@@ -1,0 +1,145 @@
+"""Wild Brief nature expansion strategy.
+
+This module is the new editorial spine for Wild Brief.  Older modules still
+use animal-oriented names for compatibility, but the channel strategy now
+covers fast, visual natural-world stories across biology, geology, climate,
+water, space-adjacent Earth science, and conservation.
+"""
+from __future__ import annotations
+
+NATURE_TOPICS: dict[str, dict] = {
+    "plants": {
+        "queries": ["carnivorous plant", "venus flytrap", "time lapse flower", "plant growing", "macro leaf", "pollination flower"],
+        "topic_hashtag": "Plants",
+        "tags": ["plants", "botany", "plant facts", "nature"],
+        "discovery_hashtags": ["plants", "botany", "naturefacts", "science", "wildbrief"],
+        "description_prefix": "A clip of plants, leaves, flowers, or plant movement",
+    },
+    "trees": {
+        "queries": ["ancient tree", "redwood forest", "tree roots", "forest canopy", "tree rings", "mangrove forest"],
+        "topic_hashtag": "Trees",
+        "tags": ["trees", "forests", "tree facts", "nature"],
+        "discovery_hashtags": ["trees", "forests", "naturefacts", "science", "wildbrief"],
+        "description_prefix": "A clip of trees, roots, canopy, bark, or forests",
+    },
+    "fungi": {
+        "queries": ["mushroom forest", "fungi macro", "mushroom time lapse", "mycelium", "glowing mushroom", "forest fungus"],
+        "topic_hashtag": "Fungi",
+        "tags": ["fungi", "mushrooms", "mycology", "nature"],
+        "discovery_hashtags": ["fungi", "mushrooms", "mycology", "naturefacts", "science"],
+        "description_prefix": "A clip of fungi, mushrooms, mycelium, or forest decomposition",
+    },
+    "rivers": {
+        "queries": ["river current", "waterfall river", "mountain river", "flood river", "river delta", "stream water"],
+        "topic_hashtag": "Rivers",
+        "tags": ["rivers", "freshwater", "water cycle", "nature"],
+        "discovery_hashtags": ["rivers", "water", "naturefacts", "earthscience", "wildbrief"],
+        "description_prefix": "A clip of rivers, streams, currents, waterfalls, or freshwater systems",
+    },
+    "mountains": {
+        "queries": ["mountain peak", "glacier mountain", "rock formation", "mountain erosion", "snow mountain", "alpine landscape"],
+        "topic_hashtag": "Mountains",
+        "tags": ["mountains", "geology", "earth science", "nature"],
+        "discovery_hashtags": ["mountains", "geology", "earthscience", "naturefacts", "wildbrief"],
+        "description_prefix": "A clip of mountains, glaciers, rock layers, erosion, or alpine landscapes",
+    },
+    "forests": {
+        "queries": ["rainforest", "temperate forest", "forest mist", "forest floor", "jungle canopy", "wild forest"],
+        "topic_hashtag": "Forests",
+        "tags": ["forests", "rainforest", "ecosystems", "nature"],
+        "discovery_hashtags": ["forests", "rainforest", "ecosystems", "naturefacts", "wildbrief"],
+        "description_prefix": "A clip of forests, rainforest, canopy, moss, or forest ecosystems",
+    },
+    "volcanoes": {
+        "queries": ["volcano eruption", "lava flow", "volcanic crater", "magma", "ash cloud", "volcanic landscape"],
+        "topic_hashtag": "Volcanoes",
+        "tags": ["volcanoes", "lava", "geology", "earth science"],
+        "discovery_hashtags": ["volcano", "lava", "geology", "earthscience", "naturefacts"],
+        "description_prefix": "A clip of volcanoes, lava, craters, ash clouds, or volcanic landscapes",
+    },
+    "weather": {
+        "queries": ["storm cloud", "lightning", "tornado", "rain cloud", "snow storm", "aurora sky"],
+        "topic_hashtag": "Weather",
+        "tags": ["weather", "climate", "storms", "nature"],
+        "discovery_hashtags": ["weather", "storm", "climate", "naturefacts", "science"],
+        "description_prefix": "A clip of weather, clouds, storms, lightning, snow, or sky phenomena",
+    },
+    "rare_phenomena": {
+        "queries": ["aurora borealis", "bioluminescent waves", "solar eclipse nature", "rainbow cloud", "ice cave", "desert bloom"],
+        "topic_hashtag": "RareNature",
+        "tags": ["rare nature", "natural phenomena", "earth science", "nature"],
+        "discovery_hashtags": ["rareearth", "naturefacts", "science", "earthscience", "wildbrief"],
+        "description_prefix": "A clip of rare natural phenomena, unusual light, ice, water, or seasonal events",
+    },
+    "geology": {
+        "queries": ["crystal cave", "rock layers", "canyon geology", "mineral close up", "sedimentary rock", "desert rocks"],
+        "topic_hashtag": "Geology",
+        "tags": ["geology", "rocks", "minerals", "earth science"],
+        "discovery_hashtags": ["geology", "rocks", "minerals", "earthscience", "naturefacts"],
+        "description_prefix": "A clip of rocks, minerals, strata, caves, canyons, or geological features",
+    },
+    "ecosystems": {
+        "queries": ["coral reef ecosystem", "wetland", "mangrove", "savanna ecosystem", "tide pool", "desert ecosystem"],
+        "topic_hashtag": "Ecosystems",
+        "tags": ["ecosystems", "habitats", "biodiversity", "nature"],
+        "discovery_hashtags": ["ecosystems", "biodiversity", "habitats", "naturefacts", "science"],
+        "description_prefix": "A clip of connected habitats, biodiversity, food webs, or ecosystem interactions",
+    },
+    "earth_from_space": {
+        "queries": ["earth from space", "satellite earth", "hurricane from space", "clouds from space", "planet earth", "atmosphere earth"],
+        "topic_hashtag": "EarthFromSpace",
+        "tags": ["earth", "space", "planet earth", "nature"],
+        "discovery_hashtags": ["earth", "space", "earthscience", "naturefacts", "science"],
+        "description_prefix": "A clip of Earth, atmosphere, clouds, storms, or landscapes seen from above",
+    },
+    "conservation": {
+        "queries": ["coral restoration", "reforestation", "wildlife conservation", "ocean cleanup", "tree planting", "protected forest"],
+        "topic_hashtag": "Conservation",
+        "tags": ["conservation", "environment", "biodiversity", "nature"],
+        "discovery_hashtags": ["conservation", "environment", "biodiversity", "naturefacts", "wildbrief"],
+        "description_prefix": "A clip of conservation, restoration, habitats, reforestation, or protected nature",
+    },
+    "discoveries": {
+        "queries": ["scientist nature field", "microscope biology", "research forest", "marine research", "fossil discovery", "biology lab nature"],
+        "topic_hashtag": "NatureScience",
+        "tags": ["science", "discoveries", "biology", "nature"],
+        "discovery_hashtags": ["science", "discoveries", "biology", "naturefacts", "wildbrief"],
+        "description_prefix": "A clip related to natural science, biology, research, fossils, or discovery",
+    },
+}
+
+NATURE_BROLL_QUERIES: dict[str, str] = {
+    "PLANTS": "plants macro nature",
+    "TREES": "trees forest nature",
+    "FUNGI": "mushroom fungi forest macro",
+    "RIVERS": "river water nature",
+    "MOUNTAINS": "mountain geology landscape",
+    "FORESTS": "forest rainforest nature",
+    "VOLCANOES": "volcano lava geology",
+    "WEATHER": "weather storm sky nature",
+    "RARE_PHENOMENA": "rare natural phenomenon",
+    "GEOLOGY": "geology rocks minerals",
+    "ECOSYSTEMS": "ecosystem biodiversity nature",
+    "EARTH_FROM_SPACE": "earth atmosphere space nature",
+    "CONSERVATION": "conservation restoration nature",
+    "DISCOVERIES": "nature science discovery",
+}
+
+NATURE_TERMS: dict[str, str] = {
+    "plant": "plant", "plants": "plant", "leaf": "plant", "leaves": "plant", "flower": "plant", "flowers": "plant",
+    "tree": "tree", "trees": "tree", "root": "tree", "roots": "tree", "forest": "forest", "forests": "forest",
+    "fungus": "fungi", "fungi": "fungi", "mushroom": "fungi", "mushrooms": "fungi", "mycelium": "fungi",
+    "ocean": "ocean", "sea": "ocean", "coral": "ocean", "reef": "ocean", "waves": "ocean",
+    "river": "river", "rivers": "river", "stream": "river", "waterfall": "river", "delta": "river",
+    "mountain": "mountain", "mountains": "mountain", "glacier": "mountain", "glaciers": "mountain",
+    "volcano": "volcano", "volcanoes": "volcano", "lava": "volcano", "magma": "volcano", "crater": "volcano",
+    "storm": "weather", "storms": "weather", "lightning": "weather", "tornado": "weather", "cloud": "weather", "clouds": "weather",
+    "aurora": "rare_phenomena", "eclipse": "rare_phenomena", "bioluminescence": "rare_phenomena",
+    "rock": "geology", "rocks": "geology", "mineral": "geology", "minerals": "geology", "canyon": "geology", "cave": "geology",
+    "ecosystem": "ecosystem", "ecosystems": "ecosystem", "habitat": "ecosystem", "habitats": "ecosystem",
+    "earth": "earth", "planet": "earth", "atmosphere": "earth", "satellite": "earth",
+    "conservation": "conservation", "reforestation": "conservation", "restoration": "conservation",
+    "science": "science", "scientist": "science", "research": "science", "fossil": "science", "biology": "science",
+}
+
+EVERGREEN_NATURE_TAGS = ["nature", "nature facts", "earth science", "science", "wild brief"]

@@ -1,19 +1,20 @@
-# Wild Brief - Animal Shorts Bot (YouTube)
+# Wild Brief - Nature Science Shorts Bot (YouTube)
 
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
 [![Refresh animal queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns vetted animal footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
+Automated pipeline that turns vetted nature footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
 - Cadence: **3 Shorts/day**, posted at 14:23, 19:23 and 23:23 UTC.
-- Duration target: **12-24 seconds**, biased toward high completion rate.
-- Category: YouTube **Pets & Animals** (`categoryId=15`).
+- Duration target: **12-18 seconds**, biased toward high completion rate.
+- Category: YouTube **Science & Technology** (`categoryId=28`).
+- Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, conservation and discoveries.
 
 ## Pipeline
 
 ```text
-Pexels + Pixabay clips -> GBIF + Commons enrichment -> fetch_animals.py
+Pexels + Pixabay clips -> nature taxonomy + enrichment -> fetch_animals.py
              -> _data/stories_queue.json
              -> generate_shorts.py -> _videos/*.mp4 + metadata
              -> upload_youtube.py -> YouTube Shorts + .done sidecar
@@ -24,10 +25,14 @@ Pexels + Pixabay clips -> GBIF + Commons enrichment -> fetch_animals.py
 
 Every candidate passes through an automated editor-in-chief before rendering:
 
-- ranks specific animal stories by editorial quality;
+- ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;
-- organizes videos into recurring series such as **Pet Secrets** and **Ocean Mysteries**;
+- organizes videos into recurring series such as **Earth Engine**, **Hidden Network** and **Rare Earth**;
 - renders a readable 2-4 word cover inside the opening frame and an end-screen CTA for channel subscriptions;
+- burns yellow CapCut-style captions with highlighted keywords;
+- uses faster b-roll beats, subtle zoom, micro-fades and contrast/saturation lift;
+- creates/maintains YouTube playlists for series and categories;
+- replies automatically to eligible viewer comments and records a reply ledger;
 - records public YouTube engagement after uploads and feeds winning categories, series and experiments back into the dashboard.
 - uses Gemini visual QA to reject unrelated thumbnails when `GEMINI_API_KEY` is configured;
 - reads retention and subscriber conversion when the OAuth token includes YouTube Analytics access.
@@ -46,6 +51,8 @@ Recommended free quality extensions:
 - `GEMINI_API_KEY` or `GEMINI`
 
 GBIF and Wikimedia Commons enrichment do not require secrets.
+See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.
+
 AI image generation is intentionally disabled because current free-tier
 availability is not reliable enough for the zero-cost goal.
 

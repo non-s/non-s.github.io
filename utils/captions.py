@@ -31,6 +31,7 @@ import json
 import logging
 import math
 import os
+import re
 import subprocess
 from pathlib import Path
 from typing import Iterable
@@ -230,9 +231,33 @@ def _format_ass_time(seconds: float) -> str:
     return f"{h}:{m:02d}:{s:05.2f}"
 
 
+EMPHASIS_WORDS = {
+    "lava", "volcano", "storm", "lightning", "tornado", "aurora",
+    "mushroom", "fungi", "mycelium", "ocean", "river", "glacier",
+    "forest", "tree", "roots", "coral", "reef", "earth", "space",
+    "survive", "escape", "explode", "glow", "hidden", "because",
+    "why", "watch", "tiny", "giant", "rare", "ancient", "secret",
+    "deadly", "fast", "slow", "breathe", "talk", "signal",
+}
+
+
 def _escape_ass(text: str) -> str:
     """Curly braces are ASS override markers; escape them."""
     return (text or "").replace("{", "(").replace("}", ")")
+
+
+def _caption_text_with_emphasis(text: str) -> str:
+    """ASS text with key words punched up for Shorts readability."""
+    tokens = re.findall(r"[A-Za-z0-9']+|[^A-Za-z0-9']+", text or "")
+    out: list[str] = []
+    for token in tokens:
+        key = token.lower().strip("'")
+        safe = _escape_ass(token.upper())
+        if key in EMPHASIS_WORDS or (token.isalpha() and len(token) >= 9):
+            out.append(r"{\c&H00FFFFFF&\3c&H00000000&\fscx108\fscy108}" + safe + r"{\rShorts}")
+        else:
+            out.append(safe)
+    return "".join(out)
 
 
 def group_words_into_phrases(words: list[Caption],
@@ -274,14 +299,14 @@ def group_words_into_phrases(words: list[Caption],
 
 def write_ass(captions: list[Caption], path: Path,
               video_w: int = 1080, video_h: int = 1920,
-              font_size: int = 84,
-              primary_colour: str = "&H00FFFFFF",
+              font_size: int = 88,
+              primary_colour: str = "&H0000F2FF",
               outline_colour: str = "&H00000000",
               shadow_colour: str = "&H00000000",
               margin_v: int = 360) -> bool:
     """Write a Shorts-tuned ASS subtitle file.
 
-    Default style: bold white, thick black outline, dropped shadow,
+    Default style: bold modern yellow, thick black outline, dropped shadow,
     positioned in the upper-middle (margin_v from bottom). The 360px
     margin clears YouTube's bottom UI band (caption preview + controls
     link + share rail â‰ˆ 250px) and leaves the captions in the dead-
@@ -313,7 +338,10 @@ def write_ass(captions: list[Caption], path: Path,
     for cap in captions:
         start = _format_ass_time(cap.start)
         end = _format_ass_time(cap.end)
-        text = _escape_ass(cap.word.upper())
+        text = _caption_text_with_emphasis(cap.word)
+        # A tiny pop-in scale feels like CapCut captions without making
+        # the text bounce around or leave the Shorts safe zone.
+        text = r"{\fad(45,60)\t(0,90,\fscx106\fscy106)}" + text
         lines.append(f"Dialogue: 0,{start},{end},Shorts,,0,0,0,,{text}")
     try:
         path.write_text(header + "\n".join(lines) + "\n", encoding="utf-8")

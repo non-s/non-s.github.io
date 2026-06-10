@@ -59,6 +59,7 @@ from utils.publish_score import score_metadata, score_story as publish_score_sto
 from utils.queue_pruner import prune_queue
 from utils.rejected_queue import record_rejection
 from utils.local_rewriter import rescue_story
+from utils.nature_strategy import NATURE_BROLL_QUERIES
 from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.rights_audit import audit_rights
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
@@ -143,6 +144,20 @@ CATEGORY_COLORS = {
     # warm and on-brand instead of a default blue.
     "ANIMAL":      (200, 150, 90),
     "ANIMALS":     (200, 150, 90),
+    "PLANTS":      (70, 205, 120),
+    "TREES":       (45, 145, 95),
+    "FUNGI":       (190, 150, 245),
+    "RIVERS":      (35, 190, 230),
+    "MOUNTAINS":   (160, 170, 185),
+    "FORESTS":     (40, 170, 110),
+    "VOLCANOES":   (245, 95, 45),
+    "WEATHER":     (110, 190, 255),
+    "RARE_PHENOMENA": (255, 210, 80),
+    "GEOLOGY":     (195, 165, 125),
+    "ECOSYSTEMS":  (95, 210, 155),
+    "EARTH_FROM_SPACE": (80, 170, 255),
+    "CONSERVATION": (80, 200, 110),
+    "DISCOVERIES": (255, 185, 85),
 }
 
 ANIMAL_BROLL_QUERIES = {
@@ -158,6 +173,7 @@ ANIMAL_BROLL_QUERIES = {
     "NOCTURNAL": "nocturnal animal night",
     "ARCTIC": "arctic animal snow",
 }
+NATURE_BROLL_QUERY_MAP = {**ANIMAL_BROLL_QUERIES, **NATURE_BROLL_QUERIES}
 
 # ── TTS voice rotation ────────────────────────────────────────────
 #
@@ -819,9 +835,9 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
 
 
 def _animal_broll_query(story: dict) -> str:
-    """Build a conservative visual query for an animal-only channel."""
+    """Build a conservative visual query for Wild Brief nature footage."""
     category = str(story.get("category", "")).strip().upper()
-    category_query = ANIMAL_BROLL_QUERIES.get(category, "animal wildlife")
+    category_query = NATURE_BROLL_QUERY_MAP.get(category, "nature science")
     tags = story.get("yt_tags") or []
     if isinstance(tags, str):
         tags = [tags]
@@ -856,7 +872,7 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
     Empty list = the caller falls back to a static frame.
 
     The primary clip is the exact source clip stored with the story.
-    Supplemental discovery is conservative: animal queries only.
+    Supplemental discovery is conservative and category-aligned.
     """
     if want_n <= 0:
         return []
@@ -864,12 +880,16 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
     if not query:
         return []
     category = story.get("category", "")
+    animal_only = str(category).strip().lower() in {
+        "cats", "dogs", "ocean", "wildlife", "birds", "farm",
+        "reptiles", "insects", "primates", "nocturnal", "arctic",
+    }
     try:
         candidates = fetch_broll_clips(
             query,
             want_n=want_n * 2,
             category=category,
-            animal_only=True,
+            animal_only=animal_only,
         )
     except Exception as exc:
         log.debug("broll discovery failed: %s", exc)
@@ -916,7 +936,7 @@ def generate_captions(audio_path: Path, tmp_dir: Path) -> Path | None:
         return None
     if not words:
         return None
-    phrases = group_words_into_phrases(words, max_words=4, max_gap_s=0.6)
+    phrases = group_words_into_phrases(words, max_words=3, max_gap_s=0.45, max_duration_s=1.8)
     ass_path = tmp_dir / "captions.ass"
     if not write_ass(phrases, ass_path):
         return None
@@ -980,10 +1000,10 @@ def build_short_metadata(story: dict, video_path: Path,
     if not discovery:
         # Fallback for queue entries written before discovery_hashtags
         # landed: synthesise a reasonable set from category + topic.
-        cat = (category or "animals").lower()
-        topic_tag = (story.get("topic_hashtag") or category or "animals").lower()
+        cat = (category or "nature").lower()
+        topic_tag = (story.get("topic_hashtag") or category or "nature").lower()
         topic_tag = "".join(ch for ch in topic_tag if ch.isalnum())
-        discovery = [cat, topic_tag, "animals", "wildlife", "funfacts"]
+        discovery = [cat, topic_tag, "naturefacts", "earthscience", "science"]
     final_tags = merge_hashtags(discovery)
     hashtag_block = " ".join(f"#{t}" for t in final_tags)
 
@@ -1013,7 +1033,7 @@ def build_short_metadata(story: dict, video_path: Path,
         "description":    caption,
         "tags":           all_tags,
         "youtube_privacy": "public",
-        "youtube_category_id": "15",
+        "youtube_category_id": "28",
         "thumbnail":      str(thumb_path),
         "video":          str(video_path),
         "story_slug":     story.get("slug", ""),
@@ -1573,10 +1593,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         log.info("  ⚠ Captions skipped — Whisper providers unavailable")
 
     # ── 3. B-roll discovery + download ────────────────────────────
-    # Three carefully-related clips beat a noisy montage. The exact
-    # source clip is preferred and supplemental footage stays inside
-    # animal-only Pexels search.
-    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=3)
+    # Four short, tightly-related clips beat a slow three-shot montage
+    # for nature/science Shorts: there is a new visual beat roughly
+    # every 3-5 seconds while the exact source clip still leads.
+    broll_paths = acquire_broll_clips(story, tmp_dir, want_n=4)
     if not broll_paths and QUALITY_REQUIRE_MOTION_BROLL:
         log.warning("  Skipping Short - production quality requires motion b-roll")
         return None
@@ -1688,7 +1708,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
     # Every Short closes with one unambiguous channel-growth action.
-    cta_text = "SUBSCRIBE FOR MORE ANIMAL FACTS"
+    cta_text = "FOLLOW FOR WILD NATURE FACTS"
     # Brand-bug watermark. Disabled by default because a second channel
     # mark adds visual noise to a compact Shorts frame.
     # Set CHANNEL_WATERMARK=@yourhandle to opt back in (useful if you're

@@ -59,9 +59,9 @@ def test_metadata_carries_required_youtube_fields(tmp_path: Path):
 def test_metadata_caption_uses_youtube_shorts_hashtags(tmp_path: Path):
     desc = _meta(tmp_path)["description"]
     assert "#Shorts" in desc
-    assert "#AnimalFacts" in desc
-    assert "#Wildlife" in desc
-    assert "#Animals" in desc
+    assert "#NatureFacts" in desc
+    assert "#WildBrief" in desc
+    assert "#EarthScience" in desc
     assert "#Nature" in desc
 
 
@@ -79,7 +79,7 @@ def test_metadata_falls_back_when_discovery_hashtags_missing(tmp_path: Path):
         tmp_path / "short-foo_thumb.jpg",
     )
     assert "#Shorts" in meta["description"]
-    assert "#Wildlife" in meta["description"]
+    assert "#NatureFacts" in meta["description"]
 
 
 def test_metadata_preserves_experiments(tmp_path: Path):

@@ -72,6 +72,7 @@ from utils.trend_radar import (
     trend_queries_for_category,
     trend_weight_for_category,
 )
+from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
 
 logging.basicConfig(
     level=logging.INFO,
@@ -92,8 +93,8 @@ QUEUE_FILE = Path("_data/stories_queue.json")
 # `record_published_clip()` below); `main()` filters Pexels candidates
 # against it before paying for AI enrichment.
 PUBLISHED_CLIPS_FILE = Path("_data/published_clips.json")
-MAX_PER_TOPIC = int(os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
-KEEP_DAYS = int(os.environ.get("ANIMALS_KEEP_DAYS", "14"))
+MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
+KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 
 
 # ── Topic table ───────────────────────────────────────────────────
@@ -244,6 +245,11 @@ ANIMAL_TOPICS: dict[str, dict] = {
     },
 }
 
+# Compatibility alias: the rest of the project historically imports
+# ANIMAL_TOPICS, but Wild Brief's actual editorial surface is now all nature.
+ANIMAL_TOPICS.update(NATURE_TOPICS)
+NATURE_QUEUE_TOPICS = ANIMAL_TOPICS
+
 
 # ── AI prompt ─────────────────────────────────────────────────────
 
@@ -319,11 +325,67 @@ _AI_PROMPT_TEMPLATE = (
 )
 
 
+_AI_PROMPT_TEMPLATE = (
+    "You write high-retention YouTube Shorts for Wild Brief, a fast "
+    "nature-science channel covering animals, plants, trees, fungi, "
+    "oceans, rivers, mountains, forests, volcanoes, weather, rare "
+    "natural phenomena, geology, ecosystems, Earth from space, "
+    "conservation, and scientific discoveries. Every Short combines "
+    "real nature footage with one visual surprise. Tone: curious, "
+    "cinematic, direct, no clickbait, no AI-isms. Speak like one "
+    "curious host, not a fact card: include one small human reaction, "
+    "two concrete visual details the viewer can notice, one tension "
+    "beat (but/because/that's why), and no generic phrases like "
+    "nature is amazing, hidden secret, or you won't believe. "
+    "Respond ONLY with valid JSON.\n\n"
+    "Clip:\n"
+    "Subject: {subject}\n"
+    "Context: {context}\n"
+    "Trend context: {trend_context}\n"
+    "Studio direction: {studio_direction}\n\n"
+    "EDITORIAL REQUIREMENT: narration, hook, title, and thumbnail MUST "
+    "be about the visible subject named in Subject. Never switch to a "
+    "different subject just because it has a stronger fact. Turtle "
+    "footage requires turtle facts; mushroom footage requires fungi "
+    "facts; lava footage requires volcano or geology facts; storm "
+    "footage requires weather facts. If multiple natural subjects are "
+    "named, choose the one most visibly present.\n\n"
+    "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
+    "watch; 4-12s = mechanism; final beat = satisfying payoff plus a "
+    "tiny comment question. Keep sentences short enough for yellow "
+    "CapCut-style captions.\n\n"
+    "Return this exact JSON shape:\n"
+    "{{"
+    '"score": <int 1-10 - how interesting is this subject for a global nature-science Short>,'
+    '"seo_title": "<38-58 chars. Start with the subject, then the curious angle. '
+    "Avoid starting with Why/How/This/These. NO all-caps, no multiple punctuation. "
+    'Good: \\"Mushrooms talk through underground threads\\". '
+    'Good: \\"Lava builds land faster than you think\\".>",'
+    '"yt_tags": ["<5 lowercase tags. First 3 are subject-specific '
+    "(subject, process, visual cue). Last 2 are evergreen "
+    '(\\"nature\\", \\"nature facts\\", \\"science\\", \\"earth science\\").>"],'
+    '"topic_hashtag": "<one CamelCase hashtag identifying the nature category. '
+    'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, Ecosystems.>",'
+    '"yt_description": "<2-3 sentences. Sentence 1 repeats the subject keyword. '
+    "Sentence 2 is the single most surprising fact from the script. Last line is exactly "
+    '\\"Source: Pexels\\". Do NOT include hashtags. No URLs.>",'
+    '"thumbnail_text": "<2-4 word punchy phrase. ALL CAPS allowed. '
+    'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
+    '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
+    '"script": "<the full voice-over for a 12-18 second short. 38-55 words MAX. '
+    "FIRST WORDS MUST BE the hook, verbatim. Then one visual cue, one mechanism, "
+    "and one payoff. Include because or that's why. Close with a tiny comment "
+    'question. No stage directions, no URLs.>",'
+    '"sentiment": "positive"'
+    "}}"
+)
+
+
 _ANIMAL_ALIASES = {
     "bear": "bear", "bears": "bear",
     "ant": "ant", "ants": "ant",
     "bat": "bat", "bats": "bat",
-    "bee": "bee", "bees": "bee",
+    "bee": "bee", "bees": "bee", "bumblebee": "bee", "bumblebees": "bee",
     "beetle": "beetle", "beetles": "beetle",
     "bird": "bird", "birds": "bird", "cockatoo": "bird", "cockatoos": "bird",
     "eagle": "bird", "eagles": "bird",
@@ -374,17 +436,39 @@ _ANIMAL_ALIASES = {
     "whale": "whale", "whales": "whale",
     "wolf": "wolf", "wolves": "wolf",
 }
+_ANIMAL_ALIASES.update(NATURE_TERMS)
+
+_STRICT_ANIMAL_SUBJECTS = {
+    "bear", "ant", "bat", "bee", "beetle", "bird", "butterfly",
+    "chameleon", "binturong", "cat", "chicken", "duck", "chimpanzee",
+    "crocodile", "cow", "deer", "dog", "dolphin", "elephant", "fish",
+    "fox", "gecko", "goat", "gorilla", "hedgehog", "horse", "iguana",
+    "jellyfish", "leopard", "lemur", "lion", "lizard", "macaque",
+    "mantis", "monkey", "octopus", "orangutan", "pig", "seal", "shark",
+    "sheep", "snake", "tiger", "turtle", "walrus", "whale", "wolf",
+}
+_CONTEXT_ONLY_SUBJECTS = {"forest", "earth"}
 
 
 def _animal_terms(text: str) -> set[str]:
-    """Return canonical animal names explicitly present in text."""
+    """Return canonical visible nature subjects explicitly present in text."""
     words = re.findall(r"[a-z]+", (text or "").lower())
     return {_ANIMAL_ALIASES[word] for word in words if word in _ANIMAL_ALIASES}
 
 
+def _strict_animal_terms(text: str) -> set[str]:
+    """Return canonical animal subjects only, used for hard visual matching."""
+    return {term for term in _animal_terms(text) if term in _STRICT_ANIMAL_SUBJECTS}
+
+
 def _script_matches_visible_subject(subject: str, script: str) -> bool:
-    """Reject narration that changes animal when the clip title is explicit."""
+    """Reject narration that changes visible subject when the clip is explicit."""
+    visible_animals = _strict_animal_terms(subject)
+    if visible_animals:
+        return bool(visible_animals & _strict_animal_terms(script))
     visible = _animal_terms(subject)
+    if visible and visible <= _CONTEXT_ONLY_SUBJECTS:
+        return True
     return not visible or bool(visible & _animal_terms(script))
 
 
@@ -412,7 +496,18 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
 
 
 def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
-    """Reject explicit animals returned outside the configured topic."""
+    """Reject explicit nature subjects returned outside the configured topic."""
+    visible_animals = _strict_animal_terms(subject)
+    allowed_animals = set().union(*(
+        _strict_animal_terms(query) for query in topic_cfg.get("queries", [])
+    ))
+    if visible_animals:
+        return not allowed_animals or bool(visible_animals & allowed_animals)
+    # Legacy animal categories often include environmental words in clip
+    # titles ("forest", "snow", "night"). Those are context, not the
+    # subject mismatch signal we want to catch.
+    if allowed_animals:
+        return True
     visible = _animal_terms(subject)
     allowed = set().union(*(
         _animal_terms(query) for query in topic_cfg.get("queries", [])
@@ -463,7 +558,7 @@ def _ai_enhance_animal(subject: str, context: str,
         if not isinstance(data, dict):
             return None
     except (json.JSONDecodeError, ValueError) as exc:
-        log.debug("animal AI parse error: %s | raw[:120]=%s", exc, raw[:120])
+        log.debug("nature AI parse error: %s | raw[:120]=%s", exc, raw[:120])
         return None
 
     raw_tags = data.get("yt_tags") or []
@@ -481,8 +576,8 @@ def _ai_enhance_animal(subject: str, context: str,
         cleaned = re.sub(r"[^A-Za-z0-9]", "", str(raw or ""))[:24]
         return cleaned or fallback
 
-    topic_hashtag = _clean_tag(data.get("topic_hashtag"), "Animals")
-    geo_hashtag = "Global"  # animal content is universal
+    topic_hashtag = _clean_tag(data.get("topic_hashtag"), "Nature")
+    geo_hashtag = "Global"
 
     out = {
         "score":          int(data.get("score", 7) or 7),
@@ -495,14 +590,14 @@ def _ai_enhance_animal(subject: str, context: str,
         "hook":           str(data.get("hook", "")).strip()[:140],
         "script":         str(data.get("script", "")).strip()[:900],
         "lead":           str(data.get("script", subject))[:400],
-        "sentiment":      "positive",  # animal content is always positive
+        "sentiment":      "positive",
         "growth_studio":   growth_studio,
         "narrative_template": growth_studio.get("narrative_template") or {},
         "production_mode": growth_studio.get("production_mode", ""),
         "trend_context":   trend_context,
     }
     if not _script_matches_visible_subject(subject, out["script"]):
-        log.warning("AI script changed visible animal: subject=%r script=%r",
+        log.warning("AI script changed visible subject: subject=%r script=%r",
                     subject[:100], out["script"][:140])
         return None
 

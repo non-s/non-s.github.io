@@ -7,6 +7,10 @@ from dataclasses import asdict, dataclass
 FORMAT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("animal_memory", ("remember", "recognize", "faces", "names", "grudge", "friend")),
     ("animal_intelligence", ("solve", "smart", "learn", "tool", "plan", "name")),
+    ("earth_engine", ("lava", "volcano", "storm", "lightning", "river", "glacier", "erosion", "weather")),
+    ("hidden_network", ("fungi", "mushroom", "mycelium", "roots", "signals", "network", "communicate")),
+    ("rare_nature", ("aurora", "eclipse", "bioluminescent", "rare", "glow", "phenomenon")),
+    ("conservation_signal", ("restore", "recover", "protect", "conservation", "reforestation", "biodiversity")),
     ("survival_trick", ("escape", "survive", "hide", "camouflage", "defense", "venom")),
     ("body_superpower", ("teeth", "bones", "eyes", "beak", "claw", "tail", "heart")),
     ("myth_buster", ("not just", "isn't", "aren't", "myth", "think", "really")),
@@ -32,6 +36,15 @@ _ANIMAL_WORDS = {
     "ant", "ants", "beetle", "beetles", "mantis", "mantises", "dragonfly",
     "dragonflies", "chameleon", "chameleons", "orangutan", "orangutans",
     "monkey", "monkeys",
+    "plant", "plants", "leaf", "leaves", "flower", "flowers", "tree", "trees",
+    "root", "roots", "forest", "forests", "fungi", "fungus", "mushroom",
+    "mushrooms", "mycelium", "ocean", "sea", "coral", "reef", "river",
+    "rivers", "waterfall", "mountain", "mountains", "glacier", "glaciers",
+    "volcano", "volcanoes", "lava", "magma", "storm", "storms", "lightning",
+    "tornado", "cloud", "clouds", "aurora", "eclipse", "rock", "rocks",
+    "mineral", "minerals", "canyon", "cave", "ecosystem", "ecosystems",
+    "earth", "planet", "atmosphere", "conservation", "biodiversity",
+    "science", "fossil", "biology",
 }
 
 
@@ -112,6 +125,8 @@ def audit_title(title: str) -> Audit:
     if not any(token in lower for token in (
         "why", "can", "remember", "recognize", "use", "not", "love",
         "fake", "plan", "escape", "slide", "call", "hear", "hold", "roar",
+        "glow", "erupt", "build", "move", "signal", "survive", "protect",
+        "form", "grow", "burn", "freeze", "breathe", "recover",
     )):
         score -= 10
         issues.append("weak_curiosity_shape")

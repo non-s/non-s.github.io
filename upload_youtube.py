@@ -31,6 +31,22 @@ SCOPES = [
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
 PLAYLIST_PREFIX = "Wild Brief | "
+PILLAR_PLAYLIST_BY_CATEGORY = {
+    "volcanoes": "Earth Engine",
+    "weather": "Earth Engine",
+    "rivers": "Earth Engine",
+    "mountains": "Earth Engine",
+    "geology": "Earth Engine",
+    "fungi": "Hidden Network",
+    "trees": "Hidden Network",
+    "forests": "Hidden Network",
+    "ecosystems": "Hidden Network",
+    "rare_phenomena": "Rare Earth",
+    "earth_from_space": "Planet Earth",
+    "conservation": "Planet Repair",
+    "discoveries": "Discovery Brief",
+    "plants": "Biology Brief",
+}
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", handlers=[logging.FileHandler(LOG_FILE, encoding="utf-8"), logging.StreamHandler()])
 log = logging.getLogger(__name__)
@@ -77,14 +93,14 @@ def _normalise_tags(tags) -> list[str]:
 
 
 def _youtube_title(meta: dict) -> str:
-    title = (meta.get("title") or "Animal fact of the day").strip()
+    title = (meta.get("title") or "Nature fact of the day").strip()
     return title if len(title) <= 100 else title[:97].rstrip(" .,;:-") + "..."
 
 
 def _youtube_description(meta: dict) -> str:
     description = (meta.get("description") or _youtube_title(meta)).strip()
     existing = {part.lower() for part in description.split() if part.startswith("#")}
-    missing = [tag for tag in ("#Shorts", "#AnimalFacts", "#Wildlife") if tag.lower() not in existing]
+    missing = [tag for tag in ("#Shorts", "#NatureFacts", "#WildBrief", "#EarthScience") if tag.lower() not in existing]
     if missing:
         description += "\n\n" + " ".join(missing)
     source = (meta.get("source_url") or "").strip()
@@ -97,7 +113,7 @@ def _video_url(video_id: str) -> str:
     return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
 
 
-def _safe_label(value: str, fallback: str = "Animal Facts") -> str:
+def _safe_label(value: str, fallback: str = "Nature Facts") -> str:
     label = " ".join(str(value or "").replace("_", " ").split()).strip(" -|")
     if not label:
         label = fallback
@@ -105,7 +121,11 @@ def _safe_label(value: str, fallback: str = "Animal Facts") -> str:
 
 
 def _playlist_titles(meta: dict) -> list[str]:
+    category = str(meta.get("category") or "").strip().lower()
+    pillar = PILLAR_PLAYLIST_BY_CATEGORY.get(category, "")
     labels = [
+        "Start Here",
+        _safe_label(pillar, ""),
         _safe_label(meta.get("series"), ""),
         _safe_label(meta.get("category"), ""),
     ]
@@ -119,14 +139,14 @@ def _playlist_titles(meta: dict) -> list[str]:
         if key not in seen:
             out.append(title[:150])
             seen.add(key)
-    return out or [f"{PLAYLIST_PREFIX}Animal Facts"]
+    return out or [f"{PLAYLIST_PREFIX}Nature Facts"]
 
 
 def _comment_text(meta: dict) -> str:
     packaging = meta.get("packaging") if isinstance(meta.get("packaging"), dict) else {}
     text = str(meta.get("pinned_comment") or packaging.get("pinned_comment") or meta.get("cta_prompt") or "").strip()
     if not text:
-        text = "Which animal should Wild Brief decode next?"
+        text = "Which wild nature subject should Wild Brief decode next?"
     return text[:500]
 
 
