@@ -44,6 +44,7 @@ from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
+from utils.growth_engine import analyze_retention, load_format_memory, score_topic
 from utils.content_agency import rank_for_agency
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
@@ -1060,6 +1061,8 @@ def build_short_metadata(story: dict, video_path: Path,
         "production_mode": story.get("production_mode", ""),
         "youtube_brain":  dict(story.get("youtube_brain") or {}),
         "packaging":      dict(story.get("packaging") or {}),
+        "opportunity_score": dict(story.get("opportunity_score") or {}),
+        "retention_score": dict(story.get("retention_score") or {}),
         "pinned_comment": (story.get("packaging") or {}).get("pinned_comment", ""),
         "cta_prompt":     story.get("cta_prompt") or (story.get("packaging") or {}).get("cta_prompt", ""),
         "replay_prompt":  story.get("replay_prompt") or (story.get("packaging") or {}).get("replay_prompt", ""),
@@ -1287,13 +1290,29 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     )
     candidates = [_queue_to_story(s) for s in pending]
     strategy = load_strategy()
+    format_memory = load_format_memory()
     scored_candidates: list[dict] = []
     for candidate in candidates:
+        opportunity = score_topic(candidate, memory=format_memory)
+        if opportunity["verdict"] == "discard":
+            record_rejection(candidate, opportunity.get("reasons") or ["low_opportunity_score"], stage="opportunity_score")
+            continue
+        retention = analyze_retention(candidate)
+        if retention["verdict"] == "discard":
+            rescued, applied = rescue_story(candidate, retention.get("reasons") or ["retention_discard"])
+            if applied:
+                candidate = rescued
+                retention = analyze_retention(candidate)
+            if retention["verdict"] == "discard":
+                record_rejection(candidate, retention.get("reasons") or ["low_retention_score"], stage="retention_score")
+                continue
         score = publish_score_story(candidate, analytics_strategy=strategy)
         if score["state"] == "reject":
             record_rejection(candidate, [f"publish_score_{score['state']}"], stage="publish_score")
             continue
         item = dict(candidate)
+        item["opportunity_score"] = opportunity
+        item["retention_score"] = retention
         item["publish_score"] = score
         item = package_story(item)
         brain = creator_premortem(item)

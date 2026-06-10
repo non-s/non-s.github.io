@@ -111,7 +111,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         publish_risks.append("publish_score_rewrite")
     if (publish.get("phrase_risk") or {}).get("hits"):
         publish_risks.append("repetitive_title_template")
-    if brain.get("state") == "rewrite_before_publish" or pkg.get("state") == "rewrite_packaging" or publish_risks:
+    if brain.get("state") in {"rewrite_before_publish", "do_not_publish"} or pkg.get("state") == "rewrite_packaging" or publish_risks:
         repair_reasons = list(dict.fromkeys(
             (brain.get("risks") or []) + (pkg.get("risks") or []) + publish_risks
         ))

@@ -4,11 +4,12 @@ from __future__ import annotations
 import re
 
 from utils.story_intelligence import audit_hook, audit_title, classify_format
+from utils.growth_engine import analyze_retention, load_format_memory, score_topic
 
 
-WINNING_CATEGORIES = {"farm", "birds", "wildlife"}
-RECOVERY_CATEGORIES = {"cats", "dogs", "ocean"}
-WINNING_FORMATS = {"animal_memory", "body_superpower", "animal_intelligence"}
+WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
+RECOVERY_CATEGORIES = {"cats", "dogs", "farm"}
+WINNING_FORMATS = {"earth_engine", "hidden_network", "rare_nature", "body_superpower", "survival_trick", "animal_intelligence"}
 ACTION_WORDS = {
     "fake", "remember", "recognize", "plan", "escape", "slide", "call",
     "hear", "hold", "roar", "use", "hide", "protect", "trick",
@@ -58,11 +59,16 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     hook_audit = audit_hook(hook)
     title_audit = audit_title(title)
     risk = phrase_risk(text)
+    memory = load_format_memory()
+    opportunity = score_topic(story, memory=memory)
+    retention = analyze_retention(story)
 
     score = 38
     score += hook_audit.score * 0.16
     score += title_audit.score * 0.14
     score += min(12, _as_score(story.get("score")) * 1.2)
+    score += opportunity["score"] * 0.16 - 8
+    score += retention["score"] * 0.20 - 10
     if category in WINNING_CATEGORIES:
         score += 9
     elif category in RECOVERY_CATEGORIES:
@@ -83,11 +89,18 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score *= max(0.75, min(1.25, _as_score(category_weights.get(category), 1.0)))
     score *= max(0.75, min(1.2, _as_score(format_weights.get(story_format), 1.0)))
     score = round(max(0, min(100, score)), 1)
-    approved = score >= 72 and not risk["hits"][:1]
+    approved = (
+        score >= 72
+        and not risk["hits"][:1]
+        and opportunity["verdict"] != "discard"
+        and retention["verdict"] != "discard"
+    )
     return {
         "score": score,
         "approved": approved,
         "state": "publish_ready" if approved else ("rewrite" if score >= 55 else "reject"),
+        "opportunity": opportunity,
+        "retention": retention,
         "category": category,
         "story_format": story_format,
         "hook_score": hook_audit.score,

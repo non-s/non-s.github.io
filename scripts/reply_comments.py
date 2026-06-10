@@ -114,6 +114,11 @@ def main() -> int:
     markers = _load_markers()[-80:]
     ledger = _load_json(LEDGER_FILE, {"replied_comment_ids": [], "replies": []})
     replied_ids = set(str(item) for item in ledger.get("replied_comment_ids", []))
+    recent_reply_texts = [
+        str(item.get("reply_text") or "")
+        for item in (ledger.get("replies") or [])[-50:]
+        if isinstance(item, dict)
+    ]
     channel_id = _channel_id(youtube)
     replies_made: list[dict] = []
 
@@ -144,7 +149,7 @@ def main() -> int:
                 continue
             if not is_replyable_comment(text):
                 continue
-            reply_text = build_reply_text(text, marker)
+            reply_text = build_reply_text(text, {**marker, "recent_reply_texts": recent_reply_texts})
             try:
                 reply_id = _insert_reply(youtube, comment_id, reply_text)
             except Exception as exc:
@@ -158,6 +163,7 @@ def main() -> int:
                 "reply_text": reply_text,
                 "replied_at": datetime.now(timezone.utc).isoformat(),
             })
+            recent_reply_texts.append(reply_text)
 
     ledger["replied_comment_ids"] = sorted(replied_ids)
     ledger["replies"] = list(ledger.get("replies") or []) + replies_made

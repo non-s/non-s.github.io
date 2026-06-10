@@ -63,6 +63,25 @@ Use repeatable series so viewers recognize the brand:
   reason to rewatch the footage.
 - Avoid generic words: amazing, incredible, secret, crazy, unbelievable.
 
+## Autonomous Growth Engine
+
+`utils/growth_engine.py` is now the editorial brain that runs before production:
+
+- Opportunity Score ranks every candidate by viral, visual, replay, comment,
+  education, emotion, and novelty potential.
+- Weak topics are discarded before rendering, with priority weight for fungi,
+  forests, oceans, volcanoes, extreme weather, geology, strange biology, rare
+  behavior, natural phenomena, conservation, and discoveries.
+- Retention Score checks hook strength, curiosity, visual surface, replay loop,
+  and completion prediction.
+- Packaging generation creates 10 titles, 10 thumbnail texts, and 5 alternate
+  hooks, scores each combination, and selects the strongest package.
+- `_data/format_memory.json` stores learned category, format, title,
+  thumbnail, and hook patterns from finished videos.
+
+The production gate now rejects candidates with low opportunity or retention
+before spending render/upload time.
+
 ## Scale Plan
 
 1. Build queue volume across all nature pillars.
@@ -85,7 +104,21 @@ Implemented operating loop:
 - `scripts/reply_comments.py` replies to recent eligible viewer comments with
   concise Wild Brief responses and stores `_data/comment_replies.json` so no
   comment is answered twice.
+- Comment replies classify praise, criticism, suggestions, questions, and
+  neutral comments, then choose short varied responses while avoiding repeated
+  reply text.
 
 The channel automation intentionally stays inside officially supported YouTube
 Data API surfaces: playlist creation, playlist item insertion, top-level
 comments, and comment replies.
+
+## Robustness Rules
+
+- All learning files are local JSON artifacts committed by the bot workflow.
+- Missing analytics, missing visual QA, or provider failures degrade to local
+  deterministic scoring instead of stopping the full pipeline.
+- Duplicate prevention happens through done markers, rejected queues, cooldowns,
+  and comment reply ledgers.
+- The system uses only free/open surfaces: GitHub Actions, configured free text
+  providers, Pexels, Pixabay, Wikimedia Commons, GBIF, and open-source Python
+  libraries.

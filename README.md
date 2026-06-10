@@ -25,6 +25,11 @@ Pexels + Pixabay clips -> nature taxonomy + enrichment -> fetch_animals.py
 
 Every candidate passes through an automated editor-in-chief before rendering:
 
+- scores topic opportunity across viral, visual, replay, comment, education, emotion and novelty signals;
+- blocks low-opportunity topics before rendering or upload;
+- predicts retention with hook, curiosity, visual, replay and completion scores;
+- generates 10 titles, 10 thumbnail texts and 5 alternate hooks, then ships the best-scored package;
+- learns from `_videos/*.done` markers into `_data/format_memory.json`;
 - ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;
 - organizes videos into recurring series such as **Earth Engine**, **Hidden Network** and **Rare Earth**;
@@ -32,7 +37,7 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - burns yellow CapCut-style captions with highlighted keywords;
 - uses faster b-roll beats, subtle zoom, micro-fades and contrast/saturation lift;
 - creates/maintains YouTube playlists for series and categories;
-- replies automatically to eligible viewer comments and records a reply ledger;
+- replies automatically to eligible viewer comments with varied, short, classified responses and records a reply ledger;
 - records public YouTube engagement after uploads and feeds winning categories, series and experiments back into the dashboard.
 - uses Gemini visual QA to reject unrelated thumbnails when `GEMINI_API_KEY` is configured;
 - reads retention and subscriber conversion when the OAuth token includes YouTube Analytics access.

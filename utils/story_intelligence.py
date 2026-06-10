@@ -10,7 +10,7 @@ FORMAT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("earth_engine", ("lava", "volcano", "storm", "lightning", "river", "glacier", "erosion", "weather")),
     ("hidden_network", ("fungi", "mushroom", "mycelium", "roots", "signals", "network", "communicate")),
     ("rare_nature", ("aurora", "eclipse", "bioluminescent", "rare", "glow", "phenomenon")),
-    ("conservation_signal", ("restore", "recover", "protect", "conservation", "reforestation", "biodiversity")),
+    ("conservation_signal", ("restore", "recover", "conservation", "reforestation", "biodiversity")),
     ("survival_trick", ("escape", "survive", "hide", "camouflage", "defense", "venom")),
     ("body_superpower", ("teeth", "bones", "eyes", "beak", "claw", "tail", "heart")),
     ("myth_buster", ("not just", "isn't", "aren't", "myth", "think", "really")),

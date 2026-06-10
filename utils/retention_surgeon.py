@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import re
 
+from utils.growth_engine import analyze_retention
+
 
 WEAK_OPENERS = {
     "did you know", "today", "in this video", "this animal", "animals are",
@@ -32,6 +34,7 @@ def _first_sentence(text: str) -> str:
 
 
 def diagnose(story: dict) -> dict:
+    growth = analyze_retention(story)
     title = str(story.get("seo_title") or story.get("title") or "")
     hook = str(story.get("hook") or _first_sentence(str(story.get("script") or "")))
     script = str(story.get("script") or "")
@@ -75,10 +78,16 @@ def diagnose(story: dict) -> dict:
         issues.append("hook_repeats_title")
         fixes.append("Let the hook advance the title instead of repeating it.")
 
+    has_payoff = any(term in script.lower() for term in ("because", "that's why", "that is why", "payoff"))
     if len(words) < 45:
-        score -= 18
-        issues.append("script_too_short")
-        fixes.append("Add one visual detail and one because/payoff sentence.")
+        if len(words) >= 26 and has_payoff:
+            score -= 6
+            issues.append("script_tight_but_usable")
+            fixes.append("Add one optional visual beat only if the video feels rushed.")
+        else:
+            score -= 18
+            issues.append("script_too_short")
+            fixes.append("Add one visual detail and one because/payoff sentence.")
     elif len(words) > 125:
         score -= 10
         issues.append("script_too_long")
@@ -86,7 +95,7 @@ def diagnose(story: dict) -> dict:
     else:
         strengths.append("shorts_length")
 
-    if "because" not in script.lower() and "that's why" not in script.lower():
+    if not has_payoff:
         score -= 8
         issues.append("missing_because")
         fixes.append("Add a simple because/that-is-why payoff.")
@@ -98,6 +107,7 @@ def diagnose(story: dict) -> dict:
         issues.append("high_velocity_category_needs_tighter_cut")
         fixes.append("Keep this category especially tight because current retention is fragile.")
 
+    score = round(score * 0.45 + int(growth.get("score", 0)) * 0.55)
     score = max(0, min(100, score))
     if score >= 82:
         verdict = "ready"
@@ -107,6 +117,7 @@ def diagnose(story: dict) -> dict:
         verdict = "rewrite"
     return {
         "score": score,
+        "growth_retention": growth,
         "verdict": verdict,
         "issues": issues,
         "fixes": fixes[:5],

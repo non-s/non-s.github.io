@@ -3,6 +3,12 @@ from __future__ import annotations
 
 import re
 
+from utils.growth_engine import (
+    analyze_retention,
+    load_format_memory,
+    score_package_variant,
+    select_best_packaging,
+)
 from utils.story_intelligence import audit_title, classify_format
 
 ANIMALS = {
@@ -18,17 +24,26 @@ ANIMALS = {
     "octopuses", "seal", "seals", "fox", "foxes", "snake", "snakes",
     "chameleon", "chameleons", "turtle", "turtles", "orangutan",
     "orangutans", "monkey", "monkeys",
+    "fungi", "mushroom", "mushrooms", "forest", "forests", "ocean",
+    "volcano", "volcanoes", "lava", "storm", "weather", "geology",
+    "river", "rivers", "glacier", "ecosystem", "ecosystems", "earth",
+    "plant", "plants", "tree", "trees", "coral", "reef",
 }
 ACTION_VERBS = (
     "fake", "protect", "escape", "remember", "recognize", "call", "hear",
     "hide", "slide", "hunt", "plan", "trick", "warn", "choose", "save",
     "signal", "follow", "digest", "groom", "roll", "bray",
+    "erupt", "glow", "flow", "form", "grow", "melt", "freeze",
+    "recover", "connect", "communicate", "build", "collapse",
 )
 CUE_WORDS = (
     "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
     "nose", "face", "head", "pupil", "pupils", "hoof", "hooves", "fin", "fins",
     "gill", "gills", "antenna", "antennae",
+    "lava", "ash", "cloud", "clouds", "roots", "leaf", "leaves",
+    "mushroom", "mycelium", "reef", "coral", "wave", "waves",
+    "current", "glacier", "rock", "rocks", "crater", "ice",
 )
 GENERIC_PHRASES = (
     "hiding in plain sight", "another secret", "another signal",
@@ -41,6 +56,10 @@ SERIES_CATALOG = {
     "body_superpower": "Body Clues",
     "survival_trick": "Survival Tricks",
     "visual_cue": "Watch The Cue",
+    "earth_engine": "Earth Engine",
+    "hidden_network": "Hidden Network",
+    "rare_nature": "Rare Earth",
+    "conservation_signal": "Planet Repair",
     "default": "Nature Signals",
 }
 
@@ -91,53 +110,15 @@ def _clean_title(title: str) -> str:
 
 
 def title_options(story: dict) -> list[str]:
-    animal = _title_case_animal(extract_animal(story))
-    action = extract_action(story)
-    cue = extract_cue(story)
-    current = _clean_title(str(story.get("seo_title") or story.get("title") or ""))
-    options = [
-        current,
-        f"Watch the {cue} when {animal.lower()} {action}",
-        f"{animal} {action} because of this {cue}",
-        f"{animal} {action} for one reason most people miss",
-        f"Why {animal.lower()} {action} is not random",
-        f"{animal} {action}: watch the {cue}",
-        f"The {cue} that explains why {animal.lower()} {action}",
-    ]
-    out: list[str] = []
-    seen = set()
-    for option in options:
-        clean = _clean_title(option)
-        key = clean.lower()
-        if clean and key not in seen:
-            out.append(clean)
-            seen.add(key)
-    return out[:5]
+    return [_clean_title(title) for title in select_best_packaging(story)["options"]["titles"][:10]]
 
 
 def thumbnail_options(story: dict) -> list[str]:
-    animal = extract_animal(story).upper()
-    cue = extract_cue(story).upper()
-    action = extract_action(story).upper()
-    raw = str(story.get("thumbnail_text") or "").upper()
-    options = [
-        raw,
-        f"WATCH THE {cue}",
-        f"{animal} {action}",
-        f"{cue} EXPLAINS IT",
-        f"{animal} {cue}",
-        "NOT RANDOM",
-    ]
-    out: list[str] = []
-    seen = set()
-    for option in options:
-        clean = re.sub(r"[^A-Z0-9 '&-]+", " ", option).strip()
-        words = clean.split()
-        clean = " ".join(words[:4])
-        if clean and clean.lower() not in seen:
-            out.append(clean)
-            seen.add(clean.lower())
-    return out[:5]
+    return select_best_packaging(story)["options"]["thumbnail_texts"][:10]
+
+
+def hook_options(story: dict) -> list[str]:
+    return select_best_packaging(story)["options"]["hooks"][:5]
 
 
 def score_packaging(story: dict) -> dict:
@@ -158,13 +139,13 @@ def score_packaging(story: dict) -> dict:
         strengths.append("thumbnail_scannable")
     else:
         risks.append("thumbnail_not_2_4_words")
-    has_animal = any(re.search(r"\b" + re.escape(a) + r"\b", text) for a in ANIMALS)
-    if has_animal:
+    has_subject = any(re.search(r"\b" + re.escape(a) + r"\b", text) for a in ANIMALS)
+    if has_subject:
         score += 10
-        strengths.append("animal_clear")
+        strengths.append("subject_clear")
     else:
         score -= 10
-        risks.append("animal_not_clear")
+        risks.append("subject_not_clear")
     if any(re.search(r"\b" + re.escape(v) + r"\b", text) for v in ACTION_VERBS):
         score += 12
         strengths.append("action_word")
@@ -181,6 +162,8 @@ def score_packaging(story: dict) -> dict:
     if "?" in title:
         score += 4
         strengths.append("curiosity_question")
+    retention_score = analyze_retention(story)["score"]
+    score = round(score * 0.65 + retention_score * 0.35)
     score = max(0, min(100, score))
     return {
         "score": score,
@@ -240,20 +223,17 @@ def replay_prompt(story: dict) -> str:
 
 def package_story(story: dict) -> dict:
     out = dict(story)
+    memory = load_format_memory()
+    selected = select_best_packaging(out, memory=memory)
+    best_variant = selected["best"]
+    if best_variant:
+        out["seo_title"] = best_variant["title"]
+        out["title"] = best_variant["title"]
+        out["thumbnail_text"] = best_variant["thumbnail_text"]
+        out["hook"] = best_variant["hook"]
     titles = title_options(out)
     thumbs = thumbnail_options(out)
-    best: tuple[int, str, str] | None = None
-    for title in titles or [out.get("seo_title") or out.get("title") or ""]:
-        for thumb in thumbs or [out.get("thumbnail_text") or ""]:
-            candidate = {**out, "seo_title": title, "title": title, "thumbnail_text": thumb}
-            score = score_packaging(candidate)["score"]
-            if best is None or score > best[0]:
-                best = (score, title, thumb)
-    if best:
-        _, best_title, best_thumb = best
-        out["seo_title"] = best_title
-        out["title"] = best_title
-        out["thumbnail_text"] = best_thumb
+    hooks = hook_options(out)
     out["series"] = series_name(out)
     out["cta_prompt"] = cta_prompt(out)
     out["replay_prompt"] = replay_prompt(out)
@@ -262,6 +242,10 @@ def package_story(story: dict) -> dict:
         **packaged_score,
         "title_options": titles,
         "thumbnail_options": thumbs,
+        "hook_options": hooks,
+        "selected_variant": best_variant,
+        "top_variants": selected["top_variants"],
+        "retention": analyze_retention(out),
         "pinned_comment": pinned_comment(out),
         "community_prompt": community_prompt(out),
         "series": out["series"],

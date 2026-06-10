@@ -30,6 +30,7 @@ def build_markdown(root: Path = ROOT) -> str:
     health = _safe_json(root / "_data" / "automation_health.json")
     remakes = _safe_json(root / "_data" / "remake_backlog.json")
     trends = _safe_json(root / "_data" / "trend_radar.json")
+    memory = _safe_json(root / "_data" / "format_memory.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -74,6 +75,28 @@ def build_markdown(root: Path = ROOT) -> str:
             )
     else:
         lines.append("- No public trend signal captured yet.")
+    lines.extend(["", "## Format Memory"])
+    categories = sorted(
+        (memory.get("category_scores") or {}).items(),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    formats = sorted(
+        (memory.get("format_scores") or {}).items(),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    if categories:
+        lines.append("- Winning categories: " + ", ".join(f"{k} ({v})" for k, v in categories[:5]))
+    else:
+        lines.append("- Winning categories: not enough data yet.")
+    if formats:
+        lines.append("- Winning formats: " + ", ".join(f"{k} ({v})" for k, v in formats[:5]))
+    else:
+        lines.append("- Winning formats: not enough data yet.")
+    hooks = list((memory.get("winning_hook_patterns") or {}).keys())[:3]
+    if hooks:
+        lines.append("- Hook patterns to reuse: " + "; ".join(hooks))
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
         lines.append(f"- {item.get('source_title')} -> {item.get('action')}")
