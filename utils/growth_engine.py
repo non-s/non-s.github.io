@@ -18,6 +18,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from utils.nature_strategy import NATURE_TOPICS
+from utils.audience_memory import load_audience_memory
 
 MEMORY_PATH = Path("_data/format_memory.json")
 
@@ -51,7 +52,7 @@ ACTION_TERMS = {
     "erupt", "glow", "move", "grow", "talk", "signal", "escape",
     "survive", "hide", "protect", "build", "form", "freeze", "melt",
     "remember", "hunt", "change", "vanish", "recover", "pull", "pulls",
-    "follow", "follows",
+    "follow", "follows", "fake", "fakes", "trick", "tricks",
 }
 
 PAYOFF_TERMS = {
@@ -103,6 +104,19 @@ def load_format_memory(path: Path = MEMORY_PATH) -> dict:
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _audience(memory: dict | None = None) -> dict:
+    if memory and isinstance(memory.get("audience_memory"), dict):
+        return memory["audience_memory"]
+    return load_audience_memory()
+
+
+def _weight(memory: dict, axis: str, key: str, default: float = 1.0) -> float:
+    try:
+        return float(((memory.get("weights") or {}).get(axis) or {}).get(key, default))
+    except Exception:
+        return default
 
 
 def _metric(marker: dict, stats: dict, *names: str) -> float:
@@ -159,28 +173,31 @@ def build_format_memory(markers: list[dict]) -> dict:
         subs_per_1k = subs * 1000 / max(views, 1)
         comments_per_1k = comments * 1000 / max(views, 1)
         quality = _performance_score(marker)
+        has_real_views = views > 0
         if category:
-            category_scores[category].append(quality)
             category_counts[category] += 1
-            category_sub_rates[category].append(subs_per_1k + comments_per_1k * 0.12)
+            if has_real_views:
+                category_scores[category].append(quality)
+                category_sub_rates[category].append(subs_per_1k + comments_per_1k * 0.12)
         if fmt:
-            format_scores[fmt].append(quality)
             format_counts[fmt] += 1
-            format_sub_rates[fmt].append(subs_per_1k + comments_per_1k * 0.12)
+            if has_real_views:
+                format_scores[fmt].append(quality)
+                format_sub_rates[fmt].append(subs_per_1k + comments_per_1k * 0.12)
         series = str(marker.get("series") or "").strip()
         if series:
             series_counts[re.sub(r"\s+#\d+$", "", series)] += 1
         title = str(marker.get("title") or "")
         thumb = str(marker.get("thumbnail_text") or "")
         hook = str(marker.get("hook") or "")
-        weight = max(1, int(quality // 16))
+        weight = max(1, int(quality // 16)) if has_real_views else 1
         if title:
             title_patterns[_pattern(title)] += weight
         if thumb:
             thumbnail_patterns[_pattern(thumb)] += weight
         if hook:
             hook_patterns[_pattern(hook)] += weight
-        if quality < 48:
+        if has_real_views and quality < 48:
             for value in (title, thumb, hook):
                 if value:
                     weak_patterns[_pattern(value)] += 1
@@ -188,7 +205,7 @@ def build_format_memory(markers: list[dict]) -> dict:
         experiment = packaging.get("experiment") if isinstance(packaging.get("experiment"), dict) else {}
         assignment = experiment.get("assignment") if isinstance(experiment.get("assignment"), dict) else {}
         for axis, variant in assignment.items():
-            if variant:
+            if variant and has_real_views:
                 experiment_scores[f"{axis}:{variant}"].append(quality)
 
     def _avg_map(values: dict[str, list[float]]) -> dict[str, float]:
@@ -199,8 +216,12 @@ def build_format_memory(markers: list[dict]) -> dict:
     experiment_avg = _avg_map(experiment_scores)
     category_sub_avg = _avg_map(category_sub_rates)
     format_sub_avg = _avg_map(format_sub_rates)
-    enough_category_data = sum(category_counts.values()) >= 8
-    enough_format_data = sum(format_counts.values()) >= 8
+    category_real_counts = Counter({k: len(v) for k, v in category_scores.items()})
+    format_real_counts = Counter({k: len(v) for k, v in format_scores.items()})
+    category_sub_counts = Counter({k: len(v) for k, v in category_sub_rates.items()})
+    format_sub_counts = Counter({k: len(v) for k, v in format_sub_rates.items()})
+    enough_category_data = sum(category_real_counts.values()) >= 8
+    enough_format_data = sum(format_real_counts.values()) >= 8
 
     def _weights(scores: dict[str, float], counts: Counter[str], enough: bool) -> dict[str, float]:
         if not enough:
@@ -229,10 +250,10 @@ def build_format_memory(markers: list[dict]) -> dict:
         "format_scores": format_avg,
         "category_subscriber_rates": category_sub_avg,
         "format_subscriber_rates": format_sub_avg,
-        "category_weights": _weights(category_avg, category_counts, enough_category_data),
-        "format_weights": _weights(format_avg, format_counts, enough_format_data),
-        "subscriber_category_weights": _subscriber_weights(category_sub_avg, category_counts, enough_category_data),
-        "subscriber_format_weights": _subscriber_weights(format_sub_avg, format_counts, enough_format_data),
+        "category_weights": _weights(category_avg, category_real_counts, enough_category_data),
+        "format_weights": _weights(format_avg, format_real_counts, enough_format_data),
+        "subscriber_category_weights": _subscriber_weights(category_sub_avg, category_sub_counts, enough_category_data),
+        "subscriber_format_weights": _subscriber_weights(format_sub_avg, format_sub_counts, enough_format_data),
         "winning_title_patterns": dict(title_patterns.most_common(12)),
         "winning_thumbnail_patterns": dict(thumbnail_patterns.most_common(12)),
         "winning_hook_patterns": dict(hook_patterns.most_common(12)),
@@ -261,6 +282,7 @@ def _pattern(text: str) -> str:
 
 def score_topic(story: dict, memory: dict | None = None) -> dict:
     memory = memory or {}
+    audience = _audience(memory)
     text = _text(story)
     category = str(story.get("category") or "").lower()
     tags = " ".join(str(t) for t in (story.get("yt_tags") or []))
@@ -284,6 +306,14 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         adj = max(-8, min(10, (float(hist) - 65) / 3))
         for key in base:
             base[key] += int(adj)
+    retention_weight = _weight(audience, "category_retention", category)
+    subscriber_weight = _weight(audience, "category_subscribers", category)
+    comment_weight = _weight(audience, "category_comments", category)
+    if audience.get("sample_count", 0) >= 8:
+        base["visual_potential"] *= retention_weight
+        base["replay_potential"] *= retention_weight
+        base["viral_potential"] *= subscriber_weight
+        base["comment_potential"] *= comment_weight
     signals = {k: max(0, min(100, int(v))) for k, v in base.items()}
     if signals["visual_potential"] >= 55 and signals["educational_potential"] >= 55:
         signals["viral_potential"] = min(100, signals["viral_potential"] + 8)
@@ -391,6 +421,14 @@ def analyze_retention(story: dict) -> dict:
         completion -= 10 + len(weak_hits) * 3
     if title and hook and len(set(_words(title.lower())[:5]) & set(_words(hook.lower())[:5])) >= 4:
         completion -= 7
+
+    audience = load_audience_memory()
+    category = str(story.get("category") or "").lower()
+    fmt = str(story.get("story_format") or "").lower()
+    if audience.get("sample_count", 0) >= 8:
+        completion *= _weight(audience, "category_retention", category)
+        if fmt:
+            completion *= _weight(audience, "format_retention", fmt)
 
     signals = {
         "hook_score": max(0, min(100, int(hook_score))),
@@ -515,7 +553,15 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
     patterns = memory.get("winning_title_patterns") or {}
     if _pattern(title) in patterns:
         pattern_bonus += min(8, int(patterns[_pattern(title)]))
-    score = int(topic * 0.25 + retention * 0.45 + thumb_score * 0.20 + pattern_bonus)
+    audience = _audience(memory or {})
+    category = str(story.get("category") or "").lower()
+    fmt = str(story.get("story_format") or "").lower()
+    audience_bonus = 0
+    if audience.get("sample_count", 0) >= 8:
+        audience_bonus += int((_weight(audience, "category_subscribers", category) - 1) * 18)
+        if fmt:
+            audience_bonus += int((_weight(audience, "format_subscribers", fmt) - 1) * 16)
+    score = int(topic * 0.22 + retention * 0.42 + thumb_score * 0.18 + pattern_bonus + audience_bonus)
     return max(0, min(100, score))
 
 

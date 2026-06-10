@@ -6,6 +6,7 @@ import re
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.subscriber_conversion import score_subscriber_conversion
+from utils.audience_memory import load_audience_memory
 
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
@@ -63,6 +64,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     title_audit = audit_title(title)
     risk = phrase_risk(text)
     memory = load_format_memory()
+    audience = load_audience_memory()
     opportunity = score_topic(story, memory=memory)
     retention = analyze_retention(story)
     weak = detect_weak_content(story, memory=memory)
@@ -93,6 +95,10 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
 
     category_weights = (memory.get("category_weights") or {}) | (analytics_strategy.get("category_weights") or {})
     format_weights = (memory.get("format_weights") or {}) | (analytics_strategy.get("format_weights") or {})
+    if audience.get("sample_count", 0) >= 8:
+        aw = audience.get("weights") or {}
+        category_weights = category_weights | (aw.get("category_retention") or {}) | (aw.get("category_subscribers") or {})
+        format_weights = format_weights | (aw.get("format_retention") or {}) | (aw.get("format_subscribers") or {})
     score *= max(0.75, min(1.25, _as_score(category_weights.get(category), 1.0)))
     score *= max(0.75, min(1.2, _as_score(format_weights.get(story_format), 1.0)))
     score = round(max(0, min(100, score)), 1)

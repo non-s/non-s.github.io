@@ -11,6 +11,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.subscriber_conversion import FAN_GROWTH_PATH, write_fan_growth
+from utils.real_metrics import enrich_markers_with_latest, safe_json
+
+LATEST_PATH = ROOT / "_data" / "analytics" / "latest.json"
+YOUTUBE_INTELLIGENCE_PATH = ROOT / "_data" / "youtube_intelligence.json"
 
 
 def _load_markers(videos_dir: Path = ROOT / "_videos") -> list[dict]:
@@ -35,7 +39,12 @@ def _load_comments(path: Path = ROOT / "_data" / "analytics" / "comments.json") 
 
 
 def main() -> int:
-    payload = write_fan_growth(_load_markers(), _load_comments(), ROOT / FAN_GROWTH_PATH)
+    markers = enrich_markers_with_latest(
+        _load_markers(),
+        safe_json(LATEST_PATH),
+        safe_json(YOUTUBE_INTELLIGENCE_PATH),
+    )
+    payload = write_fan_growth(markers, _load_comments(), ROOT / FAN_GROWTH_PATH)
     print(
         "fan_growth: "
         f"{len(payload.get('videos_ranked_by_subs_per_1k') or [])} ranked video(s), "

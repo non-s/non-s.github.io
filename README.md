@@ -35,6 +35,8 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - learns from `_videos/*.done` markers into `_data/format_memory.json`, including real views, likes, comments, retention and subscriber gains when available;
 - records lightweight explore/exploit experiments for formats, hooks, thumbnails and CTAs;
 - writes `_data/fan_growth.json` to rank videos, categories and formats by subscribers per 1,000 views and comments per 1,000 views;
+- writes `_data/audience_memory.json` to learn category, format and series strength from real retention, watch time, subscribers and comments;
+- joins `.done` markers with `_data/analytics/latest.json` and `_data/youtube_intelligence.json` so learning uses real channel outcomes instead of empty sidecar fields;
 - blocks robotic title shapes such as repeated "one trick / one reason" templates;
 - ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;

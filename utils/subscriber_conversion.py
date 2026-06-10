@@ -10,6 +10,8 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from utils.audience_memory import load_audience_memory
+
 FAN_GROWTH_PATH = Path("_data/fan_growth.json")
 
 ROBOTIC_TITLE_PATTERNS = (
@@ -119,6 +121,7 @@ def series_identity(story: dict, memory: dict | None = None) -> dict:
 
 def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict:
     memory = memory or {}
+    audience = memory.get("audience_memory") if isinstance(memory.get("audience_memory"), dict) else load_audience_memory()
     title = str(story.get("seo_title") or story.get("title") or "")
     hook = str(story.get("hook") or "")
     cta = str(story.get("cta_prompt") or "")
@@ -143,8 +146,17 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
         score += 7
         reasons.append("episode_continuity")
     score -= robotic["risk"] * 0.35
-    cat_weight = float((memory.get("subscriber_category_weights") or {}).get(_category(story), 1.0))
-    score *= max(0.82, min(1.25, cat_weight))
+    category = _category(story)
+    fmt = str(story.get("story_format") or "").lower()
+    series_base = re.sub(r"\s+#\d+$", "", series).strip()
+    weights = audience.get("weights") or {}
+    cat_weight = float((memory.get("subscriber_category_weights") or {}).get(category, 1.0))
+    cat_weight *= float((weights.get("category_subscribers") or {}).get(category, 1.0))
+    if fmt:
+        cat_weight *= float((weights.get("format_subscribers") or {}).get(fmt, 1.0))
+    if series_base:
+        cat_weight *= float((weights.get("series_return") or {}).get(series_base, 1.0))
+    score *= max(0.78, min(1.32, cat_weight))
     score = round(max(0, min(100, score)))
     return {
         "score": score,
@@ -163,6 +175,7 @@ def build_fan_growth(markers: list[dict], comments: list[dict] | None = None) ->
     category_rates: dict[str, list[float]] = defaultdict(list)
     format_rates: dict[str, list[float]] = defaultdict(list)
     recurring_authors: Counter[str] = Counter()
+    coverage = {"with_views": 0, "with_subscribers": 0, "with_comments": 0}
     for raw in comments:
         author = str(raw.get("author") or raw.get("authorDisplayName") or raw.get("author_channel_id") or "").strip()
         if author:
@@ -174,6 +187,12 @@ def build_fan_growth(markers: list[dict], comments: list[dict] | None = None) ->
         subs = float(stats.get("subscribersGained") or marker.get("subscribers_gained") or 0)
         subs_per_1k = round(subs * 1000 / max(views, 1), 3)
         comments_per_1k = round(comments_count * 1000 / max(views, 1), 3)
+        if views:
+            coverage["with_views"] += 1
+        if subs:
+            coverage["with_subscribers"] += 1
+        if comments_count:
+            coverage["with_comments"] += 1
         category = str(marker.get("category") or "").lower()
         fmt = str(marker.get("story_format") or "").lower()
         if category:
@@ -197,6 +216,7 @@ def build_fan_growth(markers: list[dict], comments: list[dict] | None = None) ->
         return round(sum(values) / len(values), 3) if values else 0.0
 
     return {
+        "coverage": {"total_markers": len(markers), **coverage},
         "videos_ranked_by_subs_per_1k": sorted(video_rows, key=lambda row: row["subs_per_1k_views"], reverse=True)[:20],
         "category_subscriber_rates": {k: avg(v) for k, v in category_rates.items()},
         "format_subscriber_rates": {k: avg(v) for k, v in format_rates.items()},

@@ -108,8 +108,27 @@ for audience creation:
   trick" are detected before upload.
 - `_data/fan_growth.json` ranks videos, categories, formats, and recurring
   commenters by subscribers per 1,000 views and comments per 1,000 views.
+- `_data/audience_memory.json` records real category, format, and series
+  strength from retention, watch time, subscribers per 1,000 views, comments
+  per 1,000 views, and a return proxy.
 - Format memory now gives extra learning weight to videos that convert viewers
   into subscribers, not only videos that get views.
+
+## Real Learning Loop
+
+The system now joins three sources before learning:
+
+- `.done` markers provide local packaging, category, series, and production
+  context.
+- `_data/analytics/latest.json` contributes real views, retention, watch time,
+  and subscribers gained.
+- `_data/youtube_intelligence.json` fills public views, likes, and comments
+  when analytics rows are incomplete.
+
+Future Shorts receive bonuses when they resemble categories, formats, and
+series that have already converted viewers into retention, subscribers, comments
+or repeatable series strength. They receive penalties when they resemble
+underperforming categories, formats, or series with enough sample size.
 
 ## Scale Plan
 

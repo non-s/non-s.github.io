@@ -32,6 +32,7 @@ def build_markdown(root: Path = ROOT) -> str:
     trends = _safe_json(root / "_data" / "trend_radar.json")
     memory = _safe_json(root / "_data" / "format_memory.json")
     fan = _safe_json(root / "_data" / "fan_growth.json")
+    audience = _safe_json(root / "_data" / "audience_memory.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -112,6 +113,20 @@ def build_markdown(root: Path = ROOT) -> str:
     if cat_rates:
         top = sorted(cat_rates.items(), key=lambda item: item[1], reverse=True)[:5]
         lines.append("- Best converting categories: " + ", ".join(f"{k} ({v})" for k, v in top))
+    lines.extend(["", "## Audience Memory"])
+    coverage = audience.get("coverage") or {}
+    if audience:
+        lines.append(
+            f"- Samples: {audience.get('sample_count', 0)} videos; "
+            f"retention={coverage.get('with_retention', 0)}, "
+            f"subscribers={coverage.get('with_subscribers', 0)}, "
+            f"comments={coverage.get('with_comments', 0)}"
+        )
+        winners = (audience.get("winners") or {}).get("series") or []
+        if winners:
+            lines.append("- Strongest return series: " + ", ".join(str(item.get("value")) for item in winners[:5]))
+    else:
+        lines.append("- No audience memory yet.")
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
         lines.append(f"- {item.get('source_title')} -> {item.get('action')}")
