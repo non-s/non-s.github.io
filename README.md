@@ -52,6 +52,15 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - reads retention and subscriber conversion when the OAuth token includes YouTube Analytics access.
 - skips production candidates without real motion b-roll or burned captions instead of uploading low-retention fallbacks.
 
+## World-class upgrade track
+
+The operating model is now documented in
+[docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md](docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md).
+The first implemented slice adds a central package rulebook and normalized
+growth analytics schemas so future render, dashboard and weekly-review work can
+share one source of truth without replacing the current queue, render, upload or
+analytics APIs.
+
 ## Required secrets
 
 - `PEXELS_API_KEY` or `PEXELS`
