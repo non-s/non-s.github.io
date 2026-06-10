@@ -21,6 +21,7 @@ from utils.nature_strategy import NATURE_TOPICS
 from utils.audience_memory import load_audience_memory
 
 MEMORY_PATH = Path("_data/format_memory.json")
+WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
 
 PRIORITY_CATEGORIES = {
     "fungi", "forests", "ocean", "volcanoes", "weather", "geology",
@@ -99,6 +100,14 @@ def _contains(text: str, terms: set[str]) -> int:
 
 
 def load_format_memory(path: Path = MEMORY_PATH) -> dict:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def load_winner_patterns(path: Path = WINNER_PATTERNS_PATH) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
@@ -280,6 +289,38 @@ def _pattern(text: str) -> str:
     return " ".join(out)
 
 
+def _distribution_adjustment(story: dict, patterns: dict | None = None) -> int:
+    patterns = patterns or load_winner_patterns()
+    if not patterns or int(patterns.get("sample_count") or 0) < 8:
+        return 0
+    category = str(story.get("category") or "").lower()
+    fmt = str(story.get("story_format") or "").lower()
+    series = re.sub(r"\s+#\d+$", "", str(story.get("series") or ""))
+    title_pattern = _pattern(str(story.get("seo_title") or story.get("title") or ""))
+    hook_pattern = _pattern(str(story.get("hook") or ""))
+    thumb_pattern = _pattern(str(story.get("thumbnail_text") or ""))
+    adj = 0
+    if category and category in (patterns.get("winning_categories") or {}):
+        adj += 5
+    if fmt and fmt in (patterns.get("winning_formats") or {}):
+        adj += 5
+    if series and series in (patterns.get("winning_series") or {}):
+        adj += 4
+    if hook_pattern and hook_pattern in (patterns.get("winning_hooks") or {}):
+        adj += 5
+    if thumb_pattern and thumb_pattern in (patterns.get("winning_thumbnails") or {}):
+        adj += 3
+    if category and category in (patterns.get("losing_categories") or {}):
+        adj -= 5
+    if fmt and fmt in (patterns.get("losing_formats") or {}):
+        adj -= 4
+    if series and series in (patterns.get("losing_series") or {}):
+        adj -= 4
+    if title_pattern and title_pattern in (patterns.get("winning_hooks") or {}):
+        adj += 2
+    return max(-12, min(18, adj))
+
+
 def score_topic(story: dict, memory: dict | None = None) -> dict:
     memory = memory or {}
     audience = _audience(memory)
@@ -322,6 +363,10 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         signals["replay_potential"] = min(100, signals["replay_potential"] + 12)
         signals["comment_potential"] = min(100, signals["comment_potential"] + 8)
         signals["educational_potential"] = min(100, signals["educational_potential"] + 6)
+    distribution_adj = _distribution_adjustment(story, memory.get("winner_patterns") if isinstance(memory.get("winner_patterns"), dict) else None)
+    if distribution_adj:
+        signals["viral_potential"] = max(0, min(100, signals["viral_potential"] + distribution_adj))
+        signals["replay_potential"] = max(0, min(100, signals["replay_potential"] + int(distribution_adj * 0.5)))
     score = round(
         signals["viral_potential"] * 0.18
         + signals["visual_potential"] * 0.20
@@ -336,9 +381,9 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         reasons.append("weak_visual_surface")
     if signals["replay_potential"] < 50:
         reasons.append("weak_replay_reason")
-    if score < 58:
+    if score < 55:
         reasons.append("low_opportunity_score")
-    verdict = "scale" if score >= 78 else ("produce" if score >= 64 else ("rewrite" if score >= 58 else "discard"))
+    verdict = "scale" if score >= 78 else ("produce" if score >= 64 else ("rewrite" if score >= 55 else "discard"))
     return ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
 
 
@@ -562,6 +607,7 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
         if fmt:
             audience_bonus += int((_weight(audience, "format_subscribers", fmt) - 1) * 16)
     score = int(topic * 0.22 + retention * 0.42 + thumb_score * 0.18 + pattern_bonus + audience_bonus)
+    score += _distribution_adjustment(candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None)
     return max(0, min(100, score))
 
 

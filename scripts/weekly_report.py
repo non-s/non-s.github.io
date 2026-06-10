@@ -33,6 +33,9 @@ def build_markdown(root: Path = ROOT) -> str:
     memory = _safe_json(root / "_data" / "format_memory.json")
     fan = _safe_json(root / "_data" / "fan_growth.json")
     audience = _safe_json(root / "_data" / "audience_memory.json")
+    early = _safe_json(root / "_data" / "early_performance.json")
+    warning = _safe_json(root / "_data" / "early_warning.json")
+    patterns = _safe_json(root / "_data" / "winner_patterns.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -127,6 +130,27 @@ def build_markdown(root: Path = ROOT) -> str:
             lines.append("- Strongest return series: " + ", ".join(str(item.get("value")) for item in winners[:5]))
     else:
         lines.append("- No audience memory yet.")
+    lines.extend(["", "## Early Distribution"])
+    top_velocity = early.get("top_velocity") or []
+    if top_velocity:
+        for item in top_velocity[:5]:
+            probs = item.get("breakout_probability") or {}
+            lines.append(
+                f"- {item.get('title')}: velocity {item.get('early_velocity_score')}/100, "
+                f"{item.get('views_per_hour')} views/hour, P>5k={probs.get('pass_5000', 0)}"
+            )
+    else:
+        lines.append("- No early velocity history yet.")
+    risks = warning.get("risk_of_dying_early") or []
+    accelerators = warning.get("potential_accelerators") or []
+    lines.append(f"- Early risks: {len(risks)}; accelerators: {len(accelerators)}")
+    if patterns:
+        cats = patterns.get("winning_categories") or {}
+        series = patterns.get("winning_series") or {}
+        if cats:
+            lines.append("- Velocity-winning categories: " + ", ".join(list(cats)[:5]))
+        if series:
+            lines.append("- Velocity-winning series: " + ", ".join(list(series)[:5]))
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
         lines.append(f"- {item.get('source_title')} -> {item.get('action')}")

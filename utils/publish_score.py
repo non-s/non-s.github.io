@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 from utils.story_intelligence import audit_hook, audit_title, classify_format
-from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
+from utils.growth_engine import _distribution_adjustment, analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.subscriber_conversion import score_subscriber_conversion
 from utils.audience_memory import load_audience_memory
 
@@ -69,6 +69,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     retention = analyze_retention(story)
     weak = detect_weak_content(story, memory=memory)
     subscriber = score_subscriber_conversion(story, memory=memory)
+    distribution_adjustment = _distribution_adjustment(story)
 
     score = 38
     score += hook_audit.score * 0.16
@@ -77,6 +78,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score += opportunity["score"] * 0.16 - 8
     score += retention["score"] * 0.20 - 10
     score += subscriber["score"] * 0.12 - 7
+    score += distribution_adjustment
     if category in WINNING_CATEGORIES:
         score += 9
     elif category in RECOVERY_CATEGORIES:
@@ -118,6 +120,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "retention": retention,
         "weak_content": weak,
         "subscriber_conversion": subscriber,
+        "distribution_adjustment": distribution_adjustment,
         "category": category,
         "story_format": story_format,
         "hook_score": hook_audit.score,

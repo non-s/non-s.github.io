@@ -130,6 +130,24 @@ series that have already converted viewers into retention, subscribers, comments
 or repeatable series strength. They receive penalties when they resemble
 underperforming categories, formats, or series with enough sample size.
 
+## Early Distribution Learning
+
+The channel now tracks distribution speed, not only final performance:
+
+- `_data/early_performance.json` stores snapshots per video and estimates
+  views at 1h, 6h, 24h, and 48h until real checkpoint snapshots exist.
+- `_data/early_warning.json` separates videos dying early, potential
+  accelerators, remake candidates, and sequence candidates.
+- `_data/winner_patterns.json` records hooks, thumbnails, CTAs, categories,
+  series, and formats that win on velocity.
+- Growth and publish scoring receive small bonuses or penalties from velocity
+  winners/losers, so the system learns which patterns leave the 500-1000 view
+  band.
+
+Early checkpoint values are marked as `observed` only when a snapshot exists
+near that checkpoint; otherwise they are marked `estimated` to avoid false
+precision.
+
 ## Scale Plan
 
 1. Build queue volume across all nature pillars.
