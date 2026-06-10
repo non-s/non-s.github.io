@@ -19,6 +19,7 @@ from pathlib import Path
 
 from utils.nature_strategy import NATURE_TOPICS
 from utils.audience_memory import load_audience_memory
+from utils.confidence_engine import assess_confidence
 
 MEMORY_PATH = Path("_data/format_memory.json")
 WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
@@ -293,6 +294,14 @@ def _distribution_adjustment(story: dict, patterns: dict | None = None) -> int:
     patterns = patterns or load_winner_patterns()
     if not patterns or int(patterns.get("sample_count") or 0) < 8:
         return 0
+    confidence = patterns.get("confidence") if isinstance(patterns.get("confidence"), dict) else assess_confidence(
+        "distribution",
+        int(patterns.get("sample_count") or 0),
+        observed=int(patterns.get("winner_count") or 0) + int(patterns.get("loser_count") or 0),
+        estimated=max(0, int(patterns.get("sample_count") or 0) - int(patterns.get("winner_count") or 0) - int(patterns.get("loser_count") or 0)),
+    )
+    if not confidence.get("can_adjust_strategy"):
+        return 0
     category = str(story.get("category") or "").lower()
     fmt = str(story.get("story_format") or "").lower()
     series = re.sub(r"\s+#\d+$", "", str(story.get("series") or ""))
@@ -318,6 +327,7 @@ def _distribution_adjustment(story: dict, patterns: dict | None = None) -> int:
         adj -= 4
     if title_pattern and title_pattern in (patterns.get("winning_hooks") or {}):
         adj += 2
+    adj = int(round(adj * float(confidence.get("bootstrap_multiplier") or 0)))
     return max(-12, min(18, adj))
 
 
@@ -384,7 +394,15 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
     if score < 55:
         reasons.append("low_opportunity_score")
     verdict = "scale" if score >= 78 else ("produce" if score >= 64 else ("rewrite" if score >= 55 else "discard"))
-    return ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
+    confidence = ((audience.get("category") or {}).get(category) or {}).get("confidence") or assess_confidence(
+        "category",
+        0,
+        inferred=1,
+    )
+    out = ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
+    out["confidence"] = confidence
+    out["reasoning"] = confidence.get("reasoning", "Topic score uses current story signals while audience data matures.")
+    return out
 
 
 def detect_weak_content(story: dict, memory: dict | None = None) -> dict:
@@ -428,6 +446,8 @@ def detect_weak_content(story: dict, memory: dict | None = None) -> dict:
         "risk": risk,
         "state": "block" if risk >= 55 else ("watch" if risk >= 30 else "clear"),
         "reasons": tuple(dict.fromkeys(reasons)),
+        "confidence": assess_confidence("pattern", len(memory.get("weak_patterns") or {}), inferred=1),
+        "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
     }
 
 
@@ -497,7 +517,15 @@ def analyze_retention(story: dict) -> dict:
     if signals["replay_score"] < 62:
         reasons.append("weak_replay_loop")
     verdict = "ready" if score >= 78 else ("rewrite" if score >= 62 else "discard")
-    return ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
+    confidence = ((audience.get("category") or {}).get(category) or {}).get("confidence") or assess_confidence(
+        "category",
+        0,
+        inferred=1,
+    )
+    out = ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
+    out["confidence"] = confidence
+    out["reasoning"] = confidence.get("reasoning", "Retention score is heuristic until real retention samples are available.")
+    return out
 
 
 def _subject(story: dict) -> str:

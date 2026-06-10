@@ -7,6 +7,7 @@ from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.growth_engine import _distribution_adjustment, analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.subscriber_conversion import score_subscriber_conversion
 from utils.audience_memory import load_audience_memory
+from utils.confidence_engine import combined_confidence
 
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
@@ -70,6 +71,16 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     weak = detect_weak_content(story, memory=memory)
     subscriber = score_subscriber_conversion(story, memory=memory)
     distribution_adjustment = _distribution_adjustment(story)
+    evidence = combined_confidence([
+        *[
+            ((audience.get(axis) or {}).get(category if axis == "category" else story_format) or {}).get("confidence") or {}
+            for axis in ("category", "format")
+        ],
+        (opportunity.get("confidence") or {}),
+        (retention.get("confidence") or {}),
+        (subscriber.get("confidence") or {}),
+    ])
+    bootstrap_multiplier = float(evidence.get("bootstrap_multiplier") or 0.35)
 
     score = 38
     score += hook_audit.score * 0.16
@@ -80,11 +91,11 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score += subscriber["score"] * 0.12 - 7
     score += distribution_adjustment
     if category in WINNING_CATEGORIES:
-        score += 9
+        score += 4 + 5 * bootstrap_multiplier
     elif category in RECOVERY_CATEGORIES:
-        score -= 7
+        score -= 3 + 4 * bootstrap_multiplier
     if story_format in WINNING_FORMATS:
-        score += 10
+        score += 5 + 5 * bootstrap_multiplier
     if any(word in text.lower() for word in ACTION_WORDS):
         score += 8
     words = script.split()
@@ -121,6 +132,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "weak_content": weak,
         "subscriber_conversion": subscriber,
         "distribution_adjustment": distribution_adjustment,
+        "decision_confidence": evidence,
         "category": category,
         "story_format": story_format,
         "hook_score": hook_audit.score,

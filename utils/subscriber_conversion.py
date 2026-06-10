@@ -11,6 +11,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from utils.audience_memory import load_audience_memory
+from utils.confidence_engine import assess_confidence, combined_confidence
 
 FAN_GROWTH_PATH = Path("_data/fan_growth.json")
 
@@ -158,6 +159,12 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
         cat_weight *= float((weights.get("series_return") or {}).get(series_base, 1.0))
     score *= max(0.78, min(1.32, cat_weight))
     score = round(max(0, min(100, score)))
+    confidence = combined_confidence([
+        ((audience.get("category") or {}).get(category) or {}).get("confidence") or {},
+        ((audience.get("format") or {}).get(fmt) or {}).get("confidence") or {},
+        ((audience.get("series") or {}).get(series_base) or {}).get("confidence") or {},
+        assess_confidence("pattern", 1, inferred=1),
+    ])
     return {
         "score": score,
         "state": "strong" if score >= 76 else ("usable" if score >= 62 else "weak"),
@@ -166,6 +173,8 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
         "comment_probability": min(0.28, round((score + (10 if pinned and "?" in pinned else 0)) / 430, 3)),
         "robotic_title": robotic,
         "reasons": tuple(reasons),
+        "confidence": confidence,
+        "reasoning": confidence.get("reasoning", "Subscriber conversion uses packaging signals while real subscriber history matures."),
     }
 
 

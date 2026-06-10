@@ -36,6 +36,7 @@ def build_markdown(root: Path = ROOT) -> str:
     early = _safe_json(root / "_data" / "early_performance.json")
     warning = _safe_json(root / "_data" / "early_warning.json")
     patterns = _safe_json(root / "_data" / "winner_patterns.json")
+    data_quality = _safe_json(root / "_data" / "data_quality_report.json")
     now = datetime.now(timezone.utc)
     risk = ops.get("risk") or {}
     brief = latest.get("weekly_brief") or {}
@@ -47,6 +48,8 @@ def build_markdown(root: Path = ROOT) -> str:
         f"- Total views tracked: {latest.get('total_views', 0)}",
         f"- Avg retention: {latest.get('avg_view_pct', latest.get('avg_view_percentage', 0))}%",
         f"- Subscribers gained: {latest.get('subscribers_gained', 0)}",
+        f"- Learning confidence: {data_quality.get('overall_confidence_score', 0)}"
+        f"{' (bootstrap)' if data_quality.get('bootstrap_mode') else ''}",
         "",
         "## What To Scale",
     ]
@@ -125,6 +128,7 @@ def build_markdown(root: Path = ROOT) -> str:
             f"subscribers={coverage.get('with_subscribers', 0)}, "
             f"comments={coverage.get('with_comments', 0)}"
         )
+        lines.append(f"- Bootstrap mode: {audience.get('bootstrap_mode', True)}")
         winners = (audience.get("winners") or {}).get("series") or []
         if winners:
             lines.append("- Strongest return series: " + ", ".join(str(item.get("value")) for item in winners[:5]))
@@ -143,8 +147,13 @@ def build_markdown(root: Path = ROOT) -> str:
         lines.append("- No early velocity history yet.")
     risks = warning.get("risk_of_dying_early") or []
     accelerators = warning.get("potential_accelerators") or []
-    lines.append(f"- Early risks: {len(risks)}; accelerators: {len(accelerators)}")
+    watchlist = warning.get("watchlist_low_confidence") or []
+    lines.append(f"- Early risks: {len(risks)}; accelerators: {len(accelerators)}; low-confidence watchlist: {len(watchlist)}")
     if patterns:
+        lines.append(
+            f"- Winner-pattern confidence: {patterns.get('confidence_score', 0)} "
+            f"({patterns.get('recommendation_strength', 'observe')})"
+        )
         cats = patterns.get("winning_categories") or {}
         series = patterns.get("winning_series") or {}
         if cats:

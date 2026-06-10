@@ -63,13 +63,39 @@ def test_acceleration_uses_snapshots_to_detect_second_wave():
 
 def test_winner_patterns_and_warning_are_actionable():
     now = datetime(2026, 6, 10, 12, tzinfo=timezone.utc)
+    previous = {
+        "videos": {
+            "winner": {
+                "snapshots": [
+                    {"at": "x", "age_hours": 6, "views": 1400, "likes": 15, "comments": 2, "subscribers": 1}
+                ]
+            },
+            "dead": {
+                "snapshots": [
+                    {"at": "x", "age_hours": 24, "views": 290, "likes": 4, "comments": 0, "subscribers": 0}
+                ]
+            },
+        }
+    }
     early = build_early_performance([
         _marker("winner", 12, 2500),
         _marker("dead", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
-    ], now=now)
+    ], previous=previous, now=now)
 
     patterns = build_winner_patterns(early)
     warning = build_early_warning(early)
 
     assert patterns["winning_categories"]["fungi"] >= 1
     assert warning["remake_candidates"][0]["video_id"] == "dead"
+
+
+def test_estimated_old_video_stays_on_low_confidence_watchlist():
+    now = datetime(2026, 6, 10, 12, tzinfo=timezone.utc)
+    early = build_early_performance([
+        _marker("old", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
+    ], now=now)
+
+    warning = build_early_warning(early)
+
+    assert warning["remake_candidates"] == []
+    assert warning["risk_of_dying_early"] == []

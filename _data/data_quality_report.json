@@ -1,0 +1,118 @@
+{
+  "updated_at": "2026-06-10T18:55:15.208120+00:00",
+  "sample_count": 32,
+  "bootstrap_mode": true,
+  "overall_confidence_score": 0.375,
+  "minimum_sample_rules": {
+    "category": 5,
+    "format": 5,
+    "series": 3,
+    "distribution": 8
+  },
+  "metrics": {
+    "views": {
+      "observed": 15,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 17,
+      "data_quality": "observed",
+      "data_quality_score": 0.469,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "likes": {
+      "observed": 10,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 22,
+      "data_quality": "observed",
+      "data_quality_score": 0.312,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "comments": {
+      "observed": 2,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 30,
+      "data_quality": "observed",
+      "data_quality_score": 0.062,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "retention": {
+      "observed": 6,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 26,
+      "data_quality": "observed",
+      "data_quality_score": 0.188,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "watch_time": {
+      "observed": 6,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 26,
+      "data_quality": "observed",
+      "data_quality_score": 0.188,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "subscribers": {
+      "observed": 6,
+      "estimated": 0,
+      "inferred": 0,
+      "missing": 26,
+      "data_quality": "observed",
+      "data_quality_score": 0.188,
+      "origin": "YouTube Analytics/Public API joined to .done markers"
+    },
+    "early_checkpoints": {
+      "observed": 7,
+      "estimated": 217,
+      "missing": 0,
+      "inferred": 0,
+      "data_quality": "estimated",
+      "data_quality_score": 0.37,
+      "origin": "local repeated snapshots; estimated until a near-checkpoint snapshot exists"
+    }
+  },
+  "systems": {
+    "audience_memory": {
+      "sample_count": 15,
+      "bootstrap_mode": true,
+      "coverage": {
+        "with_retention": 6,
+        "with_subscribers": 6,
+        "with_comments": 2,
+        "with_watch_time": 6
+      }
+    },
+    "format_memory": {
+      "sample_count": 32,
+      "coverage": {
+        "total_markers": 32,
+        "views": 15,
+        "retention": 6,
+        "watch_time": 6,
+        "subscribers": 6,
+        "comments": 2
+      }
+    },
+    "early_performance": {
+      "sample_count": 32,
+      "checkpoint_quality": {
+        "data_quality": "estimated",
+        "data_quality_score": 0.37,
+        "counts": {
+          "observed": 7,
+          "inferred": 0,
+          "estimated": 217,
+          "missing": 0
+        }
+      }
+    }
+  },
+  "recommendations": [
+    "Treat estimated early checkpoints as watchlist signals until repeated snapshots exist.",
+    "Do not promote or penalize category/format/series below minimum sample rules.",
+    "Prefer observed retention and subscriber metrics over view-only signals."
+  ]
+}

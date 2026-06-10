@@ -8,6 +8,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.confidence_engine import assess_confidence
+
 EARLY_PERFORMANCE_PATH = Path("_data/early_performance.json")
 EARLY_WARNING_PATH = Path("_data/early_warning.json")
 WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
@@ -189,6 +191,33 @@ def _breakout_probabilities(row: dict, historical: list[dict]) -> dict:
     return probs
 
 
+def _early_confidence(row: dict, checkpoints: dict, snapshots: list[dict]) -> dict:
+    observed = 0
+    estimated = 0
+    missing = 0
+    for checkpoint in checkpoints.values():
+        for metric in checkpoint.values():
+            source = metric.get("source")
+            if source == "observed":
+                observed += 1
+            elif source == "estimated":
+                estimated += 1
+            else:
+                missing += 1
+    if len(snapshots) >= 2:
+        observed += 1
+    elif row.get("age_hours", 0) >= 24:
+        estimated += 1
+    return assess_confidence(
+        "video",
+        max(1, len(snapshots)),
+        observed=observed,
+        estimated=estimated,
+        missing=missing,
+        minimum_sample_size=2,
+    )
+
+
 def build_early_performance(markers: list[dict], previous: dict | None = None,
                             now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
@@ -211,10 +240,13 @@ def build_early_performance(markers: list[dict], previous: dict | None = None,
         acceleration = _acceleration(snapshots, row)
         velocity = _velocity_score(row, checkpoints)
         breakout = _breakout_probabilities(row, historical)
+        confidence = _early_confidence(row, checkpoints, snapshots)
         videos[row["video_id"]] = {
             **row,
             "checkpoints": checkpoints,
             "early_velocity_score": velocity,
+            "early_confidence_score": confidence["confidence_score"],
+            "confidence": confidence,
             "acceleration": acceleration,
             "breakout_probability": breakout,
             "snapshots": snapshots,
@@ -236,20 +268,40 @@ def build_winner_patterns(early: dict) -> dict:
     videos = list((early.get("videos") or {}).values())
     winners = [
         item for item in videos
-        if item.get("early_velocity_score", 0) >= 62 or item.get("views", 0) >= 5000
+        if (
+            item.get("early_confidence_score", 0) >= 0.50
+            and (item.get("early_velocity_score", 0) >= 62 or item.get("views", 0) >= 5000)
+        )
     ]
     losers = [
         item for item in videos
-        if item.get("age_hours", 0) >= 24 and item.get("views", 0) < 1000
+        if (
+            item.get("early_confidence_score", 0) >= 0.65
+            and item.get("age_hours", 0) >= 24
+            and item.get("views", 0) < 1000
+        )
     ]
 
     def counts(items: list[dict], key: str) -> dict:
         return dict(Counter(str(item.get(key) or "unknown") for item in items).most_common(12))
 
+    qualified = winners + losers
+    pattern_confidence = assess_confidence(
+        "distribution",
+        len(qualified),
+        observed=sum(1 for item in qualified if (item.get("confidence") or {}).get("data_quality") == "observed"),
+        inferred=sum(1 for item in qualified if (item.get("confidence") or {}).get("data_quality") == "inferred"),
+        estimated=sum(1 for item in qualified if (item.get("confidence") or {}).get("data_quality") == "estimated"),
+        missing=max(0, len(videos) - len(qualified)),
+    )
     return {
         "sample_count": len(videos),
         "winner_count": len(winners),
         "loser_count": len(losers),
+        "confidence": pattern_confidence,
+        "confidence_score": pattern_confidence["confidence_score"],
+        "recommendation_strength": pattern_confidence["recommendation_strength"],
+        "reasoning": pattern_confidence["reasoning"],
         "winning_hooks": dict(Counter(_pattern(item.get("hook", "")) for item in winners if item.get("hook")).most_common(12)),
         "winning_thumbnails": dict(Counter(_pattern(item.get("thumbnail_text", "")) for item in winners if item.get("thumbnail_text")).most_common(12)),
         "winning_ctas": dict(Counter(_pattern(item.get("cta_prompt", "")) for item in winners if item.get("cta_prompt")).most_common(12)),
@@ -265,21 +317,62 @@ def build_winner_patterns(early: dict) -> dict:
 def build_early_warning(early: dict) -> dict:
     risks = []
     accelerators = []
+    watchlist = []
     remakes = []
     sequences = []
     for item in (early.get("videos") or {}).values():
         state = (item.get("acceleration") or {}).get("state")
-        if state == "dying_early" or (item.get("age_hours", 0) >= 6 and item.get("views", 0) < 500):
-            risks.append({"video_id": item["video_id"], "title": item["title"], "reason": "low early velocity", "views": item["views"]})
+        confidence = item.get("confidence") or {}
+        confidence_score = float(item.get("early_confidence_score") or confidence.get("confidence_score") or 0)
+        reason = confidence.get("reasoning", "")
+        if confidence_score < 0.45:
+            if state in {"dying_early", "accelerating", "second_wave"} or item.get("early_velocity_score", 0) >= 70:
+                watchlist.append({
+                    "video_id": item["video_id"],
+                    "title": item["title"],
+                    "state": state,
+                    "confidence_score": confidence_score,
+                    "reason": "low confidence early signal; keep observing",
+                })
+            continue
+        if confidence_score >= 0.55 and (state == "dying_early" or (item.get("age_hours", 0) >= 6 and item.get("views", 0) < 500)):
+            risks.append({
+                "video_id": item["video_id"],
+                "title": item["title"],
+                "reason": "low early velocity",
+                "views": item["views"],
+                "confidence_score": confidence_score,
+                "reasoning": reason,
+            })
         if state in {"accelerating", "second_wave"} or item.get("early_velocity_score", 0) >= 70:
-            accelerators.append({"video_id": item["video_id"], "title": item["title"], "state": state, "score": item.get("early_velocity_score", 0)})
-        if item.get("age_hours", 0) >= 24 and item.get("views", 0) < 1000:
-            remakes.append({"video_id": item["video_id"], "title": item["title"], "action": "remake hook/title or retire angle"})
-        if item.get("views", 0) >= 1000 and item.get("breakout_probability", {}).get("pass_5000", 0) >= 0.25:
-            sequences.append({"video_id": item["video_id"], "title": item["title"], "action": "make sequel within same series"})
+            accelerators.append({
+                "video_id": item["video_id"],
+                "title": item["title"],
+                "state": state,
+                "score": item.get("early_velocity_score", 0),
+                "confidence_score": confidence_score,
+                "reasoning": reason,
+            })
+        if confidence_score >= 0.65 and item.get("age_hours", 0) >= 24 and item.get("views", 0) < 1000:
+            remakes.append({
+                "video_id": item["video_id"],
+                "title": item["title"],
+                "action": "remake hook/title or retire angle",
+                "confidence_score": confidence_score,
+                "reasoning": reason,
+            })
+        if confidence_score >= 0.55 and item.get("views", 0) >= 1000 and item.get("breakout_probability", {}).get("pass_5000", 0) >= 0.25:
+            sequences.append({
+                "video_id": item["video_id"],
+                "title": item["title"],
+                "action": "make sequel within same series",
+                "confidence_score": confidence_score,
+                "reasoning": reason,
+            })
     return {
         "risk_of_dying_early": risks[:20],
         "potential_accelerators": accelerators[:20],
+        "watchlist_low_confidence": watchlist[:20],
         "remake_candidates": remakes[:20],
         "sequence_candidates": sequences[:20],
     }

@@ -7,6 +7,8 @@ from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
 
+from utils.confidence_engine import assess_confidence, blend_weight
+
 AUDIENCE_MEMORY_PATH = Path("_data/audience_memory.json")
 
 
@@ -98,18 +100,39 @@ def build_audience_memory(markers: list[dict]) -> dict:
         axis: {key: summarize(rows) for key, rows in values.items()}
         for axis, values in buckets.items()
     }
+    for axis, values in summaries.items():
+        confidence_axis = "series" if axis == "series" else axis
+        for item in values.values():
+            observed = item.get("retention_samples", 0) + item.get("watch_time_samples", 0) + item["n"]
+            item["confidence"] = assess_confidence(
+                confidence_axis,
+                item["n"],
+                observed=observed,
+                estimated=max(0, item["n"] * 3 - observed),
+            )
 
     def weights(axis: str, metric: str, baseline: float, scale: float) -> dict[str, float]:
         out = {}
         for key, item in summaries[axis].items():
-            if item["n"] < 2:
+            confidence_axis = "series" if axis == "series" else axis
+            observed = item.get("retention_samples", 0) + item.get("watch_time_samples", 0)
+            if metric in {"subs_per_1k", "comments_per_1k", "return_proxy"}:
+                observed += item["n"]
+            confidence = assess_confidence(
+                confidence_axis,
+                item["n"],
+                observed=observed,
+                estimated=max(0, item["n"] * 3 - observed),
+            )
+            item["confidence"] = confidence
+            if not confidence["can_adjust_strategy"]:
                 continue
             if metric == "avg_retention" and not item.get("retention_samples"):
                 continue
             if metric == "return_proxy" and not (item.get("retention_samples") or item.get("subs_per_1k") or item.get("comments_per_1k")):
                 continue
-            confidence = min(1.0, item["n"] / 6)
-            out[key] = round(max(0.78, min(1.28, 1 + ((item[metric] - baseline) / scale) * confidence)), 3)
+            raw = max(0.78, min(1.28, 1 + ((item[metric] - baseline) / scale)))
+            out[key] = blend_weight(raw, confidence)
         return out
 
     def ranked(axis: str, reverse: bool = True) -> list[dict]:
@@ -124,6 +147,12 @@ def build_audience_memory(markers: list[dict]) -> dict:
 
     return {
         "sample_count": len(videos),
+        "bootstrap_mode": len(videos) < 30 or sum(1 for v in videos if v["retention"]) < 15,
+        "minimum_sample_rules": {
+            "category": 5,
+            "format": 5,
+            "series": 3,
+        },
         "coverage": {
             "with_retention": sum(1 for v in videos if v["retention"]),
             "with_subscribers": sum(1 for v in videos if v["subscribers"]),
