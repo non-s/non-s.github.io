@@ -1041,6 +1041,8 @@ def build_short_metadata(story: dict, video_path: Path,
         "youtube_brain":  dict(story.get("youtube_brain") or {}),
         "packaging":      dict(story.get("packaging") or {}),
         "pinned_comment": (story.get("packaging") or {}).get("pinned_comment", ""),
+        "cta_prompt":     story.get("cta_prompt") or (story.get("packaging") or {}).get("cta_prompt", ""),
+        "replay_prompt":  story.get("replay_prompt") or (story.get("packaging") or {}).get("replay_prompt", ""),
         "trend_context":  dict(story.get("trend_context") or {}),
         "agency":         dict(story.get("agency") or {}),
         "agency_gate":    dict(story.get("agency_gate") or {}),
@@ -1551,6 +1553,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         voice=voice,
         tmp_dir=tmp_dir,
         text_to_speech_fn=text_to_speech,
+        outro_line=story.get("cta_prompt") or None,
     )
 
     # ── 1.5. Music bed (background, ducked to -22 dB by default). ─

@@ -128,7 +128,8 @@ def concat_audio(intro: Path | None,
 def wrap_with_intro_outro(body_audio: Path,
                             voice: str,
                             tmp_dir: Path,
-                            text_to_speech_fn=None) -> Path:
+                            text_to_speech_fn=None,
+                            outro_line: str | None = None) -> Path:
     """Convenience: render intro + outro for `voice`, concat into a new MP3.
 
     Returns the wrapped audio path on success, or `body_audio` unchanged
@@ -140,7 +141,7 @@ def wrap_with_intro_outro(body_audio: Path,
     from utils.host_persona import load as load_persona
     persona = load_persona()
     intro = get_or_render(persona.intro_line, voice, text_to_speech_fn)
-    outro = get_or_render(persona.outro_line, voice, text_to_speech_fn)
+    outro = get_or_render((outro_line or persona.outro_line), voice, text_to_speech_fn)
     if intro is None and outro is None:
         return body_audio
     wrapped = tmp_dir / "narration_with_brand.mp3"

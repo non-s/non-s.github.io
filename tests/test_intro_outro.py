@@ -71,6 +71,31 @@ def test_wrap_with_intro_outro_concats_when_renders_succeed(tmp_path, monkeypatc
     assert out.read_bytes() == b"WRAPPED"
 
 
+def test_wrap_with_intro_outro_accepts_dynamic_outro(tmp_path, monkeypatch):
+    monkeypatch.setattr(intro_outro, "ENABLED", True)
+    rendered_lines = []
+    fake_audio = tmp_path / "line.mp3"
+    fake_audio.write_bytes(b"LINE")
+
+    def fake_render(line, voice, fn=None):
+        rendered_lines.append(line)
+        return None if not line.strip() else fake_audio
+
+    monkeypatch.setattr(intro_outro, "get_or_render", fake_render)
+    monkeypatch.setattr(intro_outro, "concat_audio", lambda intro, body, outro, out: True)
+    body = tmp_path / "body.mp3"
+    body.write_bytes(b"BODY")
+
+    intro_outro.wrap_with_intro_outro(
+        body,
+        voice="en-US-AriaNeural",
+        tmp_dir=tmp_path,
+        outro_line="Follow for more animal clues.",
+    )
+
+    assert rendered_lines[-1] == "Follow for more animal clues."
+
+
 def test_get_or_render_returns_cached_path(tmp_path, monkeypatch):
     monkeypatch.setattr(intro_outro, "ENABLED", True)
     monkeypatch.setattr(intro_outro, "INTRO_OUTRO_CACHE", tmp_path / "cache")

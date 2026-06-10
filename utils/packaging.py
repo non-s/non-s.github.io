@@ -35,6 +35,14 @@ GENERIC_PHRASES = (
     "amazing fact", "incredible animal", "you won't believe",
     "one visible cue for a reason", "secret hiding in plain sight",
 )
+SERIES_CATALOG = {
+    "animal_myth": "Animal Myths",
+    "animal_memory": "Animal Memory",
+    "body_superpower": "Body Clues",
+    "survival_trick": "Survival Tricks",
+    "visual_cue": "Watch The Cue",
+    "default": "Nature Signals",
+}
 
 
 def _words(text: str) -> list[str]:
@@ -196,6 +204,40 @@ def community_prompt(story: dict) -> str:
     return f"Which {animal} behavior should Wild Brief decode next?"
 
 
+def series_name(story: dict) -> str:
+    current = str(story.get("series") or "").strip()
+    if current:
+        return current[:60]
+    text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script")).lower()
+    fmt = classify_format(text)
+    if any(word in text for word in ("myth", "really", "not true", "isn't true")):
+        return SERIES_CATALOG["animal_myth"]
+    if fmt in SERIES_CATALOG:
+        return SERIES_CATALOG[fmt]
+    if extract_cue(story) != "cue":
+        return SERIES_CATALOG["visual_cue"]
+    return SERIES_CATALOG["default"]
+
+
+def cta_prompt(story: dict) -> str:
+    animal = extract_animal(story)
+    cue = extract_cue(story)
+    cta = (
+        f"Follow for more animal clues. Comment the next animal after {animal}."
+        if cue == "cue"
+        else f"Follow for more animal facts. Did you catch the {cue}?"
+    )
+    return cta[:140]
+
+
+def replay_prompt(story: dict) -> str:
+    cue = extract_cue(story)
+    animal = extract_animal(story)
+    if cue != "cue":
+        return f"End by pointing back to the {cue}, so viewers rewatch the {animal} clip."
+    return f"End with the first visual moment again, so viewers rewatch the {animal} clip."
+
+
 def package_story(story: dict) -> dict:
     out = dict(story)
     titles = title_options(out)
@@ -212,6 +254,9 @@ def package_story(story: dict) -> dict:
         out["seo_title"] = best_title
         out["title"] = best_title
         out["thumbnail_text"] = best_thumb
+    out["series"] = series_name(out)
+    out["cta_prompt"] = cta_prompt(out)
+    out["replay_prompt"] = replay_prompt(out)
     packaged_score = score_packaging(out)
     out["packaging"] = {
         **packaged_score,
@@ -219,6 +264,9 @@ def package_story(story: dict) -> dict:
         "thumbnail_options": thumbs,
         "pinned_comment": pinned_comment(out),
         "community_prompt": community_prompt(out),
+        "series": out["series"],
+        "cta_prompt": out["cta_prompt"],
+        "replay_prompt": out["replay_prompt"],
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
     }
     return out

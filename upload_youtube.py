@@ -30,6 +30,7 @@ SCOPES = [
 ]
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
+PLAYLIST_PREFIX = "Wild Brief | "
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", handlers=[logging.FileHandler(LOG_FILE, encoding="utf-8"), logging.StreamHandler()])
 log = logging.getLogger(__name__)
@@ -96,6 +97,39 @@ def _video_url(video_id: str) -> str:
     return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
 
 
+def _safe_label(value: str, fallback: str = "Animal Facts") -> str:
+    label = " ".join(str(value or "").replace("_", " ").split()).strip(" -|")
+    if not label:
+        label = fallback
+    return label[:60]
+
+
+def _playlist_titles(meta: dict) -> list[str]:
+    labels = [
+        _safe_label(meta.get("series"), ""),
+        _safe_label(meta.get("category"), ""),
+    ]
+    out: list[str] = []
+    seen: set[str] = set()
+    for label in labels:
+        if not label:
+            continue
+        title = f"{PLAYLIST_PREFIX}{label.title()}"
+        key = title.lower()
+        if key not in seen:
+            out.append(title[:150])
+            seen.add(key)
+    return out or [f"{PLAYLIST_PREFIX}Animal Facts"]
+
+
+def _comment_text(meta: dict) -> str:
+    packaging = meta.get("packaging") if isinstance(meta.get("packaging"), dict) else {}
+    text = str(meta.get("pinned_comment") or packaging.get("pinned_comment") or meta.get("cta_prompt") or "").strip()
+    if not text:
+        text = "Which animal should Wild Brief decode next?"
+    return text[:500]
+
+
 def _is_uploadable_meta(meta: dict) -> bool:
     audit = meta.get("pre_publish_audit")
     if isinstance(audit, dict) and audit.get("approved") is False:
@@ -116,6 +150,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "human_voice", "humanity", "studio_polish", "studio_state", "ai_rewrite",
         "pre_publish_audit", "monetization_audit", "seo_score", "seo_optimisation",
         "publish_score", "youtube_brain", "packaging", "pinned_comment",
+        "cta_prompt", "replay_prompt", "youtube_operations",
         "audience_strategy",
     )
     defaults = {
@@ -132,6 +167,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "ai_rewrite": {}, "pre_publish_audit": {}, "monetization_audit": {},
         "seo_score": {}, "seo_optimisation": {},
         "publish_score": {}, "youtube_brain": {}, "packaging": {}, "pinned_comment": "",
+        "cta_prompt": "", "replay_prompt": "", "youtube_operations": {},
         "audience_strategy": {},
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
@@ -143,6 +179,146 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "language": _LANGUAGE,
     })
     return marker
+
+
+def _execute(request) -> dict:
+    response = request.execute()
+    return response if isinstance(response, dict) else {}
+
+
+def _find_playlist_id(youtube, title: str) -> str:
+    page_token = None
+    while True:
+        request = youtube.playlists().list(
+            part="snippet",
+            mine=True,
+            maxResults=50,
+            pageToken=page_token,
+        )
+        response = _execute(request)
+        for item in response.get("items", []) or []:
+            snippet = item.get("snippet") or {}
+            if str(snippet.get("title") or "").strip().lower() == title.lower():
+                return str(item.get("id") or "")
+        page_token = response.get("nextPageToken")
+        if not page_token:
+            return ""
+
+
+def _create_playlist(youtube, title: str) -> str:
+    request = youtube.playlists().insert(
+        part="snippet,status",
+        body={
+            "snippet": {
+                "title": title,
+                "description": "Wild Brief Shorts grouped for easier binge watching.",
+            },
+            "status": {"privacyStatus": "public"},
+        },
+    )
+    response = _execute(request)
+    return str(response.get("id") or "")
+
+
+def _playlist_has_video(youtube, playlist_id: str, video_id: str) -> bool:
+    try:
+        response = _execute(youtube.playlistItems().list(
+            part="snippet",
+            playlistId=playlist_id,
+            videoId=video_id,
+            maxResults=1,
+        ))
+    except TypeError:
+        response = _execute(youtube.playlistItems().list(
+            part="snippet",
+            playlistId=playlist_id,
+            maxResults=50,
+        ))
+    for item in response.get("items", []) or []:
+        resource = ((item.get("snippet") or {}).get("resourceId") or {})
+        if str(resource.get("videoId") or "") == video_id:
+            return True
+    return False
+
+
+def _ensure_playlist(youtube, title: str) -> str:
+    return _find_playlist_id(youtube, title) or _create_playlist(youtube, title)
+
+
+def _add_video_to_playlist(youtube, playlist_id: str, video_id: str) -> str:
+    if _playlist_has_video(youtube, playlist_id, video_id):
+        return "already_present"
+    request = youtube.playlistItems().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "playlistId": playlist_id,
+                "resourceId": {
+                    "kind": "youtube#video",
+                    "videoId": video_id,
+                },
+            }
+        },
+    )
+    response = _execute(request)
+    return str(response.get("id") or "added")
+
+
+def _post_cta_comment(youtube, video_id: str, text: str) -> dict:
+    request = youtube.commentThreads().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "videoId": video_id,
+                "topLevelComment": {
+                    "snippet": {
+                        "textOriginal": text,
+                    }
+                },
+            }
+        },
+    )
+    response = _execute(request)
+    comment = (((response.get("snippet") or {}).get("topLevelComment") or {}).get("snippet") or {})
+    return {
+        "posted": True,
+        "comment_thread_id": response.get("id", ""),
+        "author_channel_id": ((comment.get("authorChannelId") or {}).get("value") or ""),
+        "pin_status": "not_supported_by_youtube_data_api",
+    }
+
+
+def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
+    """Run YouTube-only growth operations after a successful upload."""
+    if os.environ.get("YOUTUBE_POST_UPLOAD_AUTOMATION", "1").lower() in {"0", "false", "no"}:
+        return {"enabled": False}
+    result: dict = {
+        "enabled": True,
+        "playlists": [],
+        "comment": {"posted": False, "pin_status": "not_supported_by_youtube_data_api"},
+    }
+    for title in _playlist_titles(meta):
+        item = {"title": title, "added": False, "playlist_id": "", "error": ""}
+        try:
+            playlist_id = _ensure_playlist(youtube, title)
+            item["playlist_id"] = playlist_id
+            if playlist_id:
+                item["playlist_item_id"] = _add_video_to_playlist(youtube, playlist_id, video_id)
+                item["added"] = True
+        except Exception as exc:
+            item["error"] = f"{type(exc).__name__}: {exc}"
+            log.warning("Playlist operation failed for %s: %s", title, exc)
+        result["playlists"].append(item)
+    try:
+        result["comment"] = _post_cta_comment(youtube, video_id, _comment_text(meta))
+    except Exception as exc:
+        result["comment"] = {
+            "posted": False,
+            "error": f"{type(exc).__name__}: {exc}",
+            "pin_status": "not_supported_by_youtube_data_api",
+        }
+        log.warning("CTA comment operation failed: %s", exc)
+    return result
 
 
 def _execute_resumable(request) -> dict:
@@ -219,6 +395,7 @@ def main() -> None:
         video_id = upload_video(youtube, meta)
         if not video_id:
             continue
+        meta["youtube_operations"] = run_post_upload_operations(youtube, video_id, meta)
         meta_file.with_suffix(".done").write_text(
             json.dumps(_done_marker(video_id, meta), indent=2),
             encoding="utf-8",

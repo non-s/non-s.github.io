@@ -5,7 +5,18 @@ import pytest
 
 pytest.importorskip("googleapiclient")
 
-from upload_youtube import _done_marker, _is_uploadable_meta, _normalise_tags, _video_url, _youtube_description, _youtube_title, check_auth
+from upload_youtube import (
+    _comment_text,
+    _done_marker,
+    _is_uploadable_meta,
+    _normalise_tags,
+    _playlist_titles,
+    _video_url,
+    _youtube_description,
+    _youtube_title,
+    check_auth,
+    run_post_upload_operations,
+)
 
 
 def test_title_respects_youtube_limit():
@@ -66,6 +77,9 @@ def test_done_marker_preserves_production_quality_signals():
         "monetization_audit": {"approved": True, "score": 94},
         "seo_score": {"score": 96},
         "seo_optimisation": {"applied": True},
+        "cta_prompt": "Follow for more animal facts.",
+        "replay_prompt": "End by pointing back to the wing.",
+        "youtube_operations": {"enabled": True},
     })
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
@@ -80,3 +94,116 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["monetization_audit"]["score"] == 94
     assert marker["seo_score"]["score"] == 96
     assert marker["seo_optimisation"]["applied"] is True
+    assert marker["cta_prompt"] == "Follow for more animal facts."
+    assert marker["replay_prompt"].startswith("End by")
+    assert marker["youtube_operations"]["enabled"] is True
+
+
+def test_playlist_titles_use_series_and_category():
+    titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
+
+    assert titles == ["Wild Brief | Watch The Cue", "Wild Brief | Birds"]
+
+
+def test_comment_text_prefers_packaging_comment():
+    assert _comment_text({
+        "packaging": {"pinned_comment": "What should we decode next?"},
+        "cta_prompt": "Follow for more.",
+    }) == "What should we decode next?"
+
+
+class _Req:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def execute(self):
+        return self.payload
+
+
+class _Playlists:
+    def __init__(self):
+        self.created = []
+
+    def list(self, **kwargs):
+        return _Req({"items": []})
+
+    def insert(self, **kwargs):
+        title = kwargs["body"]["snippet"]["title"]
+        self.created.append(title)
+        return _Req({"id": "PL-" + str(len(self.created))})
+
+
+class _PlaylistItems:
+    def __init__(self):
+        self.added = []
+
+    def list(self, **kwargs):
+        return _Req({"items": []})
+
+    def insert(self, **kwargs):
+        snippet = kwargs["body"]["snippet"]
+        self.added.append((snippet["playlistId"], snippet["resourceId"]["videoId"]))
+        return _Req({"id": "PLI-" + str(len(self.added))})
+
+
+class _CommentThreads:
+    def __init__(self):
+        self.comments = []
+
+    def insert(self, **kwargs):
+        snippet = kwargs["body"]["snippet"]
+        text = snippet["topLevelComment"]["snippet"]["textOriginal"]
+        self.comments.append((snippet["videoId"], text))
+        return _Req({
+            "id": "COMMENT_THREAD",
+            "snippet": {
+                "topLevelComment": {
+                    "snippet": {
+                        "authorChannelId": {"value": "CHANNEL"},
+                    }
+                }
+            },
+        })
+
+
+class _YouTube:
+    def __init__(self):
+        self._playlists = _Playlists()
+        self._playlist_items = _PlaylistItems()
+        self._comment_threads = _CommentThreads()
+
+    def playlists(self):
+        return self._playlists
+
+    def playlistItems(self):
+        return self._playlist_items
+
+    def commentThreads(self):
+        return self._comment_threads
+
+
+def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
+    monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
+    youtube = _YouTube()
+    result = run_post_upload_operations(youtube, "VID123", {
+        "series": "Watch The Cue",
+        "category": "birds",
+        "packaging": {"pinned_comment": "Did you catch the wing?"},
+    })
+
+    assert result["enabled"] is True
+    assert [item["title"] for item in result["playlists"]] == [
+        "Wild Brief | Watch The Cue",
+        "Wild Brief | Birds",
+    ]
+    assert all(item["added"] for item in result["playlists"])
+    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123")]
+    assert youtube._comment_threads.comments == [("VID123", "Did you catch the wing?")]
+    assert result["comment"]["posted"] is True
+    assert result["comment"]["pin_status"] == "not_supported_by_youtube_data_api"
+
+
+def test_post_upload_operations_can_be_disabled(monkeypatch):
+    monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "0")
+
+    assert run_post_upload_operations(_YouTube(), "VID123", {}) == {"enabled": False}

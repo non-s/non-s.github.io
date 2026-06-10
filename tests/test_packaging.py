@@ -1,4 +1,13 @@
-from utils.packaging import package_story, pinned_comment, score_packaging, thumbnail_options, title_options
+from utils.packaging import (
+    cta_prompt,
+    package_story,
+    pinned_comment,
+    replay_prompt,
+    score_packaging,
+    series_name,
+    thumbnail_options,
+    title_options,
+)
 
 
 def _story(**overrides):
@@ -49,5 +58,16 @@ def test_package_story_adds_comment_and_community_hook():
 
     assert packaged["packaging"]["pinned_comment"]
     assert packaged["packaging"]["community_prompt"]
+    assert packaged["packaging"]["cta_prompt"]
+    assert packaged["packaging"]["replay_prompt"]
+    assert packaged["series"]
     assert packaged["thumbnail_text"]
     assert "next animal" in pinned_comment(packaged).lower()
+
+
+def test_packaging_assigns_repeatable_series_cta_and_loop_prompt():
+    story = _story()
+
+    assert series_name(story) in {"Survival Tricks", "Watch The Cue", "Nature Signals"}
+    assert "Follow" in cta_prompt(story)
+    assert "rewatch" in replay_prompt(story).lower()
