@@ -106,10 +106,15 @@ def build_review(root: Path = ROOT) -> dict:
     }
     analytics.mkdir(parents=True, exist_ok=True)
     (analytics / "weekly_summary.json").write_text(
-        json.dumps(review, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(review, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     (root / "_data" / "experiments_recommendations.json").write_text(
-        json.dumps({"generated_at": review["generated_at"], "experiments": experiments}, indent=2, sort_keys=True)
+        json.dumps(
+            {"generated_at": review["generated_at"], "experiments": experiments},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
         + "\n",
         encoding="utf-8",
     )
@@ -118,6 +123,7 @@ def build_review(root: Path = ROOT) -> dict:
             {"generated_at": review["generated_at"], "recommendations": next_recommendations[:10]},
             indent=2,
             sort_keys=True,
+            ensure_ascii=False,
         )
         + "\n",
         encoding="utf-8",

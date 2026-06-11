@@ -78,7 +78,7 @@ def collect(root: Path = ROOT) -> dict:
         "source": "_data/analytics/latest.json",
     }
     (analytics / "extended_collection_report.json").write_text(
-        json.dumps(report, indent=2, sort_keys=True) + "\n",
+        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     return report

@@ -60,6 +60,7 @@ def harvest(root: Path = ROOT) -> dict:
             },
             indent=2,
             sort_keys=True,
+            ensure_ascii=False,
         )
         + "\n",
         encoding="utf-8",

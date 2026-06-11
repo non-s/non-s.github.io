@@ -102,15 +102,24 @@ def build_session_ops(root: Path = ROOT) -> dict:
         ],
     }
     (data_dir / "post_upload_session_ops.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     (data_dir / "related_video_recommendations.json").write_text(
-        json.dumps({"generated_at": payload["generated_at"], "items": related[:20]}, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {"generated_at": payload["generated_at"], "items": related[:20]},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
         encoding="utf-8",
     )
     (data_dir / "comment_reply_short_candidates.json").write_text(
         json.dumps(
-            {"generated_at": payload["generated_at"], "items": comment_candidates[:20]}, indent=2, sort_keys=True
+            {"generated_at": payload["generated_at"], "items": comment_candidates[:20]},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
         )
         + "\n",
         encoding="utf-8",
