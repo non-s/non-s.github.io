@@ -1,11 +1,12 @@
 # Weekly Growth Review
 
-Generated: 2026-06-11T00:53:16.580140+00:00
+Generated: 2026-06-11T08:29:32.693371+00:00
 
 ## Winners
 
-- Category `farm`: score 34.9293 across 7 rows
-- Category `primates`: score 0.0 across 2 rows
+- Category `farm`: score 34.9292 across 7 rows
+- Category `reptiles`: score 0.0 across 1 rows
+- Category `primates`: score 0.0 across 1 rows
 - Category `ocean`: score 0.0 across 1 rows
 
 ## Next Experiments
@@ -16,5 +17,5 @@ Generated: 2026-06-11T00:53:16.580140+00:00
 
 ## Losing Openings
 
-- `bA9NB3s1-wo`: Ducklings know math before they can swim 🦆 (41.78%)
 - `2ndbAhlpL-U`: Baby goats love bottle feeding — here's why 🐐 (35.65%)
+- `bA9NB3s1-wo`: Ducklings know math before they can swim 🦆 (41.78%)
