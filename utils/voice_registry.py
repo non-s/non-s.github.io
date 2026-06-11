@@ -3,7 +3,12 @@
 from __future__ import annotations
 
 VOICE_REGISTRY = {
-    "en": {"primary": "en-US-AriaNeural", "backup": "en-US-GuyNeural", "target_lufs": -16, "pronunciations": {}},
+    "en": {
+        "primary": "en-US-ChristopherNeural",
+        "backup": "en-US-RogerNeural",
+        "target_lufs": -16,
+        "pronunciations": {},
+    },
     "pt-BR": {
         "primary": "pt-BR-FranciscaNeural",
         "backup": "pt-BR-AntonioNeural",

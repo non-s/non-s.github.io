@@ -202,22 +202,30 @@ NATURE_BROLL_QUERY_MAP = {**ANIMAL_BROLL_QUERIES, **NATURE_BROLL_QUERIES}
 #
 # The audit data is clear: automated channels that monetize have ONE
 # recognizable voice. Six-voice rotation reads as randomness, not
-# editorial choice. The Wild Brief narrator (configurable via
-# host_persona) now speaks in en-US-AriaNeural — crisp delivery that
-# doesn't fatigue across daily listening.
+# editorial choice. The Wild Brief narrator now speaks in
+# en-US-ChristopherNeural: an authoritative English news/novel voice
+# that lands closer to documentary and tech-explainer narration than
+# the previous assistant-like Aria/Jenny/Guy panel.
 #
-# The second voice (Guy) is the contingency: when Aria's edge-tts
-# CDN blips on a particular Short, Guy takes over for that one
-# render. Listeners on the channel hear Aria 99 % of the time.
-HOST_VOICE_PRIMARY = "en-US-AriaNeural"
-HOST_VOICE_BACKUP = "en-US-GuyNeural"
+# The second voice (Roger) is only a contingency: when Christopher's
+# edge-tts CDN blips on a particular Short, Roger takes over for that
+# render. Listeners on the channel should hear Christopher 99 % of the
+# time.
+HOST_VOICE_PRIMARY = "en-US-ChristopherNeural"
+HOST_VOICE_BACKUP = "en-US-RogerNeural"
 HOST_VOICE_VARIANTS = {
+    "documentary": HOST_VOICE_PRIMARY,
+    "authority": HOST_VOICE_PRIMARY,
+    "refugio": HOST_VOICE_PRIMARY,
+    "techzone": HOST_VOICE_PRIMARY,
+    # Legacy experiment labels kept so queued stories stamped before
+    # the voice change do not leak the old narrator panel.
     "aria": HOST_VOICE_PRIMARY,
-    "jenny": "en-US-JennyNeural",
-    "guy": HOST_VOICE_BACKUP,
+    "jenny": HOST_VOICE_PRIMARY,
+    "guy": HOST_VOICE_PRIMARY,
 }
 
-VOICE_PANEL = [HOST_VOICE_PRIMARY, "en-US-JennyNeural", HOST_VOICE_BACKUP]
+VOICE_PANEL = [HOST_VOICE_PRIMARY, HOST_VOICE_BACKUP]
 # Backwards-compat alias — kept for any caller still importing it.
 VOICE_SHORT = HOST_VOICE_PRIMARY
 
@@ -400,6 +408,9 @@ VOICE_RATE_OFFSETS = {
     "en-US-JennyNeural": "+3%",  # baseline
     "en-US-AriaNeural": "+4%",
     "en-US-GuyNeural": "+2%",
+    "en-US-ChristopherNeural": "+1%",
+    "en-US-RogerNeural": "+1%",
+    "en-US-SteffanNeural": "+2%",
     "en-GB-SoniaNeural": "+6%",  # British — naturally slower
     "en-GB-RyanNeural": "+6%",
     "en-AU-NatashaNeural": "+3%",
@@ -414,6 +425,11 @@ VOICE_RATE_OFFSETS = {
     "es-MX-JorgeNeural": "+2%",
     "fr-FR-DeniseNeural": "+4%",
     "fr-FR-HenriNeural": "+4%",
+}
+
+VOICE_PITCH_OFFSETS = {
+    "en-US-ChristopherNeural": "-2Hz",
+    "en-US-RogerNeural": "-1Hz",
 }
 
 
@@ -441,7 +457,8 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
     import edge_tts
 
     rate = rate_override or VOICE_RATE_OFFSETS.get(voice, "+3%")
-    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
+    pitch = VOICE_PITCH_OFFSETS.get(voice, "+0Hz")
+    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
     try:
         await asyncio.wait_for(
             communicate.save(str(output_path)),

@@ -19,11 +19,11 @@ def test_pick_voice_returns_valid_panel_member():
             assert pick_voice(title, cat) in VOICE_PANEL
 
 
-def test_pick_voice_uses_small_measured_panel():
-    from generate_shorts import pick_voice, VOICE_PANEL
+def test_pick_voice_uses_single_english_host_voice():
+    from generate_shorts import HOST_VOICE_PRIMARY, pick_voice
+
     seen = {pick_voice(f"Animal fact number {i}", "WILDLIFE") for i in range(200)}
-    assert seen <= set(VOICE_PANEL)
-    assert len(seen) >= 2
+    assert seen == {HOST_VOICE_PRIMARY}
 
 
 def test_pick_voice_stays_deterministic_across_categories():
@@ -39,9 +39,11 @@ def test_pick_voice_handles_empty_seed():
 
 
 def test_pick_voice_accepts_narrator_variant():
-    from generate_shorts import pick_voice
-    assert pick_voice("cat fact", "CATS", narrator_variant="jenny") == "en-US-JennyNeural"
-    assert pick_voice("snake fact", "REPTILES", narrator_variant="guy") == "en-US-GuyNeural"
+    from generate_shorts import HOST_VOICE_PRIMARY, pick_voice
+
+    assert pick_voice("cat fact", "CATS", narrator_variant="jenny") == HOST_VOICE_PRIMARY
+    assert pick_voice("snake fact", "REPTILES", narrator_variant="guy") == HOST_VOICE_PRIMARY
+    assert pick_voice("owl fact", "BIRDS", narrator_variant="documentary") == HOST_VOICE_PRIMARY
 
 
 def test_pick_voice_pt_br_uses_locale_panel():
