@@ -491,6 +491,8 @@ _ANIMAL_ALIASES = {
     "bees": "bee",
     "bumblebee": "bee",
     "bumblebees": "bee",
+    "bug": "insect",
+    "bugs": "insect",
     "beetle": "beetle",
     "beetles": "beetle",
     "bird": "bird",
@@ -529,6 +531,8 @@ _ANIMAL_ALIASES = {
     "ducks": "duck",
     "duckling": "duck",
     "ducklings": "duck",
+    "dragonfly": "dragonfly",
+    "dragonflies": "dragonfly",
     "chimpanzee": "chimpanzee",
     "chimpanzees": "chimpanzee",
     "crocodile": "crocodile",
@@ -565,7 +569,12 @@ _ANIMAL_ALIASES = {
     "horses": "horse",
     "iguana": "iguana",
     "iguanas": "iguana",
+    "insect": "insect",
+    "insects": "insect",
     "jellyfish": "jellyfish",
+    "ladybug": "beetle",
+    "ladybugs": "beetle",
+    "libellule": "dragonfly",
     "leopard": "leopard",
     "leopards": "leopard",
     "lemur": "lemur",
@@ -625,6 +634,7 @@ _STRICT_ANIMAL_SUBJECTS = {
     "deer",
     "dog",
     "dolphin",
+    "dragonfly",
     "elephant",
     "fish",
     "fox",
@@ -634,6 +644,7 @@ _STRICT_ANIMAL_SUBJECTS = {
     "hedgehog",
     "horse",
     "iguana",
+    "insect",
     "jellyfish",
     "leopard",
     "lemur",
@@ -654,6 +665,9 @@ _STRICT_ANIMAL_SUBJECTS = {
     "walrus",
     "whale",
     "wolf",
+}
+_GENERIC_VISIBLE_SUBJECTS = {
+    "insect": {"ant", "bee", "beetle", "butterfly", "dragonfly", "mantis"},
 }
 _CONTEXT_ONLY_SUBJECTS = {"forest", "earth"}
 _HUMAN_VISUAL_TERMS = {
@@ -703,7 +717,10 @@ def _script_matches_visible_subject(subject: str, script: str) -> bool:
     """Reject narration that changes visible subject when the clip is explicit."""
     visible_animals = _strict_animal_terms(subject)
     if visible_animals:
-        return bool(visible_animals & _strict_animal_terms(script))
+        script_animals = _strict_animal_terms(script)
+        if visible_animals & script_animals:
+            return True
+        return any(bool(script_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
     visible = _animal_terms(subject)
     if visible and visible <= _CONTEXT_ONLY_SUBJECTS:
         return True
@@ -748,7 +765,9 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     visible_animals = _strict_animal_terms(subject)
     allowed_animals = set().union(*(_strict_animal_terms(query) for query in topic_cfg.get("queries", [])))
     if visible_animals:
-        return not allowed_animals or bool(visible_animals & allowed_animals)
+        if not allowed_animals or visible_animals & allowed_animals:
+            return True
+        return any(bool(allowed_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
     # Legacy animal categories often include environmental words in clip
     # titles ("forest", "snow", "night"). Those are context, not the
     # subject mismatch signal we want to catch.

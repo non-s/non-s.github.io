@@ -1,4 +1,5 @@
 """Prevent platform-specific legacy code from returning."""
+
 from __future__ import annotations
 
 import json
@@ -42,7 +43,7 @@ def test_repository_is_focused_on_youtube():
 
 
 def test_animal_queue_has_unique_visually_aligned_scripts():
-    queue = json.loads((ROOT/"_data"/"stories_queue.json").read_text(encoding="utf-8"))
+    queue = json.loads((ROOT / "_data" / "stories_queue.json").read_text(encoding="utf-8"))
     scripts: set[str] = set()
     for story in queue.get("stories", []):
         if story.get("consumed"):
@@ -58,6 +59,13 @@ def test_animal_queue_has_unique_visually_aligned_scripts():
         key = fetch_animals._script_key(story.get("script", ""))
         assert key and key not in scripts, f"duplicate script: {subject}"
         scripts.add(key)
+
+
+def test_generic_insect_visual_can_match_specific_insect_script():
+    assert fetch_animals._script_matches_visible_subject(
+        "close up of insect on flower",
+        "Bee signals with one visible foot before it chooses the flower.",
+    )
 
 
 def test_youtube_workflow_stages_queue_before_optional_files():
@@ -96,7 +104,7 @@ def test_dashboard_workflow_refreshes_analytics_before_build():
     assert "contents: write" in workflow
     assert "python scripts/run_intelligence_suite.py dashboard" in workflow
     assert "python scripts/build_dashboard.py" in workflow
-    assert "git add \"$path\"" in workflow
+    assert 'git add "$path"' in workflow
     assert "_data/analytics/latest.json" in workflow
     assert "_data/ops_guardian.json" in workflow
     assert "_data/trend_radar.json" in workflow
