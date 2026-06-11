@@ -153,6 +153,27 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Unset or remove manifest.",
     ),
     FeatureFlag(
+        "ARCHIVE_AUDIO_ENABLED",
+        "0",
+        "production",
+        "Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks.",
+        "Set to 0.",
+    ),
+    FeatureFlag(
+        "ARCHIVE_AUDIO_ROWS",
+        "8",
+        "production",
+        "Limit Archive API search breadth per mood.",
+        "Lower rows or set ARCHIVE_AUDIO_ENABLED=0.",
+    ),
+    FeatureFlag(
+        "ARCHIVE_AUDIO_CACHE_DIR",
+        "_data/archive_audio_cache",
+        "production",
+        "Cache downloaded Archive audio.",
+        "Remove cache and disable Archive audio.",
+    ),
+    FeatureFlag(
         "MUSIC_BED_CANARY_PERCENT",
         "5",
         "production",

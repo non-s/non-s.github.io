@@ -20,6 +20,10 @@
 | `COQUI_TTS_COMMAND` | no | Optional local Coqui-compatible TTS command. Edge TTS remains primary. |
 | `COQUI_TTS_MODEL` | no | Optional local Coqui model name. |
 | `AUDIO_LIBRARY_MANIFEST` | no | Optional manifest path for operator-curated local YouTube Audio Library tracks. Defaults to `_data/audio_library_manifest.json`. |
+| `ARCHIVE_AUDIO_ENABLED` | no | Enables Internet Archive public-domain/CC0 audio discovery as an optional music-bed source. Defaults to `0`. |
+| `ARCHIVE_AUDIO_ROWS` | no | Maximum Internet Archive search rows per mood query. Defaults to `8`. |
+| `ARCHIVE_AUDIO_CACHE_DIR` | no | Cache folder for downloaded Internet Archive audio. Defaults to `_data/archive_audio_cache`. |
+| `ARCHIVE_AUDIO_MAX_BYTES` | no | Maximum downloaded Archive audio file size. Defaults to `20971520`. |
 | `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
 | `VARIANT_ASSIGNMENTS_FILE` | no | Optional override for the durable variant-assignment JSONL log. |
 | `ADAPTIVE_CADENCE_ENABLED` | no | Enables publish vs safe-skip decisions from the canonical UTC slots `05:23`, `14:23`, `19:23` and `23:23`. Defaults to enabled in the YouTube workflow. |
@@ -89,6 +93,9 @@
 | `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
 | `MUSIC_BED_ENABLED` | `0` | production | Allow measured light music bed variants. | Set to 0. |
 | `AUDIO_LIBRARY_MANIFEST` | `_data/audio_library_manifest.json` | production | Local safe music manifest path. | Unset or remove manifest. |
+| `ARCHIVE_AUDIO_ENABLED` | `0` | production | Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks. | Set to 0. |
+| `ARCHIVE_AUDIO_ROWS` | `8` | production | Limit Archive API search breadth per mood. | Lower rows or set ARCHIVE_AUDIO_ENABLED=0. |
+| `ARCHIVE_AUDIO_CACHE_DIR` | `_data/archive_audio_cache` | production | Cache downloaded Archive audio. | Remove cache and disable Archive audio. |
 | `MUSIC_BED_CANARY_PERCENT` | `5` | production | Percent of Shorts allowed into safe music-bed canary. | Set to 0. |
 | `SEO_METADATA_LINT_ENABLED` | `1` | production | Attach deterministic SEO/metadata lint to every Short. | Set to 0. |
 | `SEO_METADATA_LINT_STRICT` | `0` | production | Reject metadata with SEO lint errors. | Set to 0. |
@@ -115,6 +122,12 @@ Operator-curated audio can be listed in `_data/audio_library_manifest.json`.
 Only commit the manifest or assets when their license is public and
 redistribution-safe; otherwise keep the assets local and point
 `AUDIO_LIBRARY_MANIFEST` at a private path.
+
+Internet Archive audio is optional and conservative. `ARCHIVE_AUDIO_ENABLED=1`
+allows discovery only for items whose metadata contains explicit public-domain,
+Public Domain Mark or CC0-style evidence. Use
+`python scripts/archive_audio_report.py --json` to review candidate sources
+and license evidence before enabling a wider canary.
 
 Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
 When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,

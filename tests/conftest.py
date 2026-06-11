@@ -40,6 +40,7 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         ("utils.provider_stats",  "STATS_LOG",         "provider_stats.jsonl"),
         ("utils.channel_memory",  "MEMORY_LOG",        "channel_memory.jsonl"),
         ("utils.music_bed",       "MUSIC_CACHE_DIR",   "music_cache"),
+        ("utils.internet_archive", "ARCHIVE_CACHE_DIR", "archive_audio_cache"),
         ("utils.broll",           "_CACHE_DIR",        "broll_cache"),
         ("utils.brand_card",      "BRAND_CARD_CACHE",  "brand_card_cache"),
         ("utils.intro_outro",     "INTRO_OUTRO_CACHE", "intro_outro_cache"),

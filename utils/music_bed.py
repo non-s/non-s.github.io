@@ -42,11 +42,15 @@ from pathlib import Path
 
 import requests
 
+from utils.internet_archive import ArchiveAudioAsset, discover_public_domain_audio, download_asset
+
 log = logging.getLogger(__name__)
 
 MUSIC_CACHE_DIR = Path(os.environ.get("MUSIC_CACHE_DIR", "_data/music_cache"))
 MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "1") not in ("0", "false", "False")
 MUSIC_MANIFEST = Path(os.environ.get("AUDIO_LIBRARY_MANIFEST", "_data/audio_library_manifest.json"))
+ARCHIVE_AUDIO_ENABLED = os.environ.get("ARCHIVE_AUDIO_ENABLED", "0").strip().lower() in {"1", "true", "yes", "on"}
+ARCHIVE_AUDIO_ROWS = int(os.environ.get("ARCHIVE_AUDIO_ROWS", "8"))
 # Volume of the music bed relative to the TTS (in dB). -26 dB lands the
 # music perceptually background â€” the spoken voice dominates, which
 # (a) gives the speech clarity YouTube captions track best with,
@@ -67,6 +71,9 @@ class MusicTrack:
     asset_path: str = ""
     bpm_bucket: str = ""
     license: str = "Pixabay Content License (CC0-equivalent)"
+    source: str = ""
+    source_url: str = ""
+    license_evidence: str = ""
 
 
 # Pre-curated Pixabay panel. These are public-domain-equivalent tracks
@@ -191,14 +198,48 @@ def _mood_for_story(story: dict) -> str:
     return "upbeat"
 
 
+def _archive_query_for_story(story: dict) -> str:
+    cat = (story.get("category") or "").lower()
+    if cat in {"ocean", "rivers"}:
+        return "collection:audio_music AND (ambient OR nature OR ocean OR water OR instrumental)"
+    if cat in {"birds", "forests", "wildlife"}:
+        return "collection:audio_music AND (nature OR birds OR forest OR ambient OR instrumental)"
+    if cat in {"nocturnal", "reptiles", "insects"}:
+        return "collection:audio_music AND (suspense OR drone OR ambient OR nature OR instrumental)"
+    return "collection:audio_music AND (ambient OR background OR nature OR instrumental)"
+
+
+def track_from_archive_asset(asset: ArchiveAudioAsset) -> MusicTrack:
+    return MusicTrack(
+        name=asset.title,
+        url=asset.url,
+        mood=_normalise_manifest_mood(asset.mood),
+        license=asset.license or "Internet Archive public-domain/CC0 item",
+        source="Internet Archive",
+        source_url=asset.source_url,
+        license_evidence=asset.license_evidence,
+    )
+
+
+def archive_tracks_for_story(story: dict, *, rows: int | None = None) -> list[MusicTrack]:
+    """Discover public-domain Archive audio as optional music-bed material."""
+    if not ARCHIVE_AUDIO_ENABLED:
+        return []
+    mood = _mood_for_story(story)
+    assets = discover_public_domain_audio(_archive_query_for_story(story), mood=mood, rows=rows or ARCHIVE_AUDIO_ROWS)
+    return [track_from_archive_asset(asset) for asset in assets]
+
+
 def pick_track(story: dict) -> MusicTrack | None:
     """Deterministic track pick based on story slug + mood preference."""
     if not MUSIC_ENABLED:
         return None
     mood = _mood_for_story(story)
     operator_tracks = _operator_manifest_tracks()
+    archive_tracks = archive_tracks_for_story(story)
     operator_eligible = [t for t in operator_tracks if t.mood == mood]
-    panel = operator_eligible or operator_tracks or list(PANEL)
+    archive_eligible = [t for t in archive_tracks if t.mood == mood]
+    panel = operator_eligible or operator_tracks or archive_eligible or archive_tracks or list(PANEL)
     eligible = [t for t in panel if t.mood == mood]
     if not eligible:
         eligible = list(panel)
@@ -219,6 +260,19 @@ def download_track(track: MusicTrack) -> Path | None:
     if track.asset_path:
         path = Path(track.asset_path)
         return path if path.exists() else None
+    if track.source == "Internet Archive":
+        asset = ArchiveAudioAsset(
+            identifier=track.source_url.rstrip("/").split("/")[-1] if track.source_url else track.name,
+            file_name=Path(track.url).name,
+            title=track.name,
+            creator="",
+            url=track.url,
+            source_url=track.source_url,
+            license=track.license,
+            license_evidence=track.license_evidence,
+            mood=track.mood,
+        )
+        return download_asset(asset)
     if not track.url:
         return None
     MUSIC_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -318,4 +372,12 @@ def add_music_bed(tts_path: Path, story: dict, tmp_dir: Path) -> Path:
     if not mix_tts_with_music(tts_path, music, mixed):
         return tts_path
     log.info("  ðŸŽµ Music bed mixed: %s (%s)", track.name, track.mood)
+    story["music_bed_track"] = {
+        "name": track.name,
+        "mood": track.mood,
+        "license": track.license,
+        "source": track.source or "bundled_panel",
+        "source_url": track.source_url,
+        "license_evidence": track.license_evidence,
+    }
     return mixed

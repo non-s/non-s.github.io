@@ -48,11 +48,46 @@ def test_pick_track_disabled_returns_none(monkeypatch):
 
 def test_pick_track_falls_back_when_no_mood_match(monkeypatch):
     monkeypatch.setattr(music_bed, "MUSIC_ENABLED", True)
+    monkeypatch.setattr(music_bed, "ARCHIVE_AUDIO_ENABLED", False)
     # Force an unknown mood by mocking _mood_for_story to return "xxx".
     monkeypatch.setattr(music_bed, "_mood_for_story", lambda s: "xxx")
     track = music_bed.pick_track({"slug": "x"})
     assert track is not None
     assert track in music_bed.PANEL
+
+
+def test_archive_tracks_disabled_by_default(monkeypatch):
+    monkeypatch.setattr(music_bed, "ARCHIVE_AUDIO_ENABLED", False)
+    monkeypatch.setattr(music_bed, "discover_public_domain_audio", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("called")))
+
+    assert music_bed.archive_tracks_for_story({"category": "birds"}) == []
+
+
+def test_pick_track_can_use_archive_audio_when_enabled(monkeypatch):
+    from utils.internet_archive import ArchiveAudioAsset
+
+    monkeypatch.setattr(music_bed, "MUSIC_ENABLED", True)
+    monkeypatch.setattr(music_bed, "ARCHIVE_AUDIO_ENABLED", True)
+    monkeypatch.setattr(music_bed, "_operator_manifest_tracks", lambda path=None: [])
+    asset = ArchiveAudioAsset(
+        identifier="pd-forest",
+        file_name="forest.mp3",
+        title="Forest Ambience",
+        creator="",
+        url="https://archive.org/download/pd-forest/forest.mp3",
+        source_url="https://archive.org/details/pd-forest",
+        license="https://creativecommons.org/publicdomain/mark/1.0/",
+        license_evidence="creativecommons.org/publicdomain/mark",
+        mood="reflective",
+    )
+    monkeypatch.setattr(music_bed, "discover_public_domain_audio", lambda *args, **kwargs: [asset])
+
+    track = music_bed.pick_track({"slug": "archive-story", "category": "birds"})
+
+    assert track is not None
+    assert track.name == "Forest Ambience"
+    assert track.source == "Internet Archive"
+    assert track.license_evidence == "creativecommons.org/publicdomain/mark"
 
 
 def test_pick_track_can_use_operator_audio_manifest(monkeypatch, tmp_path):
@@ -115,9 +150,12 @@ def test_add_music_bed_returns_mixed_when_pipeline_succeeds(monkeypatch, tmp_pat
         return True
 
     monkeypatch.setattr(music_bed, "mix_tts_with_music", fake_mix)
-    out = music_bed.add_music_bed(fake_tts, {"slug": "x"}, tmp_path)
+    story = {"slug": "x"}
+    out = music_bed.add_music_bed(fake_tts, story, tmp_path)
     assert out != fake_tts
     assert out.read_bytes() == b"mixed"
+    assert story["music_bed_track"]["name"]
+    assert story["music_bed_track"]["license"]
 
 
 def test_download_track_caches(monkeypatch, tmp_path):

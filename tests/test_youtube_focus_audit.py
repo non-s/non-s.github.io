@@ -23,7 +23,6 @@ BLOCKED = (
     "feed_" + "cache",
     "feed_" + "health",
     "pol" + "linations",
-    "internet " + "archive",
     "na" + "sa",
 )
 
