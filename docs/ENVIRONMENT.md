@@ -19,6 +19,9 @@
 | `WILD_BRIEF_ALERT_TO` | no | Alert recipient used only when alerts are explicitly enabled. |
 | `COQUI_TTS_COMMAND` | no | Optional local Coqui-compatible TTS command. Edge TTS remains primary. |
 | `COQUI_TTS_MODEL` | no | Optional local Coqui model name. |
+| `AUDIO_LIBRARY_MANIFEST` | no | Optional manifest path for operator-curated local YouTube Audio Library tracks. Defaults to `_data/audio_library_manifest.json`. |
+| `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
+| `VARIANT_ASSIGNMENTS_FILE` | no | Optional override for the durable variant-assignment JSONL log. |
 
 ## Local-Only Files
 
@@ -28,10 +31,17 @@ Do not commit:
 - YouTube token JSON files.
 - temporary rendered videos/audio/images.
 - local TTS caches.
+- local audio assets referenced by an operator-only audio manifest when those
+  assets are not license-cleared for redistribution.
 - manual credentials or debug dumps.
 
 Operator-dropped Google Trends snapshots belong under `_data/trends/manual_import/`.
 Those files should contain public trend data only.
+
+Operator-curated audio can be listed in `_data/audio_library_manifest.json`.
+Only commit the manifest or assets when their license is public and
+redistribution-safe; otherwise keep the assets local and point
+`AUDIO_LIBRARY_MANIFEST` at a private path.
 
 ## Logging Rules
 

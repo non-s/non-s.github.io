@@ -8,9 +8,9 @@ YouTube upload, analytics feedback, dashboard publishing and editorial learning.
 The next lift is not more automation for its own sake. The lift is better
 decision quality before render and better learning after upload.
 
-This upgrade preserves every current provider and API. It adds a central
+This upgrade preserves every current provider and API. It now adds a central
 package rulebook, normalized analytics schemas, safer baseline artifacts and a
-phased path toward stronger retention, replay, session growth and subscriber
+production path toward stronger retention, replay, session growth and subscriber
 conversion.
 
 ## Priority Code Changes
@@ -21,8 +21,8 @@ conversion.
 | P0 | `utils/analytics_schema.py` | `build_video_metric_row` | video id, title, metrics, context | normalized JSON row | Gives future jobs stable fields and derived metrics. |
 | P0 | `utils/analytics_schema.py` | `build_variant_row` | axis, variant, story id, video id | assignment row | Makes experiment logging explicit and durable. |
 | P0 | `scripts/bootstrap_growth_baseline.py` | `build_baseline` | repo root | JSONL files and weekly summary | Creates empty-state-safe baseline analytics artifacts. |
-| P1 | `generate_shorts.py` | planned package preflight | selected story/package | metadata with rulebook and loop score | Stops weak packages before expensive render work. |
-| P1 | `scripts/build_dashboard.py` | planned dashboard sections | weekly summary and package scores | Pages sections | Shows what to publish, pause, sequel and review. |
+| P1 | `generate_shorts.py` | package preflight and loop render integration | selected story/package | metadata with rulebook, loop score and rendered loop line | Stops weak packages before expensive render work and makes replay callbacks visible in the final Short. |
+| P1 | `scripts/build_dashboard.py` | dashboard sections | weekly summary and package scores | Pages sections | Shows what to publish, pause, sequel and review. |
 
 ## Implementation Status
 
@@ -30,14 +30,17 @@ Implemented:
 
 - FASE 1 baseline schemas, rulebook and bootstrap artifacts.
 - FASE 2 `CuriosityGapEngine` and `SwipeRiskScore`.
-- FASE 3 `LoopGenerator` and metadata persistence through `package_story`
-  and `generate_shorts.py`.
-- FASE 4 expanded experiment axes and `BayesianABSelector`.
-- FASE 5 `collect_analytics_extended.py` and `weekly_growth_review.py`.
+- FASE 3 `LoopGenerator`, metadata persistence and rendered final-line loop
+  callbacks through `package_story` and `generate_shorts.py`.
+- FASE 4 expanded experiment axes, including `end_card_style`, live
+  assignment logging and `BayesianABSelector`.
+- FASE 5 `collect_analytics_extended.py`, normalized warehouse files and
+  `weekly_growth_review.py`.
 - FASE 6 `free_signal_harvester.py`, `trend_bridge.py` and
   `post_upload_session_ops.py`.
-- FASE 7 structured observability helpers, optional TTS fallback hooks,
-  environment docs, security updates, dashboard sections and scoped CI linting.
+- FASE 7 structured observability helpers, integrated optional TTS fallback,
+  environment docs, security updates, dashboard sections, dashboard smoke in CI
+  and scoped CI linting.
 
 ## Pipeline Diagram
 
@@ -105,7 +108,7 @@ Acceptance tests:
 
 ## FASE 2 - Curiosity Gap and Swipe Defense
 
-Planned files:
+Implemented files:
 
 - `utils/curiosity_gap.py`
   - `HookCandidate`
@@ -124,7 +127,7 @@ Acceptance tests:
 
 ## FASE 3 - Loop and Rewatch Engine
 
-Planned file:
+Implemented file:
 
 - `utils/loop_engine.py`
   - `LoopGenerator.plan`
@@ -137,6 +140,8 @@ Rules:
 - Last subtitle should carry one keyword from the first subtitle.
 - Avoid dead-stop endings and explicit replay begging.
 - Use subtle audio tail guidance only where rendering supports it.
+- `generate_shorts.py` applies the loop-plan final line to the script before
+  TTS and caption generation and records `loop_render_applied` in metadata.
 
 Acceptance tests:
 
@@ -156,13 +161,20 @@ Recommended axes:
 - `loop_style`: `callback`, `unfinished_mechanism`, `mirror_opening`
 - `cta_pattern`: `question_tease`, `sequel_tease`, `identity_follow`
 - `title_shape`: `curiosity_gap`, `mechanism_reveal`, `impossible_fact`
+- `end_card_style`: `subscribe_clean`, `loop_callback`, `series_tease`
 
-Planned file:
+Implemented files:
 
 - `utils/ab_selector.py`
   - `BayesianABSelector.score_variant`
   - `BayesianABSelector.choose_live_variant`
   - `BayesianABSelector.has_enough_data`
+- `utils/experiments.py`
+  - `assign_all_for_production`
+  - `record_variant_assignments`
+- `generate_shorts.py`
+  - records assignments into `_data/analytics/variant_assignments.jsonl`
+  - renders experiment-aware end card text.
 
 Stopping rules:
 
@@ -173,7 +185,7 @@ Stopping rules:
 
 ## FASE 5 - Analytics Augmentation and Weekly Decision Job
 
-Planned files:
+Implemented files:
 
 - `scripts/collect_analytics_extended.py`
 - `scripts/weekly_growth_review.py`
@@ -204,13 +216,21 @@ Derived metrics:
 Output:
 
 - `_data/analytics/weekly_summary.json`
+- `_data/analytics/video_metrics.jsonl`
+- `_data/analytics/video_core_daily.jsonl`
+- `_data/analytics/traffic_source_daily.jsonl`
+- `_data/analytics/retention_curve.jsonl`
+- `_data/analytics/segment_metrics.jsonl`
+- `_data/analytics/extended_collection_report.json`
 - `_data/reports/weekly-growth-YYYY-MM-DD.md`
 - `_data/next_shorts.json`
 - `_data/experiments_recommendations.json`
+- missing API reports are recorded instead of failing the job when an OAuth
+  token does not expose optional analytics dimensions.
 
 ## FASE 6 - Free Signal Ingestion and Session Expansion
 
-Planned files:
+Implemented files:
 
 - `scripts/free_signal_harvester.py`
 - `utils/trend_bridge.py`
@@ -238,8 +258,9 @@ CI/CD:
 - Keep compile, parse, pytest, dependency audit and Bandit.
 - Add `ruff check` and `black --check` only after the current tree is made
   compatible or the scope is tightly configured.
-- Add a dashboard smoke test.
-- Upload failure artifacts when low-friction.
+- Dashboard smoke build runs in the production quality gate.
+- Failure diagnostics upload `_data`, analytics JSON/JSONL, reports and
+  `_site/index.html` when the quality gate fails.
 
 Dashboard:
 
@@ -254,7 +275,7 @@ Dashboard:
 
 Observability:
 
-- Planned `utils/observability.py`
+- Implemented `utils/observability.py`
   - `get_logger`
   - `emit_event`
   - `append_csv_metric`
@@ -294,7 +315,7 @@ Packaging:
 | Area | Option | Cost | Recommendation | Integration point |
 | --- | --- | --- | --- | --- |
 | TTS | existing edge-tts path | free | keep primary | `generate_shorts.py` |
-| TTS fallback | Coqui local models | free | optional only | `utils/tts_fallback.py` |
+| TTS fallback | Coqui local models | free | optional only | `utils/tts_fallback.py` and `generate_shorts.py` |
 | Music | existing Pixabay flow | free | keep and refine | `utils/music_bed.py` |
 | Music manual library | YouTube Audio Library local manifest | free | optional operator-curated fallback | `_data/audio_library_manifest.json` |
 | Trends | Google Trends official exports | free | support manual cached snapshots | `scripts/free_signal_harvester.py` |
@@ -316,16 +337,16 @@ Packaging:
 
 | Priority | Task | Effort | Dependencies |
 | --- | --- | --- | --- |
-| P0 | Add editorial rulebook and baseline analytics schema | Medium | none |
-| P0 | Add curiosity gap and swipe risk package preflight | Medium | baseline schema |
-| P0 | Extend experiments and variant logging | Medium | baseline schema |
-| P1 | Add loop engine and metadata persistence | Medium | generation integration |
-| P1 | Add weekly growth review | Medium | analytics normalization |
-| P1 | Add free signal harvester | Medium | analytics schema |
-| P1 | Improve dashboard with winners, risks and session suggestions | Medium | weekly outputs |
-| P2 | Add Coqui fallback | High | optional local dependency handling |
-| P2 | Add Gmail alerts | Low | observability module |
-| P2 | Harden CI with format and lint gates | Low | tests in place |
+| P0 | Add editorial rulebook and baseline analytics schema | Done | none |
+| P0 | Add curiosity gap and swipe risk package preflight | Done | baseline schema |
+| P0 | Extend experiments and variant logging | Done | baseline schema |
+| P1 | Add loop engine and metadata persistence | Done | generation integration |
+| P1 | Add weekly growth review | Done | analytics normalization |
+| P1 | Add free signal harvester | Done | analytics schema |
+| P1 | Improve dashboard with winners, risks and session suggestions | Done | weekly outputs |
+| P2 | Add Coqui fallback | Done | optional local dependency handling |
+| P2 | Add Gmail alerts | Done | observability module |
+| P2 | Harden CI with format and lint gates | Done | tests in place |
 
 ## Final 10/10 Validation Checklist
 

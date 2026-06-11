@@ -3,6 +3,7 @@ The actual download + FFmpeg mix is exercised via integration tests
 since they need network + ffmpeg respectively."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -52,6 +53,36 @@ def test_pick_track_falls_back_when_no_mood_match(monkeypatch):
     track = music_bed.pick_track({"slug": "x"})
     assert track is not None
     assert track in music_bed.PANEL
+
+
+def test_pick_track_can_use_operator_audio_manifest(monkeypatch, tmp_path):
+    local = tmp_path / "wonder.mp3"
+    local.write_bytes(b"x" * 100_000)
+    manifest = tmp_path / "audio_library_manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "tracks": [
+                    {
+                        "name": "Wonder Bed",
+                        "asset_path": "wonder.mp3",
+                        "mood": "wonder",
+                        "bpm_bucket": "medium",
+                        "safe_for_short": True,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(music_bed, "MUSIC_ENABLED", True)
+    monkeypatch.setattr(music_bed, "MUSIC_MANIFEST", manifest)
+
+    track = music_bed.pick_track({"slug": "manifest-story", "category": "cats"})
+
+    assert track is not None
+    assert track.name == "Wonder Bed"
+    assert music_bed.download_track(track) == local
 
 
 def test_add_music_bed_returns_original_when_disabled(monkeypatch, tmp_path):

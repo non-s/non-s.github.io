@@ -32,6 +32,7 @@ hard requirement.
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import os
 import subprocess
@@ -44,6 +45,7 @@ log = logging.getLogger(__name__)
 
 MUSIC_CACHE_DIR = Path(os.environ.get("MUSIC_CACHE_DIR", "_data/music_cache"))
 MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "1") not in ("0", "false", "False")
+MUSIC_MANIFEST = Path(os.environ.get("AUDIO_LIBRARY_MANIFEST", "_data/audio_library_manifest.json"))
 # Volume of the music bed relative to the TTS (in dB). -26 dB lands the
 # music perceptually background â€” the spoken voice dominates, which
 # (a) gives the speech clarity YouTube captions track best with,
@@ -61,6 +63,8 @@ class MusicTrack:
     name: str
     url: str          # direct MP3 URL, served by Pixabay's CDN
     mood: str         # "upbeat" | "tense" | "reflective"
+    asset_path: str = ""
+    bpm_bucket: str = ""
     license: str = "Pixabay Content License (CC0-equivalent)"
 
 
@@ -97,6 +101,54 @@ PANEL: tuple[MusicTrack, ...] = (
 )
 
 
+def _normalise_manifest_mood(value: str) -> str:
+    mood = (value or "").strip().lower()
+    if mood in {"suspense", "tense", "danger"}:
+        return "tense"
+    if mood in {"calm", "reflective", "analysis"}:
+        return "reflective"
+    if mood in {"discovery", "wonder", "upbeat", "curious"}:
+        return "upbeat"
+    return mood or "upbeat"
+
+
+def _operator_manifest_tracks(path: Path | None = None) -> list[MusicTrack]:
+    """Load optional operator-curated YouTube Audio Library tracks."""
+    path = path or MUSIC_MANIFEST
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.warning("audio library manifest could not be read: %s", exc)
+        return []
+    rows = data.get("tracks") if isinstance(data, dict) else data
+    tracks: list[MusicTrack] = []
+    base = path.parent
+    for row in rows or []:
+        if not isinstance(row, dict) or row.get("safe_for_short") is False:
+            continue
+        asset = str(row.get("asset_path") or "").strip()
+        if not asset:
+            continue
+        asset_path = Path(asset)
+        if not asset_path.is_absolute():
+            asset_path = (base / asset_path).resolve()
+        if not asset_path.exists() or asset_path.suffix.lower() not in {".mp3", ".wav", ".m4a", ".aac"}:
+            continue
+        tracks.append(
+            MusicTrack(
+                name=str(row.get("name") or asset_path.stem),
+                url="",
+                mood=_normalise_manifest_mood(str(row.get("mood") or "")),
+                asset_path=str(asset_path),
+                bpm_bucket=str(row.get("bpm_bucket") or ""),
+                license=str(row.get("license") or "Operator-curated YouTube Audio Library track"),
+            )
+        )
+    return tracks
+
+
 def _mood_for_story(story: dict) -> str:
     """Pick a mood from the animal clip signal."""
     if story.get("breaking"):
@@ -115,9 +167,12 @@ def pick_track(story: dict) -> MusicTrack | None:
     if not MUSIC_ENABLED:
         return None
     mood = _mood_for_story(story)
-    eligible = [t for t in PANEL if t.mood == mood]
+    operator_tracks = _operator_manifest_tracks()
+    operator_eligible = [t for t in operator_tracks if t.mood == mood]
+    panel = operator_eligible or operator_tracks or list(PANEL)
+    eligible = [t for t in panel if t.mood == mood]
     if not eligible:
-        eligible = list(PANEL)
+        eligible = list(panel)
     if not eligible:
         return None
     seed = story.get("slug") or story.get("id") or story.get("title", "")
@@ -126,12 +181,17 @@ def pick_track(story: dict) -> MusicTrack | None:
 
 
 def _cache_path(track: MusicTrack) -> Path:
-    h = hashlib.sha256(track.url.encode()).hexdigest()[:16]
+    h = hashlib.sha256((track.url or track.asset_path).encode()).hexdigest()[:16]
     return MUSIC_CACHE_DIR / f"{h}.mp3"
 
 
 def download_track(track: MusicTrack) -> Path | None:
     """Download `track.url` into the on-disk cache. Returns the path or None."""
+    if track.asset_path:
+        path = Path(track.asset_path)
+        return path if path.exists() else None
+    if not track.url:
+        return None
     MUSIC_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     dest = _cache_path(track)
     if dest.exists() and dest.stat().st_size > 50 * 1024:

@@ -1,6 +1,53 @@
 {
-  "generated_at": "2026-06-11T00:06:58.147523+00:00",
-  "output": "_data\\analytics\\video_metrics.jsonl",
+  "generated_at": "2026-06-11T00:53:16.407862+00:00",
+  "missing_analytics_reports": [
+    {
+      "dimensions": "video",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "video_core",
+      "status": "not_authorized"
+    },
+    {
+      "dimensions": "day",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "daily_channel",
+      "status": "not_authorized"
+    },
+    {
+      "dimensions": "country",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "country",
+      "status": "not_authorized"
+    },
+    {
+      "dimensions": "insightTrafficSourceType",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "traffic_source",
+      "status": "not_authorized"
+    },
+    {
+      "dimensions": "deviceType",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "device_type",
+      "status": "not_authorized"
+    },
+    {
+      "dimensions": "subscribedStatus",
+      "error": "yt-analytics.readonly scope missing",
+      "id": "subscriber_status",
+      "status": "not_authorized"
+    }
+  ],
+  "outputs": {
+    "retention_curve": "_data\\analytics\\retention_curve.jsonl",
+    "segment_metrics": "_data\\analytics\\segment_metrics.jsonl",
+    "traffic_source_daily": "_data\\analytics\\traffic_source_daily.jsonl",
+    "video_core_daily": "_data\\analytics\\video_core_daily.jsonl",
+    "video_metrics": "_data\\analytics\\video_metrics.jsonl"
+  },
+  "retention_rows": 0,
   "rows": 10,
-  "source": "_data/analytics/latest.json"
+  "segment_rows": 0,
+  "source": "_data/analytics/latest.json",
+  "traffic_source_rows": 0
 }

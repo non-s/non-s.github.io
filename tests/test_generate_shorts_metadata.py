@@ -86,6 +86,19 @@ def test_metadata_preserves_experiments(tmp_path: Path):
     assert _meta(tmp_path)["experiments"] == {"hook_style": "outcome_first"}
 
 
+def test_loop_line_and_end_card_use_experiment_axes():
+    from generate_shorts import _end_card_text_for_story, _loop_enhanced_script
+
+    story = {
+        "experiments": {"cta_pattern": "sequel_tease", "end_card_style": "loop_callback"},
+        "packaging": {"loop_plan": {"final_line": "Now the wing at the start makes sense.", "callback_keyword": "wing"}},
+    }
+    script = _loop_enhanced_script(story, "Ducks fake injuries to protect young.")
+
+    assert script.endswith("Now the wing at the start makes sense.")
+    assert _end_card_text_for_story(story) == "WATCH THE WING AGAIN"
+
+
 def test_metadata_preserves_trend_context(tmp_path: Path):
     assert _meta(tmp_path)["trend_context"]["animal"] == "lion"
 

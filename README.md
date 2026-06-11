@@ -33,7 +33,7 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - generates 10 titles, 10 thumbnail texts and 5 alternate hooks, then ships the best-scored package;
 - caches packaging selection per story to avoid repeated scoring work;
 - learns from `_videos/*.done` markers into `_data/format_memory.json`, including real views, likes, comments, retention and subscriber gains when available;
-- records lightweight explore/exploit experiments for formats, hooks, thumbnails and CTAs;
+- records lightweight explore/exploit experiments for formats, hooks, thumbnails, loop styles, end cards and CTAs;
 - writes `_data/fan_growth.json` to rank videos, categories and formats by subscribers per 1,000 views and comments per 1,000 views;
 - writes `_data/audience_memory.json` to learn category, format and series strength from real retention, watch time, subscribers and comments;
 - joins `.done` markers with `_data/analytics/latest.json` and `_data/youtube_intelligence.json` so learning uses real channel outcomes instead of empty sidecar fields;
@@ -42,24 +42,29 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - ranks specific nature stories by editorial quality;
 - blocks weak scripts and subjects repeated inside a three-day cooldown;
 - organizes videos into recurring series such as **Earth Engine**, **Hidden Network** and **Rare Earth**;
-- renders a readable 2-4 word cover inside the opening frame and an end-screen CTA for channel subscriptions;
+- renders a readable 2-4 word cover inside the opening frame and an experiment-aware end-screen CTA;
 - burns yellow CapCut-style captions with highlighted keywords;
 - uses faster b-roll beats, subtle zoom, micro-fades and contrast/saturation lift;
 - creates/maintains YouTube playlists for series and categories;
 - replies automatically to eligible viewer comments with varied, short, classified responses and records a reply ledger;
 - records public YouTube engagement after uploads and feeds winning categories, series and experiments back into the dashboard.
 - uses Gemini visual QA to reject unrelated thumbnails when `GEMINI_API_KEY` is configured;
-- reads retention and subscriber conversion when the OAuth token includes YouTube Analytics access.
+- reads retention, traffic-source, segment and subscriber conversion signals when the OAuth token includes YouTube Analytics access.
 - skips production candidates without real motion b-roll or burned captions instead of uploading low-retention fallbacks.
+- writes variant assignments during generation into `_data/analytics/variant_assignments.jsonl` so experiments are auditable before upload.
+- applies loop-plan final lines to the rendered narration and captions, not only to metadata.
+- can recover from Edge TTS outages through an optional local Coqui-compatible command.
 
 ## World-class upgrade track
 
 The operating model is now documented in
 [docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md](docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md).
-The first implemented slice adds a central package rulebook and normalized
-growth analytics schemas so future render, dashboard and weekly-review work can
-share one source of truth without replacing the current queue, render, upload or
-analytics APIs.
+The master-prompt implementation is complete across the production path:
+rulebook preflight, curiosity and swipe scoring, rendered loop callbacks,
+expanded A/B axes, live variant logging, extended analytics warehouse files,
+weekly decisions, free signal harvesting, post-upload session ops, dashboard
+sections, CI smoke checks and optional zero-cost fallbacks are all wired without
+replacing the current queue, render, upload or official YouTube APIs.
 
 ## Required secrets
 
@@ -72,6 +77,8 @@ Recommended free quality extensions:
 
 - `PIXABAY_API_KEY` or `PIXABAY`
 - `GEMINI_API_KEY` or `GEMINI`
+- `AUDIO_LIBRARY_MANIFEST` for operator-curated YouTube Audio Library files
+- `COQUI_TTS_COMMAND` for a local TTS fallback if Edge TTS fails
 
 GBIF and Wikimedia Commons enrichment do not require secrets.
 See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.

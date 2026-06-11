@@ -2,6 +2,8 @@ import json
 
 from utils.analytics_schema import (
     build_retention_row,
+    build_segment_row,
+    build_traffic_source_row,
     build_trend_signal_row,
     build_variant_row,
     build_video_metric_row,
@@ -45,3 +47,20 @@ def test_retention_and_trend_rows_have_required_shape():
     assert trend["notes"] == ["operator import"]
     assert validate_row(retention) is True
     assert validate_row(trend) is True
+
+
+def test_traffic_and_segment_rows_have_required_shape():
+    traffic = build_traffic_source_row(
+        "vid",
+        "SHORTS",
+        {"views": 10, "averageViewPercentage": 82.5},
+        context={"insight_traffic_source_detail": "shorts_feed"},
+    )
+    segment = build_segment_row("deviceType", "MOBILE", {"views": 8})
+
+    assert traffic["row_type"] == "traffic_source_daily"
+    assert traffic["metrics"]["views"] == 10
+    assert segment["row_type"] == "segment_metric"
+    assert segment["segment_value"] == "MOBILE"
+    assert validate_row(traffic) is True
+    assert validate_row(segment) is True

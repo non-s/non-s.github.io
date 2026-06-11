@@ -178,6 +178,68 @@ def build_retention_row(
     return row
 
 
+def build_traffic_source_row(
+    video_id: str,
+    source_type: str,
+    metrics: dict | None = None,
+    pulled_at: str | None = None,
+    context: dict | None = None,
+) -> dict:
+    """Build one traffic-source daily row."""
+    metrics = metrics or {}
+    context = context or {}
+    views = _int(_metric(metrics, "views"))
+    minutes = _float(_metric(metrics, "estimated_minutes_watched", "estimatedMinutesWatched"))
+    row = {
+        "schema_version": SCHEMA_VERSION,
+        "row_type": "traffic_source_daily",
+        "pulled_at": pulled_at or _text(context.get("pulled_at")) or _now_iso(),
+        "day": _text(context.get("day")),
+        "video_id": _text(video_id),
+        "insight_traffic_source_type": _text(source_type),
+        "insight_traffic_source_detail": _text(context.get("insight_traffic_source_detail")),
+        "metrics": {
+            "views": views,
+            "estimated_minutes_watched": minutes,
+            "average_view_duration": _float(_metric(metrics, "average_view_duration", "averageViewDuration")),
+            "average_view_percentage": _float(_metric(metrics, "average_view_percentage", "averageViewPercentage")),
+        },
+    }
+    validate_row(row, "traffic_source_daily")
+    return row
+
+
+def build_segment_row(
+    segment_type: str,
+    segment_value: str,
+    metrics: dict | None = None,
+    pulled_at: str | None = None,
+    context: dict | None = None,
+) -> dict:
+    """Build one country/device/subscribed-status analytics segment row."""
+    metrics = metrics or {}
+    context = context or {}
+    row = {
+        "schema_version": SCHEMA_VERSION,
+        "row_type": "segment_metric",
+        "pulled_at": pulled_at or _text(context.get("pulled_at")) or _now_iso(),
+        "segment_type": _text(segment_type),
+        "segment_value": _text(segment_value),
+        "video_id": _text(context.get("video_id")),
+        "metrics": {
+            "views": _int(_metric(metrics, "views")),
+            "estimated_minutes_watched": _float(
+                _metric(metrics, "estimated_minutes_watched", "estimatedMinutesWatched")
+            ),
+            "average_view_duration": _float(_metric(metrics, "average_view_duration", "averageViewDuration")),
+            "average_view_percentage": _float(_metric(metrics, "average_view_percentage", "averageViewPercentage")),
+            "subscribers_gained": _int(_metric(metrics, "subscribers_gained", "subscribersGained")),
+        },
+    }
+    validate_row(row, "segment_metric")
+    return row
+
+
 def build_trend_signal_row(
     source: str,
     topic: str,
@@ -213,6 +275,8 @@ def validate_row(row: dict, row_type: str | None = None) -> bool:
         "video_metric": ("pulled_at", "video_id", "metrics", "derived"),
         "variant_assignment": ("assigned_at", "axis", "variant", "story_id"),
         "retention_bucket": ("pulled_at", "video_id", "elapsed_video_time_ratio", "audience_watch_ratio"),
+        "traffic_source_daily": ("pulled_at", "video_id", "insight_traffic_source_type", "metrics"),
+        "segment_metric": ("pulled_at", "segment_type", "segment_value", "metrics"),
         "trend_signal": ("observed_at", "source", "topic", "score"),
     }.get(str(row.get("row_type")), ())
     for key in required:

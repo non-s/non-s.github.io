@@ -29,6 +29,7 @@ Axes shipped today
   - subtitle_density: low | medium
   - loop_style: callback | unfinished_mechanism | mirror_opening
   - cta_pattern: question_tease | sequel_tease | identity_follow
+  - end_card_style: subscribe_clean | loop_callback | series_tease
   - title_shape: curiosity_gap | mechanism_reveal | impossible_fact
 
 Each axis defines its variants and an `is_significant()` heuristic so
@@ -49,6 +50,9 @@ log = logging.getLogger(__name__)
 
 EXPERIMENTS_FILE = Path(os.environ.get(
     "EXPERIMENTS_FILE", "_data/analytics/experiments.json",
+))
+VARIANT_ASSIGNMENTS_FILE = Path(os.environ.get(
+    "VARIANT_ASSIGNMENTS_FILE", "_data/analytics/variant_assignments.jsonl",
 ))
 # How many Shorts a variant needs before the analyser will declare a
 # winner. 8 is the bare minimum for "more signal than noise" on YT
@@ -159,6 +163,15 @@ AXES: tuple[Axis, ...] = (
         description="Single low-friction CTA pattern inside metadata and pinned comment.",
     ),
     Axis(
+        name="end_card_style",
+        variants=(
+            "subscribe_clean",
+            "loop_callback",
+            "series_tease",
+        ),
+        description="Final on-frame CTA treatment measured separately from spoken CTA.",
+    ),
+    Axis(
         name="title_shape",
         variants=(
             "curiosity_gap",
@@ -212,6 +225,53 @@ def assign_for_production(axis_name: str, key: str,
 
 def assign_all_for_production(key: str) -> dict[str, str]:
     return {ax.name: assign_for_production(ax.name, key) for ax in AXES}
+
+
+def record_variant_assignments(assignments: dict,
+                               story_id: str,
+                               video_id: str = "",
+                               context: dict | None = None,
+                               path: Path | None = None) -> dict:
+    """Persist live A/B assignments once a Short reaches metadata output.
+
+    The write is idempotent per story/video/axis/variant so reruns do not
+    flood the analytics warehouse with duplicate assignments.
+    """
+    from utils.analytics_schema import build_variant_row, read_jsonl, write_jsonl_row
+
+    context = context or {}
+    p = path or VARIANT_ASSIGNMENTS_FILE
+    existing = {
+        (
+            str(row.get("story_id") or ""),
+            str(row.get("video_id") or ""),
+            str(row.get("axis") or ""),
+            str(row.get("variant") or ""),
+        )
+        for row in read_jsonl(p)
+    }
+    written = 0
+    skipped = 0
+    for axis, variant in sorted((assignments or {}).items()):
+        axis = str(axis or "")
+        variant = str(variant or "")
+        if not axis or not variant:
+            skipped += 1
+            continue
+        row = build_variant_row(axis, variant, story_id=story_id, video_id=video_id, context=context)
+        key = (
+            str(row.get("story_id") or ""),
+            str(row.get("video_id") or ""),
+            str(row.get("axis") or ""),
+            str(row.get("variant") or ""),
+        )
+        if key in existing:
+            skipped += 1
+            continue
+        write_jsonl_row(p, row)
+        existing.add(key)
+        written += 1
+    return {"path": str(p), "written": written, "skipped": skipped}
 
 
 # â”€â”€ Reading winners (set by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

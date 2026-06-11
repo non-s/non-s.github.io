@@ -41,7 +41,7 @@ from utils.captions import (
 )
 from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
-from utils.experiments import assign_all_for_production, assign_variant
+from utils.experiments import assign_all_for_production, assign_variant, record_variant_assignments
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
@@ -67,6 +67,7 @@ from utils.script_quality import evaluate as evaluate_script, should_block as qu
 from utils.seo_optimizer import optimise_story, seo_score
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
+from utils.tts_fallback import synthesize_with_coqui
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
 from utils.visual_ctr import select_best_frame
@@ -404,6 +405,11 @@ VOICE_RATE_OFFSETS = {
 }
 
 
+def _locale_from_voice(voice: str) -> str:
+    match = re.match(r"^([a-z]{2}-[A-Z]{2})-", str(voice or ""))
+    return match.group(1) if match else LANGUAGE
+
+
 async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
                           rate_override: str | None = None):
     """
@@ -424,10 +430,17 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
     import edge_tts
     rate = rate_override or VOICE_RATE_OFFSETS.get(voice, "+3%")
     communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
-    await asyncio.wait_for(
-        communicate.save(str(output_path)),
-        timeout=TTS_TIMEOUT_S,
-    )
+    try:
+        await asyncio.wait_for(
+            communicate.save(str(output_path)),
+            timeout=TTS_TIMEOUT_S,
+        )
+    except Exception:
+        fallback = synthesize_with_coqui(text, output_path, _locale_from_voice(voice))
+        if fallback:
+            log.info("  TTS recovered with local Coqui-compatible fallback")
+            return
+        raise
 
 
 async def text_to_speech_hook_then_body(hook: str, body: str,
@@ -1070,6 +1083,8 @@ def build_short_metadata(story: dict, video_path: Path,
         "swipe_risk":     dict((story.get("packaging") or {}).get("swipe_risk") or {}),
         "loop_plan":      dict((story.get("packaging") or {}).get("loop_plan") or {}),
         "loop_score":     (story.get("packaging") or {}).get("loop_score", 0),
+        "loop_render_applied": dict(story.get("loop_render_applied") or {}),
+        "end_card_text":  story.get("end_card_text", ""),
         "editorial_rulebook": dict((story.get("packaging") or {}).get("editorial_rulebook") or {}),
         "opportunity_score": dict(story.get("opportunity_score") or {}),
         "retention_score": dict(story.get("retention_score") or {}),
@@ -1165,6 +1180,42 @@ def _save_queue(queue: dict) -> None:
     tmp = QUEUE_FILE.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.replace(QUEUE_FILE)
+
+
+def _loop_enhanced_script(story: dict, script: str) -> str:
+    """Apply LoopGenerator's final callback line to the rendered narration."""
+    text = (script or "").strip()
+    plan = (story.get("packaging") or {}).get("loop_plan") or {}
+    final_line = _normalise_editorial_text(plan.get("final_line") or "")
+    if not text or not final_line:
+        return text
+    tail = _normalise_editorial_text(text[-220:]).lower()
+    if final_line.lower() in tail:
+        return text
+    if len(final_line.split()) > 14:
+        return text
+    story["loop_render_applied"] = {
+        "final_line": final_line,
+        "callback_keyword": plan.get("callback_keyword", ""),
+        "source": "loop_plan",
+    }
+    return f"{text.rstrip()} {final_line}"
+
+
+def _end_card_text_for_story(story: dict) -> str:
+    """Choose the visual CTA/end-card copy from measured experiment axes."""
+    experiments = story.get("experiments") or {}
+    cta_pattern = experiments.get("cta_pattern", "identity_follow")
+    end_card_style = experiments.get("end_card_style", "subscribe_clean")
+    loop_plan = (story.get("packaging") or {}).get("loop_plan") or {}
+    callback = _normalise_editorial_text(loop_plan.get("callback_keyword") or "").upper()
+    if end_card_style == "loop_callback" and callback and callback != "CUE":
+        return f"WATCH THE {callback} AGAIN"[:34]
+    if end_card_style == "series_tease" or cta_pattern == "sequel_tease":
+        return "NEXT WILD SIGNAL"
+    if cta_pattern == "question_tease":
+        return "COMMENT THE NEXT QUESTION"
+    return "FOLLOW FOR WILD NATURE"
 
 
 def _queue_to_story(qs: dict) -> dict:
@@ -1493,6 +1544,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         return None
 
     story = optimise_story(rewrite_if_needed(story))
+    queue_script = _loop_enhanced_script(story, story.get("script") or queue_script)
+    story["script"] = queue_script
 
     # The editor-in-chief is stricter than the script linter: it also
     # considers thumbnail readability, source footage and recent channel
@@ -1744,7 +1797,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
     # Every Short closes with one unambiguous channel-growth action.
-    cta_text = "FOLLOW FOR WILD NATURE FACTS"
+    cta_text = _end_card_text_for_story(story)
+    story["end_card_text"] = cta_text
     # Brand-bug watermark. Disabled by default because a second channel
     # mark adds visual noise to a compact Shorts frame.
     # Set CHANNEL_WATERMARK=@yourhandle to opt back in (useful if you're
@@ -1849,6 +1903,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             "; ".join(metadata["pre_publish_audit"].get("reasons") or []),
         )
         return None
+    metadata["variant_assignment_log"] = record_variant_assignments(
+        metadata.get("experiments") or {},
+        story_id=metadata.get("story_id") or metadata.get("story_slug") or slug,
+        video_id=metadata.get("video_id", ""),
+        context={
+            "category": metadata.get("category", ""),
+            "series": metadata.get("series", ""),
+            "story_format": metadata.get("story_format", ""),
+        },
+    )
     meta_path = video_path.with_suffix(".json")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
                          encoding="utf-8")

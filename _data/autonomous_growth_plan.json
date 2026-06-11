@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-10T23:58:58.376381+00:00",
+  "generated_at": "2026-06-11T00:52:49.479148+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -155,6 +155,16 @@
           "question_tease",
           "sequel_tease",
           "identity_follow"
+        ],
+        "state": "collecting_signal"
+      },
+      {
+        "axis": "end_card_style",
+        "winner": "",
+        "needs_samples": [
+          "subscribe_clean",
+          "loop_callback",
+          "series_tease"
         ],
         "state": "collecting_signal"
       },
@@ -343,12 +353,12 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 120,
-    "approved_candidates": 120,
+    "pending": 123,
+    "approved_candidates": 123,
     "lane_counts": {
       "fresh_experiment": 45,
       "proven_category": 56,
-      "sequence": 19
+      "sequence": 22
     },
     "top_candidates": [
       {
@@ -484,12 +494,12 @@
           "title_variants": [
             "Elephant remember faces by watching the body",
             "Asian Elephant turns the detail into the clue",
-            "Watch the detail when asian elephant signal"
+            "Watch the detail when asian elephant remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "ASIAN ELEPHANT SIGNAL"
+            "ASIAN ELEPHANT REMEMBER"
           ],
           "hook_variants": [
             "Elephant remember by using one visible body",
@@ -633,12 +643,12 @@
           "title_variants": [
             "Bears remember faces by watching the body",
             "Bears turns the detail into the clue",
-            "Watch the detail when bears signal"
+            "Watch the detail when bears remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "BEARS SIGNAL"
+            "BEARS REMEMBER"
           ],
           "hook_variants": [
             "Bears remember by using one visible body",
@@ -783,12 +793,12 @@
           "title_variants": [
             "Dolphins remember faces by watching the call",
             "Dolphins turns the detail into the clue",
-            "Watch the detail when dolphins signal"
+            "Watch the detail when dolphins remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "DOLPHINS SIGNAL"
+            "DOLPHINS REMEMBER"
           ],
           "hook_variants": [
             "Dolphins remember by using one visible call",
@@ -933,12 +943,12 @@
           "title_variants": [
             "Octopus remember faces by watching the body",
             "Octopus turns the detail into the clue",
-            "Watch the detail when octopus signal"
+            "Watch the detail when octopus remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "OCTOPUS SIGNAL"
+            "OCTOPUS REMEMBER"
           ],
           "hook_variants": [
             "Octopus remember by using one visible body",
@@ -1083,12 +1093,12 @@
           "title_variants": [
             "Whale remember faces by watching the body",
             "Whale Shark turns the detail into the clue",
-            "Watch the detail when whale shark signal"
+            "Watch the detail when whale shark remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "WHALE SHARK SIGNAL"
+            "WHALE SHARK REMEMBER"
           ],
           "hook_variants": [
             "Whale remember by using one visible body",
@@ -1233,12 +1243,12 @@
           "title_variants": [
             "Watch the tail when bears signal",
             "Bear turns the tail into the clue",
-            "Watch the tail when bear signal"
+            "Watch the tail when bear grow"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE TAIL",
-            "BEAR SIGNAL"
+            "BEAR GROW"
           ],
           "hook_variants": [
             "Bear grow because the tail changes the outcome",
@@ -1983,12 +1993,12 @@
           "title_variants": [
             "duck remember because of this cue",
             "Ducklings turns the detail into the clue",
-            "Watch the detail when ducklings signal"
+            "Watch the detail when ducklings remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE DETAIL",
-            "DUCKLINGS SIGNAL"
+            "DUCKLINGS REMEMBER"
           ],
           "hook_variants": [
             "duck remember by using one visible cue",
@@ -2133,12 +2143,12 @@
           "title_variants": [
             "sharks remember because of this nose",
             "Shark turns the detail into the clue",
-            "Watch the detail when shark signal"
+            "Watch the detail when shark remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "SHARK SIGNAL"
+            "SHARK REMEMBER"
           ],
           "hook_variants": [
             "sharks remember by using one visible nose",
@@ -2583,12 +2593,12 @@
           "title_variants": [
             "goats remember because of this cue",
             "Goat turns the detail into the clue",
-            "Watch the detail when goat signal"
+            "Watch the detail when goat remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE DETAIL",
-            "GOAT SIGNAL"
+            "GOAT REMEMBER"
           ],
           "hook_variants": [
             "goats remember by using one visible cue",
@@ -2896,6 +2906,155 @@
             "Lion is the example. Is this adaptation, instinct, or intelligence"
           ],
           "pinned_comment": "Lion is the example. Is this adaptation, instinct, or intelligence?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "sequel-43dc20637197ad24",
+        "title": "Ocean use one visible cue for a reason",
+        "category": "ocean",
+        "story_format": "body_superpower",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 94.7,
+          "approved": false,
+          "state": "rewrite",
+          "opportunity": {
+            "score": 54,
+            "signals": {
+              "viral_potential": 56,
+              "visual_potential": 61,
+              "replay_potential": 66,
+              "comment_potential": 30,
+              "educational_potential": 58,
+              "emotional_potential": 27,
+              "novelty": 71
+            },
+            "verdict": "discard",
+            "reasons": [
+              "low_opportunity_score"
+            ],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "retention": {
+            "score": 73,
+            "signals": {
+              "hook_score": 70,
+              "curiosity_score": 87,
+              "visual_score": 58,
+              "replay_score": 72,
+              "completion_prediction": 77
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 9,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 29,
+            "state": "weak",
+            "subscriber_probability": 0.041,
+            "return_probability": 0.081,
+            "comment_probability": 0.067,
+            "robotic_title": {
+              "risk": 34,
+              "state": "revise",
+              "hits": [
+                "\\bone visible cue for a reason\\b"
+              ]
+            },
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.168,
+              "sample_size": 5,
+              "minimum_sample_size": 15,
+              "data_quality": "observed",
+              "data_quality_score": 0.667,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.376,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.187,
+            "sample_size": 11,
+            "minimum_sample_size": 35,
+            "data_quality": "estimated",
+            "data_quality_score": 0.61,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.39,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
+          },
+          "category": "ocean",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 119.72,
+        "packaging_lab": {
+          "title_variants": [
+            "Ocean use one visible cue for a reason",
+            "Ocean turns the movement into the clue",
+            "Watch the movement when ocean trick"
+          ],
+          "thumbnail_variants": [
+            "OCEAN PART 2",
+            "WATCH THE MOVEMENT",
+            "OCEAN TRICK"
+          ],
+          "hook_variants": [
+            "Ocean trick because the movement changes the outcome",
+            "Why ocean trick is not random",
+            "Watch the movement again. What feels more impossible: the ocean's depth, pressure, or creatures"
+          ],
+          "pinned_comment": "Watch the movement again. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3336,12 +3495,12 @@
           "title_variants": [
             "donkeys remember because of this ears",
             "Donkey turns the detail into the clue",
-            "Watch the detail when donkey signal"
+            "Watch the detail when donkey remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "DONKEY SIGNAL"
+            "DONKEY REMEMBER"
           ],
           "hook_variants": [
             "donkeys remember by using one visible ears",
@@ -3485,12 +3644,12 @@
           "title_variants": [
             "Sheep remember faces by watching the eyes",
             "Sheep turns the eyes into the clue",
-            "Watch the eyes when sheep signal"
+            "Watch the eyes when sheep remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE EYES",
-            "SHEEP SIGNAL"
+            "SHEEP REMEMBER"
           ],
           "hook_variants": [
             "Sheep remember by using one visible eyes",
@@ -3637,12 +3796,12 @@
           "title_variants": [
             "Monkeys remember because of this eyes",
             "Monkeys turns the eyes into the clue",
-            "Watch the eyes when monkeys signal"
+            "Watch the eyes when monkeys remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE EYES",
-            "MONKEYS SIGNAL"
+            "MONKEYS REMEMBER"
           ],
           "hook_variants": [
             "Monkeys remember by using one visible eyes",
@@ -3941,12 +4100,12 @@
           "title_variants": [
             "Cows remember faces by watching the ears",
             "Cows turns the detail into the clue",
-            "Watch the detail when cows signal"
+            "Watch the detail when cows remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "COWS SIGNAL"
+            "COWS REMEMBER"
           ],
           "hook_variants": [
             "Cows remember by using one visible ears",
@@ -4093,12 +4252,12 @@
           "title_variants": [
             "Horses remember faces by watching the ears",
             "Horses turns the detail into the clue",
-            "Watch the detail when horses signal"
+            "Watch the detail when horses remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "HORSES SIGNAL"
+            "HORSES REMEMBER"
           ],
           "hook_variants": [
             "Horses remember by using one visible ears",
@@ -4245,12 +4404,12 @@
           "title_variants": [
             "chickens remember because of this face",
             "Chicken turns the detail into the clue",
-            "Watch the detail when chicken signal"
+            "Watch the detail when chicken remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "CHICKEN SIGNAL"
+            "CHICKEN REMEMBER"
           ],
           "hook_variants": [
             "chickens remember by using one visible face",
@@ -4397,12 +4556,12 @@
           "title_variants": [
             "cows remember because of this face",
             "Dairy Cows turns the detail into the clue",
-            "Watch the detail when dairy cows signal"
+            "Watch the detail when dairy cows remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "DAIRY COWS SIGNAL"
+            "DAIRY COWS REMEMBER"
           ],
           "hook_variants": [
             "cows remember by using one visible face",
@@ -4549,12 +4708,12 @@
           "title_variants": [
             "Cows remember faces by watching the call",
             "Cows turns the detail into the clue",
-            "Watch the detail when cows signal"
+            "Watch the detail when cows remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "COWS SIGNAL"
+            "COWS REMEMBER"
           ],
           "hook_variants": [
             "Cows remember by using one visible call",
@@ -4711,155 +4870,6 @@
             "Watch the paws again. Is this adaptation, instinct, or intelligence"
           ],
           "pinned_comment": "Watch the paws again. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "cb4c6832c4fbfa16",
-        "title": "Utah Desert Rocks turns the rock into the clue",
-        "category": "geology",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 65,
-            "signals": {
-              "viral_potential": 75,
-              "visual_potential": 59,
-              "replay_potential": 72,
-              "comment_potential": 54,
-              "educational_potential": 79,
-              "emotional_potential": 44,
-              "novelty": 59
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 73,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 79,
-              "visual_score": 50,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 9,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 79,
-            "state": "strong",
-            "subscriber_probability": 0.113,
-            "return_probability": 0.242,
-            "comment_probability": 0.207,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "debate_comment",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.167,
-            "sample_size": 5,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.738,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.375,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.17."
-          },
-          "category": "geology",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 118.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Utah Desert Rocks turns the rock into the clue",
-            "Watch the rock when utah desert rocks remember",
-            "Utah Desert Rocks is not doing this by accident"
-          ],
-          "thumbnail_variants": [
-            "WATCH THE ROCK",
-            "UTAH DESERT ROCKS REMEMBER",
-            "ROCK EXPLAINS IT"
-          ],
-          "hook_variants": [
-            "Utah Desert Rocks remember because the rock changes the outcome",
-            "Utah Desert Rocks turns the rock into the clue",
-            "Watch the rock again. Does this make Earth feel stable or constantly moving"
-          ],
-          "pinned_comment": "Watch the rock again. Does this make Earth feel stable or constantly moving?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       }

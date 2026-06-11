@@ -60,6 +60,7 @@ def build_review(root: Path = ROOT) -> dict:
         "subtitle_density",
         "loop_style",
         "cta_pattern",
+        "end_card_style",
         "title_shape",
         "narrator_voice",
     ]

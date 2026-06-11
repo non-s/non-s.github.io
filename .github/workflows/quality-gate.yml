@@ -67,14 +67,16 @@ jobs:
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
-            tests/test_analytics_schema.py tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
+            tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
+            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
           python -m ruff check \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
-            tests/test_analytics_schema.py tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
+            tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
+            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt
@@ -85,3 +87,19 @@ jobs:
       - name: "Run automation health audit"
         run: |
           python scripts/run_intelligence_suite.py dashboard --strict
+
+      - name: "Dashboard smoke build"
+        run: python scripts/build_dashboard.py
+
+      - name: "Upload failure diagnostics"
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gate-diagnostics
+          path: |
+            _data/*.json
+            _data/analytics/*.json
+            _data/analytics/*.jsonl
+            _data/reports/*.md
+            _site/index.html
+          if-no-files-found: ignore

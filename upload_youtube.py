@@ -172,6 +172,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "publish_score", "youtube_brain", "packaging", "pinned_comment",
         "opportunity_score", "retention_score", "weak_content",
         "subscriber_conversion",
+        "loop_render_applied", "end_card_text", "variant_assignment_log",
         "cta_prompt", "replay_prompt", "youtube_operations",
         "audience_strategy",
     )
@@ -191,6 +192,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "publish_score": {}, "youtube_brain": {}, "packaging": {}, "pinned_comment": "",
         "opportunity_score": {}, "retention_score": {}, "weak_content": {},
         "subscriber_conversion": {},
+        "loop_render_applied": {}, "end_card_text": "", "variant_assignment_log": {},
         "cta_prompt": "", "replay_prompt": "", "youtube_operations": {},
         "audience_strategy": {},
     }

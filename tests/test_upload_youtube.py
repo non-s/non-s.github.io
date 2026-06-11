@@ -78,6 +78,9 @@ def test_done_marker_preserves_production_quality_signals():
         "monetization_audit": {"approved": True, "score": 94},
         "seo_score": {"score": 96},
         "seo_optimisation": {"applied": True},
+        "loop_render_applied": {"final_line": "Now the wing at the start makes sense."},
+        "end_card_text": "WATCH THE WING AGAIN",
+        "variant_assignment_log": {"written": 7},
         "cta_prompt": "Follow for more animal facts.",
         "replay_prompt": "End by pointing back to the wing.",
         "youtube_operations": {"enabled": True},
@@ -95,6 +98,9 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["monetization_audit"]["score"] == 94
     assert marker["seo_score"]["score"] == 96
     assert marker["seo_optimisation"]["applied"] is True
+    assert marker["loop_render_applied"]["final_line"].startswith("Now the wing")
+    assert marker["end_card_text"] == "WATCH THE WING AGAIN"
+    assert marker["variant_assignment_log"]["written"] == 7
     assert marker["cta_prompt"] == "Follow for more animal facts."
     assert marker["replay_prompt"].startswith("End by")
     assert marker["youtube_operations"]["enabled"] is True

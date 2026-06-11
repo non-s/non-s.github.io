@@ -1,4 +1,5 @@
 from utils.ab_selector import BayesianABSelector
+from utils.experiments import record_variant_assignments, variant_choices
 
 
 def test_live_variant_is_deterministic_without_winner():
@@ -32,3 +33,31 @@ def test_insufficient_samples_do_not_crown_winner():
     )
 
     assert ranked["winner"] == ""
+
+
+def test_end_card_style_axis_exists():
+    assert set(variant_choices("end_card_style")) == {
+        "subscribe_clean",
+        "loop_callback",
+        "series_tease",
+    }
+
+
+def test_record_variant_assignments_is_idempotent(tmp_path):
+    path = tmp_path / "variant_assignments.jsonl"
+
+    first = record_variant_assignments(
+        {"hook_style": "outcome_first", "end_card_style": "loop_callback"},
+        "story-1",
+        context={"category": "ocean"},
+        path=path,
+    )
+    second = record_variant_assignments(
+        {"hook_style": "outcome_first", "end_card_style": "loop_callback"},
+        "story-1",
+        context={"category": "ocean"},
+        path=path,
+    )
+
+    assert first["written"] == 2
+    assert second["written"] == 0
