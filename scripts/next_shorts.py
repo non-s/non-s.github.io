@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
 
 from utils.publish_score import score_story
 from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment
+from utils.agency_gate import filter_candidates
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/next_shorts.json")
@@ -26,13 +27,15 @@ def main() -> int:
     rows = []
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)
-    for story in data.get("stories") or []:
-        if story.get("consumed"):
+    candidates, _held = filter_candidates([story for story in data.get("stories") or [] if not story.get("consumed")])
+    for story in candidates:
+        queue_state = (story.get("queue_prune") or {}).get("state")
+        if queue_state and queue_state != "publish_ready":
             continue
         score = score_story(story)
-        if score["state"] != "reject":
+        if score.get("approved") is True and score.get("state") == "publish_ready":
             lane_adjustment = mix_adjustment(story)
-            score = {**score, "score": round(float(score.get("score") or 0) + lane_adjustment, 1)}
+            score = {**score, "score": round(min(100.0, float(score.get("score") or 0) + lane_adjustment), 1)}
             rows.append(
                 {
                     "id": story.get("id", ""),

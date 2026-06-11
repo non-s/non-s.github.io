@@ -12,7 +12,9 @@ def audit_rights(item: dict) -> dict:
     warnings = []
     if source and source not in ALLOWED_SOURCES:
         reasons.append("unknown_source")
-    if source in {"pexels", "pixabay"} and "license" not in license_text:
+    if not license_text:
+        warnings.append("missing_source_license")
+    elif source in {"pexels", "pixabay"} and "license" not in license_text:
         warnings.append("missing_source_license")
     if source != "remake factory" and not (item.get("source_url") or item.get("url")):
         reasons.append("missing_source_url")

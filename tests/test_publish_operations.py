@@ -64,6 +64,8 @@ def test_rescue_story_rewrites_editorial_template_but_not_visual_mismatch():
     assert applied is True
     assert rescued["local_rewrite"]["applied"] is True
     assert "hiding in plain sight" not in rescued["seo_title"].lower()
+    assert "not random" not in rescued["script"].lower()
+    assert "to use" not in rescued["title"].lower()
     assert blocked is False
     assert unchanged is story
 

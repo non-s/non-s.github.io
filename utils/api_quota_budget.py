@@ -109,7 +109,7 @@ def should_block_run(
     daily_budget: int = DEFAULT_DAILY_BUDGET,
 ) -> dict:
     env = env or os.environ
-    mode = str(env.get("QUOTA_GUARD_MODE", "warn")).lower()
+    mode = str(env.get("QUOTA_GUARD_MODE", "block")).lower()
     enabled = _bool("QUOTA_GUARD_ENABLED", True, env)
     max_ratio = _float("QUOTA_GUARD_MAX_DAILY_RATIO", 0.7, env)
     spent = daily_spend(path)

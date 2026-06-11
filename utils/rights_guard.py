@@ -8,7 +8,7 @@ from pathlib import Path
 
 PROVENANCE_FILE = Path("_data/source_provenance.jsonl")
 BRAND_TERMS = {"disney", "netflix", "nike", "coca-cola", "national geographic", "nat geo", "bbc"}
-PERSON_TERMS = {"person", "people", "human", "face", "celebrity", "interview"}
+PERSON_TERMS = {"person", "people", "human", "celebrity", "interview"}
 
 
 def _text(value: object) -> str:
@@ -38,7 +38,7 @@ def source_provenance(meta: dict | None = None) -> dict:
 def evaluate_rights_guard(meta: dict | None = None) -> dict:
     meta = meta or {}
     provenance = source_provenance(meta)
-    text = " ".join(_text(meta.get(key)) for key in ("title", "description", "script", "source_url", "source"))
+    text = " ".join(_text(meta.get(key)) for key in ("title", "description", "source_url", "source"))
     brand_hits = _risk_terms(text, BRAND_TERMS)
     person_hits = _risk_terms(text, PERSON_TERMS)
     license_text = provenance["source_license"].lower()

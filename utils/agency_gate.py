@@ -8,6 +8,10 @@ from pathlib import Path
 from utils.fact_ledger import duplicate_angle_ids
 from utils.retention_surgeon import diagnose
 from utils.story_intelligence import classify_format
+from utils.claim_risk import evaluate_claim_risk
+from utils.editorial_guard import editorial_verdict
+from utils.rights_audit import audit_rights
+from utils.rights_guard import evaluate_rights_guard
 
 REWRITE_QUEUE = Path("_data/retention_rewrite_queue.json")
 CATEGORY_RECOVERY = Path("_data/category_recovery.json")
@@ -117,6 +121,33 @@ def recovery_allows(story: dict, plan: dict) -> bool:
     return hook_style in {"outcome_first", ""} or bool(story.get("remake_of"))
 
 
+def production_allows(story: dict) -> tuple[bool, list[str], dict]:
+    """Apply non-negotiable source, fact and copy gates."""
+    reasons: list[str] = []
+    rights = audit_rights(story)
+    rights_guard = evaluate_rights_guard(story)
+    claim = evaluate_claim_risk(story)
+    editorial = editorial_verdict(story)
+    if not rights.get("approved"):
+        reasons.extend(f"rights_{reason}" for reason in rights.get("reasons") or [])
+    if rights.get("warnings"):
+        reasons.extend(f"rights_{warning}" for warning in rights.get("warnings") or [])
+    if rights_guard.get("state") != "approved":
+        reasons.extend(f"rights_guard_{reason}" for reason in rights_guard.get("reasons") or [])
+    elif "missing_source_license" in (rights_guard.get("reasons") or []):
+        reasons.append("rights_missing_source_license")
+    if claim.get("level") == "block":
+        reasons.append("fact_guard_block")
+    if not editorial.get("approved"):
+        reasons.extend(f"editorial_{issue}" for issue in editorial.get("issues") or [])
+    return not reasons, sorted(set(reasons)), {
+        "rights_audit": rights,
+        "rights_guard": rights_guard,
+        "claim_risk": claim,
+        "editorial_guard": editorial,
+    }
+
+
 def evaluate_story(story: dict,
                    rewrite_ids: set[str] | None = None,
                    recovery_plans: dict[str, dict] | None = None,
@@ -138,11 +169,15 @@ def evaluate_story(story: dict,
     success_ok, success_reasons = success_allows(story, success_plan)
     if not success_ok:
         reasons.extend(success_reasons)
+    production_ok, production_reasons, checks = production_allows(story)
+    if not production_ok:
+        reasons.extend(production_reasons)
     approved = not reasons
     return {
         "approved": approved,
-        "reasons": reasons,
+        "reasons": sorted(set(reasons)),
         "state": "approved" if approved else "held",
+        "checks": checks,
     }
 
 

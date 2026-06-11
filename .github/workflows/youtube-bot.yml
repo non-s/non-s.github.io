@@ -48,10 +48,12 @@ jobs:
       MIN_QUEUE_OPPORTUNITY_SCORE: ${{ vars.MIN_QUEUE_OPPORTUNITY_SCORE || '50' }}
       OPENING_GATE_MODE: ${{ vars.OPENING_GATE_MODE || 'warn' }}
       OPENING_GATE_MIN_SCORE: ${{ vars.OPENING_GATE_MIN_SCORE || '78' }}
-      FACT_GUARD_MODE: ${{ vars.FACT_GUARD_MODE || 'warn' }}
-      RIGHTS_GUARD_MODE: ${{ vars.RIGHTS_GUARD_MODE || 'warn' }}
+      FACT_GUARD_MODE: ${{ vars.FACT_GUARD_MODE || 'block' }}
+      RIGHTS_GUARD_MODE: ${{ vars.RIGHTS_GUARD_MODE || 'block' }}
       ORIGINALITY_PACK_MODE: ${{ vars.ORIGINALITY_PACK_MODE || 'warn' }}
-      UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'warn' }}
+      UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
+      QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
+      OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '1' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2
@@ -121,6 +123,14 @@ jobs:
         env:
           WORKFLOW_DISPATCH_REASON: ${{ github.event.inputs.reason || '' }}
         run: |
+          if [ "${PUBLISH_QUOTA_BLOCKED:-0}" = "1" ]; then
+            echo '{"decision":"skip_quota_guard","reasons":["quota_guard_blocked"]}'
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+            echo "### Publish window decision" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Decision: \`skip_quota_guard\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Reasons: \`quota_guard_blocked\`" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
           decision="$(python scripts/publish_window.py --json)"
           echo "$decision"
           should_publish="$(DECISION_JSON="$decision" python - <<'PY'

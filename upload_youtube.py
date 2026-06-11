@@ -598,7 +598,7 @@ def main() -> None:
         duplicate = duplicate_uploaded(intent)
         meta["upload_intent_key"] = intent["idempotency_key"]
         meta["upload_intent"] = intent
-        if duplicate and os.environ.get("UPLOAD_IDEMPOTENCY_MODE", "warn").strip().lower() == "block":
+        if duplicate and os.environ.get("UPLOAD_IDEMPOTENCY_MODE", "block").strip().lower() == "block":
             log.warning(
                 "Skipping duplicate upload intent %s already published as %s",
                 intent["idempotency_key"],

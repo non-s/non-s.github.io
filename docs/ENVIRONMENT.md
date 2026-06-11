@@ -41,6 +41,7 @@
 | `FACT_GUARD_MODE` | no | Claim risk mode: `warn` or `block`. |
 | `RIGHTS_GUARD_MODE` | no | Rights guard mode: `warn` or `block`. |
 | `ORIGINALITY_PACK_MODE` | no | Originality pack completeness mode: `warn` or `block`. |
+| `OPS_GUARDIAN_ENFORCE` | no | Applies paused-topic guidance during candidate selection. Defaults to `1`. |
 | `SESSION_GRAPH_ENABLED` | no | Enables post-upload handoff, sequel and next-session artifacts. |
 | `COMMENT_TO_SHORT_ENABLED` | no | Allows strong viewer questions to become queue ideas. |
 | `COMMENT_TO_SHORT_MIN_SCORE` | no | Minimum comment idea score before it can enter the queue. |
@@ -75,16 +76,17 @@
 | `OPENING_MIN_SCORE` | `72` | production | Minimum opening audit score. | Lower threshold or disable strict mode. |
 | `OPENING_GATE_MODE` | `warn` | production | Opening gate v2 mode: off, warn or block. | Use warn. |
 | `OPENING_GATE_MIN_SCORE` | `78` | production | Minimum opening gate v2 score. | Lower threshold or set OPENING_GATE_MODE=off. |
-| `FACT_GUARD_MODE` | `warn` | production | Claim risk mode: warn or block. | Use warn. |
-| `RIGHTS_GUARD_MODE` | `warn` | production | Rights guard mode: warn or block. | Use warn. |
+| `FACT_GUARD_MODE` | `block` | production | Claim risk mode: warn or block. | Use warn. |
+| `RIGHTS_GUARD_MODE` | `block` | production | Rights guard mode: warn or block. | Use warn. |
 | `ORIGINALITY_PACK_MODE` | `warn` | production | Originality pack completeness mode: warn or block. | Use warn. |
 | `SESSION_GRAPH_ENABLED` | `1` | growth | Build post-upload handoff and sequel graph artifacts. | Set to 0. |
 | `COMMENT_TO_SHORT_ENABLED` | `1` | growth | Promote strong viewer questions into Short ideas. | Set to 0. |
 | `COMMENT_TO_SHORT_MIN_SCORE` | `64` | growth | Minimum score to add a comment idea to the queue. | Raise threshold or disable. |
 | `COMMENT_TO_SHORT_MAX_ITEMS` | `6` | growth | Maximum comment ideas added per run. | Lower limit. |
 | `QUOTA_GUARD_ENABLED` | `1` | operations | Block runs projected to exceed quota budget. | Set to 0 for passive logging. |
-| `QUOTA_GUARD_MODE` | `warn` | operations | Quota guard mode: warn or block. | Use warn. |
-| `UPLOAD_IDEMPOTENCY_MODE` | `warn` | operations | Upload idempotency mode: warn or block duplicate completed intents. | Use warn. |
+| `QUOTA_GUARD_MODE` | `block` | operations | Quota guard mode: warn or block. | Use warn. |
+| `UPLOAD_IDEMPOTENCY_MODE` | `block` | operations | Upload idempotency mode: warn or block duplicate completed intents. | Use warn. |
+| `OPS_GUARDIAN_ENFORCE` | `1` | operations | Apply ops guardian paused-topic guidance during candidate selection. | Set to 0. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.70` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |

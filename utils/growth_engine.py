@@ -20,6 +20,7 @@ from pathlib import Path
 from utils.nature_strategy import NATURE_TOPICS
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import assess_confidence
+from utils.editorial_guard import editorial_issues
 
 MEMORY_PATH = Path("_data/format_memory.json")
 WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
@@ -537,12 +538,57 @@ def _subject(story: dict) -> str:
     return category.title()
 
 
+def _display_subject(subject: str) -> str:
+    """Return a short plural display subject for grammar-safe packaging."""
+    text = re.sub(r"\s+", " ", str(subject or "Nature").strip()).title()
+    lower = text.lower()
+    irregular = {
+        "deer": "Deer",
+        "earth": "Earth systems",
+        "weather": "Weather patterns",
+        "wildlife": "Wildlife",
+        "fish": "Fish",
+        "sheep": "Sheep",
+        "fungus": "Fungi",
+        "fungi": "Fungi",
+        "octopus": "Octopuses",
+        "cactus": "Cacti",
+        "goose": "Geese",
+        "mouse": "Mice",
+    }
+    if lower in irregular:
+        return irregular[lower]
+    if len(text.split()) > 1:
+        return text
+    if lower.endswith("s"):
+        return text
+    if lower.endswith("y") and len(lower) > 1 and lower[-2] not in "aeiou":
+        return text[:-1] + "ies"
+    if lower.endswith(("ch", "sh", "x", "z")):
+        return text + "es"
+    return text + "s"
+
+
 def _action(story: dict) -> str:
     text = _text(story)
     for term in ACTION_TERMS:
         if re.search(r"\b" + re.escape(term) + r"\b", text):
             return term
     return "changes"
+
+
+def _plural_action(action: str) -> str:
+    action = str(action or "change").strip().lower()
+    irregular = {
+        "changes": "change",
+        "pulls": "pull",
+        "follows": "follow",
+        "fakes": "fake",
+        "tricks": "trick",
+    }
+    if action in irregular:
+        return irregular[action]
+    return action
 
 
 def _cue(story: dict) -> str:
@@ -559,19 +605,19 @@ def _cue(story: dict) -> str:
 
 
 def generate_packaging_options(story: dict) -> dict:
-    subject = _subject(story)
-    action = _action(story)
+    subject = _display_subject(_subject(story))
+    action = _plural_action(_action(story))
     cue = _cue(story)
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
     titles = [
         current_title,
-        f"{subject} turns the {cue} into the clue",
+        f"{subject} turn the {cue} into the clue",
         f"Watch the {cue} when {subject.lower()} {action}",
-        f"{subject} is not doing this by accident",
+        f"{subject} reveal the next move through {cue}",
         f"The {cue} that explains {subject.lower()}",
-        f"{subject} makes nature feel engineered",
-        f"{subject} changes the story in seconds",
-        f"Why {subject.lower()} {action} is not random",
+        f"{subject} show nature's engineering",
+        f"{subject} change the story in seconds",
+        f"{subject} reveal the clue before the move",
         f"{subject}: watch this {cue}",
         f"This {cue} changes the whole story",
     ]
@@ -580,7 +626,7 @@ def generate_packaging_options(story: dict) -> dict:
         f"WATCH THE {cue}".upper(),
         f"{subject} {action}".upper(),
         f"{cue} EXPLAINS IT".upper(),
-        "NOT RANDOM",
+        "WATCH THIS CLUE",
         "TINY CLUE",
         "NATURE TRICK",
         "LOOK CLOSER",
@@ -589,10 +635,10 @@ def generate_packaging_options(story: dict) -> dict:
     ]
     hooks = [
         str(story.get("hook") or "").strip(),
-        f"{subject} {action} because the {cue} changes the outcome.",
+        f"Watch the {cue}; the outcome changes right after it.",
         f"Watch the {cue}; it gives away the mechanism.",
-        f"This {cue} is not random.",
-        f"{subject} turns one detail into the whole explanation.",
+        f"This {cue} changes what happens next.",
+        f"{subject} turn one detail into the whole explanation.",
     ]
 
     def _dedupe(items: list[str], limit: int) -> list[str]:
@@ -636,6 +682,8 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
             audience_bonus += int((_weight(audience, "format_subscribers", fmt) - 1) * 16)
     score = int(topic * 0.22 + retention * 0.42 + thumb_score * 0.18 + pattern_bonus + audience_bonus)
     score += _distribution_adjustment(candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None)
+    if editorial_issues(candidate):
+        score -= 60
     return max(0, min(100, score))
 
 
@@ -643,9 +691,9 @@ def select_best_packaging(story: dict, memory: dict | None = None) -> dict:
     options = generate_packaging_options(story)
     best = None
     scored = []
-    for title in options["titles"]:
-        for thumb in options["thumbnail_texts"]:
-            for hook in options["hooks"]:
+    for title in options["titles"][:5]:
+        for thumb in options["thumbnail_texts"][:5]:
+            for hook in options["hooks"][:3]:
                 score = score_package_variant(story, title, thumb, hook, memory=memory)
                 row = {"score": score, "title": title, "thumbnail_text": thumb, "hook": hook}
                 scored.append(row)

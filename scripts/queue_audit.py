@@ -12,8 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.publish_score import score_story
-from utils.queue_pruner import enriched_score, prune_queue
+from utils.queue_pruner import prune_queue
 from utils.rights_audit import audit_rights
 
 QUEUE = Path("_data/stories_queue.json")
@@ -25,25 +24,27 @@ def main() -> int:
     rows = []
     states = Counter()
     rights = Counter()
-    _, rejected, prune_summary = prune_queue(data)
-    for story in data.get("stories") or []:
+    pruned, rejected, prune_summary = prune_queue(data)
+    for story in pruned.get("stories") or []:
         if story.get("consumed"):
             continue
-        enriched = enriched_score(story)
-        score = score_story(story)
+        score = story.get("publish_score") or {}
         right = audit_rights(story)
-        states[enriched["state"]] += 1
+        queue_prune = story.get("queue_prune") or {}
+        state = str(queue_prune.get("state") or score.get("state") or "unknown")
+        states[state] += 1
         rights["approved" if right["approved"] else "rejected"] += 1
         rows.append({
             "id": story.get("id", ""),
             "title": story.get("seo_title") or story.get("title") or "",
             "category": story.get("category", ""),
             "publish_score": score,
-            "editorial_state": enriched["state"],
-            "queue_score": enriched["score"],
-            "youtube_brain": enriched["youtube_brain"],
-            "packaging": enriched["packaging"],
+            "editorial_state": state,
+            "queue_score": queue_prune.get("score", score.get("score", 0)),
+            "youtube_brain": story.get("youtube_brain") or {},
+            "packaging": story.get("packaging") or {},
             "rights_audit": right,
+            "editorial_guard": score.get("editorial_guard") or {},
         })
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

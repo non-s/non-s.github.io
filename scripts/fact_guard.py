@@ -30,7 +30,12 @@ def _read_json(path: Path, default):
 
 def _items(root: Path) -> list[dict]:
     queue = _read_json(root / "_data" / "stories_queue.json", {})
-    stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict)]
+    stories = []
+    for item in queue.get("stories") or []:
+        if isinstance(item, dict):
+            scoped = dict(item)
+            scoped["_scope"] = "consumed_queue" if item.get("consumed") else "pending_queue"
+            stories.append(scoped)
     metas = []
     for directory in (root / "_videos", root / "_videos_pt-BR"):
         if directory.exists():
@@ -38,6 +43,7 @@ def _items(root: Path) -> list[dict]:
                 data = _read_json(path, {})
                 if isinstance(data, dict):
                     data["_path"] = str(path.relative_to(root))
+                    data["_scope"] = "rendered_metadata"
                     metas.append(data)
     return stories + metas
 
@@ -87,6 +93,7 @@ def build_fact_guard(root: Path = ROOT) -> dict:
                 "level": risk["level"],
                 "claim_count": risk["claim_count"],
                 "has_source": risk["has_source"],
+                "scope": str(item.get("_scope") or "unknown"),
             }
         )
         source_rows.append(_source_row(item))
@@ -94,12 +101,18 @@ def build_fact_guard(root: Path = ROOT) -> dict:
     counts: dict[str, int] = {}
     for row in rows:
         counts[row["level"]] = counts.get(row["level"], 0) + 1
+    pending_counts: dict[str, int] = {}
+    for row in rows:
+        if row["scope"] == "pending_queue":
+            pending_counts[row["level"]] = pending_counts.get(row["level"], 0) + 1
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "items": len(rows),
         "counts": counts,
+        "pending_counts": pending_counts,
         "sources_written": written,
         "blocked": [row for row in rows if row["level"] == "block"][:20],
+        "blocked_pending": [row for row in rows if row["scope"] == "pending_queue" and row["level"] == "block"][:20],
     }
     out = root / "_data" / "fact_guard_report.json"
     out.parent.mkdir(parents=True, exist_ok=True)

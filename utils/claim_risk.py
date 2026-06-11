@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 
 RISK_TERMS = {"only", "always", "never", "first", "largest", "fastest", "smallest", "deadliest", "proves"}
-SOURCE_KEYS = ("source_url", "commons_page_url", "gbif", "scientific_name", "source_license")
+SOURCE_KEYS = ("source_url", "url", "commons_page_url", "gbif", "scientific_name", "source_license")
 
 
 def extract_claims(text: str) -> list[str]:

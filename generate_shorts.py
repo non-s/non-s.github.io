@@ -40,6 +40,7 @@ from utils.captions import (
     write_ass,
 )
 from utils.digest import load_blocked_slugs
+from utils.editorial_guard import editorial_issues, editorial_verdict
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant, record_variant_assignments
 from utils.first_frame_audit import audit_opening_frames
@@ -362,6 +363,7 @@ def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str
         issues.append("repetitive_title_template")
     if any(phrase in lower_script for phrase in GENERIC_SCRIPT_PHRASES):
         issues.append("generic_script_template")
+    issues.extend(editorial_issues(qs))
     words = re.findall(r"[a-z]+", lower_script)
     if words:
         top_word_count = max(words.count(word) for word in set(words))
@@ -1182,6 +1184,7 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
     metadata["rights_guard"] = evaluate_rights_guard(metadata)
     metadata["search_enrichment"] = enrich_search_terms(metadata)
     metadata["seo_lint"] = lint_metadata(metadata)
+    metadata["editorial_guard"] = editorial_verdict(metadata)
     return metadata
 
 
@@ -1969,7 +1972,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["rights_guard"] = evaluate_rights_guard(metadata)
     write_source_provenance(metadata)
     if metadata["rights_guard"].get("state") == "block" or (
-        os.environ.get("RIGHTS_GUARD_MODE", "warn").strip().lower() == "block"
+        os.environ.get("RIGHTS_GUARD_MODE", "block").strip().lower() == "block"
         and metadata["rights_guard"].get("state") == "manual_review"
     ):
         log.warning(
@@ -1986,7 +1989,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         record_rejection(metadata, metadata["rights_audit"].get("reasons") or [], stage="rights_audit")
         return None
     metadata["claim_risk"] = evaluate_claim_risk(metadata)
-    if metadata["claim_risk"].get("level") == "block" and os.environ.get("FACT_GUARD_MODE", "warn").lower() == "block":
+    metadata["editorial_guard"] = editorial_verdict(metadata)
+    if not metadata["editorial_guard"].get("approved", True):
+        log.warning(
+            "  Skipping Short - editorial guard held copy: %s",
+            "; ".join(metadata["editorial_guard"].get("issues") or []),
+        )
+        record_rejection(metadata, metadata["editorial_guard"].get("issues") or [], stage="editorial_guard")
+        return None
+    if metadata["claim_risk"].get("level") == "block" and os.environ.get("FACT_GUARD_MODE", "block").lower() == "block":
         log.warning("  Skipping Short - fact guard blocked unsupported claims")
         record_rejection(metadata, metadata["claim_risk"].get("high_risk_claims") or [], stage="fact_guard")
         return None

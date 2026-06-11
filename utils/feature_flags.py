@@ -81,8 +81,8 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Minimum opening gate v2 score.",
         "Lower threshold or set OPENING_GATE_MODE=off.",
     ),
-    FeatureFlag("FACT_GUARD_MODE", "warn", "production", "Claim risk mode: warn or block.", "Use warn."),
-    FeatureFlag("RIGHTS_GUARD_MODE", "warn", "production", "Rights guard mode: warn or block.", "Use warn."),
+    FeatureFlag("FACT_GUARD_MODE", "block", "production", "Claim risk mode: warn or block.", "Use warn."),
+    FeatureFlag("RIGHTS_GUARD_MODE", "block", "production", "Rights guard mode: warn or block.", "Use warn."),
     FeatureFlag(
         "ORIGINALITY_PACK_MODE",
         "warn",
@@ -111,13 +111,20 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Block runs projected to exceed quota budget.",
         "Set to 0 for passive logging.",
     ),
-    FeatureFlag("QUOTA_GUARD_MODE", "warn", "operations", "Quota guard mode: warn or block.", "Use warn."),
+    FeatureFlag("QUOTA_GUARD_MODE", "block", "operations", "Quota guard mode: warn or block.", "Use warn."),
     FeatureFlag(
         "UPLOAD_IDEMPOTENCY_MODE",
-        "warn",
+        "block",
         "operations",
         "Upload idempotency mode: warn or block duplicate completed intents.",
         "Use warn.",
+    ),
+    FeatureFlag(
+        "OPS_GUARDIAN_ENFORCE",
+        "1",
+        "operations",
+        "Apply ops guardian paused-topic guidance during candidate selection.",
+        "Set to 0.",
     ),
     FeatureFlag(
         "QUOTA_GUARD_MAX_DAILY_RATIO",

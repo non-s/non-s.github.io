@@ -14,6 +14,9 @@ def _story(**extra):
         "category": "cats",
         "story_format": "animal_memory",
         "experiments": {"hook_style": "outcome_first"},
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/cat-1/",
+        "source_license": "Pexels License",
     }
     base.update(extra)
     return base
@@ -87,3 +90,21 @@ def test_success_gate_blocks_recovery_category_with_weak_shape():
     assert ok is False
     assert "success_recovery_format_required" in reasons
     assert "success_recovery_hook_required" in reasons
+
+
+def test_agency_gate_holds_robotic_copy_and_missing_license():
+    verdict = evaluate_story(
+        _story(
+            title="Lions use their ears to use",
+            seo_title="Lions use their ears to use",
+            source_license="",
+        ),
+        rewrite_ids=set(),
+        recovery_plans={},
+        duplicate_ids=set(),
+        success_plan={},
+    )
+
+    assert verdict["approved"] is False
+    assert "editorial_robotic_use_loop" in verdict["reasons"]
+    assert "rights_missing_source_license" in verdict["reasons"]

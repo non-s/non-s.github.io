@@ -8,6 +8,7 @@ from utils.growth_engine import _distribution_adjustment, analyze_retention, det
 from utils.subscriber_conversion import score_subscriber_conversion
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import combined_confidence
+from utils.editorial_guard import editorial_verdict
 
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
@@ -64,6 +65,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     hook_audit = audit_hook(hook)
     title_audit = audit_title(title)
     risk = phrase_risk(text)
+    editorial = editorial_verdict(story)
     memory = load_format_memory()
     audience = load_audience_memory()
     opportunity = score_topic(story, memory=memory)
@@ -105,6 +107,8 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         score -= 12
     score -= risk["penalty"]
     score -= weak["risk"] * 0.22
+    if not editorial["approved"]:
+        score -= 35
 
     category_weights = (memory.get("category_weights") or {}) | (analytics_strategy.get("category_weights") or {})
     format_weights = (memory.get("format_weights") or {}) | (analytics_strategy.get("format_weights") or {})
@@ -122,6 +126,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         and retention["verdict"] != "discard"
         and weak["state"] != "block"
         and subscriber["robotic_title"]["state"] != "block"
+        and editorial["approved"]
     )
     return {
         "score": score,
@@ -138,6 +143,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "hook_score": hook_audit.score,
         "title_score": title_audit.score,
         "phrase_risk": risk,
+        "editorial_guard": editorial,
     }
 
 

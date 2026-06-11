@@ -6,11 +6,15 @@ from collections import Counter
 from datetime import datetime, timezone
 
 import fetch_animals
+from utils.claim_risk import evaluate_claim_risk
+from utils.fact_ledger import duplicate_angle_ids
 from utils.local_rewriter import rescue_story
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
 from utils.publish_score import score_story
 from utils.rights_audit import audit_rights
+from utils.rights_guard import evaluate_rights_guard
 from utils.youtube_brain import creator_premortem
+from utils.editorial_guard import editorial_issues
 
 GENERIC_TITLE_PHRASES = (
     "one visible cue for a reason",
@@ -27,9 +31,14 @@ HARD_QUALITY_ISSUES = {
     "duplicate_title",
     "duplicate_source",
     "duplicate_angle",
+    "missing_source_license",
+    "rights_guard_brand_manual_review",
+    "rights_guard_person_manual_review",
+    "fact_guard_block",
     "subject_alignment_check_failed",
 }
 COMMONS_FIELDS = ("commons_image_url", "commons_page_url", "commons_license", "commons_artist")
+PACKAGING_LAB_VARIANT_FIELDS = ("title_variants", "hook_variants", "thumbnail_variants")
 
 
 def normalise_title(story: dict) -> str:
@@ -39,12 +48,11 @@ def normalise_title(story: dict) -> str:
 
 
 def angle_key(story: dict) -> str:
-    packaged = package_story(story)
     return "|".join((
-        extract_animal(packaged).lower(),
-        extract_action(packaged).lower(),
-        extract_cue(packaged).lower(),
-        str(packaged.get("category") or "").lower(),
+        extract_animal(story).lower(),
+        extract_action(story).lower(),
+        extract_cue(story).lower(),
+        str(story.get("category") or "").lower(),
     ))
 
 
@@ -61,12 +69,46 @@ def sanitize_story_metadata(story: dict) -> dict:
     for field in COMMONS_FIELDS:
         if field in out:
             out[field] = fetch_animals._safe_commons_value(str(out.get(field) or ""))
+    lab = out.get("autonomy", {}).get("packaging_lab") if isinstance(out.get("autonomy"), dict) else None
+    if isinstance(lab, dict):
+        clean_lab = dict(lab)
+        changed = False
+        for field in PACKAGING_LAB_VARIANT_FIELDS:
+            values = clean_lab.get(field)
+            if not isinstance(values, list):
+                continue
+            cleaned = []
+            for value in values:
+                text = str(value or "").strip()
+                if not text:
+                    continue
+                candidate = {
+                    **out,
+                    "title": text,
+                    "seo_title": text,
+                    "hook": text,
+                    "thumbnail_text": text,
+                }
+                if not editorial_issues(candidate, include_script=False):
+                    cleaned.append(text)
+            changed = changed or cleaned != values
+            if cleaned:
+                clean_lab[field] = cleaned
+            else:
+                clean_lab.pop(field, None)
+        if changed:
+            autonomy = dict(out.get("autonomy") or {})
+            autonomy["packaging_lab"] = clean_lab
+            out["autonomy"] = autonomy
     return out
 
 
 def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
-                   seen_sources: set[str]) -> list[str]:
+                   seen_sources: set[str], seen_scripts: set[str] | None = None,
+                   duplicate_ids: set[str] | None = None) -> list[str]:
     issues: list[str] = []
+    duplicate_ids = duplicate_ids or set()
+    seen_scripts = seen_scripts if seen_scripts is not None else set()
     title_key = normalise_title(story)
     title = str(story.get("seo_title") or story.get("title") or "")
     if any(phrase in title.lower() for phrase in GENERIC_TITLE_PHRASES):
@@ -79,6 +121,14 @@ def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
     rights = audit_rights(story)
     if not rights.get("approved"):
         issues.extend(str(reason) for reason in rights.get("reasons") or [])
+    issues.extend(str(warning) for warning in rights.get("warnings") or [])
+    rights_guard = evaluate_rights_guard(story)
+    if rights_guard.get("state") != "approved":
+        issues.extend(f"rights_guard_{reason}" for reason in rights_guard.get("reasons") or [])
+    claim = evaluate_claim_risk(story)
+    if claim.get("level") == "block":
+        issues.append("fact_guard_block")
+    issues.extend(editorial_issues(story))
     try:
         clip = type("Clip", (), {"url": story.get("url", ""), "title": story.get("title", "")})()
         subject = fetch_animals._subject_from_clip(clip, str(story.get("category") or ""))
@@ -94,14 +144,19 @@ def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
     src = source_key(story)
     if src and src in seen_sources:
         issues.append("duplicate_source")
+    script_key = fetch_animals._script_key(str(story.get("script") or ""))
+    if script_key and script_key in seen_scripts:
+        issues.append("duplicate_script")
     akey = angle_key(story)
-    if akey and akey in seen_angles:
+    if str(story.get("id") or "") in duplicate_ids or (akey and akey in seen_angles):
         issues.append("duplicate_angle")
     if not issues:
         if title_key:
             seen_titles.add(title_key)
         if src:
             seen_sources.add(src)
+        if script_key:
+            seen_scripts.add(script_key)
         if akey:
             seen_angles.add(akey)
     return issues
@@ -112,6 +167,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     publish = score_story(packaged, analytics_strategy=analytics_strategy)
     brain = creator_premortem(packaged)
     rights = audit_rights(packaged)
+    editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
     pkg = packaged.get("packaging") or {}
     repaired = False
     repair_reasons: list[str] = []
@@ -120,6 +176,8 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         publish_risks.append("publish_score_rewrite")
     if (publish.get("phrase_risk") or {}).get("hits"):
         publish_risks.append("repetitive_title_template")
+    if not editorial.get("approved", True):
+        publish_risks.extend(str(issue) for issue in editorial.get("issues") or [])
     if brain.get("state") in {"rewrite_before_publish", "do_not_publish"} or pkg.get("state") == "rewrite_packaging" or publish_risks:
         repair_reasons = list(dict.fromkeys(
             (brain.get("risks") or []) + (pkg.get("risks") or []) + publish_risks
@@ -131,10 +189,17 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
             publish = score_story(packaged, analytics_strategy=analytics_strategy)
             brain = creator_premortem(packaged)
             rights = audit_rights(packaged)
+            editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
             pkg = packaged.get("packaging") or {}
     penalty = 0
     if not rights.get("approved"):
         penalty += 30
+    if rights.get("warnings"):
+        penalty += 18
+    if not publish.get("approved"):
+        penalty += 40 if publish.get("state") == "reject" else 22
+    if not editorial.get("approved", True):
+        penalty += 35
     if brain.get("state") == "do_not_publish":
         penalty += 35
     elif brain.get("state") == "rewrite_before_publish":
@@ -145,7 +210,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     state = "publish_ready"
     if penalty >= 35 or total < 55:
         state = "reject"
-    elif penalty or total < 72:
+    elif not publish.get("approved") or publish.get("state") != "publish_ready" or penalty or total < 72:
         state = "rewrite"
     return {
         "story": packaged,
@@ -155,6 +220,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         "youtube_brain": brain,
         "packaging": pkg,
         "rights_audit": rights,
+        "editorial_guard": editorial,
         "repair": {
             "attempted": bool(repair_reasons),
             "applied": repaired,
@@ -168,9 +234,19 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
     """Return pruned queue, rejected entries, and summary."""
     consumed = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if s.get("consumed")]
     pending = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if not s.get("consumed")]
+    pending.sort(
+        key=lambda story: (
+            float((story.get("autonomy") or {}).get("priority", 0) or 0),
+            int(story.get("score", 0) or 0),
+            story.get("fetched_at", ""),
+        ),
+        reverse=True,
+    )
     seen_titles: set[str] = set()
     seen_angles: set[str] = set()
     seen_sources: set[str] = set()
+    seen_scripts: set[str] = set()
+    duplicate_ids = duplicate_angle_ids(pending)
     rejected: list[dict] = []
     repair: list[dict] = []
     accepted: list[dict] = []
@@ -182,6 +258,8 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
             seen_titles=seen_titles,
             seen_angles=seen_angles,
             seen_sources=seen_sources,
+            seen_scripts=seen_scripts,
+            duplicate_ids=duplicate_ids,
         )
         if issues:
             if not (set(issues) & HARD_QUALITY_ISSUES):
@@ -192,6 +270,8 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
                         seen_titles=seen_titles,
                         seen_angles=seen_angles,
                         seen_sources=seen_sources,
+                        seen_scripts=seen_scripts,
+                        duplicate_ids=duplicate_ids - {str(story.get("id") or "")},
                     )
                     if not retry_issues:
                         story = rescued
@@ -222,12 +302,28 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
     ), reverse=True)
 
     kept: list[dict] = []
+    final_seen_titles: set[str] = set()
+    final_seen_angles: set[str] = set()
+    final_seen_sources: set[str] = set()
+    final_seen_scripts: set[str] = set()
     for index, item in enumerate(accepted):
-        if index >= max_pending:
-            reasons.update(["queue_pruned_low_priority"])
-            rejected.append({"story": item["story"], "reasons": ["queue_pruned_low_priority"], "stage": "queue_prune"})
-            continue
         story = dict(item["story"])
+        final_issues = quality_issues(
+            story,
+            seen_titles=final_seen_titles,
+            seen_angles=final_seen_angles,
+            seen_sources=final_seen_sources,
+            seen_scripts=final_seen_scripts,
+            duplicate_ids=set(),
+        )
+        if final_issues:
+            reasons.update(final_issues)
+            rejected.append({"story": story, "reasons": final_issues, "stage": "queue_prune_final"})
+            continue
+        if len(kept) >= max_pending:
+            reasons.update(["queue_pruned_low_priority"])
+            rejected.append({"story": story, "reasons": ["queue_pruned_low_priority"], "stage": "queue_prune"})
+            continue
         story["publish_score"] = item["publish_score"]
         story["youtube_brain"] = item["youtube_brain"]
         story["packaging"] = item["packaging"]

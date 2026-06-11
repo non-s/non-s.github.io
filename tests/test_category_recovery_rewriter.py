@@ -26,6 +26,9 @@ def test_recovered_cat_story_passes_category_gate():
         "seo_title": "Cats love boxes",
         "hook": "Cats love boxes.",
         "script": "Cats love boxes because tight spaces can feel safer than open rooms.",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/cat-in-box/",
+        "source_license": "Pexels License",
     }
     updated, _ = recover_story(story)
     verdict = evaluate_story(updated, rewrite_ids=set(), recovery_plans={
@@ -42,6 +45,9 @@ def test_recovered_dog_story_passes_category_gate():
         "title": "dog wagging tail in snow",
         "hook": "Why do dogs wag tails?",
         "script": "Why do dogs wag tails? Dogs wag tails for many reasons.",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/dog-wagging-tail/",
+        "source_license": "Pexels License",
     }
     updated, changed = recover_story(story)
     assert changed is True
