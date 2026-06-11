@@ -19,9 +19,8 @@
 | `WILD_BRIEF_ALERT_TO` | no | Alert recipient used only when alerts are explicitly enabled. |
 | `COQUI_TTS_COMMAND` | no | Optional local Coqui-compatible TTS command. Edge TTS remains primary. |
 | `COQUI_TTS_MODEL` | no | Optional local Coqui model name. |
-| `AUDIO_LIBRARY_MANIFEST` | no | Optional manifest path for operator-curated local YouTube Audio Library tracks. Defaults to `_data/audio_library_manifest.json`. |
-| `ARCHIVE_AUDIO_ENABLED` | no | Enables Internet Archive public-domain/CC0 audio discovery as an optional music-bed source. Defaults to `0`. |
-| `ARCHIVE_AUDIO_ROWS` | no | Maximum Internet Archive search rows per mood query. Defaults to `8`. |
+| `ARCHIVE_AUDIO_ENABLED` | no | Enables Internet Archive public-domain/CC0 audio discovery as the autonomous music-bed source. Defaults to `1`. |
+| `ARCHIVE_AUDIO_ROWS` | no | Maximum Internet Archive search rows per mood query. Defaults to `12`. |
 | `ARCHIVE_AUDIO_CACHE_DIR` | no | Cache folder for downloaded Internet Archive audio. Defaults to `_data/archive_audio_cache`. |
 | `ARCHIVE_AUDIO_MAX_BYTES` | no | Maximum downloaded Archive audio file size. Defaults to `20971520`. |
 | `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
@@ -54,7 +53,7 @@
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | no | Conservative daily API unit budget, default `10000`. |
 | `YOUTUBE_REPORTING_ENABLED` | no | Enables optional Reporting API CSV backfill folders. |
 | `WAREHOUSE_COMPACTION_ENABLED` | no | Writes monthly analytics JSONL partitions. |
-| `MUSIC_BED_ENABLED` | no | Enables measured light music-bed variants when safe local assets exist. |
+| `MUSIC_BED_ENABLED` | no | Enables autonomous public-domain music beds. Defaults to `1`. |
 | `MUSIC_BED_CANARY_PERCENT` | no | Percent of safe Shorts allowed into music-bed canary. Defaults to `5`. |
 | `SEO_METADATA_LINT_ENABLED` | no | Adds deterministic SEO/search lint to metadata and repo checks. |
 | `SEO_METADATA_LINT_STRICT` | no | Rejects generated metadata with SEO lint errors when set to `1`. |
@@ -91,10 +90,9 @@
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
 | `YOUTUBE_REPORTING_ENABLED` | `0` | analytics | Enable optional Reporting API CSV backfill folders. | Set to 0. |
 | `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
-| `MUSIC_BED_ENABLED` | `0` | production | Allow measured light music bed variants. | Set to 0. |
-| `AUDIO_LIBRARY_MANIFEST` | `_data/audio_library_manifest.json` | production | Local safe music manifest path. | Unset or remove manifest. |
-| `ARCHIVE_AUDIO_ENABLED` | `0` | production | Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks. | Set to 0. |
-| `ARCHIVE_AUDIO_ROWS` | `8` | production | Limit Archive API search breadth per mood. | Lower rows or set ARCHIVE_AUDIO_ENABLED=0. |
+| `MUSIC_BED_ENABLED` | `1` | production | Allow autonomous public-domain music beds. | Set to 0. |
+| `ARCHIVE_AUDIO_ENABLED` | `1` | production | Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks. | Set to 0. |
+| `ARCHIVE_AUDIO_ROWS` | `12` | production | Limit Archive API search breadth per mood. | Lower rows or set ARCHIVE_AUDIO_ENABLED=0. |
 | `ARCHIVE_AUDIO_CACHE_DIR` | `_data/archive_audio_cache` | production | Cache downloaded Archive audio. | Remove cache and disable Archive audio. |
 | `MUSIC_BED_CANARY_PERCENT` | `5` | production | Percent of Shorts allowed into safe music-bed canary. | Set to 0. |
 | `SEO_METADATA_LINT_ENABLED` | `1` | production | Attach deterministic SEO/metadata lint to every Short. | Set to 0. |
@@ -111,23 +109,16 @@ Do not commit:
 - YouTube token JSON files.
 - temporary rendered videos/audio/images.
 - local TTS caches.
-- local audio assets referenced by an operator-only audio manifest when those
-  assets are not license-cleared for redistribution.
 - manual credentials or debug dumps.
 
 Operator-dropped Google Trends snapshots belong under `_data/trends/manual_import/`.
 Those files should contain public trend data only.
 
-Operator-curated audio can be listed in `_data/audio_library_manifest.json`.
-Only commit the manifest or assets when their license is public and
-redistribution-safe; otherwise keep the assets local and point
-`AUDIO_LIBRARY_MANIFEST` at a private path.
-
-Internet Archive audio is optional and conservative. `ARCHIVE_AUDIO_ENABLED=1`
+Internet Archive audio is autonomous and conservative. `ARCHIVE_AUDIO_ENABLED=1`
 allows discovery only for items whose metadata contains explicit public-domain,
 Public Domain Mark or CC0-style evidence. Use
 `python scripts/archive_audio_report.py --json` to review candidate sources
-and license evidence before enabling a wider canary.
+and license evidence.
 
 Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
 When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,

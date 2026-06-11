@@ -144,24 +144,17 @@ FLAGS: tuple[FeatureFlag, ...] = (
     FeatureFlag(
         "WAREHOUSE_COMPACTION_ENABLED", "1", "analytics", "Write monthly JSONL analytics partitions.", "Set to 0."
     ),
-    FeatureFlag("MUSIC_BED_ENABLED", "0", "production", "Allow measured light music bed variants.", "Set to 0."),
-    FeatureFlag(
-        "AUDIO_LIBRARY_MANIFEST",
-        "_data/audio_library_manifest.json",
-        "production",
-        "Local safe music manifest path.",
-        "Unset or remove manifest.",
-    ),
+    FeatureFlag("MUSIC_BED_ENABLED", "1", "production", "Allow autonomous public-domain music beds.", "Set to 0."),
     FeatureFlag(
         "ARCHIVE_AUDIO_ENABLED",
-        "0",
+        "1",
         "production",
         "Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks.",
         "Set to 0.",
     ),
     FeatureFlag(
         "ARCHIVE_AUDIO_ROWS",
-        "8",
+        "12",
         "production",
         "Limit Archive API search breadth per mood.",
         "Lower rows or set ARCHIVE_AUDIO_ENABLED=0.",

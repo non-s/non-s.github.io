@@ -1,31 +1,39 @@
 #!/usr/bin/env python3
-"""Report safe music-bed canary readiness."""
+"""Report autonomous Internet Archive music-bed readiness."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _enabled(name: str, default: str = "1") -> bool:
+    return os.environ.get(name, default).strip().lower() in {"1", "true", "yes", "on"}
+
+
 def build_report(root: Path = ROOT) -> dict:
-    manifest = root / "_data" / "audio_library_manifest.json"
-    try:
-        data = json.loads(manifest.read_text(encoding="utf-8"))
-    except Exception:
-        data = {"tracks": []}
-    tracks = data.get("tracks") if isinstance(data, dict) else []
-    safe = [row for row in tracks or [] if isinstance(row, dict) and row.get("safe_for_short") is not False]
+    music_enabled = _enabled("MUSIC_BED_ENABLED", "1")
+    archive_enabled = _enabled("ARCHIVE_AUDIO_ENABLED", "1")
+    rows = int(os.environ.get("ARCHIVE_AUDIO_ROWS", "12"))
+    state = "archive_enabled" if music_enabled and archive_enabled else "disabled"
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "safe_tracks": len(safe),
-        "canary_percent": 5,
-        "rollout_state": "ready" if safe else "disabled_no_safe_tracks",
+        "rollout_state": state,
+        "source": "Internet Archive",
+        "music_bed_enabled": music_enabled,
+        "archive_audio_enabled": archive_enabled,
+        "archive_audio_rows": rows,
+        "canary_percent": 100 if state == "archive_enabled" else 0,
+        "license_policy": "public-domain-or-cc0-only",
+        "manual_download_required": False,
     }
     out = root / "_data" / "music_bed_report.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
     return report
 

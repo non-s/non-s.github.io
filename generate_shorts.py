@@ -1164,6 +1164,7 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         # after upload so analytics can correlate them with engagement.
         "experiments": dict(story.get("experiments") or {}),
         "music_bed_variant": story.get("music_bed_variant", ""),
+        "music_bed_track": dict(story.get("music_bed_track") or {}),
         "autonomy": dict(story.get("autonomy") or {}),
         "editorial": dict(story.get("editorial") or {}),
         "studio_state": story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
@@ -1720,14 +1721,13 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         outro_line=story.get("cta_prompt") or None,
     )
 
-    # ── 1.5. Music bed (background, ducked to -22 dB by default). ─
-    # Picks a Pixabay CC0 track keyed by story mood and mixes it under
-    # the TTS. If the download or mix fails, audio_path is returned
-    # unchanged — music is enhancement, not a hard requirement.
-    music_variant = (story.get("experiments") or {}).get("music_bed", "off")
-    story["music_bed_variant"] = music_variant
-    if music_variant == "light_bed":
-        audio_path = add_music_bed(audio_path, story, tmp_dir)
+    # ── 1.5. Music bed (background, ducked under narration). ─
+    # Archive audio is autonomous and license-gated. The helper is a
+    # no-op when disabled or when no safe public-domain/CC0 asset can be
+    # downloaded, so generation never fails just because music is absent.
+    before_music = audio_path
+    audio_path = add_music_bed(audio_path, story, tmp_dir)
+    story["music_bed_variant"] = "light_bed" if audio_path != before_music else "off"
 
     # ── 2. Captions (word-level) — biggest single retention lever. ─
     ass_path = generate_captions(audio_path, tmp_dir)

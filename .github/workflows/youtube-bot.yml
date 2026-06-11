@@ -29,9 +29,11 @@ jobs:
       contents: write
     env:
       MAX_SHORTS_PER_RUN: "1"
-      # Spoken narration + captions only by default. This avoids
-      # third-party Content ID surprises while keeping the pipeline free.
-      MUSIC_BED_ENABLED: "0"
+      # Autonomous public-domain/CC0 music and ambience from Internet Archive.
+      # The selector rejects items without explicit public-domain evidence.
+      MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '1' }}
+      ARCHIVE_AUDIO_ENABLED: ${{ vars.ARCHIVE_AUDIO_ENABLED || '1' }}
+      ARCHIVE_AUDIO_ROWS: ${{ vars.ARCHIVE_AUDIO_ROWS || '12' }}
       # Open immediately on the animal and hook in the Shorts feed.
       BRAND_CARDS_ENABLED: "0"
       # Monetization-first mode: skip a candidate instead of shipping a
