@@ -152,7 +152,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Local safe music manifest path.",
         "Unset or remove manifest.",
     ),
-    FeatureFlag("MUSIC_BED_CANARY_PERCENT", "5", "production", "Percent of Shorts allowed into safe music-bed canary.", "Set to 0."),
+    FeatureFlag(
+        "MUSIC_BED_CANARY_PERCENT",
+        "5",
+        "production",
+        "Percent of Shorts allowed into safe music-bed canary.",
+        "Set to 0.",
+    ),
     FeatureFlag(
         "SEO_METADATA_LINT_ENABLED",
         "1",
