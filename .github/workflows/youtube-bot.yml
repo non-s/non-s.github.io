@@ -1,8 +1,8 @@
 name: "YouTube Bot - Shorts only"
 
 # Shorts-only pipeline for YouTube.
-# Primary cadence: 4 global Shorts/day, with a watchdog workflow that backfills
-# missed GitHub schedule events after a grace window.
+# The workflow evaluates every canonical global slot; scripts/publish_window.py
+# is the source of truth that decides publish vs safe skip.
 on:
   schedule:
     - cron: "23 5,14,19,23 * * *"
@@ -36,6 +36,10 @@ jobs:
       QUALITY_REQUIRE_MOTION_BROLL: "1"
       QUALITY_REQUIRE_CAPTIONS: "1"
       QUALITY_MIN_VISUAL_QA_SCORE: "6"
+      ADAPTIVE_CADENCE_ENABLED: ${{ vars.ADAPTIVE_CADENCE_ENABLED || '1' }}
+      ALLOW_FLEX_SLOT: ${{ vars.ALLOW_FLEX_SLOT || '0' }}
+      MIN_SLOT_PUBLISH_SCORE: ${{ vars.MIN_SLOT_PUBLISH_SCORE || '72' }}
+      MIN_QUEUE_OPPORTUNITY_SCORE: ${{ vars.MIN_QUEUE_OPPORTUNITY_SCORE || '50' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2
@@ -58,7 +62,47 @@ jobs:
           if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
             pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
           fi
+      - name: "Preparar inteligencia pre-publicacao"
+        run: python scripts/run_intelligence_suite.py pre_generate
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
+      - name: "Decidir janela de publicacao"
+        id: publish_window
+        run: |
+          decision="$(python scripts/publish_window.py --json)"
+          echo "$decision"
+          should_publish="$(DECISION_JSON="$decision" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["DECISION_JSON"])
+          print("true" if payload.get("decision") == "publish" else "false")
+          PY
+          )"
+          echo "should_publish=$should_publish" >> "$GITHUB_OUTPUT"
+          DECISION_JSON="$decision" python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import os
+
+          payload = json.loads(os.environ["DECISION_JSON"])
+          print("### Publish window decision")
+          print(f"- Decision: `{payload.get('decision')}`")
+          print(f"- Slot: `{payload.get('slot_label')}` UTC")
+          print(f"- Next slot: `{payload.get('next_slot')}` UTC")
+          print(f"- Top candidate: `{payload.get('top_candidate_id') or 'none'}`")
+          print(f"- Publish score: `{payload.get('publish_score')}`")
+          print(f"- Opportunity score: `{payload.get('opportunity_score')}`")
+          print(f"- Reasons: `{', '.join(payload.get('reasons') or ['ready'])}`")
+          PY
       - name: "Restaurar token do YouTube"
+        if: steps.publish_window.outputs.should_publish == 'true'
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
         run: |
@@ -72,14 +116,14 @@ jobs:
           chmod 600 youtube_token.json
           python -m json.tool < youtube_token.json > /dev/null
       - name: "Validar autenticacao do YouTube"
+        if: steps.publish_window.outputs.should_publish == 'true'
         run: python upload_youtube.py --check-auth
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
       - name: "Gerar Shorts"
+        if: steps.publish_window.outputs.should_publish == 'true'
         run: |
-          python scripts/run_intelligence_suite.py pre_generate
-          python scripts/publish_window.py
           python generate_shorts.py
         env:
           PYTHONIOENCODING: utf-8
@@ -92,15 +136,18 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
       - name: "Upload Shorts para YouTube"
+        if: steps.publish_window.outputs.should_publish == 'true'
         run: python upload_youtube.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       - name: "Atualizar aprendizado editorial gratuito"
+        if: steps.publish_window.outputs.should_publish == 'true'
         run: |
           python scripts/run_intelligence_suite.py post_publish
       - name: "Engajar comentarios"
+        if: steps.publish_window.outputs.should_publish == 'true'
         run: |
           python scripts/reply_comments.py
         env:
@@ -148,6 +195,7 @@ jobs:
             _data/post24_review.json
             _data/sequence_plan.json
             _data/publish_schedule.json
+            _data/publish_slot_decisions.jsonl
             _data/queue_prune_report.json
             _data/repair_queue.jsonl
           )

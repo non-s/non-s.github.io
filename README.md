@@ -6,7 +6,9 @@
 
 Automated pipeline that turns vetted nature footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
-- Cadence: **3 Shorts/day**, posted at 14:23, 19:23 and 23:23 UTC.
+- Cadence: the workflow evaluates **05:23, 14:23, 19:23 and 23:23 UTC**.
+  `utils/publish_schedule.py` is the source of truth for adaptive publish vs
+  safe skip, and every slot writes `_data/publish_slot_decisions.jsonl`.
 - Duration target: **12-18 seconds**, biased toward high completion rate.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
 - Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, conservation and discoveries.

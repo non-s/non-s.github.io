@@ -59,24 +59,36 @@ jobs:
       - name: "Run test suite"
         run: python -m pytest -q
 
+      - name: "Check publish schedule contract"
+        run: |
+          python scripts/check_schedule_sync.py
+          python -m pytest -q \
+            tests/test_publish_schedule_adaptive.py \
+            tests/test_publish_window_adaptive.py \
+            tests/test_docs_schedule_sync.py
+
       - name: "Lint world-class growth modules"
         run: |
           python -m black --check --diff \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
+            utils/publish_schedule.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
-            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
+            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
-            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
+            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
+            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py
           python -m ruff check \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
+            utils/publish_schedule.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
-            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
+            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
-            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
+            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
+            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt

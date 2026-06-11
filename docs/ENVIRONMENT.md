@@ -22,6 +22,11 @@
 | `AUDIO_LIBRARY_MANIFEST` | no | Optional manifest path for operator-curated local YouTube Audio Library tracks. Defaults to `_data/audio_library_manifest.json`. |
 | `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
 | `VARIANT_ASSIGNMENTS_FILE` | no | Optional override for the durable variant-assignment JSONL log. |
+| `ADAPTIVE_CADENCE_ENABLED` | no | Enables publish vs safe-skip decisions from the canonical UTC slots `05:23`, `14:23`, `19:23` and `23:23`. Defaults to enabled in the YouTube workflow. |
+| `ALLOW_FLEX_SLOT` | no | Allows one operator-defined `FLEX_SLOT_UTC` in addition to the canonical slots. |
+| `FLEX_SLOT_UTC` | no | Optional `HH:MM` UTC flex slot used only when `ALLOW_FLEX_SLOT=1`. |
+| `MIN_SLOT_PUBLISH_SCORE` | no | Minimum top-candidate publish score required for an adaptive slot to publish. |
+| `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
 
 ## Local-Only Files
 
@@ -42,6 +47,11 @@ Operator-curated audio can be listed in `_data/audio_library_manifest.json`.
 Only commit the manifest or assets when their license is public and
 redistribution-safe; otherwise keep the assets local and point
 `AUDIO_LIBRARY_MANIFEST` at a private path.
+
+Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
+When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,
+`skip_no_eligible_story`, `skip_low_queue_quality` or `skip_quota_guard`
+without failing the workflow.
 
 ## Logging Rules
 

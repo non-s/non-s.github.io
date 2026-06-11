@@ -41,6 +41,10 @@ Implemented:
 - FASE 7 structured observability helpers, integrated optional TTS fallback,
   environment docs, security updates, dashboard sections, dashboard smoke in CI
   and scoped CI linting.
+- Adaptive cadence hardening: `utils/publish_schedule.py` is the canonical
+  source for the UTC evaluation slots `05:23`, `14:23`, `19:23` and `23:23`;
+  `scripts/publish_window.py` writes `_data/publish_slot_decisions.jsonl` and
+  can safely skip slots with low queue quality or no eligible story.
 
 ## Pipeline Diagram
 
@@ -261,6 +265,8 @@ CI/CD:
 - Dashboard smoke build runs in the production quality gate.
 - Failure diagnostics upload `_data`, analytics JSON/JSONL, reports and
   `_site/index.html` when the quality gate fails.
+- `scripts/check_schedule_sync.py` keeps README/docs/workflow/env aligned with
+  the canonical publish schedule and adaptive cadence flags.
 
 Dashboard:
 
