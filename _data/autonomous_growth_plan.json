@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T16:52:44.070742+00:00",
+  "generated_at": "2026-06-11T17:53:15.053913+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -369,11 +369,11 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 125,
-    "approved_candidates": 125,
+    "pending": 124,
+    "approved_candidates": 124,
     "lane_counts": {
       "fresh_experiment": 12,
-      "proven_category": 76,
+      "proven_category": 75,
       "recovery": 18,
       "sequence": 19
     },
@@ -961,12 +961,12 @@
           "title_variants": [
             "Elephant remember faces by watching the movement",
             "Elephant turns the movement into the clue",
-            "Watch the movement when elephant follow"
+            "Watch the movement when elephant remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MOVEMENT",
-            "ELEPHANT FOLLOW"
+            "ELEPHANT REMEMBER"
           ],
           "hook_variants": [
             "Elephant remember by using one visible movement",
@@ -1577,6 +1577,155 @@
         }
       },
       {
+        "id": "f31f194b4d663084",
+        "title": "Bee remember faces by watching the feet",
+        "category": "plants",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 63,
+            "signals": {
+              "viral_potential": 63,
+              "visual_potential": 65,
+              "replay_potential": 82,
+              "comment_potential": 46,
+              "educational_potential": 78,
+              "emotional_potential": 35,
+              "novelty": 55
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 79,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 72,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 10,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 80,
+            "state": "strong",
+            "subscriber_probability": 0.114,
+            "return_probability": 0.244,
+            "comment_probability": 0.209,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.167,
+            "sample_size": 5,
+            "minimum_sample_size": 20,
+            "data_quality": "inferred",
+            "data_quality_score": 0.738,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.375,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.17."
+          },
+          "category": "plants",
+          "story_format": "animal_memory",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 118.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Bee remember faces by watching the feet",
+            "Bee turns the feet into the clue",
+            "Watch the feet when bee remember"
+          ],
+          "thumbnail_variants": [
+            "BEE FEET",
+            "WATCH THE FEET",
+            "BEE REMEMBER"
+          ],
+          "hook_variants": [
+            "Bee remember by using one visible feet",
+            "Bee remember faces by watching the feet",
+            "Watch the feet again. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the feet again. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
         "id": "0d792f267519f579",
         "title": "Dolphins remember faces by watching the call",
         "category": "ocean",
@@ -1710,12 +1859,12 @@
           "title_variants": [
             "Dolphins remember faces by watching the call",
             "Dolphins turns the detail into the clue",
-            "Watch the detail when dolphins follow"
+            "Watch the detail when dolphins remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "DOLPHINS FOLLOW"
+            "DOLPHINS REMEMBER"
           ],
           "hook_variants": [
             "Dolphins remember by using one visible call",
@@ -1860,12 +2009,12 @@
           "title_variants": [
             "Octopus remember faces by watching the body",
             "Octopus turns the detail into the clue",
-            "Watch the detail when octopus follow"
+            "Watch the detail when octopus remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "OCTOPUS FOLLOW"
+            "OCTOPUS REMEMBER"
           ],
           "hook_variants": [
             "Octopus remember by using one visible body",
@@ -2010,12 +2159,12 @@
           "title_variants": [
             "Whale remember faces by watching the body",
             "Whale Shark turns the detail into the clue",
-            "Watch the detail when whale shark follow"
+            "Watch the detail when whale shark remember"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE DETAIL",
-            "WHALE SHARK FOLLOW"
+            "WHALE SHARK REMEMBER"
           ],
           "hook_variants": [
             "Whale remember by using one visible body",
@@ -2172,155 +2321,6 @@
             "Watch the rock again. Does this make Earth feel stable or constantly moving"
           ],
           "pinned_comment": "Watch the rock again. Does this make Earth feel stable or constantly moving?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "f31f194b4d663084",
-        "title": "Bee remember faces by watching the feet",
-        "category": "plants",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 63,
-            "signals": {
-              "viral_potential": 63,
-              "visual_potential": 65,
-              "replay_potential": 82,
-              "comment_potential": 46,
-              "educational_potential": 78,
-              "emotional_potential": 35,
-              "novelty": 55
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 79,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 72,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 10,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 80,
-            "state": "strong",
-            "subscriber_probability": 0.114,
-            "return_probability": 0.244,
-            "comment_probability": 0.209,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.167,
-            "sample_size": 5,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.738,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.375,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.17."
-          },
-          "category": "plants",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 118.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Bee remember faces by watching the feet",
-            "Bee turns the feet into the clue",
-            "Watch the feet when bee follow"
-          ],
-          "thumbnail_variants": [
-            "BEE FEET",
-            "WATCH THE FEET",
-            "BEE FOLLOW"
-          ],
-          "hook_variants": [
-            "Bee remember by using one visible feet",
-            "Bee remember faces by watching the feet",
-            "Watch the feet again. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the feet again. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -2760,12 +2760,12 @@
           "title_variants": [
             "Monkeys remember because of this eyes",
             "Monkeys turns the eyes into the clue",
-            "Watch the eyes when monkeys follow"
+            "Watch the eyes when monkeys remember"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE EYES",
-            "MONKEYS FOLLOW"
+            "MONKEYS REMEMBER"
           ],
           "hook_variants": [
             "Monkeys remember by using one visible eyes",
@@ -2910,12 +2910,12 @@
           "title_variants": [
             "Watch the tail when cows signal",
             "Cow turns the tail into the clue",
-            "Watch the tail when cow signal"
+            "Watch the tail when cow move"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE TAIL",
-            "COW SIGNAL"
+            "COW MOVE"
           ],
           "hook_variants": [
             "Cow signal because the tail changes the outcome",
