@@ -30,6 +30,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("workflow", choices=["fetch-content", "youtube-bot"])
     parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--no-fail-on-block",
+        action="store_true",
+        help="Report quota block state without failing audit-only jobs.",
+    )
     args = parser.parse_args()
     row = preflight(args.workflow)
     if args.json:
@@ -40,6 +45,8 @@ def main() -> int:
             f"quota preflight: workflow={row.get('workflow')} units={row.get('estimated_units')} "
             f"ratio={guard.get('projected_ratio')} block={guard.get('block')}"
         )
+    if args.no_fail_on_block:
+        return 0
     return 3 if (row.get("guard") or {}).get("block") else 0
 
 

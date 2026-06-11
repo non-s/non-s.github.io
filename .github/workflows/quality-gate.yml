@@ -68,7 +68,7 @@ jobs:
           python scripts/fact_guard.py --json
           python scripts/upload_intent.py --json
           python scripts/tts_healthcheck.py --no-synth --json
-          python scripts/quota_preflight.py youtube-bot --json
+          python scripts/quota_preflight.py youtube-bot --json --no-fail-on-block
           python scripts/seo_metadata_lint.py
           python -m pytest -q \
             tests/test_publish_schedule_adaptive.py \
