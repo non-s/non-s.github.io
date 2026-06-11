@@ -6,6 +6,9 @@ name: "YouTube Bot - Shorts only"
 on:
   schedule:
     - cron: "23 5,14,19,23 * * *"
+    # Recovery launches for delayed/dropped GitHub schedule events.
+    # scripts/publish_window.py only allows these inside the slot grace window.
+    - cron: "43 0,6,15,20 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -38,6 +41,7 @@ jobs:
       QUALITY_MIN_VISUAL_QA_SCORE: "6"
       ADAPTIVE_CADENCE_ENABLED: ${{ vars.ADAPTIVE_CADENCE_ENABLED || '1' }}
       ALLOW_FLEX_SLOT: ${{ vars.ALLOW_FLEX_SLOT || '0' }}
+      PUBLISH_SLOT_GRACE_MINUTES: ${{ vars.PUBLISH_SLOT_GRACE_MINUTES || '90' }}
       MIN_SLOT_PUBLISH_SCORE: ${{ vars.MIN_SLOT_PUBLISH_SCORE || '72' }}
       MIN_QUEUE_OPPORTUNITY_SCORE: ${{ vars.MIN_QUEUE_OPPORTUNITY_SCORE || '50' }}
       OPENING_GATE_MODE: ${{ vars.OPENING_GATE_MODE || 'warn' }}
@@ -112,6 +116,8 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
       - name: "Decidir janela de publicacao"
         id: publish_window
+        env:
+          WORKFLOW_DISPATCH_REASON: ${{ github.event.inputs.reason || '' }}
         run: |
           decision="$(python scripts/publish_window.py --json)"
           echo "$decision"

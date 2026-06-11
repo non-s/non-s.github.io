@@ -86,6 +86,52 @@ def test_publish_window_skips_outside_slot(tmp_path):
     assert decision["decision"] == "skip_outside_slot"
 
 
+def test_publish_window_publishes_delayed_slot_inside_grace(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["14:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [{"id": "late", "title": "Late slot recovery", "script": "A strong story is still valid."}]},
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 90, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 15, 43, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "PUBLISH_SLOT_GRACE_MINUTES": "90",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["slot_label"] == "14:23"
+    assert "delayed_slot_recovery" in decision["reasons"]
+
+
+def test_watchdog_dispatch_does_not_bypass_cadence(tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 19, 23, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "GITHUB_EVENT_NAME": "workflow_dispatch",
+            "WORKFLOW_DISPATCH_REASON": "watchdog recovery for missed slot 2026-06-11T19:23:00+00:00",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_outside_slot"
+
+
 def test_publish_window_legacy_mode_does_not_block_empty_queue(tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,

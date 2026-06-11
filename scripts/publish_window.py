@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 from utils.publish_schedule import (  # noqa: E402
     DECISIONS_FILE,
     SCHEDULE_FILE,
+    active_slot_label,
     feature_flags,
     is_active_slot,
     next_slot,
@@ -108,13 +109,17 @@ def evaluate_publish_window(
     if not schedule:
         schedule = recommend_schedule(_read_json(root / "_data" / "analytics" / "latest.json", {}))
 
-    label = slot_label(current)
+    current_label = slot_label(current)
+    active_label = active_slot_label(current, schedule, env) if flags["adaptive_cadence_enabled"] else current_label
+    label = active_label or current_label
     reasons: list[str] = []
     decision = "publish"
     top_story: dict | None = None
     top_score: dict = {}
 
-    manual = str(env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch"
+    dispatch_reason = str(env.get("WORKFLOW_DISPATCH_REASON") or "").strip().lower()
+    is_watchdog_recovery = dispatch_reason.startswith("watchdog recovery")
+    manual = str(env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch" and not is_watchdog_recovery
     if manual:
         reasons.append("manual_dispatch")
     elif not flags["adaptive_cadence_enabled"]:
@@ -126,6 +131,8 @@ def evaluate_publish_window(
         decision = "skip_outside_slot"
         reasons.append("outside_recommended_slot")
     else:
+        if active_label and active_label != current_label:
+            reasons.append("delayed_slot_recovery")
         stories = _eligible_stories(_read_json(queue_file, {}))
         if not stories:
             decision = "skip_no_eligible_story"
@@ -134,12 +141,14 @@ def evaluate_publish_window(
             top_story, top_score = _best_candidate(stories)
             publish_score = float(top_score.get("score") or 0)
             opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
+            quality_reasons: list[str] = []
             if publish_score < flags["min_slot_publish_score"]:
-                reasons.append("publish_score_below_threshold")
+                quality_reasons.append("publish_score_below_threshold")
             if opportunity_score < flags["min_queue_opportunity_score"]:
-                reasons.append("opportunity_score_below_threshold")
-            if reasons:
+                quality_reasons.append("opportunity_score_below_threshold")
+            if quality_reasons:
                 decision = "skip_low_queue_quality"
+                reasons.extend(quality_reasons)
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
         stories = _eligible_stories(_read_json(queue_file, {}))

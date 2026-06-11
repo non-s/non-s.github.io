@@ -30,6 +30,13 @@ def _env_float(name: str, default: float, env: dict | None = None) -> float:
         return default
 
 
+def _env_int(name: str, default: int, env: dict | None = None) -> int:
+    try:
+        return int((env or os.environ).get(name, default))
+    except Exception:
+        return default
+
+
 def _normalise_slot(slot: str) -> str:
     hour, minute = str(slot).strip().split(":", 1)
     return f"{int(hour):02d}:{int(minute):02d}"
@@ -91,12 +98,34 @@ def slot_label(now: datetime | None = None) -> str:
     return f"{current.hour:02d}:{current.minute:02d}"
 
 
+def active_slot_label(now: datetime | None = None, schedule: dict | None = None, env: dict | None = None) -> str:
+    """Return the intended UTC slot label when now is inside its recovery window."""
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    current = current.astimezone(timezone.utc)
+    grace = max(0, _env_int("PUBLISH_SLOT_GRACE_MINUTES", 90, env))
+    today = current.date()
+    candidates = []
+    for slot in _schedule_slots(schedule, env):
+        slot_time = _parse_slot(slot)
+        for day_offset in (-1, 0):
+            slot_date = today + timedelta(days=day_offset)
+            candidate = datetime.combine(slot_date, slot_time, tzinfo=timezone.utc)
+            delay = current - candidate
+            if timedelta(0) <= delay <= timedelta(minutes=grace):
+                candidates.append((candidate, slot))
+    if not candidates:
+        return ""
+    return max(candidates, key=lambda item: item[0])[1]
+
+
 def is_active_slot(now: datetime | None = None, schedule: dict | None = None, env: dict | None = None) -> bool:
     """Return True when the current slot should be allowed to publish."""
     flags = feature_flags(env)
     if not flags["adaptive_cadence_enabled"]:
         return True
-    return slot_label(now) in set(_schedule_slots(schedule, env))
+    return bool(active_slot_label(now, schedule, env))
 
 
 def next_slot(now: datetime | None = None, schedule: dict | None = None, env: dict | None = None) -> str:
