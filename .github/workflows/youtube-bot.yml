@@ -40,6 +40,12 @@ jobs:
       ALLOW_FLEX_SLOT: ${{ vars.ALLOW_FLEX_SLOT || '0' }}
       MIN_SLOT_PUBLISH_SCORE: ${{ vars.MIN_SLOT_PUBLISH_SCORE || '72' }}
       MIN_QUEUE_OPPORTUNITY_SCORE: ${{ vars.MIN_QUEUE_OPPORTUNITY_SCORE || '50' }}
+      OPENING_GATE_MODE: ${{ vars.OPENING_GATE_MODE || 'warn' }}
+      OPENING_GATE_MIN_SCORE: ${{ vars.OPENING_GATE_MIN_SCORE || '78' }}
+      FACT_GUARD_MODE: ${{ vars.FACT_GUARD_MODE || 'warn' }}
+      RIGHTS_GUARD_MODE: ${{ vars.RIGHTS_GUARD_MODE || 'warn' }}
+      ORIGINALITY_PACK_MODE: ${{ vars.ORIGINALITY_PACK_MODE || 'warn' }}
+      UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'warn' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2
@@ -203,6 +209,7 @@ jobs:
             _data/analytics/comments.json
             _data/analytics/api_quota_ledger.jsonl
             _data/analytics/api_quota_latest.json
+            _data/upload_intents.jsonl
             _data/comment_replies.json
             _data/comment_to_short_candidates.json
             _data/ai_provider_report.json
@@ -221,6 +228,13 @@ jobs:
             _data/category_recovery.json
             _data/category_recovery_rewriter.json
             _data/fact_ledger.json
+            _data/fact_guard_report.json
+            _data/fact_sources.jsonl
+            _data/source_provenance.jsonl
+            _data/originality_pack.jsonl
+            _data/experiment_registry.json
+            _data/underpowered_tests.json
+            _data/music_bed_report.json
             _data/format_memory.json
             _data/fan_growth.json
             _data/audience_memory.json

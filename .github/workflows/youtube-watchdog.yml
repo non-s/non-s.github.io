@@ -47,15 +47,19 @@ jobs:
           tolerance = timedelta(minutes=int(os.environ.get("SLOT_TOLERANCE_MINUTES", "10")))
           now = datetime.now(timezone.utc)
 
-          # Intended YouTube publishing times in UTC. The watchdog runs hourly
+          # Intended YouTube publishing times in UTC. Keep this tuple in sync
+          # with utils.publish_schedule.CANONICAL_SLOTS_UTC:
+          # 05:23, 14:23, 19:23 and 23:23 UTC.
+          publish_slots = ("05:23", "14:23", "19:23", "23:23")
+
+          # The watchdog runs hourly
           # and only recovers the most recent slot whose grace window has ended.
-          publish_hours = (14, 19, 23)
-          publish_minute = 23
           candidates = []
           for day_offset in (-1, 0):
               day = (now + timedelta(days=day_offset)).date()
-              for hour in publish_hours:
-                  slot = datetime(day.year, day.month, day.day, hour, publish_minute, tzinfo=timezone.utc)
+              for label in publish_slots:
+                  hour, minute = [int(part) for part in label.split(":", 1)]
+                  slot = datetime(day.year, day.month, day.day, hour, minute, tzinfo=timezone.utc)
                   if now >= slot + grace:
                       candidates.append(slot)
 

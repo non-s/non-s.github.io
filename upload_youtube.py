@@ -18,8 +18,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
+from scripts.upload_intent import build_upload_intent, duplicate_uploaded, write_upload_intent
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
 from utils.session_graph import pinned_comment_payload
+from utils.time_semantics import temporal_fields
 
 _LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
 LOG_FILE = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
@@ -236,6 +238,27 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "replay_prompt",
         "youtube_operations",
         "opening_audit",
+        "opening_gate_v2",
+        "story_pattern",
+        "hook_library",
+        "hook_library_score",
+        "payoff_control",
+        "payoff_second",
+        "loop_semantics",
+        "loop_density",
+        "callback_keyword_overlap",
+        "claim_risk",
+        "rights_guard",
+        "source_provenance",
+        "originality_pack",
+        "frame_zero_packaging",
+        "search_enrichment",
+        "publish_ts_utc",
+        "publish_day_pt",
+        "quota_day_pt",
+        "views_regime",
+        "upload_intent_key",
+        "upload_intent",
         "session_handoff",
         "session_action",
         "audience_strategy",
@@ -295,6 +318,27 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "replay_prompt": "",
         "youtube_operations": {},
         "opening_audit": {},
+        "opening_gate_v2": {},
+        "story_pattern": {},
+        "hook_library": {},
+        "hook_library_score": {},
+        "payoff_control": {},
+        "payoff_second": 0,
+        "loop_semantics": {},
+        "loop_density": 0,
+        "callback_keyword_overlap": 0,
+        "claim_risk": {},
+        "rights_guard": {},
+        "source_provenance": {},
+        "originality_pack": {},
+        "frame_zero_packaging": {},
+        "search_enrichment": {},
+        "publish_ts_utc": "",
+        "publish_day_pt": "",
+        "quota_day_pt": "",
+        "views_regime": "",
+        "upload_intent_key": "",
+        "upload_intent": {},
         "session_handoff": {},
         "session_action": {},
         "audience_strategy": {},
@@ -302,11 +346,13 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
     if not marker.get("subscriber_conversion") and isinstance(marker.get("packaging"), dict):
         marker["subscriber_conversion"] = marker["packaging"].get("subscriber_conversion", {})
+    uploaded_at = datetime.now(timezone.utc)
+    marker.update(temporal_fields(now=uploaded_at))
     marker.update(
         {
             "video_id": video_id,
             "url": _video_url(video_id),
-            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "uploaded_at": uploaded_at.isoformat(),
             "platform": "youtube",
             "language": _LANGUAGE,
         }
@@ -548,10 +594,30 @@ def main() -> None:
         if not _is_uploadable_meta(meta):
             log.warning("Skipping orphan metadata without video: %s", meta_file.name)
             continue
+        intent = build_upload_intent(meta, meta_file=str(meta_file), slot=str(meta.get("publish_slot") or ""))
+        duplicate = duplicate_uploaded(intent)
+        meta["upload_intent_key"] = intent["idempotency_key"]
+        meta["upload_intent"] = intent
+        if duplicate and os.environ.get("UPLOAD_IDEMPOTENCY_MODE", "warn").strip().lower() == "block":
+            log.warning(
+                "Skipping duplicate upload intent %s already published as %s",
+                intent["idempotency_key"],
+                duplicate.get("video_id"),
+            )
+            continue
+        write_upload_intent(intent)
         attempted += 1
         video_id = upload_video(youtube, meta)
         if not video_id:
             continue
+        uploaded_intent = {
+            **intent,
+            "status": "uploaded",
+            "video_id": video_id,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        write_upload_intent(uploaded_intent)
+        meta["upload_intent"] = uploaded_intent
         meta["youtube_operations"] = run_post_upload_operations(youtube, video_id, meta)
         meta["session_action"] = {
             "applied": bool(meta["youtube_operations"].get("comment", {}).get("posted")),

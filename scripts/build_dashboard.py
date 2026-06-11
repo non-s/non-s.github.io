@@ -317,6 +317,17 @@ def render_html() -> str:
     reporting_pull = _safe_json(Path("_data/analytics/reporting_pull.json"))
     comment_to_short = _safe_json(Path("_data/comment_to_short_candidates.json"))
     seo_metadata_lint = _safe_json(Path("_data/seo_metadata_lint.json"))
+    fact_guard_report = _safe_json(Path("_data/fact_guard_report.json"))
+    experiment_registry = _safe_json(Path("_data/experiment_registry.json"))
+    underpowered_tests = _safe_json(Path("_data/underpowered_tests.json"))
+    music_bed_report = _safe_json(Path("_data/music_bed_report.json"))
+    retention_reconciliation = _safe_json(Path("_data/analytics/retention_reconciliation.json"))
+    crosspost_pack = _safe_json(Path("_data/crosspost_pack.json"))
+    render_bench = _safe_json(Path("_data/render_bench.json"))
+    security_manifest = _safe_json(Path("_data/security_manifest.json"))
+    upload_intents = read_jsonl(Path("_data/upload_intents.jsonl"))
+    originality_rows = read_jsonl(Path("_data/originality_pack.jsonl"))
+    provenance_rows = read_jsonl(Path("_data/source_provenance.jsonl"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
@@ -1513,6 +1524,52 @@ def render_html() -> str:
                     f"<td>{html.escape('; '.join(map(str, surgery.get('fixes') or []))[:120])}</td></tr>"
                 )
             out.append("</table>")
+        out.append("</div>")
+
+    if any(
+        (
+            fact_guard_report,
+            experiment_registry,
+            underpowered_tests,
+            music_bed_report,
+            retention_reconciliation,
+            crosspost_pack,
+            render_bench,
+            security_manifest,
+            upload_intents,
+            originality_rows,
+            provenance_rows,
+        )
+    ):
+        out.append("<div class='card'><h2>Zero-cost governance</h2>")
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>Fact guard items</small><div class='metric'>{int(fact_guard_report.get('items', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Experiment axes</small><div class='metric'>{len((experiment_registry.get('axes') or {}))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Underpowered tests</small><div class='metric'>{len(underpowered_tests.get('underpowered_tests') or [])}</div></div>"
+        )
+        out.append(f"<div><small>Upload intents</small><div class='metric'>{len(upload_intents)}</div></div>")
+        out.append(f"<div><small>Originality packs</small><div class='metric'>{len(originality_rows)}</div></div>")
+        out.append(f"<div><small>Provenance rows</small><div class='metric'>{len(provenance_rows)}</div></div>")
+        out.append("</section>")
+        if retention_reconciliation:
+            out.append(
+                f"<p><strong>Retention reconciliation:</strong> {int(retention_reconciliation.get('matched_videos', 0) or 0)} matched, "
+                f"{len(retention_reconciliation.get('out_of_tolerance') or [])} outside 2% delta.</p>"
+            )
+        if music_bed_report:
+            out.append(
+                f"<p><strong>Music bed canary:</strong> {html.escape(str(music_bed_report.get('rollout_state', 'unknown')))} "
+                f"at {int(music_bed_report.get('canary_percent', 0) or 0)}%.</p>"
+            )
+        if security_manifest:
+            out.append(
+                f"<p><strong>SBOM:</strong> {int(security_manifest.get('component_count', 0) or 0)} Python components recorded.</p>"
+            )
         out.append("</div>")
 
     if any((queue_audit, reject_report, next_shorts, dry_run_publish, sequence_plan, post24_review, publish_schedule)):

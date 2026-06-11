@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.audit_slot_contracts import audit_slot_contracts  # noqa: E402
 from scripts.check_schedule_sync import check_schedule_sync  # noqa: E402
 from utils.feature_flags import docs_coverage  # noqa: E402
 
@@ -20,6 +21,18 @@ REQUIRED_FILES = (
     "scripts/comment_to_short_pipeline.py",
     "scripts/compact_analytics.py",
     "scripts/seo_metadata_lint.py",
+    "scripts/audit_slot_contracts.py",
+    "scripts/fact_guard.py",
+    "scripts/build_originality_pack.py",
+    "scripts/experiment_governance.py",
+    "scripts/reconcile_retention.py",
+    "scripts/session_graph_actioner.py",
+    "scripts/build_crosspost_pack.py",
+    "scripts/render_bench.py",
+    "scripts/music_bed_report.py",
+    "scripts/security_manifest.py",
+    "scripts/doctor.py",
+    "scripts/upload_intent.py",
     "scripts/tts_healthcheck.py",
     "utils/studio_reach_schema.py",
     "utils/topic_freshness.py",
@@ -27,17 +40,37 @@ REQUIRED_FILES = (
     "utils/session_graph.py",
     "utils/api_quota_budget.py",
     "utils/feature_flags.py",
+    "utils/time_semantics.py",
+    "utils/opening_gate_v2.py",
+    "utils/story_patterns.py",
+    "utils/hook_library.py",
+    "utils/payoff_controller.py",
+    "utils/loop_semantics.py",
+    "utils/claim_risk.py",
+    "utils/rights_guard.py",
+    "utils/originality_pack.py",
+    "utils/experiment_registry.py",
+    "utils/experiment_scheduler.py",
+    "utils/retention_warehouse.py",
+    "utils/frame_zero_packaging.py",
+    "utils/search_enrichment.py",
+    "utils/cohort_memory.py",
+    "utils/comment_policy.py",
+    "utils/voice_registry.py",
+    "utils/render_qa.py",
 )
 
 WORKFLOW_TOKENS = {
     ".github/workflows/quality-gate.yml": (
         "check_repo_contracts.py",
+        "audit_slot_contracts.py",
         "tts_healthcheck.py",
         "seo_metadata_lint.py",
     ),
     ".github/workflows/youtube-bot.yml": (
         "quota_preflight.py youtube-bot",
         "comment_to_short_pipeline.py",
+        "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (
         "quota_preflight.py fetch-content",
@@ -46,12 +79,15 @@ WORKFLOW_TOKENS = {
     ".github/workflows/dashboard.yml": (
         "compact_analytics.py",
         "opening_audit_report.py",
+        "experiment_governance.py",
+        "fact_guard.py",
     ),
 }
 
 
 def check_repo_contracts(root: Path = ROOT) -> list[str]:
     errors = list(check_schedule_sync(root))
+    errors.extend(audit_slot_contracts(root).get("errors", []))
     for rel in REQUIRED_FILES:
         if not (root / rel).exists():
             errors.append(f"required file missing: {rel}")

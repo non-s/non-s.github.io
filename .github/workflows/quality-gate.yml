@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install "pytest>=8,<10" "PyYAML>=6,<7" "bandit>=1.8,<2" "pip-audit>=2.9,<3" "ruff>=0.6,<1" "black>=24,<26"
+          pip install "pytest>=8,<10" "pytest-cov>=5,<8" "PyYAML>=6,<7" "bandit>=1.8,<2" "pip-audit>=2.9,<3" "ruff>=0.6,<1" "black>=24,<26" "mypy>=1.10,<2"
 
       - name: "Compile Python"
         run: python -m compileall -q .
@@ -57,12 +57,16 @@ jobs:
           PY
 
       - name: "Run test suite"
-        run: python -m pytest -q
+        run: python -m pytest -q --cov=utils --cov=scripts --cov-report=term-missing --cov-fail-under=20
 
       - name: "Check publish schedule contract"
         run: |
           python scripts/check_schedule_sync.py
+          python scripts/audit_slot_contracts.py
           python scripts/check_repo_contracts.py
+          python scripts/experiment_governance.py --json
+          python scripts/fact_guard.py --json
+          python scripts/upload_intent.py --json
           python scripts/tts_healthcheck.py --no-synth --json
           python scripts/quota_preflight.py youtube-bot --json
           python scripts/seo_metadata_lint.py
@@ -73,7 +77,17 @@ jobs:
             tests/test_repo_contracts.py \
             tests/test_feature_flags_registry.py \
             tests/test_tts_healthcheck.py \
-            tests/test_workflow_contracts.py
+            tests/test_workflow_contracts.py \
+            tests/test_zero_cost_hardening.py
+
+      - name: "Type-check zero-cost critical path"
+        run: |
+          python -m mypy \
+            utils/time_semantics.py utils/opening_gate_v2.py utils/hook_library.py utils/story_patterns.py \
+            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
+            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
+            --ignore-missing-imports --follow-imports=silent --check-untyped-defs
 
       - name: "Lint world-class growth modules"
         run: |
@@ -83,11 +97,19 @@ jobs:
             utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
             utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
             utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py \
+            utils/time_semantics.py utils/opening_gate_v2.py utils/story_patterns.py utils/hook_library.py \
+            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
+            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
+            utils/frame_zero_packaging.py utils/search_enrichment.py utils/cohort_memory.py utils/comment_policy.py \
+            utils/voice_registry.py utils/render_qa.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
             scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
             scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
+            scripts/experiment_governance.py scripts/reconcile_retention.py scripts/session_graph_actioner.py \
+            scripts/build_crosspost_pack.py scripts/render_bench.py scripts/music_bed_report.py scripts/security_manifest.py scripts/doctor.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
             tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
@@ -96,18 +118,26 @@ jobs:
             tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
             tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
             tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
-            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py
+            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py
           python -m ruff check \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
             utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
             utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
             utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py \
+            utils/time_semantics.py utils/opening_gate_v2.py utils/story_patterns.py utils/hook_library.py \
+            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
+            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
+            utils/frame_zero_packaging.py utils/search_enrichment.py utils/cohort_memory.py utils/comment_policy.py \
+            utils/voice_registry.py utils/render_qa.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
             scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
             scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
+            scripts/experiment_governance.py scripts/reconcile_retention.py scripts/session_graph_actioner.py \
+            scripts/build_crosspost_pack.py scripts/render_bench.py scripts/music_bed_report.py scripts/security_manifest.py scripts/doctor.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
             tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
@@ -116,7 +146,7 @@ jobs:
             tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
             tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
             tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
-            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py
+            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt

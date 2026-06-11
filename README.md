@@ -9,6 +9,9 @@ Automated pipeline that turns vetted nature footage into vertical YouTube Shorts
 - Cadence: the workflow evaluates **05:23, 14:23, 19:23 and 23:23 UTC**.
   `utils/publish_schedule.py` is the source of truth for adaptive publish vs
   safe skip, and every slot writes `_data/publish_slot_decisions.jsonl`.
+  Metadata also carries `publish_ts_utc`, `publish_day_pt`, `quota_day_pt`
+  and `views_regime` so UTC operations and Pacific-time YouTube quota/analytics
+  semantics stay aligned.
 - Duration target: **12-18 seconds**, biased toward high completion rate.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
 - Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, conservation and discoveries.
@@ -59,6 +62,14 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - imports optional YouTube Studio Shorts Reach CSV exports into `_data/analytics/studio_reach_daily.jsonl` so stayed-to-watch and swipe signals are visible in weekly review and the dashboard.
 - annotates the queue with `_data/trends/freshness_report.json` from free CSV/RSS/manual trend signals.
 - audits the first second of each Short through `opening_audit` metadata and `_data/opening_audit_report.json`.
+- applies `opening_gate_v2` scoring over the first 0.7s and 1.5s with motion,
+  contrast, legibility, curiosity and first-word timing subscores.
+- records hook-library, story-pattern, payoff, loop-semantics, claim-risk,
+  rights-provenance and originality-pack metadata before upload.
+- writes `_data/upload_intents.jsonl` so uploads are idempotent by story,
+  slot, variant and script hash.
+- governs experiments through `_data/experiment_registry.json` and
+  `_data/underpowered_tests.json` so low-volume runs test one creative axis at a time.
 - builds `_data/session_graph.json`, `_data/next_session_actions.json` and `_data/sequel_candidates.json` after upload for playlist, pinned-comment and sequel continuity.
 - writes `_data/analytics/api_quota_ledger.jsonl` and `_data/analytics/api_quota_latest.json` before expensive jobs.
 - promotes high-signal viewer questions into `_data/comment_to_short_candidates.json` and optionally into the queue.

@@ -45,6 +45,10 @@ Implemented:
   source for the UTC evaluation slots `05:23`, `14:23`, `19:23` and `23:23`;
   `scripts/publish_window.py` writes `_data/publish_slot_decisions.jsonl` and
   can safely skip slots with low queue quality or no eligible story.
+- Temporal contract v2: `utils/time_semantics.py` writes `publish_ts_utc`,
+  `publish_day_pt`, `quota_day_pt` and `views_regime`, while
+  `scripts/audit_slot_contracts.py` checks parity between workflows, docs and
+  the canonical schedule.
 - Shorts leading indicators: `scripts/import_studio_reach_export.py` and
   `utils/studio_reach_schema.py` normalize Studio/Sheets CSV exports into
   `_data/analytics/studio_reach_daily.jsonl` and dashboard cards for
@@ -54,6 +58,22 @@ Implemented:
   and writes `_data/trends/freshness_report.json`.
 - Opening quality: `utils/first_frame_audit.py` is integrated into the
   editorial rulebook, generation metadata and `_data/opening_audit_report.json`.
+- Opening hard gate v2: `utils/opening_gate_v2.py` scores 0.7s and 1.5s
+  windows with motion, contrast, legibility, curiosity and first-word timing.
+- Hook/story/payoff/loop controls: `utils/hook_library.py`,
+  `utils/story_patterns.py`, `utils/payoff_controller.py` and
+  `utils/loop_semantics.py` persist cluster, payoff second, loop density and
+  callback overlap metadata.
+- Claim, rights and originality guards: `utils/claim_risk.py`,
+  `utils/rights_guard.py` and `utils/originality_pack.py` feed
+  `_data/fact_sources.jsonl`, `_data/source_provenance.jsonl` and
+  `_data/originality_pack.jsonl`.
+- Experiment governance v2: `utils/experiment_registry.py` and
+  `utils/experiment_scheduler.py` write `_data/experiment_registry.json` and
+  `_data/underpowered_tests.json` so low-volume testing stays one creative
+  axis at a time.
+- Upload idempotency: `scripts/upload_intent.py` records
+  `_data/upload_intents.jsonl` before and after `videos.insert`.
 - Session graph and sequel ops: `utils/session_graph.py` feeds
   `_data/session_graph.json`, `_data/next_session_actions.json`,
   `_data/sequel_candidates.json`, pinned-comment copy and sequence planning.
@@ -312,6 +332,14 @@ Operator outputs:
 - `_data/opening_audit_report.json`
 - `_data/analytics/api_quota_ledger.jsonl`
 - `_data/analytics/api_quota_latest.json`
+- `_data/fact_guard_report.json`
+- `_data/fact_sources.jsonl`
+- `_data/source_provenance.jsonl`
+- `_data/originality_pack.jsonl`
+- `_data/experiment_registry.json`
+- `_data/underpowered_tests.json`
+- `_data/upload_intents.jsonl`
+- `_data/music_bed_report.json`
 - `_data/comment_to_short_candidates.json`
 - `_data/analytics/reporting_video_metrics.jsonl`
 - `_data/analytics/compaction_report.json`

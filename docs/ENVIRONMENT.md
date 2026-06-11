@@ -33,18 +33,25 @@
 | `OPENING_AUDIT_ENABLED` | no | Enables first-second motion/text/safe-zone audit metadata. |
 | `OPENING_AUDIT_STRICT` | no | Rejects opening packages below `OPENING_MIN_SCORE` when enabled. |
 | `OPENING_MIN_SCORE` | no | Minimum opening audit score. |
+| `OPENING_GATE_MODE` | no | Opening gate v2 mode: `off`, `warn` or `block`. |
+| `OPENING_GATE_MIN_SCORE` | no | Minimum opening gate v2 score. |
+| `FACT_GUARD_MODE` | no | Claim risk mode: `warn` or `block`. |
+| `RIGHTS_GUARD_MODE` | no | Rights guard mode: `warn` or `block`. |
+| `ORIGINALITY_PACK_MODE` | no | Originality pack completeness mode: `warn` or `block`. |
 | `SESSION_GRAPH_ENABLED` | no | Enables post-upload handoff, sequel and next-session artifacts. |
 | `COMMENT_TO_SHORT_ENABLED` | no | Allows strong viewer questions to become queue ideas. |
 | `COMMENT_TO_SHORT_MIN_SCORE` | no | Minimum comment idea score before it can enter the queue. |
 | `COMMENT_TO_SHORT_MAX_ITEMS` | no | Maximum comment ideas queued per run. |
 | `QUOTA_GUARD_ENABLED` | no | Enables quota ledger/guard decisions. |
 | `QUOTA_GUARD_MODE` | no | `warn` logs only; `block` can mark `PUBLISH_QUOTA_BLOCKED=1`. |
+| `UPLOAD_IDEMPOTENCY_MODE` | no | `warn` records duplicates; `block` skips an already uploaded intent key. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | no | Daily budget ratio used by quota guard. |
 | `QUOTA_LEDGER_ENABLED` | no | Writes `_data/analytics/api_quota_ledger.jsonl` and latest summary. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | no | Conservative daily API unit budget, default `10000`. |
 | `YOUTUBE_REPORTING_ENABLED` | no | Enables optional Reporting API CSV backfill folders. |
 | `WAREHOUSE_COMPACTION_ENABLED` | no | Writes monthly analytics JSONL partitions. |
 | `MUSIC_BED_ENABLED` | no | Enables measured light music-bed variants when safe local assets exist. |
+| `MUSIC_BED_CANARY_PERCENT` | no | Percent of safe Shorts allowed into music-bed canary. Defaults to `5`. |
 | `SEO_METADATA_LINT_ENABLED` | no | Adds deterministic SEO/search lint to metadata and repo checks. |
 | `SEO_METADATA_LINT_STRICT` | no | Rejects generated metadata with SEO lint errors when set to `1`. |
 
@@ -63,12 +70,18 @@
 | `OPENING_AUDIT_ENABLED` | `1` | production | Score the first second opening package. | Set to 0. |
 | `OPENING_AUDIT_STRICT` | `1` | production | Reject openings below the configured score. | Set to 0 for informational mode. |
 | `OPENING_MIN_SCORE` | `72` | production | Minimum opening audit score. | Lower threshold or disable strict mode. |
+| `OPENING_GATE_MODE` | `warn` | production | Opening gate v2 mode: off, warn or block. | Use warn. |
+| `OPENING_GATE_MIN_SCORE` | `78` | production | Minimum opening gate v2 score. | Lower threshold or set OPENING_GATE_MODE=off. |
+| `FACT_GUARD_MODE` | `warn` | production | Claim risk mode: warn or block. | Use warn. |
+| `RIGHTS_GUARD_MODE` | `warn` | production | Rights guard mode: warn or block. | Use warn. |
+| `ORIGINALITY_PACK_MODE` | `warn` | production | Originality pack completeness mode: warn or block. | Use warn. |
 | `SESSION_GRAPH_ENABLED` | `1` | growth | Build post-upload handoff and sequel graph artifacts. | Set to 0. |
 | `COMMENT_TO_SHORT_ENABLED` | `1` | growth | Promote strong viewer questions into Short ideas. | Set to 0. |
 | `COMMENT_TO_SHORT_MIN_SCORE` | `64` | growth | Minimum score to add a comment idea to the queue. | Raise threshold or disable. |
 | `COMMENT_TO_SHORT_MAX_ITEMS` | `6` | growth | Maximum comment ideas added per run. | Lower limit. |
 | `QUOTA_GUARD_ENABLED` | `1` | operations | Block runs projected to exceed quota budget. | Set to 0 for passive logging. |
 | `QUOTA_GUARD_MODE` | `warn` | operations | Quota guard mode: warn or block. | Use warn. |
+| `UPLOAD_IDEMPOTENCY_MODE` | `warn` | operations | Upload idempotency mode: warn or block duplicate completed intents. | Use warn. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.70` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
@@ -76,6 +89,7 @@
 | `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
 | `MUSIC_BED_ENABLED` | `0` | production | Allow measured light music bed variants. | Set to 0. |
 | `AUDIO_LIBRARY_MANIFEST` | `_data/audio_library_manifest.json` | production | Local safe music manifest path. | Unset or remove manifest. |
+| `MUSIC_BED_CANARY_PERCENT` | `5` | production | Percent of Shorts allowed into safe music-bed canary. | Set to 0. |
 | `SEO_METADATA_LINT_ENABLED` | `1` | production | Attach deterministic SEO/metadata lint to every Short. | Set to 0. |
 | `SEO_METADATA_LINT_STRICT` | `0` | production | Reject metadata with SEO lint errors. | Set to 0. |
 | `COQUI_TTS_COMMAND` | `` | resilience | Optional local Coqui-compatible TTS command. | Unset it. |
@@ -106,6 +120,11 @@ Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
 When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,
 `skip_no_eligible_story`, `skip_low_queue_quality` or `skip_quota_guard`
 without failing the workflow.
+
+Generated and uploaded metadata carries the shared temporal contract:
+`publish_ts_utc`, `publish_day_pt`, `quota_day_pt` and `views_regime`.
+Operational schedules stay in UTC, while YouTube quota and Analytics day
+alignment use Pacific Time.
 
 ## Logging Rules
 

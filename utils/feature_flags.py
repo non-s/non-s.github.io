@@ -73,6 +73,23 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Minimum opening audit score.",
         "Lower threshold or disable strict mode.",
     ),
+    FeatureFlag("OPENING_GATE_MODE", "warn", "production", "Opening gate v2 mode: off, warn or block.", "Use warn."),
+    FeatureFlag(
+        "OPENING_GATE_MIN_SCORE",
+        "78",
+        "production",
+        "Minimum opening gate v2 score.",
+        "Lower threshold or set OPENING_GATE_MODE=off.",
+    ),
+    FeatureFlag("FACT_GUARD_MODE", "warn", "production", "Claim risk mode: warn or block.", "Use warn."),
+    FeatureFlag("RIGHTS_GUARD_MODE", "warn", "production", "Rights guard mode: warn or block.", "Use warn."),
+    FeatureFlag(
+        "ORIGINALITY_PACK_MODE",
+        "warn",
+        "production",
+        "Originality pack completeness mode: warn or block.",
+        "Use warn.",
+    ),
     FeatureFlag(
         "SESSION_GRAPH_ENABLED", "1", "growth", "Build post-upload handoff and sequel graph artifacts.", "Set to 0."
     ),
@@ -95,6 +112,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set to 0 for passive logging.",
     ),
     FeatureFlag("QUOTA_GUARD_MODE", "warn", "operations", "Quota guard mode: warn or block.", "Use warn."),
+    FeatureFlag(
+        "UPLOAD_IDEMPOTENCY_MODE",
+        "warn",
+        "operations",
+        "Upload idempotency mode: warn or block duplicate completed intents.",
+        "Use warn.",
+    ),
     FeatureFlag(
         "QUOTA_GUARD_MAX_DAILY_RATIO",
         "0.70",
@@ -128,6 +152,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Local safe music manifest path.",
         "Unset or remove manifest.",
     ),
+    FeatureFlag("MUSIC_BED_CANARY_PERCENT", "5", "production", "Percent of Shorts allowed into safe music-bed canary.", "Set to 0."),
     FeatureFlag(
         "SEO_METADATA_LINT_ENABLED",
         "1",

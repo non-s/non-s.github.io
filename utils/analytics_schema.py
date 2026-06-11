@@ -13,6 +13,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from utils.retention_warehouse import normalize_retention_metrics
+from utils.time_semantics import temporal_fields
+
 SCHEMA_VERSION = "wild-brief-growth-v1"
 
 
@@ -82,6 +85,9 @@ def build_video_metric_row(
     context = context or {}
     variants = variants or context.get("variants") or context.get("experiments") or {}
     traffic_sources = traffic_sources or context.get("traffic_sources") or {}
+    temporal = temporal_fields(
+        context.get("publish_ts_utc") or context.get("published_at") or context.get("uploaded_at") or None
+    )
 
     views = _int(_metric(metrics, "views", "viewCount"))
     engaged_views = _int(_metric(metrics, "engaged_views", "engagedViews"))
@@ -92,6 +98,7 @@ def build_video_metric_row(
     comments = _int(_metric(metrics, "comments", "commentCount"))
     shares = _int(_metric(metrics, "shares"))
     subscribers_gained = _int(_metric(metrics, "subscribers_gained", "subscribersGained"))
+    retention = normalize_retention_metrics({**metrics, "views": views, "engaged_views": engaged_views})
 
     derived = {
         "engaged_view_rate": round(_safe_rate(engaged_views, views), 6),
@@ -111,10 +118,21 @@ def build_video_metric_row(
         "series": _text(context.get("series")),
         "format": _text(context.get("format") or context.get("story_format")),
         "publish_slot": _text(context.get("publish_slot")),
+        "publish_ts_utc": _text(context.get("publish_ts_utc") or temporal["publish_ts_utc"]),
+        "publish_day_pt": _text(context.get("publish_day_pt") or temporal["publish_day_pt"]),
+        "quota_day_pt": _text(context.get("quota_day_pt") or temporal["quota_day_pt"]),
+        "views_regime": _text(context.get("views_regime") or temporal["views_regime"]),
         "variants": {str(k): str(v) for k, v in dict(variants).items()},
         "metrics": {
+            "plays": retention["plays"],
             "views": views,
             "engaged_views": engaged_views,
+            "continued_watch_rate": retention["continued_watch_rate"],
+            "swipe_rate": retention["swipe_rate"],
+            "retention_1s": retention["retention_1s"],
+            "retention_3s": retention["retention_3s"],
+            "retention_50": retention["retention_50"],
+            "retention_95": retention["retention_95"],
             "estimated_minutes_watched": estimated_minutes,
             "average_view_duration": average_view_duration,
             "average_view_percentage": average_view_percentage,

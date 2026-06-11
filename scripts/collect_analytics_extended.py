@@ -58,6 +58,10 @@ def _latest_rows(latest: dict) -> tuple[list[dict], list[dict], list[dict], list
             "series": item.get("series", ""),
             "story_format": item.get("story_format", ""),
             "publish_slot": item.get("publish_slot", ""),
+            "publish_ts_utc": item.get("publish_ts_utc") or item.get("published_at") or item.get("uploaded_at") or "",
+            "publish_day_pt": item.get("publish_day_pt", ""),
+            "quota_day_pt": item.get("quota_day_pt", ""),
+            "views_regime": item.get("views_regime", ""),
         }
         rows.append(
             build_video_metric_row(

@@ -43,19 +43,26 @@ from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant, record_variant_assignments
 from utils.first_frame_audit import audit_opening_frames
+from utils.claim_risk import evaluate_claim_risk
+from utils.frame_zero_packaging import score_frame_zero
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
+from utils.hook_library import choose_hook_template, score_hook
 from utils.content_agency import rank_for_agency
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
 from utils.host_persona import load as load_persona
 from utils.intro_outro import wrap_with_intro_outro
+from utils.loop_semantics import score_loop_semantics
 from utils.studio_rewrite import rewrite_if_needed
 from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
+from utils.opening_gate_v2 import evaluate_opening_gate
+from utils.originality_pack import build_originality_pack, write_originality_pack
 from utils.packaging import package_story
+from utils.payoff_controller import score_payoff
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.publish_score import score_metadata, score_story as publish_score_story
 from utils.queue_pruner import prune_queue
@@ -64,10 +71,14 @@ from utils.local_rewriter import rescue_story
 from utils.nature_strategy import NATURE_BROLL_QUERIES
 from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.rights_audit import audit_rights
+from utils.rights_guard import evaluate_rights_guard, write_source_provenance
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
+from utils.search_enrichment import enrich_search_terms
 from utils.seo_optimizer import lint_metadata, optimise_story, seo_score
+from utils.story_patterns import classify_story_pattern
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
+from utils.time_semantics import temporal_fields
 from utils.tts_fallback import synthesize_with_coqui
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.video_compose import build_broll_short, build_static_short
@@ -1051,6 +1062,8 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
     all_tags = merge_search_tags(queue_tags, category)
 
     seo = seo_score(base_title)
+    created_at = datetime.now(timezone.utc)
+    temporal = temporal_fields(now=created_at)
     metadata = {
         "title": base_title,
         "description": caption,
@@ -1060,7 +1073,11 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "thumbnail": str(thumb_path),
         "video": str(video_path),
         "story_slug": story.get("slug", ""),
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": created_at.isoformat(),
+        "publish_ts_utc": temporal["publish_ts_utc"],
+        "publish_day_pt": temporal["publish_day_pt"],
+        "quota_day_pt": temporal["quota_day_pt"],
+        "views_regime": temporal["views_regime"],
         "script": story.get("script", "").strip(),
         "thumbnail_text": story.get("thumbnail_text", "").strip(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
@@ -1133,9 +1150,19 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "autonomy": dict(story.get("autonomy") or {}),
         "editorial": dict(story.get("editorial") or {}),
         "studio_state": story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
-        "ai_rewrite": dict(story.get("ai_rewrite") or {}),
         "series": story.get("series", ""),
     }
+    metadata["story_pattern"] = classify_story_pattern(metadata)
+    metadata["hook_library"] = choose_hook_template(metadata)
+    metadata["hook_library_score"] = score_hook(metadata.get("hook", ""), metadata)
+    metadata["payoff_control"] = score_payoff(metadata.get("script", ""), metadata.get("hook", ""))
+    metadata["payoff_second"] = metadata["payoff_control"].get("payoff_second", 0)
+    metadata["loop_semantics"] = score_loop_semantics(metadata.get("script", ""), metadata.get("hook", ""))
+    metadata["loop_density"] = metadata["loop_semantics"].get("loop_density", 0)
+    metadata["callback_keyword_overlap"] = metadata["loop_semantics"].get("callback_keyword_overlap", 0)
+    metadata["claim_risk"] = evaluate_claim_risk(metadata)
+    metadata["rights_guard"] = evaluate_rights_guard(metadata)
+    metadata["search_enrichment"] = enrich_search_terms(metadata)
     metadata["seo_lint"] = lint_metadata(metadata)
     return metadata
 
@@ -1897,6 +1924,21 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             "has_broll": bool(broll_paths),
         }
     )
+    metadata["opening_gate_v2"] = evaluate_opening_gate(
+        {
+            **metadata,
+            "thumbnail_text": metadata.get("thumbnail_text") or story.get("thumbnail_text"),
+            "has_broll": bool(broll_paths),
+        }
+    )
+    if not metadata["opening_gate_v2"].get("approved", True):
+        log.warning(
+            "  Skipping Short - opening gate v2 blocked score=%s reasons=%s",
+            metadata["opening_gate_v2"].get("score"),
+            "; ".join(metadata["opening_gate_v2"].get("reasons") or []),
+        )
+        record_rejection(metadata, metadata["opening_gate_v2"].get("reasons") or [], stage="opening_gate_v2")
+        return None
     if not metadata["opening_audit"].get("approved", True):
         log.warning(
             "  Skipping Short - opening audit rejected score=%s reasons=%s",
@@ -1907,6 +1949,18 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         return None
     metadata["monetization_audit"] = audit_monetization(metadata)
     metadata["rights_audit"] = audit_rights(metadata)
+    metadata["rights_guard"] = evaluate_rights_guard(metadata)
+    write_source_provenance(metadata)
+    if metadata["rights_guard"].get("state") == "block" or (
+        os.environ.get("RIGHTS_GUARD_MODE", "warn").strip().lower() == "block"
+        and metadata["rights_guard"].get("state") == "manual_review"
+    ):
+        log.warning(
+            "  Skipping Short - rights guard blocked: %s",
+            "; ".join(metadata["rights_guard"].get("reasons") or []),
+        )
+        record_rejection(metadata, metadata["rights_guard"].get("reasons") or [], stage="rights_guard")
+        return None
     if not metadata["rights_audit"].get("approved"):
         log.warning(
             "  Skipping Short - rights audit rejected: %s",
@@ -1914,6 +1968,21 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         )
         record_rejection(metadata, metadata["rights_audit"].get("reasons") or [], stage="rights_audit")
         return None
+    metadata["claim_risk"] = evaluate_claim_risk(metadata)
+    if metadata["claim_risk"].get("level") == "block" and os.environ.get("FACT_GUARD_MODE", "warn").lower() == "block":
+        log.warning("  Skipping Short - fact guard blocked unsupported claims")
+        record_rejection(metadata, metadata["claim_risk"].get("high_risk_claims") or [], stage="fact_guard")
+        return None
+    metadata["frame_zero_packaging"] = score_frame_zero(metadata)
+    metadata["originality_pack"] = build_originality_pack(metadata)
+    if (
+        not metadata["originality_pack"].get("complete")
+        and os.environ.get("ORIGINALITY_PACK_MODE", "warn").lower() == "block"
+    ):
+        log.warning("  Skipping Short - originality pack incomplete")
+        record_rejection(metadata, ["originality_pack_incomplete"], stage="originality_pack")
+        return None
+    write_originality_pack(metadata)
     metadata["pre_publish_audit"] = audit_publish_package(metadata)
     metadata["publish_score"] = score_metadata(metadata)
     metadata["youtube_brain"] = publish_brain(metadata)

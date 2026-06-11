@@ -11,6 +11,8 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.time_semantics import quota_day_pt
+
 METHOD_COSTS = {
     "youtube.videos.insert": 1600,
     "youtube.thumbnails.set": 50,
@@ -89,12 +91,12 @@ def _read_rows(path: Path) -> list[dict]:
 
 
 def daily_spend(path: Path = LEDGER_FILE, *, day: str | None = None) -> int:
-    day = day or datetime.now(timezone.utc).date().isoformat()
+    day = day or quota_day_pt()
     return int(
         sum(
             int(row.get("estimated_units") or 0)
             for row in _read_rows(path)
-            if str(row.get("timestamp_utc", ""))[:10] == day
+            if str(row.get("quota_day_pt") or row.get("timestamp_utc", ""))[:10] == day
         )
     )
 
@@ -138,6 +140,7 @@ def write_quota_ledger_row(
     guard = should_block_run(estimate, path=path, env=env)
     row = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "quota_day_pt": quota_day_pt(),
         "workflow": estimate.get("workflow", ""),
         "calls": estimate.get("calls", {}),
         "estimated_units": int(estimate.get("estimated_units") or 0),
