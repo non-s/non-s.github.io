@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T11:12:53.994674+00:00",
+  "generated_at": "2026-06-11T16:43:52.949056+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -369,12 +369,12 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 194,
-    "approved_candidates": 194,
+    "pending": 190,
+    "approved_candidates": 190,
     "lane_counts": {
-      "fresh_experiment": 56,
-      "proven_category": 101,
-      "recovery": 18,
+      "fresh_experiment": 48,
+      "proven_category": 103,
+      "recovery": 20,
       "sequence": 19
     },
     "top_candidates": [
@@ -1411,12 +1411,12 @@
           "title_variants": [
             "Penguin use their movement to slide",
             "Penguin turns the movement into the clue",
-            "Watch the movement when penguin follow"
+            "Watch the movement when penguin signal"
           ],
           "thumbnail_variants": [
             "PENGUIN MOVEMENT",
             "WATCH THE MOVEMENT",
-            "PENGUIN FOLLOW"
+            "PENGUIN SIGNAL"
           ],
           "hook_variants": [
             "Penguin signal because the movement changes the outcome",
@@ -1560,12 +1560,12 @@
           "title_variants": [
             "Whale use their movement to use",
             "Whale turns the movement into the clue",
-            "Watch the movement when whale change"
+            "Watch the movement when whale talk"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MOVEMENT",
-            "WHALE CHANGE"
+            "WHALE TALK"
           ],
           "hook_variants": [
             "Whale change because the movement changes the outcome",
@@ -2176,6 +2176,155 @@
         }
       },
       {
+        "id": "f31f194b4d663084",
+        "title": "Bee remember faces by watching the feet",
+        "category": "plants",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 63,
+            "signals": {
+              "viral_potential": 63,
+              "visual_potential": 65,
+              "replay_potential": 82,
+              "comment_potential": 46,
+              "educational_potential": 78,
+              "emotional_potential": 35,
+              "novelty": 55
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 79,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 72,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 10,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 80,
+            "state": "strong",
+            "subscriber_probability": 0.114,
+            "return_probability": 0.244,
+            "comment_probability": 0.209,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.167,
+            "sample_size": 5,
+            "minimum_sample_size": 20,
+            "data_quality": "inferred",
+            "data_quality_score": 0.738,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.375,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.17."
+          },
+          "category": "plants",
+          "story_format": "animal_memory",
+          "hook_score": 100,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 118.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Bee remember faces by watching the feet",
+            "Bee turns the feet into the clue",
+            "Watch the feet when bee remember"
+          ],
+          "thumbnail_variants": [
+            "BEE FEET",
+            "WATCH THE FEET",
+            "BEE REMEMBER"
+          ],
+          "hook_variants": [
+            "Bee remember by using one visible feet",
+            "Bee remember faces by watching the feet",
+            "Watch the feet again. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the feet again. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
         "id": "remake-aa62a1580f608230",
         "title": "Goat use their movement to use",
         "category": "farm",
@@ -2309,12 +2458,12 @@
           "title_variants": [
             "Goat use their movement to use",
             "Goat turns the movement into the clue",
-            "Watch the movement when goat follow"
+            "Watch the movement when goat signal"
           ],
           "thumbnail_variants": [
             "GOAT MOVEMENT",
             "WATCH THE MOVEMENT",
-            "GOAT FOLLOW"
+            "GOAT SIGNAL"
           ],
           "hook_variants": [
             "Goat signal because the movement changes the outcome",
@@ -2628,6 +2777,151 @@
         }
       },
       {
+        "id": "5c25e034992e1b6a",
+        "title": "Snakes glow in the sunset light",
+        "category": "reptiles",
+        "story_format": "rare_nature",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 94.9,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 60,
+            "signals": {
+              "viral_potential": 72,
+              "visual_potential": 61,
+              "replay_potential": 66,
+              "comment_potential": 54,
+              "educational_potential": 58,
+              "emotional_potential": 45,
+              "novelty": 51
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "retention": {
+            "score": 72,
+            "signals": {
+              "hook_score": 70,
+              "curiosity_score": 71,
+              "visual_score": 58,
+              "replay_score": 72,
+              "completion_prediction": 84
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 10,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 41,
+            "state": "weak",
+            "subscriber_probability": 0.059,
+            "return_probability": 0.114,
+            "comment_probability": 0.095,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.061,
+              "sample_size": 2,
+              "minimum_sample_size": 10,
+              "data_quality": "inferred",
+              "data_quality_score": 0.5,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.296,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.08,
+            "sample_size": 5,
+            "minimum_sample_size": 25,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.31,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
+          },
+          "category": "reptiles",
+          "story_format": "rare_nature",
+          "hook_score": 74,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          }
+        },
+        "autonomy_priority": 116.9,
+        "packaging_lab": {
+          "title_variants": [
+            "Snakes glow in the sunset light",
+            "Snake turns the detail into the clue",
+            "Watch the detail when snake glow"
+          ],
+          "thumbnail_variants": [
+            "GLOWING SCALES",
+            "WATCH THE DETAIL",
+            "SNAKE GLOW"
+          ],
+          "hook_variants": [
+            "Snake glow because the detail changes the outcome",
+            "Why snake glow is not random",
+            "Snake is the example. Is this ancient design underrated"
+          ],
+          "pinned_comment": "Snake is the example. Is this ancient design underrated?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
         "id": "75733dc684624166",
         "title": "Watch the tail when cows signal",
         "category": "farm",
@@ -2761,12 +3055,12 @@
           "title_variants": [
             "Watch the tail when cows signal",
             "Cow turns the tail into the clue",
-            "Watch the tail when cow move"
+            "Watch the tail when cow signal"
           ],
           "thumbnail_variants": [
             "THE REAL REASON",
             "WATCH THE TAIL",
-            "COW MOVE"
+            "COW SIGNAL"
           ],
           "hook_variants": [
             "Cow signal because the tail changes the outcome",
@@ -2910,12 +3204,12 @@
           "title_variants": [
             "Mushrooms signal because of this mushroom",
             "Mushroom turns the mushroom into the clue",
-            "Watch the mushroom when mushroom follow"
+            "Watch the mushroom when mushroom signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MUSHROOM",
-            "MUSHROOM FOLLOW"
+            "MUSHROOM SIGNAL"
           ],
           "hook_variants": [
             "Mushrooms signal with one visible mushroom",
@@ -3058,12 +3352,12 @@
           "title_variants": [
             "Coral hides because of this reef",
             "Coral Reefs turns the reef into the clue",
-            "Watch the reef when coral reefs follow"
+            "Watch the reef when coral reefs signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE REEF",
-            "CORAL REEFS FOLLOW"
+            "CORAL REEFS SIGNAL"
           ],
           "hook_variants": [
             "Coral hides with one visible reef",
@@ -3207,12 +3501,12 @@
           "title_variants": [
             "Mushroom grows because of this gills",
             "Oyster Mushroom turns the mushroom into the clue",
-            "Watch the mushroom when oyster mushroom follow"
+            "Watch the mushroom when oyster mushroom signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MUSHROOM",
-            "OYSTER MUSHROOM FOLLOW"
+            "OYSTER MUSHROOM SIGNAL"
           ],
           "hook_variants": [
             "Mushroom grows with one visible gills",
@@ -3356,12 +3650,12 @@
           "title_variants": [
             "Geology signals because of this rock",
             "Cave Formations turns the rock into the clue",
-            "Watch the rock when cave formations follow"
+            "Watch the rock when cave formations signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE ROCK",
-            "CAVE FORMATIONS FOLLOW"
+            "CAVE FORMATIONS SIGNAL"
           ],
           "hook_variants": [
             "Cave Formations follow because the rock changes the outcome",
@@ -3505,12 +3799,12 @@
           "title_variants": [
             "Ocean hunts because of this waves",
             "Bioluminescence turns the detail into the clue",
-            "Watch the detail when bioluminescence follow"
+            "Watch the detail when bioluminescence signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE DETAIL",
-            "BIOLUMINESCENCE FOLLOW"
+            "BIOLUMINESCENCE SIGNAL"
           ],
           "hook_variants": [
             "Ocean hunts with one visible waves",
@@ -3654,12 +3948,12 @@
           "title_variants": [
             "Lava signals because of this lava",
             "Iceland turns the lava into the clue",
-            "Watch the lava when iceland follow"
+            "Watch the lava when iceland signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE LAVA",
-            "ICELAND FOLLOW"
+            "ICELAND SIGNAL"
           ],
           "hook_variants": [
             "Lava signals with one visible lava",
@@ -3803,12 +4097,12 @@
           "title_variants": [
             "Plant hides because of this body",
             "Rainforest turns the detail into the clue",
-            "Watch the detail when rainforest follow"
+            "Watch the detail when rainforest signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE DETAIL",
-            "RAINFOREST FOLLOW"
+            "RAINFOREST SIGNAL"
           ],
           "hook_variants": [
             "Rainforest follow because the detail changes the outcome",
@@ -3953,12 +4247,12 @@
           "title_variants": [
             "Bees use their antennae to use",
             "Bees turns the detail into the clue",
-            "Watch the detail when bees follow"
+            "Watch the detail when bees signal"
           ],
           "thumbnail_variants": [
             "BEES SIGNAL",
             "WATCH THE DETAIL",
-            "BEES FOLLOW"
+            "DETAIL EXPLAINS IT"
           ],
           "hook_variants": [
             "Bees follow because the detail changes the outcome",
@@ -4103,12 +4397,12 @@
           "title_variants": [
             "Dragonflies use their body to use",
             "Dragonfly turns the detail into the clue",
-            "Watch the detail when dragonfly follow"
+            "Watch the detail when dragonfly signal"
           ],
           "thumbnail_variants": [
             "DRAGONFLIES SIGNAL",
             "WATCH THE DETAIL",
-            "DRAGONFLY FOLLOW"
+            "DRAGONFLY SIGNAL"
           ],
           "hook_variants": [
             "Dragonfly follow because the detail changes the outcome",
@@ -4402,12 +4696,12 @@
           "title_variants": [
             "Mushrooms call because of this call",
             "Mycelium turns the mushrooms into the clue",
-            "Watch the mushrooms when mycelium follow"
+            "Watch the mushrooms when mycelium signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MUSHROOMS",
-            "MYCELIUM FOLLOW"
+            "MYCELIUM SIGNAL"
           ],
           "hook_variants": [
             "Mushrooms call with one visible call",
@@ -4551,12 +4845,12 @@
           "title_variants": [
             "Mushrooms signal because of this leaves",
             "Mushrooms turns the mushrooms into the clue",
-            "Watch the mushrooms when mushrooms follow"
+            "Watch the mushrooms when mushrooms signal"
           ],
           "thumbnail_variants": [
             "TINY CLUE",
             "WATCH THE MUSHROOMS",
-            "MUSHROOMS FOLLOW"
+            "MUSHROOMS SIGNAL"
           ],
           "hook_variants": [
             "Mushrooms signal with one visible leaves",
@@ -4564,304 +4858,6 @@
             "Watch the leaves again. Is this closer to a network, a warning system, or something stranger"
           ],
           "pinned_comment": "Watch the leaves again. Is this closer to a network, a warning system, or something stranger?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "044f781f8d21d65c",
-        "title": "Geology hides because of this rocks",
-        "category": "geology",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 68,
-            "signals": {
-              "viral_potential": 80,
-              "visual_potential": 59,
-              "replay_potential": 82,
-              "comment_potential": 46,
-              "educational_potential": 86,
-              "emotional_potential": 44,
-              "novelty": 69
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 76,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 50,
-              "replay_score": 72,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 10,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 79,
-            "state": "strong",
-            "subscriber_probability": 0.113,
-            "return_probability": 0.242,
-            "comment_probability": 0.207,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "debate_comment",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.052,
-            "sample_size": 3,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.575,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.289,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
-          },
-          "category": "geology",
-          "story_format": "animal_intelligence",
-          "hook_score": 86,
-          "title_score": 84,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 116.51,
-        "packaging_lab": {
-          "title_variants": [
-            "Geology hides because of this rocks",
-            "Rocks turns the detail into the clue",
-            "Watch the detail when rocks follow"
-          ],
-          "thumbnail_variants": [
-            "TINY CLUE",
-            "WATCH THE DETAIL",
-            "ROCKS FOLLOW"
-          ],
-          "hook_variants": [
-            "Rocks signal because the detail changes the outcome",
-            "Geology hides because of this rocks",
-            "Watch the rocks again. Does this make Earth feel stable or constantly moving"
-          ],
-          "pinned_comment": "Watch the rocks again. Does this make Earth feel stable or constantly moving?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "984084a6aff9d81c",
-        "title": "Storm signals because of this clouds",
-        "category": "weather",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 72,
-            "signals": {
-              "viral_potential": 80,
-              "visual_potential": 79,
-              "replay_potential": 82,
-              "comment_potential": 46,
-              "educational_potential": 86,
-              "emotional_potential": 44,
-              "novelty": 69
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 79,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 72,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 10,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 80,
-            "state": "strong",
-            "subscriber_probability": 0.114,
-            "return_probability": 0.244,
-            "comment_probability": 0.209,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.052,
-            "sample_size": 3,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.575,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.289,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
-          },
-          "category": "weather",
-          "story_format": "animal_intelligence",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          }
-        },
-        "autonomy_priority": 116.51,
-        "packaging_lab": {
-          "title_variants": [
-            "Storm signals because of this clouds",
-            "Storm Clouds turns the storm into the clue",
-            "Watch the storm when storm clouds follow"
-          ],
-          "thumbnail_variants": [
-            "TINY CLUE",
-            "WATCH THE STORM",
-            "STORM CLOUDS FOLLOW"
-          ],
-          "hook_variants": [
-            "Storm signals with one visible clouds",
-            "Storm signals because of this clouds",
-            "Watch the clouds again. Which is scarier: wind, water, lightning, or heat"
-          ],
-          "pinned_comment": "Watch the clouds again. Which is scarier: wind, water, lightning, or heat?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       }
