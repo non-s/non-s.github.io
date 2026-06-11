@@ -24,6 +24,21 @@ conversion.
 | P1 | `generate_shorts.py` | planned package preflight | selected story/package | metadata with rulebook and loop score | Stops weak packages before expensive render work. |
 | P1 | `scripts/build_dashboard.py` | planned dashboard sections | weekly summary and package scores | Pages sections | Shows what to publish, pause, sequel and review. |
 
+## Implementation Status
+
+Implemented:
+
+- FASE 1 baseline schemas, rulebook and bootstrap artifacts.
+- FASE 2 `CuriosityGapEngine` and `SwipeRiskScore`.
+- FASE 3 `LoopGenerator` and metadata persistence through `package_story`
+  and `generate_shorts.py`.
+- FASE 4 expanded experiment axes and `BayesianABSelector`.
+- FASE 5 `collect_analytics_extended.py` and `weekly_growth_review.py`.
+- FASE 6 `free_signal_harvester.py`, `trend_bridge.py` and
+  `post_upload_session_ops.py`.
+- FASE 7 structured observability helpers, optional TTS fallback hooks,
+  environment docs, security updates, dashboard sections and scoped CI linting.
+
 ## Pipeline Diagram
 
 ```mermaid

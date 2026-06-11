@@ -31,3 +31,31 @@ Out of scope:
 - Address verified high/critical issues within 14 days where feasible.
 - Credit reporters who request acknowledgement (no monetary bounty).
 - Keep the issue private until a fix lands on `main`.
+- Keep YouTube uploads on the official YouTube Data API path.
+- Keep Analytics reads on the official YouTube Analytics API path when enabled.
+- Avoid unsupported/private YouTube endpoints. When Studio-only features are
+  needed, generate operator-assist artifacts instead of automating them.
+- Redact or avoid logging values whose field names include token, secret,
+  password, credential, authorization or API key.
+- Treat `YOUTUBE_TOKEN`, OAuth client secrets, provider keys and local TTS
+  assets as local or GitHub-secret-only material.
+
+## Environment Inventory
+
+Required:
+
+- `YOUTUBE_TOKEN`
+- `PEXELS_API_KEY` or `PEXELS`
+- at least one configured AI text provider key
+
+Optional:
+
+- `PIXABAY_API_KEY` or `PIXABAY`
+- `GEMINI_API_KEY` or `GEMINI`
+- `WILD_BRIEF_RSS_URLS`
+- `WILD_BRIEF_GMAIL_ALERTS`
+- `WILD_BRIEF_ALERT_TO`
+- `COQUI_TTS_COMMAND`
+- `COQUI_TTS_MODEL`
+
+See `docs/ENVIRONMENT.md` for the operating checklist.

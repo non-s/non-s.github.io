@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install "pytest>=8,<10" "PyYAML>=6,<7" "bandit>=1.8,<2" "pip-audit>=2.9,<3"
+          pip install "pytest>=8,<10" "PyYAML>=6,<7" "bandit>=1.8,<2" "pip-audit>=2.9,<3" "ruff>=0.6,<1" "black>=24,<26"
 
       - name: "Compile Python"
         run: python -m compileall -q .
@@ -58,6 +58,23 @@ jobs:
 
       - name: "Run test suite"
         run: python -m pytest -q
+
+      - name: "Lint world-class growth modules"
+        run: |
+          python -m black --check --diff \
+            utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
+            utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
+            scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
+            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
+            tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
+            tests/test_analytics_schema.py tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
+          python -m ruff check \
+            utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
+            utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
+            scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
+            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py \
+            tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
+            tests/test_analytics_schema.py tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt

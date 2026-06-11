@@ -4,6 +4,7 @@ The builders here normalize partial YouTube/API/sidecar data into stable rows.
 They are intentionally tolerant of missing fields so scheduled jobs can keep
 publishing even when analytics are delayed or unavailable.
 """
+
 from __future__ import annotations
 
 import json

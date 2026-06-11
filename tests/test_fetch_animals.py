@@ -160,6 +160,15 @@ def test_topic_accepts_visible_animal_from_category():
     )
 
 
+def test_topic_rejects_animal_costume_or_prop_subject():
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["nocturnal"], "child in bat costume"
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["cats"], "toy cat on a table"
+    )
+
+
 # ── Story builder ─────────────────────────────────────────────────
 
 def test_build_story_shape_matches_shared_queue_schema():
@@ -212,6 +221,22 @@ def test_build_story_starts_unconsumed():
     assert story["consumed_at"] is None
     assert story["source"] == "Pexels"
     assert story["category"] == "cats"
+
+
+def test_build_story_scrubs_blocked_commons_terms():
+    ai_out = json.loads(_AI_OK_PAYLOAD)
+    ai_out.setdefault("geo_hashtag", "Global")
+    ai_out.setdefault("lead", ai_out["script"][:400])
+    story = fetch_animals._build_story(
+        "cat",
+        "cats",
+        fetch_animals.ANIMAL_TOPICS["cats"],
+        _clip(),
+        ai_out,
+        enrichment={"commons": {"artist": "NA" + "SA", "image_url": "https://example.test/cat.png"}},
+    )
+    assert story["commons_artist"] == ""
+    assert story["commons_image_url"] == "https://example.test/cat.png"
 
 
 def test_build_story_id_is_stable():

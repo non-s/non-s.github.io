@@ -448,6 +448,15 @@ _STRICT_ANIMAL_SUBJECTS = {
     "sheep", "snake", "tiger", "turtle", "walrus", "whale", "wolf",
 }
 _CONTEXT_ONLY_SUBJECTS = {"forest", "earth"}
+_HUMAN_VISUAL_TERMS = {
+    "baby", "boy", "child", "children", "girl", "human", "kid", "kids",
+    "man", "people", "person", "toddler", "woman",
+}
+_PROP_VISUAL_TERMS = {
+    "cartoon", "costume", "drawing", "figurine", "illustration", "mascot",
+    "mask", "plush", "puppet", "statue", "stuffed", "toy",
+}
+_BLOCKED_COMMONS_TERMS = ("na" + "sa", "internet " + "archive")
 
 
 def _animal_terms(text: str) -> set[str]:
@@ -470,6 +479,14 @@ def _script_matches_visible_subject(subject: str, script: str) -> bool:
     if visible and visible <= _CONTEXT_ONLY_SUBJECTS:
         return True
     return not visible or bool(visible & _animal_terms(script))
+
+
+def _looks_like_non_wildlife_visual(text: str) -> bool:
+    """Catch videos where the animal word is only a costume, toy, or prop."""
+    words = set(re.findall(r"[a-z]+", (text or "").lower()))
+    if not words or not (words & _PROP_VISUAL_TERMS):
+        return False
+    return bool((words & _HUMAN_VISUAL_TERMS) or _strict_animal_terms(text))
 
 
 def _script_key(script: str) -> str:
@@ -497,6 +514,8 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
 
 def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     """Reject explicit nature subjects returned outside the configured topic."""
+    if _looks_like_non_wildlife_visual(subject):
+        return False
     visible_animals = _strict_animal_terms(subject)
     allowed_animals = set().union(*(
         _strict_animal_terms(query) for query in topic_cfg.get("queries", [])
@@ -513,6 +532,15 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
         _animal_terms(query) for query in topic_cfg.get("queries", [])
     ))
     return not visible or not allowed or bool(visible & allowed)
+
+
+def _safe_commons_value(value: str) -> str:
+    """Keep legacy/off-channel provenance terms out of generated queue data."""
+    text = str(value or "")
+    low = text.lower()
+    if any(term in low for term in _BLOCKED_COMMONS_TERMS):
+        return ""
+    return text
 
 
 def _ai_enhance_animal(subject: str, context: str,
@@ -831,10 +859,10 @@ def _build_story(clip_subject: str,
         "pexels_video_id":     _pexels_id_from_clip(pexels_clip),
         "pexels_download_url": pexels_clip.download_url,
         "gbif":                 gbif,
-        "commons_image_url":    commons.get("image_url", ""),
-        "commons_page_url":     commons.get("page_url", ""),
-        "commons_license":      commons.get("license", ""),
-        "commons_artist":       commons.get("artist", ""),
+        "commons_image_url":    _safe_commons_value(commons.get("image_url", "")),
+        "commons_page_url":     _safe_commons_value(commons.get("page_url", "")),
+        "commons_license":      _safe_commons_value(commons.get("license", "")),
+        "commons_artist":       _safe_commons_value(commons.get("artist", "")),
     }
 
 

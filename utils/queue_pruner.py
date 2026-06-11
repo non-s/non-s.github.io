@@ -29,6 +29,7 @@ HARD_QUALITY_ISSUES = {
     "duplicate_angle",
     "subject_alignment_check_failed",
 }
+COMMONS_FIELDS = ("commons_image_url", "commons_page_url", "commons_license", "commons_artist")
 
 
 def normalise_title(story: dict) -> str:
@@ -53,6 +54,14 @@ def source_key(story: dict) -> str:
         if value:
             return value.lower()
     return ""
+
+
+def sanitize_story_metadata(story: dict) -> dict:
+    out = dict(story)
+    for field in COMMONS_FIELDS:
+        if field in out:
+            out[field] = fetch_animals._safe_commons_value(str(out.get(field) or ""))
+    return out
 
 
 def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
@@ -157,8 +166,8 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
 def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
                 analytics_strategy: dict | None = None) -> tuple[dict, list[dict], dict]:
     """Return pruned queue, rejected entries, and summary."""
-    consumed = [s for s in queue.get("stories") or [] if s.get("consumed")]
-    pending = [s for s in queue.get("stories") or [] if not s.get("consumed")]
+    consumed = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if s.get("consumed")]
+    pending = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if not s.get("consumed")]
     seen_titles: set[str] = set()
     seen_angles: set[str] = set()
     seen_sources: set[str] = set()

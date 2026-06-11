@@ -128,6 +128,10 @@ SCRIPT_SETS = {
         "scripts/autonomous_growth_loop.py",
         "scripts/daily_brief.py",
         "scripts/backfill_done_markers.py",
+        "scripts/collect_analytics_extended.py",
+        "scripts/weekly_growth_review.py",
+        "scripts/free_signal_harvester.py",
+        "scripts/post_upload_session_ops.py",
         "scripts/weekly_report.py",
     ],
 }
@@ -138,6 +142,7 @@ OPTIONAL = {
     "scripts/analyze_comments.py",
     "scripts/trend_radar.py",
     "scripts/ai_provider_report.py",
+    "scripts/free_signal_harvester.py",
 }
 
 

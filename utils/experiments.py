@@ -25,6 +25,11 @@ Axes shipped today
   - script_tone: opinionated | analytical | conversational
   - thumbnail_style: dynamic_text | category_color | brand_static
   - cta_style: subscribe_channel
+  - opening_visual_pattern: animal_closeup | action_first | before_after | impossible_result
+  - subtitle_density: low | medium
+  - loop_style: callback | unfinished_mechanism | mirror_opening
+  - cta_pattern: question_tease | sequel_tease | identity_follow
+  - title_shape: curiosity_gap | mechanism_reveal | impossible_fact
 
 Each axis defines its variants and an `is_significant()` heuristic so
 the analyser doesn't crown a winner on 3 data points.
@@ -116,6 +121,51 @@ AXES: tuple[Axis, ...] = (
             "subscribe_channel",
         ),
         description="End-of-Short call-to-action.",
+    ),
+    Axis(
+        name="opening_visual_pattern",
+        variants=(
+            "animal_closeup",
+            "action_first",
+            "before_after",
+            "impossible_result",
+        ),
+        description="First visual beat that defends against the swipe.",
+    ),
+    Axis(
+        name="subtitle_density",
+        variants=(
+            "low",
+            "medium",
+        ),
+        description="Caption density tuned for mobile comprehension.",
+    ),
+    Axis(
+        name="loop_style",
+        variants=(
+            "callback",
+            "unfinished_mechanism",
+            "mirror_opening",
+        ),
+        description="Replay loop structure for the final beat.",
+    ),
+    Axis(
+        name="cta_pattern",
+        variants=(
+            "question_tease",
+            "sequel_tease",
+            "identity_follow",
+        ),
+        description="Single low-friction CTA pattern inside metadata and pinned comment.",
+    ),
+    Axis(
+        name="title_shape",
+        variants=(
+            "curiosity_gap",
+            "mechanism_reveal",
+            "impossible_fact",
+        ),
+        description="Title shape used for measured packaging learning.",
     ),
 )
 

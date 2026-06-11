@@ -287,6 +287,12 @@ def render_html() -> str:
     queue_audit = _safe_json(Path("_data/queue_audit.json"))
     reject_report = _safe_json(Path("_data/reject_report.json"))
     next_shorts = _safe_json(Path("_data/next_shorts.json"))
+    weekly_growth = _safe_json(Path("_data/analytics/weekly_summary.json"))
+    experiment_recommendations = _safe_json(Path("_data/experiments_recommendations.json"))
+    topic_candidates = _safe_json(Path("_data/trends/topic_candidates.json"))
+    session_ops = _safe_json(Path("_data/post_upload_session_ops.json"))
+    related_video_recommendations = _safe_json(Path("_data/related_video_recommendations.json"))
+    comment_reply_short_candidates = _safe_json(Path("_data/comment_reply_short_candidates.json"))
     dry_run_publish = _safe_json(Path("_data/dry_run_publish.json"))
     sequence_plan = _safe_json(Path("_data/sequence_plan.json"))
     post24_review = _safe_json(Path("_data/post24_review.json"))
@@ -369,6 +375,86 @@ def render_html() -> str:
             for issue in issues[:8]:
                 out.append(f"<li><code>{html.escape(str(issue))}</code></li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if weekly_growth or next_shorts or session_ops or topic_candidates:
+        out.append("<div class='card'><h2>World-class growth cockpit</h2>")
+        if weekly_growth:
+            out.append("<section class='row'>")
+            out.append(
+                f"<div><small>Normalized rows</small><div class='metric'>{int(weekly_growth.get('rows', weekly_growth.get('video_metric_rows', 0)) or 0)}</div></div>"
+            )
+            winners = weekly_growth.get("winning_categories") or []
+            top_category = winners[0].get("value") if winners else ""
+            out.append(
+                f"<div><small>Top category</small><div class='metric'>{html.escape(str(top_category or 'none'))}</div></div>"
+            )
+            low = weekly_growth.get("losing_openings") or []
+            out.append(f"<div><small>Swipe/retention alerts</small><div class='metric'>{len(low)}</div></div>")
+            out.append("</section>")
+            experiments_list = weekly_growth.get("next_three_experiments") or []
+            if experiments_list:
+                out.append("<h3>Next experiments</h3><ul>")
+                for item in experiments_list[:3]:
+                    out.append(f"<li>{html.escape(str(item))}</li>")
+                out.append("</ul>")
+            if low:
+                out.append("<h3>Swipe risk alerts</h3><table><tr><th>Video</th><th>Title</th><th>Avg view %</th></tr>")
+                for item in low[:6]:
+                    out.append(
+                        f"<tr><td><code>{html.escape(str(item.get('video_id', '')))}</code></td>"
+                        f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                        f"<td>{html.escape(str(item.get('average_view_percentage', 0)))}</td></tr>"
+                    )
+                out.append("</table>")
+        recs = next_shorts.get("recommendations") or weekly_growth.get("next_ten_package_recommendations") or []
+        if recs:
+            out.append("<h3>What to publish next</h3><table><tr><th>Category</th><th>Reason</th><th>Package hint</th></tr>")
+            for item in recs[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('reason', ''))[:120])}</td>"
+                    f"<td>{html.escape(str(item.get('package_hint', ''))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        topics = topic_candidates.get("candidates") or []
+        if topics:
+            out.append("<h3>Free signal topics</h3><table><tr><th>Topic</th><th>Score</th><th>Sources</th></tr>")
+            for item in topics[:8]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('topic', ''))[:90])}</td>"
+                    f"<td>{float(item.get('score', 0) or 0):.1f}</td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get('sources') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        related = (
+            related_video_recommendations.get("items")
+            or session_ops.get("related_video_recommendations")
+            or []
+        )
+        if related:
+            out.append("<h3>Related video suggestions</h3><table><tr><th>New Short</th><th>Set related to</th><th>Why</th></tr>")
+            for item in related[:8]:
+                rec = item.get("recommendation") or {}
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('source_video_id', '')))}</code></td>"
+                    f"<td>{html.escape(str(rec.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(str(rec.get('reason', ''))[:120])}</td></tr>"
+                )
+            out.append("</table>")
+        comment_items = (
+            comment_reply_short_candidates.get("items")
+            or session_ops.get("comment_reply_short_candidates")
+            or []
+        )
+        if comment_items:
+            out.append("<h3>Reply with a Short</h3><ul>")
+            for item in comment_items[:6]:
+                out.append(f"<li>{html.escape(str(item.get('short_prompt', item.get('comment', '')))[:180])}</li>")
+            out.append("</ul>")
+        if experiment_recommendations:
+            out.append("<p><strong>Experiment recommendations updated:</strong> "
+                       + html.escape(str(experiment_recommendations.get("generated_at", ""))) + "</p>")
         out.append("</div>")
 
     # ── Sparklines ─────────────────────────────────────────────

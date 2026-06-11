@@ -4,22 +4,48 @@ This module is intentionally additive. It does not replace the existing
 editorial gate in ``utils.editorial``; it gives the pipeline one compact
 scorecard for first-second packaging, replay potential and freshness.
 """
+
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 
-
 SPECIFIC_TERMS = {
-    "before", "after", "seconds", "skin", "eyes", "body", "tail", "teeth",
-    "wing", "wings", "color", "heat", "sound", "memory", "signal", "track",
-    "attack", "escape", "fake", "changes", "hides", "warns", "learns",
+    "before",
+    "after",
+    "seconds",
+    "skin",
+    "eyes",
+    "body",
+    "tail",
+    "teeth",
+    "wing",
+    "wings",
+    "color",
+    "heat",
+    "sound",
+    "memory",
+    "signal",
+    "track",
+    "attack",
+    "escape",
+    "fake",
+    "changes",
+    "hides",
+    "warns",
+    "learns",
 }
 
 GENERIC_HOOKS = {
-    "amazing", "incredible", "unbelievable", "crazy", "shocking",
-    "mind-blowing", "you wont believe", "you won't believe",
+    "amazing",
+    "incredible",
+    "unbelievable",
+    "crazy",
+    "shocking",
+    "mind-blowing",
+    "you wont believe",
+    "you won't believe",
 }
 
 CATEGORY_FORMAT = {
@@ -80,11 +106,13 @@ def _specificity(text: str) -> float:
 
 
 def _script_concreteness(story: dict, package: dict) -> float:
-    text = " ".join([
-        _clean_text(story.get("script")),
-        _clean_text(story.get("hook")),
-        _clean_text(package.get("first_2s_narration")),
-    ])
+    text = " ".join(
+        [
+            _clean_text(story.get("script")),
+            _clean_text(story.get("hook")),
+            _clean_text(package.get("first_2s_narration")),
+        ]
+    )
     words = _words(text)
     if not words:
         return 0.0
@@ -104,10 +132,7 @@ def _recent_overlap(hook: str, context: dict) -> float:
 
 def _subject_is_fresh(story: dict, context: dict) -> bool:
     subject = _clean_text(
-        story.get("subject")
-        or story.get("topic_hashtag")
-        or story.get("category")
-        or story.get("title")
+        story.get("subject") or story.get("topic_hashtag") or story.get("category") or story.get("title")
     ).lower()
     if not subject:
         return True
@@ -138,7 +163,9 @@ class EditorialRulebook:
         score = 50.0
 
         hook = _clean_text(package.get("hook") or story.get("hook") or story.get("title"))
-        first_frame_words = int(_to_float(package.get("first_frame_text_words"), _word_count(package.get("first_frame_text"))))
+        first_frame_words = int(
+            _to_float(package.get("first_frame_text_words"), _word_count(package.get("first_frame_text")))
+        )
         hook_words = int(_to_float(package.get("hook_words"), _word_count(hook)))
         visual_motion = _to_float(package.get("visual_motion_score"), 0.55)
         contrast = _to_float(package.get("contrast_score"), 0.7)

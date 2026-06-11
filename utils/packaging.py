@@ -3,12 +3,16 @@ from __future__ import annotations
 
 import re
 
+from utils.curiosity_gap import CuriosityGapEngine
+from utils.editorial_rules import evaluate_story_package
 from utils.growth_engine import (
     analyze_retention,
     experiment_plan,
     load_format_memory,
     select_best_packaging,
 )
+from utils.loop_engine import LoopGenerator
+from utils.swipe_risk import SwipeRiskScore
 from utils.story_intelligence import audit_title, classify_format
 from utils.subscriber_conversion import (
     contextual_cta,
@@ -202,6 +206,47 @@ def score_packaging(story: dict) -> dict:
     }
 
 
+def _package_preflight(story: dict) -> dict:
+    hook = str(story.get("hook") or story.get("title") or "")
+    thumb = str(story.get("thumbnail_text") or "")
+    script = str(story.get("script") or "")
+    curiosity = CuriosityGapEngine()
+    best_hook = curiosity.choose_for_story(story, {
+        "recent_hooks": [
+            str(item)
+            for item in ((story.get("context") or {}).get("recent_hooks") or [])
+        ],
+    })
+    hook_specificity = min(1.0, max(0.0, best_hook.score / 100))
+    duration_hint = max(12, min(35, round(len(_words(script)) / 2.6))) if script else 18
+    first_2s = " ".join(_words(script)[:12])
+    package = {
+        "first_frame_text": thumb,
+        "first_frame_text_words": len(thumb.split()),
+        "hook": hook,
+        "hook_words": len(_words(hook)),
+        "first_2s_narration": first_2s,
+        "caption_chars_per_second": round(len(script) / max(duration_hint, 1), 2),
+        "visual_motion_score": float(story.get("visual_motion_score") or (0.76 if story.get("pexels_download_url") else 0.48)),
+        "contrast_score": float(story.get("contrast_score") or 0.74),
+        "hook_specificity": hook_specificity,
+        "novelty_score": float(story.get("novelty_score") or 0.58),
+        "payoff_time_s": min(18, max(8, duration_hint * 0.55)),
+        "cta_count": 1 if story.get("cta_prompt") else 0,
+    }
+    loop_plan = LoopGenerator().plan({"script": script, "hook": hook}, package)
+    package["loop_score"] = loop_plan["loop_score"]
+    swipe = SwipeRiskScore().score_opening(package)
+    rulebook = evaluate_story_package(story, package, story.get("context") or {})
+    return {
+        "curiosity_gap": best_hook.to_dict(),
+        "swipe_risk": swipe,
+        "loop_plan": loop_plan,
+        "editorial_rulebook": rulebook,
+        "preflight_inputs": package,
+    }
+
+
 def pinned_comment(story: dict) -> str:
     subject = extract_subject(story)
     cue = extract_cue(story)
@@ -270,6 +315,16 @@ def package_story(story: dict) -> dict:
     out["pinned_comment"] = pinned_comment(out)
     out["community_prompt"] = community_prompt(out)
     packaged_score = score_packaging(out)
+    preflight = _package_preflight(out)
+    if preflight["swipe_risk"]["band"] == "high":
+        packaged_score["score"] = max(0, int(packaged_score["score"]) - 8)
+        packaged_score["risks"] = list(dict.fromkeys(packaged_score["risks"] + ["high_swipe_risk"]))
+    if not preflight["editorial_rulebook"].get("approved"):
+        packaged_score["risks"] = list(dict.fromkeys(
+            packaged_score["risks"] + list(preflight["editorial_rulebook"].get("violations") or [])
+        ))
+        if int(packaged_score["score"]) < 74:
+            packaged_score["state"] = "rewrite_packaging"
     subscriber_score = score_subscriber_conversion({
         **out,
         "packaging": {
@@ -293,6 +348,12 @@ def package_story(story: dict) -> dict:
         "cta_prompt": out["cta_prompt"],
         "replay_prompt": out["replay_prompt"],
         "subscriber_conversion": subscriber_score,
+        "curiosity_gap": preflight["curiosity_gap"],
+        "swipe_risk": preflight["swipe_risk"],
+        "loop_plan": preflight["loop_plan"],
+        "loop_score": preflight["loop_plan"]["loop_score"],
+        "editorial_rulebook": preflight["editorial_rulebook"],
+        "preflight_inputs": preflight["preflight_inputs"],
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
     }
     out["subscriber_conversion"] = out["packaging"]["subscriber_conversion"]

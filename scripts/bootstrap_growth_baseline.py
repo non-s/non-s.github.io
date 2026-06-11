@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.analytics_schema import build_variant_row, build_video_metric_row, write_jsonl_row
+from utils.analytics_schema import build_variant_row, build_video_metric_row, write_jsonl_row  # noqa: E402
 
 
 def _read_json(path: Path, default):
@@ -71,20 +71,24 @@ def _metric_rows_from_latest(latest: dict) -> list[dict]:
             "story_format": item.get("story_format", ""),
             "publish_slot": item.get("publish_slot", ""),
         }
-        rows.append(build_video_metric_row(
-            video_id=str(item.get("video_id")),
-            title=str(item.get("title") or ""),
-            metrics=metrics,
-            context=context,
-            variants=item.get("experiments") or {},
-        ))
+        rows.append(
+            build_video_metric_row(
+                video_id=str(item.get("video_id")),
+                title=str(item.get("title") or ""),
+                metrics=metrics,
+                context=context,
+                variants=item.get("experiments") or {},
+            )
+        )
     return rows
 
 
 def _variant_rows_from_markers(markers: Iterable[dict]) -> list[dict]:
     rows: list[dict] = []
     for marker in markers:
-        story_id = str(marker.get("story_id") or marker.get("id") or marker.get("video_id") or marker.get("title") or "")
+        story_id = str(
+            marker.get("story_id") or marker.get("id") or marker.get("video_id") or marker.get("title") or ""
+        )
         if not story_id:
             continue
         context = {
