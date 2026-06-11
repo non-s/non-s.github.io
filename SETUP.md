@@ -61,3 +61,19 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
 1. Run `fetch-content.yml` manually.
 2. Run `youtube-bot.yml` manually.
 3. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`, `unlisted`, or `private`. Default: `public`.
+
+## Optional zero-cost imports
+
+- Shorts Reach: export the YouTube Studio reach table or a Google Sheets CSV
+  containing viewed/stayed-to-watch and swiped-away columns, place it under
+  `_data/studio_reach_exports/`, then run `python scripts/import_studio_reach_export.py`.
+- Reporting CSV backfill: place official Reporting API CSV exports under
+  `_data/reporting_import/`, run `python scripts/reporting_bootstrap.py`, then
+  `python scripts/reporting_pull.py`.
+- Free freshness signals: place public Google Trends CSV/JSON snapshots under
+  `_data/trends/manual_import/` or set `WILD_BRIEF_RSS_URLS`, then run
+  `python scripts/free_signal_harvester.py` and `python scripts/apply_topic_freshness.py`.
+- Local TTS fallback: set `COQUI_TTS_COMMAND` and check it with
+  `python scripts/tts_healthcheck.py --no-synth --json`.
+
+All optional imports degrade safely when their source files are missing.

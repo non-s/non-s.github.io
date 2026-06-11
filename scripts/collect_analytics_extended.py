@@ -17,6 +17,7 @@ from utils.analytics_schema import (  # noqa: E402
     build_segment_row,
     build_traffic_source_row,
     build_video_metric_row,
+    read_jsonl,
     write_jsonl_row,
 )
 
@@ -130,6 +131,9 @@ def collect(root: Path = ROOT) -> dict:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("", encoding="utf-8")
     rows, traffic_rows, retention_rows, segment_rows = _latest_rows(latest)
+    reporting_rows = read_jsonl(analytics / "reporting_video_metrics.jsonl")
+    if reporting_rows:
+        rows.extend(reporting_rows)
     for row in rows:
         write_jsonl_row(paths["video_metrics"], row)
         write_jsonl_row(paths["video_core_daily"], row)
@@ -142,6 +146,7 @@ def collect(root: Path = ROOT) -> dict:
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "rows": len(rows),
+        "reporting_rows": len(reporting_rows),
         "traffic_source_rows": len(traffic_rows),
         "retention_rows": len(retention_rows),
         "segment_rows": len(segment_rows),

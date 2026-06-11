@@ -1,4 +1,5 @@
 """Generate sequel/remake prompts from proven Shorts."""
+
 from __future__ import annotations
 
 import json
@@ -9,6 +10,7 @@ from utils.remake_factory import build_remake_story
 
 ANALYTICS_FILE = Path("_data/analytics/latest.json")
 SEQUENCES_FILE = Path("_data/sequence_plan.json")
+SESSION_SEQUELS_FILE = Path("_data/sequel_candidates.json")
 
 
 def _safe_json(path: Path) -> dict:
@@ -42,6 +44,21 @@ def build_sequence_plan(analytics: dict | None = None, *, limit: int = 5) -> dic
             story = build_remake_story({**base, "action": kind})
             story["sequence_variant"] = kind
             variants.append(story)
+    session_sequels = _safe_json(SESSION_SEQUELS_FILE).get("items") or []
+    for item in session_sequels[:limit]:
+        if not isinstance(item, dict):
+            continue
+        story = build_remake_story(
+            {
+                "source_video_id": item.get("video_id") or item.get("source_video_id", ""),
+                "source_title": item.get("title", ""),
+                "category": item.get("category", ""),
+                "action": item.get("prompt") or "session_graph_sequel",
+            }
+        )
+        story["sequence_variant"] = "session_graph_sequel"
+        story["session_handoff"] = item
+        variants.append(story)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_winners": len(winners),

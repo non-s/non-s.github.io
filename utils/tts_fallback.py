@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -32,6 +33,47 @@ def synthesize_with_coqui(text: str, output_path: Path, locale: str = "en") -> P
     if result.returncode == 0 and output_path.exists() and output_path.stat().st_size > 1024:
         return output_path
     return None
+
+
+def coqui_healthcheck(
+    *,
+    synthesize: bool = False,
+    output_dir: Path | None = None,
+    sample_text: str = "Wild Brief fallback voice check.",
+    locale: str = "en",
+) -> dict:
+    """Return observable state for the optional local Coqui fallback."""
+    command = os.environ.get("COQUI_TTS_COMMAND") or shutil.which("tts")
+    payload = {
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "status": "unavailable",
+        "command": command or "",
+        "model": os.environ.get("COQUI_TTS_MODEL", ""),
+        "synthesized": False,
+        "reason": "coqui_command_missing",
+    }
+    if not command:
+        return payload
+    payload["status"] = "ok"
+    payload["reason"] = "command_found"
+    if not synthesize:
+        return payload
+    output_dir = output_dir or Path("_data/tts_health")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output = output_dir / "coqui_healthcheck.wav"
+    result = synthesize_with_coqui(sample_text, output, locale)
+    if result:
+        payload.update(
+            {
+                "synthesized": True,
+                "output": str(result),
+                "bytes": result.stat().st_size,
+                "reason": "synthesis_ok",
+            }
+        )
+        return payload
+    payload.update({"status": "failed", "reason": "synthesis_failed"})
+    return payload
 
 
 def synthesize_with_existing_or_fallback(

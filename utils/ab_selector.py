@@ -50,6 +50,11 @@ def _objective_score(row: dict) -> float:
     return round(max(0.0, score * (1 - penalty)), 4)
 
 
+def _engaged_views(row: dict) -> float:
+    metrics = row.get("metrics") or row
+    return _num(metrics.get("engaged_views"), _num(metrics.get("views")))
+
+
 class BayesianABSelector:
     """Simple conservative selector; enough data first, winner bias second."""
 
@@ -57,6 +62,34 @@ class BayesianABSelector:
         if len(rows) < min_samples:
             return False
         return len({_date_key(row) for row in rows}) >= min_days
+
+    def guardrail_status(
+        self,
+        rows: list[dict],
+        *,
+        min_samples: int = 12,
+        min_days: int = 2,
+        min_engaged_views: int = 0,
+    ) -> dict:
+        days = len({_date_key(row) for row in rows})
+        engaged = int(sum(_engaged_views(row) for row in rows))
+        reasons = []
+        if len(rows) < min_samples:
+            reasons.append("below_min_samples")
+        if days < min_days:
+            reasons.append("below_min_days")
+        if engaged < min_engaged_views:
+            reasons.append("below_min_engaged_views")
+        return {
+            "eligible": not reasons,
+            "reasons": reasons,
+            "samples": len(rows),
+            "days": days,
+            "engaged_views": engaged,
+            "min_samples": min_samples,
+            "min_days": min_days,
+            "min_engaged_views": min_engaged_views,
+        }
 
     def score_variant(self, rows: list[dict], objective: str = "growth") -> dict:
         if not rows:
@@ -91,7 +124,14 @@ class BayesianABSelector:
             return baseline
         return winner
 
-    def rank_axis(self, rows: list[dict], axis: str, min_samples: int = 12, min_days: int = 2) -> dict:
+    def rank_axis(
+        self,
+        rows: list[dict],
+        axis: str,
+        min_samples: int = 12,
+        min_days: int = 2,
+        min_engaged_views: int = 0,
+    ) -> dict:
         grouped: dict[str, list[dict]] = defaultdict(list)
         for row in rows:
             variants = row.get("variants") or row.get("experiments") or {}
@@ -102,9 +142,31 @@ class BayesianABSelector:
         eligible = {
             variant: payload
             for variant, payload in scored.items()
-            if self.has_enough_data(grouped[variant], min_samples, min_days)
+            if self.guardrail_status(
+                grouped[variant],
+                min_samples=min_samples,
+                min_days=min_days,
+                min_engaged_views=min_engaged_views,
+            )["eligible"]
         }
         winner = ""
         if eligible:
             winner = max(eligible.items(), key=lambda kv: kv[1]["mean"])[0]
-        return {"axis": axis, "variants": scored, "winner": winner}
+        guardrails = {
+            variant: self.guardrail_status(
+                items,
+                min_samples=min_samples,
+                min_days=min_days,
+                min_engaged_views=min_engaged_views,
+            )
+            for variant, items in grouped.items()
+        }
+        losers = [
+            variant
+            for variant, payload in scored.items()
+            if winner
+            and variant != winner
+            and payload.get("n", 0) >= min_samples
+            and payload.get("mean", 0) < eligible[winner]["mean"] * 0.82
+        ]
+        return {"axis": axis, "variants": scored, "winner": winner, "guardrails": guardrails, "paused_losers": losers}

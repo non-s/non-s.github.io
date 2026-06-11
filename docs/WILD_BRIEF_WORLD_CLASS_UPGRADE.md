@@ -45,6 +45,28 @@ Implemented:
   source for the UTC evaluation slots `05:23`, `14:23`, `19:23` and `23:23`;
   `scripts/publish_window.py` writes `_data/publish_slot_decisions.jsonl` and
   can safely skip slots with low queue quality or no eligible story.
+- Shorts leading indicators: `scripts/import_studio_reach_export.py` and
+  `utils/studio_reach_schema.py` normalize Studio/Sheets CSV exports into
+  `_data/analytics/studio_reach_daily.jsonl` and dashboard cards for
+  stayed-to-watch and swipe-away risk.
+- Freshness bridge v2: free signal imports now carry signal counts and
+  freshness metadata; `scripts/apply_topic_freshness.py` annotates the queue
+  and writes `_data/trends/freshness_report.json`.
+- Opening quality: `utils/first_frame_audit.py` is integrated into the
+  editorial rulebook, generation metadata and `_data/opening_audit_report.json`.
+- Session graph and sequel ops: `utils/session_graph.py` feeds
+  `_data/session_graph.json`, `_data/next_session_actions.json`,
+  `_data/sequel_candidates.json`, pinned-comment copy and sequence planning.
+- Operations guardrails: `utils/api_quota_budget.py`, `scripts/quota_preflight.py`,
+  the workflow summaries and dashboard surface quota spend before expensive runs.
+- Statistical experiments and mix: `utils/ab_selector.py` has guardrails for
+  samples, days and engaged views; `utils/editorial_mix_optimizer.py` keeps the
+  next-shorts mix balanced across trend, evergreen, sequel and recovery lanes.
+- Medium/low-priority hardening: Reporting CSV bootstrap/pull, safe
+  music-bed variants, comment-to-Short triage, operator cockpit dashboard cards,
+  analytics compaction, reusable CI checks, SEO metadata lint, golden fixtures,
+  a central feature-flag registry, TTS healthcheck, architecture/runbooks and
+  repo contract drift detection are all wired with rollback flags.
 
 ## Pipeline Diagram
 
@@ -254,6 +276,59 @@ Session outputs:
 - `_data/post_upload_session_ops.json`
 - `_data/related_video_recommendations.json`
 - `_data/comment_reply_short_candidates.json`
+- `_data/session_graph.json`
+- `_data/next_session_actions.json`
+- `_data/sequel_candidates.json`
+
+## FASE 8 - Leading Indicators, Quota and Operator Cockpit
+
+Implemented files:
+
+- `scripts/import_studio_reach_export.py`
+- `scripts/apply_topic_freshness.py`
+- `scripts/opening_audit_report.py`
+- `scripts/quota_preflight.py`
+- `scripts/reporting_bootstrap.py`
+- `scripts/reporting_pull.py`
+- `scripts/comment_to_short_pipeline.py`
+- `scripts/compact_analytics.py`
+- `scripts/seo_metadata_lint.py`
+- `scripts/check_repo_contracts.py`
+- `scripts/tts_healthcheck.py`
+- `utils/studio_reach_schema.py`
+- `utils/topic_freshness.py`
+- `utils/first_frame_audit.py`
+- `utils/session_graph.py`
+- `utils/api_quota_budget.py`
+- `utils/editorial_mix_optimizer.py`
+- `utils/comment_to_short.py`
+- `utils/feature_flags.py`
+
+Operator outputs:
+
+- `_data/analytics/studio_reach_daily.jsonl`
+- `_data/analytics/studio_reach_latest.json`
+- `_data/trends/freshness_report.json`
+- `_data/opening_audit_report.json`
+- `_data/analytics/api_quota_ledger.jsonl`
+- `_data/analytics/api_quota_latest.json`
+- `_data/comment_to_short_candidates.json`
+- `_data/analytics/reporting_video_metrics.jsonl`
+- `_data/analytics/compaction_report.json`
+- `_data/seo_metadata_lint.json`
+
+Rollback flags:
+
+- `STUDIO_REACH_IMPORT_ENABLED=0`
+- `TOPIC_FRESHNESS_ENABLED=0`
+- `OPENING_AUDIT_STRICT=0`
+- `SESSION_GRAPH_ENABLED=0`
+- `QUOTA_GUARD_ENABLED=0`
+- `YOUTUBE_REPORTING_ENABLED=0`
+- `MUSIC_BED_ENABLED=0`
+- `COMMENT_TO_SHORT_ENABLED=0`
+- `WAREHOUSE_COMPACTION_ENABLED=0`
+- `SEO_METADATA_LINT_STRICT=0`
 
 ## FASE 7 - CI/CD, Dashboard UX, Observability, Security
 

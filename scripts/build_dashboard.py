@@ -37,11 +37,13 @@ from utils.editorial import rank_candidates
 from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
 from utils.mission_control import build_mission_control
+from utils.analytics_schema import read_jsonl
+from utils.studio_reach_schema import summarize_reach
 
 ANALYTICS_DIR = Path("_data/analytics")
-SITE_DIR      = Path("_site")
-OUT           = SITE_DIR / "index.html"
-QUEUE_FILE    = Path("_data/stories_queue.json")
+SITE_DIR = Path("_site")
+OUT = SITE_DIR / "index.html"
+QUEUE_FILE = Path("_data/stories_queue.json")
 
 
 def _read_csvs() -> list[dict]:
@@ -63,6 +65,23 @@ def _read_csvs() -> list[dict]:
     return rows
 
 
+def _read_partition_rows() -> list[dict]:
+    """Read compacted JSONL partitions as a dashboard fallback."""
+    rows: list[dict] = []
+    partitions = ANALYTICS_DIR / "partitions"
+    for path in sorted(partitions.glob("video_metrics/*.jsonl")) if partitions.exists() else []:
+        for row in read_jsonl(path):
+            metrics = row.get("metrics") or {}
+            rows.append(
+                {
+                    "pulled_at": row.get("pulled_at", ""),
+                    "an_views": metrics.get("views", 0),
+                    "avg_view_pct": metrics.get("average_view_percentage", 0),
+                }
+            )
+    return rows
+
+
 def _safe_json(path: Path) -> dict:
     if not path.exists():
         return {}
@@ -73,11 +92,9 @@ def _safe_json(path: Path) -> dict:
         return {}
 
 
-def _queue_commands(*,
-                    pending: int,
-                    approved: int,
-                    states: Counter[str],
-                    categories: dict[str, Counter[str]]) -> list[str]:
+def _queue_commands(
+    *, pending: int, approved: int, states: Counter[str], categories: dict[str, Counter[str]]
+) -> list[str]:
     """Translate queue health into concrete operator commands."""
     commands: list[str] = []
     if pending and approved == 0:
@@ -88,17 +105,15 @@ def _queue_commands(*,
     if pending and cooldown / max(1, pending) >= 0.45:
         commands.append("Too many stories are in cooldown: expand fresh subjects instead of reusing recent angles.")
     weak_categories = [
-        cat for cat, by_state in sorted(categories.items())
+        cat
+        for cat, by_state in sorted(categories.items())
         if by_state.get("publish_now", 0) + by_state.get("polished", 0) == 0
     ]
     if weak_categories:
-        commands.append(
-            "Search more approved candidates for: "
-            + ", ".join(weak_categories[:5])
-            + "."
-        )
+        commands.append("Search more approved candidates for: " + ", ".join(weak_categories[:5]) + ".")
     strong_categories = [
-        cat for cat, by_state in sorted(
+        cat
+        for cat, by_state in sorted(
             categories.items(),
             key=lambda kv: kv[1].get("publish_now", 0) + kv[1].get("polished", 0),
             reverse=True,
@@ -106,20 +121,13 @@ def _queue_commands(*,
         if by_state.get("publish_now", 0) + by_state.get("polished", 0) >= 2
     ]
     if strong_categories:
-        commands.append(
-            "Use the next publish slot from: "
-            + ", ".join(strong_categories[:3])
-            + "."
-        )
+        commands.append("Use the next publish slot from: " + ", ".join(strong_categories[:3]) + ".")
     return commands[:5]
 
 
 def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
     data = _safe_json(path)
-    stories = [
-        item for item in (data.get("stories") or [])
-        if isinstance(item, dict) and not item.get("consumed")
-    ]
+    stories = [item for item in (data.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     if not stories:
         return {"pending": 0, "approved": 0, "labels": {}, "top": []}
     polished_stories = [polish_story(item) for item in stories]
@@ -150,25 +158,24 @@ def _queue_studio_snapshot(path: Path = QUEUE_FILE) -> dict:
         if editorial.get("approved"):
             approved += 1
         if len(top) < 8 and editorial.get("approved"):
-            top.append({
-                "title": item.get("seo_title") or item.get("title") or "",
-                "category": item.get("category") or "",
-                "editorial_score": editorial.get("score", 0),
-                "humanity_score": humanity.get("score", 0),
-                "humanity_label": label,
-                "agency_score": (item.get("agency") or {}).get("score", 0),
-                "agency_decision": (item.get("agency") or {}).get("decision", ""),
-            })
+            top.append(
+                {
+                    "title": item.get("seo_title") or item.get("title") or "",
+                    "category": item.get("category") or "",
+                    "editorial_score": editorial.get("score", 0),
+                    "humanity_score": humanity.get("score", 0),
+                    "humanity_label": label,
+                    "agency_score": (item.get("agency") or {}).get("score", 0),
+                    "agency_decision": (item.get("agency") or {}).get("decision", ""),
+                }
+            )
     return {
         "pending": len(stories),
         "approved": approved,
         "rescued": rescued,
         "labels": dict(sorted(labels.items())),
         "states": dict(sorted(states.items())),
-        "categories": {
-            key: dict(sorted(value.items()))
-            for key, value in sorted(categories.items())
-        },
+        "categories": {key: dict(sorted(value.items())) for key, value in sorted(categories.items())},
         "commands": _queue_commands(
             pending=len(stories),
             approved=approved,
@@ -205,8 +212,7 @@ def _series_by_day(rows: list[dict]) -> tuple[list[str], list[int], list[float]]
     return days, views, view_pct
 
 
-def _sparkline_svg(values: list[float], width: int = 600, height: int = 80,
-                    stroke: str = "#0ea5e9") -> str:
+def _sparkline_svg(values: list[float], width: int = 600, height: int = 80, stroke: str = "#0ea5e9") -> str:
     """Minimal inline SVG sparkline. Zero JS, no external assets."""
     if not values:
         return ""
@@ -214,14 +220,13 @@ def _sparkline_svg(values: list[float], width: int = 600, height: int = 80,
     rng = max(0.001, vmax - vmin)
     step = width / max(1, len(values) - 1)
     points = " ".join(
-        f"{i * step:.1f},{height - (v - vmin) / rng * (height - 10) - 5:.1f}"
-        for i, v in enumerate(values)
+        f"{i * step:.1f},{height - (v - vmin) / rng * (height - 10) - 5:.1f}" for i, v in enumerate(values)
     )
     return (
         f'<svg viewBox="0 0 {width} {height}" width="100%" height="{height}" '
         f'preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'
         f'<polyline fill="none" stroke="{stroke}" stroke-width="2" points="{points}" />'
-        f'</svg>'
+        f"</svg>"
     )
 
 
@@ -253,7 +258,7 @@ code { background: #1f2433; padding: 1px 6px; border-radius: 4px; }
 
 
 def render_html() -> str:
-    rows = _read_csvs()
+    rows = _read_csvs() or _read_partition_rows()
     latest = _safe_json(ANALYTICS_DIR / "latest.json")
     health = _safe_json(ROOT / "_data" / "automation_health.json") or build_health(ROOT)
     comments = _safe_json(ANALYTICS_DIR / "comments.json")
@@ -297,22 +302,37 @@ def render_html() -> str:
     sequence_plan = _safe_json(Path("_data/sequence_plan.json"))
     post24_review = _safe_json(Path("_data/post24_review.json"))
     publish_schedule = _safe_json(Path("_data/publish_schedule.json"))
+    studio_reach_latest = _safe_json(Path("_data/analytics/studio_reach_latest.json"))
+    studio_reach_summary = studio_reach_latest.get("summary") or summarize_reach(
+        read_jsonl(Path("_data/analytics/studio_reach_daily.jsonl"))
+    )
+    freshness_report = _safe_json(Path("_data/trends/freshness_report.json"))
+    opening_audit_report = _safe_json(Path("_data/opening_audit_report.json"))
+    session_graph = _safe_json(Path("_data/session_graph.json"))
+    next_session_actions = _safe_json(Path("_data/next_session_actions.json"))
+    sequel_candidates = _safe_json(Path("_data/sequel_candidates.json"))
+    quota_latest = _safe_json(Path("_data/analytics/api_quota_latest.json"))
+    compaction_report = _safe_json(Path("_data/analytics/compaction_report.json"))
+    reporting_bootstrap = _safe_json(Path("_data/analytics/reporting_bootstrap.json"))
+    reporting_pull = _safe_json(Path("_data/analytics/reporting_pull.json"))
+    comment_to_short = _safe_json(Path("_data/comment_to_short_candidates.json"))
+    seo_metadata_lint = _safe_json(Path("_data/seo_metadata_lint.json"))
     days, views_series, view_pct_series = _series_by_day(rows)
 
     total_views_14d = latest.get("total_views_14d", 0)
-    total_views      = latest.get("total_views", total_views_14d)
-    avg_view_pct    = latest.get("avg_view_pct", latest.get("avg_view_percentage", 0))
-    avg_engagement  = latest.get("avg_engagement_score", 0)
-    avg_humanity    = latest.get("avg_humanity_score", 0)
+    total_views = latest.get("total_views", total_views_14d)
+    avg_view_pct = latest.get("avg_view_pct", latest.get("avg_view_percentage", 0))
+    avg_engagement = latest.get("avg_engagement_score", 0)
+    avg_humanity = latest.get("avg_humanity_score", 0)
     humanity_counts = latest.get("humanity_label_counts") or {}
-    pulled_at       = latest.get("pulled_at", "—")
+    pulled_at = latest.get("pulled_at", "—")
     underperformers = latest.get("below_62_pct") or latest.get("below_60_pct") or []
-    cat_perf        = latest.get("category_avg_view_pct") or {}
-    cat_engagement  = latest.get("category_avg_engagement") or {}
-    cat_growth      = latest.get("category_avg_growth_score") or {}
-    format_growth   = latest.get("format_avg_growth_score") or {}
+    cat_perf = latest.get("category_avg_view_pct") or {}
+    cat_engagement = latest.get("category_avg_engagement") or {}
+    cat_growth = latest.get("category_avg_growth_score") or {}
+    format_growth = latest.get("format_avg_growth_score") or {}
     series_engagement = latest.get("series_avg_engagement") or {}
-    top_performers  = latest.get("top_performers") or []
+    top_performers = latest.get("top_performers") or []
     recommendations = latest.get("production_recommendations") or {}
     learning_profile = latest.get("learning_profile") or recommendations.get("learning_profile") or {}
     weekly_brief = latest.get("weekly_brief") or {}
@@ -332,27 +352,21 @@ def render_html() -> str:
     out.append(f"<style>{CSS}</style></head><body>")
 
     out.append("<h1>Wild Brief — channel dashboard</h1>")
-    out.append(f"<small>Generated {html.escape(datetime.now(timezone.utc).isoformat())} UTC · "
-                f"last analytics snapshot {html.escape(str(pulled_at))}</small>")
+    out.append(
+        f"<small>Generated {html.escape(datetime.now(timezone.utc).isoformat())} UTC · "
+        f"last analytics snapshot {html.escape(str(pulled_at))}</small>"
+    )
 
     # ── Top-line metrics ───────────────────────────────────────
     out.append("<section class='row'>")
     out.append(
-        f"<div class='card'><small>Total tracked views</small>"
-        f"<div class='metric'>{int(total_views):,}</div></div>"
+        f"<div class='card'><small>Total tracked views</small>" f"<div class='metric'>{int(total_views):,}</div></div>"
     )
     out.append(
-        f"<div class='card'><small>Public engagement score</small>"
-        f"<div class='metric'>{avg_engagement}</div></div>"
+        f"<div class='card'><small>Public engagement score</small>" f"<div class='metric'>{avg_engagement}</div></div>"
     )
-    out.append(
-        f"<div class='card'><small>Avg view %</small>"
-        f"<div class='metric'>{avg_view_pct}</div></div>"
-    )
-    out.append(
-        f"<div class='card'><small>Avg humanity score</small>"
-        f"<div class='metric'>{avg_humanity}</div></div>"
-    )
+    out.append(f"<div class='card'><small>Avg view %</small>" f"<div class='metric'>{avg_view_pct}</div></div>")
+    out.append(f"<div class='card'><small>Avg humanity score</small>" f"<div class='metric'>{avg_humanity}</div></div>")
     out.append(
         f"<div class='card'><small>Shorts under 62 % retention</small>"
         f"<div class='metric'>{len(underperformers)}</div></div>"
@@ -364,10 +378,18 @@ def render_html() -> str:
         seo_health = health.get("seo") or {}
         out.append("<div class='card'><h2>Automation health</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Health score</small><div class='metric'>{int(health.get('score', 0) or 0)}</div></div>")
-        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(health.get('state', 'unknown')))}</div></div>")
-        out.append(f"<div><small>Pending queue</small><div class='metric'>{int(queue_health.get('pending', 0) or 0)}</div></div>")
-        out.append(f"<div><small>SEO avg</small><div class='metric'>{float(seo_health.get('average_score', 0) or 0):.1f}</div></div>")
+        out.append(
+            f"<div><small>Health score</small><div class='metric'>{int(health.get('score', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>State</small><div class='metric'>{html.escape(str(health.get('state', 'unknown')))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Pending queue</small><div class='metric'>{int(queue_health.get('pending', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>SEO avg</small><div class='metric'>{float(seo_health.get('average_score', 0) or 0):.1f}</div></div>"
+        )
         out.append("</section>")
         issues = health.get("issues") or []
         if issues:
@@ -377,8 +399,40 @@ def render_html() -> str:
             out.append("</ul>")
         out.append("</div>")
 
-    if weekly_growth or next_shorts or session_ops or topic_candidates:
+    if (
+        weekly_growth
+        or next_shorts
+        or session_ops
+        or topic_candidates
+        or studio_reach_summary.get("rows")
+        or freshness_report
+        or opening_audit_report
+        or quota_latest
+        or session_graph
+        or comment_to_short
+    ):
         out.append("<div class='card'><h2>World-class growth cockpit</h2>")
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>Studio Reach rows</small><div class='metric'>{int(studio_reach_summary.get('rows', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Stayed to watch</small><div class='metric'>{float(studio_reach_summary.get('stayed_to_watch_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Fresh queue coverage</small><div class='metric'>{float(freshness_report.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Opening audit pass</small><div class='metric'>{float(opening_audit_report.get('pass_rate', 0) or 0) * 100:.0f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Session coverage</small><div class='metric'>{float(session_graph.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
+        )
+        quota_guard = quota_latest.get("guard") or {}
+        out.append(
+            f"<div><small>Quota guard</small><div class='metric'>{html.escape(str(quota_guard.get('mode') or 'ok'))}</div></div>"
+        )
+        out.append("</section>")
         if weekly_growth:
             out.append("<section class='row'>")
             out.append(
@@ -409,7 +463,9 @@ def render_html() -> str:
                 out.append("</table>")
         recs = next_shorts.get("recommendations") or weekly_growth.get("next_ten_package_recommendations") or []
         if recs:
-            out.append("<h3>What to publish next</h3><table><tr><th>Category</th><th>Reason</th><th>Package hint</th></tr>")
+            out.append(
+                "<h3>What to publish next</h3><table><tr><th>Category</th><th>Reason</th><th>Package hint</th></tr>"
+            )
             for item in recs[:8]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
@@ -427,13 +483,46 @@ def render_html() -> str:
                     f"<td>{html.escape(', '.join(map(str, item.get('sources') or []))[:140])}</td></tr>"
                 )
             out.append("</table>")
-        related = (
-            related_video_recommendations.get("items")
-            or session_ops.get("related_video_recommendations")
-            or []
-        )
+        worst_reach = studio_reach_summary.get("worst_swipe_videos") or []
+        if worst_reach:
+            out.append(
+                "<h3>Shorts Reach: worst swipe risk</h3><table><tr><th>Video</th><th>Title</th><th>STW</th><th>Swipe</th></tr>"
+            )
+            for item in worst_reach[:6]:
+                metrics = item.get("metrics") or {}
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('video_id', '')))}</code></td>"
+                    f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{float(metrics.get('stayed_to_watch_rate', 0) or 0) * 100:.1f}%</td>"
+                    f"<td>{float(metrics.get('swipe_away_rate', 0) or 0) * 100:.1f}%</td></tr>"
+                )
+            out.append("</table>")
+        stale = freshness_report.get("stale") or freshness_report.get("stale_items") or []
+        if stale:
+            out.append("<h3>Freshness queue watchlist</h3><table><tr><th>Story</th><th>Age</th><th>Freshness</th></tr>")
+            for item in stale[:6]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title') or item.get('id') or '')[:100])}</td>"
+                    f"<td>{float(item.get('queue_age_days', 0) or 0):.1f}d</td>"
+                    f"<td>{float(item.get('freshness_score', 0) or 0):.1f}</td></tr>"
+                )
+            out.append("</table>")
+        opening_items = opening_audit_report.get("weak_openings") or opening_audit_report.get("items") or []
+        if opening_items:
+            out.append("<h3>Opening audit watchlist</h3><table><tr><th>Video</th><th>Score</th><th>Reasons</th></tr>")
+            for item in opening_items[:6]:
+                audit = item.get("opening_audit") or item
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('title') or item.get('video_id') or '')[:100])}</td>"
+                    f"<td>{float(audit.get('score', 0) or 0):.1f}</td>"
+                    f"<td>{html.escape(', '.join(map(str, audit.get('reasons') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        related = related_video_recommendations.get("items") or session_ops.get("related_video_recommendations") or []
         if related:
-            out.append("<h3>Related video suggestions</h3><table><tr><th>New Short</th><th>Set related to</th><th>Why</th></tr>")
+            out.append(
+                "<h3>Related video suggestions</h3><table><tr><th>New Short</th><th>Set related to</th><th>Why</th></tr>"
+            )
             for item in related[:8]:
                 rec = item.get("recommendation") or {}
                 out.append(
@@ -443,18 +532,66 @@ def render_html() -> str:
                 )
             out.append("</table>")
         comment_items = (
-            comment_reply_short_candidates.get("items")
+            comment_to_short.get("candidates")
+            or comment_to_short.get("items")
+            or comment_reply_short_candidates.get("items")
             or session_ops.get("comment_reply_short_candidates")
             or []
         )
         if comment_items:
             out.append("<h3>Reply with a Short</h3><ul>")
             for item in comment_items[:6]:
-                out.append(f"<li>{html.escape(str(item.get('short_prompt', item.get('comment', '')))[:180])}</li>")
+                out.append(
+                    f"<li>{html.escape(str(item.get('short_prompt') or item.get('hook') or item.get('comment') or item.get('source_comment') or '')[:180])}</li>"
+                )
             out.append("</ul>")
+        session_actions = next_session_actions.get("items") or session_graph.get("next_session_actions") or []
+        if session_actions:
+            out.append("<h3>Next session actions</h3><table><tr><th>Action</th><th>Video</th><th>Why</th></tr>")
+            for item in session_actions[:6]:
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(item.get('action', 'handoff')))}</span></td>"
+                    f"<td>{html.escape(str(item.get('video_id') or item.get('source_video_id') or '')[:40])}</td>"
+                    f"<td>{html.escape(str(item.get('reason') or item.get('title') or '')[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        sequels = sequel_candidates.get("items") or []
+        if sequels:
+            out.append("<h3>Sequel candidates</h3><ul>")
+            for item in sequels[:5]:
+                out.append(f"<li>{html.escape(str(item.get('prompt') or item.get('title') or '')[:180])}</li>")
+            out.append("</ul>")
+        if quota_latest:
+            estimate = quota_latest.get("estimate") or {}
+            guard = quota_latest.get("guard") or {}
+            out.append(
+                "<p><strong>Quota:</strong> "
+                f"{float(estimate.get('units', estimate.get('cost', 0)) or 0):.0f} projected units; "
+                f"guard <span class='badge'>{html.escape(str(guard.get('status') or guard.get('mode') or 'ok'))}</span>.</p>"
+            )
+        if compaction_report:
+            datasets = compaction_report.get("datasets") or {}
+            partitions_count = sum(len((item or {}).get("partitions") or []) for item in datasets.values())
+            out.append(
+                f"<p><strong>Warehouse compaction:</strong> {partitions_count} partition file(s) across {len(datasets)} dataset(s).</p>"
+            )
+        if reporting_bootstrap or reporting_pull:
+            out.append(
+                "<p><strong>Reporting backfill:</strong> "
+                f"{html.escape(str(reporting_bootstrap.get('status', 'not configured')))}; "
+                f"{int(reporting_pull.get('rows', 0) or 0)} imported row(s).</p>"
+            )
+        if seo_metadata_lint:
+            out.append(
+                f"<p><strong>SEO metadata lint:</strong> {int(seo_metadata_lint.get('checked', 0) or 0)} checked, "
+                f"{int(seo_metadata_lint.get('errors', 0) or 0)} error(s).</p>"
+            )
         if experiment_recommendations:
-            out.append("<p><strong>Experiment recommendations updated:</strong> "
-                       + html.escape(str(experiment_recommendations.get("generated_at", ""))) + "</p>")
+            out.append(
+                "<p><strong>Experiment recommendations updated:</strong> "
+                + html.escape(str(experiment_recommendations.get("generated_at", "")))
+                + "</p>"
+            )
         out.append("</div>")
 
     # ── Sparklines ─────────────────────────────────────────────
@@ -522,7 +659,9 @@ def render_html() -> str:
                 out.append("</ul>")
         winners = winner_loser.get("winners") or {}
         if winners:
-            out.append("<h3>Winner map</h3><table><tr><th>Axis</th><th>Winner</th><th>Growth</th><th>Retention</th><th>n</th></tr>")
+            out.append(
+                "<h3>Winner map</h3><table><tr><th>Axis</th><th>Winner</th><th>Growth</th><th>Retention</th><th>n</th></tr>"
+            )
             for axis, item in winners.items():
                 out.append(
                     f"<tr><td>{html.escape(str(axis))}</td>"
@@ -533,7 +672,9 @@ def render_html() -> str:
                 )
             out.append("</table>")
         if remake_candidates:
-            out.append("<h3>Remake candidates</h3><table><tr><th>Title</th><th>Retention</th><th>Views</th><th>Action</th></tr>")
+            out.append(
+                "<h3>Remake candidates</h3><table><tr><th>Title</th><th>Retention</th><th>Views</th><th>Action</th></tr>"
+            )
             for item in remake_candidates[:6]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
@@ -553,10 +694,16 @@ def render_html() -> str:
         executive = ops_guardian.get("executive_report") or {}
         out.append("<div class='card'><h2>Operations guardian</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Risk level</small><div class='metric'>{html.escape(str(risk.get('level', 'unknown')))}</div></div>")
+        out.append(
+            f"<div><small>Risk level</small><div class='metric'>{html.escape(str(risk.get('level', 'unknown')))}</div></div>"
+        )
         out.append(f"<div><small>Risk score</small><div class='metric'>{int(risk.get('score', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Avg retention</small><div class='metric'>{float(risk.get('avg_retention', 0) or 0):.1f}</div></div>")
-        out.append(f"<div><small>Weak ratio</small><div class='metric'>{float(risk.get('weak_retention_ratio', 0) or 0):.2f}</div></div>")
+        out.append(
+            f"<div><small>Avg retention</small><div class='metric'>{float(risk.get('avg_retention', 0) or 0):.1f}</div></div>"
+        )
+        out.append(
+            f"<div><small>Weak ratio</small><div class='metric'>{float(risk.get('weak_retention_ratio', 0) or 0):.2f}</div></div>"
+        )
         out.append("</section>")
         if inventory:
             out.append(
@@ -568,7 +715,9 @@ def render_html() -> str:
             out.append(f"<p><strong>Executive read:</strong> {html.escape(str(executive.get('summary')))}</p>")
         paused = ops_guardian.get("paused_topics") or []
         if paused:
-            out.append("<h3>Paused topics</h3><table><tr><th>Category</th><th>Reason</th><th>Retention</th><th>Growth</th></tr>")
+            out.append(
+                "<h3>Paused topics</h3><table><tr><th>Category</th><th>Reason</th><th>Retention</th><th>Growth</th></tr>"
+            )
             for item in paused[:8]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
@@ -579,7 +728,9 @@ def render_html() -> str:
             out.append("</table>")
         hours = scheduler.get("recommended_utc_hours") or []
         if hours:
-            out.append("<h3>Recommended publish windows</h3><table><tr><th>UTC hour</th><th>Country</th><th>Reason</th></tr>")
+            out.append(
+                "<h3>Recommended publish windows</h3><table><tr><th>UTC hour</th><th>Country</th><th>Reason</th></tr>"
+            )
             for item in hours[:5]:
                 out.append(
                     f"<tr><td>{int(item.get('utc_hour', 0) or 0):02d}:00 UTC</td>"
@@ -611,13 +762,23 @@ def render_html() -> str:
         topics = trend_radar.get("topics") or []
         out.append("<div class='card'><h2>Trend radar</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Items scanned</small><div class='metric'>{int(summary.get('items_scanned', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Animal topics</small><div class='metric'>{int(summary.get('animal_topics', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Top animal</small><div class='metric'>{html.escape(str(summary.get('top_animal', '') or 'none'))}</div></div>")
-        out.append(f"<div><small>Top category</small><div class='metric'>{html.escape(str(summary.get('top_category', '') or 'none'))}</div></div>")
+        out.append(
+            f"<div><small>Items scanned</small><div class='metric'>{int(summary.get('items_scanned', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Animal topics</small><div class='metric'>{int(summary.get('animal_topics', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Top animal</small><div class='metric'>{html.escape(str(summary.get('top_animal', '') or 'none'))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Top category</small><div class='metric'>{html.escape(str(summary.get('top_category', '') or 'none'))}</div></div>"
+        )
         out.append("</section>")
         if topics:
-            out.append("<table><tr><th>Animal</th><th>Category</th><th>Score</th><th>Opportunity</th><th>Posture</th><th>Why now</th></tr>")
+            out.append(
+                "<table><tr><th>Animal</th><th>Category</th><th>Score</th><th>Opportunity</th><th>Posture</th><th>Why now</th></tr>"
+            )
             for item in topics[:8]:
                 titles = item.get("top_titles") or []
                 safety = item.get("trend_safety") or {}
@@ -635,7 +796,9 @@ def render_html() -> str:
     if remake_backlog:
         remakes = remake_backlog.get("remakes") or []
         out.append("<div class='card'><h2>Remake engine</h2>")
-        out.append(f"<p><strong>Backlog:</strong> {int(remake_backlog.get('count', len(remakes)) or 0)} candidate(s)</p>")
+        out.append(
+            f"<p><strong>Backlog:</strong> {int(remake_backlog.get('count', len(remakes)) or 0)} candidate(s)</p>"
+        )
         if remakes:
             out.append("<table><tr><th>Source title</th><th>Retention</th><th>Views</th><th>Action</th></tr>")
             for item in remakes[:8]:
@@ -653,10 +816,16 @@ def render_html() -> str:
 
     if mission_control:
         out.append("<div class='card'><h2>Mission control</h2>")
-        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(mission_control.get('status', 'steady')))}</span></p>")
+        out.append(
+            f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(mission_control.get('status', 'steady')))}</span></p>"
+        )
         priority_topics = mission_control.get("priority_topics") or []
         if priority_topics:
-            out.append("<p><strong>Priority topics:</strong> " + html.escape(", ".join(map(str, priority_topics[:12]))) + "</p>")
+            out.append(
+                "<p><strong>Priority topics:</strong> "
+                + html.escape(", ".join(map(str, priority_topics[:12])))
+                + "</p>"
+            )
         tasks = mission_control.get("next_tasks") or []
         if tasks:
             out.append("<h3>Next moves</h3><table><tr><th>Priority</th><th>Task</th><th>Why</th></tr>")
@@ -683,7 +852,9 @@ def render_html() -> str:
     if agency:
         out.append("<div class='card'><h2>Agency brain</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Average agency score</small><div class='metric'>{float(agency.get('average_score', 0) or 0):.1f}</div></div>")
+        out.append(
+            f"<div><small>Average agency score</small><div class='metric'>{float(agency.get('average_score', 0) or 0):.1f}</div></div>"
+        )
         decisions = agency.get("decisions") or {}
         for label in ("publish_now", "strong_candidate", "needs_polish", "hold"):
             out.append(
@@ -693,7 +864,9 @@ def render_html() -> str:
         out.append("</section>")
         top_agency = agency.get("top") or []
         if top_agency:
-            out.append("<h3>Best agency bets</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>Decision</th><th>Strengths</th></tr>")
+            out.append(
+                "<h3>Best agency bets</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>Decision</th><th>Strengths</th></tr>"
+            )
             for item in top_agency[:8]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
@@ -707,7 +880,9 @@ def render_html() -> str:
 
     if agency_plan:
         out.append("<div class='card'><h2>7-day agency plan</h2>")
-        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(agency_plan.get('status', '')))}</span></p>")
+        out.append(
+            f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(agency_plan.get('status', '')))}</span></p>"
+        )
         out.append(f"<p>{html.escape(str(agency_plan.get('weekly_goal', '')))}</p>")
         days_plan = agency_plan.get("days") or []
         if days_plan:
@@ -725,7 +900,9 @@ def render_html() -> str:
 
     if daily_brief:
         out.append("<div class='card'><h2>Daily agency brief</h2>")
-        out.append(f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(daily_brief.get('status', '')))}</span></p>")
+        out.append(
+            f"<p><strong>Status:</strong> <span class='badge'>{html.escape(str(daily_brief.get('status', '')))}</span></p>"
+        )
         today = daily_brief.get("today") or {}
         if today:
             out.append(
@@ -743,7 +920,9 @@ def render_html() -> str:
     if agency_gate:
         out.append("<div class='card'><h2>Agency publish gate</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Approved</small><div class='metric'>{int(agency_gate.get('approved', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Approved</small><div class='metric'>{int(agency_gate.get('approved', 0) or 0)}</div></div>"
+        )
         out.append(f"<div><small>Held</small><div class='metric'>{int(agency_gate.get('held', 0) or 0)}</div></div>")
         out.append("</section>")
         reasons = agency_gate.get("reasons") or {}
@@ -757,17 +936,27 @@ def render_html() -> str:
     if youtube_intelligence:
         out.append("<div class='card'><h2>YouTube API intelligence</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>API coverage</small><div class='metric'>{int(youtube_intelligence.get('coverage_score', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>API coverage</small><div class='metric'>{int(youtube_intelligence.get('coverage_score', 0) or 0)}</div></div>"
+        )
         channel = youtube_intelligence.get("channel") or {}
-        out.append(f"<div><small>Subscribers</small><div class='metric'>{int(channel.get('subscriber_count', 0) or 0):,}</div></div>")
+        out.append(
+            f"<div><small>Subscribers</small><div class='metric'>{int(channel.get('subscriber_count', 0) or 0):,}</div></div>"
+        )
         uploads = youtube_intelligence.get("uploads_inventory") or {}
-        out.append(f"<div><small>Uploads checked</small><div class='metric'>{int(uploads.get('uploads_checked', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Uploads checked</small><div class='metric'>{int(uploads.get('uploads_checked', 0) or 0)}</div></div>"
+        )
         video_audit = youtube_intelligence.get("video_audit") or {}
-        out.append(f"<div><small>Videos checked</small><div class='metric'>{int(video_audit.get('videos_checked', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Videos checked</small><div class='metric'>{int(video_audit.get('videos_checked', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         reports = youtube_intelligence.get("analytics_reports") or []
         if reports:
-            out.append("<h3>Analytics reports</h3><table><tr><th>Report</th><th>Status</th><th>Rows</th><th>Use</th></tr>")
+            out.append(
+                "<h3>Analytics reports</h3><table><tr><th>Report</th><th>Status</th><th>Rows</th><th>Use</th></tr>"
+            )
             for item in reports[:8]:
                 out.append(
                     f"<tr><td><code>{html.escape(str(item.get('id', '')))}</code></td>"
@@ -797,13 +986,21 @@ def render_html() -> str:
     if ai_provider_report:
         out.append("<div class='card'><h2>AI provider router</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Default chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('default_chain') or [])))}</div></div>")
-        out.append(f"<div><small>JSON chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('json_chain') or [])))}</div></div>")
-        out.append(f"<div><small>Rewrite chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('rewrite_chain') or [])))}</div></div>")
+        out.append(
+            f"<div><small>Default chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('default_chain') or [])))}</div></div>"
+        )
+        out.append(
+            f"<div><small>JSON chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('json_chain') or [])))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Rewrite chain</small><div>{html.escape(' > '.join(map(str, ai_provider_report.get('rewrite_chain') or [])))}</div></div>"
+        )
         out.append("</section>")
         providers = ai_provider_report.get("providers") or []
         if providers:
-            out.append("<h3>Provider health</h3><table><tr><th>Provider</th><th>Configured</th><th>Recent success</th><th>Cooldown</th></tr>")
+            out.append(
+                "<h3>Provider health</h3><table><tr><th>Provider</th><th>Configured</th><th>Recent success</th><th>Cooldown</th></tr>"
+            )
             for item in providers:
                 rate = item.get("success_rate")
                 rate_text = "unknown" if rate is None else f"{float(rate) * 100:.1f}%"
@@ -820,10 +1017,16 @@ def render_html() -> str:
         summary = youtube_brain_report.get("summary") or {}
         out.append("<div class='card'><h2>YouTube brain</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Average creator score</small><div class='metric'>{float(summary.get('average_score', 0) or 0):.1f}</div></div>")
+        out.append(
+            f"<div><small>Average creator score</small><div class='metric'>{float(summary.get('average_score', 0) or 0):.1f}</div></div>"
+        )
         states = summary.get("states") or {}
-        out.append(f"<div><small>Publish-minded</small><div class='metric'>{int(states.get('publish_minded', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Rewrite first</small><div class='metric'>{int(states.get('rewrite_before_publish', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Publish-minded</small><div class='metric'>{int(states.get('publish_minded', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Rewrite first</small><div class='metric'>{int(states.get('rewrite_before_publish', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         principle = youtube_brain_report.get("operating_principle")
         if principle:
@@ -836,7 +1039,9 @@ def render_html() -> str:
             out.append("</table>")
         top = youtube_brain_report.get("top") or []
         if top:
-            out.append("<h3>Best creator-minded candidates</h3><table><tr><th>Title</th><th>State</th><th>Score</th><th>Promise</th></tr>")
+            out.append(
+                "<h3>Best creator-minded candidates</h3><table><tr><th>Title</th><th>State</th><th>Score</th><th>Promise</th></tr>"
+            )
             for item in top[:8]:
                 brain = item.get("youtube_brain") or {}
                 out.append(
@@ -851,10 +1056,14 @@ def render_html() -> str:
     if packaging_report:
         out.append("<div class='card'><h2>Magnetic packaging</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Pending audited</small><div class='metric'>{int(packaging_report.get('pending', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Pending audited</small><div class='metric'>{int(packaging_report.get('pending', 0) or 0)}</div></div>"
+        )
         states = packaging_report.get("states") or {}
         out.append(f"<div><small>Magnetic</small><div class='metric'>{int(states.get('magnetic', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Rewrite packaging</small><div class='metric'>{int(states.get('rewrite_packaging', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Rewrite packaging</small><div class='metric'>{int(states.get('rewrite_packaging', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         risks = packaging_report.get("top_risks") or {}
         if risks:
@@ -864,7 +1073,9 @@ def render_html() -> str:
             out.append("</table>")
         top = packaging_report.get("top") or []
         if top:
-            out.append("<h3>Strongest packages</h3><table><tr><th>Title</th><th>Thumbnail</th><th>Score</th><th>Comment hook</th></tr>")
+            out.append(
+                "<h3>Strongest packages</h3><table><tr><th>Title</th><th>Thumbnail</th><th>Score</th><th>Comment hook</th></tr>"
+            )
             for item in top[:8]:
                 pkg = item.get("packaging") or {}
                 out.append(
@@ -879,12 +1090,20 @@ def render_html() -> str:
     if autonomous_director:
         out.append("<div class='card'><h2>Autonomous director</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Autonomy score</small><div class='metric'>{int(autonomous_director.get('autonomy_score', 0) or 0)}</div></div>")
-        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(autonomous_director.get('state', 'unknown')))}</div></div>")
+        out.append(
+            f"<div><small>Autonomy score</small><div class='metric'>{int(autonomous_director.get('autonomy_score', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>State</small><div class='metric'>{html.escape(str(autonomous_director.get('state', 'unknown')))}</div></div>"
+        )
         conversion = autonomous_director.get("subscriber_conversion") or {}
-        out.append(f"<div><small>Subs / 1k views</small><div class='metric'>{float(conversion.get('subs_per_1000_views', 0) or 0):.2f}</div></div>")
+        out.append(
+            f"<div><small>Subs / 1k views</small><div class='metric'>{float(conversion.get('subs_per_1000_views', 0) or 0):.2f}</div></div>"
+        )
         quota = autonomous_director.get("quota_budget") or {}
-        out.append(f"<div><small>API quota risk</small><div class='metric'>{int(quota.get('risk_score', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>API quota risk</small><div class='metric'>{int(quota.get('risk_score', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         decisions = autonomous_director.get("decisions") or []
         if decisions:
@@ -902,37 +1121,55 @@ def render_html() -> str:
         if priorities:
             out.append("<h3>Category priorities</h3><table><tr><th>Category</th><th>Score</th></tr>")
             for item in priorities[:6]:
-                out.append(f"<tr><td>{html.escape(str(item.get('value', '')))}</td><td>{float(item.get('score', 0) or 0):.1f}</td></tr>")
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('value', '')))}</td><td>{float(item.get('score', 0) or 0):.1f}</td></tr>"
+                )
             out.append("</table>")
         out.append("</div>")
 
     if autonomous_growth_plan:
         out.append("<div class='card'><h2>Autonomous growth loop</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Loop score</small><div class='metric'>{int(autonomous_growth_plan.get('autonomy_score', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Mode</small><div class='metric'>{html.escape(str(autonomous_growth_plan.get('operating_mode', 'unknown')))}</div></div>")
+        out.append(
+            f"<div><small>Loop score</small><div class='metric'>{int(autonomous_growth_plan.get('autonomy_score', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Mode</small><div class='metric'>{html.escape(str(autonomous_growth_plan.get('operating_mode', 'unknown')))}</div></div>"
+        )
         data_status = autonomous_growth_plan.get("data_status") or {}
-        out.append(f"<div><small>Tracked Shorts</small><div class='metric'>{int(data_status.get('shorts_tracked', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Queue annotated</small><div class='metric'>{int(autonomous_growth_plan.get('queue_annotations_written', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Tracked Shorts</small><div class='metric'>{int(data_status.get('shorts_tracked', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Queue annotated</small><div class='metric'>{int(autonomous_growth_plan.get('queue_annotations_written', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         policy = autonomous_growth_plan.get("production_policy") or {}
         if policy:
             out.append("<h3>Production policy</h3><table><tr><th>Lane</th><th>%</th></tr>")
             for key in ("exploit_percent", "sequence_percent", "experiment_percent", "recovery_percent"):
-                out.append(f"<tr><td>{html.escape(str(key).replace('_percent', ''))}</td><td>{int(policy.get(key, 0) or 0)}</td></tr>")
+                out.append(
+                    f"<tr><td>{html.escape(str(key).replace('_percent', ''))}</td><td>{int(policy.get(key, 0) or 0)}</td></tr>"
+                )
             out.append("</table>")
         sequence_bank = autonomous_growth_plan.get("sequence_bank") or {}
         audience_requests = autonomous_growth_plan.get("audience_requests") or {}
         if sequence_bank or audience_requests:
             out.append("<section class='row'>")
-            out.append(f"<div><small>Sequence variants</small><div class='metric'>{int(sequence_bank.get('variant_count', 0) or 0)}</div></div>")
-            out.append(f"<div><small>Source winners</small><div class='metric'>{int(sequence_bank.get('source_winners', 0) or 0)}</div></div>")
+            out.append(
+                f"<div><small>Sequence variants</small><div class='metric'>{int(sequence_bank.get('variant_count', 0) or 0)}</div></div>"
+            )
+            out.append(
+                f"<div><small>Source winners</small><div class='metric'>{int(sequence_bank.get('source_winners', 0) or 0)}</div></div>"
+            )
             requested = audience_requests.get("requested_animals") or []
             out.append(f"<div><small>Viewer animal requests</small><div class='metric'>{len(requested)}</div></div>")
             out.append("</section>")
-        hypotheses = ((autonomous_growth_plan.get("experiment_bank") or {}).get("hypotheses") or [])
+        hypotheses = (autonomous_growth_plan.get("experiment_bank") or {}).get("hypotheses") or []
         if hypotheses:
-            out.append("<h3>Active hypotheses</h3><table><tr><th>ID</th><th>Lane</th><th>Statement</th><th>Target</th></tr>")
+            out.append(
+                "<h3>Active hypotheses</h3><table><tr><th>ID</th><th>Lane</th><th>Statement</th><th>Target</th></tr>"
+            )
             for item in hypotheses[:8]:
                 out.append(
                     f"<tr><td><code>{html.escape(str(item.get('id', '')))}</code></td>"
@@ -944,7 +1181,9 @@ def render_html() -> str:
         loop_queue = autonomous_growth_plan.get("queue") or {}
         candidates = loop_queue.get("top_candidates") or []
         if candidates:
-            out.append("<h3>Autonomous queue order</h3><table><tr><th>Title</th><th>Lane</th><th>Hypothesis</th><th>Test title</th><th>Priority</th></tr>")
+            out.append(
+                "<h3>Autonomous queue order</h3><table><tr><th>Title</th><th>Lane</th><th>Hypothesis</th><th>Test title</th><th>Priority</th></tr>"
+            )
             for item in candidates[:8]:
                 lab = item.get("packaging_lab") or {}
                 test_titles = lab.get("title_variants") or []
@@ -967,12 +1206,20 @@ def render_html() -> str:
     if channel_success:
         out.append("<div class='card'><h2>Channel success engine</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Success score</small><div class='metric'>{float(channel_success.get('success_score', 0) or 0):.1f}</div></div>")
-        out.append(f"<div><small>State</small><div class='metric'>{html.escape(str(channel_success.get('state', 'unknown')))}</div></div>")
+        out.append(
+            f"<div><small>Success score</small><div class='metric'>{float(channel_success.get('success_score', 0) or 0):.1f}</div></div>"
+        )
+        out.append(
+            f"<div><small>State</small><div class='metric'>{html.escape(str(channel_success.get('state', 'unknown')))}</div></div>"
+        )
         retention = channel_success.get("retention") or {}
-        out.append(f"<div><small>Retention gap</small><div class='metric'>{float(retention.get('gap_to_floor', 0) or 0):.1f}</div></div>")
+        out.append(
+            f"<div><small>Retention gap</small><div class='metric'>{float(retention.get('gap_to_floor', 0) or 0):.1f}</div></div>"
+        )
         conversion = channel_success.get("subscriber_conversion") or {}
-        out.append(f"<div><small>Subs / 1k target gap</small><div class='metric'>{float(conversion.get('gap_to_target', 0) or 0):.2f}</div></div>")
+        out.append(
+            f"<div><small>Subs / 1k target gap</small><div class='metric'>{float(conversion.get('gap_to_target', 0) or 0):.2f}</div></div>"
+        )
         out.append("</section>")
         principle = channel_success.get("operating_principle")
         if principle:
@@ -987,7 +1234,9 @@ def render_html() -> str:
         winners_24h = first_day.get("winners") or []
         rework_24h = first_day.get("rework") or []
         if winners_24h or rework_24h:
-            out.append("<h3>First 24h reactions</h3><table><tr><th>Lane</th><th>Title</th><th>Views</th><th>Growth</th><th>Retention</th></tr>")
+            out.append(
+                "<h3>First 24h reactions</h3><table><tr><th>Lane</th><th>Title</th><th>Views</th><th>Growth</th><th>Retention</th></tr>"
+            )
             for lane, items in (("Winner", winners_24h), ("Rework hook", rework_24h)):
                 for item in items[:4]:
                     out.append(
@@ -1000,7 +1249,9 @@ def render_html() -> str:
             out.append("</table>")
         series = (channel_success.get("series_system") or {}).get("lanes") or []
         if series:
-            out.append("<h3>Series lanes</h3><table><tr><th>Series</th><th>State</th><th>Score</th><th>Promise</th></tr>")
+            out.append(
+                "<h3>Series lanes</h3><table><tr><th>Series</th><th>State</th><th>Score</th><th>Promise</th></tr>"
+            )
             for item in series[:6]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('series', '')))}</td>"
@@ -1024,9 +1275,15 @@ def render_html() -> str:
     if success_rewriter:
         out.append("<div class='card'><h2>Success rewriter</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Rewritten</small><div class='metric'>{int(success_rewriter.get('rewritten', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Held before</small><div class='metric'>{int(success_rewriter.get('before_held', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Held after</small><div class='metric'>{int(success_rewriter.get('after_held', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Rewritten</small><div class='metric'>{int(success_rewriter.get('rewritten', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Held before</small><div class='metric'>{int(success_rewriter.get('before_held', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Held after</small><div class='metric'>{int(success_rewriter.get('after_held', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         before_reasons = success_rewriter.get("before_reasons") or {}
         after_reasons = success_rewriter.get("after_reasons") or {}
@@ -1042,7 +1299,9 @@ def render_html() -> str:
             out.append("</table>")
         items = success_rewriter.get("items") or []
         if items:
-            out.append("<h3>Recovered candidates</h3><table><tr><th>Title</th><th>Category</th><th>Words</th><th>Reasons</th></tr>")
+            out.append(
+                "<h3>Recovered candidates</h3><table><tr><th>Title</th><th>Category</th><th>Words</th><th>Reasons</th></tr>"
+            )
             for item in items[:8]:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
@@ -1055,8 +1314,10 @@ def render_html() -> str:
 
     if winner_sequels:
         out.append("<div class='card'><h2>Winner sequel factory</h2>")
-        out.append(f"<p><strong>Created:</strong> {int(winner_sequels.get('created', 0) or 0)} "
-                   f"from {int(winner_sequels.get('candidate_count', 0) or 0)} candidate(s).</p>")
+        out.append(
+            f"<p><strong>Created:</strong> {int(winner_sequels.get('created', 0) or 0)} "
+            f"from {int(winner_sequels.get('candidate_count', 0) or 0)} candidate(s).</p>"
+        )
         candidates = winner_sequels.get("candidates") or []
         if candidates:
             out.append("<table><tr><th>Source</th><th>Category</th><th>Growth</th><th>Views</th></tr>")
@@ -1145,19 +1406,35 @@ def render_html() -> str:
     if visual_report:
         out.append("<div class='card'><h2>Visual QA coverage</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Coverage</small><div class='metric'>{float(visual_report.get('coverage_pct', 0) or 0):.1f}%</div></div>")
-        out.append(f"<div><small>Legacy inferred</small><div class='metric'>{int(visual_report.get('inferred_legacy_checked', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Checked</small><div class='metric'>{int(visual_report.get('checked', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>")
-        out.append(f"<div><small>CTR frames</small><div class='metric'>{int(visual_report.get('ctr_checked', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Strong CTR</small><div class='metric'>{int(visual_report.get('ctr_strong', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Coverage</small><div class='metric'>{float(visual_report.get('coverage_pct', 0) or 0):.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Legacy inferred</small><div class='metric'>{int(visual_report.get('inferred_legacy_checked', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Checked</small><div class='metric'>{int(visual_report.get('checked', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Rejected</small><div class='metric'>{int(visual_report.get('rejected', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>CTR frames</small><div class='metric'>{int(visual_report.get('ctr_checked', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Strong CTR</small><div class='metric'>{int(visual_report.get('ctr_strong', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         visual_learning = visual_report.get("visual_learning") or {}
         if visual_learning:
-            out.append(f"<p><strong>Winning visual profile:</strong> <code>{html.escape(str(visual_learning.get('winner') or 'collecting samples'))}</code></p>")
+            out.append(
+                f"<p><strong>Winning visual profile:</strong> <code>{html.escape(str(visual_learning.get('winner') or 'collecting samples'))}</code></p>"
+            )
             profiles = visual_learning.get("profiles") or []
             if profiles:
-                out.append("<table><tr><th>Profile</th><th>n</th><th>Growth</th><th>Retention</th><th>CTR score</th></tr>")
+                out.append(
+                    "<table><tr><th>Profile</th><th>n</th><th>Growth</th><th>Retention</th><th>CTR score</th></tr>"
+                )
                 for item in profiles[:6]:
                     out.append(
                         f"<tr><td><code>{html.escape(str(item.get('profile', '')))}</code></td>"
@@ -1171,9 +1448,11 @@ def render_html() -> str:
 
     if visual_backfill:
         out.append("<div class='card'><h2>Visual QA backfill</h2>")
-        out.append(f"<p><strong>Legacy unchecked:</strong> {int(visual_backfill.get('legacy_unchecked', 0) or 0)} "
-                   f"Â· <strong>Inferred approved:</strong> {int(visual_backfill.get('inferred_approved', 0) or 0)} "
-                   f"Â· <strong>Inferred rejected:</strong> {int(visual_backfill.get('inferred_rejected', 0) or 0)}</p>")
+        out.append(
+            f"<p><strong>Legacy unchecked:</strong> {int(visual_backfill.get('legacy_unchecked', 0) or 0)} "
+            f"Â· <strong>Inferred approved:</strong> {int(visual_backfill.get('inferred_approved', 0) or 0)} "
+            f"Â· <strong>Inferred rejected:</strong> {int(visual_backfill.get('inferred_rejected', 0) or 0)}</p>"
+        )
         out.append("</div>")
 
     if narrator_report:
@@ -1183,7 +1462,9 @@ def render_html() -> str:
         voices = narrator_report.get("voices") or []
         backfill = narrator_report.get("legacy_marker_backfill") or {}
         if backfill:
-            out.append(f"<p><strong>Matched legacy markers:</strong> {int(backfill.get('matched_top_performers', 0) or 0)}</p>")
+            out.append(
+                f"<p><strong>Matched legacy markers:</strong> {int(backfill.get('matched_top_performers', 0) or 0)}</p>"
+            )
         if voices:
             out.append("<table><tr><th>Voice</th><th>n</th><th>Growth</th><th>Retention</th></tr>")
             for item in voices[:8]:
@@ -1199,8 +1480,12 @@ def render_html() -> str:
     if fact_ledger:
         out.append("<div class='card'><h2>Fact ledger</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Duplicate risk</small><div class='metric'>{int(fact_ledger.get('risk_score', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Duplicate clusters</small><div class='metric'>{len(fact_ledger.get('duplicate_clusters') or [])}</div></div>")
+        out.append(
+            f"<div><small>Duplicate risk</small><div class='metric'>{int(fact_ledger.get('risk_score', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Duplicate clusters</small><div class='metric'>{len(fact_ledger.get('duplicate_clusters') or [])}</div></div>"
+        )
         out.append("</section>")
         phrases = fact_ledger.get("repeated_phrases") or {}
         if phrases:
@@ -1212,7 +1497,9 @@ def render_html() -> str:
 
     if legacy_backfill:
         out.append("<div class='card'><h2>Legacy analytics backfill</h2>")
-        out.append(f"<p><strong>Markers needing derived metadata:</strong> {int(legacy_backfill.get('count', 0) or 0)}</p>")
+        out.append(
+            f"<p><strong>Markers needing derived metadata:</strong> {int(legacy_backfill.get('count', 0) or 0)}</p>"
+        )
         markers = legacy_backfill.get("markers") or []
         if markers:
             out.append("<table><tr><th>Title</th><th>Missing</th><th>Derived format</th><th>Retention fix</th></tr>")
@@ -1231,10 +1518,18 @@ def render_html() -> str:
     if any((queue_audit, reject_report, next_shorts, dry_run_publish, sequence_plan, post24_review, publish_schedule)):
         out.append("<div class='card'><h2>Operations cockpit</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Queue audited</small><div class='metric'>{int(queue_audit.get('pending', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Dry-run eligible</small><div class='metric'>{int(dry_run_publish.get('eligible_count', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Rejected archive</small><div class='metric'>{int(reject_report.get('total', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Sequence variants</small><div class='metric'>{len(sequence_plan.get('variants') or [])}</div></div>")
+        out.append(
+            f"<div><small>Queue audited</small><div class='metric'>{int(queue_audit.get('pending', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Dry-run eligible</small><div class='metric'>{int(dry_run_publish.get('eligible_count', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Rejected archive</small><div class='metric'>{int(reject_report.get('total', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Sequence variants</small><div class='metric'>{len(sequence_plan.get('variants') or [])}</div></div>"
+        )
         out.append("</section>")
         schedule_slots = publish_schedule.get("recommended_slots") or []
         if publish_schedule:
@@ -1254,13 +1549,19 @@ def render_html() -> str:
         if states or rights:
             out.append("<h3>Publish gates</h3><table><tr><th>Gate</th><th>State</th><th>Count</th></tr>")
             for state, count in states.items():
-                out.append(f"<tr><td>publish_score</td><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>")
+                out.append(
+                    f"<tr><td>publish_score</td><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>"
+                )
             for state, count in rights.items():
-                out.append(f"<tr><td>rights</td><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>")
+                out.append(
+                    f"<tr><td>rights</td><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>"
+                )
             out.append("</table>")
         next_items = next_shorts.get("items") or []
         if next_items:
-            out.append("<h3>Next Shorts by score</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>State</th></tr>")
+            out.append(
+                "<h3>Next Shorts by score</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>State</th></tr>"
+            )
             for item in next_items[:8]:
                 score = item.get("score") or {}
                 out.append(
@@ -1295,15 +1596,23 @@ def render_html() -> str:
     if queue_studio.get("pending"):
         out.append("<div class='card'><h2>Studio queue health</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Pending stories</small><div class='metric'>{int(queue_studio.get('pending', 0))}</div></div>")
-        out.append(f"<div><small>Editor-approved</small><div class='metric'>{int(queue_studio.get('approved', 0))}</div></div>")
-        out.append(f"<div><small>Studio-polished</small><div class='metric'>{int(queue_studio.get('rescued', 0))}</div></div>")
+        out.append(
+            f"<div><small>Pending stories</small><div class='metric'>{int(queue_studio.get('pending', 0))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Editor-approved</small><div class='metric'>{int(queue_studio.get('approved', 0))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Studio-polished</small><div class='metric'>{int(queue_studio.get('rescued', 0))}</div></div>"
+        )
         out.append("</section>")
         labels = queue_studio.get("labels") or {}
         if labels:
             out.append("<h3>Humanity labels in queue</h3><table><tr><th>Label</th><th>Stories</th></tr>")
             for label, count in labels.items():
-                out.append(f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td><td>{int(count)}</td></tr>")
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td><td>{int(count)}</td></tr>"
+                )
             out.append("</table>")
         states = queue_studio.get("states") or {}
         if states:
@@ -1319,10 +1628,7 @@ def render_html() -> str:
             out.append("</ul>")
         categories = queue_studio.get("categories") or {}
         if categories:
-            all_states = sorted({
-                state for by_state in categories.values()
-                for state in (by_state or {}).keys()
-            })
+            all_states = sorted({state for by_state in categories.values() for state in (by_state or {}).keys()})
             out.append("<h3>Queue by category</h3><table><tr><th>Category</th>")
             for state in all_states:
                 out.append(f"<th>{html.escape(str(state))}</th>")
@@ -1341,7 +1647,9 @@ def render_html() -> str:
             out.append("</table>")
         top_queue = queue_studio.get("top") or []
         if top_queue:
-            out.append("<h3>Next best candidates</h3><table><tr><th>Title</th><th>Category</th><th>Editorial</th><th>Humanity</th><th>Agency</th></tr>")
+            out.append(
+                "<h3>Next best candidates</h3><table><tr><th>Title</th><th>Category</th><th>Editorial</th><th>Humanity</th><th>Agency</th></tr>"
+            )
             for item in top_queue:
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
@@ -1361,7 +1669,9 @@ def render_html() -> str:
         if tiers:
             out.append("<h3>Retention tiers</h3><table><tr><th>Tier</th><th>Shorts</th></tr>")
             for tier, count in tiers.items():
-                out.append(f"<tr><td><span class='badge'>{html.escape(str(tier))}</span></td><td>{int(count)}</td></tr>")
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(tier))}</span></td><td>{int(count)}</td></tr>"
+                )
             out.append("</table>")
         for label, key in (
             ("Winning categories", "winning_categories"),
@@ -1383,8 +1693,12 @@ def render_html() -> str:
     if comments:
         out.append("<div class='card'><h2>Audience requests</h2>")
         out.append("<section class='row'>")
-        out.append(f"<div><small>Comments sampled</small><div class='metric'>{int(comments.get('comments_sampled', 0) or 0)}</div></div>")
-        out.append(f"<div><small>Viewer questions</small><div class='metric'>{int(comments.get('question_count', 0) or 0)}</div></div>")
+        out.append(
+            f"<div><small>Comments sampled</small><div class='metric'>{int(comments.get('comments_sampled', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Viewer questions</small><div class='metric'>{int(comments.get('question_count', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         for label, key in (
             ("Requested animals", "requested_animals"),
@@ -1403,11 +1717,11 @@ def render_html() -> str:
 
     if top_performers:
         out.append("<div class='card'><h2>Top performers (last 14 d)</h2>")
-        out.append("<table><tr><th>Title</th><th>Format</th><th>Views</th><th>Velocity</th><th>Growth</th><th>Humanity</th><th>Retention</th></tr>")
+        out.append(
+            "<table><tr><th>Title</th><th>Format</th><th>Views</th><th>Velocity</th><th>Growth</th><th>Humanity</th><th>Retention</th></tr>"
+        )
         for t in top_performers[:10]:
-            url = t.get("share_url") or (
-                f"https://www.youtube.com/shorts/{t.get('video_id', '')}"
-            )
+            url = t.get("share_url") or (f"https://www.youtube.com/shorts/{t.get('video_id', '')}")
             out.append(
                 f"<tr><td><a href='{html.escape(url)}'>"
                 f"{html.escape(t.get('title', '')[:90])}</a></td>"
@@ -1425,8 +1739,9 @@ def render_html() -> str:
         out.append("<div class='card'><h2>Humanity mix</h2>")
         out.append("<table><tr><th>Label</th><th>Shorts</th></tr>")
         for label, count in sorted(humanity_counts.items(), key=lambda kv: str(kv[0])):
-            out.append(f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td>"
-                       f"<td>{int(count)}</td></tr>")
+            out.append(
+                f"<tr><td><span class='badge'>{html.escape(str(label))}</span></td>" f"<td>{int(count)}</td></tr>"
+            )
         out.append("</table></div>")
 
     # ── Category retention ────────────────────────────────────
@@ -1435,8 +1750,7 @@ def render_html() -> str:
         out.append("<table><tr><th>Category</th><th>Avg view %</th></tr>")
         for cat, pct in sorted(cat_perf.items(), key=lambda kv: kv[1], reverse=True):
             cls = "green" if pct >= 60 else ("red" if pct < 30 else "")
-            out.append(f"<tr><td>{html.escape(str(cat))}</td>"
-                        f"<td class='{cls}'>{pct} %</td></tr>")
+            out.append(f"<tr><td>{html.escape(str(cat))}</td>" f"<td class='{cls}'>{pct} %</td></tr>")
         out.append("</table></div>")
 
     if cat_engagement:
@@ -1475,9 +1789,11 @@ def render_html() -> str:
         for axis, variant in winners.items():
             lift = (experiments.get("lift") or {}).get(axis, {}).get("lift")
             lift_s = f"+{lift:.1f} pp" if isinstance(lift, (int, float)) else "—"
-            out.append(f"<tr><td>{html.escape(axis)}</td>"
-                        f"<td><code>{html.escape(variant)}</code></td>"
-                        f"<td class='green'>{lift_s}</td></tr>")
+            out.append(
+                f"<tr><td>{html.escape(axis)}</td>"
+                f"<td><code>{html.escape(variant)}</code></td>"
+                f"<td class='green'>{lift_s}</td></tr>"
+            )
         out.append("</table></div>")
 
     # Show ALL axis stats too (warm-up phase visibility).
@@ -1511,8 +1827,9 @@ def render_html() -> str:
             )
         out.append("</table></div>")
 
-    out.append("<small>Generated by <code>scripts/build_dashboard.py</code>. "
-                "Data: <code>_data/analytics/</code>.</small>")
+    out.append(
+        "<small>Generated by <code>scripts/build_dashboard.py</code>. " "Data: <code>_data/analytics/</code>.</small>"
+    )
     out.append("</body></html>")
     return "".join(out)
 

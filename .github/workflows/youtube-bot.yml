@@ -62,6 +62,37 @@ jobs:
           if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
             pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
           fi
+      - name: "Quota preflight"
+        run: |
+          set +e
+          quota="$(python scripts/quota_preflight.py youtube-bot --json)"
+          code="$?"
+          set -e
+          echo "$quota"
+          blocked="$(QUOTA_JSON="$quota" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["QUOTA_JSON"])
+          print("1" if (payload.get("guard") or {}).get("block") else "0")
+          PY
+          )"
+          echo "PUBLISH_QUOTA_BLOCKED=$blocked" >> "$GITHUB_ENV"
+          QUOTA_JSON="$quota" python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import os
+
+          payload = json.loads(os.environ["QUOTA_JSON"])
+          guard = payload.get("guard") or {}
+          print("### API quota preflight")
+          print(f"- Estimated units: `{payload.get('estimated_units')}`")
+          print(f"- Projected ratio: `{guard.get('projected_ratio')}`")
+          print(f"- Guard mode: `{guard.get('mode')}`")
+          print(f"- Blocked: `{guard.get('block')}`")
+          PY
+          if [ "$code" = "3" ]; then
+            echo "Quota guard requested a safe skip."
+          fi
       - name: "Preparar inteligencia pre-publicacao"
         run: python scripts/run_intelligence_suite.py pre_generate
         env:
@@ -155,6 +186,9 @@ jobs:
           PYTHONUNBUFFERED: "1"
           YOUTUBE_AUTO_REPLY_COMMENTS: ${{ vars.YOUTUBE_AUTO_REPLY_COMMENTS || '1' }}
           YOUTUBE_COMMENT_REPLY_LIMIT: ${{ vars.YOUTUBE_COMMENT_REPLY_LIMIT || '30' }}
+      - name: "Promover comentarios para ideias de Shorts"
+        if: steps.publish_window.outputs.should_publish == 'true'
+        run: python scripts/comment_to_short_pipeline.py
       - name: "Salvar marcadores no git"
         run: |
           git config user.name "Wild Brief Bot"
@@ -167,7 +201,10 @@ jobs:
             _data/analytics/latest.json
             _data/analytics/experiments.json
             _data/analytics/comments.json
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/api_quota_latest.json
             _data/comment_replies.json
+            _data/comment_to_short_candidates.json
             _data/ai_provider_report.json
             _data/packaging_report.json
             _data/youtube_brain_report.json
@@ -196,6 +233,13 @@ jobs:
             _data/sequence_plan.json
             _data/publish_schedule.json
             _data/publish_slot_decisions.jsonl
+            _data/session_graph.json
+            _data/next_session_actions.json
+            _data/sequel_candidates.json
+            _data/related_video_recommendations.json
+            _data/comment_reply_short_candidates.json
+            _data/opening_audit_report.json
+            _data/seo_metadata_lint.json
             _data/queue_prune_report.json
             _data/repair_queue.jsonl
           )

@@ -62,33 +62,61 @@ jobs:
       - name: "Check publish schedule contract"
         run: |
           python scripts/check_schedule_sync.py
+          python scripts/check_repo_contracts.py
+          python scripts/tts_healthcheck.py --no-synth --json
+          python scripts/quota_preflight.py youtube-bot --json
+          python scripts/seo_metadata_lint.py
           python -m pytest -q \
             tests/test_publish_schedule_adaptive.py \
             tests/test_publish_window_adaptive.py \
-            tests/test_docs_schedule_sync.py
+            tests/test_docs_schedule_sync.py \
+            tests/test_repo_contracts.py \
+            tests/test_feature_flags_registry.py \
+            tests/test_tts_healthcheck.py \
+            tests/test_workflow_contracts.py
 
       - name: "Lint world-class growth modules"
         run: |
           python -m black --check --diff \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
-            utils/publish_schedule.py \
+            utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
+            utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
+            utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
+            scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
+            scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
+            scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
             tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
-            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py
+            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py \
+            tests/test_import_studio_reach_export.py tests/test_topic_freshness.py tests/test_first_frame_audit.py \
+            tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
+            tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
+            tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
+            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py
           python -m ruff check \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
-            utils/publish_schedule.py \
+            utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
+            utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
+            utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py \
             scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
             scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
+            scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
+            scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
+            scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
             tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
             tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
             tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
-            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py
+            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py \
+            tests/test_import_studio_reach_export.py tests/test_topic_freshness.py tests/test_first_frame_audit.py \
+            tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
+            tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
+            tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
+            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt

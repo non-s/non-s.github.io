@@ -29,6 +29,7 @@ If the music_bed download fails for any reason (network, etc.), the
 caller MUST still produce a Short â€” music is enhancement, not a
 hard requirement.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -61,8 +62,8 @@ MUSIC_BED_VOLUME_DB = float(os.environ.get("MUSIC_BED_VOLUME", "-26"))
 @dataclass(frozen=True)
 class MusicTrack:
     name: str
-    url: str          # direct MP3 URL, served by Pixabay's CDN
-    mood: str         # "upbeat" | "tense" | "reflective"
+    url: str  # direct MP3 URL, served by Pixabay's CDN
+    mood: str  # "upbeat" | "tense" | "reflective"
     asset_path: str = ""
     bpm_bucket: str = ""
     license: str = "Pixabay Content License (CC0-equivalent)"
@@ -149,6 +150,34 @@ def _operator_manifest_tracks(path: Path | None = None) -> list[MusicTrack]:
     return tracks
 
 
+def score_manifest_track(track: MusicTrack, story: dict | None = None) -> dict:
+    """Score local Audio Library tracks for safe, quiet Shorts use."""
+    story = story or {}
+    target_mood = _mood_for_story(story)
+    score = 55.0
+    if track.asset_path:
+        score += 18
+    if track.mood == target_mood:
+        score += 18
+    if track.bpm_bucket.lower() in {"low", "medium", "slow"}:
+        score += 6
+    if "youtube audio" in track.license.lower() or "operator-curated" in track.license.lower():
+        score += 8
+    return {
+        "name": track.name,
+        "score": round(min(100.0, score), 2),
+        "mood": track.mood,
+        "asset_path": track.asset_path,
+        "bpm_bucket": track.bpm_bucket,
+        "content_id_safe_music": bool(track.asset_path),
+    }
+
+
+def rank_manifest_tracks(story: dict | None = None, path: Path | None = None) -> list[dict]:
+    tracks = _operator_manifest_tracks(path)
+    return sorted((score_manifest_track(track, story) for track in tracks), key=lambda row: row["score"], reverse=True)
+
+
 def _mood_for_story(story: dict) -> str:
     """Pick a mood from the animal clip signal."""
     if story.get("breaking"):
@@ -197,8 +226,7 @@ def download_track(track: MusicTrack) -> Path | None:
     if dest.exists() and dest.stat().st_size > 50 * 1024:
         return dest
     try:
-        r = requests.get(track.url, timeout=30, stream=True,
-                          headers={"User-Agent": "WildBrief-Bot/4.0"})
+        r = requests.get(track.url, timeout=30, stream=True, headers={"User-Agent": "WildBrief-Bot/4.0"})
         if r.status_code != 200:
             log.debug("music_bed %s: HTTP %d", track.name, r.status_code)
             return None
@@ -223,9 +251,9 @@ def download_track(track: MusicTrack) -> Path | None:
         return None
 
 
-def mix_tts_with_music(tts_path: Path, music_path: Path,
-                        output_path: Path,
-                        music_volume_db: float = MUSIC_BED_VOLUME_DB) -> bool:
+def mix_tts_with_music(
+    tts_path: Path, music_path: Path, output_path: Path, music_volume_db: float = MUSIC_BED_VOLUME_DB
+) -> bool:
     """FFmpeg-mix TTS (foreground) + looped music bed (background).
 
     Music is looped (the track is shorter than a 60s Short) and
@@ -236,11 +264,16 @@ def mix_tts_with_music(tts_path: Path, music_path: Path,
     if not tts_path.exists() or not music_path.exists():
         return False
     cmd = [
-        "ffmpeg", "-y",
-        "-i", str(tts_path),
+        "ffmpeg",
+        "-y",
+        "-i",
+        str(tts_path),
         # Loop the music input forever; `amix` clips to first input
         # (the TTS) so output length = TTS length.
-        "-stream_loop", "-1", "-i", str(music_path),
+        "-stream_loop",
+        "-1",
+        "-i",
+        str(music_path),
         "-filter_complex",
         # 1. The music gets duck-volume + a 0.4s fade-in.
         # 2. amix with first-input duration keeps narration aligned.
@@ -248,8 +281,12 @@ def mix_tts_with_music(tts_path: Path, music_path: Path,
             f"[1:a]volume={music_volume_db}dB,afade=t=in:st=0:d=0.4[bg];"
             "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=0[a]"
         ),
-        "-map", "[a]",
-        "-c:a", "libmp3lame", "-b:a", "192k",
+        "-map",
+        "[a]",
+        "-c:a",
+        "libmp3lame",
+        "-b:a",
+        "192k",
         str(output_path),
     ]
     try:
@@ -263,8 +300,7 @@ def mix_tts_with_music(tts_path: Path, music_path: Path,
     return True
 
 
-def add_music_bed(tts_path: Path, story: dict,
-                   tmp_dir: Path) -> Path:
+def add_music_bed(tts_path: Path, story: dict, tmp_dir: Path) -> Path:
     """Convenience wrapper: pick track â†’ download â†’ mix.
 
     Returns either the mixed audio path or `tts_path` unchanged when

@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.session_graph import build_session_graph  # noqa: E402
+
 
 def _read_json(path: Path, default):
     if not path.exists():
@@ -47,6 +49,7 @@ def build_session_ops(root: Path = ROOT) -> dict:
     data_dir = root / "_data"
     data_dir.mkdir(parents=True, exist_ok=True)
     markers = _done_markers(root)
+    graph = build_session_graph(markers)
     latest = markers[-5:]
     related = []
     for source in latest:
@@ -100,6 +103,11 @@ def build_session_ops(root: Path = ROOT) -> dict:
             }
             for item in latest
         ],
+        "session_graph": {
+            "nodes": len(graph.get("nodes") or []),
+            "edges": len(graph.get("edges") or []),
+            "coverage": graph.get("coverage", 0),
+        },
     }
     (data_dir / "post_upload_session_ops.json").write_text(
         json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -117,6 +125,41 @@ def build_session_ops(root: Path = ROOT) -> dict:
     (data_dir / "comment_reply_short_candidates.json").write_text(
         json.dumps(
             {"generated_at": payload["generated_at"], "items": comment_candidates[:20]},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (data_dir / "session_graph.json").write_text(
+        json.dumps(
+            {
+                "generated_at": payload["generated_at"],
+                "nodes": graph.get("nodes") or [],
+                "edges": graph.get("edges") or [],
+                "coverage": graph.get("coverage", 0),
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (data_dir / "next_session_actions.json").write_text(
+        json.dumps(
+            {"generated_at": payload["generated_at"], "items": graph.get("next_session_actions") or []},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (data_dir / "sequel_candidates.json").write_text(
+        json.dumps(
+            {"generated_at": payload["generated_at"], "items": graph.get("sequel_candidates") or []},
             indent=2,
             sort_keys=True,
             ensure_ascii=False,

@@ -31,10 +31,12 @@ Axes shipped today
   - cta_pattern: question_tease | sequel_tease | identity_follow
   - end_card_style: subscribe_clean | loop_callback | series_tease
   - title_shape: curiosity_gap | mechanism_reveal | impossible_fact
+  - music_bed: off | light_bed
 
 Each axis defines its variants and an `is_significant()` heuristic so
 the analyser doesn't crown a winner on 3 data points.
 """
+
 from __future__ import annotations
 
 import dataclasses
@@ -48,12 +50,18 @@ from typing import Iterable
 
 log = logging.getLogger(__name__)
 
-EXPERIMENTS_FILE = Path(os.environ.get(
-    "EXPERIMENTS_FILE", "_data/analytics/experiments.json",
-))
-VARIANT_ASSIGNMENTS_FILE = Path(os.environ.get(
-    "VARIANT_ASSIGNMENTS_FILE", "_data/analytics/variant_assignments.jsonl",
-))
+EXPERIMENTS_FILE = Path(
+    os.environ.get(
+        "EXPERIMENTS_FILE",
+        "_data/analytics/experiments.json",
+    )
+)
+VARIANT_ASSIGNMENTS_FILE = Path(
+    os.environ.get(
+        "VARIANT_ASSIGNMENTS_FILE",
+        "_data/analytics/variant_assignments.jsonl",
+    )
+)
 # How many Shorts a variant needs before the analyser will declare a
 # winner. 8 is the bare minimum for "more signal than noise" on YT
 # Analytics' per-video sample sizes.
@@ -76,19 +84,19 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="hook_style",
         variants=(
-            "outcome_first",     # "This octopus changes colour in seconds."
-            "question",          # "Why does this octopus change colour?"
-            "shocking_number",   # "Three hearts. One extraordinary animal."
-            "curiosity_gap",     # "This bird does one thing nobody expects."
+            "outcome_first",  # "This octopus changes colour in seconds."
+            "question",  # "Why does this octopus change colour?"
+            "shocking_number",  # "Three hearts. One extraordinary animal."
+            "curiosity_gap",  # "This bird does one thing nobody expects."
         ),
         description="First-sentence shape â€” the single biggest retention lever.",
     ),
     Axis(
         name="script_tone",
         variants=(
-            "opinionated",       # name winner/loser explicitly
-            "analytical",        # explain mechanism / context
-            "conversational",    # friend-style explainer
+            "opinionated",  # name winner/loser explicitly
+            "analytical",  # explain mechanism / context
+            "conversational",  # friend-style explainer
         ),
         description="Voice-over register.",
     ),
@@ -104,8 +112,8 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="thumbnail_style",
         variants=(
-            "dynamic_text",      # AI-authored thumbnail_text overlay (current default)
-            "category_color",    # solid category-color slab + title
+            "dynamic_text",  # AI-authored thumbnail_text overlay (current default)
+            "category_color",  # solid category-color slab + title
             # `brand_static` (the shipped JPEG with no per-Short text) was
             # part of the A/B until the channel had enough volume to
             # learn from it. At <100 subs every Short is a first-
@@ -121,9 +129,7 @@ AXES: tuple[Axis, ...] = (
         # A/B winner is declared yet. Channel subscription is the only
         # production close: comments stay inside the script and pinned
         # comment so the end card has one clear action.
-        variants=(
-            "subscribe_channel",
-        ),
+        variants=("subscribe_channel",),
         description="End-of-Short call-to-action.",
     ),
     Axis(
@@ -180,6 +186,14 @@ AXES: tuple[Axis, ...] = (
         ),
         description="Title shape used for measured packaging learning.",
     ),
+    Axis(
+        name="music_bed",
+        variants=(
+            "off",
+            "light_bed",
+        ),
+        description="Safe local-manifest music bed experiment; off is the production fallback.",
+    ),
 )
 
 
@@ -209,17 +223,19 @@ def assign_all(key: str) -> dict[str, str]:
     return {ax.name: assign_variant(ax.name, key) for ax in AXES}
 
 
-def assign_for_production(axis_name: str, key: str,
-                          exploration_percent: int = 20) -> str:
+def assign_for_production(axis_name: str, key: str, exploration_percent: int = 20) -> str:
     """Favor a measured winner while reserving deterministic exploration."""
     baseline = assign_variant(axis_name, key)
     winner = read_winner(axis_name)
     if not winner or winner not in variant_choices(axis_name):
         return baseline
-    bucket = int.from_bytes(
-        hashlib.sha256(f"explore:{axis_name}:{key}".encode("utf-8")).digest()[:2],
-        "big",
-    ) % 100
+    bucket = (
+        int.from_bytes(
+            hashlib.sha256(f"explore:{axis_name}:{key}".encode("utf-8")).digest()[:2],
+            "big",
+        )
+        % 100
+    )
     return baseline if bucket < exploration_percent else winner
 
 
@@ -227,11 +243,9 @@ def assign_all_for_production(key: str) -> dict[str, str]:
     return {ax.name: assign_for_production(ax.name, key) for ax in AXES}
 
 
-def record_variant_assignments(assignments: dict,
-                               story_id: str,
-                               video_id: str = "",
-                               context: dict | None = None,
-                               path: Path | None = None) -> dict:
+def record_variant_assignments(
+    assignments: dict, story_id: str, video_id: str = "", context: dict | None = None, path: Path | None = None
+) -> dict:
     """Persist live A/B assignments once a Short reaches metadata output.
 
     The write is idempotent per story/video/axis/variant so reruns do not
@@ -276,6 +290,7 @@ def record_variant_assignments(assignments: dict,
 
 # â”€â”€ Reading winners (set by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def read_winners(path: Path | None = None) -> dict[str, str]:
     """Return {axis_name: winning_variant}. Empty when not yet computed.
 
@@ -301,8 +316,8 @@ def read_winner(axis_name: str) -> str | None:
 
 # â”€â”€ Computing winners (called by the analyser) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-def compute_winners(observations: Iterable[dict],
-                     min_samples: int = MIN_SAMPLES_FOR_WINNER) -> dict:
+
+def compute_winners(observations: Iterable[dict], min_samples: int = MIN_SAMPLES_FOR_WINNER) -> dict:
     """Given a list of {"experiments": {axis: variant}, "score": float},
     return a dict suitable for serialising to `experiments.json`:
 
@@ -349,29 +364,30 @@ def compute_winners(observations: Iterable[dict],
             if len(ranked) >= 2:
                 lift = ranked[0]["mean"] - ranked[1]["mean"]
                 runners_up[axis] = {
-                    "winner_mean":      ranked[0]["mean"],
-                    "runner_up_mean":   ranked[1]["mean"],
-                    "lift":             round(lift, 2),
+                    "winner_mean": ranked[0]["mean"],
+                    "runner_up_mean": ranked[1]["mean"],
+                    "lift": round(lift, 2),
                 }
 
     from datetime import datetime, timezone
+
     return {
-        "computed_at":  datetime.now(timezone.utc).isoformat(),
-        "min_samples":  min_samples,
-        "axis_stats":   axis_stats,
-        "winners":      winners,
-        "lift":         runners_up,
+        "computed_at": datetime.now(timezone.utc).isoformat(),
+        "min_samples": min_samples,
+        "axis_stats": axis_stats,
+        "winners": winners,
+        "lift": runners_up,
     }
 
 
 def write_winners(payload: dict, path: Path | None = None) -> None:
     p = path or EXPERIMENTS_FILE
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                  encoding="utf-8")
+    p.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 # â”€â”€ Helpers for the generator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def axis_names() -> list[str]:
     return [ax.name for ax in AXES]

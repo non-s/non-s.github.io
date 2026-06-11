@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
 
 from utils.ab_selector import BayesianABSelector  # noqa: E402
 from utils.analytics_schema import read_jsonl  # noqa: E402
+from utils.studio_reach_schema import summarize_reach  # noqa: E402
 
 
 def _num(value, default: float = 0.0) -> float:
@@ -53,6 +54,8 @@ def _top_average(rows: list[dict], field: str, limit: int = 5) -> list[dict]:
 def build_review(root: Path = ROOT) -> dict:
     analytics = root / "_data" / "analytics"
     rows = read_jsonl(analytics / "video_metrics.jsonl")
+    reach_rows = read_jsonl(analytics / "studio_reach_daily.jsonl")
+    reach_summary = summarize_reach(reach_rows)
     selector = BayesianABSelector()
     axes = [
         "hook_style",
@@ -64,7 +67,14 @@ def build_review(root: Path = ROOT) -> dict:
         "title_shape",
         "narrator_voice",
     ]
-    experiments = {axis: selector.rank_axis(rows, axis, min_samples=3, min_days=1) for axis in axes}
+    experiments = {
+        axis: selector.rank_axis(rows, axis, min_samples=3, min_days=1, min_engaged_views=0) for axis in axes
+    }
+    paused_losers = [
+        {"axis": axis, "variant": variant}
+        for axis, payload in experiments.items()
+        for variant in (payload.get("paused_losers") or [])
+    ]
     low_openings = [
         {
             "video_id": row.get("video_id"),
@@ -97,7 +107,9 @@ def build_review(root: Path = ROOT) -> dict:
         "winning_hooks": [{"value": key, "n": value} for key, value in hook_counter.most_common(5)],
         "loop_patterns": experiments.get("loop_style", {}),
         "losing_openings": low_openings,
+        "reach_summary": reach_summary,
         "experiments": experiments,
+        "paused_losers": paused_losers,
         "next_three_experiments": [
             "Compare action_first vs animal_closeup for opening_visual_pattern.",
             "Compare callback vs mirror_opening for loop_style.",
@@ -151,6 +163,13 @@ def build_review(root: Path = ROOT) -> dict:
         ]
     else:
         lines.append("- No low-retention openings in normalized rows.")
+    if reach_summary.get("rows"):
+        lines += ["", "## Shorts Reach", ""]
+        lines.append(
+            "- Stayed to watch: "
+            f"{round(float(reach_summary.get('stayed_to_watch_rate', 0) or 0) * 100, 1)}%; "
+            f"swiped away: {round(float(reach_summary.get('swipe_away_rate', 0) or 0) * 100, 1)}%."
+        )
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return review
 

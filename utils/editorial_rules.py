@@ -11,6 +11,8 @@ import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 
+from utils.first_frame_audit import audit_opening_frames
+
 SPECIFIC_TERMS = {
     "before",
     "after",
@@ -237,6 +239,26 @@ class EditorialRulebook:
         if novelty < 0.35:
             score -= 6
             notes.append("topic novelty is low")
+
+        opening_audit = package.get("opening_audit") or story.get("opening_audit") or {}
+        if not opening_audit:
+            opening_audit = audit_opening_frames(
+                {
+                    "thumbnail_text": package.get("first_frame_text") or story.get("thumbnail_text"),
+                    "title": story.get("title"),
+                    "has_broll": visual_motion >= 0.45,
+                    "opening_contrast": contrast * 100,
+                }
+            )
+        opening_score = _to_float(opening_audit.get("score"), 75)
+        if opening_score >= 82:
+            score += 4
+        elif opening_score < 60:
+            score -= 10
+            violations.append("opening audit score is too low")
+        elif opening_score < 72:
+            score -= 4
+            notes.append("opening audit is below target")
 
         overlap = _recent_overlap(hook, context)
         if overlap > 0.52:

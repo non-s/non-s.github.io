@@ -56,6 +56,13 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - writes variant assignments during generation into `_data/analytics/variant_assignments.jsonl` so experiments are auditable before upload.
 - applies loop-plan final lines to the rendered narration and captions, not only to metadata.
 - can recover from Edge TTS outages through an optional local Coqui-compatible command.
+- imports optional YouTube Studio Shorts Reach CSV exports into `_data/analytics/studio_reach_daily.jsonl` so stayed-to-watch and swipe signals are visible in weekly review and the dashboard.
+- annotates the queue with `_data/trends/freshness_report.json` from free CSV/RSS/manual trend signals.
+- audits the first second of each Short through `opening_audit` metadata and `_data/opening_audit_report.json`.
+- builds `_data/session_graph.json`, `_data/next_session_actions.json` and `_data/sequel_candidates.json` after upload for playlist, pinned-comment and sequel continuity.
+- writes `_data/analytics/api_quota_ledger.jsonl` and `_data/analytics/api_quota_latest.json` before expensive jobs.
+- promotes high-signal viewer questions into `_data/comment_to_short_candidates.json` and optionally into the queue.
+- compacts analytics into monthly `_data/analytics/partitions/` JSONL files while keeping flat files backward-compatible.
 
 ## World-class upgrade track
 
@@ -64,8 +71,10 @@ The operating model is now documented in
 The master-prompt implementation is complete across the production path:
 rulebook preflight, curiosity and swipe scoring, rendered loop callbacks,
 expanded A/B axes, live variant logging, extended analytics warehouse files,
-weekly decisions, free signal harvesting, post-upload session ops, dashboard
-sections, CI smoke checks and optional zero-cost fallbacks are all wired without
+weekly decisions, free signal harvesting, Studio Reach import, opening audit,
+quota guard, comment-to-Short triage, Reporting CSV backfill, warehouse
+compaction, post-upload session ops, dashboard sections, CI smoke checks and
+optional zero-cost fallbacks are all wired without
 replacing the current queue, render, upload or official YouTube APIs.
 
 ## Required secrets

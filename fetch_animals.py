@@ -64,6 +64,7 @@ from pathlib import Path
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
+from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
 from utils.broll import fetch_pexels, fetch_pixabay
 from utils.growth_studio import studio_brief_for_story
 from utils.trend_radar import (
@@ -73,6 +74,7 @@ from utils.trend_radar import (
     trend_weight_for_category,
 )
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
+from utils.topic_freshness import annotate_queue, freshness_report
 
 logging.basicConfig(
     level=logging.INFO,
@@ -113,133 +115,230 @@ KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KE
 ANIMAL_TOPICS: dict[str, dict] = {
     "cats": {
         "queries": [
-            "cat playing", "kitten", "cat sleeping", "cat funny",
-            "cat jumping", "cat hunting", "domestic cat",
+            "cat playing",
+            "kitten",
+            "cat sleeping",
+            "cat funny",
+            "cat jumping",
+            "cat hunting",
+            "domestic cat",
         ],
         "topic_hashtag": "Cats",
         "tags": ["cats", "kittens", "cat facts", "feline"],
         "discovery_hashtags": [
-            "cats", "kittens", "catfacts", "animals", "funfacts",
+            "cats",
+            "kittens",
+            "catfacts",
+            "animals",
+            "funfacts",
         ],
         "description_prefix": "A clip of cats / kittens",
     },
     "dogs": {
         "queries": [
-            "dog playing", "puppy", "dog running", "dog beach",
-            "golden retriever", "dog snow", "puppy playing",
+            "dog playing",
+            "puppy",
+            "dog running",
+            "dog beach",
+            "golden retriever",
+            "dog snow",
+            "puppy playing",
         ],
         "topic_hashtag": "Dogs",
         "tags": ["dogs", "puppies", "dog facts", "canine"],
         "discovery_hashtags": [
-            "dogs", "puppies", "dogfacts", "animals", "funfacts",
+            "dogs",
+            "puppies",
+            "dogfacts",
+            "animals",
+            "funfacts",
         ],
         "description_prefix": "A clip of dogs / puppies",
     },
     "ocean": {
         "queries": [
-            "dolphin", "whale", "shark", "underwater fish",
-            "sea turtle", "octopus", "coral reef",
+            "dolphin",
+            "whale",
+            "shark",
+            "underwater fish",
+            "sea turtle",
+            "octopus",
+            "coral reef",
         ],
         "topic_hashtag": "Ocean",
         "tags": ["ocean", "marine life", "sea animals", "underwater"],
         "discovery_hashtags": [
-            "ocean", "oceanlife", "marinelife", "animalfacts", "funfacts",
+            "ocean",
+            "oceanlife",
+            "marinelife",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of marine life in the ocean",
     },
     "wildlife": {
         "queries": [
-            "lion", "elephant", "tiger", "leopard",
-            "bear", "wolf", "deer", "fox",
+            "lion",
+            "elephant",
+            "tiger",
+            "leopard",
+            "bear",
+            "wolf",
+            "deer",
+            "fox",
         ],
         "topic_hashtag": "Wildlife",
         "tags": ["wildlife", "wild animals", "nature", "safari"],
         "discovery_hashtags": [
-            "wildlife", "wildanimals", "safari", "animalfacts", "funfacts",
+            "wildlife",
+            "wildanimals",
+            "safari",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of wild animals in nature",
     },
     "birds": {
         "queries": [
-            "eagle flying", "parrot", "hummingbird", "owl",
-            "penguin", "flamingo", "macaw",
+            "eagle flying",
+            "parrot",
+            "hummingbird",
+            "owl",
+            "penguin",
+            "flamingo",
+            "macaw",
         ],
         "topic_hashtag": "Birds",
         "tags": ["birds", "bird facts", "avian", "wildlife"],
         "discovery_hashtags": [
-            "birds", "birdfacts", "nature", "animals", "funfacts",
+            "birds",
+            "birdfacts",
+            "nature",
+            "animals",
+            "funfacts",
         ],
         "description_prefix": "A clip of birds",
     },
     "farm": {
         "queries": [
-            "horse running", "baby goat", "cow", "sheep",
-            "duckling", "chicken", "farm animals",
+            "horse running",
+            "baby goat",
+            "cow",
+            "sheep",
+            "duckling",
+            "chicken",
+            "farm animals",
         ],
         "topic_hashtag": "FarmAnimals",
         "tags": ["farm animals", "horses", "farm life", "countryside"],
         "discovery_hashtags": [
-            "farmanimals", "countrylife", "animalfacts", "nature", "funfacts",
+            "farmanimals",
+            "countrylife",
+            "animalfacts",
+            "nature",
+            "funfacts",
         ],
         "description_prefix": "A clip of farm animals",
     },
     "reptiles": {
         "queries": [
-            "snake", "lizard", "chameleon", "crocodile",
-            "turtle", "iguana", "gecko",
+            "snake",
+            "lizard",
+            "chameleon",
+            "crocodile",
+            "turtle",
+            "iguana",
+            "gecko",
         ],
         "topic_hashtag": "Reptiles",
         "tags": ["reptiles", "snake facts", "lizard facts", "wildlife"],
         "discovery_hashtags": [
-            "reptiles", "snakefacts", "lizardfacts", "animalfacts", "funfacts",
+            "reptiles",
+            "snakefacts",
+            "lizardfacts",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of reptiles",
     },
     "insects": {
         "queries": [
-            "butterfly", "bee", "ant", "dragonfly",
-            "mantis", "beetle", "ladybug",
+            "butterfly",
+            "bee",
+            "ant",
+            "dragonfly",
+            "mantis",
+            "beetle",
+            "ladybug",
         ],
         "topic_hashtag": "Insects",
         "tags": ["insects", "bugs", "insect facts", "nature"],
         "discovery_hashtags": [
-            "insects", "bugfacts", "naturefacts", "animalfacts", "funfacts",
+            "insects",
+            "bugfacts",
+            "naturefacts",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A close clip of insects",
     },
     "primates": {
         "queries": [
-            "monkey", "chimpanzee", "gorilla", "orangutan",
-            "lemur", "macaque",
+            "monkey",
+            "chimpanzee",
+            "gorilla",
+            "orangutan",
+            "lemur",
+            "macaque",
         ],
         "topic_hashtag": "Primates",
         "tags": ["primates", "monkeys", "ape facts", "wildlife"],
         "discovery_hashtags": [
-            "primates", "monkeyfacts", "apefacts", "animalfacts", "funfacts",
+            "primates",
+            "monkeyfacts",
+            "apefacts",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of primates",
     },
     "nocturnal": {
         "queries": [
-            "bat", "owl night", "night animals", "hedgehog",
-            "nocturnal wildlife", "fox night",
+            "bat",
+            "owl night",
+            "night animals",
+            "hedgehog",
+            "nocturnal wildlife",
+            "fox night",
         ],
         "topic_hashtag": "NocturnalAnimals",
         "tags": ["nocturnal animals", "night wildlife", "animal facts", "nature"],
         "discovery_hashtags": [
-            "nocturnal", "nightanimals", "wildlife", "animalfacts", "funfacts",
+            "nocturnal",
+            "nightanimals",
+            "wildlife",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of nocturnal animals",
     },
     "arctic": {
         "queries": [
-            "polar bear", "arctic fox", "seal", "walrus",
-            "snowy owl", "penguin snow",
+            "polar bear",
+            "arctic fox",
+            "seal",
+            "walrus",
+            "snowy owl",
+            "penguin snow",
         ],
         "topic_hashtag": "ArcticAnimals",
         "tags": ["arctic animals", "polar wildlife", "animal facts", "nature"],
         "discovery_hashtags": [
-            "arctic", "polaranimals", "wildlife", "animalfacts", "funfacts",
+            "arctic",
+            "polaranimals",
+            "wildlife",
+            "animalfacts",
+            "funfacts",
         ],
         "description_prefix": "A clip of cold-climate animals",
     },
@@ -300,7 +399,7 @@ _AI_PROMPT_TEMPLATE = (
     "subject keyword. Sentence 2 is the single most surprising "
     "fact from the script. Last line is exactly "
     '\\"Source: Pexels\\". Do NOT include any hashtags — the build '
-    "step adds YouTube Shorts hashtags afterwards. No URLs.>\","
+    'step adds YouTube Shorts hashtags afterwards. No URLs.>",'
     '"thumbnail_text": "<2-4 word punchy phrase the thumbnail '
     "overlay will use. ALL CAPS allowed. "
     'E.g. WHY CATS PURR, DOLPHIN NAMES, FOX SECRETS.>",'
@@ -319,7 +418,7 @@ _AI_PROMPT_TEMPLATE = (
     '"because" so the fact resolves, not just describes. '
     "Close with a tiny question for the "
     'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
-    "no stage directions, no URLs.>\","
+    'no stage directions, no URLs.>",'
     '"sentiment": "positive"'
     "}}"
 )
@@ -382,79 +481,209 @@ _AI_PROMPT_TEMPLATE = (
 
 
 _ANIMAL_ALIASES = {
-    "bear": "bear", "bears": "bear",
-    "ant": "ant", "ants": "ant",
-    "bat": "bat", "bats": "bat",
-    "bee": "bee", "bees": "bee", "bumblebee": "bee", "bumblebees": "bee",
-    "beetle": "beetle", "beetles": "beetle",
-    "bird": "bird", "birds": "bird", "cockatoo": "bird", "cockatoos": "bird",
-    "eagle": "bird", "eagles": "bird",
-    "butterfly": "butterfly", "butterflies": "butterfly",
-    "chameleon": "chameleon", "chameleons": "chameleon",
-    "flamingo": "bird", "flamingos": "bird", "hummingbird": "bird", "hummingbirds": "bird",
-    "macaw": "bird", "macaws": "bird", "owl": "bird", "owls": "bird",
-    "parrot": "bird", "parrots": "bird", "penguin": "bird", "penguins": "bird",
-    "pigeon": "bird", "pigeons": "bird",
+    "bear": "bear",
+    "bears": "bear",
+    "ant": "ant",
+    "ants": "ant",
+    "bat": "bat",
+    "bats": "bat",
+    "bee": "bee",
+    "bees": "bee",
+    "bumblebee": "bee",
+    "bumblebees": "bee",
+    "beetle": "beetle",
+    "beetles": "beetle",
+    "bird": "bird",
+    "birds": "bird",
+    "cockatoo": "bird",
+    "cockatoos": "bird",
+    "eagle": "bird",
+    "eagles": "bird",
+    "butterfly": "butterfly",
+    "butterflies": "butterfly",
+    "chameleon": "chameleon",
+    "chameleons": "chameleon",
+    "flamingo": "bird",
+    "flamingos": "bird",
+    "hummingbird": "bird",
+    "hummingbirds": "bird",
+    "macaw": "bird",
+    "macaws": "bird",
+    "owl": "bird",
+    "owls": "bird",
+    "parrot": "bird",
+    "parrots": "bird",
+    "penguin": "bird",
+    "penguins": "bird",
+    "pigeon": "bird",
+    "pigeons": "bird",
     "binturong": "binturong",
-    "cat": "cat", "cats": "cat", "feline": "cat", "kitten": "cat", "kittens": "cat",
-    "chicken": "chicken", "chickens": "chicken", "duck": "duck", "ducks": "duck",
-    "duckling": "duck", "ducklings": "duck",
-    "chimpanzee": "chimpanzee", "chimpanzees": "chimpanzee",
-    "crocodile": "crocodile", "crocodiles": "crocodile",
-    "cow": "cow", "cows": "cow", "cattle": "cow",
+    "cat": "cat",
+    "cats": "cat",
+    "feline": "cat",
+    "kitten": "cat",
+    "kittens": "cat",
+    "chicken": "chicken",
+    "chickens": "chicken",
+    "duck": "duck",
+    "ducks": "duck",
+    "duckling": "duck",
+    "ducklings": "duck",
+    "chimpanzee": "chimpanzee",
+    "chimpanzees": "chimpanzee",
+    "crocodile": "crocodile",
+    "crocodiles": "crocodile",
+    "cow": "cow",
+    "cows": "cow",
+    "cattle": "cow",
     "deer": "deer",
-    "dog": "dog", "dogs": "dog", "golden": "dog", "husky": "dog",
-    "retriever": "dog", "retrievers": "dog", "puppy": "dog", "puppies": "dog",
-    "dolphin": "dolphin", "dolphins": "dolphin",
-    "elephant": "elephant", "elephants": "elephant",
-    "fish": "fish", "fishes": "fish",
-    "fox": "fox", "foxes": "fox",
-    "gecko": "gecko", "geckos": "gecko",
-    "goat": "goat", "goats": "goat",
-    "gorilla": "gorilla", "gorillas": "gorilla",
-    "hedgehog": "hedgehog", "hedgehogs": "hedgehog",
-    "horse": "horse", "horses": "horse",
-    "iguana": "iguana", "iguanas": "iguana",
+    "dog": "dog",
+    "dogs": "dog",
+    "golden": "dog",
+    "husky": "dog",
+    "retriever": "dog",
+    "retrievers": "dog",
+    "puppy": "dog",
+    "puppies": "dog",
+    "dolphin": "dolphin",
+    "dolphins": "dolphin",
+    "elephant": "elephant",
+    "elephants": "elephant",
+    "fish": "fish",
+    "fishes": "fish",
+    "fox": "fox",
+    "foxes": "fox",
+    "gecko": "gecko",
+    "geckos": "gecko",
+    "goat": "goat",
+    "goats": "goat",
+    "gorilla": "gorilla",
+    "gorillas": "gorilla",
+    "hedgehog": "hedgehog",
+    "hedgehogs": "hedgehog",
+    "horse": "horse",
+    "horses": "horse",
+    "iguana": "iguana",
+    "iguanas": "iguana",
     "jellyfish": "jellyfish",
-    "leopard": "leopard", "leopards": "leopard",
-    "lemur": "lemur", "lemurs": "lemur",
-    "lion": "lion", "lions": "lion",
-    "lizard": "lizard", "lizards": "lizard",
-    "macaque": "macaque", "macaques": "macaque",
-    "mantis": "mantis", "mantises": "mantis",
-    "monkey": "monkey", "monkeys": "monkey",
-    "octopus": "octopus", "octopuses": "octopus",
-    "orangutan": "orangutan", "orangutans": "orangutan",
-    "pig": "pig", "pigs": "pig",
-    "seal": "seal", "seals": "seal",
-    "shark": "shark", "sharks": "shark",
+    "leopard": "leopard",
+    "leopards": "leopard",
+    "lemur": "lemur",
+    "lemurs": "lemur",
+    "lion": "lion",
+    "lions": "lion",
+    "lizard": "lizard",
+    "lizards": "lizard",
+    "macaque": "macaque",
+    "macaques": "macaque",
+    "mantis": "mantis",
+    "mantises": "mantis",
+    "monkey": "monkey",
+    "monkeys": "monkey",
+    "octopus": "octopus",
+    "octopuses": "octopus",
+    "orangutan": "orangutan",
+    "orangutans": "orangutan",
+    "pig": "pig",
+    "pigs": "pig",
+    "seal": "seal",
+    "seals": "seal",
+    "shark": "shark",
+    "sharks": "shark",
     "sheep": "sheep",
-    "snake": "snake", "snakes": "snake",
-    "tiger": "tiger", "tigers": "tiger",
-    "turtle": "turtle", "turtles": "turtle",
-    "walrus": "walrus", "walruses": "walrus",
-    "whale": "whale", "whales": "whale",
-    "wolf": "wolf", "wolves": "wolf",
+    "snake": "snake",
+    "snakes": "snake",
+    "tiger": "tiger",
+    "tigers": "tiger",
+    "turtle": "turtle",
+    "turtles": "turtle",
+    "walrus": "walrus",
+    "walruses": "walrus",
+    "whale": "whale",
+    "whales": "whale",
+    "wolf": "wolf",
+    "wolves": "wolf",
 }
 _ANIMAL_ALIASES.update(NATURE_TERMS)
 
 _STRICT_ANIMAL_SUBJECTS = {
-    "bear", "ant", "bat", "bee", "beetle", "bird", "butterfly",
-    "chameleon", "binturong", "cat", "chicken", "duck", "chimpanzee",
-    "crocodile", "cow", "deer", "dog", "dolphin", "elephant", "fish",
-    "fox", "gecko", "goat", "gorilla", "hedgehog", "horse", "iguana",
-    "jellyfish", "leopard", "lemur", "lion", "lizard", "macaque",
-    "mantis", "monkey", "octopus", "orangutan", "pig", "seal", "shark",
-    "sheep", "snake", "tiger", "turtle", "walrus", "whale", "wolf",
+    "bear",
+    "ant",
+    "bat",
+    "bee",
+    "beetle",
+    "bird",
+    "butterfly",
+    "chameleon",
+    "binturong",
+    "cat",
+    "chicken",
+    "duck",
+    "chimpanzee",
+    "crocodile",
+    "cow",
+    "deer",
+    "dog",
+    "dolphin",
+    "elephant",
+    "fish",
+    "fox",
+    "gecko",
+    "goat",
+    "gorilla",
+    "hedgehog",
+    "horse",
+    "iguana",
+    "jellyfish",
+    "leopard",
+    "lemur",
+    "lion",
+    "lizard",
+    "macaque",
+    "mantis",
+    "monkey",
+    "octopus",
+    "orangutan",
+    "pig",
+    "seal",
+    "shark",
+    "sheep",
+    "snake",
+    "tiger",
+    "turtle",
+    "walrus",
+    "whale",
+    "wolf",
 }
 _CONTEXT_ONLY_SUBJECTS = {"forest", "earth"}
 _HUMAN_VISUAL_TERMS = {
-    "baby", "boy", "child", "children", "girl", "human", "kid", "kids",
-    "man", "people", "person", "toddler", "woman",
+    "baby",
+    "boy",
+    "child",
+    "children",
+    "girl",
+    "human",
+    "kid",
+    "kids",
+    "man",
+    "people",
+    "person",
+    "toddler",
+    "woman",
 }
 _PROP_VISUAL_TERMS = {
-    "cartoon", "costume", "drawing", "figurine", "illustration", "mascot",
-    "mask", "plush", "puppet", "statue", "stuffed", "toy",
+    "cartoon",
+    "costume",
+    "drawing",
+    "figurine",
+    "illustration",
+    "mascot",
+    "mask",
+    "plush",
+    "puppet",
+    "statue",
+    "stuffed",
+    "toy",
 }
 _BLOCKED_COMMONS_TERMS = ("na" + "sa", "internet " + "archive")
 
@@ -517,9 +746,7 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     if _looks_like_non_wildlife_visual(subject):
         return False
     visible_animals = _strict_animal_terms(subject)
-    allowed_animals = set().union(*(
-        _strict_animal_terms(query) for query in topic_cfg.get("queries", [])
-    ))
+    allowed_animals = set().union(*(_strict_animal_terms(query) for query in topic_cfg.get("queries", [])))
     if visible_animals:
         return not allowed_animals or bool(visible_animals & allowed_animals)
     # Legacy animal categories often include environmental words in clip
@@ -528,9 +755,7 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     if allowed_animals:
         return True
     visible = _animal_terms(subject)
-    allowed = set().union(*(
-        _animal_terms(query) for query in topic_cfg.get("queries", [])
-    ))
+    allowed = set().union(*(_animal_terms(query) for query in topic_cfg.get("queries", [])))
     return not visible or not allowed or bool(visible & allowed)
 
 
@@ -543,18 +768,19 @@ def _safe_commons_value(value: str) -> str:
     return text
 
 
-def _ai_enhance_animal(subject: str, context: str,
-                       trend_context: dict | None = None) -> dict | None:
+def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = None) -> dict | None:
     """Run the AI enhancement for an animal subject + return the
     parsed JSON, or None on parse failure. Mirrors the shape of
     fetch_animals._ai_enhance so downstream code is unchanged.
     """
-    growth_studio = studio_brief_for_story({
-        "id": _story_id(subject + context),
-        "title": subject,
-        "description": context,
-        "category": "wildlife",
-    })
+    growth_studio = studio_brief_for_story(
+        {
+            "id": _story_id(subject + context),
+            "title": subject,
+            "description": context,
+            "category": "wildlife",
+        }
+    )
     trend_context = trend_context or {}
     trend_line = ""
     if trend_context:
@@ -572,8 +798,7 @@ def _ai_enhance_animal(subject: str, context: str,
         trend_context=trend_line or "No specific trend context.",
         studio_direction=growth_studio.get("prompt_overlay", ""),
     )
-    raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25,
-                  json_mode=True)
+    raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25, json_mode=True)
     if not raw:
         return None
     try:
@@ -608,25 +833,24 @@ def _ai_enhance_animal(subject: str, context: str,
     geo_hashtag = "Global"
 
     out = {
-        "score":          int(data.get("score", 7) or 7),
-        "seo_title":      str(data.get("seo_title", subject))[:60],
-        "yt_tags":        clean_tags,
-        "geo_hashtag":    geo_hashtag,
-        "topic_hashtag":  topic_hashtag,
+        "score": int(data.get("score", 7) or 7),
+        "seo_title": str(data.get("seo_title", subject))[:60],
+        "yt_tags": clean_tags,
+        "geo_hashtag": geo_hashtag,
+        "topic_hashtag": topic_hashtag,
         "yt_description": str(data.get("yt_description", "")).strip()[:500],
         "thumbnail_text": str(data.get("thumbnail_text", "")).strip()[:30],
-        "hook":           str(data.get("hook", "")).strip()[:140],
-        "script":         str(data.get("script", "")).strip()[:900],
-        "lead":           str(data.get("script", subject))[:400],
-        "sentiment":      "positive",
-        "growth_studio":   growth_studio,
+        "hook": str(data.get("hook", "")).strip()[:140],
+        "script": str(data.get("script", "")).strip()[:900],
+        "lead": str(data.get("script", subject))[:400],
+        "sentiment": "positive",
+        "growth_studio": growth_studio,
         "narrative_template": growth_studio.get("narrative_template") or {},
         "production_mode": growth_studio.get("production_mode", ""),
-        "trend_context":   trend_context,
+        "trend_context": trend_context,
     }
     if not _script_matches_visible_subject(subject, out["script"]):
-        log.warning("AI script changed visible subject: subject=%r script=%r",
-                    subject[:100], out["script"][:140])
+        log.warning("AI script changed visible subject: subject=%r script=%r", subject[:100], out["script"][:140])
         return None
 
     # Hashtags are NOT injected here anymore — generate_shorts.py owns
@@ -643,6 +867,7 @@ def _ai_enhance_animal(subject: str, context: str,
 
 
 # ── Queue I/O ─────────────────────────────────────────────────────
+
 
 def _story_id(url: str) -> str:
     """Short stable id from the Pexels page URL — used for dedupe."""
@@ -678,6 +903,7 @@ def _source_clip_id(clip) -> str:
 
 # ── Published-clips ledger ────────────────────────────────────────
 
+
 def load_published_clip_keys() -> set[str]:
     """Return the permanent set of Pexels clip identifiers we already
     shipped. Each entry is matched by BOTH `pexels_video_id` (Pexels
@@ -696,7 +922,7 @@ def load_published_clip_keys() -> set[str]:
     if not isinstance(data, dict):
         return set()
     keys: set[str] = set()
-    for entry in (data.get("clips") or []):
+    for entry in data.get("clips") or []:
         if not isinstance(entry, dict):
             continue
         for field in ("source_clip_id", "pexels_video_id", "story_id"):
@@ -706,14 +932,17 @@ def load_published_clip_keys() -> set[str]:
     return keys
 
 
-def record_published_clip(*, pexels_video_id: str = "",
-                          story_id: str = "",
-                          pexels_url: str = "",
-                          source_clip_id: str = "",
-                          source: str = "",
-                          source_url: str = "",
-                          platform_video_id: str = "",
-                          **_legacy) -> None:
+def record_published_clip(
+    *,
+    pexels_video_id: str = "",
+    story_id: str = "",
+    pexels_url: str = "",
+    source_clip_id: str = "",
+    source: str = "",
+    source_url: str = "",
+    platform_video_id: str = "",
+    **_legacy,
+) -> None:
     """Append one record to the permanent published-clips ledger.
 
     Called by upload_youtube.py right after a successful publish, so a
@@ -736,20 +965,21 @@ def record_published_clip(*, pexels_video_id: str = "",
                 payload = existing
         except Exception:
             pass
-    payload["clips"].append({
-        "pexels_video_id":     pexels_video_id or "",
-        "story_id":            story_id or "",
-        "pexels_url":          pexels_url or "",
-        "source_clip_id":      source_clip_id or "",
-        "source":              source or "",
-        "source_url":          source_url or "",
-        "platform_video_id":   platform_video_id or "",
-        "uploaded_at":         datetime.now(timezone.utc).isoformat(),
-    })
+    payload["clips"].append(
+        {
+            "pexels_video_id": pexels_video_id or "",
+            "story_id": story_id or "",
+            "pexels_url": pexels_url or "",
+            "source_clip_id": source_clip_id or "",
+            "source": source or "",
+            "source_url": source_url or "",
+            "platform_video_id": platform_video_id or "",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     payload["updated_at"] = datetime.now(timezone.utc).isoformat()
     tmp = PUBLISHED_CLIPS_FILE.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False),
-                   encoding="utf-8")
+    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.replace(PUBLISHED_CLIPS_FILE)
 
 
@@ -783,12 +1013,14 @@ def _prune_queue(stories: list[dict], keep_days: int) -> list[dict]:
     return out
 
 
-def _build_story(clip_subject: str,
-                 topic_key: str,
-                 topic_cfg: dict,
-                 pexels_clip: "BrollClip",
-                 ai_out: dict,
-                 enrichment: dict | None = None) -> dict:
+def _build_story(
+    clip_subject: str,
+    topic_key: str,
+    topic_cfg: dict,
+    pexels_clip: "BrollClip",
+    ai_out: dict,
+    enrichment: dict | None = None,
+) -> dict:
     """Assemble the queue entry. Matches the shared queue shape so
     `generate_shorts.py` doesn't need to change."""
     enrichment = enrichment or {}
@@ -812,43 +1044,43 @@ def _build_story(clip_subject: str,
         str(ai_out["yt_description"]),
     )
     return {
-        "id":             _story_id(url),
-        "fetched_at":     now,
-        "published_at":   now,
-        "consumed":       False,
-        "consumed_at":    None,
-        "title":          clip_subject,
-        "url":            url,
-        "source":         source_name,
-        "source_url":     url,
+        "id": _story_id(url),
+        "fetched_at": now,
+        "published_at": now,
+        "consumed": False,
+        "consumed_at": None,
+        "title": clip_subject,
+        "url": url,
+        "source": source_name,
+        "source_url": url,
         "source_license": pexels_clip.license,
         "source_clip_id": _source_clip_id(pexels_clip),
         "source_download_url": pexels_clip.download_url,
-        "category":       topic_key,
-        "description":    f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {pexels_clip.title or clip_subject}".strip(),
+        "category": topic_key,
+        "description": f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {pexels_clip.title or clip_subject}".strip(),
         # BrollClip doesn't carry a preview image — leave empty; the
         # generator renders its own title card frame.
-        "image_url":      "",
-        "breaking":       False,
+        "image_url": "",
+        "breaking": False,
         # Animals are always relevant for this channel — score the AI's
         # opinion on top of a high baseline so a story with score=8 from
         # the AI still wins over a 4 even after the bias chain.
-        "relevance":      9.0,
-        "score":          ai_out.get("score", 7),
+        "relevance": 9.0,
+        "score": ai_out.get("score", 7),
         "safety_penalty": 0,
-        "native_lang":    "en",
+        "native_lang": "en",
         # AI-enriched fields below.
-        "seo_title":      ai_out["seo_title"],
-        "yt_tags":        merged_tags[:8],
-        "geo_hashtag":    ai_out["geo_hashtag"],
-        "topic_hashtag":  ai_out["topic_hashtag"],
+        "seo_title": ai_out["seo_title"],
+        "yt_tags": merged_tags[:8],
+        "geo_hashtag": ai_out["geo_hashtag"],
+        "topic_hashtag": ai_out["topic_hashtag"],
         "yt_description": description,
         "thumbnail_text": ai_out["thumbnail_text"],
-        "hook":           ai_out["hook"],
-        "script":         ai_out["script"],
-        "lead":           ai_out["lead"],
-        "sentiment":      ai_out["sentiment"],
-        "trend_context":  dict(ai_out.get("trend_context") or {}),
+        "hook": ai_out["hook"],
+        "script": ai_out["script"],
+        "lead": ai_out["lead"],
+        "sentiment": ai_out["sentiment"],
+        "trend_context": dict(ai_out.get("trend_context") or {}),
         # YouTube Shorts discovery hashtags.
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
@@ -856,17 +1088,18 @@ def _build_story(clip_subject: str,
         # Pexels-specific extras — kept so a follow-up PR can later
         # bias `generate_shorts.acquire_broll_clips` to PREFER the
         # exact clip that informed the script.
-        "pexels_video_id":     _pexels_id_from_clip(pexels_clip),
+        "pexels_video_id": _pexels_id_from_clip(pexels_clip),
         "pexels_download_url": pexels_clip.download_url,
-        "gbif":                 gbif,
-        "commons_image_url":    _safe_commons_value(commons.get("image_url", "")),
-        "commons_page_url":     _safe_commons_value(commons.get("page_url", "")),
-        "commons_license":      _safe_commons_value(commons.get("license", "")),
-        "commons_artist":       _safe_commons_value(commons.get("artist", "")),
+        "gbif": gbif,
+        "commons_image_url": _safe_commons_value(commons.get("image_url", "")),
+        "commons_page_url": _safe_commons_value(commons.get("page_url", "")),
+        "commons_license": _safe_commons_value(commons.get("license", "")),
+        "commons_artist": _safe_commons_value(commons.get("artist", "")),
     }
 
 
 # ── Main ──────────────────────────────────────────────────────────
+
 
 def _rotate_queries(topic_key: str, queries: list[str], take: int) -> list[str]:
     """Pick `take` queries deterministically rotated by the current
@@ -914,11 +1147,13 @@ def _pending_category_counts(queue: dict) -> dict[str, int]:
     return counts
 
 
-def _topic_fetch_plan(queue: dict,
-                      strategy: dict | None = None,
-                      comments: dict | None = None,
-                      trends: dict | None = None,
-                      max_per_topic: int = MAX_PER_TOPIC) -> dict[str, dict[str, int]]:
+def _topic_fetch_plan(
+    queue: dict,
+    strategy: dict | None = None,
+    comments: dict | None = None,
+    trends: dict | None = None,
+    max_per_topic: int = MAX_PER_TOPIC,
+) -> dict[str, dict[str, int]]:
     """Return per-topic fetch budgets tuned by queue pressure + analytics."""
     pending = _pending_category_counts(queue)
     weights = (strategy or {}).get("category_weights") or {}
@@ -948,9 +1183,7 @@ def _topic_fetch_plan(queue: dict,
             budget += 1
         elif weight <= 0.85 and count >= 8:
             budget = max(1, budget - 1)
-        topic_animals = set().union(*(
-            _animal_terms(query) for query in cfg.get("queries", [])
-        ))
+        topic_animals = set().union(*(_animal_terms(query) for query in cfg.get("queries", [])))
         requested_for_topic = sorted(topic_animals & requested)
         if requested_for_topic:
             budget += 2
@@ -972,11 +1205,12 @@ def _topic_fetch_plan(queue: dict,
 
 def main() -> int:
     from utils.panic import abort_if_halted
+
     abort_if_halted("fetch_animals")
+    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2))
 
     log.info("=" * 60)
-    log.info("🐾 Wild Brief — animal queue refresh %s",
-             datetime.now(timezone.utc).isoformat())
+    log.info("🐾 Wild Brief — animal queue refresh %s", datetime.now(timezone.utc).isoformat())
     log.info("=" * 60)
 
     pexels_key = os.environ.get("PEXELS_API_KEY", "").strip()
@@ -1001,21 +1235,20 @@ def main() -> int:
     #      but for entries that have it (added in commit 2026-05-19).
     queue_ids: set[str] = {s.get("id") for s in queue["stories"] if s.get("id")}
     queue_pexels_ids: set[str] = {
-        str(s.get("pexels_video_id", "")) for s in queue["stories"]
-        if s.get("pexels_video_id")
+        str(s.get("pexels_video_id", "")) for s in queue["stories"] if s.get("pexels_video_id")
     }
-    queue_source_ids: set[str] = {
-        str(s.get("source_clip_id", "")) for s in queue["stories"]
-        if s.get("source_clip_id")
-    }
+    queue_source_ids: set[str] = {str(s.get("source_clip_id", "")) for s in queue["stories"] if s.get("source_clip_id")}
     published_keys = load_published_clip_keys()
     dedupe_keys: set[str] = queue_ids | queue_pexels_ids | queue_source_ids | published_keys
     script_keys: set[str] = {
-        _script_key(s.get("script", "")) for s in queue["stories"]
-        if _script_key(s.get("script", ""))
+        _script_key(s.get("script", "")) for s in queue["stories"] if _script_key(s.get("script", ""))
     }
-    log.info("🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
-             len(queue_ids), len(published_keys), len(dedupe_keys))
+    log.info(
+        "🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
+        len(queue_ids),
+        len(published_keys),
+        len(dedupe_keys),
+    )
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
@@ -1034,7 +1267,7 @@ def main() -> int:
         for query in plan.get("comment_queries") or []:
             if query not in queries:
                 queries.insert(0, query)
-        queries = queries[:max(2, int(plan.get("query_take") or 2))]
+        queries = queries[: max(2, int(plan.get("query_take") or 2))]
         log.info("🔎 %s: budget=%d queries=%s", topic_key, per_topic_n, queries)
         clips: list = []
         for q in queries:
@@ -1061,8 +1294,7 @@ def main() -> int:
                 continue
             subject = _subject_from_clip(clip, queries[0])
             if not _topic_accepts_subject(topic_cfg, subject):
-                log.warning("  skipping off-topic video clip for %s: %s",
-                            topic_key, subject[:80])
+                log.warning("  skipping off-topic video clip for %s: %s", topic_key, subject[:80])
                 continue
             enrichment = enrich_subject(subject)
             context = topic_cfg.get("description_prefix", "an animal clip")
@@ -1093,6 +1325,26 @@ def main() -> int:
     # Merge + prune.
     queue["stories"].extend(new_entries)
     queue["stories"] = _prune_queue(queue["stories"], KEEP_DAYS)
+    topic_candidates = []
+    try:
+        topic_candidates = (
+            json.loads(Path("_data/trends/topic_candidates.json").read_text(encoding="utf-8")).get("candidates") or []
+        )
+    except Exception:
+        topic_candidates = []
+    queue = annotate_queue(queue, topic_candidates)
+    freshness_path = Path("_data/trends/freshness_report.json")
+    freshness_path.parent.mkdir(parents=True, exist_ok=True)
+    freshness_path.write_text(
+        json.dumps(
+            {"generated_at": datetime.now(timezone.utc).isoformat(), **freshness_report(queue)},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     queue["updated_at"] = datetime.now(timezone.utc).isoformat()
     QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
     QUEUE_FILE.write_text(
@@ -1101,8 +1353,9 @@ def main() -> int:
     )
 
     pending = sum(1 for s in queue["stories"] if not s.get("consumed"))
-    log.info("✅ +%d new animal entries (queue: %d total, %d pending)",
-             len(new_entries), len(queue["stories"]), pending)
+    log.info(
+        "✅ +%d new animal entries (queue: %d total, %d pending)", len(new_entries), len(queue["stories"]), pending
+    )
 
     # Keep the AI disk cache bounded — same chore fetch_animals.py does.
     try:

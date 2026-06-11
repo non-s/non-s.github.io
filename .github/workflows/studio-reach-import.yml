@@ -1,0 +1,40 @@
+name: "Studio Reach import"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 4 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: main-write
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-python@v6.2.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Import Studio Reach CSV exports"
+        run: python scripts/import_studio_reach_export.py
+      - name: "Persist reach analytics"
+        run: |
+          git config user.name "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          git add _data/analytics/studio_reach_daily.jsonl _data/analytics/studio_reach_latest.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No Studio Reach data to persist."
+            exit 0
+          fi
+          git commit -m "analytics: import Studio Reach export"
+          git push origin HEAD

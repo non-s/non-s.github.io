@@ -27,6 +27,60 @@
 | `FLEX_SLOT_UTC` | no | Optional `HH:MM` UTC flex slot used only when `ALLOW_FLEX_SLOT=1`. |
 | `MIN_SLOT_PUBLISH_SCORE` | no | Minimum top-candidate publish score required for an adaptive slot to publish. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
+| `STUDIO_REACH_IMPORT_ENABLED` | no | Enables manual YouTube Studio Shorts Reach CSV import. |
+| `STUDIO_REACH_IMPORT_PATH` | no | Folder or file path for Studio/Sheets reach CSV exports. |
+| `TOPIC_FRESHNESS_ENABLED` | no | Adds free signal freshness scoring to the queue. |
+| `OPENING_AUDIT_ENABLED` | no | Enables first-second motion/text/safe-zone audit metadata. |
+| `OPENING_AUDIT_STRICT` | no | Rejects opening packages below `OPENING_MIN_SCORE` when enabled. |
+| `OPENING_MIN_SCORE` | no | Minimum opening audit score. |
+| `SESSION_GRAPH_ENABLED` | no | Enables post-upload handoff, sequel and next-session artifacts. |
+| `COMMENT_TO_SHORT_ENABLED` | no | Allows strong viewer questions to become queue ideas. |
+| `COMMENT_TO_SHORT_MIN_SCORE` | no | Minimum comment idea score before it can enter the queue. |
+| `COMMENT_TO_SHORT_MAX_ITEMS` | no | Maximum comment ideas queued per run. |
+| `QUOTA_GUARD_ENABLED` | no | Enables quota ledger/guard decisions. |
+| `QUOTA_GUARD_MODE` | no | `warn` logs only; `block` can mark `PUBLISH_QUOTA_BLOCKED=1`. |
+| `QUOTA_GUARD_MAX_DAILY_RATIO` | no | Daily budget ratio used by quota guard. |
+| `QUOTA_LEDGER_ENABLED` | no | Writes `_data/analytics/api_quota_ledger.jsonl` and latest summary. |
+| `YOUTUBE_DAILY_QUOTA_BUDGET` | no | Conservative daily API unit budget, default `10000`. |
+| `YOUTUBE_REPORTING_ENABLED` | no | Enables optional Reporting API CSV backfill folders. |
+| `WAREHOUSE_COMPACTION_ENABLED` | no | Writes monthly analytics JSONL partitions. |
+| `MUSIC_BED_ENABLED` | no | Enables measured light music-bed variants when safe local assets exist. |
+| `SEO_METADATA_LINT_ENABLED` | no | Adds deterministic SEO/search lint to metadata and repo checks. |
+| `SEO_METADATA_LINT_STRICT` | no | Rejects generated metadata with SEO lint errors when set to `1`. |
+
+## Feature Flag Registry
+
+| Flag | Default | Owner | Purpose | Rollback |
+|---|---:|---|---|---|
+| `ADAPTIVE_CADENCE_ENABLED` | `1` | publishing | Enable adaptive publish/skip decisions. | Set to 0 for legacy slot behavior. |
+| `ALLOW_FLEX_SLOT` | `0` | publishing | Allow one extra operator-defined UTC slot. | Set to 0. |
+| `FLEX_SLOT_UTC` | `` | publishing | Optional HH:MM UTC flex slot. | Unset it. |
+| `MIN_SLOT_PUBLISH_SCORE` | `72` | publishing | Minimum publish score for adaptive cadence. | Lower or disable adaptive cadence. |
+| `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
+| `STUDIO_REACH_IMPORT_ENABLED` | `1` | analytics | Import manually exported Shorts Reach CSV data. | Set to 0. |
+| `STUDIO_REACH_IMPORT_PATH` | `_data/studio_reach_exports` | analytics | Path to Studio/Sheets reach CSV exports. | Leave empty or remove files. |
+| `TOPIC_FRESHNESS_ENABLED` | `1` | discovery | Annotate queue entries with free freshness signals. | Set to 0. |
+| `OPENING_AUDIT_ENABLED` | `1` | production | Score the first second opening package. | Set to 0. |
+| `OPENING_AUDIT_STRICT` | `1` | production | Reject openings below the configured score. | Set to 0 for informational mode. |
+| `OPENING_MIN_SCORE` | `72` | production | Minimum opening audit score. | Lower threshold or disable strict mode. |
+| `SESSION_GRAPH_ENABLED` | `1` | growth | Build post-upload handoff and sequel graph artifacts. | Set to 0. |
+| `COMMENT_TO_SHORT_ENABLED` | `1` | growth | Promote strong viewer questions into Short ideas. | Set to 0. |
+| `COMMENT_TO_SHORT_MIN_SCORE` | `64` | growth | Minimum score to add a comment idea to the queue. | Raise threshold or disable. |
+| `COMMENT_TO_SHORT_MAX_ITEMS` | `6` | growth | Maximum comment ideas added per run. | Lower limit. |
+| `QUOTA_GUARD_ENABLED` | `1` | operations | Block runs projected to exceed quota budget. | Set to 0 for passive logging. |
+| `QUOTA_GUARD_MODE` | `warn` | operations | Quota guard mode: warn or block. | Use warn. |
+| `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.70` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
+| `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
+| `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
+| `YOUTUBE_REPORTING_ENABLED` | `0` | analytics | Enable optional Reporting API CSV backfill folders. | Set to 0. |
+| `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
+| `MUSIC_BED_ENABLED` | `0` | production | Allow measured light music bed variants. | Set to 0. |
+| `AUDIO_LIBRARY_MANIFEST` | `_data/audio_library_manifest.json` | production | Local safe music manifest path. | Unset or remove manifest. |
+| `SEO_METADATA_LINT_ENABLED` | `1` | production | Attach deterministic SEO/metadata lint to every Short. | Set to 0. |
+| `SEO_METADATA_LINT_STRICT` | `0` | production | Reject metadata with SEO lint errors. | Set to 0. |
+| `COQUI_TTS_COMMAND` | `` | resilience | Optional local Coqui-compatible TTS command. | Unset it. |
+| `COQUI_TTS_MODEL` | `` | resilience | Optional Coqui model name. | Unset it. |
+| `COQUI_TTS_LOCALE_ARG` | `0` | resilience | Pass language_idx to Coqui CLI. | Set to 0. |
 
 ## Local-Only Files
 

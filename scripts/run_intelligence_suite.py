@@ -10,6 +10,7 @@ import sys
 SCRIPT_SETS = {
     "pre_generate": [
         "scripts/ops_guardian.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/trend_radar.py",
         "scripts/category_recovery.py",
         "scripts/category_recovery_rewriter.py",
@@ -35,6 +36,7 @@ SCRIPT_SETS = {
     "post_publish": [
         "scripts/analyze_channel.py",
         "scripts/analyze_comments.py",
+        "scripts/comment_to_short_pipeline.py",
         "scripts/fan_growth.py",
         "scripts/youtube_intelligence.py",
         "scripts/trend_radar.py",
@@ -63,9 +65,13 @@ SCRIPT_SETS = {
         "scripts/agency_gate_report.py",
         "scripts/backfill_done_markers.py",
         "scripts/weekly_report.py",
+        "scripts/opening_audit_report.py",
+        "scripts/seo_metadata_lint.py",
+        "scripts/compact_analytics.py",
     ],
     "queue": [
         "scripts/audit_automation.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/youtube_intelligence.py",
         "scripts/ops_guardian.py",
         "scripts/remake_engine.py",
@@ -91,6 +97,7 @@ SCRIPT_SETS = {
         "scripts/agency_gate_report.py",
         "scripts/prune_queue.py",
         "scripts/weekly_report.py",
+        "scripts/seo_metadata_lint.py",
     ],
     "dashboard": [
         "scripts/audit_automation.py",
@@ -129,7 +136,14 @@ SCRIPT_SETS = {
         "scripts/daily_brief.py",
         "scripts/backfill_done_markers.py",
         "scripts/collect_analytics_extended.py",
+        "scripts/import_studio_reach_export.py",
+        "scripts/reporting_bootstrap.py",
+        "scripts/reporting_pull.py",
         "scripts/weekly_growth_review.py",
+        "scripts/opening_audit_report.py",
+        "scripts/comment_to_short_pipeline.py",
+        "scripts/seo_metadata_lint.py",
+        "scripts/compact_analytics.py",
         "scripts/free_signal_harvester.py",
         "scripts/post_upload_session_ops.py",
         "scripts/weekly_report.py",

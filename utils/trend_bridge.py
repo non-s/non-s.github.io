@@ -145,9 +145,15 @@ def build_topic_candidates(rows: list[dict]) -> list[dict]:
                 "sources": [],
                 "urls": [],
                 "observed_at": row.get("observed_at") or _now(),
+                "latest_observed_at": row.get("observed_at") or _now(),
+                "signal_count": 0,
             },
         )
         current["score"] = max(float(current["score"]), score)
+        current["signal_count"] = int(current.get("signal_count", 0) or 0) + 1
+        observed_at = _clean(row.get("observed_at")) or _now()
+        if observed_at > str(current.get("latest_observed_at") or ""):
+            current["latest_observed_at"] = observed_at
         source = _clean(row.get("source"))
         if source and source not in current["sources"]:
             current["sources"].append(source)
@@ -157,4 +163,6 @@ def build_topic_candidates(rows: list[dict]) -> list[dict]:
     candidates = list(grouped.values())
     for item in candidates:
         item["score"] = round(float(item["score"]) + min(12, len(item["sources"]) * 3), 2)
+        item["freshness_score"] = item["score"]
+        item["signal_window"] = "fresh" if int(item.get("signal_count", 0) or 0) >= 2 else "single_signal"
     return sorted(candidates, key=lambda row: row["score"], reverse=True)

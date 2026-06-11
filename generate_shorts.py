@@ -42,6 +42,7 @@ from utils.captions import (
 from utils.digest import load_blocked_slugs
 from utils.editorial import rank_candidates, review as editorial_review
 from utils.experiments import assign_all_for_production, assign_variant, record_variant_assignments
+from utils.first_frame_audit import audit_opening_frames
 from utils.growth_studio import studio_brief_for_story
 from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
@@ -64,7 +65,7 @@ from utils.nature_strategy import NATURE_BROLL_QUERIES
 from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.rights_audit import audit_rights
 from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
-from utils.seo_optimizer import optimise_story, seo_score
+from utils.seo_optimizer import lint_metadata, optimise_story, seo_score
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.text import humanize_for_tts
 from utils.tts_fallback import synthesize_with_coqui
@@ -85,14 +86,11 @@ from utils.youtube_brain import creator_premortem, publish_brain
 # language-agnostic — only the script and metadata change.
 LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
 if LANGUAGE != "en" and LANGUAGE not in SUPPORTED_LANGUAGES:
-    raise RuntimeError(
-        f"LANGUAGE={LANGUAGE!r} is not supported. "
-        f"Pick one of: en, {', '.join(SUPPORTED_LANGUAGES)}"
-    )
+    raise RuntimeError(f"LANGUAGE={LANGUAGE!r} is not supported. " f"Pick one of: en, {', '.join(SUPPORTED_LANGUAGES)}")
 
-VIDEOS_DIR      = Path("_videos") if LANGUAGE == "en" else Path(f"_videos_{LANGUAGE}")
+VIDEOS_DIR = Path("_videos") if LANGUAGE == "en" else Path(f"_videos_{LANGUAGE}")
 SHORTS_DONE_FILE = VIDEOS_DIR / "shorts_done.json"
-LOG_FILE        = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
+LOG_FILE = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
 # Cap of shorts produced per run. Overridable via env var so the
 # workflow can tune it without editing this file. Defaults to 3 —
 # matches youtube-bot.yml schedule.
@@ -120,43 +118,43 @@ GENERIC_SCRIPT_PHRASES = (
 )
 
 # Paleta de cores — identidade Wild Brief
-BG_DARK      = (8, 8, 18)
-ACCENT_BLUE  = (0, 195, 255)
-ACCENT_CYAN  = (0, 240, 200)
-RED_LIVE     = (220, 50, 50)
-TEXT_WHITE   = (245, 245, 255)
-TEXT_GRAY    = (160, 165, 190)
+BG_DARK = (8, 8, 18)
+ACCENT_BLUE = (0, 195, 255)
+ACCENT_CYAN = (0, 240, 200)
+RED_LIVE = (220, 50, 50)
+TEXT_WHITE = (245, 245, 255)
+TEXT_GRAY = (160, 165, 190)
 
 # Cores por categoria
 CATEGORY_COLORS = {
     # Wild Brief animal categories.
-    "CATS":        (255, 140, 90),   # warm orange (tabby tone)
-    "DOGS":        (255, 195, 90),   # golden retriever yellow
-    "OCEAN":       (0, 140, 220),    # deep marine blue
-    "WILDLIFE":    (180, 130, 60),   # savanna ochre
-    "BIRDS":       (90, 200, 255),   # sky blue
-    "FARM":        (140, 180, 90),   # field green
-    "REPTILES":    (90, 185, 115),   # scale green
-    "INSECTS":     (245, 185, 60),   # amber macro
-    "PRIMATES":    (210, 145, 95),   # warm forest
-    "NOCTURNAL":   (120, 120, 210),  # night violet-blue
-    "ARCTIC":      (150, 220, 245),  # ice blue
+    "CATS": (255, 140, 90),  # warm orange (tabby tone)
+    "DOGS": (255, 195, 90),  # golden retriever yellow
+    "OCEAN": (0, 140, 220),  # deep marine blue
+    "WILDLIFE": (180, 130, 60),  # savanna ochre
+    "BIRDS": (90, 200, 255),  # sky blue
+    "FARM": (140, 180, 90),  # field green
+    "REPTILES": (90, 185, 115),  # scale green
+    "INSECTS": (245, 185, 60),  # amber macro
+    "PRIMATES": (210, 145, 95),  # warm forest
+    "NOCTURNAL": (120, 120, 210),  # night violet-blue
+    "ARCTIC": (150, 220, 245),  # ice blue
     # Generic animal fallback — used when a queue entry slips through
     # without a recognised category, so the gradient renders something
     # warm and on-brand instead of a default blue.
-    "ANIMAL":      (200, 150, 90),
-    "ANIMALS":     (200, 150, 90),
-    "PLANTS":      (70, 205, 120),
-    "TREES":       (45, 145, 95),
-    "FUNGI":       (190, 150, 245),
-    "RIVERS":      (35, 190, 230),
-    "MOUNTAINS":   (160, 170, 185),
-    "FORESTS":     (40, 170, 110),
-    "VOLCANOES":   (245, 95, 45),
-    "WEATHER":     (110, 190, 255),
+    "ANIMAL": (200, 150, 90),
+    "ANIMALS": (200, 150, 90),
+    "PLANTS": (70, 205, 120),
+    "TREES": (45, 145, 95),
+    "FUNGI": (190, 150, 245),
+    "RIVERS": (35, 190, 230),
+    "MOUNTAINS": (160, 170, 185),
+    "FORESTS": (40, 170, 110),
+    "VOLCANOES": (245, 95, 45),
+    "WEATHER": (110, 190, 255),
     "RARE_PHENOMENA": (255, 210, 80),
-    "GEOLOGY":     (195, 165, 125),
-    "ECOSYSTEMS":  (95, 210, 155),
+    "GEOLOGY": (195, 165, 125),
+    "ECOSYSTEMS": (95, 210, 155),
     "EARTH_FROM_SPACE": (80, 170, 255),
     "CONSERVATION": (80, 200, 110),
     "DISCOVERIES": (255, 185, 85),
@@ -200,8 +198,8 @@ NATURE_BROLL_QUERY_MAP = {**ANIMAL_BROLL_QUERIES, **NATURE_BROLL_QUERIES}
 # The second voice (Guy) is the contingency: when Aria's edge-tts
 # CDN blips on a particular Short, Guy takes over for that one
 # render. Listeners on the channel hear Aria 99 % of the time.
-HOST_VOICE_PRIMARY   = "en-US-AriaNeural"
-HOST_VOICE_BACKUP    = "en-US-GuyNeural"
+HOST_VOICE_PRIMARY = "en-US-AriaNeural"
+HOST_VOICE_BACKUP = "en-US-GuyNeural"
 HOST_VOICE_VARIANTS = {
     "aria": HOST_VOICE_PRIMARY,
     "jenny": "en-US-JennyNeural",
@@ -216,16 +214,15 @@ VOICE_SHORT = HOST_VOICE_PRIMARY
 # ONE backup, matching the English channel's "one recognizable
 # host" commitment.
 VOICE_PANEL_BY_LOCALE: dict[str, list[str]] = {
-    "en":    VOICE_PANEL,
+    "en": VOICE_PANEL,
     "pt-BR": ["pt-BR-FranciscaNeural", "pt-BR-AntonioNeural"],
-    "es-ES": ["es-ES-ElviraNeural",    "es-ES-AlvaroNeural"],
-    "es-MX": ["es-MX-DaliaNeural",     "es-MX-JorgeNeural"],
-    "fr-FR": ["fr-FR-DeniseNeural",    "fr-FR-HenriNeural"],
+    "es-ES": ["es-ES-ElviraNeural", "es-ES-AlvaroNeural"],
+    "es-MX": ["es-MX-DaliaNeural", "es-MX-JorgeNeural"],
+    "fr-FR": ["fr-FR-DeniseNeural", "fr-FR-HenriNeural"],
 }
 
 
-def pick_voice(seed_text: str, category: str = "",
-                voice_tag: str = "", narrator_variant: str = "") -> str:
+def pick_voice(seed_text: str, category: str = "", voice_tag: str = "", narrator_variant: str = "") -> str:
     """Pick the host's signature voice for this Short.
 
     With the post-May-2026 humanization shift, the channel is committed
@@ -269,8 +266,8 @@ from utils.video_common import (
 
 
 def clean_text(text: str, max_chars: int = 500) -> str:
-    t = re.sub(r'<[^>]+>', ' ', text)
-    t = re.sub(r'\s+', ' ', t).strip()
+    t = re.sub(r"<[^>]+>", " ", text)
+    t = re.sub(r"\s+", " ", t).strip()
     return t[:max_chars]
 
 
@@ -320,10 +317,14 @@ def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str
     if not topic:
         issues.append("unknown_category")
         return issues
-    clip = type("Clip", (), {
-        "url": qs.get("url", ""),
-        "title": qs.get("title", ""),
-    })()
+    clip = type(
+        "Clip",
+        (),
+        {
+            "url": qs.get("url", ""),
+            "title": qs.get("title", ""),
+        },
+    )()
     subject = fetch_animals._subject_from_clip(clip, category)
     script = str(qs.get("script") or "")
     title = str(qs.get("seo_title") or qs.get("title") or "")
@@ -356,7 +357,7 @@ def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str
 def extract_key_points(description: str) -> list[str]:
     """Extract 3 concise key points from a story description."""
     desc = clean_text(description, 800)
-    sentences = re.split(r'(?<=[.!?])\s+', desc)
+    sentences = re.split(r"(?<=[.!?])\s+", desc)
     sentences = [s.strip() for s in sentences if len(s.strip()) > 20]
 
     points = []
@@ -385,23 +386,23 @@ TTS_TIMEOUT_S = float(os.environ.get("TTS_TIMEOUT_S", "45"))
 # range for a 100-word script. Missing entries fall through to +3%.
 VOICE_RATE_OFFSETS = {
     # English
-    "en-US-JennyNeural":     "+3%",   # baseline
-    "en-US-AriaNeural":      "+4%",
-    "en-US-GuyNeural":       "+2%",
-    "en-GB-SoniaNeural":     "+6%",   # British — naturally slower
-    "en-GB-RyanNeural":      "+6%",
-    "en-AU-NatashaNeural":   "+3%",
+    "en-US-JennyNeural": "+3%",  # baseline
+    "en-US-AriaNeural": "+4%",
+    "en-US-GuyNeural": "+2%",
+    "en-GB-SoniaNeural": "+6%",  # British — naturally slower
+    "en-GB-RyanNeural": "+6%",
+    "en-AU-NatashaNeural": "+3%",
     # Portuguese (Brazil) — already brisk; we slow down slightly
     "pt-BR-FranciscaNeural": "+0%",
-    "pt-BR-AntonioNeural":   "-2%",   # the calmest of the three
-    "pt-BR-ThalitaNeural":   "+0%",
+    "pt-BR-AntonioNeural": "-2%",  # the calmest of the three
+    "pt-BR-ThalitaNeural": "+0%",
     # Spanish + French
-    "es-ES-ElviraNeural":    "+2%",
-    "es-ES-AlvaroNeural":    "+2%",
-    "es-MX-DaliaNeural":     "+2%",
-    "es-MX-JorgeNeural":     "+2%",
-    "fr-FR-DeniseNeural":    "+4%",
-    "fr-FR-HenriNeural":     "+4%",
+    "es-ES-ElviraNeural": "+2%",
+    "es-ES-AlvaroNeural": "+2%",
+    "es-MX-DaliaNeural": "+2%",
+    "es-MX-JorgeNeural": "+2%",
+    "fr-FR-DeniseNeural": "+4%",
+    "fr-FR-HenriNeural": "+4%",
 }
 
 
@@ -410,8 +411,7 @@ def _locale_from_voice(voice: str) -> str:
     return match.group(1) if match else LANGUAGE
 
 
-async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
-                          rate_override: str | None = None):
+async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT, rate_override: str | None = None):
     """
     Render `text` to `output_path` (MP3) via Microsoft Edge-TTS.
 
@@ -428,6 +428,7 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
     path) inject a specific rate without rebuilding the panel.
     """
     import edge_tts
+
     rate = rate_override or VOICE_RATE_OFFSETS.get(voice, "+3%")
     communicate = edge_tts.Communicate(text, voice, rate=rate, pitch="+0Hz")
     try:
@@ -443,10 +444,9 @@ async def text_to_speech(text: str, output_path: Path, voice: str = VOICE_SHORT,
         raise
 
 
-async def text_to_speech_hook_then_body(hook: str, body: str,
-                                          output_path: Path,
-                                          voice: str = VOICE_SHORT,
-                                          tmp_dir: Path | None = None) -> bool:
+async def text_to_speech_hook_then_body(
+    hook: str, body: str, output_path: Path, voice: str = VOICE_SHORT, tmp_dir: Path | None = None
+) -> bool:
     """Render the hook at the voice's "calm" baseline rate (4 % slower
     than the body), then the body at the voice's regular rate. The
     two MP3 segments are FFmpeg-concatenated into `output_path`.
@@ -487,15 +487,13 @@ async def text_to_speech_hook_then_body(hook: str, body: str,
         f"file '{hook_mp3.resolve()}'\nfile '{body_mp3.resolve()}'\n",
         encoding="utf-8",
     )
-    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
-           "-i", str(list_file), "-c", "copy", str(output_path)]
+    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_file), "-c", "copy", str(output_path)]
     try:
         r = subprocess.run(cmd, capture_output=True, timeout=60)
     except subprocess.TimeoutExpired:
         return False
     if r.returncode != 0:
-        log.warning("hook/body MP3 concat failed: %s",
-                     r.stderr[-200:].decode("utf-8", errors="replace"))
+        log.warning("hook/body MP3 concat failed: %s", r.stderr[-200:].decode("utf-8", errors="replace"))
         return False
     log.info("  🎤 Hook @ %s, body @ %s (split-rate)", hook_rate, body_rate)
     return True
@@ -541,8 +539,7 @@ def _render_solid_color_background(category: str, dest: Path) -> bool:
 
 
 # ── Frame vertical do Short ───────────────────────────────────────
-def create_short_frame(title: str, category: str, points: list[str],
-                       source: str, bg_path: Path | None) -> Image.Image:
+def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None) -> Image.Image:
     """
     Create a single 1080x1920 vertical frame for a YouTube Short.
     Layout (top to bottom):
@@ -608,11 +605,8 @@ def create_short_frame(title: str, category: str, points: list[str],
     badge_h = cbbox[3] + 24
     badge_x = (SHORT_W - badge_w) // 2
     badge_y = 120
-    draw_rounded_rect(draw,
-                      (badge_x, badge_y, badge_x + badge_w, badge_y + badge_h),
-                      radius=14, fill=(*cat_color, 230))
-    draw.text((badge_x + 24, badge_y + 12), cat_text, font=cat_font,
-              fill=(0, 0, 0))
+    draw_rounded_rect(draw, (badge_x, badge_y, badge_x + badge_w, badge_y + badge_h), radius=14, fill=(*cat_color, 230))
+    draw.text((badge_x + 24, badge_y + 12), cat_text, font=cat_font, fill=(0, 0, 0))
 
     # ── LIVE dot ─────────────────────────────────────────────────
     live_font = get_font(38, bold=True)
@@ -647,8 +641,7 @@ def create_short_frame(title: str, category: str, points: list[str],
 
     # ── Divider line ─────────────────────────────────────────────
     div_y = ty + 24
-    draw.line([(padding, div_y), (SHORT_W - padding, div_y)],
-              fill=(*cat_color, 150), width=3)
+    draw.line([(padding, div_y), (SHORT_W - padding, div_y)], fill=(*cat_color, 150), width=3)
 
     # ── 3 bullet points ───────────────────────────────────────────
     bullet_start_y = div_y + 36
@@ -666,8 +659,7 @@ def create_short_frame(title: str, category: str, points: list[str],
         nbbox = draw.textbbox((0, 0), num_text, font=num_font)
         num_w = nbbox[2] + 16
         num_h = nbbox[3] + 10
-        draw_rounded_rect(draw, (padding, by, padding + num_w, by + num_h),
-                          radius=8, fill=cat_color)
+        draw_rounded_rect(draw, (padding, by, padding + num_w, by + num_h), radius=8, fill=cat_color)
         draw.text((padding + 8, by + 5), num_text, font=num_font, fill=(0, 0, 0))
 
         # Bullet text
@@ -684,8 +676,7 @@ def create_short_frame(title: str, category: str, points: list[str],
     brand_y = int(SHORT_H * 0.88)
 
     # Horizontal line
-    draw.line([(padding, brand_y), (SHORT_W - padding, brand_y)],
-              fill=(*ACCENT_BLUE, 80), width=2)
+    draw.line([(padding, brand_y), (SHORT_W - padding, brand_y)], fill=(*ACCENT_BLUE, 80), width=2)
 
     # Logo text — channel name lockup on the title card.
     logo_font = get_font(54, bold=True)
@@ -693,8 +684,7 @@ def create_short_frame(title: str, category: str, points: list[str],
     draw.text((padding, brand_y2), "WILD", font=logo_font, fill=ACCENT_BLUE)
     gbbox = draw.textbbox((0, 0), "WILD", font=logo_font)
     sep_x = padding + gbbox[2] + 12
-    draw.rectangle([(sep_x, brand_y2 + 4), (sep_x + 4, brand_y2 + gbbox[3] - 4)],
-                   fill=(*ACCENT_BLUE, 180))
+    draw.rectangle([(sep_x, brand_y2 + 4), (sep_x + 4, brand_y2 + gbbox[3] - 4)], fill=(*ACCENT_BLUE, 180))
     draw.text((sep_x + 16, brand_y2), "BRIEF", font=logo_font, fill=TEXT_WHITE)
 
     # Source
@@ -741,9 +731,9 @@ SHIPPED_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_s
 STATIC_THUMB_PATH = SHIPPED_THUMB_PATH
 
 
-def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
-                                   thumbnail_text: str = "",
-                                   category: str = "") -> None:
+def _create_static_short_thumbnail(
+    frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = ""
+) -> None:
     """
     Write the per-Short thumbnail.
 
@@ -769,7 +759,8 @@ def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
         except Exception as exc:
             log.warning(
                 "  ⚠ Failed to load branded thumb at %s: %s — falling back.",
-                SHIPPED_THUMB_PATH, exc,
+                SHIPPED_THUMB_PATH,
+                exc,
             )
 
     # Fallback: title-card frame as a JPEG (never branded but never empty).
@@ -787,6 +778,7 @@ def _create_static_short_thumbnail(frame_img: Image.Image, output: Path,
 # calls; it picks the right pipeline based on whether we actually
 # acquired b-roll clips.
 
+
 def _thumbnail_copy(thumbnail_text: str, fallback: str = "NATURE SIGNAL") -> str:
     """Return compact, readable thumbnail copy for a vertical preview tile."""
     cleaned = re.sub(r"[^A-Za-z0-9 '&-]+", " ", thumbnail_text or "")
@@ -794,9 +786,7 @@ def _thumbnail_copy(thumbnail_text: str, fallback: str = "NATURE SIGNAL") -> str
     return " ".join(words[:4]) or fallback
 
 
-def create_short_thumbnail(frame_img: Image.Image, output: Path,
-                            thumbnail_text: str = "",
-                            category: str = "") -> None:
+def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "") -> None:
     """Render a story-specific vertical preview with one instant idea."""
     if frame_img is None:
         return
@@ -815,8 +805,7 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
     pill = (76, 110, 76 + cat_box[2] + 46, 110 + cat_box[3] + 28)
     draw_rounded_rect(draw, pill, radius=12, fill=(*cat_color, 245))
-    draw.text((pill[0] + 23, pill[1] + 14), cat_text,
-              font=cat_font, fill=(0, 0, 0, 255))
+    draw.text((pill[0] + 23, pill[1] + 14), cat_text, font=cat_font, fill=(0, 0, 0, 255))
 
     copy = _thumbnail_copy(thumbnail_text)
     title_font = get_font(156, bold=True)
@@ -830,19 +819,15 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path,
     for line in lines:
         box = draw.textbbox((0, 0), line, font=title_font)
         x = (SHORT_W - box[2]) // 2
-        draw.text((x + 7, y + 8), line, font=title_font,
-                  fill=(0, 0, 0, 230))
-        draw.text((x, y), line, font=title_font,
-                  fill=(*TEXT_WHITE, 255))
+        draw.text((x + 7, y + 8), line, font=title_font, fill=(0, 0, 0, 230))
+        draw.text((x, y), line, font=title_font, fill=(*TEXT_WHITE, 255))
         y += line_h
 
     draw.rectangle((76, 1440, 310, 1454), fill=(*cat_color, 255))
     brand_font = get_font(62, bold=True)
-    draw.text((76, 1502), "WILD BRIEF", font=brand_font,
-              fill=(*TEXT_WHITE, 255))
+    draw.text((76, 1502), "WILD BRIEF", font=brand_font, fill=(*TEXT_WHITE, 255))
     sub_font = get_font(38, bold=True)
-    draw.text((76, 1582), "NATURE SCIENCE", font=sub_font,
-              fill=(*cat_color, 255))
+    draw.text((76, 1582), "NATURE SCIENCE", font=sub_font, fill=(*cat_color, 255))
 
     thumb.save(str(output), "JPEG", quality=94, optimize=True)
     log.info("  Thumbnail (dynamic story preview): %s", output.name)
@@ -870,22 +855,30 @@ def _animal_broll_query(story: dict) -> str:
 def _extract_broll_thumbnail(video_path: Path, dest: Path) -> bool:
     """Extract a still from the actual source footage for the thumbnail."""
     try:
-        result = subprocess.run([
-            "ffmpeg", "-y", "-ss", "0.5", "-i", str(video_path),
-            "-frames:v", "1", "-q:v", "2", str(dest),
-        ], capture_output=True, timeout=30)
-        return (
-            result.returncode == 0
-            and dest.exists()
-            and dest.stat().st_size >= 5 * 1024
+        result = subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-ss",
+                "0.5",
+                "-i",
+                str(video_path),
+                "-frames:v",
+                "1",
+                "-q:v",
+                "2",
+                str(dest),
+            ],
+            capture_output=True,
+            timeout=30,
         )
+        return result.returncode == 0 and dest.exists() and dest.stat().st_size >= 5 * 1024
     except Exception as exc:
         log.debug("broll thumbnail extraction failed: %s", exc)
         return False
 
 
-def acquire_broll_clips(story: dict, tmp_dir: Path,
-                         want_n: int = 3) -> list[Path]:
+def acquire_broll_clips(story: dict, tmp_dir: Path, want_n: int = 3) -> list[Path]:
     """
     Pull `want_n` b-roll MP4s into `tmp_dir`. Returns local paths.
     Empty list = the caller falls back to a static frame.
@@ -900,8 +893,17 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
         return []
     category = story.get("category", "")
     animal_only = str(category).strip().lower() in {
-        "cats", "dogs", "ocean", "wildlife", "birds", "farm",
-        "reptiles", "insects", "primates", "nocturnal", "arctic",
+        "cats",
+        "dogs",
+        "ocean",
+        "wildlife",
+        "birds",
+        "farm",
+        "reptiles",
+        "insects",
+        "primates",
+        "nocturnal",
+        "arctic",
     }
     try:
         candidates = fetch_broll_clips(
@@ -917,16 +919,19 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
 
     preferred_url = (story.get("source_download_url") or story.get("pexels_download_url") or "").strip()
     if preferred_url:
-        candidates.insert(0, BrollClip(
-            source=(story.get("source") or "pexels").strip().lower(),
-            url=(story.get("source_url") or "").strip(),
-            download_url=preferred_url,
-            width=1080,
-            height=1920,
-            duration_s=10.0,
-            title=(story.get("title") or "").strip(),
-            license=(story.get("source_license") or "Reusable source clip").strip(),
-        ))
+        candidates.insert(
+            0,
+            BrollClip(
+                source=(story.get("source") or "pexels").strip().lower(),
+                url=(story.get("source_url") or "").strip(),
+                download_url=preferred_url,
+                width=1080,
+                height=1920,
+                duration_s=10.0,
+                title=(story.get("title") or "").strip(),
+                license=(story.get("source_license") or "Reusable source clip").strip(),
+            ),
+        )
 
     paths: list[Path] = []
     seen_urls: set[str] = set()
@@ -939,9 +944,9 @@ def acquire_broll_clips(story: dict, tmp_dir: Path,
         dest = tmp_dir / f"broll_{i}.mp4"
         if download_clip(clip, dest):
             paths.append(dest)
-    log.info("  🎬 B-roll downloaded: %d/%d (sources: %s)",
-             len(paths), want_n,
-             {c.source for c in candidates[:len(paths)]})
+    log.info(
+        "  🎬 B-roll downloaded: %d/%d (sources: %s)", len(paths), want_n, {c.source for c in candidates[: len(paths)]}
+    )
     return paths
 
 
@@ -982,8 +987,7 @@ def save_shorts_done(done: set):
 
 
 # ── Metadata for upload_youtube.py ───────────────────────────────
-def build_short_metadata(story: dict, video_path: Path,
-                         thumb_path: Path) -> dict:
+def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dict:
     """
     Build the JSON metadata payload that upload_youtube.py consumes.
     Required keys downstream: title, description, video.
@@ -1003,8 +1007,8 @@ def build_short_metadata(story: dict, video_path: Path,
       - tags: a focused list for YouTube search and Shorts discovery
     """
     base_title = _normalise_editorial_text(story.get("title") or "")
-    category   = story.get("category", "wildlife")
-    source     = story.get("source", "Pexels")
+    category = story.get("category", "wildlife")
+    source = story.get("source", "Pexels")
 
     if not base_title:
         base_title = "Animal fact of the day"
@@ -1047,92 +1051,93 @@ def build_short_metadata(story: dict, video_path: Path,
     all_tags = merge_search_tags(queue_tags, category)
 
     seo = seo_score(base_title)
-    return {
-        "title":          base_title,
-        "description":    caption,
-        "tags":           all_tags,
+    metadata = {
+        "title": base_title,
+        "description": caption,
+        "tags": all_tags,
         "youtube_privacy": "public",
         "youtube_category_id": "28",
-        "thumbnail":      str(thumb_path),
-        "video":          str(video_path),
-        "story_slug":     story.get("slug", ""),
-        "created_at":     datetime.now(timezone.utc).isoformat(),
-        "script":         story.get("script", "").strip(),
+        "thumbnail": str(thumb_path),
+        "video": str(video_path),
+        "story_slug": story.get("slug", ""),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "script": story.get("script", "").strip(),
         "thumbnail_text": story.get("thumbnail_text", "").strip(),
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
-        "hook":           story.get("hook", "").strip(),
-        "story_format":   story.get("story_format") or classify_format(
-            f"{base_title} {story.get('hook', '')} {story.get('script', '')}"
-        ),
-        "hook_audit":     audit_hook(story.get("hook", "")).to_dict(),
-        "title_audit":    audit_title(base_title).to_dict(),
-        "seo_score":      seo,
-        "human_voice":    score_human_voice(story.get("script", "")).to_dict(),
-        "humanity":       score_humanity_story(story).to_dict(),
-        "studio_polish":  dict(story.get("studio_polish") or {}),
-        "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
+        "hook": story.get("hook", "").strip(),
+        "story_format": story.get("story_format")
+        or classify_format(f"{base_title} {story.get('hook', '')} {story.get('script', '')}"),
+        "hook_audit": audit_hook(story.get("hook", "")).to_dict(),
+        "title_audit": audit_title(base_title).to_dict(),
+        "seo_score": seo,
+        "human_voice": score_human_voice(story.get("script", "")).to_dict(),
+        "humanity": score_humanity_story(story).to_dict(),
+        "studio_polish": dict(story.get("studio_polish") or {}),
+        "ai_rewrite": dict(story.get("ai_rewrite") or {}),
         "seo_optimisation": dict(story.get("seo_optimisation") or {}),
         "narrator_voice": story.get("narrator_voice", ""),
         "narrator_profile": dict(((story.get("growth_studio") or {}).get("narrator")) or {}),
         "narrative_template": dict(story.get("narrative_template") or {}),
-        "growth_studio":   dict(story.get("growth_studio") or {}),
+        "growth_studio": dict(story.get("growth_studio") or {}),
         "production_mode": story.get("production_mode", ""),
-        "youtube_brain":  dict(story.get("youtube_brain") or {}),
-        "packaging":      dict(story.get("packaging") or {}),
-        "curiosity_gap":  dict((story.get("packaging") or {}).get("curiosity_gap") or {}),
-        "swipe_risk":     dict((story.get("packaging") or {}).get("swipe_risk") or {}),
-        "loop_plan":      dict((story.get("packaging") or {}).get("loop_plan") or {}),
-        "loop_score":     (story.get("packaging") or {}).get("loop_score", 0),
+        "youtube_brain": dict(story.get("youtube_brain") or {}),
+        "packaging": dict(story.get("packaging") or {}),
+        "curiosity_gap": dict((story.get("packaging") or {}).get("curiosity_gap") or {}),
+        "swipe_risk": dict((story.get("packaging") or {}).get("swipe_risk") or {}),
+        "loop_plan": dict((story.get("packaging") or {}).get("loop_plan") or {}),
+        "loop_score": (story.get("packaging") or {}).get("loop_score", 0),
         "loop_render_applied": dict(story.get("loop_render_applied") or {}),
-        "end_card_text":  story.get("end_card_text", ""),
+        "end_card_text": story.get("end_card_text", ""),
         "editorial_rulebook": dict((story.get("packaging") or {}).get("editorial_rulebook") or {}),
         "opportunity_score": dict(story.get("opportunity_score") or {}),
         "retention_score": dict(story.get("retention_score") or {}),
-        "weak_content":   dict(story.get("weak_content") or {}),
+        "weak_content": dict(story.get("weak_content") or {}),
         "subscriber_conversion": dict(story.get("subscriber_conversion") or {}),
         "pinned_comment": (story.get("packaging") or {}).get("pinned_comment", ""),
-        "cta_prompt":     story.get("cta_prompt") or (story.get("packaging") or {}).get("cta_prompt", ""),
-        "replay_prompt":  story.get("replay_prompt") or (story.get("packaging") or {}).get("replay_prompt", ""),
-        "trend_context":  dict(story.get("trend_context") or {}),
-        "agency":         dict(story.get("agency") or {}),
-        "agency_gate":    dict(story.get("agency_gate") or {}),
+        "cta_prompt": story.get("cta_prompt") or (story.get("packaging") or {}).get("cta_prompt", ""),
+        "replay_prompt": story.get("replay_prompt") or (story.get("packaging") or {}).get("replay_prompt", ""),
+        "trend_context": dict(story.get("trend_context") or {}),
+        "agency": dict(story.get("agency") or {}),
+        "agency_gate": dict(story.get("agency_gate") or {}),
         "audience_strategy": global_strategy(),
         "retention_surgery": diagnose_retention(story),
         # Vertical 9:16 + short duration = a YouTube Short.
-        "is_short":       True,
+        "is_short": True,
         # Pexels source-clip identity. Propagated so upload_youtube can
         # append it to the permanent dedup ledger
         # (`_data/published_clips.json`) on a successful upload.
-        "pexels_video_id":     story.get("pexels_video_id", ""),
+        "pexels_video_id": story.get("pexels_video_id", ""),
         "pexels_download_url": story.get("pexels_download_url", ""),
-        "source_clip_id":      story.get("source_clip_id", ""),
+        "source_clip_id": story.get("source_clip_id", ""),
         "source_download_url": story.get("source_download_url", ""),
-        "source_license":      story.get("source_license", ""),
-        "commons_page_url":    story.get("commons_page_url", ""),
-        "commons_license":     story.get("commons_license", ""),
-        "commons_artist":      story.get("commons_artist", ""),
-        "gbif":                dict(story.get("gbif") or {}),
+        "source_license": story.get("source_license", ""),
+        "commons_page_url": story.get("commons_page_url", ""),
+        "commons_license": story.get("commons_license", ""),
+        "commons_artist": story.get("commons_artist", ""),
+        "gbif": dict(story.get("gbif") or {}),
         # Queue entry id (SHA-256-derived Pexels page URL). Second dedup
         # key after pexels_video_id; whichever the recorder has is fine.
-        "story_id":            story.get("id", ""),
+        "story_id": story.get("id", ""),
         # Source metadata (kept for analytics / dashboard).
-        "source":         source,
-        "source_url":     story.get("source_url", ""),
-        "geo_hashtag":    story.get("geo_hashtag", "Global"),
-        "category":       category,
+        "source": source,
+        "source_url": story.get("source_url", ""),
+        "geo_hashtag": story.get("geo_hashtag", "Global"),
+        "category": category,
         # channel_handle is kept on the metadata for the .done sidecar /
         # analytics joins even when the on-frame watermark is disabled.
-        "channel_handle": (os.environ.get("CHANNEL_WATERMARK", "").strip()
-                           or "@wildbrief"),
+        "channel_handle": (os.environ.get("CHANNEL_WATERMARK", "").strip() or "@wildbrief"),
         # A/B variant tags ride along all the way to the .done sidecar
         # after upload so analytics can correlate them with engagement.
-        "experiments":    dict(story.get("experiments") or {}),
-        "autonomy":       dict(story.get("autonomy") or {}),
-        "editorial":      dict(story.get("editorial") or {}),
-        "studio_state":   story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
-        "ai_rewrite":     dict(story.get("ai_rewrite") or {}),
-        "series":         story.get("series", ""),
+        "experiments": dict(story.get("experiments") or {}),
+        "music_bed_variant": story.get("music_bed_variant", ""),
+        "autonomy": dict(story.get("autonomy") or {}),
+        "editorial": dict(story.get("editorial") or {}),
+        "studio_state": story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
+        "ai_rewrite": dict(story.get("ai_rewrite") or {}),
+        "series": story.get("series", ""),
     }
+    metadata["seo_lint"] = lint_metadata(metadata)
+    return metadata
 
 
 # ── Parse posts ──────────────────────────────────────────────────
@@ -1232,35 +1237,35 @@ def _queue_to_story(qs: dict) -> dict:
     experiments = assign_all_for_production(qs["id"])
     experiments.update(dict(qs.get("experiments") or {}))
     story = {
-        "slug":           f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
-        "title":          title,
-        "description":    qs.get("description", ""),
-        "lead":           qs.get("lead", ""),
-        "raw_title":      qs.get("title", ""),
-        "source":         qs.get("source", "Pexels"),
-        "source_url":     qs.get("source_url") or qs.get("url", ""),
-        "image_url":      qs.get("image_url", ""),
-        "tags":           [qs.get("category", "wildlife")],
-        "category":       qs.get("category", "wildlife"),
-        "date":           (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
-        "hook":           qs.get("hook", ""),
+        "slug": f'{(qs.get("published_at") or qs.get("fetched_at",""))[:10]}-{qs["id"]}',
+        "title": title,
+        "description": qs.get("description", ""),
+        "lead": qs.get("lead", ""),
+        "raw_title": qs.get("title", ""),
+        "source": qs.get("source", "Pexels"),
+        "source_url": qs.get("source_url") or qs.get("url", ""),
+        "image_url": qs.get("image_url", ""),
+        "tags": [qs.get("category", "wildlife")],
+        "category": qs.get("category", "wildlife"),
+        "date": (qs.get("published_at") or qs.get("fetched_at", ""))[:10],
+        "hook": qs.get("hook", ""),
         # `script` is the full opinionated voice-over (~30-45 s) authored
         # by fetch_animals.py's AI prompt. generate_short() will TTS this
         # directly instead of rebuilding from key_points.
-        "script":         qs.get("script", ""),
+        "script": qs.get("script", ""),
         "thumbnail_text": thumbnail_text,
-        "key_points":     qs.get("key_points", []),
+        "key_points": qs.get("key_points", []),
         # SEO fields authored by fetch_animals.py — used as-is by
         # build_short_metadata. Each is allowed to be empty; the
         # metadata builder falls back to safe defaults.
-        "yt_tags":        qs.get("yt_tags", []),
+        "yt_tags": qs.get("yt_tags", []),
         "yt_description": qs.get("yt_description", ""),
-        "geo_hashtag":    qs.get("geo_hashtag", ""),
-        "topic_hashtag":  qs.get("topic_hashtag", ""),
+        "geo_hashtag": qs.get("geo_hashtag", ""),
+        "topic_hashtag": qs.get("topic_hashtag", ""),
         "discovery_hashtags": list(qs.get("discovery_hashtags") or []),
-        "score":          qs.get("score", 0),
-        "autonomy":       dict(qs.get("autonomy") or {}),
-        "experiments":    experiments,
+        "score": qs.get("score", 0),
+        "autonomy": dict(qs.get("autonomy") or {}),
+        "experiments": experiments,
         "pexels_download_url": qs.get("pexels_download_url", ""),
         "pexels_video_id": qs.get("pexels_video_id", ""),
         "source_clip_id": qs.get("source_clip_id", ""),
@@ -1272,8 +1277,8 @@ def _queue_to_story(qs: dict) -> dict:
         "commons_license": qs.get("commons_license", ""),
         "commons_artist": qs.get("commons_artist", ""),
         "gbif": dict(qs.get("gbif") or {}),
-        "id":             qs["id"],
-        "_queue_id":      qs["id"],  # used to mark consumed after success
+        "id": qs["id"],
+        "_queue_id": qs["id"],  # used to mark consumed after success
     }
     story = package_story(story)
     growth_studio = studio_brief_for_story(story)
@@ -1336,9 +1341,11 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             continue
         clean_pending.append(story)
     if held_reasons:
-        log.info("  Queue quality held %d candidate(s): %s",
-                 len(pending) - len(clean_pending),
-                 ", ".join(f"{k}={v}" for k, v in sorted(held_reasons.items())))
+        log.info(
+            "  Queue quality held %d candidate(s): %s",
+            len(pending) - len(clean_pending),
+            ", ".join(f"{k}={v}" for k, v in sorted(held_reasons.items())),
+        )
     if rescued_pending:
         log.info("  Queue quality rescued %d candidate(s) with local rewrites", len(rescued_pending))
     pending = clean_pending
@@ -1358,7 +1365,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     for candidate in candidates:
         opportunity = score_topic(candidate, memory=format_memory)
         if opportunity["verdict"] == "discard":
-            record_rejection(candidate, opportunity.get("reasons") or ["low_opportunity_score"], stage="opportunity_score")
+            record_rejection(
+                candidate, opportunity.get("reasons") or ["low_opportunity_score"], stage="opportunity_score"
+            )
             continue
         weak = detect_weak_content(candidate, memory=format_memory)
         if weak["state"] == "block":
@@ -1371,7 +1380,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
                 candidate = rescued
                 retention = analyze_retention(candidate)
             if retention["verdict"] == "discard":
-                record_rejection(candidate, retention.get("reasons") or ["low_retention_score"], stage="retention_score")
+                record_rejection(
+                    candidate, retention.get("reasons") or ["low_retention_score"], stage="retention_score"
+                )
                 continue
         score = publish_score_story(candidate, analytics_strategy=strategy)
         if score["state"] == "reject":
@@ -1389,7 +1400,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             record_rejection(item, brain.get("risks") or [], stage="youtube_brain")
             continue
         if brain["state"] == "rewrite_before_publish" or packaging.get("state") == "rewrite_packaging":
-            reasons = list(dict.fromkeys((brain.get("risks") or []) + (packaging.get("risks") or ["rewrite_packaging"])))
+            reasons = list(
+                dict.fromkeys((brain.get("risks") or []) + (packaging.get("risks") or ["rewrite_packaging"]))
+            )
             rescued, applied = rescue_story(item, reasons)
             if applied:
                 item = package_story(rescued)
@@ -1405,21 +1418,17 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         paused = set(paused_categories().keys())
         if paused:
             before = len(candidates)
-            candidates = [
-                story for story in candidates
-                if str(story.get("category") or "").lower() not in paused
-            ]
-            log.info("  Ops guardian enforcement removed %d paused-category candidate(s)",
-                     before - len(candidates))
+            candidates = [story for story in candidates if str(story.get("category") or "").lower() not in paused]
+            log.info("  Ops guardian enforcement removed %d paused-category candidate(s)", before - len(candidates))
     candidates, held = filter_candidates(candidates)
     if held:
-        log.info("  Agency gate held %d candidate(s): %s",
-                 len(held),
-                 ", ".join(sorted({
-                     reason
-                     for item in held
-                     for reason in (item.get("agency_gate") or {}).get("reasons", [])
-                 }))[:160])
+        log.info(
+            "  Agency gate held %d candidate(s): %s",
+            len(held),
+            ", ".join(
+                sorted({reason for item in held for reason in (item.get("agency_gate") or {}).get("reasons", [])})
+            )[:160],
+        )
     growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
     return rank_for_agency(growth_ranked, strategy), queue
 
@@ -1520,15 +1529,16 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         if native == LANGUAGE.lower():
             log.info("  🇧🇷 Native %s source — no translation needed", LANGUAGE)
             # Still stamp voice_tag so pick_voice walks the locale panel.
-            story = dict(story,
-                          language=LANGUAGE,
-                          voice_tag=SUPPORTED_LANGUAGES[LANGUAGE]["voice_tag"],
-                          lang_hashtag=SUPPORTED_LANGUAGES[LANGUAGE]["hashtag"])
+            story = dict(
+                story,
+                language=LANGUAGE,
+                voice_tag=SUPPORTED_LANGUAGES[LANGUAGE]["voice_tag"],
+                lang_hashtag=SUPPORTED_LANGUAGES[LANGUAGE]["hashtag"],
+            )
         else:
             translated = translate_story(story, LANGUAGE)
             if not translated:
-                log.warning("  ⏭  Skipping Short — translation to %s failed for %s",
-                             LANGUAGE, title[:60])
+                log.warning("  ⏭  Skipping Short — translation to %s failed for %s", LANGUAGE, title[:60])
                 return None
             story = translated
             log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
@@ -1556,7 +1566,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if not editorial.approved:
         log.warning(
             "  Skipping Short - editor-in-chief rejected score=%d subject=%s reasons=%s",
-            editorial.score, editorial.subject, "; ".join(editorial.reasons),
+            editorial.score,
+            editorial.subject,
+            "; ".join(editorial.reasons),
         )
         return None
 
@@ -1574,14 +1586,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     if quality_should_block(issues):
         log.warning(
             "  ⏭  Skipping Short — quality gate blocks: %s (grade=%d, blocks=%d, warns=%d)",
-            title[:60], grade,
+            title[:60],
+            grade,
             sum(1 for i in issues if i.severity == "block"),
             sum(1 for i in issues if i.severity == "warn"),
         )
         return None
-    hook_text       = _normalise_editorial_text(story.get("hook") or "")
-    display_title   = _normalise_editorial_text(story.get("title") or "")  # already seo_title from queue
-    thumbnail_text  = _clean_thumbnail_text(
+    hook_text = _normalise_editorial_text(story.get("hook") or "")
+    display_title = _normalise_editorial_text(story.get("title") or "")  # already seo_title from queue
+    thumbnail_text = _clean_thumbnail_text(
         story.get("thumbnail_text") or "",
         title=display_title,
         hook=hook_text,
@@ -1597,10 +1610,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # utils.translation.translate_story. English stories don't set it,
     # so pick_voice falls through to the default panel.
     voice_tag = story.get("voice_tag", "")
-    narrator_variant = (
-        ((story.get("growth_studio") or {}).get("narrator") or {}).get("variant")
-        or (story.get("experiments") or {}).get("narrator_voice", "")
-    )
+    narrator_variant = ((story.get("growth_studio") or {}).get("narrator") or {}).get("variant") or (
+        story.get("experiments") or {}
+    ).get("narrator_voice", "")
     voice = pick_voice(
         seed_text=title,
         category=category,
@@ -1617,7 +1629,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # prompt enforces this), so we can split on the hook itself.
     split_rendered = False
     if hook_text and queue_script.lstrip().lower().startswith(hook_text.lower()):
-        body_after = queue_script[len(hook_text):].lstrip(" .!?")
+        body_after = queue_script[len(hook_text) :].lstrip(" .!?")
         body_humanised = humanize_for_tts(body_after)
         if body_humanised:
             try:
@@ -1631,8 +1643,7 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
                     )
                 )
             except Exception as exc:
-                log.warning("hook/body split TTS errored: %s — falling back",
-                              exc)
+                log.warning("hook/body split TTS errored: %s — falling back", exc)
                 split_rendered = False
 
     if not split_rendered:
@@ -1669,7 +1680,10 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # Picks a Pixabay CC0 track keyed by story mood and mixes it under
     # the TTS. If the download or mix fails, audio_path is returned
     # unchanged — music is enhancement, not a hard requirement.
-    audio_path = add_music_bed(audio_path, story, tmp_dir)
+    music_variant = (story.get("experiments") or {}).get("music_bed", "off")
+    story["music_bed_variant"] = music_variant
+    if music_variant == "light_bed":
+        audio_path = add_music_bed(audio_path, story, tmp_dir)
 
     # ── 2. Captions (word-level) — biggest single retention lever. ─
     ass_path = generate_captions(audio_path, tmp_dir)
@@ -1746,17 +1760,21 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     local_visual_qa = evaluate_local_frame(bg_path)
     if local_visual_qa.get("checked") and not local_visual_qa.get("approved"):
-        log.warning("  Local visual QA warning score=%s reason=%s",
-                    local_visual_qa.get("score"), local_visual_qa.get("reason"))
+        log.warning(
+            "  Local visual QA warning score=%s reason=%s", local_visual_qa.get("score"), local_visual_qa.get("reason")
+        )
     visual_qa = evaluate_frame(bg_path, story.get("title") or display_title)
     if visual_qa.get("checked") and not visual_qa.get("approved"):
-        log.warning("  Skipping Short - Gemini visual QA rejected frame: %s",
-                    visual_qa.get("reason", "subject mismatch"))
+        log.warning(
+            "  Skipping Short - Gemini visual QA rejected frame: %s", visual_qa.get("reason", "subject mismatch")
+        )
         return None
-    if (visual_qa.get("checked")
-            and int(visual_qa.get("thumbnail_quality", 0) or 0) < QUALITY_MIN_VISUAL_QA_SCORE):
-        log.warning("  Skipping Short - Gemini visual QA score %s is below %s",
-                    visual_qa.get("thumbnail_quality"), QUALITY_MIN_VISUAL_QA_SCORE)
+    if visual_qa.get("checked") and int(visual_qa.get("thumbnail_quality", 0) or 0) < QUALITY_MIN_VISUAL_QA_SCORE:
+        log.warning(
+            "  Skipping Short - Gemini visual QA score %s is below %s",
+            visual_qa.get("thumbnail_quality"),
+            QUALITY_MIN_VISUAL_QA_SCORE,
+        )
         return None
 
     # Render the still frame used for (a) the static-video fallback,
@@ -1777,20 +1795,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # category-colour solid block, and the legacy brand-static JPEG.
     # create_short_thumbnail's fallback chain handles each path.
     experiments = story.get("experiments") or {}
-    thumb_variant = experiments.get("thumbnail_style") \
-                    or assign_variant("thumbnail_style", slug)
+    thumb_variant = experiments.get("thumbnail_style") or assign_variant("thumbnail_style", slug)
     if thumb_variant == "brand_static":
         # Forcing empty thumbnail_text triggers the static brand fallback
         # inside create_short_thumbnail.
-        create_short_thumbnail(frame, thumb_path,
-                                thumbnail_text="",
-                                category=category)
+        create_short_thumbnail(frame, thumb_path, thumbnail_text="", category=category)
     else:
         # dynamic_text + category_color both use the dynamic renderer;
         # category_color biases harder toward the slab fill colour.
-        create_short_thumbnail(frame, thumb_path,
-                                thumbnail_text=thumbnail_text,
-                                category=category)
+        create_short_thumbnail(frame, thumb_path, thumbnail_text=thumbnail_text, category=category)
     if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
         log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
         return None
@@ -1851,6 +1864,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
 
     # ── 8. Metadata JSON ──────────────────────────────────────────
     metadata = build_short_metadata(story, video_path, thumb_path)
+    metadata["seo_lint"] = lint_metadata(metadata)
+    if metadata["seo_lint"].get("strict") and not metadata["seo_lint"].get("approved"):
+        log.warning(
+            "  Skipping Short - SEO metadata lint rejected score=%s errors=%s",
+            metadata["seo_lint"].get("score"),
+            "; ".join(metadata["seo_lint"].get("errors") or []),
+        )
+        record_rejection(metadata, metadata["seo_lint"].get("errors") or [], stage="seo_metadata_lint")
+        return None
     # Tag metadata as synthetic content for downstream disclosure tools.
     metadata["altered_content"] = True
     metadata["has_broll"] = bool(broll_paths)
@@ -1868,6 +1890,21 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["humanity"] = editorial.humanity
     metadata["studio_state"] = editorial.state
     metadata["series"] = editorial.series
+    metadata["opening_audit"] = audit_opening_frames(
+        {
+            **metadata,
+            "thumbnail_text": metadata.get("thumbnail_text") or story.get("thumbnail_text"),
+            "has_broll": bool(broll_paths),
+        }
+    )
+    if not metadata["opening_audit"].get("approved", True):
+        log.warning(
+            "  Skipping Short - opening audit rejected score=%s reasons=%s",
+            metadata["opening_audit"].get("score"),
+            "; ".join(metadata["opening_audit"].get("reasons") or []),
+        )
+        record_rejection(metadata, metadata["opening_audit"].get("reasons") or [], stage="opening_audit")
+        return None
     metadata["monetization_audit"] = audit_monetization(metadata)
     metadata["rights_audit"] = audit_rights(metadata)
     if not metadata["rights_audit"].get("approved"):
@@ -1894,7 +1931,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             metadata["publish_score"].get("score"),
             metadata["publish_score"].get("state"),
         )
-        record_rejection(metadata, [f"publish_score_{metadata['publish_score'].get('state')}"], stage="final_publish_score")
+        record_rejection(
+            metadata, [f"publish_score_{metadata['publish_score'].get('state')}"], stage="final_publish_score"
+        )
         return None
     if not metadata["pre_publish_audit"].get("approved"):
         log.warning(
@@ -1914,14 +1953,14 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         },
     )
     meta_path = video_path.with_suffix(".json")
-    meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False),
-                         encoding="utf-8")
+    meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info(f"  Metadata saved: {meta_path.name}")
 
     # ── 9. Channel memory: log this Short so future stories can
     # callback to it ("I covered this two weeks ago — here's the update").
     try:
         from utils.channel_memory import remember as _remember_story
+
         _remember_story(story)
     except Exception as exc:
         log.debug("channel_memory remember skipped: %s", exc)
@@ -1938,6 +1977,7 @@ def main():
     # generate_short() on a per-story basis. The fail-fast checks
     # below catch the cases where the queue file itself is missing.
     from utils.panic import abort_if_halted
+
     abort_if_halted("generate_shorts")
     VIDEOS_DIR.mkdir(exist_ok=True)
 
@@ -1961,11 +2001,9 @@ def main():
     blocked = load_blocked_slugs()
     if blocked:
         before = len(candidates)
-        candidates = [c for c in candidates if c["slug"] not in blocked
-                       and c.get("_queue_id", "") not in blocked]
+        candidates = [c for c in candidates if c["slug"] not in blocked and c.get("_queue_id", "") not in blocked]
         if before != len(candidates):
-            log.info("🚫 Filtered out %d blocked stories (operator /block)",
-                     before - len(candidates))
+            log.info("🚫 Filtered out %d blocked stories (operator /block)", before - len(candidates))
 
     candidates = diversify_candidates(candidates)
     log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
@@ -1981,9 +2019,8 @@ def main():
     # pending stories in the queue at any given moment, 5 retries is
     # well under queue depth and worst-case adds maybe 30 seconds of
     # wasted AI work — far better than skipping the slot entirely.
-    pool = candidates[:MAX_SHORTS_PER_RUN * 5]
-    log.info(f"Aiming for {MAX_SHORTS_PER_RUN} Short(s) this run "
-             f"(pool of {len(pool)} candidate(s) available):")
+    pool = candidates[: MAX_SHORTS_PER_RUN * 5]
+    log.info(f"Aiming for {MAX_SHORTS_PER_RUN} Short(s) this run " f"(pool of {len(pool)} candidate(s) available):")
     for i, s in enumerate(pool[:MAX_SHORTS_PER_RUN], 1):
         log.info(f"  {i}. [{s['category']}] {s['title'][:70]}")
 
@@ -2013,8 +2050,10 @@ def main():
             log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
 
     shutil.rmtree(tmp, ignore_errors=True)
-    log.info(f"\nDone: {created}/{MAX_SHORTS_PER_RUN} Short(s) created "
-             f"in {VIDEOS_DIR}/ ({attempted} candidate(s) attempted).")
+    log.info(
+        f"\nDone: {created}/{MAX_SHORTS_PER_RUN} Short(s) created "
+        f"in {VIDEOS_DIR}/ ({attempted} candidate(s) attempted)."
+    )
 
     # Observable failure signal: if we were asked to make Shorts and
     # produced zero, exit non-zero so the workflow turns red. Beats
