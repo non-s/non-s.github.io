@@ -30,6 +30,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/reject_report.json" in fetch_workflow
     youtube_workflow = (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in youtube_workflow
+    assert "_data/scale_blueprint.json" in youtube_workflow
     assert "_data/control_plane_report.json" in youtube_workflow
     assert "_data/queue_audit.json" in youtube_workflow
     assert "_data/dry_run_publish.json" in youtube_workflow
