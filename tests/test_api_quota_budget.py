@@ -1,4 +1,4 @@
-from utils.api_quota_budget import estimate_publish_run_cost, should_block_run, write_quota_ledger_row
+from utils.api_quota_budget import estimate_publish_run_cost, quota_ledger_row, should_block_run, write_quota_ledger_row
 
 
 def test_quota_estimate_uses_youtube_upload_cost():
@@ -26,3 +26,14 @@ def test_quota_ledger_writes_latest(tmp_path):
     assert row["estimated_units"] == 5
     assert (tmp_path / "ledger.jsonl").exists()
     assert (tmp_path / "latest.json").exists()
+
+
+def test_quota_check_only_does_not_spend_from_ledger(tmp_path):
+    row = quota_ledger_row(
+        {"workflow": "youtube-bot", "estimated_units": 1810, "calls": {"youtube.videos.insert": 1}},
+        path=tmp_path / "ledger.jsonl",
+    )
+
+    assert row["guard"]["spent_today"] == 0
+    assert row["guard"]["projected_today"] == 1810
+    assert not (tmp_path / "ledger.jsonl").exists()

@@ -14,15 +14,18 @@ if str(ROOT) not in sys.path:
 from utils.api_quota_budget import (  # noqa: E402
     estimate_fetch_content_cost,
     estimate_publish_run_cost,
+    quota_ledger_row,
     write_quota_ledger_row,
 )
 
 
-def preflight(workflow: str) -> dict:
+def preflight(workflow: str, *, check_only: bool = False) -> dict:
     if workflow == "fetch-content":
         estimate = estimate_fetch_content_cost()
     else:
         estimate = estimate_publish_run_cost()
+    if check_only:
+        return quota_ledger_row(estimate)
     return write_quota_ledger_row(estimate)
 
 
@@ -35,8 +38,13 @@ def main() -> int:
         action="store_true",
         help="Report quota block state without failing audit-only jobs.",
     )
+    parser.add_argument(
+        "--check-only",
+        action="store_true",
+        help="Evaluate guard state without appending estimated spend to the ledger.",
+    )
     args = parser.parse_args()
-    row = preflight(args.workflow)
+    row = preflight(args.workflow, check_only=args.check_only)
     if args.json:
         print(json.dumps(row, sort_keys=True, ensure_ascii=False))
     else:

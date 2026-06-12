@@ -137,15 +137,7 @@ def write_quota_ledger_row(
     env: dict | None = None,
 ) -> dict:
     env = env or os.environ
-    guard = should_block_run(estimate, path=path, env=env)
-    row = {
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "quota_day_pt": quota_day_pt(),
-        "workflow": estimate.get("workflow", ""),
-        "calls": estimate.get("calls", {}),
-        "estimated_units": int(estimate.get("estimated_units") or 0),
-        "guard": guard,
-    }
+    row = quota_ledger_row(estimate, path=path, env=env)
     if _bool("QUOTA_LEDGER_ENABLED", True, env):
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("a", encoding="utf-8") as fh:
@@ -153,3 +145,21 @@ def write_quota_ledger_row(
         latest_path.parent.mkdir(parents=True, exist_ok=True)
         latest_path.write_text(json.dumps(row, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
     return row
+
+
+def quota_ledger_row(
+    estimate: dict,
+    *,
+    path: Path = LEDGER_FILE,
+    env: dict | None = None,
+) -> dict:
+    env = env or os.environ
+    guard = should_block_run(estimate, path=path, env=env)
+    return {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "quota_day_pt": quota_day_pt(),
+        "workflow": estimate.get("workflow", ""),
+        "calls": estimate.get("calls", {}),
+        "estimated_units": int(estimate.get("estimated_units") or 0),
+        "guard": guard,
+    }
