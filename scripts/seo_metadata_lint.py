@@ -58,7 +58,7 @@ def lint_repo(root: Path = ROOT) -> dict:
         lint = lint_metadata(meta, recent_titles=recent_titles)
         recent_titles.append(str(meta.get("title") or ""))
         uploaded_checked += 1
-        items.append({"kind": "uploaded", "path": str(path.relative_to(root)), **lint})
+        items.append({"kind": "uploaded", "path": path.relative_to(root).as_posix(), **lint})
     queue = _read_json(root / "_data" / "stories_queue.json")
     pending_checked = 0
     for story in queue.get("stories") or []:

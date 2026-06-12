@@ -32,6 +32,18 @@ def test_optimise_story_keeps_seo_lint_compatible_title():
 def test_seo_lint_includes_pending_queue_with_rendered_hashtag_shape(tmp_path):
     data = tmp_path / "_data"
     data.mkdir()
+    videos = tmp_path / "_videos"
+    videos.mkdir()
+    (videos / "short-demo.done").write_text(
+        json.dumps(
+            {
+                "title": "Sharks sense tiny electric fields",
+                "description": "A nature fact. #Shorts #NatureFacts #WildBrief",
+                "tags": ["sharks", "science", "nature"],
+            }
+        ),
+        encoding="utf-8",
+    )
     (data / "stories_queue.json").write_text(
         json.dumps(
             {
@@ -55,6 +67,8 @@ def test_seo_lint_includes_pending_queue_with_rendered_hashtag_shape(tmp_path):
     pending = [item for item in payload["items"] if item.get("kind") == "pending"]
 
     assert payload["pending_checked"] == 1
+    assert payload["uploaded_checked"] == 1
+    assert payload["items"][0]["path"] == "_videos/short-demo.done"
     assert pending[0]["errors"] == []
     assert "missing_shorts_hashtag" not in pending[0]["warnings"]
     assert "thin_tag_set" not in pending[0]["warnings"]
