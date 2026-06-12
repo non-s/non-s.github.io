@@ -37,7 +37,11 @@ CATEGORY_CTA = {
     "discoveries": "Want fast updates from the edge of science?",
     "rare_phenomena": "Want more natural events that look impossible?",
     "wildlife": "Want more wild behavior explained without the fluff?",
-    "birds": "Want more tiny signals hidden in plain sight?",
+    "birds": "Want one animal signal a day? Follow for the next clue.",
+    "farm": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+    "cats": "Want one animal signal a day? Follow for the next pet clue.",
+    "dogs": "Want one animal signal a day? Follow for the next pet clue.",
+    "primates": "Want one animal signal a day? Follow for the next intelligence clue.",
     "insects": "Want more small creatures doing impossible things?",
     "reptiles": "Want more survival tricks from ancient designs?",
 }
@@ -72,6 +76,14 @@ SERIES_BY_CATEGORY = {
     "rare_phenomena": "Rare Earth",
     "conservation": "Planet Repair",
     "discoveries": "Discovery Brief",
+    "birds": "Sky Intelligence",
+    "farm": "Farmyard Minds",
+    "cats": "Pet Signals",
+    "dogs": "Pet Signals",
+    "wildlife": "Animal Superpowers",
+    "primates": "Animal Intelligence",
+    "reptiles": "Survival Tricks",
+    "insects": "Small Superpowers",
 }
 
 
@@ -85,7 +97,7 @@ def _category(story: dict) -> str:
 
 def contextual_cta(story: dict) -> str:
     category = _category(story)
-    return CATEGORY_CTA.get(category, "Want more fast nature science that actually connects?")
+    return CATEGORY_CTA.get(category, "Follow for one animal signal a day.")
 
 
 def debate_prompt(story: dict) -> str:
@@ -134,12 +146,20 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
     if len(_words(hook)) <= 10 and re.search(r"\b(watch|why|because|before|turns|changes|hidden|real)\b", hook.lower()):
         score += 13
         reasons.append("hook_invites_return")
-    if cta and "want" in cta.lower() and "more" in cta.lower():
+    cta_lower = cta.lower()
+    if cta and (
+        ("want" in cta_lower and "more" in cta_lower)
+        or "one animal signal" in cta_lower
+        or ("follow" in cta_lower and "signal" in cta_lower)
+    ):
         score += 14
         reasons.append("identity_cta")
     if pinned and "?" in pinned and not re.search(r"\b(next topic|what should|comment below)\b", pinned.lower()):
         score += 14
         reasons.append("debate_comment")
+    if re.search(r"\b(tomorrow|next)\b", pinned.lower()) and "signal" in pinned.lower():
+        score += 6
+        reasons.append("return_prompt")
     if series:
         score += 10
         reasons.append("series_identity")

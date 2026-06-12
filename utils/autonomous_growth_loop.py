@@ -407,6 +407,14 @@ def apply_plan_to_queue(queue: dict, plan: dict, *, limit: int = 80) -> tuple[di
     return updated, changed
 
 
+def _annotation_count(queue: dict) -> int:
+    return sum(
+        1
+        for story in queue.get("stories") or []
+        if isinstance(story, dict) and not story.get("consumed") and story.get("autonomy")
+    )
+
+
 def write_plan(path: Path = PLAN_FILE, *, update_queue: bool = True) -> dict:
     queue = _safe_json(QUEUE_FILE)
     plan = build_plan(queue=queue)
@@ -416,6 +424,7 @@ def write_plan(path: Path = PLAN_FILE, *, update_queue: bool = True) -> dict:
         updated, changed = apply_plan_to_queue(queue, plan)
         if changed:
             QUEUE_FILE.write_text(json.dumps(updated, indent=2, ensure_ascii=False), encoding="utf-8")
-        plan["queue_annotations_written"] = changed
+        plan["queue_annotations_written"] = _annotation_count(updated)
+        plan["queue_annotations_changed"] = changed
         path.write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
     return plan

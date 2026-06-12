@@ -1,3 +1,5 @@
+import json
+
 from utils.youtube_intelligence import (
     ANALYTICS_REPORTS,
     DATA_API_CAPABILITIES,
@@ -7,6 +9,64 @@ from utils.youtube_intelligence import (
     summarise_channel,
     summarise_videos,
 )
+from utils.youtube_oauth import ANALYTICS_SCOPE, READONLY_SCOPE
+
+
+def test_script_preserves_observed_snapshot_when_token_missing(monkeypatch, tmp_path):
+    from scripts import youtube_intelligence as script
+
+    out = tmp_path / "_data" / "youtube_intelligence.json"
+    out.parent.mkdir()
+    observed = build_payload(
+        channel={"id": "chan", "snippet": {"title": "Wild Brief"}},
+        uploads=[{"video_id": "abc", "title": "A"}],
+        videos=[],
+        reports=[{"id": "video_core", "status": "ok", "rows": 3}],
+        issues=[],
+    )
+    out.write_text(json.dumps(observed, indent=2), encoding="utf-8")
+    monkeypatch.setattr(script, "TOKEN_FILE", tmp_path / "missing-token.json")
+    monkeypatch.setattr(script, "OUT", out)
+    monkeypatch.delenv("YOUTUBE_TOKEN", raising=False)
+
+    assert script.main() == 0
+
+    assert json.loads(out.read_text(encoding="utf-8")) == observed
+
+
+def test_script_accepts_env_token_without_token_file(monkeypatch, tmp_path):
+    from scripts import youtube_intelligence as script
+
+    out = tmp_path / "_data" / "youtube_intelligence.json"
+    token = {
+        "token": "access-secret",
+        "refresh_token": "refresh-secret",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "client_id": "client-id",
+        "client_secret": "client-secret",
+        "scopes": [READONLY_SCOPE, ANALYTICS_SCOPE],
+    }
+    seen_sources = []
+
+    monkeypatch.setattr(script, "TOKEN_FILE", tmp_path / "missing-token.json")
+    monkeypatch.setattr(script, "OUT", out)
+    monkeypatch.setenv("YOUTUBE_TOKEN", json.dumps(token))
+    monkeypatch.setattr(script, "_load_data_service", lambda info: seen_sources.append(("data", info.source)) or object())
+    monkeypatch.setattr(
+        script,
+        "_load_analytics_service",
+        lambda info: seen_sources.append(("analytics", info.source)) or object(),
+    )
+    monkeypatch.setattr(script, "_fetch_channel", lambda youtube: {"id": "chan", "snippet": {"title": "Wild Brief"}})
+    monkeypatch.setattr(script, "_fetch_uploads", lambda youtube, playlist_id: [])
+    monkeypatch.setattr(script, "_fetch_videos", lambda youtube, ids: [])
+    monkeypatch.setattr(script, "_run_reports", lambda analytics, unavailable_error="": [])
+
+    assert script.main() == 0
+
+    payload = json.loads(out.read_text(encoding="utf-8"))
+    assert seen_sources == [("data", "env"), ("analytics", "env")]
+    assert "youtube_token_missing" not in payload["issues"]
 
 
 def test_youtube_intelligence_has_broad_api_matrix():

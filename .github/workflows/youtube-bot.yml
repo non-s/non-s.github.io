@@ -52,6 +52,7 @@ jobs:
       RIGHTS_GUARD_MODE: ${{ vars.RIGHTS_GUARD_MODE || 'block' }}
       ORIGINALITY_PACK_MODE: ${{ vars.ORIGINALITY_PACK_MODE || 'warn' }}
       UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
+      MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '1' }}
     steps:
@@ -197,6 +198,9 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      - name: "Aplicar ciclo de vida da midia"
+        if: steps.publish_window.outputs.should_publish == 'true'
+        run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
       - name: "Atualizar aprendizado editorial gratuito"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: |
@@ -228,6 +232,7 @@ jobs:
             _data/analytics/api_quota_ledger.jsonl
             _data/analytics/api_quota_latest.json
             _data/upload_intents.jsonl
+            _data/media_lifecycle_report.json
             _data/comment_replies.json
             _data/comment_to_short_candidates.json
             _data/ai_provider_report.json
@@ -237,6 +242,7 @@ jobs:
             _data/autonomous_director.json
             _data/autonomous_growth_plan.json
             _data/channel_success.json
+            _data/control_plane_report.json
             _data/success_rewriter.json
             _data/winner_sequel_factory.json
             _data/automation_health.json
@@ -264,6 +270,10 @@ jobs:
             _data/post24_review.json
             _data/sequence_plan.json
             _data/publish_schedule.json
+            _data/next_shorts.json
+            _data/queue_audit.json
+            _data/dry_run_publish.json
+            _data/reject_report.json
             _data/publish_slot_decisions.jsonl
             _data/session_graph.json
             _data/next_session_actions.json

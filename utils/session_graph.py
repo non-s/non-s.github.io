@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from collections import Counter
+
+from utils.editorial_guard import editorial_issues
+
 
 def _num(value, default: float = 0.0) -> float:
     try:
@@ -25,14 +29,21 @@ def session_handoff_score(source: dict, candidate: dict) -> float:
     return round(score, 2)
 
 
-def choose_handoff(source: dict, candidates: list[dict]) -> dict:
+def choose_handoff(source: dict, candidates: list[dict], blocked_targets: set[str] | None = None) -> dict:
+    blocked_targets = blocked_targets or set()
     ranked = []
     for candidate in candidates:
+        video_id = str(candidate.get("video_id") or "")
+        if video_id in blocked_targets:
+            continue
+        title = str(candidate.get("title") or "").strip()
+        if title and not _recommendable_title(title):
+            continue
         score = session_handoff_score(source, candidate)
         if score >= 0:
             ranked.append(
                 {
-                    "video_id": candidate.get("video_id", ""),
+                    "video_id": video_id,
                     "title": candidate.get("title", ""),
                     "url": candidate.get("url") or f"https://www.youtube.com/shorts/{candidate.get('video_id', '')}",
                     "score": score,
@@ -64,6 +75,13 @@ def pinned_comment_payload(meta: dict, handoff: dict | None = None) -> str:
     return f"Next Wild Brief: follow the {series} thread."
 
 
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
 def build_session_graph(markers: list[dict], *, max_actions: int = 20) -> dict:
     nodes = [
         {
@@ -78,13 +96,19 @@ def build_session_graph(markers: list[dict], *, max_actions: int = 20) -> dict:
         }
         for item in markers
         if item.get("video_id")
+        and (not item.get("title") or _recommendable_title(str(item.get("title") or "")))
     ]
     edges = []
     actions = []
+    target_counts: Counter[str] = Counter()
+    target_reuse_limit = 2
+    action_score_threshold = 55
     for source in nodes[-max_actions:]:
-        target = choose_handoff(source, nodes)
+        blocked_targets = {video_id for video_id, count in target_counts.items() if count >= target_reuse_limit}
+        target = choose_handoff(source, nodes, blocked_targets=blocked_targets)
         if not target:
             continue
+        target_counts[str(target["video_id"])] += 1
         edge = {
             "source_video_id": source["video_id"],
             "target_video_id": target["video_id"],
@@ -92,16 +116,17 @@ def build_session_graph(markers: list[dict], *, max_actions: int = 20) -> dict:
             "reason": target["reason"],
         }
         edges.append(edge)
-        actions.append(
-            {
-                "video_id": source["video_id"],
-                "action": "operator_assist_pinned_comment",
-                "target_video_id": target["video_id"],
-                "score": target["score"],
-                "comment": pinned_comment_payload(source, target),
-                "apply_safe": False,
-            }
-        )
+        if float(target["score"] or 0) >= action_score_threshold:
+            actions.append(
+                {
+                    "video_id": source["video_id"],
+                    "action": "operator_assist_pinned_comment",
+                    "target_video_id": target["video_id"],
+                    "score": target["score"],
+                    "comment": pinned_comment_payload(source, target),
+                    "apply_safe": False,
+                }
+            )
     sequel_candidates = [
         {
             "source_video_id": node["video_id"],
@@ -112,11 +137,14 @@ def build_session_graph(markers: list[dict], *, max_actions: int = 20) -> dict:
             "prompt": f"Make a sequel with a new subject but same payoff: {node['title']}",
         }
         for node in nodes[-max_actions:]
+        if _recommendable_title(node["title"])
     ]
     return {
         "nodes": nodes,
         "edges": edges,
         "next_session_actions": actions,
         "sequel_candidates": sequel_candidates,
+        "action_score_threshold": action_score_threshold,
+        "target_reuse_limit": target_reuse_limit,
         "coverage": round(len(actions) / max(len(nodes[-max_actions:]), 1), 4),
     }

@@ -26,7 +26,7 @@ TITLE_PATTERNS = (
 )
 
 _ANIMAL_WORDS = {
-    "bear", "bears", "cat", "cats", "chicken", "chickens", "deer", "dog", "dogs",
+    "bear", "bears", "bird", "birds", "cat", "cats", "chicken", "chickens", "deer", "dog", "dogs",
     "dolphin", "dolphins", "eagle", "elephant", "elephants", "goat", "goats",
     "macaw", "owl", "shark", "tiger", "whale", "whales", "wolf", "wolves",
     "cow", "cows", "duck", "duckling", "ducklings", "fox", "horse", "horses",

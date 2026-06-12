@@ -99,3 +99,26 @@ def test_estimated_old_video_stays_on_low_confidence_watchlist():
 
     assert warning["remake_candidates"] == []
     assert warning["risk_of_dying_early"] == []
+
+
+def test_early_warning_repairs_malformed_breakout_before_sequence():
+    now = datetime(2026, 6, 10, 12, tzinfo=timezone.utc)
+    previous = {
+        "videos": {
+            "bad-title": {
+                "snapshots": [
+                    {"at": "x", "age_hours": 24, "views": 4200, "likes": 20, "comments": 3, "subscribers": 1}
+                ]
+            }
+        }
+    }
+    early = build_early_performance([
+        _marker("bad-title", 30, 6000, title="Lions use their ears to use"),
+    ], previous=previous, now=now)
+
+    warning = build_early_warning(early)
+
+    assert all(item["video_id"] != "bad-title" for item in warning["sequence_candidates"])
+    repair = next(item for item in warning["remake_candidates"] if item["video_id"] == "bad-title")
+    assert repair["action"] == "repair title/package before scaling angle"
+    assert "robotic_use_loop" in repair["title_issues"]

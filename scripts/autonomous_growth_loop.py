@@ -20,7 +20,8 @@ def main() -> int:
         f"{plan.get('state')} score={plan.get('autonomy_score')} "
         f"mode={plan.get('operating_mode')} "
         f"pending={queue.get('pending', 0)} "
-        f"annotated={plan.get('queue_annotations_written', 0)}"
+        f"annotated={plan.get('queue_annotations_written', 0)} "
+        f"changed={plan.get('queue_annotations_changed', 0)}"
     )
     return 0
 

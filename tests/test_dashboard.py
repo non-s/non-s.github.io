@@ -129,6 +129,7 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
         "status": "aggressive_growth",
         "weekly_goal": "Raise retention.",
         "days": [{"day": 1, "focus": "farm", "trend_animal": "orca", "mix": "2 exploit + 1 explore", "goal": "raise retention"}],
+        "blocked_trends": [{"category": "dogs", "animal": "dog", "reason": "paused_category"}],
     }), encoding="utf-8")
     (tmp_path / "_data" / "daily_brief.json").write_text(json.dumps({
         "status": "aggressive_growth",
@@ -196,6 +197,8 @@ def test_dashboard_includes_top_performers(dashboard, tmp_path):
     assert "Trend radar" in body
     assert "Rare orca behavior" in body
     assert "7-day agency plan" in body
+    assert "Blocked trend conflicts" in body
+    assert "paused_category" in body
     assert "Daily agency brief" in body
     assert "Remake factory" in body
     assert "Retention rewrite queue" in body
@@ -280,6 +283,131 @@ def test_dashboard_accepts_new_retention_field_name(dashboard, tmp_path):
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
     assert "74.2" in body
     assert "81.5" in body
+
+
+def test_dashboard_filters_stale_bad_title_keywords(dashboard, tmp_path):
+    analytics = tmp_path / "_data" / "analytics"
+    analytics.mkdir(parents=True)
+    (analytics / "latest.json").write_text(json.dumps({
+        "pulled_at": "2026-06-02",
+        "total_views": 321,
+        "avg_view_percentage": 74.2,
+        "learning_profile": {
+            "winning_title_keywords": ["chickens", "another", "signal", "hiding", "plain", "sight", "ducklings"],
+        },
+        "top_performers": [
+            {"video_id": "bad", "title": "Chickens have another signal hiding in plain sight", "views": 100},
+            {"video_id": "good", "title": "Chickens remember faces and hold grudges", "views": 90},
+            {"video_id": "duck", "title": "Ducklings know math before they swim", "views": 80},
+        ],
+    }))
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+    segment = body.split("Winning title keywords", 1)[1].split("</p>", 1)[0]
+
+    assert "chickens" in segment
+    assert "ducklings" in segment
+    assert "hiding" not in segment
+    assert "plain" not in segment
+    assert "Chickens have another signal hiding in plain sight" not in body
+    assert "bad (title needs repair: generic_hiding_plain_sight)" in body
+
+
+def test_dashboard_renders_next_shorts_title_shape_warning(dashboard, tmp_path):
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir(parents=True)
+    (data_dir / "next_shorts.json").write_text(json.dumps({
+        "items": [],
+        "title_shape_mix": {
+            "status": "watch",
+            "warnings": [{
+                "window": 10,
+                "shape": "{subject} recognize signals through {cue}",
+                "count": 4,
+                "share": 0.4,
+                "action": "alternate title promises before publishing this block",
+            }],
+            "rewrite_candidates": [{
+                "rank": 4,
+                "title": "Chickens recognize signals through head movement",
+                "suggested_titles": ["Chickens react differently when their heads move"],
+                "action": "rewrite title with a different promise shape before publishing this cluster",
+            }],
+        },
+    }), encoding="utf-8")
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+
+    assert "Title shape concentration" in body
+    assert "{subject} recognize signals through {cue}" in body
+    assert "4 shorts / 40%" in body
+    assert "alternate title promises" in body
+    assert "Title rewrites to queue" in body
+    assert "Chickens recognize signals through head movement" in body
+    assert "Chickens react differently when their heads move" in body
+
+
+def test_dashboard_renders_control_plane_pressure(dashboard, tmp_path):
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir(parents=True)
+    (data_dir / "control_plane_report.json").write_text(json.dumps({
+        "state": "migration_needed",
+        "pressure_score": 80,
+        "metrics": {
+            "live_state_files": 120,
+            "stories_queue_lines": 46236,
+            "state_path_refs": 110,
+        },
+        "commands": ["Move queue behind a storage adapter."],
+        "migration_lanes": [{
+            "priority": 1,
+            "lane": "queue_and_upload_intents",
+            "target": "Postgres",
+            "reason": "Live queue state should not merge through Git.",
+        }],
+    }), encoding="utf-8")
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+
+    assert "Control plane pressure" in body
+    assert "migration_needed" in body
+    assert "queue_and_upload_intents" in body
+    assert "Move queue behind a storage adapter." in body
+
+
+def test_dashboard_renders_youtube_brain_ready_and_rewrite_sections(dashboard, tmp_path):
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir(parents=True)
+    (data_dir / "youtube_brain_report.json").write_text(json.dumps({
+        "publish_ready_summary": {
+            "average_score": 94.5,
+            "states": {"publish_minded": 3, "rewrite_before_publish": 0},
+            "top_risks": {},
+        },
+        "risk_watchlist": [{
+            "id": "rewrite",
+            "title": "Birds rely on tail position to signal",
+            "queue_state": "rewrite",
+            "youtube_brain": {"risks": ["title_shape_weak"], "score": 87},
+        }],
+        "publish_ready_top": [{
+            "id": "ready",
+            "title": "Ducks fake injuries to protect young",
+            "queue_state": "publish_ready",
+            "youtube_brain": {"state": "publish_minded", "score": 96, "viewer_promise": "Watch the wing cue."},
+        }],
+    }), encoding="utf-8")
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+
+    assert "Ready creator score" in body
+    assert "Creator rewrite watchlist" in body
+    assert "title_shape_weak" in body
+    assert "Ducks fake injuries to protect young" in body
 
 
 def test_dashboard_renders_cohort_timing(dashboard, tmp_path):

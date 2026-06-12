@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: actions/setup-python@v6.2.0
@@ -37,13 +37,17 @@ jobs:
             echo "YOUTUBE_TOKEN is not configured; building dashboard from committed analytics."
             exit 0
           fi
-          umask 077
-          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-          # Suite includes experiment_governance.py and fact_guard.py.
-          python scripts/run_intelligence_suite.py dashboard
-          rm -f youtube_token.json
+          printf '%s' "$YOUTUBE_TOKEN" | python -m json.tool > /dev/null
       - name: "Audit local automation health"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
         run: |
+          trap 'rm -f youtube_token.json' EXIT
+          if [ -n "$YOUTUBE_TOKEN" ] && [ ! -f youtube_token.json ]; then
+            umask 077
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
           # Suite includes experiment_governance.py and fact_guard.py.
           python scripts/run_intelligence_suite.py dashboard --strict
           python scripts/import_studio_reach_export.py
@@ -56,7 +60,7 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/analytics/studio_reach_daily.jsonl _data/analytics/studio_reach_latest.json _data/analytics/reporting_bootstrap.json _data/analytics/reporting_pull.json _data/analytics/reporting_video_metrics.jsonl _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json _data/analytics/retention_reconciliation.json _data/analytics/compaction_report.json _data/upload_intents.jsonl _data/youtube_intelligence.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/trends/topic_candidates.json _data/trends/trend_signals.jsonl _data/trends/freshness_report.json _data/visual_quality_report.json _data/visual_qa_backfill.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewriter.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/fact_guard_report.json _data/fact_sources.jsonl _data/source_provenance.jsonl _data/originality_pack.jsonl _data/experiment_registry.json _data/underpowered_tests.json _data/music_bed_report.json _data/crosspost_pack.json _data/render_bench.json _data/security_manifest.json _data/session_graph_actions.json _data/format_memory.json _data/fan_growth.json _data/audience_memory.json _data/early_performance.json _data/early_warning.json _data/winner_patterns.json _data/data_quality_report.json _data/agency_gate.json _data/post24_review.json _data/sequence_plan.json _data/publish_schedule.json _data/session_graph.json _data/next_session_actions.json _data/sequel_candidates.json _data/related_video_recommendations.json _data/comment_reply_short_candidates.json _data/comment_to_short_candidates.json _data/opening_audit_report.json _data/seo_metadata_lint.json _data/daily_brief.json _data/stories_queue.json _data/queue_prune_report.json _data/repair_queue.jsonl _data/rejected_queue.jsonl; do
+          for path in _data/analytics/latest.json _data/analytics/experiments.json _data/analytics/comments.json _data/analytics/legacy_backfill.json _data/analytics/studio_reach_daily.jsonl _data/analytics/studio_reach_latest.json _data/analytics/reporting_bootstrap.json _data/analytics/reporting_pull.json _data/analytics/reporting_video_metrics.jsonl _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json _data/analytics/retention_reconciliation.json _data/analytics/compaction_report.json _data/analytics/weekly_summary.json _data/upload_intents.jsonl _data/youtube_intelligence.json _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/control_plane_report.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/remake_factory.json _data/trend_radar.json _data/trends/topic_candidates.json _data/trends/trend_signals.jsonl _data/trends/freshness_report.json _data/visual_quality_report.json _data/visual_qa_backfill.json _data/narrator_report.json _data/agency_plan.json _data/retention_rewriter.json _data/retention_rewrite_queue.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/fact_guard_report.json _data/fact_sources.jsonl _data/source_provenance.jsonl _data/originality_pack.jsonl _data/experiment_registry.json _data/experiments_recommendations.json _data/underpowered_tests.json _data/music_bed_report.json _data/crosspost_pack.json _data/render_bench.json _data/security_manifest.json _data/session_graph_actions.json _data/format_memory.json _data/fan_growth.json _data/audience_memory.json _data/early_performance.json _data/early_warning.json _data/winner_patterns.json _data/data_quality_report.json _data/agency_gate.json _data/post24_review.json _data/post_upload_session_ops.json _data/sequence_plan.json _data/publish_schedule.json _data/next_shorts.json _data/session_graph.json _data/next_session_actions.json _data/sequel_candidates.json _data/related_video_recommendations.json _data/comment_reply_short_candidates.json _data/comment_to_short_candidates.json _data/opening_audit_report.json _data/seo_metadata_lint.json _data/daily_brief.json _data/stories_queue.json _data/queue_prune_report.json _data/queue_audit.json _data/reject_report.json _data/dry_run_publish.json _data/repair_queue.jsonl _data/rejected_queue.jsonl; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/analytics/partitions -type f -name '*.jsonl' -print0 2>/dev/null | xargs -0 -r git add --

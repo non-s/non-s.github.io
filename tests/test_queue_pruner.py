@@ -127,3 +127,166 @@ def test_prune_queue_repairs_editorial_do_not_publish_candidates_when_possible()
     assert kept[0]["queue_prune"]["state"] in {"publish_ready", "rewrite"}
     assert summary["repaired"] == 1
     assert rejected == []
+
+
+def test_prune_queue_repairs_publish_minded_brain_risks_before_ready():
+    generic = _story(
+        "generic-hook",
+        title="Ducklings use numbers before you notice",
+        seo_title="Ducklings use numbers before you notice",
+        hook="This movement changes what happens next",
+        script=(
+            "Ducklings show the useful cue before the payoff. Watch the first movement, "
+            "because the detail is easy to miss. One body cue explains the visible payoff."
+        ),
+        thumbnail_text="DUCKLINGS BODY CUE",
+        source_url="https://www.pexels.com/video/duckling-swimming/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [generic]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert len(kept) == 1
+    assert kept[0]["queue_repair"]["applied"] is True
+    assert kept[0]["hook"] != "This movement changes what happens next"
+    assert not (kept[0]["youtube_brain"].get("risks") or [])
+    assert kept[0]["queue_prune"]["state"] == "publish_ready"
+    assert summary["repaired"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_caps_publish_ready_title_template_clusters(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 91,
+            "state": "publish_ready",
+            "publish_score": {"approved": True, "state": "publish_ready", "score": 91},
+            "youtube_brain": {"risks": []},
+            "packaging": {},
+            "rights_audit": {"approved": True, "reasons": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {"stories": [
+        _story(str(idx), title=f"Chickens read the moment from one head cue {idx}",
+               seo_title=f"Chickens read the moment from one head cue {idx}")
+        for idx in range(4)
+    ]}
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    states = [story["queue_prune"]["state"] for story in kept]
+    objective_reasons = [story["queue_prune"]["objective_reasons"] for story in kept]
+    assert states.count("publish_ready") == 2
+    assert states.count("rewrite") == 2
+    assert any("template_cluster_limit:read_the_moment" in reasons for reasons in objective_reasons)
+    assert summary["pending_after"] == 4
+    assert rejected == []
+
+
+def test_prune_queue_caps_publish_ready_mechanism_clusters(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 93,
+            "state": "publish_ready",
+            "publish_score": {"approved": True, "state": "publish_ready", "score": 93, "objective_gate": {}},
+            "youtube_brain": {"risks": []},
+            "packaging": {},
+            "rights_audit": {"approved": True, "reasons": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {"stories": [
+        _story("fin-1", title="Sharks follow one fin cue before the payoff",
+               seo_title="Sharks follow one fin cue before the payoff",
+               hook="Sharks follow one fin cue before the payoff.",
+               thumbnail_text="SHARKS FIN CUE",
+               script="Sharks follow one fin cue before the payoff. Watch the fin cue first."),
+        _story("fin-2", title="Dolphins turn fin movement into a warning",
+               seo_title="Dolphins turn fin movement into a warning",
+               hook="Dolphins turn fin movement into a warning.",
+               thumbnail_text="DOLPHINS FIN",
+               script="Dolphins turn fin movement into a warning before the payoff."),
+        _story("fin-3", title="Whales show the fin signal before they turn",
+               seo_title="Whales show the fin signal before they turn",
+               hook="Whales show the fin signal before they turn.",
+               thumbnail_text="WHALES FIN",
+               script="Whales show the fin signal before they turn. Watch the fin cue."),
+    ]}
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    states = [story["queue_prune"]["state"] for story in kept]
+    reasons = [story["queue_prune"]["objective_reasons"] for story in kept]
+    assert states.count("publish_ready") == 2
+    assert states.count("rewrite") == 1
+    assert any("mechanism_cluster_limit:fin_signal" in item for item in reasons)
+    assert summary["pending_after"] == 3
+    assert rejected == []
+
+
+def test_prune_queue_prefers_scale_ready_inside_mechanism_cluster(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 93,
+            "state": "publish_ready",
+            "publish_score": {
+                "approved": True,
+                "state": "publish_ready",
+                "score": 93,
+                "objective_gate": story.get("objective_gate") or {},
+            },
+            "youtube_brain": {"risks": []},
+            "packaging": {},
+            "rights_audit": {"approved": True, "reasons": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {"stories": [
+        _story("observe-1", title="Sharks follow one fin cue before the payoff",
+               seo_title="Sharks follow one fin cue before the payoff",
+               hook="Sharks follow one fin cue before the payoff.",
+               thumbnail_text="SHARKS FIN CUE",
+               script="Sharks follow one fin cue before the payoff. Watch the fin cue first.",
+               objective_gate={"scale_ready": False, "confidence_score": 0.2}),
+        _story("observe-2", title="Dolphins turn fin movement into a warning",
+               seo_title="Dolphins turn fin movement into a warning",
+               hook="Dolphins turn fin movement into a warning.",
+               thumbnail_text="DOLPHINS FIN",
+               script="Dolphins turn fin movement into a warning before the payoff.",
+               objective_gate={"scale_ready": False, "confidence_score": 0.21}),
+        _story("scale", title="Whales show the fin signal before they turn",
+               seo_title="Whales show the fin signal before they turn",
+               hook="Whales show the fin signal before they turn.",
+               thumbnail_text="WHALES FIN",
+               script="Whales show the fin signal before they turn. Watch the fin cue.",
+               objective_gate={"scale_ready": True, "confidence_score": 0.8}),
+    ]}
+
+    pruned, _rejected, _summary = prune_queue(queue, max_pending=10)
+
+    by_id = {story["id"]: story["queue_prune"]["state"] for story in pruned["stories"]}
+    assert by_id["story-scale"] == "publish_ready"

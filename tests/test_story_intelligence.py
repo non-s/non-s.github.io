@@ -34,6 +34,13 @@ def test_audit_title_rewards_specific_action():
     assert audit.score >= 80
 
 
+def test_audit_title_recognizes_birds_plural():
+    audit = audit_title("Birds read the moment from one wing angle")
+    assert "missing_animal_keyword" not in audit.issues
+    assert "animal_not_front_loaded" not in audit.issues
+    assert audit.score >= 80
+
+
 def test_postmortem_collects_likely_causes():
     out = postmortem(
         title="A secret nobody tells you",

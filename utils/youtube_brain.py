@@ -16,19 +16,53 @@ ACTION_WORDS = {
     "hide", "slide", "hunt", "plan", "trick", "use", "warn", "follow",
     "choose", "save", "signal", "learn", "change", "disappear", "blend",
     "erupt", "glow", "flow", "form", "grow", "freeze", "melt", "restore",
-    "recover", "connect", "communicate", "build", "collapse",
+    "recover", "connect", "communicate", "build", "collapse", "rely",
 }
 WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thing"}
+GENERIC_CUE_WORDS = {"body", "cue", "movement"}
 VISIBLE_CUE_WORDS = {
     "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
     "skin", "texture", "colour", "color", "nose", "face", "head",
     "hoof", "hooves", "fin", "fins", "gill", "gills", "antenna",
-    "antennae", "pupil", "pupils",
+    "antennae", "pupil", "pupils", "hand", "hands", "arm", "arms",
+    "leg", "legs", "flipper", "flippers", "whisker", "whiskers",
     "leaf", "leaves", "roots", "bark", "canopy", "mushroom", "mycelium",
     "lava", "crater", "ash", "cloud", "lightning", "wave", "current",
     "glacier", "rock", "rings", "reef", "coral", "sky", "ice",
 }
+
+BROKEN_PACKAGING_PATTERNS = (
+    re.compile(r"\b(?:use|uses|using)\b[^.!?]{0,48}\bto use\b", re.I),
+    re.compile(r"\bbecause of this\s+(?:ears|eyes|feet|hooves|wings|fins|gills|horns|paws|leaves|roots)\b", re.I),
+    re.compile(r"\b(?:sheep|deer|fish|moose)\s+(?:uses|signals|remembers|hears|hunts)\b", re.I),
+)
+GENERIC_PACKAGING_PATTERNS = (
+    re.compile(r"\bsignal cue\b", re.I),
+    re.compile(r"\bturn the detail into the clue\b", re.I),
+    re.compile(r"\breveal the next move through movement\b", re.I),
+    re.compile(r"\b(?:rely on body posture|recognize faces through body posture|signal the next move with body posture|through body cue)\b", re.I),
+    re.compile(r"\b(?:signal the next move with detail|watch the detail when|the detail that explains)\b", re.I),
+    re.compile(r"\b(?:signal the next move with movement|rely on movement to signal)\b", re.I),
+    re.compile(r"\brecognize faces through (?!face|eye)[a-z-]+(?:\s+[a-z-]+)?\b", re.I),
+    re.compile(r"\brecognize signals through (?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings)\b", re.I),
+    re.compile(r"\brely on (?:the )?(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings) to signal\b", re.I),
+    re.compile(r"\bsignal the next move with (?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings)\b", re.I),
+    re.compile(r"\bthis (?:(?:first )?movement|first move) changes what [a-z]+s? do next\b", re.I),
+    re.compile(r"\brely on (?:the )?first movement for a reason\b", re.I),
+    re.compile(r"\b(?:read the moment from one first move|react differently when the first move appears|rely on (?:the )?first movement to [a-z]+)\b", re.I),
+    re.compile(r"\bwhen the ear movement changes\b", re.I),
+    re.compile(r"\bthis ear position changes what [a-z]+s? do next\b", re.I),
+)
+OPERATOR_META_PATTERNS = (
+    re.compile(r"\bprevious [a-z]+ short worked because\b", re.I),
+    re.compile(r"\bthis sequel keeps\b", re.I),
+    re.compile(r"\bsame proven pattern\b", re.I),
+    re.compile(r"\bwinning shape\b", re.I),
+    re.compile(r"\boriginal topic pulled attention\b", re.I),
+    re.compile(r"\bthis remake cuts\b", re.I),
+    re.compile(r"\bproven wild brief topic\b", re.I),
+)
 
 
 def _words(text: str) -> list[str]:
@@ -40,19 +74,70 @@ def _contains_any(text: str, words: set[str]) -> bool:
     return any(re.search(r"\b" + re.escape(word) + r"\b", lower) for word in words)
 
 
+def _specific_visible_cue_count(text: str) -> int:
+    lower = (text or "").lower()
+    specific_cues = VISIBLE_CUE_WORDS - GENERIC_CUE_WORDS
+    return sum(1 for word in specific_cues if re.search(r"\b" + re.escape(word) + r"\b", lower))
+
+
+def _packaging_language_risks(title: str, hook: str, script: str, thumb: str) -> list[str]:
+    title_text = str(title or "").strip()
+    all_text = " ".join(str(part or "").strip() for part in (title, hook, script, thumb))
+    risks: list[str] = []
+
+    if any(pattern.search(title_text) for pattern in BROKEN_PACKAGING_PATTERNS):
+        risks.append("malformed_packaging_language")
+
+    lower_title = title_text.lower()
+    if re.search(r"\b(?:watch the cue|this cue|the cue)\b", lower_title) and _specific_visible_cue_count(all_text) == 0:
+        risks.append("generic_visual_cue_language")
+    if any(pattern.search(all_text) for pattern in GENERIC_PACKAGING_PATTERNS):
+        risks.append("generic_visual_cue_language")
+    if any(pattern.search(all_text) for pattern in OPERATOR_META_PATTERNS):
+        risks.append("operator_meta_language")
+
+    title_words = _words(title_text)
+    if title_words and title_words[0][0].islower() and title_words[0].lower() not in {"a", "an", "the"}:
+        risks.append("title_not_editorial_case")
+
+    return risks
+
+
+def _has_clear_payoff(script: str) -> bool:
+    lower = str(script or "").lower()
+    payoff_markers = (
+        "because",
+        "that's why",
+        "that is why",
+        "which means",
+        "that lets",
+        "that helps",
+        "detail helps",
+        "so the payoff",
+        "so the final",
+        "so the replay",
+    )
+    return any(marker in lower for marker in payoff_markers)
+
+
 def _first_sentence(text: str) -> str:
     return re.split(r"[.!?]\s+", str(text or "").strip(), maxsplit=1)[0]
 
 
 def _subject_from_text(text: str, category: str = "") -> str:
     subjects = (
-        "cow", "cows", "duck", "ducks", "chicken", "chickens", "deer",
+        "cow", "cows", "duck", "ducks", "duckling", "ducklings", "chicken", "chickens", "deer",
         "horse", "horses", "tiger", "tigers", "penguin", "penguins",
+        "bat", "bats", "eagle", "eagles", "fish", "fox", "foxes",
+        "gecko", "geckos", "gorilla", "gorillas", "hedgehog", "hedgehogs",
+        "iguana", "iguanas", "leopard", "leopards", "lemur", "lemurs",
+        "lizard", "lizards", "macaque", "macaques", "pig", "pigs",
+        "seal", "seals", "turtle", "turtles", "walrus", "walruses",
         "goat", "goats", "wolf", "wolves", "bear", "bears", "bird",
         "birds", "owl", "owls", "cat", "cats", "dog", "dogs", "lion",
         "lions", "elephant", "elephants", "dolphin", "dolphins", "whale",
         "whales", "parrot", "parrots", "macaw", "macaws", "octopus", "octopuses",
-        "donkey", "donkeys", "sheep", "shark", "sharks", "bee", "bees",
+        "donkey", "donkeys", "sheep", "snake", "snakes", "shark", "sharks", "bee", "bees",
         "butterfly", "butterflies", "ant", "ants", "beetle", "beetles",
         "mantis", "mantises", "dragonfly", "dragonflies", "chameleon",
         "chameleons", "orangutan", "orangutans", "monkey", "monkeys",
@@ -112,7 +197,7 @@ def creator_premortem(story: dict) -> dict:
         risks.append("missing_visual_cue")
         commands.append("Name the visual cue the viewer should watch in the first second.")
 
-    if "because" in script.lower() or "that's why" in script.lower() or "that is why" in script.lower():
+    if _has_clear_payoff(script):
         score += 9
         strengths.append("clear_payoff")
     else:
@@ -151,6 +236,14 @@ def creator_premortem(story: dict) -> dict:
         score -= min(10, len(weak_hits) * 3)
         risks.append("generic_creator_language")
         commands.append("Replace generic curiosity words with a specific behavior or body cue.")
+
+    language_risks = _packaging_language_risks(title, hook, script, thumb)
+    if language_risks:
+        score -= min(22, 9 + (len(language_risks) - 1) * 5)
+        risks.extend(language_risks)
+        commands.append("Rewrite the title like a human editor: subject, visible action, and one clean payoff.")
+    if "operator_meta_language" in language_risks:
+        commands.append("Remove internal channel strategy language from the viewer script.")
 
     replay_reason = "watch_the_cue_again" if _contains_any(text, VISIBLE_CUE_WORDS) else "weak"
     viewer_promise = f"See why {subject} {story_format.replace('_', ' ')} matters."

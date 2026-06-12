@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 
+from utils.editorial_guard import editorial_issues
+
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
@@ -86,6 +88,31 @@ def annotate_queue(queue: dict, candidates: list[dict] | None = None, *, now: da
     return out
 
 
+def _display_title(item: dict) -> tuple[str, list[str]]:
+    title = str(item.get("seo_title") or item.get("title") or "").strip()
+    issues = editorial_issues({"title": title, "seo_title": title}, include_script=False) if title else []
+    if not issues:
+        return title, []
+    item_id = str(item.get("id") or "queue-item")
+    return f"{item_id} (title needs repair: {', '.join(issues[:3])})", issues
+
+
+def _report_row(item: dict, *, include_topic: bool = False) -> dict:
+    title, issues = _display_title(item)
+    row = {
+        "id": item.get("id", ""),
+        "title": title,
+        "freshness_score": item.get("freshness_score", 0),
+    }
+    if issues:
+        row["title_issues"] = issues
+    if include_topic:
+        row["topic_cluster"] = (item.get("freshness") or {}).get("topic_cluster", "")
+    else:
+        row["queue_age_days"] = item.get("queue_age_days", 0)
+    return row
+
+
 def freshness_report(queue: dict) -> dict:
     stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     scored = [float(item.get("freshness_score") or 0) for item in stories]
@@ -97,22 +124,12 @@ def freshness_report(queue: dict) -> dict:
         "average_freshness_score": round(sum(scored) / max(len(scored), 1), 2) if scored else 0.0,
         "stale_over_14d": len(stale),
         "stale": [
-            {
-                "id": item.get("id", ""),
-                "title": item.get("seo_title") or item.get("title") or "",
-                "freshness_score": item.get("freshness_score", 0),
-                "queue_age_days": item.get("queue_age_days", 0),
-            }
+            _report_row(item)
             for item in sorted(stale, key=lambda row: float(row.get("queue_age_days") or 0), reverse=True)[:20]
         ],
         "top_fresh": sorted(
             [
-                {
-                    "id": item.get("id", ""),
-                    "title": item.get("seo_title") or item.get("title") or "",
-                    "freshness_score": item.get("freshness_score", 0),
-                    "topic_cluster": (item.get("freshness") or {}).get("topic_cluster", ""),
-                }
+                _report_row(item, include_topic=True)
                 for item in stories
             ],
             key=lambda row: float(row.get("freshness_score") or 0),

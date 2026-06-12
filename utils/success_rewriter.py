@@ -15,6 +15,12 @@ from utils.agency_gate import evaluate_story
 
 
 MAX_SUCCESS_WORDS = 105
+REPAIRABLE_REASONS = {
+    "duplicate_angle_rewrite_required",
+    "overused_phrase_pressure",
+    "success_question_overload",
+    "success_script_too_long",
+}
 
 ANGLE_BANK = {
     "arctic": ["ice footing", "heat saving", "white camouflage", "group timing"],
@@ -259,10 +265,11 @@ def rewrite_queue(queue: dict,
         story_id = str(story.get("id") or "")
         previous_reasons = (story.get("success_rewrite") or {}).get("reasons") or []
         refresh_previous = "duplicate_angle_rewrite_required" in previous_reasons
-        if story.get("consumed") or (story_id not in rewrite_ids and not refresh_previous) or len(changed) >= limit:
+        reasons = verdicts.get(story_id, previous_reasons)
+        should_repair = bool(set(reasons) & REPAIRABLE_REASONS)
+        if story.get("consumed") or (story_id not in rewrite_ids and not refresh_previous and not should_repair) or len(changed) >= limit:
             stories.append(story)
             continue
-        reasons = verdicts.get(story_id, previous_reasons)
         updated, did_change = rewrite_story(story, reasons)
         stories.append(updated)
         if did_change:

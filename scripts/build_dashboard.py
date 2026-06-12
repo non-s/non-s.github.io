@@ -22,6 +22,7 @@ from __future__ import annotations
 import csv
 import html
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,6 +35,7 @@ if str(ROOT) not in sys.path:
 from utils.automation_health import build_health
 from utils.content_agency import agency_snapshot, rank_for_agency
 from utils.editorial import rank_candidates
+from utils.editorial_guard import editorial_issues
 from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
 from utils.mission_control import build_mission_control
@@ -90,6 +92,31 @@ def _safe_json(path: Path) -> dict:
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
+def _title_keyword_tokens(title: str) -> set[str]:
+    stop = {"about", "after", "their", "there", "these", "thing", "things", "watch", "where", "which", "while", "with"}
+    tokens = set()
+    for token in re.findall(r"[a-z0-9]+", str(title or "").lower()):
+        if len(token) >= 5 and token not in stop:
+            tokens.add(token)
+    return tokens
+
+
+def _display_title(item: dict, key: str = "title") -> str:
+    title = str(item.get(key) or item.get("seo_title") or "").strip()
+    issues = editorial_issues({"title": title, "seo_title": title}, include_script=False) if title else []
+    if not issues:
+        return title or str(item.get("video_id") or item.get("source_video_id") or item.get("id") or "")
+    video_id = str(item.get("video_id") or item.get("source_video_id") or item.get("id") or "unknown-video")
+    return f"{video_id} (title needs repair: {', '.join(issues[:3])})"
 
 
 def _queue_commands(
@@ -279,6 +306,7 @@ def render_html() -> str:
     category_recovery = _safe_json(Path("_data/category_recovery.json"))
     category_recovery_rewriter = _safe_json(Path("_data/category_recovery_rewriter.json"))
     daily_brief = _safe_json(Path("_data/daily_brief.json"))
+    control_plane = _safe_json(Path("_data/control_plane_report.json"))
     agency_gate = _safe_json(Path("_data/agency_gate.json"))
     youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
     ai_provider_report = _safe_json(Path("_data/ai_provider_report.json"))
@@ -349,6 +377,15 @@ def render_html() -> str:
     weekly_brief = latest.get("weekly_brief") or {}
     winner_loser = latest.get("winner_loser_map") or recommendations.get("winner_loser_map") or {}
     remake_candidates = latest.get("remake_candidates") or recommendations.get("remake_candidates") or []
+    good_title_keywords: set[str] = set()
+    bad_title_keywords: set[str] = set()
+    for item in top_performers:
+        title = str(item.get("title") or "")
+        if _recommendable_title(title):
+            good_title_keywords.update(_title_keyword_tokens(title))
+        else:
+            bad_title_keywords.update(_title_keyword_tokens(title))
+    stale_bad_title_keywords = bad_title_keywords - good_title_keywords
     queue_studio = _queue_studio_snapshot()
     mission_control = build_mission_control(
         latest=latest,
@@ -439,6 +476,14 @@ def render_html() -> str:
         out.append(
             f"<div><small>Session coverage</small><div class='metric'>{float(session_graph.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
         )
+        session_targets = {
+            str(edge.get("target_video_id") or "")
+            for edge in (session_graph.get("edges") or [])
+            if edge.get("target_video_id")
+        }
+        out.append(
+            f"<div><small>Session targets</small><div class='metric'>{len(session_targets)}</div></div>"
+        )
         quota_guard = quota_latest.get("guard") or {}
         out.append(
             f"<div><small>Quota guard</small><div class='metric'>{html.escape(str(quota_guard.get('mode') or 'ok'))}</div></div>"
@@ -468,7 +513,7 @@ def render_html() -> str:
                 for item in low[:6]:
                     out.append(
                         f"<tr><td><code>{html.escape(str(item.get('video_id', '')))}</code></td>"
-                        f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                        f"<td>{html.escape(_display_title(item)[:90])}</td>"
                         f"<td>{html.escape(str(item.get('average_view_percentage', 0)))}</td></tr>"
                     )
                 out.append("</table>")
@@ -688,7 +733,7 @@ def render_html() -> str:
             )
             for item in remake_candidates[:6]:
                 out.append(
-                    f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<tr><td>{html.escape(_display_title(item)[:90])}</td>"
                     f"<td>{float(item.get('retention', 0) or 0):.1f}%</td>"
                     f"<td>{int(item.get('views', 0) or 0):,}</td>"
                     f"<td>{html.escape(str(item.get('action', '')))}</td></tr>"
@@ -907,6 +952,16 @@ def render_html() -> str:
                     f"<td>{html.escape(str(item.get('goal', '')))}</td></tr>"
                 )
             out.append("</table>")
+        blocked_trends = agency_plan.get("blocked_trends") or []
+        if blocked_trends:
+            out.append("<h3>Blocked trend conflicts</h3><table><tr><th>Category</th><th>Trend</th><th>Reason</th></tr>")
+            for item in blocked_trends[:6]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('animal', '')))}</td>"
+                    f"<td><code>{html.escape(str(item.get('reason', '')))}</code></td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if daily_brief:
@@ -1026,29 +1081,44 @@ def render_html() -> str:
 
     if youtube_brain_report:
         summary = youtube_brain_report.get("summary") or {}
+        ready_summary = youtube_brain_report.get("publish_ready_summary") or summary
+        risk_watchlist = youtube_brain_report.get("risk_watchlist") or []
         out.append("<div class='card'><h2>YouTube brain</h2>")
         out.append("<section class='row'>")
         out.append(
-            f"<div><small>Average creator score</small><div class='metric'>{float(summary.get('average_score', 0) or 0):.1f}</div></div>"
+            f"<div><small>Ready creator score</small><div class='metric'>{float(ready_summary.get('average_score', 0) or 0):.1f}</div></div>"
         )
-        states = summary.get("states") or {}
+        states = ready_summary.get("states") or {}
         out.append(
             f"<div><small>Publish-minded</small><div class='metric'>{int(states.get('publish_minded', 0) or 0)}</div></div>"
         )
         out.append(
             f"<div><small>Rewrite first</small><div class='metric'>{int(states.get('rewrite_before_publish', 0) or 0)}</div></div>"
         )
+        out.append(
+            f"<div><small>Rewrite watchlist</small><div class='metric'>{len(risk_watchlist)}</div></div>"
+        )
         out.append("</section>")
         principle = youtube_brain_report.get("operating_principle")
         if principle:
             out.append(f"<p><strong>Principle:</strong> {html.escape(str(principle))}</p>")
-        risks = summary.get("top_risks") or {}
+        risks = ready_summary.get("top_risks") or {}
         if risks:
-            out.append("<h3>Creator risks</h3><table><tr><th>Risk</th><th>Stories</th></tr>")
+            out.append("<h3>Ready creator risks</h3><table><tr><th>Risk</th><th>Stories</th></tr>")
             for risk, count in risks.items():
                 out.append(f"<tr><td><code>{html.escape(str(risk))}</code></td><td>{int(count)}</td></tr>")
             out.append("</table>")
-        top = youtube_brain_report.get("top") or []
+        if risk_watchlist:
+            out.append("<h3>Creator rewrite watchlist</h3><table><tr><th>Title</th><th>Queue</th><th>Risks</th></tr>")
+            for item in risk_watchlist[:8]:
+                brain = item.get("youtube_brain") or {}
+                out.append(
+                    f"<tr><td>{html.escape(_display_title(item)[:100])}</td>"
+                    f"<td><code>{html.escape(str(item.get('queue_state', '')))}</code></td>"
+                    f"<td>{html.escape(', '.join(map(str, brain.get('risks') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        top = youtube_brain_report.get("publish_ready_top") or youtube_brain_report.get("top") or []
         if top:
             out.append(
                 "<h3>Best creator-minded candidates</h3><table><tr><th>Title</th><th>State</th><th>Score</th><th>Promise</th></tr>"
@@ -1227,11 +1297,29 @@ def render_html() -> str:
         out.append(
             f"<div><small>Retention gap</small><div class='metric'>{float(retention.get('gap_to_floor', 0) or 0):.1f}</div></div>"
         )
+        reach = channel_success.get("studio_reach") or {}
+        out.append(
+            f"<div><small>Stayed to watch</small><div class='metric'>{float(reach.get('stayed_to_watch_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Swiped away</small><div class='metric'>{float(reach.get('swipe_away_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
         conversion = channel_success.get("subscriber_conversion") or {}
         out.append(
             f"<div><small>Subs / 1k target gap</small><div class='metric'>{float(conversion.get('gap_to_target', 0) or 0):.2f}</div></div>"
         )
+        recurrence = channel_success.get("audience_recurrence") or {}
+        out.append(
+            f"<div><small>Recurring audience</small><div class='metric'>{float(recurrence.get('recurring_viewer_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
         out.append("</section>")
+        if reach.get("diagnosis") or recurrence.get("diagnosis"):
+            out.append("<h3>Objective diagnosis</h3><ul>")
+            if reach.get("diagnosis"):
+                out.append(f"<li>{html.escape(str(reach.get('diagnosis')))}</li>")
+            if recurrence.get("diagnosis"):
+                out.append(f"<li>{html.escape(str(recurrence.get('diagnosis')))}</li>")
+            out.append("</ul>")
         principle = channel_success.get("operating_principle")
         if principle:
             out.append(f"<p><strong>Principle:</strong> {html.escape(str(principle))}</p>")
@@ -1252,7 +1340,7 @@ def render_html() -> str:
                 for item in items[:4]:
                     out.append(
                         f"<tr><td><span class='badge'>{html.escape(lane)}</span></td>"
-                        f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                        f"<td>{html.escape(_display_title(item)[:90])}</td>"
                         f"<td>{int(item.get('views', 0) or 0):,}</td>"
                         f"<td>{float(item.get('growth_score', 0) or 0):.1f}</td>"
                         f"<td>{float(item.get('retention', 0) or 0):.1f}%</td></tr>"
@@ -1373,8 +1461,9 @@ def render_html() -> str:
         if items:
             out.append("<table><tr><th>Title</th><th>Before</th><th>After</th></tr>")
             for item in items[:8]:
+                title = _display_title(item)
                 out.append(
-                    f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<tr><td>{html.escape(title[:100])}</td>"
                     f"<td>{int(item.get('before', 0) or 0)}</td>"
                     f"<td>{int(item.get('after', 0) or 0)}</td></tr>"
                 )
@@ -1461,8 +1550,8 @@ def render_html() -> str:
         out.append("<div class='card'><h2>Visual QA backfill</h2>")
         out.append(
             f"<p><strong>Legacy unchecked:</strong> {int(visual_backfill.get('legacy_unchecked', 0) or 0)} "
-            f"Â· <strong>Inferred approved:</strong> {int(visual_backfill.get('inferred_approved', 0) or 0)} "
-            f"Â· <strong>Inferred rejected:</strong> {int(visual_backfill.get('inferred_rejected', 0) or 0)}</p>"
+            f"- <strong>Inferred approved:</strong> {int(visual_backfill.get('inferred_approved', 0) or 0)} "
+            f"- <strong>Inferred rejected:</strong> {int(visual_backfill.get('inferred_rejected', 0) or 0)}</p>"
         )
         out.append("</div>")
 
@@ -1509,8 +1598,15 @@ def render_html() -> str:
     if legacy_backfill:
         out.append("<div class='card'><h2>Legacy analytics backfill</h2>")
         out.append(
-            f"<p><strong>Markers needing derived metadata:</strong> {int(legacy_backfill.get('count', 0) or 0)}</p>"
+            f"<p><strong>Markers needing derived metadata:</strong> "
+            f"{int(legacy_backfill.get('derived_missing_count', legacy_backfill.get('count', 0)) or 0)}</p>"
         )
+        if legacy_backfill.get("source_missing_count"):
+            out.append(
+                f"<p><strong>Markers missing original hook:</strong> "
+                f"{int(legacy_backfill.get('source_missing_count', 0) or 0)}</p>"
+            )
+        missing_label_key = "missing_derived_fields" if legacy_backfill.get("derived_missing_count") is not None else "missing"
         markers = legacy_backfill.get("markers") or []
         if markers:
             out.append("<table><tr><th>Title</th><th>Missing</th><th>Derived format</th><th>Retention fix</th></tr>")
@@ -1519,7 +1615,7 @@ def render_html() -> str:
                 surgery = derived.get("retention_surgery") or {}
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:90])}</td>"
-                    f"<td>{html.escape(', '.join(map(str, item.get('missing') or [])))}</td>"
+                    f"<td>{html.escape(', '.join(map(str, item.get(missing_label_key) or [])))}</td>"
                     f"<td>{html.escape(str(derived.get('story_format', '')))}</td>"
                     f"<td>{html.escape('; '.join(map(str, surgery.get('fixes') or []))[:120])}</td></tr>"
                 )
@@ -1572,6 +1668,45 @@ def render_html() -> str:
             )
         out.append("</div>")
 
+    if control_plane:
+        metrics = control_plane.get("metrics") or {}
+        out.append("<div class='card'><h2>Control plane pressure</h2>")
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>State</small><div class='metric'>{html.escape(str(control_plane.get('state', 'unknown')))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Pressure</small><div class='metric'>{int(control_plane.get('pressure_score', 0) or 0)}/100</div></div>"
+        )
+        out.append(
+            f"<div><small>Live state files</small><div class='metric'>{int(metrics.get('live_state_files', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Queue size</small><div class='metric'>{int(metrics.get('stories_queue_lines', 0) or 0):,}</div></div>"
+        )
+        out.append(
+            f"<div><small>Workflow state refs</small><div class='metric'>{int(metrics.get('state_path_refs', 0) or 0)}</div></div>"
+        )
+        out.append("</section>")
+        commands = control_plane.get("commands") or []
+        if commands:
+            out.append("<h3>Control commands</h3><ul>")
+            for command in commands[:5]:
+                out.append(f"<li>{html.escape(str(command))}</li>")
+            out.append("</ul>")
+        lanes = control_plane.get("migration_lanes") or []
+        if lanes:
+            out.append("<h3>Migration lanes</h3><table><tr><th>Priority</th><th>Lane</th><th>Target</th><th>Reason</th></tr>")
+            for lane in sorted(lanes, key=lambda item: int(item.get("priority", 99) or 99))[:5]:
+                out.append(
+                    f"<tr><td>{int(lane.get('priority', 0) or 0)}</td>"
+                    f"<td><code>{html.escape(str(lane.get('lane', '')))}</code></td>"
+                    f"<td>{html.escape(str(lane.get('target', '')))}</td>"
+                    f"<td>{html.escape(str(lane.get('reason', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        out.append("</div>")
+
     if any((queue_audit, reject_report, next_shorts, dry_run_publish, sequence_plan, post24_review, publish_schedule)):
         out.append("<div class='card'><h2>Operations cockpit</h2>")
         out.append("<section class='row'>")
@@ -1580,6 +1715,12 @@ def render_html() -> str:
         )
         out.append(
             f"<div><small>Dry-run eligible</small><div class='metric'>{int(dry_run_publish.get('eligible_count', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Scale-ready</small><div class='metric'>{int(dry_run_publish.get('scale_ready_count', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Observe first</small><div class='metric'>{int(dry_run_publish.get('observe_before_scaling_count', 0) or 0)}</div></div>"
         )
         out.append(
             f"<div><small>Rejected archive</small><div class='metric'>{int(reject_report.get('total', 0) or 0)}</div></div>"
@@ -1614,16 +1755,56 @@ def render_html() -> str:
                     f"<tr><td>rights</td><td><code>{html.escape(str(state))}</code></td><td>{int(count)}</td></tr>"
                 )
             out.append("</table>")
+        mechanism_clusters = queue_audit.get("mechanism_clusters") or {}
+        if mechanism_clusters:
+            out.append("<h3>Mechanism concentration</h3><table><tr><th>Mechanism</th><th>Stories</th></tr>")
+            for mechanism, count in list(mechanism_clusters.items())[:8]:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(mechanism))}</code></td><td>{int(count)}</td></tr>"
+                )
+            out.append("</table>")
+        title_shape_mix = next_shorts.get("title_shape_mix") or {}
+        title_shape_warnings = title_shape_mix.get("warnings") or []
+        if title_shape_warnings:
+            out.append(
+                "<h3>Title shape concentration</h3>"
+                "<table><tr><th>Window</th><th>Repeated promise</th><th>Share</th><th>Action</th></tr>"
+            )
+            for warning in title_shape_warnings[:5]:
+                share = float(warning.get("share", 0) or 0) * 100
+                out.append(
+                    f"<tr><td>Top {int(warning.get('window', 0) or 0)}</td>"
+                    f"<td><code>{html.escape(str(warning.get('shape', '')))}</code></td>"
+                    f"<td>{int(warning.get('count', 0) or 0)} shorts / {share:.0f}%</td>"
+                    f"<td>{html.escape(str(warning.get('action', 'alternate title promises')))}</td></tr>"
+                )
+            out.append("</table>")
+            rewrite_candidates = title_shape_mix.get("rewrite_candidates") or []
+            if rewrite_candidates:
+                out.append("<h3>Title rewrites to queue</h3><table><tr><th>Rank</th><th>Title</th><th>Action</th></tr>")
+                for item in rewrite_candidates[:6]:
+                    suggestions = item.get("suggested_titles") or []
+                    suggestion_text = "; ".join(str(title) for title in suggestions[:2])
+                    title_cell = html.escape(str(item.get('title', ''))[:100])
+                    if suggestion_text:
+                        title_cell += f"<br><small>{html.escape(suggestion_text[:160])}</small>"
+                    out.append(
+                        f"<tr><td>{int(item.get('rank', 0) or 0)}</td>"
+                        f"<td>{title_cell}</td>"
+                        f"<td>{html.escape(str(item.get('action', '')))}</td></tr>"
+                    )
+                out.append("</table>")
         next_items = next_shorts.get("items") or []
         if next_items:
             out.append(
-                "<h3>Next Shorts by score</h3><table><tr><th>Title</th><th>Category</th><th>Score</th><th>State</th></tr>"
+                "<h3>Next Shorts by score</h3><table><tr><th>Title</th><th>Category</th><th>Mechanism</th><th>Score</th><th>State</th></tr>"
             )
             for item in next_items[:8]:
                 score = item.get("score") or {}
                 out.append(
                     f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
                     f"<td>{html.escape(str(item.get('category', '')))}</td>"
+                    f"<td><code>{html.escape(str(item.get('mechanism_cluster', '') or 'unique'))}</code></td>"
                     f"<td>{float(score.get('score', 0) or 0):.1f}</td>"
                     f"<td><code>{html.escape(str(score.get('state', '')))}</code></td></tr>"
                 )
@@ -1632,8 +1813,9 @@ def render_html() -> str:
         if latest_rejections:
             out.append("<h3>Latest rejections</h3><table><tr><th>Title</th><th>Stage</th><th>Reasons</th></tr>")
             for item in latest_rejections[-8:]:
+                title = _display_title(item)
                 out.append(
-                    f"<tr><td>{html.escape(str(item.get('title', ''))[:100])}</td>"
+                    f"<tr><td>{html.escape(title[:100])}</td>"
                     f"<td><code>{html.escape(str(item.get('stage', '')))}</code></td>"
                     f"<td>{html.escape(', '.join(map(str, item.get('reasons') or []))[:140])}</td></tr>"
                 )
@@ -1737,6 +1919,8 @@ def render_html() -> str:
             ("Winning humanity labels", "winning_humanity_labels"),
         ):
             values = learning_profile.get(key) or []
+            if key == "winning_title_keywords":
+                values = [value for value in values if str(value).lower() not in stale_bad_title_keywords]
             if values:
                 out.append(f"<p><strong>{label}:</strong> {html.escape(', '.join(map(str, values[:12])))}</p>")
         rules = learning_profile.get("rules") or []
@@ -1781,7 +1965,7 @@ def render_html() -> str:
             url = t.get("share_url") or (f"https://www.youtube.com/shorts/{t.get('video_id', '')}")
             out.append(
                 f"<tr><td><a href='{html.escape(url)}'>"
-                f"{html.escape(t.get('title', '')[:90])}</a></td>"
+                f"{html.escape(_display_title(t)[:90])}</a></td>"
                 f"<td>{html.escape(str(t.get('story_format', '')))}</td>"
                 f"<td>{int(t.get('views', 0)):,}</td>"
                 f"<td>{float(t.get('views_per_hour', 0) or 0):.1f}/h</td>"

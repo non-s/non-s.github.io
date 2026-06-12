@@ -73,6 +73,121 @@ def test_publish_window_skips_low_quality_candidate(monkeypatch, tmp_path):
     assert "opportunity_score_below_threshold" in decision["reasons"]
 
 
+def test_publish_window_ignores_queue_prune_rewrite_candidate(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [
+            {
+                "id": "rewrite",
+                "title": "Rewrite candidate",
+                "queue_prune": {"state": "rewrite"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+            },
+            {
+                "id": "ready",
+                "title": "Ready candidate",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+            },
+        ]},
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 90 if story["id"] == "rewrite" else 80, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "ready"
+
+
+def test_publish_window_skips_when_only_rewrite_candidates_exist(tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [{"id": "rewrite", "title": "Rewrite candidate", "queue_prune": {"state": "rewrite"}}]},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_no_eligible_story"
+
+
+def test_publish_window_ignores_unchecked_candidate_when_queue_has_prune_state(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [
+            {"id": "unchecked", "title": "Unchecked candidate"},
+            {"id": "ready", "title": "Ready candidate", "queue_prune": {"state": "publish_ready"}},
+        ]},
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 100 if story["id"] == "unchecked" else 80, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "ready"
+
+
+def test_publish_window_uses_autonomy_priority_before_raw_score(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [
+            {
+                "id": "raw_score",
+                "title": "Raw score candidate",
+                "queue_prune": {"state": "publish_ready", "score": 95},
+                "autonomy": {"priority": 20},
+            },
+            {
+                "id": "priority",
+                "title": "Priority candidate",
+                "queue_prune": {"state": "publish_ready", "score": 90},
+                "autonomy": {"priority": 120},
+            },
+        ]},
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 100 if story["id"] == "raw_score" else 80, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "priority"
+
+
 def test_publish_window_skips_outside_slot(tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
 

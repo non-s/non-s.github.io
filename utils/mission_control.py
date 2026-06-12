@@ -1,11 +1,45 @@
 """Mission-control synthesis for Wild Brief operations."""
 from __future__ import annotations
 
+import re
 from collections import Counter
+
+from utils.editorial_guard import editorial_issues
 
 
 def _as_list(value) -> list:
     return value if isinstance(value, list) else []
+
+
+def _title_issues(title: str) -> list[str]:
+    title = str(title or "").strip()
+    if not title:
+        return []
+    return editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
+def _title_tokens(title: str) -> set[str]:
+    stop = {"about", "after", "their", "there", "these", "thing", "things", "watch", "where", "which", "while", "with"}
+    return {
+        token for token in re.findall(r"[a-z0-9]+", str(title or "").lower())
+        if len(token) >= 5 and token not in stop
+    }
+
+
+def _safe_learning_keywords(latest: dict, learning: dict) -> list[str]:
+    good: set[str] = set()
+    bad: set[str] = set()
+    for item in _as_list(latest.get("top_performers")):
+        title = str(item.get("title") or "")
+        if _title_issues(title):
+            bad.update(_title_tokens(title))
+        else:
+            good.update(_title_tokens(title))
+    stale = bad - good
+    return [
+        str(item) for item in _as_list(learning.get("winning_title_keywords"))
+        if str(item).lower() not in stale
+    ]
 
 
 def _top_categories(latest: dict, limit: int = 5) -> list[str]:
@@ -42,7 +76,7 @@ def build_mission_control(*,
     viewer_prompts = [str(item) for item in _as_list(comments.get("content_prompts"))[:5]]
     priority_topics = list(dict.fromkeys(
         requested_animals
-        + [str(item) for item in _as_list(learning.get("winning_title_keywords"))[:8]]
+        + _safe_learning_keywords(latest, learning)[:8]
         + _top_categories(latest)
     ))[:12]
 
@@ -78,10 +112,17 @@ def build_mission_control(*,
 
     review_queue: list[dict] = []
     for item in _as_list(latest.get("top_performers"))[:5]:
+        title = str(item.get("title") or "")
+        issues = _title_issues(title)
+        video_id = str(item.get("video_id") or "")
+        display_title = title
+        if issues:
+            display_title = f"{video_id or 'unknown-video'} (title needs repair: {', '.join(issues[:3])})"
         review_queue.append({
-            "title": item.get("title", ""),
-            "video_id": item.get("video_id", ""),
+            "title": display_title,
+            "video_id": video_id,
             "reason": "Top performer: consider manual cover/title refinement and pinned comment.",
+            **({"source_title": title, "title_issues": issues} if issues else {}),
         })
     for video_id in _as_list(learning.get("avoid_repeating_video_ids"))[:5]:
         review_queue.append({

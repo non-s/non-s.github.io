@@ -79,6 +79,8 @@ def test_youtube_workflow_stages_queue_before_optional_files():
     assert "python scripts/run_intelligence_suite.py pre_generate" in workflow
     assert "python scripts/run_intelligence_suite.py post_publish" in workflow
     assert "python scripts/publish_window.py" in workflow
+    assert "python scripts/media_lifecycle.py --cleanup --audit-tracked --json" in workflow
+    assert "_data/media_lifecycle_report.json" in workflow
     assert "_data/ops_guardian.json" in workflow
     assert "_data/remake_backlog.json" in workflow
     assert "_data/trend_radar.json" in workflow

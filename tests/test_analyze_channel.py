@@ -82,3 +82,27 @@ def test_snapshot_tracks_below_sixty_percent_retention():
     assert snapshot["below_60_pct"] == ["abc"]
     assert snapshot["below_62_pct"] == ["abc"]
     assert snapshot["learning_profile"]["avoid_repeating_video_ids"] == ["abc"]
+
+
+def test_snapshot_does_not_recommend_malformed_top_titles():
+    markers = [
+        {"video_id": "bad1", "title": "Lions use their ears to use", "category": "wildlife"},
+        {"video_id": "bad2", "title": "Birds This black bird's ear tufts aren't ears at all", "category": "birds"},
+        {"video_id": "good", "title": "Dolphins recognize signals through call", "category": "ocean"},
+    ]
+    stats = {
+        "bad1": {"statistics": {"viewCount": "500", "likeCount": "50"}},
+        "bad2": {"statistics": {"viewCount": "400", "likeCount": "40"}},
+        "good": {"statistics": {"viewCount": "300", "likeCount": "30"}},
+    }
+
+    snapshot, _ = build_snapshot(markers, stats)
+    recs = snapshot["production_recommendations"]
+
+    assert "Lions use their ears to use" not in recs["double_down_titles"]
+    assert "Birds This black bird's ear tufts aren't ears at all" not in recs["double_down_titles"]
+    assert recs["double_down_titles"] == ["Dolphins recognize signals through call"]
+    assert "lions" not in recs["exploit_keywords"]
+    assert "dolphins" in recs["exploit_keywords"]
+    assert "lions" not in snapshot["learning_profile"]["winning_title_keywords"]
+    assert "dolphins" in snapshot["learning_profile"]["winning_title_keywords"]

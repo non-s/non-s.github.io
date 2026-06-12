@@ -66,6 +66,7 @@ from utils.packaging import package_story
 from utils.payoff_controller import score_payoff
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.publish_score import score_metadata, score_story as publish_score_story
+from utils.publish_priority import publish_priority_key
 from utils.queue_pruner import prune_queue
 from utils.rejected_queue import record_rejection
 from utils.local_rewriter import rescue_story
@@ -1350,11 +1351,12 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     """
     queue = _load_queue()
     pruned_queue, pruned_rejections, prune_summary = prune_queue(queue, analytics_strategy=load_strategy())
+    if pruned_queue != queue:
+        queue = pruned_queue
+        _save_queue(queue)
     if pruned_rejections:
         for item in pruned_rejections:
             record_rejection(item["story"], item["reasons"], stage=item.get("stage", "queue_prune"))
-        queue = pruned_queue
-        _save_queue(queue)
         log.info(
             "  Queue pruned: %d -> %d pending (%d rejected)",
             prune_summary["pending_before"],
@@ -1386,6 +1388,10 @@ def load_pending_stories() -> tuple[list[dict], dict]:
                 ", ".join(issues),
             )
             record_rejection(story, issues)
+            continue
+        queue_prune = story.get("queue_prune") or {}
+        if queue_prune and queue_prune.get("state") != "publish_ready":
+            held_reasons["queue_prune_not_publish_ready"] = held_reasons.get("queue_prune_not_publish_ready", 0) + 1
             continue
         clean_pending.append(story)
     if held_reasons:
@@ -1478,7 +1484,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             )[:160],
         )
     growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
-    return rank_for_agency(growth_ranked, strategy), queue
+    agency_ranked = rank_for_agency(growth_ranked, strategy)
+    agency_ranked.sort(key=lambda item: publish_priority_key(item), reverse=True)
+    return agency_ranked, queue
 
 
 def diversify_candidates(candidates: list[dict]) -> list[dict]:

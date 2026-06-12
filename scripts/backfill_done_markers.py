@@ -13,12 +13,34 @@ if str(ROOT) not in sys.path:
 from utils.packaging import package_story
 from utils.publish_score import score_metadata
 from utils.subscriber_conversion import score_subscriber_conversion
+from utils.humanity_engine import score_story as score_humanity
+from utils.retention_surgeon import diagnose
+from utils.story_intelligence import classify_format
 from utils.youtube_brain import publish_brain
 
 
 def backfill_marker(marker: dict) -> tuple[dict, bool]:
     out = dict(marker)
     changed = False
+    story_text = " ".join(str(out.get(key) or "") for key in ("title", "hook", "script", "description"))
+    story = {
+        **out,
+        "title": out.get("seo_title") or out.get("title") or "",
+        "hook": out.get("hook") or "",
+        "script": out.get("script") or out.get("description") or "",
+    }
+    if not out.get("story_format"):
+        out["story_format"] = classify_format(story_text)
+        changed = True
+    if not out.get("humanity"):
+        out["humanity"] = score_humanity(story).to_dict()
+        changed = True
+    if not out.get("retention_surgery"):
+        out["retention_surgery"] = diagnose(story)
+        changed = True
+    if not out.get("studio_state"):
+        out["studio_state"] = "legacy_backfilled"
+        changed = True
     packaged = package_story(out)
     if not out.get("packaging"):
         out["packaging"] = packaged.get("packaging") or {}

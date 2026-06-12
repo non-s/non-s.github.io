@@ -11,19 +11,23 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from utils.comment_intelligence import analyze_comments
+from utils.youtube_oauth import (
+    COMMENTS_SCOPE,
+    READONLY_SCOPE,
+    can_manage_comments,
+    credentials_from_token_info,
+    load_token_info,
+    token_grants,
+    token_status_message,
+)
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
 ANALYTICS_DIR = ROOT / "_data" / "analytics"
 OUT_FILE = ANALYTICS_DIR / "comments.json"
-READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
-COMMENTS_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
-FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 
 
 def _load_markers(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
@@ -40,22 +44,18 @@ def _load_markers(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
     return rows
 
 
-def _token_grants(data: dict, *accepted_scopes: str) -> bool:
-    granted = set(data.get("scopes") or [])
-    return bool(granted.intersection(accepted_scopes))
-
-
 def _load_service(token_file: Path = TOKEN_FILE):
-    data = json.loads(token_file.read_text(encoding="utf-8"))
-    if not _token_grants(data, COMMENTS_SCOPE, FULL_YOUTUBE_SCOPE):
+    info = load_token_info(token_file)
+    if not info.present:
+        print(f"comments: {token_status_message(info)}; keeping existing comment snapshot")
+        return None
+    if not can_manage_comments(info.data):
         print("comments: token lacks youtube.force-ssl; skipping comment refresh")
         return None
     scopes = [COMMENTS_SCOPE]
-    if _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+    if token_grants(info.data, READONLY_SCOPE):
         scopes.append(READONLY_SCOPE)
-    creds = Credentials.from_authorized_user_info(data, scopes)
-    if not creds.valid and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+    creds = credentials_from_token_info(info, scopes)
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
@@ -106,8 +106,9 @@ def main() -> int:
     if not markers:
         print("comments: no uploaded markers yet")
         return 0
-    if not TOKEN_FILE.exists():
-        print("comments: youtube_token.json missing; keeping existing comment snapshot")
+    token_info = load_token_info(TOKEN_FILE)
+    if not token_info.present:
+        print(f"comments: {token_status_message(token_info)}; keeping existing comment snapshot")
         return 0
     youtube = _load_service()
     if youtube is None:

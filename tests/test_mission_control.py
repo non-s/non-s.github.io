@@ -31,3 +31,35 @@ def test_mission_control_steady_when_no_risk():
     )
     assert out["status"] == "steady"
     assert "cats" in out["priority_topics"]
+
+
+def test_mission_control_sanitizes_bad_learning_keywords_and_review_titles():
+    out = build_mission_control(
+        latest={
+            "learning_profile": {
+                "winning_title_keywords": ["chickens", "another", "signal", "hiding", "plain", "sight", "ducks"],
+            },
+            "top_performers": [
+                {
+                    "video_id": "bad",
+                    "title": "Chickens have another signal hiding in plain sight",
+                },
+                {
+                    "video_id": "good",
+                    "title": "Chickens remember faces and hold grudges",
+                },
+                {
+                    "video_id": "duck",
+                    "title": "Mallard ducks fake injuries to trick predators",
+                },
+            ],
+        },
+        comments={},
+        queue={"pending": 5, "approved": 4, "states": {}},
+    )
+
+    assert "chickens" in out["priority_topics"]
+    assert "ducks" in out["priority_topics"]
+    assert "hiding" not in out["priority_topics"]
+    assert out["review_queue"][0]["title"] == "bad (title needs repair: generic_hiding_plain_sight)"
+    assert out["review_queue"][0]["title_issues"] == ["generic_hiding_plain_sight"]

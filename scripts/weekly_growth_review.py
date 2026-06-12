@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
 
 from utils.ab_selector import BayesianABSelector  # noqa: E402
 from utils.analytics_schema import read_jsonl  # noqa: E402
+from utils.channel_objective import load_channel_objective, reach_goal_status  # noqa: E402
 from utils.studio_reach_schema import summarize_reach  # noqa: E402
 
 
@@ -56,6 +57,8 @@ def build_review(root: Path = ROOT) -> dict:
     rows = read_jsonl(analytics / "video_metrics.jsonl")
     reach_rows = read_jsonl(analytics / "studio_reach_daily.jsonl")
     reach_summary = summarize_reach(reach_rows)
+    objective = load_channel_objective(root / "_data" / "channel_objective.json")
+    reach_goal = reach_goal_status(objective, reach_summary)
     selector = BayesianABSelector()
     axes = [
         "hook_style",
@@ -108,6 +111,7 @@ def build_review(root: Path = ROOT) -> dict:
         "loop_patterns": experiments.get("loop_style", {}),
         "losing_openings": low_openings,
         "reach_summary": reach_summary,
+        "reach_goal": reach_goal,
         "experiments": experiments,
         "paused_losers": paused_losers,
         "next_three_experiments": [
@@ -131,7 +135,7 @@ def build_review(root: Path = ROOT) -> dict:
         + "\n",
         encoding="utf-8",
     )
-    (root / "_data" / "next_shorts.json").write_text(
+    (analytics / "weekly_next_recommendations.json").write_text(
         json.dumps(
             {"generated_at": review["generated_at"], "recommendations": next_recommendations[:10]},
             indent=2,
@@ -163,13 +167,17 @@ def build_review(root: Path = ROOT) -> dict:
         ]
     else:
         lines.append("- No low-retention openings in normalized rows.")
-    if reach_summary.get("rows"):
-        lines += ["", "## Shorts Reach", ""]
+    if reach_summary.get("rows") or reach_goal.get("stayed_to_watch_rate"):
+        lines += ["", "## Shorts Reach Objective", ""]
         lines.append(
             "- Stayed to watch: "
-            f"{round(float(reach_summary.get('stayed_to_watch_rate', 0) or 0) * 100, 1)}%; "
-            f"swiped away: {round(float(reach_summary.get('swipe_away_rate', 0) or 0) * 100, 1)}%."
+            f"{round(float(reach_goal.get('stayed_to_watch_rate', 0) or 0) * 100, 1)}%; "
+            f"floor: {round(float(reach_goal.get('stayed_to_watch_floor', 0) or 0) * 100, 1)}%; "
+            f"swiped away: {round(float(reach_goal.get('swipe_away_rate', 0) or 0) * 100, 1)}%; "
+            f"source: {reach_goal.get('source')}."
         )
+        for command in (reach_goal.get("commands") or [])[:3]:
+            lines.append(f"- {command}")
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return review
 

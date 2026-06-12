@@ -26,13 +26,24 @@ def _requirements(root: Path) -> list[str]:
     return sorted(set(name for name in names if name))
 
 
+def _license_from_metadata(dist_meta: metadata.PackageMetadata) -> str:
+    license_text = dist_meta.get("License-Expression") or dist_meta.get("License") or ""
+    if license_text:
+        return license_text
+    for classifier in dist_meta.get_all("Classifier") or []:
+        prefix = "License :: OSI Approved :: "
+        if classifier.startswith(prefix):
+            return classifier.removeprefix(prefix)
+    return ""
+
+
 def build_manifest(root: Path = ROOT) -> dict:
     packages = []
     for name in _requirements(root):
         try:
             version = metadata.version(name)
             dist_meta = metadata.metadata(name)
-            license_text = dist_meta.get("License") or ""
+            license_text = _license_from_metadata(dist_meta)
         except Exception:
             version = ""
             license_text = ""
@@ -42,7 +53,7 @@ def build_manifest(root: Path = ROOT) -> dict:
             name = dist.metadata.get("Name") or ""
             if not name:
                 continue
-            packages.append({"name": name, "version": dist.version, "license": dist.metadata.get("License") or ""})
+            packages.append({"name": name, "version": dist.version, "license": _license_from_metadata(dist.metadata)})
             if len(packages) >= 25:
                 break
     report = {

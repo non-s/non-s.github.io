@@ -61,6 +61,23 @@ def test_packaging_selector_returns_scored_variants():
     assert len(selected["top_variants"]) == 10
 
 
+def test_packaging_selector_hides_rejected_title_variants():
+    selected = select_best_packaging(_story(
+        title="Chickens rely on head movement to signal",
+        seo_title="Chickens rely on head movement to signal",
+        hook="Chickens rely on head movement before the move.",
+        thumbnail_text="CHICKEN HEAD",
+        category="farm",
+    ))
+
+    titles = [row["title"] for row in selected["top_variants"]]
+    assert all("signal the next move with movement" not in title.lower() for title in titles)
+    assert all("rely on movement to signal" not in title.lower() for title in titles)
+    assert all("rely on head movement to signal" not in title.lower() for title in titles)
+    assert all("signal the next move with" not in title.lower() for title in titles)
+    assert all("this movement changes what" not in title.lower() for title in titles)
+
+
 def test_format_memory_uses_real_performance_when_available():
     markers = [
         {
@@ -85,6 +102,34 @@ def test_format_memory_uses_real_performance_when_available():
     assert memory["sample_count"] == 8
     assert memory["category_weights"]["fungi"] > 1
     assert memory["format_weights"]["hidden_network"] > 1
+
+
+def test_format_memory_does_not_learn_malformed_winning_titles():
+    markers = [
+        {
+            "category": "wildlife",
+            "story_format": "body_superpower",
+            "title": "Lions use their ears to use",
+            "thumbnail_text": "LION EARS",
+            "hook": "Lions use their ears to use.",
+            "analytics": {"views": 10000, "likes": 800, "comments": 100, "averageViewPercentage": 90},
+        },
+        {
+            "category": "ocean",
+            "story_format": "animal_memory",
+            "title": "Dolphins recognize signals through call",
+            "thumbnail_text": "DOLPHIN CALL",
+            "hook": "Dolphins recognize the call.",
+            "analytics": {"views": 1000, "likes": 80, "comments": 10, "averageViewPercentage": 70},
+        },
+    ]
+
+    memory = build_format_memory(markers)
+
+    winning = " ".join(memory["winning_title_patterns"])
+    weak = " ".join(memory["weak_patterns"])
+    assert "to use" not in winning
+    assert "to use" in weak
 
 
 def test_weak_content_detector_blocks_generic_recycled_packaging():

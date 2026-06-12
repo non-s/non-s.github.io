@@ -37,8 +37,11 @@ VISUAL_TERMS = {
     "cave", "river", "waterfall", "volcano", "cloud", "ash", "glacier",
     "eyes", "tail", "wings", "paws", "camouflage", "color", "colour",
     "wing", "feet", "beak", "fin", "fins", "pupil", "pupils", "movement",
-    "mushrooms", "thread", "threads", "cap", "caps", "nest", "soil",
-    "predator", "predators", "gesture", "gestures",
+    "ear", "ears", "head", "hand", "hands", "flipper", "flippers",
+    "hoof", "hooves", "mouth", "feeding", "bottle", "mushrooms",
+    "object", "objects", "group", "groups", "line", "lines", "thread",
+    "threads", "cap", "caps", "nest", "soil", "predator", "predators",
+    "gesture", "gestures",
 }
 
 EMOTIONAL_TERMS = {
@@ -55,7 +58,7 @@ ACTION_TERMS = {
     "erupt", "glow", "move", "grow", "talk", "signal", "escape",
     "survive", "hide", "protect", "build", "form", "freeze", "melt",
     "remember", "hunt", "change", "vanish", "recover", "pull", "pulls",
-    "follow", "follows", "fake", "fakes", "trick", "tricks",
+    "follow", "follows", "choose", "chooses", "fake", "fakes", "trick", "tricks",
 }
 
 PAYOFF_TERMS = {
@@ -88,6 +91,13 @@ class ScoreBreakdown:
 
 def _words(text: str) -> list[str]:
     return re.findall(r"[A-Za-z0-9']+", text or "")
+
+
+def _copy_is_recommendable(value: str) -> bool:
+    value = str(value or "").strip()
+    if not value:
+        return False
+    return not editorial_issues({"title": value, "seo_title": value, "hook": value}, include_script=False)
 
 
 def _text(story: dict) -> str:
@@ -202,12 +212,18 @@ def build_format_memory(markers: list[dict]) -> dict:
         thumb = str(marker.get("thumbnail_text") or "")
         hook = str(marker.get("hook") or "")
         weight = max(1, int(quality // 16)) if has_real_views else 1
-        if title:
-            title_patterns[_pattern(title)] += weight
-        if thumb:
-            thumbnail_patterns[_pattern(thumb)] += weight
-        if hook:
-            hook_patterns[_pattern(hook)] += weight
+        for value, counter in (
+            (title, title_patterns),
+            (thumb, thumbnail_patterns),
+            (hook, hook_patterns),
+        ):
+            if not value:
+                continue
+            pattern = _pattern(value)
+            if _copy_is_recommendable(value):
+                counter[pattern] += weight
+            else:
+                weak_patterns[pattern] += weight
         if has_real_views and quality < 48:
             for value in (title, thumb, hook):
                 if value:
@@ -594,6 +610,10 @@ def _plural_action(action: str) -> str:
 def _cue(story: dict) -> str:
     text = _text(story)
     cue_priority = [
+        "ear position", "head movement", "hand movement", "tail position",
+        "wing movement", "wing position", "beak movement", "fin movement",
+        "flipper movement", "first movement", "feeding cue", "body cue",
+        "object group", "number cue",
         "eyes", "wing", "wings", "tail", "paws", "feet", "beak", "lava",
         "mushroom", "mushrooms", "threads", "roots", "reef", "coral",
         "storm", "lightning", "glacier", "rock", "crater", "movement",
@@ -601,31 +621,71 @@ def _cue(story: dict) -> str:
     for term in cue_priority:
         if re.search(r"\b" + re.escape(term) + r"\b", text):
             return term
-    return "detail"
+    return "first movement"
+
+
+def _thumb_cue(cue: str) -> str:
+    cue = str(cue or "cue").strip().lower()
+    return {
+        "ear position": "ears",
+        "head movement": "head",
+        "hand movement": "hands",
+        "tail position": "tail",
+        "wing movement": "wing",
+        "wing position": "wing",
+        "beak movement": "beak",
+        "fin movement": "fin",
+        "flipper movement": "flipper",
+        "first movement": "first move",
+        "feeding cue": "feeding",
+        "object group": "group",
+        "number cue": "number",
+        "body cue": "cue",
+    }.get(cue, cue)
+
+
+def _title_cue(cue: str) -> str:
+    cue = str(cue or "cue").strip().lower()
+    return {
+        "ear position": "ear shift",
+        "ear movement": "ear shift",
+        "wing position": "wing angle",
+        "tail position": "tail lift",
+        "flipper movement": "flipper cue",
+        "beak movement": "beak cue",
+        "fin movement": "fin cue",
+        "head movement": "head movement",
+        "hand movement": "hand movement",
+        "first movement": "first move",
+        "object group": "object group",
+        "number cue": "number cue",
+    }.get(cue, cue)
 
 
 def generate_packaging_options(story: dict) -> dict:
     subject = _display_subject(_subject(story))
     action = _plural_action(_action(story))
     cue = _cue(story)
+    thumb_cue = _thumb_cue(cue)
+    title_cue = _title_cue(cue)
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
     titles = [
         current_title,
-        f"{subject} turn the {cue} into the clue",
-        f"Watch the {cue} when {subject.lower()} {action}",
-        f"{subject} reveal the next move through {cue}",
-        f"The {cue} that explains {subject.lower()}",
+        f"{subject} turn {title_cue} into a warning",
+        f"Watch the {title_cue} when {subject.lower()} {action}",
+        f"This {title_cue} changes what {subject.lower()} do next",
+        f"The {title_cue} that explains {subject.lower()}",
         f"{subject} show nature's engineering",
         f"{subject} change the story in seconds",
         f"{subject} reveal the clue before the move",
-        f"{subject}: watch this {cue}",
-        f"This {cue} changes the whole story",
+        f"{subject}: watch this {title_cue}",
+        f"This {title_cue} changes the whole story",
     ]
     thumbs = [
         str(story.get("thumbnail_text") or "").upper(),
-        f"WATCH THE {cue}".upper(),
+        f"WATCH THE {thumb_cue}".upper(),
         f"{subject} {action}".upper(),
-        f"{cue} EXPLAINS IT".upper(),
+        f"{thumb_cue} EXPLAINS IT".upper(),
         "WATCH THIS CLUE",
         "TINY CLUE",
         "NATURE TRICK",
@@ -691,14 +751,24 @@ def select_best_packaging(story: dict, memory: dict | None = None) -> dict:
     options = generate_packaging_options(story)
     best = None
     scored = []
+    fallback_scored = []
     for title in options["titles"][:5]:
         for thumb in options["thumbnail_texts"][:5]:
             for hook in options["hooks"][:3]:
+                candidate = {**story, "title": title, "seo_title": title, "thumbnail_text": thumb, "hook": hook}
+                issues = editorial_issues(candidate, include_script=False)
                 score = score_package_variant(story, title, thumb, hook, memory=memory)
                 row = {"score": score, "title": title, "thumbnail_text": thumb, "hook": hook}
+                fallback_scored.append(row)
+                if issues:
+                    continue
                 scored.append(row)
                 if best is None or score > best["score"]:
                     best = row
+    if not scored:
+        scored = fallback_scored
+        if best is None and scored:
+            best = max(scored, key=lambda row: row["score"])
     scored.sort(key=lambda row: row["score"], reverse=True)
     return {
         "best": best or {"score": 0, "title": story.get("title", ""), "thumbnail_text": story.get("thumbnail_text", ""), "hook": story.get("hook", "")},

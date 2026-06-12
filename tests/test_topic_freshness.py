@@ -25,3 +25,19 @@ def test_annotate_queue_reports_coverage():
 
     assert annotated["stories"][0]["freshness_score"] > 0
     assert report["coverage"] == 1.0
+
+
+def test_freshness_report_masks_non_recommendable_titles():
+    queue = {
+        "stories": [{
+            "id": "bad-title",
+            "title": "Cows rely on ear position to signal",
+            "fetched_at": "2026-06-11T00:00:00+00:00",
+        }]
+    }
+
+    annotated = annotate_queue(queue, [], now=datetime(2026, 6, 11, tzinfo=timezone.utc))
+    report = freshness_report(annotated)
+
+    assert report["top_fresh"][0]["title"].startswith("bad-title (title needs repair:")
+    assert "generic_rely_to_signal_cue" in report["top_fresh"][0]["title_issues"]

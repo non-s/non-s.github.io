@@ -99,3 +99,18 @@ def test_ops_guardian_series_plan_reads_queue(tmp_path: Path):
     out = build_ops_report(tmp_path)
     assert out["series_plan"]["series_to_scale"] == ["Pet Secrets", "Ocean Mysteries"]
     assert out["series_plan"]["queue_categories"] == {"cats": 2}
+
+
+def test_ops_guardian_filters_malformed_remake_recommendations(tmp_path: Path):
+    _write(tmp_path / "_data" / "analytics" / "latest.json", {
+        "avg_view_pct": 70,
+        "shorts_tracked": 2,
+        "remake_candidates": [
+            {"video_id": "bad", "title": "Chickens have another signal hiding in plain sight"},
+            {"video_id": "good", "title": "Ducklings know math before they swim"},
+        ],
+    })
+
+    out = build_ops_report(tmp_path)
+
+    assert [item["video_id"] for item in out["executive_report"]["what_to_remake"]] == ["good"]

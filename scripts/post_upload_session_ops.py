@@ -13,6 +13,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.session_graph import build_session_graph  # noqa: E402
+from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.video_markers import sorted_done_markers  # noqa: E402
 
 
 def _read_json(path: Path, default):
@@ -25,12 +27,7 @@ def _read_json(path: Path, default):
 
 
 def _done_markers(root: Path) -> list[dict]:
-    rows = []
-    for path in sorted((root / "_videos").glob("*.done")) if (root / "_videos").exists() else []:
-        data = _read_json(path, {})
-        if isinstance(data, dict):
-            rows.append(data)
-    return rows
+    return [marker for _, marker in sorted_done_markers(root)]
 
 
 def _score_related(source: dict, candidate: dict) -> float:
@@ -45,14 +42,29 @@ def _score_related(source: dict, candidate: dict) -> float:
     return round(score, 2)
 
 
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
+def _has_recommendable_or_empty_title(item: dict) -> bool:
+    title = str(item.get("title") or "").strip()
+    return not title or _recommendable_title(title)
+
+
 def build_session_ops(root: Path = ROOT) -> dict:
     data_dir = root / "_data"
     data_dir.mkdir(parents=True, exist_ok=True)
     markers = _done_markers(root)
     graph = build_session_graph(markers)
-    latest = markers[-5:]
+    recommendable_markers = [item for item in markers if _has_recommendable_or_empty_title(item)]
+    latest = recommendable_markers[-5:]
     related = []
     for source in latest:
+        if source.get("title") and not _recommendable_title(str(source.get("title") or "")):
+            continue
         candidates = [
             {
                 "video_id": item.get("video_id"),
@@ -61,7 +73,7 @@ def build_session_ops(root: Path = ROOT) -> dict:
                 "score": _score_related(source, item),
                 "reason": "same series/category/format session bridge",
             }
-            for item in markers
+            for item in recommendable_markers
             if item.get("video_id") and item.get("video_id") != source.get("video_id")
         ]
         candidates.sort(key=lambda row: row["score"], reverse=True)
@@ -102,11 +114,14 @@ def build_session_ops(root: Path = ROOT) -> dict:
                 "prompt": f"Make a sequel with a new subject but the same payoff shape: {item.get('title')}",
             }
             for item in latest
+            if _recommendable_title(str(item.get("title") or ""))
         ],
         "session_graph": {
             "nodes": len(graph.get("nodes") or []),
             "edges": len(graph.get("edges") or []),
             "coverage": graph.get("coverage", 0),
+            "action_score_threshold": graph.get("action_score_threshold", 0),
+            "target_reuse_limit": graph.get("target_reuse_limit", 0),
         },
     }
     (data_dir / "post_upload_session_ops.json").write_text(
@@ -139,6 +154,8 @@ def build_session_ops(root: Path = ROOT) -> dict:
                 "nodes": graph.get("nodes") or [],
                 "edges": graph.get("edges") or [],
                 "coverage": graph.get("coverage", 0),
+                "action_score_threshold": graph.get("action_score_threshold", 0),
+                "target_reuse_limit": graph.get("target_reuse_limit", 0),
             },
             indent=2,
             sort_keys=True,
@@ -149,7 +166,12 @@ def build_session_ops(root: Path = ROOT) -> dict:
     )
     (data_dir / "next_session_actions.json").write_text(
         json.dumps(
-            {"generated_at": payload["generated_at"], "items": graph.get("next_session_actions") or []},
+            {
+                "generated_at": payload["generated_at"],
+                "items": graph.get("next_session_actions") or [],
+                "action_score_threshold": graph.get("action_score_threshold", 0),
+                "target_reuse_limit": graph.get("target_reuse_limit", 0),
+            },
             indent=2,
             sort_keys=True,
             ensure_ascii=False,

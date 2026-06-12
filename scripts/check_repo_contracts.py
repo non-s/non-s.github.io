@@ -32,6 +32,7 @@ REQUIRED_FILES = (
     "scripts/music_bed_report.py",
     "scripts/archive_audio_report.py",
     "scripts/security_manifest.py",
+    "scripts/media_lifecycle.py",
     "scripts/doctor.py",
     "scripts/upload_intent.py",
     "scripts/tts_healthcheck.py",
@@ -59,6 +60,7 @@ REQUIRED_FILES = (
     "utils/comment_policy.py",
     "utils/voice_registry.py",
     "utils/music_bed.py",
+    "utils/media_lifecycle.py",
     "utils/internet_archive.py",
     "utils/render_qa.py",
 )
@@ -67,12 +69,14 @@ WORKFLOW_TOKENS = {
     ".github/workflows/quality-gate.yml": (
         "check_repo_contracts.py",
         "audit_slot_contracts.py",
+        "media_lifecycle.py --audit-tracked",
         "tts_healthcheck.py",
         "seo_metadata_lint.py",
     ),
     ".github/workflows/youtube-bot.yml": (
         "quota_preflight.py youtube-bot",
         "comment_to_short_pipeline.py",
+        "media_lifecycle.py --cleanup --audit-tracked",
         "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (

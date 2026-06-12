@@ -120,6 +120,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Use warn.",
     ),
     FeatureFlag(
+        "MEDIA_LIFECYCLE_CLEANUP",
+        "1",
+        "operations",
+        "Delete generated media after successful upload while keeping metadata markers.",
+        "Set to 0 temporarily while debugging renders.",
+    ),
+    FeatureFlag(
         "OPS_GUARDIAN_ENFORCE",
         "1",
         "operations",

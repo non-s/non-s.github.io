@@ -5,6 +5,9 @@ import hashlib
 import re
 from datetime import datetime, timezone
 
+from utils.editorial_guard import editorial_issues
+from utils.packaging import extract_action, extract_animal, extract_cue
+
 
 CATEGORY_HINTS = {
     "farm": ("duck", "duckling", "cow", "goat", "chicken", "horse", "pig", "sheep"),
@@ -37,6 +40,26 @@ def _animal(title: str) -> str:
     return words[0].lower() if words else "animal"
 
 
+def _subject(animal: str) -> str:
+    lower = (animal or "animal").lower()
+    irregular = {
+        "deer": "Deer",
+        "sheep": "Sheep",
+        "fish": "Fish",
+        "duckling": "Ducklings",
+        "baby goat": "Baby goats",
+    }
+    if lower in irregular:
+        return irregular[lower]
+    if lower.endswith("s"):
+        return lower.capitalize()
+    if lower.endswith("y"):
+        return f"{lower[:-1].capitalize()}ies"
+    if lower.endswith(("ch", "sh", "x")):
+        return f"{lower.capitalize()}es"
+    return f"{lower.capitalize()}s"
+
+
 def _category(title: str) -> str:
     lower = title.lower()
     for category, aliases in CATEGORY_HINTS.items():
@@ -45,36 +68,106 @@ def _category(title: str) -> str:
     return "wildlife"
 
 
+def _shorts_url(video_id: str) -> str:
+    return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
+
+
+def _source_keys(story: dict) -> set[str]:
+    keys: set[str] = set()
+    for key in ("source_url", "url", "source_clip_id", "pexels_video_id"):
+        value = str(story.get(key) or "").strip().lower()
+        if value:
+            keys.add(value)
+    for parent_key in ("remake_of", "sequel_of"):
+        parent = story.get(parent_key) if isinstance(story.get(parent_key), dict) else {}
+        video_id = str(parent.get("video_id") or "").strip()
+        if video_id:
+            keys.add(video_id.lower())
+            keys.add(_shorts_url(video_id).lower())
+    return keys
+
+
+def _angle_key(story: dict) -> str:
+    return "|".join((
+        extract_animal(story).lower(),
+        extract_action(story).lower(),
+        extract_cue(story).lower(),
+        str(story.get("category") or "").lower(),
+    ))
+
+
+def _title_key(story: dict) -> str:
+    title = str(story.get("seo_title") or story.get("title") or "")
+    return re.sub(r"\s+", " ", _clean(title).lower())
+
+
 def _title(animal: str, source_title: str) -> str:
     source = _clean(source_title)
+    subject = _subject(animal)
     if "remember" in source.lower():
-        return f"{animal.capitalize()} remember more than you think"
+        return f"{subject} remember the face cue"
     if "math" in source.lower():
-        return f"{animal.capitalize()} use numbers before you notice"
+        return f"{subject} choose the bigger group before they swim"
     if "bottle" in source.lower() or "feeding" in source.lower():
-        return f"{animal.capitalize()} do not just want milk"
+        return f"{subject} follow the feeding cue before the payoff"
     if "bury" in source.lower():
-        return f"{animal.capitalize()} hide their heads for a reason"
-    return f"{animal.capitalize()} have one hidden trick viewers missed"
+        return f"{subject} hide their heads for a reason"
+    return f"{subject} reveal one body clue"
+
+
+def _suggested_hook(suggested: str, animal: str) -> str:
+    if not re.search(rf"\b{re.escape(animal)}s?\b", suggested.lower()):
+        return ""
+    if editorial_issues({"title": suggested, "hook": suggested, "script": suggested}):
+        return ""
+    return suggested
+
+
+def _requires_different_animal(remake: dict) -> bool:
+    text = " ".join(
+        [str(remake.get("action") or "")]
+        + [str(item) for item in (remake.get("instructions") or [])]
+    ).lower()
+    return "new animal" in text or "different animal" in text
 
 
 def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict:
     generated_at = generated_at or datetime.now(timezone.utc).isoformat()
     source_title = str(remake.get("source_title") or remake.get("title") or "")
     animal = _animal(source_title)
+    subject = _subject(animal)
     category = str(remake.get("category") or _category(source_title))
     seo_title = _title(animal, source_title)
     suggested = str((remake.get("retention_surgery") or {}).get("suggested_hook") or "")
-    hook = suggested if re.search(rf"\b{re.escape(animal)}s?\b", suggested.lower()) else ""
-    hook = hook or f"{animal.capitalize()} do this for one hidden reason."
+    hook = _suggested_hook(suggested, animal)
+    hook = hook or f"{subject} show the useful cue before the payoff."
     hook = _clean(hook).rstrip(".") + "."
-    source_signal = _clean(source_title)[:90] or seo_title
-    script = (
-        f"{hook} Watch the first movement, because the detail is easy to miss. "
-        f"The original topic pulled attention with this angle: {source_signal}. This remake cuts straight "
-        f"to the animal's visible payoff. One body cue, one reason, one surprise: "
-        f"that is the version viewers can understand before they swipe."
-    )
+    source_lower = source_title.lower()
+    is_feeding = "feeding" in source_lower or "bottle" in source_lower
+    is_math = "math" in source_lower or "number" in source_lower
+    if is_math:
+        cue = "object group"
+        opening_detail = "object group and first choice"
+    elif is_feeding:
+        cue = "feeding cue"
+        opening_detail = "feeding cue and head movement"
+    else:
+        cue = "visible cue"
+        opening_detail = cue
+    thumbnail = f"{subject.upper()} {cue.upper()}"
+    if is_math:
+        script = (
+            f"{hook} Watch the {opening_detail} first, because ducklings can follow a small number pattern "
+            "before they ever swim. The clue is the group they move toward, then the number fact makes sense "
+            "on replay. That gives viewers one clear setup, one visible action, and one reason to watch the "
+            "opening again."
+        )
+    else:
+        script = (
+            f"{hook} Watch the {opening_detail} first, because that small detail changes how the animal moves "
+            "before the payoff. The clue appears early, then the behavior makes sense on replay. "
+            "That gives viewers one clear setup, one visible action, and one reason to watch the opening again."
+        )
     source_id = str(remake.get("source_video_id") or source_title)
     digest = hashlib.sha256(f"remake:{source_id}:{seo_title}".encode("utf-8")).hexdigest()[:16]
     return {
@@ -83,11 +176,13 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "published_at": generated_at,
         "consumed": False,
         "consumed_at": None,
-        "title": source_title,
-        "url": f"https://www.youtube.com/shorts/{source_id}" if source_id else "",
+        "title": seo_title,
+        "url": _shorts_url(source_id),
+        "source_url": _shorts_url(source_id),
         "source": "Remake Factory",
+        "source_license": "Derived analytics brief; new media required before render",
         "category": category,
-        "description": f"Remake draft from proven Wild Brief topic: {source_title}",
+        "description": f"Watch the {cue} behind this animal behavior: {source_title}",
         "image_url": "",
         "breaking": False,
         "relevance": 9.5,
@@ -98,8 +193,8 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "yt_tags": [animal, category, "animal facts", "wildlife", "shorts"],
         "geo_hashtag": "Global",
         "topic_hashtag": category.title(),
-        "yt_description": f"{seo_title}. A sharper remake of a proven Wild Brief topic.",
-        "thumbnail_text": _clean(seo_title).upper()[:32],
+        "yt_description": f"{seo_title}. Watch the {cue} first, then replay the payoff.",
+        "thumbnail_text": thumbnail[:32],
         "hook": hook,
         "script": script,
         "lead": script[:400],
@@ -120,6 +215,22 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         },
         "production_mode": "remake_factory",
     }
+
+
+def _preserve_operational_fields(rebuilt: dict, existing: dict) -> dict:
+    out = dict(rebuilt)
+    for key in (
+        "autonomy",
+        "queue_prune",
+        "publish_score",
+        "rights_audit",
+        "packaging",
+        "youtube_brain",
+        "agency_gate",
+    ):
+        if existing.get(key):
+            out[key] = existing[key]
+    return out
 
 
 def append_remakes_to_queue(queue: dict, remakes: list[dict], limit: int = 5) -> tuple[dict, list[dict]]:
@@ -145,27 +256,52 @@ def append_remakes_to_queue(queue: dict, remakes: list[dict], limit: int = 5) ->
         rebuilt["id"] = story.get("id", rebuilt["id"])
         rebuilt["fetched_at"] = story.get("fetched_at", rebuilt["fetched_at"])
         rebuilt["published_at"] = story.get("published_at", rebuilt["published_at"])
+        rebuilt = _preserve_operational_fields(rebuilt, story)
         stories[idx] = rebuilt
     existing_ids = {str(item.get("id") or "") for item in stories}
-    existing_sources = {
-        str((item.get("remake_of") or {}).get("video_id") or "")
-        for item in stories
-    }
+    existing_sources: set[str] = set()
+    existing_angles: set[str] = set()
+    existing_titles: set[str] = set()
+    for item in stories:
+        if item.get("consumed"):
+            continue
+        existing_sources.update(_source_keys(item))
+        angle = _angle_key(item)
+        if angle:
+            existing_angles.add(angle)
+        title_key = _title_key(item)
+        if title_key:
+            existing_titles.add(title_key)
     created = []
     for remake in remakes:
         if len(created) >= limit:
             break
+        if _requires_different_animal(remake):
+            continue
         source_id = str(remake.get("source_video_id") or "")
-        if source_id and source_id in existing_sources:
+        source_candidates = {source_id.lower(), _shorts_url(source_id).lower()} if source_id else set()
+        if source_candidates and existing_sources.intersection(source_candidates):
             continue
         story = build_remake_story(remake)
         if story["id"] in existing_ids:
             continue
+        story_sources = _source_keys(story)
+        if story_sources and existing_sources.intersection(story_sources):
+            continue
+        story_title = _title_key(story)
+        if story_title and story_title in existing_titles:
+            continue
+        story_angle = _angle_key(story)
+        if story_angle and story_angle in existing_angles:
+            continue
         stories.append(story)
         created.append(story)
         existing_ids.add(story["id"])
-        if source_id:
-            existing_sources.add(source_id)
+        existing_sources.update(story_sources)
+        if story_title:
+            existing_titles.add(story_title)
+        if story_angle:
+            existing_angles.add(story_angle)
     out = dict(queue)
     out["stories"] = stories
     return out, created

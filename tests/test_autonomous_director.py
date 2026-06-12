@@ -7,6 +7,7 @@ from utils.autonomous_director import (
     subscriber_conversion,
     traffic_source_insight,
 )
+from utils.agency_gate import production_allows
 
 
 def _latest():
@@ -64,11 +65,123 @@ def test_sequel_factory_builds_and_dedupes():
     assert story["id"].startswith("sequel-")
     assert story["sequel_of"]["video_id"] == "abc"
     assert "hiding in plain sight" not in story["seo_title"].lower()
+    assert "one visible cue" not in story["seo_title"].lower()
+    assert "face memory" not in story["seo_title"].lower()
+    assert "previous" not in story["script"].lower()
+    assert "sequel" not in story["script"].lower()
+    assert "same proven pattern" not in story["script"].lower()
+    approved, reasons, _checks = production_allows(story)
+    assert approved is True
+    assert reasons == []
     updated, created = append_sequels({"stories": []}, candidates)
     assert len(created) == 1
     updated2, created2 = append_sequels(updated, candidates)
     assert len(created2) == 0
     assert len(updated2["stories"]) == 1
+
+
+def test_sequel_factory_skips_existing_remake_source_and_angle():
+    queue = {
+        "stories": [
+            {
+                "id": "remake-existing",
+                "title": "Goats follow the feeding cue",
+                "seo_title": "Goats follow the feeding cue",
+                "category": "farm",
+                "source_url": "https://www.youtube.com/shorts/2ndbAhlpL-U",
+                "remake_of": {"video_id": "2ndbAhlpL-U"},
+            },
+            {
+                "id": "chicken-face",
+                "title": "Chickens remember the face cue",
+                "seo_title": "Chickens remember the face cue",
+                "category": "farm",
+            },
+        ]
+    }
+    candidates = [
+        {
+            "source_video_id": "2ndbAhlpL-U",
+            "source_title": "Baby goats love bottle feeding",
+            "category": "farm",
+            "story_format": "cute_behavior",
+            "sequel_id": "sequel-goat",
+        },
+        {
+            "source_video_id": "new-chicken",
+            "source_title": "Chickens remember faces and hold grudges",
+            "category": "farm",
+            "story_format": "animal_memory",
+            "sequel_id": "sequel-chicken",
+        },
+    ]
+
+    updated, created = append_sequels(queue, candidates)
+
+    assert created == []
+    assert len(updated["stories"]) == 2
+
+
+def test_sequel_story_uses_specific_subject_from_source_title():
+    story = build_sequel_story({
+        "source_video_id": "lion1",
+        "source_title": "Lions use their ears to use",
+        "category": "wildlife",
+        "story_format": "body_superpower",
+        "growth_score": 200,
+        "views": 600,
+        "sequel_id": "sequel-lion1",
+    })
+
+    assert story["seo_title"].startswith("Lions rely")
+    assert story["thumbnail_text"].startswith("LIONS")
+    approved, reasons, _checks = production_allows(story)
+    assert approved is True
+    assert reasons == []
+
+
+def test_sequel_candidates_skip_broken_source_titles():
+    candidates = sequel_candidates({
+        "top_performers": [
+            {
+                "video_id": "lion1",
+                "title": "Lions use their ears to use",
+                "views": 600,
+                "growth_score": 220,
+                "category": "wildlife",
+                "story_format": "body_superpower",
+            },
+            {
+                "video_id": "duck1",
+                "title": "Ducklings know math before they can swim",
+                "views": 600,
+                "growth_score": 210,
+                "category": "farm",
+                "story_format": "single_fact",
+            },
+        ]
+    })
+
+    assert candidates
+    assert candidates[0]["source_video_id"] == "duck1"
+    assert "to use" not in candidates[0]["sequel_brief"].lower()
+
+
+def test_sequel_candidate_brief_avoids_generic_signal_cue():
+    candidates = sequel_candidates({
+        "top_performers": [{
+            "video_id": "chicken1",
+            "title": "Chickens remember the signal before danger",
+            "views": 600,
+            "growth_score": 220,
+            "category": "farm",
+            "story_format": "animal_memory",
+        }]
+    })
+
+    assert candidates
+    assert "signal cue" not in candidates[0]["sequel_brief"].lower()
+    assert "alarm call" in candidates[0]["sequel_brief"].lower()
 
 
 def test_build_director_makes_operating_decisions():

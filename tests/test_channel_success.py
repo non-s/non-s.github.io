@@ -4,6 +4,8 @@ from utils.channel_success import (
     first_24h_engine,
     retention_command_center,
     series_system,
+    audience_recurrence_engine,
+    studio_reach_engine,
     subscriber_engine,
 )
 
@@ -63,6 +65,25 @@ def test_first_24h_engine_splits_winners_and_reworks():
     assert out["rework"][0]["video_id"] == "def"
 
 
+def test_first_24h_engine_reworks_malformed_metric_winners():
+    latest = _latest()
+    latest["top_performers"] = [{
+        "video_id": "bad",
+        "title": "Lions use their ears to use",
+        "views": 2000,
+        "views_per_hour": 80,
+        "growth_score": 300,
+        "view_pct": 70,
+    }]
+
+    out = first_24h_engine(latest)
+
+    assert out["winners"] == []
+    assert out["rework"][0]["video_id"] == "bad"
+    assert out["rework"][0]["rework_reason"] == "repair title/package before scaling"
+    assert "robotic_use_loop" in out["rework"][0]["title_issues"]
+
+
 def test_series_system_marks_paused_lanes_as_recovery():
     out = series_system(_latest(), {"paused_topics": [{"category": "cats"}]})
     pet_lane = next(item for item in out["lanes"] if item["series"] == "Pet Signals")
@@ -81,5 +102,41 @@ def test_build_success_plan_returns_operating_actions():
     assert out["state"] == "growth_building"
     assert out["success_score"] < 80
     assert out["retention"]["gap_to_floor"] > 0
+    assert out["studio_reach"]["state"] == "needs_first_second_work"
+    assert out["audience_recurrence"]["state"] == "needs_recurrence_work"
     assert out["next_actions"]
+
+
+def test_studio_reach_engine_uses_operator_baseline_when_import_is_empty():
+    objective = {
+        "baseline": {"stayed_to_watch_rate": 0.318, "swipe_away_rate": 0.682},
+        "targets": {"stayed_to_watch_floor": 0.4, "swipe_away_ceiling": 0.6},
+    }
+
+    out = studio_reach_engine({"summary": {"rows": 0, "stayed_to_watch_rate": 0}}, objective)
+
+    assert out["source"] == "operator_baseline"
+    assert out["stayed_to_watch_rate"] == 0.318
+    assert out["state"] == "needs_first_second_work"
+
+
+def test_audience_recurrence_engine_flags_new_viewer_leak():
+    objective = {
+        "baseline": {
+            "monthly_audience": 9800,
+            "subscribers_gained": 37,
+            "new_viewer_rate": 0.998,
+            "recurring_viewer_rate_upper_bound": 0.001,
+        },
+        "targets": {
+            "new_viewer_subscribe_rate_floor": 0.005,
+            "recurring_viewer_rate_floor": 0.02,
+        },
+    }
+
+    out = audience_recurrence_engine(objective)
+
+    assert out["new_viewer_subscribe_rate"] < out["new_viewer_subscribe_rate_floor"]
+    assert out["recurring_viewer_rate"] < out["recurring_viewer_rate_floor"]
+    assert "follow for one animal signal" in " ".join(out["commands"]).lower()
 

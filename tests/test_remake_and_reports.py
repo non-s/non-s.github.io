@@ -47,6 +47,33 @@ def test_remake_engine_falls_back_to_top_performers(tmp_path: Path):
     assert out["remakes"][0]["source_video_id"] == "top1"
 
 
+def test_remake_engine_skips_malformed_source_titles(tmp_path: Path):
+    _write(tmp_path / "_data" / "analytics" / "latest.json", {
+        "remake_candidates": [
+            {
+                "video_id": "bad",
+                "title": "Chickens have another signal hiding in plain sight",
+                "views": 2000,
+                "retention": 70,
+                "growth_score": 300,
+            },
+            {
+                "video_id": "good",
+                "title": "Ducklings know math before they swim",
+                "views": 1200,
+                "retention": 65,
+                "growth_score": 220,
+            },
+        ]
+    })
+
+    out = build_backlog(tmp_path)
+
+    assert out["count"] == 1
+    assert out["remakes"][0]["source_video_id"] == "good"
+    assert "hiding in plain sight" not in " ".join(out["remakes"][0]["candidate_titles"]).lower()
+
+
 def test_weekly_report_contains_core_sections(tmp_path: Path):
     _write(tmp_path / "_data" / "analytics" / "latest.json", {
         "total_views": 1000,
@@ -67,6 +94,15 @@ def test_weekly_report_contains_core_sections(tmp_path: Path):
         "topics": [{"animal": "orca", "category": "ocean", "trend_score": 88,
                     "mentions": 3, "top_titles": ["Rare orca behavior"]}],
     })
+    _write(tmp_path / "_data" / "early_performance.json", {
+        "top_velocity": [{
+            "video_id": "bad1",
+            "title": "Lions use their ears to use",
+            "early_velocity_score": 80,
+            "views_per_hour": 42,
+            "breakout_probability": {"pass_5000": 0.3},
+        }],
+    })
     body = build_markdown(tmp_path)
     assert "# Wild Brief Weekly Report" in body
     assert "## What To Scale" in body
@@ -74,3 +110,5 @@ def test_weekly_report_contains_core_sections(tmp_path: Path):
     assert "## Trend Radar" in body
     assert "orca" in body
     assert "Cows remember faces" in body
+    assert "Lions use their ears to use" not in body
+    assert "bad1 (title needs repair: robotic_use_loop)" in body

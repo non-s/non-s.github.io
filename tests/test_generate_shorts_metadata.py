@@ -254,3 +254,133 @@ def test_dynamic_thumbnails_change_with_story(tmp_path: Path):
     create_short_thumbnail(frame, birds, "OWL NIGHT VISION", "birds")
     assert cats.exists() and birds.exists()
     assert cats.read_bytes() != birds.read_bytes()
+
+
+def test_load_pending_stories_uses_pruned_publish_ready_queue(monkeypatch, tmp_path):
+    import importlib
+    import json
+    import sys
+
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+    importlib.reload(gs)
+
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    original = {"stories": [{"id": "unchecked", "title": "Unchecked", "consumed": False}]}
+    pruned = {
+        "stories": [
+            {
+                "id": "ready",
+                "title": "Ready story",
+                "seo_title": "Ready story",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready"},
+            },
+            {
+                "id": "rewrite",
+                "title": "Rewrite story",
+                "seo_title": "Rewrite story",
+                "consumed": False,
+                "queue_prune": {"state": "rewrite"},
+            },
+        ]
+    }
+    (data_dir / "stories_queue.json").write_text(json.dumps(original), encoding="utf-8")
+
+    monkeypatch.setattr(gs, "prune_queue", lambda queue, analytics_strategy=None: (pruned, [], {
+        "pending_before": 1,
+        "pending_after": 2,
+        "rejected": 0,
+    }))
+    monkeypatch.setattr(gs, "load_strategy", lambda: {})
+    monkeypatch.setattr(gs, "_queue_story_quality_issues", lambda story, seen_scripts: [])
+    monkeypatch.setattr(gs, "_queue_to_story", lambda story: {"slug": story["id"], **story})
+    monkeypatch.setattr(gs, "score_topic", lambda story, memory=None: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "detect_weak_content", lambda story, memory=None: {"state": "clear"})
+    monkeypatch.setattr(gs, "analyze_retention", lambda story: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "publish_score_story", lambda story, analytics_strategy=None: {
+        "state": "publish_ready",
+        "approved": True,
+        "score": 90,
+    })
+    monkeypatch.setattr(gs, "package_story", lambda story: story)
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "load_format_memory", lambda: {})
+    monkeypatch.setattr(gs, "filter_candidates", lambda candidates: (candidates, []))
+    monkeypatch.setattr(gs, "rank_candidates", lambda candidates: candidates)
+    monkeypatch.setattr(gs, "rank_for_growth", lambda candidates, strategy: candidates)
+    monkeypatch.setattr(gs, "rank_for_agency", lambda candidates, strategy: candidates)
+
+    candidates, queue = gs.load_pending_stories()
+
+    assert [item["id"] for item in candidates] == ["ready"]
+    assert queue == pruned
+    saved = json.loads((data_dir / "stories_queue.json").read_text(encoding="utf-8"))
+    assert saved == pruned
+
+
+def test_load_pending_stories_keeps_publish_priority_after_agency_ranking(monkeypatch, tmp_path):
+    import importlib
+    import json
+    import sys
+
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+    importlib.reload(gs)
+
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    queue = {
+        "stories": [
+            {
+                "id": "low-priority",
+                "title": "Low priority",
+                "seo_title": "Low priority",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 99},
+                "autonomy": {"priority": 10},
+            },
+            {
+                "id": "high-priority",
+                "title": "High priority",
+                "seo_title": "High priority",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 70},
+                "autonomy": {"priority": 130},
+            },
+        ]
+    }
+    (data_dir / "stories_queue.json").write_text(json.dumps(queue), encoding="utf-8")
+
+    monkeypatch.setattr(gs, "prune_queue", lambda queue, analytics_strategy=None: (queue, [], {
+        "pending_before": 2,
+        "pending_after": 2,
+        "rejected": 0,
+    }))
+    monkeypatch.setattr(gs, "load_strategy", lambda: {})
+    monkeypatch.setattr(gs, "_queue_story_quality_issues", lambda story, seen_scripts: [])
+    monkeypatch.setattr(gs, "_queue_to_story", lambda story: {"slug": story["id"], **story})
+    monkeypatch.setattr(gs, "score_topic", lambda story, memory=None: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "detect_weak_content", lambda story, memory=None: {"state": "clear"})
+    monkeypatch.setattr(gs, "analyze_retention", lambda story: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "publish_score_story", lambda story, analytics_strategy=None: {
+        "state": "publish_ready",
+        "approved": True,
+        "score": 90,
+    })
+    monkeypatch.setattr(gs, "package_story", lambda story: story)
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "load_format_memory", lambda: {})
+    monkeypatch.setattr(gs, "filter_candidates", lambda candidates: (candidates, []))
+    monkeypatch.setattr(gs, "rank_candidates", lambda candidates: candidates)
+    monkeypatch.setattr(gs, "rank_for_growth", lambda candidates, strategy: candidates)
+    monkeypatch.setattr(gs, "rank_for_agency", lambda candidates, strategy: list(reversed(candidates)))
+
+    candidates, _queue = gs.load_pending_stories()
+
+    assert [item["id"] for item in candidates] == ["high-priority", "low-priority"]

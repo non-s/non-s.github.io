@@ -9,6 +9,8 @@ import hashlib
 import re
 from datetime import datetime, timezone
 
+from utils.editorial_guard import editorial_issues
+
 
 def _avg(values: list[float]) -> float:
     return round(sum(values) / len(values), 3) if values else 0.0
@@ -27,6 +29,27 @@ ANIMAL_ALIASES = {
     "cats": "cats", "cat": "cats", "dogs": "dogs", "dog": "dogs",
     "birds": "birds", "bird": "birds", "whales": "whales", "whale": "whales",
     "dolphins": "dolphins", "dolphin": "dolphins", "tigers": "tigers", "tiger": "tigers",
+    "lions": "lions", "lion": "lions", "snakes": "snakes", "snake": "snakes",
+    "reptiles": "reptiles", "reptile": "reptiles",
+}
+
+CUE_ALIASES = {
+    "face": "face cue",
+    "faces": "face cue",
+    "math": "number sense",
+    "numbers": "number sense",
+    "injury": "injury display",
+    "injuries": "injury display",
+    "tail": "tail signal",
+    "wing": "wing signal",
+    "wings": "wing signal",
+    "feet": "footwork",
+    "hooves": "hoof movement",
+    "eyes": "eye contact",
+    "ears": "ear position",
+    "roar": "silent hunting",
+    "signal": "alarm call",
+    "signals": "alarm call",
 }
 
 
@@ -35,7 +58,32 @@ def _animal_from_title(title: str, category: str) -> str:
     for word in words:
         if word in ANIMAL_ALIASES:
             return ANIMAL_ALIASES[word]
-    return str(category or "animals").lower()
+    fallback = str(category or "animals").lower()
+    if fallback in {"farm", "wildlife"}:
+        return "animals"
+    return fallback
+
+
+def _cue_from_title(title: str) -> str:
+    words = re.findall(r"[a-z]+", str(title or "").lower())
+    for word in words:
+        if word in CUE_ALIASES:
+            return CUE_ALIASES[word]
+    return "first movement"
+
+
+def _sequel_brief(title: str) -> str:
+    animal = _animal_from_title(title, "wildlife")
+    cue = _cue_from_title(title)
+    subject = animal.capitalize()
+    return f"Create a fresh follow-up with {subject}, a new {cue} detail, and a different fact."
+
+
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
 def subscriber_conversion(latest: dict) -> dict:
@@ -100,6 +148,8 @@ def sequel_candidates(latest: dict, limit: int = 8) -> list[dict]:
     out = []
     for item in latest.get("top_performers") or []:
         title = str(item.get("title") or "")
+        if not _recommendable_title(title):
+            continue
         views = int(item.get("views", 0) or 0)
         growth = float(item.get("growth_score", 0) or 0)
         if views < 100 or growth < 120:
@@ -114,7 +164,7 @@ def sequel_candidates(latest: dict, limit: int = 8) -> list[dict]:
             "story_format": story_format,
             "growth_score": round(growth, 3),
             "views": views,
-            "sequel_brief": f"Create a fresh follow-up to '{title}' with a new animal detail, not the same fact.",
+            "sequel_brief": _sequel_brief(title),
             "sequel_id": "sequel-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16],
         })
         if len(out) >= limit:
@@ -127,15 +177,18 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
     category = str(candidate.get("category") or "wildlife")
     source_title = str(candidate.get("source_title") or "Animal behavior")
     animal = _animal_from_title(source_title, category)
-    source_signal = re.sub(r"[^A-Za-z0-9' ]+", " ", source_title).strip()[:80]
-    action = "remember" if str(candidate.get("story_format")) == "animal_memory" else "use"
-    title = f"{animal.capitalize()} {action} one visible cue for a reason"
-    hook = f"{animal.capitalize()} {action} one visible cue for a reason."
+    cue = _cue_from_title(source_title)
+    visible_signal = f"the {cue}"
+    if str(candidate.get("story_format")) == "animal_memory":
+        title = f"{animal.capitalize()} remember the {cue} for a reason"
+        hook = f"{animal.capitalize()} remember the {cue} before the payoff."
+    else:
+        title = f"{animal.capitalize()} rely on the {cue} for a reason"
+        hook = f"{animal.capitalize()} rely on the {cue} before the payoff."
     script = (
-        f"{hook} The previous {animal} Short worked because it gave one visible animal, "
-        f"one surprise, and one payoff: {source_signal}. This sequel keeps that winning "
-        "shape but changes the detail. Watch the first movement, then the body cue "
-        "that explains the behavior. Same proven pattern, new fact, no repeat."
+        f"{hook} Watch {visible_signal} first, because {animal} change the next move "
+        "around that clue. The signal appears before the payoff, so the replay has a "
+        "job: spot the setup, then watch the behavior land a second later."
     )
     return {
         "id": str(candidate.get("sequel_id") or "sequel-" + _slug(source_title)),
@@ -146,9 +199,11 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
         "title": title,
         "seo_title": title[:100],
         "url": f"https://www.youtube.com/shorts/{candidate.get('source_video_id', '')}",
+        "source_url": f"https://www.youtube.com/shorts/{candidate.get('source_video_id', '')}",
         "source": "YouTube Analytics sequel",
+        "source_license": "Derived analytics brief; new media required before render",
         "category": category,
-        "description": candidate.get("sequel_brief", ""),
+        "description": f"Fresh follow-up brief from a proven {cue} winner; use new footage and a new fact.",
         "breaking": False,
         "relevance": 9.5,
         "score": 9,
@@ -157,7 +212,7 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
         "yt_tags": [category, "animal facts", "wildlife", "shorts", "sequel"],
         "geo_hashtag": "Global",
         "topic_hashtag": category.title(),
-        "thumbnail_text": f"{animal.upper()} PART 2"[:32],
+        "thumbnail_text": f"{animal.upper()} {cue.upper()}"[:32],
         "hook": hook,
         "script": script,
         "lead": script[:400],
@@ -184,11 +239,34 @@ def append_sequels(queue: dict, candidates: list[dict], limit: int = 5) -> tuple
         for idx, story in enumerate(stories)
         if (story.get("sequel_of") or {}).get("video_id")
     }
+    existing_source_ids = set(existing_by_source)
+    existing_angles: set[tuple[str, str]] = set()
+    for story in stories:
+        for related_key in ("sequel_of", "remake_of"):
+            related = story.get(related_key) or {}
+            if isinstance(related, dict) and related.get("video_id"):
+                existing_source_ids.add(str(related.get("video_id")))
+        for url_key in ("source_url", "url"):
+            url = str(story.get(url_key) or "")
+            if "/shorts/" in url:
+                existing_source_ids.add(url.rsplit("/shorts/", 1)[-1].split("?", 1)[0])
+        title = " ".join(str(story.get(key) or "") for key in ("seo_title", "title", "hook"))
+        subject = _animal_from_title(title, str(story.get("category") or "wildlife"))
+        cue = _cue_from_title(title)
+        existing_angles.add((subject, cue))
     existing_ids = {str(story.get("id") or "") for story in stories}
     created = []
     for candidate in candidates:
         source_id = str(candidate.get("source_video_id") or "")
         if not source_id:
+            continue
+        if source_id in existing_source_ids:
+            continue
+        candidate_angle = (
+            _animal_from_title(str(candidate.get("source_title") or ""), str(candidate.get("category") or "wildlife")),
+            _cue_from_title(str(candidate.get("source_title") or "")),
+        )
+        if candidate_angle in existing_angles:
             continue
         story = build_sequel_story(candidate)
         if source_id in existing_by_source:
@@ -202,6 +280,8 @@ def append_sequels(queue: dict, candidates: list[dict], limit: int = 5) -> tuple
         stories.append(story)
         created.append(story)
         existing_by_source[source_id] = len(stories) - 1
+        existing_source_ids.add(source_id)
+        existing_angles.add(candidate_angle)
         existing_ids.add(story["id"])
     out = dict(queue)
     out["stories"] = stories

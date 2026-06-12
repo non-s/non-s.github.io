@@ -1,5 +1,5 @@
 from utils.agency_gate import success_allows
-from utils.success_rewriter import rewrite_story, _word_count
+from utils.success_rewriter import rewrite_queue, rewrite_story, _word_count
 
 
 def _story(**extra):
@@ -50,3 +50,11 @@ def test_rewritten_story_can_pass_phrase_and_question_success_gate():
     )
     assert ok, reasons
 
+
+def test_rewrite_queue_repairs_gate_verdict_without_external_rewrite_id():
+    queue = {"stories": [_story(script="Birds watch the tail cue before the move " * 20)]}
+
+    updated, changed = rewrite_queue(queue, set(), {"a": ["success_script_too_long"]})
+
+    assert len(changed) == 1
+    assert _word_count(updated["stories"][0]["script"]) <= 105

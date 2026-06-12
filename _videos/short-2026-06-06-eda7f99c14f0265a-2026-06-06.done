@@ -286,5 +286,45 @@
       "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
     },
     "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+  },
+  "retention_surgery": {
+    "score": 81,
+    "growth_retention": {
+      "score": 71,
+      "signals": {
+        "hook_score": 82,
+        "curiosity_score": 71,
+        "visual_score": 50,
+        "replay_score": 62,
+        "completion_prediction": 80
+      },
+      "verdict": "rewrite",
+      "reasons": [],
+      "confidence": {
+        "confidence_score": 0.0,
+        "sample_size": 0,
+        "minimum_sample_size": 5,
+        "data_quality": "inferred",
+        "data_quality_score": 0.65,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.25,
+        "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+      },
+      "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+    },
+    "verdict": "tighten",
+    "issues": [
+      "script_tight_but_usable"
+    ],
+    "fixes": [
+      "Add one optional visual beat only if the video feels rushed."
+    ],
+    "strengths": [
+      "short_hook",
+      "payoff_action",
+      "clear_explanation"
+    ],
+    "suggested_hook": "Watch the body freeze first."
   }
 }

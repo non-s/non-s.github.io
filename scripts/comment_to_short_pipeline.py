@@ -40,6 +40,8 @@ def run(root: Path = ROOT) -> dict:
     max_items = int(os.environ.get("COMMENT_TO_SHORT_MAX_ITEMS", "6") or 6)
     enabled = os.environ.get("COMMENT_TO_SHORT_ENABLED", "1").strip().lower() not in {"0", "false", "no"}
     queued = 0
+    updated = 0
+    removed = 0
     if enabled and candidates:
         queue_path = data_dir / "stories_queue.json"
         queue = _read_json(queue_path, {"stories": []})
@@ -47,7 +49,9 @@ def run(root: Path = ROOT) -> dict:
             queue if isinstance(queue, dict) else {"stories": []}, candidates, min_score=min_score, max_items=max_items
         )
         queued = int(merged.get("comment_to_short_added", 0) or 0)
-        if queued:
+        updated = int(merged.get("comment_to_short_updated", 0) or 0)
+        removed = int(merged.get("comment_to_short_removed", 0) or 0)
+        if queued or updated or removed:
             queue_path.parent.mkdir(parents=True, exist_ok=True)
             queue_path.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     payload = {
@@ -56,6 +60,8 @@ def run(root: Path = ROOT) -> dict:
         "min_score": min_score,
         "candidates": candidates[:50],
         "queued": queued,
+        "updated": updated,
+        "removed": removed,
     }
     out = data_dir / "comment_to_short_candidates.json"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -68,7 +74,10 @@ def main() -> int:
     parser.add_argument("--root", default=".")
     args = parser.parse_args()
     payload = run(Path(args.root).resolve())
-    print(f"comment_to_short: {len(payload['candidates'])} candidate(s), {payload['queued']} queued")
+    print(
+        f"comment_to_short: {len(payload['candidates'])} candidate(s), "
+        f"{payload['queued']} queued, {payload['updated']} updated, {payload['removed']} removed"
+    )
     return 0
 
 

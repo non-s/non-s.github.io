@@ -19,6 +19,16 @@ def build_plan(*, latest: dict, health: dict, ops: dict, trend: dict) -> dict:
     green_trends = [
         item for item in trend_topics
         if (item.get("trend_safety") or {}).get("posture") in {"greenlight", "watch"}
+        and str(item.get("category") or "").lower() not in paused_set
+    ]
+    blocked_trends = [
+        {
+            "category": item.get("category", ""),
+            "animal": item.get("animal", ""),
+            "reason": "paused_category",
+        }
+        for item in trend_topics
+        if str(item.get("category") or "").lower() in paused_set
     ]
     publish_now = int(((health.get("agency") or {}).get("decisions") or {}).get("publish_now", 0) or 0)
     days = []
@@ -28,6 +38,7 @@ def build_plan(*, latest: dict, health: dict, ops: dict, trend: dict) -> dict:
         days.append({
             "day": i + 1,
             "focus": focus,
+            "trend_category": trend_item.get("category", ""),
             "trend_animal": trend_item.get("animal", ""),
             "mix": "2 exploit + 1 explore" if publish_now >= 21 else "1 exploit + 2 explore",
             "avoid": paused[:3],
@@ -37,5 +48,6 @@ def build_plan(*, latest: dict, health: dict, ops: dict, trend: dict) -> dict:
         "status": "aggressive_growth" if publish_now >= 21 else "build_inventory_quality",
         "publish_now_inventory": publish_now,
         "weekly_goal": "Push average retention toward 70% while scaling winning formats.",
+        "blocked_trends": blocked_trends[:10],
         "days": days,
     }

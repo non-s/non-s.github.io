@@ -24,6 +24,7 @@ def main() -> int:
     rows = []
     states = Counter()
     rights = Counter()
+    mechanism_clusters = Counter()
     pruned, rejected, prune_summary = prune_queue(data)
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
@@ -33,6 +34,8 @@ def main() -> int:
         queue_prune = story.get("queue_prune") or {}
         state = str(queue_prune.get("state") or score.get("state") or "unknown")
         states[state] += 1
+        if queue_prune.get("mechanism_cluster"):
+            mechanism_clusters[str(queue_prune.get("mechanism_cluster"))] += 1
         rights["approved" if right["approved"] else "rejected"] += 1
         rows.append({
             "id": story.get("id", ""),
@@ -40,6 +43,7 @@ def main() -> int:
             "category": story.get("category", ""),
             "publish_score": score,
             "editorial_state": state,
+            "queue_prune": queue_prune,
             "queue_score": queue_prune.get("score", score.get("score", 0)),
             "youtube_brain": story.get("youtube_brain") or {},
             "packaging": story.get("packaging") or {},
@@ -50,6 +54,7 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "pending": len(rows),
         "states": dict(states),
+        "mechanism_clusters": dict(mechanism_clusters.most_common()),
         "rights": dict(rights),
         "prune_summary": prune_summary,
         "rejected_preview": [

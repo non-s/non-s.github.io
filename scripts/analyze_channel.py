@@ -12,10 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
+from utils.editorial_guard import editorial_issues
 from utils.experiments import compute_winners, write_winners
 from utils.growth_studio import (
     build_performance_matrix,
@@ -25,14 +24,22 @@ from utils.growth_studio import (
 )
 from utils.story_intelligence import classify_format, postmortem
 from utils.visual_learning import build_visual_learning, visual_profile_key
+from utils.youtube_oauth import (
+    ANALYTICS_MONETARY_SCOPE,
+    ANALYTICS_SCOPE,
+    READONLY_SCOPE,
+    UPLOAD_SCOPE,
+    can_read_analytics,
+    can_read_youtube,
+    credentials_from_token_info,
+    load_token_info,
+    token_grants,
+    token_status_message,
+)
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
 ANALYTICS_DIR = ROOT / "_data" / "analytics"
-UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
-READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
-ANALYTICS_SCOPE = "https://www.googleapis.com/auth/yt-analytics.readonly"
-FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 SCOPES = [UPLOAD_SCOPE, READONLY_SCOPE]
 
 
@@ -51,33 +58,27 @@ def _load_markers(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
     return rows
 
 
-def _token_grants(data: dict, *accepted_scopes: str) -> bool:
-    granted = set(data.get("scopes") or [])
-    return bool(granted.intersection(accepted_scopes))
-
-
 def _load_service(token_file: Path = TOKEN_FILE):
-    data = json.loads(token_file.read_text(encoding="utf-8"))
-    if not _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+    info = load_token_info(token_file)
+    if not info.present:
+        print(f"analytics: {token_status_message(info)}; keeping existing snapshots")
+        return None
+    if not can_read_youtube(info.data):
         print("analytics: token lacks youtube.readonly; skipping public-stat refresh")
         return None
-    creds = Credentials.from_authorized_user_info(data, SCOPES)
-    if not creds.valid and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+    creds = credentials_from_token_info(info, SCOPES)
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
 def _load_analytics_service(token_file: Path = TOKEN_FILE):
-    data = json.loads(token_file.read_text(encoding="utf-8"))
-    if not _token_grants(data, ANALYTICS_SCOPE, FULL_YOUTUBE_SCOPE):
+    info = load_token_info(token_file)
+    if not info.present:
+        return None
+    if not can_read_analytics(info.data):
         print("analytics: token lacks yt-analytics.readonly; skipping retention refresh")
         return None
-    scopes = [ANALYTICS_SCOPE]
-    if _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
-        scopes.append(READONLY_SCOPE)
-    creds = Credentials.from_authorized_user_info(data, scopes)
-    if not creds.valid and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+    analytics_scope = ANALYTICS_SCOPE if token_grants(info.data, ANALYTICS_SCOPE) else ANALYTICS_MONETARY_SCOPE
+    creds = credentials_from_token_info(info, [analytics_scope, READONLY_SCOPE])
     return build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
 
 
@@ -173,13 +174,24 @@ def _keywords_from_titles(items: list[dict], limit: int = 12) -> list[str]:
     return out
 
 
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
 def _learning_profile(top: list[dict], observations: list[dict],
                       category_growth: dict[str, float],
                       format_growth: dict[str, float]) -> dict:
     retention_tiers: dict[str, int] = defaultdict(int)
     for item in top:
         retention_tiers[_retention_tier(float(item.get("view_pct", 0) or 0))] += 1
-    winners = [item for item in top if item.get("growth_score", 0) > 0][:5]
+    winners = [
+        item for item in top
+        if item.get("growth_score", 0) > 0
+        and _recommendable_title(str(item.get("title") or ""))
+    ][:5]
     weak = [
         item for item in top
         if 0 < float(item.get("view_pct", 0) or 0) < 60
@@ -355,6 +367,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     }
     exploit_keywords: list[str] = []
     for item in top[:5]:
+        if not _recommendable_title(str(item.get("title") or "")):
+            continue
         for token in str(item.get("title", "")).lower().split():
             clean = "".join(ch for ch in token if ch.isalnum())
             if len(clean) >= 5 and clean not in exploit_keywords:
@@ -431,7 +445,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "production_mix": brief.get("production_mix", {}),
             "double_down_titles": [
                 item["title"] for item in top[:5]
-                if item.get("views", 0) > 0
+                if item.get("views", 0) > 0 and _recommendable_title(str(item.get("title") or ""))
             ],
             "next_actions": [
                 "Favor categories with the highest growth score for the next production day.",
@@ -450,8 +464,9 @@ def main() -> int:
     if not markers:
         print("analytics: no uploaded markers yet")
         return 0
-    if not TOKEN_FILE.exists():
-        print("analytics: youtube_token.json missing; keeping existing snapshots")
+    token_info = load_token_info(TOKEN_FILE)
+    if not token_info.present:
+        print(f"analytics: {token_status_message(token_info)}; keeping existing snapshots")
         return 0
     youtube = _load_service()
     if youtube is None:

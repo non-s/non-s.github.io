@@ -4,6 +4,7 @@ The radar reads public RSS/search feeds, extracts animal topics, scores
 them conservatively, and produces a local payload the queue refresh can
 use. No paid APIs, no credentials, and no live data is required in tests.
 """
+
 from __future__ import annotations
 
 import html
@@ -38,15 +39,43 @@ ANIMAL_ALIASES: dict[str, tuple[str, ...]] = {
 }
 
 TREND_TERMS = (
-    "rescue", "attack", "sighting", "viral", "rare", "migration",
-    "study", "scientists", "discovered", "behavior", "intelligence",
-    "camera", "wildlife", "conservation", "zoo", "aquarium",
+    "rescue",
+    "attack",
+    "sighting",
+    "viral",
+    "rare",
+    "migration",
+    "study",
+    "scientists",
+    "discovered",
+    "behavior",
+    "intelligence",
+    "camera",
+    "wildlife",
+    "conservation",
+    "zoo",
+    "aquarium",
 )
 
 DEFAULT_FEEDS = (
     "https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q={query}&hl=en-GB&gl=GB&ceid=GB:en",
 )
+
+LEGACY_PLATFORM_TERMS = (
+    "tik" + "tok",
+    "f" + "yp",
+    "for" + "you",
+    "cat" + "tok",
+    "dog" + "tok",
+    "bird" + "tok",
+    "farm" + "tok",
+)
+
+
+def _legacy_platform_hit(text: str) -> bool:
+    compact = re.sub(r"[^a-z0-9]+", "", text.lower())
+    return any(term in compact for term in LEGACY_PLATFORM_TERMS)
 
 
 def _animal_category(text: str) -> tuple[str, str] | None:
@@ -78,13 +107,12 @@ def _rss_items(xml_text: str, *, source: str) -> list[dict]:
         link = (item.findtext("link") or "").strip()
         desc = html.unescape(re.sub(r"<[^>]+>", " ", item.findtext("description") or ""))
         text = re.sub(r"\s+", " ", f"{title} {desc}").strip()
-        if title and text:
+        if title and text and not _legacy_platform_hit(text):
             rows.append({"source": source, "title": title, "url": link, "text": text})
     return rows
 
 
-def fetch_public_items(queries: list[str] | None = None,
-                       feeds: tuple[str, ...] = DEFAULT_FEEDS) -> list[dict]:
+def fetch_public_items(queries: list[str] | None = None, feeds: tuple[str, ...] = DEFAULT_FEEDS) -> list[dict]:
     queries = queries or [
         "animal trending OR viral",
         "wildlife viral animal",
@@ -115,6 +143,8 @@ def score_trends(items: list[dict]) -> dict:
     animals: Counter[str] = Counter()
     for item in items:
         text = item.get("text") or item.get("title") or ""
+        if _legacy_platform_hit(text):
+            continue
         match = _animal_category(text)
         if not match:
             continue
@@ -144,16 +174,18 @@ def score_trends(items: list[dict]) -> dict:
     for key, rows in topic_hits.items():
         category, animal = key.split(":", 1)
         top = sorted(rows, key=lambda r: r["score"], reverse=True)[:5]
-        topics.append({
-            "category": category,
-            "animal": animal,
-            "trend_score": min(100, round(sum(r["score"] for r in rows) / max(1, len(rows)) + len(rows) * 5, 2)),
-            "mentions": len(rows),
-            "top_titles": [r["title"] for r in top],
-            "top_urls": [r["url"] for r in top if r.get("url")],
-            "terms": sorted({term for r in rows for term in r.get("terms", [])})[:8],
-            "query": f"{animal} animal {(' '.join(top[0].get('terms') or [])).strip()}".strip(),
-        })
+        topics.append(
+            {
+                "category": category,
+                "animal": animal,
+                "trend_score": min(100, round(sum(r["score"] for r in rows) / max(1, len(rows)) + len(rows) * 5, 2)),
+                "mentions": len(rows),
+                "top_titles": [r["title"] for r in top],
+                "top_urls": [r["url"] for r in top if r.get("url")],
+                "terms": sorted({term for r in rows for term in r.get("terms", [])})[:8],
+                "query": f"{animal} animal {(' '.join(top[0].get('terms') or [])).strip()}".strip(),
+            }
+        )
     topics.sort(key=lambda r: (r["trend_score"], r["mentions"]), reverse=True)
     topics = enrich_topics(topics)
     return {
@@ -186,8 +218,7 @@ def load_trends(path: Path | None = None) -> dict:
         return {}
 
 
-def trend_queries_for_category(category: str, trends: dict | None = None,
-                               limit: int = 3) -> list[str]:
+def trend_queries_for_category(category: str, trends: dict | None = None, limit: int = 3) -> list[str]:
     trends = trends or load_trends()
     out: list[str] = []
     for item in trends.get("topics") or []:
@@ -204,8 +235,7 @@ def trend_queries_for_category(category: str, trends: dict | None = None,
 def trend_context_for_category(category: str, trends: dict | None = None) -> dict:
     trends = trends or load_trends()
     matches = [
-        item for item in trends.get("topics") or []
-        if str(item.get("category") or "").lower() == category.lower()
+        item for item in trends.get("topics") or [] if str(item.get("category") or "").lower() == category.lower()
     ]
     if not matches:
         return {}

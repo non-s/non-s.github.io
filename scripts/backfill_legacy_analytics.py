@@ -34,15 +34,16 @@ def _markers() -> list[dict]:
 
 def build_backfill() -> dict:
     rows = []
+    derived_keys = ("humanity", "studio_state", "story_format", "retention_surgery")
+    source_keys = ("hook",)
     for item in _markers():
         title = str(item.get("title") or "")
         hook = str(item.get("hook") or "")
         script = str(item.get("script") or item.get("description") or "")
         story = {**item, "title": title, "hook": hook, "script": script}
-        needs = [
-            key for key in ("hook", "humanity", "studio_state", "story_format", "retention_surgery")
-            if not item.get(key)
-        ]
+        missing_derived = [key for key in derived_keys if not item.get(key)]
+        missing_source = [key for key in source_keys if not item.get(key)]
+        needs = missing_source + missing_derived
         if not needs:
             continue
         rows.append({
@@ -50,6 +51,8 @@ def build_backfill() -> dict:
             "marker": item.get("_marker", ""),
             "title": title,
             "missing": needs,
+            "missing_source_fields": missing_source,
+            "missing_derived_fields": missing_derived,
             "derived": {
                 "story_format": item.get("story_format") or classify_format(f"{title} {hook} {script}"),
                 "hook_audit": audit_hook(hook).to_dict(),
@@ -61,6 +64,8 @@ def build_backfill() -> dict:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(rows),
+        "derived_missing_count": sum(1 for row in rows if row.get("missing_derived_fields")),
+        "source_missing_count": sum(1 for row in rows if row.get("missing_source_fields")),
         "markers": rows,
     }
 
@@ -69,7 +74,11 @@ def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     payload = build_backfill()
     OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"legacy backfill: {payload['count']} marker(s) need derived metadata")
+    print(
+        "legacy backfill: "
+        f"{payload['derived_missing_count']} marker(s) need derived metadata; "
+        f"{payload['source_missing_count']} marker(s) miss source fields"
+    )
     return 0
 
 

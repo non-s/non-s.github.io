@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.editorial_guard import editorial_issues  # noqa: E402
+
 REPORT_DIR = ROOT / "_data" / "reports"
 
 
@@ -22,6 +24,22 @@ def _safe_json(path: Path) -> dict:
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _title_issues(title: str) -> list[str]:
+    title = str(title or "").strip()
+    if not title:
+        return []
+    return editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
+def _display_title(item: dict, key: str = "title") -> str:
+    title = str(item.get(key) or "").strip()
+    issues = _title_issues(title)
+    if not issues:
+        return title or str(item.get("video_id") or item.get("source_video_id") or "untitled")
+    video_id = str(item.get("video_id") or item.get("source_video_id") or "unknown-video")
+    return f"{video_id} (title needs repair: {', '.join(issues[:3])})"
 
 
 def build_markdown(root: Path = ROOT) -> str:
@@ -110,7 +128,7 @@ def build_markdown(root: Path = ROOT) -> str:
     if fan_rows:
         for item in fan_rows[:5]:
             lines.append(
-                f"- {item.get('title')}: {item.get('subs_per_1k_views')} subs/1k views, "
+                f"- {_display_title(item)}: {item.get('subs_per_1k_views')} subs/1k views, "
                 f"{item.get('comments_per_1k_views')} comments/1k"
             )
     else:
@@ -140,7 +158,7 @@ def build_markdown(root: Path = ROOT) -> str:
         for item in top_velocity[:5]:
             probs = item.get("breakout_probability") or {}
             lines.append(
-                f"- {item.get('title')}: velocity {item.get('early_velocity_score')}/100, "
+                f"- {_display_title(item)}: velocity {item.get('early_velocity_score')}/100, "
                 f"{item.get('views_per_hour')} views/hour, P>5k={probs.get('pass_5000', 0)}"
             )
     else:
@@ -162,7 +180,7 @@ def build_markdown(root: Path = ROOT) -> str:
             lines.append("- Velocity-winning series: " + ", ".join(list(series)[:5]))
     lines.extend(["", "## Remake Backlog"])
     for item in (remakes.get("remakes") or [])[:8]:
-        lines.append(f"- {item.get('source_title')} -> {item.get('action')}")
+        lines.append(f"- {_display_title(item, 'source_title')} -> {item.get('action')}")
     if not remakes.get("remakes"):
         lines.append("- No remake candidates yet.")
     lines.extend(["", "## Next Actions"])

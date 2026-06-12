@@ -23,9 +23,10 @@ def _read_json(path: Path, default):
 def build_actions(root: Path = ROOT) -> dict:
     graph = _read_json(root / "_data" / "session_graph.json", {})
     actions = []
+    threshold = float(graph.get("action_score_threshold") or 55)
     for edge in graph.get("edges") or []:
         weight = float(edge.get("score") or 0)
-        if weight < 55:
+        if weight < threshold:
             continue
         actions.append(
             {
@@ -36,7 +37,14 @@ def build_actions(root: Path = ROOT) -> dict:
                 "priority": "high" if weight >= 75 else "normal",
             }
         )
-    report = {"generated_at": datetime.now(timezone.utc).isoformat(), "actions": actions[:40]}
+    actions = actions[:40]
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "actions": actions,
+        "action_score_threshold": threshold,
+        "target_reuse_limit": graph.get("target_reuse_limit", 0),
+        "unique_target_count": len({item.get("target_video_id") for item in actions if item.get("target_video_id")}),
+    }
     out = root / "_data" / "session_graph_actions.json"
     out.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
     return report

@@ -24,6 +24,7 @@ from utils.publish_schedule import (  # noqa: E402
     slot_label,
 )
 from utils.publish_score import score_story  # noqa: E402
+from utils.publish_priority import publish_priority_key  # noqa: E402
 
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 
@@ -49,11 +50,21 @@ def _parse_now(value: str | None) -> datetime:
 
 def _eligible_stories(queue: dict) -> list[dict]:
     stories = queue.get("stories") if isinstance(queue, dict) else []
+    has_prune_state = any(
+        isinstance(story, dict) and not story.get("consumed") and bool(story.get("queue_prune"))
+        for story in stories or []
+    )
     out = []
     for story in stories or []:
         if not isinstance(story, dict) or story.get("consumed"):
             continue
         if not (story.get("title") or story.get("seo_title")):
+            continue
+        queue_prune = story.get("queue_prune") or {}
+        if has_prune_state and queue_prune.get("state") != "publish_ready":
+            continue
+        publish = story.get("publish_score") or {}
+        if publish and (publish.get("approved") is not True or publish.get("state") != "publish_ready"):
             continue
         out.append(story)
     return out
@@ -68,14 +79,17 @@ def _candidate_id(story: dict | None) -> str:
 def _best_candidate(stories: list[dict]) -> tuple[dict | None, dict]:
     best_story: dict | None = None
     best_score: dict = {}
+    best_key = (-1.0, -1.0, -1.0)
     for story in stories:
         try:
             score = score_story(story)
         except Exception as exc:
             score = {"score": 0.0, "approved": False, "opportunity": {"score": 0.0}, "error": str(exc)}
-        if best_story is None or float(score.get("score") or 0) > float(best_score.get("score") or 0):
+        key = publish_priority_key(story, score)
+        if best_story is None or key > best_key:
             best_story = story
             best_score = score
+            best_key = key
     return best_story, best_score
 
 

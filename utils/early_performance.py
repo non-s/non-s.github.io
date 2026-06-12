@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from utils.confidence_engine import assess_confidence
+from utils.editorial_guard import editorial_issues
 
 EARLY_PERFORMANCE_PATH = Path("_data/early_performance.json")
 EARLY_WARNING_PATH = Path("_data/early_warning.json")
@@ -82,6 +83,13 @@ def _video_row(marker: dict, now: datetime) -> dict:
         "subscribers": int(subs),
         "views_per_hour": round(views / max(age_hours, 1), 3) if age_hours else 0.0,
     }
+
+
+def _title_issues(title: str) -> list[str]:
+    title = str(title or "").strip()
+    if not title:
+        return []
+    return editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
 def _load_previous(path: Path = EARLY_PERFORMANCE_PATH) -> dict:
@@ -325,35 +333,59 @@ def build_early_warning(early: dict) -> dict:
         confidence = item.get("confidence") or {}
         confidence_score = float(item.get("early_confidence_score") or confidence.get("confidence_score") or 0)
         reason = confidence.get("reasoning", "")
+        title_issues = _title_issues(item.get("title", ""))
         if confidence_score < 0.45:
             if state in {"dying_early", "accelerating", "second_wave"} or item.get("early_velocity_score", 0) >= 70:
-                watchlist.append({
+                entry = {
                     "video_id": item["video_id"],
                     "title": item["title"],
                     "state": state,
                     "confidence_score": confidence_score,
                     "reason": "low confidence early signal; keep observing",
-                })
+                }
+                if title_issues:
+                    entry["title_issues"] = title_issues
+                watchlist.append(entry)
             continue
+        if title_issues:
+            remakes.append({
+                "video_id": item["video_id"],
+                "title": item["title"],
+                "action": "repair title/package before scaling angle",
+                "confidence_score": confidence_score,
+                "reasoning": reason,
+                "title_issues": title_issues,
+            })
         if confidence_score >= 0.55 and (state == "dying_early" or (item.get("age_hours", 0) >= 6 and item.get("views", 0) < 500)):
-            risks.append({
+            entry = {
                 "video_id": item["video_id"],
                 "title": item["title"],
                 "reason": "low early velocity",
                 "views": item["views"],
                 "confidence_score": confidence_score,
                 "reasoning": reason,
-            })
+            }
+            if title_issues:
+                entry["title_issues"] = title_issues
+            risks.append(entry)
         if state in {"accelerating", "second_wave"} or item.get("early_velocity_score", 0) >= 70:
-            accelerators.append({
+            entry = {
                 "video_id": item["video_id"],
                 "title": item["title"],
                 "state": state,
                 "score": item.get("early_velocity_score", 0),
                 "confidence_score": confidence_score,
                 "reasoning": reason,
-            })
-        if confidence_score >= 0.65 and item.get("age_hours", 0) >= 24 and item.get("views", 0) < 1000:
+            }
+            if title_issues:
+                entry["title_issues"] = title_issues
+            accelerators.append(entry)
+        if (
+            not title_issues
+            and confidence_score >= 0.65
+            and item.get("age_hours", 0) >= 24
+            and item.get("views", 0) < 1000
+        ):
             remakes.append({
                 "video_id": item["video_id"],
                 "title": item["title"],
@@ -361,7 +393,12 @@ def build_early_warning(early: dict) -> dict:
                 "confidence_score": confidence_score,
                 "reasoning": reason,
             })
-        if confidence_score >= 0.55 and item.get("views", 0) >= 1000 and item.get("breakout_probability", {}).get("pass_5000", 0) >= 0.25:
+        if (
+            not title_issues
+            and confidence_score >= 0.55
+            and item.get("views", 0) >= 1000
+            and item.get("breakout_probability", {}).get("pass_5000", 0) >= 0.25
+        ):
             sequences.append({
                 "video_id": item["video_id"],
                 "title": item["title"],

@@ -2,7 +2,14 @@
 from __future__ import annotations
 
 
-ALLOWED_SOURCES = {"pexels", "pixabay", "wikimedia commons", "remake factory"}
+ALLOWED_SOURCES = {
+    "pexels",
+    "pixabay",
+    "wikimedia commons",
+    "remake factory",
+    "youtube analytics sequel",
+    "youtube comment idea",
+}
 
 
 def audit_rights(item: dict) -> dict:

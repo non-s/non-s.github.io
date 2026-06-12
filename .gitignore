@@ -39,6 +39,24 @@ _data/music_cache/
 _data/archive_audio_cache/
 _data/archive_audio_candidates.json
 
+# Never version rendered audio/video. YouTube keeps the published media;
+# this repo keeps only metadata, markers and analytics memory.
+*.aac
+*.avi
+*.flac
+*.m4a
+*.mkv
+*.mov
+*.mp3
+*.mp4
+*.oga
+*.ogg
+*.wav
+*.webm
+assets/audio/
+assets/video/
+assets/videos/
+
 # Video pipeline binaries
 _videos/*.mp4
 _videos/*.mp3

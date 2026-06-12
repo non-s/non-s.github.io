@@ -1,0 +1,101 @@
+{
+  "state": "migration_needed",
+  "pressure_score": 86,
+  "metrics": {
+    "live_state_files": 153,
+    "data_state_files": 115,
+    "video_done_markers": 37,
+    "live_state_bytes": 5294541,
+    "stories_queue_bytes": 1521694,
+    "stories_queue_lines": 38207,
+    "workflow_files": 14,
+    "state_path_refs": 216
+  },
+  "largest_state_files": [
+    {
+      "path": "_data/stories_queue.json",
+      "bytes": 1521694,
+      "lines": 38207
+    },
+    {
+      "path": "_data/ai_cache.jsonl",
+      "bytes": 737848,
+      "lines": 843
+    },
+    {
+      "path": "_data/early_performance.json",
+      "bytes": 365762,
+      "lines": 13641
+    },
+    {
+      "path": "_data/queue_audit.json",
+      "bytes": 325287,
+      "lines": 8856
+    },
+    {
+      "path": "_data/packaging_report.json",
+      "bytes": 284701,
+      "lines": 7607
+    },
+    {
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 213656,
+      "lines": 593
+    },
+    {
+      "path": "_data/autonomous_growth_plan.json",
+      "bytes": 208640,
+      "lines": 5446
+    },
+    {
+      "path": "_data/analytics/legacy_backfill.json",
+      "bytes": 110232,
+      "lines": 3432
+    },
+    {
+      "path": "_data/youtube_brain_report.json",
+      "bytes": 108082,
+      "lines": 3186
+    },
+    {
+      "path": "_data/dry_run_publish.json",
+      "bytes": 100704,
+      "lines": 2709
+    },
+    {
+      "path": "_data/next_shorts.json",
+      "bytes": 86219,
+      "lines": 2477
+    },
+    {
+      "path": "_data/fact_sources.jsonl",
+      "bytes": 77179,
+      "lines": 257
+    }
+  ],
+  "migration_lanes": [
+    {
+      "lane": "queue_and_upload_intents",
+      "target": "Postgres/Supabase tables keyed by channel, language, state, and publish window",
+      "reason": "Queue and upload state change every run and should not be merged through Git.",
+      "priority": 1
+    },
+    {
+      "lane": "raw_analytics_and_ledgers",
+      "target": "Object storage plus compacted daily snapshots committed to Git",
+      "reason": "Append-heavy JSONL/CSV data creates repository churn and merge pressure.",
+      "priority": 2
+    },
+    {
+      "lane": "workflow_runtime_state",
+      "target": "External run ledger with Git storing reports, not live locks",
+      "reason": "Operational locks, quota ledgers, and markers are control-plane state.",
+      "priority": 3
+    }
+  ],
+  "commands": [
+    "Keep Git for code, dashboards, and reviewed daily/weekly snapshots.",
+    "Move queue, upload intents, raw analytics, quota ledgers, and run markers behind a storage adapter.",
+    "Block new features that add live-state files without a migration lane."
+  ]
+}

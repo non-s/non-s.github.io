@@ -11,12 +11,9 @@ from pathlib import Path
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = [
-    "https://www.googleapis.com/auth/youtube.upload",
-    "https://www.googleapis.com/auth/youtube.readonly",
-    "https://www.googleapis.com/auth/youtube.force-ssl",
-    "https://www.googleapis.com/auth/yt-analytics.readonly",
-]
+from utils.youtube_oauth import DEFAULT_SCOPES
+
+SCOPES = DEFAULT_SCOPES
 TOKEN_FILE = Path("youtube_token.json")
 REPO = "non-s/non-s.github.io"
 

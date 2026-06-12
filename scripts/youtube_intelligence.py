@@ -10,17 +10,24 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from utils.youtube_intelligence import ANALYTICS_REPORTS, build_payload, default_window, rows_to_dicts
+from utils.youtube_oauth import (
+    ANALYTICS_MONETARY_SCOPE,
+    ANALYTICS_SCOPE,
+    READONLY_SCOPE,
+    can_read_analytics,
+    can_read_youtube,
+    credentials_from_token_info,
+    load_token_info,
+    token_grants,
+    token_issue_codes,
+    token_status_message,
+)
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 OUT = ROOT / "_data" / "youtube_intelligence.json"
-READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
-ANALYTICS_SCOPE = "https://www.googleapis.com/auth/yt-analytics.readonly"
-FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 
 
 def _safe_json(path: Path) -> dict:
@@ -31,33 +38,40 @@ def _safe_json(path: Path) -> dict:
         return {}
 
 
-def _token_grants(data: dict, *accepted_scopes: str) -> bool:
-    granted = set(data.get("scopes") or [])
-    return bool(granted.intersection(accepted_scopes))
+def _has_observed_snapshot(payload: dict) -> bool:
+    if not isinstance(payload, dict):
+        return False
+    if (payload.get("channel") or {}).get("id"):
+        return True
+    if int((payload.get("uploads_inventory") or {}).get("uploads_checked", 0) or 0) > 0:
+        return True
+    if int((payload.get("video_audit") or {}).get("videos_checked", 0) or 0) > 0:
+        return True
+    return any(
+        (item.get("status") == "ok" and int(item.get("rows", 0) or 0) > 0)
+        for item in (payload.get("analytics_reports") or [])
+        if isinstance(item, dict)
+    )
 
 
-def _credentials(data: dict, scopes: list[str]) -> Credentials:
-    creds = Credentials.from_authorized_user_info(data, scopes)
-    if not creds.valid and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-    return creds
-
-
-def _load_data_service(data: dict):
-    if not _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
+def _load_data_service(info):
+    if not can_read_youtube(info.data):
         return None
-    return build("youtube", "v3", credentials=_credentials(data, [READONLY_SCOPE]), cache_discovery=False)
+    return build("youtube", "v3", credentials=credentials_from_token_info(info, [READONLY_SCOPE]), cache_discovery=False)
 
 
-def _load_analytics_service(data: dict):
-    if not _token_grants(data, ANALYTICS_SCOPE, FULL_YOUTUBE_SCOPE):
+def _load_analytics_service(info):
+    if not can_read_analytics(info.data):
         return None
     # The reports.query docs now require youtube.readonly access as well, so
     # include it when the token grants it.
-    scopes = [ANALYTICS_SCOPE]
-    if _token_grants(data, READONLY_SCOPE, FULL_YOUTUBE_SCOPE):
-        scopes.append(READONLY_SCOPE)
-    return build("youtubeAnalytics", "v2", credentials=_credentials(data, scopes), cache_discovery=False)
+    analytics_scope = ANALYTICS_SCOPE if token_grants(info.data, ANALYTICS_SCOPE) else ANALYTICS_MONETARY_SCOPE
+    return build(
+        "youtubeAnalytics",
+        "v2",
+        credentials=credentials_from_token_info(info, [analytics_scope, READONLY_SCOPE]),
+        cache_discovery=False,
+    )
 
 
 def _fetch_channel(youtube) -> dict | None:
@@ -139,10 +153,10 @@ def _run_report(analytics, spec: dict) -> dict:
         }
 
 
-def _run_reports(analytics) -> list[dict]:
+def _run_reports(analytics, unavailable_error: str = "yt-analytics.readonly scope missing") -> list[dict]:
     if analytics is None:
         return [
-            {"id": spec["id"], "status": "not_authorized", "rows": 0, "error": "yt-analytics.readonly scope missing"}
+            {"id": spec["id"], "status": "not_authorized", "rows": 0, "error": unavailable_error}
             for spec in ANALYTICS_REPORTS
         ]
     return [_run_report(analytics, spec) for spec in ANALYTICS_REPORTS]
@@ -150,14 +164,18 @@ def _run_reports(analytics) -> list[dict]:
 
 def main() -> int:
     issues = []
-    data = _safe_json(TOKEN_FILE)
-    if not data:
-        issues.append("youtube_token_missing")
-    youtube = _load_data_service(data) if data else None
-    analytics = _load_analytics_service(data) if data else None
-    if youtube is None:
+    info = load_token_info(TOKEN_FILE)
+    if not info.present:
+        if _has_observed_snapshot(_safe_json(OUT)):
+            print(f"youtube intelligence: {token_status_message(info)}; keeping existing snapshot")
+            return 0
+        issues.extend(token_issue_codes(info))
+        print(f"youtube intelligence: {token_status_message(info)}; writing unauthenticated diagnostic snapshot")
+    youtube = _load_data_service(info) if info.present else None
+    analytics = _load_analytics_service(info) if info.present else None
+    if youtube is None and info.present:
         issues.append("youtube_readonly_scope_missing")
-    if analytics is None:
+    if analytics is None and info.present:
         issues.append("youtube_analytics_scope_missing")
     channel = None
     uploads = []
@@ -170,7 +188,10 @@ def main() -> int:
         videos = _fetch_videos(youtube, [item["video_id"] for item in uploads if item.get("video_id")])
     except Exception as exc:
         issues.append(f"data_api_refresh_failed:{type(exc).__name__}")
-    reports = _run_reports(analytics)
+    reports = _run_reports(
+        analytics,
+        "YouTube token missing" if not info.present else "yt-analytics.readonly scope missing",
+    )
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         json.dumps(build_payload(channel=channel, uploads=uploads, videos=videos, reports=reports, issues=issues),

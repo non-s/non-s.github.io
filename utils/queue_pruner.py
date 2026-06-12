@@ -6,6 +6,7 @@ from collections import Counter
 from datetime import datetime, timezone
 
 import fetch_animals
+from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
 from utils.claim_risk import evaluate_claim_risk
 from utils.fact_ledger import duplicate_angle_ids
 from utils.local_rewriter import rescue_story
@@ -172,15 +173,23 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     repaired = False
     repair_reasons: list[str] = []
     publish_risks = []
+    brain_risks = [str(risk) for risk in (brain.get("risks") or [])]
+    packaging_risks = [str(risk) for risk in (pkg.get("risks") or [])]
     if publish.get("state") == "rewrite" or not publish.get("approved"):
         publish_risks.append("publish_score_rewrite")
     if (publish.get("phrase_risk") or {}).get("hits"):
         publish_risks.append("repetitive_title_template")
     if not editorial.get("approved", True):
         publish_risks.extend(str(issue) for issue in editorial.get("issues") or [])
-    if brain.get("state") in {"rewrite_before_publish", "do_not_publish"} or pkg.get("state") == "rewrite_packaging" or publish_risks:
+    if (
+        brain.get("state") in {"rewrite_before_publish", "do_not_publish"}
+        or brain_risks
+        or pkg.get("state") == "rewrite_packaging"
+        or packaging_risks
+        or publish_risks
+    ):
         repair_reasons = list(dict.fromkeys(
-            (brain.get("risks") or []) + (pkg.get("risks") or []) + publish_risks
+            brain_risks + packaging_risks + publish_risks
         ))
         rescued, applied = rescue_story(packaged, repair_reasons)
         if applied:
@@ -191,6 +200,8 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
             rights = audit_rights(packaged)
             editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
             pkg = packaged.get("packaging") or {}
+            brain_risks = [str(risk) for risk in (brain.get("risks") or [])]
+            packaging_risks = [str(risk) for risk in (pkg.get("risks") or [])]
     penalty = 0
     if not rights.get("approved"):
         penalty += 30
@@ -204,8 +215,12 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         penalty += 35
     elif brain.get("state") == "rewrite_before_publish":
         penalty += 12
+    if brain_risks:
+        penalty += min(18, 6 * len(brain_risks))
     if pkg.get("state") == "rewrite_packaging":
         penalty += 16
+    elif packaging_risks:
+        penalty += min(12, 4 * len(packaging_risks))
     total = max(0.0, min(100.0, float(publish.get("score", 0) or 0) - penalty))
     state = "publish_ready"
     if penalty >= 35 or total < 55:
@@ -227,6 +242,16 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
             "reasons": repair_reasons,
         },
     }
+
+
+def _objective_rank(item: dict) -> tuple[int, float]:
+    gate = ((item.get("publish_score") or {}).get("objective_gate") or {})
+    scale_ready = 1 if gate.get("scale_ready", True) else 0
+    try:
+        confidence = float(gate.get("confidence_score") or 0)
+    except Exception:
+        confidence = 0.0
+    return scale_ready, confidence
 
 
 def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
@@ -295,6 +320,7 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
         accepted.append(scored)
 
     accepted.sort(key=lambda item: (
+        *_objective_rank(item),
         float((item["story"].get("autonomy") or {}).get("priority", 0) or 0),
         item["score"],
         int(item["story"].get("score", 0) or 0),
@@ -302,6 +328,12 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
     ), reverse=True)
 
     kept: list[dict] = []
+    objective = load_channel_objective()
+    objective_targets = objective.get("targets") or {}
+    max_cluster = int(objective_targets.get("max_publish_ready_template_cluster") or 2)
+    max_mechanism_cluster = int(objective_targets.get("max_publish_ready_mechanism_cluster") or 2)
+    template_clusters: Counter[str] = Counter()
+    mechanism_clusters: Counter[str] = Counter()
     final_seen_titles: set[str] = set()
     final_seen_angles: set[str] = set()
     final_seen_sources: set[str] = set()
@@ -328,10 +360,40 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
         story["youtube_brain"] = item["youtube_brain"]
         story["packaging"] = item["packaging"]
         story["queue_repair"] = item["repair"]
+        effective_state = item["state"]
+        effective_score = item["score"]
+        gate = (item["publish_score"] or {}).get("objective_gate") or {}
+        objective_reasons = [
+            f"objective_gate:{reason}"
+            for reason in (gate.get("reasons") or [])
+        ]
+        if objective_reasons:
+            reasons.update(objective_reasons)
+        cluster = title_template_cluster(str(story.get("seo_title") or story.get("title") or ""))
+        mechanism = cognitive_mechanism_cluster(story)
+        if cluster and effective_state == "publish_ready":
+            if template_clusters[cluster] >= max_cluster:
+                effective_state = "rewrite"
+                effective_score = max(0.0, float(effective_score) - 12.0)
+                objective_reasons.append(f"template_cluster_limit:{cluster}")
+            else:
+                template_clusters[cluster] += 1
+        if mechanism and effective_state == "publish_ready":
+            if mechanism_clusters[mechanism] >= max_mechanism_cluster:
+                effective_state = "rewrite"
+                effective_score = max(0.0, float(effective_score) - 14.0)
+                objective_reasons.append(f"mechanism_cluster_limit:{mechanism}")
+            else:
+                mechanism_clusters[mechanism] += 1
+        if objective_reasons:
+            reasons.update(objective_reasons)
         story["queue_prune"] = {
-            "score": item["score"],
-            "state": item["state"],
+            "score": round(effective_score, 1),
+            "state": effective_state,
             "checked_at": datetime.now(timezone.utc).isoformat(),
+            "template_cluster": cluster,
+            "mechanism_cluster": mechanism,
+            "objective_reasons": objective_reasons,
         }
         kept.append(story)
 

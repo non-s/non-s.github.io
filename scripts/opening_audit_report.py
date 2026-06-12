@@ -4,8 +4,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from utils.editorial_guard import editorial_issues
+from utils.local_rewriter import rescue_story
 
 
 def _read_json(path: Path, default):
@@ -16,6 +24,32 @@ def _read_json(path: Path, default):
         return default
 
 
+def _title_payload(marker: dict) -> dict:
+    title = str(marker.get("title") or "").strip()
+    video_id = str(marker.get("video_id") or "").strip()
+    issues = editorial_issues({"title": title, "seo_title": title}, include_script=False) if title else []
+    if not issues:
+        return {"title": title, "source_title": title, "title_issues": []}
+    payload = {
+        "title": f"{video_id or 'unknown-video'} (title needs repair: {', '.join(issues[:3])})",
+        "source_title": title,
+        "title_issues": issues,
+    }
+    rescued, applied = rescue_story({
+        "title": title,
+        "seo_title": title,
+        "hook": title,
+        "script": title,
+        "thumbnail_text": str(marker.get("thumbnail_text") or ""),
+        "category": str(marker.get("category") or ""),
+        "source_url": str(marker.get("url") or marker.get("source_url") or ""),
+    }, issues)
+    candidate = str(rescued.get("seo_title") or rescued.get("title") or "").strip() if applied else ""
+    if candidate and candidate.lower() != title.lower() and not editorial_issues({"title": candidate, "seo_title": candidate}, include_script=False):
+        payload["suggested_titles"] = [candidate[:82]]
+    return payload
+
+
 def build_report(root: Path = Path(".")) -> dict:
     rows = []
     for path in sorted((root / "_videos").glob("*.done")) if (root / "_videos").exists() else []:
@@ -23,10 +57,11 @@ def build_report(root: Path = Path(".")) -> dict:
         audit = marker.get("opening_audit") or {}
         if not audit:
             continue
+        title_payload = _title_payload(marker)
         rows.append(
             {
                 "video_id": marker.get("video_id", ""),
-                "title": marker.get("title", ""),
+                **title_payload,
                 "score": audit.get("score", 0),
                 "reasons": audit.get("reasons") or [],
                 "approved": audit.get("approved", True),

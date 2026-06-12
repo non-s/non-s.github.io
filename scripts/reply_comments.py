@@ -12,17 +12,20 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from utils.comment_replies import build_reply_text, is_replyable_comment
+from utils.youtube_oauth import (
+    COMMENTS_SCOPE,
+    can_manage_comments,
+    credentials_from_token_info,
+    load_token_info,
+    token_status_message,
+)
 
 TOKEN_FILE = ROOT / "youtube_token.json"
 VIDEOS_DIR = ROOT / "_videos"
 LEDGER_FILE = ROOT / "_data" / "comment_replies.json"
-COMMENTS_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
-FULL_YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 
 
 def _load_json(path: Path, fallback):
@@ -32,19 +35,15 @@ def _load_json(path: Path, fallback):
         return fallback
 
 
-def _token_grants(data: dict, *accepted_scopes: str) -> bool:
-    granted = set(data.get("scopes") or [])
-    return bool(granted.intersection(accepted_scopes))
-
-
 def _load_service(token_file: Path = TOKEN_FILE):
-    data = json.loads(token_file.read_text(encoding="utf-8"))
-    if not _token_grants(data, COMMENTS_SCOPE, FULL_YOUTUBE_SCOPE):
+    info = load_token_info(token_file)
+    if not info.present:
+        print(f"reply-comments: {token_status_message(info)}")
+        return None
+    if not can_manage_comments(info.data):
         print("reply-comments: token lacks youtube.force-ssl; skipping")
         return None
-    creds = Credentials.from_authorized_user_info(data, [COMMENTS_SCOPE])
-    if not creds.valid and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+    creds = credentials_from_token_info(info, [COMMENTS_SCOPE])
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
@@ -103,8 +102,9 @@ def main() -> int:
     if os.environ.get("YOUTUBE_AUTO_REPLY_COMMENTS", "1").lower() in {"0", "false", "no"}:
         print("reply-comments: disabled")
         return 0
-    if not TOKEN_FILE.exists():
-        print("reply-comments: youtube_token.json missing")
+    token_info = load_token_info(TOKEN_FILE)
+    if not token_info.present:
+        print(f"reply-comments: {token_status_message(token_info)}")
         return 0
     youtube = _load_service()
     if youtube is None:

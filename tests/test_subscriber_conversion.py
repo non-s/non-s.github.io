@@ -11,6 +11,7 @@ from utils.subscriber_conversion import (
 def test_contextual_cta_uses_category_identity():
     assert "science fiction" in contextual_cta({"category": "fungi"}).lower()
     assert "earth" in contextual_cta({"category": "volcanoes"}).lower()
+    assert "one animal signal" in contextual_cta({"category": "farm"}).lower()
 
 
 def test_debate_prompt_asks_for_opinion_not_generic_topic():
@@ -40,6 +41,24 @@ def test_subscriber_conversion_scores_series_and_debate_comment():
 
     assert out["score"] >= 76
     assert out["state"] == "strong"
+
+
+def test_subscriber_conversion_rewards_return_promise():
+    story = {
+        "title": "Chickens react differently when their heads move",
+        "hook": "Chickens react before the group moves.",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "series": "Farmyard Minds #3",
+        "packaging": {
+            "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this instinct or intelligence?",
+        },
+        "category": "farm",
+    }
+
+    out = score_subscriber_conversion(story)
+
+    assert "identity_cta" in out["reasons"]
+    assert "return_prompt" in out["reasons"]
 
 
 def test_series_identity_numbers_from_memory():

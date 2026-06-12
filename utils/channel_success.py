@@ -8,6 +8,13 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from utils.channel_objective import (
+    audience_goal_status,
+    load_channel_objective,
+    reach_goal_status,
+)
+from utils.editorial_guard import editorial_issues
+
 
 RETENTION_FLOOR = 62.0
 RETENTION_STRETCH = 70.0
@@ -35,6 +42,13 @@ def _rank_map(mapping: dict, limit: int = 5) -> list[dict]:
     ]
     ranked.sort(key=lambda item: item["score"], reverse=True)
     return ranked[:limit]
+
+
+def _title_issues(title: str) -> list[str]:
+    title = str(title or "").strip()
+    if not title:
+        return []
+    return editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
 def retention_command_center(latest: dict, fact_ledger: dict) -> dict:
@@ -148,6 +162,7 @@ def first_24h_engine(latest: dict) -> dict:
     watch = []
     for item in latest.get("top_performers") or []:
         title = str(item.get("title") or "")
+        title_issues = _title_issues(title)
         views = _int(item.get("views", 0))
         velocity = _float(item.get("views_per_hour", 0))
         growth = _float(item.get("growth_score", 0))
@@ -163,7 +178,11 @@ def first_24h_engine(latest: dict) -> dict:
             "retention": round(retention, 3),
             "retention_ready": retention_ready,
         }
-        if retention_ready and retention >= RETENTION_FLOOR and (growth >= 180 or velocity >= 35):
+        if title_issues:
+            row["title_issues"] = title_issues
+            row["rework_reason"] = "repair title/package before scaling"
+            rework.append(row)
+        elif retention_ready and retention >= RETENTION_FLOOR and (growth >= 180 or velocity >= 35):
             winners.append(row)
         elif retention_ready and views >= 300 and retention < RETENTION_FLOOR:
             rework.append(row)
@@ -250,6 +269,32 @@ def thirty_day_review(latest: dict) -> dict:
     }
 
 
+def studio_reach_engine(studio_reach: dict, objective: dict) -> dict:
+    summary = studio_reach.get("summary") if isinstance(studio_reach.get("summary"), dict) else studio_reach
+    status = reach_goal_status(objective, summary)
+    gap_pct = round(status["gap_to_floor"] * 100, 1)
+    status["priority"] = "urgent" if status["state"] == "needs_first_second_work" else "maintain"
+    status["diagnosis"] = (
+        f"Stayed-to-watch is {round(status['stayed_to_watch_rate'] * 100, 1)}%, "
+        f"{gap_pct} points below the operating floor."
+        if status["state"] == "needs_first_second_work"
+        else "Stayed-to-watch is above the operating floor; scale only after per-video checks."
+    )
+    return status
+
+
+def audience_recurrence_engine(objective: dict) -> dict:
+    status = audience_goal_status(objective)
+    sub_gap = round(max(0.0, status["new_viewer_subscribe_rate_floor"] - status["new_viewer_subscribe_rate"]) * 100, 2)
+    recurring_gap = round(max(0.0, status["recurring_viewer_rate_floor"] - status["recurring_viewer_rate"]) * 100, 2)
+    status["priority"] = "urgent" if status["state"] == "needs_recurrence_work" else "maintain"
+    status["diagnosis"] = (
+        f"New viewers are not yet becoming a repeat audience: subscribe gap {sub_gap} points, "
+        f"recurring gap {recurring_gap} points."
+    )
+    return status
+
+
 def build_success_plan(
     latest: dict,
     comments: dict,
@@ -257,17 +302,25 @@ def build_success_plan(
     autonomous: dict,
     fact_ledger: dict,
     ops: dict,
+    studio_reach: dict | None = None,
+    objective: dict | None = None,
 ) -> dict:
+    objective = objective or load_channel_objective()
     retention = retention_command_center(latest, fact_ledger)
     subscribers = subscriber_engine(latest)
     audience = audience_loop(comments)
     first_day = first_24h_engine(latest)
     series = series_system(latest, ops)
     review = thirty_day_review(latest)
+    reach = studio_reach_engine(studio_reach or {}, objective)
+    recurrence = audience_recurrence_engine(objective)
 
     score = 100.0
     score -= min(25.0, retention["gap_to_floor"] * 2)
     score -= min(15.0, subscribers["gap_to_target"] * 10)
+    score -= min(12.0, reach["gap_to_floor"] * 100)
+    score -= 10.0 if recurrence["state"] == "needs_recurrence_work" else 0.0
+    score -= min(6.0, max(0.0, recurrence["new_viewer_subscribe_rate_floor"] - recurrence["new_viewer_subscribe_rate"]) * 1000)
     score -= 10.0 if audience["state"] == "blind_spot" else 0.0
     score -= 10.0 if _int(fact_ledger.get("risk_score", 0)) >= 80 else 0.0
     quota = autonomous.get("quota_budget") or {}
@@ -277,7 +330,9 @@ def build_success_plan(
 
     next_actions = []
     next_actions.extend(retention.get("commands") or [])
+    next_actions.extend(reach.get("commands") or [])
     next_actions.extend(subscribers.get("commands") or [])
+    next_actions.extend(recurrence.get("commands") or [])
     next_actions.extend(audience.get("commands") or [])
     if first_day.get("winners"):
         next_actions.append("Create sequels for first-day winners before broad discovery.")
@@ -288,12 +343,19 @@ def build_success_plan(
         "success_score": score,
         "state": "success_ready" if score >= 80 else "growth_building",
         "retention": retention,
+        "studio_reach": reach,
         "subscriber_conversion": subscribers,
+        "audience_recurrence": recurrence,
         "audience_loop": audience,
         "first_24h": first_day,
         "identity": identity_lock(),
         "series_system": series,
         "thirty_day_review": review,
         "next_actions": next_actions[:10],
-        "operating_principle": "Scale only what earns retention, then use comments and sequels to compound attention.",
+        "objective": {
+            "name": objective.get("objective", "Turn discovery into retained and recurring audience."),
+            "source": objective.get("source", "default"),
+            "targets": objective.get("targets") or {},
+        },
+        "operating_principle": "Scale only what earns stayed-to-watch, subscribers, and return signals.",
     }

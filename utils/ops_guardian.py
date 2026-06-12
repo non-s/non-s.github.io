@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from utils.audience_expansion import GLOBAL_PUBLISH_WINDOWS
+from utils.editorial_guard import editorial_issues
 
 
 def _safe_json(path: Path) -> dict:
@@ -39,6 +40,13 @@ def _load_markers(root: Path) -> list[dict]:
 
 def _avg(values: list[float]) -> float:
     return round(sum(values) / len(values), 3) if values else 0.0
+
+
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
 def _recommended_hours(root: Path, latest: dict) -> list[dict]:
@@ -235,6 +243,10 @@ def build_ops_report(root: Path | str = ".") -> dict:
         item for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:5]
         if str(item) not in paused_names
     ]
+    remake_candidates = [
+        item for item in (latest.get("remake_candidates") or [])
+        if isinstance(item, dict) and _recommendable_title(str(item.get("title") or ""))
+    ][:8]
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "risk": {
@@ -257,7 +269,7 @@ def build_ops_report(root: Path | str = ".") -> dict:
             ),
             "what_to_scale": scale_categories,
             "what_to_pause": [item["category"] for item in paused],
-            "what_to_remake": (latest.get("remake_candidates") or [])[:8],
+            "what_to_remake": remake_candidates,
             "inventory_state": inventory.get("state"),
             "next_actions": [
                 "Favor high-retention categories and formats in the next queue refresh.",

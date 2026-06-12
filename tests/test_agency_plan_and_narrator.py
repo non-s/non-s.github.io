@@ -7,11 +7,17 @@ def test_agency_plan_builds_seven_days():
         latest={"avg_view_pct": 55, "production_recommendations": {"hot_categories": ["farm", "birds"]}},
         health={"agency": {"decisions": {"publish_now": 30}}},
         ops={"paused_topics": [{"category": "cats"}]},
-        trend={"topics": [{"animal": "whale", "trend_safety": {"posture": "greenlight"}}]},
+        trend={"topics": [
+            {"category": "cats", "animal": "cat", "trend_safety": {"posture": "greenlight"}},
+            {"category": "ocean", "animal": "whale", "trend_safety": {"posture": "greenlight"}},
+        ]},
     )
     assert len(plan["days"]) == 7
     assert plan["status"] == "aggressive_growth"
     assert plan["days"][0]["avoid"] == ["cats"]
+    assert plan["days"][0]["trend_category"] == "ocean"
+    assert plan["days"][0]["trend_animal"] == "whale"
+    assert plan["blocked_trends"] == [{"category": "cats", "animal": "cat", "reason": "paused_category"}]
     assert all(day["focus"] != "cats" for day in plan["days"])
 
 

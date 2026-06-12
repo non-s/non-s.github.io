@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T10:53:15.429698+00:00",
+  "generated_at": "2026-06-12T13:16:07.496805+00:00",
   "items": [
     {
       "video_id": "7-ADzNJ9TH0",
@@ -8,7 +8,13 @@
       "views": 1930,
       "retention": 80.33,
       "growth_score": 300.813,
-      "decision": "scale"
+      "decision": "repair_package",
+      "title_issues": [
+        "generic_hiding_plain_sight"
+      ],
+      "suggested_titles": [
+        "Chickens react differently when their heads move"
+      ]
     },
     {
       "video_id": "x5WHIOr3fbQ",
@@ -71,7 +77,13 @@
       "views": 692,
       "retention": 76.42,
       "growth_score": 179.365,
-      "decision": "watch"
+      "decision": "repair_package",
+      "title_issues": [
+        "truncated_heres_title"
+      ],
+      "suggested_titles": [
+        "Tigers stay silent before they strike"
+      ]
     },
     {
       "video_id": "bA9NB3s1-wo",
@@ -93,12 +105,14 @@
     }
   ],
   "counts": {
-    "scale": 4,
+    "repair_package": 2,
+    "scale": 3,
     "rewrite_hook": 4,
     "pause_topic": 0,
-    "watch": 2
+    "watch": 1
   },
   "rules": {
+    "repair_package": "title or packaging fails editorial guard",
     "scale": "retention >= 62 and growth_score >= 180",
     "rewrite_hook": "views >= 900 and retention < 62",
     "pause_topic": "views < 500 and retention < 50"

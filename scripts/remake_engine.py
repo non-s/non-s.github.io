@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.editorial_guard import editorial_issues  # noqa: E402
 from utils.retention_surgeon import remake_brief
 
 LATEST = ROOT / "_data" / "analytics" / "latest.json"
@@ -25,6 +26,13 @@ def _safe_json(path: Path) -> dict:
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _recommendable_title(title: str) -> bool:
+    title = str(title or "").strip()
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
 def _brief(item: dict) -> dict:
@@ -71,6 +79,8 @@ def build_backlog(root: Path = ROOT) -> dict:
             retention = float(item.get("view_pct", item.get("average_view_percentage", 0)) or 0)
             postmortem = item.get("postmortem") or {}
             likely = set(postmortem.get("likely_causes") or [])
+            if not _recommendable_title(str(item.get("title") or "")):
+                continue
             if views >= 250 and (growth >= 120 or retention < 60 or "hook_needs_work" in likely):
                 remake = dict(item)
                 remake["retention"] = retention
@@ -78,7 +88,11 @@ def build_backlog(root: Path = ROOT) -> dict:
                     "remake the proven topic with a new first sentence and tighter visual promise"
                 )
                 candidates.append(remake)
-    briefs = [_brief(item) for item in candidates if isinstance(item, dict)]
+    briefs = [
+        _brief(item)
+        for item in candidates
+        if isinstance(item, dict) and _recommendable_title(str(item.get("title") or ""))
+    ]
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(briefs),

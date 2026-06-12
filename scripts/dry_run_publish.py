@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,22 +12,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.queue_pruner import prune_queue
+from utils.publish_priority import autonomy_priority, publish_priority_key
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
 
 
-def _autonomy_priority(story: dict, queue_score: float) -> float:
-    autonomy = story.get("autonomy") or {}
-    try:
-        priority = float(autonomy.get("priority", 0) or 0)
-    except Exception:
-        priority = 0.0
-    return priority if priority > 0 else float(queue_score or 0)
-
-
 def build_dry_run(data: dict) -> dict:
     items = []
+    objective_reasons = Counter()
     pruned, rejected, prune_summary = prune_queue(data)
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
@@ -44,12 +38,19 @@ def build_dry_run(data: dict) -> dict:
             and publish.get("state") == "publish_ready"
         ):
             autonomy = story.get("autonomy") or {}
+            gate = publish.get("objective_gate") or {}
+            for reason in gate.get("reasons") or []:
+                objective_reasons[str(reason)] += 1
             items.append({
                 "id": story.get("id", ""),
                 "title": story.get("seo_title") or story.get("title") or "",
                 "category": story.get("category", ""),
                 "queue_score": queue_prune.get("score", 0),
-                "autonomy_priority": _autonomy_priority(story, queue_prune.get("score", 0)),
+                "template_cluster": queue_prune.get("template_cluster", ""),
+                "mechanism_cluster": queue_prune.get("mechanism_cluster", ""),
+                "objective_reasons": list(gate.get("reasons") or []),
+                "scale_ready": bool(gate.get("scale_ready", True)),
+                "autonomy_priority": autonomy_priority(story, queue_prune.get("score", 0)),
                 "autonomy_lane": autonomy.get("lane", ""),
                 "hypothesis_id": autonomy.get("hypothesis_id", ""),
                 "packaging_lab": autonomy.get("packaging_lab") or {},
@@ -60,13 +61,21 @@ def build_dry_run(data: dict) -> dict:
             })
     items = sorted(
         items,
-        key=lambda item: (float(item.get("autonomy_priority", 0) or 0), float(item.get("queue_score", 0) or 0)),
+        key=lambda item: publish_priority_key(
+            {"autonomy": {"priority": item.get("autonomy_priority", 0)}, "queue_prune": {"score": item.get("queue_score", 0)}},
+            item.get("publish_score") or {},
+        ),
         reverse=True,
     )
     return {
         "would_publish": items[:10],
         "eligible_count": len(items),
-        "selection_rule": "autonomy_priority first, queue_score as tie-breaker",
+        "scale_ready_count": sum(1 for item in items if item.get("scale_ready")),
+        "observe_before_scaling_count": sum(
+            1 for item in items if "observe_before_scaling" in (item.get("objective_reasons") or [])
+        ),
+        "objective_reasons": dict(objective_reasons.most_common()),
+        "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
         "prune_summary": prune_summary,
         "rejected_preview": [
             {

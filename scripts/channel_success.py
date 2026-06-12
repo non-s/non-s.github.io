@@ -31,6 +31,8 @@ def main() -> int:
         autonomous=_safe(ROOT / "_data" / "autonomous_director.json"),
         fact_ledger=_safe(ROOT / "_data" / "fact_ledger.json"),
         ops=_safe(ROOT / "_data" / "ops_guardian.json"),
+        studio_reach=_safe(ROOT / "_data" / "analytics" / "studio_reach_latest.json"),
+        objective=_safe(ROOT / "_data" / "channel_objective.json"),
     )
     OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"channel success: {payload['state']} ({payload['success_score']}/100)")

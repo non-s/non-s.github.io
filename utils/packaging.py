@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 
 from utils.curiosity_gap import CuriosityGapEngine
+from utils.editorial_guard import editorial_issues
 from utils.editorial_rules import evaluate_story_package
 from utils.growth_engine import (
     analyze_retention,
@@ -22,7 +23,7 @@ from utils.subscriber_conversion import (
 )
 
 SUBJECT_TERMS = {
-    "cow", "cows", "duck", "ducks", "chicken", "chickens", "deer",
+    "cow", "cows", "duck", "ducks", "duckling", "ducklings", "chicken", "chickens", "deer",
     "horse", "horses", "tiger", "tigers", "penguin", "penguins",
     "goat", "goats", "wolf", "wolves", "bear", "bears", "bird",
     "birds", "owl", "owls", "cat", "cats", "dog", "dogs", "lion",
@@ -42,23 +43,79 @@ SUBJECT_TERMS = {
 ACTION_VERBS = (
     "fake", "protect", "escape", "remember", "recognize", "call", "hear",
     "hide", "slide", "hunt", "plan", "trick", "warn", "choose", "save",
-    "signal", "follow", "digest", "groom", "roll", "bray",
+    "signal", "follow", "rely", "digest", "groom", "roll", "bray",
     "erupt", "glow", "flow", "form", "grow", "melt", "freeze",
     "recover", "connect", "communicate", "build", "collapse",
 )
 CUE_WORDS = (
-    "eyes", "ears", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
+    "ear position", "ear movement", "head movement", "hand movement", "tail position",
+    "wing movement", "wing position", "beak movement", "fin movement",
+    "flipper movement", "first movement", "feeding cue", "body cue",
+    "object group", "number cue",
+    "eyes", "ears", "ear", "tail", "beak", "wing", "wings", "feet", "paw", "paws", "horn", "horns",
     "sound", "call", "stripe", "feathers", "movement", "cue", "body",
     "nose", "face", "head", "pupil", "pupils", "hoof", "hooves", "fin", "fins",
-    "gill", "gills", "antenna", "antennae",
+    "gill", "gills", "antenna", "antennae", "hand", "hands", "arm", "arms",
+    "leg", "legs", "flipper", "flippers", "whisker", "whiskers",
     "lava", "ash", "cloud", "clouds", "roots", "leaf", "leaves",
-    "mushroom", "mycelium", "reef", "coral", "wave", "waves",
+    "mushroom", "mycelium", "object", "objects", "group", "groups", "reef", "coral", "wave", "waves",
     "current", "glacier", "rock", "rocks", "crater", "ice",
 )
 GENERIC_PHRASES = (
     "hiding in plain sight", "another secret", "another signal",
     "amazing fact", "incredible animal", "you won't believe",
     "one visible cue for a reason", "secret hiding in plain sight",
+    "signal cue", "turn the detail into the clue",
+    "reveal the next move through movement",
+    "rely on body posture", "recognize faces through body posture",
+    "signal the next move with body posture", "through body cue",
+    "signal the next move with detail", "watch the detail when",
+    "the detail that explains", "recognize faces through tail",
+    "signal the next move with movement", "rely on movement to signal",
+    "recognize faces through ear", "recognize faces through hand",
+    "recognize faces through flipper", "recognize faces through beak",
+    "recognize faces through wing",
+    "recognize signals through body cue", "recognize signals through body posture",
+    "recognize signals through ear position", "recognize signals through head movement",
+    "recognize signals through fin movement", "recognize signals through hand movement",
+    "recognize signals through tail position", "recognize signals through wing movement",
+    "recognize signals through wing position", "recognize signals through beak movement",
+    "recognize signals through flipper movement", "recognize signals through first movement",
+    "rely on ear position to signal", "rely on head movement to signal",
+    "rely on fin movement to signal", "rely on hand movement to signal",
+    "rely on tail position to signal", "rely on wing movement to signal",
+    "rely on wing position to signal", "rely on beak movement to signal",
+    "rely on flipper movement to signal", "rely on first movement to signal",
+    "signal the next move with ear position", "signal the next move with head movement",
+    "signal the next move with fin movement", "signal the next move with hand movement",
+    "signal the next move with tail position", "signal the next move with wing movement",
+    "signal the next move with wing position", "signal the next move with beak movement",
+    "signal the next move with flipper movement", "signal the next move with first movement",
+    "this movement changes what", "this first movement changes what", "this first move changes what",
+    "rely on the first movement for a reason", "rely on first movement for a reason",
+    "when the ear movement changes",
+    "this ear position changes what",
+)
+BODY_SIGNAL_TEMPLATE = re.compile(
+    r"(?:(?:recognize signals through|signal the next move with) "
+    r"(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|"
+    r"fin movement|first movement|flipper movement|hand movement|head movement|"
+    r"tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|"
+    r"face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|"
+    r"leg|legs|nose|paw|paws|tail|wing|wings)\b|rely on(?: the)? "
+    r"(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|"
+    r"fin movement|first movement|flipper movement|hand movement|head movement|"
+    r"tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|"
+    r"face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|"
+    r"leg|legs|nose|paw|paws|tail|wing|wings) to signal)\b",
+    re.I,
+)
+GENERIC_MOVEMENT_TITLE = re.compile(
+    r"\bthis (?:(?:first )?movement|first move) changes what [a-z]+s? do next\b|"
+    r"\brely on (?:the )?first movement for a reason\b|"
+    r"\b(?:read the moment from one first move|react differently when the first move appears|"
+    r"rely on (?:the )?first movement to [a-z]+)\b",
+    re.I,
 )
 SERIES_CATALOG = {
     "animal_myth": "Animal Myths",
@@ -114,7 +171,7 @@ def extract_action(story: dict) -> str:
 
 def extract_cue(story: dict) -> str:
     text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script", "thumbnail_text")).lower()
-    for cue in CUE_WORDS:
+    for cue in sorted(CUE_WORDS, key=len, reverse=True):
         if re.search(r"\b" + re.escape(cue) + r"\b", text):
             return cue
     return "cue"
@@ -123,6 +180,16 @@ def extract_cue(story: dict) -> str:
 def _clean_title(title: str) -> str:
     title = re.sub(r"\s+", " ", title or "").strip(" -.,")
     return title if len(title) <= 82 else title[:79].rstrip(" -.,") + "..."
+
+
+def _safe_title_options(story: dict, titles: list[str]) -> list[str]:
+    out: list[str] = []
+    for title in titles:
+        clean = _clean_title(title)
+        candidate = {**story, "title": clean, "seo_title": clean}
+        if clean and not editorial_issues(candidate, include_script=False):
+            out.append(clean)
+    return out or [_clean_title(title) for title in titles if _clean_title(title)]
 
 
 def title_options(story: dict) -> list[str]:
@@ -189,7 +256,12 @@ def score_packaging(story: dict) -> dict:
         strengths.append("visible_cue")
     else:
         risks.append("missing_visible_cue")
-    if any(phrase in text for phrase in GENERIC_PHRASES):
+    generic_hit = (
+        any(phrase in text for phrase in GENERIC_PHRASES)
+        or bool(BODY_SIGNAL_TEMPLATE.search(text))
+        or bool(GENERIC_MOVEMENT_TITLE.search(text))
+    )
+    if generic_hit:
         score -= 28
         risks.append("generic_clickbait_language")
     if "?" in title:
@@ -197,6 +269,8 @@ def score_packaging(story: dict) -> dict:
         strengths.append("curiosity_question")
     retention_score = analyze_retention(story)["score"]
     score = round(score * 0.65 + retention_score * 0.35)
+    if generic_hit:
+        score = min(score, 67)
     score = max(0, min(100, score))
     return {
         "score": score,
@@ -251,9 +325,10 @@ def pinned_comment(story: dict) -> str:
     subject = extract_subject(story)
     cue = extract_cue(story)
     prompt = debate_prompt(story)
+    return_hook = "Tomorrow: another animal signal."
     if cue != "cue":
-        return f"Watch the {cue} again. {prompt}"[:280]
-    return f"{_title_case_subject(subject)} is the example. {prompt}"[:280]
+        return f"Watch the {cue} again. {return_hook} {prompt}"[:280]
+    return f"{_title_case_subject(subject)} is the example. {return_hook} {prompt}"[:280]
 
 
 def community_prompt(story: dict) -> str:
@@ -300,12 +375,18 @@ def package_story(story: dict) -> dict:
     memory = load_format_memory()
     selected = _select_packaging(out, memory=memory)
     best_variant = selected["best"]
-    if best_variant:
+    preserve_source_packaging = (
+        str(out.get("studio_state") or "") == "comment_idea"
+        or str(out.get("source") or "").strip().lower() == "youtube comment idea"
+        or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
+        or str(out.get("source") or "").strip().lower() == "remake factory"
+    )
+    if best_variant and not preserve_source_packaging:
         out["seo_title"] = best_variant["title"]
         out["title"] = best_variant["title"]
         out["thumbnail_text"] = best_variant["thumbnail_text"]
         out["hook"] = best_variant["hook"]
-    titles = [_clean_title(title) for title in selected["options"]["titles"][:10]]
+    titles = _safe_title_options(out, selected["options"]["titles"][:10])
     thumbs = selected["options"]["thumbnail_texts"][:10]
     hooks = selected["options"]["hooks"][:5]
     series_info = series_package(out, memory=memory)

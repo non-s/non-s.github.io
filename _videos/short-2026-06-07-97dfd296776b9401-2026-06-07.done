@@ -276,5 +276,49 @@
       "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
     },
     "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
+  },
+  "retention_surgery": {
+    "score": 66,
+    "growth_retention": {
+      "score": 69,
+      "signals": {
+        "hook_score": 82,
+        "curiosity_score": 63,
+        "visual_score": 58,
+        "replay_score": 52,
+        "completion_prediction": 80
+      },
+      "verdict": "rewrite",
+      "reasons": [
+        "weak_replay_loop"
+      ],
+      "confidence": {
+        "confidence_score": 0.4,
+        "sample_size": 2,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.55,
+        "reasoning": "category has 2/5 samples, observed data, confidence 0.40; observation only."
+      },
+      "reasoning": "category has 2/5 samples, observed data, confidence 0.40; observation only."
+    },
+    "verdict": "tighten",
+    "issues": [
+      "missing_payoff_verb",
+      "script_too_short",
+      "missing_because"
+    ],
+    "fixes": [
+      "Add an action verb such as erupt, form, escape, recover, use, or change.",
+      "Add one visual detail and one because/payoff sentence.",
+      "Add a simple because/that-is-why payoff."
+    ],
+    "strengths": [
+      "short_hook"
+    ],
+    "suggested_hook": "Deer reveal the reason in one tiny movement."
   }
 }

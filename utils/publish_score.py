@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import re
 
+from utils.channel_objective import objective_gate_for_story
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.growth_engine import _distribution_adjustment, analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.subscriber_conversion import score_subscriber_conversion
@@ -18,7 +19,7 @@ ACTION_WORDS = {
     "fake", "remember", "recognize", "plan", "escape", "slide", "call",
     "hear", "hold", "roar", "use", "hide", "protect", "trick",
     "erupt", "glow", "form", "freeze", "melt", "recover", "connect",
-    "signal", "collapse", "flow", "grow",
+    "signal", "choose", "chooses", "collapse", "flow", "grow",
 }
 
 
@@ -109,6 +110,12 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score -= weak["risk"] * 0.22
     if not editorial["approved"]:
         score -= 35
+    objective_gate = objective_gate_for_story(
+        story,
+        {"decision_confidence": evidence},
+        story.get("packaging") if isinstance(story.get("packaging"), dict) else None,
+    )
+    score -= float(objective_gate.get("penalty") or 0)
 
     category_weights = (memory.get("category_weights") or {}) | (analytics_strategy.get("category_weights") or {})
     format_weights = (memory.get("format_weights") or {}) | (analytics_strategy.get("format_weights") or {})
@@ -127,6 +134,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         and weak["state"] != "block"
         and subscriber["robotic_title"]["state"] != "block"
         and editorial["approved"]
+        and not objective_gate.get("publish_blocking")
     )
     return {
         "score": score,
@@ -144,6 +152,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "title_score": title_audit.score,
         "phrase_risk": risk,
         "editorial_guard": editorial,
+        "objective_gate": objective_gate,
     }
 
 

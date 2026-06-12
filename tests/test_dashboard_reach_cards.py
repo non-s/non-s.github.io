@@ -40,7 +40,16 @@ def test_dashboard_renders_reach_and_operator_cards(tmp_path, monkeypatch):
     (tmp_path / "_data" / "trends").mkdir(parents=True)
     (tmp_path / "_data" / "trends" / "freshness_report.json").write_text(json.dumps({"coverage": 1}), encoding="utf-8")
     (tmp_path / "_data" / "opening_audit_report.json").write_text(json.dumps({"pass_rate": 1}), encoding="utf-8")
-    (tmp_path / "_data" / "session_graph.json").write_text(json.dumps({"coverage": 1}), encoding="utf-8")
+    (tmp_path / "_data" / "session_graph.json").write_text(
+        json.dumps({
+            "coverage": 1,
+            "edges": [
+                {"source_video_id": "a", "target_video_id": "b", "score": 80},
+                {"source_video_id": "c", "target_video_id": "d", "score": 62},
+            ],
+        }),
+        encoding="utf-8",
+    )
     (analytics / "api_quota_latest.json").write_text(
         json.dumps({"estimated_units": 1700, "guard": {"mode": "warn"}}), encoding="utf-8"
     )
@@ -50,5 +59,6 @@ def test_dashboard_renders_reach_and_operator_cards(tmp_path, monkeypatch):
 
     assert "World-class growth cockpit" in body
     assert "Stayed to watch" in body
+    assert "Session targets" in body
     assert "Shorts Reach: worst swipe risk" in body
     assert "Quota" in body
