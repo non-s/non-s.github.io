@@ -23,7 +23,7 @@ Axes shipped today
 ------------------
   - hook_style: outcome_first | question | shocking_number | curiosity_gap
   - script_tone: opinionated | analytical | conversational
-  - thumbnail_style: dynamic_text | category_color | brand_static
+  - thumbnail_style: frame_first_side_caption
   - cta_style: subscribe_channel
   - opening_visual_pattern: animal_closeup | action_first | before_after | impossible_result
   - subtitle_density: low | medium
@@ -112,16 +112,9 @@ AXES: tuple[Axis, ...] = (
     Axis(
         name="thumbnail_style",
         variants=(
-            "dynamic_text",  # AI-authored thumbnail_text overlay (current default)
-            "category_color",  # solid category-color slab + title
-            # `brand_static` (the shipped JPEG with no per-Short text) was
-            # part of the A/B until the channel had enough volume to
-            # learn from it. At <100 subs every Short is a first-
-            # impression and the boring brand image hurts CTR. Re-add
-            # once the channel passes ~500 subs and the A/B has real
-            # statistical power.
+            "frame_first_side_caption",
         ),
-        description="Thumbnail composition strategy.",
+        description="Locked thumbnail format: real footage frame, large side cue, small Wild Brief brand.",
     ),
     Axis(
         name="cta_style",

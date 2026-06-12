@@ -247,7 +247,7 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
         "experiments": {
             "hook_style": "outcome_first",
             "script_tone": "conversational",
-            "thumbnail_style": "dynamic_text",
+            "thumbnail_style": "frame_first_side_caption",
             "cta_style": "viewer_request",
         },
         "sequel_of": {

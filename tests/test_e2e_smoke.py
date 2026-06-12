@@ -72,7 +72,7 @@ def fake_queue_story():
         "experiments": {
             "hook_style": "outcome_first",
             "script_tone": "opinionated",
-            "thumbnail_style": "dynamic_text",
+            "thumbnail_style": "frame_first_side_caption",
             "cta_style": "subscribe_channel",
         },
     }

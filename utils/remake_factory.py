@@ -213,7 +213,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "experiments": {
             "hook_style": "outcome_first",
             "script_tone": "conversational",
-            "thumbnail_style": "dynamic_text",
+            "thumbnail_style": "frame_first_side_caption",
         },
         "production_mode": "remake_factory",
     }

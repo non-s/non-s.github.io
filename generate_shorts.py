@@ -962,64 +962,13 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     return img.convert("RGB")
 
 
-# ── Thumbnail do Short (dynamic per-story) ────────────────────────
+# ── Thumbnail do Short (frame-first side caption) ─────────────────
 #
-# Previously every Short shipped with the same brand-grid JPEG. The
-# "Inauthentic Content" policy + CTR research both push the other way:
-# a thumbnail that names WHAT the story is about wins clicks at the
-# moment the viewer is browsing the Shorts feed search page. We now
-# render the thumbnail per-Short with the AI-generated `thumbnail_text`
-# Per-operator decision (2026-05-19): every Short ships with the same
-# branded vertical thumbnail (`wildbrief_short_thumb.png`) as a
-# placeholder. The operator overrides each Short's thumb manually via
-# YouTube Studio for the ones that earn a bespoke design. This is
-# cleaner than auto-generating a per-Short title-card thumb because:
-#   * Every channel preview tile looks instantly recognisable as Wild
-#     Brief — branding consistency at the highest-impact surface.
-#   * The dynamic AI-text overlay path was visually inconsistent.
-#   * Frame-from-video extracts looked random / weak.
-SHIPPED_THUMB_PATH = Path(__file__).parent / "scripts" / "assets" / "wildbrief_short_thumb.png"
-# Legacy alias retained because tests / older comments referenced it.
-STATIC_THUMB_PATH = SHIPPED_THUMB_PATH
-
-
-def _create_static_short_thumbnail(
-    frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = ""
-) -> None:
-    """
-    Write the per-Short thumbnail.
-
-    Current policy: every Short ships with the SAME branded vertical
-    placeholder (`wildbrief_short_thumb.png`). YouTube can generate a
-    cover from the video itself, but we still emit a JPEG so the
-    `.done` sidecar carries one for downstream dashboards / future
-    cross-posting. `thumbnail_text` and `category` are kept in the
-    signature so older callers still type-check; they're ignored.
-
-    Fallback chain:
-      1. Copy the branded placeholder (the normal case).
-      2. If that file is missing, save the title-card frame as JPEG.
-      3. If even that fails (no PIL image passed), bail silently — the
-         uploader treats a missing thumbnail as non-fatal.
-    """
-    if SHIPPED_THUMB_PATH.exists():
-        try:
-            thumb = Image.open(SHIPPED_THUMB_PATH).convert("RGB")
-            thumb.save(str(output), "JPEG", quality=90, optimize=True)
-            log.info("  🖼  Thumbnail (branded Wild Brief): %s", output.name)
-            return
-        except Exception as exc:
-            log.warning(
-                "  ⚠ Failed to load branded thumb at %s: %s — falling back.",
-                SHIPPED_THUMB_PATH,
-                exc,
-            )
-
-    # Fallback: title-card frame as a JPEG (never branded but never empty).
-    if frame_img is not None:
-        thumb = frame_img.copy().convert("RGB")
-        thumb.save(str(output), "JPEG", quality=92, optimize=True)
-        log.info("  Thumbnail (title-card fallback): %s", output.name)
+# Every new Short uses the format selected by the operator: a real still
+# from the source footage whenever b-roll exists, one large scannable cue,
+# and small Wild Brief branding. Static brand cards and solid color slabs
+# are intentionally out of the production path.
+THUMBNAIL_STYLE_VERSION = "frame_first_side_caption_v1"
 
 
 # ── Video assembly (b-roll + captions + hook overlay) ────────────
@@ -2090,24 +2039,17 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     frame_path = tmp_dir / f"frame_{slug}.png"
     frame.save(str(frame_path))
 
-    # ── 6. Thumbnail: variant-driven (A/B framework) ──────────────
-    # The thumbnail_style axis picks between dynamic_text overlay,
-    # category-colour solid block, and the legacy brand-static JPEG.
-    # create_short_thumbnail's fallback chain handles each path.
-    experiments = story.get("experiments") or {}
-    thumb_variant = experiments.get("thumbnail_style") or assign_variant("thumbnail_style", slug)
+    # ── 6. Thumbnail: frame-first side caption ────────────────────
+    # This is now a production standard, not an A/B bucket. A/B tests may
+    # tune the cue text later, but the visual format stays locked.
+    experiments = dict(story.get("experiments") or {})
+    experiments["thumbnail_style"] = "frame_first_side_caption"
+    story["experiments"] = experiments
     try:
         thumb_base = Image.open(bg_path).convert("RGB")
     except Exception:
         thumb_base = frame
-    if thumb_variant == "brand_static":
-        # Forcing empty thumbnail_text triggers the static brand fallback
-        # inside create_short_thumbnail.
-        create_short_thumbnail(thumb_base, thumb_path, thumbnail_text="", category=category)
-    else:
-        # dynamic_text + category_color both use the dynamic renderer;
-        # category_color biases harder toward the slab fill colour.
-        create_short_thumbnail(thumb_base, thumb_path, thumbnail_text=thumbnail_text, category=category)
+    create_short_thumbnail(thumb_base, thumb_path, thumbnail_text=thumbnail_text, category=category)
     if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
         log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
         return None

@@ -67,6 +67,10 @@ def test_variant_choices_includes_documented_variants():
     assert "aria" in experiments.variant_choices("narrator_voice")
 
 
+def test_thumbnail_style_is_locked_to_frame_first_caption():
+    assert experiments.variant_choices("thumbnail_style") == ("frame_first_side_caption",)
+
+
 def test_cta_is_channel_subscription_only():
     """End cards keep one unambiguous growth action."""
     cta_variants = experiments.variant_choices("cta_style")
