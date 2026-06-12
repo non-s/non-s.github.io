@@ -117,6 +117,10 @@ jobs:
 
       - name: "Commit queue state"
         run: |
+          if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then
+            echo "Quota guard blocked queue refresh; leaving generated diagnostics uncommitted to avoid data-write conflicts."
+            exit 0
+          fi
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
           # Stage the queue first: optional generated files must never

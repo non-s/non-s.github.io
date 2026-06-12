@@ -17,6 +17,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "apply_topic_freshness.py" in fetch_workflow
     assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow
+    assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
+    assert "leaving generated diagnostics uncommitted" in fetch_workflow
     assert "compact_analytics.py" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "check_repo_contracts.py" in (ROOT / ".github/workflows/quality-gate.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in fetch_workflow
