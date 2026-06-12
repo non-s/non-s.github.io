@@ -1,6 +1,13 @@
 from utils.editorial_guard import editorial_issues, editorial_verdict
 
 
+def test_editorial_guard_blocks_truncated_to_trick_title():
+    assert "truncated_to_trick_title" in editorial_issues({"title": "Butterflies rely on wing movement to trick"})
+    assert "truncated_to_trick_title" not in editorial_issues(
+        {"title": "Mallard ducks fake injuries to trick predators"}
+    )
+
+
 def test_editorial_guard_blocks_robotic_title_shapes():
     story = {
         "title": "Whale use their movement to use",

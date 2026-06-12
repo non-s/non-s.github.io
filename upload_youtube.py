@@ -404,6 +404,10 @@ def _playlist_has_video(youtube, playlist_id: str, video_id: str) -> bool:
                 maxResults=50,
             )
         )
+    except HttpError as exc:
+        if getattr(exc.resp, "status", None) == 404:
+            return False
+        raise
     for item in response.get("items", []) or []:
         resource = (item.get("snippet") or {}).get("resourceId") or {}
         if str(resource.get("videoId") or "") == video_id:

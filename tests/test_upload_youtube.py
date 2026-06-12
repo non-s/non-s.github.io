@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
 pytest.importorskip("googleapiclient")
+
+from googleapiclient.errors import HttpError
 
 from upload_youtube import (
     _comment_text,
@@ -170,6 +174,11 @@ class _PlaylistItems:
         return _Req({"id": "PLI-" + str(len(self.added))})
 
 
+class _PlaylistItemsPrecheck404(_PlaylistItems):
+    def list(self, **kwargs):
+        raise HttpError(SimpleNamespace(status=404, reason="Not Found"), b'{"error":{"message":"playlist not found"}}')
+
+
 class _CommentThreads:
     def __init__(self):
         self.comments = []
@@ -232,6 +241,17 @@ def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
     assert youtube._comment_threads.comments == [("VID123", "Did you catch the wing?")]
     assert result["comment"]["posted"] is True
     assert result["comment"]["pin_status"] == "not_supported_by_youtube_data_api"
+
+
+def test_post_upload_operations_inserts_after_playlist_precheck_404(monkeypatch):
+    monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
+    youtube = _YouTube()
+    youtube._playlist_items = _PlaylistItemsPrecheck404()
+
+    result = run_post_upload_operations(youtube, "VID123", {"series": "Tiny Worlds", "category": "insects"})
+
+    assert all(item["added"] for item in result["playlists"])
+    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123"), ("PL-3", "VID123")]
 
 
 def test_post_upload_operations_can_be_disabled(monkeypatch):

@@ -178,6 +178,7 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),
     ("truncated_heres_title", r"\b(here'?s|here is)\s*$"),
+    ("truncated_to_trick_title", r"\bto trick\s*$"),
     (
         "bad_plural_verb",
         r"\b[a-z]+s\s+(gives|turns|makes|changes|reveals|uses|relies|recognizes|remembers|signals|hunts|grows|moves)\b",
