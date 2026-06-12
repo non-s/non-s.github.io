@@ -12,7 +12,7 @@ from utils.audience_expansion import GLOBAL_PUBLISH_WINDOWS
 ANALYTICS_FILE = Path("_data/analytics/latest.json")
 SCHEDULE_FILE = Path("_data/publish_schedule.json")
 CANONICAL_SLOTS_UTC = tuple(str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS)
-DEFAULT_RECOMMENDED_SLOTS_UTC = (CANONICAL_SLOTS_UTC[0], CANONICAL_SLOTS_UTC[1], CANONICAL_SLOTS_UTC[-1])
+DEFAULT_RECOMMENDED_SLOTS_UTC = CANONICAL_SLOTS_UTC
 DECISIONS_FILE = Path("_data/publish_slot_decisions.jsonl")
 
 
@@ -223,18 +223,17 @@ def recommend_schedule(analytics: dict | None = None) -> dict:
     analytics = analytics or _safe_json(ANALYTICS_FILE)
     # Until traffic-source/daypart data exists, use global UTC windows:
     # Asia/Oceania evening, Europe/Africa afternoon, Americas midday and
-    # Americas evening. Cadence still adapts to retention health.
+    # Americas evening. Cadence still keeps a low-retention brake, but the
+    # normal operating target is now four Shorts per day.
     retention = float(analytics.get("avg_view_percentage") or analytics.get("avg_view_pct") or 0)
     global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
     slots = list(DEFAULT_RECOMMENDED_SLOTS_UTC)
     if retention < 52:
         cadence = 2
         slots = [global_slots[0], global_slots[-1]]
-    elif retention >= 70:
+    else:
         cadence = 4
         slots = global_slots
-    else:
-        cadence = 3
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "timezone": "UTC",

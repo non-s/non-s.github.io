@@ -565,9 +565,12 @@ def test_next_shorts_title_suggestions_handle_short_plural_cues():
 
 def test_publish_schedule_adapts_to_retention_health():
     low = recommend_schedule({"avg_view_pct": 45})
+    mid = recommend_schedule({"avg_view_pct": 59})
     high = recommend_schedule({"avg_view_pct": 75})
 
     assert low["recommended_shorts_per_day"] == 2
+    assert mid["recommended_shorts_per_day"] == 4
+    assert mid["recommended_slots"] == ["05:23", "14:23", "19:23", "23:23"]
     assert high["recommended_shorts_per_day"] == 4
     assert high["recommended_slots"] == ["05:23", "14:23", "19:23", "23:23"]
     assert high["reason"] == "global_daypart_retention_based_until_country_analytics_available"
