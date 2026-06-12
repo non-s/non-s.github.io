@@ -1,5 +1,5 @@
 {
-  "sample_count": 11,
+  "sample_count": 13,
   "bootstrap_mode": true,
   "minimum_sample_rules": {
     "category": 5,
@@ -7,22 +7,22 @@
     "series": 3
   },
   "coverage": {
-    "with_retention": 8,
-    "with_subscribers": 7,
-    "with_comments": 0,
-    "with_watch_time": 8
+    "with_retention": 10,
+    "with_subscribers": 8,
+    "with_comments": 3,
+    "with_watch_time": 10
   },
   "category": {
     "farm": {
       "n": 6,
-      "views": 9011,
+      "views": 9012,
       "retention_samples": 6,
       "watch_time_samples": 6,
-      "avg_retention": 66.792,
+      "avg_retention": 66.992,
       "avg_watch_time": 16.167,
       "subs_per_1k": 1.231,
-      "comments_per_1k": 0.0,
-      "return_proxy": 48.904,
+      "comments_per_1k": 0.532,
+      "return_proxy": 50.058,
       "confidence": {
         "confidence_score": 1.0,
         "sample_size": 6,
@@ -35,53 +35,31 @@
         "reasoning": "category has 6/5 samples, observed data, confidence 1.00; strategy changes allowed."
       }
     },
-    "birds": {
-      "n": 2,
-      "views": 1776,
-      "retention_samples": 1,
-      "watch_time_samples": 1,
-      "avg_retention": 58.09,
-      "avg_watch_time": 13.0,
-      "subs_per_1k": 1.325,
-      "comments_per_1k": 0.0,
-      "return_proxy": 39.741,
-      "confidence": {
-        "confidence_score": 0.313,
-        "sample_size": 2,
-        "minimum_sample_size": 5,
-        "data_quality": "observed",
-        "data_quality_score": 0.783,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.485,
-        "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-      }
-    },
     "wildlife": {
-      "n": 2,
-      "views": 1325,
-      "retention_samples": 1,
-      "watch_time_samples": 1,
-      "avg_retention": 75.35,
-      "avg_watch_time": 17.0,
-      "subs_per_1k": 1.445,
+      "n": 4,
+      "views": 3336,
+      "retention_samples": 2,
+      "watch_time_samples": 2,
+      "avg_retention": 69.59,
+      "avg_watch_time": 16.0,
+      "subs_per_1k": 1.977,
       "comments_per_1k": 0.0,
-      "return_proxy": 48.468,
+      "return_proxy": 53.132,
       "confidence": {
-        "confidence_score": 0.313,
-        "sample_size": 2,
+        "confidence_score": 0.626,
+        "sample_size": 4,
         "minimum_sample_size": 5,
         "data_quality": "observed",
         "data_quality_score": 0.783,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.485,
-        "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+        "bootstrap_multiplier": 0.55,
+        "reasoning": "category has 4/5 samples, observed data, confidence 0.63; observation only."
       }
     },
-    "reptiles": {
+    "birds": {
       "n": 1,
-      "views": 590,
+      "views": 1021,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
@@ -100,12 +78,56 @@
         "bootstrap_multiplier": 0.335,
         "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
       }
+    },
+    "primates": {
+      "n": 1,
+      "views": 688,
+      "retention_samples": 1,
+      "watch_time_samples": 1,
+      "avg_retention": 70.64,
+      "avg_watch_time": 15.0,
+      "subs_per_1k": 1.453,
+      "comments_per_1k": 0.0,
+      "return_proxy": 44.912,
+      "confidence": {
+        "confidence_score": 0.2,
+        "sample_size": 1,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.4,
+        "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+      }
+    },
+    "ocean": {
+      "n": 1,
+      "views": 916,
+      "retention_samples": 1,
+      "watch_time_samples": 1,
+      "avg_retention": 58.89,
+      "avg_watch_time": 13.0,
+      "subs_per_1k": 0.0,
+      "comments_per_1k": 2.183,
+      "return_proxy": 32.367,
+      "confidence": {
+        "confidence_score": 0.2,
+        "sample_size": 1,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.4,
+        "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+      }
     }
   },
   "format": {
     "cute_behavior": {
       "n": 1,
-      "views": 1956,
+      "views": 1957,
       "retention_samples": 1,
       "watch_time_samples": 1,
       "avg_retention": 35.65,
@@ -133,8 +155,8 @@
       "avg_retention": 78.417,
       "avg_watch_time": 19.0,
       "subs_per_1k": 1.998,
-      "comments_per_1k": 0.0,
-      "return_proxy": 55.772,
+      "comments_per_1k": 0.565,
+      "return_proxy": 56.902,
       "confidence": {
         "confidence_score": 0.6,
         "sample_size": 3,
@@ -147,53 +169,9 @@
         "reasoning": "format has 3/5 samples, observed data, confidence 0.60; observation only."
       }
     },
-    "body_superpower": {
-      "n": 3,
-      "views": 3326,
-      "retention_samples": 2,
-      "watch_time_samples": 2,
-      "avg_retention": 73.115,
-      "avg_watch_time": 16.0,
-      "subs_per_1k": 1.098,
-      "comments_per_1k": 0.0,
-      "return_proxy": 46.186,
-      "confidence": {
-        "confidence_score": 0.514,
-        "sample_size": 3,
-        "minimum_sample_size": 5,
-        "data_quality": "observed",
-        "data_quality_score": 0.856,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.55,
-        "reasoning": "format has 3/5 samples, observed data, confidence 0.51; observation only."
-      }
-    },
-    "single_fact": {
+    "unknown": {
       "n": 2,
-      "views": 2030,
-      "retention_samples": 2,
-      "watch_time_samples": 2,
-      "avg_retention": 58.53,
-      "avg_watch_time": 14.5,
-      "subs_per_1k": 1.819,
-      "comments_per_1k": 0.0,
-      "return_proxy": 43.891,
-      "confidence": {
-        "confidence_score": 0.4,
-        "sample_size": 2,
-        "minimum_sample_size": 5,
-        "data_quality": "observed",
-        "data_quality_score": 1.0,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.55,
-        "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
-      }
-    },
-    "animal_intelligence": {
-      "n": 2,
-      "views": 1223,
+      "views": 2046,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
@@ -212,19 +190,85 @@
         "bootstrap_multiplier": 0.42,
         "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
       }
+    },
+    "animal_intelligence": {
+      "n": 2,
+      "views": 1286,
+      "retention_samples": 2,
+      "watch_time_samples": 2,
+      "avg_retention": 66.7,
+      "avg_watch_time": 15.0,
+      "subs_per_1k": 3.235,
+      "comments_per_1k": 0.0,
+      "return_proxy": 58.895,
+      "confidence": {
+        "confidence_score": 0.4,
+        "sample_size": 2,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.55,
+        "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
+      }
+    },
+    "body_superpower": {
+      "n": 3,
+      "views": 3487,
+      "retention_samples": 2,
+      "watch_time_samples": 2,
+      "avg_retention": 74.115,
+      "avg_watch_time": 16.0,
+      "subs_per_1k": 0.215,
+      "comments_per_1k": 0.728,
+      "return_proxy": 41.028,
+      "confidence": {
+        "confidence_score": 0.514,
+        "sample_size": 3,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 0.856,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.55,
+        "reasoning": "format has 3/5 samples, observed data, confidence 0.51; observation only."
+      }
+    },
+    "single_fact": {
+      "n": 2,
+      "views": 2030,
+      "retention_samples": 2,
+      "watch_time_samples": 2,
+      "avg_retention": 59.065,
+      "avg_watch_time": 14.5,
+      "subs_per_1k": 1.819,
+      "comments_per_1k": 0.747,
+      "return_proxy": 45.625,
+      "confidence": {
+        "confidence_score": 0.4,
+        "sample_size": 2,
+        "minimum_sample_size": 5,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.55,
+        "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
+      }
     }
   },
   "series": {
     "Farmyard Surprises": {
       "n": 6,
-      "views": 9011,
+      "views": 9012,
       "retention_samples": 6,
       "watch_time_samples": 6,
-      "avg_retention": 66.792,
+      "avg_retention": 66.992,
       "avg_watch_time": 16.167,
       "subs_per_1k": 1.231,
-      "comments_per_1k": 0.0,
-      "return_proxy": 48.904,
+      "comments_per_1k": 0.532,
+      "return_proxy": 50.058,
       "confidence": {
         "confidence_score": 1.0,
         "sample_size": 6,
@@ -237,53 +281,31 @@
         "reasoning": "series has 6/3 samples, observed data, confidence 1.00; strategy changes allowed."
       }
     },
-    "Sky Intelligence": {
-      "n": 2,
-      "views": 1776,
-      "retention_samples": 1,
-      "watch_time_samples": 1,
-      "avg_retention": 58.09,
-      "avg_watch_time": 13.0,
-      "subs_per_1k": 1.325,
-      "comments_per_1k": 0.0,
-      "return_proxy": 39.741,
-      "confidence": {
-        "confidence_score": 0.522,
-        "sample_size": 2,
-        "minimum_sample_size": 3,
-        "data_quality": "observed",
-        "data_quality_score": 0.783,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.55,
-        "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
-      }
-    },
     "Animal Superpowers": {
-      "n": 2,
-      "views": 1325,
-      "retention_samples": 1,
-      "watch_time_samples": 1,
-      "avg_retention": 75.35,
-      "avg_watch_time": 17.0,
-      "subs_per_1k": 1.445,
+      "n": 4,
+      "views": 3336,
+      "retention_samples": 2,
+      "watch_time_samples": 2,
+      "avg_retention": 69.59,
+      "avg_watch_time": 16.0,
+      "subs_per_1k": 1.977,
       "comments_per_1k": 0.0,
-      "return_proxy": 48.468,
+      "return_proxy": 53.132,
       "confidence": {
-        "confidence_score": 0.522,
-        "sample_size": 2,
+        "confidence_score": 0.783,
+        "sample_size": 4,
         "minimum_sample_size": 3,
         "data_quality": "observed",
         "data_quality_score": 0.783,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.55,
-        "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
+        "recommendation_strength": "test",
+        "can_adjust_strategy": true,
+        "bootstrap_multiplier": 0.837,
+        "reasoning": "series has 4/3 samples, observed data, confidence 0.78; strategy changes allowed."
       }
     },
-    "Cold-Blooded Secrets": {
+    "Sky Intelligence": {
       "n": 1,
-      "views": 590,
+      "views": 1021,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
@@ -302,37 +324,105 @@
         "bootstrap_multiplier": 0.392,
         "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
       }
+    },
+    "Primate Intelligence": {
+      "n": 1,
+      "views": 688,
+      "retention_samples": 1,
+      "watch_time_samples": 1,
+      "avg_retention": 70.64,
+      "avg_watch_time": 15.0,
+      "subs_per_1k": 1.453,
+      "comments_per_1k": 0.0,
+      "return_proxy": 44.912,
+      "confidence": {
+        "confidence_score": 0.333,
+        "sample_size": 1,
+        "minimum_sample_size": 3,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.5,
+        "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
+      }
+    },
+    "Ocean Mysteries": {
+      "n": 1,
+      "views": 916,
+      "retention_samples": 1,
+      "watch_time_samples": 1,
+      "avg_retention": 58.89,
+      "avg_watch_time": 13.0,
+      "subs_per_1k": 0.0,
+      "comments_per_1k": 2.183,
+      "return_proxy": 32.367,
+      "confidence": {
+        "confidence_score": 0.333,
+        "sample_size": 1,
+        "minimum_sample_size": 3,
+        "data_quality": "observed",
+        "data_quality_score": 1.0,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.5,
+        "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
+      }
     }
   },
   "weights": {
     "category_retention": {
-      "farm": 1.071
+      "farm": 1.073
     },
     "category_subscribers": {
       "farm": 0.973
     },
     "category_comments": {
-      "farm": 0.95
+      "farm": 1.016
     },
     "format_retention": {},
     "format_subscribers": {},
     "series_return": {
-      "Farmyard Surprises": 1.099
+      "Farmyard Surprises": 1.112,
+      "Animal Superpowers": 1.122
     }
   },
   "winners": {
     "category": [
       {
+        "value": "wildlife",
+        "n": 4,
+        "views": 3336,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 69.59,
+        "avg_watch_time": 16.0,
+        "subs_per_1k": 1.977,
+        "comments_per_1k": 0.0,
+        "return_proxy": 53.132,
+        "confidence": {
+          "confidence_score": 0.626,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.783,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "category has 4/5 samples, observed data, confidence 0.63; observation only."
+        }
+      },
+      {
         "value": "farm",
         "n": 6,
-        "views": 9011,
+        "views": 9012,
         "retention_samples": 6,
         "watch_time_samples": 6,
-        "avg_retention": 66.792,
+        "avg_retention": 66.992,
         "avg_watch_time": 16.167,
         "subs_per_1k": 1.231,
-        "comments_per_1k": 0.0,
-        "return_proxy": 48.904,
+        "comments_per_1k": 0.532,
+        "return_proxy": 50.058,
         "confidence": {
           "confidence_score": 1.0,
           "sample_size": 6,
@@ -346,55 +436,55 @@
         }
       },
       {
-        "value": "wildlife",
-        "n": 2,
-        "views": 1325,
+        "value": "primates",
+        "n": 1,
+        "views": 688,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 75.35,
-        "avg_watch_time": 17.0,
-        "subs_per_1k": 1.445,
+        "avg_retention": 70.64,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 1.453,
         "comments_per_1k": 0.0,
-        "return_proxy": 48.468,
+        "return_proxy": 44.912,
         "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
+          "confidence_score": 0.2,
+          "sample_size": 1,
           "minimum_sample_size": 5,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.4,
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+        }
+      },
+      {
+        "value": "ocean",
+        "n": 1,
+        "views": 916,
+        "retention_samples": 1,
+        "watch_time_samples": 1,
+        "avg_retention": 58.89,
+        "avg_watch_time": 13.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 2.183,
+        "return_proxy": 32.367,
+        "confidence": {
+          "confidence_score": 0.2,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.4,
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
         }
       },
       {
         "value": "birds",
-        "n": 2,
-        "views": 1776,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 58.09,
-        "avg_watch_time": 13.0,
-        "subs_per_1k": 1.325,
-        "comments_per_1k": 0.0,
-        "return_proxy": 39.741,
-        "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-        }
-      },
-      {
-        "value": "reptiles",
         "n": 1,
-        "views": 590,
+        "views": 1021,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -417,62 +507,16 @@
     ],
     "format": [
       {
-        "value": "animal_memory",
-        "n": 3,
-        "views": 4167,
-        "retention_samples": 3,
-        "watch_time_samples": 3,
-        "avg_retention": 78.417,
-        "avg_watch_time": 19.0,
-        "subs_per_1k": 1.998,
-        "comments_per_1k": 0.0,
-        "return_proxy": 55.772,
-        "confidence": {
-          "confidence_score": 0.6,
-          "sample_size": 3,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "format has 3/5 samples, observed data, confidence 0.60; observation only."
-        }
-      },
-      {
-        "value": "body_superpower",
-        "n": 3,
-        "views": 3326,
-        "retention_samples": 2,
-        "watch_time_samples": 2,
-        "avg_retention": 73.115,
-        "avg_watch_time": 16.0,
-        "subs_per_1k": 1.098,
-        "comments_per_1k": 0.0,
-        "return_proxy": 46.186,
-        "confidence": {
-          "confidence_score": 0.514,
-          "sample_size": 3,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.856,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "format has 3/5 samples, observed data, confidence 0.51; observation only."
-        }
-      },
-      {
-        "value": "single_fact",
+        "value": "animal_intelligence",
         "n": 2,
-        "views": 2030,
+        "views": 1286,
         "retention_samples": 2,
         "watch_time_samples": 2,
-        "avg_retention": 58.53,
-        "avg_watch_time": 14.5,
-        "subs_per_1k": 1.819,
+        "avg_retention": 66.7,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 3.235,
         "comments_per_1k": 0.0,
-        "return_proxy": 43.891,
+        "return_proxy": 58.895,
         "confidence": {
           "confidence_score": 0.4,
           "sample_size": 2,
@@ -486,9 +530,78 @@
         }
       },
       {
+        "value": "animal_memory",
+        "n": 3,
+        "views": 4167,
+        "retention_samples": 3,
+        "watch_time_samples": 3,
+        "avg_retention": 78.417,
+        "avg_watch_time": 19.0,
+        "subs_per_1k": 1.998,
+        "comments_per_1k": 0.565,
+        "return_proxy": 56.902,
+        "confidence": {
+          "confidence_score": 0.6,
+          "sample_size": 3,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 3/5 samples, observed data, confidence 0.60; observation only."
+        }
+      },
+      {
+        "value": "single_fact",
+        "n": 2,
+        "views": 2030,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 59.065,
+        "avg_watch_time": 14.5,
+        "subs_per_1k": 1.819,
+        "comments_per_1k": 0.747,
+        "return_proxy": 45.625,
+        "confidence": {
+          "confidence_score": 0.4,
+          "sample_size": 2,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
+        }
+      },
+      {
+        "value": "body_superpower",
+        "n": 3,
+        "views": 3487,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 74.115,
+        "avg_watch_time": 16.0,
+        "subs_per_1k": 0.215,
+        "comments_per_1k": 0.728,
+        "return_proxy": 41.028,
+        "confidence": {
+          "confidence_score": 0.514,
+          "sample_size": 3,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.856,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 3/5 samples, observed data, confidence 0.51; observation only."
+        }
+      },
+      {
         "value": "cute_behavior",
         "n": 1,
-        "views": 1956,
+        "views": 1957,
         "retention_samples": 1,
         "watch_time_samples": 1,
         "avg_retention": 35.65,
@@ -509,9 +622,9 @@
         }
       },
       {
-        "value": "animal_intelligence",
+        "value": "unknown",
         "n": 2,
-        "views": 1223,
+        "views": 2046,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -534,16 +647,39 @@
     ],
     "series": [
       {
+        "value": "Animal Superpowers",
+        "n": 4,
+        "views": 3336,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 69.59,
+        "avg_watch_time": 16.0,
+        "subs_per_1k": 1.977,
+        "comments_per_1k": 0.0,
+        "return_proxy": 53.132,
+        "confidence": {
+          "confidence_score": 0.783,
+          "sample_size": 4,
+          "minimum_sample_size": 3,
+          "data_quality": "observed",
+          "data_quality_score": 0.783,
+          "recommendation_strength": "test",
+          "can_adjust_strategy": true,
+          "bootstrap_multiplier": 0.837,
+          "reasoning": "series has 4/3 samples, observed data, confidence 0.78; strategy changes allowed."
+        }
+      },
+      {
         "value": "Farmyard Surprises",
         "n": 6,
-        "views": 9011,
+        "views": 9012,
         "retention_samples": 6,
         "watch_time_samples": 6,
-        "avg_retention": 66.792,
+        "avg_retention": 66.992,
         "avg_watch_time": 16.167,
         "subs_per_1k": 1.231,
-        "comments_per_1k": 0.0,
-        "return_proxy": 48.904,
+        "comments_per_1k": 0.532,
+        "return_proxy": 50.058,
         "confidence": {
           "confidence_score": 1.0,
           "sample_size": 6,
@@ -557,55 +693,55 @@
         }
       },
       {
-        "value": "Animal Superpowers",
-        "n": 2,
-        "views": 1325,
+        "value": "Primate Intelligence",
+        "n": 1,
+        "views": 688,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 75.35,
-        "avg_watch_time": 17.0,
-        "subs_per_1k": 1.445,
+        "avg_retention": 70.64,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 1.453,
         "comments_per_1k": 0.0,
-        "return_proxy": 48.468,
+        "return_proxy": 44.912,
         "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
+          "confidence_score": 0.333,
+          "sample_size": 1,
           "minimum_sample_size": 3,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
+          "bootstrap_multiplier": 0.5,
+          "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
+        }
+      },
+      {
+        "value": "Ocean Mysteries",
+        "n": 1,
+        "views": 916,
+        "retention_samples": 1,
+        "watch_time_samples": 1,
+        "avg_retention": 58.89,
+        "avg_watch_time": 13.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 2.183,
+        "return_proxy": 32.367,
+        "confidence": {
+          "confidence_score": 0.333,
+          "sample_size": 1,
+          "minimum_sample_size": 3,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.5,
+          "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
         }
       },
       {
         "value": "Sky Intelligence",
-        "n": 2,
-        "views": 1776,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 58.09,
-        "avg_watch_time": 13.0,
-        "subs_per_1k": 1.325,
-        "comments_per_1k": 0.0,
-        "return_proxy": 39.741,
-        "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
-          "minimum_sample_size": 3,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
-        }
-      },
-      {
-        "value": "Cold-Blooded Secrets",
         "n": 1,
-        "views": 590,
+        "views": 1021,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -630,9 +766,9 @@
   "losers": {
     "category": [
       {
-        "value": "reptiles",
+        "value": "birds",
         "n": 1,
-        "views": 590,
+        "views": 1021,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -653,62 +789,62 @@
         }
       },
       {
-        "value": "birds",
-        "n": 2,
-        "views": 1776,
+        "value": "ocean",
+        "n": 1,
+        "views": 916,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 58.09,
+        "avg_retention": 58.89,
         "avg_watch_time": 13.0,
-        "subs_per_1k": 1.325,
-        "comments_per_1k": 0.0,
-        "return_proxy": 39.741,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 2.183,
+        "return_proxy": 32.367,
         "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
+          "confidence_score": 0.2,
+          "sample_size": 1,
           "minimum_sample_size": 5,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.4,
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
         }
       },
       {
-        "value": "wildlife",
-        "n": 2,
-        "views": 1325,
+        "value": "primates",
+        "n": 1,
+        "views": 688,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 75.35,
-        "avg_watch_time": 17.0,
-        "subs_per_1k": 1.445,
+        "avg_retention": 70.64,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 1.453,
         "comments_per_1k": 0.0,
-        "return_proxy": 48.468,
+        "return_proxy": 44.912,
         "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
+          "confidence_score": 0.2,
+          "sample_size": 1,
           "minimum_sample_size": 5,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.4,
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
         }
       },
       {
         "value": "farm",
         "n": 6,
-        "views": 9011,
+        "views": 9012,
         "retention_samples": 6,
         "watch_time_samples": 6,
-        "avg_retention": 66.792,
+        "avg_retention": 66.992,
         "avg_watch_time": 16.167,
         "subs_per_1k": 1.231,
-        "comments_per_1k": 0.0,
-        "return_proxy": 48.904,
+        "comments_per_1k": 0.532,
+        "return_proxy": 50.058,
         "confidence": {
           "confidence_score": 1.0,
           "sample_size": 6,
@@ -720,13 +856,36 @@
           "bootstrap_multiplier": 1.0,
           "reasoning": "category has 6/5 samples, observed data, confidence 1.00; strategy changes allowed."
         }
+      },
+      {
+        "value": "wildlife",
+        "n": 4,
+        "views": 3336,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 69.59,
+        "avg_watch_time": 16.0,
+        "subs_per_1k": 1.977,
+        "comments_per_1k": 0.0,
+        "return_proxy": 53.132,
+        "confidence": {
+          "confidence_score": 0.626,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.783,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "category has 4/5 samples, observed data, confidence 0.63; observation only."
+        }
       }
     ],
     "format": [
       {
-        "value": "animal_intelligence",
+        "value": "unknown",
         "n": 2,
-        "views": 1223,
+        "views": 2046,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -749,7 +908,7 @@
       {
         "value": "cute_behavior",
         "n": 1,
-        "views": 1956,
+        "views": 1957,
         "retention_samples": 1,
         "watch_time_samples": 1,
         "avg_retention": 35.65,
@@ -770,39 +929,16 @@
         }
       },
       {
-        "value": "single_fact",
-        "n": 2,
-        "views": 2030,
-        "retention_samples": 2,
-        "watch_time_samples": 2,
-        "avg_retention": 58.53,
-        "avg_watch_time": 14.5,
-        "subs_per_1k": 1.819,
-        "comments_per_1k": 0.0,
-        "return_proxy": 43.891,
-        "confidence": {
-          "confidence_score": 0.4,
-          "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
-        }
-      },
-      {
         "value": "body_superpower",
         "n": 3,
-        "views": 3326,
+        "views": 3487,
         "retention_samples": 2,
         "watch_time_samples": 2,
-        "avg_retention": 73.115,
+        "avg_retention": 74.115,
         "avg_watch_time": 16.0,
-        "subs_per_1k": 1.098,
-        "comments_per_1k": 0.0,
-        "return_proxy": 46.186,
+        "subs_per_1k": 0.215,
+        "comments_per_1k": 0.728,
+        "return_proxy": 41.028,
         "confidence": {
           "confidence_score": 0.514,
           "sample_size": 3,
@@ -816,6 +952,29 @@
         }
       },
       {
+        "value": "single_fact",
+        "n": 2,
+        "views": 2030,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 59.065,
+        "avg_watch_time": 14.5,
+        "subs_per_1k": 1.819,
+        "comments_per_1k": 0.747,
+        "return_proxy": 45.625,
+        "confidence": {
+          "confidence_score": 0.4,
+          "sample_size": 2,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
+        }
+      },
+      {
         "value": "animal_memory",
         "n": 3,
         "views": 4167,
@@ -824,8 +983,8 @@
         "avg_retention": 78.417,
         "avg_watch_time": 19.0,
         "subs_per_1k": 1.998,
-        "comments_per_1k": 0.0,
-        "return_proxy": 55.772,
+        "comments_per_1k": 0.565,
+        "return_proxy": 56.902,
         "confidence": {
           "confidence_score": 0.6,
           "sample_size": 3,
@@ -837,13 +996,36 @@
           "bootstrap_multiplier": 0.55,
           "reasoning": "format has 3/5 samples, observed data, confidence 0.60; observation only."
         }
+      },
+      {
+        "value": "animal_intelligence",
+        "n": 2,
+        "views": 1286,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 66.7,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 3.235,
+        "comments_per_1k": 0.0,
+        "return_proxy": 58.895,
+        "confidence": {
+          "confidence_score": 0.4,
+          "sample_size": 2,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 2/5 samples, observed data, confidence 0.40; observation only."
+        }
       }
     ],
     "series": [
       {
-        "value": "Cold-Blooded Secrets",
+        "value": "Sky Intelligence",
         "n": 1,
-        "views": 590,
+        "views": 1021,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
@@ -864,62 +1046,62 @@
         }
       },
       {
-        "value": "Sky Intelligence",
-        "n": 2,
-        "views": 1776,
+        "value": "Ocean Mysteries",
+        "n": 1,
+        "views": 916,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 58.09,
+        "avg_retention": 58.89,
         "avg_watch_time": 13.0,
-        "subs_per_1k": 1.325,
-        "comments_per_1k": 0.0,
-        "return_proxy": 39.741,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 2.183,
+        "return_proxy": 32.367,
         "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
+          "confidence_score": 0.333,
+          "sample_size": 1,
           "minimum_sample_size": 3,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
+          "bootstrap_multiplier": 0.5,
+          "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
         }
       },
       {
-        "value": "Animal Superpowers",
-        "n": 2,
-        "views": 1325,
+        "value": "Primate Intelligence",
+        "n": 1,
+        "views": 688,
         "retention_samples": 1,
         "watch_time_samples": 1,
-        "avg_retention": 75.35,
-        "avg_watch_time": 17.0,
-        "subs_per_1k": 1.445,
+        "avg_retention": 70.64,
+        "avg_watch_time": 15.0,
+        "subs_per_1k": 1.453,
         "comments_per_1k": 0.0,
-        "return_proxy": 48.468,
+        "return_proxy": 44.912,
         "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
+          "confidence_score": 0.333,
+          "sample_size": 1,
           "minimum_sample_size": 3,
           "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
+          "bootstrap_multiplier": 0.5,
+          "reasoning": "series has 1/3 samples, observed data, confidence 0.33; observation only."
         }
       },
       {
         "value": "Farmyard Surprises",
         "n": 6,
-        "views": 9011,
+        "views": 9012,
         "retention_samples": 6,
         "watch_time_samples": 6,
-        "avg_retention": 66.792,
+        "avg_retention": 66.992,
         "avg_watch_time": 16.167,
         "subs_per_1k": 1.231,
-        "comments_per_1k": 0.0,
-        "return_proxy": 48.904,
+        "comments_per_1k": 0.532,
+        "return_proxy": 50.058,
         "confidence": {
           "confidence_score": 1.0,
           "sample_size": 6,
@@ -930,6 +1112,29 @@
           "can_adjust_strategy": true,
           "bootstrap_multiplier": 1.0,
           "reasoning": "series has 6/3 samples, observed data, confidence 1.00; strategy changes allowed."
+        }
+      },
+      {
+        "value": "Animal Superpowers",
+        "n": 4,
+        "views": 3336,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 69.59,
+        "avg_watch_time": 16.0,
+        "subs_per_1k": 1.977,
+        "comments_per_1k": 0.0,
+        "return_proxy": 53.132,
+        "confidence": {
+          "confidence_score": 0.783,
+          "sample_size": 4,
+          "minimum_sample_size": 3,
+          "data_quality": "observed",
+          "data_quality_score": 0.783,
+          "recommendation_strength": "test",
+          "can_adjust_strategy": true,
+          "bootstrap_multiplier": 0.837,
+          "reasoning": "series has 4/3 samples, observed data, confidence 0.78; strategy changes allowed."
         }
       }
     ]
