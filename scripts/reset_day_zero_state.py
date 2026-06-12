@@ -32,8 +32,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
     deleted: list[str] = []
     written: list[str] = []
 
-    delete_targets: list[Path] = []
-    for pattern in (
+    delete_patterns = (
         "_videos/*.done",
         "_videos/*.roundup",
         "_videos/shorts_done.json",
@@ -41,7 +40,9 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "docs/published_packaging_repair_*.md",
         "_data/reports/weekly*.md",
         "_data/analytics/partitions/**/*.jsonl",
-    ):
+    )
+    delete_targets: list[Path] = []
+    for pattern in delete_patterns:
         delete_targets.extend(root.glob(pattern))
 
     selection_rule = "autonomy_priority first, queue_score and publish_score as tie-breakers"
@@ -403,7 +404,8 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "generated_at": stamp,
         "channel_epoch": EPOCH,
         "dry_run": dry_run,
-        "deleted": deleted,
+        "deleted_count": len(deleted),
+        "deleted_patterns": list(delete_patterns),
         "written": written,
     }
     if not dry_run:
