@@ -315,6 +315,7 @@ def render_html() -> str:
     autonomous_director = _safe_json(Path("_data/autonomous_director.json"))
     autonomous_growth_plan = _safe_json(Path("_data/autonomous_growth_plan.json"))
     channel_success = _safe_json(Path("_data/channel_success.json"))
+    scale_blueprint = _safe_json(Path("_data/scale_blueprint.json"))
     success_rewriter = _safe_json(Path("_data/success_rewriter.json"))
     winner_sequels = _safe_json(Path("_data/winner_sequel_factory.json"))
     queue_audit = _safe_json(Path("_data/queue_audit.json"))
@@ -1278,6 +1279,94 @@ def render_html() -> str:
             for decision in decisions[:8]:
                 out.append(f"<li>{html.escape(str(decision))}</li>")
             out.append("</ul>")
+        out.append("</div>")
+
+    if scale_blueprint:
+        out.append("<div class='card'><h2>Million-view scale blueprint</h2>")
+        summary = scale_blueprint.get("dashboard_summary") or {}
+        baseline = scale_blueprint.get("baseline") or {}
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>Phase</small><div class='metric'>{html.escape(str(summary.get('phase') or scale_blueprint.get('phase') or 'unknown'))}</div></div>"
+        )
+        out.append(
+            f"<div><small>28d views</small><div class='metric'>{int(baseline.get('views', 0) or 0):,}</div></div>"
+        )
+        out.append(
+            f"<div><small>Stayed to watch</small><div class='metric'>{float(baseline.get('stayed_to_watch_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Recurring viewers</small><div class='metric'>{float(baseline.get('recurring_viewer_rate', 0) or 0) * 100:.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Subs / 1k views</small><div class='metric'>{float(baseline.get('subs_per_1000_views', 0) or 0):.2f}</div></div>"
+        )
+        out.append(
+            f"<div><small>Top bottleneck</small><div class='metric'>{html.escape(str(summary.get('top_bottleneck', 'none')))}</div></div>"
+        )
+        out.append("</section>")
+        north_star = scale_blueprint.get("north_star")
+        if north_star:
+            out.append(f"<p><strong>North star:</strong> {html.escape(str(north_star))}</p>")
+        commands = scale_blueprint.get("production_commands") or []
+        if commands:
+            out.append("<h3>Scale commands</h3><ul>")
+            for command in commands[:8]:
+                out.append(f"<li>{html.escape(str(command))}</li>")
+            out.append("</ul>")
+        bottlenecks_rows = scale_blueprint.get("bottlenecks") or []
+        if bottlenecks_rows:
+            out.append(
+                "<h3>Bottlenecks</h3><table><tr><th>Severity</th><th>Metric</th><th>Current</th><th>Target</th><th>Action</th></tr>"
+            )
+            for item in bottlenecks_rows[:6]:
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(item.get('severity', '')))}</span></td>"
+                    f"<td><code>{html.escape(str(item.get('metric', '')))}</code></td>"
+                    f"<td>{html.escape(str(item.get('current', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('target', '')))}</td>"
+                    f"<td>{html.escape(str(item.get('action', ''))[:150])}</td></tr>"
+                )
+            out.append("</table>")
+        lanes = scale_blueprint.get("series_lanes") or []
+        if lanes:
+            out.append(
+                "<h3>Series lanes</h3><table><tr><th>Lane</th><th>State</th><th>Retention</th><th>Supply</th><th>Promise</th></tr>"
+            )
+            for item in lanes[:6]:
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('lane', '')))}</td>"
+                    f"<td><span class='badge'>{html.escape(str(item.get('state', '')))}</span></td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}%</td>"
+                    f"<td>{int(item.get('publish_ready_supply', 0) or 0)}</td>"
+                    f"<td>{html.escape(str(item.get('promise', ''))[:130])}</td></tr>"
+                )
+            out.append("</table>")
+        video_actions = (scale_blueprint.get("video_action_plan") or {}).get("actions") or []
+        if video_actions:
+            out.append(
+                "<h3>Winner actions</h3><table><tr><th>Action</th><th>Title</th><th>Views</th><th>Retention</th><th>Why</th></tr>"
+            )
+            for item in video_actions[:8]:
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(item.get('action', '')))}</span></td>"
+                    f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{int(item.get('views', 0) or 0):,}</td>"
+                    f"<td>{float(item.get('retention', 0) or 0):.1f}%</td>"
+                    f"<td>{html.escape(str(item.get('reason', ''))[:120])}</td></tr>"
+                )
+            out.append("</table>")
+        milestones = scale_blueprint.get("milestone_path") or []
+        if milestones:
+            out.append("<h3>Milestone path</h3><table><tr><th>Milestone</th><th>Remaining</th><th>Job</th></tr>")
+            for item in milestones[:4]:
+                remaining = item.get("remaining_subscribers", item.get("remaining_views_28d", 0))
+                out.append(
+                    f"<tr><td>{html.escape(str(item.get('milestone', '')))}</td>"
+                    f"<td>{int(remaining or 0):,}</td>"
+                    f"<td>{html.escape(str(item.get('job', ''))[:140])}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if channel_success:

@@ -74,11 +74,14 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - writes `_data/analytics/api_quota_ledger.jsonl` and `_data/analytics/api_quota_latest.json` before expensive jobs.
 - promotes high-signal viewer questions into `_data/comment_to_short_candidates.json` and optionally into the queue.
 - compacts analytics into monthly `_data/analytics/partitions/` JSONL files while keeping flat files backward-compatible.
+- writes `_data/scale_blueprint.json` to turn Studio metrics into a million-view operating plan with bottlenecks, series lanes, winner/remake actions and milestone targets.
 
 ## World-class upgrade track
 
 The operating model is now documented in
 [docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md](docs/WILD_BRIEF_WORLD_CLASS_UPGRADE.md).
+The channel-scale plan is documented in
+[docs/MILLION_VIEW_SCALE_SYSTEM.md](docs/MILLION_VIEW_SCALE_SYSTEM.md).
 The master-prompt implementation is complete across the production path:
 rulebook preflight, curiosity and swipe scoring, rendered loop callbacks,
 expanded A/B axes, live variant logging, extended analytics warehouse files,

@@ -46,6 +46,7 @@ SCRIPT_SETS = {
         "scripts/packaging_report.py",
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
+        "scripts/scale_blueprint.py",
     ],
     "post_publish": [
         "scripts/analyze_channel.py",
@@ -99,6 +100,7 @@ SCRIPT_SETS = {
         "scripts/packaging_report.py",
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
+        "scripts/scale_blueprint.py",
     ],
     "queue": [
         "scripts/audit_automation.py",
@@ -142,6 +144,7 @@ SCRIPT_SETS = {
         "scripts/weekly_report.py",
         "scripts/seo_metadata_lint.py",
         "scripts/next_shorts.py",
+        "scripts/scale_blueprint.py",
     ],
     "dashboard": [
         "scripts/audit_automation.py",
@@ -218,6 +221,7 @@ SCRIPT_SETS = {
         "scripts/packaging_report.py",
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
+        "scripts/scale_blueprint.py",
     ],
 }
 
