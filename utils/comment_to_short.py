@@ -134,12 +134,14 @@ def _normal_title(story: dict) -> str:
 
 
 def _story_angle(story: dict) -> str:
-    return "|".join((
-        extract_animal(story).lower(),
-        extract_action(story).lower(),
-        extract_cue(story).lower(),
-        str(story.get("category") or "").lower(),
-    ))
+    return "|".join(
+        (
+            extract_animal(story).lower(),
+            extract_action(story).lower(),
+            extract_cue(story).lower(),
+            str(story.get("category") or "").lower(),
+        )
+    )
 
 
 def _packaged_identity(story: dict) -> tuple[str, str]:
@@ -284,9 +286,13 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
     candidate_id = _comment_id(comment)
     cue = _cue_for(animal, text)
     title = _title_for(animal, cue, text) if animal != "nature" else "Nature reveals one clue viewers asked about"
-    hook, script = _script_for(title, animal, cue, text) if animal != "nature" else (
-        "A viewer asked about one nature clue.",
-        "A viewer asked about one nature clue. Watch the visible cue first, because the payoff is easier to spot when the setup is clear.",
+    hook, script = (
+        _script_for(title, animal, cue, text)
+        if animal != "nature"
+        else (
+            "A viewer asked about one nature clue.",
+            "A viewer asked about one nature clue. Watch the visible cue first, because the payoff is easier to spot when the setup is clear.",
+        )
     )
     related = ""
     for marker in markers or []:
@@ -338,9 +344,7 @@ def build_candidates(comments_payload: dict, markers: list[dict] | None = None) 
 def merge_into_queue(queue: dict, candidates: list[dict], *, min_score: float = 64.0, max_items: int = 6) -> dict:
     stories = list(queue.get("stories") or [])
     existing_indexes = {
-        str(item.get("id")): index
-        for index, item in enumerate(stories)
-        if isinstance(item, dict) and item.get("id")
+        str(item.get("id")): index for index, item in enumerate(stories) if isinstance(item, dict) and item.get("id")
     }
     seen = set(existing_indexes)
     seen_titles = {_normal_title(item) for item in stories if isinstance(item, dict)}
@@ -401,9 +405,7 @@ def merge_into_queue(queue: dict, candidates: list[dict], *, min_score: float = 
     out = dict(queue)
     if remove_ids:
         stories = [
-            story
-            for story in stories
-            if not (isinstance(story, dict) and str(story.get("id") or "") in remove_ids)
+            story for story in stories if not (isinstance(story, dict) and str(story.get("id") or "") in remove_ids)
         ]
     out["stories"] = stories
     out["comment_to_short_added"] = added

@@ -1,4 +1,5 @@
 """Tests for the final pre-publish package audit."""
+
 from utils.pre_publish_audit import audit_package
 
 

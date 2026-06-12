@@ -43,36 +43,42 @@ def test_thumbnail_options_are_short_scannable_phrases():
 
 
 def test_score_packaging_penalizes_generic_clickbait():
-    weak = score_packaging(_story(
-        title="Animals have another secret hiding in plain sight",
-        seo_title="Animals have another secret hiding in plain sight",
-        thumbnail_text="AMAZING SECRET TODAY",
-        hook="Animals are amazing.",
-    ))
+    weak = score_packaging(
+        _story(
+            title="Animals have another secret hiding in plain sight",
+            seo_title="Animals have another secret hiding in plain sight",
+            thumbnail_text="AMAZING SECRET TODAY",
+            hook="Animals are amazing.",
+        )
+    )
 
     assert weak["state"] == "rewrite_packaging"
     assert "generic_clickbait_language" in weak["risks"]
 
 
 def test_score_packaging_penalizes_generic_successor_templates():
-    weak = score_packaging(_story(
-        title="Chickens remember the signal cue for a reason",
-        seo_title="Chickens remember the signal cue for a reason",
-        thumbnail_text="CHICKENS SIGNAL",
-        hook="Chickens remember the signal cue before the payoff.",
-    ))
+    weak = score_packaging(
+        _story(
+            title="Chickens remember the signal cue for a reason",
+            seo_title="Chickens remember the signal cue for a reason",
+            thumbnail_text="CHICKENS SIGNAL",
+            hook="Chickens remember the signal cue before the payoff.",
+        )
+    )
 
     assert weak["state"] == "rewrite_packaging"
     assert "generic_clickbait_language" in weak["risks"]
 
 
 def test_score_packaging_recognizes_concrete_ducklings_rely_shape():
-    score = score_packaging(_story(
-        title="Ducklings rely on wing movement to steer",
-        seo_title="Ducklings rely on wing movement to steer",
-        hook="Ducklings rely on wing movement before the move.",
-        thumbnail_text="DUCKLINGS WING",
-    ))
+    score = score_packaging(
+        _story(
+            title="Ducklings rely on wing movement to steer",
+            seo_title="Ducklings rely on wing movement to steer",
+            hook="Ducklings rely on wing movement before the move.",
+            thumbnail_text="DUCKLINGS WING",
+        )
+    )
 
     assert score["state"] == "magnetic"
     assert "subject_not_clear" not in score["risks"]
@@ -80,29 +86,33 @@ def test_score_packaging_recognizes_concrete_ducklings_rely_shape():
 
 
 def test_score_packaging_penalizes_generic_rely_to_signal_shape():
-    weak = score_packaging(_story(
-        title="Ducklings rely on wing movement to signal",
-        seo_title="Ducklings rely on wing movement to signal",
-        hook="Ducklings rely on wing movement before the move.",
-        thumbnail_text="DUCKLINGS WING",
-    ))
+    weak = score_packaging(
+        _story(
+            title="Ducklings rely on wing movement to signal",
+            seo_title="Ducklings rely on wing movement to signal",
+            hook="Ducklings rely on wing movement before the move.",
+            thumbnail_text="DUCKLINGS WING",
+        )
+    )
 
     assert weak["state"] == "rewrite_packaging"
     assert "generic_clickbait_language" in weak["risks"]
 
 
 def test_title_options_use_natural_head_movement_language():
-    options = title_options(_story(
-        title="Chickens react differently when their heads move",
-        seo_title="Chickens react differently when their heads move",
-        hook="Chickens read one visible signal.",
-        script=(
-            "Chickens read one visible signal. Watch head movement, because chickens use it "
-            "to recognize familiar signals faster."
-        ),
-        thumbnail_text="CHICKENS HEAD MOVEMENT",
-        category="farm",
-    ))
+    options = title_options(
+        _story(
+            title="Chickens react differently when their heads move",
+            seo_title="Chickens react differently when their heads move",
+            hook="Chickens read one visible signal.",
+            script=(
+                "Chickens read one visible signal. Watch head movement, because chickens use it "
+                "to recognize familiar signals faster."
+            ),
+            thumbnail_text="CHICKENS HEAD MOVEMENT",
+            category="farm",
+        )
+    )
 
     assert any("head movement" in option.lower() for option in options)
     assert all("head cue" not in option.lower() for option in options)
@@ -122,14 +132,16 @@ def test_package_story_adds_comment_and_community_hook():
 
 
 def test_package_story_preserves_remake_factory_packaging():
-    packaged = package_story(_story(
-        title="Goats follow the feeding cue before the payoff",
-        seo_title="Goats follow the feeding cue before the payoff",
-        hook="Goats show the useful cue before the payoff.",
-        thumbnail_text="GOATS FEEDING CUE",
-        production_mode="remake_factory",
-        source="Remake Factory",
-    ))
+    packaged = package_story(
+        _story(
+            title="Goats follow the feeding cue before the payoff",
+            seo_title="Goats follow the feeding cue before the payoff",
+            hook="Goats show the useful cue before the payoff.",
+            thumbnail_text="GOATS FEEDING CUE",
+            production_mode="remake_factory",
+            source="Remake Factory",
+        )
+    )
 
     assert packaged["title"] == "Goats follow the feeding cue before the payoff"
     assert packaged["hook"] == "Goats show the useful cue before the payoff."

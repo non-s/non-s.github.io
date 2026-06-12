@@ -57,7 +57,9 @@ def _has_observed_snapshot(payload: dict) -> bool:
 def _load_data_service(info):
     if not can_read_youtube(info.data):
         return None
-    return build("youtube", "v3", credentials=credentials_from_token_info(info, [READONLY_SCOPE]), cache_discovery=False)
+    return build(
+        "youtube", "v3", credentials=credentials_from_token_info(info, [READONLY_SCOPE]), cache_discovery=False
+    )
 
 
 def _load_analytics_service(info):
@@ -77,10 +79,14 @@ def _load_analytics_service(info):
 def _fetch_channel(youtube) -> dict | None:
     if youtube is None:
         return None
-    response = youtube.channels().list(
-        part="snippet,statistics,contentDetails,status,brandingSettings",
-        mine=True,
-    ).execute()
+    response = (
+        youtube.channels()
+        .list(
+            part="snippet,statistics,contentDetails,status,brandingSettings",
+            mine=True,
+        )
+        .execute()
+    )
     items = response.get("items") or []
     return items[0] if items else None
 
@@ -91,21 +97,27 @@ def _fetch_uploads(youtube, playlist_id: str, limit: int = 75) -> list[dict]:
     out = []
     page_token = None
     while len(out) < limit:
-        response = youtube.playlistItems().list(
-            part="snippet,contentDetails,status",
-            playlistId=playlist_id,
-            maxResults=min(50, limit - len(out)),
-            pageToken=page_token,
-        ).execute()
+        response = (
+            youtube.playlistItems()
+            .list(
+                part="snippet,contentDetails,status",
+                playlistId=playlist_id,
+                maxResults=min(50, limit - len(out)),
+                pageToken=page_token,
+            )
+            .execute()
+        )
         for item in response.get("items", []) or []:
             snippet = item.get("snippet") or {}
             content = item.get("contentDetails") or {}
-            out.append({
-                "video_id": content.get("videoId", ""),
-                "title": snippet.get("title", ""),
-                "published_at": content.get("videoPublishedAt") or snippet.get("publishedAt", ""),
-                "playlist_item_id": item.get("id", ""),
-            })
+            out.append(
+                {
+                    "video_id": content.get("videoId", ""),
+                    "title": snippet.get("title", ""),
+                    "published_at": content.get("videoPublishedAt") or snippet.get("publishedAt", ""),
+                    "playlist_item_id": item.get("id", ""),
+                }
+            )
         page_token = response.get("nextPageToken")
         if not page_token:
             break
@@ -117,10 +129,14 @@ def _fetch_videos(youtube, ids: list[str]) -> list[dict]:
         return []
     out = []
     for start in range(0, len(ids), 50):
-        response = youtube.videos().list(
-            part="snippet,statistics,status,contentDetails,topicDetails,recordingDetails,localizations",
-            id=",".join(ids[start:start + 50]),
-        ).execute()
+        response = (
+            youtube.videos()
+            .list(
+                part="snippet,statistics,status,contentDetails,topicDetails,recordingDetails,localizations",
+                id=",".join(ids[start : start + 50]),
+            )
+            .execute()
+        )
         out.extend(response.get("items") or [])
     return out
 
@@ -128,15 +144,19 @@ def _fetch_videos(youtube, ids: list[str]) -> list[dict]:
 def _run_report(analytics, spec: dict) -> dict:
     start_date, end_date = default_window()
     try:
-        response = analytics.reports().query(
-            ids="channel==MINE",
-            startDate=start_date,
-            endDate=end_date,
-            metrics=spec["metrics"],
-            dimensions=spec["dimensions"],
-            sort=spec.get("sort", ""),
-            maxResults=50,
-        ).execute()
+        response = (
+            analytics.reports()
+            .query(
+                ids="channel==MINE",
+                startDate=start_date,
+                endDate=end_date,
+                metrics=spec["metrics"],
+                dimensions=spec["dimensions"],
+                sort=spec.get("sort", ""),
+                maxResults=50,
+            )
+            .execute()
+        )
         rows = rows_to_dicts(response)
         return {
             "id": spec["id"],
@@ -194,8 +214,11 @@ def main() -> int:
     )
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
-        json.dumps(build_payload(channel=channel, uploads=uploads, videos=videos, reports=reports, issues=issues),
-                   indent=2, ensure_ascii=False),
+        json.dumps(
+            build_payload(channel=channel, uploads=uploads, videos=videos, reports=reports, issues=issues),
+            indent=2,
+            ensure_ascii=False,
+        ),
         encoding="utf-8",
     )
     print(f"youtube intelligence: {len(uploads)} uploads, {len(videos)} videos, {len(reports)} reports")

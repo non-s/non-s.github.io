@@ -4,6 +4,7 @@ Cover the queue-shape contract with generate_shorts.py, the AI JSON
 parsing, dedupe, and prune-on-age behaviour. The Pexels and AI
 network calls are mocked — no test should hit the real internet.
 """
+
 from __future__ import annotations
 
 import json
@@ -16,9 +17,11 @@ import fetch_animals
 from utils.broll import BrollClip
 
 
-def _clip(url: str = "https://www.pexels.com/video/cat/123/",
-          dl: str = "https://files.pexels.com/v/cat-1.mp4",
-          title: str = "Cat playing in sunlight") -> BrollClip:
+def _clip(
+    url: str = "https://www.pexels.com/video/cat/123/",
+    dl: str = "https://files.pexels.com/v/cat-1.mp4",
+    title: str = "Cat playing in sunlight",
+) -> BrollClip:
     return BrollClip(
         source="pexels",
         url=url,
@@ -31,24 +34,27 @@ def _clip(url: str = "https://www.pexels.com/video/cat/123/",
     )
 
 
-_AI_OK_PAYLOAD = json.dumps({
-    "score":          8,
-    "seo_title":      "Why cats really purr — it is not just happiness",
-    "yt_tags":        ["cats", "cat facts", "purring", "animals", "wildlife"],
-    "topic_hashtag":  "Cats",
-    "yt_description": "Cats purr for more than joy. They self-soothe and "
-                      "even heal their own bones at 25-150 Hz. Source: Pexels",
-    "thumbnail_text": "WHY CATS PURR",
-    "hook":           "Cats purr to heal their own bones.",
-    "script":         "Cats purr to heal their own bones. The 25-150 Hz "
-                      "frequency promotes bone density. Big cats can purr "
-                      "too — sometimes. What's the strangest thing your "
-                      "cat does?",
-    "sentiment":      "positive",
-})
+_AI_OK_PAYLOAD = json.dumps(
+    {
+        "score": 8,
+        "seo_title": "Why cats really purr — it is not just happiness",
+        "yt_tags": ["cats", "cat facts", "purring", "animals", "wildlife"],
+        "topic_hashtag": "Cats",
+        "yt_description": "Cats purr for more than joy. They self-soothe and "
+        "even heal their own bones at 25-150 Hz. Source: Pexels",
+        "thumbnail_text": "WHY CATS PURR",
+        "hook": "Cats purr to heal their own bones.",
+        "script": "Cats purr to heal their own bones. The 25-150 Hz "
+        "frequency promotes bone density. Big cats can purr "
+        "too — sometimes. What's the strangest thing your "
+        "cat does?",
+        "sentiment": "positive",
+    }
+)
 
 
 # ── AI parsing ────────────────────────────────────────────────────
+
 
 def test_ai_enhance_animal_parses_valid_json(monkeypatch):
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: _AI_OK_PAYLOAD)
@@ -134,42 +140,30 @@ def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
 
 
 def test_script_key_normalises_case_and_punctuation():
-    assert fetch_animals._script_key("Cats purr. Really!") == \
-        fetch_animals._script_key("  CATS PURR -- really  ")
+    assert fetch_animals._script_key("Cats purr. Really!") == fetch_animals._script_key("  CATS PURR -- really  ")
 
 
 def test_subject_from_clip_prefers_descriptive_pexels_slug():
-    clip = _clip(url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
-                 title="Uploader Name")
-    assert fetch_animals._subject_from_clip(clip, "ocean") == \
-        "sea turtle over coral reef"
+    clip = _clip(url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/", title="Uploader Name")
+    assert fetch_animals._subject_from_clip(clip, "ocean") == "sea turtle over coral reef"
 
 
 def test_topic_rejects_explicit_animal_from_wrong_category():
-    assert not fetch_animals._topic_accepts_subject(
-        fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch"
-    )
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch")
 
 
 def test_topic_accepts_visible_animal_from_category():
-    assert fetch_animals._topic_accepts_subject(
-        fetch_animals.ANIMAL_TOPICS["farm"], "baby goat in the grass"
-    )
-    assert fetch_animals._topic_accepts_subject(
-        fetch_animals.ANIMAL_TOPICS["farm"], "close up on chickens"
-    )
+    assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["farm"], "baby goat in the grass")
+    assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["farm"], "close up on chickens")
 
 
 def test_topic_rejects_animal_costume_or_prop_subject():
-    assert not fetch_animals._topic_accepts_subject(
-        fetch_animals.ANIMAL_TOPICS["nocturnal"], "child in bat costume"
-    )
-    assert not fetch_animals._topic_accepts_subject(
-        fetch_animals.ANIMAL_TOPICS["cats"], "toy cat on a table"
-    )
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["nocturnal"], "child in bat costume")
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["cats"], "toy cat on a table")
 
 
 # ── Story builder ─────────────────────────────────────────────────
+
 
 def test_build_story_shape_matches_shared_queue_schema():
     """The downstream generate_shorts.py reads a fixed set of keys;
@@ -190,15 +184,36 @@ def test_build_story_shape_matches_shared_queue_schema():
     )
     for required in (
         # Queue identity / state
-        "id", "fetched_at", "published_at", "consumed", "consumed_at",
+        "id",
+        "fetched_at",
+        "published_at",
+        "consumed",
+        "consumed_at",
         # Original fields generate_shorts reads as fallbacks
-        "title", "url", "source", "category", "description", "image_url",
+        "title",
+        "url",
+        "source",
+        "category",
+        "description",
+        "image_url",
         # Score chain
-        "breaking", "relevance", "score", "safety_penalty", "native_lang",
+        "breaking",
+        "relevance",
+        "score",
+        "safety_penalty",
+        "native_lang",
         # AI-enriched fields generate_shorts reads directly
-        "seo_title", "yt_tags", "geo_hashtag", "topic_hashtag",
-        "yt_description", "thumbnail_text", "hook", "script", "lead",
-        "sentiment", "trend_context",
+        "seo_title",
+        "yt_tags",
+        "geo_hashtag",
+        "topic_hashtag",
+        "yt_description",
+        "thumbnail_text",
+        "hook",
+        "script",
+        "lead",
+        "sentiment",
+        "trend_context",
         # YouTube Shorts discovery hashtag bundle (set from ANIMAL_TOPICS).
         "discovery_hashtags",
     ):
@@ -213,9 +228,11 @@ def test_build_story_starts_unconsumed():
     ai_out.setdefault("geo_hashtag", "Global")
     ai_out.setdefault("lead", ai_out["script"][:400])
     story = fetch_animals._build_story(
-        "cat", "cats",
+        "cat",
+        "cats",
         fetch_animals.ANIMAL_TOPICS["cats"],
-        _clip(), ai_out,
+        _clip(),
+        ai_out,
     )
     assert story["consumed"] is False
     assert story["consumed_at"] is None
@@ -244,12 +261,12 @@ def test_build_story_id_is_stable():
     ai_out = json.loads(_AI_OK_PAYLOAD)
     ai_out.setdefault("geo_hashtag", "Global")
     ai_out.setdefault("lead", "")
-    a = fetch_animals._build_story("cat", "cats",
-                                    fetch_animals.ANIMAL_TOPICS["cats"],
-                                    _clip(url="https://x/y/1"), ai_out)
-    b = fetch_animals._build_story("cat", "cats",
-                                    fetch_animals.ANIMAL_TOPICS["cats"],
-                                    _clip(url="https://x/y/1"), ai_out)
+    a = fetch_animals._build_story(
+        "cat", "cats", fetch_animals.ANIMAL_TOPICS["cats"], _clip(url="https://x/y/1"), ai_out
+    )
+    b = fetch_animals._build_story(
+        "cat", "cats", fetch_animals.ANIMAL_TOPICS["cats"], _clip(url="https://x/y/1"), ai_out
+    )
     assert a["id"] == b["id"]
 
 
@@ -257,16 +274,17 @@ def test_build_story_id_differs_per_clip():
     ai_out = json.loads(_AI_OK_PAYLOAD)
     ai_out.setdefault("geo_hashtag", "Global")
     ai_out.setdefault("lead", "")
-    a = fetch_animals._build_story("cat", "cats",
-                                    fetch_animals.ANIMAL_TOPICS["cats"],
-                                    _clip(url="https://x/y/1"), ai_out)
-    b = fetch_animals._build_story("cat", "cats",
-                                    fetch_animals.ANIMAL_TOPICS["cats"],
-                                    _clip(url="https://x/y/2"), ai_out)
+    a = fetch_animals._build_story(
+        "cat", "cats", fetch_animals.ANIMAL_TOPICS["cats"], _clip(url="https://x/y/1"), ai_out
+    )
+    b = fetch_animals._build_story(
+        "cat", "cats", fetch_animals.ANIMAL_TOPICS["cats"], _clip(url="https://x/y/2"), ai_out
+    )
     assert a["id"] != b["id"]
 
 
 # ── Prune ──────────────────────────────────────────────────────────
+
 
 def test_prune_keeps_unconsumed_regardless_of_age():
     old = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
@@ -295,6 +313,7 @@ def test_prune_drops_old_consumed():
 
 # ── Query rotation ────────────────────────────────────────────────
 
+
 def test_rotate_queries_returns_requested_count():
     queries = ["a", "b", "c", "d", "e"]
     out = fetch_animals._rotate_queries("cats", queries, take=2)
@@ -315,6 +334,7 @@ def test_rotate_queries_is_deterministic_within_window():
 
 
 # ── Topic table ───────────────────────────────────────────────────
+
 
 def test_topic_table_covers_expected_categories():
     """Pivot doc / channel branding refers to these 6 topics; if one
@@ -340,17 +360,20 @@ def test_every_topic_has_queries_and_hashtag():
 
 # ── Permanent published-clips dedup ledger ───────────────────────
 
+
 def test_topic_table_expands_discovery_surface():
     expected = {"reptiles", "insects", "primates", "nocturnal", "arctic"}
     assert expected.issubset(set(fetch_animals.ANIMAL_TOPICS))
 
 
 def test_topic_fetch_plan_boosts_thin_hot_topics():
-    queue = {"stories": [
-        {"category": "cats", "consumed": False},
-        {"category": "cats", "consumed": False},
-        *({"category": "farm", "consumed": False} for _ in range(14)),
-    ]}
+    queue = {
+        "stories": [
+            {"category": "cats", "consumed": False},
+            {"category": "cats", "consumed": False},
+            *({"category": "farm", "consumed": False} for _ in range(14)),
+        ]
+    }
     plan = fetch_animals._topic_fetch_plan(
         queue,
         {"category_weights": {"cats": 1.5, "farm": 0.75}},
@@ -376,12 +399,14 @@ def test_topic_fetch_plan_boosts_viewer_requested_animals():
 def test_topic_fetch_plan_boosts_trending_animals():
     queue = {"stories": []}
     trends = {
-        "topics": [{
-            "category": "ocean",
-            "animal": "orca",
-            "trend_score": 85,
-            "query": "orca animal behavior",
-        }]
+        "topics": [
+            {
+                "category": "ocean",
+                "animal": "orca",
+                "trend_score": 85,
+                "query": "orca animal behavior",
+            }
+        ]
     }
     plan = fetch_animals._topic_fetch_plan(queue, {}, {}, trends, max_per_topic=4)
     assert plan["ocean"]["budget"] > 4
@@ -389,24 +414,31 @@ def test_topic_fetch_plan_boosts_trending_animals():
 
 
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
-    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE",
-                        tmp_path / "missing.json")
+    monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", tmp_path / "missing.json")
     assert fetch_animals.load_published_clip_keys() == set()
 
 
 def test_load_published_clip_keys_extracts_both_id_fields(tmp_path, monkeypatch):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({
-        "clips": [
-            {"pexels_video_id": "111", "story_id": "abc123"},
-            {"pexels_video_id": "222"},                       # only pexels id
-            {"story_id": "def456"},                            # only story id
-            {"pexels_video_id": "", "story_id": ""},           # both empty — ignored
-        ],
-    }), encoding="utf-8")
+    f.write_text(
+        json.dumps(
+            {
+                "clips": [
+                    {"pexels_video_id": "111", "story_id": "abc123"},
+                    {"pexels_video_id": "222"},  # only pexels id
+                    {"story_id": "def456"},  # only story id
+                    {"pexels_video_id": "", "story_id": ""},  # both empty — ignored
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
     assert fetch_animals.load_published_clip_keys() == {
-        "111", "222", "abc123", "def456",
+        "111",
+        "222",
+        "abc123",
+        "def456",
     }
 
 
@@ -436,13 +468,17 @@ def test_record_published_clip_appends_to_empty_ledger(tmp_path, monkeypatch):
 
 def test_record_published_clip_appends_to_existing_ledger(tmp_path, monkeypatch):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({
-        "clips":      [{"pexels_video_id": "111", "story_id": "old1"}],
-        "updated_at": "2026-05-01T00:00:00+00:00",
-    }), encoding="utf-8")
+    f.write_text(
+        json.dumps(
+            {
+                "clips": [{"pexels_video_id": "111", "story_id": "old1"}],
+                "updated_at": "2026-05-01T00:00:00+00:00",
+            }
+        ),
+        encoding="utf-8",
+    )
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
-    fetch_animals.record_published_clip(pexels_video_id="222",
-                                         story_id="new2")
+    fetch_animals.record_published_clip(pexels_video_id="222", story_id="new2")
     payload = json.loads(f.read_text(encoding="utf-8"))
     assert len(payload["clips"]) == 2
     assert {c["pexels_video_id"] for c in payload["clips"]} == {"111", "222"}
@@ -468,30 +504,41 @@ def test_record_then_load_round_trip(tmp_path, monkeypatch):
 
 
 def test_pexels_id_from_clip_extracts_canonical_id():
-    clip = BrollClip(source="pexels",
-                     url="https://www.pexels.com/video/cat/12345/",
-                     download_url="https://files.pexels.com/v/cat-1.mp4",
-                     width=1080, height=1920, duration_s=10)
+    clip = BrollClip(
+        source="pexels",
+        url="https://www.pexels.com/video/cat/12345/",
+        download_url="https://files.pexels.com/v/cat-1.mp4",
+        width=1080,
+        height=1920,
+        duration_s=10,
+    )
     assert fetch_animals._pexels_id_from_clip(clip) == "12345"
 
 
 def test_pexels_id_from_clip_extracts_id_appended_to_slug():
-    clip = BrollClip(source="pexels",
-                     url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
-                     download_url="https://files.pexels.com/v/turtle.mp4",
-                     width=1080, height=1920, duration_s=10)
+    clip = BrollClip(
+        source="pexels",
+        url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+        download_url="https://files.pexels.com/v/turtle.mp4",
+        width=1080,
+        height=1920,
+        duration_s=10,
+    )
     assert fetch_animals._pexels_id_from_clip(clip) == "12345"
 
 
 def test_pexels_id_from_clip_handles_missing_url():
-    clip = BrollClip(source="pexels", url="", download_url="x",
-                     width=1080, height=1920, duration_s=10)
+    clip = BrollClip(source="pexels", url="", download_url="x", width=1080, height=1920, duration_s=10)
     assert fetch_animals._pexels_id_from_clip(clip) == ""
 
 
 def test_pexels_id_from_clip_rejects_pixabay_id():
-    clip = BrollClip(source="pixabay",
-                     url="https://pixabay.com/videos/octopus-12345/",
-                     download_url="https://cdn.pixabay.com/v/octopus.mp4",
-                     width=1080, height=1920, duration_s=10)
+    clip = BrollClip(
+        source="pixabay",
+        url="https://pixabay.com/videos/octopus-12345/",
+        download_url="https://cdn.pixabay.com/v/octopus.mp4",
+        width=1080,
+        height=1920,
+        duration_s=10,
+    )
     assert fetch_animals._pexels_id_from_clip(clip) == ""

@@ -29,7 +29,9 @@ def _recommendable_title(title: str) -> bool:
     return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
-def build_sequence_plan(analytics: dict | None = None, *, limit: int = 5, include_session_handoff: bool | None = None) -> dict:
+def build_sequence_plan(
+    analytics: dict | None = None, *, limit: int = 5, include_session_handoff: bool | None = None
+) -> dict:
     include_session_handoff = analytics is None if include_session_handoff is None else include_session_handoff
     analytics = analytics or _safe_json(ANALYTICS_FILE)
     winners = []

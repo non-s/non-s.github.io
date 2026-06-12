@@ -1,6 +1,7 @@
 """
 utils/retry.py — Exponential backoff with jitter for Wild Brief network calls.
 """
+
 from __future__ import annotations
 
 import logging
@@ -33,6 +34,7 @@ def with_retry(
         retry_on:     Exception types that trigger a retry.
         skip_on:      Exception types that skip retry and re-raise immediately.
     """
+
     def decorator(fn: Callable) -> Callable:
         @wraps(fn)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -51,13 +53,20 @@ def with_retry(
                     wait = min(delay * (1 + random.uniform(0, jitter)), max_delay)
                     log.debug(
                         "%s — attempt %d/%d failed (%s: %s). Retrying in %.1fs…",
-                        fn.__name__, attempt, max_attempts, type(exc).__name__, exc, wait,
+                        fn.__name__,
+                        attempt,
+                        max_attempts,
+                        type(exc).__name__,
+                        exc,
+                        wait,
                     )
                     time.sleep(wait)
                     delay = min(delay * backoff, max_delay)
             log.warning("%s — all %d attempts failed. Last error: %s", fn.__name__, max_attempts, last_exc)
             raise last_exc  # type: ignore[misc]
+
         return wrapper
+
     return decorator
 
 
@@ -83,13 +92,18 @@ def retry_call(
             if attempt == max_attempts:
                 log.warning(
                     "retry_call(%s) — all %d attempts failed: %s",
-                    getattr(fn, "__name__", str(fn)), max_attempts, exc,
+                    getattr(fn, "__name__", str(fn)),
+                    max_attempts,
+                    exc,
                 )
                 return default
             wait = min(delay * (1 + random.uniform(0, jitter)), max_delay)
             log.debug(
                 "retry_call(%s) attempt %d/%d failed, retrying in %.1fs",
-                getattr(fn, "__name__", str(fn)), attempt, max_attempts, wait,
+                getattr(fn, "__name__", str(fn)),
+                attempt,
+                max_attempts,
+                wait,
             )
             time.sleep(wait)
             delay = min(delay * 2, max_delay)

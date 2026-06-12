@@ -1,24 +1,29 @@
 """Tests for utils/retry.py"""
+
 import pytest
 from utils.retry import retry_call, with_retry
 
 
 def test_retry_call_success_first_try():
     calls = []
+
     def fn():
         calls.append(1)
         return "ok"
+
     assert retry_call(fn, max_attempts=3) == "ok"
     assert len(calls) == 1
 
 
 def test_retry_call_success_second_try():
     calls = []
+
     def fn():
         calls.append(1)
         if len(calls) < 2:
             raise ValueError("not yet")
         return "ok"
+
     result = retry_call(fn, max_attempts=3, base_delay=0.01)
     assert result == "ok"
     assert len(calls) == 2
@@ -27,6 +32,7 @@ def test_retry_call_success_second_try():
 def test_retry_call_all_fail_returns_default():
     def fn():
         raise RuntimeError("always fails")
+
     result = retry_call(fn, max_attempts=3, base_delay=0.01, default="fallback")
     assert result == "fallback"
 
@@ -34,6 +40,7 @@ def test_retry_call_all_fail_returns_default():
 def test_retry_call_default_none():
     def fn():
         raise Exception("fail")
+
     result = retry_call(fn, max_attempts=2, base_delay=0.01)
     assert result is None
 

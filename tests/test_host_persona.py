@@ -1,4 +1,5 @@
 """Tests for utils/host_persona.py."""
+
 from __future__ import annotations
 
 import json
@@ -28,8 +29,7 @@ def test_load_returns_defaults_without_file(tmp_path, monkeypatch):
 
 def test_load_merges_partial_override(tmp_path, monkeypatch):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({"name": "Beatriz", "handle": "wildbrief_alt"}),
-                  encoding="utf-8")
+    f.write_text(json.dumps({"name": "Beatriz", "handle": "wildbrief_alt"}), encoding="utf-8")
     monkeypatch.setattr(host_persona, "PERSONA_FILE", f)
     p = host_persona.load()
     assert p.name == "Beatriz"
@@ -46,7 +46,7 @@ def test_load_handles_malformed_json(tmp_path, monkeypatch):
     f.write_text("{not json", encoding="utf-8")
     monkeypatch.setattr(host_persona, "PERSONA_FILE", f)
     p = host_persona.load()
-    assert p.name == "Wild Brief"   # default
+    assert p.name == "Wild Brief"  # default
 
 
 def test_load_rejects_non_list_catchphrases(tmp_path, monkeypatch):

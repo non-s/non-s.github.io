@@ -29,20 +29,22 @@ def main() -> int:
     plans = []
     for item in ops.get("paused_topics") or []:
         category = str(item.get("category") or "")
-        plans.append({
-            "category": category,
-            "state": "paused_recovery",
-            "reason": item.get("reason", ""),
-            "retention": item.get("retention", retention.get(category, 0)),
-            "allowed_formats": ["myth_buster", "body_superpower", "animal_memory"],
-            "blocked_patterns": ["generic cute behavior", "slow setup", "question-only hook"],
-            "rules": [
-                "Only publish this category with an outcome-first hook.",
-                "Use a visibly different source clip from recent weak videos.",
-                "Keep script under 95 words until retention recovers.",
-                "Require retention_surgery verdict ready or tighten; never rewrite.",
-            ],
-        })
+        plans.append(
+            {
+                "category": category,
+                "state": "paused_recovery",
+                "reason": item.get("reason", ""),
+                "retention": item.get("retention", retention.get(category, 0)),
+                "allowed_formats": ["myth_buster", "body_superpower", "animal_memory"],
+                "blocked_patterns": ["generic cute behavior", "slow setup", "question-only hook"],
+                "rules": [
+                    "Only publish this category with an outcome-first hook.",
+                    "Use a visibly different source clip from recent weak videos.",
+                    "Keep script under 95 words until retention recovers.",
+                    "Require retention_surgery verdict ready or tighten; never rewrite.",
+                ],
+            }
+        )
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(plans),

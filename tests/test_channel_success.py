@@ -20,20 +20,23 @@ def _latest():
         "category_avg_view_pct": {"birds": 72, "cats": 37, "farm": 55},
         "category_avg_growth_score": {"farm": 240, "birds": 210, "cats": 90},
         "series_avg_engagement": {"Sky Intelligence": 80},
-        "top_performers": [{
-            "video_id": "abc",
-            "title": "Chickens remember faces",
-            "views": 1000,
-            "views_per_hour": 45,
-            "growth_score": 250,
-            "view_pct": 64,
-        }, {
-            "video_id": "def",
-            "title": "Cats land quietly",
-            "views": 500,
-            "growth_score": 120,
-            "view_pct": 38,
-        }],
+        "top_performers": [
+            {
+                "video_id": "abc",
+                "title": "Chickens remember faces",
+                "views": 1000,
+                "views_per_hour": 45,
+                "growth_score": 250,
+                "view_pct": 64,
+            },
+            {
+                "video_id": "def",
+                "title": "Cats land quietly",
+                "views": 500,
+                "growth_score": 120,
+                "view_pct": 38,
+            },
+        ],
     }
 
 
@@ -67,14 +70,16 @@ def test_first_24h_engine_splits_winners_and_reworks():
 
 def test_first_24h_engine_reworks_malformed_metric_winners():
     latest = _latest()
-    latest["top_performers"] = [{
-        "video_id": "bad",
-        "title": "Lions use their ears to use",
-        "views": 2000,
-        "views_per_hour": 80,
-        "growth_score": 300,
-        "view_pct": 70,
-    }]
+    latest["top_performers"] = [
+        {
+            "video_id": "bad",
+            "title": "Lions use their ears to use",
+            "views": 2000,
+            "views_per_hour": 80,
+            "growth_score": 300,
+            "view_pct": 70,
+        }
+    ]
 
     out = first_24h_engine(latest)
 
@@ -139,4 +144,3 @@ def test_audience_recurrence_engine_flags_new_viewer_leak():
     assert out["new_viewer_subscribe_rate"] < out["new_viewer_subscribe_rate_floor"]
     assert out["recurring_viewer_rate"] < out["recurring_viewer_rate_floor"]
     assert "follow for one animal signal" in " ".join(out["commands"]).lower()
-

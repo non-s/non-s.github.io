@@ -1,4 +1,5 @@
 """Queue pruning and quality quarantine for pending Shorts."""
+
 from __future__ import annotations
 
 import re
@@ -49,12 +50,14 @@ def normalise_title(story: dict) -> str:
 
 
 def angle_key(story: dict) -> str:
-    return "|".join((
-        extract_animal(story).lower(),
-        extract_action(story).lower(),
-        extract_cue(story).lower(),
-        str(story.get("category") or "").lower(),
-    ))
+    return "|".join(
+        (
+            extract_animal(story).lower(),
+            extract_action(story).lower(),
+            extract_cue(story).lower(),
+            str(story.get("category") or "").lower(),
+        )
+    )
 
 
 def source_key(story: dict) -> str:
@@ -104,9 +107,15 @@ def sanitize_story_metadata(story: dict) -> dict:
     return out
 
 
-def quality_issues(story: dict, *, seen_titles: set[str], seen_angles: set[str],
-                   seen_sources: set[str], seen_scripts: set[str] | None = None,
-                   duplicate_ids: set[str] | None = None) -> list[str]:
+def quality_issues(
+    story: dict,
+    *,
+    seen_titles: set[str],
+    seen_angles: set[str],
+    seen_sources: set[str],
+    seen_scripts: set[str] | None = None,
+    duplicate_ids: set[str] | None = None,
+) -> list[str]:
     issues: list[str] = []
     duplicate_ids = duplicate_ids or set()
     seen_scripts = seen_scripts if seen_scripts is not None else set()
@@ -188,9 +197,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         or packaging_risks
         or publish_risks
     ):
-        repair_reasons = list(dict.fromkeys(
-            brain_risks + packaging_risks + publish_risks
-        ))
+        repair_reasons = list(dict.fromkeys(brain_risks + packaging_risks + publish_risks))
         rescued, applied = rescue_story(packaged, repair_reasons)
         if applied:
             repaired = True
@@ -245,7 +252,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
 
 
 def _objective_rank(item: dict) -> tuple[int, float]:
-    gate = ((item.get("publish_score") or {}).get("objective_gate") or {})
+    gate = (item.get("publish_score") or {}).get("objective_gate") or {}
     scale_ready = 1 if gate.get("scale_ready", True) else 0
     try:
         confidence = float(gate.get("confidence_score") or 0)
@@ -254,8 +261,9 @@ def _objective_rank(item: dict) -> tuple[int, float]:
     return scale_ready, confidence
 
 
-def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
-                analytics_strategy: dict | None = None) -> tuple[dict, list[dict], dict]:
+def prune_queue(
+    queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING, analytics_strategy: dict | None = None
+) -> tuple[dict, list[dict], dict]:
     """Return pruned queue, rejected entries, and summary."""
     consumed = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if s.get("consumed")]
     pending = [sanitize_story_metadata(s) for s in queue.get("stories") or [] if not s.get("consumed")]
@@ -307,25 +315,30 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
                 continue
         scored = enriched_score(story, analytics_strategy=analytics_strategy)
         if scored["state"] == "reject":
-            reject_reasons = list(dict.fromkeys(
-                (scored["youtube_brain"].get("risks") or [])
-                + (scored["packaging"].get("risks") or [])
-                + (scored["rights_audit"].get("reasons") or [])
-                + ["queue_score_reject"]
-            ))
+            reject_reasons = list(
+                dict.fromkeys(
+                    (scored["youtube_brain"].get("risks") or [])
+                    + (scored["packaging"].get("risks") or [])
+                    + (scored["rights_audit"].get("reasons") or [])
+                    + ["queue_score_reject"]
+                )
+            )
             reasons.update(reject_reasons)
             repair.append({"story": scored["story"], "reasons": reject_reasons, "stage": "queue_repair"})
             rejected.append({"story": scored["story"], "reasons": reject_reasons, "stage": "queue_repair"})
             continue
         accepted.append(scored)
 
-    accepted.sort(key=lambda item: (
-        *_objective_rank(item),
-        float((item["story"].get("autonomy") or {}).get("priority", 0) or 0),
-        item["score"],
-        int(item["story"].get("score", 0) or 0),
-        item["story"].get("fetched_at", ""),
-    ), reverse=True)
+    accepted.sort(
+        key=lambda item: (
+            *_objective_rank(item),
+            float((item["story"].get("autonomy") or {}).get("priority", 0) or 0),
+            item["score"],
+            int(item["story"].get("score", 0) or 0),
+            item["story"].get("fetched_at", ""),
+        ),
+        reverse=True,
+    )
 
     kept: list[dict] = []
     objective = load_channel_objective()
@@ -363,10 +376,7 @@ def prune_queue(queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING,
         effective_state = item["state"]
         effective_score = item["score"]
         gate = (item["publish_score"] or {}).get("objective_gate") or {}
-        objective_reasons = [
-            f"objective_gate:{reason}"
-            for reason in (gate.get("reasons") or [])
-        ]
+        objective_reasons = [f"objective_gate:{reason}" for reason in (gate.get("reasons") or [])]
         if objective_reasons:
             reasons.update(objective_reasons)
         cluster = title_template_cluster(str(story.get("seo_title") or story.get("title") or ""))

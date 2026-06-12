@@ -128,10 +128,7 @@ def freshness_report(queue: dict) -> dict:
             for item in sorted(stale, key=lambda row: float(row.get("queue_age_days") or 0), reverse=True)[:20]
         ],
         "top_fresh": sorted(
-            [
-                _report_row(item, include_topic=True)
-                for item in stories
-            ],
+            [_report_row(item, include_topic=True) for item in stories],
             key=lambda row: float(row.get("freshness_score") or 0),
             reverse=True,
         )[:20],

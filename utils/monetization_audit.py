@@ -1,4 +1,5 @@
 """Local monetization-readiness checks for Wild Brief Shorts."""
+
 from __future__ import annotations
 
 import re
@@ -54,11 +55,15 @@ def audit(meta: dict) -> dict:
         reasons.append("AI-tell language in public metadata")
 
     score = max(0, min(100, score))
-    approved = score >= 72 and not any(reason in {
-        "no motion b-roll",
-        "script quality too low",
-        "weak human host signal",
-    } for reason in reasons)
+    approved = score >= 72 and not any(
+        reason
+        in {
+            "no motion b-roll",
+            "script quality too low",
+            "weak human host signal",
+        }
+        for reason in reasons
+    )
     return {
         "approved": approved,
         "score": score,

@@ -1,4 +1,5 @@
 """Tests for the automated Wild Brief editor-in-chief."""
+
 from __future__ import annotations
 
 from utils import editorial
@@ -99,13 +100,15 @@ def test_editor_routes_weak_story_to_ai_rewrite(monkeypatch):
 
 def test_editor_discards_unusable_story(monkeypatch):
     monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
-    out = editorial.review({
-        "title": "Amazing animal fact",
-        "hook": "",
-        "script": "",
-        "thumbnail_text": "",
-        "category": "wildlife",
-        "score": 1,
-    })
+    out = editorial.review(
+        {
+            "title": "Amazing animal fact",
+            "hook": "",
+            "script": "",
+            "thumbnail_text": "",
+            "category": "wildlife",
+            "score": 1,
+        }
+    )
     assert not out.approved
     assert out.state == "discard"

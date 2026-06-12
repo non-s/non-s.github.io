@@ -24,6 +24,7 @@ Pexels rate-limits at 200/h. We cache discovery
 results in-memory per process and on disk under `_data/broll_cache/`
 so a re-run of the same story doesn't burn quota.
 """
+
 from __future__ import annotations
 
 import dataclasses
@@ -55,6 +56,7 @@ class BrollClip:
     source resolution — we prefer >= 1080 vertical so the post-crop
     to 1080x1920 doesn't upscale.
     """
+
     source: str
     url: str
     download_url: str
@@ -67,6 +69,7 @@ class BrollClip:
 
 # ── HTTP session ─────────────────────────────────────────────────
 
+
 def _session() -> requests.Session:
     s = requests.Session()
     s.headers.update({"User-Agent": _USER_AGENT})
@@ -74,6 +77,7 @@ def _session() -> requests.Session:
 
 
 # ── On-disk cache for discovery results ──────────────────────────
+
 
 def _cache_key(source: str, query: str) -> Path:
     h = hashlib.sha256(f"{source}\x00{query}".lower().encode()).hexdigest()[:16]
@@ -96,8 +100,7 @@ def _cache_get(path: Path) -> list[dict] | None:
 def _cache_put(path: Path, clips: list[dict]) -> None:
     try:
         _CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"ts": time.time(), "clips": clips},
-                                   ensure_ascii=False), encoding="utf-8")
+        path.write_text(json.dumps({"ts": time.time(), "clips": clips}, ensure_ascii=False), encoding="utf-8")
     except Exception as exc:
         log.debug("broll cache write failed: %s", exc)
 
@@ -158,26 +161,30 @@ def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
         files = v.get("video_files", []) or []
         files = [f for f in files if f.get("link") and f.get("width") and f.get("height")]
         # Prefer portrait/vertical; fall back to landscape we'll crop.
-        files.sort(key=lambda f: (
-            0 if (f.get("height") or 0) >= (f.get("width") or 0) else 1,
-            abs((f.get("height") or 0) - 1920),
-        ))
+        files.sort(
+            key=lambda f: (
+                0 if (f.get("height") or 0) >= (f.get("width") or 0) else 1,
+                abs((f.get("height") or 0) - 1920),
+            )
+        )
         if not files:
             continue
         f = files[0]
-        out.append(BrollClip(
-            source="pexels",
-            url=v.get("url", ""),
-            download_url=f["link"],
-            width=int(f.get("width") or 0),
-            height=int(f.get("height") or 0),
-            duration_s=float(v.get("duration") or 0),
-            title=_pexels_clip_title(
-                v.get("url", ""),
-                (v.get("user", {}) or {}).get("name", ""),
-            ),
-            license="Pexels License (free for commercial use)",
-        ))
+        out.append(
+            BrollClip(
+                source="pexels",
+                url=v.get("url", ""),
+                download_url=f["link"],
+                width=int(f.get("width") or 0),
+                height=int(f.get("height") or 0),
+                duration_s=float(v.get("duration") or 0),
+                title=_pexels_clip_title(
+                    v.get("url", ""),
+                    (v.get("user", {}) or {}).get("name", ""),
+                ),
+                license="Pexels License (free for commercial use)",
+            )
+        )
     _cache_put(cache_path, [dataclasses.asdict(c) for c in out])
     return out
 
@@ -194,8 +201,13 @@ def fetch_pixabay(query: str, per_page: int = 8) -> list[BrollClip]:
     try:
         r = _session().get(
             _PIXABAY_API,
-            params={"key": key, "q": query[:100], "per_page": max(3, min(int(per_page), 200)),
-                    "safesearch": "true", "video_type": "all"},
+            params={
+                "key": key,
+                "q": query[:100],
+                "per_page": max(3, min(int(per_page), 200)),
+                "safesearch": "true",
+                "video_type": "all",
+            },
             timeout=_TIMEOUT,
         )
         if r.status_code != 200:
@@ -207,22 +219,32 @@ def fetch_pixabay(query: str, per_page: int = 8) -> list[BrollClip]:
         return []
     out: list[BrollClip] = []
     for video in videos:
-        variants = [item for item in (video.get("videos") or {}).values()
-                    if item.get("url") and item.get("width") and item.get("height")]
-        variants.sort(key=lambda item: (
-            0 if int(item.get("height") or 0) >= int(item.get("width") or 0) else 1,
-            abs(int(item.get("height") or 0) - 1920),
-        ))
+        variants = [
+            item
+            for item in (video.get("videos") or {}).values()
+            if item.get("url") and item.get("width") and item.get("height")
+        ]
+        variants.sort(
+            key=lambda item: (
+                0 if int(item.get("height") or 0) >= int(item.get("width") or 0) else 1,
+                abs(int(item.get("height") or 0) - 1920),
+            )
+        )
         if not variants:
             continue
         item = variants[0]
-        out.append(BrollClip(
-            source="pixabay", url=video.get("pageURL", ""), download_url=item["url"],
-            width=int(item.get("width") or 0), height=int(item.get("height") or 0),
-            duration_s=float(video.get("duration") or 0),
-            title=str(video.get("tags") or "").strip(),
-            license="Pixabay Content License (free for commercial use)",
-        ))
+        out.append(
+            BrollClip(
+                source="pixabay",
+                url=video.get("pageURL", ""),
+                download_url=item["url"],
+                width=int(item.get("width") or 0),
+                height=int(item.get("height") or 0),
+                duration_s=float(video.get("duration") or 0),
+                title=str(video.get("tags") or "").strip(),
+                license="Pixabay Content License (free for commercial use)",
+            )
+        )
     _cache_put(cache_path, [dataclasses.asdict(c) for c in out])
     return out
 
@@ -232,12 +254,55 @@ def fetch_pixabay(query: str, per_page: int = 8) -> list[BrollClip]:
 # Strip filler words so "The octopus changes colour today" becomes
 # a more targeted "octopus changes colour" — better b-roll matches.
 _STOPWORDS = {
-    "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
-    "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
-    "as", "that", "this", "these", "those", "it", "its", "after", "before",
-    "during", "into", "over", "under", "between", "again", "than",
-    "today", "yesterday", "tomorrow", "new", "latest", "update", "report",
-    "says", "said", "now", "just", "really",
+    "a",
+    "an",
+    "the",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "by",
+    "from",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "as",
+    "that",
+    "this",
+    "these",
+    "those",
+    "it",
+    "its",
+    "after",
+    "before",
+    "during",
+    "into",
+    "over",
+    "under",
+    "between",
+    "again",
+    "than",
+    "today",
+    "yesterday",
+    "tomorrow",
+    "new",
+    "latest",
+    "update",
+    "report",
+    "says",
+    "said",
+    "now",
+    "just",
+    "really",
 }
 
 
@@ -250,8 +315,7 @@ def _build_query(text: str) -> str:
     return " ".join(kept)
 
 
-def fetch_broll_clips(query: str, want_n: int = 4, category: str = "",
-                      animal_only: bool = False) -> list[BrollClip]:
+def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False) -> list[BrollClip]:
     """Collect up to `want_n` vetted animal clips."""
     seen_urls: set[str] = set()
     collected: list[BrollClip] = []
@@ -303,6 +367,7 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "",
 
 
 # ── Download helper ──────────────────────────────────────────────
+
 
 def download_clip(clip: BrollClip, dest: Path, max_bytes: int = 30 * 1024 * 1024) -> bool:
     """Download `clip.download_url` to `dest`. Caps body at `max_bytes`.

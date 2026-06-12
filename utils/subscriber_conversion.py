@@ -3,6 +3,7 @@
 The growth engine decides whether a Short can earn attention. This module asks
 whether that attention can become recurring audience.
 """
+
 from __future__ import annotations
 
 import json
@@ -134,7 +135,9 @@ def series_identity(story: dict, memory: dict | None = None) -> dict:
 
 def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict:
     memory = memory or {}
-    audience = memory.get("audience_memory") if isinstance(memory.get("audience_memory"), dict) else load_audience_memory()
+    audience = (
+        memory.get("audience_memory") if isinstance(memory.get("audience_memory"), dict) else load_audience_memory()
+    )
     title = str(story.get("seo_title") or story.get("title") or "")
     hook = str(story.get("hook") or "")
     cta = str(story.get("cta_prompt") or "")
@@ -179,12 +182,14 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
         cat_weight *= float((weights.get("series_return") or {}).get(series_base, 1.0))
     score *= max(0.78, min(1.32, cat_weight))
     score = round(max(0, min(100, score)))
-    confidence = combined_confidence([
-        ((audience.get("category") or {}).get(category) or {}).get("confidence") or {},
-        ((audience.get("format") or {}).get(fmt) or {}).get("confidence") or {},
-        ((audience.get("series") or {}).get(series_base) or {}).get("confidence") or {},
-        assess_confidence("pattern", 1, inferred=1),
-    ])
+    confidence = combined_confidence(
+        [
+            ((audience.get("category") or {}).get(category) or {}).get("confidence") or {},
+            ((audience.get("format") or {}).get(fmt) or {}).get("confidence") or {},
+            ((audience.get("series") or {}).get(series_base) or {}).get("confidence") or {},
+            assess_confidence("pattern", 1, inferred=1),
+        ]
+    )
     return {
         "score": score,
         "state": "strong" if score >= 76 else ("usable" if score >= 62 else "weak"),
@@ -194,7 +199,9 @@ def score_subscriber_conversion(story: dict, memory: dict | None = None) -> dict
         "robotic_title": robotic,
         "reasons": tuple(reasons),
         "confidence": confidence,
-        "reasoning": confidence.get("reasoning", "Subscriber conversion uses packaging signals while real subscriber history matures."),
+        "reasoning": confidence.get(
+            "reasoning", "Subscriber conversion uses packaging signals while real subscriber history matures."
+        ),
     }
 
 
@@ -228,18 +235,20 @@ def build_fan_growth(markers: list[dict], comments: list[dict] | None = None) ->
             category_rates[category].append(subs_per_1k)
         if fmt:
             format_rates[fmt].append(subs_per_1k)
-        video_rows.append({
-            "video_id": marker.get("video_id", ""),
-            "title": marker.get("title", ""),
-            "category": category,
-            "story_format": fmt,
-            "series": marker.get("series", ""),
-            "views": int(views),
-            "subscribers_gained": int(subs),
-            "subs_per_1k_views": subs_per_1k,
-            "comments_per_1k_views": comments_per_1k,
-            "subscriber_conversion": marker.get("subscriber_conversion", {}),
-        })
+        video_rows.append(
+            {
+                "video_id": marker.get("video_id", ""),
+                "title": marker.get("title", ""),
+                "category": category,
+                "story_format": fmt,
+                "series": marker.get("series", ""),
+                "views": int(views),
+                "subscribers_gained": int(subs),
+                "subs_per_1k_views": subs_per_1k,
+                "comments_per_1k_views": comments_per_1k,
+                "subscriber_conversion": marker.get("subscriber_conversion", {}),
+            }
+        )
 
     def avg(values: list[float]) -> float:
         return round(sum(values) / len(values), 3) if values else 0.0
@@ -250,19 +259,15 @@ def build_fan_growth(markers: list[dict], comments: list[dict] | None = None) ->
         "category_subscriber_rates": {k: avg(v) for k, v in category_rates.items()},
         "format_subscriber_rates": {k: avg(v) for k, v in format_rates.items()},
         "recurring_commenters": [
-            {"author": author, "comments": count}
-            for author, count in recurring_authors.most_common(20)
-            if count >= 2
+            {"author": author, "comments": count} for author, count in recurring_authors.most_common(20) if count >= 2
         ],
         "subscriber_category_weights": {
-            k: round(max(0.85, min(1.25, 1 + (avg(v) - 1.5) / 10)), 3)
-            for k, v in category_rates.items()
+            k: round(max(0.85, min(1.25, 1 + (avg(v) - 1.5) / 10)), 3) for k, v in category_rates.items()
         },
     }
 
 
-def write_fan_growth(markers: list[dict], comments: list[dict] | None = None,
-                     path: Path = FAN_GROWTH_PATH) -> dict:
+def write_fan_growth(markers: list[dict], comments: list[dict] | None = None, path: Path = FAN_GROWTH_PATH) -> dict:
     payload = build_fan_growth(markers, comments)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")

@@ -1,4 +1,5 @@
 """Free story intelligence for growth-oriented Shorts production."""
+
 from __future__ import annotations
 
 import re
@@ -26,25 +27,131 @@ TITLE_PATTERNS = (
 )
 
 _ANIMAL_WORDS = {
-    "bear", "bears", "bird", "birds", "cat", "cats", "chicken", "chickens", "deer", "dog", "dogs",
-    "dolphin", "dolphins", "eagle", "elephant", "elephants", "goat", "goats",
-    "macaw", "owl", "shark", "tiger", "whale", "whales", "wolf", "wolves",
-    "cow", "cows", "duck", "duckling", "ducklings", "fox", "horse", "horses",
-    "lion", "lions", "octopus", "octopuses", "parrot", "parrots", "penguin",
-    "penguins", "seal", "seals", "snake", "snakes", "turtle", "turtles",
-    "donkey", "donkeys", "sheep", "bee", "bees", "butterfly", "butterflies",
-    "ant", "ants", "beetle", "beetles", "mantis", "mantises", "dragonfly",
-    "dragonflies", "chameleon", "chameleons", "orangutan", "orangutans",
-    "monkey", "monkeys",
-    "plant", "plants", "leaf", "leaves", "flower", "flowers", "tree", "trees",
-    "root", "roots", "forest", "forests", "fungi", "fungus", "mushroom",
-    "mushrooms", "mycelium", "ocean", "sea", "coral", "reef", "river",
-    "rivers", "waterfall", "mountain", "mountains", "glacier", "glaciers",
-    "volcano", "volcanoes", "lava", "magma", "storm", "storms", "lightning",
-    "tornado", "cloud", "clouds", "aurora", "eclipse", "rock", "rocks",
-    "mineral", "minerals", "canyon", "cave", "ecosystem", "ecosystems",
-    "earth", "planet", "atmosphere", "conservation", "biodiversity",
-    "science", "fossil", "biology",
+    "bear",
+    "bears",
+    "bird",
+    "birds",
+    "cat",
+    "cats",
+    "chicken",
+    "chickens",
+    "deer",
+    "dog",
+    "dogs",
+    "dolphin",
+    "dolphins",
+    "eagle",
+    "elephant",
+    "elephants",
+    "goat",
+    "goats",
+    "macaw",
+    "owl",
+    "shark",
+    "tiger",
+    "whale",
+    "whales",
+    "wolf",
+    "wolves",
+    "cow",
+    "cows",
+    "duck",
+    "duckling",
+    "ducklings",
+    "fox",
+    "horse",
+    "horses",
+    "lion",
+    "lions",
+    "octopus",
+    "octopuses",
+    "parrot",
+    "parrots",
+    "penguin",
+    "penguins",
+    "seal",
+    "seals",
+    "snake",
+    "snakes",
+    "turtle",
+    "turtles",
+    "donkey",
+    "donkeys",
+    "sheep",
+    "bee",
+    "bees",
+    "butterfly",
+    "butterflies",
+    "ant",
+    "ants",
+    "beetle",
+    "beetles",
+    "mantis",
+    "mantises",
+    "dragonfly",
+    "dragonflies",
+    "chameleon",
+    "chameleons",
+    "orangutan",
+    "orangutans",
+    "monkey",
+    "monkeys",
+    "plant",
+    "plants",
+    "leaf",
+    "leaves",
+    "flower",
+    "flowers",
+    "tree",
+    "trees",
+    "root",
+    "roots",
+    "forest",
+    "forests",
+    "fungi",
+    "fungus",
+    "mushroom",
+    "mushrooms",
+    "mycelium",
+    "ocean",
+    "sea",
+    "coral",
+    "reef",
+    "river",
+    "rivers",
+    "waterfall",
+    "mountain",
+    "mountains",
+    "glacier",
+    "glaciers",
+    "volcano",
+    "volcanoes",
+    "lava",
+    "magma",
+    "storm",
+    "storms",
+    "lightning",
+    "tornado",
+    "cloud",
+    "clouds",
+    "aurora",
+    "eclipse",
+    "rock",
+    "rocks",
+    "mineral",
+    "minerals",
+    "canyon",
+    "cave",
+    "ecosystem",
+    "ecosystems",
+    "earth",
+    "planet",
+    "atmosphere",
+    "conservation",
+    "biodiversity",
+    "science",
+    "fossil",
+    "biology",
 }
 
 
@@ -115,26 +222,57 @@ def audit_title(title: str) -> Audit:
     if any(token in lower for token in ("won't believe", "shocking", "insane", "crazy")):
         score -= 20
         issues.append("clickbait_language")
-    if any(token in lower for token in (
-        "another signal hiding in plain sight",
-        "another secret hiding in plain sight",
-        "secret hiding in plain sight",
-    )):
+    if any(
+        token in lower
+        for token in (
+            "another signal hiding in plain sight",
+            "another secret hiding in plain sight",
+            "secret hiding in plain sight",
+        )
+    ):
         score -= 22
         issues.append("repetitive_template")
-    if not any(token in lower for token in (
-        "why", "can", "remember", "recognize", "use", "not", "love",
-        "fake", "plan", "escape", "slide", "call", "hear", "hold", "roar",
-        "glow", "erupt", "build", "move", "signal", "survive", "protect",
-        "form", "grow", "burn", "freeze", "breathe", "recover",
-    )):
+    if not any(
+        token in lower
+        for token in (
+            "why",
+            "can",
+            "remember",
+            "recognize",
+            "use",
+            "not",
+            "love",
+            "fake",
+            "plan",
+            "escape",
+            "slide",
+            "call",
+            "hear",
+            "hold",
+            "roar",
+            "glow",
+            "erupt",
+            "build",
+            "move",
+            "signal",
+            "survive",
+            "protect",
+            "form",
+            "grow",
+            "burn",
+            "freeze",
+            "breathe",
+            "recover",
+        )
+    ):
         score -= 10
         issues.append("weak_curiosity_shape")
     return Audit(score=max(0, score), issues=tuple(issues))
 
 
-def postmortem(*, title: str, hook: str, views: int, views_per_hour: float,
-               average_view_percentage: float, growth_score: float) -> dict:
+def postmortem(
+    *, title: str, hook: str, views: int, views_per_hour: float, average_view_percentage: float, growth_score: float
+) -> dict:
     hook_audit = audit_hook(hook)
     title_audit = audit_title(title)
     reasons: list[str] = []

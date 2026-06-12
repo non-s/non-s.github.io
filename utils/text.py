@@ -2,6 +2,7 @@
 utils/text.py — Pure text utilities for Wild Brief.
 No global state, no external HTTP calls, fully testable.
 """
+
 from __future__ import annotations
 
 import re
@@ -48,38 +49,47 @@ _MD_LIST_BULLET_RE = re.compile(r"^\s*[-*+]\s+", re.MULTILINE)
 _MD_LIST_NUMBER_RE = re.compile(r"^\s*\d+\.\s+", re.MULTILINE)
 _MD_EMPHASIS_RE = re.compile(r"[*_]+")
 _HTML_ENTITIES_TTS = {
-    "&amp;": " and ", "&nbsp;": " ", "&lt;": " ", "&gt;": " ",
-    "&quot;": '"', "&#39;": "'", "&apos;": "'", "&hellip;": "...",
-    "&mdash;": " — ", "&ndash;": " – ",
+    "&amp;": " and ",
+    "&nbsp;": " ",
+    "&lt;": " ",
+    "&gt;": " ",
+    "&quot;": '"',
+    "&#39;": "'",
+    "&apos;": "'",
+    "&hellip;": "...",
+    "&mdash;": " — ",
+    "&ndash;": " – ",
 }
 
 # Abbreviations that read awkwardly when spoken literally. Order matters:
 # longer patterns first so "U.S.A." matches before "U.S.". Word boundaries
 # avoid eating substrings of normal words.
 _TTS_ABBREVIATIONS = [
-    (re.compile(r"\bU\.S\.A\.?"),                "U S A"),
-    (re.compile(r"\bU\.S\.\B|\bU\.S\.\s"),       "U S "),
-    (re.compile(r"\bU\.K\.\B|\bU\.K\.\s"),       "U K "),
-    (re.compile(r"\bE\.U\.\B|\bE\.U\.\s"),       "E U "),
-    (re.compile(r"\bDr\.\s+"),                   "Doctor "),
-    (re.compile(r"\bMr\.\s+"),                   "Mister "),
-    (re.compile(r"\bMrs\.\s+"),                  "Missus "),
-    (re.compile(r"\bMs\.\s+"),                   "Miz "),
-    (re.compile(r"\bProf\.\s+"),                 "Professor "),
-    (re.compile(r"\bSen\.\s+"),                  "Senator "),
-    (re.compile(r"\bRep\.\s+"),                  "Representative "),
-    (re.compile(r"\bGov\.\s+"),                  "Governor "),
-    (re.compile(r"\bvs\.\s+"),                   "versus "),
-    (re.compile(r"\betc\."),                     "et cetera"),
-    (re.compile(r"\bInc\."),                     "Incorporated"),
-    (re.compile(r"\bCorp\."),                    "Corporation"),
-    (re.compile(r"\bLtd\."),                     "Limited"),
-    (re.compile(r"\s+&\s+"),                     " and "),
-    (re.compile(r"\$(\d+(?:\.\d+)?)\s*(billion|million|trillion)\b", re.IGNORECASE),
-                                                 lambda m: f"{m.group(1)} {m.group(2).lower()} dollars"),
-    (re.compile(r"\$(\d+(?:\.\d+)?)\b"),         r"\1 dollars"),
+    (re.compile(r"\bU\.S\.A\.?"), "U S A"),
+    (re.compile(r"\bU\.S\.\B|\bU\.S\.\s"), "U S "),
+    (re.compile(r"\bU\.K\.\B|\bU\.K\.\s"), "U K "),
+    (re.compile(r"\bE\.U\.\B|\bE\.U\.\s"), "E U "),
+    (re.compile(r"\bDr\.\s+"), "Doctor "),
+    (re.compile(r"\bMr\.\s+"), "Mister "),
+    (re.compile(r"\bMrs\.\s+"), "Missus "),
+    (re.compile(r"\bMs\.\s+"), "Miz "),
+    (re.compile(r"\bProf\.\s+"), "Professor "),
+    (re.compile(r"\bSen\.\s+"), "Senator "),
+    (re.compile(r"\bRep\.\s+"), "Representative "),
+    (re.compile(r"\bGov\.\s+"), "Governor "),
+    (re.compile(r"\bvs\.\s+"), "versus "),
+    (re.compile(r"\betc\."), "et cetera"),
+    (re.compile(r"\bInc\."), "Incorporated"),
+    (re.compile(r"\bCorp\."), "Corporation"),
+    (re.compile(r"\bLtd\."), "Limited"),
+    (re.compile(r"\s+&\s+"), " and "),
+    (
+        re.compile(r"\$(\d+(?:\.\d+)?)\s*(billion|million|trillion)\b", re.IGNORECASE),
+        lambda m: f"{m.group(1)} {m.group(2).lower()} dollars",
+    ),
+    (re.compile(r"\$(\d+(?:\.\d+)?)\b"), r"\1 dollars"),
     # Percentages: "30%" → "30 percent"
-    (re.compile(r"(\d+(?:\.\d+)?)\s*%"),         r"\1 percent"),
+    (re.compile(r"(\d+(?:\.\d+)?)\s*%"), r"\1 percent"),
 ]
 
 
@@ -121,4 +131,3 @@ def humanize_for_tts(text: str) -> str:
     # pauses via punctuation, not line breaks).
     t = _WHITESPACE_RE.sub(" ", t).strip()
     return t
-

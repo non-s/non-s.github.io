@@ -21,6 +21,7 @@ Set `DIGEST_REPO` (e.g. "non-s/non-s.github.io") + a token with
 issues:write permission. The workflow's `GITHUB_TOKEN` is sufficient
 when the digest runs INSIDE the repo's own Actions.
 """
+
 from __future__ import annotations
 
 import json
@@ -70,9 +71,7 @@ def collect_recent_shorts(lookback_hours: int = 24) -> list[dict]:
             if not data:
                 continue
             try:
-                ts = datetime.fromisoformat(
-                    (data.get("uploaded_at") or "").replace("Z", "+00:00")
-                )
+                ts = datetime.fromisoformat((data.get("uploaded_at") or "").replace("Z", "+00:00"))
             except Exception:
                 continue
             if ts < cutoff:
@@ -93,9 +92,9 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         f"**{len(shorts)} Short(s) published in the last 24 hours.**",
         "",
         "Review checklist (30 seconds):",
-        "- [ ] Each hook leads with action / number â€” no \"Today\" / \"In a recent\"",
+        '- [ ] Each hook leads with action / number â€” no "Today" / "In a recent"',
         "- [ ] Each script adds a memorable fact beyond the source metadata",
-        "- [ ] No AI-tell phrases on display (\"crucial\", \"pivotal\", \"delve\")",
+        '- [ ] No AI-tell phrases on display ("crucial", "pivotal", "delve")',
         "- [ ] Thumbnails read clearly at small size",
         "- [ ] Captions are accurate (open one and skim)",
         "",
@@ -112,15 +111,15 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         lines.append("### Channel pulse (last 14 days, from analytics workflow)")
         lines.append("")
         lines.append(f"- Avg view %: **{analytics_summary.get('avg_view_pct', '?')}**")
-        lines.append(f"- Total tracked views: {analytics_summary.get('total_views', analytics_summary.get('total_views_14d', '?'))}")
+        lines.append(
+            f"- Total tracked views: {analytics_summary.get('total_views', analytics_summary.get('total_views_14d', '?'))}"
+        )
         if "avg_engagement_score" in analytics_summary:
             lines.append(f"- Public engagement score: **{analytics_summary.get('avg_engagement_score')}**")
         series = analytics_summary.get("series_avg_engagement") or {}
         if series:
             top_series = sorted(series.items(), key=lambda kv: kv[1], reverse=True)[:3]
-            lines.append("- Top editorial series: " + ", ".join(
-                f"{name} ({score:.2f})" for name, score in top_series
-            ))
+            lines.append("- Top editorial series: " + ", ".join(f"{name} ({score:.2f})" for name, score in top_series))
         underperf = analytics_summary.get("below_62_pct") or analytics_summary.get("below_60_pct") or []
         lines.append(f"- Underperforming (<62 % retention): {len(underperf)}")
         cat = analytics_summary.get("category_avg_view_pct") or {}
@@ -223,9 +222,11 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append("")
 
     if not shorts:
-        lines.append("_No Shorts shipped in the last 24 h._ Possible causes: "
-                     "Mistral 429 with no fallback configured, all stories failed "
-                     "the quality gate, or the workflow didn't run.")
+        lines.append(
+            "_No Shorts shipped in the last 24 h._ Possible causes: "
+            "Mistral 429 with no fallback configured, all stories failed "
+            "the quality gate, or the workflow didn't run."
+        )
         return "\n".join(lines)
 
     for s in shorts:
@@ -254,28 +255,30 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
         tags = s.get("tags") or []
         if tags:
             lines.append(f"- ðŸ·  tags: {', '.join(tags[:6])}")
-        lines.append(f"- quality: b-roll={'yes' if s.get('has_broll') else 'no'}, "
-                     f"captions={'yes' if s.get('has_captions') else 'no'}, "
-                     f"script grade={s.get('script_quality_grade', '?')}")
+        lines.append(
+            f"- quality: b-roll={'yes' if s.get('has_broll') else 'no'}, "
+            f"captions={'yes' if s.get('has_captions') else 'no'}, "
+            f"script grade={s.get('script_quality_grade', '?')}"
+        )
         monetization = s.get("monetization_audit") or {}
         if monetization:
-            lines.append(
-                f"- monetization: {monetization.get('state', '?')} "
-                f"({monetization.get('score', '?')}/100)"
-            )
+            lines.append(f"- monetization: {monetization.get('state', '?')} " f"({monetization.get('score', '?')}/100)")
         visual = s.get("visual_qa") or {}
         if visual.get("checked"):
-            lines.append(f"- visual QA: {visual.get('thumbnail_quality', '?')}/10 "
-                         f"({'approved' if visual.get('approved') else 'rejected'})")
+            lines.append(
+                f"- visual QA: {visual.get('thumbnail_quality', '?')}/10 "
+                f"({'approved' if visual.get('approved') else 'rejected'})"
+            )
         lines.append("")
     return "\n".join(lines)
 
 
 # â”€â”€ GitHub Issues API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-def post_digest_issue(body: str, repo: str | None = None,
-                       token: str | None = None,
-                       title: str | None = None) -> str | None:
+
+def post_digest_issue(
+    body: str, repo: str | None = None, token: str | None = None, title: str | None = None
+) -> str | None:
     """POST a new Issue to `repo`. Returns the URL, or None on failure.
 
     The workflow's `GITHUB_TOKEN` has `issues:write` permission as
@@ -294,12 +297,12 @@ def post_digest_issue(body: str, repo: str | None = None,
             f"https://api.github.com/repos/{repo}/issues",
             json={
                 "title": title,
-                "body":  body[:60_000],   # GitHub caps issue body at 64 KB
+                "body": body[:60_000],  # GitHub caps issue body at 64 KB
                 "labels": ["digest", "auto"],
             },
             headers={
                 "Authorization": f"Bearer {token}",
-                "Accept":        "application/vnd.github+json",
+                "Accept": "application/vnd.github+json",
                 "X-GitHub-Api-Version": "2022-11-28",
             },
             timeout=30,
@@ -343,9 +346,7 @@ def save_blocked_slugs(slugs: set[str]) -> None:
     )
 
 
-def harvest_block_commands(repo: str | None = None,
-                            token: str | None = None,
-                            lookback_days: int = 7) -> set[str]:
+def harvest_block_commands(repo: str | None = None, token: str | None = None, lookback_days: int = 7) -> set[str]:
     """Read recent digest-issue comments, return slugs after `/block`.
 
     Idempotent: re-running just refreshes the same set.
@@ -362,13 +363,13 @@ def harvest_block_commands(repo: str | None = None,
             f"https://api.github.com/repos/{repo}/issues",
             params={
                 "labels": "digest",
-                "state":  "all",
-                "since":  since,
+                "state": "all",
+                "since": since,
                 "per_page": "30",
             },
             headers={
                 "Authorization": f"Bearer {token}",
-                "Accept":        "application/vnd.github+json",
+                "Accept": "application/vnd.github+json",
             },
             timeout=30,
         )
@@ -379,6 +380,7 @@ def harvest_block_commands(repo: str | None = None,
         return set()
 
     import re
+
     block_re = re.compile(r"/block\s+([a-z0-9\-]{6,})", re.IGNORECASE)
     for issue in issues:
         comments_url = issue.get("comments_url", "")
@@ -389,7 +391,7 @@ def harvest_block_commands(repo: str | None = None,
                 comments_url,
                 headers={
                     "Authorization": f"Bearer {token}",
-                    "Accept":        "application/vnd.github+json",
+                    "Accept": "application/vnd.github+json",
                 },
                 timeout=15,
             )

@@ -1,4 +1,5 @@
 """Tests for the local human editorial signal."""
+
 from __future__ import annotations
 
 from utils.humanity_engine import polish_story, score_story
@@ -28,16 +29,18 @@ def test_humanity_rewards_host_tension_detail_and_payoff():
 
 
 def test_humanity_penalizes_generic_fact_card():
-    result = score_story({
-        "title": "Amazing animal fact",
-        "hook": "Did you know this animal is amazing?",
-        "script": (
-            "Did you know this animal is amazing? Animals have incredible "
-            "adaptations in the animal kingdom. Nature is fascinating and "
-            "this creature plays a vital role."
-        ),
-        "thumbnail_text": "AMAZING FACT",
-    })
+    result = score_story(
+        {
+            "title": "Amazing animal fact",
+            "hook": "Did you know this animal is amazing?",
+            "script": (
+                "Did you know this animal is amazing? Animals have incredible "
+                "adaptations in the animal kingdom. Nature is fascinating and "
+                "this creature plays a vital role."
+            ),
+            "thumbnail_text": "AMAZING FACT",
+        }
+    )
     assert result.score < 58
     assert result.label == "robotic"
     assert "missing_payoff" in result.issues

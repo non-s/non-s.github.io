@@ -24,6 +24,7 @@ utils/intro_outro). All free, all in-repo.
 
 Cache: rendered once per (persona_hash + voice) pair and reused.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -39,17 +40,16 @@ from utils.video_common import draw_rounded_rect, get_font
 
 log = logging.getLogger(__name__)
 
-BRAND_CARD_CACHE = Path(os.environ.get("BRAND_CARD_CACHE",
-                                         "_data/brand_card_cache"))
+BRAND_CARD_CACHE = Path(os.environ.get("BRAND_CARD_CACHE", "_data/brand_card_cache"))
 SHORT_W, SHORT_H = 1080, 1920
 
 # Brand palette — kept here as constants so the operator can adjust
 # the channel's look in one place. Values are RGB.
-BRAND_PRIMARY   = (0, 195, 255)        # Cyan-blue: signature highlight
-BRAND_ACCENT    = (255, 200, 0)         # Mustard: secondary highlight
-BRAND_DARK      = (8, 8, 18)            # Near-black: backgrounds
-BRAND_TEXT      = (245, 245, 255)       # Off-white: text
-BRAND_DIM       = (160, 165, 190)       # Muted: secondary text
+BRAND_PRIMARY = (0, 195, 255)  # Cyan-blue: signature highlight
+BRAND_ACCENT = (255, 200, 0)  # Mustard: secondary highlight
+BRAND_DARK = (8, 8, 18)  # Near-black: backgrounds
+BRAND_TEXT = (245, 245, 255)  # Off-white: text
+BRAND_DIM = (160, 165, 190)  # Muted: secondary text
 
 
 def _persona_hash(persona: HostPersona) -> str:
@@ -57,8 +57,7 @@ def _persona_hash(persona: HostPersona) -> str:
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
 
 
-def render_intro_card(persona: HostPersona | None = None,
-                       output_path: Path | None = None) -> Path:
+def render_intro_card(persona: HostPersona | None = None, output_path: Path | None = None) -> Path:
     """Render the static intro card PNG. Cached on disk.
 
     The card is intentionally LIGHT on detail — a high-contrast brand
@@ -108,8 +107,7 @@ def render_intro_card(persona: HostPersona | None = None,
     return out
 
 
-def render_outro_card(persona: HostPersona | None = None,
-                       output_path: Path | None = None) -> Path:
+def render_outro_card(persona: HostPersona | None = None, output_path: Path | None = None) -> Path:
     """Render the static outro card PNG. Cached on disk."""
     persona = persona or load_persona()
     out = output_path or (BRAND_CARD_CACHE / f"outro_{_persona_hash(persona)}.png")
@@ -122,8 +120,7 @@ def render_outro_card(persona: HostPersona | None = None,
 
     # Mirror brand band on the bottom instead of top.
     band_h = 14
-    draw.rectangle([(0, SHORT_H - 254), (SHORT_W, SHORT_H - 240)],
-                    fill=BRAND_PRIMARY)
+    draw.rectangle([(0, SHORT_H - 254), (SHORT_W, SHORT_H - 240)], fill=BRAND_PRIMARY)
 
     # Big sign-off line as the focal point.
     sign_font = get_font(108, bold=True)

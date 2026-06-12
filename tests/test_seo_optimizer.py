@@ -1,4 +1,5 @@
 """Tests for deterministic Shorts SEO polishing."""
+
 from utils.seo_optimizer import optimise_story, optimise_title, seo_score
 
 
@@ -21,12 +22,14 @@ def test_seo_score_rewards_frontloaded_animal():
 
 
 def test_optimise_story_records_before_and_after():
-    story = optimise_story({
-        "title": "Why dogs wag tails — it's not just happiness",
-        "hook": "Dogs wag tails for more than happiness.",
-        "yt_tags": ["dogs", "tail wagging"],
-        "category": "dogs",
-    })
+    story = optimise_story(
+        {
+            "title": "Why dogs wag tails — it's not just happiness",
+            "hook": "Dogs wag tails for more than happiness.",
+            "yt_tags": ["dogs", "tail wagging"],
+            "category": "dogs",
+        }
+    )
     assert story["title"].startswith("Dogs ")
     assert story["seo_title"] == story["title"]
     assert story["seo_optimisation"]["applied"] is True

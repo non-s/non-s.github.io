@@ -1,4 +1,5 @@
 """Focused tests for YouTube uploader helpers."""
+
 from __future__ import annotations
 
 import pytest
@@ -59,32 +60,39 @@ def test_orphan_metadata_is_not_uploadable(tmp_path):
 def test_rejected_pre_publish_audit_is_not_uploadable(tmp_path):
     video = tmp_path / "short.mp4"
     video.write_bytes(b"fake")
-    assert not _is_uploadable_meta({
-        "video": str(video),
-        "pre_publish_audit": {"approved": False, "score": 40},
-    })
+    assert not _is_uploadable_meta(
+        {
+            "video": str(video),
+            "pre_publish_audit": {"approved": False, "score": 40},
+        }
+    )
 
 
 def test_done_marker_preserves_production_quality_signals():
-    marker = _done_marker("abc123", {
-        "title": "Octopus", "has_broll": True, "has_captions": True,
-        "script_quality_grade": 9,
-        "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
-        "humanity": {"score": 88, "label": "signature"},
-        "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
-        "studio_state": "polished",
-        "ai_rewrite": {"attempted": True, "accepted": True},
-        "pre_publish_audit": {"approved": True, "score": 92},
-        "monetization_audit": {"approved": True, "score": 94},
-        "seo_score": {"score": 96},
-        "seo_optimisation": {"applied": True},
-        "loop_render_applied": {"final_line": "Now the wing at the start makes sense."},
-        "end_card_text": "WATCH THE WING AGAIN",
-        "variant_assignment_log": {"written": 7},
-        "cta_prompt": "Follow for more animal facts.",
-        "replay_prompt": "End by pointing back to the wing.",
-        "youtube_operations": {"enabled": True},
-    })
+    marker = _done_marker(
+        "abc123",
+        {
+            "title": "Octopus",
+            "has_broll": True,
+            "has_captions": True,
+            "script_quality_grade": 9,
+            "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
+            "humanity": {"score": 88, "label": "signature"},
+            "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
+            "studio_state": "polished",
+            "ai_rewrite": {"attempted": True, "accepted": True},
+            "pre_publish_audit": {"approved": True, "score": 92},
+            "monetization_audit": {"approved": True, "score": 94},
+            "seo_score": {"score": 96},
+            "seo_optimisation": {"applied": True},
+            "loop_render_applied": {"final_line": "Now the wing at the start makes sense."},
+            "end_card_text": "WATCH THE WING AGAIN",
+            "variant_assignment_log": {"written": 7},
+            "cta_prompt": "Follow for more animal facts.",
+            "replay_prompt": "End by pointing back to the wing.",
+            "youtube_operations": {"enabled": True},
+        },
+    )
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
     assert marker["has_broll"] is True
     assert marker["has_captions"] is True
@@ -117,10 +125,15 @@ def test_playlist_titles_use_series_and_category():
 
 
 def test_comment_text_prefers_packaging_comment():
-    assert _comment_text({
-        "packaging": {"pinned_comment": "What should we decode next?"},
-        "cta_prompt": "Follow for more.",
-    }) == "What should we decode next?"
+    assert (
+        _comment_text(
+            {
+                "packaging": {"pinned_comment": "What should we decode next?"},
+                "cta_prompt": "Follow for more.",
+            }
+        )
+        == "What should we decode next?"
+    )
 
 
 class _Req:
@@ -165,16 +178,18 @@ class _CommentThreads:
         snippet = kwargs["body"]["snippet"]
         text = snippet["topLevelComment"]["snippet"]["textOriginal"]
         self.comments.append((snippet["videoId"], text))
-        return _Req({
-            "id": "COMMENT_THREAD",
-            "snippet": {
-                "topLevelComment": {
-                    "snippet": {
-                        "authorChannelId": {"value": "CHANNEL"},
+        return _Req(
+            {
+                "id": "COMMENT_THREAD",
+                "snippet": {
+                    "topLevelComment": {
+                        "snippet": {
+                            "authorChannelId": {"value": "CHANNEL"},
+                        }
                     }
-                }
-            },
-        })
+                },
+            }
+        )
 
 
 class _YouTube:
@@ -196,11 +211,15 @@ class _YouTube:
 def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
     monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
     youtube = _YouTube()
-    result = run_post_upload_operations(youtube, "VID123", {
-        "series": "Watch The Cue",
-        "category": "birds",
-        "packaging": {"pinned_comment": "Did you catch the wing?"},
-    })
+    result = run_post_upload_operations(
+        youtube,
+        "VID123",
+        {
+            "series": "Watch The Cue",
+            "category": "birds",
+            "packaging": {"pinned_comment": "Did you catch the wing?"},
+        },
+    )
 
     assert result["enabled"] is True
     assert [item["title"] for item in result["playlists"]] == [

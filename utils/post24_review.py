@@ -1,4 +1,5 @@
 """Classify Shorts after the first 24 hours."""
+
 from __future__ import annotations
 
 import json
@@ -112,8 +113,10 @@ def build_review(analytics: dict | None = None) -> dict:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "items": rows,
-        "counts": {state: sum(1 for row in rows if row["decision"] == state)
-                   for state in ("repair_package", "scale", "rewrite_hook", "pause_topic", "watch")},
+        "counts": {
+            state: sum(1 for row in rows if row["decision"] == state)
+            for state in ("repair_package", "scale", "rewrite_hook", "pause_topic", "watch")
+        },
         "rules": {
             "repair_package": "title or packaging fails editorial guard",
             "scale": f"retention >= {RETENTION_SCALE_FLOOR:g} and growth_score >= 180",

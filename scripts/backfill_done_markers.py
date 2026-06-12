@@ -50,10 +50,9 @@ def backfill_marker(marker: dict) -> tuple[dict, bool]:
         out["publish_score"] = score_metadata(out)
         changed = True
     if not out.get("subscriber_conversion"):
-        out["subscriber_conversion"] = (
-            (out.get("packaging") or {}).get("subscriber_conversion")
-            or score_subscriber_conversion(out)
-        )
+        out["subscriber_conversion"] = (out.get("packaging") or {}).get(
+            "subscriber_conversion"
+        ) or score_subscriber_conversion(out)
         changed = True
     if not out.get("youtube_brain"):
         out["youtube_brain"] = publish_brain(out)

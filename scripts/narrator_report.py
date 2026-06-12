@@ -55,8 +55,7 @@ def main() -> int:
     payload = narrator_report(_enrich_with_markers(latest.get("top_performers") or []))
     payload["legacy_marker_backfill"] = {
         "matched_top_performers": sum(
-            1 for item in _enrich_with_markers(latest.get("top_performers") or [])
-            if item.get("legacy_marker_found")
+            1 for item in _enrich_with_markers(latest.get("top_performers") or []) if item.get("legacy_marker_found")
         )
     }
     payload["generated_at"] = datetime.now(timezone.utc).isoformat()

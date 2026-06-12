@@ -1,4 +1,5 @@
 """Tests for the Wild Brief mission-control synthesis."""
+
 from utils.mission_control import build_mission_control
 
 

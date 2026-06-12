@@ -1,4 +1,5 @@
 """Tests for utils/text.py."""
+
 from utils.text import humanize_for_tts, sanitize_text, slugify
 
 
@@ -83,7 +84,10 @@ def test_humanize_expands_abbreviations():
 
 def test_humanize_expands_values():
     assert humanize_for_tts("The colony grew 3.5% last quarter") == "The colony grew 3.5 percent last quarter"
-    assert humanize_for_tts("The habitat project is worth $50 million") == "The habitat project is worth 50 million dollars"
+    assert (
+        humanize_for_tts("The habitat project is worth $50 million")
+        == "The habitat project is worth 50 million dollars"
+    )
 
 
 def test_humanize_expands_ampersand():
@@ -91,4 +95,7 @@ def test_humanize_expands_ampersand():
 
 
 def test_humanize_expands_corporation():
-    assert humanize_for_tts("Wild Brief Inc. partnered with Habitat Corp.") == "Wild Brief Incorporated partnered with Habitat Corporation"
+    assert (
+        humanize_for_tts("Wild Brief Inc. partnered with Habitat Corp.")
+        == "Wild Brief Incorporated partnered with Habitat Corporation"
+    )

@@ -32,17 +32,24 @@ def test_optimise_story_keeps_seo_lint_compatible_title():
 def test_seo_lint_includes_pending_queue_with_rendered_hashtag_shape(tmp_path):
     data = tmp_path / "_data"
     data.mkdir()
-    (data / "stories_queue.json").write_text(json.dumps({
-        "stories": [{
-            "id": "pending-shark",
-            "title": "Sharks follow one fin cue before the payoff",
-            "seo_title": "Sharks follow one fin cue before the payoff",
-            "description": "A shark short.",
-            "category": "ocean",
-            "yt_tags": ["sharks", "ocean", "animal facts"],
-            "discovery_hashtags": ["ocean", "sharks", "animalfacts", "nature"],
-        }]
-    }), encoding="utf-8")
+    (data / "stories_queue.json").write_text(
+        json.dumps(
+            {
+                "stories": [
+                    {
+                        "id": "pending-shark",
+                        "title": "Sharks follow one fin cue before the payoff",
+                        "seo_title": "Sharks follow one fin cue before the payoff",
+                        "description": "A shark short.",
+                        "category": "ocean",
+                        "yt_tags": ["sharks", "ocean", "animal facts"],
+                        "discovery_hashtags": ["ocean", "sharks", "animalfacts", "nature"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
 
     payload = lint_repo(tmp_path)
     pending = [item for item in payload["items"] if item.get("kind") == "pending"]

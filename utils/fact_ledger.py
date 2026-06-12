@@ -1,4 +1,5 @@
 """Editorial memory for repeated animal facts and angles."""
+
 from __future__ import annotations
 
 import re
@@ -7,17 +8,87 @@ from datetime import datetime, timezone
 
 
 _STOPWORDS = {
-    "animal", "animals", "wildlife", "shorts", "facts", "fact", "why", "this",
-    "that", "they", "their", "them", "with", "from", "just", "like", "here",
-    "real", "reason", "secret", "really", "because", "what", "when", "your",
-    "it's", "isnt", "isn't", "dont", "don't", "one", "first", "watch",
-    "show", "shows", "reveal", "reveals", "visible", "cue", "clip", "short",
-    "movement", "payoff", "viewer", "viewers", "miss", "most", "in", "on",
-    "of", "at", "to", "for", "by", "before", "after",
-    "cat", "cats", "dog", "dogs", "seal", "seals", "paw", "paws",
-    "landing", "ear", "ears", "turn", "nose", "check", "tail", "pause",
-    "grooming", "reset", "whisker", "whiskers", "map", "white",
-    "camouflage", "body", "freeze",
+    "animal",
+    "animals",
+    "wildlife",
+    "shorts",
+    "facts",
+    "fact",
+    "why",
+    "this",
+    "that",
+    "they",
+    "their",
+    "them",
+    "with",
+    "from",
+    "just",
+    "like",
+    "here",
+    "real",
+    "reason",
+    "secret",
+    "really",
+    "because",
+    "what",
+    "when",
+    "your",
+    "it's",
+    "isnt",
+    "isn't",
+    "dont",
+    "don't",
+    "one",
+    "first",
+    "watch",
+    "show",
+    "shows",
+    "reveal",
+    "reveals",
+    "visible",
+    "cue",
+    "clip",
+    "short",
+    "movement",
+    "payoff",
+    "viewer",
+    "viewers",
+    "miss",
+    "most",
+    "in",
+    "on",
+    "of",
+    "at",
+    "to",
+    "for",
+    "by",
+    "before",
+    "after",
+    "cat",
+    "cats",
+    "dog",
+    "dogs",
+    "seal",
+    "seals",
+    "paw",
+    "paws",
+    "landing",
+    "ear",
+    "ears",
+    "turn",
+    "nose",
+    "check",
+    "tail",
+    "pause",
+    "grooming",
+    "reset",
+    "whisker",
+    "whiskers",
+    "map",
+    "white",
+    "camouflage",
+    "body",
+    "freeze",
 }
 
 
@@ -52,8 +123,14 @@ def build_fact_ledger(stories: list[dict]) -> dict:
         category_counts[str(story.get("category") or "unknown").lower()] += 1
         text = f"{story.get('seo_title', '')} {story.get('hook', '')}".lower()
         for phrase in (
-            "not just happiness", "not just happy", "not just playing",
-            "not just fun", "real reason", "secret", "purr", "knead",
+            "not just happiness",
+            "not just happy",
+            "not just playing",
+            "not just fun",
+            "real reason",
+            "secret",
+            "purr",
+            "knead",
         ):
             if phrase in text:
                 repeated_phrases[phrase] += 1
@@ -61,15 +138,14 @@ def build_fact_ledger(stories: list[dict]) -> dict:
     for key, sample in sorted(groups.items(), key=lambda kv: len(kv[1]), reverse=True):
         if len(sample) < 2:
             continue
-        clusters.append({
-            "angle_key": key,
-            "count": len(sample),
-            "category": str(sample[0].get("category") or "unknown"),
-            "titles": [
-                str(item.get("seo_title") or item.get("title") or "")[:120]
-                for item in sample[:8]
-            ],
-        })
+        clusters.append(
+            {
+                "angle_key": key,
+                "count": len(sample),
+                "category": str(sample[0].get("category") or "unknown"),
+                "titles": [str(item.get("seo_title") or item.get("title") or "")[:120] for item in sample[:8]],
+            }
+        )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "pending_stories": sum(1 for story in stories if not story.get("consumed")),

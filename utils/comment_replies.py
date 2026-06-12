@@ -1,4 +1,5 @@
 """Automatic, safe YouTube comment replies for Wild Brief."""
+
 from __future__ import annotations
 
 import re
@@ -7,8 +8,15 @@ import hashlib
 from utils.comment_intelligence import clean_comment
 
 BLOCKED_TERMS = {
-    "http", "www.", "crypto", "telegram", "whatsapp", "onlyfans",
-    "subscribe to me", "sub4sub", "kill yourself",
+    "http",
+    "www.",
+    "crypto",
+    "telegram",
+    "whatsapp",
+    "onlyfans",
+    "subscribe to me",
+    "sub4sub",
+    "kill yourself",
 }
 
 
@@ -36,7 +44,9 @@ def classify_comment(text: str) -> str:
     lower = clean_comment(text).lower()
     if re.search(r"\b(wrong|fake|not true|source|actually|mistake)\b", lower):
         return "critique"
-    if re.search(r"\b(do|cover|make|next|please).{0,40}\b(volcano|fungi|mushroom|shark|forest|ocean|storm|animal|plant)\b", lower):
+    if re.search(
+        r"\b(do|cover|make|next|please).{0,40}\b(volcano|fungi|mushroom|shark|forest|ocean|storm|animal|plant)\b", lower
+    ):
         return "suggestion"
     if "?" in lower or re.search(r"\b(why|how|what|can you|do one|next)\b", lower):
         return "question"

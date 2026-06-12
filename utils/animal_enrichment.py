@@ -1,4 +1,5 @@
 """Free animal metadata and thumbnail enrichment."""
+
 from __future__ import annotations
 
 import json
@@ -98,9 +99,15 @@ def commons_image(subject: str) -> dict:
     if cached is not None:
         return cached
     params = {
-        "action": "query", "format": "json", "generator": "search",
-        "gsrsearch": subject, "gsrnamespace": "6", "gsrlimit": "8",
-        "prop": "imageinfo", "iiprop": "url|extmetadata", "iiurlwidth": "1280",
+        "action": "query",
+        "format": "json",
+        "generator": "search",
+        "gsrsearch": subject,
+        "gsrnamespace": "6",
+        "gsrlimit": "8",
+        "prop": "imageinfo",
+        "iiprop": "url|extmetadata",
+        "iiurlwidth": "1280",
     }
     try:
         response = _session().get(_COMMONS_API, params=params, timeout=_TIMEOUT)

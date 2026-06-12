@@ -33,6 +33,7 @@ Mistral burn.
 Output shape mirrors the input â€” drop in to `generate_shorts.py` and
 swap voices to render the PT-BR Short with the same code path.
 """
+
 from __future__ import annotations
 
 import json
@@ -50,24 +51,24 @@ log = logging.getLogger(__name__)
 # Each entry is (locale code, human-readable name, sample voice tag).
 SUPPORTED_LANGUAGES: dict[str, dict] = {
     "pt-BR": {
-        "name":       "Portuguese (Brazil)",
-        "voice_tag":  "pt-BR",
-        "hashtag":    "BR",  # appended to discovery tags for locale signal
+        "name": "Portuguese (Brazil)",
+        "voice_tag": "pt-BR",
+        "hashtag": "BR",  # appended to discovery tags for locale signal
     },
     "es-ES": {
-        "name":       "Spanish (Spain)",
-        "voice_tag":  "es-ES",
-        "hashtag":    "ES",
+        "name": "Spanish (Spain)",
+        "voice_tag": "es-ES",
+        "hashtag": "ES",
     },
     "es-MX": {
-        "name":       "Spanish (Mexico)",
-        "voice_tag":  "es-MX",
-        "hashtag":    "MX",
+        "name": "Spanish (Mexico)",
+        "voice_tag": "es-MX",
+        "hashtag": "MX",
     },
     "fr-FR": {
-        "name":       "French (France)",
-        "voice_tag":  "fr-FR",
-        "hashtag":    "FR",
+        "name": "French (France)",
+        "voice_tag": "fr-FR",
+        "hashtag": "FR",
     },
 }
 
@@ -78,16 +79,19 @@ SUPPORTED_LANGUAGES: dict[str, dict] = {
 # queries on YouTube â€” Portuguese viewers search "fennec", not
 # "raposa-do-deserto".
 _TRANSLATABLE_FIELDS = (
-    "seo_title", "hook", "script", "thumbnail_text",
-    "yt_description", "lead",
+    "seo_title",
+    "hook",
+    "script",
+    "thumbnail_text",
+    "yt_description",
+    "lead",
 )
 
 
 def _build_prompt(story: dict, target_lang: str) -> str:
     """Construct the translation prompt. Keeps the JSON envelope strict."""
     lang_info = SUPPORTED_LANGUAGES[target_lang]
-    safe = {k: sanitize_for_prompt(str(story.get(k, "")), max_len=2000)
-            for k in _TRANSLATABLE_FIELDS}
+    safe = {k: sanitize_for_prompt(str(story.get(k, "")), max_len=2000) for k in _TRANSLATABLE_FIELDS}
     payload = json.dumps(safe, ensure_ascii=False)
 
     return (
@@ -122,8 +126,7 @@ def _build_prompt(story: dict, target_lang: str) -> str:
     )
 
 
-def translate_story(story: dict, target_lang: str,
-                    timeout: int = 25) -> dict | None:
+def translate_story(story: dict, target_lang: str, timeout: int = 25) -> dict | None:
     """Translate the AI-authored fields of `story` to `target_lang`.
 
     Returns a new dict (copy of `story` with translated fields overlaid)
@@ -135,12 +138,10 @@ def translate_story(story: dict, target_lang: str,
         return None
     # Bail early if the source story has none of the fields we'd translate.
     if not any(story.get(f) for f in _TRANSLATABLE_FIELDS):
-        log.warning("translate_story: no translatable fields on story id=%s",
-                    story.get("id", "?"))
+        log.warning("translate_story: no translatable fields on story id=%s", story.get("id", "?"))
         return None
     prompt = _build_prompt(story, target_lang)
-    raw = ai_text(prompt, seed=abs(hash(story.get("id", ""))) % 9999,
-                   timeout=timeout, json_mode=True)
+    raw = ai_text(prompt, seed=abs(hash(story.get("id", ""))) % 9999, timeout=timeout, json_mode=True)
     if not raw:
         return None
     try:
@@ -153,8 +154,7 @@ def translate_story(story: dict, target_lang: str,
         if not isinstance(data, dict):
             return None
     except (json.JSONDecodeError, ValueError) as exc:
-        log.warning("translate_story parse error: %s | raw[:120]=%r",
-                    exc, raw[:120])
+        log.warning("translate_story parse error: %s | raw[:120]=%r", exc, raw[:120])
         return None
 
     out = dict(story)
@@ -164,8 +164,8 @@ def translate_story(story: dict, target_lang: str,
             out[field] = val.strip()
     # Record the language so downstream consumers (generate_shorts) can
     # pick the right TTS voice / hashtag without re-guessing.
-    out["language"]     = target_lang
-    out["voice_tag"]    = SUPPORTED_LANGUAGES[target_lang]["voice_tag"]
+    out["language"] = target_lang
+    out["voice_tag"] = SUPPORTED_LANGUAGES[target_lang]["voice_tag"]
     out["lang_hashtag"] = SUPPORTED_LANGUAGES[target_lang]["hashtag"]
     return out
 
@@ -178,4 +178,3 @@ def translate_stories(stories: Iterable[dict], target_lang: str) -> list[dict]:
         if translated:
             out.append(translated)
     return out
-

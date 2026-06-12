@@ -1,4 +1,5 @@
 """Tests for utils/ai_helper.py — pure functions only (no live API calls)."""
+
 import pytest
 
 from utils.ai_helper import quality_check

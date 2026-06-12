@@ -5,14 +5,16 @@ from utils.real_metrics import enrich_markers_with_latest
 def test_enrich_markers_with_latest_adds_real_analytics():
     markers = [{"video_id": "abc", "title": "Old", "category": "fungi"}]
     latest = {
-        "top_performers": [{
-            "video_id": "abc",
-            "views": 1200,
-            "average_view_percentage": 81.5,
-            "average_view_duration": 18.0,
-            "subscribers_gained": 4,
-            "story_format": "hidden_network",
-        }]
+        "top_performers": [
+            {
+                "video_id": "abc",
+                "views": 1200,
+                "average_view_percentage": 81.5,
+                "average_view_duration": 18.0,
+                "subscribers_gained": 4,
+                "story_format": "hidden_network",
+            }
+        ]
     }
 
     youtube = {"video_audit": {"top_public_videos": [{"video_id": "abc", "likes": 20, "comments": 3}]}}
@@ -28,35 +30,39 @@ def test_enrich_markers_with_latest_adds_real_analytics():
 def test_audience_memory_weights_real_subscriber_conversion():
     markers = []
     for idx in range(5):
-        markers.append({
-            "video_id": f"f{idx}",
-            "title": "Fungi",
-            "category": "fungi",
-            "story_format": "hidden_network",
-            "series": "Hidden Network",
-            "analytics": {
-                "views": 1000,
-                "comments": 12,
-                "averageViewPercentage": 82,
-                "averageViewDuration": 18,
-                "subscribersGained": 5,
-            },
-        })
+        markers.append(
+            {
+                "video_id": f"f{idx}",
+                "title": "Fungi",
+                "category": "fungi",
+                "story_format": "hidden_network",
+                "series": "Hidden Network",
+                "analytics": {
+                    "views": 1000,
+                    "comments": 12,
+                    "averageViewPercentage": 82,
+                    "averageViewDuration": 18,
+                    "subscribersGained": 5,
+                },
+            }
+        )
     for idx in range(5):
-        markers.append({
-            "video_id": f"d{idx}",
-            "title": "Dogs",
-            "category": "dogs",
-            "story_format": "single_fact",
-            "series": "Pet Signals",
-            "analytics": {
-                "views": 1000,
-                "comments": 0,
-                "averageViewPercentage": 38,
-                "averageViewDuration": 8,
-                "subscribersGained": 0,
-            },
-        })
+        markers.append(
+            {
+                "video_id": f"d{idx}",
+                "title": "Dogs",
+                "category": "dogs",
+                "story_format": "single_fact",
+                "series": "Pet Signals",
+                "analytics": {
+                    "views": 1000,
+                    "comments": 0,
+                    "averageViewPercentage": 38,
+                    "averageViewDuration": 8,
+                    "subscribersGained": 0,
+                },
+            }
+        )
 
     memory = build_audience_memory(markers)
 

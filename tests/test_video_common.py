@@ -1,4 +1,5 @@
 """Unit tests for utils/video_common.py."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -51,9 +52,11 @@ def test_draw_rounded_rect_calls_underlying_pillow_method():
 def test_wrap_text_breaks_on_max_width():
     """Simulate `textbbox` so wrap_text breaks when accumulated width exceeds the limit."""
     draw = MagicMock()
+
     # Each character contributes width 10, plus 10 per space.
     def fake_bbox(xy, text, font=None):
         return (0, 0, len(text) * 10, 20)
+
     draw.textbbox.side_effect = fake_bbox
 
     lines = wrap_text(draw, "alpha beta gamma delta", font=None, max_width=110)

@@ -20,6 +20,7 @@ Operator override
 Drop `_data/host_persona.json` to override the defaults. The shipped
 defaults are tuned for Wild Brief, a daily animal-facts Shorts channel.
 """
+
 from __future__ import annotations
 
 import json
@@ -30,8 +31,7 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-PERSONA_FILE = Path(os.environ.get("HOST_PERSONA_FILE",
-                                     "_data/host_persona.json"))
+PERSONA_FILE = Path(os.environ.get("HOST_PERSONA_FILE", "_data/host_persona.json"))
 
 
 @dataclass
@@ -76,12 +76,14 @@ class HostPersona:
     # Signature catchphrases the AI should weave in occasionally.
     # NOT every Short â€” overused they grate. Mention in the prompt
     # so the LLM uses them sparingly.
-    catchphrases: list[str] = field(default_factory=lambda: [
-        "Here's the part nobody tells you:",
-        "My favorite part:",
-        "Watch this one twice:",
-        "I love this detail:",
-    ])
+    catchphrases: list[str] = field(
+        default_factory=lambda: [
+            "Here's the part nobody tells you:",
+            "My favorite part:",
+            "Watch this one twice:",
+            "I love this detail:",
+        ]
+    )
 
     # Pinned-first-comment template. `{handle}` interpolates the
     # channel handle from the upload metadata.
@@ -143,6 +145,7 @@ def save(persona: HostPersona, path: Path | None = None) -> None:
 
 # â”€â”€ Prompt injection helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def system_prompt_overlay(persona: HostPersona | None = None) -> str:
     """Build the text we PREPEND to ai_helper.py's system prompt.
 
@@ -153,10 +156,7 @@ def system_prompt_overlay(persona: HostPersona | None = None) -> str:
     parts = [persona.pov]
     if persona.catchphrases:
         catch = "; ".join(f'"{p}"' for p in persona.catchphrases[:3])
-        parts.append(
-            f"Use one of these signature openers occasionally (not every "
-            f"Short â€” feels canned): {catch}"
-        )
+        parts.append(f"Use one of these signature openers occasionally (not every " f"Short â€” feels canned): {catch}")
     return " ".join(parts)
 
 

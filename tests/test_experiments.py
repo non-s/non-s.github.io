@@ -1,4 +1,5 @@
 """Tests for utils/experiments.py â€” pure assignment + winner math."""
+
 from __future__ import annotations
 
 import json
@@ -10,6 +11,7 @@ from utils import experiments
 
 
 # â”€â”€ assignment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def test_assign_variant_is_deterministic():
     a = experiments.assign_variant("hook_style", "story-abc")
@@ -32,9 +34,14 @@ def test_assign_variant_unknown_axis_returns_empty():
 
 def test_production_assignment_favors_winner(monkeypatch):
     monkeypatch.setattr(experiments, "read_winner", lambda axis: "outcome_first")
-    assert experiments.assign_for_production(
-        "hook_style", "story", exploration_percent=0,
-    ) == "outcome_first"
+    assert (
+        experiments.assign_for_production(
+            "hook_style",
+            "story",
+            exploration_percent=0,
+        )
+        == "outcome_first"
+    )
 
 
 def test_assign_all_returns_one_variant_per_axis():
@@ -68,13 +75,13 @@ def test_cta_is_channel_subscription_only():
 
 # â”€â”€ winner computation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def test_compute_winners_picks_highest_mean(monkeypatch):
     monkeypatch.setattr(experiments, "MIN_SAMPLES_FOR_WINNER", 3)
     # 4 outcome_first observations averaging 80; 4 question averaging 60.
-    obs = (
-        [{"experiments": {"hook_style": "outcome_first"}, "score": 80} for _ in range(4)] +
-        [{"experiments": {"hook_style": "question"},      "score": 60} for _ in range(4)]
-    )
+    obs = [{"experiments": {"hook_style": "outcome_first"}, "score": 80} for _ in range(4)] + [
+        {"experiments": {"hook_style": "question"}, "score": 60} for _ in range(4)
+    ]
     out = experiments.compute_winners(obs, min_samples=3)
     assert out["winners"]["hook_style"] == "outcome_first"
     assert out["axis_stats"]["hook_style"]["outcome_first"]["mean"] == 80
@@ -83,10 +90,9 @@ def test_compute_winners_picks_highest_mean(monkeypatch):
 
 def test_compute_winners_skips_below_min_samples():
     # Only 2 observations per variant â€” below default 8.
-    obs = (
-        [{"experiments": {"hook_style": "outcome_first"}, "score": 80} for _ in range(2)] +
-        [{"experiments": {"hook_style": "question"},      "score": 60} for _ in range(2)]
-    )
+    obs = [{"experiments": {"hook_style": "outcome_first"}, "score": 80} for _ in range(2)] + [
+        {"experiments": {"hook_style": "question"}, "score": 60} for _ in range(2)
+    ]
     out = experiments.compute_winners(obs)
     # No winner emitted â€” needs more data first.
     assert out["winners"] == {}
@@ -100,7 +106,7 @@ def test_compute_winners_handles_empty():
 
 def test_compute_winners_skips_malformed_observations():
     obs = [
-        {"experiments": "not a dict", "score": 80},   # bad experiments
+        {"experiments": "not a dict", "score": 80},  # bad experiments
         {"experiments": {"hook_style": 123}, "score": 80},  # bad variant type
         {"experiments": {"hook_style": "x"}, "score": "ten"},  # bad score
         # One valid record so the computation has a tableau.
@@ -113,14 +119,9 @@ def test_compute_winners_skips_malformed_observations():
 
 def test_compute_winners_multi_axis(monkeypatch):
     monkeypatch.setattr(experiments, "MIN_SAMPLES_FOR_WINNER", 3)
-    obs = (
-        [{"experiments": {"hook_style": "outcome_first",
-                          "script_tone": "curious"}, "score": 80}
-         for _ in range(5)] +
-        [{"experiments": {"hook_style": "outcome_first",
-                          "script_tone": "opinionated"}, "score": 90}
-         for _ in range(5)]
-    )
+    obs = [
+        {"experiments": {"hook_style": "outcome_first", "script_tone": "curious"}, "score": 80} for _ in range(5)
+    ] + [{"experiments": {"hook_style": "outcome_first", "script_tone": "opinionated"}, "score": 90} for _ in range(5)]
     out = experiments.compute_winners(obs, min_samples=3)
     # hook_style only has one variant in the data, but it still "wins".
     assert out["winners"]["hook_style"] == "outcome_first"
@@ -128,6 +129,7 @@ def test_compute_winners_multi_axis(monkeypatch):
 
 
 # â”€â”€ read / write â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def test_read_winners_handles_missing(tmp_path, monkeypatch):
     monkeypatch.setattr(experiments, "EXPERIMENTS_FILE", tmp_path / "exp.json")

@@ -1,4 +1,5 @@
 """Tests for utils/digest.py — pure formatting + HTTP via mocks."""
+
 from __future__ import annotations
 
 import json
@@ -12,6 +13,7 @@ from utils import digest
 
 # ── collect_recent_shorts ────────────────────────────────────────
 
+
 def _write_done(dirpath: Path, slug: str, payload: dict) -> Path:
     dirpath.mkdir(parents=True, exist_ok=True)
     p = dirpath / f"{slug}.done"
@@ -23,9 +25,9 @@ def test_collect_recent_shorts_includes_fresh(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(digest, "VIDEOS_DIRS", (Path("_videos"), Path("_videos_pt-BR")))
     from datetime import datetime, timezone, timedelta
+
     fresh = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
-    _write_done(Path("_videos"), "fresh-en",
-                 {"title": "Fresh EN", "uploaded_at": fresh, "url": "https://yt/x"})
+    _write_done(Path("_videos"), "fresh-en", {"title": "Fresh EN", "uploaded_at": fresh, "url": "https://yt/x"})
     out = digest.collect_recent_shorts(lookback_hours=24)
     assert len(out) == 1
     assert out[0]["title"] == "Fresh EN"
@@ -35,9 +37,9 @@ def test_collect_recent_shorts_excludes_old(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(digest, "VIDEOS_DIRS", (Path("_videos"),))
     from datetime import datetime, timezone, timedelta
+
     old = (datetime.now(timezone.utc) - timedelta(hours=48)).isoformat()
-    _write_done(Path("_videos"), "old-en",
-                 {"title": "Old", "uploaded_at": old, "url": "x"})
+    _write_done(Path("_videos"), "old-en", {"title": "Old", "uploaded_at": old, "url": "x"})
     assert digest.collect_recent_shorts(lookback_hours=24) == []
 
 
@@ -45,8 +47,9 @@ def test_collect_recent_shorts_includes_ptbr(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(digest, "VIDEOS_DIRS", (Path("_videos"), Path("_videos_pt-BR")))
     from datetime import datetime, timezone
+
     now = datetime.now(timezone.utc).isoformat()
-    _write_done(Path("_videos"),       "en-short",   {"title": "EN",   "uploaded_at": now})
+    _write_done(Path("_videos"), "en-short", {"title": "EN", "uploaded_at": now})
     _write_done(Path("_videos_pt-BR"), "ptbr-short", {"title": "PTBR", "uploaded_at": now})
     out = digest.collect_recent_shorts(lookback_hours=24)
     dirs = {d["_dir"] for d in out}
@@ -63,18 +66,27 @@ def test_collect_recent_shorts_skips_unparseable(monkeypatch, tmp_path):
 
 # ── render_digest ────────────────────────────────────────────────
 
+
 def test_render_digest_lists_each_short():
     shorts = [
-        {"title": "Story A", "url": "https://yt/a",
-         "_slug": "slug-a", "_dir": "_videos",
-         "uploaded_at": "2026-05-18T12:00:00+00:00",
-         "description": "Lead sentence.\n#Shorts",
-         "tags": ["fed", "powell"]},
-        {"title": "Story B", "url": "https://yt/b",
-         "_slug": "slug-b", "_dir": "_videos_pt-BR",
-         "uploaded_at": "2026-05-18T13:00:00+00:00",
-         "description": "Frase principal.\n#Shorts",
-         "tags": ["bovespa"]},
+        {
+            "title": "Story A",
+            "url": "https://yt/a",
+            "_slug": "slug-a",
+            "_dir": "_videos",
+            "uploaded_at": "2026-05-18T12:00:00+00:00",
+            "description": "Lead sentence.\n#Shorts",
+            "tags": ["fed", "powell"],
+        },
+        {
+            "title": "Story B",
+            "url": "https://yt/b",
+            "_slug": "slug-b",
+            "_dir": "_videos_pt-BR",
+            "uploaded_at": "2026-05-18T13:00:00+00:00",
+            "description": "Frase principal.\n#Shorts",
+            "tags": ["bovespa"],
+        },
     ]
     out = digest.render_digest(shorts)
     assert "Story A" in out
@@ -91,13 +103,16 @@ def test_render_digest_empty_explains_why():
 
 
 def test_render_digest_includes_analytics():
-    out = digest.render_digest([], analytics_summary={
-        "avg_view_pct": 67.5,
-        "total_views_14d": 12345,
-        "below_60_pct": ["v1", "v2"],
-        "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
-        "production_recommendations": {"hot_categories": ["cats"]},
-    })
+    out = digest.render_digest(
+        [],
+        analytics_summary={
+            "avg_view_pct": 67.5,
+            "total_views_14d": 12345,
+            "below_60_pct": ["v1", "v2"],
+            "category_avg_view_pct": {"cats": 72.0, "ocean": 55.0},
+            "production_recommendations": {"hot_categories": ["cats"]},
+        },
+    )
     assert "67.5" in out
     assert "12345" in out
     assert "cats" in out.lower()
@@ -105,13 +120,21 @@ def test_render_digest_includes_analytics():
 
 
 def test_render_digest_includes_production_quality_signals():
-    out = digest.render_digest([{
-        "title": "Octopus", "_slug": "octopus-123", "_dir": "_videos",
-        "uploaded_at": "2026-06-02T10:00:00+00:00",
-        "has_broll": True, "has_captions": True, "script_quality_grade": 9,
-        "monetization_audit": {"state": "monetization_ready", "score": 94},
-        "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
-    }])
+    out = digest.render_digest(
+        [
+            {
+                "title": "Octopus",
+                "_slug": "octopus-123",
+                "_dir": "_videos",
+                "uploaded_at": "2026-06-02T10:00:00+00:00",
+                "has_broll": True,
+                "has_captions": True,
+                "script_quality_grade": 9,
+                "monetization_audit": {"state": "monetization_ready", "score": 94},
+                "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
+            }
+        ]
+    )
     assert "b-roll=yes" in out
     assert "captions=yes" in out
     assert "script grade=9" in out
@@ -123,16 +146,22 @@ def test_render_digest_includes_audience_requests(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     comments = tmp_path / "_data" / "analytics" / "comments.json"
     comments.parent.mkdir(parents=True)
-    comments.write_text(json.dumps({
-        "requested_animals": ["shark"],
-        "content_prompts": ["Answer this viewer question: Can you do sharks?"],
-    }), encoding="utf-8")
+    comments.write_text(
+        json.dumps(
+            {
+                "requested_animals": ["shark"],
+                "content_prompts": ["Answer this viewer question: Can you do sharks?"],
+            }
+        ),
+        encoding="utf-8",
+    )
     out = digest.render_digest([])
     assert "Audience requests" in out
     assert "Can you do sharks" in out
 
 
 # ── post_digest_issue ────────────────────────────────────────────
+
 
 def test_post_issue_skips_without_token(monkeypatch):
     monkeypatch.delenv("GITHUB_TOKEN", raising=False)
@@ -160,6 +189,7 @@ def test_post_issue_returns_none_on_error(monkeypatch):
 
 # ── blocked-slug load/save ───────────────────────────────────────
 
+
 def test_load_blocked_slugs_handles_missing(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(digest, "BLOCKED_FILE", tmp_path / "blocked.json")
@@ -182,6 +212,7 @@ def test_load_blocked_slugs_handles_malformed(monkeypatch, tmp_path):
 
 
 # ── harvest_block_commands ──────────────────────────────────────
+
 
 def test_harvest_block_commands_parses_comments(monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "t")

@@ -5,6 +5,7 @@ turns inventory into waste. This module makes conservative, deterministic
 repairs: shorten scripts, remove question overload, rotate overused phrases
 and add a clearer visible cue to repeated angles.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -45,16 +46,68 @@ PHRASE_ROTATIONS = {
 }
 
 KNOWN_ANIMALS = {
-    "bee", "bees", "butterfly", "butterflies", "cat", "cats", "chicken",
-    "chickens", "cow", "cows", "crocodile", "crocodiles", "deer", "dog",
-    "dogs", "dolphin", "dolphins", "duck", "ducks", "duckling", "ducklings",
-    "elephant", "elephants", "fox", "foxes", "goat", "goats", "hedgehog",
-    "hedgehogs", "horse", "horses", "ladybug", "ladybugs", "lemur",
-    "lemurs", "leopard", "leopards", "macaque", "macaques", "macaw",
-    "macaws", "mantis", "monkey", "monkeys", "octopus", "octopuses",
-    "owl", "owls", "penguin", "penguins", "seal", "seals", "shark",
-    "sharks", "tiger", "tigers", "turtle", "turtles", "walrus",
-    "walruses", "whale", "whales",
+    "bee",
+    "bees",
+    "butterfly",
+    "butterflies",
+    "cat",
+    "cats",
+    "chicken",
+    "chickens",
+    "cow",
+    "cows",
+    "crocodile",
+    "crocodiles",
+    "deer",
+    "dog",
+    "dogs",
+    "dolphin",
+    "dolphins",
+    "duck",
+    "ducks",
+    "duckling",
+    "ducklings",
+    "elephant",
+    "elephants",
+    "fox",
+    "foxes",
+    "goat",
+    "goats",
+    "hedgehog",
+    "hedgehogs",
+    "horse",
+    "horses",
+    "ladybug",
+    "ladybugs",
+    "lemur",
+    "lemurs",
+    "leopard",
+    "leopards",
+    "macaque",
+    "macaques",
+    "macaw",
+    "macaws",
+    "mantis",
+    "monkey",
+    "monkeys",
+    "octopus",
+    "octopuses",
+    "owl",
+    "owls",
+    "penguin",
+    "penguins",
+    "seal",
+    "seals",
+    "shark",
+    "sharks",
+    "tiger",
+    "tigers",
+    "turtle",
+    "turtles",
+    "walrus",
+    "walruses",
+    "whale",
+    "whales",
 }
 
 
@@ -84,11 +137,39 @@ def _category_subject(story: dict) -> str:
         if low in KNOWN_ANIMALS:
             return low
     blocked = {
-        "a", "an", "the", "why", "what", "how", "this", "that", "before",
-        "after", "reveal", "reveals", "show", "shows", "most", "viewers",
-        "miss", "nose", "ear", "ears", "paw", "paws", "body", "grooming",
-        "tail", "white", "camouflage", "check", "turn", "pressure", "reset",
-        category, category.rstrip("s"),
+        "a",
+        "an",
+        "the",
+        "why",
+        "what",
+        "how",
+        "this",
+        "that",
+        "before",
+        "after",
+        "reveal",
+        "reveals",
+        "show",
+        "shows",
+        "most",
+        "viewers",
+        "miss",
+        "nose",
+        "ear",
+        "ears",
+        "paw",
+        "paws",
+        "body",
+        "grooming",
+        "tail",
+        "white",
+        "camouflage",
+        "check",
+        "turn",
+        "pressure",
+        "reset",
+        category,
+        category.rstrip("s"),
     }
     for token in re.findall(r"[A-Za-z]+", title):
         low = token.lower()
@@ -175,9 +256,22 @@ def _source_detail(story: dict) -> str:
     tokens = [
         token.lower()
         for token in clean.split()
-        if token.lower() not in {
-            "why", "what", "how", "this", "that", "with", "from", "their",
-            "before", "after", "animal", "animals", "wildlife", "shorts",
+        if token.lower()
+        not in {
+            "why",
+            "what",
+            "how",
+            "this",
+            "that",
+            "with",
+            "from",
+            "their",
+            "before",
+            "after",
+            "animal",
+            "animals",
+            "wildlife",
+            "shorts",
         }
     ]
     return " ".join(tokens[:7]) or "one visible moment"
@@ -200,14 +294,16 @@ def _rewrite_duplicate_angle(story: dict) -> dict:
     experiments = dict(out.get("experiments") or {})
     experiments["hook_style"] = "outcome_first"
     experiments["script_tone"] = "conversational"
-    out.update({
-        "seo_title": title[:100],
-        "hook": hook,
-        "script": script,
-        "lead": script[:400],
-        "thumbnail_text": cue.upper()[:32],
-        "experiments": experiments,
-    })
+    out.update(
+        {
+            "seo_title": title[:100],
+            "hook": hook,
+            "script": script,
+            "lead": script[:400],
+            "thumbnail_text": cue.upper()[:32],
+            "experiments": experiments,
+        }
+    )
     return out
 
 
@@ -255,10 +351,9 @@ def rewrite_story(story: dict, reasons: list[str] | None = None) -> tuple[dict, 
     return out, changed
 
 
-def rewrite_queue(queue: dict,
-                  rewrite_ids: set[str],
-                  verdicts: dict[str, list[str]],
-                  limit: int = 250) -> tuple[dict, list[dict]]:
+def rewrite_queue(
+    queue: dict, rewrite_ids: set[str], verdicts: dict[str, list[str]], limit: int = 250
+) -> tuple[dict, list[dict]]:
     stories = []
     changed = []
     for story in queue.get("stories") or []:
@@ -267,30 +362,34 @@ def rewrite_queue(queue: dict,
         refresh_previous = "duplicate_angle_rewrite_required" in previous_reasons
         reasons = verdicts.get(story_id, previous_reasons)
         should_repair = bool(set(reasons) & REPAIRABLE_REASONS)
-        if story.get("consumed") or (story_id not in rewrite_ids and not refresh_previous and not should_repair) or len(changed) >= limit:
+        if (
+            story.get("consumed")
+            or (story_id not in rewrite_ids and not refresh_previous and not should_repair)
+            or len(changed) >= limit
+        ):
             stories.append(story)
             continue
         updated, did_change = rewrite_story(story, reasons)
         stories.append(updated)
         if did_change:
-            changed.append({
-                "id": story_id,
-                "category": updated.get("category", ""),
-                "title": updated.get("seo_title") or updated.get("title", ""),
-                "reasons": verdicts.get(story_id, []),
-                "script_words": _word_count(str(updated.get("script") or "")),
-            })
+            changed.append(
+                {
+                    "id": story_id,
+                    "category": updated.get("category", ""),
+                    "title": updated.get("seo_title") or updated.get("title", ""),
+                    "reasons": verdicts.get(story_id, []),
+                    "script_words": _word_count(str(updated.get("script") or "")),
+                }
+            )
     out = dict(queue)
     out["stories"] = stories
     out["updated_at"] = datetime.now(timezone.utc).isoformat()
     return out, changed
 
 
-def evaluate_pending(queue: dict,
-                     rewrite_ids: set[str],
-                     recovery_plans: dict[str, dict],
-                     duplicate_ids: set[str],
-                     success_plan: dict) -> dict[str, list[str]]:
+def evaluate_pending(
+    queue: dict, rewrite_ids: set[str], recovery_plans: dict[str, dict], duplicate_ids: set[str], success_plan: dict
+) -> dict[str, list[str]]:
     verdicts = {}
     for story in queue.get("stories") or []:
         if story.get("consumed"):

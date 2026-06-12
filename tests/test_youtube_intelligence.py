@@ -51,7 +51,9 @@ def test_script_accepts_env_token_without_token_file(monkeypatch, tmp_path):
     monkeypatch.setattr(script, "TOKEN_FILE", tmp_path / "missing-token.json")
     monkeypatch.setattr(script, "OUT", out)
     monkeypatch.setenv("YOUTUBE_TOKEN", json.dumps(token))
-    monkeypatch.setattr(script, "_load_data_service", lambda info: seen_sources.append(("data", info.source)) or object())
+    monkeypatch.setattr(
+        script, "_load_data_service", lambda info: seen_sources.append(("data", info.source)) or object()
+    )
     monkeypatch.setattr(
         script,
         "_load_analytics_service",
@@ -78,30 +80,36 @@ def test_youtube_intelligence_has_broad_api_matrix():
 
 
 def test_rows_to_dicts_uses_response_headers():
-    rows = rows_to_dicts({
-        "columnHeaders": [{"name": "video"}, {"name": "views"}],
-        "rows": [["abc", 10]],
-    })
+    rows = rows_to_dicts(
+        {
+            "columnHeaders": [{"name": "video"}, {"name": "views"}],
+            "rows": [["abc", 10]],
+        }
+    )
     assert rows == [{"video": "abc", "views": 10}]
 
 
 def test_summarise_channel_extracts_uploads_playlist():
-    channel = summarise_channel({
-        "id": "chan",
-        "snippet": {"title": "Wild Brief"},
-        "statistics": {"subscriberCount": "20", "viewCount": "1000", "videoCount": "5"},
-        "contentDetails": {"relatedPlaylists": {"uploads": "UU123"}},
-        "status": {"privacyStatus": "public"},
-    })
+    channel = summarise_channel(
+        {
+            "id": "chan",
+            "snippet": {"title": "Wild Brief"},
+            "statistics": {"subscriberCount": "20", "viewCount": "1000", "videoCount": "5"},
+            "contentDetails": {"relatedPlaylists": {"uploads": "UU123"}},
+            "status": {"privacyStatus": "public"},
+        }
+    )
     assert channel["uploads_playlist"] == "UU123"
     assert channel["subscriber_count"] == 20
 
 
 def test_summarise_videos_ranks_public_stats():
-    summary = summarise_videos([
-        {"id": "a", "snippet": {"title": "A"}, "statistics": {"viewCount": "5", "likeCount": "1"}},
-        {"id": "b", "snippet": {"title": "B"}, "statistics": {"viewCount": "10", "commentCount": "2"}},
-    ])
+    summary = summarise_videos(
+        [
+            {"id": "a", "snippet": {"title": "A"}, "statistics": {"viewCount": "5", "likeCount": "1"}},
+            {"id": "b", "snippet": {"title": "B"}, "statistics": {"viewCount": "10", "commentCount": "2"}},
+        ]
+    )
     assert summary["videos_checked"] == 2
     assert summary["total_views"] == 15
     assert summary["top_public_videos"][0]["video_id"] == "b"

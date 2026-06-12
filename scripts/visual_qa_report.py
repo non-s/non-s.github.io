@@ -49,13 +49,15 @@ def build_report() -> dict:
                 reasons[reason] += 1
         quality = int(qa.get("thumbnail_quality", local.get("score", 0)) or 0)
         ctr = item.get("visual_ctr") or {}
-        observations.append({
-            "visual_profile": visual_profile_key(item),
-            "visual_ctr_score": ctr.get("score") if ctr.get("checked") else None,
-            "growth_score": item.get("growth_score", 0),
-            "average_view_percentage": item.get("view_pct", item.get("average_view_percentage", 0)),
-            "views": item.get("views", 0),
-        })
+        observations.append(
+            {
+                "visual_profile": visual_profile_key(item),
+                "visual_ctr_score": ctr.get("score") if ctr.get("checked") else None,
+                "growth_score": item.get("growth_score", 0),
+                "average_view_percentage": item.get("view_pct", item.get("average_view_percentage", 0)),
+                "views": item.get("views", 0),
+            }
+        )
         if ctr.get("checked"):
             ctr_checked += 1
             ctr_score = int(ctr.get("score", 0) or 0)
@@ -65,12 +67,14 @@ def build_report() -> dict:
                 ctr_weak += 1
                 reasons[str(ctr.get("reason") or "weak_ctr_frame")] += 1
         if quality and quality < 6:
-            weak.append({
-                "video_id": item.get("video_id", ""),
-                "title": item.get("title", ""),
-                "quality": quality,
-                "reason": qa.get("reason") or local.get("reason", ""),
-            })
+            weak.append(
+                {
+                    "video_id": item.get("video_id", ""),
+                    "title": item.get("title", ""),
+                    "quality": quality,
+                    "reason": qa.get("reason") or local.get("reason", ""),
+                }
+            )
         elif inferred.get("needs_backfill"):
             reason = str(inferred.get("reason") or "legacy_unchecked")
             reasons[reason] += 1

@@ -75,7 +75,8 @@ def build_markdown(root: Path = ROOT) -> str:
     if scale is None:
         paused_names = {str(item.get("category")) for item in (ops.get("paused_topics") or [])}
         scale = [
-            item for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:8]
+            item
+            for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:8]
             if str(item) not in paused_names
         ]
     for item in scale[:8]:
@@ -96,8 +97,7 @@ def build_markdown(root: Path = ROOT) -> str:
             title = (item.get("top_titles") or [""])[0]
             lines.append(
                 f"- {item.get('animal')} ({item.get('category')}): "
-                f"{item.get('trend_score')} score, {item.get('mentions')} mentions"
-                + (f" - {title}" if title else "")
+                f"{item.get('trend_score')} score, {item.get('mentions')} mentions" + (f" - {title}" if title else "")
             )
     else:
         lines.append("- No public trend signal captured yet.")
@@ -166,7 +166,9 @@ def build_markdown(root: Path = ROOT) -> str:
     risks = warning.get("risk_of_dying_early") or []
     accelerators = warning.get("potential_accelerators") or []
     watchlist = warning.get("watchlist_low_confidence") or []
-    lines.append(f"- Early risks: {len(risks)}; accelerators: {len(accelerators)}; low-confidence watchlist: {len(watchlist)}")
+    lines.append(
+        f"- Early risks: {len(risks)}; accelerators: {len(accelerators)}; low-confidence watchlist: {len(watchlist)}"
+    )
     if patterns:
         lines.append(
             f"- Winner-pattern confidence: {patterns.get('confidence_score', 0)} "

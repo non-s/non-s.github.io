@@ -36,12 +36,17 @@ def test_build_plan_creates_hypotheses_and_prioritises_queue():
         },
         experiments={"winners": {"hook_style": "outcome_first"}, "axis_stats": {}},
         post24={"counts": {"rewrite_hook": 2}},
-        sequence_plan={"source_winners": 1, "variants": [{
-            "id": "seq-1",
-            "title": "Ducks part 2",
-            "sequence_variant": "same_format_new_animal",
-            "category": "farm",
-        }]},
+        sequence_plan={
+            "source_winners": 1,
+            "variants": [
+                {
+                    "id": "seq-1",
+                    "title": "Ducks part 2",
+                    "sequence_variant": "same_format_new_animal",
+                    "category": "farm",
+                }
+            ],
+        },
         comments={"requested_animals": ["shark"], "content_prompts": ["do sharks remember?"]},
         queue={"stories": [_story("farm-1"), _story("cats-1", category="cats")]},
     )

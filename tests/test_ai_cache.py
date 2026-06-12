@@ -1,4 +1,5 @@
 """Tests for utils/ai_cache.py — pure disk + in-memory cache, no network."""
+
 from __future__ import annotations
 
 import importlib
@@ -16,6 +17,7 @@ def fresh_cache(tmp_path, monkeypatch):
     monkeypatch.setenv("AI_CACHE_ENABLED", "1")
     monkeypatch.setenv("AI_CACHE_TTL_DAYS", "30")
     from utils import ai_cache
+
     importlib.reload(ai_cache)
     ai_cache.reset_cache_for_tests()
     yield ai_cache, Path(str(tmp_path / "cache.jsonl"))
@@ -61,6 +63,7 @@ def test_expired_entries_are_ignored(fresh_cache):
     ai_cache, path = fresh_cache
     # Write an expired entry directly to disk; the loader should skip it.
     import json
+
     path.parent.mkdir(parents=True, exist_ok=True)
     expired = {
         "k": ai_cache._key("p", "", False),
@@ -82,6 +85,7 @@ def test_disabled_cache_does_not_persist(tmp_path, monkeypatch):
     monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "cache.jsonl"))
     monkeypatch.setenv("AI_CACHE_ENABLED", "0")
     from utils import ai_cache
+
     importlib.reload(ai_cache)
     ai_cache.reset_cache_for_tests()
     ai_cache.put("p", "v")
@@ -108,12 +112,13 @@ def test_prune_rewrites_file_dropping_expired(fresh_cache):
     # Write 2 valid + 1 expired entry directly to disk so prune has
     # something concrete to compact.
     import json
+
     path.parent.mkdir(parents=True, exist_ok=True)
     now = ai_cache._now()
     rows = [
-        {"k": ai_cache._key("a", "", False), "ts": now,  "v": "1"},
-        {"k": ai_cache._key("b", "", False), "ts": now,  "v": "2"},
-        {"k": ai_cache._key("c", "", False), "ts": 0,    "v": "expired"},
+        {"k": ai_cache._key("a", "", False), "ts": now, "v": "1"},
+        {"k": ai_cache._key("b", "", False), "ts": now, "v": "2"},
+        {"k": ai_cache._key("c", "", False), "ts": 0, "v": "expired"},
     ]
     path.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
     ai_cache.reset_cache_for_tests()
@@ -123,6 +128,7 @@ def test_prune_rewrites_file_dropping_expired(fresh_cache):
 
 def test_key_is_stable_across_calls():
     from utils import ai_cache
+
     k1 = ai_cache._key("p", "m", True)
     k2 = ai_cache._key("p", "m", True)
     assert k1 == k2

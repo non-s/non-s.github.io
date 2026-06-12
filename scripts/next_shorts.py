@@ -210,11 +210,7 @@ def build_title_shape_mix(rows: list[dict], windows: tuple[int, ...] = (10, 30))
         window = [(rank, row) for rank, row in enumerate(rows[:size], start=1) if row.get("title")]
         if not window:
             continue
-        row_shapes = [
-            (rank, row, shape)
-            for rank, row in window
-            if (shape := title_shape(str(row.get("title") or "")))
-        ]
+        row_shapes = [(rank, row, shape) for rank, row in window if (shape := title_shape(str(row.get("title") or "")))]
         counts = Counter(shape for _rank, _row, shape in row_shapes)
         if not counts:
             continue
@@ -305,7 +301,10 @@ def main() -> int:
     rows = sorted(
         rows,
         key=lambda row: publish_priority_key(
-            {"autonomy": {"priority": row.get("autonomy_priority", 0)}, "queue_prune": {"score": row.get("queue_score", 0)}},
+            {
+                "autonomy": {"priority": row.get("autonomy_priority", 0)},
+                "queue_prune": {"score": row.get("queue_score", 0)},
+            },
             row.get("score") or {},
         ),
         reverse=True,

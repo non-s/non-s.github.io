@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.session_graph import build_session_graph  # noqa: E402
 from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.session_graph import build_session_graph  # noqa: E402
 from utils.video_markers import sorted_done_markers  # noqa: E402
 
 

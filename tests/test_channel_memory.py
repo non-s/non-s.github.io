@@ -1,4 +1,5 @@
 """Tests for utils/channel_memory.py."""
+
 from __future__ import annotations
 
 import json
@@ -18,24 +19,26 @@ def isolated(tmp_path, monkeypatch):
 
 
 def test_remember_appends_jsonl(isolated):
-    channel_memory.remember({
-        "id":          "story-abc",
-        "slug":        "story-abc",
-        "title":       "Octopus changes colour",
-        "seo_title":   "Octopus changes colour in seconds",
-        "hook":        "This octopus changes colour in seconds.",
-        "category":    "ocean",
-        "geo_hashtag": "Ocean",
-        "topic_hashtag": "Octopus",
-        "source":      "Pexels",
-        "yt_tags":     ["octopus", "cephalopod", "camouflage", "animal facts"],
-    })
+    channel_memory.remember(
+        {
+            "id": "story-abc",
+            "slug": "story-abc",
+            "title": "Octopus changes colour",
+            "seo_title": "Octopus changes colour in seconds",
+            "hook": "This octopus changes colour in seconds.",
+            "category": "ocean",
+            "geo_hashtag": "Ocean",
+            "topic_hashtag": "Octopus",
+            "source": "Pexels",
+            "yt_tags": ["octopus", "cephalopod", "camouflage", "animal facts"],
+        }
+    )
     entries = isolated.read_text(encoding="utf-8").strip().split("\n")
     assert len(entries) == 1
     e = json.loads(entries[0])
     assert e["slug"] == "story-abc"
     assert e["title"] == "Octopus changes colour in seconds"
-    assert e["entities"] == ["octopus", "cephalopod", "camouflage"]   # first 3 only
+    assert e["entities"] == ["octopus", "cephalopod", "camouflage"]  # first 3 only
 
 
 def test_remember_skips_when_no_slug(isolated):
@@ -50,14 +53,17 @@ def test_find_callback_candidates_returns_empty_without_memory(isolated):
 
 def test_find_callback_candidates_matches_on_entities(isolated):
     # Past: an octopus-camouflage story.
-    channel_memory.remember({
-        "slug": "past-1", "id": "past-1",
-        "title": "Octopus shifts colour",
-        "hook": "This octopus changes its skin pattern.",
-        "yt_tags": ["octopus", "camouflage", "cephalopod", "x", "y"],
-        "geo_hashtag": "Ocean",
-        "topic_hashtag": "Octopus",
-    })
+    channel_memory.remember(
+        {
+            "slug": "past-1",
+            "id": "past-1",
+            "title": "Octopus shifts colour",
+            "hook": "This octopus changes its skin pattern.",
+            "yt_tags": ["octopus", "camouflage", "cephalopod", "x", "y"],
+            "geo_hashtag": "Ocean",
+            "topic_hashtag": "Octopus",
+        }
+    )
     # New: shares entities with the past one.
     new_story = {
         "slug": "new-1",
@@ -73,14 +79,17 @@ def test_find_callback_candidates_matches_on_entities(isolated):
 
 
 def test_find_callback_candidates_skips_unrelated(isolated):
-    channel_memory.remember({
-        "slug": "past-1", "id": "past-1",
-        "title": "Octopus changes colour",
-        "hook": "This octopus shifts colour in seconds.",
-        "yt_tags": ["octopus", "camouflage", "cephalopod"],
-        "geo_hashtag": "Ocean",
-        "topic_hashtag": "Octopus",
-    })
+    channel_memory.remember(
+        {
+            "slug": "past-1",
+            "id": "past-1",
+            "title": "Octopus changes colour",
+            "hook": "This octopus shifts colour in seconds.",
+            "yt_tags": ["octopus", "camouflage", "cephalopod"],
+            "geo_hashtag": "Ocean",
+            "topic_hashtag": "Octopus",
+        }
+    )
     new_story = {
         "slug": "new-1",
         "seo_title": "Owls rotate their heads farther than humans",
@@ -93,26 +102,35 @@ def test_find_callback_candidates_skips_unrelated(isolated):
 
 
 def test_find_callback_candidates_skips_self(isolated):
-    channel_memory.remember({
-        "slug": "x", "id": "x",
-        "title": "Same story",
-        "yt_tags": ["a", "b", "c"],
-    })
+    channel_memory.remember(
+        {
+            "slug": "x",
+            "id": "x",
+            "title": "Same story",
+            "yt_tags": ["a", "b", "c"],
+        }
+    )
     # Same slug → must be skipped.
-    out = channel_memory.find_callback_candidates({
-        "slug": "x", "yt_tags": ["a", "b", "c"],
-    })
+    out = channel_memory.find_callback_candidates(
+        {
+            "slug": "x",
+            "yt_tags": ["a", "b", "c"],
+        }
+    )
     assert out == []
 
 
 def test_find_callback_candidates_caps_at_max(isolated):
     for i in range(5):
-        channel_memory.remember({
-            "slug": f"p-{i}", "id": f"p-{i}",
-            "title": "Octopus camouflage",
-            "hook": "Octopus changed colour.",
-            "yt_tags": ["octopus", "camouflage", "cephalopod"],
-        })
+        channel_memory.remember(
+            {
+                "slug": f"p-{i}",
+                "id": f"p-{i}",
+                "title": "Octopus camouflage",
+                "hook": "Octopus changed colour.",
+                "yt_tags": ["octopus", "camouflage", "cephalopod"],
+            }
+        )
     new_story = {
         "slug": "n",
         "seo_title": "Octopus camouflage detail",
@@ -142,13 +160,17 @@ def test_lookback_window_excludes_old_entries(isolated, monkeypatch):
     # Forge an old entry directly.
     old = time.time() - 90 * 86400
     isolated.write_text(
-        json.dumps({"ts": old, "slug": "ancient", "title": "old",
-                     "hook": "Old.", "entities": ["fed", "powell"]}) + "\n",
+        json.dumps({"ts": old, "slug": "ancient", "title": "old", "hook": "Old.", "entities": ["fed", "powell"]})
+        + "\n",
         encoding="utf-8",
     )
-    out = channel_memory.find_callback_candidates({
-        "slug": "n", "yt_tags": ["fed", "powell"],
-    }, days=30)
+    out = channel_memory.find_callback_candidates(
+        {
+            "slug": "n",
+            "yt_tags": ["fed", "powell"],
+        },
+        days=30,
+    )
     # Outside the 30-day window.
     assert out == []
 

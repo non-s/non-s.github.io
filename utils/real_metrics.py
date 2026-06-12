@@ -1,4 +1,5 @@
 """Helpers for joining local .done markers with real channel analytics."""
+
 from __future__ import annotations
 
 import json
@@ -50,8 +51,9 @@ def public_stats_by_video_id(youtube_intelligence: dict) -> dict[str, dict]:
     return out
 
 
-def enrich_markers_with_latest(markers: list[dict], latest: dict,
-                               youtube_intelligence: dict | None = None) -> list[dict]:
+def enrich_markers_with_latest(
+    markers: list[dict], latest: dict, youtube_intelligence: dict | None = None
+) -> list[dict]:
     analytics_map = analytics_by_video_id(latest)
     public_map = public_stats_by_video_id(youtube_intelligence or {})
     enriched = []
@@ -67,13 +69,17 @@ def enrich_markers_with_latest(markers: list[dict], latest: dict,
                 **existing,
                 "views": row.get("views", row.get("viewCount", public.get("views", existing.get("views", 0)))),
                 "likes": row.get("likes", row.get("likeCount", public.get("likes", existing.get("likes", 0)))),
-                "comments": row.get("comments", row.get("commentCount", public.get("comments", existing.get("comments", 0)))),
+                "comments": row.get(
+                    "comments", row.get("commentCount", public.get("comments", existing.get("comments", 0)))
+                ),
                 "averageViewPercentage": row.get(
                     "average_view_percentage",
                     row.get("view_pct", row.get("avg_view_pct", existing.get("averageViewPercentage", 0))),
                 ),
                 "averageViewDuration": row.get("average_view_duration", existing.get("averageViewDuration", 0)),
-                "subscribersGained": row.get("subscribers_gained", row.get("subscribersGained", existing.get("subscribersGained", 0))),
+                "subscribersGained": row.get(
+                    "subscribers_gained", row.get("subscribersGained", existing.get("subscribersGained", 0))
+                ),
                 "viewsPerHour": row.get("views_per_hour", existing.get("viewsPerHour", 0)),
                 "growthScore": row.get("growth_score", existing.get("growthScore", 0)),
             }

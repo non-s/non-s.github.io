@@ -5,6 +5,7 @@ editor marked as `needs_ai_rewrite`, uses the existing free AI provider
 chain/cache, and accepts the rewrite only when the editorial gate
 improves enough.
 """
+
 from __future__ import annotations
 
 import json
@@ -69,8 +70,9 @@ def rewrite_if_needed(story: dict) -> dict:
     if current.state != "needs_ai_rewrite":
         return story
 
-    raw = ai_text(_prompt(story, current.to_dict()), seed=abs(hash(story.get("id", ""))) % 9999,
-                  timeout=25, json_mode=True)
+    raw = ai_text(
+        _prompt(story, current.to_dict()), seed=abs(hash(story.get("id", ""))) % 9999, timeout=25, json_mode=True
+    )
     data = _extract_json(raw)
     if not data:
         out = dict(story)

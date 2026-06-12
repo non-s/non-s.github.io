@@ -1,4 +1,5 @@
 """Rewrite paused-category stories into stricter recovery-safe formats."""
+
 from __future__ import annotations
 
 import hashlib
@@ -225,39 +226,41 @@ def recover_story(story: dict, plan: dict | None = None) -> tuple[dict, bool]:
         script = " ".join(words).rstrip(" ,") + "."
     experiments = dict(out.get("experiments") or {})
     experiments["hook_style"] = "outcome_first"
-    out.update({
-        "seo_title": title,
-        "hook": hook,
-        "script": script,
-        "lead": script[:400],
-        "thumbnail_text": angle["thumb"][:32],
-        "story_format": angle["format"],
-        "experiments": experiments,
-        "category_recovery_rewrite": {
-            "at": datetime.now(timezone.utc).isoformat(),
-            "category": category,
-            "angle": angle["key"],
-            "variant": variant["title_suffix"],
-            "source_signal": source_signal,
-            "before": {
-                "title": story.get("seo_title") or story.get("title") or "",
-                "format": story.get("story_format") or classify_format(
-                    f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-                ),
-                "retention": diagnose(story),
+    out.update(
+        {
+            "seo_title": title,
+            "hook": hook,
+            "script": script,
+            "lead": script[:400],
+            "thumbnail_text": angle["thumb"][:32],
+            "story_format": angle["format"],
+            "experiments": experiments,
+            "category_recovery_rewrite": {
+                "at": datetime.now(timezone.utc).isoformat(),
+                "category": category,
+                "angle": angle["key"],
+                "variant": variant["title_suffix"],
+                "source_signal": source_signal,
+                "before": {
+                    "title": story.get("seo_title") or story.get("title") or "",
+                    "format": story.get("story_format")
+                    or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"),
+                    "retention": diagnose(story),
+                },
+                "after": {
+                    "format": angle["format"],
+                    "retention": diagnose({**out, "script": script, "hook": hook}),
+                },
+                "rules": plan.get("rules") or [],
             },
-            "after": {
-                "format": angle["format"],
-                "retention": diagnose({**out, "script": script, "hook": hook}),
-            },
-            "rules": plan.get("rules") or [],
-        },
-    })
+        }
+    )
     return out, True
 
 
-def recover_queue(queue: dict, held_ids: set[str], recovery_plans: dict[str, dict] | None = None,
-                  limit: int = 50) -> tuple[dict, list[dict]]:
+def recover_queue(
+    queue: dict, held_ids: set[str], recovery_plans: dict[str, dict] | None = None, limit: int = 50
+) -> tuple[dict, list[dict]]:
     recovery_plans = recovery_plans or {}
     stories = []
     changed = []
@@ -270,13 +273,15 @@ def recover_queue(queue: dict, held_ids: set[str], recovery_plans: dict[str, dic
         updated, did_change = recover_story(story, recovery_plans.get(str(story.get("category") or "").lower()))
         stories.append(updated)
         if did_change:
-            changed.append({
-                "id": story_id,
-                "category": updated.get("category", ""),
-                "title": updated.get("seo_title") or updated.get("title", ""),
-                "format": updated.get("story_format", ""),
-                "angle": (updated.get("category_recovery_rewrite") or {}).get("angle", ""),
-            })
+            changed.append(
+                {
+                    "id": story_id,
+                    "category": updated.get("category", ""),
+                    "title": updated.get("seo_title") or updated.get("title", ""),
+                    "format": updated.get("story_format", ""),
+                    "angle": (updated.get("category_recovery_rewrite") or {}).get("angle", ""),
+                }
+            )
     out = dict(queue)
     out["stories"] = stories
     out["updated_at"] = datetime.now(timezone.utc).isoformat()

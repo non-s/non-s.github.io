@@ -33,13 +33,15 @@ def build_report(queue_path: Path = QUEUE, out_path: Path = OUT) -> dict:
             continue
         brain = creator_premortem(story)
         queue_state = str((story.get("queue_prune") or {}).get("state") or "")
-        items.append({
-            "id": story.get("id", ""),
-            "title": story.get("seo_title") or story.get("title") or "",
-            "category": story.get("category", ""),
-            "queue_state": queue_state,
-            "youtube_brain": brain,
-        })
+        items.append(
+            {
+                "id": story.get("id", ""),
+                "title": story.get("seo_title") or story.get("title") or "",
+                "category": story.get("category", ""),
+                "queue_state": queue_state,
+                "youtube_brain": brain,
+            }
+        )
     items.sort(key=lambda item: item["youtube_brain"]["score"], reverse=True)
     publish_ready = [item for item in items if item.get("queue_state") == "publish_ready"]
     watchlist = [

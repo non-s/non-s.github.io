@@ -1,4 +1,5 @@
 """YouTube API coverage and intelligence aggregation helpers."""
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -185,15 +186,17 @@ def summarise_videos(videos: list[dict]) -> dict:
         title = str(snippet.get("title") or "")
         if "#shorts" in str(snippet.get("description") or "").lower() or len(title) <= 100:
             shorts_like += 1
-        top.append({
-            "video_id": item.get("id", ""),
-            "title": title,
-            "views": views,
-            "likes": likes,
-            "comments": comments,
-            "privacy_status": status.get("privacyStatus", ""),
-            "published_at": snippet.get("publishedAt", ""),
-        })
+        top.append(
+            {
+                "video_id": item.get("id", ""),
+                "title": title,
+                "views": views,
+                "likes": likes,
+                "comments": comments,
+                "privacy_status": status.get("privacyStatus", ""),
+                "published_at": snippet.get("publishedAt", ""),
+            }
+        )
     top.sort(key=lambda row: (row["views"], row["likes"], row["comments"]), reverse=True)
     return {
         "videos_checked": len(videos),
@@ -215,12 +218,9 @@ def coverage_score(capabilities: list[dict], reports: list[dict]) -> int:
     return round(done * 100 / possible)
 
 
-def build_payload(*,
-                  channel: dict | None,
-                  uploads: list[dict],
-                  videos: list[dict],
-                  reports: list[dict],
-                  issues: list[str]) -> dict:
+def build_payload(
+    *, channel: dict | None, uploads: list[dict], videos: list[dict], reports: list[dict], issues: list[str]
+) -> dict:
     capabilities = [dict(item) for item in DATA_API_CAPABILITIES]
     for item in capabilities:
         if item["id"] in {"channel_profile", "uploaded_video_inventory", "video_metadata_statistics"}:

@@ -28,21 +28,26 @@ def test_youtube_brain_report_separates_ready_summary_from_rewrite_watchlist(tmp
     queue = tmp_path / "_data" / "stories_queue.json"
     out = tmp_path / "_data" / "youtube_brain_report.json"
     queue.parent.mkdir()
-    queue.write_text(json.dumps({
-        "stories": [
-            _ready_story(),
-            _ready_story(
-                id="rewrite",
-                title="Animals have another amazing secret",
-                seo_title="Animals have another amazing secret",
-                hook="Animals are amazing.",
-                script="Animals are amazing and interesting.",
-                thumbnail_text="AMAZING SECRET TODAY",
-                category="wildlife",
-                queue_prune={"state": "rewrite"},
-            ),
-        ],
-    }), encoding="utf-8")
+    queue.write_text(
+        json.dumps(
+            {
+                "stories": [
+                    _ready_story(),
+                    _ready_story(
+                        id="rewrite",
+                        title="Animals have another amazing secret",
+                        seo_title="Animals have another amazing secret",
+                        hook="Animals are amazing.",
+                        script="Animals are amazing and interesting.",
+                        thumbnail_text="AMAZING SECRET TODAY",
+                        category="wildlife",
+                        queue_prune={"state": "rewrite"},
+                    ),
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
 
     report = build_report(queue, out)
 

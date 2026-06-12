@@ -24,6 +24,7 @@ This is defense in depth, not perfect. The Mistral / Cerebras / Gemini /
 Groq layers all reject the most blatant attempts on their end too —
 this is the belt to their suspenders.
 """
+
 from __future__ import annotations
 
 import re
@@ -32,12 +33,12 @@ import re
 # inject new instructions. Order doesn't matter; we apply them all.
 _INJECTION_PATTERNS = [
     # Direct instruction overrides.
-    re.compile(r"\b(ignore|disregard|forget)\s+(all\s+|the\s+)?(previous|prior|above|earlier)\s+(instructions?|prompts?|messages?|rules?)\b",
-               re.IGNORECASE),
-    re.compile(r"\b(new|updated|revised)\s+(instructions?|prompts?|task|directive)s?\s*[:\-]\s*",
-               re.IGNORECASE),
-    re.compile(r"\bact\s+as\s+(if\s+you\s+are\s+)?(a\s+)?(different|new)\b",
-               re.IGNORECASE),
+    re.compile(
+        r"\b(ignore|disregard|forget)\s+(all\s+|the\s+)?(previous|prior|above|earlier)\s+(instructions?|prompts?|messages?|rules?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\b(new|updated|revised)\s+(instructions?|prompts?|task|directive)s?\s*[:\-]\s*", re.IGNORECASE),
+    re.compile(r"\bact\s+as\s+(if\s+you\s+are\s+)?(a\s+)?(different|new)\b", re.IGNORECASE),
     re.compile(r"\byou\s+are\s+now\s+(a|an)\s+\w+\b", re.IGNORECASE),
     # Fake delimiters that try to close our prompt envelope.
     re.compile(r"<\s*/?\s*(system|user|assistant|prompt|instructions?)\s*>", re.IGNORECASE),

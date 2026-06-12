@@ -1,4 +1,5 @@
 """Persistent quarantine for rejected queue candidates."""
+
 from __future__ import annotations
 
 import json
@@ -53,26 +54,26 @@ def _read(path: Path = REJECTED_QUEUE) -> list[dict]:
     return []
 
 
-def record_rejection(story: dict, reasons: list[str], *, path: Path = REJECTED_QUEUE,
-                     stage: str = "queue_quality") -> None:
+def record_rejection(
+    story: dict, reasons: list[str], *, path: Path = REJECTED_QUEUE, stage: str = "queue_quality"
+) -> None:
     if not reasons:
         return
     items = _read(path)
     story_id = str(story.get("id") or story.get("_queue_id") or story.get("title") or "")
-    items = [
-        item for item in items
-        if not (item.get("story_id") == story_id and item.get("stage") == stage)
-    ]
-    items.append({
-        "story_id": story_id,
-        "stage": stage,
-        "reasons": list(dict.fromkeys(str(r) for r in reasons)),
-        "title": story.get("seo_title") or story.get("title") or "",
-        "category": story.get("category") or "",
-        "source_url": story.get("url") or story.get("source_url") or "",
-        "recorded_at": datetime.now(timezone.utc).isoformat(),
-        "rewrite_attempted": False,
-    })
+    items = [item for item in items if not (item.get("story_id") == story_id and item.get("stage") == stage)]
+    items.append(
+        {
+            "story_id": story_id,
+            "stage": stage,
+            "reasons": list(dict.fromkeys(str(r) for r in reasons)),
+            "title": story.get("seo_title") or story.get("title") or "",
+            "category": story.get("category") or "",
+            "source_url": story.get("url") or story.get("source_url") or "",
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "rewrite_attempted": False,
+        }
+    )
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.suffix == ".jsonl":
         lines = [json.dumps(item, ensure_ascii=False) for item in items[-1000:]]

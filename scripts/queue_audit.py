@@ -37,19 +37,21 @@ def main() -> int:
         if queue_prune.get("mechanism_cluster"):
             mechanism_clusters[str(queue_prune.get("mechanism_cluster"))] += 1
         rights["approved" if right["approved"] else "rejected"] += 1
-        rows.append({
-            "id": story.get("id", ""),
-            "title": story.get("seo_title") or story.get("title") or "",
-            "category": story.get("category", ""),
-            "publish_score": score,
-            "editorial_state": state,
-            "queue_prune": queue_prune,
-            "queue_score": queue_prune.get("score", score.get("score", 0)),
-            "youtube_brain": story.get("youtube_brain") or {},
-            "packaging": story.get("packaging") or {},
-            "rights_audit": right,
-            "editorial_guard": score.get("editorial_guard") or {},
-        })
+        rows.append(
+            {
+                "id": story.get("id", ""),
+                "title": story.get("seo_title") or story.get("title") or "",
+                "category": story.get("category", ""),
+                "publish_score": score,
+                "editorial_state": state,
+                "queue_prune": queue_prune,
+                "queue_score": queue_prune.get("score", score.get("score", 0)),
+                "youtube_brain": story.get("youtube_brain") or {},
+                "packaging": story.get("packaging") or {},
+                "rights_audit": right,
+                "editorial_guard": score.get("editorial_guard") or {},
+            }
+        )
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "pending": len(rows),

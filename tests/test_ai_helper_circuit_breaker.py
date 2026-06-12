@@ -7,6 +7,7 @@ pulls Mistral out of the chain for the rest of the run after a
 configurable number of consecutive 429s, so subsequent stories go
 straight to the fallback chain.
 """
+
 from __future__ import annotations
 
 from unittest.mock import patch, MagicMock
@@ -33,10 +34,12 @@ def _isolated_cache(monkeypatch, tmp_path):
     monkeypatch.setenv("AI_CACHE_ENABLED", "1")
     import importlib
     from utils import ai_cache as _ac
+
     importlib.reload(_ac)
     _ac.reset_cache_for_tests()
     monkeypatch.setattr(ai_helper, "ai_cache", _ac)
     from utils import provider_stats as _ps
+
     monkeypatch.setattr(_ps, "STATS_LOG", tmp_path / "provider_stats.jsonl")
     monkeypatch.setattr(ai_helper, "sleep", lambda *_, **__: None)
     monkeypatch.setattr(ai_helper.time, "sleep", lambda *_, **__: None)
@@ -67,8 +70,10 @@ def test_circuit_open_skips_mistral_entirely(monkeypatch):
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     ai_helper._mistral_circuit_open = True
 
-    with patch.object(ai_helper, "_call_mistral") as mistral, \
-         patch.object(ai_helper, "_call_cerebras", return_value="from-cerebras"):
+    with (
+        patch.object(ai_helper, "_call_mistral") as mistral,
+        patch.object(ai_helper, "_call_cerebras", return_value="from-cerebras"),
+    ):
         out = ai_helper.ai_text("anything")
     assert out == "from-cerebras"
     mistral.assert_not_called()

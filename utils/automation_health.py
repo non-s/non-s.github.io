@@ -1,4 +1,5 @@
 """Local automation health audit for Wild Brief."""
+
 from __future__ import annotations
 
 import json
@@ -37,10 +38,7 @@ def build_health(root: Path | str = ".") -> dict:
     queue = _safe_json(root / "_data" / "stories_queue.json")
     latest = _safe_json(root / "_data" / "analytics" / "latest.json")
     comments = _safe_json(root / "_data" / "analytics" / "comments.json")
-    stories = [
-        item for item in (queue.get("stories") or [])
-        if isinstance(item, dict) and not item.get("consumed")
-    ]
+    stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     categories = Counter(str(item.get("category") or "unknown") for item in stories)
     scripts = [_script_key(str(item.get("script") or "")) for item in stories if item.get("script")]
     duplicate_scripts = len(scripts) - len(set(scripts))

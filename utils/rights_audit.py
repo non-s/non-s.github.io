@@ -1,4 +1,5 @@
 """Rights and license checks for queue items and rendered metadata."""
+
 from __future__ import annotations
 
 

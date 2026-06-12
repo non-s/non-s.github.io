@@ -29,12 +29,14 @@ def main() -> int:
     for name in provider_stats.DEFAULT_ORDER:
         rate = provider_stats.success_rate(name)
         until = provider_stats.cooldown_until(name, now=now)
-        providers.append({
-            "provider": name,
-            "configured": bool(os.environ.get(env_names[name], "").strip()),
-            "success_rate": None if rate is None else round(rate, 3),
-            "cooldown_seconds": max(0, int(until - now)) if until else 0,
-        })
+        providers.append(
+            {
+                "provider": name,
+                "configured": bool(os.environ.get(env_names[name], "").strip()),
+                "success_rate": None if rate is None else round(rate, 3),
+                "cooldown_seconds": max(0, int(until - now)) if until else 0,
+            }
+        )
     payload = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "default_chain": provider_stats.preferred_chain(),

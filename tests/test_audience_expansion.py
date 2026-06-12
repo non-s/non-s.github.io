@@ -1,4 +1,5 @@
 """Tests for global audience expansion helpers."""
+
 from __future__ import annotations
 
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags

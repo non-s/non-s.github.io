@@ -19,6 +19,7 @@ Decay: we look at the LAST 50 calls per provider. Older data is
 ignored so a provider that's recovered after an outage climbs back
 to the front within an hour or two.
 """
+
 from __future__ import annotations
 
 import json
@@ -31,8 +32,7 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-STATS_LOG = Path(os.environ.get("PROVIDER_STATS_LOG",
-                                  "_data/provider_stats.jsonl"))
+STATS_LOG = Path(os.environ.get("PROVIDER_STATS_LOG", "_data/provider_stats.jsonl"))
 # How many recent calls to weigh per provider when computing the
 # success rate. Smaller = adapts faster to current weather; larger =
 # smoother. 50 lands at ~2 hours of typical traffic.
@@ -57,10 +57,10 @@ _write_lock = threading.Lock()
 def record(provider: str, success: bool, status: int | None = None) -> None:
     """Append a single call's outcome. Best-effort, never raises."""
     entry = {
-        "ts":       time.time(),
+        "ts": time.time(),
         "provider": provider,
-        "ok":       bool(success),
-        "status":   status,
+        "ok": bool(success),
+        "status": status,
     }
     try:
         STATS_LOG.parent.mkdir(parents=True, exist_ok=True)
@@ -128,8 +128,7 @@ def success_rate(provider: str, path: Path | None = None) -> float | None:
     return sum(1 for ok in samples if ok) / len(samples)
 
 
-def cooldown_until(provider: str, path: Path | None = None,
-                   now: float | None = None) -> float:
+def cooldown_until(provider: str, path: Path | None = None, now: float | None = None) -> float:
     """Return unix timestamp until which provider should be avoided."""
     now = time.time() if now is None else now
     rows = _load_recent_rows(path or STATS_LOG)
@@ -150,15 +149,13 @@ def cooldown_until(provider: str, path: Path | None = None,
     return 0.0 if latest_ts <= now else latest_ts
 
 
-def is_in_cooldown(provider: str, path: Path | None = None,
-                   now: float | None = None) -> bool:
+def is_in_cooldown(provider: str, path: Path | None = None, now: float | None = None) -> bool:
     now = time.time() if now is None else now
     until = cooldown_until(provider, path=path, now=now)
     return bool(until and until > now)
 
 
-def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER,
-                     path: Path | None = None) -> list[str]:
+def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER, path: Path | None = None) -> list[str]:
     """Return providers in the order ai_helper.py should try them.
 
     Logic:
@@ -185,18 +182,18 @@ def preferred_chain(*, default: tuple[str, ...] = DEFAULT_ORDER,
             return (3, default_idx[p])
         samples = recent.get(p, [])
         if not samples:
-            return (1, default_idx[p])               # unknown: middle band
+            return (1, default_idx[p])  # unknown: middle band
         rate = sum(1 for ok in samples if ok) / len(samples)
         if rate >= 0.4:
-            return (0, -rate, default_idx[p])         # healthy: front, by rate
-        return (2, default_idx[p])                    # dead: back
+            return (0, -rate, default_idx[p])  # healthy: front, by rate
+        return (2, default_idx[p])  # dead: back
 
     return sorted(default, key=_key)
 
 
-def preferred_chain_for_task(task: str = "auto", *, json_mode: bool = False,
-                             prompt_chars: int = 0,
-                             path: Path | None = None) -> list[str]:
+def preferred_chain_for_task(
+    task: str = "auto", *, json_mode: bool = False, prompt_chars: int = 0, path: Path | None = None
+) -> list[str]:
     """Choose provider order for the actual job, then adapt by health.
 
     The task hint keeps expensive/slow providers for high-value work and

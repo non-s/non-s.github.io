@@ -4,6 +4,7 @@ The rest of the project makes videos and measures them. This module turns
 those signals into a concrete playbook for retention, subscribers, comments,
 series, first-day reactions and brand consistency.
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -36,10 +37,7 @@ def _int(value: object, default: int = 0) -> int:
 
 
 def _rank_map(mapping: dict, limit: int = 5) -> list[dict]:
-    ranked = [
-        {"value": str(key), "score": round(_float(value), 3)}
-        for key, value in (mapping or {}).items()
-    ]
+    ranked = [{"value": str(key), "score": round(_float(value), 3)} for key, value in (mapping or {}).items()]
     ranked.sort(key=lambda item: item["score"], reverse=True)
     return ranked[:limit]
 
@@ -106,11 +104,13 @@ def subscriber_engine(latest: dict) -> dict:
     rate = round(subs * 1000 / views, 3) if views else 0.0
     commands = []
     if rate < SUBS_PER_1000_TARGET:
-        commands.extend([
-            "Use a soft channel promise CTA only after the payoff, never before it.",
-            "Connect the CTA to the viewer identity: follow for one animal signal a day.",
-            "Apply the CTA only to strong candidates so weak videos do not waste the close.",
-        ])
+        commands.extend(
+            [
+                "Use a soft channel promise CTA only after the payoff, never before it.",
+                "Connect the CTA to the viewer identity: follow for one animal signal a day.",
+                "Apply the CTA only to strong candidates so weak videos do not waste the close.",
+            ]
+        )
     return {
         "views": views,
         "subscribers_gained": subs,
@@ -230,7 +230,11 @@ def series_system(latest: dict, ops: dict) -> dict:
         {"series": "Sky Intelligence", "categories": ["birds"], "promise": "bird senses, memory and navigation"},
         {"series": "Animal Superpowers", "categories": ["wildlife"], "promise": "body features that look impossible"},
         {"series": "Ocean Signals", "categories": ["ocean"], "promise": "underwater behavior viewers can decode"},
-        {"series": "Pet Signals", "categories": ["cats", "dogs"], "promise": "home-animal behavior with stricter retention gates"},
+        {
+            "series": "Pet Signals",
+            "categories": ["cats", "dogs"],
+            "promise": "home-animal behavior with stricter retention gates",
+        },
     ]
     for lane in lanes:
         growth = max((_float(category_growth.get(category)) for category in lane["categories"]), default=0.0)
@@ -320,7 +324,9 @@ def build_success_plan(
     score -= min(15.0, subscribers["gap_to_target"] * 10)
     score -= min(12.0, reach["gap_to_floor"] * 100)
     score -= 10.0 if recurrence["state"] == "needs_recurrence_work" else 0.0
-    score -= min(6.0, max(0.0, recurrence["new_viewer_subscribe_rate_floor"] - recurrence["new_viewer_subscribe_rate"]) * 1000)
+    score -= min(
+        6.0, max(0.0, recurrence["new_viewer_subscribe_rate_floor"] - recurrence["new_viewer_subscribe_rate"]) * 1000
+    )
     score -= 10.0 if audience["state"] == "blind_spot" else 0.0
     score -= 10.0 if _int(fact_ledger.get("risk_score", 0)) >= 80 else 0.0
     quota = autonomous.get("quota_budget") or {}

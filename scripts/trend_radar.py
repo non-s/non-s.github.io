@@ -20,11 +20,7 @@ def main() -> int:
     payload = build_trend_radar(ROOT)
     OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     summary = payload.get("summary") or {}
-    print(
-        "trend radar: "
-        f"{summary.get('animal_topics', 0)} topic(s), "
-        f"top={summary.get('top_animal') or 'none'}"
-    )
+    print("trend radar: " f"{summary.get('animal_topics', 0)} topic(s), " f"top={summary.get('top_animal') or 'none'}")
     return 0
 
 

@@ -19,6 +19,7 @@ behaviour — so this module is purely additive.
 The detection runs once per clip and the offset is reused for all
 frames in that clip, so the cost is O(clips), not O(frames).
 """
+
 from __future__ import annotations
 
 import logging
@@ -32,6 +33,7 @@ def _try_import_opencv():
     """Import cv2 lazily — keep the module import cheap on sandboxes."""
     try:
         import cv2  # noqa: F401
+
         return True
     except Exception:
         return False
@@ -41,9 +43,9 @@ def _extract_first_frame(clip_path: Path, dest: Path) -> bool:
     """Extract a single PNG of the clip's first frame via FFmpeg."""
     try:
         r = subprocess.run(
-            ["ffmpeg", "-y", "-i", str(clip_path),
-             "-frames:v", "1", "-q:v", "2", str(dest)],
-            capture_output=True, timeout=30,
+            ["ffmpeg", "-y", "-i", str(clip_path), "-frames:v", "1", "-q:v", "2", str(dest)],
+            capture_output=True,
+            timeout=30,
         )
         return r.returncode == 0 and dest.exists()
     except Exception as exc:
@@ -51,8 +53,7 @@ def _extract_first_frame(clip_path: Path, dest: Path) -> bool:
         return False
 
 
-def detect_face_center(clip_path: Path,
-                       tmp_dir: Path) -> tuple[float, float] | None:
+def detect_face_center(clip_path: Path, tmp_dir: Path) -> tuple[float, float] | None:
     """Probe the first frame for a face. Returns (x_frac, y_frac) in
     [0, 1] coordinates of the source frame's centre-of-largest-face,
     or None when no face is found / OpenCV isn't available.
@@ -79,7 +80,9 @@ def detect_face_center(clip_path: Path,
         cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
         cascade = cv2.CascadeClassifier(cascade_path)
         faces = cascade.detectMultiScale(
-            gray, scaleFactor=1.2, minNeighbors=5,
+            gray,
+            scaleFactor=1.2,
+            minNeighbors=5,
             minSize=(60, 60),
         )
         if len(faces) == 0:
@@ -99,9 +102,7 @@ def detect_face_center(clip_path: Path,
             pass
 
 
-def x_crop_offset_expr(face_x_frac: float | None,
-                       source_w: int = 1920,
-                       short_w: int = 1080) -> str:
+def x_crop_offset_expr(face_x_frac: float | None, source_w: int = 1920, short_w: int = 1080) -> str:
     """Return the FFmpeg crop `x` expression that keeps the face on-screen.
 
     The Ken Burns pipeline first scales the source to 2× (3840 wide
@@ -121,8 +122,4 @@ def x_crop_offset_expr(face_x_frac: float | None,
     # crop width ow == short_w × 2.
     # Target x of crop window = face_x × iw - ow/2.
     # Then clamp to [0, iw - ow].
-    return (
-        f"max(0,min(iw-ow,"
-        f"{face_x_frac:.4f}*iw-(ow/2)"
-        f"))"
-    )
+    return f"max(0,min(iw-ow," f"{face_x_frac:.4f}*iw-(ow/2)" f"))"

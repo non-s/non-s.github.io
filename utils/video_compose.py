@@ -14,6 +14,7 @@ Two pipelines:
 Both produce a 1080x1920 / 30fps / yuv420p / faststart MP4 muxed with the
 TTS MP3 we already render.
 """
+
 from __future__ import annotations
 
 import logging
@@ -59,9 +60,10 @@ def _audio_duration_s(audio_path: Path) -> float:
     """Use ffprobe to extract the audio duration. Returns ~50s on parse failure."""
     try:
         result = subprocess.run(
-            ["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
-             "-of", "csv=p=0", str(audio_path)],
-            capture_output=True, text=True, timeout=15,
+            ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(audio_path)],
+            capture_output=True,
+            text=True,
+            timeout=15,
         )
         return float(result.stdout.strip())
     except Exception:
@@ -79,6 +81,7 @@ def _ffmpeg_escape(text: str) -> str:
 
 # â”€â”€ Multi-clip b-roll pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def _overlay_copy(text: str, max_chars: int = 42) -> str:
     """Compact spoken hooks for a single mobile-readable overlay line."""
     cleaned = " ".join((text or "").strip().split())
@@ -90,17 +93,19 @@ def _overlay_copy(text: str, max_chars: int = 42) -> str:
         if len(candidate) > max_chars - 3:
             break
         words.append(word)
-    return (" ".join(words).rstrip(" .,;:-") + "...") if words else cleaned[:max_chars - 3] + "..."
+    return (" ".join(words).rstrip(" .,;:-") + "...") if words else cleaned[: max_chars - 3] + "..."
 
 
-def build_broll_short(broll_paths: list[Path],
-                      audio_path: Path,
-                      output_path: Path,
-                      ass_subtitle_path: Path | None = None,
-                      hook_text: str = "",
-                      cover_text: str = "",
-                      cta_text: str = "",
-                      watermark_text: str = "") -> bool:
+def build_broll_short(
+    broll_paths: list[Path],
+    audio_path: Path,
+    output_path: Path,
+    ass_subtitle_path: Path | None = None,
+    hook_text: str = "",
+    cover_text: str = "",
+    cta_text: str = "",
+    watermark_text: str = "",
+) -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
     - Each clip is cropped to 9:16, scaled to 1080x1920, played for
@@ -135,6 +140,7 @@ def build_broll_short(broll_paths: list[Path],
     if BRAND_CARDS_ENABLED:
         try:
             from utils.brand_card import get_intro_outro_cards
+
             intro_card_path, outro_card_path = get_intro_outro_cards()
         except Exception as exc:
             log.warning("brand cards skipped: %s", exc)
@@ -153,6 +159,7 @@ def build_broll_short(broll_paths: list[Path],
     # per clip. Falls back to centre-crop when no face is found OR
     # OpenCV isn't installed.
     from utils.face_crop import detect_face_center
+
     face_centers: list[tuple[float, float] | None] = []
     for clip in broll_paths:
         face_centers.append(detect_face_center(clip, output_path.parent))
@@ -165,7 +172,7 @@ def build_broll_short(broll_paths: list[Path],
     parts: list[str] = []
     segment_frames = int(round(seg_dur * TARGET_FPS))
     for i, clip in enumerate(broll_paths):
-        zoom_in = (i % 2 == 0)
+        zoom_in = i % 2 == 0
         # zoompan z' starts at 1 and grows (or shrinks) per frame. A 1.08
         # final zoom over seg_dur â‰ˆ 1.78 % per second â€” slow enough to
         # feel cinematic, not so fast the viewer notices the crop walking.
@@ -189,10 +196,8 @@ def build_broll_short(broll_paths: list[Path],
             # window of width ow centred at fx Ã— iw, clamped. Every
             # comma inside the max(0,min(...)) expressions has to be
             # backslash-escaped â€” see the zoompan note above.
-            crop_x = (f"max(0\\,min(iw-ow\\,"
-                       f"{fx:.4f}*iw-(ow/2)))")
-            crop_y = (f"max(0\\,min(ih-oh\\,"
-                       f"{fy:.4f}*ih-(oh/2)))")
+            crop_x = f"max(0\\,min(iw-ow\\," f"{fx:.4f}*iw-(ow/2)))"
+            crop_y = f"max(0\\,min(ih-oh\\," f"{fy:.4f}*ih-(oh/2)))"
             crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}:{crop_x}:{crop_y}"
         else:
             crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}"
@@ -253,9 +258,7 @@ def build_broll_short(broll_paths: list[Path],
     if outro_node:
         concat_inputs_parts.append(f"[{outro_node}]")
     total_segs = len(concat_inputs_parts)
-    parts.append(
-        f"{''.join(concat_inputs_parts)}concat=n={total_segs}:v=1:a=0[concat]"
-    )
+    parts.append(f"{''.join(concat_inputs_parts)}concat=n={total_segs}:v=1:a=0[concat]")
 
     last_label = "concat"
 
@@ -332,20 +335,34 @@ def build_broll_short(broll_paths: list[Path],
     # indexes are stable (n, n+1) regardless of how many b-roll clips
     # we have. PNGs need `-loop 1` + a `-t` so FFmpeg knows when to stop.
     for card in extra_inputs:
-        cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}",
-                 "-i", str(card)]
+        cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}", "-i", str(card)]
     cmd += ["-i", str(audio_path)]
     audio_idx = n + len(extra_inputs)
     cmd += [
-        "-filter_complex", filtergraph,
-        "-map", f"[{last_label}]",
-        "-map", f"{audio_idx}:a",
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
-        "-c:a", "aac", "-b:a", "128k",
-        "-pix_fmt", "yuv420p",
-        "-r", str(TARGET_FPS),
-        "-t", f"{audio_dur:.2f}",
-        "-movflags", "+faststart",
+        "-filter_complex",
+        filtergraph,
+        "-map",
+        f"[{last_label}]",
+        "-map",
+        f"{audio_idx}:a",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "23",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        "-pix_fmt",
+        "yuv420p",
+        "-r",
+        str(TARGET_FPS),
+        "-t",
+        f"{audio_dur:.2f}",
+        "-movflags",
+        "+faststart",
         "-shortest",
         str(output_path),
     ]
@@ -358,21 +375,23 @@ def build_broll_short(broll_paths: list[Path],
     if result.returncode != 0:
         log.error("ffmpeg b-roll compose failed: %s", result.stderr[-1200:])
         return False
-    log.info("  ðŸŽ¬ B-roll Short ready (%s clips, %.1fs): %s",
-             n, audio_dur, output_path.name)
+    log.info("  ðŸŽ¬ B-roll Short ready (%s clips, %.1fs): %s", n, audio_dur, output_path.name)
     return True
 
 
 # â”€â”€ Static-image fallback pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-def build_static_short(frame_path: Path,
-                       audio_path: Path,
-                       output_path: Path,
-                       ass_subtitle_path: Path | None = None,
-                       hook_text: str = "",
-                       cover_text: str = "",
-                       cta_text: str = "",
-                       watermark_text: str = "") -> bool:
+
+def build_static_short(
+    frame_path: Path,
+    audio_path: Path,
+    output_path: Path,
+    ass_subtitle_path: Path | None = None,
+    hook_text: str = "",
+    cover_text: str = "",
+    cta_text: str = "",
+    watermark_text: str = "",
+) -> bool:
     """Single still image + audio, with optional burned captions.
 
     Used when no b-roll was acquired. We still burn
@@ -452,18 +471,38 @@ def build_static_short(frame_path: Path,
 
     filtergraph = ";".join(parts)
     cmd = [
-        "ffmpeg", "-y",
-        "-loop", "1", "-i", str(frame_path),
-        "-i", str(audio_path),
-        "-filter_complex", filtergraph,
-        "-map", f"[{last}]",
-        "-map", "1:a",
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
-        "-c:a", "aac", "-b:a", "128k",
-        "-pix_fmt", "yuv420p",
-        "-r", str(TARGET_FPS),
-        "-t", f"{audio_dur:.2f}",
-        "-movflags", "+faststart",
+        "ffmpeg",
+        "-y",
+        "-loop",
+        "1",
+        "-i",
+        str(frame_path),
+        "-i",
+        str(audio_path),
+        "-filter_complex",
+        filtergraph,
+        "-map",
+        f"[{last}]",
+        "-map",
+        "1:a",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "23",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        "-pix_fmt",
+        "yuv420p",
+        "-r",
+        str(TARGET_FPS),
+        "-t",
+        f"{audio_dur:.2f}",
+        "-movflags",
+        "+faststart",
         "-shortest",
         str(output_path),
     ]

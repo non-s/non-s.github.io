@@ -40,11 +40,15 @@ def test_comment_to_short_maps_big_cat_question_to_wildlife():
 
 def test_comment_to_short_downranks_channel_self_prompt():
     candidates = build_candidates(
-        {"raw_comments": [{
-            "text": "Did you spot the tail before the reveal? Comment the next animal after bird.",
-            "video_id": "bird1",
-            "author": "@wildbrief-e8o",
-        }]}
+        {
+            "raw_comments": [
+                {
+                    "text": "Did you spot the tail before the reveal? Comment the next animal after bird.",
+                    "video_id": "bird1",
+                    "author": "@wildbrief-e8o",
+                }
+            ]
+        }
     )
 
     assert candidates[0]["score"] < 64
@@ -102,9 +106,9 @@ def test_merge_into_queue_skips_duplicate_comment_angle():
         "thumbnail_text": "LIONS EAR CUE",
         "category": "wildlife",
     }
-    candidate = build_candidates({
-        "raw_comments": [{"text": "What big cat or predator makes noise when hunting?", "video_id": "lion1"}]
-    })[0]
+    candidate = build_candidates(
+        {"raw_comments": [{"text": "What big cat or predator makes noise when hunting?", "video_id": "lion1"}]}
+    )[0]
 
     merged = merge_into_queue({"stories": [existing]}, [candidate])
 
@@ -113,9 +117,9 @@ def test_merge_into_queue_skips_duplicate_comment_angle():
 
 
 def test_merge_into_queue_refreshes_existing_comment_idea():
-    candidate = build_candidates({
-        "raw_comments": [{"text": "Can you do sharks next?", "likeCount": 4, "video_id": "shark1"}]
-    })[0]
+    candidate = build_candidates(
+        {"raw_comments": [{"text": "Can you do sharks next?", "likeCount": 4, "video_id": "shark1"}]}
+    )[0]
     old = {
         "id": candidate["id"],
         "title": "Old comment title",
@@ -134,9 +138,9 @@ def test_merge_into_queue_refreshes_existing_comment_idea():
 
 
 def test_merge_into_queue_removes_existing_comment_idea_that_no_longer_passes_directly():
-    candidate = build_candidates({
-        "raw_comments": [{"text": "5 is best number for a clutch of ducklings?", "video_id": "duck1"}]
-    })[0]
+    candidate = build_candidates(
+        {"raw_comments": [{"text": "5 is best number for a clutch of ducklings?", "video_id": "duck1"}]}
+    )[0]
     old = {
         "id": candidate["id"],
         "title": "Old duckling comment",
@@ -151,9 +155,9 @@ def test_merge_into_queue_removes_existing_comment_idea_that_no_longer_passes_di
 
 
 def test_comment_idea_packaging_preserves_viewer_question_hook():
-    candidate = build_candidates({
-        "raw_comments": [{"text": "What big cat or predator makes noise when hunting?", "video_id": "lion1"}]
-    })[0]
+    candidate = build_candidates(
+        {"raw_comments": [{"text": "What big cat or predator makes noise when hunting?", "video_id": "lion1"}]}
+    )[0]
     candidate["studio_state"] = "comment_idea"
 
     packaged = package_story(candidate)

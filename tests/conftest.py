@@ -4,6 +4,7 @@ Keeps test files lean: every test that needs a fake Mistral pulls it
 from here. The old site fixtures were removed during the animal-channel
 pivot.
 """
+
 from __future__ import annotations
 
 import sys
@@ -37,15 +38,15 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
 
     # Each (module, attribute, path-fragment) tuple gets isolated.
     overrides = [
-        ("utils.provider_stats",  "STATS_LOG",         "provider_stats.jsonl"),
-        ("utils.channel_memory",  "MEMORY_LOG",        "channel_memory.jsonl"),
-        ("utils.music_bed",       "MUSIC_CACHE_DIR",   "music_cache"),
+        ("utils.provider_stats", "STATS_LOG", "provider_stats.jsonl"),
+        ("utils.channel_memory", "MEMORY_LOG", "channel_memory.jsonl"),
+        ("utils.music_bed", "MUSIC_CACHE_DIR", "music_cache"),
         ("utils.internet_archive", "ARCHIVE_CACHE_DIR", "archive_audio_cache"),
-        ("utils.broll",           "_CACHE_DIR",        "broll_cache"),
-        ("utils.brand_card",      "BRAND_CARD_CACHE",  "brand_card_cache"),
-        ("utils.intro_outro",     "INTRO_OUTRO_CACHE", "intro_outro_cache"),
-        ("utils.host_persona",    "PERSONA_FILE",      "host_persona.json"),
-        ("fetch_animals",         "PUBLISHED_CLIPS_FILE", "published_clips.json"),
+        ("utils.broll", "_CACHE_DIR", "broll_cache"),
+        ("utils.brand_card", "BRAND_CARD_CACHE", "brand_card_cache"),
+        ("utils.intro_outro", "INTRO_OUTRO_CACHE", "intro_outro_cache"),
+        ("utils.host_persona", "PERSONA_FILE", "host_persona.json"),
+        ("fetch_animals", "PUBLISHED_CLIPS_FILE", "published_clips.json"),
     ]
     for module_name, attr, frag in overrides:
         try:
@@ -62,10 +63,10 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     # same pytest process. Reset it once per test up front.
     try:
         from utils import ai_helper as _ah
+
         _ah._reset_mistral_circuit_breaker()
     except Exception:
         pass
-
 
 
 @pytest.fixture
@@ -100,9 +101,7 @@ def no_network(monkeypatch):
     import requests
 
     def _refuse(*args, **kwargs):
-        raise RuntimeError(
-            "Outbound HTTP not allowed in tests — use a fixture or mock."
-        )
+        raise RuntimeError("Outbound HTTP not allowed in tests — use a fixture or mock.")
 
     monkeypatch.setattr(requests, "get", _refuse)
     monkeypatch.setattr(requests, "post", _refuse)

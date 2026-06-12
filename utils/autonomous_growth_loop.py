@@ -4,6 +4,7 @@ The loop turns the channel's current analytics into queue-level decisions:
 what to exploit, what to test, what to recover, and which pending Shorts
 should be attempted first.
 """
+
 from __future__ import annotations
 
 import json
@@ -42,8 +43,7 @@ def _num(value, default: float = 0.0) -> float:
 
 
 def _rank_map(mapping: dict, *, limit: int = 5) -> list[dict]:
-    rows = [{"name": str(key), "score": round(_num(value), 3)}
-            for key, value in (mapping or {}).items()]
+    rows = [{"name": str(key), "score": round(_num(value), 3)} for key, value in (mapping or {}).items()]
     rows.sort(key=lambda item: item["score"], reverse=True)
     return rows[:limit]
 
@@ -58,9 +58,20 @@ def _tokens(text: str) -> set[str]:
     return {
         token.lower()
         for token in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", text or "")
-        if token.lower() not in {
-            "animal", "animals", "secret", "secrets", "their", "there",
-            "about", "while", "because", "brief", "shorts", "really",
+        if token.lower()
+        not in {
+            "animal",
+            "animals",
+            "secret",
+            "secrets",
+            "their",
+            "there",
+            "about",
+            "while",
+            "because",
+            "brief",
+            "shorts",
+            "really",
         }
     }
 
@@ -71,26 +82,27 @@ def _experiment_gaps(experiments: dict) -> list[dict]:
     gaps = []
     for axis in axis_names():
         stats = axis_stats.get(axis) or {}
-        missing = [
-            variant for variant in variant_choices(axis)
-            if int((stats.get(variant) or {}).get("n", 0) or 0) < 8
-        ]
-        gaps.append({
-            "axis": axis,
-            "winner": winners.get(axis, ""),
-            "needs_samples": missing,
-            "state": "winner_locked" if winners.get(axis) else "collecting_signal",
-        })
+        missing = [variant for variant in variant_choices(axis) if int((stats.get(variant) or {}).get("n", 0) or 0) < 8]
+        gaps.append(
+            {
+                "axis": axis,
+                "winner": winners.get(axis, ""),
+                "needs_samples": missing,
+                "state": "winner_locked" if winners.get(axis) else "collecting_signal",
+            }
+        )
     return gaps
 
 
-def build_plan(*,
-               latest: dict | None = None,
-               experiments: dict | None = None,
-               post24: dict | None = None,
-               queue: dict | None = None,
-               sequence_plan: dict | None = None,
-               comments: dict | None = None) -> dict:
+def build_plan(
+    *,
+    latest: dict | None = None,
+    experiments: dict | None = None,
+    post24: dict | None = None,
+    queue: dict | None = None,
+    sequence_plan: dict | None = None,
+    comments: dict | None = None,
+) -> dict:
     latest = latest or _safe_json(LATEST_FILE)
     experiments = experiments or _safe_json(EXPERIMENTS_FILE)
     post24 = post24 or _safe_json(POST24_FILE)
@@ -104,92 +116,106 @@ def build_plan(*,
     best_format = format_rank[0]["score"] if format_rank else 0.0
     hot_categories = [item["name"] for item in category_rank[:3]]
     slow_categories = [
-        item["name"] for item in category_rank[-2:]
-        if best_category and item["score"] < best_category * 0.45
+        item["name"] for item in category_rank[-2:] if best_category and item["score"] < best_category * 0.45
     ]
     hot_formats = [item["name"] for item in format_rank[:3]]
     avg_retention = _num(latest.get("avg_view_pct") or latest.get("avg_view_percentage"))
     subs_per_1000 = (
-        int(latest.get("subscribers_gained", 0) or 0) * 1000
-        / max(1, int(latest.get("total_views", 0) or 0))
+        int(latest.get("subscribers_gained", 0) or 0) * 1000 / max(1, int(latest.get("total_views", 0) or 0))
     )
     post_counts = post24.get("counts") or {}
     sequence_variants = sequence_plan.get("variants") or []
-    visual_learning = latest.get("visual_learning") or (latest.get("production_recommendations") or {}).get("visual_learning") or {}
+    visual_learning = (
+        latest.get("visual_learning") or (latest.get("production_recommendations") or {}).get("visual_learning") or {}
+    )
     visual_winner = str(visual_learning.get("winner") or "")
     requested_animals = [
-        str(item).strip().lower()
-        for item in (comments.get("requested_animals") or [])
-        if str(item).strip()
+        str(item).strip().lower() for item in (comments.get("requested_animals") or []) if str(item).strip()
     ][:8]
     top_titles = " ".join(str(item.get("title") or "") for item in latest.get("top_performers") or [])
     winning_terms = sorted(_tokens(top_titles))[:12]
 
     hypotheses = []
     if hot_categories:
-        hypotheses.append({
-            "id": "H1_DOUBLE_DOWN_CATEGORY",
-            "lane": "proven_category",
-            "statement": f"Next Shorts in {', '.join(hot_categories[:2])} should outperform cold topics.",
-            "success_metric": "growth_score",
-            "target": category_rank[0]["score"],
-        })
+        hypotheses.append(
+            {
+                "id": "H1_DOUBLE_DOWN_CATEGORY",
+                "lane": "proven_category",
+                "statement": f"Next Shorts in {', '.join(hot_categories[:2])} should outperform cold topics.",
+                "success_metric": "growth_score",
+                "target": category_rank[0]["score"],
+            }
+        )
     if hot_formats:
-        hypotheses.append({
-            "id": "H2_SCALE_FORMAT",
-            "lane": "proven_format",
-            "statement": f"{hot_formats[0]} is the strongest current story shape.",
-            "success_metric": "avg_view_pct_plus_views_per_hour",
-            "target": format_rank[0]["score"],
-        })
+        hypotheses.append(
+            {
+                "id": "H2_SCALE_FORMAT",
+                "lane": "proven_format",
+                "statement": f"{hot_formats[0]} is the strongest current story shape.",
+                "success_metric": "avg_view_pct_plus_views_per_hour",
+                "target": format_rank[0]["score"],
+            }
+        )
     if int(post_counts.get("rewrite_hook", 0) or 0):
-        hypotheses.append({
-            "id": "H3_REWRITE_HOOKS",
-            "lane": "rewrite_hook",
-            "statement": "High-view/low-retention Shorts need stronger first-sentence outcomes.",
-            "success_metric": "view_pct",
-            "target": 60,
-        })
+        hypotheses.append(
+            {
+                "id": "H3_REWRITE_HOOKS",
+                "lane": "rewrite_hook",
+                "statement": "High-view/low-retention Shorts need stronger first-sentence outcomes.",
+                "success_metric": "view_pct",
+                "target": 60,
+            }
+        )
     if subs_per_1000 < 1.5:
-        hypotheses.append({
-            "id": "H4_SUBSCRIBER_CONVERSION",
-            "lane": "conversion",
-            "statement": "A clearer one-line follow CTA should improve subscribers per 1k views.",
-            "success_metric": "subs_per_1000_views",
-            "target": 1.5,
-        })
+        hypotheses.append(
+            {
+                "id": "H4_SUBSCRIBER_CONVERSION",
+                "lane": "conversion",
+                "statement": "A clearer one-line follow CTA should improve subscribers per 1k views.",
+                "success_metric": "subs_per_1000_views",
+                "target": 1.5,
+            }
+        )
     if slow_categories:
-        hypotheses.append({
-            "id": "H5_RECOVER_OR_PAUSE",
-            "lane": "recovery",
-            "statement": f"{', '.join(slow_categories)} should only run with stronger hooks or remakes.",
-            "success_metric": "view_pct",
-            "target": 55,
-        })
+        hypotheses.append(
+            {
+                "id": "H5_RECOVER_OR_PAUSE",
+                "lane": "recovery",
+                "statement": f"{', '.join(slow_categories)} should only run with stronger hooks or remakes.",
+                "success_metric": "view_pct",
+                "target": 55,
+            }
+        )
     if sequence_variants:
-        hypotheses.append({
-            "id": "H6_SEQUENCE_WINNERS",
-            "lane": "sequence",
-            "statement": "Turn top performers into sourced sequence/remake candidates before cold discovery.",
-            "success_metric": "growth_score",
-            "target": 180,
-        })
+        hypotheses.append(
+            {
+                "id": "H6_SEQUENCE_WINNERS",
+                "lane": "sequence",
+                "statement": "Turn top performers into sourced sequence/remake candidates before cold discovery.",
+                "success_metric": "growth_score",
+                "target": 180,
+            }
+        )
     if requested_animals:
-        hypotheses.append({
-            "id": "H7_AUDIENCE_REQUESTS",
-            "lane": "audience_request",
-            "statement": "Viewer-requested animals should earn more comments and subscribers when packaging is strong.",
-            "success_metric": "comments_plus_subscribers",
-            "target": 1.5,
-        })
+        hypotheses.append(
+            {
+                "id": "H7_AUDIENCE_REQUESTS",
+                "lane": "audience_request",
+                "statement": "Viewer-requested animals should earn more comments and subscribers when packaging is strong.",
+                "success_metric": "comments_plus_subscribers",
+                "target": 1.5,
+            }
+        )
     if visual_winner:
-        hypotheses.append({
-            "id": "H8_VISUAL_PROFILE",
-            "lane": "visual_ctr",
-            "statement": f"Favor frame profile {visual_winner} for stronger click and retention signals.",
-            "success_metric": "growth_score_plus_retention",
-            "target": visual_winner,
-        })
+        hypotheses.append(
+            {
+                "id": "H8_VISUAL_PROFILE",
+                "lane": "visual_ctr",
+                "statement": f"Favor frame profile {visual_winner} for stronger click and retention signals.",
+                "success_metric": "growth_score_plus_retention",
+                "target": visual_winner,
+            }
+        )
 
     pending = [item for item in queue.get("stories") or [] if isinstance(item, dict) and not item.get("consumed")]
     queue_snapshot = _score_queue(
@@ -269,11 +295,18 @@ def build_plan(*,
     }
 
 
-def _score_queue(pending: list[dict], *, hot_categories: list[str],
-                 slow_categories: list[str], hot_formats: list[str],
-                 category_rank: list[dict], format_rank: list[dict],
-                 best_category: float, best_format: float,
-                 hypotheses: list[dict]) -> dict:
+def _score_queue(
+    pending: list[dict],
+    *,
+    hot_categories: list[str],
+    slow_categories: list[str],
+    hot_formats: list[str],
+    category_rank: list[dict],
+    format_rank: list[dict],
+    best_category: float,
+    best_format: float,
+    hypotheses: list[dict],
+) -> dict:
     category_scores = {item["name"]: item["score"] for item in category_rank}
     format_scores = {item["name"]: item["score"] for item in format_rank}
     hypothesis_by_lane = {item["lane"]: item["id"] for item in hypotheses}
@@ -282,9 +315,10 @@ def _score_queue(pending: list[dict], *, hot_categories: list[str],
     for story in pending:
         publish = score_story(story)
         category = str(story.get("category") or "wildlife")
-        fmt = str(story.get("story_format") or classify_format(
-            f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-        ))
+        fmt = str(
+            story.get("story_format")
+            or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}")
+        )
         if story.get("sequel_of") or story.get("remake_of"):
             lane = "sequence"
         elif category in slow_categories:
@@ -304,17 +338,19 @@ def _score_queue(pending: list[dict], *, hot_categories: list[str],
         priority += 12 * _normalise(category_scores.get(category, 0.0), best_category)
         priority += 8 * _normalise(format_scores.get(fmt, 0.0), best_format)
         priority = round(max(0, min(140, priority)), 2)
-        rows.append({
-            "id": story.get("id", ""),
-            "title": story.get("seo_title") or story.get("title") or "",
-            "category": category,
-            "story_format": fmt,
-            "lane": lane,
-            "hypothesis_id": hypothesis_by_lane.get(lane, hypothesis_by_lane.get("proven_category", "")),
-            "publish_score": publish,
-            "autonomy_priority": priority,
-            "packaging_lab": _packaging_lab(story),
-        })
+        rows.append(
+            {
+                "id": story.get("id", ""),
+                "title": story.get("seo_title") or story.get("title") or "",
+                "category": category,
+                "story_format": fmt,
+                "lane": lane,
+                "hypothesis_id": hypothesis_by_lane.get(lane, hypothesis_by_lane.get("proven_category", "")),
+                "publish_score": publish,
+                "autonomy_priority": priority,
+                "packaging_lab": _packaging_lab(story),
+            }
+        )
     rows.sort(key=lambda item: item["autonomy_priority"], reverse=True)
     return {
         "pending": len(pending),
@@ -324,8 +360,9 @@ def _score_queue(pending: list[dict], *, hot_categories: list[str],
     }
 
 
-def _decisions(mode: str, hot_categories: list[str], hot_formats: list[str],
-               slow_categories: list[str], experiments: dict) -> list[str]:
+def _decisions(
+    mode: str, hot_categories: list[str], hot_formats: list[str], slow_categories: list[str], experiments: dict
+) -> list[str]:
     decisions = []
     if hot_categories:
         decisions.append("Prioritize categories: " + ", ".join(hot_categories[:3]) + ".")
@@ -335,7 +372,9 @@ def _decisions(mode: str, hot_categories: list[str], hot_formats: list[str],
         decisions.append("Keep weak categories in recovery mode: " + ", ".join(slow_categories) + ".")
     if experiments.get("winners"):
         winners = experiments.get("winners") or {}
-        decisions.append("Bias production toward experiment winners: " + ", ".join(f"{k}={v}" for k, v in winners.items()) + ".")
+        decisions.append(
+            "Bias production toward experiment winners: " + ", ".join(f"{k}={v}" for k, v in winners.items()) + "."
+        )
     else:
         decisions.append("No statistically locked experiment winners yet; reserve traffic for structured learning.")
     decisions.append(f"Current operating mode: {mode}.")
@@ -399,7 +438,7 @@ def apply_plan_to_queue(queue: dict, plan: dict, *, limit: int = 80) -> tuple[di
             changed += 1
         stories.append(story)
         if changed >= limit:
-            stories.extend(queue.get("stories", [])[len(stories):])
+            stories.extend(queue.get("stories", [])[len(stories) :])
             break
     updated = dict(queue)
     updated["stories"] = stories

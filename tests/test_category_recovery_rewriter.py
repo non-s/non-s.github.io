@@ -31,9 +31,11 @@ def test_recovered_cat_story_passes_category_gate():
         "source_license": "Pexels License",
     }
     updated, _ = recover_story(story)
-    verdict = evaluate_story(updated, rewrite_ids=set(), recovery_plans={
-        "cats": {"allowed_formats": ["myth_buster", "body_superpower", "animal_memory"]}
-    })
+    verdict = evaluate_story(
+        updated,
+        rewrite_ids=set(),
+        recovery_plans={"cats": {"allowed_formats": ["myth_buster", "body_superpower", "animal_memory"]}},
+    )
     assert verdict["approved"] is True
 
 
@@ -52,7 +54,9 @@ def test_recovered_dog_story_passes_category_gate():
     updated, changed = recover_story(story)
     assert changed is True
     assert "dog" in updated["script"].lower() or "dogs" in updated["script"].lower()
-    verdict = evaluate_story(updated, rewrite_ids=set(), recovery_plans={
-        "dogs": {"allowed_formats": ["myth_buster", "body_superpower", "animal_memory"]}
-    })
+    verdict = evaluate_story(
+        updated,
+        rewrite_ids=set(),
+        recovery_plans={"dogs": {"allowed_formats": ["myth_buster", "body_superpower", "animal_memory"]}},
+    )
     assert verdict["approved"] is True

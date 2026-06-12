@@ -26,6 +26,7 @@ The 30-second human review the case studies recommend can layer on
 top: the daily digest issue (utils/digest.py) shows every flagged
 Short so the operator can spot patterns the lint missed.
 """
+
 from __future__ import annotations
 
 import dataclasses
@@ -41,19 +42,37 @@ from utils.human_voice import score_text
 # Frequency of any single phrase in the published script is a strong
 # AI-slop signal that YouTube's classifiers also key on.
 _BANNED_PHRASES = [
-    r"\bcrucial\b", r"\bvital\b", r"\bpivotal\b", r"\bdelve\b",
-    r"\blandscape\b", r"\bgame[- ]?changer\b", r"\brevolutionary\b",
-    r"\bgroundbreaking\b", r"\bunderscores the importance\b",
-    r"\bsheds light on\b", r"\bhighlights the critical role\b",
-    r"\bin this article\b", r"\bin this report\b",
-    r"\bit is worth noting\b", r"\bit is important to\b",
-    r"\bnavigate the complexities\b", r"\bcould reshape\b",
-    r"\bparadigm shift\b", r"\bunprecedented\b", r"\bpaves the way\b",
-    r"\bin the realm of\b", r"\bin today.s fast[- ]?paced\b",
-    r"\ba testament to\b", r"\btapestry\b", r"\bembark on\b",
-    r"\bushering in\b", r"\breshape the future\b",
+    r"\bcrucial\b",
+    r"\bvital\b",
+    r"\bpivotal\b",
+    r"\bdelve\b",
+    r"\blandscape\b",
+    r"\bgame[- ]?changer\b",
+    r"\brevolutionary\b",
+    r"\bgroundbreaking\b",
+    r"\bunderscores the importance\b",
+    r"\bsheds light on\b",
+    r"\bhighlights the critical role\b",
+    r"\bin this article\b",
+    r"\bin this report\b",
+    r"\bit is worth noting\b",
+    r"\bit is important to\b",
+    r"\bnavigate the complexities\b",
+    r"\bcould reshape\b",
+    r"\bparadigm shift\b",
+    r"\bunprecedented\b",
+    r"\bpaves the way\b",
+    r"\bin the realm of\b",
+    r"\bin today.s fast[- ]?paced\b",
+    r"\ba testament to\b",
+    r"\btapestry\b",
+    r"\bembark on\b",
+    r"\bushering in\b",
+    r"\breshape the future\b",
     # Clickbait the SEO prompt also forbids.
-    r"\byou won.t believe\b", r"\bshocking\b", r"\bjaw[- ]?dropping\b",
+    r"\byou won.t believe\b",
+    r"\bshocking\b",
+    r"\bjaw[- ]?dropping\b",
     r"\bmind[- ]?blowing\b",
 ]
 _BANNED_RE = [re.compile(p, re.IGNORECASE) for p in _BANNED_PHRASES]
@@ -94,10 +113,11 @@ _OUTCOME_INDICATORS_RE = re.compile(
 @dataclasses.dataclass
 class Issue:
     """One quality problem detected on a script."""
-    code: str          # short identifier ("ai_tell", "weak_hook", ...)
-    severity: str      # "warn" | "block"
+
+    code: str  # short identifier ("ai_tell", "weak_hook", ...)
+    severity: str  # "warn" | "block"
     message: str
-    span: str = ""     # the matching text fragment (if any)
+    span: str = ""  # the matching text fragment (if any)
 
 
 def check_banned_phrases(text: str) -> list[Issue]:
@@ -113,12 +133,14 @@ def check_banned_phrases(text: str) -> list[Issue]:
             if phrase in seen:
                 continue
             seen.add(phrase)
-            out.append(Issue(
-                code="ai_tell",
-                severity="warn",
-                message=f"AI-tell phrase '{phrase}' in script — system prompt forbids it",
-                span=m.group(0),
-            ))
+            out.append(
+                Issue(
+                    code="ai_tell",
+                    severity="warn",
+                    message=f"AI-tell phrase '{phrase}' in script — system prompt forbids it",
+                    span=m.group(0),
+                )
+            )
     return out
 
 
@@ -128,25 +150,28 @@ def check_hook_opens_strong(hook: str, script: str = "") -> list[Issue]:
     Returns at most one Issue: weak_hook OR missing_outcome.
     """
     if not hook:
-        return [Issue(code="missing_hook", severity="block",
-                       message="Story has no `hook` field on the queue")]
+        return [Issue(code="missing_hook", severity="block", message="Story has no `hook` field on the queue")]
     lower = hook.strip().lower()
     for bad in _WEAK_HOOK_OPENERS:
         if lower.startswith(bad):
-            return [Issue(
-                code="weak_hook",
-                severity="warn",
-                message=f"Hook opens with weak word '{bad}'. Lead with verb + consequence.",
-                span=hook[:80],
-            )]
+            return [
+                Issue(
+                    code="weak_hook",
+                    severity="warn",
+                    message=f"Hook opens with weak word '{bad}'. Lead with verb + consequence.",
+                    span=hook[:80],
+                )
+            ]
     # Hook should mention some action / number — outcome-first shape.
     if not _OUTCOME_INDICATORS_RE.search(hook):
-        return [Issue(
-            code="vague_hook",
-            severity="warn",
-            message="Hook lacks an outcome verb or number — may bury the lede",
-            span=hook[:80],
-        )]
+        return [
+            Issue(
+                code="vague_hook",
+                severity="warn",
+                message="Hook lacks an outcome verb or number — may bury the lede",
+                span=hook[:80],
+            )
+        ]
     return []
 
 
@@ -159,12 +184,14 @@ def check_script_starts_with_hook(hook: str, script: str) -> list[Issue]:
     # Tolerate small variations: leading punctuation, the script may
     # have stripped/added a period.
     if not s.startswith(h):
-        return [Issue(
-            code="script_hook_mismatch",
-            severity="warn",
-            message="Script doesn't open with the hook verbatim — TTS will sound off",
-            span=script[:80],
-        )]
+        return [
+            Issue(
+                code="script_hook_mismatch",
+                severity="warn",
+                message="Script doesn't open with the hook verbatim — TTS will sound off",
+                span=script[:80],
+            )
+        ]
     return []
 
 
@@ -180,17 +207,18 @@ def check_transformation_present(script: str, description: str) -> list[Issue]:
     if not script or not description:
         return []
     script_tokens = re.findall(r"[A-Za-z']{4,}", script.lower())
-    src_tokens    = set(re.findall(r"[A-Za-z']{4,}", description.lower()))
+    src_tokens = set(re.findall(r"[A-Za-z']{4,}", description.lower()))
     if not script_tokens:
         return []
     overlap = sum(1 for t in script_tokens if t in src_tokens) / len(script_tokens)
     if overlap > 0.70:
-        return [Issue(
-            code="low_transformation",
-            severity="warn",
-            message=f"Script overlaps {overlap*100:.0f}% with source description — "
-                    "may read as wire copy",
-        )]
+        return [
+            Issue(
+                code="low_transformation",
+                severity="warn",
+                message=f"Script overlaps {overlap*100:.0f}% with source description — " "may read as wire copy",
+            )
+        ]
     return []
 
 
@@ -202,16 +230,21 @@ def check_length(script: str) -> list[Issue]:
     yield terse AI scripts; the relaxed bar means we publish-rather-
     than-skip when the AI ran lean."""
     if not script:
-        return [Issue(code="empty_script", severity="block",
-                       message="Script is empty — TTS would produce nothing")]
+        return [Issue(code="empty_script", severity="block", message="Script is empty — TTS would produce nothing")]
     words = re.findall(r"\S+", script)
     n = len(words)
     if n < 40:
-        return [Issue(code="script_too_short", severity="block",
-                       message=f"Script has only {n} words — Shorts < 15s underperform")]
+        return [
+            Issue(
+                code="script_too_short",
+                severity="block",
+                message=f"Script has only {n} words — Shorts < 15s underperform",
+            )
+        ]
     if n > 160:
-        return [Issue(code="script_too_long", severity="warn",
-                       message=f"Script has {n} words — likely exceeds 60s cap")]
+        return [
+            Issue(code="script_too_long", severity="warn", message=f"Script has {n} words — likely exceeds 60s cap")
+        ]
     return []
 
 
@@ -222,12 +255,14 @@ def check_title_diverges_from_source(seo_title: str, raw_title: str) -> list[Iss
     a = re.sub(r"[^a-z0-9 ]", "", seo_title.lower()).strip()
     b = re.sub(r"[^a-z0-9 ]", "", raw_title.lower()).strip()
     if a == b:
-        return [Issue(
-            code="seo_title_unchanged",
-            severity="warn",
-            message="seo_title is identical to the raw source title — no curiosity gap",
-            span=seo_title[:80],
-        )]
+        return [
+            Issue(
+                code="seo_title_unchanged",
+                severity="warn",
+                message="seo_title is identical to the raw source title — no curiosity gap",
+                span=seo_title[:80],
+            )
+        ]
     return []
 
 
@@ -236,21 +271,23 @@ def check_human_voice(script: str) -> list[Issue]:
     result = score_text(script)
     if result.score >= 58:
         return []
-    return [Issue(
-        code="low_human_voice",
-        severity="warn",
-        message=f"Narration feels too generic/hands-off (human_voice={result.score})",
-        span=", ".join(result.issues[:3]),
-    )]
+    return [
+        Issue(
+            code="low_human_voice",
+            severity="warn",
+            message=f"Narration feels too generic/hands-off (human_voice={result.score})",
+            span=", ".join(result.issues[:3]),
+        )
+    ]
 
 
 def evaluate(story: dict) -> tuple[int, list[Issue]]:
     """Run every check. Returns (grade_0_10, issues)."""
-    hook        = story.get("hook", "")
-    script      = story.get("script", "")
+    hook = story.get("hook", "")
+    script = story.get("script", "")
     description = story.get("description", "")
-    seo_title   = story.get("seo_title") or story.get("title", "")
-    raw_title   = story.get("raw_title", "")
+    seo_title = story.get("seo_title") or story.get("title", "")
+    raw_title = story.get("raw_title", "")
 
     issues: list[Issue] = []
     issues += check_banned_phrases(script)

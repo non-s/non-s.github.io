@@ -1,4 +1,5 @@
 """Control-plane pressure report for live operational state."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -94,8 +95,7 @@ def build_control_plane_report(root: Path | str = ".") -> dict:
             **workflow_refs,
         },
         "largest_state_files": [
-            {"path": _rel(root, path), "bytes": _safe_size(path), "lines": _safe_lines(path)}
-            for path in largest
+            {"path": _rel(root, path), "bytes": _safe_size(path), "lines": _safe_lines(path)} for path in largest
         ],
         "migration_lanes": [
             {
@@ -123,4 +123,3 @@ def build_control_plane_report(root: Path | str = ".") -> dict:
             "Block new features that add live-state files without a migration lane.",
         ],
     }
-

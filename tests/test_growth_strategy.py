@@ -57,8 +57,9 @@ def test_score_story_rewards_signature_humanity():
         **base,
         "editorial": {"approved": True, "score": 72, "humanity": {"score": 92}},
     }
-    assert score_story(signature, {"category_weights": {"cats": 1.0}}) > \
-        score_story(base, {"category_weights": {"cats": 1.0}})
+    assert score_story(signature, {"category_weights": {"cats": 1.0}}) > score_story(
+        base, {"category_weights": {"cats": 1.0}}
+    )
 
 
 def test_paused_category_reduces_growth_priority(tmp_path, monkeypatch):

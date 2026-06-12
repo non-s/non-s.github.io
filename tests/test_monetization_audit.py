@@ -1,4 +1,5 @@
 """Tests for local monetization-readiness checks."""
+
 from utils.monetization_audit import audit
 
 

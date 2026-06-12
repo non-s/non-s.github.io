@@ -32,11 +32,9 @@ def _load_queue() -> dict:
     return data if isinstance(data, dict) else {"stories": []}
 
 
-def _count_held(queue: dict,
-                rewrite_ids: set[str],
-                recovery: dict[str, dict],
-                duplicate_ids: set[str],
-                success_plan: dict) -> tuple[int, Counter]:
+def _count_held(
+    queue: dict, rewrite_ids: set[str], recovery: dict[str, dict], duplicate_ids: set[str], success_plan: dict
+) -> tuple[int, Counter]:
     held = 0
     reasons: Counter[str] = Counter()
     for story in queue.get("stories") or []:
@@ -79,4 +77,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

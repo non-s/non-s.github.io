@@ -481,9 +481,7 @@ def render_html() -> str:
             for edge in (session_graph.get("edges") or [])
             if edge.get("target_video_id")
         }
-        out.append(
-            f"<div><small>Session targets</small><div class='metric'>{len(session_targets)}</div></div>"
-        )
+        out.append(f"<div><small>Session targets</small><div class='metric'>{len(session_targets)}</div></div>")
         quota_guard = quota_latest.get("guard") or {}
         out.append(
             f"<div><small>Quota guard</small><div class='metric'>{html.escape(str(quota_guard.get('mode') or 'ok'))}</div></div>"
@@ -1095,9 +1093,7 @@ def render_html() -> str:
         out.append(
             f"<div><small>Rewrite first</small><div class='metric'>{int(states.get('rewrite_before_publish', 0) or 0)}</div></div>"
         )
-        out.append(
-            f"<div><small>Rewrite watchlist</small><div class='metric'>{len(risk_watchlist)}</div></div>"
-        )
+        out.append(f"<div><small>Rewrite watchlist</small><div class='metric'>{len(risk_watchlist)}</div></div>")
         out.append("</section>")
         principle = youtube_brain_report.get("operating_principle")
         if principle:
@@ -1606,7 +1602,9 @@ def render_html() -> str:
                 f"<p><strong>Markers missing original hook:</strong> "
                 f"{int(legacy_backfill.get('source_missing_count', 0) or 0)}</p>"
             )
-        missing_label_key = "missing_derived_fields" if legacy_backfill.get("derived_missing_count") is not None else "missing"
+        missing_label_key = (
+            "missing_derived_fields" if legacy_backfill.get("derived_missing_count") is not None else "missing"
+        )
         markers = legacy_backfill.get("markers") or []
         if markers:
             out.append("<table><tr><th>Title</th><th>Missing</th><th>Derived format</th><th>Retention fix</th></tr>")
@@ -1696,7 +1694,9 @@ def render_html() -> str:
             out.append("</ul>")
         lanes = control_plane.get("migration_lanes") or []
         if lanes:
-            out.append("<h3>Migration lanes</h3><table><tr><th>Priority</th><th>Lane</th><th>Target</th><th>Reason</th></tr>")
+            out.append(
+                "<h3>Migration lanes</h3><table><tr><th>Priority</th><th>Lane</th><th>Target</th><th>Reason</th></tr>"
+            )
             for lane in sorted(lanes, key=lambda item: int(item.get("priority", 99) or 99))[:5]:
                 out.append(
                     f"<tr><td>{int(lane.get('priority', 0) or 0)}</td>"
@@ -1759,9 +1759,7 @@ def render_html() -> str:
         if mechanism_clusters:
             out.append("<h3>Mechanism concentration</h3><table><tr><th>Mechanism</th><th>Stories</th></tr>")
             for mechanism, count in list(mechanism_clusters.items())[:8]:
-                out.append(
-                    f"<tr><td><code>{html.escape(str(mechanism))}</code></td><td>{int(count)}</td></tr>"
-                )
+                out.append(f"<tr><td><code>{html.escape(str(mechanism))}</code></td><td>{int(count)}</td></tr>")
             out.append("</table>")
         title_shape_mix = next_shorts.get("title_shape_mix") or {}
         title_shape_warnings = title_shape_mix.get("warnings") or []
@@ -1785,7 +1783,7 @@ def render_html() -> str:
                 for item in rewrite_candidates[:6]:
                     suggestions = item.get("suggested_titles") or []
                     suggestion_text = "; ".join(str(title) for title in suggestions[:2])
-                    title_cell = html.escape(str(item.get('title', ''))[:100])
+                    title_cell = html.escape(str(item.get("title", ""))[:100])
                     if suggestion_text:
                         title_cell += f"<br><small>{html.escape(suggestion_text[:160])}</small>"
                     out.append(

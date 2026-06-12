@@ -7,6 +7,7 @@ into three decisions:
 * is the script likely to retain/replay?
 * which title, thumbnail text and hook package should ship?
 """
+
 from __future__ import annotations
 
 import json
@@ -26,55 +27,185 @@ MEMORY_PATH = Path("_data/format_memory.json")
 WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
 
 PRIORITY_CATEGORIES = {
-    "fungi", "forests", "ocean", "volcanoes", "weather", "geology",
-    "ecosystems", "rare_phenomena", "conservation", "discoveries",
-    "wildlife", "reptiles", "insects", "birds",
+    "fungi",
+    "forests",
+    "ocean",
+    "volcanoes",
+    "weather",
+    "geology",
+    "ecosystems",
+    "rare_phenomena",
+    "conservation",
+    "discoveries",
+    "wildlife",
+    "reptiles",
+    "insects",
+    "birds",
 }
 
 VISUAL_TERMS = {
-    "lava", "glow", "storm", "lightning", "tornado", "aurora", "waves",
-    "reef", "coral", "mushroom", "roots", "canopy", "ice", "crystal",
-    "cave", "river", "waterfall", "volcano", "cloud", "ash", "glacier",
-    "eyes", "tail", "wings", "paws", "camouflage", "color", "colour",
-    "wing", "feet", "beak", "fin", "fins", "pupil", "pupils", "movement",
-    "ear", "ears", "head", "hand", "hands", "flipper", "flippers",
-    "hoof", "hooves", "mouth", "feeding", "bottle", "mushrooms",
-    "object", "objects", "group", "groups", "line", "lines", "thread",
-    "threads", "cap", "caps", "nest", "soil", "predator", "predators",
-    "gesture", "gestures",
+    "lava",
+    "glow",
+    "storm",
+    "lightning",
+    "tornado",
+    "aurora",
+    "waves",
+    "reef",
+    "coral",
+    "mushroom",
+    "roots",
+    "canopy",
+    "ice",
+    "crystal",
+    "cave",
+    "river",
+    "waterfall",
+    "volcano",
+    "cloud",
+    "ash",
+    "glacier",
+    "eyes",
+    "tail",
+    "wings",
+    "paws",
+    "camouflage",
+    "color",
+    "colour",
+    "wing",
+    "feet",
+    "beak",
+    "fin",
+    "fins",
+    "pupil",
+    "pupils",
+    "movement",
+    "ear",
+    "ears",
+    "head",
+    "hand",
+    "hands",
+    "flipper",
+    "flippers",
+    "hoof",
+    "hooves",
+    "mouth",
+    "feeding",
+    "bottle",
+    "mushrooms",
+    "object",
+    "objects",
+    "group",
+    "groups",
+    "line",
+    "lines",
+    "thread",
+    "threads",
+    "cap",
+    "caps",
+    "nest",
+    "soil",
+    "predator",
+    "predators",
+    "gesture",
+    "gestures",
 }
 
 EMOTIONAL_TERMS = {
-    "rare", "tiny", "giant", "ancient", "hidden", "deadly", "strange",
-    "weird", "survive", "rescue", "protect", "vanish", "explode",
+    "rare",
+    "tiny",
+    "giant",
+    "ancient",
+    "hidden",
+    "deadly",
+    "strange",
+    "weird",
+    "survive",
+    "rescue",
+    "protect",
+    "vanish",
+    "explode",
 }
 
 COMMENT_TERMS = {
-    "why", "how", "which", "what", "next", "guess", "spot", "notice",
-    "comment", "ever", "would",
+    "why",
+    "how",
+    "which",
+    "what",
+    "next",
+    "guess",
+    "spot",
+    "notice",
+    "comment",
+    "ever",
+    "would",
 }
 
 ACTION_TERMS = {
-    "erupt", "glow", "move", "grow", "talk", "signal", "escape",
-    "survive", "hide", "protect", "build", "form", "freeze", "melt",
-    "remember", "hunt", "change", "vanish", "recover", "pull", "pulls",
-    "follow", "follows", "choose", "chooses", "fake", "fakes", "trick", "tricks",
+    "erupt",
+    "glow",
+    "move",
+    "grow",
+    "talk",
+    "signal",
+    "escape",
+    "survive",
+    "hide",
+    "protect",
+    "build",
+    "form",
+    "freeze",
+    "melt",
+    "remember",
+    "hunt",
+    "change",
+    "vanish",
+    "recover",
+    "pull",
+    "pulls",
+    "follow",
+    "follows",
+    "choose",
+    "chooses",
+    "fake",
+    "fakes",
+    "trick",
+    "tricks",
 }
 
 PAYOFF_TERMS = {
-    "because", "that is why", "that's why", "explains why", "payoff",
-    "trick", "reason", "watch again", "look again",
+    "because",
+    "that is why",
+    "that's why",
+    "explains why",
+    "payoff",
+    "trick",
+    "reason",
+    "watch again",
+    "look again",
 }
 
 WEAK_PHRASES = {
-    "did you know", "in this video", "today we", "nature is amazing",
-    "you won't believe", "hidden secret", "animal kingdom",
-    "amazing fact", "incredible", "mind blowing", "this will shock you",
+    "did you know",
+    "in this video",
+    "today we",
+    "nature is amazing",
+    "you won't believe",
+    "hidden secret",
+    "animal kingdom",
+    "amazing fact",
+    "incredible",
+    "mind blowing",
+    "this will shock you",
 }
 
 SATURATED_PATTERNS = {
-    "another secret", "hidden reason", "hiding in plain sight",
-    "one tiny movement", "you won't believe", "wait for it",
+    "another secret",
+    "hidden reason",
+    "hiding in plain sight",
+    "one tiny movement",
+    "you won't believe",
+    "wait for it",
 }
 
 
@@ -101,10 +232,19 @@ def _copy_is_recommendable(value: str) -> bool:
 
 
 def _text(story: dict) -> str:
-    return " ".join(str(story.get(k) or "") for k in (
-        "category", "topic_hashtag", "title", "seo_title", "hook",
-        "script", "thumbnail_text", "description",
-    )).lower()
+    return " ".join(
+        str(story.get(k) or "")
+        for k in (
+            "category",
+            "topic_hashtag",
+            "title",
+            "seo_title",
+            "hook",
+            "script",
+            "thumbnail_text",
+            "description",
+        )
+    ).lower()
 
 
 def _contains(text: str, terms: set[str]) -> int:
@@ -311,11 +451,20 @@ def _distribution_adjustment(story: dict, patterns: dict | None = None) -> int:
     patterns = patterns or load_winner_patterns()
     if not patterns or int(patterns.get("sample_count") or 0) < 8:
         return 0
-    confidence = patterns.get("confidence") if isinstance(patterns.get("confidence"), dict) else assess_confidence(
-        "distribution",
-        int(patterns.get("sample_count") or 0),
-        observed=int(patterns.get("winner_count") or 0) + int(patterns.get("loser_count") or 0),
-        estimated=max(0, int(patterns.get("sample_count") or 0) - int(patterns.get("winner_count") or 0) - int(patterns.get("loser_count") or 0)),
+    confidence = (
+        patterns.get("confidence")
+        if isinstance(patterns.get("confidence"), dict)
+        else assess_confidence(
+            "distribution",
+            int(patterns.get("sample_count") or 0),
+            observed=int(patterns.get("winner_count") or 0) + int(patterns.get("loser_count") or 0),
+            estimated=max(
+                0,
+                int(patterns.get("sample_count") or 0)
+                - int(patterns.get("winner_count") or 0)
+                - int(patterns.get("loser_count") or 0),
+            ),
+        )
     )
     if not confidence.get("can_adjust_strategy"):
         return 0
@@ -361,7 +510,8 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         "comment_potential": 30 + _contains(text, COMMENT_TERMS) * 8,
         "educational_potential": 45 + _contains(text, {"because", "why", "science", "research", "forms", "helps"}) * 7,
         "emotional_potential": 35 + _contains(text, EMOTIONAL_TERMS) * 9,
-        "novelty": 45 + _contains(text + " " + tags.lower(), {"rare", "strange", "new", "unknown", "first", "weird"}) * 10,
+        "novelty": 45
+        + _contains(text + " " + tags.lower(), {"rare", "strange", "new", "unknown", "first", "weird"}) * 10,
     }
     if category in PRIORITY_CATEGORIES:
         for key in ("viral_potential", "visual_potential", "novelty"):
@@ -390,7 +540,9 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         signals["replay_potential"] = min(100, signals["replay_potential"] + 12)
         signals["comment_potential"] = min(100, signals["comment_potential"] + 8)
         signals["educational_potential"] = min(100, signals["educational_potential"] + 6)
-    distribution_adj = _distribution_adjustment(story, memory.get("winner_patterns") if isinstance(memory.get("winner_patterns"), dict) else None)
+    distribution_adj = _distribution_adjustment(
+        story, memory.get("winner_patterns") if isinstance(memory.get("winner_patterns"), dict) else None
+    )
     if distribution_adj:
         signals["viral_potential"] = max(0, min(100, signals["viral_potential"] + distribution_adj))
         signals["replay_potential"] = max(0, min(100, signals["replay_potential"] + int(distribution_adj * 0.5)))
@@ -418,7 +570,9 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
     )
     out = ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
     out["confidence"] = confidence
-    out["reasoning"] = confidence.get("reasoning", "Topic score uses current story signals while audience data matures.")
+    out["reasoning"] = confidence.get(
+        "reasoning", "Topic score uses current story signals while audience data matures."
+    )
     return out
 
 
@@ -541,12 +695,14 @@ def analyze_retention(story: dict) -> dict:
     )
     out = ScoreBreakdown(score=score, signals=signals, verdict=verdict, reasons=tuple(reasons)).to_dict()
     out["confidence"] = confidence
-    out["reasoning"] = confidence.get("reasoning", "Retention score is heuristic until real retention samples are available.")
+    out["reasoning"] = confidence.get(
+        "reasoning", "Retention score is heuristic until real retention samples are available."
+    )
     return out
 
 
 def _subject(story: dict) -> str:
-    for source in (story.get("yt_tags") or []):
+    for source in story.get("yt_tags") or []:
         text = str(source).strip()
         if text and len(text.split()) <= 3:
             return text.title()
@@ -610,13 +766,40 @@ def _plural_action(action: str) -> str:
 def _cue(story: dict) -> str:
     text = _text(story)
     cue_priority = [
-        "ear position", "head movement", "hand movement", "tail position",
-        "wing movement", "wing position", "beak movement", "fin movement",
-        "flipper movement", "first movement", "feeding cue", "body cue",
-        "object group", "number cue",
-        "eyes", "wing", "wings", "tail", "paws", "feet", "beak", "lava",
-        "mushroom", "mushrooms", "threads", "roots", "reef", "coral",
-        "storm", "lightning", "glacier", "rock", "crater", "movement",
+        "ear position",
+        "head movement",
+        "hand movement",
+        "tail position",
+        "wing movement",
+        "wing position",
+        "beak movement",
+        "fin movement",
+        "flipper movement",
+        "first movement",
+        "feeding cue",
+        "body cue",
+        "object group",
+        "number cue",
+        "eyes",
+        "wing",
+        "wings",
+        "tail",
+        "paws",
+        "feet",
+        "beak",
+        "lava",
+        "mushroom",
+        "mushrooms",
+        "threads",
+        "roots",
+        "reef",
+        "coral",
+        "storm",
+        "lightning",
+        "glacier",
+        "rock",
+        "crater",
+        "movement",
     ]
     for term in cue_priority:
         if re.search(r"\b" + re.escape(term) + r"\b", text):
@@ -720,8 +903,7 @@ def generate_packaging_options(story: dict) -> dict:
     }
 
 
-def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: str,
-                          memory: dict | None = None) -> int:
+def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: str, memory: dict | None = None) -> int:
     candidate = {**story, "title": title, "seo_title": title, "thumbnail_text": thumbnail_text, "hook": hook}
     retention = analyze_retention(candidate)["score"]
     topic = score_topic(candidate, memory=memory)["score"]
@@ -741,7 +923,9 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
         if fmt:
             audience_bonus += int((_weight(audience, "format_subscribers", fmt) - 1) * 16)
     score = int(topic * 0.22 + retention * 0.42 + thumb_score * 0.18 + pattern_bonus + audience_bonus)
-    score += _distribution_adjustment(candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None)
+    score += _distribution_adjustment(
+        candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None
+    )
     if editorial_issues(candidate):
         score -= 60
     return max(0, min(100, score))
@@ -771,7 +955,13 @@ def select_best_packaging(story: dict, memory: dict | None = None) -> dict:
             best = max(scored, key=lambda row: row["score"])
     scored.sort(key=lambda row: row["score"], reverse=True)
     return {
-        "best": best or {"score": 0, "title": story.get("title", ""), "thumbnail_text": story.get("thumbnail_text", ""), "hook": story.get("hook", "")},
+        "best": best
+        or {
+            "score": 0,
+            "title": story.get("title", ""),
+            "thumbnail_text": story.get("thumbnail_text", ""),
+            "hook": story.get("hook", ""),
+        },
         "top_variants": scored[:10],
         "options": options,
     }
@@ -790,7 +980,9 @@ def experiment_plan(story: dict, memory: dict | None = None) -> dict:
     if sample_count >= 30:
         explore_rate = 0.10
     category = str(story.get("category") or "nature").lower()
-    digest = hashlib.sha256(f"{story.get('id') or story.get('title')}-{category}".encode("utf-8", errors="ignore")).hexdigest()
+    digest = hashlib.sha256(
+        f"{story.get('id') or story.get('title')}-{category}".encode("utf-8", errors="ignore")
+    ).hexdigest()
     axis_seed = int(digest[:8], 16) % 100
     mode = "explore" if axis_seed < int(explore_rate * 100) else "exploit"
     return {

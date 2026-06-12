@@ -1,4 +1,5 @@
 """Final local go/no-go audit for generated Shorts."""
+
 from __future__ import annotations
 
 import os

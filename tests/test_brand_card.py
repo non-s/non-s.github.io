@@ -1,4 +1,5 @@
 """Tests for utils/brand_card.py — render the static brand PNGs."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -13,8 +14,7 @@ from utils.host_persona import HostPersona
 
 def test_render_intro_card_produces_png(tmp_path, monkeypatch):
     monkeypatch.setattr(brand_card, "BRAND_CARD_CACHE", tmp_path / "cache")
-    out = brand_card.render_intro_card(HostPersona(name="TestHost",
-                                                     handle="testchan"))
+    out = brand_card.render_intro_card(HostPersona(name="TestHost", handle="testchan"))
     assert out.exists()
     # PNG magic bytes.
     assert out.read_bytes().startswith(b"\x89PNG")

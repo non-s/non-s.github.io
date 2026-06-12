@@ -30,11 +30,13 @@ def test_choose_narrator_profile_uses_category_fit():
 
 
 def test_studio_brief_contains_prompt_overlay():
-    brief = studio_brief_for_story({
-        "id": "story-1",
-        "category": "farm",
-        "title": "Goats recognize happy voices",
-    })
+    brief = studio_brief_for_story(
+        {
+            "id": "story-1",
+            "category": "farm",
+            "title": "Goats recognize happy voices",
+        }
+    )
     assert brief["production_mode"] in {"exploit", "explore", "moonshot", "steady"}
     assert brief["narrative_template"]["id"]
     assert brief["narrator"]["variant"]
@@ -72,10 +74,12 @@ def test_performance_matrix_finds_winners_and_losers():
 
 
 def test_remake_candidates_classifies_almost_good_and_sequels():
-    out = remake_candidates([
-        {"video_id": "a", "title": "Cats", "views": 100, "view_pct": 58, "growth_score": 80},
-        {"video_id": "b", "title": "Dogs", "views": 500, "view_pct": 68, "growth_score": 180},
-    ])
+    out = remake_candidates(
+        [
+            {"video_id": "a", "title": "Cats", "views": 100, "view_pct": 58, "growth_score": 80},
+            {"video_id": "b", "title": "Dogs", "views": 500, "view_pct": 68, "growth_score": 180},
+        ]
+    )
     assert out[0]["action"].startswith("remake")
     assert "sequel" in out[1]["action"]
 

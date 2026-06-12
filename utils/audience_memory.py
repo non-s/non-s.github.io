@@ -1,4 +1,5 @@
 """Real audience memory for retention, subscribers, comments and return proxy."""
+
 from __future__ import annotations
 
 import json
@@ -32,7 +33,9 @@ def _row_metrics(marker: dict) -> dict:
     views = _num(stats.get("views") or stats.get("viewCount") or marker.get("views"))
     comments = _num(stats.get("comments") or stats.get("commentCount") or marker.get("comments"))
     subs = _num(stats.get("subscribersGained") or marker.get("subscribers_gained"))
-    retention = _num(stats.get("averageViewPercentage") or stats.get("avg_view_pct") or stats.get("avg_view_percentage"))
+    retention = _num(
+        stats.get("averageViewPercentage") or stats.get("avg_view_pct") or stats.get("avg_view_percentage")
+    )
     watch_time = _num(stats.get("averageViewDuration"))
     return {
         "views": views,
@@ -96,10 +99,7 @@ def build_audience_memory(markers: list[dict]) -> dict:
             "return_proxy": return_proxy,
         }
 
-    summaries = {
-        axis: {key: summarize(rows) for key, rows in values.items()}
-        for axis, values in buckets.items()
-    }
+    summaries = {axis: {key: summarize(rows) for key, rows in values.items()} for axis, values in buckets.items()}
     for axis, values in summaries.items():
         confidence_axis = "series" if axis == "series" else axis
         for item in values.values():
@@ -129,7 +129,9 @@ def build_audience_memory(markers: list[dict]) -> dict:
                 continue
             if metric == "avg_retention" and not item.get("retention_samples"):
                 continue
-            if metric == "return_proxy" and not (item.get("retention_samples") or item.get("subs_per_1k") or item.get("comments_per_1k")):
+            if metric == "return_proxy" and not (
+                item.get("retention_samples") or item.get("subs_per_1k") or item.get("comments_per_1k")
+            ):
                 continue
             raw = max(0.78, min(1.28, 1 + ((item[metric] - baseline) / scale)))
             out[key] = blend_weight(raw, confidence)

@@ -1,4 +1,5 @@
 """Tests for free public YouTube performance snapshots."""
+
 from scripts.analyze_channel import _engagement_score, build_snapshot
 
 
@@ -7,19 +8,21 @@ def test_engagement_score_weights_comments():
 
 
 def test_snapshot_aggregates_series_and_experiments():
-    markers = [{
-        "video_id": "abc",
-        "title": "Octopus",
-        "url": "https://youtube.com/shorts/abc",
-        "category": "ocean",
-        "series": "Ocean Mysteries",
-        "hook": "Octopuses use tools.",
-        "experiments": {"hook_style": "outcome_first"},
-        "narrator_voice": "en-US-JennyNeural",
-        "humanity": {"score": 81, "label": "human"},
-        "studio_polish": {"applied": True},
-        "studio_state": "polished",
-    }]
+    markers = [
+        {
+            "video_id": "abc",
+            "title": "Octopus",
+            "url": "https://youtube.com/shorts/abc",
+            "category": "ocean",
+            "series": "Ocean Mysteries",
+            "hook": "Octopuses use tools.",
+            "experiments": {"hook_style": "outcome_first"},
+            "narrator_voice": "en-US-JennyNeural",
+            "humanity": {"score": 81, "label": "human"},
+            "studio_polish": {"applied": True},
+            "studio_state": "polished",
+        }
+    ]
     stats = {"abc": {"statistics": {"viewCount": "200", "likeCount": "20", "commentCount": "5"}}}
     snapshot, observations = build_snapshot(markers, stats)
     assert snapshot["total_views"] == 200
@@ -52,11 +55,13 @@ def test_snapshot_aggregates_series_and_experiments():
 def test_snapshot_includes_optional_retention_metrics():
     markers = [{"video_id": "abc", "category": "ocean", "series": "Ocean Mysteries"}]
     stats = {"abc": {"statistics": {"viewCount": "100", "likeCount": "5"}}}
-    retention = {"abc": {
-        "averageViewPercentage": 82.5,
-        "averageViewDuration": 24.3,
-        "subscribersGained": 7,
-    }}
+    retention = {
+        "abc": {
+            "averageViewPercentage": 82.5,
+            "averageViewDuration": 24.3,
+            "subscribersGained": 7,
+        }
+    }
     snapshot, observations = build_snapshot(markers, stats, retention)
     assert snapshot["avg_view_percentage"] == 82.5
     assert snapshot["avg_view_pct"] == 82.5

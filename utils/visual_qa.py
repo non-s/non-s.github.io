@@ -1,4 +1,5 @@
 """Optional Gemini thumbnail reviewer for animal-only Shorts."""
+
 from __future__ import annotations
 
 import base64
@@ -85,13 +86,21 @@ def evaluate_frame(image_path: Path, expected_subject: str) -> dict:
             "Approve only if the image visibly contains the expected animal or an unambiguous close match. "
             "Reject people, food, objects, unrelated animals, and abstract backgrounds."
         )
-        payload = {"contents": [{"parts": [
-            {"text": prompt},
-            {"inline_data": {
-                "mime_type": mimetypes.guess_type(image_path.name)[0] or "image/jpeg",
-                "data": base64.b64encode(body).decode("ascii"),
-            }},
-        ]}]}
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt},
+                        {
+                            "inline_data": {
+                                "mime_type": mimetypes.guess_type(image_path.name)[0] or "image/jpeg",
+                                "data": base64.b64encode(body).decode("ascii"),
+                            }
+                        },
+                    ]
+                }
+            ]
+        }
         response = requests.post(url, params={"key": key}, json=payload, timeout=_TIMEOUT)
         if response.status_code != 200:
             return {"checked": False, "approved": True, "reason": f"Gemini HTTP {response.status_code}"}

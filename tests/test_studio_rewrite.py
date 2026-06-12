@@ -1,4 +1,5 @@
 """Tests for controlled AI rewrite rescue."""
+
 from __future__ import annotations
 
 import json
@@ -28,17 +29,23 @@ def _needs_rewrite_story() -> dict:
 def test_ai_rewrite_accepts_better_script(monkeypatch):
     monkeypatch.setattr(studio_rewrite, "ENABLED", True)
     monkeypatch.setenv("MISTRAL_API_KEY", "test-key")
-    monkeypatch.setattr(studio_rewrite, "ai_text", lambda *a, **k: json.dumps({
-        "hook": "This octopus disappears against coral.",
-        "script": (
-            "This octopus disappears against coral. I love this detail: "
-            "watch the skin and tiny muscles. Because they change colour "
-            "and texture together, the body stops looking like an animal. "
-            "That's why predators can swim past it. Which ocean animal "
-            "should we decode next?"
+    monkeypatch.setattr(
+        studio_rewrite,
+        "ai_text",
+        lambda *a, **k: json.dumps(
+            {
+                "hook": "This octopus disappears against coral.",
+                "script": (
+                    "This octopus disappears against coral. I love this detail: "
+                    "watch the skin and tiny muscles. Because they change colour "
+                    "and texture together, the body stops looking like an animal. "
+                    "That's why predators can swim past it. Which ocean animal "
+                    "should we decode next?"
+                ),
+                "thumbnail_text": "OCTOPUS VANISHES",
+            }
         ),
-        "thumbnail_text": "OCTOPUS VANISHES",
-    }))
+    )
     out = studio_rewrite.rewrite_if_needed(_needs_rewrite_story())
     assert out["ai_rewrite"]["accepted"] is True
     assert out["studio_state"] in {"publish_now", "polished"}

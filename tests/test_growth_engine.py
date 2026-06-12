@@ -37,10 +37,12 @@ def test_score_topic_returns_opportunity_breakdown():
 
 
 def test_retention_analyzer_flags_weak_scripts():
-    weak = analyze_retention(_story(
-        hook="Did you know nature is amazing?",
-        script="Did you know nature is amazing? It is interesting.",
-    ))
+    weak = analyze_retention(
+        _story(
+            hook="Did you know nature is amazing?",
+            script="Did you know nature is amazing? It is interesting.",
+        )
+    )
 
     assert weak["verdict"] in {"rewrite", "discard"}
     assert "hook_below_threshold" in weak["reasons"]
@@ -62,13 +64,15 @@ def test_packaging_selector_returns_scored_variants():
 
 
 def test_packaging_selector_hides_rejected_title_variants():
-    selected = select_best_packaging(_story(
-        title="Chickens rely on head movement to signal",
-        seo_title="Chickens rely on head movement to signal",
-        hook="Chickens rely on head movement before the move.",
-        thumbnail_text="CHICKEN HEAD",
-        category="farm",
-    ))
+    selected = select_best_packaging(
+        _story(
+            title="Chickens rely on head movement to signal",
+            seo_title="Chickens rely on head movement to signal",
+            hook="Chickens rely on head movement before the move.",
+            thumbnail_text="CHICKEN HEAD",
+            category="farm",
+        )
+    )
 
     titles = [row["title"] for row in selected["top_variants"]]
     assert all("signal the next move with movement" not in title.lower() for title in titles)
@@ -133,13 +137,15 @@ def test_format_memory_does_not_learn_malformed_winning_titles():
 
 
 def test_weak_content_detector_blocks_generic_recycled_packaging():
-    weak = detect_weak_content({
-        "title": "Animals have another amazing secret",
-        "hook": "Animals are amazing.",
-        "script": "Animals are amazing. Animals are amazing. Animals are amazing.",
-        "thumbnail_text": "AMAZING SECRET TODAY",
-        "category": "wildlife",
-    })
+    weak = detect_weak_content(
+        {
+            "title": "Animals have another amazing secret",
+            "hook": "Animals are amazing.",
+            "script": "Animals are amazing. Animals are amazing. Animals are amazing.",
+            "thumbnail_text": "AMAZING SECRET TODAY",
+            "category": "wildlife",
+        }
+    )
 
     assert weak["state"] == "block"
     assert weak["risk"] >= 55

@@ -1,16 +1,38 @@
 """Safety and opportunity scoring for public animal trends."""
+
 from __future__ import annotations
 
 import re
 
 
 HIGH_RISK = {
-    "attack", "attacks", "death", "dead", "killed", "mauling", "rabies",
-    "disease", "virus", "abuse", "cruelty", "tragedy", "injured",
+    "attack",
+    "attacks",
+    "death",
+    "dead",
+    "killed",
+    "mauling",
+    "rabies",
+    "disease",
+    "virus",
+    "abuse",
+    "cruelty",
+    "tragedy",
+    "injured",
 }
 OPPORTUNITY = {
-    "rescue", "rare", "sighting", "study", "behavior", "viral", "migration",
-    "baby", "learn", "memory", "intelligence", "conservation",
+    "rescue",
+    "rare",
+    "sighting",
+    "study",
+    "behavior",
+    "viral",
+    "migration",
+    "baby",
+    "learn",
+    "memory",
+    "intelligence",
+    "conservation",
 }
 
 

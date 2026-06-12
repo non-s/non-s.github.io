@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.editorial_guard import editorial_issues
-from utils.local_rewriter import rescue_story
+from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.local_rewriter import rescue_story  # noqa: E402
 
 
 def _read_json(path: Path, default):
@@ -35,17 +35,24 @@ def _title_payload(marker: dict) -> dict:
         "source_title": title,
         "title_issues": issues,
     }
-    rescued, applied = rescue_story({
-        "title": title,
-        "seo_title": title,
-        "hook": title,
-        "script": title,
-        "thumbnail_text": str(marker.get("thumbnail_text") or ""),
-        "category": str(marker.get("category") or ""),
-        "source_url": str(marker.get("url") or marker.get("source_url") or ""),
-    }, issues)
+    rescued, applied = rescue_story(
+        {
+            "title": title,
+            "seo_title": title,
+            "hook": title,
+            "script": title,
+            "thumbnail_text": str(marker.get("thumbnail_text") or ""),
+            "category": str(marker.get("category") or ""),
+            "source_url": str(marker.get("url") or marker.get("source_url") or ""),
+        },
+        issues,
+    )
     candidate = str(rescued.get("seo_title") or rescued.get("title") or "").strip() if applied else ""
-    if candidate and candidate.lower() != title.lower() and not editorial_issues({"title": candidate, "seo_title": candidate}, include_script=False):
+    if (
+        candidate
+        and candidate.lower() != title.lower()
+        and not editorial_issues({"title": candidate, "seo_title": candidate}, include_script=False)
+    ):
         payload["suggested_titles"] = [candidate[:82]]
     return payload
 

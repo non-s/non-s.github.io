@@ -1,4 +1,5 @@
 """Learn which visual CTR frame profiles perform after publication."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -12,7 +13,7 @@ def _num(value: object, default: float = 0.0) -> float:
 
 
 def visual_profile_key(marker: dict) -> str:
-    profile = ((marker.get("visual_ctr") or {}).get("profile") or {})
+    profile = (marker.get("visual_ctr") or {}).get("profile") or {}
     primary = str(profile.get("primary") or "").strip()
     if primary:
         return primary
@@ -35,14 +36,16 @@ def build_visual_learning(observations: list[dict], *, min_samples: int = 2) -> 
         retention = [_num(row.get("average_view_percentage")) for row in rows]
         views = [_num(row.get("views")) for row in rows]
         ctr_scores = [_num(row.get("visual_ctr_score")) for row in rows if row.get("visual_ctr_score") is not None]
-        profiles.append({
-            "profile": key,
-            "n": len(rows),
-            "mean_growth_score": round(sum(growth) / len(growth), 3) if growth else 0.0,
-            "mean_retention": round(sum(retention) / len(retention), 3) if retention else 0.0,
-            "mean_views": round(sum(views) / len(views), 3) if views else 0.0,
-            "mean_visual_ctr_score": round(sum(ctr_scores) / len(ctr_scores), 3) if ctr_scores else 0.0,
-        })
+        profiles.append(
+            {
+                "profile": key,
+                "n": len(rows),
+                "mean_growth_score": round(sum(growth) / len(growth), 3) if growth else 0.0,
+                "mean_retention": round(sum(retention) / len(retention), 3) if retention else 0.0,
+                "mean_views": round(sum(views) / len(views), 3) if views else 0.0,
+                "mean_visual_ctr_score": round(sum(ctr_scores) / len(ctr_scores), 3) if ctr_scores else 0.0,
+            }
+        )
     profiles.sort(
         key=lambda item: (
             item["n"] >= min_samples,

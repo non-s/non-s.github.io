@@ -5,6 +5,7 @@ existing queue entries and analytics snapshots into editorial choices
 for narrative format, narrator profile, remake candidates and weekly
 operator guidance.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -40,8 +41,7 @@ NARRATIVE_TEMPLATES: tuple[NarrativeTemplate, ...] = (
         id="myth_flip",
         label="Myth flip",
         prompt_rule=(
-            "Start from what viewers probably assume, then flip it with the "
-            "real animal reason in plain language."
+            "Start from what viewers probably assume, then flip it with the " "real animal reason in plain language."
         ),
         best_for=("myth_bust", "surprising_behavior", "pet_behavior"),
     ),
@@ -49,8 +49,7 @@ NARRATIVE_TEMPLATES: tuple[NarrativeTemplate, ...] = (
         id="watch_closely",
         label="Watch closely",
         prompt_rule=(
-            "Point viewers at one visible body detail in the first seconds, "
-            "then explain why that detail matters."
+            "Point viewers at one visible body detail in the first seconds, " "then explain why that detail matters."
         ),
         best_for=("visual_detail", "survival_mechanism", "camouflage"),
     ),
@@ -67,8 +66,7 @@ NARRATIVE_TEMPLATES: tuple[NarrativeTemplate, ...] = (
         id="cute_but_survival",
         label="Cute, but survival",
         prompt_rule=(
-            "If the clip looks cute, reveal the survival function behind the "
-            "behavior without overdramatizing it."
+            "If the clip looks cute, reveal the survival function behind the " "behavior without overdramatizing it."
         ),
         best_for=("pet_behavior", "survival_mechanism", "farm_behavior"),
     ),
@@ -122,6 +120,7 @@ def _strategy_or_latest(strategy: dict | None) -> dict:
         return strategy
     try:
         from utils.growth_strategy import load_strategy
+
         return load_strategy()
     except Exception:
         return {}
@@ -174,9 +173,10 @@ def production_mode_for_story(story: dict, strategy: dict | None = None) -> str:
     bucket = _hash_bucket("mode:" + key)
     hot_categories = {str(item).lower() for item in (strategy.get("hot_categories") or [])}
     hot_formats = {str(item) for item in (strategy.get("hot_formats") or [])}
-    story_format = str(story.get("story_format") or classify_format(
-        f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-    ))
+    story_format = str(
+        story.get("story_format")
+        or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}")
+    )
     category = str(story.get("category") or "").lower()
     if category in hot_categories or story_format in hot_formats:
         return "exploit" if bucket < 78 else "explore"
@@ -209,12 +209,16 @@ def _avg(values: list[float]) -> float:
 
 def build_performance_matrix(observations: list[dict]) -> dict:
     axes = (
-        "category", "story_format", "narrator_voice", "hook_style",
-        "script_tone", "thumbnail_style", "series", "humanity_label",
+        "category",
+        "story_format",
+        "narrator_voice",
+        "hook_style",
+        "script_tone",
+        "thumbnail_style",
+        "series",
+        "humanity_label",
     )
-    buckets: dict[str, dict[str, list[dict]]] = {
-        axis: defaultdict(list) for axis in axes
-    }
+    buckets: dict[str, dict[str, list[dict]]] = {axis: defaultdict(list) for axis in axes}
     for item in observations:
         experiments = item.get("experiments") or {}
         values = {
@@ -237,7 +241,8 @@ def build_performance_matrix(observations: list[dict]) -> dict:
             growth = [float(r.get("growth_score", 0) or 0) for r in rows]
             retention = [
                 float(r.get("average_view_percentage", 0) or 0)
-                for r in rows if float(r.get("average_view_percentage", 0) or 0) > 0
+                for r in rows
+                if float(r.get("average_view_percentage", 0) or 0) > 0
             ]
             subscribers = sum(int(r.get("subscribers_gained", 0) or 0) for r in rows)
             matrix[axis][value] = {
@@ -280,14 +285,16 @@ def remake_candidates(top_performers: list[dict]) -> list[dict]:
             action = "reuse topic only after changing the hook format"
         else:
             continue
-        candidates.append({
-            "video_id": item.get("video_id", ""),
-            "title": item.get("title", ""),
-            "views": views,
-            "retention": retention,
-            "growth_score": growth,
-            "action": action,
-        })
+        candidates.append(
+            {
+                "video_id": item.get("video_id", ""),
+                "title": item.get("title", ""),
+                "views": views,
+                "retention": retention,
+                "growth_score": growth,
+                "action": action,
+            }
+        )
         if len(candidates) >= 8:
             break
     return candidates
@@ -300,8 +307,7 @@ def production_mix(observations: list[dict]) -> dict:
     return {"exploit": 70, "explore": 20, "moonshot": 10, "reason": "measured_growth_loop"}
 
 
-def weekly_brief(snapshot: dict, observations: list[dict], matrix: dict,
-                 remakes: list[dict]) -> dict:
+def weekly_brief(snapshot: dict, observations: list[dict], matrix: dict, remakes: list[dict]) -> dict:
     wl = winners_and_losers(matrix)
     winners = wl.get("winners", {})
     return {

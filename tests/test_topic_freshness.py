@@ -29,11 +29,13 @@ def test_annotate_queue_reports_coverage():
 
 def test_freshness_report_masks_non_recommendable_titles():
     queue = {
-        "stories": [{
-            "id": "bad-title",
-            "title": "Cows rely on ear position to signal",
-            "fetched_at": "2026-06-11T00:00:00+00:00",
-        }]
+        "stories": [
+            {
+                "id": "bad-title",
+                "title": "Cows rely on ear position to signal",
+                "fetched_at": "2026-06-11T00:00:00+00:00",
+            }
+        ]
     }
 
     annotated = annotate_queue(queue, [], now=datetime(2026, 6, 11, tzinfo=timezone.utc))

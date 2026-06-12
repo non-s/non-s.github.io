@@ -77,20 +77,22 @@ def test_publish_window_ignores_queue_prune_rewrite_candidate(monkeypatch, tmp_p
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(
         tmp_path / "_data" / "stories_queue.json",
-        {"stories": [
-            {
-                "id": "rewrite",
-                "title": "Rewrite candidate",
-                "queue_prune": {"state": "rewrite"},
-                "publish_score": {"approved": True, "state": "publish_ready"},
-            },
-            {
-                "id": "ready",
-                "title": "Ready candidate",
-                "queue_prune": {"state": "publish_ready"},
-                "publish_score": {"approved": True, "state": "publish_ready"},
-            },
-        ]},
+        {
+            "stories": [
+                {
+                    "id": "rewrite",
+                    "title": "Rewrite candidate",
+                    "queue_prune": {"state": "rewrite"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                },
+                {
+                    "id": "ready",
+                    "title": "Ready candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                },
+            ]
+        },
     )
     monkeypatch.setattr(
         publish_window,
@@ -130,15 +132,21 @@ def test_publish_window_ignores_unchecked_candidate_when_queue_has_prune_state(m
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(
         tmp_path / "_data" / "stories_queue.json",
-        {"stories": [
-            {"id": "unchecked", "title": "Unchecked candidate"},
-            {"id": "ready", "title": "Ready candidate", "queue_prune": {"state": "publish_ready"}},
-        ]},
+        {
+            "stories": [
+                {"id": "unchecked", "title": "Unchecked candidate"},
+                {"id": "ready", "title": "Ready candidate", "queue_prune": {"state": "publish_ready"}},
+            ]
+        },
     )
     monkeypatch.setattr(
         publish_window,
         "score_story",
-        lambda story: {"score": 100 if story["id"] == "unchecked" else 80, "opportunity": {"score": 80}, "approved": True},
+        lambda story: {
+            "score": 100 if story["id"] == "unchecked" else 80,
+            "opportunity": {"score": 80},
+            "approved": True,
+        },
     )
 
     decision = publish_window.evaluate_publish_window(
@@ -156,25 +164,31 @@ def test_publish_window_uses_autonomy_priority_before_raw_score(monkeypatch, tmp
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(
         tmp_path / "_data" / "stories_queue.json",
-        {"stories": [
-            {
-                "id": "raw_score",
-                "title": "Raw score candidate",
-                "queue_prune": {"state": "publish_ready", "score": 95},
-                "autonomy": {"priority": 20},
-            },
-            {
-                "id": "priority",
-                "title": "Priority candidate",
-                "queue_prune": {"state": "publish_ready", "score": 90},
-                "autonomy": {"priority": 120},
-            },
-        ]},
+        {
+            "stories": [
+                {
+                    "id": "raw_score",
+                    "title": "Raw score candidate",
+                    "queue_prune": {"state": "publish_ready", "score": 95},
+                    "autonomy": {"priority": 20},
+                },
+                {
+                    "id": "priority",
+                    "title": "Priority candidate",
+                    "queue_prune": {"state": "publish_ready", "score": 90},
+                    "autonomy": {"priority": 120},
+                },
+            ]
+        },
     )
     monkeypatch.setattr(
         publish_window,
         "score_story",
-        lambda story: {"score": 100 if story["id"] == "raw_score" else 80, "opportunity": {"score": 80}, "approved": True},
+        lambda story: {
+            "score": 100 if story["id"] == "raw_score" else 80,
+            "opportunity": {"score": 80},
+            "approved": True,
+        },
     )
 
     decision = publish_window.evaluate_publish_window(

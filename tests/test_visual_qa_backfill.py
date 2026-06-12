@@ -16,11 +16,15 @@ def test_visual_qa_backfill_infers_safe_legacy_marker():
 
 
 def test_visual_qa_backfill_flags_missing_motion():
-    report = build_backfill_report([{
-        "video_id": "abc",
-        "title": "Still frame",
-        "category": "cats",
-        "has_captions": True,
-    }])
+    report = build_backfill_report(
+        [
+            {
+                "video_id": "abc",
+                "title": "Still frame",
+                "category": "cats",
+                "has_captions": True,
+            }
+        ]
+    )
     assert report["legacy_unchecked"] == 1
     assert report["inferred_rejected"] == 1

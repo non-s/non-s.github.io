@@ -5,6 +5,7 @@ scripts/analyze_channel.py. No new service, key, or paid dependency is
 required: production simply leans toward categories and story shapes that
 already proved they can earn views, retention, or subscribers.
 """
+
 from __future__ import annotations
 
 import json
@@ -82,18 +83,16 @@ def score_story(story: dict, strategy: dict | None = None) -> float:
         humanity_score = 0.0
     ai_score = float(story.get("score", 0) or 0)
     base = editorial_score + humanity_score * 0.55 + ai_score * 3
-    story_format = str(story.get("story_format") or classify_format(
-        f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-    ))
+    story_format = str(
+        story.get("story_format")
+        or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}")
+    )
     format_weights = strategy.get("format_weights") or {}
     try:
         format_weight = float(format_weights.get(story_format, 1.0))
     except Exception:
         format_weight = 1.0
-    exploit_keywords = [
-        str(item).lower() for item in (strategy.get("exploit_keywords") or [])
-        if str(item).strip()
-    ]
+    exploit_keywords = [str(item).lower() for item in (strategy.get("exploit_keywords") or []) if str(item).strip()]
     title_hook = f"{story.get('title', '')} {story.get('hook', '')}".lower()
     if exploit_keywords and any(word in title_hook for word in exploit_keywords):
         base *= 1.18
@@ -111,8 +110,7 @@ def score_story(story: dict, strategy: dict | None = None) -> float:
     return round(base * weights.get(category, 1.0) * max(0.7, min(1.8, format_weight)), 3)
 
 
-def rank_for_growth(candidates: list[dict],
-                    strategy: dict | None = None) -> list[dict]:
+def rank_for_growth(candidates: list[dict], strategy: dict | None = None) -> list[dict]:
     """Attach growth metadata and sort strongest candidates first."""
     strategy = strategy or load_strategy()
     ranked: list[dict] = []

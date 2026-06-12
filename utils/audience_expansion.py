@@ -5,6 +5,7 @@ universal nature discovery terms and publish windows spread across
 major time zones. This module keeps those choices in one place so the
 automation can expand globally without hard-coding one target country.
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timezone

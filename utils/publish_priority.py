@@ -4,6 +4,7 @@ These helpers rank candidates after quality gates have already decided a
 story is publishable. The autonomy plan is the operational owner of the
 next slot; queue and publish scores only break ties.
 """
+
 from __future__ import annotations
 
 

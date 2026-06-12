@@ -38,13 +38,15 @@ def main() -> int:
         pkg = packaged.get("packaging") or {}
         states[str(pkg.get("state") or "unknown")] += 1
         risks.update(pkg.get("risks") or [])
-        rows.append({
-            "id": story.get("id", ""),
-            "title": packaged.get("seo_title") or packaged.get("title") or "",
-            "thumbnail_text": packaged.get("thumbnail_text", ""),
-            "category": packaged.get("category", ""),
-            "packaging": pkg,
-        })
+        rows.append(
+            {
+                "id": story.get("id", ""),
+                "title": packaged.get("seo_title") or packaged.get("title") or "",
+                "thumbnail_text": packaged.get("thumbnail_text", ""),
+                "category": packaged.get("category", ""),
+                "packaging": pkg,
+            }
+        )
     rows.sort(key=lambda item: (item["packaging"].get("score", 0), item["title"]), reverse=True)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

@@ -1,4 +1,5 @@
 """Shared YouTube OAuth token loading and safe diagnostics."""
+
 from __future__ import annotations
 
 import json

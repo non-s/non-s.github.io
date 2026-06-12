@@ -76,7 +76,12 @@ def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     queue = {
         "stories": [
             _story("1"),
-            _story("2", seo_title="Penguins slide on their bellies to save energy", title="Penguins slide on their bellies to save energy", source_url=""),
+            _story(
+                "2",
+                seo_title="Penguins slide on their bellies to save energy",
+                title="Penguins slide on their bellies to save energy",
+                source_url="",
+            ),
             _story(
                 "3",
                 seo_title="Why tigers flick their ears before charging",
@@ -174,11 +179,16 @@ def test_prune_queue_caps_publish_ready_title_template_clusters(monkeypatch):
 
     monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
     monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
-    queue = {"stories": [
-        _story(str(idx), title=f"Chickens read the moment from one head cue {idx}",
-               seo_title=f"Chickens read the moment from one head cue {idx}")
-        for idx in range(4)
-    ]}
+    queue = {
+        "stories": [
+            _story(
+                str(idx),
+                title=f"Chickens read the moment from one head cue {idx}",
+                seo_title=f"Chickens read the moment from one head cue {idx}",
+            )
+            for idx in range(4)
+        ]
+    }
 
     pruned, rejected, summary = prune_queue(queue, max_pending=10)
 
@@ -211,23 +221,34 @@ def test_prune_queue_caps_publish_ready_mechanism_clusters(monkeypatch):
 
     monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
     monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
-    queue = {"stories": [
-        _story("fin-1", title="Sharks follow one fin cue before the payoff",
-               seo_title="Sharks follow one fin cue before the payoff",
-               hook="Sharks follow one fin cue before the payoff.",
-               thumbnail_text="SHARKS FIN CUE",
-               script="Sharks follow one fin cue before the payoff. Watch the fin cue first."),
-        _story("fin-2", title="Dolphins turn fin movement into a warning",
-               seo_title="Dolphins turn fin movement into a warning",
-               hook="Dolphins turn fin movement into a warning.",
-               thumbnail_text="DOLPHINS FIN",
-               script="Dolphins turn fin movement into a warning before the payoff."),
-        _story("fin-3", title="Whales show the fin signal before they turn",
-               seo_title="Whales show the fin signal before they turn",
-               hook="Whales show the fin signal before they turn.",
-               thumbnail_text="WHALES FIN",
-               script="Whales show the fin signal before they turn. Watch the fin cue."),
-    ]}
+    queue = {
+        "stories": [
+            _story(
+                "fin-1",
+                title="Sharks follow one fin cue before the payoff",
+                seo_title="Sharks follow one fin cue before the payoff",
+                hook="Sharks follow one fin cue before the payoff.",
+                thumbnail_text="SHARKS FIN CUE",
+                script="Sharks follow one fin cue before the payoff. Watch the fin cue first.",
+            ),
+            _story(
+                "fin-2",
+                title="Dolphins turn fin movement into a warning",
+                seo_title="Dolphins turn fin movement into a warning",
+                hook="Dolphins turn fin movement into a warning.",
+                thumbnail_text="DOLPHINS FIN",
+                script="Dolphins turn fin movement into a warning before the payoff.",
+            ),
+            _story(
+                "fin-3",
+                title="Whales show the fin signal before they turn",
+                seo_title="Whales show the fin signal before they turn",
+                hook="Whales show the fin signal before they turn.",
+                thumbnail_text="WHALES FIN",
+                script="Whales show the fin signal before they turn. Watch the fin cue.",
+            ),
+        ]
+    }
 
     pruned, rejected, summary = prune_queue(queue, max_pending=10)
 
@@ -265,26 +286,37 @@ def test_prune_queue_prefers_scale_ready_inside_mechanism_cluster(monkeypatch):
 
     monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
     monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
-    queue = {"stories": [
-        _story("observe-1", title="Sharks follow one fin cue before the payoff",
-               seo_title="Sharks follow one fin cue before the payoff",
-               hook="Sharks follow one fin cue before the payoff.",
-               thumbnail_text="SHARKS FIN CUE",
-               script="Sharks follow one fin cue before the payoff. Watch the fin cue first.",
-               objective_gate={"scale_ready": False, "confidence_score": 0.2}),
-        _story("observe-2", title="Dolphins turn fin movement into a warning",
-               seo_title="Dolphins turn fin movement into a warning",
-               hook="Dolphins turn fin movement into a warning.",
-               thumbnail_text="DOLPHINS FIN",
-               script="Dolphins turn fin movement into a warning before the payoff.",
-               objective_gate={"scale_ready": False, "confidence_score": 0.21}),
-        _story("scale", title="Whales show the fin signal before they turn",
-               seo_title="Whales show the fin signal before they turn",
-               hook="Whales show the fin signal before they turn.",
-               thumbnail_text="WHALES FIN",
-               script="Whales show the fin signal before they turn. Watch the fin cue.",
-               objective_gate={"scale_ready": True, "confidence_score": 0.8}),
-    ]}
+    queue = {
+        "stories": [
+            _story(
+                "observe-1",
+                title="Sharks follow one fin cue before the payoff",
+                seo_title="Sharks follow one fin cue before the payoff",
+                hook="Sharks follow one fin cue before the payoff.",
+                thumbnail_text="SHARKS FIN CUE",
+                script="Sharks follow one fin cue before the payoff. Watch the fin cue first.",
+                objective_gate={"scale_ready": False, "confidence_score": 0.2},
+            ),
+            _story(
+                "observe-2",
+                title="Dolphins turn fin movement into a warning",
+                seo_title="Dolphins turn fin movement into a warning",
+                hook="Dolphins turn fin movement into a warning.",
+                thumbnail_text="DOLPHINS FIN",
+                script="Dolphins turn fin movement into a warning before the payoff.",
+                objective_gate={"scale_ready": False, "confidence_score": 0.21},
+            ),
+            _story(
+                "scale",
+                title="Whales show the fin signal before they turn",
+                seo_title="Whales show the fin signal before they turn",
+                hook="Whales show the fin signal before they turn.",
+                thumbnail_text="WHALES FIN",
+                script="Whales show the fin signal before they turn. Watch the fin cue.",
+                objective_gate={"scale_ready": True, "confidence_score": 0.8},
+            ),
+        ]
+    }
 
     pruned, _rejected, _summary = prune_queue(queue, max_pending=10)
 

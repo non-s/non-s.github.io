@@ -1,4 +1,5 @@
 """Tests for utils/panic.py — env + file kill switch."""
+
 from __future__ import annotations
 
 from pathlib import Path

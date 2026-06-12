@@ -1,5 +1,6 @@
 """Tests for utils/face_crop.py — pure logic + fallbacks, no real OpenCV
 required (we monkeypatch the imports for cross-platform sandboxes)."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -47,10 +48,10 @@ def test_detect_face_falls_back_when_frame_extract_fails(tmp_path, monkeypatch):
 def test_detect_face_returns_normalised_center_when_face_found(tmp_path, monkeypatch):
     """Stub the entire cv2 chain so we can assert the math without ffmpeg."""
     monkeypatch.setattr(face_crop, "_try_import_opencv", lambda: True)
-    monkeypatch.setattr(face_crop, "_extract_first_frame",
-                          lambda clip_path, dest: (dest.write_bytes(b"x"), True)[1])
+    monkeypatch.setattr(face_crop, "_extract_first_frame", lambda clip_path, dest: (dest.write_bytes(b"x"), True)[1])
 
     import types
+
     fake_cv2 = types.SimpleNamespace()
 
     class _FakeCascade:
@@ -81,10 +82,10 @@ def test_detect_face_returns_normalised_center_when_face_found(tmp_path, monkeyp
 
 def test_detect_face_returns_none_when_no_face_detected(tmp_path, monkeypatch):
     monkeypatch.setattr(face_crop, "_try_import_opencv", lambda: True)
-    monkeypatch.setattr(face_crop, "_extract_first_frame",
-                          lambda clip_path, dest: (dest.write_bytes(b"x"), True)[1])
+    monkeypatch.setattr(face_crop, "_extract_first_frame", lambda clip_path, dest: (dest.write_bytes(b"x"), True)[1])
 
     import types
+
     fake_cv2 = types.SimpleNamespace()
 
     class _FakeCascade:
@@ -98,6 +99,7 @@ def test_detect_face_returns_none_when_no_face_detected(tmp_path, monkeypatch):
 
     class _FakeImg:
         shape = (1080, 1920)
+
     fake_cv2.imread = lambda path: _FakeImg()
 
     monkeypatch.setitem(__import__("sys").modules, "cv2", fake_cv2)

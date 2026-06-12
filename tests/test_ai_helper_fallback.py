@@ -3,6 +3,7 @@
 We mock the three transport functions (_call_mistral, _call_cerebras,
 _call_gemini, _call_groq) so the tests run offline.
 """
+
 from __future__ import annotations
 
 from unittest.mock import patch, MagicMock
@@ -34,12 +35,14 @@ def _clear_keys(monkeypatch, tmp_path):
     monkeypatch.setenv("AI_CACHE_ENABLED", "1")
     import importlib
     from utils import ai_cache as _ac
+
     importlib.reload(_ac)
     _ac.reset_cache_for_tests()
     monkeypatch.setattr(ai_helper, "ai_cache", _ac)
     # provider_stats.record() writes to `_data/provider_stats.jsonl`
     # by default. Tests must NEVER leak into the repo's _data dir.
     from utils import provider_stats as _ps
+
     monkeypatch.setattr(_ps, "STATS_LOG", tmp_path / "provider_stats.jsonl")
 
 
@@ -54,10 +57,12 @@ def test_mistral_success_short_circuits(monkeypatch, fast_sleep):
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    with patch.object(ai_helper, "_call_mistral", return_value="ok-mistral") as m, \
-         patch.object(ai_helper, "_call_cerebras") as ce, \
-         patch.object(ai_helper, "_call_gemini") as ge, \
-         patch.object(ai_helper, "_call_groq") as gr:
+    with (
+        patch.object(ai_helper, "_call_mistral", return_value="ok-mistral") as m,
+        patch.object(ai_helper, "_call_cerebras") as ce,
+        patch.object(ai_helper, "_call_gemini") as ge,
+        patch.object(ai_helper, "_call_groq") as gr,
+    ):
         out = ai_helper.ai_text("anything")
     assert out == "ok-mistral"
     m.assert_called_once()
@@ -69,8 +74,10 @@ def test_mistral_success_short_circuits(monkeypatch, fast_sleep):
 def test_falls_back_to_cerebras_on_mistral_429(monkeypatch, fast_sleep):
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_cerebras", return_value="ok-cerebras") as ce:
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_cerebras", return_value="ok-cerebras") as ce,
+    ):
         out = ai_helper.ai_text("x")
     assert out == "ok-cerebras"
     ce.assert_called_once()
@@ -80,9 +87,11 @@ def test_falls_through_to_gemini_when_cerebras_also_429(monkeypatch, fast_sleep)
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_cerebras", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_gemini", return_value="ok-gemini") as ge:
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_cerebras", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_gemini", return_value="ok-gemini") as ge,
+    ):
         out = ai_helper.ai_text("x")
     assert out == "ok-gemini"
     ge.assert_called()
@@ -93,10 +102,12 @@ def test_falls_through_to_groq_when_everything_else_fails(monkeypatch, fast_slee
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
     monkeypatch.setenv("GROQ_API_KEY", "gr")
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(503)), \
-         patch.object(ai_helper, "_call_cerebras", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_gemini", side_effect=_FakeHTTPError(500)), \
-         patch.object(ai_helper, "_call_groq", return_value="ok-groq") as gr:
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(503)),
+        patch.object(ai_helper, "_call_cerebras", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_gemini", side_effect=_FakeHTTPError(500)),
+        patch.object(ai_helper, "_call_groq", return_value="ok-groq") as gr,
+    ):
         out = ai_helper.ai_text("x")
     assert out == "ok-groq"
     gr.assert_called()
@@ -115,10 +126,12 @@ def test_400_status_skips_fallbacks(monkeypatch, fast_sleep):
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
     monkeypatch.setenv("GROQ_API_KEY", "gr")
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(400)), \
-         patch.object(ai_helper, "_call_cerebras") as ce, \
-         patch.object(ai_helper, "_call_gemini") as ge, \
-         patch.object(ai_helper, "_call_groq") as gr:
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(400)),
+        patch.object(ai_helper, "_call_cerebras") as ce,
+        patch.object(ai_helper, "_call_gemini") as ge,
+        patch.object(ai_helper, "_call_groq") as gr,
+    ):
         out = ai_helper.ai_text("x")
     assert out == ""
     ce.assert_not_called()
@@ -131,9 +144,11 @@ def test_no_mistral_key_routes_to_configured_provider(monkeypatch, fast_sleep):
     # the chain triggers only on a transient Mistral failure.
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    with patch.object(ai_helper, "_call_mistral") as m, \
-         patch.object(ai_helper, "_call_cerebras", return_value="ok-cerebras") as ce, \
-         patch.object(ai_helper, "_call_gemini") as ge:
+    with (
+        patch.object(ai_helper, "_call_mistral") as m,
+        patch.object(ai_helper, "_call_cerebras", return_value="ok-cerebras") as ce,
+        patch.object(ai_helper, "_call_gemini") as ge,
+    ):
         out = ai_helper.ai_text("x")
     assert out == "ok-cerebras"
     m.assert_not_called()
@@ -145,9 +160,11 @@ def test_skips_provider_without_key(monkeypatch, fast_sleep):
     """If Gemini is configured but Cerebras is not, the chain should skip Cerebras."""
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_cerebras") as ce, \
-         patch.object(ai_helper, "_call_gemini", return_value="ok-gemini") as ge:
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_cerebras") as ce,
+        patch.object(ai_helper, "_call_gemini", return_value="ok-gemini") as ge,
+    ):
         out = ai_helper.ai_text("x")
     assert out == "ok-gemini"
     ce.assert_not_called()
@@ -157,8 +174,10 @@ def test_skips_provider_without_key(monkeypatch, fast_sleep):
 def test_json_task_prefers_gemini_when_configured(monkeypatch, fast_sleep):
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    with patch.object(ai_helper, "_call_mistral") as m, \
-         patch.object(ai_helper, "_call_gemini", return_value='{"ok": true}') as ge:
+    with (
+        patch.object(ai_helper, "_call_mistral") as m,
+        patch.object(ai_helper, "_call_gemini", return_value='{"ok": true}') as ge,
+    ):
         out = ai_helper.ai_text("return JSON", json_mode=True)
     assert out == '{"ok": true}'
     ge.assert_called_once()
@@ -166,6 +185,7 @@ def test_json_task_prefers_gemini_when_configured(monkeypatch, fast_sleep):
 
 
 # ── Cache integration ────────────────────────────────────────────
+
 
 def test_cache_hit_skips_every_provider(monkeypatch, fast_sleep, tmp_path):
     """A cached response means no API is contacted at all."""
@@ -176,6 +196,7 @@ def test_cache_hit_skips_every_provider(monkeypatch, fast_sleep, tmp_path):
 
     import importlib
     from utils import ai_cache as _ac
+
     importlib.reload(_ac)
     _ac.reset_cache_for_tests()
     # Patch ai_helper's reference to the freshly-reloaded module.
@@ -188,10 +209,12 @@ def test_cache_hit_skips_every_provider(monkeypatch, fast_sleep, tmp_path):
     m1.assert_called_once()
 
     # Second call: no provider should be invoked.
-    with patch.object(ai_helper, "_call_mistral") as m2, \
-         patch.object(ai_helper, "_call_cerebras") as ce, \
-         patch.object(ai_helper, "_call_gemini") as ge, \
-         patch.object(ai_helper, "_call_groq") as gr:
+    with (
+        patch.object(ai_helper, "_call_mistral") as m2,
+        patch.object(ai_helper, "_call_cerebras") as ce,
+        patch.object(ai_helper, "_call_gemini") as ge,
+        patch.object(ai_helper, "_call_groq") as gr,
+    ):
         second = ai_helper.ai_text("hello prompt")
     assert second == "fresh-out"
     m2.assert_not_called()
@@ -209,18 +232,20 @@ def test_fallback_result_is_cached_under_primary_key(monkeypatch, fast_sleep, tm
 
     import importlib
     from utils import ai_cache as _ac
+
     importlib.reload(_ac)
     _ac.reset_cache_for_tests()
     monkeypatch.setattr(ai_helper, "ai_cache", _ac)
 
-    with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)), \
-         patch.object(ai_helper, "_call_cerebras", return_value="from-cerebras"):
+    with (
+        patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(429)),
+        patch.object(ai_helper, "_call_cerebras", return_value="from-cerebras"),
+    ):
         out1 = ai_helper.ai_text("identical prompt")
     assert out1 == "from-cerebras"
 
     # Second call: cache hit means we never reach Mistral or Cerebras.
-    with patch.object(ai_helper, "_call_mistral") as m, \
-         patch.object(ai_helper, "_call_cerebras") as ce:
+    with patch.object(ai_helper, "_call_mistral") as m, patch.object(ai_helper, "_call_cerebras") as ce:
         out2 = ai_helper.ai_text("identical prompt")
     assert out2 == "from-cerebras"
     m.assert_not_called()

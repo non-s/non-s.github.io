@@ -55,8 +55,12 @@ def _set_github_secret(secret_value: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--client-secrets-file", help="Downloaded OAuth desktop-client JSON from Google Cloud.")
-    parser.add_argument("--set-github-secret", action="store_true", help="Update the repository YOUTUBE_TOKEN secret via gh.")
-    parser.add_argument("--print-secret", action="store_true", help="Print token JSON for manual copy. Avoid in shared terminals.")
+    parser.add_argument(
+        "--set-github-secret", action="store_true", help="Update the repository YOUTUBE_TOKEN secret via gh."
+    )
+    parser.add_argument(
+        "--print-secret", action="store_true", help="Print token JSON for manual copy. Avoid in shared terminals."
+    )
     args = parser.parse_args()
 
     client_config = _client_config(args)

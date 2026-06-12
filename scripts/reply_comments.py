@@ -63,13 +63,17 @@ def _channel_id(youtube) -> str:
 
 
 def _fetch_threads(youtube, video_id: str, per_video: int = 25) -> list[dict]:
-    response = youtube.commentThreads().list(
-        part="snippet,replies",
-        videoId=video_id,
-        maxResults=per_video,
-        order="time",
-        textFormat="plainText",
-    ).execute()
+    response = (
+        youtube.commentThreads()
+        .list(
+            part="snippet,replies",
+            videoId=video_id,
+            maxResults=per_video,
+            order="time",
+            textFormat="plainText",
+        )
+        .execute()
+    )
     return list(response.get("items") or [])
 
 
@@ -78,7 +82,7 @@ def _author_id(snippet: dict) -> str:
 
 
 def _already_has_channel_reply(thread: dict, channel_id: str) -> bool:
-    for reply in (((thread.get("replies") or {}).get("comments") or [])):
+    for reply in (thread.get("replies") or {}).get("comments") or []:
         snippet = reply.get("snippet") or {}
         if _author_id(snippet) == channel_id:
             return True
@@ -86,15 +90,19 @@ def _already_has_channel_reply(thread: dict, channel_id: str) -> bool:
 
 
 def _insert_reply(youtube, comment_id: str, text: str) -> str:
-    response = youtube.comments().insert(
-        part="snippet",
-        body={
-            "snippet": {
-                "parentId": comment_id,
-                "textOriginal": text,
-            }
-        },
-    ).execute()
+    response = (
+        youtube.comments()
+        .insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "parentId": comment_id,
+                    "textOriginal": text,
+                }
+            },
+        )
+        .execute()
+    )
     return str(response.get("id") or "")
 
 
@@ -115,9 +123,7 @@ def main() -> int:
     ledger = _load_json(LEDGER_FILE, {"replied_comment_ids": [], "replies": []})
     replied_ids = set(str(item) for item in ledger.get("replied_comment_ids", []))
     recent_reply_texts = [
-        str(item.get("reply_text") or "")
-        for item in (ledger.get("replies") or [])[-50:]
-        if isinstance(item, dict)
+        str(item.get("reply_text") or "") for item in (ledger.get("replies") or [])[-50:] if isinstance(item, dict)
     ]
     channel_id = _channel_id(youtube)
     replies_made: list[dict] = []
@@ -136,7 +142,7 @@ def main() -> int:
         for thread in threads:
             if len(replies_made) >= max_replies:
                 break
-            top = ((thread.get("snippet") or {}).get("topLevelComment") or {})
+            top = (thread.get("snippet") or {}).get("topLevelComment") or {}
             comment_id = str(top.get("id") or "")
             snippet = top.get("snippet") or {}
             text = str(snippet.get("textDisplay") or snippet.get("textOriginal") or "")
@@ -156,13 +162,15 @@ def main() -> int:
                 print(f"reply-comments: failed {comment_id}: {exc}")
                 continue
             replied_ids.add(comment_id)
-            replies_made.append({
-                "comment_id": comment_id,
-                "reply_id": reply_id,
-                "video_id": video_id,
-                "reply_text": reply_text,
-                "replied_at": datetime.now(timezone.utc).isoformat(),
-            })
+            replies_made.append(
+                {
+                    "comment_id": comment_id,
+                    "reply_id": reply_id,
+                    "video_id": video_id,
+                    "reply_text": reply_text,
+                    "replied_at": datetime.now(timezone.utc).isoformat(),
+                }
+            )
             recent_reply_texts.append(reply_text)
 
     ledger["replied_comment_ids"] = sorted(replied_ids)

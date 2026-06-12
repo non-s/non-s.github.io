@@ -1,4 +1,5 @@
 """Early distribution velocity and breakout memory for Wild Brief."""
+
 from __future__ import annotations
 
 import json
@@ -112,7 +113,11 @@ def _snapshots(previous: dict, row: dict, now: datetime) -> list[dict]:
         "comments": row["comments"],
         "subscribers": row["subscribers"],
     }
-    if not snapshots or snapshots[-1].get("views") != current["views"] or snapshots[-1].get("age_hours") != current["age_hours"]:
+    if (
+        not snapshots
+        or snapshots[-1].get("views") != current["views"]
+        or snapshots[-1].get("age_hours") != current["age_hours"]
+    ):
         snapshots.append(current)
     return snapshots[-30:]
 
@@ -226,8 +231,7 @@ def _early_confidence(row: dict, checkpoints: dict, snapshots: list[dict]) -> di
     )
 
 
-def build_early_performance(markers: list[dict], previous: dict | None = None,
-                            now: datetime | None = None) -> dict:
+def build_early_performance(markers: list[dict], previous: dict | None = None, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     previous = previous or {}
     rows = [_video_row(marker, now) for marker in markers if marker.get("video_id")]
@@ -275,14 +279,16 @@ def build_early_performance(markers: list[dict], previous: dict | None = None,
 def build_winner_patterns(early: dict) -> dict:
     videos = list((early.get("videos") or {}).values())
     winners = [
-        item for item in videos
+        item
+        for item in videos
         if (
             item.get("early_confidence_score", 0) >= 0.50
             and (item.get("early_velocity_score", 0) >= 62 or item.get("views", 0) >= 5000)
         )
     ]
     losers = [
-        item for item in videos
+        item
+        for item in videos
         if (
             item.get("early_confidence_score", 0) >= 0.65
             and item.get("age_hours", 0) >= 24
@@ -310,9 +316,17 @@ def build_winner_patterns(early: dict) -> dict:
         "confidence_score": pattern_confidence["confidence_score"],
         "recommendation_strength": pattern_confidence["recommendation_strength"],
         "reasoning": pattern_confidence["reasoning"],
-        "winning_hooks": dict(Counter(_pattern(item.get("hook", "")) for item in winners if item.get("hook")).most_common(12)),
-        "winning_thumbnails": dict(Counter(_pattern(item.get("thumbnail_text", "")) for item in winners if item.get("thumbnail_text")).most_common(12)),
-        "winning_ctas": dict(Counter(_pattern(item.get("cta_prompt", "")) for item in winners if item.get("cta_prompt")).most_common(12)),
+        "winning_hooks": dict(
+            Counter(_pattern(item.get("hook", "")) for item in winners if item.get("hook")).most_common(12)
+        ),
+        "winning_thumbnails": dict(
+            Counter(
+                _pattern(item.get("thumbnail_text", "")) for item in winners if item.get("thumbnail_text")
+            ).most_common(12)
+        ),
+        "winning_ctas": dict(
+            Counter(_pattern(item.get("cta_prompt", "")) for item in winners if item.get("cta_prompt")).most_common(12)
+        ),
         "winning_categories": counts(winners, "category"),
         "winning_series": counts(winners, "series"),
         "winning_formats": counts(winners, "story_format"),
@@ -348,15 +362,19 @@ def build_early_warning(early: dict) -> dict:
                 watchlist.append(entry)
             continue
         if title_issues:
-            remakes.append({
-                "video_id": item["video_id"],
-                "title": item["title"],
-                "action": "repair title/package before scaling angle",
-                "confidence_score": confidence_score,
-                "reasoning": reason,
-                "title_issues": title_issues,
-            })
-        if confidence_score >= 0.55 and (state == "dying_early" or (item.get("age_hours", 0) >= 6 and item.get("views", 0) < 500)):
+            remakes.append(
+                {
+                    "video_id": item["video_id"],
+                    "title": item["title"],
+                    "action": "repair title/package before scaling angle",
+                    "confidence_score": confidence_score,
+                    "reasoning": reason,
+                    "title_issues": title_issues,
+                }
+            )
+        if confidence_score >= 0.55 and (
+            state == "dying_early" or (item.get("age_hours", 0) >= 6 and item.get("views", 0) < 500)
+        ):
             entry = {
                 "video_id": item["video_id"],
                 "title": item["title"],
@@ -386,26 +404,30 @@ def build_early_warning(early: dict) -> dict:
             and item.get("age_hours", 0) >= 24
             and item.get("views", 0) < 1000
         ):
-            remakes.append({
-                "video_id": item["video_id"],
-                "title": item["title"],
-                "action": "remake hook/title or retire angle",
-                "confidence_score": confidence_score,
-                "reasoning": reason,
-            })
+            remakes.append(
+                {
+                    "video_id": item["video_id"],
+                    "title": item["title"],
+                    "action": "remake hook/title or retire angle",
+                    "confidence_score": confidence_score,
+                    "reasoning": reason,
+                }
+            )
         if (
             not title_issues
             and confidence_score >= 0.55
             and item.get("views", 0) >= 1000
             and item.get("breakout_probability", {}).get("pass_5000", 0) >= 0.25
         ):
-            sequences.append({
-                "video_id": item["video_id"],
-                "title": item["title"],
-                "action": "make sequel within same series",
-                "confidence_score": confidence_score,
-                "reasoning": reason,
-            })
+            sequences.append(
+                {
+                    "video_id": item["video_id"],
+                    "title": item["title"],
+                    "action": "make sequel within same series",
+                    "confidence_score": confidence_score,
+                    "reasoning": reason,
+                }
+            )
     return {
         "risk_of_dying_early": risks[:20],
         "potential_accelerators": accelerators[:20],
@@ -415,10 +437,12 @@ def build_early_warning(early: dict) -> dict:
     }
 
 
-def write_reports(markers: list[dict],
-                  early_path: Path = EARLY_PERFORMANCE_PATH,
-                  warning_path: Path = EARLY_WARNING_PATH,
-                  patterns_path: Path = WINNER_PATTERNS_PATH) -> dict:
+def write_reports(
+    markers: list[dict],
+    early_path: Path = EARLY_PERFORMANCE_PATH,
+    warning_path: Path = EARLY_WARNING_PATH,
+    patterns_path: Path = WINNER_PATTERNS_PATH,
+) -> dict:
     previous = _load_previous(early_path)
     early = build_early_performance(markers, previous=previous)
     warning = build_early_warning(early)

@@ -52,18 +52,18 @@ def _assert_recommendable(text: str):
 
 
 def test_crosspost_pack_exposes_only_recommendable_titles():
-    for item in (_json("_data/crosspost_pack.json").get("items") or []):
+    for item in _json("_data/crosspost_pack.json").get("items") or []:
         _assert_recommendable(item.get("title", ""))
         assert not BAD_COPY.search(str(item.get("shortform_caption") or ""))
         assert not BAD_COPY.search(str(item.get("instagram_caption") or ""))
 
 
 def test_session_and_related_outputs_expose_only_recommendable_titles():
-    for item in (_json("_data/session_graph.json").get("nodes") or []):
+    for item in _json("_data/session_graph.json").get("nodes") or []:
         _assert_recommendable(item.get("title", ""))
-    for item in (_json("_data/sequel_candidates.json").get("items") or []):
+    for item in _json("_data/sequel_candidates.json").get("items") or []:
         _assert_recommendable(item.get("title", ""))
-    for item in (_json("_data/related_video_recommendations.json").get("items") or []):
+    for item in _json("_data/related_video_recommendations.json").get("items") or []:
         _assert_recommendable(item.get("source_title", ""))
         _assert_recommendable((item.get("recommendation") or {}).get("title", ""))
     session_ops = _json("_data/post_upload_session_ops.json")
@@ -103,18 +103,18 @@ def test_session_operator_actions_meet_score_threshold():
 
 
 def test_winner_sequel_outputs_use_recommendable_source_titles():
-    for item in (_json("_data/winner_sequel_factory.json").get("candidates") or []):
+    for item in _json("_data/winner_sequel_factory.json").get("candidates") or []:
         _assert_recommendable(item.get("source_title", ""))
-    for item in (_json("_data/autonomous_director.json").get("sequel_candidates") or []):
+    for item in _json("_data/autonomous_director.json").get("sequel_candidates") or []:
         _assert_recommendable(item.get("source_title", ""))
 
 
 def test_remake_and_sequence_outputs_use_recommendable_titles():
-    for item in (_json("_data/remake_backlog.json").get("remakes") or []):
+    for item in _json("_data/remake_backlog.json").get("remakes") or []:
         _assert_recommendable(item.get("source_title", ""))
         for title in item.get("candidate_titles") or []:
             _assert_recommendable(title)
-    for item in (_json("_data/sequence_plan.json").get("variants") or []):
+    for item in _json("_data/sequence_plan.json").get("variants") or []:
         _assert_recommendable(item.get("title", ""))
         _assert_recommendable((item.get("remake_of") or {}).get("title", ""))
 
@@ -126,7 +126,7 @@ def test_ops_guardian_remake_recommendations_are_recommendable():
 
 
 def test_comment_to_short_outputs_do_not_expose_bad_source_titles():
-    for item in (_json("_data/comment_to_short_candidates.json").get("candidates") or []):
+    for item in _json("_data/comment_to_short_candidates.json").get("candidates") or []:
         _assert_recommendable(item.get("source_title", ""))
 
 
@@ -151,7 +151,7 @@ def test_early_warning_sequence_candidates_are_recommendable():
 
 
 def test_channel_success_scales_only_recommendable_first_day_winners():
-    first_day = (_json("_data/channel_success.json").get("first_24h") or {})
+    first_day = _json("_data/channel_success.json").get("first_24h") or {}
     for item in first_day.get("winners") or []:
         _assert_recommendable(item.get("title", ""))
     for item in first_day.get("rework") or []:
@@ -207,7 +207,7 @@ def test_agency_plan_avoids_paused_trend_categories():
 
 
 def test_next_shorts_title_shape_watch_has_rewrite_candidates():
-    mix = (_json("_data/next_shorts.json").get("title_shape_mix") or {})
+    mix = _json("_data/next_shorts.json").get("title_shape_mix") or {}
     if mix.get("status") == "watch":
         candidates = mix.get("rewrite_candidates") or []
         assert candidates

@@ -24,6 +24,7 @@ Both providers return a `Caption` list â€” one entry per word, with
 absolute start/end seconds. FFmpeg's drawtext filter consumes them
 via the SRT writer below.
 """
+
 from __future__ import annotations
 
 import dataclasses
@@ -44,6 +45,7 @@ log = logging.getLogger(__name__)
 @dataclasses.dataclass
 class Caption:
     """One spoken word + its position on the audio timeline."""
+
     word: str
     start: float
     end: float
@@ -56,7 +58,7 @@ class Caption:
 # Docs:      https://console.groq.com/docs/speech-to-text
 
 _GROQ_STT_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
-_GROQ_MODEL   = os.environ.get("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
+_GROQ_MODEL = os.environ.get("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 
 # A single 429 retry recovers ~80 % of Groq blips without forcing the
 # ~10Ã— slower local faster-whisper fallback.
@@ -79,8 +81,24 @@ def _whisper_language() -> str:
     # The set Whisper definitely supports per its model card. Anything
     # outside this set falls through to auto-detect.
     known = {
-        "en", "pt", "es", "fr", "de", "it", "ja", "ko", "zh",
-        "ru", "ar", "hi", "tr", "pl", "nl", "sv", "id", "vi",
+        "en",
+        "pt",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "ja",
+        "ko",
+        "zh",
+        "ru",
+        "ar",
+        "hi",
+        "tr",
+        "pl",
+        "nl",
+        "sv",
+        "id",
+        "vi",
     }
     return base if base in known else ""
 
@@ -115,6 +133,7 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
             if attempt == 0:
                 log.debug("groq whisper transient %s; retrying", type(exc).__name__)
                 import time as _time
+
                 _time.sleep(_GROQ_RETRY_DELAY_S)
                 continue
             return None
@@ -123,6 +142,7 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
         if r.status_code in (429, 500, 502, 503, 504) and attempt == 0:
             log.debug("groq whisper %d; retrying once", r.status_code)
             import time as _time
+
             _time.sleep(_GROQ_RETRY_DELAY_S)
             continue
         log.debug("groq whisper %d: %s", r.status_code, r.text[:200])
@@ -156,8 +176,8 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
 # wants captions, and import inside this function so unrelated code
 # isn't impacted.
 
-def transcribe_faster_whisper(audio_path: Path,
-                              model_name: str = "tiny.en") -> list[Caption] | None:
+
+def transcribe_faster_whisper(audio_path: Path, model_name: str = "tiny.en") -> list[Caption] | None:
     """Local CPU transcription on the GitHub Actions runner. ~5-15s per 50s audio."""
     if not audio_path.exists():
         return None
@@ -165,8 +185,7 @@ def transcribe_faster_whisper(audio_path: Path,
         from faster_whisper import WhisperModel  # type: ignore
     except Exception:
         log.info(
-            "faster-whisper not installed; captions will fall back to skip. "
-            "`pip install faster-whisper` to enable."
+            "faster-whisper not installed; captions will fall back to skip. " "`pip install faster-whisper` to enable."
         )
         return None
     try:
@@ -183,7 +202,7 @@ def transcribe_faster_whisper(audio_path: Path,
         )
         out: list[Caption] = []
         for seg in segments:
-            for w in (seg.words or []):
+            for w in seg.words or []:
                 text = (w.word or "").strip()
                 if not text:
                     continue
@@ -198,6 +217,7 @@ def transcribe_faster_whisper(audio_path: Path,
 
 
 # â”€â”€ Unified entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def transcribe(audio_path: Path) -> list[Caption] | None:
     """Try Groq first, faster-whisper second. None if both fail."""
@@ -222,6 +242,7 @@ def transcribe(audio_path: Path) -> list[Caption] | None:
 # highlighting â€” all of which ASS does cleanly. The .ass file is
 # fed to FFmpeg via `-vf "ass=captions.ass"`.
 
+
 def _format_ass_time(seconds: float) -> str:
     """`0:00:01.23` for ASS." A small bias clamps tiny negatives."""
     seconds = max(0.0, float(seconds))
@@ -232,12 +253,44 @@ def _format_ass_time(seconds: float) -> str:
 
 
 EMPHASIS_WORDS = {
-    "lava", "volcano", "storm", "lightning", "tornado", "aurora",
-    "mushroom", "fungi", "mycelium", "ocean", "river", "glacier",
-    "forest", "tree", "roots", "coral", "reef", "earth", "space",
-    "survive", "escape", "explode", "glow", "hidden", "because",
-    "why", "watch", "tiny", "giant", "rare", "ancient", "secret",
-    "deadly", "fast", "slow", "breathe", "talk", "signal",
+    "lava",
+    "volcano",
+    "storm",
+    "lightning",
+    "tornado",
+    "aurora",
+    "mushroom",
+    "fungi",
+    "mycelium",
+    "ocean",
+    "river",
+    "glacier",
+    "forest",
+    "tree",
+    "roots",
+    "coral",
+    "reef",
+    "earth",
+    "space",
+    "survive",
+    "escape",
+    "explode",
+    "glow",
+    "hidden",
+    "because",
+    "why",
+    "watch",
+    "tiny",
+    "giant",
+    "rare",
+    "ancient",
+    "secret",
+    "deadly",
+    "fast",
+    "slow",
+    "breathe",
+    "talk",
+    "signal",
 }
 
 
@@ -260,10 +313,9 @@ def _caption_text_with_emphasis(text: str) -> str:
     return "".join(out)
 
 
-def group_words_into_phrases(words: list[Caption],
-                              max_words: int = 4,
-                              max_gap_s: float = 0.6,
-                              max_duration_s: float = 2.5) -> list[Caption]:
+def group_words_into_phrases(
+    words: list[Caption], max_words: int = 4, max_gap_s: float = 0.6, max_duration_s: float = 2.5
+) -> list[Caption]:
     """Group word-level captions into 2-4 word phrases that fit on screen.
 
     Word-level karaoke-style captions are jittery on a Short. Grouping
@@ -278,32 +330,38 @@ def group_words_into_phrases(words: list[Caption],
         if buf:
             gap = w.start - buf[-1].end
             phrase_dur = w.end - buf[0].start
-            if (len(buf) >= max_words
-                    or gap > max_gap_s
-                    or phrase_dur > max_duration_s):
-                groups.append(Caption(
-                    word=" ".join(b.word.strip() for b in buf),
-                    start=buf[0].start,
-                    end=buf[-1].end,
-                ))
+            if len(buf) >= max_words or gap > max_gap_s or phrase_dur > max_duration_s:
+                groups.append(
+                    Caption(
+                        word=" ".join(b.word.strip() for b in buf),
+                        start=buf[0].start,
+                        end=buf[-1].end,
+                    )
+                )
                 buf = []
         buf.append(w)
     if buf:
-        groups.append(Caption(
-            word=" ".join(b.word.strip() for b in buf),
-            start=buf[0].start,
-            end=buf[-1].end,
-        ))
+        groups.append(
+            Caption(
+                word=" ".join(b.word.strip() for b in buf),
+                start=buf[0].start,
+                end=buf[-1].end,
+            )
+        )
     return groups
 
 
-def write_ass(captions: list[Caption], path: Path,
-              video_w: int = 1080, video_h: int = 1920,
-              font_size: int = 88,
-              primary_colour: str = "&H0000F2FF",
-              outline_colour: str = "&H00000000",
-              shadow_colour: str = "&H00000000",
-              margin_v: int = 360) -> bool:
+def write_ass(
+    captions: list[Caption],
+    path: Path,
+    video_w: int = 1080,
+    video_h: int = 1920,
+    font_size: int = 88,
+    primary_colour: str = "&H0000F2FF",
+    outline_colour: str = "&H00000000",
+    shadow_colour: str = "&H00000000",
+    margin_v: int = 360,
+) -> bool:
     """Write a Shorts-tuned ASS subtitle file.
 
     Default style: bold modern yellow, thick black outline, dropped shadow,
@@ -349,4 +407,3 @@ def write_ass(captions: list[Caption], path: Path,
     except Exception as exc:
         log.warning("write_ass failed: %s", exc)
         return False
-

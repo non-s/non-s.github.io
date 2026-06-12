@@ -46,21 +46,23 @@ def build_backfill() -> dict:
         needs = missing_source + missing_derived
         if not needs:
             continue
-        rows.append({
-            "video_id": item.get("video_id", ""),
-            "marker": item.get("_marker", ""),
-            "title": title,
-            "missing": needs,
-            "missing_source_fields": missing_source,
-            "missing_derived_fields": missing_derived,
-            "derived": {
-                "story_format": item.get("story_format") or classify_format(f"{title} {hook} {script}"),
-                "hook_audit": audit_hook(hook).to_dict(),
-                "title_audit": audit_title(title).to_dict(),
-                "humanity": (item.get("humanity") or score_story(story).to_dict()),
-                "retention_surgery": diagnose(story),
-            },
-        })
+        rows.append(
+            {
+                "video_id": item.get("video_id", ""),
+                "marker": item.get("_marker", ""),
+                "title": title,
+                "missing": needs,
+                "missing_source_fields": missing_source,
+                "missing_derived_fields": missing_derived,
+                "derived": {
+                    "story_format": item.get("story_format") or classify_format(f"{title} {hook} {script}"),
+                    "hook_audit": audit_hook(hook).to_dict(),
+                    "title_audit": audit_title(title).to_dict(),
+                    "humanity": (item.get("humanity") or score_story(story).to_dict()),
+                    "retention_surgery": diagnose(story),
+                },
+            }
+        )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(rows),

@@ -1,4 +1,5 @@
 """Free visual CTR heuristics for Shorts thumbnails and first frames."""
+
 from __future__ import annotations
 
 import logging
@@ -28,12 +29,14 @@ def score_ctr_frame(image_path: Path) -> dict:
             rgb = im.convert("RGB")
             width, height = rgb.size
             gray = rgb.convert("L")
-            center = gray.crop((
-                int(width * 0.18),
-                int(height * 0.12),
-                int(width * 0.82),
-                int(height * 0.76),
-            ))
+            center = gray.crop(
+                (
+                    int(width * 0.18),
+                    int(height * 0.12),
+                    int(width * 0.82),
+                    int(height * 0.76),
+                )
+            )
             edges = center.resize((96, 128)).filter(ImageFilter.FIND_EDGES)
             edge_stat = ImageStat.Stat(edges)
             center_detail = float(edge_stat.mean[0])
@@ -87,10 +90,7 @@ def score_ctr_frame(image_path: Path) -> dict:
     }
 
 
-def classify_visual_profile(*, center_strength: float,
-                            brightness_fit: float,
-                            contrast_fit: float,
-                            score: int) -> dict:
+def classify_visual_profile(*, center_strength: float, brightness_fit: float, contrast_fit: float, score: int) -> dict:
     """Map numeric frame signals into learnable visual buckets."""
     buckets: list[str] = []
     if center_strength >= 0.72:
@@ -129,8 +129,16 @@ def extract_candidate_frame(video_path: Path, dest: Path, timestamp: float) -> b
     try:
         result = subprocess.run(
             [
-                "ffmpeg", "-y", "-ss", f"{max(0.0, timestamp):.2f}",
-                "-i", str(video_path), "-frames:v", "1", "-q:v", "2",
+                "ffmpeg",
+                "-y",
+                "-ss",
+                f"{max(0.0, timestamp):.2f}",
+                "-i",
+                str(video_path),
+                "-frames:v",
+                "1",
+                "-q:v",
+                "2",
                 str(dest),
             ],
             capture_output=True,
@@ -142,8 +150,7 @@ def extract_candidate_frame(video_path: Path, dest: Path, timestamp: float) -> b
         return False
 
 
-def select_best_frame(video_path: Path, tmp_dir: Path,
-                      timestamps: tuple[float, ...] = DEFAULT_TIMESTAMPS) -> dict:
+def select_best_frame(video_path: Path, tmp_dir: Path, timestamps: tuple[float, ...] = DEFAULT_TIMESTAMPS) -> dict:
     """Extract several early frames and return the strongest CTR candidate."""
     candidates = []
     tmp_dir.mkdir(parents=True, exist_ok=True)
@@ -152,11 +159,13 @@ def select_best_frame(video_path: Path, tmp_dir: Path,
         if not extract_candidate_frame(video_path, frame_path, ts):
             continue
         score = score_ctr_frame(frame_path)
-        candidates.append({
-            "path": str(frame_path),
-            "timestamp": ts,
-            **score,
-        })
+        candidates.append(
+            {
+                "path": str(frame_path),
+                "timestamp": ts,
+                **score,
+            }
+        )
     if not candidates:
         return {
             "checked": False,
@@ -165,7 +174,9 @@ def select_best_frame(video_path: Path, tmp_dir: Path,
             "reason": "no_candidate_frames",
             "candidates": [],
         }
-    candidates.sort(key=lambda item: (int(item.get("score", 0) or 0), float(item.get("timestamp", 0) or 0)), reverse=True)
+    candidates.sort(
+        key=lambda item: (int(item.get("score", 0) or 0), float(item.get("timestamp", 0) or 0)), reverse=True
+    )
     best = candidates[0]
     return {
         "checked": True,
@@ -176,10 +187,6 @@ def select_best_frame(video_path: Path, tmp_dir: Path,
         "best_timestamp": best.get("timestamp", 0),
         "profile": best.get("profile") or {},
         "candidates": [
-            {
-                key: value for key, value in item.items()
-                if key not in {"path", "local_visual_qa"}
-            }
-            for item in candidates
+            {key: value for key, value in item.items() if key not in {"path", "local_visual_qa"}} for item in candidates
         ],
     }

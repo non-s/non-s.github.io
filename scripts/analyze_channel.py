@@ -87,15 +87,19 @@ def _fetch_retention(analytics, ids: list[str]) -> dict[str, dict]:
     if analytics is None or not ids:
         return {}
     today = datetime.now(timezone.utc).date()
-    response = analytics.reports().query(
-        ids="channel==MINE",
-        startDate="2005-01-01",
-        endDate=today.isoformat(),
-        metrics="views,averageViewDuration,averageViewPercentage,subscribersGained",
-        dimensions="video",
-        filters="video==" + ",".join(ids),
-        maxResults=min(200, len(ids)),
-    ).execute()
+    response = (
+        analytics.reports()
+        .query(
+            ids="channel==MINE",
+            startDate="2005-01-01",
+            endDate=today.isoformat(),
+            metrics="views,averageViewDuration,averageViewPercentage,subscribersGained",
+            dimensions="video",
+            filters="video==" + ",".join(ids),
+            maxResults=min(200, len(ids)),
+        )
+        .execute()
+    )
     headers = [item["name"] for item in response.get("columnHeaders", [])]
     return {str(row[0]): dict(zip(headers, row)) for row in response.get("rows", []) if row}
 
@@ -103,10 +107,14 @@ def _fetch_retention(analytics, ids: list[str]) -> dict[str, dict]:
 def _fetch_statistics(youtube, ids: list[str]) -> dict[str, dict]:
     out: dict[str, dict] = {}
     for start in range(0, len(ids), 50):
-        response = youtube.videos().list(
-            part="statistics,snippet",
-            id=",".join(ids[start:start + 50]),
-        ).execute()
+        response = (
+            youtube.videos()
+            .list(
+                part="statistics,snippet",
+                id=",".join(ids[start : start + 50]),
+            )
+            .execute()
+        )
         for item in response.get("items", []):
             out[str(item.get("id", ""))] = item
     return out
@@ -136,9 +144,14 @@ def _views_per_hour(views: int, uploaded_at: str) -> float:
     return round(views / age_hours, 3)
 
 
-def _growth_score(*, views: int, views_per_hour: float, engagement_score: float,
-                  average_view_percentage: float,
-                  subscribers_gained: int) -> float:
+def _growth_score(
+    *,
+    views: int,
+    views_per_hour: float,
+    engagement_score: float,
+    average_view_percentage: float,
+    subscribers_gained: int,
+) -> float:
     retention_bonus = average_view_percentage * 0.9 if average_view_percentage else 0.0
     subscriber_bonus = subscribers_gained * 20
     velocity_bonus = min(500.0, views_per_hour * 6)
@@ -158,9 +171,26 @@ def _retention_tier(value: float) -> str:
 
 def _keywords_from_titles(items: list[dict], limit: int = 12) -> list[str]:
     stop = {
-        "about", "after", "animal", "animals", "brief", "their", "there",
-        "these", "thing", "things", "watch", "where", "which", "while",
-        "wild", "with", "without", "really", "secret", "secrets",
+        "about",
+        "after",
+        "animal",
+        "animals",
+        "brief",
+        "their",
+        "there",
+        "these",
+        "thing",
+        "things",
+        "watch",
+        "where",
+        "which",
+        "while",
+        "wild",
+        "with",
+        "without",
+        "really",
+        "secret",
+        "secrets",
     }
     out: list[str] = []
     for item in items:
@@ -181,37 +211,29 @@ def _recommendable_title(title: str) -> bool:
     return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
 
 
-def _learning_profile(top: list[dict], observations: list[dict],
-                      category_growth: dict[str, float],
-                      format_growth: dict[str, float]) -> dict:
+def _learning_profile(
+    top: list[dict], observations: list[dict], category_growth: dict[str, float], format_growth: dict[str, float]
+) -> dict:
     retention_tiers: dict[str, int] = defaultdict(int)
     for item in top:
         retention_tiers[_retention_tier(float(item.get("view_pct", 0) or 0))] += 1
     winners = [
-        item for item in top
-        if item.get("growth_score", 0) > 0
-        and _recommendable_title(str(item.get("title") or ""))
+        item for item in top if item.get("growth_score", 0) > 0 and _recommendable_title(str(item.get("title") or ""))
     ][:5]
-    weak = [
-        item for item in top
-        if 0 < float(item.get("view_pct", 0) or 0) < 60
-    ]
+    weak = [item for item in top if 0 < float(item.get("view_pct", 0) or 0) < 60]
     label_scores: dict[str, list[float]] = defaultdict(list)
     for item in observations:
-        label_scores[str(item.get("humanity_label") or "unknown")].append(
-            float(item.get("growth_score", 0) or 0)
-        )
+        label_scores[str(item.get("humanity_label") or "unknown")].append(float(item.get("growth_score", 0) or 0))
     avg = lambda values: round(sum(values) / len(values), 3) if values else 0.0
     return {
         "retention_tiers": dict(sorted(retention_tiers.items())),
         "winning_categories": [
             key for key, _ in sorted(category_growth.items(), key=lambda kv: kv[1], reverse=True)[:5]
         ],
-        "winning_formats": [
-            key for key, _ in sorted(format_growth.items(), key=lambda kv: kv[1], reverse=True)[:5]
-        ],
+        "winning_formats": [key for key, _ in sorted(format_growth.items(), key=lambda kv: kv[1], reverse=True)[:5]],
         "winning_humanity_labels": [
-            key for key, _ in sorted(
+            key
+            for key, _ in sorted(
                 ((key, avg(values)) for key, values in label_scores.items()),
                 key=lambda kv: kv[1],
                 reverse=True,
@@ -228,8 +250,9 @@ def _learning_profile(top: list[dict], observations: list[dict],
     }
 
 
-def build_snapshot(markers: list[dict], statistics: dict[str, dict],
-                   retention: dict[str, dict] | None = None) -> tuple[dict, list[dict]]:
+def build_snapshot(
+    markers: list[dict], statistics: dict[str, dict], retention: dict[str, dict] | None = None
+) -> tuple[dict, list[dict]]:
     retention = retention or {}
     observations: list[dict] = []
     category: dict[str, list[float]] = defaultdict(list)
@@ -294,58 +317,62 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         category_growth[cat_key].append(growth_score)
         format_growth[story_format].append(growth_score)
         series[str(marker.get("series") or "Unassigned")].append(score)
-        observations.append({
-            "video_id": video_id,
-            "title": title,
-            "category": cat_key,
-            "series": str(marker.get("series") or "Unassigned"),
-            "score": growth_score or average_view_percentage or score,
-            "engagement_score": score,
-            "experiments": marker.get("experiments") or {},
-            "average_view_percentage": average_view_percentage,
-            "subscribers_gained": subscribers_gained,
-            "views_per_hour": vph,
-            "growth_score": growth_score,
-            "views": views,
-            "visual_profile": visual_profile,
-            "visual_ctr_score": visual_ctr_score,
-            "story_format": story_format,
-            "narrator_voice": str(marker.get("narrator_voice") or ""),
-            "humanity_score": humanity_score,
-            "humanity_label": humanity_label,
-            "studio_polished": studio_polished,
-            "studio_state": studio_state,
-            "retention_tier": _retention_tier(average_view_percentage),
-        })
-        top.append({
-            "video_id": video_id,
-            "title": title,
-            "views": views,
-            "engagement_score": score,
-            "growth_score": growth_score,
-            "views_per_hour": vph,
-            "share_url": marker.get("url", ""),
-            "category": cat_key,
-            "story_format": story_format,
-            "humanity_score": round(humanity_score, 3),
-            "humanity_label": humanity_label,
-            "studio_polished": studio_polished,
-            "studio_state": studio_state,
-            "average_view_percentage": round(average_view_percentage, 3),
-            "view_pct": round(average_view_percentage, 3),
-            "average_view_duration": round(average_view_duration, 3),
-            "subscribers_gained": subscribers_gained,
-            "visual_profile": visual_profile,
-            "visual_ctr_score": visual_ctr_score,
-            "postmortem": postmortem(
-                title=title,
-                hook=hook,
-                views=views,
-                views_per_hour=vph,
-                average_view_percentage=average_view_percentage,
-                growth_score=growth_score,
-            ),
-        })
+        observations.append(
+            {
+                "video_id": video_id,
+                "title": title,
+                "category": cat_key,
+                "series": str(marker.get("series") or "Unassigned"),
+                "score": growth_score or average_view_percentage or score,
+                "engagement_score": score,
+                "experiments": marker.get("experiments") or {},
+                "average_view_percentage": average_view_percentage,
+                "subscribers_gained": subscribers_gained,
+                "views_per_hour": vph,
+                "growth_score": growth_score,
+                "views": views,
+                "visual_profile": visual_profile,
+                "visual_ctr_score": visual_ctr_score,
+                "story_format": story_format,
+                "narrator_voice": str(marker.get("narrator_voice") or ""),
+                "humanity_score": humanity_score,
+                "humanity_label": humanity_label,
+                "studio_polished": studio_polished,
+                "studio_state": studio_state,
+                "retention_tier": _retention_tier(average_view_percentage),
+            }
+        )
+        top.append(
+            {
+                "video_id": video_id,
+                "title": title,
+                "views": views,
+                "engagement_score": score,
+                "growth_score": growth_score,
+                "views_per_hour": vph,
+                "share_url": marker.get("url", ""),
+                "category": cat_key,
+                "story_format": story_format,
+                "humanity_score": round(humanity_score, 3),
+                "humanity_label": humanity_label,
+                "studio_polished": studio_polished,
+                "studio_state": studio_state,
+                "average_view_percentage": round(average_view_percentage, 3),
+                "view_pct": round(average_view_percentage, 3),
+                "average_view_duration": round(average_view_duration, 3),
+                "subscribers_gained": subscribers_gained,
+                "visual_profile": visual_profile,
+                "visual_ctr_score": visual_ctr_score,
+                "postmortem": postmortem(
+                    title=title,
+                    hook=hook,
+                    views=views,
+                    views_per_hour=vph,
+                    average_view_percentage=average_view_percentage,
+                    growth_score=growth_score,
+                ),
+            }
+        )
     top.sort(key=lambda item: (item["growth_score"], item["views"], item["engagement_score"]), reverse=True)
     average = lambda values: round(sum(values) / len(values), 3) if values else 0.0
     category_avg_growth = {k: average(v) for k, v in sorted(category_growth.items())}
@@ -354,8 +381,7 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
     ranked_formats = sorted(format_avg_growth.items(), key=lambda kv: kv[1], reverse=True)
     best = ranked_categories[0][1] if ranked_categories else 0.0
     category_weights = {
-        key: round(1.0 + min(0.8, (score / best) * 0.8), 3) if best else 1.0
-        for key, score in ranked_categories
+        key: round(1.0 + min(0.8, (score / best) * 0.8), 3) if best else 1.0 for key, score in ranked_categories
     }
     for key, score_value in ranked_categories[-2:]:
         if best and score_value < best * 0.35:
@@ -407,17 +433,13 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
         "avg_view_percentage": average(retention_percentages),
         "avg_view_pct": average(retention_percentages),
         "subscribers_gained": total_subscribers_gained,
-        "below_60_pct": sorted([
-            video_id for video_id, item in retention.items()
-            if float(item.get("averageViewPercentage", 0) or 0) < 60
-        ]),
-        "below_62_pct": sorted([
-            video_id for video_id, item in retention.items()
-            if float(item.get("averageViewPercentage", 0) or 0) < 62
-        ]),
-        "category_avg_view_pct": {
-            key: average(values) for key, values in sorted(category_retention.items())
-        },
+        "below_60_pct": sorted(
+            [video_id for video_id, item in retention.items() if float(item.get("averageViewPercentage", 0) or 0) < 60]
+        ),
+        "below_62_pct": sorted(
+            [video_id for video_id, item in retention.items() if float(item.get("averageViewPercentage", 0) or 0) < 62]
+        ),
+        "category_avg_view_pct": {key: average(values) for key, values in sorted(category_retention.items())},
         "category_avg_engagement": {k: average(v) for k, v in sorted(category.items())},
         "category_avg_growth_score": category_avg_growth,
         "format_avg_growth_score": format_avg_growth,
@@ -444,7 +466,8 @@ def build_snapshot(markers: list[dict], statistics: dict[str, dict],
             "remake_candidates": remakes,
             "production_mix": brief.get("production_mix", {}),
             "double_down_titles": [
-                item["title"] for item in top[:5]
+                item["title"]
+                for item in top[:5]
                 if item.get("views", 0) > 0 and _recommendable_title(str(item.get("title") or ""))
             ],
             "next_actions": [
@@ -484,7 +507,8 @@ def main() -> int:
     snapshot, observations = build_snapshot(markers, stats, retention)
     ANALYTICS_DIR.mkdir(parents=True, exist_ok=True)
     (ANALYTICS_DIR / "latest.json").write_text(
-        json.dumps(snapshot, indent=2, ensure_ascii=False), encoding="utf-8",
+        json.dumps(snapshot, indent=2, ensure_ascii=False),
+        encoding="utf-8",
     )
     write_winners(compute_winners(observations), ANALYTICS_DIR / "experiments.json")
     print(f"analytics: refreshed {snapshot['shorts_tracked']} Shorts")

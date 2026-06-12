@@ -24,6 +24,7 @@ forced). We only mention past coverage when there's a clear entity
 overlap with high-relevance prior coverage, and the prompt lets the
 LLM skip the callback if it doesn't fit naturally.
 """
+
 from __future__ import annotations
 
 import json
@@ -36,41 +37,58 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-MEMORY_LOG = Path(os.environ.get("CHANNEL_MEMORY_LOG",
-                                   "_data/channel_memory.jsonl"))
+MEMORY_LOG = Path(os.environ.get("CHANNEL_MEMORY_LOG", "_data/channel_memory.jsonl"))
 # How far back to look for callback candidates.
 LOOKBACK_DAYS = int(os.environ.get("CHANNEL_MEMORY_LOOKBACK_DAYS", "30"))
 # Max entries we keep on disk. Older ones get pruned.
 MAX_ENTRIES = int(os.environ.get("CHANNEL_MEMORY_MAX_ENTRIES", "500"))
 
 _ANGLE_STOPWORDS = {
-    "animal", "animals", "brief", "secret", "secrets", "facts", "fact",
-    "here", "really", "this", "that", "their", "your", "with", "from",
-    "why", "how", "what", "when", "they", "them", "because",
+    "animal",
+    "animals",
+    "brief",
+    "secret",
+    "secrets",
+    "facts",
+    "fact",
+    "here",
+    "really",
+    "this",
+    "that",
+    "their",
+    "your",
+    "with",
+    "from",
+    "why",
+    "how",
+    "what",
+    "when",
+    "they",
+    "them",
+    "because",
 }
 
 
 def remember(story: dict) -> None:
     """Append a story's core facts to the memory ledger. Best-effort."""
     entry = {
-        "ts":          time.time(),
-        "iso":         datetime.now(timezone.utc).isoformat(),
-        "slug":        story.get("slug") or story.get("id"),
-        "title":       (story.get("seo_title") or story.get("title", ""))[:200],
-        "hook":        (story.get("hook") or "")[:240],
-        "category":    story.get("category", ""),
-        "geo":         story.get("geo_hashtag", ""),
-        "topic":       story.get("topic_hashtag", ""),
-        "subject":     story.get("editorial", {}).get("subject", ""),
-        "angle_key":   angle_key(story),
-        "series":      story.get("series", ""),
-        "source":      story.get("source", ""),
-        "language":    story.get("language", "en"),
+        "ts": time.time(),
+        "iso": datetime.now(timezone.utc).isoformat(),
+        "slug": story.get("slug") or story.get("id"),
+        "title": (story.get("seo_title") or story.get("title", ""))[:200],
+        "hook": (story.get("hook") or "")[:240],
+        "category": story.get("category", ""),
+        "geo": story.get("geo_hashtag", ""),
+        "topic": story.get("topic_hashtag", ""),
+        "subject": story.get("editorial", {}).get("subject", ""),
+        "angle_key": angle_key(story),
+        "series": story.get("series", ""),
+        "source": story.get("source", ""),
+        "language": story.get("language", "en"),
         # Entities = the AI-picked search tags from yt_tags. The first
         # three are the entity-driven ones per the fetch_animals prompt
         # contract.
-        "entities":    [t for t in (story.get("yt_tags") or [])[:3]
-                         if isinstance(t, str)],
+        "entities": [t for t in (story.get("yt_tags") or [])[:3] if isinstance(t, str)],
     }
     if not entry["slug"]:
         return
@@ -107,18 +125,46 @@ _WORD_RE = re.compile(r"[A-Za-z][A-Za-z\-']{2,}")
 
 def _tokenise(text: str) -> set[str]:
     """Lowercase non-stopword tokens, 3+ chars."""
-    return {w.lower() for w in _WORD_RE.findall(text)
-             if w.lower() not in {"the", "and", "for", "with", "from",
-                                    "that", "this", "are", "was", "were",
-                                    "but", "not", "you", "your", "have",
-                                    "has", "had", "they", "them", "into"}}
+    return {
+        w.lower()
+        for w in _WORD_RE.findall(text)
+        if w.lower()
+        not in {
+            "the",
+            "and",
+            "for",
+            "with",
+            "from",
+            "that",
+            "this",
+            "are",
+            "was",
+            "were",
+            "but",
+            "not",
+            "you",
+            "your",
+            "have",
+            "has",
+            "had",
+            "they",
+            "them",
+            "into",
+        }
+    }
 
 
 def angle_key(story: dict) -> str:
     """Stable coarse angle key: subject + strongest non-generic terms."""
-    title_text = " ".join(str(story.get(k) or "") for k in (
-        "seo_title", "title", "hook", "thumbnail_text",
-    ))
+    title_text = " ".join(
+        str(story.get(k) or "")
+        for k in (
+            "seo_title",
+            "title",
+            "hook",
+            "thumbnail_text",
+        )
+    )
     tokens = []
     for token in _WORD_RE.findall(title_text):
         token = token.lower()
@@ -135,9 +181,9 @@ def angle_key(story: dict) -> str:
     return "-".join(base)
 
 
-def find_callback_candidates(story: dict, max_candidates: int = 2,
-                              path: Path | None = None,
-                              days: int = LOOKBACK_DAYS) -> list[dict]:
+def find_callback_candidates(
+    story: dict, max_candidates: int = 2, path: Path | None = None, days: int = LOOKBACK_DAYS
+) -> list[dict]:
     """Return up to N past stories that share entities/topics with `story`.
 
     Ranking: shared entities (exact match) are worth 3 points each;
@@ -149,8 +195,7 @@ def find_callback_candidates(story: dict, max_candidates: int = 2,
     """
     if max_candidates <= 0:
         return []
-    target_entities = {e.lower() for e in (story.get("yt_tags") or [])[:5]
-                        if isinstance(e, str)}
+    target_entities = {e.lower() for e in (story.get("yt_tags") or [])[:5] if isinstance(e, str)}
     target_topic = (story.get("topic_hashtag") or "").lower()
     target_geo = (story.get("geo_hashtag") or "").lower()
     title_text = f"{story.get('seo_title','')} {story.get('hook','')}"
@@ -182,8 +227,7 @@ def find_callback_candidates(story: dict, max_candidates: int = 2,
     return [s[1] for s in scored[:max_candidates]]
 
 
-def recent_angle_repeat(story: dict, days: int = 10,
-                        path: Path | None = None) -> bool:
+def recent_angle_repeat(story: dict, days: int = 10, path: Path | None = None) -> bool:
     """Return True when the same coarse angle appeared recently."""
     key = angle_key(story)
     if not key:
@@ -208,10 +252,8 @@ def callback_prompt_block(candidates: list[dict]) -> str:
         "RECENT COVERAGE YOU (the host) ALREADY BROADCAST:",
     ]
     for c in candidates[:2]:
-        when = (c.get("iso", "")[:10] or "recently")
-        lines.append(
-            f'- On {when}: "{c.get("hook", "").strip()}"'
-        )
+        when = c.get("iso", "")[:10] or "recently"
+        lines.append(f'- On {when}: "{c.get("hook", "").strip()}"')
     lines.append(
         "If this new story is a clear continuation, you MAY weave in "
         "ONE short callback line ('I called this out last week — here's "

@@ -5,6 +5,7 @@ scripts or call a paid model; it scores the material we already have so
 the automation can prefer stories that feel watched, felt, and edited by
 a real host.
 """
+
 from __future__ import annotations
 
 import re
@@ -33,8 +34,7 @@ _BODY_DETAIL_RE = re.compile(
     re.IGNORECASE,
 )
 _GENERIC_TITLE_RE = re.compile(
-    r"\b(amazing|incredible|you won't believe|mind[- ]?blowing|crazy|"
-    r"animal fact|did you know)\b",
+    r"\b(amazing|incredible|you won't believe|mind[- ]?blowing|crazy|" r"animal fact|did you know)\b",
     re.IGNORECASE,
 )
 _ANIMAL_RE = re.compile(
@@ -73,9 +73,17 @@ def _sentence(text: str) -> str:
 
 
 def _animal_name(story: dict) -> str:
-    haystack = " ".join(str(story.get(k) or "") for k in (
-        "title", "seo_title", "hook", "script", "description", "category",
-    ))
+    haystack = " ".join(
+        str(story.get(k) or "")
+        for k in (
+            "title",
+            "seo_title",
+            "hook",
+            "script",
+            "description",
+            "category",
+        )
+    )
     match = _ANIMAL_RE.search(haystack)
     return match.group(0).lower() if match else "this animal"
 
@@ -102,7 +110,8 @@ def _details(story: dict) -> tuple[str, str]:
 
 def _thumbnail_from_hook(hook: str, animal: str) -> str:
     words = [
-        w.upper() for w in re.findall(r"[A-Za-z0-9]+", hook)
+        w.upper()
+        for w in re.findall(r"[A-Za-z0-9]+", hook)
         if w.lower() not in {"this", "that", "your", "their", "they", "can", "the", "and", "why"}
     ]
     if len(words) >= 2:

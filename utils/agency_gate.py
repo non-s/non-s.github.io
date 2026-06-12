@@ -1,4 +1,5 @@
 """Publish gate for agency-level production controls."""
+
 from __future__ import annotations
 
 import json
@@ -29,11 +30,7 @@ def _safe_json(path: Path) -> dict:
 
 def load_rewrite_ids(path: Path | None = None) -> set[str]:
     payload = _safe_json(path or REWRITE_QUEUE)
-    return {
-        str(item.get("id") or "")
-        for item in (payload.get("items") or [])
-        if str(item.get("id") or "")
-    }
+    return {str(item.get("id") or "") for item in (payload.get("items") or []) if str(item.get("id") or "")}
 
 
 def load_recovery_plans(path: Path | None = None) -> dict[str, dict]:
@@ -60,8 +57,7 @@ def load_success_plan(path: Path | None = None) -> dict:
 
 def _story_text(story: dict) -> str:
     return " ".join(
-        str(story.get(key) or "")
-        for key in ("seo_title", "title", "hook", "script", "thumbnail_text")
+        str(story.get(key) or "") for key in ("seo_title", "title", "hook", "script", "thumbnail_text")
     ).lower()
 
 
@@ -81,8 +77,7 @@ def success_allows(story: dict, success_plan: dict) -> tuple[bool, list[str]]:
     category = str(story.get("category") or "").lower()
     retention = success_plan.get("retention") or {}
     recovery_categories = {
-        str(item.get("category") or "").lower()
-        for item in (retention.get("recovery_categories") or [])
+        str(item.get("category") or "").lower() for item in (retention.get("recovery_categories") or [])
     }
     if category in recovery_categories:
         story_format = str(story.get("story_format") or classify_format(text))
@@ -109,9 +104,10 @@ def recovery_allows(story: dict, plan: dict) -> bool:
     if surgery.get("verdict") == "rewrite":
         return False
     allowed_formats = set(str(item) for item in (plan.get("allowed_formats") or []))
-    story_format = str(story.get("story_format") or classify_format(
-        f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-    ))
+    story_format = str(
+        story.get("story_format")
+        or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}")
+    )
     if allowed_formats and story_format not in allowed_formats:
         return False
     words = len(str(story.get("script") or "").split())
@@ -140,19 +136,25 @@ def production_allows(story: dict) -> tuple[bool, list[str], dict]:
         reasons.append("fact_guard_block")
     if not editorial.get("approved"):
         reasons.extend(f"editorial_{issue}" for issue in editorial.get("issues") or [])
-    return not reasons, sorted(set(reasons)), {
-        "rights_audit": rights,
-        "rights_guard": rights_guard,
-        "claim_risk": claim,
-        "editorial_guard": editorial,
-    }
+    return (
+        not reasons,
+        sorted(set(reasons)),
+        {
+            "rights_audit": rights,
+            "rights_guard": rights_guard,
+            "claim_risk": claim,
+            "editorial_guard": editorial,
+        },
+    )
 
 
-def evaluate_story(story: dict,
-                   rewrite_ids: set[str] | None = None,
-                   recovery_plans: dict[str, dict] | None = None,
-                   duplicate_ids: set[str] | None = None,
-                   success_plan: dict | None = None) -> dict:
+def evaluate_story(
+    story: dict,
+    rewrite_ids: set[str] | None = None,
+    recovery_plans: dict[str, dict] | None = None,
+    duplicate_ids: set[str] | None = None,
+    success_plan: dict | None = None,
+) -> dict:
     rewrite_ids = rewrite_ids if rewrite_ids is not None else load_rewrite_ids()
     recovery_plans = recovery_plans if recovery_plans is not None else load_recovery_plans()
     duplicate_ids = duplicate_ids if duplicate_ids is not None else load_duplicate_ids()
@@ -181,11 +183,13 @@ def evaluate_story(story: dict,
     }
 
 
-def filter_candidates(candidates: list[dict],
-                      rewrite_ids: set[str] | None = None,
-                      recovery_plans: dict[str, dict] | None = None,
-                      duplicate_ids: set[str] | None = None,
-                      success_plan: dict | None = None) -> tuple[list[dict], list[dict]]:
+def filter_candidates(
+    candidates: list[dict],
+    rewrite_ids: set[str] | None = None,
+    recovery_plans: dict[str, dict] | None = None,
+    duplicate_ids: set[str] | None = None,
+    success_plan: dict | None = None,
+) -> tuple[list[dict], list[dict]]:
     rewrite_ids = rewrite_ids if rewrite_ids is not None else load_rewrite_ids()
     recovery_plans = recovery_plans if recovery_plans is not None else load_recovery_plans()
     duplicate_ids = duplicate_ids if duplicate_ids is not None else load_duplicate_ids()

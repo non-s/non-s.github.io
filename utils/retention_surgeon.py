@@ -5,6 +5,7 @@ automation a local "retention surgeon" that can explain why a Short may
 lose viewers early and what to fix before remaking or publishing a
 similar angle.
 """
+
 from __future__ import annotations
 
 import re
@@ -13,16 +14,57 @@ from utils.growth_engine import analyze_retention
 
 
 WEAK_OPENERS = {
-    "did you know", "today", "in this video", "this animal", "animals are",
-    "welcome", "according to", "scientists say",
+    "did you know",
+    "today",
+    "in this video",
+    "this animal",
+    "animals are",
+    "welcome",
+    "according to",
+    "scientists say",
 }
 PAYOFF_VERBS = {
-    "remember", "recognize", "escape", "survive", "hide", "hunt", "heal",
-    "use", "uses", "plan", "plans", "love", "loves", "see", "sees",
-    "hear", "hears", "change", "changes", "protect", "protects",
-    "choose", "chooses", "catch", "catches", "talk", "calls",
-    "erupt", "erupts", "form", "forms", "freeze", "freezes", "melt",
-    "melts", "recover", "recovers", "connect", "connects", "flow", "flows",
+    "remember",
+    "recognize",
+    "escape",
+    "survive",
+    "hide",
+    "hunt",
+    "heal",
+    "use",
+    "uses",
+    "plan",
+    "plans",
+    "love",
+    "loves",
+    "see",
+    "sees",
+    "hear",
+    "hears",
+    "change",
+    "changes",
+    "protect",
+    "protects",
+    "choose",
+    "chooses",
+    "catch",
+    "catches",
+    "talk",
+    "calls",
+    "erupt",
+    "erupts",
+    "form",
+    "forms",
+    "freeze",
+    "freezes",
+    "melt",
+    "melts",
+    "recover",
+    "recovers",
+    "connect",
+    "connects",
+    "flow",
+    "flows",
 }
 
 

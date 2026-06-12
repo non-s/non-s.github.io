@@ -1,4 +1,5 @@
 """Human-feel heuristics for Wild Brief narration."""
+
 from __future__ import annotations
 
 import re

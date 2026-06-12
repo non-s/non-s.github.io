@@ -3,6 +3,7 @@
 This module does not pretend to be magic. It turns the channel's own
 analytics, queue health and API coverage into explicit operating decisions.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -22,15 +23,39 @@ def _slug(text: str) -> str:
 
 
 ANIMAL_ALIASES = {
-    "ducklings": "ducklings", "duckling": "ducklings", "ducks": "ducks", "duck": "ducks",
-    "cows": "cows", "cow": "cows", "goats": "goats", "goat": "goats",
-    "chickens": "chickens", "chicken": "chickens", "deer": "deer",
-    "bears": "bears", "bear": "bears", "elephants": "elephants", "elephant": "elephants",
-    "cats": "cats", "cat": "cats", "dogs": "dogs", "dog": "dogs",
-    "birds": "birds", "bird": "birds", "whales": "whales", "whale": "whales",
-    "dolphins": "dolphins", "dolphin": "dolphins", "tigers": "tigers", "tiger": "tigers",
-    "lions": "lions", "lion": "lions", "snakes": "snakes", "snake": "snakes",
-    "reptiles": "reptiles", "reptile": "reptiles",
+    "ducklings": "ducklings",
+    "duckling": "ducklings",
+    "ducks": "ducks",
+    "duck": "ducks",
+    "cows": "cows",
+    "cow": "cows",
+    "goats": "goats",
+    "goat": "goats",
+    "chickens": "chickens",
+    "chicken": "chickens",
+    "deer": "deer",
+    "bears": "bears",
+    "bear": "bears",
+    "elephants": "elephants",
+    "elephant": "elephants",
+    "cats": "cats",
+    "cat": "cats",
+    "dogs": "dogs",
+    "dog": "dogs",
+    "birds": "birds",
+    "bird": "birds",
+    "whales": "whales",
+    "whale": "whales",
+    "dolphins": "dolphins",
+    "dolphin": "dolphins",
+    "tigers": "tigers",
+    "tiger": "tigers",
+    "lions": "lions",
+    "lion": "lions",
+    "snakes": "snakes",
+    "snake": "snakes",
+    "reptiles": "reptiles",
+    "reptile": "reptiles",
 }
 
 CUE_ALIASES = {
@@ -157,16 +182,18 @@ def sequel_candidates(latest: dict, limit: int = 8) -> list[dict]:
         category = str(item.get("category") or "wildlife")
         story_format = str(item.get("story_format") or "single_fact")
         seed = f"{item.get('video_id')}:{title}:sequel"
-        out.append({
-            "source_video_id": item.get("video_id", ""),
-            "source_title": title,
-            "category": category,
-            "story_format": story_format,
-            "growth_score": round(growth, 3),
-            "views": views,
-            "sequel_brief": _sequel_brief(title),
-            "sequel_id": "sequel-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16],
-        })
+        out.append(
+            {
+                "source_video_id": item.get("video_id", ""),
+                "source_title": title,
+                "category": category,
+                "story_format": story_format,
+                "growth_score": round(growth, 3),
+                "views": views,
+                "sequel_brief": _sequel_brief(title),
+                "sequel_id": "sequel-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16],
+            }
+        )
         if len(out) >= limit:
             break
     return out
@@ -289,11 +316,7 @@ def append_sequels(queue: dict, candidates: list[dict], limit: int = 5) -> tuple
     return out, created
 
 
-def build_director(latest: dict,
-                   youtube_intelligence: dict,
-                   health: dict,
-                   ops: dict,
-                   fact_ledger: dict) -> dict:
+def build_director(latest: dict, youtube_intelligence: dict, health: dict, ops: dict, fact_ledger: dict) -> dict:
     category_growth = _rank_map(latest.get("category_avg_growth_score") or {})
     format_growth = _rank_map(latest.get("format_avg_growth_score") or {})
     conversion = subscriber_conversion(latest)

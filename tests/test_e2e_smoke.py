@@ -16,6 +16,7 @@ Pexels, Whisper, FFmpeg, YouTube) and assert that:
 When any wiring breaks, this test goes red â€” way faster than waiting
 for CI to fail in production.
 """
+
 from __future__ import annotations
 
 import json
@@ -33,46 +34,46 @@ pytest.importorskip("PIL")
 def fake_queue_story():
     """The shape fetch_animals.py produces and generate_shorts.py expects."""
     return {
-        "id":             "abc123",
-        "fetched_at":     "2026-05-18T12:00:00+00:00",
-        "published_at":   "2026-05-18T11:00:00+00:00",
-        "consumed":       False,
-        "consumed_at":    None,
-        "title":          "Octopus camouflage happens faster than you think",
-        "url":            "https://www.pexels.com/video/octopus/",
-        "source":         "Pexels",
-        "category":       "ocean",
-        "description":    "Octopuses can rapidly change colour and skin texture. "
-                          "Specialised cells help them blend into reefs and rocks. "
-                          "The effect is a remarkable form of camouflage.",
-        "image_url":      "",
-        "breaking":       True,
-        "relevance":      8.5,
-        "native_lang":    "en",
-        "score":          9,
-        "seo_title":      "Octopus camouflage happens in seconds",
-        "yt_tags":        ["octopus", "camouflage", "cephalopod", "animal facts"],
-        "geo_hashtag":    "Ocean",
-        "topic_hashtag":  "Octopus",
+        "id": "abc123",
+        "fetched_at": "2026-05-18T12:00:00+00:00",
+        "published_at": "2026-05-18T11:00:00+00:00",
+        "consumed": False,
+        "consumed_at": None,
+        "title": "Octopus camouflage happens faster than you think",
+        "url": "https://www.pexels.com/video/octopus/",
+        "source": "Pexels",
+        "category": "ocean",
+        "description": "Octopuses can rapidly change colour and skin texture. "
+        "Specialised cells help them blend into reefs and rocks. "
+        "The effect is a remarkable form of camouflage.",
+        "image_url": "",
+        "breaking": True,
+        "relevance": 8.5,
+        "native_lang": "en",
+        "score": 9,
+        "seo_title": "Octopus camouflage happens in seconds",
+        "yt_tags": ["octopus", "camouflage", "cephalopod", "animal facts"],
+        "geo_hashtag": "Ocean",
+        "topic_hashtag": "Octopus",
         "yt_description": "This octopus can change colour and skin texture in seconds.\n"
-                          "Source: Pexels\n#Shorts #AnimalFacts #Octopus",
+        "Source: Pexels\n#Shorts #AnimalFacts #Octopus",
         "thumbnail_text": "INVISIBLE IN SECONDS",
-        "hook":           "This octopus can disappear against a reef in seconds.",
-        "script":         ("This octopus can disappear against a reef in seconds. "
-                           "I love this detail: its skin cells shift colour while "
-                           "tiny muscles roughen the texture. That's why it can "
-                           "match coral, rocks, and sand even while moving. "
-                           "Which ocean animal should we decode next?"),
-        "lead":           "Octopus camouflage changes in seconds.",
-        "key_points":     ["rapid colour shift",
-                           "skin texture changes",
-                           "reef camouflage"],
-        "sentiment":      "positive",
-        "experiments":    {
-            "hook_style":      "outcome_first",
-            "script_tone":     "opinionated",
+        "hook": "This octopus can disappear against a reef in seconds.",
+        "script": (
+            "This octopus can disappear against a reef in seconds. "
+            "I love this detail: its skin cells shift colour while "
+            "tiny muscles roughen the texture. That's why it can "
+            "match coral, rocks, and sand even while moving. "
+            "Which ocean animal should we decode next?"
+        ),
+        "lead": "Octopus camouflage changes in seconds.",
+        "key_points": ["rapid colour shift", "skin texture changes", "reef camouflage"],
+        "sentiment": "positive",
+        "experiments": {
+            "hook_style": "outcome_first",
+            "script_tone": "opinionated",
             "thumbnail_style": "dynamic_text",
-            "cta_style":       "subscribe_channel",
+            "cta_style": "subscribe_channel",
         },
     }
 
@@ -100,6 +101,7 @@ def _stub_image_chain(monkeypatch, gs):
     # Pillow opens the JPEG â€” give it a real one. We use a 1x1 fake
     # that PIL will accept and create_short_frame will paste over.
     from PIL import Image
+
     real_jpeg = Image.new("RGB", (1080, 1920), (8, 8, 18))
 
     def fake_solid_bg(category, dest):
@@ -111,6 +113,7 @@ def _stub_image_chain(monkeypatch, gs):
 
 def _stub_tts_and_captions(monkeypatch, gs):
     """No real TTS, no real Whisper, no real Archive download."""
+
     async def fake_tts(text, output_path, voice, **_kw):
         output_path.write_bytes(b"ID3" + b"\x00" * 10_000)
 
@@ -134,15 +137,16 @@ def _stub_broll_acquisition(monkeypatch, gs):
     monkeypatch.setattr(gs, "acquire_broll_clips", fake_broll)
 
 
-def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
-                                                    fake_queue_story):
+def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path, fake_queue_story):
     """Walk one story all the way through generate_short() and assert
     we ended with a valid metadata sidecar."""
     import importlib, sys
+
     if "generate_shorts" in sys.modules:
         del sys.modules["generate_shorts"]
     monkeypatch.chdir(tmp_path)
     import generate_shorts as gs
+
     importlib.reload(gs)
 
     _stub_image_chain(monkeypatch, gs)
@@ -152,29 +156,32 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
 
     # Wrap story to match what _queue_to_story emits.
     story = {
-        "slug":           "test-slug",
-        "title":          fake_queue_story["seo_title"],
-        "description":    fake_queue_story["description"],
-        "source":         fake_queue_story["source"],
-        "source_url":     fake_queue_story["url"],
-        "image_url":      fake_queue_story["image_url"],
-        "tags":           [fake_queue_story["category"]],
-        "category":       fake_queue_story["category"],
-        "date":           "2026-05-18",
-        "hook":           fake_queue_story["hook"],
-        "script":         fake_queue_story["script"],
+        "slug": "test-slug",
+        "title": fake_queue_story["seo_title"],
+        "description": fake_queue_story["description"],
+        "source": fake_queue_story["source"],
+        "source_url": fake_queue_story["url"],
+        "image_url": fake_queue_story["image_url"],
+        "tags": [fake_queue_story["category"]],
+        "category": fake_queue_story["category"],
+        "date": "2026-05-18",
+        "hook": fake_queue_story["hook"],
+        "script": fake_queue_story["script"],
         "thumbnail_text": fake_queue_story["thumbnail_text"],
-        "key_points":     fake_queue_story["key_points"],
-        "yt_tags":        fake_queue_story["yt_tags"],
+        "key_points": fake_queue_story["key_points"],
+        "yt_tags": fake_queue_story["yt_tags"],
         "yt_description": fake_queue_story["yt_description"],
-        "geo_hashtag":    fake_queue_story["geo_hashtag"],
-        "topic_hashtag":  fake_queue_story["topic_hashtag"],
+        "geo_hashtag": fake_queue_story["geo_hashtag"],
+        "topic_hashtag": fake_queue_story["topic_hashtag"],
         "discovery_hashtags": [
-            "wildlife", "wildanimals", "safari", "funfacts",
+            "wildlife",
+            "wildanimals",
+            "safari",
+            "funfacts",
         ],
-        "_queue_id":      fake_queue_story["id"],
-        "native_lang":    "en",
-        "experiments":    fake_queue_story["experiments"],
+        "_queue_id": fake_queue_story["id"],
+        "native_lang": "en",
+        "experiments": fake_queue_story["experiments"],
     }
 
     tmp = tmp_path / "tmp_run"
@@ -185,9 +192,19 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
 
     # Verify the metadata sidecar has every field upload_youtube.py reads.
     required = {
-        "title", "description", "tags", "youtube_privacy", "youtube_category_id",
-        "thumbnail", "video", "story_slug", "created_at",
-        "thumbnail_hook", "source", "experiments", "channel_handle",
+        "title",
+        "description",
+        "tags",
+        "youtube_privacy",
+        "youtube_category_id",
+        "thumbnail",
+        "video",
+        "story_slug",
+        "created_at",
+        "thumbnail_hook",
+        "source",
+        "experiments",
+        "channel_handle",
     }
     missing = required - metadata.keys()
     assert missing == set(), f"missing metadata fields: {missing}"
@@ -208,14 +225,15 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path,
     assert saved["title"] == metadata["title"]
 
 
-def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
-                                                fake_queue_story):
+def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path, fake_queue_story):
     """A bad story (banned phrases + weak hook) should be skipped."""
     import importlib, sys
+
     if "generate_shorts" in sys.modules:
         del sys.modules["generate_shorts"]
     monkeypatch.chdir(tmp_path)
     import generate_shorts as gs
+
     importlib.reload(gs)
     _stub_image_chain(monkeypatch, gs)
     _stub_tts_and_captions(monkeypatch, gs)
@@ -223,15 +241,25 @@ def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path,
     _silence_ffmpeg(monkeypatch, gs)
 
     slop_story = dict(
-        slug="slop-slug", title="Octopus camouflage fact",
+        slug="slop-slug",
+        title="Octopus camouflage fact",
         description="Octopus camouflage fact today.",
-        source="Pexels", source_url="https://e", image_url="",
-        tags=["octopus"], category="ocean", date="2026-05-18",
+        source="Pexels",
+        source_url="https://e",
+        image_url="",
+        tags=["octopus"],
+        category="ocean",
+        date="2026-05-18",
         hook="Today this octopus changed colour.",  # weak opener
         script="Today this octopus changed colour. This is a crucial pivotal moment.",
-        thumbnail_text="OCTOPUS", key_points=[], yt_tags=[],
-        yt_description="x", geo_hashtag="Ocean", topic_hashtag="Octopus",
-        _queue_id="slop-id", native_lang="en",
+        thumbnail_text="OCTOPUS",
+        key_points=[],
+        yt_tags=[],
+        yt_description="x",
+        geo_hashtag="Ocean",
+        topic_hashtag="Octopus",
+        _queue_id="slop-id",
+        native_lang="en",
         # seo_title same as source title is also a flag.
         experiments={},
     )

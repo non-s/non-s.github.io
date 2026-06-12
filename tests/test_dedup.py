@@ -1,4 +1,5 @@
 """Tests for utils/dedup.py"""
+
 import pytest
 from utils.dedup import levenshtein, titles_too_similar, title_similarity
 

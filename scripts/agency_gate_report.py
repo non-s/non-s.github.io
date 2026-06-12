@@ -41,12 +41,14 @@ def main() -> int:
             approved += 1
         else:
             reasons.update(verdict["reasons"])
-            held.append({
-                "id": story.get("id", ""),
-                "title": story.get("seo_title") or story.get("title", ""),
-                "category": story.get("category", ""),
-                "reasons": verdict["reasons"],
-            })
+            held.append(
+                {
+                    "id": story.get("id", ""),
+                    "title": story.get("seo_title") or story.get("title", ""),
+                    "category": story.get("category", ""),
+                    "reasons": verdict["reasons"],
+                }
+            )
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "approved": approved,

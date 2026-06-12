@@ -1,4 +1,5 @@
 """Tests for utils/intro_outro.py — cache + concat behaviour, no real TTS."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -28,8 +29,7 @@ def test_wrap_with_intro_outro_disabled_returns_body(tmp_path, monkeypatch):
     monkeypatch.setattr(intro_outro, "ENABLED", False)
     body = tmp_path / "body.mp3"
     body.write_bytes(b"BODY")
-    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural",
-                                              tmp_dir=tmp_path)
+    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural", tmp_dir=tmp_path)
     assert out == body
 
 
@@ -38,8 +38,7 @@ def test_wrap_with_intro_outro_falls_back_when_render_fails(tmp_path, monkeypatc
     monkeypatch.setattr(intro_outro, "get_or_render", lambda *a, **kw: None)
     body = tmp_path / "body.mp3"
     body.write_bytes(b"BODY")
-    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural",
-                                              tmp_dir=tmp_path)
+    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural", tmp_dir=tmp_path)
     # Both intro + outro returned None → original body returned unchanged.
     assert out == body
 
@@ -65,8 +64,7 @@ def test_wrap_with_intro_outro_concats_when_renders_succeed(tmp_path, monkeypatc
         return True
 
     monkeypatch.setattr(intro_outro, "concat_audio", fake_concat)
-    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural",
-                                              tmp_dir=tmp_path)
+    out = intro_outro.wrap_with_intro_outro(body, voice="en-US-AriaNeural", tmp_dir=tmp_path)
     assert out != body
     assert out.read_bytes() == b"WRAPPED"
 

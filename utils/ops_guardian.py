@@ -5,6 +5,7 @@ into decisions the bot can act on without paid services: risk level,
 paused topics, publish windows, visual-quality warnings and an executive
 report for the dashboard.
 """
+
 from __future__ import annotations
 
 import json
@@ -57,12 +58,14 @@ def _recommended_hours(root: Path, latest: dict) -> list[dict]:
         if not isinstance(item, dict):
             continue
         try:
-            out.append({
-                "utc_hour": int(item.get("utc_hour")),
-                "country": str(item.get("country") or "global"),
-                "views": int(item.get("views", 0) or 0),
-                "reason": "audience_cohort",
-            })
+            out.append(
+                {
+                    "utc_hour": int(item.get("utc_hour")),
+                    "country": str(item.get("country") or "global"),
+                    "views": int(item.get("views", 0) or 0),
+                    "reason": "audience_cohort",
+                }
+            )
         except Exception:
             continue
     if out:
@@ -95,19 +98,23 @@ def _paused_topics(latest: dict) -> list[dict]:
             continue
         growth = float((category_growth or {}).get(category, 0) or 0)
         if retention and retention < 45 and growth < 150:
-            paused.append({
-                "category": str(category),
-                "reason": "retention_below_45",
-                "retention": round(retention, 3),
-                "growth_score": round(growth, 3),
-            })
+            paused.append(
+                {
+                    "category": str(category),
+                    "reason": "retention_below_45",
+                    "retention": round(retention, 3),
+                    "growth_score": round(growth, 3),
+                }
+            )
         elif avg_retention and retention < max(40, avg_retention - 15) and growth < 100:
-            paused.append({
-                "category": str(category),
-                "reason": "under_channel_average",
-                "retention": round(retention, 3),
-                "growth_score": round(growth, 3),
-            })
+            paused.append(
+                {
+                    "category": str(category),
+                    "reason": "under_channel_average",
+                    "retention": round(retention, 3),
+                    "growth_score": round(growth, 3),
+                }
+            )
     return sorted(paused, key=lambda item: (item["retention"], item["growth_score"]))[:8]
 
 
@@ -151,16 +158,14 @@ def _visual_quality(markers: list[dict]) -> dict:
 def _series_plan(latest: dict, queue: dict) -> dict:
     series_perf = latest.get("series_avg_engagement") or {}
     top_series = [
-        str(key) for key, _ in sorted(
+        str(key)
+        for key, _ in sorted(
             series_perf.items(),
             key=lambda kv: float(kv[1] or 0),
             reverse=True,
         )[:5]
     ]
-    stories = [
-        item for item in (queue.get("stories") or [])
-        if isinstance(item, dict) and not item.get("consumed")
-    ]
+    stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     queue_categories = Counter(str(item.get("category") or "unknown") for item in stories)
     return {
         "top_series": top_series,
@@ -171,10 +176,7 @@ def _series_plan(latest: dict, queue: dict) -> dict:
 
 
 def _inventory_forecast(queue: dict, scheduler: dict) -> dict:
-    stories = [
-        item for item in (queue.get("stories") or [])
-        if isinstance(item, dict) and not item.get("consumed")
-    ]
+    stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     pending = len(stories)
     windows = scheduler.get("recommended_utc_hours") or []
     daily_posts = max(1, min(4, len(windows) or 3))
@@ -240,11 +242,13 @@ def build_ops_report(root: Path | str = ".") -> dict:
     inventory = _inventory_forecast(queue, scheduler)
     paused_names = {item["category"] for item in paused}
     scale_categories = [
-        item for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:5]
+        item
+        for item in (latest.get("production_recommendations") or {}).get("hot_categories", [])[:5]
         if str(item) not in paused_names
     ]
     remake_candidates = [
-        item for item in (latest.get("remake_candidates") or [])
+        item
+        for item in (latest.get("remake_candidates") or [])
         if isinstance(item, dict) and _recommendable_title(str(item.get("title") or ""))
     ][:8]
     report = {

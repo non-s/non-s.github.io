@@ -4,6 +4,7 @@ The goal is to keep recommendations useful while the channel is still
 collecting data. Strong strategy changes require enough samples and enough
 observed metrics; small or estimated signals stay in observation mode.
 """
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -46,8 +47,7 @@ def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
     return max(low, min(high, value))
 
 
-def data_quality_from_counts(*, observed: int = 0, inferred: int = 0,
-                             estimated: int = 0, missing: int = 0) -> dict:
+def data_quality_from_counts(*, observed: int = 0, inferred: int = 0, estimated: int = 0, missing: int = 0) -> dict:
     counts = {
         "observed": int(observed or 0),
         "inferred": int(inferred or 0),
@@ -68,10 +68,16 @@ def data_quality_from_counts(*, observed: int = 0, inferred: int = 0,
     }
 
 
-def assess_confidence(axis: str, sample_size: int, *,
-                      observed: int = 0, inferred: int = 0,
-                      estimated: int = 0, missing: int = 0,
-                      minimum_sample_size: int | None = None) -> dict:
+def assess_confidence(
+    axis: str,
+    sample_size: int,
+    *,
+    observed: int = 0,
+    inferred: int = 0,
+    estimated: int = 0,
+    missing: int = 0,
+    minimum_sample_size: int | None = None,
+) -> dict:
     minimum = int(minimum_sample_size or MINIMUM_SAMPLE_RULES.get(axis, 5))
     sample_size = int(sample_size or 0)
     quality = data_quality_from_counts(

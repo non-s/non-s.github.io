@@ -1,4 +1,5 @@
 """Infer legacy visual QA coverage from uploaded marker metadata."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -44,12 +45,14 @@ def build_backfill_report(markers: list[dict]) -> dict:
             approved += 1
         else:
             rejected += 1
-        items.append({
-            "video_id": marker.get("video_id", ""),
-            "title": marker.get("title", ""),
-            "category": marker.get("category", ""),
-            "inferred": inferred,
-        })
+        items.append(
+            {
+                "video_id": marker.get("video_id", ""),
+                "title": marker.get("title", ""),
+                "category": marker.get("category", ""),
+                "inferred": inferred,
+            }
+        )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "legacy_unchecked": len(items),

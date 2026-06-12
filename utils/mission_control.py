@@ -1,4 +1,5 @@
 """Mission-control synthesis for Wild Brief operations."""
+
 from __future__ import annotations
 
 import re
@@ -21,8 +22,7 @@ def _title_issues(title: str) -> list[str]:
 def _title_tokens(title: str) -> set[str]:
     stop = {"about", "after", "their", "there", "these", "thing", "things", "watch", "where", "which", "while", "with"}
     return {
-        token for token in re.findall(r"[a-z0-9]+", str(title or "").lower())
-        if len(token) >= 5 and token not in stop
+        token for token in re.findall(r"[a-z0-9]+", str(title or "").lower()) if len(token) >= 5 and token not in stop
     }
 
 
@@ -36,10 +36,7 @@ def _safe_learning_keywords(latest: dict, learning: dict) -> list[str]:
         else:
             good.update(_title_tokens(title))
     stale = bad - good
-    return [
-        str(item) for item in _as_list(learning.get("winning_title_keywords"))
-        if str(item).lower() not in stale
-    ]
+    return [str(item) for item in _as_list(learning.get("winning_title_keywords")) if str(item).lower() not in stale]
 
 
 def _top_categories(latest: dict, limit: int = 5) -> list[str]:
@@ -50,7 +47,8 @@ def _top_categories(latest: dict, limit: int = 5) -> list[str]:
     growth = latest.get("category_avg_growth_score") or {}
     if isinstance(growth, dict):
         return [
-            str(key) for key, _ in sorted(
+            str(key)
+            for key, _ in sorted(
                 growth.items(),
                 key=lambda kv: float(kv[1] or 0),
                 reverse=True,
@@ -59,10 +57,9 @@ def _top_categories(latest: dict, limit: int = 5) -> list[str]:
     return []
 
 
-def build_mission_control(*,
-                          latest: dict | None = None,
-                          comments: dict | None = None,
-                          queue: dict | None = None) -> dict:
+def build_mission_control(
+    *, latest: dict | None = None, comments: dict | None = None, queue: dict | None = None
+) -> dict:
     """Combine analytics, comments and queue health into operator actions."""
     latest = latest or {}
     comments = comments or {}
@@ -74,41 +71,47 @@ def build_mission_control(*,
     queue_commands = _as_list(queue.get("commands"))
     requested_animals = [str(item) for item in _as_list(comments.get("requested_animals"))[:8]]
     viewer_prompts = [str(item) for item in _as_list(comments.get("content_prompts"))[:5]]
-    priority_topics = list(dict.fromkeys(
-        requested_animals
-        + _safe_learning_keywords(latest, learning)[:8]
-        + _top_categories(latest)
-    ))[:12]
+    priority_topics = list(
+        dict.fromkeys(requested_animals + _safe_learning_keywords(latest, learning)[:8] + _top_categories(latest))
+    )[:12]
 
     tasks: list[dict] = []
     if viewer_prompts:
-        tasks.append({
-            "priority": "high",
-            "task": "Turn the strongest viewer question into a Short candidate.",
-            "why": viewer_prompts[0],
-        })
+        tasks.append(
+            {
+                "priority": "high",
+                "task": "Turn the strongest viewer question into a Short candidate.",
+                "why": viewer_prompts[0],
+            }
+        )
     approved = int(queue.get("approved", 0) or 0)
     pending = int(queue.get("pending", 0) or 0)
     if pending and approved < 3:
-        tasks.append({
-            "priority": "high",
-            "task": "Refresh discovery before the next publish window.",
-            "why": "Approved queue is below the safety floor.",
-        })
+        tasks.append(
+            {
+                "priority": "high",
+                "task": "Refresh discovery before the next publish window.",
+                "why": "Approved queue is below the safety floor.",
+            }
+        )
     if int(queue_states.get("cooldown_subject", 0) or 0) > approved:
-        tasks.append({
-            "priority": "medium",
-            "task": "Shift discovery toward fresh subjects and new angles.",
-            "why": "Cooldown pressure is higher than approved inventory.",
-        })
+        tasks.append(
+            {
+                "priority": "medium",
+                "task": "Shift discovery toward fresh subjects and new angles.",
+                "why": "Cooldown pressure is higher than approved inventory.",
+            }
+        )
     for command in queue_commands[:3]:
         tasks.append({"priority": "medium", "task": str(command), "why": "Queue command center"})
     if not tasks:
-        tasks.append({
-            "priority": "normal",
-            "task": "Keep producing from the top approved candidate pool.",
-            "why": "No critical operational risk detected.",
-        })
+        tasks.append(
+            {
+                "priority": "normal",
+                "task": "Keep producing from the top approved candidate pool.",
+                "why": "No critical operational risk detected.",
+            }
+        )
 
     review_queue: list[dict] = []
     for item in _as_list(latest.get("top_performers"))[:5]:
@@ -118,18 +121,22 @@ def build_mission_control(*,
         display_title = title
         if issues:
             display_title = f"{video_id or 'unknown-video'} (title needs repair: {', '.join(issues[:3])})"
-        review_queue.append({
-            "title": display_title,
-            "video_id": video_id,
-            "reason": "Top performer: consider manual cover/title refinement and pinned comment.",
-            **({"source_title": title, "title_issues": issues} if issues else {}),
-        })
+        review_queue.append(
+            {
+                "title": display_title,
+                "video_id": video_id,
+                "reason": "Top performer: consider manual cover/title refinement and pinned comment.",
+                **({"source_title": title, "title_issues": issues} if issues else {}),
+            }
+        )
     for video_id in _as_list(learning.get("avoid_repeating_video_ids"))[:5]:
-        review_queue.append({
-            "title": "",
-            "video_id": video_id,
-            "reason": "Weak retention: avoid repeating this subject angle until the hook changes.",
-        })
+        review_queue.append(
+            {
+                "title": "",
+                "video_id": video_id,
+                "reason": "Weak retention: avoid repeating this subject angle until the hook changes.",
+            }
+        )
 
     status_counts = Counter(str(task.get("priority") or "normal") for task in tasks)
     return {

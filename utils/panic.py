@@ -10,6 +10,7 @@ b-roll downloads, FFmpeg renders, uploads. The check is intentionally
 free of dependencies so it always works, even if the rest of the
 pipeline is broken.
 """
+
 from __future__ import annotations
 
 import logging
@@ -46,6 +47,5 @@ def abort_if_halted(component: str = "pipeline") -> None:
     if not halted:
         return
     log.error("🛑 PANIC HALT engaged for %s — %s", component, reason)
-    log.error("   To resume: unset PANIC_HALT env var AND/OR delete %s",
-               PANIC_FLAG_FILE)
+    log.error("   To resume: unset PANIC_HALT env var AND/OR delete %s", PANIC_FLAG_FILE)
     sys.exit(75)  # 75 = "temporary failure, try again" in /usr/include/sysexits.h

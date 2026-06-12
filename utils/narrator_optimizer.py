@@ -1,4 +1,5 @@
 """Narrator performance helpers."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -13,12 +14,14 @@ def narrator_report(items: list[dict]) -> dict:
     for voice, sample in groups.items():
         growth = [float(i.get("growth_score", i.get("score", 0)) or 0) for i in sample]
         retention = [float(i.get("view_pct", i.get("average_view_percentage", 0)) or 0) for i in sample]
-        rows.append({
-            "voice": voice,
-            "n": len(sample),
-            "mean_growth": round(sum(growth) / len(growth), 3) if growth else 0,
-            "mean_retention": round(sum(retention) / len(retention), 3) if retention else 0,
-        })
+        rows.append(
+            {
+                "voice": voice,
+                "n": len(sample),
+                "mean_growth": round(sum(growth) / len(growth), 3) if growth else 0,
+                "mean_retention": round(sum(retention) / len(retention), 3) if retention else 0,
+            }
+        )
     rows.sort(key=lambda item: (item["mean_growth"], item["mean_retention"], item["n"]), reverse=True)
     winner = rows[0]["voice"] if rows and rows[0]["voice"] != "unknown" and rows[0]["n"] >= 2 else ""
     return {

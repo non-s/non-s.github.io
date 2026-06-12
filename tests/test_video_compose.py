@@ -1,5 +1,6 @@
 """Tests for utils/video_compose.py â€” verify the FFmpeg filtergraph
 construction, no actual encoding."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -35,6 +36,7 @@ def stub_ffmpeg_ok(monkeypatch):
 @pytest.fixture
 def stub_ffmpeg_fail(monkeypatch):
     """ffmpeg subprocess returns rc=1."""
+
     def _fake_run(cmd, **kw):
         result = MagicMock()
         result.returncode = 1
@@ -49,8 +51,7 @@ def _touch(path: Path, size: int = 100_000) -> Path:
     return path
 
 
-def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok,
-                                       monkeypatch):
+def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monkeypatch):
     # The brand-card overlay also runs by default. To keep this test
     # focused on the b-roll concat (and avoid pulling Pillow + the
     # PNG render path into a unit test), disable brand cards here.
@@ -59,7 +60,9 @@ def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok,
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / f"c{i}.mp4") for i in range(3)]
     ok = video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio, output_path=out,
+        broll_paths=clips,
+        audio_path=audio,
+        output_path=out,
     )
     assert ok
     # Inspect the last ffmpeg invocation.
@@ -72,8 +75,7 @@ def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok,
     assert "concat=n=3" in last_cmd[fg_idx + 1]
 
 
-def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe,
-                                              stub_ffmpeg_ok, monkeypatch):
+def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monkeypatch):
     """When brand cards are enabled, the concat chain grows to 5
     (intro + 3 clips + outro) and there are 2 extra -i inputs."""
     monkeypatch.setattr(video_compose, "BRAND_CARDS_ENABLED", True)
@@ -88,6 +90,7 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe,
     # video_compose imports brand_card lazily; patch the sys.modules
     # entry it expects to find.
     import types, sys
+
     fake_module = types.ModuleType("utils.brand_card")
     fake_module.get_intro_outro_cards = fake_cards
     monkeypatch.setitem(sys.modules, "utils.brand_card", fake_module)
@@ -96,7 +99,9 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe,
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / f"c{i}.mp4") for i in range(3)]
     ok = video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio, output_path=out,
+        broll_paths=clips,
+        audio_path=audio,
+        output_path=out,
     )
     assert ok
     last_cmd = stub_ffmpeg_ok[-1]
@@ -111,7 +116,9 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe,
 def test_build_broll_short_returns_false_without_clips(tmp_path, stub_ffprobe):
     audio = _touch(tmp_path / "a.mp3")
     assert not video_compose.build_broll_short(
-        broll_paths=[], audio_path=audio, output_path=tmp_path / "out.mp4",
+        broll_paths=[],
+        audio_path=audio,
+        output_path=tmp_path / "out.mp4",
     )
 
 
@@ -119,7 +126,9 @@ def test_build_broll_short_returns_false_without_audio(tmp_path):
     audio = tmp_path / "missing.mp3"
     clips = [_touch(tmp_path / "c.mp4")]
     assert not video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio, output_path=tmp_path / "out.mp4",
+        broll_paths=clips,
+        audio_path=audio,
+        output_path=tmp_path / "out.mp4",
     )
 
 
@@ -128,7 +137,8 @@ def test_build_broll_short_with_hook_overlay(tmp_path, stub_ffprobe, stub_ffmpeg
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / "c.mp4")]
     video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio,
+        broll_paths=clips,
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
         hook_text="This octopus vanished against coral",
     )
@@ -142,7 +152,8 @@ def test_build_broll_short_with_cta_overlay(tmp_path, stub_ffprobe, stub_ffmpeg_
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / "c.mp4")]
     video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio,
+        broll_paths=clips,
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
         cta_text="SUBSCRIBE FOR MORE ANIMAL FACTS",
     )
@@ -155,7 +166,9 @@ def test_build_broll_short_with_opening_cover(tmp_path, stub_ffprobe, stub_ffmpe
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / "c.mp4")]
     video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio, output_path=tmp_path / "out.mp4",
+        broll_paths=clips,
+        audio_path=audio,
+        output_path=tmp_path / "out.mp4",
         cover_text="OCTOPUS VANISHES",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
@@ -168,8 +181,11 @@ def test_static_fallback_keeps_channel_cta(tmp_path, stub_ffprobe, stub_ffmpeg_o
     frame = _touch(tmp_path / "frame.png")
     audio = _touch(tmp_path / "a.mp3")
     video_compose.build_static_short(
-        frame_path=frame, audio_path=audio, output_path=tmp_path / "out.mp4",
-        cover_text="OWL NIGHT VISION", cta_text="SUBSCRIBE FOR MORE ANIMAL FACTS",
+        frame_path=frame,
+        audio_path=audio,
+        output_path=tmp_path / "out.mp4",
+        cover_text="OWL NIGHT VISION",
+        cta_text="SUBSCRIBE FOR MORE ANIMAL FACTS",
     )
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
     assert "OWL NIGHT VISION" in fg
@@ -181,7 +197,8 @@ def test_build_broll_short_with_ass_subtitles(tmp_path, stub_ffprobe, stub_ffmpe
     clips = [_touch(tmp_path / "c.mp4")]
     ass = _touch(tmp_path / "subs.ass", size=500)
     video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio,
+        broll_paths=clips,
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
         ass_subtitle_path=ass,
     )
@@ -193,7 +210,8 @@ def test_build_broll_short_propagates_ffmpeg_failure(tmp_path, stub_ffprobe, stu
     audio = _touch(tmp_path / "a.mp3")
     clips = [_touch(tmp_path / "c.mp4")]
     assert not video_compose.build_broll_short(
-        broll_paths=clips, audio_path=audio,
+        broll_paths=clips,
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
     )
 
@@ -202,7 +220,8 @@ def test_build_static_short_basic(tmp_path, stub_ffprobe, stub_ffmpeg_ok):
     frame = _touch(tmp_path / "frame.png")
     audio = _touch(tmp_path / "a.mp3")
     ok = video_compose.build_static_short(
-        frame_path=frame, audio_path=audio,
+        frame_path=frame,
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
     )
     assert ok
@@ -211,7 +230,8 @@ def test_build_static_short_basic(tmp_path, stub_ffprobe, stub_ffmpeg_ok):
 def test_build_static_short_missing_frame(tmp_path):
     audio = _touch(tmp_path / "a.mp3")
     assert not video_compose.build_static_short(
-        frame_path=tmp_path / "no.png", audio_path=audio,
+        frame_path=tmp_path / "no.png",
+        audio_path=audio,
         output_path=tmp_path / "out.mp4",
     )
 

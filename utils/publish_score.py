@@ -1,11 +1,18 @@
 """Unified publish scoring for Wild Brief Shorts."""
+
 from __future__ import annotations
 
 import re
 
 from utils.channel_objective import objective_gate_for_story
 from utils.story_intelligence import audit_hook, audit_title, classify_format
-from utils.growth_engine import _distribution_adjustment, analyze_retention, detect_weak_content, load_format_memory, score_topic
+from utils.growth_engine import (
+    _distribution_adjustment,
+    analyze_retention,
+    detect_weak_content,
+    load_format_memory,
+    score_topic,
+)
 from utils.subscriber_conversion import score_subscriber_conversion
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import combined_confidence
@@ -14,12 +21,42 @@ from utils.editorial_guard import editorial_verdict
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
 RECOVERY_CATEGORIES = {"cats", "dogs", "farm"}
-WINNING_FORMATS = {"earth_engine", "hidden_network", "rare_nature", "body_superpower", "survival_trick", "animal_intelligence"}
+WINNING_FORMATS = {
+    "earth_engine",
+    "hidden_network",
+    "rare_nature",
+    "body_superpower",
+    "survival_trick",
+    "animal_intelligence",
+}
 ACTION_WORDS = {
-    "fake", "remember", "recognize", "plan", "escape", "slide", "call",
-    "hear", "hold", "roar", "use", "hide", "protect", "trick",
-    "erupt", "glow", "form", "freeze", "melt", "recover", "connect",
-    "signal", "choose", "chooses", "collapse", "flow", "grow",
+    "fake",
+    "remember",
+    "recognize",
+    "plan",
+    "escape",
+    "slide",
+    "call",
+    "hear",
+    "hold",
+    "roar",
+    "use",
+    "hide",
+    "protect",
+    "trick",
+    "erupt",
+    "glow",
+    "form",
+    "freeze",
+    "melt",
+    "recover",
+    "connect",
+    "signal",
+    "choose",
+    "chooses",
+    "collapse",
+    "flow",
+    "grow",
 }
 
 
@@ -74,15 +111,20 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     weak = detect_weak_content(story, memory=memory)
     subscriber = score_subscriber_conversion(story, memory=memory)
     distribution_adjustment = _distribution_adjustment(story)
-    evidence = combined_confidence([
-        *[
-            ((audience.get(axis) or {}).get(category if axis == "category" else story_format) or {}).get("confidence") or {}
-            for axis in ("category", "format")
-        ],
-        (opportunity.get("confidence") or {}),
-        (retention.get("confidence") or {}),
-        (subscriber.get("confidence") or {}),
-    ])
+    evidence = combined_confidence(
+        [
+            *[
+                ((audience.get(axis) or {}).get(category if axis == "category" else story_format) or {}).get(
+                    "confidence"
+                )
+                or {}
+                for axis in ("category", "format")
+            ],
+            (opportunity.get("confidence") or {}),
+            (retention.get("confidence") or {}),
+            (subscriber.get("confidence") or {}),
+        ]
+    )
     bootstrap_multiplier = float(evidence.get("bootstrap_multiplier") or 0.35)
 
     score = 38
@@ -121,7 +163,9 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     format_weights = (memory.get("format_weights") or {}) | (analytics_strategy.get("format_weights") or {})
     if audience.get("sample_count", 0) >= 8:
         aw = audience.get("weights") or {}
-        category_weights = category_weights | (aw.get("category_retention") or {}) | (aw.get("category_subscribers") or {})
+        category_weights = (
+            category_weights | (aw.get("category_retention") or {}) | (aw.get("category_subscribers") or {})
+        )
         format_weights = format_weights | (aw.get("format_retention") or {}) | (aw.get("format_subscribers") or {})
     score *= max(0.75, min(1.25, _as_score(category_weights.get(category), 1.0)))
     score *= max(0.75, min(1.2, _as_score(format_weights.get(story_format), 1.0)))

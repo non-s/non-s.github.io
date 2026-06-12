@@ -1,4 +1,5 @@
 """Data-quality reporting for local Wild Brief learning files."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -26,10 +27,13 @@ def _has_value(source: dict, names: tuple[str, ...]) -> bool:
     return False
 
 
-def build_data_quality_report(markers: list[dict], *,
-                              audience_memory: dict | None = None,
-                              format_memory: dict | None = None,
-                              early_performance: dict | None = None) -> dict:
+def build_data_quality_report(
+    markers: list[dict],
+    *,
+    audience_memory: dict | None = None,
+    format_memory: dict | None = None,
+    early_performance: dict | None = None,
+) -> dict:
     markers = markers or []
     metric_rows = {}
     for metric, names in METRICS.items():
@@ -92,7 +96,9 @@ def build_data_quality_report(markers: list[dict], *,
             missing=max(0, int(fmt.get("sample_count") or 0) - int((fmt.get("data_coverage") or {}).get("views") or 0)),
         ),
     ]
-    overall_confidence = round(sum(item["confidence_score"] for item in confidence_sources) / len(confidence_sources), 3)
+    overall_confidence = round(
+        sum(item["confidence_score"] for item in confidence_sources) / len(confidence_sources), 3
+    )
     return {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "sample_count": len(markers),

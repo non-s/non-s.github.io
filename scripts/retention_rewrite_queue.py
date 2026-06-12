@@ -25,15 +25,17 @@ def main() -> int:
             continue
         surgery = diagnose(story)
         if surgery["verdict"] == "rewrite":
-            items.append({
-                "id": story.get("id", ""),
-                "title": story.get("seo_title") or story.get("title", ""),
-                "category": story.get("category", ""),
-                "score": surgery["score"],
-                "issues": surgery["issues"],
-                "fixes": surgery["fixes"],
-                "suggested_hook": surgery["suggested_hook"],
-            })
+            items.append(
+                {
+                    "id": story.get("id", ""),
+                    "title": story.get("seo_title") or story.get("title", ""),
+                    "category": story.get("category", ""),
+                    "score": surgery["score"],
+                    "issues": surgery["issues"],
+                    "fixes": surgery["fixes"],
+                    "suggested_hook": surgery["suggested_hook"],
+                }
+            )
     items.sort(key=lambda item: item["score"])
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

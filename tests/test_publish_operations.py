@@ -194,21 +194,30 @@ def test_rescue_story_replaces_false_face_memory_with_signal_memory():
 
 
 def test_rescue_story_handles_singular_truncated_and_stitched_titles():
-    singular, singular_applied = rescue_story(_strong_story(
-        title="Snake use their body to follow",
-        seo_title="Snake use their body to follow",
-        category="reptiles",
-    ), ["bad_singular_subject_verb"])
-    truncated, truncated_applied = rescue_story(_strong_story(
-        title="Tigers never roar at their prey — here's",
-        seo_title="Tigers never roar at their prey — here's",
-        category="wildlife",
-    ), ["truncated_heres_title"])
-    stitched, stitched_applied = rescue_story(_strong_story(
-        title="Birds This black bird's ear tufts aren't ears at all",
-        seo_title="Birds This black bird's ear tufts aren't ears at all",
-        category="birds",
-    ), ["stitched_category_title", "stitched_repeated_animal_title"])
+    singular, singular_applied = rescue_story(
+        _strong_story(
+            title="Snake use their body to follow",
+            seo_title="Snake use their body to follow",
+            category="reptiles",
+        ),
+        ["bad_singular_subject_verb"],
+    )
+    truncated, truncated_applied = rescue_story(
+        _strong_story(
+            title="Tigers never roar at their prey — here's",
+            seo_title="Tigers never roar at their prey — here's",
+            category="wildlife",
+        ),
+        ["truncated_heres_title"],
+    )
+    stitched, stitched_applied = rescue_story(
+        _strong_story(
+            title="Birds This black bird's ear tufts aren't ears at all",
+            seo_title="Birds This black bird's ear tufts aren't ears at all",
+            category="birds",
+        ),
+        ["stitched_category_title", "stitched_repeated_animal_title"],
+    )
 
     assert singular_applied is True
     assert singular["title"].startswith("Snakes ")
@@ -243,11 +252,13 @@ def test_rejected_queue_jsonl_default_format_records_deduped_items(tmp_path):
 
 
 def test_rights_audit_requires_known_source_license_and_url():
-    approved = audit_rights({
-        "source": "Pexels",
-        "source_license": "Pexels License",
-        "source_url": "https://www.pexels.com/video/1/",
-    })
+    approved = audit_rights(
+        {
+            "source": "Pexels",
+            "source_license": "Pexels License",
+            "source_url": "https://www.pexels.com/video/1/",
+        }
+    )
     rejected = audit_rights({"source": "mystery archive"})
 
     assert approved["approved"] is True
@@ -284,16 +295,20 @@ def test_backfill_done_marker_preserves_upload_identity_fields():
 
 
 def test_sequence_plan_generates_three_variants_per_winner():
-    plan = build_sequence_plan({
-        "top_performers": [{
-            "video_id": "v1",
-            "title": "Mallard ducks fake injuries to protect young",
-            "category": "birds",
-            "views": 1400,
-            "view_pct": 66,
-            "growth_score": 220,
-        }]
-    })
+    plan = build_sequence_plan(
+        {
+            "top_performers": [
+                {
+                    "video_id": "v1",
+                    "title": "Mallard ducks fake injuries to protect young",
+                    "category": "birds",
+                    "views": 1400,
+                    "view_pct": 66,
+                    "growth_score": 220,
+                }
+            ]
+        }
+    )
 
     assert plan["source_winners"] == 1
     assert len(plan["variants"]) == 3
@@ -305,26 +320,28 @@ def test_sequence_plan_generates_three_variants_per_winner():
 
 
 def test_sequence_plan_skips_malformed_winner_titles():
-    plan = build_sequence_plan({
-        "top_performers": [
-            {
-                "video_id": "bad",
-                "title": "Chickens have another signal hiding in plain sight",
-                "category": "farm",
-                "views": 1400,
-                "view_pct": 66,
-                "growth_score": 220,
-            },
-            {
-                "video_id": "good",
-                "title": "Mallard ducks fake injuries to protect young",
-                "category": "birds",
-                "views": 1400,
-                "view_pct": 66,
-                "growth_score": 220,
-            },
-        ]
-    })
+    plan = build_sequence_plan(
+        {
+            "top_performers": [
+                {
+                    "video_id": "bad",
+                    "title": "Chickens have another signal hiding in plain sight",
+                    "category": "farm",
+                    "views": 1400,
+                    "view_pct": 66,
+                    "growth_score": 220,
+                },
+                {
+                    "video_id": "good",
+                    "title": "Mallard ducks fake injuries to protect young",
+                    "category": "birds",
+                    "views": 1400,
+                    "view_pct": 66,
+                    "growth_score": 220,
+                },
+            ]
+        }
+    )
 
     assert plan["source_winners"] == 1
     assert all((variant.get("remake_of") or {}).get("video_id") != "bad" for variant in plan["variants"])
@@ -333,17 +350,40 @@ def test_sequence_plan_skips_malformed_winner_titles():
 
 def test_post24_review_classifies_scale_rewrite_pause_and_watch():
     assert classify_video({"views": 1200, "view_pct": 70, "growth_score": 250}) == "scale"
-    assert classify_video({"title": "Lions use their ears to use", "views": 1200, "view_pct": 70, "growth_score": 250}) == "repair_package"
-    assert classify_video({"title": "Baby goats love bottle feeding \u00e2\u20ac\u201d here's why \u00f0\u0178", "views": 1200, "view_pct": 70, "growth_score": 250}) == "repair_package"
+    assert (
+        classify_video({"title": "Lions use their ears to use", "views": 1200, "view_pct": 70, "growth_score": 250})
+        == "repair_package"
+    )
+    assert (
+        classify_video(
+            {
+                "title": "Baby goats love bottle feeding \u00e2\u20ac\u201d here's why \u00f0\u0178",
+                "views": 1200,
+                "view_pct": 70,
+                "growth_score": 250,
+            }
+        )
+        == "repair_package"
+    )
     assert classify_video({"views": 1200, "view_pct": 61, "growth_score": 250}) == "rewrite_hook"
     assert classify_video({"views": 1000, "view_pct": 45, "growth_score": 120}) == "rewrite_hook"
     assert classify_video({"views": 200, "view_pct": 40, "growth_score": 20}) == "pause_topic"
     assert classify_video({"views": 700, "view_pct": 55, "growth_score": 100}) == "watch"
 
-    review = build_review({"top_performers": [
-        {"video_id": "x", "title": "X", "views": 1200, "view_pct": 70, "growth_score": 250},
-        {"video_id": "bad", "title": "Lions use their ears to use", "views": 1200, "view_pct": 70, "growth_score": 250},
-    ]})
+    review = build_review(
+        {
+            "top_performers": [
+                {"video_id": "x", "title": "X", "views": 1200, "view_pct": 70, "growth_score": 250},
+                {
+                    "video_id": "bad",
+                    "title": "Lions use their ears to use",
+                    "views": 1200,
+                    "view_pct": 70,
+                    "growth_score": 250,
+                },
+            ]
+        }
+    )
     assert review["counts"]["scale"] == 1
     assert review["counts"]["repair_package"] == 1
     assert review["items"][1]["title_issues"] == ["robotic_use_loop"]
@@ -351,24 +391,28 @@ def test_post24_review_classifies_scale_rewrite_pause_and_watch():
 
 
 def test_post24_review_suggests_title_repairs():
-    review = build_review({"top_performers": [
+    review = build_review(
         {
-            "video_id": "bad",
-            "title": "Lions use their ears to use",
-            "category": "wildlife",
-            "views": 1200,
-            "view_pct": 70,
-            "growth_score": 250,
-        },
-        {
-            "video_id": "tiger",
-            "title": "Tigers never roar at their prey — here's",
-            "category": "wildlife",
-            "views": 1200,
-            "view_pct": 70,
-            "growth_score": 250,
-        },
-    ]})
+            "top_performers": [
+                {
+                    "video_id": "bad",
+                    "title": "Lions use their ears to use",
+                    "category": "wildlife",
+                    "views": 1200,
+                    "view_pct": 70,
+                    "growth_score": 250,
+                },
+                {
+                    "video_id": "tiger",
+                    "title": "Tigers never roar at their prey — here's",
+                    "category": "wildlife",
+                    "views": 1200,
+                    "view_pct": 70,
+                    "growth_score": 250,
+                },
+            ]
+        }
+    )
 
     row = review["items"][0]
     assert row["decision"] == "repair_package"
@@ -394,15 +438,19 @@ def test_dry_run_publish_uses_autonomy_priority_before_queue_score():
         "category": "farm",
         "score": 9,
     }
-    payload = build_dry_run({"stories": [
-        {**base, "id": "low", "autonomy": {"priority": 10, "lane": "fresh_experiment"}},
+    payload = build_dry_run(
         {
-            **base,
-            "id": "high",
-            "source_url": "https://www.pexels.com/video/duck-2/",
-            "autonomy": {"priority": 130, "lane": "proven_category"},
-        },
-    ]})
+            "stories": [
+                {**base, "id": "low", "autonomy": {"priority": 10, "lane": "fresh_experiment"}},
+                {
+                    **base,
+                    "id": "high",
+                    "source_url": "https://www.pexels.com/video/duck-2/",
+                    "autonomy": {"priority": 130, "lane": "proven_category"},
+                },
+            ]
+        }
+    )
 
     assert payload["would_publish"][0]["id"] == "high"
     assert payload["would_publish"][0]["autonomy_lane"] == "proven_category"
@@ -416,30 +464,36 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
     data_dir = tmp_path / "_data"
     data_dir.mkdir()
     (data_dir / "stories_queue.json").write_text(json.dumps({"stories": []}), encoding="utf-8")
-    pruned = {"stories": [{
-        "id": "ready",
-        "seo_title": "Chickens recognize alarm calls through head movement",
-        "title": "Chickens recognize alarm calls through head movement",
-        "hook": "Chickens recognize alarm calls before the payoff.",
-        "script": (
-            "Chickens recognize alarm calls before the payoff. Watch the head movement first, "
-            "because that cue changes how they react."
-        ),
-        "thumbnail_text": "CHICKEN ALARM CALL",
-        "yt_tags": ["chickens", "animal facts"],
-        "source": "Pexels",
-        "source_url": "https://www.pexels.com/video/chicken-1/",
-        "source_license": "Pexels License",
-        "category": "farm",
-        "queue_prune": {"state": "publish_ready", "score": 100},
-        "autonomy": {"priority": 130},
-        "score": 9,
-    }]}
+    pruned = {
+        "stories": [
+            {
+                "id": "ready",
+                "seo_title": "Chickens recognize alarm calls through head movement",
+                "title": "Chickens recognize alarm calls through head movement",
+                "hook": "Chickens recognize alarm calls before the payoff.",
+                "script": (
+                    "Chickens recognize alarm calls before the payoff. Watch the head movement first, "
+                    "because that cue changes how they react."
+                ),
+                "thumbnail_text": "CHICKEN ALARM CALL",
+                "yt_tags": ["chickens", "animal facts"],
+                "source": "Pexels",
+                "source_url": "https://www.pexels.com/video/chicken-1/",
+                "source_license": "Pexels License",
+                "category": "farm",
+                "queue_prune": {"state": "publish_ready", "score": 100},
+                "autonomy": {"priority": 130},
+                "score": 9,
+            }
+        ]
+    }
 
     monkeypatch.setattr(next_shorts, "QUEUE", data_dir / "stories_queue.json")
     monkeypatch.setattr(next_shorts, "OUT", data_dir / "next_shorts.json")
     monkeypatch.setattr(next_shorts, "prune_queue", lambda data: (pruned, [], {"pending_after": 1}))
-    monkeypatch.setattr(next_shorts, "score_story", lambda story: {"approved": True, "state": "publish_ready", "score": 99})
+    monkeypatch.setattr(
+        next_shorts, "score_story", lambda story: {"approved": True, "state": "publish_ready", "score": 99}
+    )
 
     assert next_shorts.main() == 0
     payload = json.loads((data_dir / "next_shorts.json").read_text(encoding="utf-8"))
@@ -470,19 +524,21 @@ def test_next_shorts_reports_repeated_title_shapes():
     assert warning["shape"] == "{subject} recognize signals through {cue}"
     assert warning["count"] == 4
     assert warning["action"] == "alternate title promises before publishing this block"
-    assert mix["rewrite_candidates"] == [{
-        "rank": 4,
-        "id": "",
-        "title": "Chickens recognize signals through head movement",
-        "shape": "{subject} recognize signals through {cue}",
-        "suggested_titles": [
-            "Chickens react differently when their heads move",
-            "Chickens read the moment from one head movement",
-            "The head movement that changes how chickens react",
-        ],
-        "window": 10,
-        "action": "rewrite title with a different promise shape before publishing this cluster",
-    }]
+    assert mix["rewrite_candidates"] == [
+        {
+            "rank": 4,
+            "id": "",
+            "title": "Chickens recognize signals through head movement",
+            "shape": "{subject} recognize signals through {cue}",
+            "suggested_titles": [
+                "Chickens react differently when their heads move",
+                "Chickens read the moment from one head movement",
+                "The head movement that changes how chickens react",
+            ],
+            "window": 10,
+            "action": "rewrite title with a different promise shape before publishing this cluster",
+        }
+    ]
     assert all(
         next_shorts.title_shape(title) != "{subject} recognize signals through {cue}"
         for title in mix["rewrite_candidates"][0]["suggested_titles"]

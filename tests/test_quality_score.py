@@ -1,4 +1,5 @@
 """Tests for utils.ai_helper.quality_score — the publish gate."""
+
 from utils.ai_helper import quality_score
 
 

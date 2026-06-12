@@ -16,14 +16,16 @@ def _latest():
         "subscribers_gained": 4,
         "category_avg_growth_score": {"farm": 400, "birds": 120},
         "format_avg_growth_score": {"animal_memory": 300, "single_fact": 100},
-        "top_performers": [{
-            "video_id": "abc",
-            "title": "Ducklings know math before they can swim",
-            "views": 1200,
-            "growth_score": 500,
-            "category": "farm",
-            "story_format": "animal_memory",
-        }],
+        "top_performers": [
+            {
+                "video_id": "abc",
+                "title": "Ducklings know math before they can swim",
+                "views": 1200,
+                "growth_score": 500,
+                "category": "farm",
+                "story_format": "animal_memory",
+            }
+        ],
     }
 
 
@@ -34,26 +36,32 @@ def test_subscriber_conversion_scores_per_1000_views():
 
 
 def test_traffic_source_insight_reads_ok_report():
-    out = traffic_source_insight({
-        "analytics_reports": [{
-            "id": "traffic_source",
-            "status": "ok",
-            "sample": [
-                {"insightTrafficSourceType": "YT_SHORTS", "views": 100},
-                {"insightTrafficSourceType": "SEARCH", "views": 10},
-            ],
-        }]
-    })
+    out = traffic_source_insight(
+        {
+            "analytics_reports": [
+                {
+                    "id": "traffic_source",
+                    "status": "ok",
+                    "sample": [
+                        {"insightTrafficSourceType": "YT_SHORTS", "views": 100},
+                        {"insightTrafficSourceType": "SEARCH", "views": 10},
+                    ],
+                }
+            ]
+        }
+    )
     assert out["state"] == "ready"
     assert out["dominant_source"] == "YT_SHORTS"
 
 
 def test_quota_budget_warns_on_missing_token():
-    out = quota_budget({
-        "coverage_score": 40,
-        "issues": ["youtube_token_missing"],
-        "analytics_reports": [{"id": "country", "status": "not_authorized"}],
-    })
+    out = quota_budget(
+        {
+            "coverage_score": 40,
+            "issues": ["youtube_token_missing"],
+            "analytics_reports": [{"id": "country", "status": "not_authorized"}],
+        }
+    )
     assert out["state"] == "watch"
     assert out["risk_score"] >= 35
 
@@ -123,15 +131,17 @@ def test_sequel_factory_skips_existing_remake_source_and_angle():
 
 
 def test_sequel_story_uses_specific_subject_from_source_title():
-    story = build_sequel_story({
-        "source_video_id": "lion1",
-        "source_title": "Lions use their ears to use",
-        "category": "wildlife",
-        "story_format": "body_superpower",
-        "growth_score": 200,
-        "views": 600,
-        "sequel_id": "sequel-lion1",
-    })
+    story = build_sequel_story(
+        {
+            "source_video_id": "lion1",
+            "source_title": "Lions use their ears to use",
+            "category": "wildlife",
+            "story_format": "body_superpower",
+            "growth_score": 200,
+            "views": 600,
+            "sequel_id": "sequel-lion1",
+        }
+    )
 
     assert story["seo_title"].startswith("Lions rely")
     assert story["thumbnail_text"].startswith("LIONS")
@@ -141,26 +151,28 @@ def test_sequel_story_uses_specific_subject_from_source_title():
 
 
 def test_sequel_candidates_skip_broken_source_titles():
-    candidates = sequel_candidates({
-        "top_performers": [
-            {
-                "video_id": "lion1",
-                "title": "Lions use their ears to use",
-                "views": 600,
-                "growth_score": 220,
-                "category": "wildlife",
-                "story_format": "body_superpower",
-            },
-            {
-                "video_id": "duck1",
-                "title": "Ducklings know math before they can swim",
-                "views": 600,
-                "growth_score": 210,
-                "category": "farm",
-                "story_format": "single_fact",
-            },
-        ]
-    })
+    candidates = sequel_candidates(
+        {
+            "top_performers": [
+                {
+                    "video_id": "lion1",
+                    "title": "Lions use their ears to use",
+                    "views": 600,
+                    "growth_score": 220,
+                    "category": "wildlife",
+                    "story_format": "body_superpower",
+                },
+                {
+                    "video_id": "duck1",
+                    "title": "Ducklings know math before they can swim",
+                    "views": 600,
+                    "growth_score": 210,
+                    "category": "farm",
+                    "story_format": "single_fact",
+                },
+            ]
+        }
+    )
 
     assert candidates
     assert candidates[0]["source_video_id"] == "duck1"
@@ -168,16 +180,20 @@ def test_sequel_candidates_skip_broken_source_titles():
 
 
 def test_sequel_candidate_brief_avoids_generic_signal_cue():
-    candidates = sequel_candidates({
-        "top_performers": [{
-            "video_id": "chicken1",
-            "title": "Chickens remember the signal before danger",
-            "views": 600,
-            "growth_score": 220,
-            "category": "farm",
-            "story_format": "animal_memory",
-        }]
-    })
+    candidates = sequel_candidates(
+        {
+            "top_performers": [
+                {
+                    "video_id": "chicken1",
+                    "title": "Chickens remember the signal before danger",
+                    "views": 600,
+                    "growth_score": 220,
+                    "category": "farm",
+                    "story_format": "animal_memory",
+                }
+            ]
+        }
+    )
 
     assert candidates
     assert "signal cue" not in candidates[0]["sequel_brief"].lower()
@@ -190,11 +206,13 @@ def test_build_director_makes_operating_decisions():
         youtube_intelligence={
             "coverage_score": 80,
             "issues": [],
-            "analytics_reports": [{
-                "id": "traffic_source",
-                "status": "ok",
-                "sample": [{"insightTrafficSourceType": "YT_SHORTS", "views": 100}],
-            }],
+            "analytics_reports": [
+                {
+                    "id": "traffic_source",
+                    "status": "ok",
+                    "sample": [{"insightTrafficSourceType": "YT_SHORTS", "views": 100}],
+                }
+            ],
         },
         health={"score": 100},
         ops={"paused_topics": [{"category": "cats"}]},

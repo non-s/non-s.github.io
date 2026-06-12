@@ -4,6 +4,7 @@ Both scripts use Pillow for frame composition and the same handful of
 font / drawing utilities. Centralised here so a fix to (say) the font
 fallback chain propagates to both pipelines.
 """
+
 from __future__ import annotations
 
 import logging
@@ -104,11 +105,14 @@ def download_image(url: str, dest: Path, timeout: int = 12) -> bool:
         # Quick magic-number sniff so an HTML 2 KB error page still gets
         # rejected even when the server lied about Content-Type.
         head = r.content[:12]
-        if not (head.startswith(b"\xff\xd8\xff")            # JPEG
-                or head.startswith(b"\x89PNG\r\n\x1a\n")    # PNG
-                or head.startswith(b"GIF8")                 # GIF
-                or head[:4] == b"RIFF" and head[8:12] == b"WEBP"  # WEBP
-                or head.startswith(b"BM")):                 # BMP
+        if not (
+            head.startswith(b"\xff\xd8\xff")  # JPEG
+            or head.startswith(b"\x89PNG\r\n\x1a\n")  # PNG
+            or head.startswith(b"GIF8")  # GIF
+            or head[:4] == b"RIFF"
+            and head[8:12] == b"WEBP"  # WEBP
+            or head.startswith(b"BM")
+        ):  # BMP
             log.debug("Image download: payload doesn't look like an image")
             return False
         dest.write_bytes(r.content)

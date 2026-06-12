@@ -2,17 +2,41 @@
 utils/dedup.py — Title deduplication utilities for Wild Brief.
 Pure functions, no global state, no external deps.
 """
+
 from __future__ import annotations
 
 import re
 
 # Precompiled — used in every title_similarity call
-_NON_WORD_RE = re.compile(r'[^\w\s]')
-_STOP_WORDS = frozenset({
-    'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or',
-    'but', 'is', 'was', 'are', 'were', 'be', 'been', 'by', 'from', 'with',
-    'this', 'that', 'it',
-})
+_NON_WORD_RE = re.compile(r"[^\w\s]")
+_STOP_WORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "of",
+        "and",
+        "or",
+        "but",
+        "is",
+        "was",
+        "are",
+        "were",
+        "be",
+        "been",
+        "by",
+        "from",
+        "with",
+        "this",
+        "that",
+        "it",
+    }
+)
 
 
 def levenshtein(s1: str, s2: str) -> int:
@@ -46,8 +70,8 @@ def titles_too_similar(t1: str, t2: str) -> bool:
 
 def title_similarity(t1: str, t2: str) -> float:
     """Returns 0.0-1.0 Jaccard similarity ignoring stopwords."""
-    w1 = set(_NON_WORD_RE.sub('', t1.lower()).split()) - _STOP_WORDS
-    w2 = set(_NON_WORD_RE.sub('', t2.lower()).split()) - _STOP_WORDS
+    w1 = set(_NON_WORD_RE.sub("", t1.lower()).split()) - _STOP_WORDS
+    w2 = set(_NON_WORD_RE.sub("", t2.lower()).split()) - _STOP_WORDS
     if not w1 or not w2:
         return 0.0
     return len(w1 & w2) / len(w1 | w2)

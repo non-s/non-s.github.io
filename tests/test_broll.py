@@ -1,4 +1,5 @@
 """Tests for utils/broll.py — discovery + download, no live HTTP."""
+
 from __future__ import annotations
 
 import json
@@ -20,6 +21,7 @@ def test_pexels_clip_title_uses_descriptive_url_slug():
 
 # ── _build_query ─────────────────────────────────────────────────
 
+
 def test_build_query_strips_stopwords():
     out = broll._build_query("The octopus just changed colour near coral today")
     assert "the" not in out.lower().split()
@@ -40,6 +42,7 @@ def test_build_query_caps_tokens():
 
 # ── Pexels ────────────────────────────────────────────────────────
 
+
 def _pexels_payload():
     return {
         "videos": [
@@ -48,8 +51,8 @@ def _pexels_payload():
                 "duration": 12,
                 "user": {"name": "Test Author"},
                 "video_files": [
-                    {"link": "https://cdn.pexels.com/big.mp4",  "width": 1080, "height": 1920},
-                    {"link": "https://cdn.pexels.com/small.mp4","width": 720,  "height": 1280},
+                    {"link": "https://cdn.pexels.com/big.mp4", "width": 1080, "height": 1920},
+                    {"link": "https://cdn.pexels.com/small.mp4", "width": 720, "height": 1280},
                 ],
             },
         ]
@@ -62,7 +65,9 @@ def test_pexels_returns_clips_when_key_set(monkeypatch, tmp_path):
     fake = MagicMock(status_code=200)
     fake.json.return_value = _pexels_payload()
     with patch.object(broll, "_session") as factory:
-        s = MagicMock(); s.get.return_value = fake; factory.return_value = s
+        s = MagicMock()
+        s.get.return_value = fake
+        factory.return_value = s
         clips = broll.fetch_pexels("octopus animal")
     assert len(clips) == 1
     assert clips[0].source == "pexels"
@@ -78,25 +83,32 @@ def test_pexels_returns_empty_without_key(monkeypatch):
 def test_pexels_returns_empty_on_non_200(monkeypatch, tmp_path):
     monkeypatch.setenv("PEXELS_API_KEY", "x")
     monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
-    fake = MagicMock(status_code=429); fake.json.return_value = {}
+    fake = MagicMock(status_code=429)
+    fake.json.return_value = {}
     with patch.object(broll, "_session") as factory:
-        s = MagicMock(); s.get.return_value = fake; factory.return_value = s
+        s = MagicMock()
+        s.get.return_value = fake
+        factory.return_value = s
         assert broll.fetch_pexels("x") == []
 
 
 def test_pexels_cache_avoids_second_call(monkeypatch, tmp_path):
     monkeypatch.setenv("PEXELS_API_KEY", "x")
     monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
-    fake = MagicMock(status_code=200); fake.json.return_value = _pexels_payload()
+    fake = MagicMock(status_code=200)
+    fake.json.return_value = _pexels_payload()
     calls = {"n": 0}
 
     def make_session():
         s = MagicMock()
+
         def _get(*a, **kw):
             calls["n"] += 1
             return fake
+
         s.get.side_effect = _get
         return s
+
     with patch.object(broll, "_session", side_effect=make_session):
         broll.fetch_pexels("identical query")
         broll.fetch_pexels("identical query")
@@ -107,17 +119,23 @@ def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
     monkeypatch.setenv("PIXABAY_API_KEY", "x")
     monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
     fake = MagicMock(status_code=200)
-    fake.json.return_value = {"hits": [{
-        "pageURL": "https://pixabay.com/videos/octopus-123/",
-        "duration": 9,
-        "tags": "octopus, underwater",
-        "videos": {
-            "small": {"url": "https://cdn.pixabay.com/s.mp4", "width": 720, "height": 1280},
-            "large": {"url": "https://cdn.pixabay.com/l.mp4", "width": 1080, "height": 1920},
-        },
-    }]}
+    fake.json.return_value = {
+        "hits": [
+            {
+                "pageURL": "https://pixabay.com/videos/octopus-123/",
+                "duration": 9,
+                "tags": "octopus, underwater",
+                "videos": {
+                    "small": {"url": "https://cdn.pixabay.com/s.mp4", "width": 720, "height": 1280},
+                    "large": {"url": "https://cdn.pixabay.com/l.mp4", "width": 1080, "height": 1920},
+                },
+            }
+        ]
+    }
     with patch.object(broll, "_session") as factory:
-        session = MagicMock(); session.get.return_value = fake; factory.return_value = session
+        session = MagicMock()
+        session.get.return_value = fake
+        factory.return_value = session
         clips = broll.fetch_pixabay("octopus")
     assert len(clips) == 1
     assert clips[0].source == "pixabay"
@@ -129,15 +147,18 @@ def test_pixabay_returns_empty_without_key(monkeypatch):
     assert broll.fetch_pixabay("anything") == []
 
 
-# ── fetch_broll_clips orchestration ────────────────────────────── 
+# ── fetch_broll_clips orchestration ──────────────────────────────
+
 
 def test_fetch_broll_returns_vetted_pexels_clips(monkeypatch):
     fake_pexels = [
-        broll.BrollClip(source="pexels", url="", download_url=f"https://a/{i}",
-                         width=1080, height=1920, duration_s=10) for i in range(2)
+        broll.BrollClip(source="pexels", url="", download_url=f"https://a/{i}", width=1080, height=1920, duration_s=10)
+        for i in range(2)
     ]
-    with patch.object(broll, "fetch_pexels", return_value=fake_pexels), \
-         patch.object(broll, "fetch_pixabay", return_value=[]):
+    with (
+        patch.object(broll, "fetch_pexels", return_value=fake_pexels),
+        patch.object(broll, "fetch_pixabay", return_value=[]),
+    ):
         out = broll.fetch_broll_clips("octopus underwater animal", want_n=3)
     assert len(out) == 2
     sources = {c.source for c in out}
@@ -145,34 +166,35 @@ def test_fetch_broll_returns_vetted_pexels_clips(monkeypatch):
 
 
 def test_fetch_broll_deduplicates_by_url(monkeypatch):
-    same = broll.BrollClip(source="pexels", url="", download_url="https://dup",
-                            width=1080, height=1920, duration_s=10)
-    with patch.object(broll, "fetch_pexels", return_value=[same]), \
-         patch.object(broll, "fetch_pixabay", return_value=[same]):
+    same = broll.BrollClip(source="pexels", url="", download_url="https://dup", width=1080, height=1920, duration_s=10)
+    with (
+        patch.object(broll, "fetch_pexels", return_value=[same]),
+        patch.object(broll, "fetch_pixabay", return_value=[same]),
+    ):
         out = broll.fetch_broll_clips("x", want_n=5)
     assert len(out) == 1
 
 
 def test_fetch_broll_returns_empty_on_total_failure(monkeypatch):
-    with patch.object(broll, "fetch_pexels", return_value=[]), \
-         patch.object(broll, "fetch_pixabay", return_value=[]):
+    with patch.object(broll, "fetch_pexels", return_value=[]), patch.object(broll, "fetch_pixabay", return_value=[]):
         out = broll.fetch_broll_clips("x", want_n=3)
     assert out == []
 
 
 def test_fetch_broll_animal_only_uses_pexels(monkeypatch):
     pexels = [
-        broll.BrollClip(source="pexels", url="", download_url="https://animal",
-                        width=1080, height=1920, duration_s=10),
+        broll.BrollClip(source="pexels", url="", download_url="https://animal", width=1080, height=1920, duration_s=10),
     ]
-    with patch.object(broll, "fetch_pexels", return_value=pexels), \
-         patch.object(broll, "fetch_pixabay", return_value=[]):
-        out = broll.fetch_broll_clips("octopus underwater animal",
-                                      want_n=3, animal_only=True)
+    with (
+        patch.object(broll, "fetch_pexels", return_value=pexels),
+        patch.object(broll, "fetch_pixabay", return_value=[]),
+    ):
+        out = broll.fetch_broll_clips("octopus underwater animal", want_n=3, animal_only=True)
     assert out == pexels
 
 
 # ── download_clip ────────────────────────────────────────────────
+
 
 def test_download_clip_writes_valid_mp4(tmp_path):
     dest = tmp_path / "out.mp4"
@@ -180,10 +202,13 @@ def test_download_clip_writes_valid_mp4(tmp_path):
     body = b"\x00\x00\x00\x18ftypmp42" + b"x" * 60_000
     fake = MagicMock(status_code=200)
     fake.iter_content.return_value = [body]
-    clip = broll.BrollClip(source="test", url="", download_url="https://e/x.mp4",
-                            width=1080, height=1920, duration_s=10)
+    clip = broll.BrollClip(
+        source="test", url="", download_url="https://e/x.mp4", width=1080, height=1920, duration_s=10
+    )
     with patch.object(broll, "_session") as factory:
-        s = MagicMock(); s.get.return_value = fake; factory.return_value = s
+        s = MagicMock()
+        s.get.return_value = fake
+        factory.return_value = s
         ok = broll.download_clip(clip, dest)
     assert ok
     assert dest.exists()
@@ -195,10 +220,11 @@ def test_download_clip_rejects_non_mp4(tmp_path):
     body = b"<html>not a video</html>" * 1000
     fake = MagicMock(status_code=200)
     fake.iter_content.return_value = [body]
-    clip = broll.BrollClip(source="test", url="", download_url="https://e/x.mp4",
-                            width=1, height=1, duration_s=10)
+    clip = broll.BrollClip(source="test", url="", download_url="https://e/x.mp4", width=1, height=1, duration_s=10)
     with patch.object(broll, "_session") as factory:
-        s = MagicMock(); s.get.return_value = fake; factory.return_value = s
+        s = MagicMock()
+        s.get.return_value = fake
+        factory.return_value = s
         assert not broll.download_clip(clip, dest)
 
 
@@ -208,8 +234,9 @@ def test_download_clip_aborts_oversized(tmp_path):
     chunks = [b"a" * (1024 * 1024) for _ in range(35)]
     fake = MagicMock(status_code=200)
     fake.iter_content.return_value = chunks
-    clip = broll.BrollClip(source="test", url="", download_url="https://e/x.mp4",
-                            width=1, height=1, duration_s=10)
+    clip = broll.BrollClip(source="test", url="", download_url="https://e/x.mp4", width=1, height=1, duration_s=10)
     with patch.object(broll, "_session") as factory:
-        s = MagicMock(); s.get.return_value = fake; factory.return_value = s
+        s = MagicMock()
+        s.get.return_value = fake
+        factory.return_value = s
         assert not broll.download_clip(clip, dest)

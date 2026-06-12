@@ -7,10 +7,12 @@ def test_agency_plan_builds_seven_days():
         latest={"avg_view_pct": 55, "production_recommendations": {"hot_categories": ["farm", "birds"]}},
         health={"agency": {"decisions": {"publish_now": 30}}},
         ops={"paused_topics": [{"category": "cats"}]},
-        trend={"topics": [
-            {"category": "cats", "animal": "cat", "trend_safety": {"posture": "greenlight"}},
-            {"category": "ocean", "animal": "whale", "trend_safety": {"posture": "greenlight"}},
-        ]},
+        trend={
+            "topics": [
+                {"category": "cats", "animal": "cat", "trend_safety": {"posture": "greenlight"}},
+                {"category": "ocean", "animal": "whale", "trend_safety": {"posture": "greenlight"}},
+            ]
+        },
     )
     assert len(plan["days"]) == 7
     assert plan["status"] == "aggressive_growth"
@@ -22,11 +24,13 @@ def test_agency_plan_builds_seven_days():
 
 
 def test_narrator_report_picks_winner_with_samples():
-    report = narrator_report([
-        {"narrator_voice": "aria", "growth_score": 100, "view_pct": 70},
-        {"narrator_voice": "aria", "growth_score": 120, "view_pct": 80},
-        {"narrator_voice": "guy", "growth_score": 40, "view_pct": 50},
-    ])
+    report = narrator_report(
+        [
+            {"narrator_voice": "aria", "growth_score": 100, "view_pct": 70},
+            {"narrator_voice": "aria", "growth_score": 120, "view_pct": 80},
+            {"narrator_voice": "guy", "growth_score": 40, "view_pct": 50},
+        ]
+    )
     assert report["winner"] == "aria"
     assert category_voice_hint("ocean", report) == "aria"
 

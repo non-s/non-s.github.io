@@ -68,21 +68,24 @@ def test_series_identity_numbers_from_memory():
 
 
 def test_fan_growth_ranks_subscribers_per_thousand_views():
-    payload = build_fan_growth([
-        {
-            "video_id": "a",
-            "title": "A",
-            "category": "fungi",
-            "story_format": "hidden_network",
-            "analytics": {"views": 1000, "subscribersGained": 5, "comments": 20},
-        },
-        {
-            "video_id": "b",
-            "title": "B",
-            "category": "weather",
-            "analytics": {"views": 10000, "subscribersGained": 2, "comments": 10},
-        },
-    ], [{"author": "Ada"}, {"author": "Ada"}])
+    payload = build_fan_growth(
+        [
+            {
+                "video_id": "a",
+                "title": "A",
+                "category": "fungi",
+                "story_format": "hidden_network",
+                "analytics": {"views": 1000, "subscribersGained": 5, "comments": 20},
+            },
+            {
+                "video_id": "b",
+                "title": "B",
+                "category": "weather",
+                "analytics": {"views": 10000, "subscribersGained": 2, "comments": 10},
+            },
+        ],
+        [{"author": "Ada"}, {"author": "Ada"}],
+    )
 
     assert payload["videos_ranked_by_subs_per_1k"][0]["video_id"] == "a"
     assert payload["recurring_commenters"][0]["author"] == "Ada"

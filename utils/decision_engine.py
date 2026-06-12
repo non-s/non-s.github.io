@@ -1,4 +1,5 @@
 """Single decision layer for Wild Brief story recommendations."""
+
 from __future__ import annotations
 
 from utils.confidence_engine import combined_confidence
@@ -34,13 +35,15 @@ def decide_story(story: dict, *, analytics_strategy: dict | None = None) -> dict
         _source("weak_content", weak),
         _source("publish_score", publish),
     ]
-    confidence = combined_confidence([
-        opportunity.get("confidence") or {},
-        retention.get("confidence") or {},
-        subscriber.get("confidence") or {},
-        weak.get("confidence") or {},
-        publish.get("decision_confidence") or {},
-    ])
+    confidence = combined_confidence(
+        [
+            opportunity.get("confidence") or {},
+            retention.get("confidence") or {},
+            subscriber.get("confidence") or {},
+            weak.get("confidence") or {},
+            publish.get("decision_confidence") or {},
+        ]
+    )
 
     blockers = []
     if opportunity.get("verdict") == "discard":

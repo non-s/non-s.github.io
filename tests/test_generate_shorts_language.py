@@ -3,6 +3,7 @@
 We reload the modules in each test with a fresh LANGUAGE env so the
 module-level path constants reflect the locale axis correctly.
 """
+
 from __future__ import annotations
 
 import importlib
@@ -19,6 +20,7 @@ def _reload(name: str, language: str | None = None, monkeypatch=None):
     else:
         monkeypatch.setenv("LANGUAGE", language)
     import sys
+
     if name in sys.modules:
         return importlib.reload(sys.modules[name])
     return importlib.import_module(name)
@@ -46,6 +48,7 @@ def test_es_es_switches_video_dir(monkeypatch):
 def test_unsupported_language_raises(monkeypatch):
     monkeypatch.setenv("LANGUAGE", "zz-ZZ")
     import sys
+
     if "generate_shorts" in sys.modules:
         del sys.modules["generate_shorts"]
     with pytest.raises(RuntimeError, match="LANGUAGE"):
@@ -55,6 +58,7 @@ def test_unsupported_language_raises(monkeypatch):
 def test_upload_youtube_respects_language(monkeypatch):
     monkeypatch.setenv("LANGUAGE", "pt-BR")
     import sys
+
     # Stash the original module so we can restore it on teardown.
     # Otherwise the pt-BR variant of upload_youtube leaks into
     # subsequent tests that imported `upload_youtube` at module load —
@@ -82,31 +86,45 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
     gs = _reload("generate_shorts", language="pt-BR", monkeypatch=monkeypatch)
 
     translated = {
-        "id": "abc", "slug": "test-slug", "date": "2026-05-18",
+        "id": "abc",
+        "slug": "test-slug",
+        "date": "2026-05-18",
         "title": "Manchete em português",
         "seo_title": "Manchete em português",
         "hook": "Este polvo muda de cor.",
         "script": "Este polvo muda de cor. " * 20,
         "thumbnail_text": "POLVO INVISÍVEL",
-        "yt_description": "x", "yt_tags": ["octopus"],
-        "category": "ocean", "source": "Pexels",
-        "language": "pt-BR", "voice_tag": "pt-BR",
-        "image_url": "", "source_url": "",
+        "yt_description": "x",
+        "yt_tags": ["octopus"],
+        "category": "ocean",
+        "source": "Pexels",
+        "language": "pt-BR",
+        "voice_tag": "pt-BR",
+        "image_url": "",
+        "source_url": "",
     }
     from unittest.mock import patch
+
     # Mock every external call we'd otherwise need ffmpeg / edge-tts /
     # Pexels / Internet Archive for. Without mocking add_music_bed the test
     # would hit the Archive network path and cache audio locally.
-    with patch.object(gs, "translate_story", return_value=translated) as tx, \
-         patch.object(gs, "acquire_broll_clips", return_value=[]), \
-         patch.object(gs, "generate_captions", return_value=None), \
-         patch.object(gs, "text_to_speech") as tts, \
-         patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio):
+    with (
+        patch.object(gs, "translate_story", return_value=translated) as tx,
+        patch.object(gs, "acquire_broll_clips", return_value=[]),
+        patch.object(gs, "generate_captions", return_value=None),
+        patch.object(gs, "text_to_speech") as tts,
+        patch.object(gs, "add_music_bed", side_effect=lambda audio, story, tmp: audio),
+    ):
         story = {
-            "id": "abc", "slug": "test-slug", "date": "2026-05-18",
-            "title": "English octopus fact", "script": "x" * 200,
-            "category": "ocean", "source": "Pexels",
-            "image_url": "", "source_url": "",
+            "id": "abc",
+            "slug": "test-slug",
+            "date": "2026-05-18",
+            "title": "English octopus fact",
+            "script": "x" * 200,
+            "category": "ocean",
+            "source": "Pexels",
+            "image_url": "",
+            "source_url": "",
         }
         # generate_short will fail on missing background; that's fine —
         # we just want to confirm translate_story was invoked.

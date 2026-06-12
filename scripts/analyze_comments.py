@@ -65,39 +65,44 @@ def _fetch_comments(youtube, video_ids: list[str], per_video: int = 40) -> list[
         return comments
     for video_id in video_ids:
         try:
-            response = youtube.commentThreads().list(
-                part="snippet",
-                videoId=video_id,
-                maxResults=per_video,
-                order="relevance",
-                textFormat="plainText",
-            ).execute()
+            response = (
+                youtube.commentThreads()
+                .list(
+                    part="snippet",
+                    videoId=video_id,
+                    maxResults=per_video,
+                    order="relevance",
+                    textFormat="plainText",
+                )
+                .execute()
+            )
         except Exception as exc:
             print(f"comments: skipped {video_id}: {exc}")
             continue
         for item in response.get("items", []):
-            snippet = (
-                ((item.get("snippet") or {}).get("topLevelComment") or {})
-                .get("snippet") or {}
+            snippet = ((item.get("snippet") or {}).get("topLevelComment") or {}).get("snippet") or {}
+            comments.append(
+                {
+                    "video_id": video_id,
+                    "author": snippet.get("authorDisplayName", ""),
+                    "author_channel_id": ((snippet.get("authorChannelId") or {}).get("value") or ""),
+                    "text": snippet.get("textDisplay") or snippet.get("textOriginal") or "",
+                    "likeCount": snippet.get("likeCount", 0),
+                    "publishedAt": snippet.get("publishedAt", ""),
+                }
             )
-            comments.append({
-                "video_id": video_id,
-                "author": snippet.get("authorDisplayName", ""),
-                "author_channel_id": ((snippet.get("authorChannelId") or {}).get("value") or ""),
-                "text": snippet.get("textDisplay") or snippet.get("textOriginal") or "",
-                "likeCount": snippet.get("likeCount", 0),
-                "publishedAt": snippet.get("publishedAt", ""),
-            })
     return comments
 
 
 def build_payload(comments: list[dict]) -> dict:
     summary = analyze_comments(comments)
-    summary.update({
-        "pulled_at": datetime.now(timezone.utc).isoformat(),
-        "source": "youtube_comments",
-        "raw_comments": comments[:500],
-    })
+    summary.update(
+        {
+            "pulled_at": datetime.now(timezone.utc).isoformat(),
+            "source": "youtube_comments",
+            "raw_comments": comments[:500],
+        }
+    )
     return summary
 
 

@@ -1,4 +1,5 @@
 """Tests for utils/captions.py â€” pure logic, no live API."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,10 +13,12 @@ from utils.captions import Caption, group_words_into_phrases, write_ass
 
 def _strip_ass_overrides(text: str) -> str:
     import re
+
     return re.sub(r"\{[^}]*\}", "", text)
 
 
 # â”€â”€ group_words_into_phrases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def _w(word: str, start: float, end: float) -> Caption:
     return Caption(word=word, start=start, end=end)
@@ -23,8 +26,7 @@ def _w(word: str, start: float, end: float) -> Caption:
 
 def test_groups_break_on_max_words():
     words = [_w(f"w{i}", i * 0.1, i * 0.1 + 0.08) for i in range(10)]
-    phrases = group_words_into_phrases(words, max_words=3,
-                                        max_gap_s=10, max_duration_s=10)
+    phrases = group_words_into_phrases(words, max_words=3, max_gap_s=10, max_duration_s=10)
     # Each phrase has 3 words, plus one final shorter one.
     assert all(len(p.word.split()) <= 3 for p in phrases)
     assert sum(len(p.word.split()) for p in phrases) == 10
@@ -32,10 +34,8 @@ def test_groups_break_on_max_words():
 
 def test_groups_break_on_gap():
     # Two clusters separated by a 2-second gap.
-    words = [_w("a", 0, 0.3), _w("b", 0.4, 0.7),
-             _w("c", 3.0, 3.3), _w("d", 3.4, 3.7)]
-    phrases = group_words_into_phrases(words, max_words=10,
-                                        max_gap_s=0.6, max_duration_s=10)
+    words = [_w("a", 0, 0.3), _w("b", 0.4, 0.7), _w("c", 3.0, 3.3), _w("d", 3.4, 3.7)]
+    phrases = group_words_into_phrases(words, max_words=10, max_gap_s=0.6, max_duration_s=10)
     assert len(phrases) == 2
     assert phrases[0].word == "a b"
     assert phrases[1].word == "c d"
@@ -44,8 +44,7 @@ def test_groups_break_on_gap():
 def test_groups_break_on_duration():
     # Words that span longer than max_duration_s should split.
     words = [_w(f"w{i}", i * 1.0, i * 1.0 + 0.5) for i in range(5)]
-    phrases = group_words_into_phrases(words, max_words=10,
-                                        max_gap_s=10, max_duration_s=2.0)
+    phrases = group_words_into_phrases(words, max_words=10, max_gap_s=10, max_duration_s=2.0)
     assert len(phrases) >= 2
 
 
@@ -54,6 +53,7 @@ def test_groups_handles_empty():
 
 
 # â”€â”€ write_ass â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 def test_write_ass_creates_valid_file(tmp_path):
     caps = [_w("Octopus camouflage", 0.0, 1.2), _w("Owl night vision", 1.5, 2.8)]
@@ -89,6 +89,7 @@ def test_write_ass_empty_returns_false(tmp_path):
 
 # â”€â”€ transcribe_groq â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def test_transcribe_groq_returns_none_without_key(monkeypatch, tmp_path):
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     fake = tmp_path / "a.mp3"
@@ -104,7 +105,7 @@ def test_transcribe_groq_parses_word_timestamps(monkeypatch, tmp_path):
         "words": [
             {"word": "Hello", "start": 0.0, "end": 0.4},
             {"word": "world", "start": 0.5, "end": 0.9},
-            {"word": "",      "start": 0.9, "end": 0.9},
+            {"word": "", "start": 0.9, "end": 0.9},
         ]
     }
     resp = MagicMock(status_code=200)
@@ -126,12 +127,15 @@ def test_transcribe_groq_handles_non_200(monkeypatch, tmp_path):
 
 # â”€â”€ transcribe (unified) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+
 def test_transcribe_prefers_groq_when_available(monkeypatch, tmp_path):
     fake_audio = tmp_path / "a.mp3"
     fake_audio.write_bytes(b"x" * 100)
     groq_result = [_w("hi", 0, 0.3)]
-    with patch.object(captions, "transcribe_groq", return_value=groq_result) as g, \
-         patch.object(captions, "transcribe_faster_whisper") as fw:
+    with (
+        patch.object(captions, "transcribe_groq", return_value=groq_result) as g,
+        patch.object(captions, "transcribe_faster_whisper") as fw,
+    ):
         out = captions.transcribe(fake_audio)
     assert out == groq_result
     g.assert_called_once()
@@ -143,8 +147,7 @@ def test_transcribe_falls_through_to_faster_whisper(monkeypatch, tmp_path):
     fake_audio.write_bytes(b"x" * 100)
     fw_result = [_w("hi", 0, 0.3)]
     with patch.object(captions, "transcribe_groq", return_value=None):
-        with patch.object(captions, "transcribe_faster_whisper",
-                          return_value=fw_result) as fw:
+        with patch.object(captions, "transcribe_faster_whisper", return_value=fw_result) as fw:
             out = captions.transcribe(fake_audio)
     assert out == fw_result
     fw.assert_called_once()
@@ -168,6 +171,7 @@ def test_write_ass_default_margin_v_clears_shorts_ui(tmp_path):
     rail) takes ~250 px; we keep margin_v â‰¥ 320 so captions land in
     the centre-safe zone, not under the UI."""
     import inspect
+
     sig = inspect.signature(write_ass)
     assert sig.parameters["margin_v"].default >= 320
 
@@ -215,9 +219,7 @@ def test_transcribe_groq_retries_once_on_429(tmp_path, monkeypatch):
             resp.text = "rate limited"
         else:
             resp.status_code = 200
-            resp.json.return_value = {
-                "words": [{"word": "hi", "start": 0.0, "end": 0.3}]
-            }
+            resp.json.return_value = {"words": [{"word": "hi", "start": 0.0, "end": 0.3}]}
         return resp
 
     monkeypatch.setattr(captions.requests, "post", _fake_post)

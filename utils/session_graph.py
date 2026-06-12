@@ -95,8 +95,7 @@ def build_session_graph(markers: list[dict], *, max_actions: int = 20) -> dict:
             "url": item.get("url") or f"https://www.youtube.com/shorts/{item.get('video_id', '')}",
         }
         for item in markers
-        if item.get("video_id")
-        and (not item.get("title") or _recommendable_title(str(item.get("title") or "")))
+        if item.get("video_id") and (not item.get("title") or _recommendable_title(str(item.get("title") or "")))
     ]
     edges = []
     actions = []

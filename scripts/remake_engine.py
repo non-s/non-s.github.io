@@ -57,18 +57,26 @@ def _brief(item: dict) -> dict:
             f"Why {title[:48]} works"[:90],
         ],
     }
-    out.update(remake_brief({
-        "title": title,
-        "hook": item.get("hook", ""),
-        "script": item.get("script", title),
-        "category": item.get("category", ""),
-    }))
+    out.update(
+        remake_brief(
+            {
+                "title": title,
+                "hook": item.get("hook", ""),
+                "script": item.get("script", title),
+                "category": item.get("category", ""),
+            }
+        )
+    )
     return out
 
 
 def build_backlog(root: Path = ROOT) -> dict:
     latest = _safe_json(root / "_data" / "analytics" / "latest.json")
-    candidates = latest.get("remake_candidates") or (latest.get("production_recommendations") or {}).get("remake_candidates") or []
+    candidates = (
+        latest.get("remake_candidates")
+        or (latest.get("production_recommendations") or {}).get("remake_candidates")
+        or []
+    )
     if not candidates:
         candidates = []
         for item in latest.get("top_performers") or []:
@@ -84,9 +92,7 @@ def build_backlog(root: Path = ROOT) -> dict:
             if views >= 250 and (growth >= 120 or retention < 60 or "hook_needs_work" in likely):
                 remake = dict(item)
                 remake["retention"] = retention
-                remake["action"] = (
-                    "remake the proven topic with a new first sentence and tighter visual promise"
-                )
+                remake["action"] = "remake the proven topic with a new first sentence and tighter visual promise"
                 candidates.append(remake)
     briefs = [
         _brief(item)

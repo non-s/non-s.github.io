@@ -1,4 +1,5 @@
 """Turn remake backlog items into queue-ready story drafts."""
+
 from __future__ import annotations
 
 import hashlib
@@ -88,12 +89,14 @@ def _source_keys(story: dict) -> set[str]:
 
 
 def _angle_key(story: dict) -> str:
-    return "|".join((
-        extract_animal(story).lower(),
-        extract_action(story).lower(),
-        extract_cue(story).lower(),
-        str(story.get("category") or "").lower(),
-    ))
+    return "|".join(
+        (
+            extract_animal(story).lower(),
+            extract_action(story).lower(),
+            extract_cue(story).lower(),
+            str(story.get("category") or "").lower(),
+        )
+    )
 
 
 def _title_key(story: dict) -> str:
@@ -125,8 +128,7 @@ def _suggested_hook(suggested: str, animal: str) -> str:
 
 def _requires_different_animal(remake: dict) -> bool:
     text = " ".join(
-        [str(remake.get("action") or "")]
-        + [str(item) for item in (remake.get("instructions") or [])]
+        [str(remake.get("action") or "")] + [str(item) for item in (remake.get("instructions") or [])]
     ).lower()
     return "new animal" in text or "different animal" in text
 

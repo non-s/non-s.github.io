@@ -45,8 +45,7 @@ def test_agency_score_rewards_quality_trend_and_learning():
         "format_weights": {"animal_memory": 1.4},
         "exploit_keywords": ["dogs"],
     }
-    assert agency_score(strong, strategy=strategy)["score"] > \
-        agency_score(weak, strategy=strategy)["score"]
+    assert agency_score(strong, strategy=strategy)["score"] > agency_score(weak, strategy=strategy)["score"]
     assert agency_score(strong, strategy=strategy)["decision"] in {
         "publish_now",
         "strong_candidate",
@@ -58,10 +57,13 @@ def test_rank_for_agency_attaches_decision_and_sorts():
         _story(title="Cats sleep through danger", category="cats", trend_context={}),
         _story(title="Dogs remember faces after one meeting", category="dogs"),
     ]
-    ranked = rank_for_agency(candidates, {
-        "category_weights": {"dogs": 1.8, "cats": 0.5},
-        "format_weights": {"animal_memory": 1.2},
-    })
+    ranked = rank_for_agency(
+        candidates,
+        {
+            "category_weights": {"dogs": 1.8, "cats": 0.5},
+            "format_weights": {"animal_memory": 1.2},
+        },
+    )
     assert ranked[0]["category"] == "dogs"
     assert "agency" in ranked[0]
     assert ranked[0]["agency"]["score"] >= ranked[1]["agency"]["score"]

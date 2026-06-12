@@ -19,6 +19,7 @@ This chain means a single story has up to 4 chances to survive a
 provider hiccup — drastically reducing the "Mistral 429 → drop story"
 loss rate on the free-tier budget.
 """
+
 import json
 import logging
 import os
@@ -37,9 +38,11 @@ def _host_persona_block() -> str:
     """Lazy-load the persona to keep ai_helper's import cheap."""
     try:
         from utils.host_persona import system_prompt_overlay
+
         return system_prompt_overlay()
     except Exception:
         return ""
+
 
 log = logging.getLogger(__name__)
 
@@ -47,35 +50,33 @@ _session = requests.Session()
 _session.headers.update({"User-Agent": "WildBrief-Bot/3.0 (+https://non-s.github.io)"})
 
 _MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
-_MISTRAL_MODEL   = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
+_MISTRAL_MODEL = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
 
 # Cerebras has a 1M token/day free tier and uses an OpenAI-compatible
 # API at api.cerebras.ai/v1. We call it ONLY after Mistral exhausts its
 # 3 retries on 429 — it's the "we ran out of free tier on the primary,
 # don't drop the story" parachute.
 _CEREBRAS_API_URL = "https://api.cerebras.ai/v1/chat/completions"
-_CEREBRAS_MODEL   = os.environ.get("CEREBRAS_MODEL", "llama-3.3-70b")
+_CEREBRAS_MODEL = os.environ.get("CEREBRAS_MODEL", "llama-3.3-70b")
 
 # Google Gemini free tier — 15 RPM, 1,500 requests/day on flash-lite.
 # Uses a different request shape than OpenAI-compat APIs, so we have
 # a dedicated _call_gemini below.
-_GEMINI_API_URL = (
-    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-)
-_GEMINI_MODEL   = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+_GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
 
 # Groq — OpenAI-compatible API, free tier ~14k req/day on llama-3.3-70b
 # and llama-3.1-8b. Very fast (sub-second usually).
 _GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-_GROQ_MODEL   = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+_GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # Mistral free tier is nominally 1 request/second but sustained traffic
 # hits 429 well before that. 8s gives a comfortable 8x margin over the
 # documented limit — costs ~7 min per 50-post run but eliminates the
 # retry-and-drop loop entirely. Override via MISTRAL_MIN_INTERVAL env.
-_MIN_INTERVAL    = float(os.environ.get("MISTRAL_MIN_INTERVAL", "8.0"))
-_call_lock       = threading.Lock()
-_last_call_ts    = 0.0
+_MIN_INTERVAL = float(os.environ.get("MISTRAL_MIN_INTERVAL", "8.0"))
+_call_lock = threading.Lock()
+_last_call_ts = 0.0
 
 # In-run circuit breaker: when Mistral 429s repeatedly (free-tier
 # quota gone for the day, sustained burst limit), keep trying it on
@@ -86,7 +87,7 @@ _last_call_ts    = 0.0
 # Earlier queue-refresh runs hit the 25-min workflow timeout exactly
 # because we burned the whole budget on 36 consecutive Mistral 429s.
 _MISTRAL_429_CIRCUIT_THRESHOLD = int(os.environ.get("MISTRAL_429_CIRCUIT_THRESHOLD", "3"))
-_mistral_429_streak  = 0
+_mistral_429_streak = 0
 _mistral_circuit_open = False
 
 
@@ -99,8 +100,9 @@ def _reset_mistral_circuit_breaker() -> None:
     _mistral_429_streak = 0
     _mistral_circuit_open = False
 
+
 _SPAM_PATTERNS = re.compile(
-    r'\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b',
+    r"\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b",
     re.IGNORECASE,
 )
 
@@ -121,7 +123,7 @@ def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: 
         "model": _MISTRAL_MODEL,
         "messages": [
             {"role": "system", "content": sys_msg},
-            {"role": "user",   "content": prompt},
+            {"role": "user", "content": prompt},
         ],
         "temperature": 0.7,
         "max_tokens": 3000,
@@ -158,7 +160,7 @@ def _call_cerebras(sys_msg: str, prompt: str, timeout: int, key: str, json_mode:
         "model": _CEREBRAS_MODEL,
         "messages": [
             {"role": "system", "content": sys_msg},
-            {"role": "user",   "content": prompt},
+            {"role": "user", "content": prompt},
         ],
         "temperature": 0.7,
         "max_tokens": 3000,
@@ -186,10 +188,12 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
     _throttle()
     url = _GEMINI_API_URL.format(model=_GEMINI_MODEL) + f"?key={key}"
     body: dict = {
-        "contents": [{
-            "role": "user",
-            "parts": [{"text": prompt}],
-        }],
+        "contents": [
+            {
+                "role": "user",
+                "parts": [{"text": prompt}],
+            }
+        ],
         "systemInstruction": {"parts": [{"text": sys_msg}]},
         "generationConfig": {
             "temperature": 0.7,
@@ -199,8 +203,7 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
     if json_mode:
         body["generationConfig"]["responseMimeType"] = "application/json"
 
-    r = _session.post(url, json=body, timeout=timeout,
-                      headers={"Content-Type": "application/json"})
+    r = _session.post(url, json=body, timeout=timeout, headers={"Content-Type": "application/json"})
     r.raise_for_status()
     data = r.json()
     try:
@@ -216,7 +219,7 @@ def _call_groq(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: boo
         "model": _GROQ_MODEL,
         "messages": [
             {"role": "system", "content": sys_msg},
-            {"role": "user",   "content": prompt},
+            {"role": "user", "content": prompt},
         ],
         "temperature": 0.7,
         "max_tokens": 3000,
@@ -330,8 +333,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
                     else:
                         log.warning("Mistral rate limited (429) — giving up after 2 attempts")
                         _mistral_429_streak += 1
-                        if (not _mistral_circuit_open
-                                and _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD):
+                        if not _mistral_circuit_open and _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD:
                             _mistral_circuit_open = True
                             log.warning(
                                 "🔌 Mistral circuit breaker OPEN after "
@@ -363,9 +365,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
     # network). 400-class errors mean the prompt itself is bad — every
     # provider would reject it, so we save the budget.
     transient_failure = (
-        mistral_failed_with == 429
-        or mistral_failed_with in (500, 502, 503, 504)
-        or mistral_failed_with == "exception"
+        mistral_failed_with == 429 or mistral_failed_with in (500, 502, 503, 504) or mistral_failed_with == "exception"
     )
     if not transient_failure:
         return ""
@@ -377,12 +377,11 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
     # before we reach a healthy one.
     _by_name = {
         "cerebras": ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
-        "gemini":   ("GEMINI_API_KEY",   "Gemini",   _call_gemini),
-        "groq":     ("GROQ_API_KEY",     "Groq",     _call_groq),
+        "gemini": ("GEMINI_API_KEY", "Gemini", _call_gemini),
+        "groq": ("GROQ_API_KEY", "Groq", _call_groq),
     }
     ranked_names = [
-        n for n in provider_stats.preferred_chain()
-        if n != "mistral"  # mistral was the primary, already failed
+        n for n in provider_stats.preferred_chain() if n != "mistral"  # mistral was the primary, already failed
     ]
     fallback_chain = [(_by_name[n] + (n,)) for n in ranked_names if n in _by_name]
     any_configured = False
@@ -458,8 +457,9 @@ def _ai_provider_registry() -> dict[str, tuple[str, str, object]]:
     }
 
 
-def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30,
-            json_mode: bool = False, task: str = "auto") -> str:
+def ai_text(
+    prompt: str, system: str = "", seed: int = 0, timeout: int = 30, json_mode: bool = False, task: str = "auto"
+) -> str:
     """Route text generation across the healthiest configured provider."""
     sys_msg = system or _default_system_prompt()
     registry = _ai_provider_registry()
@@ -468,14 +468,10 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30,
         json_mode=json_mode,
         prompt_chars=len(prompt) + len(sys_msg),
     )
-    configured = [
-        name for name in chain
-        if name in registry and os.environ.get(registry[name][0], "")
-    ]
+    configured = [name for name in chain if name in registry and os.environ.get(registry[name][0], "")]
     if not configured:
         log.error(
-            "No AI provider key configured. Set MISTRAL_API_KEY, "
-            "CEREBRAS_API_KEY, GEMINI_API_KEY or GROQ_API_KEY."
+            "No AI provider key configured. Set MISTRAL_API_KEY, " "CEREBRAS_API_KEY, GEMINI_API_KEY or GROQ_API_KEY."
         )
         return ""
 

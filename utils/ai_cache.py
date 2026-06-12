@@ -29,6 +29,7 @@ JSONL at `_data/ai_cache.jsonl` to keep the on-disk shape readable
 and append-only. We rewrite the file in full only on prune; daily
 writes stay append-only and concurrency-safe via fcntl on POSIX.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -149,8 +150,7 @@ def reset_cache_for_tests() -> None:
         _mem = None
 
 
-def get(prompt: str, model_hint: str = "", json_mode: bool = False,
-        path: Path = _DEFAULT_PATH) -> str | None:
+def get(prompt: str, model_hint: str = "", json_mode: bool = False, path: Path = _DEFAULT_PATH) -> str | None:
     """Return cached response for this prompt, or None on miss."""
     if not _ENABLED:
         return None
@@ -161,8 +161,7 @@ def get(prompt: str, model_hint: str = "", json_mode: bool = False,
     return entry.get("v") or None
 
 
-def put(prompt: str, value: str, model_hint: str = "", json_mode: bool = False,
-        path: Path = _DEFAULT_PATH) -> None:
+def put(prompt: str, value: str, model_hint: str = "", json_mode: bool = False, path: Path = _DEFAULT_PATH) -> None:
     """Store `value` against this prompt. No-op if cache is disabled or value empty."""
     if not _ENABLED or not value:
         return
@@ -173,11 +172,9 @@ def put(prompt: str, value: str, model_hint: str = "", json_mode: bool = False,
     _append(path, entry)
 
 
-def cached_call(prompt: str,
-                caller: Callable[[], str],
-                model_hint: str = "",
-                json_mode: bool = False,
-                path: Path = _DEFAULT_PATH) -> str:
+def cached_call(
+    prompt: str, caller: Callable[[], str], model_hint: str = "", json_mode: bool = False, path: Path = _DEFAULT_PATH
+) -> str:
     """Cache wrapper: returns the cached value if present, else calls `caller()`
     and stores the result. `caller` is invoked AT MOST ONCE per (prompt, model,
     json_mode) within the TTL window."""

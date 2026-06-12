@@ -32,11 +32,14 @@ def _marker(video_id: str, hours_old: float, views: int, **overrides):
 
 def test_early_performance_scores_velocity_and_breakout():
     now = datetime(2026, 6, 10, 12, tzinfo=timezone.utc)
-    early = build_early_performance([
-        _marker("fast", 6, 1200),
-        _marker("mature", 30, 6000),
-        _marker("slow", 30, 400),
-    ], now=now)
+    early = build_early_performance(
+        [
+            _marker("fast", 6, 1200),
+            _marker("mature", 30, 6000),
+            _marker("slow", 30, 400),
+        ],
+        now=now,
+    )
 
     fast = early["videos"]["fast"]
 
@@ -50,9 +53,7 @@ def test_acceleration_uses_snapshots_to_detect_second_wave():
     previous = {
         "videos": {
             "wave": {
-                "snapshots": [
-                    {"at": "x", "age_hours": 24, "views": 1000, "likes": 10, "comments": 0, "subscribers": 0}
-                ]
+                "snapshots": [{"at": "x", "age_hours": 24, "views": 1000, "likes": 10, "comments": 0, "subscribers": 0}]
             }
         }
     }
@@ -66,21 +67,21 @@ def test_winner_patterns_and_warning_are_actionable():
     previous = {
         "videos": {
             "winner": {
-                "snapshots": [
-                    {"at": "x", "age_hours": 6, "views": 1400, "likes": 15, "comments": 2, "subscribers": 1}
-                ]
+                "snapshots": [{"at": "x", "age_hours": 6, "views": 1400, "likes": 15, "comments": 2, "subscribers": 1}]
             },
             "dead": {
-                "snapshots": [
-                    {"at": "x", "age_hours": 24, "views": 290, "likes": 4, "comments": 0, "subscribers": 0}
-                ]
+                "snapshots": [{"at": "x", "age_hours": 24, "views": 290, "likes": 4, "comments": 0, "subscribers": 0}]
             },
         }
     }
-    early = build_early_performance([
-        _marker("winner", 12, 2500),
-        _marker("dead", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
-    ], previous=previous, now=now)
+    early = build_early_performance(
+        [
+            _marker("winner", 12, 2500),
+            _marker("dead", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
+        ],
+        previous=previous,
+        now=now,
+    )
 
     patterns = build_winner_patterns(early)
     warning = build_early_warning(early)
@@ -91,9 +92,12 @@ def test_winner_patterns_and_warning_are_actionable():
 
 def test_estimated_old_video_stays_on_low_confidence_watchlist():
     now = datetime(2026, 6, 10, 12, tzinfo=timezone.utc)
-    early = build_early_performance([
-        _marker("old", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
-    ], now=now)
+    early = build_early_performance(
+        [
+            _marker("old", 30, 300, category="dogs", series="Pet Signals", story_format="single_fact"),
+        ],
+        now=now,
+    )
 
     warning = build_early_warning(early)
 
@@ -106,15 +110,17 @@ def test_early_warning_repairs_malformed_breakout_before_sequence():
     previous = {
         "videos": {
             "bad-title": {
-                "snapshots": [
-                    {"at": "x", "age_hours": 24, "views": 4200, "likes": 20, "comments": 3, "subscribers": 1}
-                ]
+                "snapshots": [{"at": "x", "age_hours": 24, "views": 4200, "likes": 20, "comments": 3, "subscribers": 1}]
             }
         }
     }
-    early = build_early_performance([
-        _marker("bad-title", 30, 6000, title="Lions use their ears to use"),
-    ], previous=previous, now=now)
+    early = build_early_performance(
+        [
+            _marker("bad-title", 30, 6000, title="Lions use their ears to use"),
+        ],
+        previous=previous,
+        now=now,
+    )
 
     warning = build_early_warning(early)
 

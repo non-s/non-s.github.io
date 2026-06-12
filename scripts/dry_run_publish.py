@@ -28,6 +28,7 @@ def build_dry_run(data: dict) -> dict:
         rights = story.get("rights_audit") or {}
         if not rights:
             from utils.rights_audit import audit_rights
+
             rights = audit_rights(story)
         queue_prune = story.get("queue_prune") or {}
         publish = story.get("publish_score") or {}
@@ -41,28 +42,33 @@ def build_dry_run(data: dict) -> dict:
             gate = publish.get("objective_gate") or {}
             for reason in gate.get("reasons") or []:
                 objective_reasons[str(reason)] += 1
-            items.append({
-                "id": story.get("id", ""),
-                "title": story.get("seo_title") or story.get("title") or "",
-                "category": story.get("category", ""),
-                "queue_score": queue_prune.get("score", 0),
-                "template_cluster": queue_prune.get("template_cluster", ""),
-                "mechanism_cluster": queue_prune.get("mechanism_cluster", ""),
-                "objective_reasons": list(gate.get("reasons") or []),
-                "scale_ready": bool(gate.get("scale_ready", True)),
-                "autonomy_priority": autonomy_priority(story, queue_prune.get("score", 0)),
-                "autonomy_lane": autonomy.get("lane", ""),
-                "hypothesis_id": autonomy.get("hypothesis_id", ""),
-                "packaging_lab": autonomy.get("packaging_lab") or {},
-                "publish_score": publish,
-                "youtube_brain": story.get("youtube_brain") or {},
-                "packaging": story.get("packaging") or {},
-                "rights_audit": rights,
-            })
+            items.append(
+                {
+                    "id": story.get("id", ""),
+                    "title": story.get("seo_title") or story.get("title") or "",
+                    "category": story.get("category", ""),
+                    "queue_score": queue_prune.get("score", 0),
+                    "template_cluster": queue_prune.get("template_cluster", ""),
+                    "mechanism_cluster": queue_prune.get("mechanism_cluster", ""),
+                    "objective_reasons": list(gate.get("reasons") or []),
+                    "scale_ready": bool(gate.get("scale_ready", True)),
+                    "autonomy_priority": autonomy_priority(story, queue_prune.get("score", 0)),
+                    "autonomy_lane": autonomy.get("lane", ""),
+                    "hypothesis_id": autonomy.get("hypothesis_id", ""),
+                    "packaging_lab": autonomy.get("packaging_lab") or {},
+                    "publish_score": publish,
+                    "youtube_brain": story.get("youtube_brain") or {},
+                    "packaging": story.get("packaging") or {},
+                    "rights_audit": rights,
+                }
+            )
     items = sorted(
         items,
         key=lambda item: publish_priority_key(
-            {"autonomy": {"priority": item.get("autonomy_priority", 0)}, "queue_prune": {"score": item.get("queue_score", 0)}},
+            {
+                "autonomy": {"priority": item.get("autonomy_priority", 0)},
+                "queue_prune": {"score": item.get("queue_score", 0)},
+            },
             item.get("publish_score") or {},
         ),
         reverse=True,

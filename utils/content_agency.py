@@ -6,6 +6,7 @@ replacement for the editorial, SEO, ops, or pre-publish gates. It is the
 agency-level view that decides which approved story deserves the next
 slot.
 """
+
 from __future__ import annotations
 
 import re
@@ -60,21 +61,16 @@ def _trend_score(story: dict) -> float:
 def _learning_score(story: dict, strategy: dict | None = None) -> float:
     strategy = strategy or {}
     category = str(story.get("category") or "").lower()
-    story_format = str(story.get("story_format") or classify_format(
-        f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}"
-    ))
+    story_format = str(
+        story.get("story_format")
+        or classify_format(f"{story.get('title', '')} {story.get('hook', '')} {story.get('script', '')}")
+    )
     category_weights = strategy.get("category_weights") or {}
     format_weights = strategy.get("format_weights") or {}
     cat_weight = _num(category_weights.get(category), 1.0)
     fmt_weight = _num(format_weights.get(story_format), 1.0)
-    exploit_keywords = [
-        str(item).lower() for item in (strategy.get("exploit_keywords") or [])
-        if str(item).strip()
-    ]
-    text = (
-        f"{story.get('title', '')} {story.get('hook', '')} "
-        f"{story.get('script', '')}"
-    ).lower()
+    exploit_keywords = [str(item).lower() for item in (strategy.get("exploit_keywords") or []) if str(item).strip()]
+    text = (f"{story.get('title', '')} {story.get('hook', '')} " f"{story.get('script', '')}").lower()
     keyword_bonus = 8 if exploit_keywords and any(word in text for word in exploit_keywords) else 0
     base = 50 + (cat_weight - 1.0) * 22 + (fmt_weight - 1.0) * 18 + keyword_bonus
     return max(0.0, min(100.0, base))
@@ -88,8 +84,7 @@ def _distinctiveness_score(story: dict, cohort: list[dict] | None = None) -> flo
         return 42.0
     category = str(story.get("category") or "")
     same_category = [
-        item for item in (cohort or [])
-        if item is not story and str(item.get("category") or "") == category
+        item for item in (cohort or []) if item is not story and str(item.get("category") or "") == category
     ]
     if not same_category:
         return 88.0
@@ -98,18 +93,14 @@ def _distinctiveness_score(story: dict, cohort: list[dict] | None = None) -> flo
         other_words = set(_words(str(other.get("title") or other.get("seo_title") or "")))
         if not other_words:
             continue
-        overlaps.append(
-            len(subject_words & other_words) / max(1, len(subject_words | other_words))
-        )
+        overlaps.append(len(subject_words & other_words) / max(1, len(subject_words | other_words)))
     if not overlaps:
         return 84.0
     avg_overlap = sum(overlaps) / len(overlaps)
     return max(25.0, min(100.0, 100 - avg_overlap * 120))
 
 
-def agency_score(story: dict, *,
-                 strategy: dict | None = None,
-                 cohort: list[dict] | None = None) -> dict:
+def agency_score(story: dict, *, strategy: dict | None = None, cohort: list[dict] | None = None) -> dict:
     editorial = story.get("editorial") or {}
     humanity = editorial.get("humanity") or story.get("humanity") or {}
     hook_audit = story.get("hook_audit") or {}
@@ -143,14 +134,7 @@ def agency_score(story: dict, *,
         risk_penalty += 12
         reasons.append("studio_hold")
 
-    score = (
-        quality * 0.42
-        + learning * 0.22
-        + trend * 0.16
-        + freshness * 0.10
-        + distinctiveness * 0.10
-        - risk_penalty
-    )
+    score = quality * 0.42 + learning * 0.22 + trend * 0.16 + freshness * 0.10 + distinctiveness * 0.10 - risk_penalty
     score = int(max(0, min(100, round(score))))
     if score >= 82:
         decision = "publish_now"
@@ -187,8 +171,7 @@ def agency_score(story: dict, *,
     }
 
 
-def rank_for_agency(candidates: list[dict],
-                    strategy: dict | None = None) -> list[dict]:
+def rank_for_agency(candidates: list[dict], strategy: dict | None = None) -> list[dict]:
     cohort = list(candidates)
     ranked = []
     for candidate in candidates:
@@ -207,18 +190,16 @@ def rank_for_agency(candidates: list[dict],
     )
 
 
-def agency_snapshot(candidates: list[dict],
-                    strategy: dict | None = None,
-                    limit: int = 8) -> dict:
+def agency_snapshot(candidates: list[dict], strategy: dict | None = None, limit: int = 8) -> dict:
     ranked = rank_for_agency(candidates, strategy)
     decisions = Counter((item.get("agency") or {}).get("decision", "unknown") for item in ranked)
     avg = (
         round(
-            sum(int((item.get("agency") or {}).get("score", 0)) for item in ranked)
-            / len(ranked),
+            sum(int((item.get("agency") or {}).get("score", 0)) for item in ranked) / len(ranked),
             1,
         )
-        if ranked else 0
+        if ranked
+        else 0
     )
     return {
         "average_score": avg,

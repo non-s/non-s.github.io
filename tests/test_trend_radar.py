@@ -1,4 +1,5 @@
 """Tests for public animal trend radar."""
+
 from __future__ import annotations
 
 import json
@@ -16,12 +17,17 @@ RSS = """<?xml version="1.0"?>
 
 
 def test_score_trends_extracts_animal_topics():
-    payload = trend_radar.score_trends([
-        {"title": "Rare orca behavior caught on camera", "url": "u", "source": "s",
-         "text": "Rare orca behavior caught on camera scientists study viral orca behavior"},
-        {"title": "Cat rescue video goes viral", "url": "c", "source": "s",
-         "text": "Cat rescue video goes viral"},
-    ])
+    payload = trend_radar.score_trends(
+        [
+            {
+                "title": "Rare orca behavior caught on camera",
+                "url": "u",
+                "source": "s",
+                "text": "Rare orca behavior caught on camera scientists study viral orca behavior",
+            },
+            {"title": "Cat rescue video goes viral", "url": "c", "source": "s", "text": "Cat rescue video goes viral"},
+        ]
+    )
     assert payload["summary"]["animal_topics"] == 2
     assert payload["topics"][0]["trend_score"] >= payload["topics"][1]["trend_score"]
     assert "trend_safety" in payload["topics"][0]
@@ -38,9 +44,12 @@ def test_fetch_public_items_reads_rss(monkeypatch):
 
 def test_load_trends_and_category_helpers(tmp_path):
     path = tmp_path / "trend.json"
-    path.write_text(json.dumps({
-        "topics": [{"category": "ocean", "animal": "orca", "trend_score": 82, "query": "orca animal behavior"}]
-    }), encoding="utf-8")
+    path.write_text(
+        json.dumps(
+            {"topics": [{"category": "ocean", "animal": "orca", "trend_score": 82, "query": "orca animal behavior"}]}
+        ),
+        encoding="utf-8",
+    )
     payload = trend_radar.load_trends(path)
     assert trend_radar.trend_queries_for_category("ocean", payload) == ["orca animal behavior"]
     assert trend_radar.trend_weight_for_category("ocean", payload) == 1.45
@@ -80,13 +89,18 @@ def test_trend_context_picks_best_category_topic():
 
 
 def test_animal_classifier_avoids_media_name_false_positives():
-    payload = trend_radar.score_trends([
-        {"title": "Animal shelter trending in right direction - FOX 2",
-         "text": "Animal shelter trending in right direction FOX 2 news"},
-        {"title": "Rare mammal sighting - Outdoors with Bear Grylls",
-         "text": "Rare mammal sighting Outdoors with Bear Grylls"},
-        {"title": "Sea lion surprises beach visitors",
-         "text": "Viral sea lion video surprises beach visitors"},
-    ])
+    payload = trend_radar.score_trends(
+        [
+            {
+                "title": "Animal shelter trending in right direction - FOX 2",
+                "text": "Animal shelter trending in right direction FOX 2 news",
+            },
+            {
+                "title": "Rare mammal sighting - Outdoors with Bear Grylls",
+                "text": "Rare mammal sighting Outdoors with Bear Grylls",
+            },
+            {"title": "Sea lion surprises beach visitors", "text": "Viral sea lion video surprises beach visitors"},
+        ]
+    )
     assert payload["summary"]["animal_topics"] == 1
     assert payload["topics"][0]["animal"] == "sea lion"

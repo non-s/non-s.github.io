@@ -153,7 +153,9 @@ def advanced_search_audio(query: str, *, rows: int = 20, session=requests) -> li
 
 def fetch_metadata(identifier: str, *, session=requests) -> dict[str, Any] | None:
     try:
-        resp = session.get(METADATA_URL.format(identifier=quote(identifier, safe="")), timeout=30, headers={"User-Agent": USER_AGENT})
+        resp = session.get(
+            METADATA_URL.format(identifier=quote(identifier, safe="")), timeout=30, headers={"User-Agent": USER_AGENT}
+        )
         resp.raise_for_status()
         payload = resp.json()
     except Exception as exc:
@@ -191,7 +193,9 @@ def asset_from_metadata(payload: dict[str, Any], *, mood: str = "upbeat") -> Arc
     )
 
 
-def discover_public_domain_audio(query: str, *, mood: str = "upbeat", rows: int = 20, session=requests) -> list[ArchiveAudioAsset]:
+def discover_public_domain_audio(
+    query: str, *, mood: str = "upbeat", rows: int = 20, session=requests
+) -> list[ArchiveAudioAsset]:
     assets: list[ArchiveAudioAsset] = []
     for identifier in advanced_search_audio(query, rows=rows, session=session):
         payload = fetch_metadata(identifier, session=session)
