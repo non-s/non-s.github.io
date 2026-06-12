@@ -31,9 +31,10 @@ def _workflow_slots(workflow: str) -> set[str]:
         parts = match.group("cron").split()
         if len(parts) < 2:
             continue
-        minute = parts[0]
-        for hour in parts[1].split(","):
-            if hour.isdigit() and minute.isdigit():
+        minutes = range(60) if parts[0] == "*" else [int(parts[0])] if parts[0].isdigit() else []
+        hours = range(24) if parts[1] == "*" else [int(hour) for hour in parts[1].split(",") if hour.isdigit()]
+        for minute in minutes:
+            for hour in hours:
                 slots.add(f"{int(hour):02d}:{int(minute):02d}")
     return slots
 

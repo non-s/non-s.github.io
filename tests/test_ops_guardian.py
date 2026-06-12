@@ -28,7 +28,7 @@ def test_ops_guardian_normal_with_healthy_retention(tmp_path: Path):
     _write(tmp_path / "_data" / "automation_health.json", {"state": "excellent"})
     out = build_ops_report(tmp_path)
     assert out["risk"]["level"] == "normal"
-    assert [item["utc_hour"] for item in out["scheduler"]["recommended_utc_hours"]] == [5, 14, 19, 23]
+    assert [item["utc_hour"] for item in out["scheduler"]["recommended_utc_hours"]] == list(range(24))
     assert out["scheduler"]["recommended_utc_hours"][0]["reason"] == "default_global_daypart"
     assert out["inventory_forecast"]["state"] == "thin"
     assert out["executive_report"]["what_to_scale"] == ["cats"]

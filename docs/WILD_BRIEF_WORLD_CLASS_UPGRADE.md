@@ -42,7 +42,10 @@ Implemented:
   environment docs, security updates, dashboard sections, dashboard smoke in CI
   and scoped CI linting.
 - Adaptive cadence hardening: `utils/publish_schedule.py` is the canonical
-  source for the UTC evaluation slots `05:23`, `14:23`, `19:23` and `23:23`;
+  source for the 24/day UTC evaluation grid `00:00`, `01:00`, `02:00`,
+  `03:00`, `04:00`, `05:00`, `06:00`, `07:00`, `08:00`, `09:00`,
+  `10:00`, `11:00`, `12:00`, `13:00`, `14:00`, `15:00`, `16:00`,
+  `17:00`, `18:00`, `19:00`, `20:00`, `21:00`, `22:00` and `23:00`;
   `scripts/publish_window.py` writes `_data/publish_slot_decisions.jsonl` and
   can safely skip slots with low queue quality or no eligible story.
 - Temporal contract v2: `utils/time_semantics.py` writes `publish_ts_utc`,

@@ -25,4 +25,4 @@ def test_global_strategy_covers_major_regions():
     strategy = global_strategy()
 
     assert strategy["mode"] == "global"
-    assert [item["utc_hour"] for item in strategy["publish_windows"]] == [5, 14, 19, 23]
+    assert [item["utc_hour"] for item in strategy["publish_windows"]] == list(range(24))

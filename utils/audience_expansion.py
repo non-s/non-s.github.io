@@ -25,32 +25,25 @@ GLOBAL_SEARCH_TAGS = [
     "wild brief",
 ]
 
-GLOBAL_PUBLISH_WINDOWS = [
-    {
-        "slot": "05:23",
-        "utc_hour": 5,
-        "label": "Asia/Oceania evening",
-        "regions": ["India", "Southeast Asia", "Australia"],
-    },
-    {
-        "slot": "14:23",
-        "utc_hour": 14,
-        "label": "Europe/Africa afternoon",
-        "regions": ["Europe", "Africa", "Middle East"],
-    },
-    {
-        "slot": "19:23",
-        "utc_hour": 19,
-        "label": "Americas midday",
-        "regions": ["North America", "Latin America"],
-    },
-    {
-        "slot": "23:23",
-        "utc_hour": 23,
-        "label": "Americas evening",
-        "regions": ["North America", "Latin America"],
-    },
-]
+
+def _hourly_window(hour: int) -> dict:
+    """Return one UTC publishing slot for the hourly Shorts cadence."""
+    if 0 <= hour <= 3:
+        label = "Americas evening and late scroll"
+        regions = ["North America", "Latin America"]
+    elif 4 <= hour <= 8:
+        label = "Asia/Oceania evening"
+        regions = ["India", "Southeast Asia", "East Asia", "Australia"]
+    elif 9 <= hour <= 15:
+        label = "Europe/Africa daytime"
+        regions = ["Europe", "Africa", "Middle East"]
+    else:
+        label = "Americas daytime"
+        regions = ["North America", "Latin America"]
+    return {"slot": f"{hour:02d}:00", "utc_hour": hour, "label": label, "regions": regions}
+
+
+GLOBAL_PUBLISH_WINDOWS = [_hourly_window(hour) for hour in range(24)]
 
 
 def _clean_token(value: str) -> str:

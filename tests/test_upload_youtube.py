@@ -16,11 +16,13 @@ from upload_youtube import (
     _is_uploadable_meta,
     _normalise_tags,
     _playlist_titles,
+    _scheduled_publish_at,
     _video_url,
     _youtube_description,
     _youtube_title,
     check_auth,
     run_post_upload_operations,
+    upload_video,
 )
 
 
@@ -118,6 +120,22 @@ def test_done_marker_preserves_production_quality_signals():
     assert marker["youtube_operations"]["enabled"] is True
 
 
+def test_done_marker_uses_scheduled_publish_time_for_temporal_fields():
+    marker = _done_marker(
+        "abc123",
+        {
+            "title": "Scheduled Short",
+            "scheduled_publish_at": "2026-06-13T00:23:00Z",
+            "publish_ts_utc": "2026-06-13T00:23:00Z",
+            "youtube_privacy": "private",
+        },
+    )
+
+    assert marker["scheduled_publish_at"] == "2026-06-13T00:23:00Z"
+    assert marker["publish_ts_utc"].startswith("2026-06-13T00:23:00")
+    assert marker["youtube_privacy"] == "private"
+
+
 def test_playlist_titles_use_series_and_category():
     titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
 
@@ -146,6 +164,11 @@ class _Req:
 
     def execute(self):
         return self.payload
+
+
+class _UploadReq:
+    def next_chunk(self):
+        return None, {"id": "VID123"}
 
 
 class _Playlists:
@@ -201,11 +224,31 @@ class _CommentThreads:
         )
 
 
+class _Videos:
+    def __init__(self):
+        self.inserts = []
+
+    def insert(self, **kwargs):
+        self.inserts.append(kwargs)
+        return _UploadReq()
+
+
+class _Thumbnails:
+    def __init__(self):
+        self.uploads = []
+
+    def set(self, **kwargs):
+        self.uploads.append(kwargs)
+        return _Req({"id": "thumb"})
+
+
 class _YouTube:
     def __init__(self):
         self._playlists = _Playlists()
         self._playlist_items = _PlaylistItems()
         self._comment_threads = _CommentThreads()
+        self._videos = _Videos()
+        self._thumbnails = _Thumbnails()
 
     def playlists(self):
         return self._playlists
@@ -215,6 +258,12 @@ class _YouTube:
 
     def commentThreads(self):
         return self._comment_threads
+
+    def videos(self):
+        return self._videos
+
+    def thumbnails(self):
+        return self._thumbnails
 
 
 def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
@@ -258,3 +307,31 @@ def test_post_upload_operations_can_be_disabled(monkeypatch):
     monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "0")
 
     assert run_post_upload_operations(_YouTube(), "VID123", {}) == {"enabled": False}
+
+
+def test_scheduled_publish_at_uses_rolling_slots(monkeypatch):
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_UPLOADS", "1")
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_START_UTC", "2026-06-13T00:00:00Z")
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_SLOTS_UTC", "00:23,02:23")
+
+    assert _scheduled_publish_at({}, sequence_index=0) == "2026-06-13T00:23:00Z"
+    assert _scheduled_publish_at({}, sequence_index=2) == "2026-06-14T00:23:00Z"
+
+
+def test_upload_video_sets_publish_at_for_scheduled_private_upload(monkeypatch, tmp_path):
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_UPLOADS", "1")
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_START_UTC", "2026-06-13T00:00:00Z")
+    monkeypatch.setenv("YOUTUBE_SCHEDULE_SLOTS_UTC", "00:23,02:23")
+    video = tmp_path / "short.mp4"
+    video.write_bytes(b"fake")
+    thumb = tmp_path / "thumb.jpg"
+    thumb.write_bytes(b"fake")
+    youtube = _YouTube()
+    meta = {"video": str(video), "thumbnail": str(thumb), "title": "Test Short"}
+
+    assert upload_video(youtube, meta, sequence_index=1) == "VID123"
+
+    status = youtube._videos.inserts[0]["body"]["status"]
+    assert status["privacyStatus"] == "private"
+    assert status["publishAt"] == "2026-06-13T02:23:00Z"
+    assert meta["scheduled_publish_at"] == "2026-06-13T02:23:00Z"

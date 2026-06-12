@@ -122,7 +122,7 @@ def test_metadata_preserves_agency_decision(tmp_path: Path):
 def test_metadata_includes_global_audience_strategy(tmp_path: Path):
     meta = _meta(tmp_path)
     assert meta["audience_strategy"]["mode"] == "global"
-    assert len(meta["audience_strategy"]["publish_windows"]) == 4
+    assert len(meta["audience_strategy"]["publish_windows"]) == 24
 
 
 def test_metadata_includes_youtube_brain(tmp_path: Path):

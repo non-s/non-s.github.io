@@ -44,9 +44,9 @@ def test_time_semantics_use_pacific_days_and_views_cutover():
 def test_slot_audit_checks_bot_watchdog_docs_and_temporal_fields(tmp_path):
     (tmp_path / ".github" / "workflows").mkdir(parents=True)
     (tmp_path / "docs").mkdir()
-    slots = "05:23 14:23 19:23 23:23"
+    slots = " ".join(f"{hour:02d}:00" for hour in range(24))
     (tmp_path / ".github" / "workflows" / "youtube-bot.yml").write_text(
-        'on:\n  schedule:\n    - cron: "23 5,14,19,23 * * *"\n',
+        'on:\n  schedule:\n    - cron: "0 * * * *"\n',
         encoding="utf-8",
     )
     (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text(slots, encoding="utf-8")
@@ -56,10 +56,10 @@ def test_slot_audit_checks_bot_watchdog_docs_and_temporal_fields(tmp_path):
     (tmp_path / "docs" / "WILD_BRIEF_WORLD_CLASS_UPGRADE.md").write_text(docs, encoding="utf-8")
 
     assert audit_slot_contracts(tmp_path)["ok"] is True
-    (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text("14:23 19:23 23:23", encoding="utf-8")
+    (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text("14:00 19:00 23:00", encoding="utf-8")
 
     errors = audit_slot_contracts(tmp_path)["errors"]
-    assert any("05:23" in error and "watchdog" in error for error in errors)
+    assert any("05:00" in error and "watchdog" in error for error in errors)
 
 
 def test_opening_gate_v2_scores_first_windows_and_can_block():

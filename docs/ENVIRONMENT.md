@@ -25,11 +25,18 @@
 | `ARCHIVE_AUDIO_MAX_BYTES` | no | Maximum downloaded Archive audio file size. Defaults to `20971520`. |
 | `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
 | `VARIANT_ASSIGNMENTS_FILE` | no | Optional override for the durable variant-assignment JSONL log. |
-| `ADAPTIVE_CADENCE_ENABLED` | no | Enables publish vs safe-skip decisions from the canonical UTC slots `05:23`, `14:23`, `19:23` and `23:23`. Defaults to enabled in the YouTube workflow. |
+| `ADAPTIVE_CADENCE_ENABLED` | no | Enables publish vs safe-skip decisions from the canonical 24/day UTC grid: `00:00`, `01:00`, `02:00`, `03:00`, `04:00`, `05:00`, `06:00`, `07:00`, `08:00`, `09:00`, `10:00`, `11:00`, `12:00`, `13:00`, `14:00`, `15:00`, `16:00`, `17:00`, `18:00`, `19:00`, `20:00`, `21:00`, `22:00` and `23:00`. Defaults to enabled in the YouTube workflow. |
 | `ALLOW_FLEX_SLOT` | no | Allows one operator-defined `FLEX_SLOT_UTC` in addition to the canonical slots. |
 | `FLEX_SLOT_UTC` | no | Optional `HH:MM` UTC flex slot used only when `ALLOW_FLEX_SLOT=1`. |
 | `MIN_SLOT_PUBLISH_SCORE` | no | Minimum top-candidate publish score required for an adaptive slot to publish. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
+| `QUEUE_TARGET_PENDING` | no | Target number of unconsumed queue stories to keep ready. Defaults to `1` for on-demand hourly publishing. |
+| `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
+| `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
+| `YOUTUBE_SCHEDULE_UPLOADS` | no | When enabled, uploads are private scheduled videos using `publishAt` instead of immediate public uploads. Defaults to `0`. |
+| `YOUTUBE_SCHEDULE_START_UTC` | no | Optional RFC3339 start time for scheduled upload batches. Defaults to one hour from upload time. |
+| `YOUTUBE_SCHEDULE_SLOTS_UTC` | no | Optional comma-separated `HH:MM` UTC slots for scheduled upload batches. Defaults to the canonical publish grid. |
+| `YOUTUBE_SCHEDULE_OFFSET` | no | Optional starting index into the rolling schedule when adding another scheduled batch. Defaults to `0`. |
 | `STUDIO_REACH_IMPORT_ENABLED` | no | Enables manual YouTube Studio Shorts Reach CSV import. |
 | `STUDIO_REACH_IMPORT_PATH` | no | Folder or file path for Studio/Sheets reach CSV exports. |
 | `TOPIC_FRESHNESS_ENABLED` | no | Adds free signal freshness scoring to the queue. |
@@ -49,6 +56,7 @@
 | `QUOTA_GUARD_ENABLED` | no | Enables quota ledger/guard decisions. |
 | `QUOTA_GUARD_MODE` | no | `warn` logs only; `block` can mark `PUBLISH_QUOTA_BLOCKED=1`. |
 | `UPLOAD_IDEMPOTENCY_MODE` | no | `warn` records duplicates; `block` skips an already uploaded intent key. |
+| `UPLOAD_SLOT_IDEMPOTENCY_MODE` | no | `warn` records duplicate slots; `block` skips a second successful upload for the same slot. |
 | `MEDIA_LIFECYCLE_CLEANUP` | no | Deletes generated video/audio/image artifacts after upload while preserving `.done` markers and analytics. Defaults to `1`. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | no | Daily budget ratio used by quota guard. |
 | `QUOTA_LEDGER_ENABLED` | no | Writes `_data/analytics/api_quota_ledger.jsonl` and latest summary. |
@@ -69,6 +77,13 @@
 | `FLEX_SLOT_UTC` | `` | publishing | Optional HH:MM UTC flex slot. | Unset it. |
 | `MIN_SLOT_PUBLISH_SCORE` | `72` | publishing | Minimum publish score for adaptive cadence. | Lower or disable adaptive cadence. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
+| `QUEUE_TARGET_PENDING` | `1` | publishing | Pending story target for on-demand hourly queue refresh. | Raise only when prebuilding inventory. |
+| `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
+| `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
+| `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |
+| `YOUTUBE_SCHEDULE_START_UTC` | `` | publishing | Optional start time for scheduled upload batches. | Unset it. |
+| `YOUTUBE_SCHEDULE_SLOTS_UTC` | `` | publishing | Optional scheduled batch slot list. | Unset to use canonical slots. |
+| `YOUTUBE_SCHEDULE_OFFSET` | `0` | publishing | Offset for adding another scheduled batch after existing scheduled items. | Reset to 0 after batch upload. |
 | `STUDIO_REACH_IMPORT_ENABLED` | `1` | analytics | Import manually exported Shorts Reach CSV data. | Set to 0. |
 | `STUDIO_REACH_IMPORT_PATH` | `_data/studio_reach_exports` | analytics | Path to Studio/Sheets reach CSV exports. | Leave empty or remove files. |
 | `TOPIC_FRESHNESS_ENABLED` | `1` | discovery | Annotate queue entries with free freshness signals. | Set to 0. |
@@ -87,6 +102,7 @@
 | `QUOTA_GUARD_ENABLED` | `1` | operations | Block runs projected to exceed quota budget. | Set to 0 for passive logging. |
 | `QUOTA_GUARD_MODE` | `block` | operations | Quota guard mode: warn or block. | Use warn. |
 | `UPLOAD_IDEMPOTENCY_MODE` | `block` | operations | Upload idempotency mode: warn or block duplicate completed intents. | Use warn. |
+| `UPLOAD_SLOT_IDEMPOTENCY_MODE` | `block` | operations | Block a second successful upload for the same publish slot. | Use warn. |
 | `MEDIA_LIFECYCLE_CLEANUP` | `1` | operations | Delete generated media after successful upload while keeping metadata markers. | Set to 0 temporarily while debugging renders. |
 | `OPS_GUARDIAN_ENFORCE` | `1` | operations | Apply ops guardian paused-topic guidance during candidate selection. | Set to 0. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.70` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |

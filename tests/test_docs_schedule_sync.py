@@ -17,7 +17,7 @@ def test_schedule_sync_detects_missing_workflow_slot(tmp_path):
 
     errors = check_schedule_sync(tmp_path)
 
-    assert any("05:23" in error and "youtube-bot.yml" in error for error in errors)
+    assert any("05:00" in error and "youtube-bot.yml" in error for error in errors)
 
 
 def test_schedule_sync_detects_missing_flag_docs(tmp_path):
@@ -28,7 +28,12 @@ def test_schedule_sync_detects_missing_flag_docs(tmp_path):
     assert any("ADAPTIVE_CADENCE_ENABLED" in error for error in errors)
 
 
-def _write_contract_files(root: Path, *, cron: str = "23 5,14,19,23 * * *", env_doc_flags: bool = True) -> None:
+def _write_contract_files(
+    root: Path,
+    *,
+    cron: str = "0 * * * *",
+    env_doc_flags: bool = True,
+) -> None:
     slots = " ".join(CANONICAL_SLOTS_UTC)
     flags = "\n".join(REQUIRED_FLAGS) if env_doc_flags else ""
     (root / ".github" / "workflows").mkdir(parents=True)

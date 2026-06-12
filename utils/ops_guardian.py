@@ -179,7 +179,7 @@ def _inventory_forecast(queue: dict, scheduler: dict) -> dict:
     stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
     pending = len(stories)
     windows = scheduler.get("recommended_utc_hours") or []
-    daily_posts = max(1, min(4, len(windows) or 3))
+    daily_posts = max(1, min(24, len(windows) or 3))
     days_remaining = round(pending / daily_posts, 1) if daily_posts else 0.0
     if days_remaining >= 30:
         state = "excellent"

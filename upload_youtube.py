@@ -9,7 +9,7 @@ import os
 import random
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, time as dt_time, timedelta, timezone
 from pathlib import Path
 
 from google.oauth2.credentials import Credentials
@@ -17,12 +17,13 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-from scripts.upload_intent import build_upload_intent, duplicate_uploaded, write_upload_intent
+from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, duplicate_uploaded, write_upload_intent
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
 from utils.media_lifecycle import cleanup_meta_artifacts
 from utils.session_graph import pinned_comment_payload
 from utils.time_semantics import temporal_fields
 from utils.youtube_oauth import DEFAULT_SCOPES, credentials_from_token_info, load_token_info, token_status_message
+from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
 
 _LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
 LOG_FILE = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
@@ -97,6 +98,9 @@ def _youtube_title(meta: dict) -> str:
 
 
 def _youtube_description(meta: dict) -> str:
+    mode = os.environ.get("YOUTUBE_DESCRIPTION_MODE", "full").strip().lower()
+    if mode in {"", "empty", "none", "off", "0"}:
+        return ""
     description = (meta.get("description") or _youtube_title(meta)).strip()
     existing = {part.lower() for part in description.split() if part.startswith("#")}
     missing = [tag for tag in ("#Shorts", "#NatureFacts", "#WildBrief", "#EarthScience") if tag.lower() not in existing]
@@ -106,6 +110,92 @@ def _youtube_description(meta: dict) -> str:
     if source and source not in description:
         description += "\n\nSource: " + source
     return description[:5000]
+
+
+def _current_publish_slot(now: datetime | None = None) -> tuple[str, str]:
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    current = current.astimezone(timezone.utc)
+    label = active_slot_label(current) or slot_label(current)
+    try:
+        hour, minute = [int(part) for part in label.split(":", 1)]
+    except Exception:
+        label = slot_label(current)
+        hour, minute = current.hour, current.minute
+    start = datetime.combine(current.date(), dt_time(hour, minute, tzinfo=timezone.utc), tzinfo=timezone.utc)
+    if start > current:
+        start -= timedelta(days=1)
+    return label, start.strftime("%Y-%m-%dT%H:%MZ")
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _parse_utc(value: str) -> datetime | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _rfc3339_z(value: datetime) -> str:
+    return value.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _schedule_slots() -> list[str]:
+    configured = [item.strip() for item in os.environ.get("YOUTUBE_SCHEDULE_SLOTS_UTC", "").split(",") if item.strip()]
+    slots = configured or canonical_slots()
+    out: list[str] = []
+    for slot in slots:
+        try:
+            hour, minute = str(slot).split(":", 1)
+            out.append(f"{int(hour):02d}:{int(minute):02d}")
+        except Exception:
+            continue
+    return sorted(set(out)) or ["00:23"]
+
+
+def _scheduled_publish_at(meta: dict, *, sequence_index: int = 0, now: datetime | None = None) -> str:
+    explicit = (
+        meta.get("scheduled_publish_at")
+        or meta.get("youtube_publish_at")
+        or meta.get("publish_at")
+        or meta.get("publishAt")
+    )
+    parsed_explicit = _parse_utc(str(explicit or ""))
+    if parsed_explicit:
+        return _rfc3339_z(parsed_explicit)
+    if not _env_bool("YOUTUBE_SCHEDULE_UPLOADS", False):
+        return ""
+
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    current = current.astimezone(timezone.utc)
+    start = _parse_utc(os.environ.get("YOUTUBE_SCHEDULE_START_UTC", "")) or (current + timedelta(hours=1))
+    offset = max(0, int(os.environ.get("YOUTUBE_SCHEDULE_OFFSET", "0") or 0) + int(sequence_index or 0))
+    candidates: list[datetime] = []
+    day = start.date()
+    slots = _schedule_slots()
+    while len(candidates) <= offset:
+        for label in slots:
+            hour, minute = [int(part) for part in label.split(":", 1)]
+            candidate = datetime.combine(day, dt_time(hour, minute, tzinfo=timezone.utc), tzinfo=timezone.utc)
+            if candidate >= start:
+                candidates.append(candidate)
+        day += timedelta(days=1)
+    return _rfc3339_z(candidates[offset])
 
 
 def _video_url(video_id: str) -> str:
@@ -241,6 +331,10 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "frame_zero_packaging",
         "search_enrichment",
         "publish_ts_utc",
+        "scheduled_publish_at",
+        "youtube_privacy",
+        "publish_slot",
+        "publish_slot_key",
         "publish_day_pt",
         "quota_day_pt",
         "views_regime",
@@ -321,6 +415,10 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "frame_zero_packaging": {},
         "search_enrichment": {},
         "publish_ts_utc": "",
+        "scheduled_publish_at": "",
+        "publish_slot": "",
+        "publish_slot_key": "",
+        "youtube_privacy": "",
         "publish_day_pt": "",
         "quota_day_pt": "",
         "views_regime": "",
@@ -334,7 +432,8 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     if not marker.get("subscriber_conversion") and isinstance(marker.get("packaging"), dict):
         marker["subscriber_conversion"] = marker["packaging"].get("subscriber_conversion", {})
     uploaded_at = datetime.now(timezone.utc)
-    marker.update(temporal_fields(now=uploaded_at))
+    public_at = marker.get("scheduled_publish_at") or marker.get("publish_ts_utc") or uploaded_at
+    marker.update(temporal_fields(public_at, now=uploaded_at))
     marker.update(
         {
             "video_id": video_id,
@@ -517,7 +616,7 @@ def _execute_resumable(request) -> dict:
     return response
 
 
-def upload_video(youtube, meta: dict) -> str | None:
+def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
     video_path = Path(meta.get("video") or "")
     if not video_path.exists():
         log.error("Video not found: %s", video_path)
@@ -525,6 +624,16 @@ def upload_video(youtube, meta: dict) -> str | None:
     privacy = (os.environ.get("YOUTUBE_PRIVACY") or meta.get("youtube_privacy") or "public").strip().lower()
     if privacy not in {"public", "unlisted", "private"}:
         privacy = "public"
+    scheduled_publish_at = _scheduled_publish_at(meta, sequence_index=sequence_index)
+    status = {"privacyStatus": privacy, "selfDeclaredMadeForKids": False}
+    if scheduled_publish_at:
+        status["privacyStatus"] = "private"
+        status["publishAt"] = scheduled_publish_at
+        meta["scheduled_publish_at"] = scheduled_publish_at
+        meta["publish_ts_utc"] = scheduled_publish_at
+        meta["youtube_privacy"] = "private"
+    else:
+        meta["youtube_privacy"] = privacy
     request = youtube.videos().insert(
         part="snippet,status",
         body={
@@ -534,7 +643,7 @@ def upload_video(youtube, meta: dict) -> str | None:
                 "tags": _normalise_tags(meta.get("tags")),
                 "categoryId": str(meta.get("youtube_category_id") or "15"),
             },
-            "status": {"privacyStatus": privacy, "selfDeclaredMadeForKids": False},
+            "status": status,
         },
         media_body=MediaFileUpload(str(video_path), mimetype="video/mp4", chunksize=-1, resumable=True),
         notifySubscribers=False,
@@ -549,7 +658,10 @@ def upload_video(youtube, meta: dict) -> str | None:
             youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb))).execute()
         except HttpError as exc:
             log.warning("Thumbnail upload failed: HTTP %s", exc.resp.status)
-    log.info("Published: %s", _video_url(video_id))
+    if scheduled_publish_at:
+        log.info("Scheduled: %s at %s", _video_url(video_id), scheduled_publish_at)
+    else:
+        log.info("Published: %s", _video_url(video_id))
     return video_id
 
 
@@ -585,7 +697,19 @@ def main() -> None:
         if not _is_uploadable_meta(meta):
             log.warning("Skipping orphan metadata without video: %s", meta_file.name)
             continue
-        intent = build_upload_intent(meta, meta_file=str(meta_file), slot=str(meta.get("publish_slot") or ""))
+        slot_label_value, slot_key = _current_publish_slot()
+        meta["publish_slot"] = meta.get("publish_slot") or slot_label_value
+        meta["publish_slot_key"] = meta.get("publish_slot_key") or slot_key
+        intent_slot = str(meta.get("publish_slot_key") or meta.get("publish_slot") or "")
+        slot_duplicate = duplicate_slot_uploaded(intent_slot)
+        if slot_duplicate and os.environ.get("UPLOAD_SLOT_IDEMPOTENCY_MODE", "block").strip().lower() == "block":
+            log.warning(
+                "Skipping duplicate publish slot %s already published as %s",
+                intent_slot,
+                slot_duplicate.get("video_id"),
+            )
+            continue
+        intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
         duplicate = duplicate_uploaded(intent)
         meta["upload_intent_key"] = intent["idempotency_key"]
         meta["upload_intent"] = intent
@@ -598,7 +722,7 @@ def main() -> None:
             continue
         write_upload_intent(intent)
         attempted += 1
-        video_id = upload_video(youtube, meta)
+        video_id = upload_video(youtube, meta, sequence_index=uploaded)
         if not video_id:
             continue
         uploaded_intent = {

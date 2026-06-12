@@ -77,6 +77,16 @@ def duplicate_uploaded(intent: dict, path: Path = INTENTS_FILE) -> dict:
     return {}
 
 
+def duplicate_slot_uploaded(slot: str, path: Path = INTENTS_FILE) -> dict:
+    slot = str(slot or "").strip()
+    if not slot:
+        return {}
+    for row in read_intents(path):
+        if str(row.get("slot") or "") == slot and row.get("status") == "uploaded" and row.get("video_id"):
+            return row
+    return {}
+
+
 def write_upload_intent(intent: dict, path: Path = INTENTS_FILE) -> dict:
     key = (str(intent.get("idempotency_key") or ""), str(intent.get("status") or ""), str(intent.get("video_id") or ""))
     existing = {

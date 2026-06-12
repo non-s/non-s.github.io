@@ -6,7 +6,12 @@
 
 Automated pipeline that turns vetted nature footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
-- Cadence: the workflow evaluates **05:23, 14:23, 19:23 and 23:23 UTC**.
+- Cadence: the workflow evaluates **one slot per hour, 00:00 through
+  23:00 UTC**, for a 24/day publishing grid when quality and quota allow it.
+  Canonical slots: `00:00`, `01:00`, `02:00`, `03:00`, `04:00`, `05:00`,
+  `06:00`, `07:00`, `08:00`, `09:00`, `10:00`, `11:00`, `12:00`, `13:00`,
+  `14:00`, `15:00`, `16:00`, `17:00`, `18:00`, `19:00`, `20:00`, `21:00`,
+  `22:00` and `23:00`.
   `utils/publish_schedule.py` is the source of truth for adaptive publish vs
   safe skip, and every slot writes `_data/publish_slot_decisions.jsonl`.
   Metadata also carries `publish_ts_utc`, `publish_day_pt`, `quota_day_pt`

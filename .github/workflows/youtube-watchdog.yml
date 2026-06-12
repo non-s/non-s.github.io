@@ -48,9 +48,13 @@ jobs:
           now = datetime.now(timezone.utc)
 
           # Intended YouTube publishing times in UTC. Keep this tuple in sync
-          # with utils.publish_schedule.CANONICAL_SLOTS_UTC:
-          # 05:23, 14:23, 19:23 and 23:23 UTC.
-          publish_slots = ("05:23", "14:23", "19:23", "23:23")
+          # with utils.publish_schedule.CANONICAL_SLOTS_UTC.
+          publish_slots = (
+              "00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+              "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
+              "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+              "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
+          )
 
           # The watchdog runs hourly
           # and only recovers the most recent slot whose grace window has ended.

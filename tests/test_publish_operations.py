@@ -422,21 +422,23 @@ def test_post24_review_suggests_title_repairs():
 
 def test_dry_run_publish_uses_autonomy_priority_before_queue_score():
     base = {
-        "seo_title": "Ducks fake injuries to protect young",
-        "title": "Ducks fake injuries to protect young",
-        "hook": "Ducks fake injuries to protect their young.",
+        "seo_title": "Whales use tail slaps to warn the group",
+        "title": "Whales use tail slaps to warn the group",
+        "hook": "Whales warn the group with one tail slap.",
         "script": (
-            "Ducks fake injuries when danger gets close. Watch the wing movement first, "
-            "because that cue pulls predators away from the nest. That is why the young "
-            "get time to hide before the payoff."
+            "Whales warn the group with one tail slap. Watch the white splash first, "
+            "because that hit sends pressure through the water before danger gets close. "
+            "The pod reacts faster than sound alone, and that is why the first splash "
+            "matters. Would you spot it?"
         ),
-        "thumbnail_text": "DUCK WING",
-        "yt_tags": ["ducks", "animal facts"],
+        "thumbnail_text": "TAIL SLAP",
+        "yt_tags": ["whales", "tail slap", "ocean", "nature", "science"],
         "source": "Pexels",
-        "source_url": "https://www.pexels.com/video/duck-1/",
+        "source_url": "https://www.pexels.com/video/whale-tail-slap-1/",
+        "url": "https://www.pexels.com/video/whale-tail-slap-1/",
         "source_license": "Pexels License",
-        "category": "farm",
-        "score": 9,
+        "category": "ocean",
+        "score": 10,
     }
     payload = build_dry_run(
         {
@@ -445,7 +447,8 @@ def test_dry_run_publish_uses_autonomy_priority_before_queue_score():
                 {
                     **base,
                     "id": "high",
-                    "source_url": "https://www.pexels.com/video/duck-2/",
+                    "source_url": "https://www.pexels.com/video/whale-tail-slap-2/",
+                    "url": "https://www.pexels.com/video/whale-tail-slap-2/",
                     "autonomy": {"priority": 130, "lane": "proven_category"},
                 },
             ]
@@ -568,10 +571,14 @@ def test_publish_schedule_adapts_to_retention_health():
     mid = recommend_schedule({"avg_view_pct": 59})
     high = recommend_schedule({"avg_view_pct": 75})
 
-    assert low["recommended_shorts_per_day"] == 2
-    assert mid["recommended_shorts_per_day"] == 4
-    assert mid["recommended_slots"] == ["05:23", "14:23", "19:23", "23:23"]
-    assert high["recommended_shorts_per_day"] == 4
-    assert high["recommended_slots"] == ["05:23", "14:23", "19:23", "23:23"]
-    assert high["reason"] == "global_daypart_retention_based_until_country_analytics_available"
-    assert len(high["recommended_slots"]) > len(low["recommended_slots"])
+    expected_slots = [f"{hour:02d}:00" for hour in range(24)]
+
+    assert low["recommended_shorts_per_day"] == 24
+    assert mid["recommended_shorts_per_day"] == 24
+    assert mid["recommended_slots"] == expected_slots
+    assert high["recommended_shorts_per_day"] == 24
+    assert high["recommended_slots"] == expected_slots
+    assert high["rolling_batch_size"] == 1
+    assert high["queue_target_pending"] == 1
+    assert high["reason"] == "operator_day_zero_hourly_publish_with_quality_and_quota_guards"
+    assert len(high["recommended_slots"]) == len(low["recommended_slots"]) == 24

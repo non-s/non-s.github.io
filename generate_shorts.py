@@ -454,6 +454,8 @@ def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str
         issues.append("off_topic_visual")
     if not fetch_animals._script_matches_visible_subject(subject, script):
         issues.append("script_subject_mismatch")
+    if not fetch_animals._copy_matches_visible_subject(subject, title, str(qs.get("hook") or ""), script):
+        issues.append("copy_subject_mismatch")
     script_key = fetch_animals._script_key(script)
     if not script_key:
         issues.append("empty_script")

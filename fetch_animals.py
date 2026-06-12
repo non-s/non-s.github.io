@@ -97,6 +97,7 @@ QUEUE_FILE = Path("_data/stories_queue.json")
 PUBLISHED_CLIPS_FILE = Path("_data/published_clips.json")
 MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
 KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
+QUEUE_TARGET_PENDING = int(os.environ.get("QUEUE_TARGET_PENDING", "1"))
 
 
 # ── Topic table ───────────────────────────────────────────────────
@@ -465,9 +466,6 @@ _AI_PROMPT_TEMPLATE = (
     '(\\"nature\\", \\"nature facts\\", \\"science\\", \\"earth science\\").>"],'
     '"topic_hashtag": "<one CamelCase hashtag identifying the nature category. '
     'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, Ecosystems.>",'
-    '"yt_description": "<2-3 sentences. Sentence 1 repeats the subject keyword. '
-    "Sentence 2 is the single most surprising fact from the script. Last line is exactly "
-    '\\"Source: Pexels\\". Do NOT include hashtags. No URLs.>",'
     '"thumbnail_text": "<2-4 word punchy phrase. ALL CAPS allowed. '
     'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
     '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
@@ -727,6 +725,14 @@ def _script_matches_visible_subject(subject: str, script: str) -> bool:
     return not visible or bool(visible & _animal_terms(script))
 
 
+def _copy_matches_visible_subject(subject: str, *texts: str) -> bool:
+    """Require title, hook and narration to name the visible subject."""
+    for text in texts:
+        if not _script_matches_visible_subject(subject, text):
+            return False
+    return True
+
+
 def _looks_like_non_wildlife_visual(text: str) -> bool:
     """Catch videos where the animal word is only a costume, toy, or prop."""
     words = set(re.findall(r"[a-z]+", (text or "").lower()))
@@ -857,7 +863,7 @@ def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = 
         "yt_tags": clean_tags,
         "geo_hashtag": geo_hashtag,
         "topic_hashtag": topic_hashtag,
-        "yt_description": str(data.get("yt_description", "")).strip()[:500],
+        "yt_description": "",
         "thumbnail_text": str(data.get("thumbnail_text", "")).strip()[:30],
         "hook": str(data.get("hook", "")).strip()[:140],
         "script": str(data.get("script", "")).strip()[:900],
@@ -868,20 +874,21 @@ def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = 
         "production_mode": growth_studio.get("production_mode", ""),
         "trend_context": trend_context,
     }
-    if not _script_matches_visible_subject(subject, out["script"]):
-        log.warning("AI script changed visible subject: subject=%r script=%r", subject[:100], out["script"][:140])
+    if not _copy_matches_visible_subject(subject, out["seo_title"], out["hook"], out["script"]):
+        log.warning(
+            "AI copy changed or hid visible subject: subject=%r title=%r hook=%r script=%r",
+            subject[:100],
+            out["seo_title"][:100],
+            out["hook"][:100],
+            out["script"][:140],
+        )
         return None
 
     # Hashtags are NOT injected here anymore — generate_shorts.py owns
     # the YouTube Shorts hashtag block construction. We just hand off a
     # clean description body; any stray hashtag lines authored by the
     # model are stripped so the caption builder doesn't have to.
-    raw_desc = out["yt_description"]
-    if not raw_desc:
-        base = out["script"] or out["seo_title"]
-        raw_desc = f"{base}\n\nSource: Pexels"
-    cleaned_desc = re.sub(r"(?m)^#.*$", "", raw_desc).rstrip()
-    out["yt_description"] = cleaned_desc[:500]
+    out["yt_description"] = ""
     return out
 
 
@@ -1166,6 +1173,10 @@ def _pending_category_counts(queue: dict) -> dict[str, int]:
     return counts
 
 
+def _pending_count(queue: dict) -> int:
+    return sum(1 for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed"))
+
+
 def _topic_fetch_plan(
     queue: dict,
     strategy: dict | None = None,
@@ -1243,6 +1254,13 @@ def main() -> int:
         return 2
 
     queue = _load_queue()
+    pending_at_start = _pending_count(queue)
+    target_pending = max(0, int(QUEUE_TARGET_PENDING or 0))
+    max_new_entries = max(0, target_pending - pending_at_start) if target_pending else 10_000
+    if target_pending:
+        log.info("Queue target: %d pending stories; current pending=%d", target_pending, pending_at_start)
+        if max_new_entries <= 0:
+            log.info("Queue already meets target; only pruning/freshness metadata will be refreshed.")
     # Dedup keys come from three places, unioned into a single set:
     #   1. Queue ids — anything still on the queue (pending or recently
     #      consumed, before prune).
@@ -1273,6 +1291,8 @@ def main() -> int:
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
+        if len(new_entries) >= max_new_entries:
+            break
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
         per_topic_n = int(plan.get("budget") or MAX_PER_TOPIC)
         queries = _rotate_queries(
@@ -1306,6 +1326,8 @@ def main() -> int:
         log.info("📹 %s: %d vetted video clip(s) returned", topic_key, len(clips))
 
         for clip in clips:
+            if len(new_entries) >= max_new_entries:
+                break
             sid = _story_id(clip.url or clip.download_url)
             pid = _pexels_id_from_clip(clip)
             source_clip_id = _source_clip_id(clip)
@@ -1365,6 +1387,8 @@ def main() -> int:
         encoding="utf-8",
     )
     queue["updated_at"] = datetime.now(timezone.utc).isoformat()
+    if target_pending:
+        queue["target_pending"] = target_pending
     QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
     QUEUE_FILE.write_text(
         json.dumps(queue, indent=2, ensure_ascii=False),

@@ -3,7 +3,7 @@ name: "Refresh animal queue"
 
 on:
   schedule:
-    - cron: "17 */3 * * *"
+    - cron: "37 * * * *"
   workflow_dispatch:
 
 # Serialise queue updates with YouTube publishing commits.
@@ -84,6 +84,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
+          QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '1' }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}

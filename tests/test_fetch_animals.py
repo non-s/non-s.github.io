@@ -134,7 +134,11 @@ def test_ai_enhance_rejects_script_about_different_visible_animal(monkeypatch):
 
 def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
     dog = dict(json.loads(_AI_OK_PAYLOAD))
+    dog["seo_title"] = "Dogs read snow trails by smell"
+    dog["title"] = dog["seo_title"]
+    dog["hook"] = "Dogs track snow trails by smell."
     dog["script"] = "Dogs see blues and yellows better than reds and greens."
+    dog["thumbnail_text"] = "DOG VISION"
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(dog))
     assert fetch_animals._ai_enhance_animal("Husky running through snow", "dogs") is not None
 

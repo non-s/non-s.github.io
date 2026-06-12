@@ -5,10 +5,10 @@ name: "YouTube Bot - Shorts only"
 # is the source of truth that decides publish vs safe skip.
 on:
   schedule:
-    - cron: "23 5,14,19,23 * * *"
+    - cron: "0 * * * *"
     # Recovery launches for delayed/dropped GitHub schedule events.
     # scripts/publish_window.py only allows these inside the slot grace window.
-    - cron: "43 0,6,15,20 * * *"
+    - cron: "40 * * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -55,6 +55,8 @@ jobs:
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '1' }}
+      YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+      PUBLISH_RECOVERY_DELAY_MINUTES: ${{ vars.PUBLISH_RECOVERY_DELAY_MINUTES || '40' }}
       PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
     steps:
       - name: "Checkout"
@@ -199,6 +201,7 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+          YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json

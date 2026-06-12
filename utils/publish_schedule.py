@@ -69,10 +69,21 @@ def _event_schedule_max_delay(env: dict | None = None) -> int:
     return max(0, _env_int("PUBLISH_EVENT_MAX_DELAY_MINUTES", 360, env))
 
 
+def _recovery_delay_minutes(env: dict | None = None) -> int:
+    return max(0, _env_int("PUBLISH_RECOVERY_DELAY_MINUTES", 40, env))
+
+
 def _target_slot_from_scheduled_time(scheduled: datetime) -> str:
-    # Recovery cron runs at :43, exactly 80 minutes after the intended slot.
-    target = scheduled - timedelta(minutes=80) if scheduled.minute == 43 else scheduled
-    return f"{target.hour:02d}:23"
+    scheduled = scheduled.astimezone(timezone.utc)
+    canonical_minutes = {int(str(slot).split(":", 1)[1]) for slot in CANONICAL_SLOTS_UTC}
+    if scheduled.minute in canonical_minutes:
+        target = scheduled
+    elif scheduled.minute == 43:
+        # Legacy recovery cron: :43 recovered the previous :23 slot.
+        target = scheduled - timedelta(minutes=80)
+    else:
+        target = scheduled - timedelta(minutes=_recovery_delay_minutes())
+    return f"{target.hour:02d}:{target.minute:02d}"
 
 
 def feature_flags(env: dict | None = None) -> dict:
@@ -221,28 +232,24 @@ def _safe_json(path: Path) -> dict:
 
 def recommend_schedule(analytics: dict | None = None) -> dict:
     analytics = analytics or _safe_json(ANALYTICS_FILE)
-    # Until traffic-source/daypart data exists, use global UTC windows:
-    # Asia/Oceania evening, Europe/Africa afternoon, Americas midday and
-    # Americas evening. Cadence still keeps a low-retention brake, but the
-    # normal operating target is now four Shorts per day.
-    retention = float(analytics.get("avg_view_percentage") or analytics.get("avg_view_pct") or 0)
+    # The operator's restart plan is one generated/uploaded Short per hour.
+    # Quality and quota guards can still skip a weak or expensive slot, but
+    # the canonical programming grid stays hourly.
     global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
-    slots = list(DEFAULT_RECOMMENDED_SLOTS_UTC)
-    if retention < 52:
-        cadence = 2
-        slots = [global_slots[0], global_slots[-1]]
-    else:
-        cadence = 4
-        slots = global_slots
+    cadence = len(global_slots)
+    slots = global_slots
+    backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 1))
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "timezone": "UTC",
         "canonical_slots": list(CANONICAL_SLOTS_UTC),
         "recommended_slots": slots,
         "recommended_shorts_per_day": cadence,
+        "rolling_batch_size": backlog_target or 1,
+        "queue_target_pending": backlog_target,
         "target_regions": GLOBAL_PUBLISH_WINDOWS,
         "feature_flags": feature_flags(),
-        "reason": "global_daypart_retention_based_until_country_analytics_available",
+        "reason": "operator_day_zero_hourly_publish_with_quality_and_quota_guards",
     }
 
 

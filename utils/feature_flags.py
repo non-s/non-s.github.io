@@ -46,6 +46,27 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Lower or disable adaptive cadence.",
     ),
     FeatureFlag(
+        "QUEUE_TARGET_PENDING",
+        "1",
+        "publishing",
+        "Pending story target for on-demand hourly queue refresh.",
+        "Raise only when prebuilding inventory.",
+    ),
+    FeatureFlag(
+        "YOUTUBE_DESCRIPTION_MODE",
+        "empty",
+        "publishing",
+        "YouTube description mode: empty or full.",
+        "Set to full.",
+    ),
+    FeatureFlag(
+        "PUBLISH_RECOVERY_DELAY_MINUTES",
+        "40",
+        "publishing",
+        "Minutes after an hourly slot when recovery cron maps back to the intended slot.",
+        "Set to 40.",
+    ),
+    FeatureFlag(
         "STUDIO_REACH_IMPORT_ENABLED", "1", "analytics", "Import manually exported Shorts Reach CSV data.", "Set to 0."
     ),
     FeatureFlag(
@@ -117,6 +138,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "block",
         "operations",
         "Upload idempotency mode: warn or block duplicate completed intents.",
+        "Use warn.",
+    ),
+    FeatureFlag(
+        "UPLOAD_SLOT_IDEMPOTENCY_MODE",
+        "block",
+        "operations",
+        "Block a second successful upload for the same publish slot.",
         "Use warn.",
     ),
     FeatureFlag(
