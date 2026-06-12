@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T17:56:44.515696+00:00",
+  "generated_at": "2026-06-12T20:38:53.242536+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -54,18 +54,18 @@
     }
   ],
   "winning_terms": [
-    "another",
+    "alarm",
+    "ambush",
     "aquariums",
+    "away",
     "baby",
+    "before",
     "bottle",
     "chickens",
     "cows",
     "ducks",
-    "faces",
-    "fake",
-    "feeding",
-    "goats",
-    "grudges"
+    "each",
+    "energy"
   ],
   "experiment_bank": {
     "winners": {
@@ -107,7 +107,7 @@
         "axis": "thumbnail_style",
         "winner": "dynamic_text",
         "needs_samples": [
-          "category_color"
+          "frame_first_side_caption"
         ],
         "state": "winner_locked"
       },
@@ -240,10 +240,28 @@
     ]
   },
   "sequence_bank": {
-    "source_winners": 4,
-    "variant_count": 17,
+    "source_winners": 5,
+    "variant_count": 20,
     "next_variants": [
       {
+        "id": "remake-69be7843f173ab71",
+        "title": "Chickens reveal one body clue",
+        "variant": "same_format_new_animal",
+        "category": "farm"
+      },
+      {
+        "id": "remake-69be7843f173ab71",
+        "title": "Chickens reveal one body clue",
+        "variant": "same_animal_new_behavior",
+        "category": "farm"
+      },
+      {
+        "id": "remake-69be7843f173ab71",
+        "title": "Chickens reveal one body clue",
+        "variant": "same_topic_stronger_hook",
+        "category": "farm"
+      },
+      {
         "id": "remake-5ede232620e7b145",
         "title": "Ducks reveal one body clue",
         "variant": "same_format_new_animal",
@@ -272,24 +290,6 @@
         "title": "Cows remember the face cue",
         "variant": "same_animal_new_behavior",
         "category": "farm"
-      },
-      {
-        "id": "remake-242b9f521035674d",
-        "title": "Cows remember the face cue",
-        "variant": "same_topic_stronger_hook",
-        "category": "farm"
-      },
-      {
-        "id": "remake-dc2c2a2b159a9c9a",
-        "title": "Monkeies reveal one body clue",
-        "variant": "same_format_new_animal",
-        "category": "primates"
-      },
-      {
-        "id": "remake-dc2c2a2b159a9c9a",
-        "title": "Monkeies reveal one body clue",
-        "variant": "same_animal_new_behavior",
-        "category": "primates"
       }
     ]
   },
@@ -361,11 +361,12 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 53,
-    "approved_candidates": 53,
+    "pending": 81,
+    "approved_candidates": 81,
     "lane_counts": {
-      "fresh_experiment": 14,
-      "proven_category": 39
+      "fresh_experiment": 32,
+      "proven_category": 48,
+      "sequence": 1
     },
     "top_candidates": [
       {
@@ -519,13 +520,13 @@
         "packaging_lab": {
           "title_variants": [
             "Orangutans react differently when their hands move",
-            "Orangutans turn hand movement into a warning",
-            "Watch the hand movement when orangutans signal"
+            "Orangutans use hand movement before they move",
+            "This hand movement gives orangutans away"
           ],
           "thumbnail_variants": [
             "ORANGUTANS HAND MOVEMENT",
-            "WATCH THE HANDS",
-            "ORANGUTANS SIGNAL"
+            "HAND CUE",
+            "WATCH HAND CUE"
           ],
           "hook_variants": [
             "Orangutans read one visible signal",
@@ -686,13 +687,13 @@
         "packaging_lab": {
           "title_variants": [
             "Dolphins react differently when their fins shift",
-            "Dolphins turn fin cue into a warning",
-            "Watch the fin cue when dolphins signal"
+            "Dolphins use fin cue before they move",
+            "This fin cue gives dolphins away"
           ],
           "thumbnail_variants": [
             "DOLPHINS FIN MOVEMENT",
-            "WATCH THE FIN",
-            "DOLPHINS SIGNAL"
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
           ],
           "hook_variants": [
             "Dolphins read one visible signal",
@@ -853,13 +854,13 @@
         "packaging_lab": {
           "title_variants": [
             "Sharks react differently when their fins shift",
-            "Sharks turn fin cue into a warning",
-            "Watch the fin cue when sharks signal"
+            "Sharks use fin cue before they move",
+            "This fin cue gives sharks away"
           ],
           "thumbnail_variants": [
             "SHARKS FIN MOVEMENT",
-            "WATCH THE FIN",
-            "SHARKS SIGNAL"
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
           ],
           "hook_variants": [
             "Sharks read one visible signal",
@@ -1020,13 +1021,13 @@
         "packaging_lab": {
           "title_variants": [
             "Whales react differently when their fins shift",
-            "Whales turn fin cue into a warning",
-            "Watch the fin cue when whales signal"
+            "Whales use fin cue before they move",
+            "This fin cue gives whales away"
           ],
           "thumbnail_variants": [
             "WHALES FIN MOVEMENT",
-            "WATCH THE FIN",
-            "WHALES SIGNAL"
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
           ],
           "hook_variants": [
             "Whales read one visible signal",
@@ -1034,6 +1035,341 @@
             "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, "
           ],
           "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "873806e4b5b332c5",
+        "title": "Ducklings react differently when their wings shift",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 94.7,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 67,
+            "signals": {
+              "viral_potential": 63,
+              "visual_potential": 72,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 65,
+              "emotional_potential": 44,
+              "novelty": 55
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.928,
+              "sample_size": 6,
+              "minimum_sample_size": 5,
+              "data_quality": "observed",
+              "data_quality_score": 0.928,
+              "recommendation_strength": "act",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.946,
+              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+            },
+            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+          },
+          "retention": {
+            "score": 86,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 100,
+              "completion_prediction": 93
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.928,
+              "sample_size": 6,
+              "minimum_sample_size": 5,
+              "data_quality": "observed",
+              "data_quality_score": 0.928,
+              "recommendation_strength": "act",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.946,
+              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+            },
+            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 80,
+            "state": "strong",
+            "subscriber_probability": 0.114,
+            "return_probability": 0.244,
+            "comment_probability": 0.209,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.265,
+              "sample_size": 7,
+              "minimum_sample_size": 10,
+              "data_quality": "observed",
+              "data_quality_score": 0.825,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.448,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.753,
+            "sample_size": 29,
+            "minimum_sample_size": 30,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.814,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.75."
+          },
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 74,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [],
+            "confidence_score": 0.753,
+            "scale_ready": true,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.35,
+            "template_cluster": "react_differently",
+            "mechanism_cluster": "signal_recognition"
+          }
+        },
+        "autonomy_priority": 124.7,
+        "packaging_lab": {
+          "title_variants": [
+            "Ducklings react differently when their wings shift",
+            "Ducklings use wing angle before they move",
+            "This wing angle gives ducklings away"
+          ],
+          "thumbnail_variants": [
+            "DUCKLINGS WING POSITION",
+            "WING ANGLE",
+            "WATCH WING ANGLE"
+          ],
+          "hook_variants": [
+            "Start with the wing angle; it explains the next move",
+            "Ducklings react differently when their wings shift",
+            "Watch the wing position again. Tomorrow: another animal signal. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "sequel-6e61ff4230066140",
+        "title": "Chickens remember the first movement for a reason",
+        "category": "farm",
+        "story_format": "animal_memory",
+        "lane": "sequence",
+        "hypothesis_id": "H6_SEQUENCE_WINNERS",
+        "publish_score": {
+          "score": 91.4,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 63,
+            "signals": {
+              "viral_potential": 62,
+              "visual_potential": 61,
+              "replay_potential": 92,
+              "comment_potential": 54,
+              "educational_potential": 58,
+              "emotional_potential": 35,
+              "novelty": 65
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.928,
+              "sample_size": 6,
+              "minimum_sample_size": 5,
+              "data_quality": "observed",
+              "data_quality_score": 0.928,
+              "recommendation_strength": "act",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.946,
+              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+            },
+            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+          },
+          "retention": {
+            "score": 83,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 58,
+              "replay_score": 92,
+              "completion_prediction": 93
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.928,
+              "sample_size": 6,
+              "minimum_sample_size": 5,
+              "data_quality": "observed",
+              "data_quality_score": 0.928,
+              "recommendation_strength": "act",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.946,
+              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+            },
+            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
+          },
+          "weak_content": {
+            "risk": 22,
+            "state": "clear",
+            "reasons": [
+              "repetitive_script"
+            ],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 92,
+            "state": "strong",
+            "subscriber_probability": 0.131,
+            "return_probability": 0.278,
+            "comment_probability": 0.237,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "hook_invites_return",
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.443,
+              "sample_size": 11,
+              "minimum_sample_size": 15,
+              "data_quality": "observed",
+              "data_quality_score": 0.883,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.582,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.44."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.44."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.788,
+            "sample_size": 33,
+            "minimum_sample_size": 35,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.841,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.79."
+          },
+          "category": "farm",
+          "story_format": "animal_memory",
+          "hook_score": 74,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [],
+            "confidence_score": 0.788,
+            "scale_ready": true,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.35,
+            "template_cluster": "",
+            "mechanism_cluster": "ear_signal"
+          }
+        },
+        "autonomy_priority": 124.4,
+        "packaging_lab": {
+          "title_variants": [
+            "Chickens remember the first movement for a reason",
+            "Farms use first move before they remember",
+            "This first move gives farms away"
+          ],
+          "thumbnail_variants": [
+            "CHICKENS FIRST MOVEMENT",
+            "FIRST MOVE",
+            "WATCH FIRST MOVE"
+          ],
+          "hook_variants": [
+            "Watch the first move; the payoff lands seconds later",
+            "Chickens remember the first movement for a reason",
+            "Watch the first movement again. Tomorrow: another animal signal. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the first movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1186,13 +1522,13 @@
         "packaging_lab": {
           "title_variants": [
             "Elephants react differently when their ears move",
-            "Elephants turn movement into a warning",
-            "Watch the movement when elephants signal"
+            "Elephants use movement before they move",
+            "This movement gives elephants away"
           ],
           "thumbnail_variants": [
             "ELEPHANTS EAR MOVEMENT",
-            "WATCH THE MOVEMENT",
-            "ELEPHANTS SIGNAL"
+            "MOVEMENT",
+            "WATCH MOVEMENT"
           ],
           "hook_variants": [
             "Elephants read one visible signal",
@@ -1352,13 +1688,13 @@
         "packaging_lab": {
           "title_variants": [
             "This ear shift changes what goats do next",
-            "Goats turn ear shift into a warning",
-            "Watch the ear shift when goats signal"
+            "Goats use ear shift before they move",
+            "This ear shift gives goats away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "GOATS SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Goats read one visible signal",
@@ -1366,172 +1702,6 @@
             "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "873806e4b5b332c5",
-        "title": "Ducks react differently when their wings shift",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 92.3,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 66,
-            "signals": {
-              "viral_potential": 63,
-              "visual_potential": 72,
-              "replay_potential": 100,
-              "comment_potential": 46,
-              "educational_potential": 65,
-              "emotional_potential": 44,
-              "novelty": 55
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.928,
-              "sample_size": 6,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 0.928,
-              "recommendation_strength": "act",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.946,
-              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
-            },
-            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
-          },
-          "retention": {
-            "score": 86,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 100,
-              "completion_prediction": 93
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.928,
-              "sample_size": 6,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 0.928,
-              "recommendation_strength": "act",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.946,
-              "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
-            },
-            "reasoning": "category has 6/5 samples, observed data, confidence 0.93; strategy changes allowed."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 80,
-            "state": "strong",
-            "subscriber_probability": 0.114,
-            "return_probability": 0.244,
-            "comment_probability": 0.209,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.265,
-              "sample_size": 7,
-              "minimum_sample_size": 10,
-              "data_quality": "observed",
-              "data_quality_score": 0.825,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.448,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.753,
-            "sample_size": 29,
-            "minimum_sample_size": 30,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.814,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.75."
-          },
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 74,
-          "title_score": 74,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [],
-            "confidence_score": 0.753,
-            "scale_ready": true,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.35,
-            "template_cluster": "react_differently",
-            "mechanism_cluster": "signal_recognition"
-          }
-        },
-        "autonomy_priority": 122.3,
-        "packaging_lab": {
-          "title_variants": [
-            "Ducks react differently when their wings shift",
-            "Ducks turn wing angle into a warning",
-            "Watch the wing angle when ducks signal"
-          ],
-          "thumbnail_variants": [
-            "DUCKS WING POSITION",
-            "WATCH THE WING",
-            "DUCKS SIGNAL"
-          ],
-          "hook_variants": [
-            "Ducks read one visible signal",
-            "Ducks react differently when their wings shift",
-            "Watch the wing position again. Tomorrow: another animal signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1684,13 +1854,13 @@
         "packaging_lab": {
           "title_variants": [
             "This ear shift changes what cows do next",
-            "Cows turn ear shift into a warning",
-            "Watch the ear shift when cows signal"
+            "Cows use ear shift before they move",
+            "This ear shift gives cows away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "COWS SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Cows read one visible signal",
@@ -1850,13 +2020,13 @@
         "packaging_lab": {
           "title_variants": [
             "This ear shift changes what horses do next",
-            "Horses turn ear shift into a warning",
-            "Watch the ear shift when horses signal"
+            "Horses use ear shift before they move",
+            "This ear shift gives horses away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "HORSES SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Horses read one visible signal",
@@ -1864,176 +2034,6 @@
             "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "64f0da98afbdf831",
-        "title": "This body cue changes what sharks do next",
-        "category": "ocean",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 95.3,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 61,
-            "signals": {
-              "viral_potential": 69,
-              "visual_potential": 56,
-              "replay_potential": 81,
-              "comment_potential": 51,
-              "educational_potential": 56,
-              "emotional_potential": 41,
-              "novelty": 66
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.2,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 1.0,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.4,
-              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-            },
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-          },
-          "retention": {
-            "score": 77,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 50,
-              "replay_score": 92,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.2,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 1.0,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.4,
-              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-            },
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-          },
-          "weak_content": {
-            "risk": 22,
-            "state": "clear",
-            "reasons": [
-              "repetitive_script"
-            ],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 83,
-            "state": "strong",
-            "subscriber_probability": 0.119,
-            "return_probability": 0.253,
-            "comment_probability": 0.216,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.083,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
-              "data_quality": "observed",
-              "data_quality_score": 0.825,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.312,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.262,
-            "sample_size": 9,
-            "minimum_sample_size": 30,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.446,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.26."
-          },
-          "category": "ocean",
-          "story_format": "body_superpower",
-          "hook_score": 74,
-          "title_score": 74,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.262,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "this_changes_what",
-            "mechanism_cluster": "body_posture_signal"
-          }
-        },
-        "autonomy_priority": 121.5,
-        "packaging_lab": {
-          "title_variants": [
-            "This body cue changes what sharks do next",
-            "Sharks turn body cue into a warning",
-            "Watch the body cue when sharks signal"
-          ],
-          "thumbnail_variants": [
-            "TINY CLUE",
-            "WATCH THE CUE",
-            "SHARKS SIGNAL"
-          ],
-          "hook_variants": [
-            "Sharks rely on body cue before the move",
-            "This body cue changes what sharks do next",
-            "Watch the body cue again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pres"
-          ],
-          "pinned_comment": "Watch the body cue again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -2186,13 +2186,13 @@
         "packaging_lab": {
           "title_variants": [
             "Bears react differently when their tails lift",
-            "Bears turn tail lift into a warning",
-            "Watch the tail lift when bears signal"
+            "Bears use tail lift before they move",
+            "This tail lift gives bears away"
           ],
           "thumbnail_variants": [
             "BEARS TAIL POSITION",
-            "WATCH THE TAIL",
-            "BEARS SIGNAL"
+            "TAIL LIFT",
+            "WATCH TAIL LIFT"
           ],
           "hook_variants": [
             "Bears read one visible signal",
@@ -2352,13 +2352,13 @@
         "packaging_lab": {
           "title_variants": [
             "Bears read the moment from one tail lift",
-            "Bears turn tail lift into a warning",
-            "Watch the tail lift when bears signal"
+            "Bears use tail lift before they move",
+            "This tail lift gives bears away"
           ],
           "thumbnail_variants": [
             "BEARS TAIL POSITION",
-            "WATCH THE TAIL",
-            "BEARS SIGNAL"
+            "TAIL LIFT",
+            "WATCH TAIL LIFT"
           ],
           "hook_variants": [
             "Bears reveal one visible signal",
@@ -2518,13 +2518,13 @@
         "packaging_lab": {
           "title_variants": [
             "Chickens read the moment from one head movement",
-            "Chickens remember up to 100 faces",
-            "Watch the head movement when chickens signal"
+            "Chickens use head tilt before they move",
+            "This head tilt gives chickens away"
           ],
           "thumbnail_variants": [
             "CHICKENS HEAD MOVEMENT",
-            "WATCH THE HEAD",
-            "CHICKENS SIGNAL"
+            "HEAD TILT",
+            "WATCH HEAD TILT"
           ],
           "hook_variants": [
             "Chickens read one visible signal",
@@ -2532,6 +2532,174 @@
             "Watch the head movement again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "c6ec3f81c2935d2a",
+        "title": "This wing movement changes what butterflies do next",
+        "category": "insects",
+        "story_format": "cute_behavior",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 89.6,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 75,
+            "signals": {
+              "viral_potential": 80,
+              "visual_potential": 79,
+              "replay_potential": 100,
+              "comment_potential": 62,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 69
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 84,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.047,
+            "sample_size": 2,
+            "minimum_sample_size": 20,
+            "data_quality": "inferred",
+            "data_quality_score": 0.738,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.285,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+          },
+          "category": "insects",
+          "story_format": "cute_behavior",
+          "hook_score": 86,
+          "title_score": 84,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 10.0,
+            "reasons": [
+              "low_decision_confidence"
+            ],
+            "confidence_score": 0.047,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "this_changes_what",
+            "mechanism_cluster": "cue_changes_next_move"
+          }
+        },
+        "autonomy_priority": 118.85,
+        "packaging_lab": {
+          "title_variants": [
+            "This wing movement changes what butterflies do next",
+            "Butterflies use wing flash before they move",
+            "This wing flash gives butterflies away"
+          ],
+          "thumbnail_variants": [
+            "BUTTERFLIES WING MOVEMENT",
+            "WING FLASH",
+            "WATCH WING FLASH"
+          ],
+          "hook_variants": [
+            "Butterflies read one visible signal",
+            "This wing movement changes what butterflies do next",
+            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
+          ],
+          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -2686,13 +2854,13 @@
         "packaging_lab": {
           "title_variants": [
             "Bees read the moment from one wing angle",
-            "Bees turn wing angle into a warning",
-            "Watch the wing angle when bees signal"
+            "Bees use wing angle before they move",
+            "This wing angle gives bees away"
           ],
           "thumbnail_variants": [
             "BEES WING POSITION",
-            "WATCH THE WING",
-            "BEES SIGNAL"
+            "WING ANGLE",
+            "WATCH WING ANGLE"
           ],
           "hook_variants": [
             "Bees read one visible signal",
@@ -2854,13 +3022,13 @@
         "packaging_lab": {
           "title_variants": [
             "This wing movement changes what bees do next",
-            "Bees turn wing movement into a warning",
-            "Watch the wing movement when bees signal"
+            "Bees use wing flash before they move",
+            "This wing flash gives bees away"
           ],
           "thumbnail_variants": [
             "BEES WING MOVEMENT",
-            "WATCH THE WING",
-            "BEES SIGNAL"
+            "WING FLASH",
+            "WATCH WING FLASH"
           ],
           "hook_variants": [
             "Bees read one visible signal",
@@ -3022,13 +3190,13 @@
         "packaging_lab": {
           "title_variants": [
             "This wing movement changes what dragonflies do next",
-            "Dragonflies turn wing movement into a warning",
-            "Watch the wing movement when dragonflies signal"
+            "Dragonflies use wing flash before they move",
+            "This wing flash gives dragonflies away"
           ],
           "thumbnail_variants": [
             "DRAGONFLIES WING MOVEMENT",
-            "WATCH THE WING",
-            "DRAGONFLIES SIGNAL"
+            "WING FLASH",
+            "WATCH WING FLASH"
           ],
           "hook_variants": [
             "Dragonflies read one visible signal",
@@ -3040,41 +3208,41 @@
         }
       },
       {
-        "id": "c6ec3f81c2935d2a",
-        "title": "This wing movement changes what butterflies do next",
-        "category": "insects",
-        "story_format": "cute_behavior",
+        "id": "35208228f95f00a2",
+        "title": "Monkeys rely on ear position to survive",
+        "category": "primates",
+        "story_format": "survival_trick",
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 89.6,
+          "score": 97.7,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
-            "score": 75,
+            "score": 66,
             "signals": {
-              "viral_potential": 80,
-              "visual_potential": 79,
-              "replay_potential": 100,
-              "comment_potential": 62,
-              "educational_potential": 73,
-              "emotional_potential": 44,
-              "novelty": 69
+              "viral_potential": 71,
+              "visual_potential": 62,
+              "replay_potential": 99,
+              "comment_potential": 51,
+              "educational_potential": 62,
+              "emotional_potential": 50,
+              "novelty": 52
             },
             "verdict": "produce",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
+              "confidence_score": 0.2,
+              "sample_size": 1,
               "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
+              "data_quality": "observed",
+              "data_quality_score": 1.0,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+              "bootstrap_multiplier": 0.4,
+              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
             },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
           },
           "retention": {
             "score": 84,
@@ -3088,17 +3256,17 @@
             "verdict": "ready",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
+              "confidence_score": 0.2,
+              "sample_size": 1,
               "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
+              "data_quality": "observed",
+              "data_quality_score": 1.0,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+              "bootstrap_multiplier": 0.4,
+              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
             },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
           },
           "weak_content": {
             "risk": 0,
@@ -3135,34 +3303,34 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
+              "confidence_score": 0.083,
+              "sample_size": 2,
+              "minimum_sample_size": 10,
+              "data_quality": "observed",
+              "data_quality_score": 0.825,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+              "bootstrap_multiplier": 0.312,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.047,
-            "sample_size": 2,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.738,
+            "confidence_score": 0.137,
+            "sample_size": 5,
+            "minimum_sample_size": 25,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.285,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+            "bootstrap_multiplier": 0.352,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.14."
           },
-          "category": "insects",
-          "story_format": "cute_behavior",
-          "hook_score": 86,
-          "title_score": 84,
+          "category": "primates",
+          "story_format": "survival_trick",
+          "hook_score": 74,
+          "title_score": 100,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -3177,33 +3345,33 @@
             "reasons": [
               "low_decision_confidence"
             ],
-            "confidence_score": 0.047,
+            "confidence_score": 0.137,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "this_changes_what",
-            "mechanism_cluster": "cue_changes_next_move"
+            "payoff_time_s": 9.35,
+            "template_cluster": "rely_to_survive",
+            "mechanism_cluster": "survival_cue"
           }
         },
-        "autonomy_priority": 118.85,
+        "autonomy_priority": 118.72,
         "packaging_lab": {
           "title_variants": [
-            "This wing movement changes what butterflies do next",
-            "Butterflies turn wing movement into a warning",
-            "Watch the wing movement when butterflies signal"
+            "Monkeys rely on ear position to survive",
+            "Monkeys use ear shift before they move",
+            "This ear shift gives monkeys away"
           ],
           "thumbnail_variants": [
-            "BUTTERFLIES WING MOVEMENT",
-            "WATCH THE WING",
-            "BUTTERFLIES SIGNAL"
+            "MONKEYS EAR POSITION",
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
-            "Butterflies read one visible signal",
-            "This wing movement changes what butterflies do next",
-            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
+            "Start with the ear shift; it explains the next move",
+            "Monkeys rely on ear position to survive",
+            "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
-          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3356,17 +3524,353 @@
         "packaging_lab": {
           "title_variants": [
             "Goats read the moment from one ear shift",
-            "Goats turn ear shift into a warning",
-            "Watch the ear shift when goats signal"
+            "Goats use ear shift before they move",
+            "This ear shift gives goats away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "GOATS SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Goats read one visible signal",
             "Goats read the moment from one ear shift",
+            "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "e560a640c41de380",
+        "title": "Dogs read the moment from one tail lift",
+        "category": "dogs",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 64,
+            "signals": {
+              "viral_potential": 66,
+              "visual_potential": 55,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 65,
+              "emotional_potential": 44,
+              "novelty": 55
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 82,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 58,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.211,
+              "sample_size": 5,
+              "minimum_sample_size": 10,
+              "data_quality": "observed",
+              "data_quality_score": 0.825,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.408,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.185,
+            "sample_size": 9,
+            "minimum_sample_size": 25,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.389,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.18."
+          },
+          "category": "dogs",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "observe_before_scaling"
+            ],
+            "confidence_score": 0.185,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
+          }
+        },
+        "autonomy_priority": 118.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Dogs read the moment from one tail lift",
+            "Dogs use tail lift before they move",
+            "This tail lift gives dogs away"
+          ],
+          "thumbnail_variants": [
+            "DOGS TAIL POSITION",
+            "TAIL LIFT",
+            "WATCH TAIL LIFT"
+          ],
+          "hook_variants": [
+            "Dogs reveal one visible signal",
+            "Dogs read the moment from one tail lift",
+            "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "4b5093fb68989839",
+        "title": "Cats read the moment from one ear shift",
+        "category": "cats",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 64,
+            "signals": {
+              "viral_potential": 66,
+              "visual_potential": 55,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 65,
+              "emotional_potential": 44,
+              "novelty": 55
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 82,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 58,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.211,
+              "sample_size": 5,
+              "minimum_sample_size": 10,
+              "data_quality": "observed",
+              "data_quality_score": 0.825,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.408,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.185,
+            "sample_size": 9,
+            "minimum_sample_size": 25,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.389,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.18."
+          },
+          "category": "cats",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "observe_before_scaling"
+            ],
+            "confidence_score": 0.185,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
+          }
+        },
+        "autonomy_priority": 118.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Cats read the moment from one ear shift",
+            "Cats use ear shift before they move",
+            "This ear shift gives cats away"
+          ],
+          "thumbnail_variants": [
+            "CATS EAR POSITION",
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
+          ],
+          "hook_variants": [
+            "Cats reveal one visible signal",
+            "Cats read the moment from one ear shift",
             "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
@@ -3522,13 +4026,13 @@
         "packaging_lab": {
           "title_variants": [
             "Deer read the moment from one tail lift",
-            "Deer turn tail lift into a warning",
-            "Watch the tail lift when deer signal"
+            "Deer use tail lift before they move",
+            "This tail lift gives deer away"
           ],
           "thumbnail_variants": [
             "DEER TAIL POSITION",
-            "WATCH THE TAIL",
-            "DEER SIGNAL"
+            "TAIL LIFT",
+            "WATCH TAIL LIFT"
           ],
           "hook_variants": [
             "Deer read one visible signal",
@@ -3536,6 +4040,174 @@
             "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
           ],
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "edaac22027eb5765",
+        "title": "Cats rely on ear position to follow",
+        "category": "cats",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 99.9,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 63,
+            "signals": {
+              "viral_potential": 66,
+              "visual_potential": 55,
+              "replay_potential": 100,
+              "comment_potential": 46,
+              "educational_potential": 65,
+              "emotional_potential": 44,
+              "novelty": 55
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 81,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 58,
+              "replay_score": 100,
+              "completion_prediction": 77
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.211,
+              "sample_size": 5,
+              "minimum_sample_size": 10,
+              "data_quality": "observed",
+              "data_quality_score": 0.825,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.408,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.185,
+            "sample_size": 9,
+            "minimum_sample_size": 25,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.389,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.18."
+          },
+          "category": "cats",
+          "story_format": "animal_memory",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "observe_before_scaling"
+            ],
+            "confidence_score": 0.185,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "",
+            "mechanism_cluster": "ear_signal"
+          }
+        },
+        "autonomy_priority": 117.9,
+        "packaging_lab": {
+          "title_variants": [
+            "Cats rely on ear position to follow",
+            "Cats use ear shift before they move",
+            "This ear shift gives cats away"
+          ],
+          "thumbnail_variants": [
+            "CATS EAR POSITION",
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
+          ],
+          "hook_variants": [
+            "Cats rely on ear position",
+            "Cats rely on ear position to follow",
+            "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
+          ],
+          "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3688,13 +4360,13 @@
         "packaging_lab": {
           "title_variants": [
             "Horses read the moment from one ear shift",
-            "Horses turn ear shift into a warning",
-            "Watch the ear shift when horses signal"
+            "Horses use ear shift before they move",
+            "This ear shift gives horses away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "HORSES SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Horses read one visible signal",
@@ -3702,6 +4374,343 @@
             "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "ce22715fff4c46c5",
+        "title": "Why macaws signal after one beak",
+        "category": "birds",
+        "story_format": "animal_memory",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 99.4,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 55,
+            "signals": {
+              "viral_potential": 57,
+              "visual_potential": 62,
+              "replay_potential": 67,
+              "comment_potential": 39,
+              "educational_potential": 59,
+              "emotional_potential": 28,
+              "novelty": 62
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "retention": {
+            "score": 78,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 79,
+              "visual_score": 58,
+              "replay_score": 82,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 96,
+            "state": "strong",
+            "subscriber_probability": 0.137,
+            "return_probability": 0.289,
+            "comment_probability": 0.247,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "hook_invites_return",
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.061,
+              "sample_size": 2,
+              "minimum_sample_size": 10,
+              "data_quality": "inferred",
+              "data_quality_score": 0.5,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.296,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.223,
+            "sample_size": 9,
+            "minimum_sample_size": 30,
+            "data_quality": "estimated",
+            "data_quality_score": 0.54,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.417,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.22."
+          },
+          "category": "birds",
+          "story_format": "animal_memory",
+          "hook_score": 88,
+          "title_score": 84,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "observe_before_scaling"
+            ],
+            "confidence_score": 0.223,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 8.8,
+            "template_cluster": "",
+            "mechanism_cluster": "tail_signal"
+          }
+        },
+        "autonomy_priority": 117.4,
+        "packaging_lab": {
+          "title_variants": [
+            "Why macaws signal after one beak",
+            "Macaws use beak before they move",
+            "This beak gives macaws away"
+          ],
+          "thumbnail_variants": [
+            "MACAWS BEAK",
+            "BEAK",
+            "WATCH BEAK"
+          ],
+          "hook_variants": [
+            "Macaws recognize a familiar signal before they react",
+            "Why macaws signal after one beak",
+            "Watch the beak again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
+          ],
+          "pinned_comment": "Watch the beak again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "0ee0c37ee7a5bdce",
+        "title": "Bees read the moment from one legs",
+        "category": "insects",
+        "story_format": "cute_behavior",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 88.0,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 70,
+            "signals": {
+              "viral_potential": 80,
+              "visual_potential": 59,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 69
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 81,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 50,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.047,
+            "sample_size": 2,
+            "minimum_sample_size": 20,
+            "data_quality": "inferred",
+            "data_quality_score": 0.738,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.285,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+          },
+          "category": "insects",
+          "story_format": "cute_behavior",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 10.0,
+            "reasons": [
+              "low_decision_confidence"
+            ],
+            "confidence_score": 0.047,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.35,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
+          }
+        },
+        "autonomy_priority": 117.25,
+        "packaging_lab": {
+          "title_variants": [
+            "Bees read the moment from one legs",
+            "Bees use first move before they move",
+            "This first move gives bees away"
+          ],
+          "thumbnail_variants": [
+            "BEES LEGS",
+            "FIRST MOVE",
+            "WATCH FIRST MOVE"
+          ],
+          "hook_variants": [
+            "Bees reveal one visible signal",
+            "Bees read the moment from one legs",
+            "Watch the legs again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal s"
+          ],
+          "pinned_comment": "Watch the legs again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3854,13 +4863,13 @@
         "packaging_lab": {
           "title_variants": [
             "Sheep read the moment from one ear shift",
-            "Sheep turn ear shift into a warning",
-            "Watch the ear shift when sheep signal"
+            "Sheep use ear shift before they move",
+            "This ear shift gives sheep away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "SHEEP SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Sheep read one visible signal",
@@ -4020,13 +5029,13 @@
         "packaging_lab": {
           "title_variants": [
             "Cows read the moment from one ear shift",
-            "Cows turn ear shift into a warning",
-            "Watch the ear shift when cows signal"
+            "Cows use ear shift before they move",
+            "This ear shift gives cows away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "COWS SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Cows read one visible signal",
@@ -4187,13 +5196,13 @@
         "packaging_lab": {
           "title_variants": [
             "Sharks read the moment from one fin cue",
-            "Sharks turn fin cue into a warning",
-            "Watch the fin cue when sharks signal"
+            "Sharks use fin cue before they move",
+            "This fin cue gives sharks away"
           ],
           "thumbnail_variants": [
             "SHARKS FIN MOVEMENT",
-            "WATCH THE FIN",
-            "SHARKS SIGNAL"
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
           ],
           "hook_variants": [
             "Sharks reveal one visible signal",
@@ -4201,177 +5210,6 @@
             "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, "
           ],
           "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "ce22715fff4c46c5",
-        "title": "Macaws reveal the next move through beak",
-        "category": "birds",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 98.9,
-          "approved": false,
-          "state": "rewrite",
-          "opportunity": {
-            "score": 54,
-            "signals": {
-              "viral_potential": 57,
-              "visual_potential": 62,
-              "replay_potential": 67,
-              "comment_potential": 39,
-              "educational_potential": 52,
-              "emotional_potential": 28,
-              "novelty": 62
-            },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 76,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 58,
-              "replay_score": 82,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 96,
-            "state": "strong",
-            "subscriber_probability": 0.137,
-            "return_probability": 0.289,
-            "comment_probability": 0.247,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
-              "data_quality": "inferred",
-              "data_quality_score": 0.5,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.223,
-            "sample_size": 9,
-            "minimum_sample_size": 30,
-            "data_quality": "estimated",
-            "data_quality_score": 0.54,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.417,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.22."
-          },
-          "category": "birds",
-          "story_format": "animal_memory",
-          "hook_score": 88,
-          "title_score": 84,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.223,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 8.8,
-            "template_cluster": "",
-            "mechanism_cluster": "tail_signal"
-          }
-        },
-        "autonomy_priority": 116.9,
-        "packaging_lab": {
-          "title_variants": [
-            "Macaws reveal the next move through beak",
-            "Macaws turn beak into a warning",
-            "Watch the beak when macaws signal"
-          ],
-          "thumbnail_variants": [
-            "MACAWS BEAK",
-            "WATCH THE BEAK",
-            "MACAWS SIGNAL"
-          ],
-          "hook_variants": [
-            "Macaws recognize a familiar signal before they react",
-            "Macaws reveal the next move through beak",
-            "Watch the beak again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
-          ],
-          "pinned_comment": "Watch the beak again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -4524,13 +5362,13 @@
         "packaging_lab": {
           "title_variants": [
             "Lions rely on ear position to hunt",
-            "Lions turn ear shift into a warning",
-            "Watch the ear shift when lions signal"
+            "Lions use ear shift before they hunt",
+            "This ear shift gives lions away"
           ],
           "thumbnail_variants": [
             "WATCH THE EARS",
-            "LIONS SIGNAL",
-            "EARS EXPLAINS IT"
+            "EAR SHIFT",
+            "WATCH EAR SHIFT"
           ],
           "hook_variants": [
             "Lions rely on ear position",
@@ -4538,849 +5376,6 @@
             "Watch the ear position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
           ],
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "79473a20b6c7711f",
-        "title": "Orangutans read the moment from one hand cue",
-        "category": "primates",
-        "story_format": "cute_behavior",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 87.0,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 66,
-            "signals": {
-              "viral_potential": 63,
-              "visual_potential": 72,
-              "replay_potential": 99,
-              "comment_potential": 51,
-              "educational_potential": 62,
-              "emotional_potential": 41,
-              "novelty": 52
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.2,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 1.0,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.4,
-              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-            },
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-          },
-          "retention": {
-            "score": 85,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 74,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.2,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 1.0,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.4,
-              "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-            },
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.083,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
-              "data_quality": "observed",
-              "data_quality_score": 0.825,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.312,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.177,
-            "sample_size": 6,
-            "minimum_sample_size": 30,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.382,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.18."
-          },
-          "category": "primates",
-          "story_format": "cute_behavior",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 10.0,
-            "reasons": [
-              "low_decision_confidence"
-            ],
-            "confidence_score": 0.177,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 116.01,
-        "packaging_lab": {
-          "title_variants": [
-            "Orangutans read the moment from one hand cue",
-            "Orangutans turn hand movement into a warning",
-            "Watch the hand movement when orangutans signal"
-          ],
-          "thumbnail_variants": [
-            "WATCH THE HANDS",
-            "ORANGUTANS SIGNAL",
-            "HANDS EXPLAINS IT"
-          ],
-          "hook_variants": [
-            "Orangutans read one visible signal",
-            "Orangutans read the moment from one hand cue",
-            "Watch the hand movement again. Tomorrow: another animal signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the hand movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "992912e1686e3ec9",
-        "title": "This beak cue changes what parrots do next",
-        "category": "birds",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 96.4,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 68,
-            "signals": {
-              "viral_potential": 73,
-              "visual_potential": 72,
-              "replay_potential": 95,
-              "comment_potential": 55,
-              "educational_potential": 66,
-              "emotional_potential": 37,
-              "novelty": 62
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 84,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 83,
-            "state": "strong",
-            "subscriber_probability": 0.119,
-            "return_probability": 0.253,
-            "comment_probability": 0.216,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
-              "data_quality": "inferred",
-              "data_quality_score": 0.5,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.205,
-            "sample_size": 9,
-            "minimum_sample_size": 30,
-            "data_quality": "estimated",
-            "data_quality_score": 0.54,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.404,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.21."
-          },
-          "category": "birds",
-          "story_format": "body_superpower",
-          "hook_score": 86,
-          "title_score": 74,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.205,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "this_changes_what",
-            "mechanism_cluster": "cue_changes_next_move"
-          }
-        },
-        "autonomy_priority": 114.3,
-        "packaging_lab": {
-          "title_variants": [
-            "This beak cue changes what parrots do next",
-            "Parrots turn beak cue into a warning",
-            "Watch the beak cue when parrots signal"
-          ],
-          "thumbnail_variants": [
-            "PARROTS BEAK MOVEMENT",
-            "WATCH THE BEAK",
-            "PARROTS SIGNAL"
-          ],
-          "hook_variants": [
-            "Parrots read one visible signal",
-            "This beak cue changes what parrots do next",
-            "Watch the beak movement again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
-          ],
-          "pinned_comment": "Watch the beak movement again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "da0730d17a1348ef",
-        "title": "Tigers read the moment from one ear shift",
-        "category": "wildlife",
-        "story_format": "cute_behavior",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 84.2,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 70,
-            "signals": {
-              "viral_potential": 75,
-              "visual_potential": 74,
-              "replay_potential": 97,
-              "comment_potential": 49,
-              "educational_potential": 68,
-              "emotional_potential": 39,
-              "novelty": 64
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.54,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 0.675,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only."
-            },
-            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only."
-          },
-          "retention": {
-            "score": 84,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.54,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "observed",
-              "data_quality_score": 0.675,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only."
-            },
-            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 81,
-            "state": "strong",
-            "subscriber_probability": 0.116,
-            "return_probability": 0.247,
-            "comment_probability": 0.212,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.168,
-              "sample_size": 5,
-              "minimum_sample_size": 10,
-              "data_quality": "observed",
-              "data_quality_score": 0.825,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.376,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.398,
-            "sample_size": 18,
-            "minimum_sample_size": 30,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.548,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.40."
-          },
-          "category": "wildlife",
-          "story_format": "cute_behavior",
-          "hook_score": 74,
-          "title_score": 74,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [],
-            "confidence_score": 0.398,
-            "scale_ready": true,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 112.88,
-        "packaging_lab": {
-          "title_variants": [
-            "Tigers read the moment from one ear shift",
-            "Tigers turn ear shift into a warning",
-            "Watch the ear shift when tigers signal"
-          ],
-          "thumbnail_variants": [
-            "WATCH THE EARS",
-            "TIGERS SIGNAL",
-            "EARS EXPLAINS IT"
-          ],
-          "hook_variants": [
-            "Tigers read one visible signal",
-            "Tigers read the moment from one ear shift",
-            "Watch the ear position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
-          ],
-          "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "4b5093fb68989839",
-        "title": "Why cat ears give away the real mood in the first second",
-        "category": "cats",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 93.3,
-          "approved": false,
-          "state": "rewrite",
-          "opportunity": {
-            "score": 53,
-            "signals": {
-              "viral_potential": 40,
-              "visual_potential": 75,
-              "replay_potential": 62,
-              "comment_potential": 38,
-              "educational_potential": 52,
-              "emotional_potential": 35,
-              "novelty": 55
-            },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 74,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 74,
-              "replay_score": 72,
-              "completion_prediction": 68
-            },
-            "verdict": "rewrite",
-            "reasons": [
-              "completion_risk"
-            ],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 22,
-            "state": "clear",
-            "reasons": [
-              "repetitive_script"
-            ],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.211,
-              "sample_size": 5,
-              "minimum_sample_size": 10,
-              "data_quality": "observed",
-              "data_quality_score": 0.825,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.408,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.185,
-            "sample_size": 9,
-            "minimum_sample_size": 25,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.389,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.18."
-          },
-          "category": "cats",
-          "story_format": "animal_memory",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.185,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 111.3,
-        "packaging_lab": {
-          "title_variants": [
-            "Why cat ears give away the real mood in the first second",
-            "Cats turn movement into a warning",
-            "Watch the movement when cats change"
-          ],
-          "thumbnail_variants": [
-            "EAR CLUE",
-            "WATCH THE MOVEMENT",
-            "CATS CHANGE"
-          ],
-          "hook_variants": [
-            "Cats give away the answer with their ears first",
-            "Why cat ears give away the real mood in the first second",
-            "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "2f87fe9860ee09c1",
-        "title": "Turtles read the moment from one head movement",
-        "category": "discoveries",
-        "story_format": "cute_behavior",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 91.6,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 81,
-            "signals": {
-              "viral_potential": 80,
-              "visual_potential": 99,
-              "replay_potential": 100,
-              "comment_potential": 54,
-              "educational_potential": 93,
-              "emotional_potential": 44,
-              "novelty": 69
-            },
-            "verdict": "scale",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 87,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 82,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.047,
-            "sample_size": 2,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.738,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.285,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
-          },
-          "category": "discoveries",
-          "story_format": "cute_behavior",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 10.0,
-            "reasons": [
-              "low_decision_confidence"
-            ],
-            "confidence_score": 0.047,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 109.59,
-        "packaging_lab": {
-          "title_variants": [
-            "Turtles read the moment from one head movement",
-            "Turtles turn head movement into a warning",
-            "Watch the head movement when turtles signal"
-          ],
-          "thumbnail_variants": [
-            "TURTLES HEAD MOVEMENT",
-            "WATCH THE HEAD",
-            "TURTLES SIGNAL"
-          ],
-          "hook_variants": [
-            "Turtles read one visible signal",
-            "Turtles read the moment from one head movement",
-            "Watch the head movement again. Tomorrow: another animal signal. Would you trust this explanation from footage "
-          ],
-          "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Would you trust this explanation from footage alone?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       }
@@ -5392,6 +5387,6 @@
     "Bias production toward experiment winners: hook_style=outcome_first, script_tone=conversational, thumbnail_style=dynamic_text, cta_style=subscribe_channel, narrator_voice=guy.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 49,
+  "queue_annotations_written": 51,
   "queue_annotations_changed": 30
 }
