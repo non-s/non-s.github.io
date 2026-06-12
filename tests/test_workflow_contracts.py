@@ -13,8 +13,7 @@ def test_workflows_parse_and_include_growth_steps():
 
     youtube_workflow = (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
     assert "quota_preflight.py youtube-bot --json --check-only" in youtube_workflow
-    assert "Registrar quota consumida" in youtube_workflow
-    assert "quota_preflight.py youtube-bot --json --no-fail-on-block" in youtube_workflow
+    assert "Registrar quota consumida" not in youtube_workflow
     assert "PUBLISH_EVENT_SCHEDULE_CRON" in youtube_workflow
     assert "skip_quota_guard" in youtube_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")

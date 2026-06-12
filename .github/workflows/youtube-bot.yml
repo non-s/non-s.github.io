@@ -199,9 +199,6 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
-      - name: "Registrar quota consumida"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: python scripts/quota_preflight.py youtube-bot --json --no-fail-on-block
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
