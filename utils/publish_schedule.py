@@ -48,6 +48,33 @@ def _parse_slot(slot: str) -> time:
     return time(int(hour), int(minute), tzinfo=timezone.utc)
 
 
+def _parse_cron_values(field: str, *, minimum: int, maximum: int) -> list[int]:
+    values: list[int] = []
+    for part in str(field or "").split(","):
+        part = part.strip()
+        if not part.isdigit():
+            continue
+        value = int(part)
+        if minimum <= value <= maximum and value not in values:
+            values.append(value)
+    return values
+
+
+def _event_schedule_cron(env: dict | None = None) -> str:
+    env = env or os.environ
+    return str(env.get("PUBLISH_EVENT_SCHEDULE_CRON") or env.get("GITHUB_EVENT_SCHEDULE") or "").strip()
+
+
+def _event_schedule_max_delay(env: dict | None = None) -> int:
+    return max(0, _env_int("PUBLISH_EVENT_MAX_DELAY_MINUTES", 360, env))
+
+
+def _target_slot_from_scheduled_time(scheduled: datetime) -> str:
+    # Recovery cron runs at :43, exactly 80 minutes after the intended slot.
+    target = scheduled - timedelta(minutes=80) if scheduled.minute == 43 else scheduled
+    return f"{target.hour:02d}:23"
+
+
 def feature_flags(env: dict | None = None) -> dict:
     """Return publish schedule flags and thresholds from the environment."""
     return {
@@ -98,6 +125,44 @@ def slot_label(now: datetime | None = None) -> str:
     return f"{current.hour:02d}:{current.minute:02d}"
 
 
+def event_schedule_slot_label(
+    now: datetime | None = None,
+    schedule: dict | None = None,
+    env: dict | None = None,
+) -> str:
+    """Return the intended slot from a delayed GitHub schedule event."""
+    env = env or os.environ
+    if str(env.get("GITHUB_EVENT_NAME") or "").lower() != "schedule":
+        return ""
+    cron = _event_schedule_cron(env)
+    parts = cron.split()
+    if len(parts) < 2:
+        return ""
+    minutes = _parse_cron_values(parts[0], minimum=0, maximum=59)
+    hours = _parse_cron_values(parts[1], minimum=0, maximum=23)
+    if not minutes or not hours:
+        return ""
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    current = current.astimezone(timezone.utc)
+    max_delay = timedelta(minutes=_event_schedule_max_delay(env))
+    candidates = []
+    for day_offset in (-1, 0):
+        slot_date = current.date() + timedelta(days=day_offset)
+        for hour in hours:
+            for minute in minutes:
+                scheduled = datetime.combine(slot_date, time(hour, minute, tzinfo=timezone.utc), tzinfo=timezone.utc)
+                delay = current - scheduled
+                if timedelta(0) <= delay <= max_delay:
+                    target = _target_slot_from_scheduled_time(scheduled)
+                    if target in _schedule_slots(schedule, env):
+                        candidates.append((scheduled, target))
+    if not candidates:
+        return ""
+    return max(candidates, key=lambda item: item[0])[1]
+
+
 def active_slot_label(now: datetime | None = None, schedule: dict | None = None, env: dict | None = None) -> str:
     """Return the intended UTC slot label when now is inside its recovery window."""
     current = now or datetime.now(timezone.utc)
@@ -116,7 +181,7 @@ def active_slot_label(now: datetime | None = None, schedule: dict | None = None,
             if timedelta(0) <= delay <= timedelta(minutes=grace):
                 candidates.append((candidate, slot))
     if not candidates:
-        return ""
+        return event_schedule_slot_label(current, schedule, env)
     return max(candidates, key=lambda item: item[0])[1]
 
 

@@ -55,6 +55,7 @@ jobs:
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '1' }}
+      PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2

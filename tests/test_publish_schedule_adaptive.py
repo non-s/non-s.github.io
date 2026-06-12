@@ -2,7 +2,14 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from utils.publish_schedule import active_slot_label, canonical_slots, is_active_slot, next_slot, slot_label
+from utils.publish_schedule import (
+    active_slot_label,
+    canonical_slots,
+    event_schedule_slot_label,
+    is_active_slot,
+    next_slot,
+    slot_label,
+)
 
 
 def test_active_slot_honors_adaptive_schedule():
@@ -28,6 +35,32 @@ def test_active_slot_rejects_late_recovery_after_grace_window():
     schedule = {"recommended_slots": ["05:23", "14:23", "23:23"]}
 
     assert is_active_slot(datetime(2026, 6, 11, 16, 0, tzinfo=timezone.utc), schedule, env) is False
+
+
+def test_delayed_github_schedule_event_recovers_intended_slot():
+    env = {
+        "ADAPTIVE_CADENCE_ENABLED": "1",
+        "GITHUB_EVENT_NAME": "schedule",
+        "PUBLISH_EVENT_SCHEDULE_CRON": "43 0,6,15,20 * * *",
+    }
+    schedule = {"recommended_slots": ["05:23", "14:23", "23:23"]}
+    delayed = datetime(2026, 6, 12, 9, 39, tzinfo=timezone.utc)
+
+    assert event_schedule_slot_label(delayed, schedule, env) == "05:23"
+    assert active_slot_label(delayed, schedule, env) == "05:23"
+    assert is_active_slot(delayed, schedule, env) is True
+
+
+def test_delayed_github_schedule_event_honors_max_delay():
+    env = {
+        "ADAPTIVE_CADENCE_ENABLED": "1",
+        "GITHUB_EVENT_NAME": "schedule",
+        "PUBLISH_EVENT_SCHEDULE_CRON": "43 0,6,15,20 * * *",
+        "PUBLISH_EVENT_MAX_DELAY_MINUTES": "120",
+    }
+    schedule = {"recommended_slots": ["05:23", "14:23", "23:23"]}
+
+    assert event_schedule_slot_label(datetime(2026, 6, 12, 9, 39, tzinfo=timezone.utc), schedule, env) == ""
 
 
 def test_legacy_mode_allows_current_behavior():
