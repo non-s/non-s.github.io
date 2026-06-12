@@ -13,16 +13,17 @@ def test_workflows_parse_and_include_growth_steps():
 
     assert "quota_preflight.py youtube-bot" in (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
     assert "skip_quota_guard" in (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
-    assert "apply_topic_freshness.py" in (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
+    fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
+    assert "apply_topic_freshness.py" in fetch_workflow
+    assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow
+    assert "FETCH_QUOTA_BLOCKED" in fetch_workflow
     assert "compact_analytics.py" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "check_repo_contracts.py" in (ROOT / ".github/workflows/quality-gate.yml").read_text(encoding="utf-8")
-    assert "_data/next_shorts.json" in (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
-    assert "_data/control_plane_report.json" in (ROOT / ".github/workflows/fetch-content.yml").read_text(
-        encoding="utf-8"
-    )
-    assert "_data/queue_audit.json" in (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
-    assert "_data/dry_run_publish.json" in (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
-    assert "_data/reject_report.json" in (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
+    assert "_data/next_shorts.json" in fetch_workflow
+    assert "_data/control_plane_report.json" in fetch_workflow
+    assert "_data/queue_audit.json" in fetch_workflow
+    assert "_data/dry_run_publish.json" in fetch_workflow
+    assert "_data/reject_report.json" in fetch_workflow
     youtube_workflow = (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in youtube_workflow
     assert "_data/control_plane_report.json" in youtube_workflow

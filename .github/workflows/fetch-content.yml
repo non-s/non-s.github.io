@@ -41,8 +41,17 @@ jobs:
 
       - name: "Quota preflight"
         run: |
-          quota="$(python scripts/quota_preflight.py fetch-content --json)"
+          quota="$(python scripts/quota_preflight.py fetch-content --json --no-fail-on-block)"
           echo "$quota"
+          blocked="$(QUOTA_JSON="$quota" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["QUOTA_JSON"])
+          print("1" if (payload.get("guard") or {}).get("block") else "0")
+          PY
+          )"
+          echo "FETCH_QUOTA_BLOCKED=$blocked" >> "$GITHUB_ENV"
           QUOTA_JSON="$quota" python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
           import os
@@ -54,7 +63,11 @@ jobs:
           print(f"- Estimated units: `{payload.get('estimated_units')}`")
           print(f"- Projected ratio: `{guard.get('projected_ratio')}`")
           print(f"- Guard mode: `{guard.get('mode')}`")
+          print(f"- Blocked: `{guard.get('block')}`")
           PY
+          if [ "$blocked" = "1" ]; then
+            echo "Quota guard requested a safe queue-refresh skip."
+          fi
 
       - name: "Harvest free freshness signals"
         run: python scripts/free_signal_harvester.py || true
@@ -63,6 +76,7 @@ jobs:
         run: python scripts/trend_radar.py || true
 
       - name: "Refresh animal stories"
+        if: env.FETCH_QUOTA_BLOCKED != '1'
         timeout-minutes: 25
         run: python fetch_animals.py
         env:
