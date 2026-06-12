@@ -268,9 +268,10 @@ def build_broll_short(
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=0xFFF200:fontsize=82"
-            f":box=1:boxcolor=black@0.62:boxborderw=24"
-            f":x=(w-text_w)/2:y=180"
+            f":text='{safe}':fontcolor=white:fontsize=72"
+            f":borderw=5:bordercolor=black@0.92"
+            f":box=1:boxcolor=black@0.30:boxborderw=18"
+            f":x=(w-text_w)/2:y=150"
             # Visible 0-3s with a quick fade-out 2.7-3s.
             f":enable='between(t,0,3)'"
             f"[withhook]"
@@ -283,9 +284,9 @@ def build_broll_short(
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
             f"[{last_label}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=0xFFF200:fontsize=116"
-            f":box=1:boxcolor=black@0.68:boxborderw=26"
-            f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'"
+            f":text='{safe}':fontcolor=white:fontsize=122"
+            f":borderw=8:bordercolor=black@0.94"
+            f":x=64:y=h*0.43:enable='between(t,0,1.2)'"
             f"[withcover]"
         )
         last_label = "withcover"
@@ -430,18 +431,19 @@ def build_static_short(
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=0xFFF200:fontsize=82"
-            f":box=1:boxcolor=black@0.62:boxborderw=24"
-            f":x=(w-text_w)/2:y=180:enable='between(t,0,3)'[withhook]"
+            f":text='{safe}':fontcolor=white:fontsize=72"
+            f":borderw=5:bordercolor=black@0.92"
+            f":box=1:boxcolor=black@0.30:boxborderw=18"
+            f":x=(w-text_w)/2:y=150:enable='between(t,0,3)'[withhook]"
         )
         last = "withhook"
     if cover_text and font:
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
             f"[{last}]drawtext=fontfile={font}"
-            f":text='{safe}':fontcolor=0xFFF200:fontsize=116"
-            f":box=1:boxcolor=black@0.68:boxborderw=26"
-            f":x=(w-text_w)/2:y=430:enable='between(t,0,1.2)'[withcover]"
+            f":text='{safe}':fontcolor=white:fontsize=122"
+            f":borderw=8:bordercolor=black@0.94"
+            f":x=64:y=h*0.43:enable='between(t,0,1.2)'[withcover]"
         )
         last = "withcover"
     if cta_text and font:

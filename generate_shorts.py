@@ -22,7 +22,7 @@ import os, re, json, asyncio, subprocess, logging, shutil, sys, time, contextlib
 from pathlib import Path
 from datetime import datetime, timezone
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 
 # fcntl is POSIX-only; we use it to serialise queue access against
 # fetch_animals.py. Guarded for local Windows dev — the CI runner is Linux.
@@ -311,19 +311,120 @@ def _normalise_editorial_text(text: str) -> str:
     return out
 
 
-def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "") -> str:
-    """Make the cover text read like an action label, not generated prose."""
-    raw = _normalise_editorial_text(text).upper()
+_THUMB_STOP_WORDS = {
+    "A",
+    "AN",
+    "AND",
+    "ANOTHER",
+    "ARE",
+    "AT",
+    "BECAUSE",
+    "CLUE",
+    "DO",
+    "DOES",
+    "FOR",
+    "HAVE",
+    "HAS",
+    "HIDING",
+    "IN",
+    "IS",
+    "IT",
+    "ITS",
+    "LOOK",
+    "ON",
+    "PLAIN",
+    "REALLY",
+    "RELY",
+    "SECRET",
+    "SIGNAL",
+    "SIGHT",
+    "THE",
+    "THEIR",
+    "THEY",
+    "THIS",
+    "TO",
+    "USE",
+    "USES",
+    "WATCH",
+    "WHEN",
+    "WHY",
+}
+
+_THUMB_ANIMAL_WORDS = {
+    "ANTS",
+    "BEARS",
+    "BEES",
+    "BIRDS",
+    "BUTTERFLIES",
+    "CATS",
+    "CHICKENS",
+    "COWS",
+    "DEER",
+    "DOGS",
+    "DOLPHINS",
+    "DUCKS",
+    "DUCKLINGS",
+    "ELEPHANTS",
+    "GOATS",
+    "HORSES",
+    "LIONS",
+    "MONKEYS",
+    "ORANGUTANS",
+    "OWLS",
+    "PENGUINS",
+    "SHARKS",
+    "SHEEP",
+    "SNAKES",
+    "TIGERS",
+    "WHALES",
+    "WOLVES",
+}
+
+_THUMB_CUE_PATTERNS: tuple[tuple[str, str], ...] = (
+    (r"\bFAKE\s+INJUR(?:Y|IES)\b|\bBROKEN\s+WING\b", "FAKE INJURY"),
+    (r"\bSTRAW(?:-LIKE)?\s+TONGUE\b|\bNECTAR\b", "NECTAR STRAW"),
+    (r"\bHEAD\s+MOVEMENT\b|\bHEAD\s+TILT\w*\b", "HEAD TILT"),
+    (r"\bWING\s+MOVEMENT\b|\bWING\s+ANGLE\b|\bWINGS?\b", "WING FLASH"),
+    (r"\bTAIL\s+POSITION\b|\bTAIL\s+LIFT\b|\bTAILS?\b", "TAIL LIFT"),
+    (r"\bEAR\s+POSITION\b|\bEAR\s+MOVEMENT\b|\bEARS?\b", "EAR SHIFT"),
+    (r"\bEYES?\b|\bFACE\b|\bFACES\b", "FACE MEMORY"),
+    (r"\bFEET\b|\bFOOT\b|\bHOOF\b|\bHOOVES\b|\bPAWS?\b", "FOOT GRIP"),
+    (r"\bBODY\s+CUE\b|\bBODY\s+POSTURE\b|\bBODY\b", "BODY MOVE"),
+    (r"\bCALL\b|\bSOUND\b", "ALARM CALL"),
+    (r"\bNOSE\b|\bSCENT\b", "SCENT TRICK"),
+    (r"\bFIN\s+MOVEMENT\b|\bFINS?\b", "FIN SHIFT"),
+    (r"\bBEAK\s+MOVEMENT\b|\bBEAK\b", "BEAK CLUE"),
+    (r"\bCOLOR\b|\bCOLOUR\b", "COLOR CHANGE"),
+    (r"\bWARNING\b|\bWARN\b", "WARNING SIGN"),
+)
+
+
+def _compact_thumbnail_candidate(value: str) -> str:
+    raw = _normalise_editorial_text(value).upper()
     raw = re.sub(r"[^A-Z0-9\s'-]", " ", raw)
-    raw = re.sub(r"\b(SURPRISE|ANOTHER|SECRET|SIGNAL|PLAIN|SIGHT)\b", " ", raw)
     raw = re.sub(r"\s+", " ", raw).strip(" -'")
-    words = raw.split()
-    if not words:
-        fallback = _normalise_editorial_text(hook or title).upper()
-        fallback = re.sub(r"[^A-Z0-9\s'-]", " ", fallback)
-        words = [w for w in fallback.split() if w not in {"THE", "THIS", "THAT", "THEY", "HAVE", "HAS"}]
-    compact = " ".join(words[:4]).strip()
-    return compact[:30] or "ANIMAL SIGNAL"
+    if not raw:
+        return ""
+    for pattern, replacement in _THUMB_CUE_PATTERNS:
+        if re.search(pattern, raw):
+            return replacement
+    words = [word.strip("'-") for word in raw.split()]
+    useful = [word for word in words if word and word not in _THUMB_STOP_WORDS]
+    if len(useful) > 3:
+        without_animals = [word for word in useful if word not in _THUMB_ANIMAL_WORDS]
+        if len(without_animals) >= 2:
+            useful = without_animals
+    useful = useful[:3]
+    return " ".join(useful)
+
+
+def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "") -> str:
+    """Make the cover text read like a fast visual cue, not generated prose."""
+    for candidate in (text, hook, title, f"{title} {hook}"):
+        compact = _compact_thumbnail_candidate(candidate)
+        if compact:
+            return compact[:24].strip() or "NATURE MOMENT"
+    return "NATURE MOMENT"
 
 
 def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str]:
@@ -741,6 +842,126 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     return img.convert("RGB")
 
 
+def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None) -> Image.Image:
+    """
+    Create a first frame that works as a Shorts cover: visible animal,
+    compact visual cue, and small brand lockup.
+    """
+    img = Image.new("RGB", (SHORT_W, SHORT_H), BG_DARK)
+    if bg_path and bg_path.exists():
+        try:
+            bg = Image.open(bg_path).convert("RGB")
+            bw, bh = bg.size
+            target_ratio = SHORT_W / SHORT_H
+            img_ratio = bw / bh
+            if img_ratio > target_ratio:
+                new_w = int(bh * target_ratio)
+                off = (bw - new_w) // 2
+                bg = bg.crop((off, 0, off + new_w, bh))
+            else:
+                new_h = int(bw / target_ratio)
+                off = (bh - new_h) // 2
+                bg = bg.crop((0, off, bw, off + new_h))
+            bg = bg.resize((SHORT_W, SHORT_H), Image.LANCZOS)
+            bg = ImageEnhance.Brightness(bg).enhance(1.08)
+            bg = ImageEnhance.Contrast(bg).enhance(1.12)
+            bg = ImageEnhance.Color(bg).enhance(1.10)
+            img.paste(bg)
+        except Exception:
+            pass
+
+    overlay = Image.new("RGBA", (SHORT_W, SHORT_H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    side_w = int(SHORT_W * 0.48)
+    for x in range(side_w):
+        t = x / max(1, side_w - 1)
+        alpha = int(186 * (1 - t) + 16 * t)
+        od.line([(x, 0), (x, SHORT_H)], fill=(0, 0, 0, alpha))
+    for y in range(SHORT_H):
+        t = y / max(1, SHORT_H - 1)
+        alpha = int(18 + 132 * max(0.0, (t - 0.42) / 0.58))
+        od.line([(0, y), (SHORT_W, y)], fill=(0, 0, 0, alpha))
+    od.rectangle((0, 0, SHORT_W, 210), fill=(0, 0, 0, 36))
+    img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+
+    draw = ImageDraw.Draw(img, "RGBA")
+    cat_color = CATEGORY_COLORS.get(category.upper(), ACCENT_BLUE)
+    padding = 70
+
+    brand_font = get_font(38, bold=True)
+    draw.text(
+        (padding, 92),
+        "WILD BRIEF",
+        font=brand_font,
+        fill=(*TEXT_WHITE, 235),
+        stroke_width=3,
+        stroke_fill=(0, 0, 0, 190),
+    )
+    cat_text = (category or "nature").replace("_", " ").upper()[:18]
+    cat_font = get_font(30, bold=True)
+    cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
+    draw.text(
+        (SHORT_W - cat_box[2] - padding, 102),
+        cat_text,
+        font=cat_font,
+        fill=(*cat_color, 245),
+        stroke_width=2,
+        stroke_fill=(0, 0, 0, 180),
+    )
+
+    cue = _clean_thumbnail_text("", title=title, hook=points[0] if points else "")
+    title_font = get_font(150, bold=True)
+    title_lines = _side_caption_lines(draw, cue, title_font, int(SHORT_W * 0.48) - 112)
+    if any((draw.textbbox((0, 0), line, font=title_font)[2] > int(SHORT_W * 0.48) - 112) for line in title_lines):
+        title_font = get_font(130, bold=True)
+        title_lines = _side_caption_lines(draw, cue, title_font, int(SHORT_W * 0.48) - 112)
+    title_lines = title_lines[:3]
+    line_h = 144 if len(title_lines) >= 3 else 164
+    y = int(SHORT_H * 0.42) - (len(title_lines) * line_h // 2)
+    for line in title_lines:
+        draw.text(
+            (padding, y),
+            line,
+            font=title_font,
+            fill=(*TEXT_WHITE, 255),
+            stroke_width=9,
+            stroke_fill=(0, 0, 0, 220),
+        )
+        y += line_h
+
+    tagline = _normalise_editorial_text(title)[:74].rstrip(" -.,")
+    if tagline and tagline.upper() != cue:
+        small_font = get_font(36, bold=True)
+        sy = min(int(SHORT_H * 0.70), y + 26)
+        for line in wrap_text(draw, tagline, small_font, int(SHORT_W * 0.48) - 112)[:3]:
+            draw.text(
+                (padding, sy),
+                line,
+                font=small_font,
+                fill=(245, 248, 250, 235),
+                stroke_width=4,
+                stroke_fill=(0, 0, 0, 190),
+            )
+            sy += 54
+
+    brand_y = SHORT_H - 196
+    draw.rectangle((padding, brand_y, padding + 230, brand_y + 12), fill=(*cat_color, 255))
+    lock_font = get_font(54, bold=True)
+    draw.text(
+        (padding, brand_y + 34),
+        "WILD BRIEF",
+        font=lock_font,
+        fill=(*TEXT_WHITE, 250),
+        stroke_width=3,
+        stroke_fill=(0, 0, 0, 180),
+    )
+    src = (source or "").strip()
+    if src:
+        draw.text((padding, brand_y + 104), f"source: {src[:42]}", font=get_font(28), fill=(224, 230, 235, 185))
+
+    return img.convert("RGB")
+
+
 # ── Thumbnail do Short (dynamic per-story) ────────────────────────
 #
 # Previously every Short shipped with the same brand-grid JPEG. The
@@ -812,56 +1033,80 @@ def _create_static_short_thumbnail(
 
 def _thumbnail_copy(thumbnail_text: str, fallback: str = "NATURE SIGNAL") -> str:
     """Return compact, readable thumbnail copy for a vertical preview tile."""
-    cleaned = re.sub(r"[^A-Za-z0-9 '&-]+", " ", thumbnail_text or "")
-    words = [word for word in cleaned.upper().split() if word]
-    return " ".join(words[:4]) or fallback
+    return _clean_thumbnail_text(thumbnail_text, title=fallback)
+
+
+def _side_caption_lines(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.ImageFont, max_width: int) -> list[str]:
+    words = [word for word in text.split() if word]
+    if not words:
+        return []
+    if len(words) <= 3:
+        return words
+    return wrap_text(draw, " ".join(words), font, max_width)[:3]
 
 
 def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "") -> None:
-    """Render a story-specific vertical preview with one instant idea."""
+    """Render a frame-first thumbnail with a large side caption."""
     if frame_img is None:
         return
     thumb = frame_img.copy().convert("RGB").resize((SHORT_W, SHORT_H), Image.LANCZOS)
-    draw = ImageDraw.Draw(thumb, "RGBA")
+    thumb = ImageEnhance.Brightness(thumb).enhance(1.10)
+    thumb = ImageEnhance.Contrast(thumb).enhance(1.14)
+    thumb = ImageEnhance.Color(thumb).enhance(1.10)
     cat_color = CATEGORY_COLORS.get((category or "").upper(), ACCENT_BLUE)
 
-    # Keep the subject visible, then create a clean mobile-readable text band.
-    draw.rectangle((0, 0, SHORT_W, SHORT_H), fill=(0, 0, 0, 82))
-    draw.rectangle((0, 420, SHORT_W, 1450), fill=(0, 0, 0, 132))
-    draw.rectangle((0, 1440, SHORT_W, SHORT_H), fill=(0, 0, 0, 178))
-    draw.rectangle((0, 0, 22, SHORT_H), fill=(*cat_color, 255))
-
-    cat_text = (category or "nature").upper()[:18]
-    cat_font = get_font(42, bold=True)
-    cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
-    pill = (76, 110, 76 + cat_box[2] + 46, 110 + cat_box[3] + 28)
-    draw_rounded_rect(draw, pill, radius=12, fill=(*cat_color, 245))
-    draw.text((pill[0] + 23, pill[1] + 14), cat_text, font=cat_font, fill=(0, 0, 0, 255))
+    overlay = Image.new("RGBA", (SHORT_W, SHORT_H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    side_w = int(SHORT_W * 0.48)
+    for x in range(side_w):
+        t = x / max(1, side_w - 1)
+        alpha = int(192 * (1 - t) + 24 * t)
+        od.line([(x, 0), (x, SHORT_H)], fill=(0, 0, 0, alpha))
+    for y in range(SHORT_H):
+        t = y / max(1, SHORT_H - 1)
+        alpha = int(12 + 98 * max(0.0, (t - 0.58) / 0.42))
+        od.line([(0, y), (SHORT_W, y)], fill=(0, 0, 0, alpha))
+    thumb = Image.alpha_composite(thumb.convert("RGBA"), overlay).convert("RGB")
+    draw = ImageDraw.Draw(thumb, "RGBA")
 
     copy = _thumbnail_copy(thumbnail_text)
-    title_font = get_font(156, bold=True)
-    lines = wrap_text(draw, copy, title_font, SHORT_W - 154)
-    if len(lines) > 3:
+    max_text_w = side_w - 112
+    title_font = get_font(152, bold=True)
+    lines = _side_caption_lines(draw, copy, title_font, max_text_w)
+    if any((draw.textbbox((0, 0), line, font=title_font)[2] > max_text_w) for line in lines):
         title_font = get_font(132, bold=True)
-        lines = wrap_text(draw, copy, title_font, SHORT_W - 154)
+        lines = _side_caption_lines(draw, copy, title_font, max_text_w)
     lines = lines[:3]
-    line_h = 176 if len(lines) <= 2 else 150
-    y = 730 - (len(lines) * line_h // 2)
+    line_h = 146 if len(lines) >= 3 else 166
+    y = int(SHORT_H * 0.42) - (len(lines) * line_h // 2)
     for line in lines:
-        box = draw.textbbox((0, 0), line, font=title_font)
-        x = (SHORT_W - box[2]) // 2
-        draw.text((x + 7, y + 8), line, font=title_font, fill=(0, 0, 0, 230))
-        draw.text((x, y), line, font=title_font, fill=(*TEXT_WHITE, 255))
+        draw.text(
+            (64, y),
+            line,
+            font=title_font,
+            fill=(*TEXT_WHITE, 255),
+            stroke_width=10,
+            stroke_fill=(0, 0, 0, 225),
+        )
         y += line_h
 
-    draw.rectangle((76, 1440, 310, 1454), fill=(*cat_color, 255))
-    brand_font = get_font(62, bold=True)
-    draw.text((76, 1502), "WILD BRIEF", font=brand_font, fill=(*TEXT_WHITE, 255))
-    sub_font = get_font(38, bold=True)
-    draw.text((76, 1582), "NATURE SCIENCE", font=sub_font, fill=(*cat_color, 255))
+    brand_x = 64
+    brand_y = SHORT_H - 250
+    draw.rectangle((brand_x, brand_y, brand_x + 214, brand_y + 12), fill=(*cat_color, 255))
+    brand_font = get_font(50, bold=True)
+    draw.text(
+        (brand_x, brand_y + 34),
+        "WILD BRIEF",
+        font=brand_font,
+        fill=(*TEXT_WHITE, 245),
+        stroke_width=3,
+        stroke_fill=(0, 0, 0, 175),
+    )
+    sub = (category or "nature science").replace("_", " ").upper()[:20]
+    draw.text((brand_x, brand_y + 94), sub, font=get_font(30, bold=True), fill=(*cat_color, 250))
 
-    thumb.save(str(output), "JPEG", quality=94, optimize=True)
-    log.info("  Thumbnail (dynamic story preview): %s", output.name)
+    thumb.save(str(output), "JPEG", quality=95, optimize=True)
+    log.info("  Thumbnail (frame-first side caption): %s", output.name)
 
 
 def _nature_broll_query(story: dict) -> str:
@@ -1851,14 +2096,18 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # create_short_thumbnail's fallback chain handles each path.
     experiments = story.get("experiments") or {}
     thumb_variant = experiments.get("thumbnail_style") or assign_variant("thumbnail_style", slug)
+    try:
+        thumb_base = Image.open(bg_path).convert("RGB")
+    except Exception:
+        thumb_base = frame
     if thumb_variant == "brand_static":
         # Forcing empty thumbnail_text triggers the static brand fallback
         # inside create_short_thumbnail.
-        create_short_thumbnail(frame, thumb_path, thumbnail_text="", category=category)
+        create_short_thumbnail(thumb_base, thumb_path, thumbnail_text="", category=category)
     else:
         # dynamic_text + category_color both use the dynamic renderer;
         # category_color biases harder toward the slab fill colour.
-        create_short_thumbnail(frame, thumb_path, thumbnail_text=thumbnail_text, category=category)
+        create_short_thumbnail(thumb_base, thumb_path, thumbnail_text=thumbnail_text, category=category)
     if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
         log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
         return None

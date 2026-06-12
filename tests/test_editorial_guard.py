@@ -49,6 +49,11 @@ def test_editorial_guard_blocks_rely_loop():
     assert "robotic_rely_loop" in editorial_issues({"title": "Lions rely on movement to rely"})
 
 
+def test_editorial_guard_blocks_generic_body_part_signal_titles():
+    assert "generic_use_bodypart_to_signal" in editorial_issues({"title": "Monkeys use their tail to signal"})
+    assert "generic_use_bodypart_to_signal" in editorial_issues({"title": "Snake use their body to follow"})
+
+
 def test_editorial_guard_blocks_singular_subject_with_plural_verb():
     assert "bad_singular_subject_verb" in editorial_issues({"title": "Octopus turn the detail into the clue"})
     assert "bad_singular_subject_verb" in editorial_issues({"title": "Goat rely on body posture"})

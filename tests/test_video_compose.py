@@ -174,6 +174,7 @@ def test_build_broll_short_with_opening_cover(tmp_path, stub_ffprobe, stub_ffmpe
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
     assert "OCTOPUS VANISHES" in fg
     assert "between(t,0,1.2)" in fg
+    assert ":x=64:" in fg
 
 
 def test_static_fallback_keeps_channel_cta(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monkeypatch):
@@ -190,6 +191,7 @@ def test_static_fallback_keeps_channel_cta(tmp_path, stub_ffprobe, stub_ffmpeg_o
     fg = next(arg for arg in stub_ffmpeg_ok[-1] if isinstance(arg, str) and "drawtext" in arg)
     assert "OWL NIGHT VISION" in fg
     assert "SUBSCRIBE" in fg
+    assert ":x=64:" in fg
 
 
 def test_build_broll_short_with_ass_subtitles(tmp_path, stub_ffprobe, stub_ffmpeg_ok):

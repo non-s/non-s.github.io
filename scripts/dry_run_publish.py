@@ -32,8 +32,15 @@ def build_dry_run(data: dict) -> dict:
             rights = audit_rights(story)
         queue_prune = story.get("queue_prune") or {}
         publish = story.get("publish_score") or {}
+        if not publish:
+            from utils.publish_score import score_story
+
+            publish = score_story(story)
+        queue_ready = queue_prune.get("state") == "publish_ready" or (
+            queue_prune.get("state") == "rewrite" and float(queue_prune.get("score", 0) or 0) >= 90
+        )
         if (
-            queue_prune.get("state") == "publish_ready"
+            queue_ready
             and rights.get("approved") is True
             and publish.get("approved") is True
             and publish.get("state") == "publish_ready"

@@ -132,6 +132,12 @@ NON_ANIMAL_BODY_TERMS = (
 
 ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("robotic_use_loop", r"\b[a-z]+s?\s+use\s+(their|its)\s+[a-z]+\s+to\s+use\b"),
+    (
+        "generic_use_bodypart_to_signal",
+        r"\b[a-z]+s?\s+use\s+(their|its)\s+"
+        r"(?:body|ear|ears|eye|eyes|feet|fin|fins|flipper|flippers|head|hoof|hooves|"
+        r"paw|paws|tail|wing|wings)\s+to\s+(?:follow|signal|use)\b",
+    ),
     ("robotic_rely_loop", r"\b[a-z]+s?\s+rely\s+on\s+[a-z\s]+\s+to\s+rely\b"),
     (
         "robotic_because_of_this",
@@ -297,6 +303,8 @@ def editorial_issues(story: dict, *, include_script: bool = True) -> list[str]:
     for name, pattern in ROBOTIC_TEXT_PATTERNS:
         if re.search(pattern, body_lower):
             issues.append(name)
+    if "robotic_use_loop" in issues:
+        issues = [issue for issue in issues if issue != "generic_use_bodypart_to_signal"]
     category = str(story.get("category") or "").lower()
     if category in NON_ANIMAL_CATEGORIES and any(term in body_lower for term in NON_ANIMAL_BODY_TERMS):
         issues.append("non_animal_body_language")

@@ -39,7 +39,7 @@ def test_thumbnail_options_are_short_scannable_phrases():
 
     assert options
     assert all(len(option.split()) <= 4 for option in options)
-    assert "WATCH THE WING" in options
+    assert "WING FLASH" in options
 
 
 def test_score_packaging_penalizes_generic_clickbait():
@@ -114,7 +114,7 @@ def test_title_options_use_natural_head_movement_language():
         )
     )
 
-    assert any("head movement" in option.lower() for option in options)
+    assert any("head tilt" in option.lower() for option in options)
     assert all("head cue" not in option.lower() for option in options)
 
 

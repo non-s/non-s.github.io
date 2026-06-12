@@ -307,6 +307,12 @@ GENERIC_PHRASES = (
     "rely on first movement for a reason",
     "when the ear movement changes",
     "this ear position changes what",
+    "watch this clue",
+    "tiny clue",
+    "nature trick",
+    "look closer",
+    "wait for it",
+    "the real reason",
 )
 BODY_SIGNAL_TEMPLATE = re.compile(
     r"(?:(?:recognize signals through|signal the next move with) "

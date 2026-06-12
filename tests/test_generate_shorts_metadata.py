@@ -277,13 +277,15 @@ def test_queue_adapter_frontloads_seo_title():
 
 
 def test_thumbnail_copy_is_short_and_uppercase():
-    from generate_shorts import _thumbnail_copy
+    from generate_shorts import _clean_thumbnail_text, _thumbnail_copy
 
-    assert _thumbnail_copy("Why cats really purr at night") == "WHY CATS REALLY PURR"
+    assert _thumbnail_copy("Why cats really purr at night") == "CATS PURR NIGHT"
+    assert _clean_thumbnail_text("Chickens head movement") == "HEAD TILT"
+    assert _clean_thumbnail_text("Butterflies rely on wing movement to trick") == "WING FLASH"
 
 
 def test_dynamic_thumbnails_change_with_story(tmp_path: Path):
-    from PIL import Image
+    from PIL import Image, ImageStat
     from generate_shorts import create_short_thumbnail
 
     frame = Image.new("RGB", (1080, 1920), (80, 120, 90))
@@ -293,6 +295,7 @@ def test_dynamic_thumbnails_change_with_story(tmp_path: Path):
     create_short_thumbnail(frame, birds, "OWL NIGHT VISION", "birds")
     assert cats.exists() and birds.exists()
     assert cats.read_bytes() != birds.read_bytes()
+    assert sum(ImageStat.Stat(Image.open(cats).convert("L")).mean) / 1 > 55
 
 
 def test_load_pending_stories_uses_pruned_publish_ready_queue(monkeypatch, tmp_path):
