@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T13:44:46.078770+00:00",
+  "generated_at": "2026-06-13T15:23:29.338053+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -29,7 +29,7 @@
     "no_captions_view_rate": 0.944,
     "realtime_48h_views": 2954,
     "avg_view_percentage": 0.0,
-    "shorts_tracked": 8
+    "shorts_tracked": 9
   },
   "bottlenecks": [
     {
@@ -106,7 +106,7 @@
       "promise": "home-animal behavior only when the hook beats retention gates",
       "state": "scale",
       "retention": 0.0,
-      "growth_score": 555.211,
+      "growth_score": 491.559,
       "publish_ready_supply": 0
     },
     {
@@ -116,10 +116,10 @@
         "primates"
       ],
       "promise": "one visible body cue that explains the next move",
-      "state": "scale",
+      "state": "test",
       "retention": 0.0,
-      "growth_score": 200.0,
-      "publish_ready_supply": 0
+      "growth_score": 102.872,
+      "publish_ready_supply": 1
     },
     {
       "lane": "Predator tells",
@@ -127,9 +127,9 @@
         "wildlife"
       ],
       "promise": "small cues before hunting, escape, or defense",
-      "state": "scale",
+      "state": "test",
       "retention": 0.0,
-      "growth_score": 200.0,
+      "growth_score": 102.872,
       "publish_ready_supply": 0
     },
     {
@@ -140,7 +140,7 @@
       "promise": "underwater behavior decoded through a visible signal",
       "state": "test",
       "retention": 0.0,
-      "growth_score": 135.552,
+      "growth_score": 85.21,
       "publish_ready_supply": 1
     },
     {
@@ -152,7 +152,7 @@
       "state": "test",
       "retention": 0.0,
       "growth_score": 0.0,
-      "publish_ready_supply": 1
+      "publish_ready_supply": 2
     }
   ],
   "video_action_plan": {
@@ -160,12 +160,22 @@
       {
         "video_id": "-S9qKWvq4qc",
         "title": "Cats read the moment from one paw position",
-        "views": 998,
+        "views": 1002,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 94.65,
+        "views_per_hour": 72.695,
         "action": "remake_opening",
         "reason": "reach exists but the opening leaks viewers"
+      },
+      {
+        "video_id": "_gf2bHn3RAw",
+        "title": "Butterflies read the moment from one wing beat",
+        "views": 3,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.577,
+        "action": "observe",
+        "reason": "not enough signal yet"
       },
       {
         "video_id": "qxmGtelxVm8",
@@ -173,7 +183,7 @@
         "views": 3,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.602,
+        "views_per_hour": 0.365,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -183,7 +193,27 @@
         "views": 3,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.336,
+        "views_per_hour": 0.247,
+        "action": "observe",
+        "reason": "not enough signal yet"
+      },
+      {
+        "video_id": "aaiy9Invhn8",
+        "title": "Tigers read the moment from one paw position",
+        "views": 2,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.462,
+        "action": "observe",
+        "reason": "not enough signal yet"
+      },
+      {
+        "video_id": "I9Yg2jJ3Ld8",
+        "title": "Sharks read the moment from one fin cue",
+        "views": 2,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.337,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -193,17 +223,17 @@
         "views": 2,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.58,
+        "views_per_hour": 0.299,
         "action": "observe",
         "reason": "not enough signal yet"
       },
       {
-        "video_id": "I9Yg2jJ3Ld8",
-        "title": "Sharks read the moment from one fin cue",
-        "views": 1,
+        "video_id": "PmFoZl7zTVM",
+        "title": "Bees read the moment from one wing beat",
+        "views": 0,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.37,
+        "views_per_hour": 0.0,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -216,38 +246,18 @@
         "views_per_hour": 0.0,
         "action": "observe",
         "reason": "not enough signal yet"
-      },
-      {
-        "video_id": "aaiy9Invhn8",
-        "title": "Tigers read the moment from one paw position",
-        "views": 0,
-        "retention": 0.0,
-        "subscribers_gained": 0,
-        "views_per_hour": 0.0,
-        "action": "observe",
-        "reason": "not enough signal yet"
-      },
-      {
-        "video_id": "_gf2bHn3RAw",
-        "title": "Butterflies read the moment from one wing beat",
-        "views": 0,
-        "retention": 0.0,
-        "subscribers_gained": 0,
-        "views_per_hour": 0.0,
-        "action": "observe",
-        "reason": "not enough signal yet"
       }
     ],
     "counts": {
       "remake_opening": 1,
-      "observe": 7
+      "observe": 8
     }
   },
   "production_commands": [
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
     "Attach a named series lane and next-episode pinned question to every strong candidate.",
     "For each winner, add one searchable title/description variant around animal behavior intent.",
-    "Use the next publish block to deepen: Pet Signals, Body Clues, Predator tells.",
+    "Use the next publish block to deepen: Pet Signals.",
     "Remake 1 high-reach/low-retention openings instead of copying their old hooks."
   ],
   "milestone_path": [
@@ -279,8 +289,8 @@
   "next_48h_watch": [
     {
       "title": "Cats read the moment from one paw position",
-      "views": 998,
-      "views_per_hour": 82.314,
+      "views": 1002,
+      "views_per_hour": 72.674,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
@@ -291,8 +301,8 @@
     },
     {
       "title": "Butterflies read the moment from one wing beat",
-      "views": 0,
-      "views_per_hour": 0.0,
+      "views": 3,
+      "views_per_hour": 0.577,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
@@ -302,9 +312,9 @@
       }
     },
     {
-      "title": "Birds read the moment from one wing angle",
+      "title": "Tigers read the moment from one paw position",
       "views": 2,
-      "views_per_hour": 0.398,
+      "views_per_hour": 0.461,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
@@ -315,8 +325,8 @@
     },
     {
       "title": "Sharks read the moment from one fin cue",
-      "views": 1,
-      "views_per_hour": 0.234,
+      "views": 2,
+      "views_per_hour": 0.336,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
@@ -328,7 +338,7 @@
     {
       "title": "Snakes read the moment from one head movement",
       "views": 3,
-      "views_per_hour": 0.457,
+      "views_per_hour": 0.365,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
