@@ -43,6 +43,7 @@ jobs:
         env:
           QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
           YOUTUBE_DAILY_QUOTA_BUDGET: ${{ vars.YOUTUBE_DAILY_QUOTA_BUDGET || '10000' }}
+          YOUTUBE_DAILY_UPLOAD_BUDGET: ${{ vars.YOUTUBE_DAILY_UPLOAD_BUDGET || '100' }}
         run: |
           quota="$(python scripts/quota_preflight.py fetch-content --json --no-fail-on-block)"
           echo "$quota"
