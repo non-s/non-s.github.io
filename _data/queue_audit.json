@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-06-13T08:42:34.073272+00:00",
-  "pending": 9,
+  "generated_at": "2026-06-13T09:26:27.179565+00:00",
+  "pending": 10,
   "states": {
     "publish_ready": 4,
-    "rewrite": 5
+    "rewrite": 6
   },
   "mechanism_clusters": {
-    "cue_timing_read": 5,
+    "cue_timing_read": 6,
     "survival_cue": 2
   },
   "rights": {
-    "approved": 9
+    "approved": 10
   },
   "prune_summary": {
-    "pending_before": 9,
-    "pending_after": 9,
+    "pending_before": 10,
+    "pending_after": 10,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 0,
     "reasons": {
-      "objective_gate:low_decision_confidence": 18,
-      "template_cluster_limit:read_the_moment": 3
+      "objective_gate:low_decision_confidence": 20,
+      "template_cluster_limit:read_the_moment": 4
     }
   },
   "rejected_preview": [],
@@ -88,15 +88,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -174,7 +174,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:42:34.070027+00:00",
+        "checked_at": "2026-06-13T09:26:27.176275+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -221,9 +221,9 @@
         "risks": [],
         "title_options": [
           "Bees rely on wing movement to survive",
-          "Bees use wing flash before they move",
+          "Bees use wing flash before they survive",
           "This wing flash gives bees away",
-          "Why bees move after one wing flash",
+          "Why bees survive after one wing flash",
           "Bees reveal the answer with wing flash",
           "The wing flash that changes the moment",
           "Bees make one wing flash matter",
@@ -235,7 +235,7 @@
           "BEES WING MOVEMENT",
           "WING FLASH",
           "WATCH WING FLASH",
-          "BEES MOVE",
+          "BEES SURVIVE",
           "WING FLASH MATTERS",
           "WING FLASH PAYOFF",
           "WING FLASH FIRST",
@@ -313,7 +313,7 @@
           {
             "score": 67,
             "title": "Bees rely on wing movement to survive",
-            "thumbnail_text": "BEES MOVE",
+            "thumbnail_text": "BEES SURVIVE",
             "hook": "Watch the wing flash; the payoff lands seconds later"
           }
         ],
@@ -350,12 +350,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -536,15 +536,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -621,7 +621,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:42:34.072084+00:00",
+        "checked_at": "2026-06-13T09:26:27.178890+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -668,9 +668,9 @@
         "risks": [],
         "title_options": [
           "Sharks rely on fin movement to survive",
-          "Sharks use fin cue before they move",
+          "Sharks use fin cue before they survive",
           "This fin cue gives sharks away",
-          "Why sharks move after one fin cue",
+          "Why sharks survive after one fin cue",
           "Sharks reveal the answer with fin cue",
           "The fin cue that changes the moment",
           "Sharks make one fin cue matter",
@@ -682,7 +682,7 @@
           "SHARKS FIN MOVEMENT",
           "FIN SHIFT",
           "WATCH FIN SHIFT",
-          "SHARKS MOVE",
+          "SHARKS SURVIVE",
           "FIN SHIFT MATTERS",
           "FIN SHIFT PAYOFF",
           "FIN SHIFT FIRST",
@@ -760,7 +760,7 @@
           {
             "score": 67,
             "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "SHARKS MOVE",
+            "thumbnail_text": "SHARKS SURVIVE",
             "hook": "Watch the fin cue; the payoff lands seconds later"
           }
         ],
@@ -797,12 +797,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -920,453 +920,6 @@
       }
     },
     {
-      "id": "2fb9584c6073f269",
-      "title": "Birds read the moment from one wing angle",
-      "category": "birds",
-      "publish_score": {
-        "score": 93.2,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 72,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 69,
-            "replay_potential": 100,
-            "comment_potential": 54,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 82,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.029,
-          "sample_size": 2,
-          "minimum_sample_size": 20,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.272,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
-        },
-        "category": "birds",
-        "story_format": "cute_behavior",
-        "hook_score": 86,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.029,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.9,
-          "template_cluster": "read_the_moment",
-          "mechanism_cluster": "cue_timing_read"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "score": 93.2,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T08:42:34.068863+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      },
-      "queue_score": 93.2,
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "birds",
-        "subject": "birds",
-        "story_format": "cute_behavior",
-        "viewer_promise": "See why birds cute behavior matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "packaging": {
-        "score": 95,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Birds read the moment from one wing angle",
-          "Birds use wing angle before they move",
-          "This wing angle gives birds away",
-          "Why birds move after one wing angle",
-          "Birds reveal the answer with wing angle",
-          "The wing angle that changes the moment",
-          "Birds make one wing angle matter",
-          "Birds show the hidden payoff in seconds",
-          "Birds: watch this wing angle",
-          "Watch birds after the wing angle"
-        ],
-        "thumbnail_options": [
-          "BIRDS WING POSITION",
-          "WING ANGLE",
-          "WATCH WING ANGLE",
-          "BIRDS MOVE",
-          "WING ANGLE MATTERS",
-          "WING ANGLE PAYOFF",
-          "WING ANGLE FIRST",
-          "WING ANGLE REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Birds reveal one visible signal",
-          "Watch the wing angle; the payoff lands seconds later",
-          "Start with the wing angle; it explains the next move",
-          "The wing angle is the detail most people miss",
-          "Birds give away the answer through wing angle"
-        ],
-        "selected_variant": {
-          "score": 65,
-          "title": "Birds read the moment from one wing angle",
-          "thumbnail_text": "BIRDS WING POSITION",
-          "hook": "Birds reveal one visible signal"
-        },
-        "top_variants": [
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "BIRDS WING POSITION",
-            "hook": "Birds reveal one visible signal"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "BIRDS WING POSITION",
-            "hook": "Watch the wing angle; the payoff lands seconds later"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "BIRDS WING POSITION",
-            "hook": "Start with the wing angle; it explains the next move"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WING ANGLE",
-            "hook": "Birds reveal one visible signal"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WING ANGLE",
-            "hook": "Watch the wing angle; the payoff lands seconds later"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WING ANGLE",
-            "hook": "Start with the wing angle; it explains the next move"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WATCH WING ANGLE",
-            "hook": "Birds reveal one visible signal"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WATCH WING ANGLE",
-            "hook": "Watch the wing angle; the payoff lands seconds later"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "WATCH WING ANGLE",
-            "hook": "Start with the wing angle; it explains the next move"
-          },
-          {
-            "score": 65,
-            "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "BIRDS MOVE",
-            "hook": "Birds reveal one visible signal"
-          }
-        ],
-        "retention": {
-          "score": 82,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "experiment": {
-          "mode": "exploit",
-          "explore_rate": 0.35,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
-          },
-          "sample_count": 3,
-          "assignment": {
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail",
-            "cta": "follow_for_more"
-          }
-        },
-        "series_identity": {
-          "series": "Nature Signals",
-          "episode": 1,
-          "label": "Nature Signals",
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after birds?",
-        "series": "Nature Signals",
-        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
-        "replay_prompt": "End by pointing back to the wing position, so viewers rewatch the birds clip.",
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "curiosity_gap": {
-          "hook": "This birds changes right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "birds",
-          "opening_line": "Birds reveal one visible signal",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the birds at the start makes sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.369,
-          "render_hints": {
-            "carry_keyword": "birds",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.369,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "mechanism_reveal",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "BIRDS WING POSITION",
-          "first_frame_text_words": 3,
-          "hook": "Birds reveal one visible signal",
-          "hook_words": 5,
-          "first_2s_narration": "Birds reveal one visible signal Watch wing position because birds use it",
-          "caption_chars_per_second": 14.44,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "cta_count": 1,
-          "loop_score": 0.369
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "state": "approved",
-        "issues": []
-      }
-    },
-    {
       "id": "sequel-825bf3d29e694495",
       "title": "Cats read the moment from one ear shift",
       "category": "cats",
@@ -1429,15 +982,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1514,7 +1067,7 @@
       "queue_prune": {
         "score": 89.8,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:42:34.068289+00:00",
+        "checked_at": "2026-06-13T09:26:27.173366+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -1561,9 +1114,9 @@
         "risks": [],
         "title_options": [
           "Cats read the moment from one ear shift",
-          "Cats use ear shift before they move",
+          "Cats use ear shift before they follow",
           "This ear shift gives cats away",
-          "Why cats move after one ear shift",
+          "Why cats follow after one ear shift",
           "Cats reveal the answer with ear shift",
           "The ear shift that changes the moment",
           "Cats make one ear shift matter",
@@ -1575,7 +1128,7 @@
           "CATS EAR POSITION",
           "EAR SHIFT",
           "WATCH EAR SHIFT",
-          "CATS MOVE",
+          "CATS FOLLOW",
           "EAR SHIFT MATTERS",
           "EAR SHIFT PAYOFF",
           "EAR SHIFT FIRST",
@@ -1591,70 +1144,70 @@
           "Cats give away the answer through ear shift"
         ],
         "selected_variant": {
-          "score": 65,
+          "score": 66,
           "title": "Cats read the moment from one ear shift",
           "thumbnail_text": "CATS EAR POSITION",
           "hook": "Cats reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "CATS EAR POSITION",
             "hook": "Cats reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "CATS EAR POSITION",
             "hook": "Watch the ear shift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "CATS EAR POSITION",
             "hook": "Start with the ear shift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "EAR SHIFT",
             "hook": "Cats reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "EAR SHIFT",
             "hook": "Watch the ear shift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "EAR SHIFT",
             "hook": "Start with the ear shift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "WATCH EAR SHIFT",
             "hook": "Cats reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "WATCH EAR SHIFT",
             "hook": "Watch the ear shift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
             "thumbnail_text": "WATCH EAR SHIFT",
             "hook": "Start with the ear shift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Cats read the moment from one ear shift",
-            "thumbnail_text": "CATS MOVE",
+            "thumbnail_text": "CATS FOLLOW",
             "hook": "Cats reveal one visible signal"
           }
         ],
@@ -1691,12 +1244,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -1814,6 +1367,453 @@
       }
     },
     {
+      "id": "5e9b4e4e7013fcc8",
+      "title": "Tigers read the moment from one paw position",
+      "category": "wildlife",
+      "publish_score": {
+        "score": 88.5,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 70,
+          "signals": {
+            "viral_potential": 80,
+            "visual_potential": 59,
+            "replay_potential": 100,
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 81,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 50,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.26,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.052,
+          "sample_size": 3,
+          "minimum_sample_size": 20,
+          "data_quality": "inferred",
+          "data_quality_score": 0.575,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.289,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+        },
+        "category": "wildlife",
+        "story_format": "cute_behavior",
+        "hook_score": 74,
+        "title_score": 74,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 10.0,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "confidence_score": 0.052,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.9,
+          "template_cluster": "read_the_moment",
+          "mechanism_cluster": "cue_timing_read"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "score": 88.5,
+        "state": "publish_ready",
+        "checked_at": "2026-06-13T09:26:27.174524+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_score": 88.5,
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "tigers",
+        "subject": "tigers",
+        "story_format": "cute_behavior",
+        "viewer_promise": "See why tigers cute behavior matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": []
+      },
+      "packaging": {
+        "score": 95,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Tigers read the moment from one paw position",
+          "Tigers use first move before they move",
+          "This first move gives tigers away",
+          "Why tigers move after one first move",
+          "Tigers reveal the answer with first move",
+          "The first move that changes the moment",
+          "Tigers make one first move matter",
+          "Tigers show the hidden payoff in seconds",
+          "Tigers: watch this first move",
+          "Watch tigers after the first move"
+        ],
+        "thumbnail_options": [
+          "TIGERS PAW POSITION",
+          "FIRST MOVE",
+          "WATCH FIRST MOVE",
+          "TIGERS MOVE",
+          "FIRST MOVE MATTERS",
+          "FIRST MOVE PAYOFF",
+          "FIRST MOVE FIRST",
+          "FIRST MOVE REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Tigers reveal one visible signal",
+          "Watch the first move; the payoff lands seconds later",
+          "Start with the first move; it explains the next move",
+          "The first move is the detail most people miss",
+          "Tigers give away the answer through first move"
+        ],
+        "selected_variant": {
+          "score": 67,
+          "title": "Tigers read the moment from one paw position",
+          "thumbnail_text": "TIGERS PAW POSITION",
+          "hook": "Tigers reveal one visible signal"
+        },
+        "top_variants": [
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "TIGERS PAW POSITION",
+            "hook": "Tigers reveal one visible signal"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "TIGERS PAW POSITION",
+            "hook": "Watch the first move; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "TIGERS PAW POSITION",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "FIRST MOVE",
+            "hook": "Tigers reveal one visible signal"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "FIRST MOVE",
+            "hook": "Watch the first move; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "hook": "Tigers reveal one visible signal"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "hook": "Watch the first move; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Tigers read the moment from one paw position",
+            "thumbnail_text": "TIGERS MOVE",
+            "hook": "Tigers reveal one visible signal"
+          }
+        ],
+        "retention": {
+          "score": 81,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 50,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} one {subject} {action}"
+          },
+          "winning_experiments": {
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
+          },
+          "sample_count": 5,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Watch The Cue",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the paw again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after tigers?",
+        "series": "Watch The Cue",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "replay_prompt": "End by pointing back to the paw, so viewers rewatch the tigers clip.",
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This wildlife changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "tigers",
+          "opening_line": "Tigers reveal one visible signal",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the tigers at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.379,
+          "render_hints": {
+            "carry_keyword": "tigers",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.379,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "TIGERS PAW POSITION",
+          "first_frame_text_words": 3,
+          "hook": "Tigers reveal one visible signal",
+          "hook_words": 5,
+          "first_2s_narration": "Tigers reveal one visible signal Watch paw position because tigers use it",
+          "caption_chars_per_second": 14.5,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.379
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "state": "approved",
+        "issues": []
+      }
+    },
+    {
       "id": "18762a35e9b1f385",
       "title": "Wolves read the moment from one tail lift",
       "category": "wildlife",
@@ -1876,15 +1876,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1961,7 +1961,7 @@
       "queue_prune": {
         "score": 87.5,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:42:34.070568+00:00",
+        "checked_at": "2026-06-13T09:26:27.176820+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -2039,68 +2039,68 @@
           "Wolves give away the answer through tail lift"
         ],
         "selected_variant": {
-          "score": 65,
+          "score": 66,
           "title": "Wolves read the moment from one tail lift",
           "thumbnail_text": "WOLVES TAIL POSITION",
           "hook": "Wolves reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 65,
+            "score": 66,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES MOVE",
             "hook": "Wolves reveal one visible signal"
@@ -2139,12 +2139,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -2324,15 +2324,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -2409,7 +2409,7 @@
       "queue_prune": {
         "score": 82.2,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:42:34.072590+00:00",
+        "checked_at": "2026-06-13T09:26:27.178289+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -2487,68 +2487,68 @@
           "Dogs give away the answer through tail lift"
         ],
         "selected_variant": {
-          "score": 63,
+          "score": 64,
           "title": "Dogs read the moment from one tail lift",
           "thumbnail_text": "DOGS TAIL POSITION",
           "hook": "Dogs reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 63,
+            "score": 64,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS MOVE",
             "hook": "Dogs reveal one visible signal"
@@ -2587,12 +2587,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -2710,11 +2710,459 @@
       }
     },
     {
+      "id": "2fb9584c6073f269",
+      "title": "Birds read the moment from one wing angle",
+      "category": "birds",
+      "publish_score": {
+        "score": 93.2,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 72,
+          "signals": {
+            "viral_potential": 80,
+            "visual_potential": 69,
+            "replay_potential": 100,
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 82,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 58,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.26,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.052,
+          "sample_size": 3,
+          "minimum_sample_size": 20,
+          "data_quality": "inferred",
+          "data_quality_score": 0.575,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.289,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+        },
+        "category": "birds",
+        "story_format": "cute_behavior",
+        "hook_score": 86,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 10.0,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "confidence_score": 0.052,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.9,
+          "template_cluster": "read_the_moment",
+          "mechanism_cluster": "cue_timing_read"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "score": 81.2,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T09:26:27.175711+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence",
+          "template_cluster_limit:read_the_moment"
+        ]
+      },
+      "queue_score": 81.2,
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "birds",
+        "subject": "birds",
+        "story_format": "cute_behavior",
+        "viewer_promise": "See why birds cute behavior matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": []
+      },
+      "packaging": {
+        "score": 95,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Birds read the moment from one wing angle",
+          "Birds use wing angle before they move",
+          "This wing angle gives birds away",
+          "Why birds move after one wing angle",
+          "Birds reveal the answer with wing angle",
+          "The wing angle that changes the moment",
+          "Birds make one wing angle matter",
+          "Birds show the hidden payoff in seconds",
+          "Birds: watch this wing angle",
+          "Watch birds after the wing angle"
+        ],
+        "thumbnail_options": [
+          "BIRDS WING POSITION",
+          "WING ANGLE",
+          "WATCH WING ANGLE",
+          "BIRDS MOVE",
+          "WING ANGLE MATTERS",
+          "WING ANGLE PAYOFF",
+          "WING ANGLE FIRST",
+          "WING ANGLE REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Birds reveal one visible signal",
+          "Watch the wing angle; the payoff lands seconds later",
+          "Start with the wing angle; it explains the next move",
+          "The wing angle is the detail most people miss",
+          "Birds give away the answer through wing angle"
+        ],
+        "selected_variant": {
+          "score": 66,
+          "title": "Birds read the moment from one wing angle",
+          "thumbnail_text": "BIRDS WING POSITION",
+          "hook": "Birds reveal one visible signal"
+        },
+        "top_variants": [
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "BIRDS WING POSITION",
+            "hook": "Birds reveal one visible signal"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "BIRDS WING POSITION",
+            "hook": "Watch the wing angle; the payoff lands seconds later"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "BIRDS WING POSITION",
+            "hook": "Start with the wing angle; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WING ANGLE",
+            "hook": "Birds reveal one visible signal"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WING ANGLE",
+            "hook": "Watch the wing angle; the payoff lands seconds later"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WING ANGLE",
+            "hook": "Start with the wing angle; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WATCH WING ANGLE",
+            "hook": "Birds reveal one visible signal"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WATCH WING ANGLE",
+            "hook": "Watch the wing angle; the payoff lands seconds later"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "WATCH WING ANGLE",
+            "hook": "Start with the wing angle; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Birds read the moment from one wing angle",
+            "thumbnail_text": "BIRDS MOVE",
+            "hook": "Birds reveal one visible signal"
+          }
+        ],
+        "retention": {
+          "score": 82,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 58,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} one {subject} {action}"
+          },
+          "winning_experiments": {
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
+          },
+          "sample_count": 5,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Nature Signals",
+          "episode": 1,
+          "label": "Nature Signals",
+          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after birds?",
+        "series": "Nature Signals",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "replay_prompt": "End by pointing back to the wing position, so viewers rewatch the birds clip.",
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This birds changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "birds",
+          "opening_line": "Birds reveal one visible signal",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the birds at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.369,
+          "render_hints": {
+            "carry_keyword": "birds",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.369,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "BIRDS WING POSITION",
+          "first_frame_text_words": 3,
+          "hook": "Birds reveal one visible signal",
+          "hook_words": 5,
+          "first_2s_narration": "Birds reveal one visible signal Watch wing position because birds use it",
+          "caption_chars_per_second": 14.44,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.369
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "state": "approved",
+        "issues": []
+      }
+    },
+    {
       "id": "2877e98b5ef59dbf",
       "title": "Goats read the moment from one hoof movement",
       "category": "farm",
       "publish_score": {
-        "score": 87.6,
+        "score": 87.5,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
@@ -2772,15 +3220,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -2816,15 +3264,15 @@
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.029,
-          "sample_size": 2,
+          "confidence_score": 0.052,
+          "sample_size": 3,
           "minimum_sample_size": 20,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.272,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+          "bootstrap_multiplier": 0.289,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
         },
         "category": "farm",
         "story_format": "cute_behavior",
@@ -2844,7 +3292,7 @@
           "reasons": [
             "low_decision_confidence"
           ],
-          "confidence_score": 0.029,
+          "confidence_score": 0.052,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -2855,9 +3303,9 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "score": 75.6,
+        "score": 75.5,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:42:34.069473+00:00",
+        "checked_at": "2026-06-13T09:26:27.175177+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -2865,7 +3313,7 @@
           "template_cluster_limit:read_the_moment"
         ]
       },
-      "queue_score": 75.6,
+      "queue_score": 75.5,
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -2935,68 +3383,68 @@
           "Goats give away the answer through movement"
         ],
         "selected_variant": {
-          "score": 66,
+          "score": 67,
           "title": "Goats read the moment from one hoof movement",
           "thumbnail_text": "GOATS HOOF MOVEMENT",
           "hook": "Goats reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 67,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "MOVEMENT MATTERS",
             "hook": "Goats reveal one visible signal"
@@ -3035,12 +3483,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -3220,15 +3668,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -3306,7 +3754,7 @@
       "queue_prune": {
         "score": 67.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:42:34.071492+00:00",
+        "checked_at": "2026-06-13T09:26:27.177766+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -3484,12 +3932,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -3670,15 +4118,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.26,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.445,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -3755,7 +4203,7 @@
       "queue_prune": {
         "score": 60.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:42:34.073192+00:00",
+        "checked_at": "2026-06-13T09:26:27.179494+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -3930,12 +4378,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 57.95,
-            "hook:new_hook": 57.95,
-            "thumbnail:new_thumbnail": 57.95,
-            "cta:specific_question": 57.95
+            "format:fresh_variant": 52.69,
+            "hook:new_hook": 52.69,
+            "thumbnail:new_thumbnail": 52.69,
+            "cta:specific_question": 52.69
           },
-          "sample_count": 3,
+          "sample_count": 5,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",

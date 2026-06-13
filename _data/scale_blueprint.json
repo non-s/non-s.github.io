@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T08:42:38.313709+00:00",
+  "generated_at": "2026-06-13T09:26:33.884440+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -29,7 +29,7 @@
     "no_captions_view_rate": 0.944,
     "realtime_48h_views": 2954,
     "avg_view_percentage": 0.0,
-    "shorts_tracked": 3
+    "shorts_tracked": 5
   },
   "bottlenecks": [
     {
@@ -106,7 +106,7 @@
       "promise": "home-animal behavior only when the hook beats retention gates",
       "state": "scale",
       "retention": 0.0,
-      "growth_score": 551.717,
+      "growth_score": 554.764,
       "publish_ready_supply": 1
     },
     {
@@ -115,9 +115,32 @@
         "ocean"
       ],
       "promise": "underwater behavior decoded through a visible signal",
-      "state": "scale",
+      "state": "test",
       "retention": 0.0,
-      "growth_score": 200.0,
+      "growth_score": 100.0,
+      "publish_ready_supply": 1
+    },
+    {
+      "lane": "Body Clues",
+      "categories": [
+        "wildlife",
+        "primates"
+      ],
+      "promise": "one visible body cue that explains the next move",
+      "state": "test",
+      "retention": 0.0,
+      "growth_score": 0.0,
+      "publish_ready_supply": 1
+    },
+    {
+      "lane": "Predator tells",
+      "categories": [
+        "wildlife"
+      ],
+      "promise": "small cues before hunting, escape, or defense",
+      "state": "test",
+      "retention": 0.0,
+      "growth_score": 0.0,
       "publish_ready_supply": 1
     },
     {
@@ -130,29 +153,6 @@
       "retention": 0.0,
       "growth_score": 0.0,
       "publish_ready_supply": 0
-    },
-    {
-      "lane": "Body Clues",
-      "categories": [
-        "wildlife",
-        "primates"
-      ],
-      "promise": "one visible body cue that explains the next move",
-      "state": "test",
-      "retention": 0.0,
-      "growth_score": 0.0,
-      "publish_ready_supply": 0
-    },
-    {
-      "lane": "Predator tells",
-      "categories": [
-        "wildlife"
-      ],
-      "promise": "small cues before hunting, escape, or defense",
-      "state": "test",
-      "retention": 0.0,
-      "growth_score": 0.0,
-      "publish_ready_supply": 0
     }
   ],
   "video_action_plan": {
@@ -160,20 +160,20 @@
       {
         "video_id": "-S9qKWvq4qc",
         "title": "Cats read the moment from one paw position",
-        "views": 919,
+        "views": 988,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 165.138,
+        "views_per_hour": 125.98,
         "action": "remake_opening",
         "reason": "reach exists but the opening leaks viewers"
       },
       {
         "video_id": "qxmGtelxVm8",
         "title": "Snakes read the moment from one head movement",
-        "views": 0,
+        "views": 2,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.0,
+        "views_per_hour": 0.878,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -186,18 +186,38 @@
         "views_per_hour": 0.0,
         "action": "observe",
         "reason": "not enough signal yet"
+      },
+      {
+        "video_id": "NP2KHIyagHw",
+        "title": "Birds read the moment from one wing angle",
+        "views": 0,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.0,
+        "action": "observe",
+        "reason": "not enough signal yet"
+      },
+      {
+        "video_id": "I9Yg2jJ3Ld8",
+        "title": "Sharks read the moment from one fin cue",
+        "views": 0,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.0,
+        "action": "observe",
+        "reason": "not enough signal yet"
       }
     ],
     "counts": {
       "remake_opening": 1,
-      "observe": 2
+      "observe": 4
     }
   },
   "production_commands": [
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
     "Attach a named series lane and next-episode pinned question to every strong candidate.",
     "For each winner, add one searchable title/description variant around animal behavior intent.",
-    "Use the next publish block to deepen: Pet Signals, Ocean Signals.",
+    "Use the next publish block to deepen: Pet Signals.",
     "Remake 1 high-reach/low-retention openings instead of copying their old hooks."
   ],
   "milestone_path": [
@@ -229,8 +249,8 @@
   "next_48h_watch": [
     {
       "title": "Cats read the moment from one paw position",
-      "views": 919,
-      "views_per_hour": 129.212,
+      "views": 988,
+      "views_per_hour": 125.95,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
@@ -241,6 +261,18 @@
     },
     {
       "title": "Snakes read the moment from one head movement",
+      "views": 2,
+      "views_per_hour": 0.877,
+      "breakout_probability": {
+        "pass_500": 0.0,
+        "pass_1000": 0.0,
+        "pass_5000": 0.0,
+        "pass_10000": 0.0,
+        "pass_50000": 0.0
+      }
+    },
+    {
+      "title": "Birds read the moment from one wing angle",
       "views": 0,
       "views_per_hour": 0.0,
       "breakout_probability": {
@@ -253,6 +285,18 @@
     },
     {
       "title": "Whales read the moment from one fin cue",
+      "views": 0,
+      "views_per_hour": 0.0,
+      "breakout_probability": {
+        "pass_500": 0.0,
+        "pass_1000": 0.0,
+        "pass_5000": 0.0,
+        "pass_10000": 0.0,
+        "pass_50000": 0.0
+      }
+    },
+    {
+      "title": "Sharks read the moment from one fin cue",
       "views": 0,
       "views_per_hour": 0.0,
       "breakout_probability": {

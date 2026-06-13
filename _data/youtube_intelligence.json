@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-13T07:10:18.730274+00:00",
+  "generated_at": "2026-06-13T09:26:14.666379+00:00",
   "window": {
     "start_date": "2026-05-17",
     "end_date": "2026-06-13"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,20 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 50,
     "view_count": 26327,
-    "video_count": 3,
+    "video_count": 4,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 3,
+    "uploads_checked": 4,
     "latest_uploads": [
+      {
+        "video_id": "NP2KHIyagHw",
+        "title": "Birds read the moment from one wing angle",
+        "published_at": "2026-06-13T08:41:47Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLk5QMktISXlhZ0h3"
+      },
       {
         "video_id": "qxmGtelxVm8",
         "title": "Snakes read the moment from one head movement",
@@ -48,17 +54,17 @@
     ]
   },
   "video_audit": {
-    "videos_checked": 3,
-    "total_views": 920,
+    "videos_checked": 4,
+    "total_views": 990,
     "total_likes": 51,
-    "total_comments": 3,
+    "total_comments": 4,
     "private_or_unlisted": 0,
-    "shorts_like": 3,
+    "shorts_like": 4,
     "top_public_videos": [
       {
         "video_id": "-S9qKWvq4qc",
         "title": "Cats read the moment from one paw position",
-        "views": 920,
+        "views": 988,
         "likes": 51,
         "comments": 1,
         "privacy_status": "public",
@@ -67,11 +73,20 @@
       {
         "video_id": "qxmGtelxVm8",
         "title": "Snakes read the moment from one head movement",
-        "views": 0,
+        "views": 2,
         "likes": 0,
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-06-13T07:09:46Z"
+      },
+      {
+        "video_id": "NP2KHIyagHw",
+        "title": "Birds read the moment from one wing angle",
+        "views": 0,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-06-13T08:41:47Z"
       },
       {
         "video_id": "yBCwHxMgk1o",
@@ -92,7 +107,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -101,7 +116,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -110,7 +125,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -168,9 +183,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -178,9 +193,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 14,
+      "error": ""
     },
     {
       "id": "country",
@@ -188,9 +203,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 43,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -198,9 +213,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 11,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -208,9 +223,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -218,12 +233,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }
