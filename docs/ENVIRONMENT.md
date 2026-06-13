@@ -68,6 +68,10 @@
 | `SEO_METADATA_LINT_ENABLED` | no | Adds deterministic SEO/search lint to metadata and repo checks. |
 | `SEO_METADATA_LINT_STRICT` | no | Rejects generated metadata with SEO lint errors when set to `1`. |
 
+YouTube uploads cost roughly 1600 API units each. The default 10000-unit quota
+supports only a few uploads per day; true 24/day publishing requires a higher
+Google API quota and a matching `YOUTUBE_DAILY_QUOTA_BUDGET`.
+
 ## Feature Flag Registry
 
 | Flag | Default | Owner | Purpose | Rollback |
@@ -105,7 +109,7 @@
 | `UPLOAD_SLOT_IDEMPOTENCY_MODE` | `block` | operations | Block a second successful upload for the same publish slot. | Use warn. |
 | `MEDIA_LIFECYCLE_CLEANUP` | `1` | operations | Delete generated media after successful upload while keeping metadata markers. | Set to 0 temporarily while debugging renders. |
 | `OPS_GUARDIAN_ENFORCE` | `1` | operations | Apply ops guardian paused-topic guidance during candidate selection. | Set to 0. |
-| `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.70` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
+| `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.95` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
 | `YOUTUBE_REPORTING_ENABLED` | `0` | analytics | Enable optional Reporting API CSV backfill folders. | Set to 0. |

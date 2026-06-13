@@ -54,6 +54,8 @@ jobs:
       UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
+      QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
+      YOUTUBE_DAILY_QUOTA_BUDGET: ${{ vars.YOUTUBE_DAILY_QUOTA_BUDGET || '10000' }}
       OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '1' }}
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
       PUBLISH_RECOVERY_DELAY_MINUTES: ${{ vars.PUBLISH_RECOVERY_DELAY_MINUTES || '40' }}
@@ -338,8 +340,48 @@ jobs:
             if git push origin HEAD; then
               exit 0
             fi
-            echo "Push rejected on attempt ${attempt}; rebasing before retry."
-            git pull --rebase --autostash origin main
+            echo "Push rejected on attempt ${attempt}; replaying generated state on latest main."
+            retry_dir="$(mktemp -d)"
+            for path in "${state_paths[@]}"; do
+              if [ -e "$path" ]; then
+                mkdir -p "$retry_dir/$(dirname "$path")"
+                cp "$path" "$retry_dir/$path"
+              fi
+            done
+            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+              mkdir -p "$retry_dir/$(dirname "$path")"
+              cp "$path" "$retry_dir/$path"
+            done
+            find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 | while IFS= read -r -d '' path; do
+              mkdir -p "$retry_dir/$(dirname "$path")"
+              cp "$path" "$retry_dir/$path"
+            done
+            for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json; do
+              if [ -e "$path" ]; then
+                mkdir -p "$retry_dir/$(dirname "$path")"
+                cp "$path" "$retry_dir/$path"
+              fi
+            done
+            git fetch origin main
+            git reset --hard origin/main
+            cp -R "$retry_dir"/. .
+            rm -rf "$retry_dir"
+            git add _data/stories_queue.json
+            for path in "${state_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
+            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
+            find _videos -maxdepth 1 -type f \
+              \( -name '*.done' -o -name '*.roundup' \) \
+              -print0 | xargs -0 -r git add --
+            for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json; do
+              [ -e "$path" ] && git add -f "$path"
+            done
+            if git diff --cached --quiet; then
+              echo "Latest main already contains generated state."
+              exit 0
+            fi
+            git commit -m "YouTube Shorts - $(date -u +'%Y-%m-%d')"
             sleep $((attempt * 5))
           done
           echo "Push failed after retries."

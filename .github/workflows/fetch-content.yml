@@ -40,6 +40,9 @@ jobs:
         run: python -m compileall -q fetch_animals.py utils/
 
       - name: "Quota preflight"
+        env:
+          QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
+          YOUTUBE_DAILY_QUOTA_BUDGET: ${{ vars.YOUTUBE_DAILY_QUOTA_BUDGET || '10000' }}
         run: |
           quota="$(python scripts/quota_preflight.py fetch-content --json --no-fail-on-block)"
           echo "$quota"
@@ -124,10 +127,71 @@ jobs:
           fi
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
+          state_dir="$(mktemp -d)"
+          state_paths=(
+            _data/stories_queue.json
+            _data/ai_cache.jsonl
+            _data/provider_stats.jsonl
+            _data/ai_provider_report.json
+            _data/packaging_report.json
+            _data/youtube_brain_report.json
+            _data/youtube_intelligence.json
+            _data/autonomous_director.json
+            _data/autonomous_growth_plan.json
+            _data/channel_success.json
+            _data/scale_blueprint.json
+            _data/control_plane_report.json
+            _data/success_rewriter.json
+            _data/winner_sequel_factory.json
+            _data/automation_health.json
+            _data/ops_guardian.json
+            _data/remake_backlog.json
+            _data/trend_radar.json
+            _data/trends/topic_candidates.json
+            _data/trends/trend_signals.jsonl
+            _data/trends/freshness_report.json
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/api_quota_latest.json
+            _data/category_recovery.json
+            _data/category_recovery_rewriter.json
+            _data/fact_ledger.json
+            _data/format_memory.json
+            _data/fan_growth.json
+            _data/audience_memory.json
+            _data/early_performance.json
+            _data/early_warning.json
+            _data/winner_patterns.json
+            _data/data_quality_report.json
+            _data/agency_gate.json
+            _data/post24_review.json
+            _data/sequence_plan.json
+            _data/publish_schedule.json
+            _data/next_shorts.json
+            _data/queue_prune_report.json
+            _data/queue_audit.json
+            _data/dry_run_publish.json
+            _data/reject_report.json
+            _data/repair_queue.jsonl
+            _data/rejected_queue.jsonl
+          )
+          for path in "${state_paths[@]}"; do
+            if [ -e "$path" ]; then
+              mkdir -p "$state_dir/$(dirname "$path")"
+              cp "$path" "$state_dir/$path"
+            fi
+          done
+          find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+            mkdir -p "$state_dir/$(dirname "$path")"
+            cp "$path" "$state_dir/$path"
+          done
+          git fetch origin main
+          git reset --hard origin/main
+          cp -R "$state_dir"/. .
+          rm -rf "$state_dir"
           # Stage the queue first: optional generated files must never
           # prevent the refreshed queue from being persisted.
           git add _data/stories_queue.json
-          for path in _data/ai_cache.jsonl _data/provider_stats.jsonl _data/ai_provider_report.json _data/packaging_report.json _data/youtube_brain_report.json _data/youtube_intelligence.json _data/autonomous_director.json _data/autonomous_growth_plan.json _data/channel_success.json _data/scale_blueprint.json _data/control_plane_report.json _data/success_rewriter.json _data/winner_sequel_factory.json _data/automation_health.json _data/ops_guardian.json _data/remake_backlog.json _data/trend_radar.json _data/trends/topic_candidates.json _data/trends/trend_signals.jsonl _data/trends/freshness_report.json _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json _data/category_recovery.json _data/category_recovery_rewriter.json _data/fact_ledger.json _data/format_memory.json _data/fan_growth.json _data/audience_memory.json _data/early_performance.json _data/early_warning.json _data/winner_patterns.json _data/data_quality_report.json _data/agency_gate.json _data/post24_review.json _data/sequence_plan.json _data/publish_schedule.json _data/next_shorts.json _data/queue_prune_report.json _data/queue_audit.json _data/dry_run_publish.json _data/reject_report.json _data/repair_queue.jsonl _data/rejected_queue.jsonl; do
+          for path in "${state_paths[@]}"; do
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
@@ -141,11 +205,33 @@ jobs:
             if git push origin HEAD; then
               exit 0
             fi
-            echo "Push rejected on attempt ${attempt}; rebasing."
-            if ! git pull --rebase --autostash origin main; then
-              git rebase --abort 2>/dev/null || true
-              [ "$attempt" = "3" ] && exit 1
+            echo "Push rejected on attempt ${attempt}; replaying queue state on latest main."
+            retry_dir="$(mktemp -d)"
+            for path in "${state_paths[@]}"; do
+              if [ -e "$path" ]; then
+                mkdir -p "$retry_dir/$(dirname "$path")"
+                cp "$path" "$retry_dir/$path"
+              fi
+            done
+            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+              mkdir -p "$retry_dir/$(dirname "$path")"
+              cp "$path" "$retry_dir/$path"
+            done
+            git fetch origin main
+            git reset --hard origin/main
+            cp -R "$retry_dir"/. .
+            rm -rf "$retry_dir"
+            git add _data/stories_queue.json
+            for path in "${state_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
+            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
+            if git diff --cached --quiet; then
+              echo "Latest main already contains queue state."
+              exit 0
             fi
+            PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories', []) if not s.get('consumed')))")
+            git commit -m "queue refresh: ${PENDING} pending YouTube Shorts"
             sleep $((attempt * 5))
           done
 

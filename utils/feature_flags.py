@@ -163,7 +163,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "QUOTA_GUARD_MAX_DAILY_RATIO",
-        "0.70",
+        "0.95",
         "operations",
         "Daily budget ratio before guard trips.",
         "Raise ratio or disable.",

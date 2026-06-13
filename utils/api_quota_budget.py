@@ -111,7 +111,7 @@ def should_block_run(
     env = env or os.environ
     mode = str(env.get("QUOTA_GUARD_MODE", "block")).lower()
     enabled = _bool("QUOTA_GUARD_ENABLED", True, env)
-    max_ratio = _float("QUOTA_GUARD_MAX_DAILY_RATIO", 0.7, env)
+    max_ratio = _float("QUOTA_GUARD_MAX_DAILY_RATIO", 0.95, env)
     spent = daily_spend(path)
     projected = spent + int(estimate.get("estimated_units") or 0)
     ratio = projected / max(daily_budget, 1)
