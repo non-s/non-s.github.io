@@ -63,6 +63,20 @@ def test_delayed_github_schedule_event_honors_max_delay():
     assert event_schedule_slot_label(datetime(2026, 6, 12, 9, 39, tzinfo=timezone.utc), schedule, env) == ""
 
 
+def test_hourly_recovery_crons_map_to_top_of_hour_slot():
+    schedule = {"recommended_slots": ["06:00"]}
+
+    for minute in ("20", "40"):
+        env = {
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "GITHUB_EVENT_NAME": "schedule",
+            "PUBLISH_EVENT_SCHEDULE_CRON": f"{minute} * * * *",
+        }
+        delayed = datetime(2026, 6, 12, 6, 55, tzinfo=timezone.utc)
+
+        assert event_schedule_slot_label(delayed, schedule, env) == "06:00"
+
+
 def test_legacy_mode_allows_current_behavior():
     env = {"ADAPTIVE_CADENCE_ENABLED": "0"}
     schedule = {"recommended_slots": ["05:23"]}

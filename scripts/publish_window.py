@@ -6,7 +6,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,8 +25,10 @@ from utils.publish_schedule import (  # noqa: E402
     slot_label,
 )
 from utils.publish_score import score_story  # noqa: E402
+from scripts.upload_intent import duplicate_slot_uploaded  # noqa: E402
 
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
+UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
 
 
 def _read_json(path: Path, default):
@@ -99,6 +101,20 @@ def _append_decision(path: Path, decision: dict) -> None:
         fh.write(json.dumps(decision, sort_keys=True, ensure_ascii=False) + "\n")
 
 
+def _slot_key(current: datetime, label: str) -> str:
+    try:
+        hour, minute = [int(part) for part in str(label).split(":", 1)]
+    except Exception:
+        hour, minute = current.hour, current.minute
+    start = datetime.combine(current.date(), datetime.min.time(), tzinfo=timezone.utc).replace(
+        hour=hour,
+        minute=minute,
+    )
+    if start > current:
+        start -= timedelta(days=1)
+    return start.strftime("%Y-%m-%dT%H:%MZ")
+
+
 def evaluate_publish_window(
     *,
     root: Path = ROOT,
@@ -126,10 +142,12 @@ def evaluate_publish_window(
     current_label = slot_label(current)
     active_label = active_slot_label(current, schedule, env) if flags["adaptive_cadence_enabled"] else current_label
     label = active_label or current_label
+    slot_key = _slot_key(current, label)
     reasons: list[str] = []
     decision = "publish"
     top_story: dict | None = None
     top_score: dict = {}
+    uploaded_for_slot: dict = {}
 
     dispatch_reason = str(env.get("WORKFLOW_DISPATCH_REASON") or "").strip().lower()
     is_watchdog_recovery = dispatch_reason.startswith("watchdog recovery")
@@ -147,22 +165,27 @@ def evaluate_publish_window(
     else:
         if active_label and active_label != current_label:
             reasons.append("delayed_slot_recovery")
-        stories = _eligible_stories(_read_json(queue_file, {}))
-        if not stories:
-            decision = "skip_no_eligible_story"
-            reasons.append("no_eligible_story")
-        else:
-            top_story, top_score = _best_candidate(stories)
-            publish_score = float(top_score.get("score") or 0)
-            opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
-            quality_reasons: list[str] = []
-            if publish_score < flags["min_slot_publish_score"]:
-                quality_reasons.append("publish_score_below_threshold")
-            if opportunity_score < flags["min_queue_opportunity_score"]:
-                quality_reasons.append("opportunity_score_below_threshold")
-            if quality_reasons:
-                decision = "skip_low_queue_quality"
-                reasons.extend(quality_reasons)
+        uploaded_for_slot = duplicate_slot_uploaded(slot_key, root / UPLOAD_INTENTS_FILE)
+        if uploaded_for_slot:
+            decision = "skip_slot_already_uploaded"
+            reasons.append("slot_already_uploaded")
+        if decision == "publish":
+            stories = _eligible_stories(_read_json(queue_file, {}))
+            if not stories:
+                decision = "skip_no_eligible_story"
+                reasons.append("no_eligible_story")
+            else:
+                top_story, top_score = _best_candidate(stories)
+                publish_score = float(top_score.get("score") or 0)
+                opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
+                quality_reasons: list[str] = []
+                if publish_score < flags["min_slot_publish_score"]:
+                    quality_reasons.append("publish_score_below_threshold")
+                if opportunity_score < flags["min_queue_opportunity_score"]:
+                    quality_reasons.append("opportunity_score_below_threshold")
+                if quality_reasons:
+                    decision = "skip_low_queue_quality"
+                    reasons.extend(quality_reasons)
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
         stories = _eligible_stories(_read_json(queue_file, {}))
@@ -174,11 +197,13 @@ def evaluate_publish_window(
     payload = {
         "timestamp_utc": current.isoformat(),
         "slot_label": label,
+        "slot_key": slot_key,
         "decision": decision,
         "top_candidate_id": _candidate_id(top_story),
         "publish_score": publish_score,
         "opportunity_score": opportunity_score,
         "reasons": reasons,
+        "slot_uploaded_video_id": str(uploaded_for_slot.get("video_id") or ""),
         "feature_flags": flags,
         "recommended_slots": schedule.get("recommended_slots") or [],
         "next_slot": next_slot(current, schedule, env),

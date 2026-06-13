@@ -5,7 +5,7 @@ name: "YouTube publishing watchdog"
 # recovery run after a grace window when GitHub drops the original cron.
 on:
   schedule:
-    - cron: "43 * * * *"
+    - cron: "50 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -27,7 +27,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPOSITORY: ${{ github.repository }}
           TARGET_WORKFLOW: "youtube-bot.yml"
-          GRACE_MINUTES: "45"
+          GRACE_MINUTES: "35"
           SLOT_TOLERANCE_MINUTES: "10"
         run: |
           python - <<'PY'

@@ -19,6 +19,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
     assert 'if [ "${pending}" -lt "${target}" ]; then' in youtube_workflow
+    assert 'cron: "20 * * * *"' in youtube_workflow
+    assert 'cron: "40 * * * *"' in youtube_workflow
+    assert 'GRACE_MINUTES: "35"' in (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert "apply_topic_freshness.py" in fetch_workflow
     assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow

@@ -49,6 +49,8 @@ def _parse_slot(slot: str) -> time:
 
 
 def _parse_cron_values(field: str, *, minimum: int, maximum: int) -> list[int]:
+    if str(field or "").strip() == "*":
+        return list(range(minimum, maximum + 1))
     values: list[int] = []
     for part in str(field or "").split(","):
         part = part.strip()
@@ -78,6 +80,8 @@ def _target_slot_from_scheduled_time(scheduled: datetime) -> str:
     canonical_minutes = {int(str(slot).split(":", 1)[1]) for slot in CANONICAL_SLOTS_UTC}
     if scheduled.minute in canonical_minutes:
         target = scheduled
+    elif scheduled.minute in {20, 40}:
+        target = scheduled.replace(minute=0)
     elif scheduled.minute == 43:
         # Legacy recovery cron: :43 recovered the previous :23 slot.
         target = scheduled - timedelta(minutes=80)
