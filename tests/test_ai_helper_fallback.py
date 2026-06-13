@@ -15,10 +15,10 @@ from utils import ai_helper
 
 
 class _FakeHTTPError(requests.exceptions.HTTPError):
-    def __init__(self, status: int):
+    def __init__(self, status: int, headers: dict | None = None):
         resp = MagicMock()
         resp.status_code = status
-        resp.headers = {}
+        resp.headers = headers or {}
         super().__init__(response=resp)
         self.response = resp
 
@@ -169,6 +169,25 @@ def test_skips_provider_without_key(monkeypatch, fast_sleep):
     assert out == "ok-gemini"
     ce.assert_not_called()
     ge.assert_called()
+
+
+def test_provider_429_retry_after_is_capped(monkeypatch):
+    monkeypatch.setenv("GROQ_API_KEY", "g")
+    monkeypatch.setattr(ai_helper, "_PROVIDER_429_MAX_WAIT_SECONDS", 8)
+    waits: list[float] = []
+    monkeypatch.setattr(ai_helper, "sleep", lambda seconds: waits.append(seconds))
+    monkeypatch.setattr(ai_helper.time, "sleep", lambda *_: None)
+
+    with patch.object(
+        ai_helper,
+        "_call_groq",
+        side_effect=_FakeHTTPError(429, headers={"Retry-After": "3520"}),
+    ) as groq:
+        out = ai_helper.ai_text("x")
+
+    assert out == ""
+    assert groq.call_count == 2
+    assert waits == [8]
 
 
 def test_json_task_prefers_gemini_when_configured(monkeypatch, fast_sleep):

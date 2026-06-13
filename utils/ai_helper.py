@@ -87,6 +87,7 @@ _last_call_ts = 0.0
 # Earlier queue-refresh runs hit the 25-min workflow timeout exactly
 # because we burned the whole budget on 36 consecutive Mistral 429s.
 _MISTRAL_429_CIRCUIT_THRESHOLD = int(os.environ.get("MISTRAL_429_CIRCUIT_THRESHOLD", "3"))
+_PROVIDER_429_MAX_WAIT_SECONDS = float(os.environ.get("AI_PROVIDER_429_MAX_WAIT_SECONDS", "8"))
 _mistral_429_streak = 0
 _mistral_circuit_open = False
 
@@ -99,6 +100,13 @@ def _reset_mistral_circuit_breaker() -> None:
     global _mistral_429_streak, _mistral_circuit_open
     _mistral_429_streak = 0
     _mistral_circuit_open = False
+
+
+def _bounded_429_wait(retry_after: int | float, fallback: int | float) -> float:
+    wait = max(float(retry_after or 0), float(fallback or 0))
+    if _PROVIDER_429_MAX_WAIT_SECONDS <= 0:
+        return 0.0
+    return min(wait, _PROVIDER_429_MAX_WAIT_SECONDS)
 
 
 _SPAM_PATTERNS = re.compile(
@@ -323,7 +331,7 @@ def ai_text(prompt: str, system: str = "", seed: int = 0, timeout: int = 30, jso
                         retry_after = int(float(hdr))
                     except (TypeError, ValueError):
                         retry_after = 0
-                    wait = max(retry_after, 5 * (attempt + 1))
+                    wait = _bounded_429_wait(retry_after, 5 * (attempt + 1))
                     if attempt < 1:
                         # Single retry is enough — a quota-gone 429 stays
                         # 429 no matter how long we wait. Burst 429s
@@ -510,7 +518,7 @@ def ai_text(
                         retry_after = int(float(hdr))
                     except (TypeError, ValueError):
                         retry_after = 0
-                    wait = max(retry_after, 5)
+                    wait = _bounded_429_wait(retry_after, 5)
                     log.warning("%s 429 - retry in %ss (attempt %d/2)", label, wait, attempt + 1)
                     sleep(wait)
                     continue
