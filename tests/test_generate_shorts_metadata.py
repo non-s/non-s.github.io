@@ -197,6 +197,20 @@ def test_candidates_are_distributed_across_categories():
     ]
 
 
+def test_mark_rejected_consumes_blocked_candidate():
+    from generate_shorts import mark_rejected
+
+    queue = {"stories": [{"id": "blocked", "title": "Blocked story"}]}
+
+    mark_rejected(queue, "blocked", ["cooldown_subject", "low_editorial_score"], stage="editor_in_chief")
+
+    story = queue["stories"][0]
+    assert story["consumed"] is True
+    assert story["rejection_stage"] == "editor_in_chief"
+    assert story["rejection_reasons"] == ["cooldown_subject", "low_editorial_score"]
+    assert story["rejected_at"]
+
+
 def test_queue_adapter_preserves_original_pexels_clip():
     from generate_shorts import _queue_to_story
 

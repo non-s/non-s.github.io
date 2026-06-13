@@ -18,6 +18,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "skip_quota_guard" in youtube_workflow
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
+    assert "PUBLISH_BACKFILL_QUEUE_TARGET || '5'" in youtube_workflow
     assert 'if [ "${pending}" -lt "${target}" ]; then' in youtube_workflow
     assert 'cron: "20 * * * *"' in youtube_workflow
     assert 'cron: "40 * * * *"' in youtube_workflow

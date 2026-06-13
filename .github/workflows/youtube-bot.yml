@@ -141,7 +141,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '1' }}
+          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '5' }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}

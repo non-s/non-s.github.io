@@ -1716,6 +1716,23 @@ def mark_consumed(queue: dict, queue_id: str) -> None:
     log.warning(f"mark_consumed: story id {queue_id} not found in queue (lost?)")
 
 
+def mark_rejected(queue: dict, queue_id: str, reasons: list[str], *, stage: str) -> None:
+    """Mutate queue: flag a blocked story as consumed with rejection metadata."""
+    if not queue_id:
+        log.warning("mark_rejected called with empty queue_id - skipping")
+        return
+    stamp = datetime.now(timezone.utc).isoformat()
+    for story in queue.get("stories", []):
+        if story.get("id") == queue_id:
+            story["consumed"] = True
+            story["consumed_at"] = stamp
+            story["rejected_at"] = stamp
+            story["rejection_stage"] = stage
+            story["rejection_reasons"] = list(dict.fromkeys(str(reason) for reason in reasons))
+            return
+    log.warning("mark_rejected: story id %s not found in queue", queue_id)
+
+
 def commit_consumed(queue_id: str) -> None:
     """
     Atomic read-mark-write: under the cross-process lock, reload the
@@ -1727,6 +1744,14 @@ def commit_consumed(queue_id: str) -> None:
     with _queue_file_lock():
         disk_queue = _load_queue()
         mark_consumed(disk_queue, queue_id)
+        _save_queue(disk_queue)
+
+
+def commit_rejected(queue_id: str, reasons: list[str], *, stage: str) -> None:
+    """Atomic read-mark-write for candidates blocked during generation."""
+    with _queue_file_lock():
+        disk_queue = _load_queue()
+        mark_rejected(disk_queue, queue_id, reasons, stage=stage)
         _save_queue(disk_queue)
 
 
@@ -1822,6 +1847,8 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
             editorial.subject,
             "; ".join(editorial.reasons),
         )
+        record_rejection(story, editorial.reasons, stage="editor_in_chief")
+        commit_rejected(story.get("_queue_id", ""), editorial.reasons, stage="editor_in_chief")
         return None
 
     # ── Pre-flight quality gate ──────────────────────────────────
