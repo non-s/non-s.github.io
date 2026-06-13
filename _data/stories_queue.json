@@ -2396,24 +2396,24 @@
         "views": 919
       },
       "category_recovery_rewrite": {
-        "at": "2026-06-13T07:09:37.435958+00:00",
+        "at": "2026-06-13T07:10:25.406246+00:00",
         "category": "cats",
         "angle": "ears",
         "variant": "before the obvious moment",
-        "source_signal": "rely on first movement",
+        "source_signal": "read moment from one",
         "before": {
-          "title": "Cats rely on the first movement for a reason",
-          "format": "cute_behavior",
+          "title": "Cats read the moment from one ear shift",
+          "format": "animal_memory",
           "retention": {
-            "score": 80,
+            "score": 86,
             "growth_retention": {
-              "score": 80,
+              "score": 84,
               "signals": {
                 "hook_score": 82,
                 "curiosity_score": 87,
-                "visual_score": 58,
-                "replay_score": 92,
-                "completion_prediction": 77
+                "visual_score": 66,
+                "replay_score": 100,
+                "completion_prediction": 84
               },
               "verdict": "ready",
               "reasons": [],
@@ -2430,21 +2430,19 @@
               },
               "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
             },
-            "verdict": "tighten",
+            "verdict": "ready",
             "issues": [
-              "missing_payoff_verb",
-              "hook_repeats_title"
+              "missing_payoff_verb"
             ],
             "fixes": [
-              "Add an action verb such as erupt, form, escape, recover, use, or change.",
-              "Let the hook advance the title instead of repeating it."
+              "Add an action verb such as erupt, form, escape, recover, use, or change."
             ],
             "strengths": [
               "short_hook",
               "shorts_length",
               "clear_explanation"
             ],
-            "suggested_hook": "Cats rely on the first movement before the payoff."
+            "suggested_hook": "Cats reveal one visible signal"
           }
         },
         "after": {
@@ -2452,16 +2450,18 @@
           "retention": {
             "score": 78,
             "growth_retention": {
-              "score": 77,
+              "score": 76,
               "signals": {
                 "hook_score": 82,
-                "curiosity_score": 79,
-                "visual_score": 66,
+                "curiosity_score": 71,
+                "visual_score": 74,
                 "replay_score": 82,
-                "completion_prediction": 76
+                "completion_prediction": 68
               },
               "verdict": "rewrite",
-              "reasons": [],
+              "reasons": [
+                "completion_risk"
+              ],
               "confidence": {
                 "confidence_score": 0.113,
                 "sample_size": 1,
@@ -2494,11 +2494,11 @@
         "rules": []
       },
       "autonomy": {
-        "priority": 69.3,
+        "priority": 108.3,
         "lane": "sequence",
         "hypothesis_id": "H6_SEQUENCE_WINNERS",
-        "publish_score": 44.3,
-        "state": "reject",
+        "publish_score": 83.3,
+        "state": "publish_ready",
         "packaging_lab": {
           "title_variants": [
             "Why cat ears give away the real mood before the obvious moment",
@@ -2513,17 +2513,20 @@
           "hook_variants": [
             "Watch the first move; the payoff lands seconds later",
             "Why cat ears give away the real mood before the obvious moment",
-            "Watch the first movement again. Tomorrow: another animal signal. What part of this feels most impossible"
+            "Watch the ears again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
-          "pinned_comment": "Watch the first movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "pinned_comment": "Watch the ears again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "local_rewrite": {
         "applied": true,
         "reasons": [
-          "generic_first_movement_reason"
+          "no_action_promise",
+          "payoff_not_explicit",
+          "missing_action_word",
+          "publish_score_rewrite"
         ],
         "method": "deterministic_rescue"
       },
@@ -2545,9 +2548,9 @@
         "risks": [],
         "title_options": [
           "Cats read the moment from one ear shift",
-          "Cats use ear shift before they follow",
+          "Cats use ear shift before they move",
           "This ear shift gives cats away",
-          "Why cats follow after one ear shift",
+          "Why cats move after one ear shift",
           "Cats reveal the answer with ear shift",
           "The ear shift that changes the moment",
           "Cats make one ear shift matter",
@@ -2559,7 +2562,7 @@
           "CATS EAR POSITION",
           "EAR SHIFT",
           "WATCH EAR SHIFT",
-          "CATS FOLLOW",
+          "CATS MOVE",
           "EAR SHIFT MATTERS",
           "EAR SHIFT PAYOFF",
           "EAR SHIFT FIRST",
@@ -2638,7 +2641,7 @@
           {
             "score": 65,
             "title": "Cats read the moment from one ear shift",
-            "thumbnail_text": "CATS FOLLOW",
+            "thumbnail_text": "CATS MOVE",
             "hook": "Cats reveal one visible signal"
           }
         ],
@@ -2988,7 +2991,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T07:09:45.107852+00:00",
+        "checked_at": "2026-06-13T07:10:45.939220+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -3006,7 +3009,7 @@
         "packaging_lab": {
           "title_variants": [
             "Birds read the moment from one wing angle",
-            "Birds use wing angle before they move",
+            "Birds use wing angle before they signal",
             "This wing angle gives birds away"
           ],
           "thumbnail_variants": [
@@ -3022,7 +3025,7 @@
           "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "birds",
@@ -3471,7 +3474,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T07:09:45.108418+00:00",
+        "checked_at": "2026-06-13T07:10:45.939794+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -3656,7 +3659,7 @@
         "packaging_lab": {
           "title_variants": [
             "Goats read the moment from one hoof movement",
-            "Goats use movement before they move",
+            "Goats use movement before they signal",
             "This movement gives goats away"
           ],
           "thumbnail_variants": [
@@ -3672,7 +3675,7 @@
           "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "series": "Rare Earth",
       "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
@@ -4144,7 +4147,7 @@
       "queue_prune": {
         "score": 88.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T07:09:45.109047+00:00",
+        "checked_at": "2026-06-13T07:10:45.940414+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -4179,7 +4182,7 @@
           "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "insects",
@@ -4627,7 +4630,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T07:09:45.109616+00:00",
+        "checked_at": "2026-06-13T07:10:45.940988+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -4747,7 +4750,7 @@
         "packaging_lab": {
           "title_variants": [
             "Wolves read the moment from one tail lift",
-            "Wolves use tail lift before they move",
+            "Wolves use tail lift before they signal",
             "This tail lift gives wolves away"
           ],
           "thumbnail_variants": [
@@ -4763,7 +4766,7 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "wildlife",
@@ -5210,7 +5213,7 @@
       "queue_prune": {
         "score": 87.5,
         "state": "rewrite",
-        "checked_at": "2026-06-13T07:09:45.110161+00:00",
+        "checked_at": "2026-06-13T07:10:45.941565+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -5350,7 +5353,7 @@
           "pinned_comment": "Mushrooms is the example. Tomorrow: another animal signal. Is this closer to a network, a warning system, or something stranger?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "fungi",
@@ -5787,7 +5790,7 @@
       "queue_prune": {
         "score": 67.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T07:09:45.111100+00:00",
+        "checked_at": "2026-06-13T07:10:45.942515+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -5999,7 +6002,7 @@
           "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "series": "Body Clues",
       "cta_prompt": "Want to uncover what is still hidden in the ocean?",
@@ -6472,7 +6475,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T07:09:45.111706+00:00",
+        "checked_at": "2026-06-13T07:10:45.943120+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -6490,7 +6493,7 @@
         "packaging_lab": {
           "title_variants": [
             "Dogs read the moment from one tail lift",
-            "Dogs use tail lift before they move",
+            "Dogs use tail lift before they signal",
             "This tail lift gives dogs away"
           ],
           "thumbnail_variants": [
@@ -6506,7 +6509,7 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "dogs",
@@ -6953,7 +6956,7 @@
       "queue_prune": {
         "score": 82.2,
         "state": "rewrite",
-        "checked_at": "2026-06-13T07:09:45.112218+00:00",
+        "checked_at": "2026-06-13T07:10:45.943652+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -7095,7 +7098,7 @@
           "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T07:09:41.962043+00:00"
+        "updated_at": "2026-06-13T07:10:29.845977+00:00"
       },
       "breaking": false,
       "category": "plants",
@@ -7529,7 +7532,7 @@
       "queue_prune": {
         "score": 60.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T07:09:45.112837+00:00",
+        "checked_at": "2026-06-13T07:10:45.944261+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -7636,5 +7639,5 @@
     }
   ],
   "target_pending": 12,
-  "updated_at": "2026-06-13T07:09:45.112843+00:00"
+  "updated_at": "2026-06-13T07:10:45.944267+00:00"
 }
