@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T20:51:13.013848+00:00",
+  "generated_at": "2026-06-13T22:10:28.745143+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
@@ -684,11 +684,11 @@
         "id": "5693f233c862d5b4",
         "title": "Cats read the moment from one paw position",
         "category": "cats",
-        "story_format": "animal_intelligence",
+        "story_format": "cute_behavior",
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 90.2,
+          "score": 85.9,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
@@ -744,9 +744,11 @@
             "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
           "weak_content": {
-            "risk": 0,
+            "risk": 14,
             "state": "clear",
-            "reasons": [],
+            "reasons": [
+              "weak_hook_pattern"
+            ],
             "confidence": {
               "confidence_score": 0.65,
               "sample_size": 6,
@@ -792,19 +794,19 @@
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.08,
-            "sample_size": 5,
-            "minimum_sample_size": 25,
+            "confidence_score": 0.193,
+            "sample_size": 16,
+            "minimum_sample_size": 30,
             "data_quality": "estimated",
-            "data_quality_score": 0.425,
+            "data_quality_score": 0.41,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.31,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
+            "bootstrap_multiplier": 0.395,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
           },
           "category": "cats",
-          "story_format": "animal_intelligence",
-          "hook_score": 74,
+          "story_format": "cute_behavior",
+          "hook_score": 86,
           "title_score": 90,
           "phrase_risk": {
             "penalty": 0,
@@ -816,11 +818,11 @@
             "issues": []
           },
           "objective_gate": {
-            "penalty": 10.0,
+            "penalty": 0.0,
             "reasons": [
-              "low_decision_confidence"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.08,
+            "confidence_score": 0.193,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -829,7 +831,7 @@
             "mechanism_cluster": "cue_timing_read"
           }
         },
-        "autonomy_priority": 112.2,
+        "autonomy_priority": 113.32,
         "packaging_lab": {
           "title_variants": [
             "Cats read the moment from one paw position",
@@ -842,7 +844,7 @@
             "CATS SIGNAL"
           ],
           "hook_variants": [
-            "Start with the first move; it explains the next move",
+            "Cats reveal one visible signal",
             "Cats read the moment from one paw position",
             "Watch the paw again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
