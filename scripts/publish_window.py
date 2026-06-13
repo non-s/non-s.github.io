@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.upload_intent import duplicate_slot_uploaded  # noqa: E402
 from utils.publish_priority import publish_priority_key  # noqa: E402
 from utils.publish_schedule import (  # noqa: E402
     DECISIONS_FILE,
@@ -25,7 +26,6 @@ from utils.publish_schedule import (  # noqa: E402
     slot_label,
 )
 from utils.publish_score import score_story  # noqa: E402
-from scripts.upload_intent import duplicate_slot_uploaded  # noqa: E402
 
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
