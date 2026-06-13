@@ -1,21 +1,25 @@
 {
-  "generated_at": "2026-06-13T11:38:50.809913+00:00",
+  "generated_at": "2026-06-13T12:08:30.761195+00:00",
   "state": "fully_autonomous",
-  "autonomy_score": 80,
-  "operating_mode": "learn",
+  "autonomy_score": 90,
+  "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "public_video_statistics",
-    "shorts_tracked": 7,
+    "shorts_tracked": 8,
     "avg_view_pct": 0.0,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
       "name": "cats",
-      "score": 554.854
+      "score": 555.211
     },
     {
-      "name": "birds",
+      "name": "forests",
+      "score": 200.0
+    },
+    {
+      "name": "insects",
       "score": 200.0
     },
     {
@@ -24,17 +28,13 @@
     },
     {
       "name": "ocean",
-      "score": 136.448
-    },
-    {
-      "name": "insects",
-      "score": 112.1
+      "score": 135.552
     }
   ],
   "format_priorities": [
     {
       "name": "cute_behavior",
-      "score": 206.149
+      "score": 200.04
     }
   ],
   "winning_terms": [
@@ -43,16 +43,19 @@
     "birds",
     "butterflies",
     "cats",
+    "forests",
     "from",
     "head",
+    "leaves",
     "moment",
     "movement",
-    "position",
-    "read",
-    "sharks"
+    "position"
   ],
   "experiment_bank": {
-    "winners": {},
+    "winners": {
+      "thumbnail_style": "frame_first_side_caption",
+      "cta_style": "subscribe_channel"
+    },
     "gaps": [
       {
         "axis": "hook_style",
@@ -87,19 +90,15 @@
       },
       {
         "axis": "thumbnail_style",
-        "winner": "",
-        "needs_samples": [
-          "frame_first_side_caption"
-        ],
-        "state": "collecting_signal"
+        "winner": "frame_first_side_caption",
+        "needs_samples": [],
+        "state": "winner_locked"
       },
       {
         "axis": "cta_style",
-        "winner": "",
-        "needs_samples": [
-          "subscribe_channel"
-        ],
-        "state": "collecting_signal"
+        "winner": "subscribe_channel",
+        "needs_samples": [],
+        "state": "winner_locked"
       },
       {
         "axis": "opening_visual_pattern",
@@ -175,16 +174,16 @@
       {
         "id": "H1_DOUBLE_DOWN_CATEGORY",
         "lane": "proven_category",
-        "statement": "Next Shorts in cats, birds should outperform cold topics.",
+        "statement": "Next Shorts in cats, forests should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 554.854
+        "target": 555.211
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "cute_behavior is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 206.149
+        "target": 200.04
       },
       {
         "id": "H3_REWRITE_HOOKS",
@@ -203,7 +202,7 @@
       {
         "id": "H5_RECOVER_OR_PAUSE",
         "lane": "recovery",
-        "statement": "ocean, insects should only run with stronger hooks or remakes.",
+        "statement": "wildlife, ocean should only run with stronger hooks or remakes.",
         "success_metric": "view_pct",
         "target": 55
       },
@@ -265,8 +264,8 @@
       "Answer this viewer question: Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
       "Answer this viewer question: Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
       "Answer this viewer question: Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
-      "Answer this viewer question: Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-      "Answer this viewer question: Watch the paw again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?"
+      "Answer this viewer question: Watch the leaves again. Tomorrow: another animal signal. Do forests feel more like places, systems, or living machines?",
+      "Answer this viewer question: Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?"
     ]
   },
   "visual_policy": {
@@ -275,31 +274,39 @@
       {
         "profile": "close_subject|usable_light|high_contrast",
         "n": 2,
-        "mean_growth_score": 379.318,
+        "mean_growth_score": 378.74,
         "mean_retention": 0.0,
-        "mean_views": 495.5,
+        "mean_views": 499.5,
         "mean_visual_ctr_score": 98.5
       },
       {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 3,
-        "mean_growth_score": 138.43,
+        "mean_growth_score": 156.81,
         "mean_retention": 0.0,
-        "mean_views": 1.333,
+        "mean_views": 1.0,
         "mean_visual_ctr_score": 100.0
       },
       {
-        "profile": "close_subject|feed_bright|medium_contrast",
+        "profile": "subject_rich|usable_light|medium_contrast",
         "n": 1,
         "mean_growth_score": 200.0,
         "mean_retention": 0.0,
         "mean_views": 0.0,
+        "mean_visual_ctr_score": 88.0
+      },
+      {
+        "profile": "close_subject|feed_bright|medium_contrast",
+        "n": 1,
+        "mean_growth_score": 103.58,
+        "mean_retention": 0.0,
+        "mean_views": 2.0,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "close_subject|usable_light|medium_contrast",
         "n": 1,
-        "mean_growth_score": 69.115,
+        "mean_growth_score": 68.833,
         "mean_retention": 0.0,
         "mean_views": 3.0,
         "mean_visual_ctr_score": 100.0
@@ -308,21 +315,360 @@
     "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
   },
   "production_policy": {
-    "exploit_percent": 40,
+    "exploit_percent": 55,
     "sequence_percent": 25,
     "experiment_percent": 15,
     "recovery_percent": 10,
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 18,
-    "approved_candidates": 18,
+    "pending": 17,
+    "approved_candidates": 17,
     "lane_counts": {
       "fresh_experiment": 8,
       "proven_category": 7,
-      "recovery": 3
+      "recovery": 2
     },
     "top_candidates": [
+      {
+        "id": "9ff926cda4c1ee10",
+        "title": "Bees read the moment from one wing beat",
+        "category": "insects",
+        "story_format": "cute_behavior",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 92.0,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 74,
+            "signals": {
+              "viral_potential": 80,
+              "visual_potential": 79,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 69
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 84,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 14,
+            "state": "clear",
+            "reasons": [
+              "weak_hook_pattern"
+            ],
+            "confidence": {
+              "confidence_score": 0.39,
+              "sample_size": 3,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.12,
+            "sample_size": 6,
+            "minimum_sample_size": 20,
+            "data_quality": "inferred",
+            "data_quality_score": 0.575,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.34,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+          },
+          "category": "insects",
+          "story_format": "cute_behavior",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 10.0,
+            "reasons": [
+              "low_decision_confidence"
+            ],
+            "confidence_score": 0.12,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
+          }
+        },
+        "autonomy_priority": 114.32,
+        "packaging_lab": {
+          "title_variants": [
+            "Bees read the moment from one wing beat",
+            "Bees signal through wing flash",
+            "Bees use wing flash before they signal"
+          ],
+          "thumbnail_variants": [
+            "BEES WING MOVEMENT",
+            "WING FLASH",
+            "WATCH WING FLASH"
+          ],
+          "hook_variants": [
+            "Bees reveal one visible signal",
+            "Bees read the moment from one wing beat",
+            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
+          ],
+          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "b0960cfb12495b2b",
+        "title": "Bees rely on wing movement to survive",
+        "category": "insects",
+        "story_format": "survival_trick",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 76,
+            "signals": {
+              "viral_potential": 93,
+              "visual_potential": 79,
+              "replay_potential": 100,
+              "comment_potential": 46,
+              "educational_potential": 73,
+              "emotional_potential": 53,
+              "novelty": 69
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 84,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.39,
+              "sample_size": 3,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 99,
+            "state": "strong",
+            "subscriber_probability": 0.141,
+            "return_probability": 0.297,
+            "comment_probability": 0.253,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "hook_invites_return",
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "insects",
+          "story_format": "survival_trick",
+          "hook_score": 74,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 10.0,
+            "reasons": [
+              "low_decision_confidence"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.35,
+            "template_cluster": "rely_to_survive",
+            "mechanism_cluster": "survival_cue"
+          }
+        },
+        "autonomy_priority": 114.32,
+        "packaging_lab": {
+          "title_variants": [
+            "Bees rely on wing movement to survive",
+            "Bees use wing flash before they rely",
+            "This wing flash gives bees away"
+          ],
+          "thumbnail_variants": [
+            "BEES WING MOVEMENT",
+            "WING FLASH",
+            "WATCH WING FLASH"
+          ],
+          "hook_variants": [
+            "Watch the wing flash; the payoff lands seconds later",
+            "Bees rely on wing movement to survive",
+            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
+          ],
+          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
       {
         "id": "6f81c1e9406e27db",
         "title": "Cats read the moment from one ear shift",
@@ -393,15 +739,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -496,175 +842,6 @@
         }
       },
       {
-        "id": "41bb91e14c9cd4f6",
-        "title": "Forests read the moment from one leaves",
-        "category": "forests",
-        "story_format": "cute_behavior",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 94.3,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 73,
-            "signals": {
-              "viral_potential": 80,
-              "visual_potential": 69,
-              "replay_potential": 100,
-              "comment_potential": 54,
-              "educational_potential": 79,
-              "emotional_potential": 44,
-              "novelty": 69
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 82,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 58,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 14,
-            "state": "clear",
-            "reasons": [
-              "weak_hook_pattern"
-            ],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.12,
-            "sample_size": 6,
-            "minimum_sample_size": 20,
-            "data_quality": "inferred",
-            "data_quality_score": 0.575,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.34,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
-          },
-          "category": "forests",
-          "story_format": "cute_behavior",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 10.0,
-            "reasons": [
-              "low_decision_confidence"
-            ],
-            "confidence_score": 0.12,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 112.3,
-        "packaging_lab": {
-          "title_variants": [
-            "Forests read the moment from one leaves",
-            "Forests signal through canopy shift",
-            "Forests use canopy shift before they signal"
-          ],
-          "thumbnail_variants": [
-            "FORESTS LEAVES",
-            "CANOPY SHIFT",
-            "WATCH CANOPY SHIFT"
-          ],
-          "hook_variants": [
-            "Forests reveal one visible signal",
-            "Forests read the moment from one leaves",
-            "Watch the leaves again. Tomorrow: another animal signal. Do forests feel more like places, systems, or living "
-          ],
-          "pinned_comment": "Watch the leaves again. Tomorrow: another animal signal. Do forests feel more like places, systems, or living machines?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
         "id": "3a14e88bd4a77538",
         "title": "Earth systems signal through cloud patterns",
         "category": "earth_from_space",
@@ -730,15 +907,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -833,346 +1010,6 @@
         }
       },
       {
-        "id": "18762a35e9b1f385",
-        "title": "Wolves read the moment from one tail lift",
-        "category": "wildlife",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 96.4,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 72,
-            "signals": {
-              "viral_potential": 80,
-              "visual_potential": 69,
-              "replay_potential": 100,
-              "comment_potential": 54,
-              "educational_potential": 73,
-              "emotional_potential": 44,
-              "novelty": 69
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 82,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 58,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 14,
-            "state": "clear",
-            "reasons": [
-              "weak_hook_pattern"
-            ],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.007,
-            "sample_size": 1,
-            "minimum_sample_size": 15,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.255,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-          },
-          "category": "wildlife",
-          "story_format": "body_superpower",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 10.0,
-            "reasons": [
-              "low_decision_confidence"
-            ],
-            "confidence_score": 0.007,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 110.73,
-        "packaging_lab": {
-          "title_variants": [
-            "Wolves read the moment from one tail lift",
-            "Wolves signal through tail lift",
-            "Wolves use tail lift before they signal"
-          ],
-          "thumbnail_variants": [
-            "WOLVES TAIL POSITION",
-            "TAIL LIFT",
-            "WATCH TAIL LIFT"
-          ],
-          "hook_variants": [
-            "Wolves reveal one visible signal",
-            "Wolves read the moment from one tail lift",
-            "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
-          ],
-          "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "9ff926cda4c1ee10",
-        "title": "Bees read the moment from one wing beat",
-        "category": "insects",
-        "story_format": "cute_behavior",
-        "lane": "recovery",
-        "hypothesis_id": "H5_RECOVER_OR_PAUSE",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 70,
-            "signals": {
-              "viral_potential": 75,
-              "visual_potential": 74,
-              "replay_potential": 97,
-              "comment_potential": 49,
-              "educational_potential": 68,
-              "emotional_potential": 39,
-              "novelty": 64
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 84,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 87,
-              "visual_score": 66,
-              "replay_score": 100,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 14,
-            "state": "clear",
-            "reasons": [
-              "weak_hook_pattern"
-            ],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
-              "data_quality": "inferred",
-              "data_quality_score": 0.5,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.193,
-            "sample_size": 10,
-            "minimum_sample_size": 30,
-            "data_quality": "estimated",
-            "data_quality_score": 0.41,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.395,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
-          },
-          "category": "insects",
-          "story_format": "cute_behavior",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.193,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "read_the_moment",
-            "mechanism_cluster": "cue_timing_read"
-          }
-        },
-        "autonomy_priority": 104.42,
-        "packaging_lab": {
-          "title_variants": [
-            "Bees read the moment from one wing beat",
-            "Bees signal through wing flash",
-            "Bees use wing flash before they signal"
-          ],
-          "thumbnail_variants": [
-            "BEES WING MOVEMENT",
-            "WING FLASH",
-            "WATCH WING FLASH"
-          ],
-          "hook_variants": [
-            "Bees reveal one visible signal",
-            "Bees read the moment from one wing beat",
-            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
-          ],
-          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
         "id": "37fc6915b5c2c82e",
         "title": "Mushrooms signal through mycelium network",
         "category": "fungi",
@@ -1238,15 +1075,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1406,15 +1243,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1576,15 +1413,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1746,15 +1583,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1916,15 +1753,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2085,15 +1922,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2257,15 +2094,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2427,15 +2264,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2595,15 +2432,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2764,15 +2601,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2844,7 +2681,7 @@
             "mechanism_cluster": "survival_cue"
           }
         },
-        "autonomy_priority": 96.95,
+        "autonomy_priority": 96.93,
         "packaging_lab": {
           "title_variants": [
             "Sharks rely on fin movement to survive",
@@ -2866,130 +2703,131 @@
         }
       },
       {
-        "id": "b0960cfb12495b2b",
-        "title": "Bees rely on wing movement to survive",
-        "category": "insects",
-        "story_format": "survival_trick",
+        "id": "18762a35e9b1f385",
+        "title": "Wolves read the moment from one tail lift",
+        "category": "wildlife",
+        "story_format": "body_superpower",
         "lane": "recovery",
         "hypothesis_id": "H5_RECOVER_OR_PAUSE",
         "publish_score": {
-          "score": 100,
+          "score": 96.4,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
             "score": 72,
             "signals": {
-              "viral_potential": 88,
-              "visual_potential": 74,
-              "replay_potential": 97,
-              "comment_potential": 41,
-              "educational_potential": 68,
-              "emotional_potential": 48,
-              "novelty": 64
+              "viral_potential": 80,
+              "visual_potential": 69,
+              "replay_potential": 100,
+              "comment_potential": 54,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 69
             },
             "verdict": "produce",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.0,
+              "sample_size": 0,
               "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "retention": {
-            "score": 84,
+            "score": 82,
             "signals": {
               "hook_score": 82,
               "curiosity_score": 87,
-              "visual_score": 66,
+              "visual_score": 58,
               "replay_score": 100,
               "completion_prediction": 84
             },
             "verdict": "ready",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.0,
+              "sample_size": 0,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 14,
+            "state": "clear",
+            "reasons": [
+              "weak_hook_pattern"
+            ],
+            "confidence": {
+              "confidence_score": 0.39,
+              "sample_size": 3,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
           "subscriber_conversion": {
-            "score": 99,
+            "score": 86,
             "state": "strong",
-            "subscriber_probability": 0.141,
-            "return_probability": 0.297,
-            "comment_probability": 0.253,
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
             "robotic_title": {
               "risk": 0,
               "state": "clear",
               "hits": []
             },
             "reasons": [
-              "hook_invites_return",
               "identity_cta",
               "debate_comment",
               "return_prompt",
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
-              "minimum_sample_size": 10,
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
               "data_quality": "inferred",
-              "data_quality_score": 0.5,
+              "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.08,
-            "sample_size": 5,
-            "minimum_sample_size": 25,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.31,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
           },
-          "category": "insects",
-          "story_format": "survival_trick",
-          "hook_score": 74,
-          "title_score": 100,
+          "category": "wildlife",
+          "story_format": "body_superpower",
+          "hook_score": 86,
+          "title_score": 90,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -3004,33 +2842,33 @@
             "reasons": [
               "low_decision_confidence"
             ],
-            "confidence_score": 0.08,
+            "confidence_score": 0.007,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
-            "payoff_time_s": 9.35,
-            "template_cluster": "rely_to_survive",
-            "mechanism_cluster": "survival_cue"
+            "payoff_time_s": 9.9,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
           }
         },
-        "autonomy_priority": 96.42,
+        "autonomy_priority": 94.72,
         "packaging_lab": {
           "title_variants": [
-            "Bees rely on wing movement to survive",
-            "Bees use wing flash before they rely",
-            "This wing flash gives bees away"
+            "Wolves read the moment from one tail lift",
+            "Wolves signal through tail lift",
+            "Wolves use tail lift before they signal"
           ],
           "thumbnail_variants": [
-            "BEES WING MOVEMENT",
-            "WING FLASH",
-            "WATCH WING FLASH"
+            "WOLVES TAIL POSITION",
+            "TAIL LIFT",
+            "WATCH TAIL LIFT"
           ],
           "hook_variants": [
-            "Watch the wing flash; the payoff lands seconds later",
-            "Bees rely on wing movement to survive",
-            "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large"
+            "Wolves reveal one visible signal",
+            "Wolves read the moment from one tail lift",
+            "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
           ],
-          "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3102,15 +2940,15 @@
               "weak_hook_pattern"
             ],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3270,15 +3108,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.39,
+              "sample_size": 3,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "bootstrap_multiplier": 0.542,
+              "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3375,12 +3213,12 @@
     ]
   },
   "decisions": [
-    "Prioritize categories: cats, birds, wildlife.",
+    "Prioritize categories: cats, forests, insects.",
     "Use formats first: cute_behavior.",
-    "Keep weak categories in recovery mode: ocean, insects.",
-    "No statistically locked experiment winners yet; reserve traffic for structured learning.",
-    "Current operating mode: learn."
+    "Keep weak categories in recovery mode: wildlife, ocean.",
+    "Bias production toward experiment winners: thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel.",
+    "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 18,
-  "queue_annotations_changed": 18
+  "queue_annotations_written": 17,
+  "queue_annotations_changed": 17
 }
