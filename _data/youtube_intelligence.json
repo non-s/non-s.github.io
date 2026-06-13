@@ -1,9 +1,182 @@
 {
-  "generated_at": "2026-06-12T22:20:46.863249+00:00",
-  "channel_epoch": "day_zero_hourly_restart_2026-06-12",
-  "uploaded_video_inventory": [],
-  "video_metadata_statistics": {},
+  "generated_at": "2026-06-13T01:31:29.565554+00:00",
+  "window": {
+    "start_date": "2026-05-17",
+    "end_date": "2026-06-13"
+  },
+  "coverage_score": 40,
+  "quota_strategy": [
+    "Batch videos.list in groups of 50.",
+    "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
+    "Run write operations only in publishing workflows; keep intelligence refresh read-only.",
+    "Fail open for unavailable Analytics reports and record the exact missing capability."
+  ],
+  "channel": {
+    "id": "",
+    "title": "",
+    "custom_url": "",
+    "published_at": "",
+    "uploads_playlist": "",
+    "subscriber_count": 0,
+    "view_count": 0,
+    "video_count": 0,
+    "privacy_status": "",
+    "made_for_kids": false,
+    "self_declared_made_for_kids": false
+  },
+  "uploads_inventory": {
+    "uploads_checked": 0,
+    "latest_uploads": []
+  },
   "video_audit": {
+    "videos_checked": 0,
+    "total_views": 0,
+    "total_likes": 0,
+    "total_comments": 0,
+    "private_or_unlisted": 0,
+    "shorts_like": 0,
     "top_public_videos": []
-  }
+  },
+  "capabilities": [
+    {
+      "id": "channel_profile",
+      "api": "youtube.data",
+      "method": "channels.list",
+      "coverage": "implemented",
+      "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
+      "risk": "read_only",
+      "last_run": "attempted"
+    },
+    {
+      "id": "uploaded_video_inventory",
+      "api": "youtube.data",
+      "method": "playlistItems.list",
+      "coverage": "implemented",
+      "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
+      "risk": "read_only",
+      "last_run": "attempted"
+    },
+    {
+      "id": "video_metadata_statistics",
+      "api": "youtube.data",
+      "method": "videos.list",
+      "coverage": "implemented",
+      "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
+      "risk": "read_only",
+      "last_run": "attempted"
+    },
+    {
+      "id": "comment_threads",
+      "api": "youtube.data",
+      "method": "commentThreads.list",
+      "coverage": "implemented_elsewhere",
+      "use": "Audience questions, requested animals, sentiment and sequel prompts.",
+      "risk": "read_only"
+    },
+    {
+      "id": "video_upload",
+      "api": "youtube.data",
+      "method": "videos.insert",
+      "coverage": "implemented_elsewhere",
+      "use": "Publish generated Shorts.",
+      "risk": "write_high_quota"
+    },
+    {
+      "id": "thumbnail_upload",
+      "api": "youtube.data",
+      "method": "thumbnails.set",
+      "coverage": "implemented_elsewhere",
+      "use": "Upload custom thumbnail when YouTube permits it for the video type/account.",
+      "risk": "write_medium_quota"
+    },
+    {
+      "id": "playlist_management",
+      "api": "youtube.data",
+      "method": "playlists.list,playlistItems.insert",
+      "coverage": "planned_manual_gate",
+      "use": "Series packaging after winners are proven.",
+      "risk": "write_requires_review"
+    },
+    {
+      "id": "comment_replies_moderation",
+      "api": "youtube.data",
+      "method": "comments.insert,comments.setModerationStatus,comments.delete",
+      "coverage": "blocked_by_human_review",
+      "use": "Reply/moderate comments only after explicit operator approval.",
+      "risk": "write_sensitive"
+    },
+    {
+      "id": "channel_branding_update",
+      "api": "youtube.data",
+      "method": "channels.update",
+      "coverage": "blocked_by_human_review",
+      "use": "Branding changes are too sensitive for unattended automation.",
+      "risk": "write_sensitive"
+    }
+  ],
+  "analytics_reports": [
+    {
+      "id": "video_core",
+      "dimensions": "video",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
+      "sort": "-views",
+      "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    },
+    {
+      "id": "daily_channel",
+      "dimensions": "day",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "sort": "day",
+      "use": "Daily pacing and anomaly detection.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    },
+    {
+      "id": "country",
+      "dimensions": "country",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "sort": "-views",
+      "use": "Geo demand and publish timing hints.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    },
+    {
+      "id": "traffic_source",
+      "dimensions": "insightTrafficSourceType",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    },
+    {
+      "id": "device_type",
+      "dimensions": "deviceType",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Tune caption size, pacing and visual density for device mix.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    },
+    {
+      "id": "subscriber_status",
+      "dimensions": "subscribedStatus",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Separate existing subscriber behavior from discovery behavior.",
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "YouTube token missing"
+    }
+  ],
+  "issues": [
+    "youtube_token_missing"
+  ]
 }
