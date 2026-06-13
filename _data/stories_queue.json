@@ -2376,12 +2376,12 @@
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:40:23.936470+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "cats",
       "category_recovery_rewrite": {
-        "at": "2026-06-13T08:40:12.374455+00:00",
+        "at": "2026-06-13T08:42:20.970733+00:00",
         "category": "cats",
         "angle": "ears",
         "variant": "before the obvious moment",
@@ -2479,8 +2479,8 @@
         "rules": []
       },
       "community_prompt": "Which nature topic should Wild Brief explain next after cats?",
-      "consumed": true,
-      "consumed_at": "2026-06-13T08:40:39.819372+00:00",
+      "consumed": false,
+      "consumed_at": null,
       "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
       "description": "Fresh follow-up brief from a proven first movement winner; use new footage and a new fact.",
       "experiments": {
@@ -2527,9 +2527,9 @@
         "risks": [],
         "title_options": [
           "Cats read the moment from one ear shift",
-          "Cats use ear shift before they signal",
+          "Cats use ear shift before they follow",
           "This ear shift gives cats away",
-          "Why cats signal after one ear shift",
+          "Why cats follow after one ear shift",
           "Cats reveal the answer with ear shift",
           "The ear shift that changes the moment",
           "Cats make one ear shift matter",
@@ -2541,7 +2541,7 @@
           "CATS EAR POSITION",
           "EAR SHIFT",
           "WATCH EAR SHIFT",
-          "CATS SIGNAL",
+          "CATS FOLLOW",
           "EAR SHIFT MATTERS",
           "EAR SHIFT PAYOFF",
           "EAR SHIFT FIRST",
@@ -2620,7 +2620,7 @@
           {
             "score": 65,
             "title": "Cats read the moment from one ear shift",
-            "thumbnail_text": "CATS SIGNAL",
+            "thumbnail_text": "CATS FOLLOW",
             "hook": "Cats reveal one visible signal"
           }
         ],
@@ -2912,7 +2912,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:40:39.351748+00:00",
+        "checked_at": "2026-06-13T08:42:28.021370+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -2920,9 +2920,14 @@
         ]
       },
       "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
+        "attempted": true,
+        "applied": true,
+        "reasons": [
+          "no_action_promise",
+          "payoff_not_explicit",
+          "missing_action_word",
+          "publish_score_rewrite"
+        ]
       },
       "relevance": 9.5,
       "replay_prompt": "End by pointing back to the ear position, so viewers rewatch the cats clip.",
@@ -3007,13 +3012,6 @@
         "wildlife",
         "shorts",
         "sequel"
-      ],
-      "rejected_at": "2026-06-13T08:40:39.819372+00:00",
-      "rejection_stage": "editor_in_chief",
-      "rejection_reasons": [
-        "subject repeated inside 3-day cooldown",
-        "story angle repeated inside 10-day cooldown",
-        "editorial score 38 is below 62"
       ]
     },
     {
@@ -3042,7 +3040,7 @@
           "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:40:23.936470+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "birds",
@@ -3051,8 +3049,8 @@
       "commons_license": "CC0",
       "commons_page_url": "https://commons.wikimedia.org/wiki/File:Cinclus_cinclus26.jpg",
       "community_prompt": "Which nature topic should Wild Brief explain next after birds?",
-      "consumed": true,
-      "consumed_at": "2026-06-13T08:41:21.572538+00:00",
+      "consumed": false,
+      "consumed_at": null,
       "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
       "description": "A clip of birds: marangone",
       "discovery_hashtags": [
@@ -3104,9 +3102,9 @@
         "risks": [],
         "title_options": [
           "Birds read the moment from one wing angle",
-          "Birds use wing angle before they signal",
+          "Birds use wing angle before they move",
           "This wing angle gives birds away",
-          "Why birds signal after one wing angle",
+          "Why birds move after one wing angle",
           "Birds reveal the answer with wing angle",
           "The wing angle that changes the moment",
           "Birds make one wing angle matter",
@@ -3118,7 +3116,7 @@
           "BIRDS WING POSITION",
           "WING ANGLE",
           "WATCH WING ANGLE",
-          "BIRDS SIGNAL",
+          "BIRDS MOVE",
           "WING ANGLE MATTERS",
           "WING ANGLE PAYOFF",
           "WING ANGLE FIRST",
@@ -3197,7 +3195,7 @@
           {
             "score": 65,
             "title": "Birds read the moment from one wing angle",
-            "thumbnail_text": "BIRDS SIGNAL",
+            "thumbnail_text": "BIRDS MOVE",
             "hook": "Birds reveal one visible signal"
           }
         ],
@@ -3491,7 +3489,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:40:39.352330+00:00",
+        "checked_at": "2026-06-13T08:42:28.021922+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -3603,1186 +3601,16 @@
       ]
     },
     {
-      "breaking": false,
-      "category": "reptiles",
-      "commons_artist": "Rhododendrites",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Great_blue_heron_eating_a_snake_%2894629%29.jpg/1280px-Great_blue_heron_eating_a_snake_%2894629%29.jpg",
-      "commons_license": "CC BY-SA 4.0",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Great_blue_heron_eating_a_snake_(94629).jpg",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of reptiles: water snake",
-      "discovery_hashtags": [
-        "reptiles",
-        "snakefacts",
-        "lizardfacts",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T08:40:06.830212+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "reptiles"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Snakes reveal one visible signal",
-      "id": "3895eb7adb12665b",
-      "image_url": "",
-      "lead": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/27469278/12150566_1080_1920_30fps.mp4",
-      "pexels_video_id": "27469278",
-      "published_at": "2026-06-13T08:40:06.830212+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Snakes read the moment from one head movement",
-      "source": "Pexels",
-      "source_clip_id": "pexels:3895eb7adb12665b",
-      "source_download_url": "https://videos.pexels.com/video-files/27469278/12150566_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/water-snake-27469278/",
-      "thumbnail_text": "SNAKES HEAD MOVEMENT",
-      "title": "Snakes read the moment from one head movement",
-      "topic_hashtag": "Reptiles",
-      "trend_context": {
-        "animal": "snake",
-        "category": "reptiles",
-        "headline": "WATCH: RFK Jr. snatches snakes in viral video, the latest of his many animal encounters - East Idaho News",
-        "mentions": 5,
-        "query": "snake animal viral",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPaFpLNXFYMmZhWkdZZlJ6SjVYR3pNNHo5YXMtdzZGSEwwWmdKQ1NUaDJhZmVic0J0YVlLaU5iQjZ1VTdLc3BKZ2wwV0ljUTQ1eklPbDM4anRqb1NhTW1zMEZRWm5MSjNTZWpjVmw3RWd3VUp3dkdKNkU0bzE0cVY0M2Y5MFVELXNJT2cwTzFJSHRWR2NGNGM2dUFuV3FpU1lONEx6eFA4OEphbGh6cVFfZkM0MU9tSGFMaGl5MnlUYXA?oc=5",
-          "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOdkxNQ0llYUZiTE5KU3hDQTVPQlN6ZGJnNFpqM2ZlR2l5V3RLOU1KcUVWWUxzOUNRM0dJVGx5eWU0Tml6X0xJYmZOekRvRjlEaElFb2s3VzlNczFReEhPRy1xZWdHVjZvN3hPV0VXZW5ETFZLdVhSMWc3dVRBQ19XYkNlOFJMNTVMNXdaSXpMYUhZb2NIMFJLTDlnd1Nod3NJOFRWVGExMUZSM3BDTDhTZEstZ2lha2VtTkdaNVY5TjA5YzVrYXFnaFVLajBUTzcwLUhiblBDY2VjaTJna1dVOG42TXNlNW1vUmFXbFM3UXdOU2s?oc=5",
-          "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZ2lNMzB2di1HOE9seUFibTJEeXFpdnlPME52QzRMVk5CUWNnY0dZelZzSERsYjhEa0I2VjFqZncxRUcyTXFtWnFHQTVCdDBETV9nN3I2VTZzVnVYSjNDRVNOTy1mUElUdXNMcEt3eEtPMmhtN3J5YlNpTnR6S0hRR21ZZ2M1cDdwTEs2ZmhTc0xlcUFfQjExNHFCcWx0SHc0T1FEemkzNXlPR0RtZ1d4VE1ZMlpTcHpvVmJhaVRVVHFrRjhLcGk1OA?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "viral"
-        ],
-        "trend_score": 66.2
-      },
-      "url": "https://www.pexels.com/video/water-snake-27469278/",
-      "yt_description": "",
-      "yt_tags": [
-        "snakes",
-        "reptiles",
-        "animal facts",
-        "hunting",
-        "swimming",
-        "nature",
-        "earth science",
-        "lizard facts"
-      ],
       "autonomy": {
-        "priority": 99.03,
-        "lane": "recovery",
-        "hypothesis_id": "H5_RECOVER_OR_PAUSE",
-        "publish_score": 94.7,
-        "state": "publish_ready",
-        "packaging_lab": {
-          "title_variants": [
-            "Snakes read the moment from one head movement",
-            "Snakes use head tilt before they signal",
-            "This head tilt gives snakes away"
-          ],
-          "thumbnail_variants": [
-            "SNAKES HEAD MOVEMENT",
-            "HEAD TILT",
-            "WATCH HEAD TILT"
-          ],
-          "hook_variants": [
-            "Snakes reveal one visible signal",
-            "Snakes read the moment from one head movement",
-            "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated"
-          ],
-          "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
-      },
-      "series": "Watch The Cue",
-      "cta_prompt": "Want more survival tricks from ancient designs?",
-      "replay_prompt": "End by pointing back to the head movement, so viewers rewatch the snakes clip.",
-      "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
-      "community_prompt": "Which nature topic should Wild Brief explain next after snakes?",
-      "packaging": {
-        "score": 96,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Snakes read the moment from one head movement",
-          "Snakes use head tilt before they move",
-          "This head tilt gives snakes away",
-          "Why snakes move after one head tilt",
-          "Snakes reveal the answer with head tilt",
-          "The head tilt that changes the moment",
-          "Snakes make one head tilt matter",
-          "Snakes show the hidden payoff in seconds",
-          "Snakes: watch this head tilt",
-          "Watch snakes after the head tilt"
-        ],
-        "thumbnail_options": [
-          "SNAKES HEAD MOVEMENT",
-          "HEAD TILT",
-          "WATCH HEAD TILT",
-          "SNAKES MOVE",
-          "HEAD TILT MATTERS",
-          "HEAD TILT PAYOFF",
-          "HEAD TILT FIRST",
-          "HEAD TILT REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Snakes reveal one visible signal",
-          "Watch the head tilt; the payoff lands seconds later",
-          "Start with the head tilt; it explains the next move",
-          "The head tilt is the detail most people miss",
-          "Snakes give away the answer through head tilt"
-        ],
-        "selected_variant": {
-          "score": 67,
-          "title": "Snakes read the moment from one head movement",
-          "thumbnail_text": "SNAKES HEAD MOVEMENT",
-          "hook": "Snakes reveal one visible signal"
-        },
-        "top_variants": [
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "SNAKES HEAD MOVEMENT",
-            "hook": "Snakes reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "SNAKES HEAD MOVEMENT",
-            "hook": "Watch the head tilt; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "SNAKES HEAD MOVEMENT",
-            "hook": "Start with the head tilt; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "HEAD TILT",
-            "hook": "Snakes reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "HEAD TILT",
-            "hook": "Watch the head tilt; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "HEAD TILT",
-            "hook": "Start with the head tilt; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "WATCH HEAD TILT",
-            "hook": "Snakes reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "WATCH HEAD TILT",
-            "hook": "Watch the head tilt; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "WATCH HEAD TILT",
-            "hook": "Start with the head tilt; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Snakes read the moment from one head movement",
-            "thumbnail_text": "SNAKES MOVE",
-            "hook": "Snakes reveal one visible signal"
-          }
-        ],
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-        },
-        "experiment": {
-          "mode": "exploit",
-          "explore_rate": 0.35,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
-          },
-          "sample_count": 4,
-          "assignment": {
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail",
-            "cta": "follow_for_more"
-          }
-        },
-        "series_identity": {
-          "series": "Watch The Cue",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after snakes?",
-        "series": "Watch The Cue",
-        "cta_prompt": "Want more survival tricks from ancient designs?",
-        "replay_prompt": "End by pointing back to the head movement, so viewers rewatch the snakes clip.",
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.061,
-            "sample_size": 2,
-            "minimum_sample_size": 10,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.296,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-        },
-        "curiosity_gap": {
-          "hook": "This reptiles changes right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "snakes",
-          "opening_line": "Snakes reveal one visible signal",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the snakes at the start makes sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.379,
-          "render_hints": {
-            "carry_keyword": "snakes",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.379,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "mechanism_reveal",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "SNAKES HEAD MOVEMENT",
-          "first_frame_text_words": 3,
-          "hook": "Snakes reveal one visible signal",
-          "hook_words": 5,
-          "first_2s_narration": "Snakes reveal one visible signal Watch head movement because snakes use it",
-          "caption_chars_per_second": 14.56,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "cta_count": 1,
-          "loop_score": 0.379
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.061,
-          "sample_size": 2,
-          "minimum_sample_size": 10,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.296,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "script_length_risk",
-          "generic_creator_language",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
-      "publish_score": {
-        "score": 85.2,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 70,
-          "signals": {
-            "viral_potential": 75,
-            "visual_potential": 74,
-            "replay_potential": 97,
-            "comment_potential": 49,
-            "educational_potential": 68,
-            "emotional_potential": 39,
-            "novelty": 64
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-        },
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.061,
-            "sample_size": 2,
-            "minimum_sample_size": 10,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.296,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.125,
-          "sample_size": 7,
-          "minimum_sample_size": 30,
-          "data_quality": "estimated",
-          "data_quality_score": 0.41,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.344,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.13."
-        },
-        "category": "reptiles",
-        "story_format": "cute_behavior",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.125,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.9,
-          "template_cluster": "read_the_moment",
-          "mechanism_cluster": "cue_timing_read"
-        }
-      },
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "snakes",
-        "subject": "snakes",
-        "story_format": "cute_behavior",
-        "viewer_promise": "See why snakes cute behavior matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 85.2,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T08:41:42.003898+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "ocean",
-      "commons_artist": "Stazione zoologica di Napoli",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Guide_to_the_aquarium_of_the_Zoological_Station_at_Naples_%28IA_aquariumzoologic00stazrich%29.pdf/page1-500px-Guide_to_the_aquarium_of_the_Zoological_Station_at_Naples_%28IA_aquariumzoologic00stazrich%29.pdf.jpg",
-      "commons_license": "Public domain",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Guide_to_the_aquarium_of_the_Zoological_Station_at_Naples_(IA_aquariumzoologic00stazrich).pdf",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of marine life in the ocean: a shark swimming in an aquarium with a large tank",
-      "discovery_hashtags": [
-        "ocean",
-        "oceanlife",
-        "marinelife",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T08:39:50.860956+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "ocean"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Sharks reveal one visible signal",
-      "id": "4d33f4e1006c19da",
-      "image_url": "",
-      "lead": "Sharks reveal one visible signal. Watch fin movement, because sharks use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/20381505/20381505-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "20381505",
-      "published_at": "2026-06-13T08:39:50.860956+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Sharks reveal one visible signal. Watch fin movement, because sharks use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Sharks read the moment from one fin cue",
-      "source": "Pexels",
-      "source_clip_id": "pexels:4d33f4e1006c19da",
-      "source_download_url": "https://videos.pexels.com/video-files/20381505/20381505-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/a-shark-swimming-in-an-aquarium-with-a-large-tank-20381505/",
-      "thumbnail_text": "SHARKS FIN MOVEMENT",
-      "title": "Sharks read the moment from one fin cue",
-      "topic_hashtag": "MarineLife",
-      "trend_context": {
-        "animal": "whale",
-        "category": "ocean",
-        "headline": "Rare sighting of endangered blue whales - The Martha's Vineyard Times",
-        "mentions": 4,
-        "query": "whale animal sighting rare",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
-          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
-          "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQQS05eFFJNlVIZkt3Vy02MU5kb0hBODBsWHM1anVPeFhCVmZqUUdMRDZCcHo1OVZWRk00U3JsNlRjcVJ1VERtUlVuX0xtWktaTGFxXzdYWjhQQQ?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "sighting"
-        ],
-        "trend_score": 59.0
-      },
-      "url": "https://www.pexels.com/video/a-shark-swimming-in-an-aquarium-with-a-large-tank-20381505/",
-      "yt_description": "",
-      "yt_tags": [
-        "sharks",
-        "ocean",
-        "animal facts",
-        "aquarium",
-        "swimming",
-        "nature",
-        "marine life",
-        "sea animals"
-      ],
-      "autonomy": {
-        "priority": 115.83,
+        "priority": 105.6,
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": 93.5,
-        "state": "publish_ready",
-        "packaging_lab": {
-          "title_variants": [
-            "Sharks read the moment from one fin cue",
-            "Sharks use fin cue before they signal",
-            "This fin cue gives sharks away"
-          ],
-          "thumbnail_variants": [
-            "SHARKS FIN MOVEMENT",
-            "FIN SHIFT",
-            "WATCH FIN SHIFT"
-          ],
-          "hook_variants": [
-            "Sharks reveal one visible signal",
-            "Sharks read the moment from one fin cue",
-            "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth,"
-          ],
-          "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
-      },
-      "series": "Watch The Cue",
-      "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-      "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
-      "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-      "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
-      "packaging": {
-        "score": 96,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Sharks read the moment from one fin cue",
-          "Sharks use fin cue before they move",
-          "This fin cue gives sharks away",
-          "Why sharks move after one fin cue",
-          "Sharks reveal the answer with fin cue",
-          "The fin cue that changes the moment",
-          "Sharks make one fin cue matter",
-          "Sharks show the hidden payoff in seconds",
-          "Sharks: watch this fin cue",
-          "Watch sharks after the fin cue"
-        ],
-        "thumbnail_options": [
-          "SHARKS FIN MOVEMENT",
-          "FIN SHIFT",
-          "WATCH FIN SHIFT",
-          "SHARKS MOVE",
-          "FIN SHIFT MATTERS",
-          "FIN SHIFT PAYOFF",
-          "FIN SHIFT FIRST",
-          "FIN SHIFT REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Sharks reveal one visible signal",
-          "Watch the fin cue; the payoff lands seconds later",
-          "Start with the fin cue; it explains the next move",
-          "The fin cue is the detail most people miss",
-          "Sharks give away the answer through fin cue"
-        ],
-        "selected_variant": {
-          "score": 67,
-          "title": "Sharks read the moment from one fin cue",
-          "thumbnail_text": "SHARKS FIN MOVEMENT",
-          "hook": "Sharks reveal one visible signal"
-        },
-        "top_variants": [
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "Sharks reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Sharks reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Sharks reveal one visible signal"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks read the moment from one fin cue",
-            "thumbnail_text": "SHARKS MOVE",
-            "hook": "Sharks reveal one visible signal"
-          }
-        ],
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "experiment": {
-          "mode": "explore",
-          "explore_rate": 0.35,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
-          },
-          "sample_count": 4,
-          "assignment": {
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail",
-            "cta": "specific_question"
-          }
-        },
-        "series_identity": {
-          "series": "Watch The Cue",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
-        "series": "Watch The Cue",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "curiosity_gap": {
-          "hook": "This marinelife changes right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "sharks",
-          "opening_line": "Sharks reveal one visible signal",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the sharks at the start makes sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.379,
-          "render_hints": {
-            "carry_keyword": "sharks",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.379,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "mechanism_reveal",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "SHARKS FIN MOVEMENT",
-          "first_frame_text_words": 3,
-          "hook": "Sharks reveal one visible signal",
-          "hook_words": 5,
-          "first_2s_narration": "Sharks reveal one visible signal Watch fin movement because sharks use it",
-          "caption_chars_per_second": 14.5,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "cta_count": 1,
-          "loop_score": 0.379
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "subscriber_conversion": {
-        "score": 72,
-        "state": "usable",
-        "subscriber_probability": 0.103,
-        "return_probability": 0.222,
-        "comment_probability": 0.191,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "subject_not_immediately_clear",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
-      "publish_score": {
-        "score": 100,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 74,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 79,
-            "replay_potential": 100,
-            "comment_potential": 54,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.052,
-          "sample_size": 3,
-          "minimum_sample_size": 20,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.289,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
-        },
-        "category": "ocean",
-        "story_format": "cute_behavior",
-        "hook_score": 74,
-        "title_score": 74,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.052,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.9,
-          "template_cluster": "read_the_moment",
-          "mechanism_cluster": "cue_timing_read"
-        }
-      },
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "sharks",
-        "subject": "sharks",
-        "story_format": "cute_behavior",
-        "viewer_promise": "See why sharks cute behavior matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 100.0,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T08:41:42.004524+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "autonomy": {
-        "priority": 105.5,
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": 87.5,
+        "publish_score": 87.6,
         "state": "publish_ready",
         "packaging_lab": {
           "title_variants": [
             "Goats read the moment from one hoof movement",
-            "Goats use movement before they signal",
+            "Goats use movement before they move",
             "This movement gives goats away"
           ],
           "thumbnail_variants": [
@@ -4798,7 +3626,7 @@
           "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "farm",
@@ -4820,14 +3648,14 @@
       ],
       "fetched_at": "2026-06-13T07:07:57.525747+00:00",
       "freshness": {
-        "freshness_score": 54.88,
+        "freshness_score": 54.86,
         "matched_signal_score": 0.0,
-        "queue_age_days": 0.06,
+        "queue_age_days": 0.07,
         "signal_source": "queue_age",
         "signal_window": "0_3d",
         "topic_cluster": "farm"
       },
-      "freshness_score": 54.88,
+      "freshness_score": 54.86,
       "gbif": {},
       "geo_hashtag": "Global",
       "hook": "Goats reveal one visible signal",
@@ -4887,68 +3715,68 @@
           "Goats give away the answer through movement"
         ],
         "selected_variant": {
-          "score": 67,
+          "score": 66,
           "title": "Goats read the moment from one hoof movement",
           "thumbnail_text": "GOATS HOOF MOVEMENT",
           "hook": "Goats reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS HOOF MOVEMENT",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "WATCH MOVEMENT",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Goats reveal one visible signal"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Watch the movement; the payoff lands seconds later"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "GOATS MOVE",
             "hook": "Start with the movement; it explains the next move"
           },
           {
-            "score": 67,
+            "score": 66,
             "title": "Goats read the moment from one hoof movement",
             "thumbnail_text": "MOVEMENT MATTERS",
             "hook": "Goats reveal one visible signal"
@@ -4987,12 +3815,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -5158,15 +3986,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -5202,15 +4030,15 @@
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.052,
-          "sample_size": 3,
+          "confidence_score": 0.029,
+          "sample_size": 2,
           "minimum_sample_size": 20,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.289,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05."
+          "bootstrap_multiplier": 0.272,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
         },
         "category": "farm",
         "story_format": "cute_behavior",
@@ -5230,7 +4058,7 @@
           "reasons": [
             "low_decision_confidence"
           ],
-          "confidence_score": 0.052,
+          "confidence_score": 0.029,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -5240,11 +4068,11 @@
         }
       },
       "published_at": "2026-06-13T07:07:57.525747+00:00",
-      "queue_age_days": 0.06,
+      "queue_age_days": 0.07,
       "queue_prune": {
         "score": 88.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:41:42.005148+00:00",
+        "checked_at": "2026-06-13T08:42:28.022529+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -5345,593 +4173,6 @@
     },
     {
       "autonomy": {
-        "priority": 114.33,
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": 100,
-        "state": "publish_ready",
-        "packaging_lab": {
-          "title_variants": [
-            "Sharks rely on fin movement to survive",
-            "Sharks use fin cue before they move",
-            "This fin cue gives sharks away"
-          ],
-          "thumbnail_variants": [
-            "SHARKS FIN MOVEMENT",
-            "FIN SHIFT",
-            "WATCH FIN SHIFT"
-          ],
-          "hook_variants": [
-            "Watch the fin cue; the payoff lands seconds later",
-            "Sharks rely on fin movement to survive",
-            "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth,"
-          ],
-          "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
-      },
-      "breaking": false,
-      "category": "ocean",
-      "commons_artist": "andrew bishop",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Eel_-_Shark_Reef_Aquarium_at_Mandalay_Bay.jpg",
-      "commons_license": "CC BY 2.0",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Eel_-_Shark_Reef_Aquarium_at_Mandalay_Bay.jpg",
-      "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
-      "consumed": false,
-      "consumed_at": null,
-      "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-      "description": "A clip of marine life in the ocean: sharks in aquarium",
-      "discovery_hashtags": [
-        "ocean",
-        "oceanlife",
-        "marinelife",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T07:07:41.433730+00:00",
-      "freshness": {
-        "freshness_score": 54.88,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.06,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "ocean"
-      },
-      "freshness_score": 54.88,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Watch the fin cue; the payoff lands seconds later",
-      "id": "80a214d0a2236cfe",
-      "image_url": "",
-      "lead": "Sharks rely on fin movement. Watch fin movement, because sharks use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "local_rewrite": {
-        "applied": true,
-        "method": "deterministic_rescue",
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue",
-          "publish_score_rewrite"
-        ]
-      },
-      "native_lang": "en",
-      "packaging": {
-        "score": 96,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Sharks rely on fin movement to survive",
-          "Sharks use fin cue before they survive",
-          "This fin cue gives sharks away",
-          "Why sharks survive after one fin cue",
-          "Sharks reveal the answer with fin cue",
-          "The fin cue that changes the moment",
-          "Sharks make one fin cue matter",
-          "Sharks show the hidden payoff in seconds",
-          "Sharks: watch this fin cue",
-          "Watch sharks after the fin cue"
-        ],
-        "thumbnail_options": [
-          "SHARKS FIN MOVEMENT",
-          "FIN SHIFT",
-          "WATCH FIN SHIFT",
-          "SHARKS SURVIVE",
-          "FIN SHIFT MATTERS",
-          "FIN SHIFT PAYOFF",
-          "FIN SHIFT FIRST",
-          "FIN SHIFT REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Watch the fin cue; the payoff lands seconds later",
-          "Start with the fin cue; it explains the next move",
-          "The fin cue is the detail most people miss",
-          "Sharks give away the answer through fin cue"
-        ],
-        "selected_variant": {
-          "score": 67,
-          "title": "Sharks rely on fin movement to survive",
-          "thumbnail_text": "SHARKS FIN MOVEMENT",
-          "hook": "Watch the fin cue; the payoff lands seconds later"
-        },
-        "top_variants": [
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "SHARKS FIN MOVEMENT",
-            "hook": "The fin cue is the detail most people miss"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "The fin cue is the detail most people miss"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "The fin cue is the detail most people miss"
-          },
-          {
-            "score": 67,
-            "title": "Sharks rely on fin movement to survive",
-            "thumbnail_text": "SHARKS SURVIVE",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          }
-        ],
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "experiment": {
-          "mode": "exploit",
-          "explore_rate": 0.35,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
-          },
-          "sample_count": 4,
-          "assignment": {
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail",
-            "cta": "follow_for_more"
-          }
-        },
-        "series_identity": {
-          "series": "Body Clues",
-          "episode": 1,
-          "label": "Body Clues",
-          "continuity_prompt": "Next in Body Clues: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
-        "series": "Body Clues",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
-        "subscriber_conversion": {
-          "score": 85,
-          "state": "strong",
-          "subscriber_probability": 0.121,
-          "return_probability": 0.258,
-          "comment_probability": 0.221,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "curiosity_gap": {
-          "hook": "This ocean changes right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "cue",
-          "opening_line": "Watch the fin cue; the payoff lands seconds later",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the cue at the start makes sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.637,
-          "render_hints": {
-            "carry_keyword": "cue",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.637,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "mechanism_reveal",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "SHARKS FIN MOVEMENT",
-          "first_frame_text_words": 3,
-          "hook": "Watch the fin cue; the payoff lands seconds later",
-          "hook_words": 9,
-          "first_2s_narration": "Sharks rely on fin movement Watch fin movement because sharks use it",
-          "caption_chars_per_second": 14.65,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.350000000000001,
-          "cta_count": 1,
-          "loop_score": 0.637
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "pexels_download_url": "https://videos.pexels.com/video-files/12210147/12210147-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "12210147",
-      "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-      "publish_score": {
-        "score": 100,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 76,
-          "signals": {
-            "viral_potential": 88,
-            "visual_potential": 79,
-            "replay_potential": 100,
-            "comment_potential": 46,
-            "educational_potential": 73,
-            "emotional_potential": 53,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 85,
-          "state": "strong",
-          "subscriber_probability": 0.121,
-          "return_probability": 0.258,
-          "comment_probability": 0.221,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "ocean",
-        "story_format": "survival_trick",
-        "hook_score": 74,
-        "title_score": 84,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.35,
-          "template_cluster": "rely_to_survive",
-          "mechanism_cluster": "survival_cue"
-        }
-      },
-      "published_at": "2026-06-13T07:07:41.433730+00:00",
-      "queue_age_days": 0.06,
-      "queue_prune": {
-        "score": 100.0,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T08:41:42.005767+00:00",
-        "template_cluster": "rely_to_survive",
-        "mechanism_cluster": "survival_cue",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "relevance": 9.0,
-      "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Sharks rely on fin movement. Watch fin movement, because sharks use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Sharks rely on fin movement to survive",
-      "series": "Body Clues",
-      "source": "Pexels",
-      "source_clip_id": "pexels:80a214d0a2236cfe",
-      "source_download_url": "https://videos.pexels.com/video-files/12210147/12210147-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
-      "subscriber_conversion": {
-        "score": 85,
-        "state": "strong",
-        "subscriber_probability": 0.121,
-        "return_probability": 0.258,
-        "comment_probability": 0.221,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "hook_invites_return",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "thumbnail_text": "SHARKS FIN MOVEMENT",
-      "title": "Sharks rely on fin movement to survive",
-      "topic_hashtag": "Ocean",
-      "trend_context": {
-        "animal": "whale",
-        "category": "ocean",
-        "headline": "Rare sighting of endangered blue whales - The Martha's Vineyard Times",
-        "mentions": 4,
-        "query": "whale animal sighting rare",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
-          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
-          "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQQS05eFFJNlVIZkt3Vy02MU5kb0hBODBsWHM1anVPeFhCVmZqUUdMRDZCcHo1OVZWRk00U3JsNlRjcVJ1VERtUlVuX0xtWktaTGFxXzdYWjhQQQ?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "sighting"
-        ],
-        "trend_score": 59.0
-      },
-      "url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "sharks",
-        "subject": "sharks",
-        "story_format": "survival_trick",
-        "viewer_promise": "See why sharks survival trick matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "yt_description": "",
-      "yt_tags": [
-        "sharks",
-        "ocean",
-        "animal facts",
-        "aquarium life",
-        "marine predators",
-        "nature",
-        "nature facts",
-        "marine life"
-      ]
-    },
-    {
-      "autonomy": {
         "priority": 103.0,
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
@@ -5956,7 +4197,7 @@
           "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "insects",
@@ -6145,12 +4386,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -6317,15 +4558,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -6404,7 +4645,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-13T08:41:42.006335+00:00",
+        "checked_at": "2026-06-13T08:42:28.023088+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -6524,7 +4765,7 @@
         "packaging_lab": {
           "title_variants": [
             "Wolves read the moment from one tail lift",
-            "Wolves use tail lift before they signal",
+            "Wolves use tail lift before they move",
             "This tail lift gives wolves away"
           ],
           "thumbnail_variants": [
@@ -6540,7 +4781,7 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "wildlife",
@@ -6630,68 +4871,68 @@
           "Wolves give away the answer through tail lift"
         ],
         "selected_variant": {
-          "score": 66,
+          "score": 65,
           "title": "Wolves read the moment from one tail lift",
           "thumbnail_text": "WOLVES TAIL POSITION",
           "hook": "Wolves reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES TAIL POSITION",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Wolves reveal one visible signal"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 66,
+            "score": 65,
             "title": "Wolves read the moment from one tail lift",
             "thumbnail_text": "WOLVES MOVE",
             "hook": "Wolves reveal one visible signal"
@@ -6730,12 +4971,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -6901,15 +5142,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -6987,7 +5228,7 @@
       "queue_prune": {
         "score": 87.5,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:41:42.006920+00:00",
+        "checked_at": "2026-06-13T08:42:28.023642+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -7127,7 +5368,7 @@
           "pinned_comment": "Mushrooms is the example. Tomorrow: another animal signal. Is this closer to a network, a warning system, or something stranger?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "fungi",
@@ -7305,12 +5546,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -7477,15 +5718,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -7564,7 +5805,7 @@
       "queue_prune": {
         "score": 67.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:41:42.007851+00:00",
+        "checked_at": "2026-06-13T08:42:28.024570+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -7672,6 +5913,593 @@
     },
     {
       "autonomy": {
+        "priority": 98.35,
+        "lane": "recovery",
+        "hypothesis_id": "H5_RECOVER_OR_PAUSE",
+        "publish_score": 100,
+        "state": "publish_ready",
+        "packaging_lab": {
+          "title_variants": [
+            "Sharks rely on fin movement to survive",
+            "Sharks use fin cue before they move",
+            "This fin cue gives sharks away"
+          ],
+          "thumbnail_variants": [
+            "SHARKS FIN MOVEMENT",
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
+          ],
+          "hook_variants": [
+            "Watch the fin cue; the payoff lands seconds later",
+            "Sharks rely on fin movement to survive",
+            "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, "
+          ],
+          "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        },
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
+      },
+      "breaking": false,
+      "category": "ocean",
+      "commons_artist": "andrew bishop",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Eel_-_Shark_Reef_Aquarium_at_Mandalay_Bay.jpg",
+      "commons_license": "CC BY 2.0",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Eel_-_Shark_Reef_Aquarium_at_Mandalay_Bay.jpg",
+      "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+      "description": "A clip of marine life in the ocean: sharks in aquarium",
+      "discovery_hashtags": [
+        "ocean",
+        "oceanlife",
+        "marinelife",
+        "animalfacts",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T07:07:41.433730+00:00",
+      "freshness": {
+        "freshness_score": 54.86,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.07,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "ocean"
+      },
+      "freshness_score": 54.86,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Watch the fin cue; the payoff lands seconds later",
+      "id": "80a214d0a2236cfe",
+      "image_url": "",
+      "lead": "Sharks rely on fin movement. Watch fin movement, because sharks use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_action_word",
+          "missing_visible_cue",
+          "publish_score_rewrite"
+        ]
+      },
+      "native_lang": "en",
+      "packaging": {
+        "score": 96,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Sharks rely on fin movement to survive",
+          "Sharks use fin cue before they survive",
+          "This fin cue gives sharks away",
+          "Why sharks survive after one fin cue",
+          "Sharks reveal the answer with fin cue",
+          "The fin cue that changes the moment",
+          "Sharks make one fin cue matter",
+          "Sharks show the hidden payoff in seconds",
+          "Sharks: watch this fin cue",
+          "Watch sharks after the fin cue"
+        ],
+        "thumbnail_options": [
+          "SHARKS FIN MOVEMENT",
+          "FIN SHIFT",
+          "WATCH FIN SHIFT",
+          "SHARKS SURVIVE",
+          "FIN SHIFT MATTERS",
+          "FIN SHIFT PAYOFF",
+          "FIN SHIFT FIRST",
+          "FIN SHIFT REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Watch the fin cue; the payoff lands seconds later",
+          "Start with the fin cue; it explains the next move",
+          "The fin cue is the detail most people miss",
+          "Sharks give away the answer through fin cue"
+        ],
+        "selected_variant": {
+          "score": 67,
+          "title": "Sharks rely on fin movement to survive",
+          "thumbnail_text": "SHARKS FIN MOVEMENT",
+          "hook": "Watch the fin cue; the payoff lands seconds later"
+        },
+        "top_variants": [
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "SHARKS FIN MOVEMENT",
+            "hook": "Watch the fin cue; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "SHARKS FIN MOVEMENT",
+            "hook": "Start with the fin cue; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "SHARKS FIN MOVEMENT",
+            "hook": "The fin cue is the detail most people miss"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "FIN SHIFT",
+            "hook": "Watch the fin cue; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "FIN SHIFT",
+            "hook": "Start with the fin cue; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "FIN SHIFT",
+            "hook": "The fin cue is the detail most people miss"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "hook": "Watch the fin cue; the payoff lands seconds later"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "hook": "Start with the fin cue; it explains the next move"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "hook": "The fin cue is the detail most people miss"
+          },
+          {
+            "score": 67,
+            "title": "Sharks rely on fin movement to survive",
+            "thumbnail_text": "SHARKS SURVIVE",
+            "hook": "Watch the fin cue; the payoff lands seconds later"
+          }
+        ],
+        "retention": {
+          "score": 84,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} one {subject} {action}"
+          },
+          "winning_experiments": {
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
+          },
+          "sample_count": 3,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Body Clues",
+          "episode": 1,
+          "label": "Body Clues",
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
+        "series": "Body Clues",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
+        "subscriber_conversion": {
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121,
+          "return_probability": 0.258,
+          "comment_probability": 0.221,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This ocean changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "cue",
+          "opening_line": "Watch the fin cue; the payoff lands seconds later",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the cue at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.637,
+          "render_hints": {
+            "carry_keyword": "cue",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.637,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "SHARKS FIN MOVEMENT",
+          "first_frame_text_words": 3,
+          "hook": "Watch the fin cue; the payoff lands seconds later",
+          "hook_words": 9,
+          "first_2s_narration": "Sharks rely on fin movement Watch fin movement because sharks use it",
+          "caption_chars_per_second": 14.65,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.637
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/12210147/12210147-hd_1080_1920_30fps.mp4",
+      "pexels_video_id": "12210147",
+      "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+      "publish_score": {
+        "score": 100,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 76,
+          "signals": {
+            "viral_potential": 88,
+            "visual_potential": 79,
+            "replay_potential": 100,
+            "comment_potential": 46,
+            "educational_potential": 73,
+            "emotional_potential": 53,
+            "novelty": 69
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 84,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121,
+          "return_probability": 0.258,
+          "comment_probability": 0.221,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "ocean",
+        "story_format": "survival_trick",
+        "hook_score": 74,
+        "title_score": 84,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 10.0,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.35,
+          "template_cluster": "rely_to_survive",
+          "mechanism_cluster": "survival_cue"
+        }
+      },
+      "published_at": "2026-06-13T07:07:41.433730+00:00",
+      "queue_age_days": 0.07,
+      "queue_prune": {
+        "score": 100.0,
+        "state": "publish_ready",
+        "checked_at": "2026-06-13T08:42:28.025149+00:00",
+        "template_cluster": "rely_to_survive",
+        "mechanism_cluster": "survival_cue",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Sharks rely on fin movement. Watch fin movement, because sharks use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Sharks rely on fin movement to survive",
+      "series": "Body Clues",
+      "source": "Pexels",
+      "source_clip_id": "pexels:80a214d0a2236cfe",
+      "source_download_url": "https://videos.pexels.com/video-files/12210147/12210147-hd_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
+      "subscriber_conversion": {
+        "score": 85,
+        "state": "strong",
+        "subscriber_probability": 0.121,
+        "return_probability": 0.258,
+        "comment_probability": 0.221,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "hook_invites_return",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "SHARKS FIN MOVEMENT",
+      "title": "Sharks rely on fin movement to survive",
+      "topic_hashtag": "Ocean",
+      "trend_context": {
+        "animal": "whale",
+        "category": "ocean",
+        "headline": "Rare sighting of endangered blue whales - The Martha's Vineyard Times",
+        "mentions": 4,
+        "query": "whale animal sighting rare",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
+          "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTM3YjQwcFZlbmlEMVRzLS10WF9UU1JUTjVGR1pqbnlwTk5iOEJBZXQydF9yWlF5WmRwdEduRVM1OFpBbVJZSE1RSEhaVXQ0MXllcUNVY0Q0TGVqYjdJZ0dvLXpfQVBRVHdFQzJPMmowRjBGZWc4aUNRODNvRWxOVHlBSlppYlR4UF94ejVaRk81eHZXWDdXdnVn?oc=5",
+          "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQQS05eFFJNlVIZkt3Vy02MU5kb0hBODBsWHM1anVPeFhCVmZqUUdMRDZCcHo1OVZWRk00U3JsNlRjcVJ1VERtUlVuX0xtWktaTGFxXzdYWjhQQQ?oc=5"
+        ],
+        "terms": [
+          "rare",
+          "sighting"
+        ],
+        "trend_score": 59.0
+      },
+      "url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "sharks",
+        "subject": "sharks",
+        "story_format": "survival_trick",
+        "viewer_promise": "See why sharks survival trick matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": []
+      },
+      "yt_description": "",
+      "yt_tags": [
+        "sharks",
+        "ocean",
+        "animal facts",
+        "aquarium life",
+        "marine predators",
+        "nature",
+        "nature facts",
+        "marine life"
+      ]
+    },
+    {
+      "autonomy": {
         "priority": 97.2,
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
@@ -7680,7 +6508,7 @@
         "packaging_lab": {
           "title_variants": [
             "Dogs read the moment from one tail lift",
-            "Dogs use tail lift before they signal",
+            "Dogs use tail lift before they move",
             "This tail lift gives dogs away"
           ],
           "thumbnail_variants": [
@@ -7696,7 +6524,7 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "dogs",
@@ -7786,68 +6614,68 @@
           "Dogs give away the answer through tail lift"
         ],
         "selected_variant": {
-          "score": 64,
+          "score": 63,
           "title": "Dogs read the moment from one tail lift",
           "thumbnail_text": "DOGS TAIL POSITION",
           "hook": "Dogs reveal one visible signal"
         },
         "top_variants": [
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS TAIL POSITION",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Dogs reveal one visible signal"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Watch the tail lift; the payoff lands seconds later"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "WATCH TAIL LIFT",
             "hook": "Start with the tail lift; it explains the next move"
           },
           {
-            "score": 64,
+            "score": 63,
             "title": "Dogs read the moment from one tail lift",
             "thumbnail_text": "DOGS MOVE",
             "hook": "Dogs reveal one visible signal"
@@ -7886,12 +6714,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -8057,15 +6885,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -8143,7 +6971,7 @@
       "queue_prune": {
         "score": 82.2,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:41:42.008383+00:00",
+        "checked_at": "2026-06-13T08:42:28.025658+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -8275,7 +7103,8 @@
           ],
           "thumbnail_variants": [
             "WATCH MOVEMENT",
-            "MOVEMENT"
+            "MOVEMENT",
+            "CARNIVOROUS PLANT MOVE"
           ],
           "hook_variants": [
             "Start with the movement; it explains the next move",
@@ -8285,7 +7114,7 @@
           "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T08:41:38.772708+00:00"
+        "updated_at": "2026-06-13T08:42:30.016741+00:00"
       },
       "breaking": false,
       "category": "plants",
@@ -8460,12 +7289,12 @@
             "hook_pattern": "{subject} {subject} one {subject} {action}"
           },
           "winning_experiments": {
-            "format:fresh_variant": 52.69,
-            "hook:new_hook": 52.69,
-            "thumbnail:new_thumbnail": 52.69,
-            "cta:specific_question": 52.69
+            "format:fresh_variant": 57.95,
+            "hook:new_hook": 57.95,
+            "thumbnail:new_thumbnail": 57.95,
+            "cta:specific_question": 57.95
           },
-          "sample_count": 4,
+          "sample_count": 3,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -8633,15 +7462,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.26,
-            "sample_size": 2,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.445,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -8719,7 +7548,7 @@
       "queue_prune": {
         "score": 60.0,
         "state": "rewrite",
-        "checked_at": "2026-06-13T08:41:42.008995+00:00",
+        "checked_at": "2026-06-13T08:42:28.026254+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -8825,6 +7654,6 @@
       ]
     }
   ],
-  "target_pending": 12,
-  "updated_at": "2026-06-13T08:41:42.009001+00:00"
+  "target_pending": 1,
+  "updated_at": "2026-06-13T08:42:30.020266+00:00"
 }
