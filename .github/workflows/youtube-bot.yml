@@ -113,6 +113,40 @@ jobs:
           if [ "$code" = "3" ]; then
             echo "Quota guard requested a safe skip."
           fi
+      - name: "Garantir fila minima"
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
+        run: |
+          pending="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("_data/stories_queue.json")
+          if not path.exists():
+              print(0)
+              raise SystemExit
+          data = json.loads(path.read_text(encoding="utf-8"))
+          print(sum(1 for story in data.get("stories", []) if not story.get("consumed")))
+          PY
+          )"
+          target="${QUEUE_TARGET_PENDING:-1}"
+          echo "Pending queue before publish backfill: ${pending}/${target}"
+          if [ "${pending}" -lt "${target}" ]; then
+            echo "Queue is below target; refreshing one publish-ready candidate inside the YouTube Bot run."
+            python fetch_animals.py
+            python scripts/apply_topic_freshness.py || true
+          else
+            echo "Queue already has enough pending candidates."
+          fi
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '1' }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
       - name: "Preparar inteligencia pre-publicacao"
         run: python scripts/run_intelligence_suite.py pre_generate
         env:
