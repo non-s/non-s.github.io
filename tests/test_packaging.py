@@ -118,6 +118,27 @@ def test_title_options_use_natural_head_movement_language():
     assert all("head cue" not in option.lower() for option in options)
 
 
+def test_package_story_uses_fungi_detail_instead_of_subject_as_cue():
+    packaged = package_story(
+        _story(
+            title="Mushrooms use mushrooms before they change",
+            seo_title="Mushrooms use mushrooms before they change",
+            hook="Mushrooms signal through underground threads.",
+            script=(
+                "Mushrooms signal through underground threads. Watch the thread network first, "
+                "because it moves nutrients before the forest changes."
+            ),
+            thumbnail_text="FUNGAL WEB",
+            category="fungi",
+            yt_tags=["mushrooms", "mycelium", "forest network"],
+        )
+    )
+
+    assert "use mushrooms" not in packaged["title"].lower()
+    assert "underground threads" in pinned_comment(packaged).lower()
+    assert "underground threads" in replay_prompt(packaged).lower()
+
+
 def test_package_story_adds_comment_and_community_hook():
     packaged = package_story(_story(thumbnail_text=""))
 

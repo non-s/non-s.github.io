@@ -43,6 +43,20 @@ PRIORITY_CATEGORIES = {
     "birds",
 }
 
+CATEGORY_FALLBACK_CUES = {
+    "fungi": "underground threads",
+    "plants": "leaf movement",
+    "forests": "canopy shift",
+    "ocean": "water movement",
+}
+
+SUBJECT_CUE_TERMS_BY_CATEGORY = {
+    "fungi": {"fungi", "fungus", "mushroom", "mushrooms"},
+    "plants": {"plant", "plants"},
+    "forests": {"forest", "forests", "tree", "trees"},
+    "ocean": {"ocean", "sea", "water"},
+}
+
 VISUAL_TERMS = {
     "lava",
     "glow",
@@ -93,6 +107,16 @@ VISUAL_TERMS = {
     "feeding",
     "bottle",
     "mushrooms",
+    "mycelium",
+    "underground",
+    "thread",
+    "threads",
+    "cap",
+    "caps",
+    "gill",
+    "gills",
+    "spore",
+    "spores",
     "object",
     "objects",
     "group",
@@ -148,6 +172,8 @@ ACTION_TERMS = {
     "grow",
     "talk",
     "signal",
+    "connect",
+    "communicate",
     "escape",
     "survive",
     "hide",
@@ -172,6 +198,41 @@ ACTION_TERMS = {
     "trick",
     "tricks",
 }
+ACTION_PRIORITY = (
+    "fake",
+    "fakes",
+    "protect",
+    "escape",
+    "remember",
+    "recognize",
+    "signal",
+    "communicate",
+    "connect",
+    "follow",
+    "follows",
+    "rely",
+    "survive",
+    "hide",
+    "hunt",
+    "choose",
+    "chooses",
+    "trick",
+    "tricks",
+    "pull",
+    "pulls",
+    "build",
+    "form",
+    "grow",
+    "move",
+    "talk",
+    "glow",
+    "erupt",
+    "recover",
+    "freeze",
+    "melt",
+    "vanish",
+    "change",
+)
 
 PAYOFF_TERMS = {
     "because",
@@ -743,7 +804,7 @@ def _display_subject(subject: str) -> str:
 
 def _action(story: dict) -> str:
     text = _text(story)
-    for term in ACTION_TERMS:
+    for term in ACTION_PRIORITY:
         if re.search(r"\b" + re.escape(term) + r"\b", text):
             return term
     return "changes"
@@ -761,6 +822,49 @@ def _plural_action(action: str) -> str:
     if action in irregular:
         return irregular[action]
     return action
+
+
+def _cue_subject_terms(story: dict) -> set[str]:
+    category = str(story.get("category") or "").lower()
+    terms = set(SUBJECT_CUE_TERMS_BY_CATEGORY.get(category, set()))
+    for source in (_subject(story), category):
+        for word in _words(str(source).lower()):
+            if len(word) <= 2:
+                continue
+            terms.add(word)
+            if word.endswith("s"):
+                terms.add(word[:-1])
+            else:
+                terms.add(f"{word}s")
+    return terms
+
+
+def _subject_word_forms(subject: str) -> set[str]:
+    forms: set[str] = set()
+    for word in _words(str(subject).lower()):
+        if len(word) <= 2:
+            continue
+        forms.add(word)
+        if word.endswith("s"):
+            forms.add(word[:-1])
+        else:
+            forms.add(f"{word}s")
+    return forms
+
+
+def _title_repeats_subject_as_cue(title: str, subject: str) -> bool:
+    forms = _subject_word_forms(subject)
+    if not forms:
+        return False
+    words = _words(str(title).lower())
+    for idx, word in enumerate(words[:6]):
+        if word not in {"use", "uses", "rely", "relies", "read", "reads", "show", "shows"}:
+            continue
+        before = set(words[max(0, idx - 2) : idx])
+        after = set(words[idx + 1 : idx + 4])
+        if before & forms and after & forms:
+            return True
+    return False
 
 
 def _cue(story: dict) -> str:
@@ -787,11 +891,19 @@ def _cue(story: dict) -> str:
         "paws",
         "feet",
         "beak",
+        "mycelium",
+        "underground threads",
+        "threads",
+        "thread",
+        "cap",
+        "caps",
+        "gill",
+        "gills",
+        "spores",
         "lava",
+        "roots",
         "mushroom",
         "mushrooms",
-        "threads",
-        "roots",
         "reef",
         "coral",
         "storm",
@@ -801,10 +913,14 @@ def _cue(story: dict) -> str:
         "crater",
         "movement",
     ]
+    subject_terms = _cue_subject_terms(story)
     for term in cue_priority:
+        if term in subject_terms:
+            continue
         if re.search(r"\b" + re.escape(term) + r"\b", text):
             return term
-    return "first movement"
+    category = str(story.get("category") or "").lower()
+    return CATEGORY_FALLBACK_CUES.get(category, "first movement")
 
 
 def _thumb_cue(cue: str) -> str:
@@ -825,6 +941,21 @@ def _thumb_cue(cue: str) -> str:
         "object group": "group",
         "number cue": "number trick",
         "body cue": "body move",
+        "underground threads": "thread map",
+        "threads": "thread map",
+        "thread": "thread map",
+        "mycelium": "fungal web",
+        "roots": "root signal",
+        "cap": "cap clue",
+        "caps": "cap clue",
+        "gill": "gill lines",
+        "gills": "gill lines",
+        "spores": "spore dust",
+        "leaf movement": "leaf move",
+        "leaf": "leaf clue",
+        "leaves": "leaf move",
+        "canopy shift": "canopy shift",
+        "water movement": "water shift",
         "eyes": "face memory",
         "ear": "ear shift",
         "ears": "ear shift",
@@ -853,6 +984,21 @@ def _title_cue(cue: str) -> str:
         "first movement": "first move",
         "object group": "object group",
         "number cue": "number cue",
+        "underground threads": "underground threads",
+        "threads": "underground threads",
+        "thread": "underground thread",
+        "mycelium": "mycelium network",
+        "roots": "root network",
+        "cap": "cap shape",
+        "caps": "cap shapes",
+        "gill": "gill lines",
+        "gills": "gill lines",
+        "spores": "spore dust",
+        "leaf movement": "leaf movement",
+        "leaf": "leaf movement",
+        "leaves": "leaf movement",
+        "canopy shift": "canopy shift",
+        "water movement": "water shift",
         "eyes": "eye contact",
         "tail": "tail lift",
         "wing": "wing flash",
@@ -862,25 +1008,46 @@ def _title_cue(cue: str) -> str:
     }.get(cue, cue)
 
 
+def _countable_title_cue(cue: str) -> str:
+    cue = str(cue or "cue").strip().lower()
+    return {
+        "underground threads": "thread network",
+        "threads": "thread network",
+        "thread": "thread line",
+        "mycelium": "mycelium network",
+        "roots": "root network",
+        "spores": "spore cloud",
+        "leaves": "leaf movement",
+    }.get(cue, _title_cue(cue))
+
+
 def generate_packaging_options(story: dict) -> dict:
     subject = _display_subject(_subject(story))
     action = _plural_action(_action(story))
     cue = _cue(story)
     thumb_cue = _thumb_cue(cue)
     title_cue = _title_cue(cue)
+    countable_cue = _countable_title_cue(cue)
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
-    titles = [
-        current_title,
-        f"{subject} use {title_cue} before they {action}",
-        f"This {title_cue} gives {subject.lower()} away",
-        f"Why {subject.lower()} {action} after one {title_cue}",
-        f"{subject} reveal the answer with {title_cue}",
-        f"The {title_cue} that changes the moment",
-        f"{subject} make one {title_cue} matter",
-        f"{subject} show the hidden payoff in seconds",
-        f"{subject}: watch this {title_cue}",
-        f"Watch {subject.lower()} after the {title_cue}",
-    ]
+    titles = []
+    if not _title_repeats_subject_as_cue(current_title, subject):
+        titles.append(current_title)
+    if action in {"signal", "connect", "communicate"}:
+        titles.append(f"{subject} {action} through {title_cue}")
+    titles.extend(
+        [
+            f"{subject} use {title_cue} before they {action}",
+            f"This {countable_cue} gives {subject.lower()} away",
+            f"Why {subject.lower()} {action} after one {countable_cue}",
+            f"{subject} reveal the answer with {title_cue}",
+            f"The {countable_cue} that changes the moment",
+            f"{subject} make one {countable_cue} matter",
+            f"{subject} show the hidden payoff in seconds",
+            f"{subject}: watch this {countable_cue}",
+            f"Watch {subject.lower()} after the {countable_cue}",
+            f"One {countable_cue} changes how {subject.lower()} react",
+        ]
+    )
     thumbs = [
         str(story.get("thumbnail_text") or "").upper(),
         f"{thumb_cue}".upper(),
@@ -940,6 +1107,19 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
         if fmt:
             audience_bonus += int((_weight(audience, "format_subscribers", fmt) - 1) * 16)
     score = int(topic * 0.22 + retention * 0.42 + thumb_score * 0.18 + pattern_bonus + audience_bonus)
+    lower_title = str(title or "").lower()
+    structural_cues = (
+        "underground threads",
+        "thread network",
+        "mycelium network",
+        "root network",
+        "leaf movement",
+        "water shift",
+    )
+    if " through " in lower_title and any(cue in lower_title for cue in structural_cues):
+        score += 6
+    if re.search(r"\bwhy\b.*\bafter one (?:thread network|root network|leaf movement|water shift)\b", lower_title):
+        score -= 5
     score += _distribution_adjustment(
         candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None
     )

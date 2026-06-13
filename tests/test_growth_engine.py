@@ -56,6 +56,27 @@ def test_packaging_generates_required_option_counts():
     assert len(options["hooks"]) == 5
 
 
+def test_packaging_avoids_repeating_subject_as_visual_cue_for_fungi():
+    story = _story(
+        title="Mushrooms use mushrooms before they change",
+        seo_title="Mushrooms use mushrooms before they change",
+        hook="Mushrooms signal through underground threads.",
+        script=(
+            "Mushrooms signal through underground threads. Watch the thread network first, "
+            "because it moves nutrients before the forest changes."
+        ),
+    )
+
+    options = generate_packaging_options(story)
+    titles = " | ".join(options["titles"]).lower()
+    selected = select_best_packaging(story)
+
+    assert "use mushrooms" not in titles
+    assert "underground threads" in titles
+    assert "use mushrooms" not in selected["best"]["title"].lower()
+    assert selected["best"]["title"] == "Mushrooms signal through underground threads"
+
+
 def test_packaging_selector_returns_scored_variants():
     selected = select_best_packaging(_story())
 

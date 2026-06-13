@@ -20,6 +20,11 @@ def test_workflows_parse_and_include_growth_steps():
     assert "python fetch_animals.py" in youtube_workflow
     assert "PUBLISH_BACKFILL_QUEUE_TARGET || '12'" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
+    assert "merge_jsonl_state.py" in youtube_workflow
+    assert "reconcile_queue_uploads.py" in youtube_workflow
+    assert "jsonl_merge_paths" in youtube_workflow
+    assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
+    assert "_data/rejected_queue.jsonl" in youtube_workflow
     assert 'while [ "${pending}" -lt "${target}" ]' in youtube_workflow
     assert "if: always() && steps.publish_window.outputs.should_publish == 'true'" in youtube_workflow
     assert 'cron: "20 * * * *"' in youtube_workflow
@@ -31,6 +36,10 @@ def test_workflows_parse_and_include_growth_steps():
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow
     assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
     assert "leaving generated diagnostics uncommitted" in fetch_workflow
+    assert "QUEUE_TARGET_PENDING || '24'" in fetch_workflow
+    assert "merge_jsonl_state.py" in fetch_workflow
+    assert "reconcile_queue_uploads.py" in fetch_workflow
+    assert "jsonl_merge_paths" in fetch_workflow
     assert "_data/scale_blueprint.json" in fetch_workflow
     assert "compact_analytics.py" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "_data/scale_blueprint.json" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
@@ -83,6 +92,7 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
     dashboard = SCRIPT_SETS["dashboard"]
     prune_index = max(i for i, script in enumerate(dashboard) if script == "scripts/prune_queue.py")
     for report in (
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",
@@ -95,6 +105,7 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
         scripts = SCRIPT_SETS[mode]
         prune_index = max(i for i, script in enumerate(scripts) if script == "scripts/prune_queue.py")
         for report in (
+            "scripts/apply_topic_freshness.py",
             "scripts/sequence_plan.py",
             "scripts/autonomous_growth_loop.py",
             "scripts/agency_gate_report.py",
@@ -113,6 +124,7 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
     post_publish = SCRIPT_SETS["post_publish"]
     post_prune = max(i for i, script in enumerate(post_publish) if script == "scripts/prune_queue.py")
     for report in (
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",

@@ -8,6 +8,7 @@ import sys
 
 SCRIPT_SETS = {
     "pre_generate": [
+        "scripts/reconcile_queue_uploads.py",
         "scripts/ops_guardian.py",
         "scripts/control_plane_report.py",
         "scripts/apply_topic_freshness.py",
@@ -35,6 +36,7 @@ SCRIPT_SETS = {
         "scripts/success_rewriter.py",
         "scripts/agency_gate_report.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/sequence_plan.py",
         "scripts/autonomous_growth_loop.py",
         "scripts/agency_gate_report.py",
@@ -49,6 +51,7 @@ SCRIPT_SETS = {
         "scripts/scale_blueprint.py",
     ],
     "post_publish": [
+        "scripts/reconcile_queue_uploads.py",
         "scripts/analyze_channel.py",
         "scripts/analyze_comments.py",
         "scripts/control_plane_report.py",
@@ -93,6 +96,7 @@ SCRIPT_SETS = {
         "scripts/seo_metadata_lint.py",
         "scripts/compact_analytics.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",
@@ -103,6 +107,7 @@ SCRIPT_SETS = {
         "scripts/scale_blueprint.py",
     ],
     "queue": [
+        "scripts/reconcile_queue_uploads.py",
         "scripts/audit_automation.py",
         "scripts/control_plane_report.py",
         "scripts/apply_topic_freshness.py",
@@ -133,6 +138,7 @@ SCRIPT_SETS = {
         "scripts/success_rewriter.py",
         "scripts/agency_gate_report.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/sequence_plan.py",
         "scripts/autonomous_growth_loop.py",
         "scripts/agency_gate_report.py",
@@ -147,6 +153,7 @@ SCRIPT_SETS = {
         "scripts/scale_blueprint.py",
     ],
     "dashboard": [
+        "scripts/reconcile_queue_uploads.py",
         "scripts/audit_automation.py",
         "scripts/control_plane_report.py",
         "scripts/youtube_intelligence.py",
@@ -185,6 +192,7 @@ SCRIPT_SETS = {
         "scripts/publish_schedule.py",
         "scripts/autonomous_growth_loop.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",
@@ -199,6 +207,7 @@ SCRIPT_SETS = {
         "scripts/weekly_growth_review.py",
         "scripts/opening_audit_report.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",
@@ -214,6 +223,7 @@ SCRIPT_SETS = {
         "scripts/free_signal_harvester.py",
         "scripts/weekly_report.py",
         "scripts/prune_queue.py",
+        "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
         "scripts/dry_run_publish.py",

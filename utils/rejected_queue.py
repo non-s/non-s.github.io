@@ -27,7 +27,8 @@ def _read_jsonl(path: Path) -> list[dict]:
     return items
 
 
-def _read_legacy(path: Path = LEGACY_REJECTED_QUEUE) -> list[dict]:
+def _read_legacy(path: Path | None = None) -> list[dict]:
+    path = path or LEGACY_REJECTED_QUEUE
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(data, dict):
@@ -37,7 +38,8 @@ def _read_legacy(path: Path = LEGACY_REJECTED_QUEUE) -> list[dict]:
     return []
 
 
-def _read(path: Path = REJECTED_QUEUE) -> list[dict]:
+def _read(path: Path | None = None) -> list[dict]:
+    path = path or REJECTED_QUEUE
     if path.suffix == ".jsonl":
         items = _read_jsonl(path)
         if items:
@@ -55,10 +57,11 @@ def _read(path: Path = REJECTED_QUEUE) -> list[dict]:
 
 
 def record_rejection(
-    story: dict, reasons: list[str], *, path: Path = REJECTED_QUEUE, stage: str = "queue_quality"
+    story: dict, reasons: list[str], *, path: Path | None = None, stage: str = "queue_quality"
 ) -> None:
     if not reasons:
         return
+    path = path or REJECTED_QUEUE
     items = _read(path)
     story_id = str(story.get("id") or story.get("_queue_id") or story.get("title") or "")
     items = [item for item in items if not (item.get("story_id") == story_id and item.get("stage") == stage)]
@@ -83,5 +86,5 @@ def record_rejection(
         path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def load_rejections(path: Path = REJECTED_QUEUE) -> list[dict]:
+def load_rejections(path: Path | None = None) -> list[dict]:
     return _read(path)

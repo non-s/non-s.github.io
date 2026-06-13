@@ -40,6 +40,8 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     overrides = [
         ("utils.provider_stats", "STATS_LOG", "provider_stats.jsonl"),
         ("utils.channel_memory", "MEMORY_LOG", "channel_memory.jsonl"),
+        ("utils.rejected_queue", "REJECTED_QUEUE", "rejected_queue.jsonl"),
+        ("utils.rejected_queue", "LEGACY_REJECTED_QUEUE", "rejected_queue.json"),
         ("utils.music_bed", "MUSIC_CACHE_DIR", "music_cache"),
         ("utils.internet_archive", "ARCHIVE_CACHE_DIR", "archive_audio_cache"),
         ("utils.broll", "_CACHE_DIR", "broll_cache"),

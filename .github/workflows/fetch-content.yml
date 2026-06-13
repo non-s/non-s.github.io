@@ -87,7 +87,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
-          QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '1' }}
+          QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '24' }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
@@ -95,6 +95,9 @@ jobs:
 
       - name: "Apply topic freshness"
         run: python scripts/apply_topic_freshness.py
+
+      - name: "Reconcile uploaded queue state"
+        run: python scripts/reconcile_queue_uploads.py
 
       - name: "Write run summary"
         if: always()
@@ -174,6 +177,22 @@ jobs:
             _data/repair_queue.jsonl
             _data/rejected_queue.jsonl
           )
+          jsonl_merge_paths=(
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/reporting_video_metrics.jsonl
+            _data/analytics/studio_reach_daily.jsonl
+            _data/ai_cache.jsonl
+            _data/channel_memory.jsonl
+            _data/fact_sources.jsonl
+            _data/originality_pack.jsonl
+            _data/provider_stats.jsonl
+            _data/publish_slot_decisions.jsonl
+            _data/repair_queue.jsonl
+            _data/rejected_queue.jsonl
+            _data/source_provenance.jsonl
+            _data/trends/trend_signals.jsonl
+            _data/upload_intents.jsonl
+          )
           for path in "${state_paths[@]}"; do
             if [ -e "$path" ]; then
               mkdir -p "$state_dir/$(dirname "$path")"
@@ -186,7 +205,9 @@ jobs:
           done
           git fetch origin main
           git reset --hard origin/main
+          python scripts/merge_jsonl_state.py "$state_dir" "${jsonl_merge_paths[@]}"
           cp -R "$state_dir"/. .
+          python scripts/reconcile_queue_uploads.py
           rm -rf "$state_dir"
           # Stage the queue first: optional generated files must never
           # prevent the refreshed queue from being persisted.
@@ -219,7 +240,9 @@ jobs:
             done
             git fetch origin main
             git reset --hard origin/main
+            python scripts/merge_jsonl_state.py "$retry_dir" "${jsonl_merge_paths[@]}"
             cp -R "$retry_dir"/. .
+            python scripts/reconcile_queue_uploads.py
             rm -rf "$retry_dir"
             git add _data/stories_queue.json
             for path in "${state_paths[@]}"; do

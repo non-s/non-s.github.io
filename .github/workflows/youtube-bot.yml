@@ -278,12 +278,16 @@ jobs:
           state_paths=(
             _data/stories_queue.json
             _data/published_clips.json
+            _data/ai_cache.jsonl
+            _data/provider_stats.jsonl
             _data/channel_memory.jsonl
             _data/analytics/latest.json
             _data/analytics/experiments.json
             _data/analytics/comments.json
             _data/analytics/api_quota_ledger.jsonl
             _data/analytics/api_quota_latest.json
+            _data/analytics/reporting_video_metrics.jsonl
+            _data/analytics/studio_reach_daily.jsonl
             _data/upload_intents.jsonl
             _data/media_lifecycle_report.json
             _data/comment_replies.json
@@ -303,6 +307,7 @@ jobs:
             _data/ops_guardian.json
             _data/remake_backlog.json
             _data/trend_radar.json
+            _data/trends/trend_signals.jsonl
             _data/category_recovery.json
             _data/category_recovery_rewriter.json
             _data/fact_ledger.json
@@ -329,6 +334,7 @@ jobs:
             _data/dry_run_publish.json
             _data/reject_report.json
             _data/publish_slot_decisions.jsonl
+            _data/rejected_queue.jsonl
             _data/session_graph.json
             _data/next_session_actions.json
             _data/sequel_candidates.json
@@ -338,6 +344,22 @@ jobs:
             _data/seo_metadata_lint.json
             _data/queue_prune_report.json
             _data/repair_queue.jsonl
+          )
+          jsonl_merge_paths=(
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/reporting_video_metrics.jsonl
+            _data/analytics/studio_reach_daily.jsonl
+            _data/ai_cache.jsonl
+            _data/channel_memory.jsonl
+            _data/fact_sources.jsonl
+            _data/originality_pack.jsonl
+            _data/provider_stats.jsonl
+            _data/publish_slot_decisions.jsonl
+            _data/repair_queue.jsonl
+            _data/rejected_queue.jsonl
+            _data/source_provenance.jsonl
+            _data/trends/trend_signals.jsonl
+            _data/upload_intents.jsonl
           )
           for path in "${state_paths[@]}"; do
             if [ -e "$path" ]; then
@@ -361,12 +383,14 @@ jobs:
           done
           git fetch origin main
           git reset --hard origin/main
+          python scripts/merge_jsonl_state.py "$state_dir" "${jsonl_merge_paths[@]}"
           cp -R "$state_dir"/. .
+          python scripts/reconcile_queue_uploads.py
           rm -rf "$state_dir"
           # Stage the queue first: unmatched optional globs must never
-          # prevent consumed stories from being persisted. The rejected queue
-          # is diagnostic-only and is omitted here to avoid append-log conflicts
-          # after a successful upload.
+          # prevent consumed stories from being persisted. Append-only JSONL
+          # ledgers are merged with latest main before generated state is
+          # replayed, so diagnostics and upload rows do not erase each other.
           git add _data/stories_queue.json
           for path in "${state_paths[@]}"; do
             [ -e "$path" ] && git add "$path"
@@ -411,7 +435,9 @@ jobs:
             done
             git fetch origin main
             git reset --hard origin/main
+            python scripts/merge_jsonl_state.py "$retry_dir" "${jsonl_merge_paths[@]}"
             cp -R "$retry_dir"/. .
+            python scripts/reconcile_queue_uploads.py
             rm -rf "$retry_dir"
             git add _data/stories_queue.json
             for path in "${state_paths[@]}"; do

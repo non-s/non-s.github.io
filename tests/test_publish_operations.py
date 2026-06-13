@@ -2,6 +2,7 @@ from utils.local_rewriter import rescue_story
 from utils.post24_review import build_review, classify_video
 from utils.publish_schedule import recommend_schedule
 from utils.publish_score import score_story
+from utils import rejected_queue as rejected_queue_module
 from utils.rejected_queue import load_rejections, record_rejection
 from utils.rights_audit import audit_rights
 from utils.sequence_factory import build_sequence_plan
@@ -249,6 +250,18 @@ def test_rejected_queue_jsonl_default_format_records_deduped_items(tmp_path):
     items = load_rejections(path)
     assert len(items) == 1
     assert items[0]["reasons"] == ["generic_packaging"]
+
+
+def test_rejected_queue_default_path_can_be_isolated(monkeypatch, tmp_path):
+    path = tmp_path / "isolated_rejected_queue.jsonl"
+    monkeypatch.setattr(rejected_queue_module, "REJECTED_QUEUE", path)
+
+    record_rejection({"id": "abc", "title": "Weak story"}, ["weak_packaging"], stage="youtube_brain")
+
+    items = load_rejections()
+    assert len(items) == 1
+    assert items[0]["story_id"] == "abc"
+    assert path.exists()
 
 
 def test_rights_audit_requires_known_source_license_and_url():
