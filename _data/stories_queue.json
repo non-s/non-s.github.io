@@ -590,14 +590,43 @@
       ]
     },
     {
+      "autonomy": {
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "lane": "proven_category",
+        "packaging_lab": {
+          "hook_variants": [
+            "Whales reveal one visible signal",
+            "Whales read the moment from one fin cue",
+            "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth,"
+          ],
+          "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target.",
+          "thumbnail_variants": [
+            "WHALES FIN MOVEMENT",
+            "FIN SHIFT",
+            "WATCH FIN SHIFT"
+          ],
+          "title_variants": [
+            "Whales read the moment from one fin cue",
+            "Whales use fin cue before they signal",
+            "This fin cue gives whales away"
+          ]
+        },
+        "priority": 107.5,
+        "publish_score": 97.5,
+        "state": "publish_ready",
+        "updated_at": "2026-06-13T03:12:09.745130+00:00"
+      },
       "breaking": false,
       "category": "ocean",
       "commons_artist": "Stanislav Stelmakhovich",
       "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/A_close-up_of_a_humpback_whale.jpg/1280px-A_close-up_of_a_humpback_whale.jpg",
       "commons_license": "CC0",
       "commons_page_url": "https://commons.wikimedia.org/wiki/File:A_close-up_of_a_humpback_whale.jpg",
+      "community_prompt": "Which nature topic should Wild Brief explain next after whales?",
       "consumed": true,
       "consumed_at": "2026-06-13T03:13:06.495703+00:00",
+      "cta_prompt": "Want to uncover what is still hidden in the ocean?",
       "description": "A clip of marine life in the ocean: close up of whales",
       "discovery_hashtags": [
         "ocean",
@@ -622,22 +651,463 @@
       "id": "1af1013cc6eed163",
       "image_url": "",
       "lead": "Whales reveal one visible signal. Watch fin movement, because whales use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_visible_cue"
+        ]
+      },
       "native_lang": "en",
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after whales?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "This ocean changes right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "mechanism_reveal",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 1,
+          "winners": {
+            "hook_pattern": "{subject} {subject} one {subject} {action}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Whales reveal one visible signal",
+          "Watch the fin cue; the payoff lands seconds later",
+          "Start with the fin cue; it explains the next move",
+          "The fin cue is the detail most people miss",
+          "Whales give away the answer through fin cue"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "whales",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the whales at the start makes sense.",
+          "loop_score": 0.379,
+          "opening_line": "Whales reveal one visible signal",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "whales",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.379,
+        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.5,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Whales reveal one visible signal Watch fin movement because whales use it",
+          "first_frame_text": "WHALES FIN MOVEMENT",
+          "first_frame_text_words": 3,
+          "hook": "Whales reveal one visible signal",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.379,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the whales clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 84,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 96,
+        "selected_variant": {
+          "hook": "Whales reveal one visible signal",
+          "score": 66,
+          "thumbnail_text": "WHALES FIN MOVEMENT",
+          "title": "Whales read the moment from one fin cue"
+        },
+        "series": "Nature Signals",
+        "series_identity": {
+          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Nature Signals",
+          "series": "Nature Signals"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "WHALES FIN MOVEMENT",
+          "FIN SHIFT",
+          "WATCH FIN SHIFT",
+          "WHALES MOVE",
+          "FIN SHIFT MATTERS",
+          "FIN SHIFT PAYOFF",
+          "FIN SHIFT FIRST",
+          "FIN SHIFT REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Whales read the moment from one fin cue",
+          "Whales use fin cue before they move",
+          "This fin cue gives whales away",
+          "Why whales move after one fin cue",
+          "Whales reveal the answer with fin cue",
+          "The fin cue that changes the moment",
+          "Whales make one fin cue matter",
+          "Whales show the hidden payoff in seconds",
+          "Whales: watch this fin cue",
+          "Watch whales after the fin cue"
+        ],
+        "top_variants": [
+          {
+            "hook": "Whales reveal one visible signal",
+            "score": 66,
+            "thumbnail_text": "WHALES FIN MOVEMENT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 66,
+            "thumbnail_text": "WHALES FIN MOVEMENT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 66,
+            "thumbnail_text": "WHALES FIN MOVEMENT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Whales reveal one visible signal",
+            "score": 66,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 66,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 66,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Whales reveal one visible signal",
+            "score": 66,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 66,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 66,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Whales read the moment from one fin cue"
+          },
+          {
+            "hook": "Whales reveal one visible signal",
+            "score": 66,
+            "thumbnail_text": "WHALES MOVE",
+            "title": "Whales read the moment from one fin cue"
+          }
+        ]
+      },
       "pexels_download_url": "https://videos.pexels.com/video-files/13568071/13568071-hd_1080_1920_30fps.mp4",
       "pexels_video_id": "13568071",
+      "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "cue_timing_read",
+          "payoff_time_s": 9.9,
+          "penalty": 10.0,
+          "publish_blocking": false,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": "read_the_moment"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 100,
+            "viral_potential": 80,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 84,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "score": 97.5,
+        "state": "publish_ready",
+        "story_format": "cute_behavior",
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
       "published_at": "2026-06-13T03:10:24.347305+00:00",
       "queue_age_days": 0.0,
+      "queue_prune": {
+        "checked_at": "2026-06-13T03:12:22.883606+00:00",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ],
+        "score": 97.5,
+        "state": "publish_ready",
+        "template_cluster": "read_the_moment"
+      },
+      "queue_repair": {
+        "applied": false,
+        "attempted": false,
+        "reasons": []
+      },
       "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the whales clip.",
       "safety_penalty": 0,
       "score": 8,
       "script": "Whales reveal one visible signal. Watch fin movement, because whales use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
       "sentiment": "positive",
       "seo_title": "Whales read the moment from one fin cue",
+      "series": "Nature Signals",
       "source": "Pexels",
       "source_clip_id": "pexels:1af1013cc6eed163",
       "source_download_url": "https://videos.pexels.com/video-files/13568071/13568071-hd_1080_1920_30fps.mp4",
       "source_license": "Pexels License (free for commercial use)",
       "source_url": "https://www.pexels.com/video/close-up-of-whales-13568071/",
+      "subscriber_conversion": {
+        "comment_probability": 0.191,
+        "confidence": {
+          "bootstrap_multiplier": 0.274,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.033,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 5,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+        "reasons": [
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "return_probability": 0.222,
+        "robotic_title": {
+          "hits": [],
+          "risk": 0,
+          "state": "clear"
+        },
+        "score": 72,
+        "state": "usable",
+        "subscriber_probability": 0.103
+      },
       "thumbnail_text": "WHALES FIN MOVEMENT",
       "title": "Whales read the moment from one fin cue",
       "topic_hashtag": "Ocean",
@@ -659,6 +1129,32 @@
         "trend_score": 59.0
       },
       "url": "https://www.pexels.com/video/close-up-of-whales-13568071/",
+      "youtube_brain": {
+        "animal": "whales",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "cute_behavior",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "whales",
+        "viewer_promise": "See why whales cute behavior matters."
+      },
       "yt_description": "",
       "yt_tags": [
         "whales",
@@ -669,586 +1165,9 @@
         "nature",
         "science",
         "marine life"
-      ],
-      "autonomy": {
-        "priority": 107.5,
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": 97.5,
-        "state": "publish_ready",
-        "packaging_lab": {
-          "title_variants": [
-            "Whales read the moment from one fin cue",
-            "Whales use fin cue before they signal",
-            "This fin cue gives whales away"
-          ],
-          "thumbnail_variants": [
-            "WHALES FIN MOVEMENT",
-            "FIN SHIFT",
-            "WATCH FIN SHIFT"
-          ],
-          "hook_variants": [
-            "Whales reveal one visible signal",
-            "Whales read the moment from one fin cue",
-            "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth,"
-          ],
-          "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        },
-        "updated_at": "2026-06-13T03:12:09.745130+00:00"
-      },
-      "series": "Nature Signals",
-      "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-      "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the whales clip.",
-      "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-      "community_prompt": "Which nature topic should Wild Brief explain next after whales?",
-      "packaging": {
-        "score": 96,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Whales read the moment from one fin cue",
-          "Whales use fin cue before they move",
-          "This fin cue gives whales away",
-          "Why whales move after one fin cue",
-          "Whales reveal the answer with fin cue",
-          "The fin cue that changes the moment",
-          "Whales make one fin cue matter",
-          "Whales show the hidden payoff in seconds",
-          "Whales: watch this fin cue",
-          "Watch whales after the fin cue"
-        ],
-        "thumbnail_options": [
-          "WHALES FIN MOVEMENT",
-          "FIN SHIFT",
-          "WATCH FIN SHIFT",
-          "WHALES MOVE",
-          "FIN SHIFT MATTERS",
-          "FIN SHIFT PAYOFF",
-          "FIN SHIFT FIRST",
-          "FIN SHIFT REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Whales reveal one visible signal",
-          "Watch the fin cue; the payoff lands seconds later",
-          "Start with the fin cue; it explains the next move",
-          "The fin cue is the detail most people miss",
-          "Whales give away the answer through fin cue"
-        ],
-        "selected_variant": {
-          "score": 66,
-          "title": "Whales read the moment from one fin cue",
-          "thumbnail_text": "WHALES FIN MOVEMENT",
-          "hook": "Whales reveal one visible signal"
-        },
-        "top_variants": [
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WHALES FIN MOVEMENT",
-            "hook": "Whales reveal one visible signal"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WHALES FIN MOVEMENT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WHALES FIN MOVEMENT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Whales reveal one visible signal"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Whales reveal one visible signal"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Watch the fin cue; the payoff lands seconds later"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WATCH FIN SHIFT",
-            "hook": "Start with the fin cue; it explains the next move"
-          },
-          {
-            "score": 66,
-            "title": "Whales read the moment from one fin cue",
-            "thumbnail_text": "WHALES MOVE",
-            "hook": "Whales reveal one visible signal"
-          }
-        ],
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "experiment": {
-          "mode": "exploit",
-          "explore_rate": 0.35,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one paw {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {},
-          "sample_count": 1,
-          "assignment": {
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail",
-            "cta": "follow_for_more"
-          }
-        },
-        "series_identity": {
-          "series": "Nature Signals",
-          "episode": 1,
-          "label": "Nature Signals",
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after whales?",
-        "series": "Nature Signals",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the whales clip.",
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "curiosity_gap": {
-          "hook": "This ocean changes right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "whales",
-          "opening_line": "Whales reveal one visible signal",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the whales at the start makes sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.379,
-          "render_hints": {
-            "carry_keyword": "whales",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.379,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "mechanism_reveal",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "WHALES FIN MOVEMENT",
-          "first_frame_text_words": 3,
-          "hook": "Whales reveal one visible signal",
-          "hook_words": 5,
-          "first_2s_narration": "Whales reveal one visible signal Watch fin movement because whales use it",
-          "caption_chars_per_second": 14.5,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "cta_count": 1,
-          "loop_score": 0.379
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "subscriber_conversion": {
-        "score": 72,
-        "state": "usable",
-        "subscriber_probability": 0.103,
-        "return_probability": 0.222,
-        "comment_probability": 0.191,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
-      "publish_score": {
-        "score": 97.5,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 74,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 79,
-            "replay_potential": 100,
-            "comment_potential": 54,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 84,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "ocean",
-        "story_format": "cute_behavior",
-        "hook_score": 86,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.9,
-          "template_cluster": "read_the_moment",
-          "mechanism_cluster": "cue_timing_read"
-        }
-      },
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "whales",
-        "subject": "whales",
-        "story_format": "cute_behavior",
-        "viewer_promise": "See why whales cute behavior matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 97.5,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T03:12:22.883606+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
+      ]
     },
     {
-      "breaking": false,
-      "category": "cats",
-      "commons_artist": "Atelier of the Boxes",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Atelier_of_the_Boxes_-_Mirror_Cover_with_Lovers_Playing_Chess_and_a_Dispute_between_the_Sexes_-_Walters_71206.jpg",
-      "commons_license": "Public domain",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Atelier_of_the_Boxes_-_Mirror_Cover_with_Lovers_Playing_Chess_and_a_Dispute_between_the_Sexes_-_Walters_71206.jpg",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of cats / kittens: a cat between boxes",
-      "discovery_hashtags": [
-        "cats",
-        "kittens",
-        "catfacts",
-        "animals",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:10:08.414787+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "cats"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Cats reveal one visible signal",
-      "id": "4b5093fb68989839",
-      "image_url": "",
-      "lead": "Cats reveal one visible signal. Watch ear position, because cats use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/7691946/7691946-hd_1080_2048_30fps.mp4",
-      "pexels_video_id": "7691946",
-      "published_at": "2026-06-13T03:10:08.414787+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Cats reveal one visible signal. Watch ear position, because cats use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Cats read the moment from one ear shift",
-      "source": "Pexels",
-      "source_clip_id": "pexels:4b5093fb68989839",
-      "source_download_url": "https://videos.pexels.com/video-files/7691946/7691946-hd_1080_2048_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/a-cat-between-boxes-7691946/",
-      "thumbnail_text": "CATS EAR POSITION",
-      "title": "Cats read the moment from one ear shift",
-      "topic_hashtag": "Animals",
-      "trend_context": {
-        "animal": "cat",
-        "category": "cats",
-        "headline": "‘Being forced into human spaces’: Wildlife experts on ‘rare’ rusty-spotted cat sighting - The Indian Express",
-        "mentions": 4,
-        "query": "cat animal sighting rare wildlife",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQd0FPWGxGUHl2WTFtQ2dhVEJLNEwxUUJnLVRhM3BwczU2NHdKSUc1RHM0V3FnWUR0aDZVQjM2Rm9OZWRPVTBEMmJJcFdlNzNNaGdqb2ZxZGRzS0FvOEJLVG9tY0E2SW4za3NTZEZ3UGpfc0RJYTNFcXBYcE5WR2ZPUzM1bXZ2RENLRjh2NVhtZmowdTZPVl9weTdpLWFybmRYWVp2bGpUM01zVVlsbkFZNGtCQ3pyQkYtUVEyN0FGRVR4VG1vTEFYenhQVy1pZ1I1Q3RMc2FKTUxrc3dwR0dMWkJhc9IB6gFBVV95cUxQa2J0RldhRTFrVG1fbWQtQS1BLVdFeGtURzNpb0poMlVrcVp5NzI5N3JKb0RrX3pMMk1BeTRUZUcxWVpEWE5pbERNMUo2azFBbFNkLVFqOHk0MndOM0pfY0lWa3QxYTNCWC1ZbVVJTUhQRmIwRFNoQzdUcjNnYkFyM3dZRWtHLVh6RllrbDVPT1p4QWNzNDlYTm80Z3V5M1pjVE4yS0FsZzNPZzZWdzBNTG4wcGd5WHUxVS01b2FySnREN3B4eEJIQWRzaUZaOU5KOHQ1YjB1Y0RJR3lacjZ3aE5TbTNEcUpxeFE?oc=5",
-          "https://news.google.com/rss/articles/CBMijAFBVV95cUxPY191MGphWDlUYi1JdmtwMG1EZkplMW43X2g3czg3QlNSRl9aUF9lOUFJbllTMlFBRkNwV3pkNzdfMmlXM19qLWkwbWhHQkZBSmp5aW5IbmIwcHFfRzM0ZGNrWUlXUDZFOUdneVJZMlB1MF9oZ0I0SFhLaGZlV1RwaS1RYTBveU5pVWlvZg?oc=5",
-          "https://news.google.com/rss/articles/CBMi4wFBVV95cUxORWRJWjBpRU9FdzBEWVJSckhGdEh5TTFyMUhITS1ILW1OWXlTMl8zZ2sxdTdYUnh6SmM4cml6ZHdHSWw5QVJXSGFHSEUyME9uSDdLcTVnTVdRRGVHSEU5UkdVWnk5RzdsRHFYSzJ4X0NwZWpQZEdQZm5TNzhmOGZybnF5TjBOQ1VwWXIwZGhFMkMwVVVCS1k5bXFTU1NCUEZmRVMxTEF1REYxZ3VDd3V6VnY4dmxweTgtNjYtMnV0VXJKMS1Md3BsQWZJQzlBOWxYVk8wczNlYnZCRnFyLTkzLTJxQdIB9wFBVV95cUxOaFdVMzVxYlFac0FfekRkdjRGbnVZQUxKZ0tjdGNEdXRTZFFwdGlIZXNQRkJpcTZIcXEwTmxKZ0dhckZ0NXNGLWRYVGh4dU54SDQyb3BxSlI3VEhDa3VYY0NmQjFodFV1UGJuU1Nab2RyQ1dBNVp5RmtvbEp4U0t2aEdNeW9jclhSbjF5cUM2N0Y4ZVJIU3NtZGp6QXJjaElJZkVDcUFBTUZLOWNmZy00OXN5Z0ZoTFpId1J3VlhqZ1VMNkJEVjhyeDhFVGZpM2FkZk9CSFZ6MzZrYlF5Ul9jcHctenoxQnNORm5EY29idTR2amRIek40?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "rescue",
-          "sighting",
-          "wildlife"
-        ],
-        "trend_score": 61.0
-      },
-      "url": "https://www.pexels.com/video/a-cat-between-boxes-7691946/",
-      "yt_description": "",
-      "yt_tags": [
-        "cats",
-        "animal facts",
-        "hiding",
-        "boxes",
-        "nature",
-        "science",
-        "kittens"
-      ],
       "autonomy": {
         "priority": 116.8,
         "lane": "proven_category",
@@ -1258,7 +1177,7 @@
         "packaging_lab": {
           "title_variants": [
             "Cats read the moment from one ear shift",
-            "Cats use ear shift before they signal",
+            "Cats use ear shift before they move",
             "This ear shift gives cats away"
           ],
           "thumbnail_variants": [
@@ -1274,13 +1193,52 @@
           "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Survival Tricks",
-      "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
-      "replay_prompt": "End by pointing back to the ear position, so viewers rewatch the cats clip.",
-      "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+      "breaking": false,
+      "category": "cats",
+      "commons_artist": "Atelier of the Boxes",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Atelier_of_the_Boxes_-_Mirror_Cover_with_Lovers_Playing_Chess_and_a_Dispute_between_the_Sexes_-_Walters_71206.jpg",
+      "commons_license": "Public domain",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Atelier_of_the_Boxes_-_Mirror_Cover_with_Lovers_Playing_Chess_and_a_Dispute_between_the_Sexes_-_Walters_71206.jpg",
       "community_prompt": "Which nature topic should Wild Brief explain next after cats?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
+      "description": "A clip of cats / kittens: a cat between boxes",
+      "discovery_hashtags": [
+        "cats",
+        "kittens",
+        "catfacts",
+        "animals",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:10:08.414787+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "cats"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Cats reveal one visible signal",
+      "id": "4b5093fb68989839",
+      "image_url": "",
+      "lead": "Cats reveal one visible signal. Watch ear position, because cats use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 95,
         "state": "magnetic",
@@ -1533,45 +1491,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.061,
-          "sample_size": 2,
-          "minimum_sample_size": 10,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.296,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/7691946/7691946-hd_1080_2048_30fps.mp4",
+      "pexels_video_id": "7691946",
+      "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. What part of this feels most impossible?",
       "publish_score": {
         "score": 100,
         "approved": true,
@@ -1714,6 +1636,89 @@
           "mechanism_cluster": "cue_timing_read"
         }
       },
+      "published_at": "2026-06-13T03:10:08.414787+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 100.0,
+        "state": "publish_ready",
+        "checked_at": "2026-06-13T05:09:38.830051+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the ear position, so viewers rewatch the cats clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Cats reveal one visible signal. Watch ear position, because cats use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Cats read the moment from one ear shift",
+      "series": "Survival Tricks",
+      "source": "Pexels",
+      "source_clip_id": "pexels:4b5093fb68989839",
+      "source_download_url": "https://videos.pexels.com/video-files/7691946/7691946-hd_1080_2048_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/a-cat-between-boxes-7691946/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.061,
+          "sample_size": 2,
+          "minimum_sample_size": 10,
+          "data_quality": "inferred",
+          "data_quality_score": 0.5,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.296,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+      },
+      "thumbnail_text": "CATS EAR POSITION",
+      "title": "Cats read the moment from one ear shift",
+      "topic_hashtag": "Animals",
+      "trend_context": {
+        "animal": "cat",
+        "category": "cats",
+        "headline": "‘Being forced into human spaces’: Wildlife experts on ‘rare’ rusty-spotted cat sighting - The Indian Express",
+        "mentions": 4,
+        "query": "cat animal sighting rare wildlife",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQd0FPWGxGUHl2WTFtQ2dhVEJLNEwxUUJnLVRhM3BwczU2NHdKSUc1RHM0V3FnWUR0aDZVQjM2Rm9OZWRPVTBEMmJJcFdlNzNNaGdqb2ZxZGRzS0FvOEJLVG9tY0E2SW4za3NTZEZ3UGpfc0RJYTNFcXBYcE5WR2ZPUzM1bXZ2RENLRjh2NVhtZmowdTZPVl9weTdpLWFybmRYWVp2bGpUM01zVVlsbkFZNGtCQ3pyQkYtUVEyN0FGRVR4VG1vTEFYenhQVy1pZ1I1Q3RMc2FKTUxrc3dwR0dMWkJhc9IB6gFBVV95cUxQa2J0RldhRTFrVG1fbWQtQS1BLVdFeGtURzNpb0poMlVrcVp5NzI5N3JKb0RrX3pMMk1BeTRUZUcxWVpEWE5pbERNMUo2azFBbFNkLVFqOHk0MndOM0pfY0lWa3QxYTNCWC1ZbVVJTUhQRmIwRFNoQzdUcjNnYkFyM3dZRWtHLVh6RllrbDVPT1p4QWNzNDlYTm80Z3V5M1pjVE4yS0FsZzNPZzZWdzBNTG4wcGd5WHUxVS01b2FySnREN3B4eEJIQWRzaUZaOU5KOHQ1YjB1Y0RJR3lacjZ3aE5TbTNEcUpxeFE?oc=5",
+          "https://news.google.com/rss/articles/CBMijAFBVV95cUxPY191MGphWDlUYi1JdmtwMG1EZkplMW43X2g3czg3QlNSRl9aUF9lOUFJbllTMlFBRkNwV3pkNzdfMmlXM19qLWkwbWhHQkZBSmp5aW5IbmIwcHFfRzM0ZGNrWUlXUDZFOUdneVJZMlB1MF9oZ0I0SFhLaGZlV1RwaS1RYTBveU5pVWlvZg?oc=5",
+          "https://news.google.com/rss/articles/CBMi4wFBVV95cUxORWRJWjBpRU9FdzBEWVJSckhGdEh5TTFyMUhITS1ILW1OWXlTMl8zZ2sxdTdYUnh6SmM4cml6ZHdHSWw5QVJXSGFHSEUyME9uSDdLcTVnTVdRRGVHSEU5UkdVWnk5RzdsRHFYSzJ4X0NwZWpQZEdQZm5TNzhmOGZybnF5TjBOQ1VwWXIwZGhFMkMwVVVCS1k5bXFTU1NCUEZmRVMxTEF1REYxZ3VDd3V6VnY4dmxweTgtNjYtMnV0VXJKMS1Md3BsQWZJQzlBOWxYVk8wczNlYnZCRnFyLTkzLTJxQdIB9wFBVV95cUxOaFdVMzVxYlFac0FfekRkdjRGbnVZQUxKZ0tjdGNEdXRTZFFwdGlIZXNQRkJpcTZIcXEwTmxKZ0dhckZ0NXNGLWRYVGh4dU54SDQyb3BxSlI3VEhDa3VYY0NmQjFodFV1UGJuU1Nab2RyQ1dBNVp5RmtvbEp4U0t2aEdNeW9jclhSbjF5cUM2N0Y4ZVJIU3NtZGp6QXJjaElJZkVDcUFBTUZLOWNmZy00OXN5Z0ZoTFpId1J3VlhqZ1VMNkJEVjhyeDhFVGZpM2FkZk9CSFZ6MzZrYlF5Ul9jcHctenoxQnNORm5EY29idTR2amRIek40?oc=5"
+        ],
+        "terms": [
+          "rare",
+          "rescue",
+          "sighting",
+          "wildlife"
+        ],
+        "trend_score": 61.0
+      },
+      "url": "https://www.pexels.com/video/a-cat-between-boxes-7691946/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -1740,103 +1745,18 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 100.0,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T03:13:27.200450+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "reptiles",
-      "commons_artist": "King, Charles, 1844-1933",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Captain_Close%2C_and_Sergeant_Croesus%3B_two_novels_%28IA_captaincloseands00kingiala%29.pdf/page1-500px-Captain_Close%2C_and_Sergeant_Croesus%3B_two_novels_%28IA_captaincloseands00kingiala%29.pdf.jpg",
-      "commons_license": "Public domain",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Captain_Close,_and_Sergeant_Croesus;_two_novels_(IA_captaincloseands00kingiala).pdf",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of reptiles: close up on snake moving over planks",
-      "discovery_hashtags": [
-        "reptiles",
-        "snakefacts",
-        "lizardfacts",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:10:56.355790+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "reptiles"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Snakes reveal one visible signal",
-      "id": "01c9148ecf9c93ea",
-      "image_url": "",
-      "lead": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/10231672/10231672-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "10231672",
-      "published_at": "2026-06-13T03:10:56.355790+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Snakes read the moment from one head movement",
-      "source": "Pexels",
-      "source_clip_id": "pexels:01c9148ecf9c93ea",
-      "source_download_url": "https://videos.pexels.com/video-files/10231672/10231672-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/close-up-on-snake-moving-over-planks-10231672/",
-      "thumbnail_text": "SNAKES HEAD MOVEMENT",
-      "title": "Snakes read the moment from one head movement",
-      "topic_hashtag": "Reptiles",
-      "trend_context": {
-        "animal": "snake",
-        "category": "reptiles",
-        "headline": "RFK Jr. snatches snakes in viral video, the latest of his many animal encounters - KARK",
-        "mentions": 4,
-        "query": "snake animal viral",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZ2lNMzB2di1HOE9seUFibTJEeXFpdnlPME52QzRMVk5CUWNnY0dZelZzSERsYjhEa0I2VjFqZncxRUcyTXFtWnFHQTVCdDBETV9nN3I2VTZzVnVYSjNDRVNOTy1mUElUdXNMcEt3eEtPMmhtN3J5YlNpTnR6S0hRR21ZZ2M1cDdwTEs2ZmhTc0xlcUFfQjExNHFCcWx0SHc0T1FEemkzNXlPR0RtZ1d4VE1ZMlpTcHpvVmJhaVRVVHFrRjhLcGk1OA?oc=5",
-          "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZ2lNMzB2di1HOE9seUFibTJEeXFpdnlPME52QzRMVk5CUWNnY0dZelZzSERsYjhEa0I2VjFqZncxRUcyTXFtWnFHQTVCdDBETV9nN3I2VTZzVnVYSjNDRVNOTy1mUElUdXNMcEt3eEtPMmhtN3J5YlNpTnR6S0hRR21ZZ2M1cDdwTEs2ZmhTc0xlcUFfQjExNHFCcWx0SHc0T1FEemkzNXlPR0RtZ1d4VE1ZMlpTcHpvVmJhaVRVVHFrRjhLcGk1OA?oc=5",
-          "https://news.google.com/rss/articles/CBMihAFBVV95cUxPejJLeGNNNDhFdmg2bFRRRVBad01YbmRkY2ZOSlc3d1QyUlUtd1BXVnVoaEotdV9ocnI1ZG9OdjFfQlppYVV2MGFJcDR2TmprS0d0M0N4OTF5VmhxYWtMRTZBTWtZVHBreVlKMnBXcWZraVVGZ01pbUx2dUpoNVNYUEhiNWc?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "viral"
-        ],
-        "trend_score": 61.0
-      },
-      "url": "https://www.pexels.com/video/close-up-on-snake-moving-over-planks-10231672/",
       "yt_description": "",
       "yt_tags": [
-        "snakes",
-        "reptiles",
+        "cats",
         "animal facts",
-        "reptile movement",
-        "plank crossing",
+        "hiding",
+        "boxes",
         "nature",
-        "nature facts",
-        "lizard facts"
-      ],
+        "science",
+        "kittens"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 113.3,
         "lane": "proven_category",
@@ -1846,7 +1766,7 @@
         "packaging_lab": {
           "title_variants": [
             "Snakes read the moment from one head movement",
-            "Snakes use head tilt before they signal",
+            "Snakes use head tilt before they move",
             "This head tilt gives snakes away"
           ],
           "thumbnail_variants": [
@@ -1862,13 +1782,53 @@
           "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Watch The Cue",
-      "cta_prompt": "Want more survival tricks from ancient designs?",
-      "replay_prompt": "End by pointing back to the head movement, so viewers rewatch the snakes clip.",
-      "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
+      "breaking": false,
+      "category": "reptiles",
+      "commons_artist": "King, Charles, 1844-1933",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Captain_Close%2C_and_Sergeant_Croesus%3B_two_novels_%28IA_captaincloseands00kingiala%29.pdf/page1-500px-Captain_Close%2C_and_Sergeant_Croesus%3B_two_novels_%28IA_captaincloseands00kingiala%29.pdf.jpg",
+      "commons_license": "Public domain",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Captain_Close,_and_Sergeant_Croesus;_two_novels_(IA_captaincloseands00kingiala).pdf",
       "community_prompt": "Which nature topic should Wild Brief explain next after snakes?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want more survival tricks from ancient designs?",
+      "description": "A clip of reptiles: close up on snake moving over planks",
+      "discovery_hashtags": [
+        "reptiles",
+        "snakefacts",
+        "lizardfacts",
+        "animalfacts",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:10:56.355790+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "reptiles"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Snakes reveal one visible signal",
+      "id": "01c9148ecf9c93ea",
+      "image_url": "",
+      "lead": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "subject_not_immediately_clear",
+          "script_length_risk",
+          "missing_action_word",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 96,
         "state": "magnetic",
@@ -2121,46 +2081,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "subject_not_immediately_clear",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/10231672/10231672-hd_1080_1920_30fps.mp4",
+      "pexels_video_id": "10231672",
+      "pinned_comment": "Watch the head movement again. Tomorrow: another animal signal. Is this ancient design underrated?",
       "publish_score": {
         "score": 100,
         "approved": true,
@@ -2301,6 +2224,87 @@
           "mechanism_cluster": "cue_timing_read"
         }
       },
+      "published_at": "2026-06-13T03:10:56.355790+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 100.0,
+        "state": "publish_ready",
+        "checked_at": "2026-06-13T05:09:38.830578+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the head movement, so viewers rewatch the snakes clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Snakes reveal one visible signal. Watch head movement, because snakes use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Snakes read the moment from one head movement",
+      "series": "Watch The Cue",
+      "source": "Pexels",
+      "source_clip_id": "pexels:01c9148ecf9c93ea",
+      "source_download_url": "https://videos.pexels.com/video-files/10231672/10231672-hd_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/close-up-on-snake-moving-over-planks-10231672/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "SNAKES HEAD MOVEMENT",
+      "title": "Snakes read the moment from one head movement",
+      "topic_hashtag": "Reptiles",
+      "trend_context": {
+        "animal": "snake",
+        "category": "reptiles",
+        "headline": "RFK Jr. snatches snakes in viral video, the latest of his many animal encounters - KARK",
+        "mentions": 4,
+        "query": "snake animal viral",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZ2lNMzB2di1HOE9seUFibTJEeXFpdnlPME52QzRMVk5CUWNnY0dZelZzSERsYjhEa0I2VjFqZncxRUcyTXFtWnFHQTVCdDBETV9nN3I2VTZzVnVYSjNDRVNOTy1mUElUdXNMcEt3eEtPMmhtN3J5YlNpTnR6S0hRR21ZZ2M1cDdwTEs2ZmhTc0xlcUFfQjExNHFCcWx0SHc0T1FEemkzNXlPR0RtZ1d4VE1ZMlpTcHpvVmJhaVRVVHFrRjhLcGk1OA?oc=5",
+          "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZ2lNMzB2di1HOE9seUFibTJEeXFpdnlPME52QzRMVk5CUWNnY0dZelZzSERsYjhEa0I2VjFqZncxRUcyTXFtWnFHQTVCdDBETV9nN3I2VTZzVnVYSjNDRVNOTy1mUElUdXNMcEt3eEtPMmhtN3J5YlNpTnR6S0hRR21ZZ2M1cDdwTEs2ZmhTc0xlcUFfQjExNHFCcWx0SHc0T1FEemkzNXlPR0RtZ1d4VE1ZMlpTcHpvVmJhaVRVVHFrRjhLcGk1OA?oc=5",
+          "https://news.google.com/rss/articles/CBMihAFBVV95cUxPejJLeGNNNDhFdmg2bFRRRVBad01YbmRkY2ZOSlc3d1QyUlUtd1BXVnVoaEotdV9ocnI1ZG9OdjFfQlppYVV2MGFJcDR2TmprS0d0M0N4OTF5VmhxYWtMRTZBTWtZVHBreVlKMnBXcWZraVVGZ01pbUx2dUpoNVNYUEhiNWc?oc=5"
+        ],
+        "terms": [
+          "rare",
+          "viral"
+        ],
+        "trend_score": 61.0
+      },
+      "url": "https://www.pexels.com/video/close-up-on-snake-moving-over-planks-10231672/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -2327,100 +2331,19 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 100.0,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T03:13:27.200989+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "birds",
-      "commons_artist": "MilanIlic553",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Cinclus_cinclus26.jpg/1280px-Cinclus_cinclus26.jpg",
-      "commons_license": "CC0",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Cinclus_cinclus26.jpg",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of birds: marangone",
-      "discovery_hashtags": [
-        "birds",
-        "birdfacts",
-        "nature",
-        "animals",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:10:40.415118+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "birds"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Birds reveal one visible signal",
-      "id": "2fb9584c6073f269",
-      "image_url": "",
-      "lead": "Birds reveal one visible signal. Watch wing position, because birds use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/15953425/15953425-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "15953425",
-      "published_at": "2026-06-13T03:10:40.415118+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Birds reveal one visible signal. Watch wing position, because birds use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Birds read the moment from one wing angle",
-      "source": "Pexels",
-      "source_clip_id": "pexels:2fb9584c6073f269",
-      "source_download_url": "https://videos.pexels.com/video-files/15953425/15953425-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/marangone-15953425/",
-      "thumbnail_text": "BIRDS WING POSITION",
-      "title": "Birds read the moment from one wing angle",
-      "topic_hashtag": "Birds",
-      "trend_context": {
-        "animal": "owl",
-        "category": "birds",
-        "headline": "Pocket-sized owl babies mark first sighting for rare species in over 100 years - Good Good Good News",
-        "mentions": 1,
-        "query": "owl animal sighting rare",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMid0FVX3lxTE5mUFI4SzM2dGxKbFVoNnhST2pLR05lRGZjcmRZQkNzOEF1cHR3Rml3X3NmTVpkajZjSzFaVXh2Sy1sbHNxRWNaTUdwQUwzV0pxaWhYa1pJOWRsY2JFMExRVVRjZlZYNEZDa2FNWEJSR2FlaTNjRE1j?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "sighting"
-        ],
-        "trend_score": 57.0
-      },
-      "url": "https://www.pexels.com/video/marangone-15953425/",
       "yt_description": "",
       "yt_tags": [
-        "birds",
+        "snakes",
+        "reptiles",
         "animal facts",
-        "marangone",
-        "tree nesting",
+        "reptile movement",
+        "plank crossing",
         "nature",
-        "earth science",
-        "avian"
-      ],
+        "nature facts",
+        "lizard facts"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 111.2,
         "lane": "proven_category",
@@ -2430,7 +2353,7 @@
         "packaging_lab": {
           "title_variants": [
             "Birds read the moment from one wing angle",
-            "Birds use wing angle before they signal",
+            "Birds use wing angle before they move",
             "This wing angle gives birds away"
           ],
           "thumbnail_variants": [
@@ -2446,13 +2369,55 @@
           "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Nature Signals",
-      "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
-      "replay_prompt": "End by pointing back to the wing position, so viewers rewatch the birds clip.",
-      "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+      "breaking": false,
+      "category": "birds",
+      "commons_artist": "MilanIlic553",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Cinclus_cinclus26.jpg/1280px-Cinclus_cinclus26.jpg",
+      "commons_license": "CC0",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Cinclus_cinclus26.jpg",
       "community_prompt": "Which nature topic should Wild Brief explain next after birds?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+      "description": "A clip of birds: marangone",
+      "discovery_hashtags": [
+        "birds",
+        "birdfacts",
+        "nature",
+        "animals",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:10:40.415118+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "birds"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Birds reveal one visible signal",
+      "id": "2fb9584c6073f269",
+      "image_url": "",
+      "lead": "Birds reveal one visible signal. Watch wing position, because birds use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "title_shape_weak",
+          "title_needs_stronger_shape",
+          "missing_action_word",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 95,
         "state": "magnetic",
@@ -2705,48 +2670,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "title_shape_weak",
-          "title_needs_stronger_shape",
-          "missing_action_word",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/15953425/15953425-hd_1080_1920_30fps.mp4",
+      "pexels_video_id": "15953425",
+      "pinned_comment": "Watch the wing position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
       "publish_score": {
         "score": 100,
         "approved": true,
@@ -2887,6 +2813,86 @@
           "mechanism_cluster": "cue_timing_read"
         }
       },
+      "published_at": "2026-06-13T03:10:40.415118+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 88.0,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T05:09:38.831129+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence",
+          "template_cluster_limit:read_the_moment"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the wing position, so viewers rewatch the birds clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Birds reveal one visible signal. Watch wing position, because birds use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Birds read the moment from one wing angle",
+      "series": "Nature Signals",
+      "source": "Pexels",
+      "source_clip_id": "pexels:2fb9584c6073f269",
+      "source_download_url": "https://videos.pexels.com/video-files/15953425/15953425-hd_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/marangone-15953425/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "BIRDS WING POSITION",
+      "title": "Birds read the moment from one wing angle",
+      "topic_hashtag": "Birds",
+      "trend_context": {
+        "animal": "owl",
+        "category": "birds",
+        "headline": "Pocket-sized owl babies mark first sighting for rare species in over 100 years - Good Good Good News",
+        "mentions": 1,
+        "query": "owl animal sighting rare",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMid0FVX3lxTE5mUFI4SzM2dGxKbFVoNnhST2pLR05lRGZjcmRZQkNzOEF1cHR3Rml3X3NmTVpkajZjSzFaVXh2Sy1sbHNxRWNaTUdwQUwzV0pxaWhYa1pJOWRsY2JFMExRVVRjZlZYNEZDa2FNWEJSR2FlaTNjRE1j?oc=5"
+        ],
+        "terms": [
+          "rare",
+          "sighting"
+        ],
+        "trend_score": 57.0
+      },
+      "url": "https://www.pexels.com/video/marangone-15953425/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -2913,99 +2919,18 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 88.0,
-        "state": "rewrite",
-        "checked_at": "2026-06-13T03:13:27.201541+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence",
-          "template_cluster_limit:read_the_moment"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "insects",
-      "commons_artist": "Nicholson, George, 1760-1825\nUniversity of Leeds. Library",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/On_clothing_%28IA_b21533714%29.pdf/page1-500px-On_clothing_%28IA_b21533714%29.pdf.jpg",
-      "commons_license": "Public domain",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:On_clothing_(IA_b21533714).pdf",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A close clip of insects: bees on old clothing",
-      "discovery_hashtags": [
-        "insects",
-        "bugfacts",
-        "naturefacts",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:11:04.481679+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "insects"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Watch the wing flash; the payoff lands seconds later",
-      "id": "b0960cfb12495b2b",
-      "image_url": "",
-      "lead": "Bees rely on wing movement. Watch wing movement, because bees use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/8233976/8233976-hd_1080_2048_25fps.mp4",
-      "pexels_video_id": "8233976",
-      "published_at": "2026-06-13T03:11:04.481679+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Bees rely on wing movement. Watch wing movement, because bees use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Bees rely on wing movement to survive",
-      "source": "Pexels",
-      "source_clip_id": "pexels:b0960cfb12495b2b",
-      "source_download_url": "https://videos.pexels.com/video-files/8233976/8233976-hd_1080_2048_25fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
-      "thumbnail_text": "BEES WING MOVEMENT",
-      "title": "Bees rely on wing movement to survive",
-      "topic_hashtag": "Insects",
-      "trend_context": {
-        "animal": "bee",
-        "category": "insects",
-        "headline": "Stanislaus animal shelter temporarily closed. Respiratory illness spreads quickly - Modesto Bee",
-        "mentions": 1,
-        "query": "bee animal",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMiZkFVX3lxTFA3eGJJaHVzMDVPc3M2TTRvWVAxa0EwcXpfRFd5bWVrM1BlU0dGbzhnVWVYd2hpMzRGY0ktcVBsejRqaGpCQjFrZGZrcm03S18xUEpFblVvWkxINThGUmptNEZkMnRNQdIBZkFVX3lxTE1yb253NWZOUTduTVRra21xeXE0UW9GTVVVdTdOd1dvakdKam1VdTJ2T0ptdlM0LVJqV244LUlRaVczZmdlWmxZZndIdjhUSDJsOVlYMlh4YnhJUEZBODRjUGdzNC1FUQ?oc=5"
-        ],
-        "terms": [],
-        "trend_score": 25.0
-      },
-      "url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
       "yt_description": "",
       "yt_tags": [
-        "bees",
-        "insects",
+        "birds",
         "animal facts",
-        "old clothing",
+        "marangone",
+        "tree nesting",
         "nature",
-        "nature facts",
-        "bugs",
-        "insect facts"
-      ],
+        "earth science",
+        "avian"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 103.0,
         "lane": "fresh_experiment",
@@ -3015,7 +2940,7 @@
         "packaging_lab": {
           "title_variants": [
             "Bees rely on wing movement to survive",
-            "Bees use wing flash before they survive",
+            "Bees use wing flash before they move",
             "This wing flash gives bees away"
           ],
           "thumbnail_variants": [
@@ -3031,13 +2956,53 @@
           "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Body Clues",
-      "cta_prompt": "Want more small creatures doing impossible things?",
-      "replay_prompt": "End by pointing back to the wing movement, so viewers rewatch the bees clip.",
-      "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+      "breaking": false,
+      "category": "insects",
+      "commons_artist": "Nicholson, George, 1760-1825\nUniversity of Leeds. Library",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/On_clothing_%28IA_b21533714%29.pdf/page1-500px-On_clothing_%28IA_b21533714%29.pdf.jpg",
+      "commons_license": "Public domain",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:On_clothing_(IA_b21533714).pdf",
       "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want more small creatures doing impossible things?",
+      "description": "A close clip of insects: bees on old clothing",
+      "discovery_hashtags": [
+        "insects",
+        "bugfacts",
+        "naturefacts",
+        "animalfacts",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:11:04.481679+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "insects"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Watch the wing flash; the payoff lands seconds later",
+      "id": "b0960cfb12495b2b",
+      "image_url": "",
+      "lead": "Bees rely on wing movement. Watch wing movement, because bees use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_action_word",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 96,
         "state": "magnetic",
@@ -3051,9 +3016,9 @@
         "risks": [],
         "title_options": [
           "Bees rely on wing movement to survive",
-          "Bees use wing flash before they move",
+          "Bees use wing flash before they survive",
           "This wing flash gives bees away",
-          "Why bees move after one wing flash",
+          "Why bees survive after one wing flash",
           "Bees reveal the answer with wing flash",
           "The wing flash that changes the moment",
           "Bees make one wing flash matter",
@@ -3065,7 +3030,7 @@
           "BEES WING MOVEMENT",
           "WING FLASH",
           "WATCH WING FLASH",
-          "BEES MOVE",
+          "BEES SURVIVE",
           "WING FLASH MATTERS",
           "WING FLASH PAYOFF",
           "WING FLASH FIRST",
@@ -3143,7 +3108,7 @@
           {
             "score": 67,
             "title": "Bees rely on wing movement to survive",
-            "thumbnail_text": "BEES MOVE",
+            "thumbnail_text": "BEES SURVIVE",
             "hook": "Watch the wing flash; the payoff lands seconds later"
           }
         ],
@@ -3290,47 +3255,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 99,
-        "state": "strong",
-        "subscriber_probability": 0.141,
-        "return_probability": 0.297,
-        "comment_probability": 0.253,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "hook_invites_return",
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/8233976/8233976-hd_1080_2048_25fps.mp4",
+      "pexels_video_id": "8233976",
+      "pinned_comment": "Watch the wing movement again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
       "publish_score": {
         "score": 100,
         "approved": true,
@@ -3472,6 +3399,83 @@
           "mechanism_cluster": "survival_cue"
         }
       },
+      "published_at": "2026-06-13T03:11:04.481679+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 100.0,
+        "state": "publish_ready",
+        "checked_at": "2026-06-13T05:09:38.831699+00:00",
+        "template_cluster": "rely_to_survive",
+        "mechanism_cluster": "survival_cue",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the wing movement, so viewers rewatch the bees clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Bees rely on wing movement. Watch wing movement, because bees use it to stay safe when the moment changes. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Bees rely on wing movement to survive",
+      "series": "Body Clues",
+      "source": "Pexels",
+      "source_clip_id": "pexels:b0960cfb12495b2b",
+      "source_download_url": "https://videos.pexels.com/video-files/8233976/8233976-hd_1080_2048_25fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
+      "subscriber_conversion": {
+        "score": 99,
+        "state": "strong",
+        "subscriber_probability": 0.141,
+        "return_probability": 0.297,
+        "comment_probability": 0.253,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "hook_invites_return",
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "BEES WING MOVEMENT",
+      "title": "Bees rely on wing movement to survive",
+      "topic_hashtag": "Insects",
+      "trend_context": {
+        "animal": "bee",
+        "category": "insects",
+        "headline": "Stanislaus animal shelter temporarily closed. Respiratory illness spreads quickly - Modesto Bee",
+        "mentions": 1,
+        "query": "bee animal",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMiZkFVX3lxTFA3eGJJaHVzMDVPc3M2TTRvWVAxa0EwcXpfRFd5bWVrM1BlU0dGbzhnVWVYd2hpMzRGY0ktcVBsejRqaGpCQjFrZGZrcm03S18xUEpFblVvWkxINThGUmptNEZkMnRNQdIBZkFVX3lxTE1yb253NWZOUTduTVRra21xeXE0UW9GTVVVdTdOd1dvakdKam1VdTJ2T0ptdlM0LVJqV244LUlRaVczZmdlWmxZZndIdjhUSDJsOVlYMlh4YnhJUEZBODRjUGdzNC1FUQ?oc=5"
+        ],
+        "terms": [],
+        "trend_score": 25.0
+      },
+      "url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -3498,102 +3502,19 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 100.0,
-        "state": "publish_ready",
-        "checked_at": "2026-06-13T03:13:27.202101+00:00",
-        "template_cluster": "rely_to_survive",
-        "mechanism_cluster": "survival_cue",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "wildlife",
-      "commons_artist": "",
-      "commons_image_url": "",
-      "commons_license": "",
-      "commons_page_url": "",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of wild animals in nature: gray wolf engaging in scent rolling by pond",
-      "discovery_hashtags": [
-        "wildlife",
-        "wildanimals",
-        "safari",
-        "animalfacts",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:10:32.383593+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "wildlife"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Wolves reveal one visible signal",
-      "id": "18762a35e9b1f385",
-      "image_url": "",
-      "lead": "Wolves reveal one visible signal. Watch tail position, because wolves use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/34803054/14756468_1080_1920_30fps.mp4",
-      "pexels_video_id": "34803054",
-      "published_at": "2026-06-13T03:10:32.383593+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Wolves reveal one visible signal. Watch tail position, because wolves use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Wolves read the moment from one tail lift",
-      "source": "Pexels",
-      "source_clip_id": "pexels:18762a35e9b1f385",
-      "source_download_url": "https://videos.pexels.com/video-files/34803054/14756468_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/gray-wolf-engaging-in-scent-rolling-by-pond-34803054/",
-      "thumbnail_text": "WOLVES TAIL POSITION",
-      "title": "Wolves read the moment from one tail lift",
-      "topic_hashtag": "Wildlife",
-      "trend_context": {
-        "animal": "lion",
-        "category": "wildlife",
-        "headline": "Rare mountain lion sighting in Pasadena neighborhood prompts shelter-in-place for some residents - ABC7 Los Angeles",
-        "mentions": 2,
-        "query": "lion animal sighting rare",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMiswFBVV95cUxONzNFdjF6OTFRc08xcmM1d245cHFiNUxadE43a0VUb0JSenY0MHdPSTJFMi1ialZrMDVBZHdrRzBzd3RQNFpsaklvallXbzA4SHhBRHlYSGJsbVBYVC1lODlRalJRUVVFeHJDc0RyazVfNXpwWm9lSkJKeU4taDE5U3ZMcVJxNVlhZUhsa1hKeWs3Vl84SXQ2RUktV0s1QXNuSlhoT0hkSHlGQ19GeHFIdDdGQdIBuAFBVV95cUxNWENKWmlieFJJVmJxeGhlVkRMY09IRGw5WkFMbUFGQmZpOWtkLUtOSi1JOHczM1NmYXJGQllXM3lmRTVqMmJqNVg1ZEV4ZUc1MWw2Y3NGdV9WUnlDNlBFWlR3WkRkMjFkWldvdmkyajVZQllqam5MZ0lZdmpuUVp6U05SZG4ybWViR0ExdlE4VUZpdjZWay1vVWNiS3p6bWFfV2ZwNWdBTnY2ekY3cXcwNEdnMTB2dnpC?oc=5",
-          "https://news.google.com/rss/articles/CBMiswFBVV95cUxONzNFdjF6OTFRc08xcmM1d245cHFiNUxadE43a0VUb0JSenY0MHdPSTJFMi1ialZrMDVBZHdrRzBzd3RQNFpsaklvallXbzA4SHhBRHlYSGJsbVBYVC1lODlRalJRUVVFeHJDc0RyazVfNXpwWm9lSkJKeU4taDE5U3ZMcVJxNVlhZUhsa1hKeWs3Vl84SXQ2RUktV0s1QXNuSlhoT0hkSHlGQ19GeHFIdDdGQdIBuAFBVV95cUxNWENKWmlieFJJVmJxeGhlVkRMY09IRGw5WkFMbUFGQmZpOWtkLUtOSi1JOHczM1NmYXJGQllXM3lmRTVqMmJqNVg1ZEV4ZUc1MWw2Y3NGdV9WUnlDNlBFWlR3WkRkMjFkWldvdmkyajVZQllqam5MZ0lZdmpuUVp6U05SZG4ybWViR0ExdlE4VUZpdjZWay1vVWNiS3p6bWFfV2ZwNWdBTnY2ekY3cXcwNEdnMTB2dnpC?oc=5"
-        ],
-        "terms": [
-          "rare",
-          "sighting"
-        ],
-        "trend_score": 62.0
-      },
-      "url": "https://www.pexels.com/video/gray-wolf-engaging-in-scent-rolling-by-pond-34803054/",
       "yt_description": "",
       "yt_tags": [
-        "wolves",
-        "wildlife",
+        "bees",
+        "insects",
         "animal facts",
-        "scent rolling",
-        "wild canine",
+        "old clothing",
         "nature",
         "nature facts",
-        "wild animals"
-      ],
+        "bugs",
+        "insect facts"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 102.5,
         "lane": "fresh_experiment",
@@ -3603,7 +3524,7 @@
         "packaging_lab": {
           "title_variants": [
             "Wolves read the moment from one tail lift",
-            "Wolves use tail lift before they signal",
+            "Wolves use tail lift before they move",
             "This tail lift gives wolves away"
           ],
           "thumbnail_variants": [
@@ -3619,13 +3540,53 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Nature Signals",
-      "cta_prompt": "Want more wild behavior explained without the fluff?",
-      "replay_prompt": "End by pointing back to the tail position, so viewers rewatch the wolves clip.",
-      "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+      "breaking": false,
+      "category": "wildlife",
+      "commons_artist": "",
+      "commons_image_url": "",
+      "commons_license": "",
+      "commons_page_url": "",
       "community_prompt": "Which nature topic should Wild Brief explain next after wolves?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want more wild behavior explained without the fluff?",
+      "description": "A clip of wild animals in nature: gray wolf engaging in scent rolling by pond",
+      "discovery_hashtags": [
+        "wildlife",
+        "wildanimals",
+        "safari",
+        "animalfacts",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:10:32.383593+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "wildlife"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Wolves reveal one visible signal",
+      "id": "18762a35e9b1f385",
+      "image_url": "",
+      "lead": "Wolves reveal one visible signal. Watch tail position, because wolves use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "no_action_promise",
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 95,
         "state": "magnetic",
@@ -3878,46 +3839,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "no_action_promise",
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/34803054/14756468_1080_1920_30fps.mp4",
+      "pexels_video_id": "34803054",
+      "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
       "publish_score": {
         "score": 99.5,
         "approved": true,
@@ -4058,6 +3982,87 @@
           "mechanism_cluster": "cue_timing_read"
         }
       },
+      "published_at": "2026-06-13T03:10:32.383593+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 87.5,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T05:09:38.832252+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence",
+          "template_cluster_limit:read_the_moment"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the tail position, so viewers rewatch the wolves clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Wolves reveal one visible signal. Watch tail position, because wolves use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Wolves read the moment from one tail lift",
+      "series": "Nature Signals",
+      "source": "Pexels",
+      "source_clip_id": "pexels:18762a35e9b1f385",
+      "source_download_url": "https://videos.pexels.com/video-files/34803054/14756468_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/gray-wolf-engaging-in-scent-rolling-by-pond-34803054/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "WOLVES TAIL POSITION",
+      "title": "Wolves read the moment from one tail lift",
+      "topic_hashtag": "Wildlife",
+      "trend_context": {
+        "animal": "lion",
+        "category": "wildlife",
+        "headline": "Rare mountain lion sighting in Pasadena neighborhood prompts shelter-in-place for some residents - ABC7 Los Angeles",
+        "mentions": 2,
+        "query": "lion animal sighting rare",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMiswFBVV95cUxONzNFdjF6OTFRc08xcmM1d245cHFiNUxadE43a0VUb0JSenY0MHdPSTJFMi1ialZrMDVBZHdrRzBzd3RQNFpsaklvallXbzA4SHhBRHlYSGJsbVBYVC1lODlRalJRUVVFeHJDc0RyazVfNXpwWm9lSkJKeU4taDE5U3ZMcVJxNVlhZUhsa1hKeWs3Vl84SXQ2RUktV0s1QXNuSlhoT0hkSHlGQ19GeHFIdDdGQdIBuAFBVV95cUxNWENKWmlieFJJVmJxeGhlVkRMY09IRGw5WkFMbUFGQmZpOWtkLUtOSi1JOHczM1NmYXJGQllXM3lmRTVqMmJqNVg1ZEV4ZUc1MWw2Y3NGdV9WUnlDNlBFWlR3WkRkMjFkWldvdmkyajVZQllqam5MZ0lZdmpuUVp6U05SZG4ybWViR0ExdlE4VUZpdjZWay1vVWNiS3p6bWFfV2ZwNWdBTnY2ekY3cXcwNEdnMTB2dnpC?oc=5",
+          "https://news.google.com/rss/articles/CBMiswFBVV95cUxONzNFdjF6OTFRc08xcmM1d245cHFiNUxadE43a0VUb0JSenY0MHdPSTJFMi1ialZrMDVBZHdrRzBzd3RQNFpsaklvallXbzA4SHhBRHlYSGJsbVBYVC1lODlRalJRUVVFeHJDc0RyazVfNXpwWm9lSkJKeU4taDE5U3ZMcVJxNVlhZUhsa1hKeWs3Vl84SXQ2RUktV0s1QXNuSlhoT0hkSHlGQ19GeHFIdDdGQdIBuAFBVV95cUxNWENKWmlieFJJVmJxeGhlVkRMY09IRGw5WkFMbUFGQmZpOWtkLUtOSi1JOHczM1NmYXJGQllXM3lmRTVqMmJqNVg1ZEV4ZUc1MWw2Y3NGdV9WUnlDNlBFWlR3WkRkMjFkWldvdmkyajVZQllqam5MZ0lZdmpuUVp6U05SZG4ybWViR0ExdlE4VUZpdjZWay1vVWNiS3p6bWFfV2ZwNWdBTnY2ekY3cXcwNEdnMTB2dnpC?oc=5"
+        ],
+        "terms": [
+          "rare",
+          "sighting"
+        ],
+        "trend_score": 62.0
+      },
+      "url": "https://www.pexels.com/video/gray-wolf-engaging-in-scent-rolling-by-pond-34803054/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -4084,87 +4089,19 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 87.5,
-        "state": "rewrite",
-        "checked_at": "2026-06-13T03:13:27.202673+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence",
-          "template_cluster_limit:read_the_moment"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "fungi",
-      "commons_artist": "Benjamin Balazs",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Deep_In_The_Woods_You_Find_Beauty_%28126027527%29.jpeg/1280px-Deep_In_The_Woods_You_Find_Beauty_%28126027527%29.jpeg",
-      "commons_license": "CC0",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Deep_In_The_Woods_You_Find_Beauty_(126027527).jpeg",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of fungi, mushrooms, mycelium, or forest decomposition: mushrooms deep in the forest",
-      "discovery_hashtags": [
-        "fungi",
-        "mushrooms",
-        "mycology",
-        "naturefacts",
-        "science"
-      ],
-      "fetched_at": "2026-06-13T03:11:44.272052+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "fungi"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Watch the mushrooms; the payoff lands seconds later",
-      "id": "37fc6915b5c2c82e",
-      "image_url": "",
-      "lead": "Mushrooms are connected, notice the thin threads, they share nutrients because that's why they thrive, pretty cool, right?",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/19473590/19473590-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "19473590",
-      "published_at": "2026-06-13T03:11:44.272052+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Mushrooms are connected, notice the thin threads, they share nutrients because that's why they thrive, pretty cool, right?",
-      "sentiment": "positive",
-      "seo_title": "Mushrooms use mushrooms before they change",
-      "source": "Pexels",
-      "source_clip_id": "pexels:37fc6915b5c2c82e",
-      "source_download_url": "https://videos.pexels.com/video-files/19473590/19473590-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/mushrooms-deep-in-the-forest-19473590/",
-      "thumbnail_text": "FUNGI NETWORK",
-      "title": "Mushrooms use mushrooms before they change",
-      "topic_hashtag": "Fungi",
-      "trend_context": {},
-      "url": "https://www.pexels.com/video/mushrooms-deep-in-the-forest-19473590/",
       "yt_description": "",
       "yt_tags": [
-        "mushrooms",
-        "mycelium",
-        "forest floor",
+        "wolves",
+        "wildlife",
+        "animal facts",
+        "scent rolling",
+        "wild canine",
         "nature",
-        "earth science",
-        "fungi",
-        "mycology"
-      ],
+        "nature facts",
+        "wild animals"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 102.0,
         "lane": "fresh_experiment",
@@ -4190,13 +4127,43 @@
           "pinned_comment": "Mushrooms is the example. Tomorrow: another animal signal. Is this closer to a network, a warning system, or something stranger?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Hidden Network",
-      "cta_prompt": "Want more nature that feels like science fiction but is real?",
-      "replay_prompt": "End with the first visual moment again, so viewers rewatch the mushrooms clip.",
-      "pinned_comment": "Mushrooms is the example. Tomorrow: another animal signal. Is this closer to a network, a warning system, or something stranger?",
+      "breaking": false,
+      "category": "fungi",
+      "commons_artist": "Benjamin Balazs",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Deep_In_The_Woods_You_Find_Beauty_%28126027527%29.jpeg/1280px-Deep_In_The_Woods_You_Find_Beauty_%28126027527%29.jpeg",
+      "commons_license": "CC0",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Deep_In_The_Woods_You_Find_Beauty_(126027527).jpeg",
       "community_prompt": "Which nature topic should Wild Brief explain next after mushrooms?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want more nature that feels like science fiction but is real?",
+      "description": "A clip of fungi, mushrooms, mycelium, or forest decomposition: mushrooms deep in the forest",
+      "discovery_hashtags": [
+        "fungi",
+        "mushrooms",
+        "mycology",
+        "naturefacts",
+        "science"
+      ],
+      "fetched_at": "2026-06-13T03:11:44.272052+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "fungi"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Watch the mushrooms; the payoff lands seconds later",
+      "id": "37fc6915b5c2c82e",
+      "image_url": "",
+      "lead": "Mushrooms are connected, notice the thin threads, they share nutrients because that's why they thrive, pretty cool, right?",
+      "native_lang": "en",
       "packaging": {
         "score": 80,
         "state": "usable",
@@ -4448,37 +4415,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 99,
-        "state": "strong",
-        "subscriber_probability": 0.141,
-        "return_probability": 0.297,
-        "comment_probability": 0.253,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "hook_invites_return",
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/19473590/19473590-hd_1080_1920_30fps.mp4",
+      "pexels_video_id": "19473590",
+      "pinned_comment": "Mushrooms is the example. Tomorrow: another animal signal. Is this closer to a network, a warning system, or something stranger?",
       "publish_score": {
         "score": 99.0,
         "approved": true,
@@ -4620,6 +4559,77 @@
           "mechanism_cluster": ""
         }
       },
+      "published_at": "2026-06-13T03:11:44.272052+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 67.0,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T05:09:38.833192+00:00",
+        "template_cluster": "",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": true,
+        "applied": false,
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_action_word",
+          "missing_visible_cue"
+        ]
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End with the first visual moment again, so viewers rewatch the mushrooms clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Mushrooms are connected, notice the thin threads, they share nutrients because that's why they thrive, pretty cool, right?",
+      "sentiment": "positive",
+      "seo_title": "Mushrooms use mushrooms before they change",
+      "series": "Hidden Network",
+      "source": "Pexels",
+      "source_clip_id": "pexels:37fc6915b5c2c82e",
+      "source_download_url": "https://videos.pexels.com/video-files/19473590/19473590-hd_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/mushrooms-deep-in-the-forest-19473590/",
+      "subscriber_conversion": {
+        "score": 99,
+        "state": "strong",
+        "subscriber_probability": 0.141,
+        "return_probability": 0.297,
+        "comment_probability": 0.253,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "hook_invites_return",
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "FUNGI NETWORK",
+      "title": "Mushrooms use mushrooms before they change",
+      "topic_hashtag": "Fungi",
+      "trend_context": {},
+      "url": "https://www.pexels.com/video/mushrooms-deep-in-the-forest-19473590/",
       "youtube_brain": {
         "score": 73,
         "state": "rewrite_before_publish",
@@ -4649,110 +4659,18 @@
           "Name the visual cue the viewer should watch in the first second."
         ]
       },
-      "queue_repair": {
-        "attempted": true,
-        "applied": false,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue"
-        ]
-      },
-      "queue_prune": {
-        "score": 67.0,
-        "state": "rewrite",
-        "checked_at": "2026-06-13T03:13:27.203622+00:00",
-        "template_cluster": "",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "dogs",
-      "commons_artist": "Devaki surya",
-      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Black_dogs.jpg",
-      "commons_license": "CC BY-SA 4.0",
-      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Black_dogs.jpg",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of dogs / puppies: dogs in black",
-      "discovery_hashtags": [
-        "dogs",
-        "puppies",
-        "dogfacts",
-        "animals",
-        "funfacts"
-      ],
-      "fetched_at": "2026-06-13T03:10:16.355137+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "dogs"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Dogs reveal one visible signal",
-      "id": "8df740c694a0b488",
-      "image_url": "",
-      "lead": "Dogs reveal one visible signal. Watch tail position, because dogs use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/19089752/19089752-hd_1080_1920_30fps.mp4",
-      "pexels_video_id": "19089752",
-      "published_at": "2026-06-13T03:10:16.355137+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Dogs reveal one visible signal. Watch tail position, because dogs use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-      "sentiment": "positive",
-      "seo_title": "Dogs read the moment from one tail lift",
-      "source": "Pexels",
-      "source_clip_id": "pexels:8df740c694a0b488",
-      "source_download_url": "https://videos.pexels.com/video-files/19089752/19089752-hd_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/dogs-in-black-19089752/",
-      "thumbnail_text": "DOGS TAIL POSITION",
-      "title": "Dogs read the moment from one tail lift",
-      "topic_hashtag": "Mammals",
-      "trend_context": {
-        "animal": "dog",
-        "category": "dogs",
-        "headline": "Rescue dog’s viral trash truck reaction highlights stray animal issue in eastern Kentucky - WYMT",
-        "mentions": 53,
-        "query": "dog animal rescue viral",
-        "source_urls": [
-          "https://news.google.com/rss/articles/CBMiugFBVV95cUxOdE1hUmdiMDlENV9ENFBCUUVRWThwdDhIOEVfRkc0OEZ2Z3lMeV9KX1QxY2sxalRyalhSMEFCUmhoczk2a1g5cXktZHdTeWdWRjFva0pqelNsb05ORVNPek8tbTU4SDFCMWdnUDl2S0k0R3c5VTQ2NFZkajhwVVZBRjE3ekdUNTZQTjBzVmx6U3lJWXZPZDUtZDduekw3VzR6Vm1IaENxajAyU01NcWo0dXZGUFVEMWw3dnfSAc4BQVVfeXFMTkx0X2xxYUpQVDdTZDBvNk5UVjVJaEpxSnZ5R3VqREVleVNhMVlUY18wQmxQLTV4UmRSeGJsTElvMnBYX3dac1M5X2xPQWFFQ2RRWmg4a3BLNmtDSmtLc2Q2YVRXNHpEQWZjVWRralpZMU5CYUpZQ2p5YVJPWmVudWpNc1hmN3RXVVhpMVJyQjhzWGFnVHdOVzBEQWw3QWxpRUJSTXdYUDBJT2ZzeUtKQUJmQVRxbDJRX3pMR3ZMQmJqdnpKd2dGbWZ6MVljNWc?oc=5",
-          "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbnVOYW5hWkhQUG5XSExwbzVRMWhYOVFfUEk5WlMxSlVYRkFsOGJ0ZDdOc085X0Y4UzVyZ1J0SThCR2g4V1Q2T2pHU0NmcGQxd04xYkp0U1NBS1JkNGdBXzg3eUViTWYwZ1N4QXJ0bEZKODNMSlVlM2Ywc2dCTkM2cXU1M182N3hCb2lPSlRsclE3c0hvbVhNMHJldVlBb3lodG52Sg?oc=5",
-          "https://news.google.com/rss/articles/CBMikAFBVV95cUxNeEplY3dlZlA2LW4zSlVhVWNmZ0hUWER5NXNqeHlDZ3dPZ2FhYWVRRXFRXzFDUDM4b0F1Y3BINVl6bDd3LTlEdjNQcU03d1BQVE9jQVJFMnpXX0I0QnhtTERrMFhVNTZ0U2hjM2lqR1JTdF8tRFotNG8zQVBkbkdWMk1WOGQwamJ1NDB1ajFCUE8?oc=5"
-        ],
-        "terms": [
-          "behavior",
-          "rescue",
-          "study",
-          "viral"
-        ],
-        "trend_score": 100
-      },
-      "url": "https://www.pexels.com/video/dogs-in-black-19089752/",
       "yt_description": "",
       "yt_tags": [
-        "dogs",
-        "animal facts",
-        "black",
-        "coats",
+        "mushrooms",
+        "mycelium",
+        "forest floor",
         "nature",
-        "science",
-        "puppies",
-        "canine"
-      ],
+        "earth science",
+        "fungi",
+        "mycology"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 97.2,
         "lane": "fresh_experiment",
@@ -4762,7 +4680,7 @@
         "packaging_lab": {
           "title_variants": [
             "Dogs read the moment from one tail lift",
-            "Dogs use tail lift before they signal",
+            "Dogs use tail lift before they move",
             "This tail lift gives dogs away"
           ],
           "thumbnail_variants": [
@@ -4778,13 +4696,53 @@
           "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Nature Signals",
-      "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
-      "replay_prompt": "End by pointing back to the tail position, so viewers rewatch the dogs clip.",
-      "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
+      "breaking": false,
+      "category": "dogs",
+      "commons_artist": "Devaki surya",
+      "commons_image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Black_dogs.jpg",
+      "commons_license": "CC BY-SA 4.0",
+      "commons_page_url": "https://commons.wikimedia.org/wiki/File:Black_dogs.jpg",
       "community_prompt": "Which nature topic should Wild Brief explain next after dogs?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
+      "description": "A clip of dogs / puppies: dogs in black",
+      "discovery_hashtags": [
+        "dogs",
+        "puppies",
+        "dogfacts",
+        "animals",
+        "funfacts"
+      ],
+      "fetched_at": "2026-06-13T03:10:16.355137+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "dogs"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Dogs reveal one visible signal",
+      "id": "8df740c694a0b488",
+      "image_url": "",
+      "lead": "Dogs reveal one visible signal. Watch tail position, because dogs use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "local_rewrite": {
+        "applied": true,
+        "method": "deterministic_rescue",
+        "reasons": [
+          "missing_visual_cue",
+          "script_length_risk",
+          "missing_action_word",
+          "missing_visible_cue"
+        ]
+      },
+      "native_lang": "en",
       "packaging": {
         "score": 95,
         "state": "magnetic",
@@ -5037,46 +4995,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
-      "local_rewrite": {
-        "applied": true,
-        "reasons": [
-          "missing_visual_cue",
-          "script_length_risk",
-          "missing_action_word",
-          "missing_visible_cue"
-        ],
-        "method": "deterministic_rescue"
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/19089752/19089752-hd_1080_1920_30fps.mp4",
+      "pexels_video_id": "19089752",
+      "pinned_comment": "Watch the tail position again. Tomorrow: another animal signal. What part of this feels most impossible?",
       "publish_score": {
         "score": 94.2,
         "approved": true,
@@ -5217,6 +5138,90 @@
           "mechanism_cluster": "cue_timing_read"
         }
       },
+      "published_at": "2026-06-13T03:10:16.355137+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 82.2,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T05:09:38.833727+00:00",
+        "template_cluster": "read_the_moment",
+        "mechanism_cluster": "cue_timing_read",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence",
+          "template_cluster_limit:read_the_moment"
+        ]
+      },
+      "queue_repair": {
+        "attempted": false,
+        "applied": false,
+        "reasons": []
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the tail position, so viewers rewatch the dogs clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Dogs reveal one visible signal. Watch tail position, because dogs use it to send a clear signal before the next move. The payoff appears before the final move. That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+      "sentiment": "positive",
+      "seo_title": "Dogs read the moment from one tail lift",
+      "series": "Nature Signals",
+      "source": "Pexels",
+      "source_clip_id": "pexels:8df740c694a0b488",
+      "source_download_url": "https://videos.pexels.com/video-files/19089752/19089752-hd_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/dogs-in-black-19089752/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "DOGS TAIL POSITION",
+      "title": "Dogs read the moment from one tail lift",
+      "topic_hashtag": "Mammals",
+      "trend_context": {
+        "animal": "dog",
+        "category": "dogs",
+        "headline": "Rescue dog’s viral trash truck reaction highlights stray animal issue in eastern Kentucky - WYMT",
+        "mentions": 53,
+        "query": "dog animal rescue viral",
+        "source_urls": [
+          "https://news.google.com/rss/articles/CBMiugFBVV95cUxOdE1hUmdiMDlENV9ENFBCUUVRWThwdDhIOEVfRkc0OEZ2Z3lMeV9KX1QxY2sxalRyalhSMEFCUmhoczk2a1g5cXktZHdTeWdWRjFva0pqelNsb05ORVNPek8tbTU4SDFCMWdnUDl2S0k0R3c5VTQ2NFZkajhwVVZBRjE3ekdUNTZQTjBzVmx6U3lJWXZPZDUtZDduekw3VzR6Vm1IaENxajAyU01NcWo0dXZGUFVEMWw3dnfSAc4BQVVfeXFMTkx0X2xxYUpQVDdTZDBvNk5UVjVJaEpxSnZ5R3VqREVleVNhMVlUY18wQmxQLTV4UmRSeGJsTElvMnBYX3dac1M5X2xPQWFFQ2RRWmg4a3BLNmtDSmtLc2Q2YVRXNHpEQWZjVWRralpZMU5CYUpZQ2p5YVJPWmVudWpNc1hmN3RXVVhpMVJyQjhzWGFnVHdOVzBEQWw3QWxpRUJSTXdYUDBJT2ZzeUtKQUJmQVRxbDJRX3pMR3ZMQmJqdnpKd2dGbWZ6MVljNWc?oc=5",
+          "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbnVOYW5hWkhQUG5XSExwbzVRMWhYOVFfUEk5WlMxSlVYRkFsOGJ0ZDdOc085X0Y4UzVyZ1J0SThCR2g4V1Q2T2pHU0NmcGQxd04xYkp0U1NBS1JkNGdBXzg3eUViTWYwZ1N4QXJ0bEZKODNMSlVlM2Ywc2dCTkM2cXU1M182N3hCb2lPSlRsclE3c0hvbVhNMHJldVlBb3lodG52Sg?oc=5",
+          "https://news.google.com/rss/articles/CBMikAFBVV95cUxNeEplY3dlZlA2LW4zSlVhVWNmZ0hUWER5NXNqeHlDZ3dPZ2FhYWVRRXFRXzFDUDM4b0F1Y3BINVl6bDd3LTlEdjNQcU03d1BQVE9jQVJFMnpXX0I0QnhtTERrMFhVNTZ0U2hjM2lqR1JTdF8tRFotNG8zQVBkbkdWMk1WOGQwamJ1NDB1ajFCUE8?oc=5"
+        ],
+        "terms": [
+          "behavior",
+          "rescue",
+          "study",
+          "viral"
+        ],
+        "trend_score": 100
+      },
+      "url": "https://www.pexels.com/video/dogs-in-black-19089752/",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
@@ -5243,88 +5248,19 @@
         ],
         "commands": []
       },
-      "queue_repair": {
-        "attempted": false,
-        "applied": false,
-        "reasons": []
-      },
-      "queue_prune": {
-        "score": 82.2,
-        "state": "rewrite",
-        "checked_at": "2026-06-13T03:13:27.204144+00:00",
-        "template_cluster": "read_the_moment",
-        "mechanism_cluster": "cue_timing_read",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence",
-          "template_cluster_limit:read_the_moment"
-        ]
-      }
-    },
-    {
-      "breaking": false,
-      "category": "plants",
-      "commons_artist": "",
-      "commons_image_url": "",
-      "commons_license": "",
-      "commons_page_url": "",
-      "consumed": false,
-      "consumed_at": null,
-      "description": "A clip of plants, leaves, flowers, or plant movement: hyena feeding in nairobi grasslands",
-      "discovery_hashtags": [
-        "plants",
-        "botany",
-        "naturefacts",
-        "science",
-        "wildbrief"
-      ],
-      "fetched_at": "2026-06-13T03:11:28.362800+00:00",
-      "freshness": {
-        "freshness_score": 55.0,
-        "matched_signal_score": 0.0,
-        "queue_age_days": 0.0,
-        "signal_source": "queue_age",
-        "signal_window": "0_3d",
-        "topic_cluster": "plants"
-      },
-      "freshness_score": 55.0,
-      "gbif": {},
-      "geo_hashtag": "Global",
-      "hook": "Start with the movement; it explains the next move",
-      "id": "9a87307932045891",
-      "image_url": "",
-      "lead": "Plants eat insects, notice the trigger hairs, they snap shut because of the insect's weight, that's why they're so effective, pretty clever?",
-      "native_lang": "en",
-      "pexels_download_url": "https://videos.pexels.com/video-files/31702131/13507638_1080_1920_30fps.mp4",
-      "pexels_video_id": "31702131",
-      "published_at": "2026-06-13T03:11:28.362800+00:00",
-      "queue_age_days": 0.0,
-      "relevance": 9.0,
-      "safety_penalty": 0,
-      "score": 8,
-      "script": "Plants eat insects, notice the trigger hairs, they snap shut because of the insect's weight, that's why they're so effective, pretty clever?",
-      "sentiment": "positive",
-      "seo_title": "Carnivorous plant traps prey quickly",
-      "source": "Pexels",
-      "source_clip_id": "pexels:9a87307932045891",
-      "source_download_url": "https://videos.pexels.com/video-files/31702131/13507638_1080_1920_30fps.mp4",
-      "source_license": "Pexels License (free for commercial use)",
-      "source_url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
-      "thumbnail_text": "WATCH MOVEMENT",
-      "title": "Carnivorous plant traps prey quickly",
-      "topic_hashtag": "Plants",
-      "trend_context": {},
-      "url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
       "yt_description": "",
       "yt_tags": [
-        "carnivorous plant",
-        "trapping mechanism",
-        "leaves",
+        "dogs",
+        "animal facts",
+        "black",
+        "coats",
         "nature",
         "science",
-        "plants",
-        "botany",
-        "plant facts"
-      ],
+        "puppies",
+        "canine"
+      ]
+    },
+    {
       "autonomy": {
         "priority": 91.0,
         "lane": "fresh_experiment",
@@ -5339,7 +5275,8 @@
           ],
           "thumbnail_variants": [
             "WATCH MOVEMENT",
-            "MOVEMENT"
+            "MOVEMENT",
+            "CARNIVOROUS PLANT MOVE"
           ],
           "hook_variants": [
             "Start with the movement; it explains the next move",
@@ -5349,13 +5286,43 @@
           "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         },
-        "updated_at": "2026-06-13T03:13:24.454565+00:00"
+        "updated_at": "2026-06-13T05:09:40.571386+00:00"
       },
-      "series": "Watch The Cue",
-      "cta_prompt": "Follow for one animal signal a day.",
-      "replay_prompt": "End by pointing back to the movement, so viewers rewatch the plant clip.",
-      "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
+      "breaking": false,
+      "category": "plants",
+      "commons_artist": "",
+      "commons_image_url": "",
+      "commons_license": "",
+      "commons_page_url": "",
       "community_prompt": "Which nature topic should Wild Brief explain next after plant?",
+      "consumed": false,
+      "consumed_at": null,
+      "cta_prompt": "Follow for one animal signal a day.",
+      "description": "A clip of plants, leaves, flowers, or plant movement: hyena feeding in nairobi grasslands",
+      "discovery_hashtags": [
+        "plants",
+        "botany",
+        "naturefacts",
+        "science",
+        "wildbrief"
+      ],
+      "fetched_at": "2026-06-13T03:11:28.362800+00:00",
+      "freshness": {
+        "freshness_score": 54.84,
+        "matched_signal_score": 0.0,
+        "queue_age_days": 0.08,
+        "signal_source": "queue_age",
+        "signal_window": "0_3d",
+        "topic_cluster": "plants"
+      },
+      "freshness_score": 54.84,
+      "gbif": {},
+      "geo_hashtag": "Global",
+      "hook": "Start with the movement; it explains the next move",
+      "id": "9a87307932045891",
+      "image_url": "",
+      "lead": "Plants eat insects, notice the trigger hairs, they snap shut because of the insect's weight, that's why they're so effective, pretty clever?",
+      "native_lang": "en",
       "packaging": {
         "score": 85,
         "state": "magnetic",
@@ -5605,36 +5572,9 @@
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
-      "subscriber_conversion": {
-        "score": 86,
-        "state": "strong",
-        "subscriber_probability": 0.123,
-        "return_probability": 0.261,
-        "comment_probability": 0.223,
-        "robotic_title": {
-          "risk": 0,
-          "state": "clear",
-          "hits": []
-        },
-        "reasons": [
-          "identity_cta",
-          "debate_comment",
-          "return_prompt",
-          "series_identity"
-        ],
-        "confidence": {
-          "confidence_score": 0.033,
-          "sample_size": 1,
-          "minimum_sample_size": 5,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.274,
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-      },
+      "pexels_download_url": "https://videos.pexels.com/video-files/31702131/13507638_1080_1920_30fps.mp4",
+      "pexels_video_id": "31702131",
+      "pinned_comment": "Watch the movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
       "publish_score": {
         "score": 88.0,
         "approved": true,
@@ -5775,6 +5715,75 @@
           "mechanism_cluster": ""
         }
       },
+      "published_at": "2026-06-13T03:11:28.362800+00:00",
+      "queue_age_days": 0.08,
+      "queue_prune": {
+        "score": 60.0,
+        "state": "rewrite",
+        "checked_at": "2026-06-13T05:09:38.834334+00:00",
+        "template_cluster": "",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ]
+      },
+      "queue_repair": {
+        "attempted": true,
+        "applied": false,
+        "reasons": [
+          "no_action_promise",
+          "script_length_risk",
+          "missing_action_word"
+        ]
+      },
+      "relevance": 9.0,
+      "replay_prompt": "End by pointing back to the movement, so viewers rewatch the plant clip.",
+      "safety_penalty": 0,
+      "score": 8,
+      "script": "Plants eat insects, notice the trigger hairs, they snap shut because of the insect's weight, that's why they're so effective, pretty clever?",
+      "sentiment": "positive",
+      "seo_title": "Carnivorous plant traps prey quickly",
+      "series": "Watch The Cue",
+      "source": "Pexels",
+      "source_clip_id": "pexels:9a87307932045891",
+      "source_download_url": "https://videos.pexels.com/video-files/31702131/13507638_1080_1920_30fps.mp4",
+      "source_license": "Pexels License (free for commercial use)",
+      "source_url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
+      "subscriber_conversion": {
+        "score": 86,
+        "state": "strong",
+        "subscriber_probability": 0.123,
+        "return_probability": 0.261,
+        "comment_probability": 0.223,
+        "robotic_title": {
+          "risk": 0,
+          "state": "clear",
+          "hits": []
+        },
+        "reasons": [
+          "identity_cta",
+          "debate_comment",
+          "return_prompt",
+          "series_identity"
+        ],
+        "confidence": {
+          "confidence_score": 0.033,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.274,
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+      },
+      "thumbnail_text": "WATCH MOVEMENT",
+      "title": "Carnivorous plant traps prey quickly",
+      "topic_hashtag": "Plants",
+      "trend_context": {},
+      "url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
       "youtube_brain": {
         "score": 67,
         "state": "rewrite_before_publish",
@@ -5804,27 +5813,19 @@
           "Add a visible action verb: fake, protect, escape, remember, call, or use."
         ]
       },
-      "queue_repair": {
-        "attempted": true,
-        "applied": false,
-        "reasons": [
-          "no_action_promise",
-          "script_length_risk",
-          "missing_action_word"
-        ]
-      },
-      "queue_prune": {
-        "score": 60.0,
-        "state": "rewrite",
-        "checked_at": "2026-06-13T03:13:27.204770+00:00",
-        "template_cluster": "",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      }
+      "yt_description": "",
+      "yt_tags": [
+        "carnivorous plant",
+        "trapping mechanism",
+        "leaves",
+        "nature",
+        "science",
+        "plants",
+        "botany",
+        "plant facts"
+      ]
     }
   ],
-  "target_pending": 12,
-  "updated_at": "2026-06-13T03:13:27.204777+00:00"
+  "target_pending": 1,
+  "updated_at": "2026-06-13T05:09:40.574005+00:00"
 }
