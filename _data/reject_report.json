@@ -1,20 +1,21 @@
 {
-  "total": 42,
+  "total": 45,
   "reasons": {
     "copy_subject_mismatch": 19,
-    "duplicate_title": 8,
-    "duplicate_angle": 8,
+    "duplicate_title": 10,
+    "duplicate_angle": 9,
     "queue_score_reject": 7,
     "missing_visible_cue": 6,
     "script_length_risk": 5,
     "title_shape_weak": 5,
     "title_needs_stronger_shape": 5,
     "subject_not_clear": 5,
+    "script_subject_mismatch": 5,
     "missing_visual_cue": 4,
     "missing_action_word": 4,
-    "script_subject_mismatch": 4,
+    "duplicate_script": 4,
     "subject_not_immediately_clear": 3,
-    "duplicate_script": 3,
+    "duplicate_source": 2,
     "generic_first_movement_reason": 1,
     "subject repeated inside 3-day cooldown": 1,
     "story angle repeated inside 10-day cooldown": 1,
@@ -25,48 +26,12 @@
   },
   "stages": {
     "queue_quality": 19,
-    "queue_prune_final": 12,
+    "queue_prune_final": 13,
     "queue_repair": 7,
-    "queue_prune": 3,
+    "queue_prune": 5,
     "editor_in_chief": 1
   },
   "latest": [
-    {
-      "story_id": "e560a640c41de380",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Dogs rely on ear position to survive",
-      "category": "dogs",
-      "source_url": "https://www.pexels.com/video/a-dog-sitting-on-the-sidewalk-27875229/",
-      "recorded_at": "2026-06-13T11:01:44.232251+00:00",
-      "rewrite_attempted": false
-    },
-    {
-      "story_id": "b0960cfb12495b2b",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Bees rely on wing movement to survive",
-      "category": "insects",
-      "source_url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
-      "recorded_at": "2026-06-13T11:01:44.233096+00:00",
-      "rewrite_attempted": false
-    },
-    {
-      "story_id": "9a87307932045891",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Carnivorous plant traps prey quickly",
-      "category": "plants",
-      "source_url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
-      "recorded_at": "2026-06-13T11:01:44.234216+00:00",
-      "rewrite_attempted": false
-    },
     {
       "story_id": "926ba5ff87156a76",
       "stage": "queue_repair",
@@ -354,6 +319,46 @@
       "category": "trees",
       "source_url": "https://www.pexels.com/video/a-giant-sequoia-tree-11272150/",
       "recorded_at": "2026-06-13T13:12:37.455318+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "3a14e88bd4a77538",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_source"
+      ],
+      "title": "Earth systems signal through cloud patterns",
+      "category": "earth_from_space",
+      "source_url": "https://www.pexels.com/video/white-clouds-seen-from-an-airplane-window-11382600/",
+      "recorded_at": "2026-06-13T13:30:19.690354+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "07172388b9a65046",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_source",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Forests read the moment from one leaf movement",
+      "category": "forests",
+      "source_url": "https://www.pexels.com/video/lush-green-forest-scene-in-springtime-32535228/",
+      "recorded_at": "2026-06-13T13:30:19.702919+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "965914b8523cf456",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "script_subject_mismatch"
+      ],
+      "title": "Earth systems signal through leaf movement",
+      "category": "earth_from_space",
+      "source_url": "https://www.pexels.com/video/white-clouds-seen-from-an-airplane-window-11382600/",
+      "recorded_at": "2026-06-13T13:38:30.544579+00:00",
       "rewrite_attempted": false
     }
   ]

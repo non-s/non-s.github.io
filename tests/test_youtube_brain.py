@@ -136,6 +136,61 @@ def test_creator_premortem_recognizes_specific_subjects_outside_category_name():
     assert "subject_not_immediately_clear" not in creator_premortem(turtle_story)["risks"]
 
 
+def test_creator_premortem_uses_nature_promise_for_forests():
+    story = {
+        **_strong_story(),
+        "title": "Forests signal through leaf movement",
+        "seo_title": "Forests signal through leaf movement",
+        "hook": "Watch the leaf movement; the payoff lands seconds later.",
+        "script": (
+            "Forests reveal one visible signal. Watch the leaf movement, because forests use it "
+            "to send a clear signal before the next move. The payoff appears before the final move."
+        ),
+        "thumbnail_text": "LEAF MOVE",
+        "category": "forests",
+        "story_format": "cute_behavior",
+    }
+
+    brain = creator_premortem(story)
+
+    assert brain["viewer_promise"] == "See the forest detail that changes the whole scene."
+    assert "cute behavior" not in brain["viewer_promise"]
+    assert brain["satisfaction_bet"] == "The viewer gets one visible nature cue and one reason, fast."
+
+
+def test_creator_premortem_rephrases_cute_behavior_for_animals():
+    story = {
+        **_strong_story(),
+        "story_format": "cute_behavior",
+    }
+
+    brain = creator_premortem(story)
+
+    assert brain["viewer_promise"] == "See why this visible behavior matters for ducks."
+    assert "cute behavior" not in brain["viewer_promise"]
+
+
+def test_creator_premortem_keeps_animal_subject_inside_nature_category():
+    story = {
+        **_strong_story(),
+        "title": "Sharks rely on fin movement to survive",
+        "seo_title": "Sharks rely on fin movement to survive",
+        "hook": "Sharks rely on fin movement before the payoff.",
+        "script": (
+            "Sharks rely on fin movement before the payoff. Watch the fin movement, "
+            "because that detail helps them survive."
+        ),
+        "thumbnail_text": "FIN SHIFT",
+        "category": "ocean",
+        "story_format": "survival_trick",
+    }
+
+    brain = creator_premortem(story)
+
+    assert brain["viewer_promise"] == "See why sharks survival trick matters."
+    assert brain["satisfaction_bet"] == "The viewer gets one visible behavior and one reason, fast."
+
+
 def test_creator_premortem_flags_internal_strategy_language():
     story = {
         **_strong_story(),

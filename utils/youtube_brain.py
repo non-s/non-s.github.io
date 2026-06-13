@@ -167,6 +167,57 @@ OPERATOR_META_PATTERNS = (
     re.compile(r"\bthis remake cuts\b", re.I),
     re.compile(r"\bproven wild brief topic\b", re.I),
 )
+NATURE_CATEGORIES = {
+    "earth_from_space",
+    "ecosystems",
+    "forests",
+    "fungi",
+    "geology",
+    "ocean",
+    "oceans",
+    "plants",
+    "rare_phenomena",
+    "rivers",
+    "tree",
+    "trees",
+    "volcanoes",
+    "weather",
+}
+NATURE_SUBJECT_LABELS = {
+    "atmosphere": "atmosphere",
+    "biodiversity": "biodiversity",
+    "conservation": "recovery",
+    "coral": "coral",
+    "earth": "earth",
+    "ecosystem": "ecosystem",
+    "ecosystems": "ecosystem",
+    "forest": "forest",
+    "forests": "forest",
+    "fungi": "fungal",
+    "geology": "geology",
+    "glacier": "glacier",
+    "lava": "lava",
+    "mountain": "mountain",
+    "mountains": "mountain",
+    "mushroom": "mushroom",
+    "mushrooms": "mushroom",
+    "mycelium": "mycelium",
+    "ocean": "ocean",
+    "plant": "plant",
+    "plants": "plant",
+    "reef": "reef",
+    "river": "river",
+    "rivers": "river",
+    "rock": "rock",
+    "rocks": "rock",
+    "storm": "storm",
+    "storms": "storm",
+    "tree": "tree",
+    "trees": "tree",
+    "volcano": "volcano",
+    "volcanoes": "volcano",
+    "weather": "weather",
+}
 
 
 def _words(text: str) -> list[str]:
@@ -373,6 +424,31 @@ def _subject_from_text(text: str, category: str = "") -> str:
     return category or "nature"
 
 
+def _viewer_promise(subject: str, story_format: str, category: str) -> str:
+    lower_subject = str(subject or "nature").strip().lower()
+    lower_category = str(category or "").strip().lower()
+    format_label = str(story_format or "nature signal").replace("_", " ")
+    category_text = lower_category.replace("_", " ")
+    category_forms = {lower_category, category_text, category_text.rstrip("s"), lower_category.rstrip("s"), "nature"}
+    is_nature = lower_subject in NATURE_SUBJECT_LABELS or (
+        lower_category in NATURE_CATEGORIES and lower_subject in category_forms
+    )
+    if is_nature:
+        detail = NATURE_SUBJECT_LABELS.get(lower_subject, lower_category.replace("_", " ") or "nature")
+        if format_label in {
+            "animal intelligence",
+            "animal memory",
+            "body superpower",
+            "cute behavior",
+            "survival trick",
+        }:
+            return f"See the {detail} detail that changes the whole scene."
+        return f"See why this {detail} {format_label} matters."
+    if format_label == "cute behavior":
+        return f"See why this visible behavior matters for {subject}."
+    return f"See why {subject} {format_label} matters."
+
+
 def creator_premortem(story: dict) -> dict:
     title = str(story.get("seo_title") or story.get("title") or "")
     hook = str(story.get("hook") or "")
@@ -464,8 +540,13 @@ def creator_premortem(story: dict) -> dict:
         commands.append("Remove internal channel strategy language from the viewer script.")
 
     replay_reason = "watch_the_cue_again" if _contains_any(text, VISIBLE_CUE_WORDS) else "weak"
-    viewer_promise = f"See why {subject} {story_format.replace('_', ' ')} matters."
-    satisfaction_bet = "The viewer gets one visible behavior and one reason, fast."
+    viewer_promise = _viewer_promise(subject, story_format, category)
+    satisfaction_bet = (
+        "The viewer gets one visible nature cue and one reason, fast."
+        if str(category or "").strip().lower() in NATURE_CATEGORIES
+        and str(subject or "").strip().lower() in NATURE_SUBJECT_LABELS
+        else "The viewer gets one visible behavior and one reason, fast."
+    )
     score = max(0, min(100, score))
     state = "publish_minded" if score >= 78 else ("rewrite_before_publish" if score >= 60 else "do_not_publish")
     return {

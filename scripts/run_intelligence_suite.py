@@ -9,6 +9,7 @@ import sys
 SCRIPT_SETS = {
     "pre_generate": [
         "scripts/reconcile_queue_uploads.py",
+        "scripts/repair_queue_history.py",
         "scripts/ops_guardian.py",
         "scripts/control_plane_report.py",
         "scripts/apply_topic_freshness.py",
@@ -36,6 +37,7 @@ SCRIPT_SETS = {
         "scripts/success_rewriter.py",
         "scripts/agency_gate_report.py",
         "scripts/prune_queue.py",
+        "scripts/repair_queue_history.py",
         "scripts/apply_topic_freshness.py",
         "scripts/sequence_plan.py",
         "scripts/autonomous_growth_loop.py",
@@ -52,6 +54,7 @@ SCRIPT_SETS = {
     ],
     "post_publish": [
         "scripts/reconcile_queue_uploads.py",
+        "scripts/repair_queue_history.py",
         "scripts/analyze_channel.py",
         "scripts/analyze_comments.py",
         "scripts/control_plane_report.py",
@@ -96,6 +99,7 @@ SCRIPT_SETS = {
         "scripts/seo_metadata_lint.py",
         "scripts/compact_analytics.py",
         "scripts/prune_queue.py",
+        "scripts/repair_queue_history.py",
         "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",
@@ -108,6 +112,7 @@ SCRIPT_SETS = {
     ],
     "queue": [
         "scripts/reconcile_queue_uploads.py",
+        "scripts/repair_queue_history.py",
         "scripts/audit_automation.py",
         "scripts/control_plane_report.py",
         "scripts/apply_topic_freshness.py",
@@ -138,6 +143,7 @@ SCRIPT_SETS = {
         "scripts/success_rewriter.py",
         "scripts/agency_gate_report.py",
         "scripts/prune_queue.py",
+        "scripts/repair_queue_history.py",
         "scripts/apply_topic_freshness.py",
         "scripts/sequence_plan.py",
         "scripts/autonomous_growth_loop.py",
@@ -154,6 +160,7 @@ SCRIPT_SETS = {
     ],
     "dashboard": [
         "scripts/reconcile_queue_uploads.py",
+        "scripts/repair_queue_history.py",
         "scripts/audit_automation.py",
         "scripts/control_plane_report.py",
         "scripts/youtube_intelligence.py",
@@ -192,6 +199,7 @@ SCRIPT_SETS = {
         "scripts/publish_schedule.py",
         "scripts/autonomous_growth_loop.py",
         "scripts/prune_queue.py",
+        "scripts/repair_queue_history.py",
         "scripts/apply_topic_freshness.py",
         "scripts/agency_gate_report.py",
         "scripts/queue_audit.py",

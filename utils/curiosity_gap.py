@@ -90,6 +90,37 @@ def _subject(story: dict) -> str:
     return title_words[0] if title_words else "nature"
 
 
+def _subject_is_plural(subject: str) -> bool:
+    lower = str(subject or "").strip().lower()
+    return lower in {"cacti", "deer", "fish", "fungi", "geese", "mice", "sheep", "wildlife"} or lower.endswith("s")
+
+
+def _plural_action(action: str) -> str:
+    action = str(action or "change").strip().lower()
+    irregular = {
+        "changes": "change",
+        "does": "do",
+        "gives": "give",
+        "goes": "go",
+        "has": "have",
+        "makes": "make",
+        "signals": "signal",
+        "uses": "use",
+    }
+    if action in irregular:
+        return irregular[action]
+    return action
+
+
+def _this_subject(subject: str) -> str:
+    subject = _clean(subject or "nature")
+    return f"these {subject}" if _subject_is_plural(subject) else f"this {subject}"
+
+
+def _question_aux(subject: str) -> str:
+    return "do" if _subject_is_plural(subject) else "does"
+
+
 def _similarity(left: str, right: str) -> float:
     left_clean = _clean(left).lower()
     right_clean = _clean(right).lower()
@@ -149,10 +180,12 @@ class CuriosityGapEngine:
         action = _clean(story.get("action") or context.get("action") or "changes")
         cue = _clean(story.get("cue") or context.get("cue") or "body cue")
         outcome = _clean(story.get("outcome") or context.get("outcome") or "the payoff")
+        subject_phrase = _this_subject(subject)
+        subject_action = _plural_action(action) if _subject_is_plural(subject) else action
         templates = (
-            f"This {subject} {action} right before {outcome}.",
-            f"Watch the {cue} before this {subject} {action}.",
-            f"Why does this {subject} {action} before {outcome}?",
+            f"{subject_phrase.capitalize()} {subject_action} right before {outcome}.",
+            f"Watch the {cue} before {subject_phrase} {subject_action}.",
+            f"Why {_question_aux(subject)} {subject_phrase} {subject_action} before {outcome}?",
             f"What looks like {cue} is actually the warning.",
         )
         for text in templates:

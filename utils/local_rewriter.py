@@ -115,6 +115,8 @@ FALLBACK_CUES = {
     "elephants": "ear movement",
     "fox": "tail position",
     "foxes": "tail position",
+    "forest": "canopy shift",
+    "forests": "canopy shift",
     "geology": "rock layers",
     "geologies": "rock layers",
     "goat": "ear position",
@@ -148,12 +150,36 @@ FALLBACK_CUES = {
     "snakes": "head movement",
     "tiger": "ear position",
     "tigers": "ear position",
+    "tree": "root network",
+    "trees": "root network",
     "turtle": "head movement",
     "turtles": "head movement",
     "whale": "fin movement",
     "whales": "fin movement",
     "wolf": "tail position",
     "wolves": "tail position",
+}
+NATURE_SUBJECTS = {
+    "earth",
+    "earth systems",
+    "earth from space",
+    "earth_from_space",
+    "ecosystem",
+    "ecosystems",
+    "forest",
+    "forests",
+    "fungi",
+    "fungus",
+    "geology",
+    "geologies",
+    "mushroom",
+    "mushrooms",
+    "plant",
+    "plants",
+    "tree",
+    "trees",
+    "weather",
+    "weather patterns",
 }
 
 
@@ -288,9 +314,24 @@ def _lower_plural_subject(animal: str) -> str:
 
 def _plural(animal: str) -> bool:
     lower = _lower_subject(animal)
-    if lower in {"earth", "earth systems", "earth from space", "earth_from_space", "weather", "wildlife"}:
+    if lower in {
+        "cacti",
+        "deer",
+        "earth",
+        "earth systems",
+        "earth from space",
+        "earth_from_space",
+        "fish",
+        "fungi",
+        "geese",
+        "mice",
+        "sheep",
+        "weather",
+        "weather patterns",
+        "wildlife",
+    }:
         return True
-    return lower == "sheep" or lower.endswith("s")
+    return lower.endswith("s")
 
 
 def _verb(animal: str, base: str) -> str:
@@ -351,6 +392,9 @@ def _usable_cue(cue: str, animal: str = "") -> str:
         "rocks": "rock layers",
         "cloud": "cloud pattern",
         "clouds": "cloud pattern",
+        "canopy": "canopy shift",
+        "leaf": "leaf movement",
+        "leaves": "leaf movement",
         "movement": "movement",
         "body": "body posture",
         "call": "call",
@@ -365,6 +409,27 @@ def _benefit(action: str, fmt: str) -> str:
     if action in {"hunt", "trick", "signal", "call"}:
         return "send a clear signal before the next move"
     return "solve one visible problem in the scene"
+
+
+def _is_nature_subject(animal: str) -> bool:
+    return _lower_subject(animal) in NATURE_SUBJECTS or _lower_plural_subject(animal) in NATURE_SUBJECTS
+
+
+def _nature_motion_verb(animal: str) -> str:
+    return "shift" if _plural(animal) or _lower_plural_subject(animal).endswith("s") else "shifts"
+
+
+def _reason_clause(
+    *,
+    animal: str,
+    lower_subject: str,
+    cue_object_pronoun: str,
+    benefit: str,
+    use_verb: str,
+) -> str:
+    if _is_nature_subject(animal):
+        return f"that detail shows how {lower_subject} {_nature_motion_verb(animal)} before the payoff"
+    return f"{lower_subject} {use_verb} {cue_object_pronoun} to {benefit}"
 
 
 def _source_context(story: dict) -> str:
@@ -436,6 +501,10 @@ def _cue_moment(cue: str) -> str:
         "rocks": "the rock layer appears",
         "cloud pattern": "the cloud pattern appears",
         "clouds": "the cloud pattern appears",
+        "canopy shift": "the canopy shift appears",
+        "leaf movement": "the leaf movement appears",
+        "leaf": "the leaf movement appears",
+        "leaves": "the leaf movement appears",
     }.get(cue, f"the {cue} changes")
 
 
@@ -475,7 +544,15 @@ def _cue_signal(cue: str) -> str:
         "rocks": "rock layer",
         "cloud pattern": "cloud pattern",
         "clouds": "cloud pattern",
+        "canopy shift": "canopy shift",
+        "leaf movement": "leaf movement",
+        "leaf": "leaf movement",
+        "leaves": "leaf movement",
     }.get(cue, cue or "first cue")
+
+
+def _thumbnail_label(cue: str) -> str:
+    return _cue_signal(cue).upper()[:28]
 
 
 def _cue_reference(cue: str) -> str:
@@ -487,7 +564,7 @@ def _cue_reference(cue: str) -> str:
 
 def _cue_object_pronoun(cue: str) -> str:
     cue = str(cue or "").lower().strip()
-    if re.search(r"\b(?:layers|threads|roots|spores|clouds)\b", cue):
+    if re.search(r"\b(?:layers|threads|roots|spores|clouds|leaves)\b", cue):
         return "them"
     return "it"
 
@@ -541,6 +618,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "awkward_ear_movement_changes",
             "awkward_this_ear_position_changes",
             "awkward_head_cue_title",
+            "awkward_plural_loop_line",
             "generic_clickbait_language",
             "generic_hiding_plain_sight",
             "robotic_not_random_line",
@@ -548,6 +626,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "robotic_memory_title",
             "bad_domain_plural",
             "awkward_uncountable_one_cue",
+            "awkward_non_animal_use_pronoun",
             "bad_plural_verb",
             "bad_singular_subject_verb",
             "bad_because_changes",
@@ -589,6 +668,13 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     benefit = _benefit(action, fmt)
     cue_reference = _cue_reference(cue)
     cue_object_pronoun = _cue_object_pronoun(cue)
+    reason_clause = _reason_clause(
+        animal=animal,
+        lower_subject=lower_subject,
+        cue_object_pronoun=cue_object_pronoun,
+        benefit=benefit,
+        use_verb=use_verb,
+    )
     if fmt == "animal_memory":
         if cue in {"face", "faces", "face cue", "eye contact", "eyes"}:
             title = f"{subject} remember familiar faces by sight"
@@ -607,7 +693,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
         hook = f"{subject} {reveal_verb} one visible signal."
     script = (
-        f"{hook} Watch {cue_reference}, because {lower_subject} {use_verb} {cue_object_pronoun} to {benefit}. "
+        f"{hook} Watch {cue_reference}, because {reason_clause}. "
         f"The payoff appears before the final move. "
         f"That is why viewers can replay the first second and catch the hidden cue before it pays off again."
     )
@@ -618,7 +704,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "hook": hook,
             "script": script,
             "lead": script[:400],
-            "thumbnail_text": f"{subject.upper()} {cue.upper()}"[:28],
+            "thumbnail_text": _thumbnail_label(cue),
             "yt_tags": _clean_tags(out.get("yt_tags"), lower_subject, str(out.get("category") or "")),
             "local_rewrite": {"applied": True, "reasons": reasons, "method": "deterministic_rescue"},
         }

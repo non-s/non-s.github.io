@@ -113,6 +113,8 @@ NON_ANIMAL_CATEGORIES = {
     "plants",
     "rare_phenomena",
     "rivers",
+    "tree",
+    "trees",
     "volcanoes",
     "weather",
 }
@@ -181,7 +183,8 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
     ("awkward_head_cue_title", r"\bhead cue\b"),
-    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns)\b"),
+    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns|leaves)\b"),
+    ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),
     ("truncated_heres_title", r"\b(here'?s|here is)\s*$"),
@@ -242,7 +245,12 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
     ),
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
-    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns)\b"),
+    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns|leaves)\b"),
+    (
+        "bad_plural_verb",
+        r"\b[a-z]+s\s+(gives|turns|makes|changes|reveals|uses|relies|recognizes|remembers|signals|hunts|grows|moves)\b",
+    ),
+    ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("bad_domain_plural", r"\b(earths|weathers|wildlifes|geologies)\b"),
     ("generic_payoff_filler", r"\bthat is why this moment matters before the payoff\b"),
 )
@@ -284,6 +292,27 @@ def _repeated_leading_animal(title: str) -> bool:
     return any(word in forms for word in words[1:])
 
 
+def _has_non_animal_body_term(body_lower: str) -> bool:
+    return any(re.search(r"\b" + re.escape(term) + r"\b", body_lower) for term in NON_ANIMAL_BODY_TERMS)
+
+
+def _has_non_animal_pronoun_use(body_lower: str) -> bool:
+    subjects = (
+        "earth systems",
+        "ecosystems",
+        "forests",
+        "fungi",
+        "geology",
+        "mushrooms",
+        "plants",
+        "trees",
+        "weather patterns",
+    )
+    return any(
+        re.search(r"\b" + re.escape(subject) + r"\s+use\s+(?:it|them)\s+to\b", body_lower) for subject in subjects
+    )
+
+
 def editorial_issues(story: dict, *, include_script: bool = True) -> list[str]:
     """Return copy issues that should hold or rewrite a candidate."""
     title = str(story.get("seo_title") or story.get("title") or "").strip()
@@ -309,8 +338,10 @@ def editorial_issues(story: dict, *, include_script: bool = True) -> list[str]:
     if "robotic_use_loop" in issues:
         issues = [issue for issue in issues if issue != "generic_use_bodypart_to_signal"]
     category = str(story.get("category") or "").lower()
-    if category in NON_ANIMAL_CATEGORIES and any(term in body_lower for term in NON_ANIMAL_BODY_TERMS):
+    if category in NON_ANIMAL_CATEGORIES and _has_non_animal_body_term(body_lower):
         issues.append("non_animal_body_language")
+    if category in NON_ANIMAL_CATEGORIES and _has_non_animal_pronoun_use(body_lower):
+        issues.append("awkward_non_animal_use_pronoun")
     if re.search(r"\b[a-z]+s?\s+remember\s+because of this\b", title_lower):
         issues.append("robotic_memory_title")
     return sorted(set(issues))

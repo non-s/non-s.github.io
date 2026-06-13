@@ -898,9 +898,54 @@ def _title_repeats_subject_as_cue(title: str, subject: str) -> bool:
     return False
 
 
+def _thumbnail_repeats_subject(thumbnail_text: str, subject: str) -> bool:
+    words = set(_words(str(thumbnail_text).lower()))
+    forms = _subject_word_forms(subject)
+    return bool(words & forms) and len(words) > 1
+
+
+def _thumbnail_matches_cue(thumbnail_text: str, cue: str) -> bool:
+    words = set(_words(str(thumbnail_text).lower()))
+    if not words:
+        return False
+    cue = str(cue or "").strip().lower()
+    cue_words = set(_words(cue))
+    cue_synonyms = {
+        "cloud pattern": {"cloud", "clouds", "pattern", "sky"},
+        "rock layers": {"rock", "rocks", "layer", "layers"},
+        "leaf movement": {"leaf", "leaves", "move", "movement"},
+        "mycelium network": {"mycelium", "fungal", "web", "network", "thread", "threads"},
+        "underground threads": {"thread", "threads", "fungal", "web", "network"},
+        "root network": {"root", "roots", "network"},
+        "wing movement": {"wing", "wings", "flash", "beat", "move", "movement"},
+        "wing position": {"wing", "wings", "angle", "position"},
+        "fin movement": {"fin", "fins", "shift", "move", "movement"},
+        "ear position": {"ear", "ears", "shift", "position"},
+        "eye contact": {"eye", "eyes", "contact"},
+        "head movement": {"head", "tilt", "move", "movement"},
+        "tail position": {"tail", "lift", "position"},
+    }
+    allowed = cue_words | cue_synonyms.get(cue, set())
+    generic = {"watch", "the", "first", "before", "payoff", "reveal", "matters", "move", "cue"}
+    if words <= generic:
+        return cue in {"first movement", "first move", "movement"}
+    return bool(words & allowed)
+
+
 def _subject_is_plural(subject: str) -> bool:
     lower = str(subject or "").strip().lower()
-    if lower in {"deer", "sheep", "wildlife", "earth systems", "weather patterns"}:
+    if lower in {
+        "cacti",
+        "deer",
+        "fish",
+        "fungi",
+        "geese",
+        "mice",
+        "sheep",
+        "wildlife",
+        "earth systems",
+        "weather patterns",
+    }:
         return True
     return lower.endswith("s")
 
@@ -920,12 +965,25 @@ def _subject_verb(subject: str, base: str) -> str:
 
 
 def _cue(story: dict) -> str:
-    text = _text(story)
+    primary_text = " ".join(
+        str(story.get(k) or "")
+        for k in (
+            "category",
+            "topic_hashtag",
+            "title",
+            "seo_title",
+            "hook",
+            "script",
+            "yt_tags",
+        )
+    ).lower()
+    fallback_text = " ".join(str(story.get(k) or "") for k in ("thumbnail_text", "description")).lower()
     cue_priority = [
         "ear position",
         "head movement",
         "hand movement",
         "tail position",
+        "eye contact",
         "wing movement",
         "wing position",
         "beak movement",
@@ -943,15 +1001,21 @@ def _cue(story: dict) -> str:
         "paws",
         "feet",
         "beak",
-        "mycelium",
         "underground threads",
         "threads",
         "thread",
+        "mycelium",
         "cap",
         "caps",
         "gill",
         "gills",
         "spores",
+        "canopy shift",
+        "canopy",
+        "leaf movement",
+        "leaves",
+        "leaf",
+        "root network",
         "clouds",
         "cloud",
         "lava",
@@ -969,11 +1033,12 @@ def _cue(story: dict) -> str:
         "movement",
     ]
     subject_terms = _cue_subject_terms(story)
-    for term in cue_priority:
-        if term in subject_terms:
-            continue
-        if re.search(r"\b" + re.escape(term) + r"\b", text):
-            return term
+    for text in (primary_text, fallback_text):
+        for term in cue_priority:
+            if term in subject_terms:
+                continue
+            if re.search(r"\b" + re.escape(term) + r"\b", text):
+                return term
     category = str(story.get("category") or "").lower()
     return CATEGORY_FALLBACK_CUES.get(category, "first movement")
 
@@ -986,6 +1051,7 @@ def _thumb_cue(cue: str) -> str:
         "head movement": "head tilt",
         "hand movement": "hand cue",
         "tail position": "tail lift",
+        "eye contact": "eye contact",
         "wing movement": "wing flash",
         "wing position": "wing angle",
         "beak movement": "beak clue",
@@ -1037,6 +1103,7 @@ def _title_cue(cue: str) -> str:
         "wing position": "wing angle",
         "wing movement": "wing flash",
         "tail position": "tail lift",
+        "eye contact": "eye contact",
         "flipper movement": "flipper cue",
         "beak movement": "beak cue",
         "fin movement": "fin cue",
@@ -1088,7 +1155,13 @@ def _countable_title_cue(cue: str) -> str:
         "rocks": "rock layer",
         "clouds": "cloud pattern",
         "cloud pattern": "cloud pattern",
+        "canopy shift": "canopy shift",
+        "canopy": "canopy shift",
+        "leaf movement": "leaf movement",
+        "leaf": "leaf movement",
         "leaves": "leaf movement",
+        "root network": "root network",
+        "roots": "root network",
     }.get(cue, _title_cue(cue))
 
 
@@ -1125,21 +1198,26 @@ def generate_packaging_options(story: dict) -> dict:
     )
     thumbs = []
     current_thumb = str(story.get("thumbnail_text") or "").upper()
-    if current_thumb and not editorial_issues(
-        {"title": subject, "seo_title": subject, "thumbnail_text": current_thumb}, include_script=False
+    if (
+        current_thumb
+        and not editorial_issues(
+            {"title": subject, "seo_title": subject, "thumbnail_text": current_thumb}, include_script=False
+        )
+        and not _thumbnail_repeats_subject(current_thumb, subject)
+        and _thumbnail_matches_cue(current_thumb, title_cue)
     ):
         thumbs.append(current_thumb)
     thumbs.extend(
         [
-        f"{thumb_cue}".upper(),
-        f"WATCH {thumb_cue}".upper(),
-        f"{subject} {action}".upper(),
-        f"{thumb_cue} MATTERS".upper(),
-        f"{thumb_cue} PAYOFF".upper(),
-        f"{thumb_cue} FIRST".upper(),
-        f"{thumb_cue} REVEAL".upper(),
-        "WATCH THE MOVE",
-        "BEFORE THE PAYOFF",
+            f"{thumb_cue}".upper(),
+            f"WATCH {thumb_cue}".upper(),
+            f"{subject} {action}".upper(),
+            f"{thumb_cue} MATTERS".upper(),
+            f"{thumb_cue} PAYOFF".upper(),
+            f"{thumb_cue} FIRST".upper(),
+            f"{thumb_cue} REVEAL".upper(),
+            "WATCH THE MOVE",
+            "BEFORE THE PAYOFF",
         ]
     )
     hooks = []
@@ -1148,10 +1226,10 @@ def generate_packaging_options(story: dict) -> dict:
         hooks.append(current_hook)
     hooks.extend(
         [
-        f"Watch the {title_cue}; the payoff lands seconds later.",
-        f"Start with the {countable_cue}; it explains the next move.",
-        f"The {countable_cue} is the detail most people miss.",
-        f"{subject} {_subject_verb(subject, 'give')} away the answer through {title_cue}.",
+            f"Watch the {title_cue}; the payoff lands seconds later.",
+            f"Start with the {countable_cue}; it explains the next move.",
+            f"The {countable_cue} is the detail most people miss.",
+            f"{subject} {_subject_verb(subject, 'give')} away the answer through {title_cue}.",
         ]
     )
 

@@ -102,26 +102,47 @@ def test_packaging_repairs_non_animal_domain_grammar():
         category="earth_from_space",
         yt_tags=[],
     )
+    forest = _story(
+        title="Forests read the moment from one leaves",
+        seo_title="Forests read the moment from one leaves",
+        hook="This forests changes right before the payoff.",
+        script=(
+            "Forests reveal one visible signal. Watch the leaves, because forests use it "
+            "to send a clear signal before the next move."
+        ),
+        thumbnail_text="FORESTS LEAVES",
+        category="forests",
+        yt_tags=[],
+    )
 
     geology_options = generate_packaging_options(geology)
     geology_best = select_best_packaging(geology)["best"]
     earth_options = generate_packaging_options(earth)
     earth_best = select_best_packaging(earth)["best"]
+    forest_options = generate_packaging_options(forest)
+    forest_best = select_best_packaging(forest)["best"]
     generated = " | ".join(
         geology_options["titles"]
         + geology_options["thumbnail_texts"]
         + geology_options["hooks"]
         + earth_options["titles"]
         + earth_options["hooks"]
+        + forest_options["titles"]
+        + forest_options["thumbnail_texts"]
+        + forest_options["hooks"]
     ).lower()
 
     assert "geologies" not in generated
     assert "one rocks" not in generated
     assert "one clouds" not in generated
+    assert "one leaves" not in generated
+    assert "this forests changes" not in generated
     assert "before it change" not in generated
     assert geology_best["title"] == "Geology signals through rock layers"
     assert geology_best["thumbnail_text"] == "ROCK LAYER"
     assert earth_best["title"] == "Earth systems signal through cloud patterns"
+    assert forest_best["title"] == "Forests signal through leaf movement"
+    assert forest_best["thumbnail_text"] == "LEAF MOVE"
 
 
 def test_packaging_selector_returns_scored_variants():
@@ -129,6 +150,45 @@ def test_packaging_selector_returns_scored_variants():
 
     assert selected["best"]["score"] > 0
     assert len(selected["top_variants"]) == 10
+
+
+def test_packaging_selector_rejects_stale_thumbnail_for_changed_cue():
+    story = _story(
+        title="Earth systems signal through cloud patterns",
+        seo_title="Earth systems signal through cloud patterns",
+        hook="Watch the cloud pattern; the payoff lands seconds later.",
+        script=(
+            "Earth systems reveal one visible signal. Watch the cloud pattern, because that detail "
+            "shows how earth systems shift before the payoff."
+        ),
+        thumbnail_text="LEAF CLUE",
+        category="insects",
+        yt_tags=["earth systems", "earth_from_space", "clouds", "atmosphere"],
+    )
+
+    selected = select_best_packaging(story)["best"]
+
+    assert selected["title"] == "Earth systems signal through cloud patterns"
+    assert selected["thumbnail_text"] == "CLOUD PATTERN"
+
+
+def test_packaging_selector_replaces_generic_thumbnail_when_specific_cue_exists():
+    story = _story(
+        title="Chickens rely on eye contact to call",
+        seo_title="Chickens rely on eye contact to call",
+        hook="Chickens rely on eye contact before the payoff.",
+        script=(
+            "Chickens rely on eye contact. Watch the eye contact, because chickens use it "
+            "to send a clear signal before the next move."
+        ),
+        thumbnail_text="FIRST MOVE",
+        category="farm",
+        yt_tags=[],
+    )
+
+    selected = select_best_packaging(story)["best"]
+
+    assert selected["thumbnail_text"] == "EYE CONTACT"
 
 
 def test_packaging_selector_hides_rejected_title_variants():

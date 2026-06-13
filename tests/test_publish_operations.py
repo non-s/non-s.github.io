@@ -259,14 +259,36 @@ def test_rescue_story_repairs_non_animal_domain_grammar():
         ),
         ["awkward_uncountable_one_cue"],
     )
+    forest, forest_applied = rescue_story(
+        _strong_story(
+            id="forest-1",
+            title="Forests read the moment from one leaves",
+            seo_title="Forests read the moment from one leaves",
+            hook="Forests reveal one visible signal",
+            script=(
+                "Forests reveal one visible signal. Watch the leaves, because forests use it "
+                "to send a clear signal before the next move."
+            ),
+            thumbnail_text="FORESTS LEAVES",
+            category="forests",
+            source_title="Foggy forest with leaves and canopy",
+        ),
+        ["awkward_uncountable_one_cue"],
+    )
 
     assert geology_applied is True
     assert "Geologies" not in geology["title"]
     assert "one rocks" not in geology["title"].lower()
-    assert "geology uses them" in geology["script"].lower()
+    assert "that detail shows how geology shifts" in geology["script"].lower()
     assert earth_applied is True
     assert earth["title"] == "Earth systems read the moment from one cloud pattern"
     assert "Earth systems read" in earth["title"]
+    assert forest_applied is True
+    assert forest["title"] == "Forests read the moment from one leaf movement"
+    assert forest["thumbnail_text"] == "LEAF MOVEMENT"
+    assert "one leaves" not in forest["script"].lower()
+    assert "forests use it" not in forest["script"].lower()
+    assert "that detail shows how forests shift" in forest["script"].lower()
 
 
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):

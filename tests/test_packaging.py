@@ -139,6 +139,88 @@ def test_package_story_uses_fungi_detail_instead_of_subject_as_cue():
     assert "underground threads" in replay_prompt(packaged).lower()
 
 
+def test_package_story_uses_nature_signal_language_for_forests():
+    packaged = package_story(
+        _story(
+            title="Forests read the moment from one leaves",
+            seo_title="Forests read the moment from one leaves",
+            hook="This forests changes right before the payoff.",
+            script=(
+                "Forests reveal one visible signal. Watch the leaves, because forests use it "
+                "to send a clear signal before the next move."
+            ),
+            thumbnail_text="FORESTS LEAVES",
+            category="forests",
+            yt_tags=[],
+        )
+    )
+
+    assert packaged["title"] == "Forests signal through leaf movement"
+    assert packaged["thumbnail_text"] == "LEAF MOVE"
+    assert "another nature signal" in pinned_comment(packaged).lower()
+    assert "one leaves" not in packaged["packaging"]["pinned_comment"].lower()
+
+
+def test_package_story_uses_nature_signal_language_for_trees():
+    packaged = package_story(
+        _story(
+            title="Trees signal through root network",
+            seo_title="Trees signal through root network",
+            hook="Trees reveal one visible signal.",
+            script=(
+                "Trees reveal one visible signal. Watch roots, because that detail shows how trees shift "
+                "before the payoff."
+            ),
+            thumbnail_text="ROOT NETWORK",
+            category="trees",
+            yt_tags=[],
+        )
+    )
+
+    assert "another nature signal" in pinned_comment(packaged).lower()
+    assert "trees quietly engineer" in cta_prompt(packaged).lower()
+
+
+def test_package_story_keeps_animal_signal_for_animals_in_nature_categories():
+    packaged = package_story(
+        _story(
+            title="Sharks rely on fin movement to survive",
+            seo_title="Sharks rely on fin movement to survive",
+            hook="Sharks rely on fin movement before the payoff.",
+            script=(
+                "Sharks rely on fin movement before the payoff. Watch the fin movement, "
+                "because that detail helps them survive."
+            ),
+            thumbnail_text="FIN SHIFT",
+            category="ocean",
+            yt_tags=[],
+        )
+    )
+
+    assert "another animal signal" in pinned_comment(packaged).lower()
+
+
+def test_package_story_normalizes_earth_category_from_title_and_tags():
+    packaged = package_story(
+        _story(
+            title="Earth systems signal through cloud patterns",
+            seo_title="Earth systems signal through cloud patterns",
+            hook="Watch the cloud pattern; the payoff lands seconds later.",
+            script=(
+                "Earth systems reveal one visible signal. Watch the cloud pattern, because that detail "
+                "shows how earth systems shift before the payoff."
+            ),
+            thumbnail_text="LEAF CLUE",
+            category="insects",
+            yt_tags=["earth systems", "earth_from_space", "clouds", "atmosphere"],
+        )
+    )
+
+    assert packaged["category"] == "earth_from_space"
+    assert packaged["thumbnail_text"] == "CLOUD PATTERN"
+    assert "another nature signal" in pinned_comment(packaged).lower()
+
+
 def test_package_story_adds_comment_and_community_hook():
     packaged = package_story(_story(thumbnail_text=""))
 

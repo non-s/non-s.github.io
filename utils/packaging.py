@@ -221,9 +221,12 @@ CUE_WORDS = (
     "ash",
     "cloud",
     "clouds",
+    "canopy shift",
+    "canopy",
     "underground threads",
     "thread",
     "threads",
+    "root network",
     "roots",
     "mycelium",
     "cap",
@@ -231,6 +234,7 @@ CUE_WORDS = (
     "spore",
     "spores",
     "leaf",
+    "leaf movement",
     "leaves",
     "mushroom",
     "object",
@@ -355,6 +359,63 @@ SERIES_CATALOG = {
     "default": "Nature Signals",
 }
 _PACKAGING_CACHE: dict[tuple[str, str], dict] = {}
+NATURE_SIGNAL_CATEGORIES = {
+    "earth_from_space",
+    "ecosystems",
+    "forests",
+    "fungi",
+    "geology",
+    "ocean",
+    "oceans",
+    "plants",
+    "rare_phenomena",
+    "rivers",
+    "tree",
+    "trees",
+    "volcanoes",
+    "weather",
+}
+NATURE_SIGNAL_SUBJECTS = {
+    "atmosphere",
+    "biodiversity",
+    "coral",
+    "earth",
+    "earth systems",
+    "ecosystem",
+    "ecosystems",
+    "forest",
+    "forests",
+    "fungi",
+    "geology",
+    "glacier",
+    "lava",
+    "mushroom",
+    "mushrooms",
+    "mycelium",
+    "ocean",
+    "plant",
+    "plants",
+    "reef",
+    "river",
+    "rivers",
+    "rock",
+    "rocks",
+    "storm",
+    "storms",
+    "tree",
+    "trees",
+    "volcano",
+    "volcanoes",
+    "weather",
+}
+NATURE_CATEGORY_SIGNALS = (
+    ("earth_from_space", ("earth systems", "earth_from_space", "atmosphere", "aerial view", "cloud pattern", "clouds")),
+    ("forests", ("forest", "forests", "canopy", "rainforest")),
+    ("trees", ("tree", "trees", "root network", "roots")),
+    ("fungi", ("fungi", "fungal", "mushroom", "mushrooms", "mycelium")),
+    ("geology", ("geology", "rock layers", "rocks", "minerals")),
+    ("weather", ("weather", "storm", "lightning", "tornado")),
+)
 
 
 def _words(text: str) -> list[str]:
@@ -379,6 +440,36 @@ def extract_subject(story: dict) -> str:
 def extract_animal(story: dict) -> str:
     """Backward-compatible alias; returns the generic subject/topic."""
     return extract_subject(story)
+
+
+def _normalized_category(story: dict) -> str:
+    current = str(story.get("category") or "").strip().lower()
+    text = " ".join(
+        str(value or "")
+        for value in (
+            story.get("seo_title"),
+            story.get("title"),
+            story.get("hook"),
+            story.get("topic_hashtag"),
+            " ".join(str(tag or "") for tag in (story.get("yt_tags") or [])),
+        )
+    ).lower()
+    for category, signals in NATURE_CATEGORY_SIGNALS:
+        if any(re.search(r"\b" + re.escape(signal) + r"\b", text) for signal in signals):
+            return category
+    return current
+
+
+def _uses_nature_signal(story: dict) -> bool:
+    category = str(story.get("category") or "").strip().lower()
+    subject = extract_subject(story).strip().lower()
+    category_text = category.replace("_", " ")
+    category_forms = {category, category_text, category_text.rstrip("s"), category.rstrip("s"), "nature"}
+    return subject in NATURE_SIGNAL_SUBJECTS or (category in NATURE_SIGNAL_CATEGORIES and subject in category_forms)
+
+
+def _return_hook(story: dict) -> str:
+    return "Tomorrow: another nature signal." if _uses_nature_signal(story) else "Tomorrow: another animal signal."
 
 
 def extract_action(story: dict) -> str:
@@ -554,7 +645,7 @@ def pinned_comment(story: dict) -> str:
     subject = extract_subject(story)
     cue = extract_cue(story)
     prompt = debate_prompt(story)
-    return_hook = "Tomorrow: another animal signal."
+    return_hook = _return_hook(story)
     if cue != "cue":
         return f"Watch the {cue} again. {return_hook} {prompt}"[:280]
     return f"{_title_case_subject(subject)} is the example. {return_hook} {prompt}"[:280]
@@ -601,6 +692,9 @@ def replay_prompt(story: dict) -> str:
 
 def package_story(story: dict) -> dict:
     out = dict(story)
+    normalized_category = _normalized_category(out)
+    if normalized_category:
+        out["category"] = normalized_category
     memory = load_format_memory()
     selected = _select_packaging(out, memory=memory)
     best_variant = selected["best"]

@@ -31,3 +31,18 @@ def test_recent_hook_overlap_is_penalized():
     repeated = engine.score_candidate(candidate, story, {"recent_hooks": [candidate.hook]})
 
     assert repeated < fresh
+
+
+def test_plural_subject_templates_use_plural_grammar():
+    engine = CuriosityGapEngine()
+    hooks = [
+        item.hook
+        for item in engine.build_candidates(
+            {"category": "forests", "action": "changes", "cue": "leaf movement", "outcome": "the payoff"}
+        )
+    ]
+    joined = " | ".join(hooks).lower()
+
+    assert "this forests changes" not in joined
+    assert "these forests change" in joined
+    assert "why do these forests change" in joined

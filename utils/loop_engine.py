@@ -26,6 +26,24 @@ STOPWORDS = {
     "what",
 }
 
+SUBJECT_CALLBACKS = {
+    "animal",
+    "animals",
+    "nature",
+    "forest",
+    "forests",
+    "tree",
+    "trees",
+    "fungi",
+    "mushroom",
+    "mushrooms",
+    "geology",
+    "weather",
+    "earth",
+    "systems",
+    "wildlife",
+}
+
 
 def _clean(value: object) -> str:
     return " ".join(str(value or "").split())
@@ -59,9 +77,23 @@ def estimate_loop_strength(opening: str, final_line: str) -> float:
     return round(max(0.0, min(1.0, score)), 3)
 
 
+def _callback_phrase(callback: str) -> str:
+    callback = _clean(callback or "cue").lower()
+    if callback in SUBJECT_CALLBACKS:
+        return "first clue"
+    return callback or "first clue"
+
+
+def _sense_verb(phrase: str) -> str:
+    lower = str(phrase or "").lower().strip()
+    if lower.endswith("s") and lower not in {"first clue", "this"}:
+        return "make"
+    return "makes"
+
+
 def rewrite_to_reopen_question(ending: str, callback: str, max_words: int = 13) -> str:
-    callback = callback or "cue"
-    line = f"Now the {callback} at the start makes sense."
+    callback = _callback_phrase(callback)
+    line = f"Now the {callback} at the start {_sense_verb(callback)} sense."
     if ending and "?" in ending:
         line = ending
     words = line.split()

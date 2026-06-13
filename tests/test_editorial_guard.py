@@ -51,6 +51,19 @@ def test_editorial_guard_blocks_non_animal_domain_grammar():
         {"title": "Earth systems read the moment from one clouds"}
     )
     assert "awkward_uncountable_one_cue" in editorial_issues({"hook": "Watch one rock layers before the payoff"})
+    assert "awkward_uncountable_one_cue" in editorial_issues(
+        {"title": "Forests read the moment from one leaves"}
+    )
+    assert "bad_plural_verb" in editorial_issues({"hook": "This forests changes right before the payoff"})
+    assert "awkward_plural_loop_line" in editorial_issues(
+        {"script": "Now the forests at the start makes sense."}
+    )
+    assert "awkward_non_animal_use_pronoun" in editorial_issues(
+        {
+            "script": "Forests reveal one visible signal. Watch the leaves, because forests use it to signal.",
+            "category": "forests",
+        }
+    )
 
 
 def test_editorial_guard_blocks_rely_loop():
@@ -79,6 +92,18 @@ def test_editorial_guard_blocks_non_animal_body_language():
     )
 
     assert "non_animal_body_language" in issues
+
+
+def test_editorial_guard_does_not_find_tail_inside_detail():
+    issues = editorial_issues(
+        {
+            "title": "Geology reads the moment from one rock layer",
+            "script": "Watch the rock layers, because that detail shows how geology shifts.",
+            "category": "geology",
+        }
+    )
+
+    assert "non_animal_body_language" not in issues
 
 
 def test_editorial_guard_blocks_bad_because_changes_hook():

@@ -146,6 +146,12 @@ OVERRIDES: dict[str, dict[str, str]] = {
         "hook": "Watch the silence first; roaring would ruin the ambush.",
         "rationale": "Fixes the truncated title and turns the premise into a sharper survival hook.",
     },
+    "Dsk4uI1FncM": {
+        "title": "Forests signal through leaf movement",
+        "thumbnail_text": "LEAF MOVE",
+        "hook": "Watch the leaf movement first; it shows how the forest shifts before the payoff.",
+        "rationale": "Replaces the awkward 'one leaves' title with the new visual-cue thumbnail style.",
+    },
 }
 
 
