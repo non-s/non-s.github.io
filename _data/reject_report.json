@@ -1,10 +1,10 @@
 {
-  "total": 40,
+  "total": 42,
   "reasons": {
     "copy_subject_mismatch": 19,
+    "duplicate_title": 8,
+    "duplicate_angle": 8,
     "queue_score_reject": 7,
-    "duplicate_title": 7,
-    "duplicate_angle": 7,
     "missing_visible_cue": 6,
     "script_length_risk": 5,
     "title_shape_weak": 5,
@@ -20,40 +20,17 @@
     "story angle repeated inside 10-day cooldown": 1,
     "editorial score 38 is below 62": 1,
     "no_action_promise": 1,
-    "off_topic_visual": 1
+    "off_topic_visual": 1,
+    "non_animal_body_language": 1
   },
   "stages": {
     "queue_quality": 19,
-    "queue_prune_final": 11,
+    "queue_prune_final": 12,
     "queue_repair": 7,
-    "queue_prune": 2,
+    "queue_prune": 3,
     "editor_in_chief": 1
   },
   "latest": [
-    {
-      "story_id": "3a14e88bd4a77538",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Earth systems read the moment from one clouds",
-      "category": "earth_from_space",
-      "source_url": "https://www.pexels.com/video/white-clouds-seen-from-an-airplane-window-11382600/",
-      "recorded_at": "2026-06-13T11:01:44.228410+00:00",
-      "rewrite_attempted": false
-    },
-    {
-      "story_id": "044f781f8d21d65c",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Geologies read the moment from one rocks",
-      "category": "geology",
-      "source_url": "https://www.pexels.com/video/exploring-a-narrow-rocky-canyon-passage-37497803/",
-      "recorded_at": "2026-06-13T11:01:44.229315+00:00",
-      "rewrite_attempted": false
-    },
     {
       "story_id": "e560a640c41de380",
       "stage": "queue_quality",
@@ -352,6 +329,31 @@
       "category": "dogs",
       "source_url": "https://www.pexels.com/video/adorable-puppies-in-cardboard-box-35913013/",
       "recorded_at": "2026-06-13T12:28:40.487370+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "1a8e57f23d0b5e78",
+      "stage": "queue_prune",
+      "reasons": [
+        "non_animal_body_language"
+      ],
+      "title": "tigers vanish in a single blink of grass",
+      "category": "plants",
+      "source_url": "https://www.pexels.com/video/majestic-tiger-roaming-in-natural-habitat-34955701/",
+      "recorded_at": "2026-06-13T13:12:37.454626+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "96221908e5e4476a",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "title": "Trees signal through root network",
+      "category": "trees",
+      "source_url": "https://www.pexels.com/video/a-giant-sequoia-tree-11272150/",
+      "recorded_at": "2026-06-13T13:12:37.455318+00:00",
       "rewrite_attempted": false
     }
   ]

@@ -621,35 +621,37 @@
       }
     },
     {
-      "id": "37fc6915b5c2c82e",
-      "title": "Mushrooms signal through mycelium network",
-      "category": "fungi",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
+      "id": "f19e4f14dc57ffe5",
+      "title": "Chickens rely on eye contact to call",
+      "category": "farm",
+      "autonomy_priority": 104.6,
+      "queue_score": 86.6,
       "template_cluster": "",
       "mechanism_cluster": "ear_signal",
       "objective_reasons": [
         "objective_gate:low_decision_confidence"
       ],
-      "lane": "evergreen",
+      "lane": "recovery",
       "mix_adjustment": 5.0,
       "score": {
-        "score": 100.0,
+        "score": 91.6,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 75,
+          "score": 60,
           "signals": {
-            "viral_potential": 80,
-            "visual_potential": 79,
-            "replay_potential": 100,
+            "viral_potential": 58,
+            "visual_potential": 45,
+            "replay_potential": 94,
             "comment_potential": 54,
-            "educational_potential": 79,
+            "educational_potential": 65,
             "emotional_potential": 44,
-            "novelty": 69
+            "novelty": 55
           },
-          "verdict": "produce",
-          "reasons": [],
+          "verdict": "rewrite",
+          "reasons": [
+            "weak_visual_surface"
+          ],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -664,11 +666,11 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 84,
+          "score": 81,
           "signals": {
             "hook_score": 82,
             "curiosity_score": 87,
-            "visual_score": 66,
+            "visual_score": 50,
             "replay_score": 100,
             "completion_prediction": 84
           },
@@ -705,17 +707,18 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 86,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
@@ -736,19 +739,19 @@
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
+          "confidence_score": 0.12,
+          "sample_size": 6,
+          "minimum_sample_size": 20,
           "data_quality": "inferred",
-          "data_quality_score": 0.65,
+          "data_quality_score": 0.575,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          "bootstrap_multiplier": 0.34,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
         },
-        "category": "fungi",
-        "story_format": "hidden_network",
-        "hook_score": 86,
+        "category": "farm",
+        "story_format": "cute_behavior",
+        "hook_score": 74,
         "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
@@ -764,11 +767,11 @@
           "reasons": [
             "low_decision_confidence"
           ],
-          "confidence_score": 0.007,
+          "confidence_score": 0.12,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
-          "payoff_time_s": 9.35,
+          "payoff_time_s": 9.9,
           "template_cluster": "",
           "mechanism_cluster": "ear_signal"
         }
@@ -936,8 +939,8 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 13,
-      "recovery": 6
+      "evergreen": 15,
+      "recovery": 7
     },
     "items": [
       {
@@ -946,7 +949,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.5
       },
       {
         "id": "07172388b9a65046",
@@ -954,7 +957,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.94
       },
       {
         "id": "9ff926cda4c1ee10",
@@ -962,7 +965,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.86
       },
       {
         "id": "3a14e88bd4a77538",
@@ -970,13 +973,29 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.74
+      },
+      {
+        "id": "bc368b27bc6ddb59",
+        "title": "Dragonflies read the moment from one wing angle",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "965914b8523cf456",
         "title": "Insects read the moment from one leaf",
         "category": "insects",
         "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.94
+      },
+      {
+        "id": "f19e4f14dc57ffe5",
+        "title": "Chickens rely on eye contact to call",
+        "category": "farm",
+        "lane": "recovery",
         "adjustment": 5.0,
         "freshness_score": 55.0
       },
@@ -986,7 +1005,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.74
       },
       {
         "id": "2877e98b5ef59dbf",
@@ -994,7 +1013,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.5
       },
       {
         "id": "00489d96ccaf81c3",
@@ -1002,7 +1021,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.86
       },
       {
         "id": "6f81c1e9406e27db",
@@ -1010,7 +1029,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.9
+        "freshness_score": 54.84
       },
       {
         "id": "b0960cfb12495b2b",
@@ -1018,7 +1037,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.22
+        "freshness_score": 54.16
       },
       {
         "id": "37fc6915b5c2c82e",
@@ -1026,7 +1045,7 @@
         "category": "fungi",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.22
+        "freshness_score": 54.16
       },
       {
         "id": "14f9e8f7fb4689a6",
@@ -1034,7 +1053,15 @@
         "category": "weather",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.86
+      },
+      {
+        "id": "35208228f95f00a2",
+        "title": "Monkeys rely on leaves to freeze",
+        "category": "primates",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "044f781f8d21d65c",
@@ -1042,7 +1069,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.74
       },
       {
         "id": "17f93bd1fd66bd13",
@@ -1050,7 +1077,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.74
       },
       {
         "id": "360ed2f163e61f41",
@@ -1058,7 +1085,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.86
       },
       {
         "id": "e560a640c41de380",
@@ -1066,7 +1093,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.74
       },
       {
         "id": "18762a35e9b1f385",
@@ -1074,7 +1101,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.22
+        "freshness_score": 54.16
       },
       {
         "id": "8df740c694a0b488",
@@ -1082,7 +1109,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.22
+        "freshness_score": 54.16
       },
       {
         "id": "9a87307932045891",
@@ -1090,7 +1117,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.22
+        "freshness_score": 54.16
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1128,7 +1155,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} signal through mycelium network",
+            "shape": "{subject} rely on {cue} to call",
             "count": 1,
             "share": 0.167
           }
@@ -1162,7 +1189,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} signal through mycelium network",
+            "shape": "{subject} rely on {cue} to call",
             "count": 1,
             "share": 0.167
           }
@@ -1172,15 +1199,15 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 22,
+    "pending_after": 22,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 0,
     "reasons": {
-      "objective_gate:low_decision_confidence": 38,
-      "template_cluster_limit:read_the_moment": 6,
-      "mechanism_cluster_limit:ear_signal": 3,
+      "objective_gate:low_decision_confidence": 44,
+      "template_cluster_limit:read_the_moment": 7,
+      "mechanism_cluster_limit:ear_signal": 5,
       "template_cluster_limit:rely_to_survive": 1
     }
   }
