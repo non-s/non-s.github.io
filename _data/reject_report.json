@@ -1,29 +1,30 @@
 {
-  "total": 20,
+  "total": 23,
   "reasons": {
     "copy_subject_mismatch": 12,
-    "script_length_risk": 3,
+    "script_length_risk": 4,
+    "missing_visible_cue": 4,
+    "queue_score_reject": 4,
+    "duplicate_title": 4,
+    "duplicate_angle": 4,
     "title_shape_weak": 3,
     "title_needs_stronger_shape": 3,
     "subject_not_clear": 3,
-    "missing_visible_cue": 3,
-    "queue_score_reject": 3,
+    "missing_action_word": 3,
     "subject_not_immediately_clear": 2,
     "missing_visual_cue": 2,
-    "missing_action_word": 2,
-    "duplicate_title": 2,
-    "duplicate_angle": 2,
+    "duplicate_script": 2,
     "generic_first_movement_reason": 1,
     "script_subject_mismatch": 1,
-    "duplicate_script": 1,
     "subject repeated inside 3-day cooldown": 1,
     "story angle repeated inside 10-day cooldown": 1,
-    "editorial score 38 is below 62": 1
+    "editorial score 38 is below 62": 1,
+    "no_action_promise": 1
   },
   "stages": {
     "queue_quality": 12,
-    "queue_repair": 3,
-    "queue_prune_final": 3,
+    "queue_prune_final": 5,
+    "queue_repair": 4,
     "queue_prune": 1,
     "editor_in_chief": 1
   },
@@ -292,6 +293,49 @@
       "category": "plants",
       "source_url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
       "recorded_at": "2026-06-13T11:01:44.234216+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "926ba5ff87156a76",
+      "stage": "queue_repair",
+      "reasons": [
+        "no_action_promise",
+        "script_length_risk",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "title": "Tree Planting uses root network before it changes",
+      "category": "conservation",
+      "source_url": "https://www.pexels.com/video/men-engaged-in-community-tree-planting-outdoors-36906598/",
+      "recorded_at": "2026-06-13T11:38:46.433067+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "3e7f77fdb4f98b64",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Earth systems signal through cloud patterns",
+      "category": "earth_from_space",
+      "source_url": "https://www.pexels.com/video/crescent-moon-viewed-through-telescope-37723924/",
+      "recorded_at": "2026-06-13T11:38:46.433536+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "33b5082b104c19f8",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "title": "Wolves read the moment from one tail lift",
+      "category": "wildlife",
+      "source_url": "https://www.pexels.com/video/lupo-15954020/",
+      "recorded_at": "2026-06-13T11:38:46.433981+00:00",
       "rewrite_attempted": false
     }
   ]
