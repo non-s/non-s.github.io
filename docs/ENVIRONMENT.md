@@ -62,6 +62,7 @@
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | no | Daily budget ratio used by quota guard. |
 | `QUOTA_LEDGER_ENABLED` | no | Writes `_data/analytics/api_quota_ledger.jsonl` and latest summary. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | no | Conservative daily API unit budget, default `10000`. |
+| `YOUTUBE_DAILY_UPLOAD_BUDGET` | no | Conservative daily `videos.insert` call budget, default `100`. |
 | `YOUTUBE_REPORTING_ENABLED` | no | Enables optional Reporting API CSV backfill folders. |
 | `WAREHOUSE_COMPACTION_ENABLED` | no | Writes monthly analytics JSONL partitions. |
 | `MUSIC_BED_ENABLED` | no | Enables autonomous public-domain music beds. Defaults to `1`. |
@@ -69,9 +70,10 @@
 | `SEO_METADATA_LINT_ENABLED` | no | Adds deterministic SEO/search lint to metadata and repo checks. |
 | `SEO_METADATA_LINT_STRICT` | no | Rejects generated metadata with SEO lint errors when set to `1`. |
 
-YouTube uploads cost roughly 1600 API units each. The default 10000-unit quota
-supports only a few uploads per day; true 24/day publishing requires a higher
-Google API quota and a matching `YOUTUBE_DAILY_QUOTA_BUDGET`.
+YouTube `videos.insert` calls use their own daily upload bucket. Keep
+`YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different
+project-specific value. The 10000-unit `YOUTUBE_DAILY_QUOTA_BUDGET` still
+protects non-upload calls such as thumbnails, playlists, comments and analytics.
 
 ## Feature Flag Registry
 
@@ -114,6 +116,7 @@ Google API quota and a matching `YOUTUBE_DAILY_QUOTA_BUDGET`.
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.95` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
+| `YOUTUBE_DAILY_UPLOAD_BUDGET` | `100` | operations | Conservative daily YouTube upload-call budget. | Match the Google Cloud upload quota. |
 | `YOUTUBE_REPORTING_ENABLED` | `0` | analytics | Enable optional Reporting API CSV backfill folders. | Set to 0. |
 | `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
 | `MUSIC_BED_ENABLED` | `1` | production | Allow autonomous public-domain music beds. | Set to 0. |

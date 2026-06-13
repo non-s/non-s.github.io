@@ -177,6 +177,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Raise only after checking API quota.",
     ),
     FeatureFlag(
+        "YOUTUBE_DAILY_UPLOAD_BUDGET",
+        "100",
+        "operations",
+        "Conservative daily YouTube upload-call budget.",
+        "Match the Google Cloud upload quota.",
+    ),
+    FeatureFlag(
         "YOUTUBE_REPORTING_ENABLED",
         "0",
         "analytics",
