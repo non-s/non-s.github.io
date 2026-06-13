@@ -228,6 +228,47 @@ def test_rescue_story_handles_singular_truncated_and_stitched_titles():
     assert not stitched["title"].startswith("Birds This")
 
 
+def test_rescue_story_repairs_non_animal_domain_grammar():
+    geology, geology_applied = rescue_story(
+        _strong_story(
+            id="geology-1",
+            title="Geologies read the moment from one rocks",
+            seo_title="Geologies read the moment from one rocks",
+            hook="Geologies reveal one visible signal",
+            script=(
+                "Geologies reveal one visible signal. Watch rocks, because geologies use it "
+                "to send a clear signal before the next move."
+            ),
+            thumbnail_text="GEOLOGIES ROCKS",
+            category="geology",
+        ),
+        ["bad_domain_plural", "awkward_uncountable_one_cue"],
+    )
+    earth, earth_applied = rescue_story(
+        _strong_story(
+            id="earth-1",
+            title="Earth systems read the moment from one clouds",
+            seo_title="Earth systems read the moment from one clouds",
+            hook="Earth systems reveal one visible signal",
+            script=(
+                "Earth systems reveal one visible signal. Watch clouds, because earth systems use it "
+                "to send a clear signal before the next move."
+            ),
+            thumbnail_text="EARTH CLOUDS",
+            category="earth_from_space",
+        ),
+        ["awkward_uncountable_one_cue"],
+    )
+
+    assert geology_applied is True
+    assert "Geologies" not in geology["title"]
+    assert "one rocks" not in geology["title"].lower()
+    assert "geology uses them" in geology["script"].lower()
+    assert earth_applied is True
+    assert earth["title"] == "Earth systems read the moment from one cloud pattern"
+    assert "Earth systems read" in earth["title"]
+
+
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):
     path = tmp_path / "rejected_queue.json"
     story = {"id": "abc", "title": "Weak story"}
@@ -591,7 +632,7 @@ def test_publish_schedule_adapts_to_retention_health():
     assert mid["recommended_slots"] == expected_slots
     assert high["recommended_shorts_per_day"] == 24
     assert high["recommended_slots"] == expected_slots
-    assert high["rolling_batch_size"] == 1
-    assert high["queue_target_pending"] == 1
+    assert high["rolling_batch_size"] == 24
+    assert high["queue_target_pending"] == 24
     assert high["reason"] == "operator_day_zero_hourly_publish_with_quality_and_quota_guards"
     assert len(high["recommended_slots"]) == len(low["recommended_slots"]) == 24

@@ -57,7 +57,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/stories_queue.json": {
             "updated_at": stamp,
             "channel_epoch": EPOCH,
-            "target_pending": 1,
+            "target_pending": 24,
             "stories": [],
         },
         "_data/published_clips.json": {"updated_at": stamp, "channel_epoch": EPOCH, "clips": []},
@@ -85,7 +85,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "channel_epoch": EPOCH,
             "policy": "Old local video markers, old published-thumbnail repairs, and pending queue inventory were reset. Analytics can be re-collected from YouTube after the operator removes old videos.",
             "cadence": "one_short_per_hour",
-            "queue_target_pending": 1,
+            "queue_target_pending": 24,
             "youtube_description_mode": "empty",
         },
         "_data/agency_gate.json": {"generated_at": stamp, "channel_epoch": EPOCH, "approved": [], "held": []},

@@ -47,6 +47,8 @@ CATEGORY_FALLBACK_CUES = {
     "fungi": "underground threads",
     "plants": "leaf movement",
     "forests": "canopy shift",
+    "geology": "rock layers",
+    "earth_from_space": "cloud pattern",
     "ocean": "water movement",
 }
 
@@ -54,6 +56,8 @@ SUBJECT_CUE_TERMS_BY_CATEGORY = {
     "fungi": {"fungi", "fungus", "mushroom", "mushrooms"},
     "plants": {"plant", "plants"},
     "forests": {"forest", "forests", "tree", "trees"},
+    "geology": {"geology", "geologies"},
+    "earth_from_space": {"earth", "system", "systems"},
     "ocean": {"ocean", "sea", "water"},
 }
 
@@ -77,6 +81,7 @@ VISUAL_TERMS = {
     "waterfall",
     "volcano",
     "cloud",
+    "clouds",
     "ash",
     "glacier",
     "eyes",
@@ -106,6 +111,8 @@ VISUAL_TERMS = {
     "mouth",
     "feeding",
     "bottle",
+    "rock",
+    "rocks",
     "mushrooms",
     "mycelium",
     "underground",
@@ -172,8 +179,11 @@ ACTION_TERMS = {
     "grow",
     "talk",
     "signal",
+    "signals",
     "connect",
+    "connects",
     "communicate",
+    "communicates",
     "escape",
     "survive",
     "hide",
@@ -185,6 +195,7 @@ ACTION_TERMS = {
     "remember",
     "hunt",
     "change",
+    "changes",
     "vanish",
     "recover",
     "pull",
@@ -206,8 +217,11 @@ ACTION_PRIORITY = (
     "remember",
     "recognize",
     "signal",
+    "signals",
     "communicate",
+    "communicates",
     "connect",
+    "connects",
     "follow",
     "follows",
     "rely",
@@ -232,6 +246,7 @@ ACTION_PRIORITY = (
     "melt",
     "vanish",
     "change",
+    "changes",
 )
 
 PAYOFF_TERMS = {
@@ -778,6 +793,11 @@ def _display_subject(subject: str) -> str:
     irregular = {
         "deer": "Deer",
         "earth": "Earth systems",
+        "earth systems": "Earth systems",
+        "earth from space": "Earth systems",
+        "earth_from_space": "Earth systems",
+        "geology": "Geology",
+        "geologies": "Geology",
         "weather": "Weather patterns",
         "wildlife": "Wildlife",
         "fish": "Fish",
@@ -814,6 +834,9 @@ def _plural_action(action: str) -> str:
     action = str(action or "change").strip().lower()
     irregular = {
         "changes": "change",
+        "signals": "signal",
+        "communicates": "communicate",
+        "connects": "connect",
         "pulls": "pull",
         "follows": "follow",
         "fakes": "fake",
@@ -832,10 +855,14 @@ def _cue_subject_terms(story: dict) -> set[str]:
             if len(word) <= 2:
                 continue
             terms.add(word)
-            if word.endswith("s"):
+            if word.endswith("ies") and len(word) > 3:
+                terms.add(word[:-3] + "y")
+            elif word.endswith("s"):
                 terms.add(word[:-1])
             else:
                 terms.add(f"{word}s")
+                if word.endswith("y") and len(word) > 1 and word[-2] not in "aeiou":
+                    terms.add(word[:-1] + "ies")
     return terms
 
 
@@ -845,10 +872,14 @@ def _subject_word_forms(subject: str) -> set[str]:
         if len(word) <= 2:
             continue
         forms.add(word)
-        if word.endswith("s"):
+        if word.endswith("ies") and len(word) > 3:
+            forms.add(word[:-3] + "y")
+        elif word.endswith("s"):
             forms.add(word[:-1])
         else:
             forms.add(f"{word}s")
+            if word.endswith("y") and len(word) > 1 and word[-2] not in "aeiou":
+                forms.add(word[:-1] + "ies")
     return forms
 
 
@@ -865,6 +896,27 @@ def _title_repeats_subject_as_cue(title: str, subject: str) -> bool:
         if before & forms and after & forms:
             return True
     return False
+
+
+def _subject_is_plural(subject: str) -> bool:
+    lower = str(subject or "").strip().lower()
+    if lower in {"deer", "sheep", "wildlife", "earth systems", "weather patterns"}:
+        return True
+    return lower.endswith("s")
+
+
+def _subject_verb(subject: str, base: str) -> str:
+    base = str(base or "").strip().lower()
+    if not base or _subject_is_plural(subject):
+        return base
+    irregular = {"have": "has", "do": "does"}
+    if base in irregular:
+        return irregular[base]
+    if base.endswith("y") and len(base) > 1 and base[-2] not in "aeiou":
+        return f"{base[:-1]}ies"
+    if base.endswith(("ch", "sh", "x", "z", "s")):
+        return f"{base}es"
+    return f"{base}s"
 
 
 def _cue(story: dict) -> str:
@@ -900,8 +952,11 @@ def _cue(story: dict) -> str:
         "gill",
         "gills",
         "spores",
+        "clouds",
+        "cloud",
         "lava",
         "roots",
+        "rocks",
         "mushroom",
         "mushrooms",
         "reef",
@@ -951,6 +1006,12 @@ def _thumb_cue(cue: str) -> str:
         "gill": "gill lines",
         "gills": "gill lines",
         "spores": "spore dust",
+        "rock layers": "rock layer",
+        "rocks": "rock layer",
+        "rock": "rock layer",
+        "cloud pattern": "cloud pattern",
+        "clouds": "cloud pattern",
+        "cloud": "cloud pattern",
         "leaf movement": "leaf move",
         "leaf": "leaf clue",
         "leaves": "leaf move",
@@ -994,6 +1055,12 @@ def _title_cue(cue: str) -> str:
         "gill": "gill lines",
         "gills": "gill lines",
         "spores": "spore dust",
+        "rock layers": "rock layers",
+        "rocks": "rock layers",
+        "rock": "rock layer",
+        "cloud pattern": "cloud pattern",
+        "clouds": "cloud patterns",
+        "cloud": "cloud pattern",
         "leaf movement": "leaf movement",
         "leaf": "leaf movement",
         "leaves": "leaf movement",
@@ -1017,6 +1084,10 @@ def _countable_title_cue(cue: str) -> str:
         "mycelium": "mycelium network",
         "roots": "root network",
         "spores": "spore cloud",
+        "rock layers": "rock layer",
+        "rocks": "rock layer",
+        "clouds": "cloud pattern",
+        "cloud pattern": "cloud pattern",
         "leaves": "leaf movement",
     }.get(cue, _title_cue(cue))
 
@@ -1028,28 +1099,38 @@ def generate_packaging_options(story: dict) -> dict:
     thumb_cue = _thumb_cue(cue)
     title_cue = _title_cue(cue)
     countable_cue = _countable_title_cue(cue)
+    subject_pronoun = "they" if _subject_is_plural(subject) else "it"
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
     titles = []
-    if not _title_repeats_subject_as_cue(current_title, subject):
+    current_title_candidate = {"title": current_title, "seo_title": current_title, "hook": str(story.get("hook") or "")}
+    if not _title_repeats_subject_as_cue(current_title, subject) and not editorial_issues(
+        current_title_candidate, include_script=False
+    ):
         titles.append(current_title)
     if action in {"signal", "connect", "communicate"}:
-        titles.append(f"{subject} {action} through {title_cue}")
+        titles.append(f"{subject} {_subject_verb(subject, action)} through {title_cue}")
     titles.extend(
         [
-            f"{subject} use {title_cue} before they {action}",
+            f"{subject} {_subject_verb(subject, 'use')} {title_cue} before {subject_pronoun} {_subject_verb(subject, action)}",
             f"This {countable_cue} gives {subject.lower()} away",
-            f"Why {subject.lower()} {action} after one {countable_cue}",
-            f"{subject} reveal the answer with {title_cue}",
+            f"Why {subject.lower()} {_subject_verb(subject, action)} after one {countable_cue}",
+            f"{subject} {_subject_verb(subject, 'reveal')} the answer with {title_cue}",
             f"The {countable_cue} that changes the moment",
-            f"{subject} make one {countable_cue} matter",
-            f"{subject} show the hidden payoff in seconds",
+            f"{subject} {_subject_verb(subject, 'make')} one {countable_cue} matter",
+            f"{subject} {_subject_verb(subject, 'show')} the hidden payoff in seconds",
             f"{subject}: watch this {countable_cue}",
             f"Watch {subject.lower()} after the {countable_cue}",
-            f"One {countable_cue} changes how {subject.lower()} react",
+            f"One {countable_cue} changes how {subject.lower()} {_subject_verb(subject, 'react')}",
         ]
     )
-    thumbs = [
-        str(story.get("thumbnail_text") or "").upper(),
+    thumbs = []
+    current_thumb = str(story.get("thumbnail_text") or "").upper()
+    if current_thumb and not editorial_issues(
+        {"title": subject, "seo_title": subject, "thumbnail_text": current_thumb}, include_script=False
+    ):
+        thumbs.append(current_thumb)
+    thumbs.extend(
+        [
         f"{thumb_cue}".upper(),
         f"WATCH {thumb_cue}".upper(),
         f"{subject} {action}".upper(),
@@ -1059,14 +1140,20 @@ def generate_packaging_options(story: dict) -> dict:
         f"{thumb_cue} REVEAL".upper(),
         "WATCH THE MOVE",
         "BEFORE THE PAYOFF",
-    ]
-    hooks = [
-        str(story.get("hook") or "").strip(),
+        ]
+    )
+    hooks = []
+    current_hook = str(story.get("hook") or "").strip()
+    if current_hook and not editorial_issues({"title": current_hook, "hook": current_hook}, include_script=False):
+        hooks.append(current_hook)
+    hooks.extend(
+        [
         f"Watch the {title_cue}; the payoff lands seconds later.",
-        f"Start with the {title_cue}; it explains the next move.",
-        f"The {title_cue} is the detail most people miss.",
-        f"{subject} give away the answer through {title_cue}.",
-    ]
+        f"Start with the {countable_cue}; it explains the next move.",
+        f"The {countable_cue} is the detail most people miss.",
+        f"{subject} {_subject_verb(subject, 'give')} away the answer through {title_cue}.",
+        ]
+    )
 
     def _dedupe(items: list[str], limit: int) -> list[str]:
         out, seen = [], set()
@@ -1113,17 +1200,23 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
         "thread network",
         "mycelium network",
         "root network",
+        "rock layers",
+        "cloud pattern",
+        "cloud patterns",
         "leaf movement",
         "water shift",
     )
     if " through " in lower_title and any(cue in lower_title for cue in structural_cues):
         score += 6
-    if re.search(r"\bwhy\b.*\bafter one (?:thread network|root network|leaf movement|water shift)\b", lower_title):
+    if re.search(
+        r"\bwhy\b.*\bafter one (?:thread network|root network|rock layer|cloud pattern|leaf movement|water shift)\b",
+        lower_title,
+    ):
         score -= 5
     score += _distribution_adjustment(
         candidate, memory.get("winner_patterns") if isinstance((memory or {}).get("winner_patterns"), dict) else None
     )
-    if editorial_issues(candidate):
+    if editorial_issues(candidate, include_script=False):
         score -= 60
     return max(0, min(100, score))
 

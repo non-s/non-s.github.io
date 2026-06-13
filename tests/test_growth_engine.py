@@ -77,6 +77,53 @@ def test_packaging_avoids_repeating_subject_as_visual_cue_for_fungi():
     assert selected["best"]["title"] == "Mushrooms signal through underground threads"
 
 
+def test_packaging_repairs_non_animal_domain_grammar():
+    geology = _story(
+        title="Geologies read the moment from one rocks",
+        seo_title="Geologies read the moment from one rocks",
+        hook="Geologies reveal one visible signal",
+        script=(
+            "Geologies reveal one visible signal. Watch rocks, because geologies use it "
+            "to send a clear signal before the next move."
+        ),
+        thumbnail_text="GEOLOGIES ROCKS",
+        category="geology",
+        yt_tags=[],
+    )
+    earth = _story(
+        title="Earth systems read the moment from one clouds",
+        seo_title="Earth systems read the moment from one clouds",
+        hook="Earth systems reveal one visible signal",
+        script=(
+            "Earth systems reveal one visible signal. Watch clouds, because earth systems use it "
+            "to send a clear signal before the next move."
+        ),
+        thumbnail_text="EARTH CLOUDS",
+        category="earth_from_space",
+        yt_tags=[],
+    )
+
+    geology_options = generate_packaging_options(geology)
+    geology_best = select_best_packaging(geology)["best"]
+    earth_options = generate_packaging_options(earth)
+    earth_best = select_best_packaging(earth)["best"]
+    generated = " | ".join(
+        geology_options["titles"]
+        + geology_options["thumbnail_texts"]
+        + geology_options["hooks"]
+        + earth_options["titles"]
+        + earth_options["hooks"]
+    ).lower()
+
+    assert "geologies" not in generated
+    assert "one rocks" not in generated
+    assert "one clouds" not in generated
+    assert "before it change" not in generated
+    assert geology_best["title"] == "Geology signals through rock layers"
+    assert geology_best["thumbnail_text"] == "ROCK LAYER"
+    assert earth_best["title"] == "Earth systems signal through cloud patterns"
+
+
 def test_packaging_selector_returns_scored_variants():
     selected = select_best_packaging(_story())
 

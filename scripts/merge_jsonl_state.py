@@ -33,6 +33,10 @@ DEFAULT_JSONL_STATE_PATHS = (
     "_data/upload_intents.jsonl",
 )
 
+KEY_MERGED_JSONL_PATHS = {
+    "_data/fact_sources.jsonl",
+}
+
 
 def read_jsonl_lines(path: Path) -> list[str]:
     if not path.exists():
@@ -50,6 +54,58 @@ def merge_jsonl_lines(current_lines: list[str], incoming_lines: list[str]) -> li
         merged.append(line)
         seen.add(line)
     return merged
+
+
+def _fact_source_key(row: dict) -> tuple[str, str]:
+    return (str(row.get("story_id") or ""), str(row.get("source_url") or ""))
+
+
+def merge_fact_source_lines(current_lines: list[str], incoming_lines: list[str]) -> list[str]:
+    """Merge source metadata by story/source so corrected titles replace stale rows."""
+    rows: list[dict] = []
+    raw_lines: list[str] = []
+    index: dict[tuple[str, str], int] = {}
+    seen_raw: set[str] = set()
+
+    def add(line: str, *, prefer: bool) -> None:
+        if not line.strip():
+            return
+        try:
+            row = json.loads(line)
+        except Exception:
+            if line not in seen_raw:
+                raw_lines.append(line)
+                seen_raw.add(line)
+            return
+        if not isinstance(row, dict):
+            if line not in seen_raw:
+                raw_lines.append(line)
+                seen_raw.add(line)
+            return
+        key = _fact_source_key(row)
+        if not any(key):
+            if line not in seen_raw:
+                raw_lines.append(line)
+                seen_raw.add(line)
+            return
+        if key in index:
+            if prefer:
+                current = rows[index[key]]
+                updated = dict(current)
+                for field, value in row.items():
+                    if field == "recorded_at" and current.get("recorded_at"):
+                        continue
+                    updated[field] = value
+                rows[index[key]] = updated
+            return
+        index[key] = len(rows)
+        rows.append(row)
+
+    for line in current_lines:
+        add(line, prefer=False)
+    for line in incoming_lines:
+        add(line, prefer=True)
+    return [json.dumps(row, sort_keys=True, ensure_ascii=False) for row in rows] + raw_lines
 
 
 def write_quota_latest(state_dir: Path, merged_lines: list[str]) -> None:
@@ -84,7 +140,10 @@ def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
             "changed": False,
             "skipped": True,
         }
-    merged = merge_jsonl_lines(current_lines, incoming_lines)
+    if relative_path in KEY_MERGED_JSONL_PATHS:
+        merged = merge_fact_source_lines(current_lines, incoming_lines)
+    else:
+        merged = merge_jsonl_lines(current_lines, incoming_lines)
     incoming_path.parent.mkdir(parents=True, exist_ok=True)
     text = "\n".join(merged)
     if text:

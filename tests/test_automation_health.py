@@ -65,3 +65,42 @@ def test_automation_health_flags_duplicate_scripts(tmp_path: Path):
     out = build_health(tmp_path)
     assert out["queue"]["duplicate_scripts"] == 1
     assert "duplicate_scripts_in_queue" in out["issues"]
+
+
+def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    (data / "stories_queue.json").write_text(
+        json.dumps(
+            {
+                "stories": [
+                    {
+                        "id": "trees",
+                        "category": "trees",
+                        "seo_title": "Trees signal through root network",
+                        "script": "Trees signal through root network before the forest changes.",
+                    },
+                    {
+                        "id": "earth",
+                        "category": "earth_from_space",
+                        "seo_title": "Earth systems signal through cloud patterns",
+                        "script": "Earth systems signal through cloud patterns before the weather changes.",
+                    },
+                    {
+                        "id": "plant",
+                        "category": "plants",
+                        "seo_title": "Carnivorous Plant uses movement before it moves",
+                        "script": "Carnivorous Plant uses movement before the insect gets close.",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    out = build_health(tmp_path)
+
+    assert out["seo"]["average_score"] >= 90
+    assert out["seo"]["subject_frontloaded_pct"] == 100.0
+    assert "seo_average_below_target" not in out["issues"]
+    assert "subject_frontload_below_target" not in out["issues"]

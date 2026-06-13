@@ -81,6 +81,8 @@ WORKFLOW_TOKENS = {
         "media_lifecycle.py --cleanup --audit-tracked",
         "merge_jsonl_state.py",
         "reconcile_queue_uploads.py",
+        'target="${QUEUE_TARGET_PENDING:-24}"',
+        "PUBLISH_BACKFILL_QUEUE_TARGET || '24'",
         "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (

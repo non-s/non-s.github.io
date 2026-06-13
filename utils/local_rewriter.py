@@ -115,6 +115,8 @@ FALLBACK_CUES = {
     "elephants": "ear movement",
     "fox": "tail position",
     "foxes": "tail position",
+    "geology": "rock layers",
+    "geologies": "rock layers",
     "goat": "ear position",
     "goats": "ear position",
     "horse": "ear position",
@@ -253,6 +255,11 @@ def _plural_subject(animal: str) -> str:
         "deer": "Deer",
         "sheep": "Sheep",
         "earth": "Earth systems",
+        "earth systems": "Earth systems",
+        "earth from space": "Earth systems",
+        "earth_from_space": "Earth systems",
+        "geology": "Geology",
+        "geologies": "Geology",
         "weather": "Weather patterns",
         "wildlife": "Wildlife",
         "wolf": "Wolves",
@@ -281,11 +288,14 @@ def _lower_plural_subject(animal: str) -> str:
 
 def _plural(animal: str) -> bool:
     lower = _lower_subject(animal)
+    if lower in {"earth", "earth systems", "earth from space", "earth_from_space", "weather", "wildlife"}:
+        return True
     return lower == "sheep" or lower.endswith("s")
 
 
 def _verb(animal: str, base: str) -> str:
-    if _plural(animal):
+    display_subject = _plural_subject(animal).lower()
+    if _plural(animal) or display_subject.endswith("s"):
         return base
     if base.endswith("ch") or base.endswith("sh"):
         return f"{base}es"
@@ -337,6 +347,10 @@ def _usable_cue(cue: str, animal: str = "") -> str:
         "antennae": "antenna movement",
         "whisker": "whisker movement",
         "whiskers": "whisker movement",
+        "rock": "rock layers",
+        "rocks": "rock layers",
+        "cloud": "cloud pattern",
+        "clouds": "cloud pattern",
         "movement": "movement",
         "body": "body posture",
         "call": "call",
@@ -418,6 +432,10 @@ def _cue_moment(cue: str) -> str:
         "feeding cue": "the feeding cue appears",
         "object group": "the object group changes",
         "number cue": "the number cue appears",
+        "rock layers": "the rock layer appears",
+        "rocks": "the rock layer appears",
+        "cloud pattern": "the cloud pattern appears",
+        "clouds": "the cloud pattern appears",
     }.get(cue, f"the {cue} changes")
 
 
@@ -453,7 +471,25 @@ def _cue_signal(cue: str) -> str:
         "feeding cue": "feeding cue",
         "object group": "object group",
         "number cue": "number cue",
+        "rock layers": "rock layer",
+        "rocks": "rock layer",
+        "cloud pattern": "cloud pattern",
+        "clouds": "cloud pattern",
     }.get(cue, cue or "first cue")
+
+
+def _cue_reference(cue: str) -> str:
+    cue = str(cue or "cue").lower().strip()
+    if cue.startswith(("the ", "their ", "its ")):
+        return cue
+    return f"the {cue}"
+
+
+def _cue_object_pronoun(cue: str) -> str:
+    cue = str(cue or "").lower().strip()
+    if re.search(r"\b(?:layers|threads|roots|spores|clouds)\b", cue):
+        return "them"
+    return "it"
 
 
 def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
@@ -510,6 +546,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "robotic_not_random_line",
             "generic_payoff_filler",
             "robotic_memory_title",
+            "bad_domain_plural",
+            "awkward_uncountable_one_cue",
             "bad_plural_verb",
             "bad_singular_subject_verb",
             "bad_because_changes",
@@ -545,26 +583,31 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     action = _usable_action(extract_action(out), fmt)
     subject = _plural_subject(animal)
     lower_subject = _lower_plural_subject(animal)
+    read_verb = _verb(animal, "read")
+    reveal_verb = _verb(animal, "reveal")
+    use_verb = _verb(animal, "use")
     benefit = _benefit(action, fmt)
+    cue_reference = _cue_reference(cue)
+    cue_object_pronoun = _cue_object_pronoun(cue)
     if fmt == "animal_memory":
         if cue in {"face", "faces", "face cue", "eye contact", "eyes"}:
             title = f"{subject} remember familiar faces by sight"
             hook = f"{subject} recognize familiar faces."
         else:
             title = f"{subject} react differently when {_cue_moment(cue)}"
-            hook = f"{subject} read one visible signal."
+            hook = f"{subject} {read_verb} one visible signal."
     elif fmt == "body_superpower":
         if action == "signal":
-            title = f"{subject} read the moment from one {_cue_signal(cue)}"
-            hook = f"{subject} read one visible signal."
+            title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
+            hook = f"{subject} {read_verb} one visible signal."
         else:
             title = f"{subject} rely on {cue} to {action}"
             hook = f"{subject} rely on {cue}."
     else:
-        title = f"{subject} read the moment from one {_cue_signal(cue)}"
-        hook = f"{subject} reveal one visible signal."
+        title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
+        hook = f"{subject} {reveal_verb} one visible signal."
     script = (
-        f"{hook} Watch {cue}, because {lower_subject} use it to {benefit}. "
+        f"{hook} Watch {cue_reference}, because {lower_subject} {use_verb} {cue_object_pronoun} to {benefit}. "
         f"The payoff appears before the final move. "
         f"That is why viewers can replay the first second and catch the hidden cue before it pays off again."
     )

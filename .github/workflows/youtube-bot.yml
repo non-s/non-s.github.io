@@ -130,7 +130,7 @@ jobs:
           print(sum(1 for story in data.get("stories", []) if not story.get("consumed")))
           PY
           }
-          target="${QUEUE_TARGET_PENDING:-1}"
+          target="${QUEUE_TARGET_PENDING:-24}"
           max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-3}"
           pending="$(pending_count)"
           echo "Pending queue before publish backfill: ${pending}/${target}"
@@ -151,7 +151,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '12' }}
+          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}
           QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '3' }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}

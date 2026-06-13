@@ -181,6 +181,7 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
     ("awkward_head_cue_title", r"\bhead cue\b"),
+    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns)\b"),
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),
     ("truncated_heres_title", r"\b(here'?s|here is)\s*$"),
@@ -195,7 +196,7 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
         + "|".join(SINGULAR_SUBJECTS)
         + r")\s+(turn|rely|recognize|reveal|show|change|use|remember|signal|hunt|grow|move|fake|trick|protect|survive)\b",
     ),
-    ("bad_domain_plural", r"\b(earths|weathers|wildlifes)\b"),
+    ("bad_domain_plural", r"\b(earths|weathers|wildlifes|geologies)\b"),
 )
 
 ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
@@ -241,6 +242,8 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
     ),
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
+    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns)\b"),
+    ("bad_domain_plural", r"\b(earths|weathers|wildlifes|geologies)\b"),
     ("generic_payoff_filler", r"\bthat is why this moment matters before the payoff\b"),
 )
 

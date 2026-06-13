@@ -60,25 +60,45 @@ def _source_row(item: dict) -> dict:
 
 
 def _write_sources(rows: list[dict], path: Path) -> int:
-    existing = set()
+    existing_rows: list[dict] = []
+    index: dict[tuple[str, str], int] = {}
     if path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
             try:
                 row = json.loads(line)
             except Exception:
                 continue
-            existing.add((str(row.get("story_id") or ""), str(row.get("source_url") or "")))
-    written = 0
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8", newline="\n") as handle:
-        for row in rows:
-            key = (row["story_id"], row["source_url"])
-            if key in existing or not any(key):
+            key = (str(row.get("story_id") or ""), str(row.get("source_url") or ""))
+            if not any(key):
                 continue
-            handle.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
-            existing.add(key)
-            written += 1
-    return written
+            index[key] = len(existing_rows)
+            existing_rows.append(row)
+    changed = 0
+    path.parent.mkdir(parents=True, exist_ok=True)
+    for row in rows:
+        key = (row["story_id"], row["source_url"])
+        if not any(key):
+            continue
+        if key in index:
+            current = existing_rows[index[key]]
+            updated = dict(current)
+            for field, value in row.items():
+                if field == "recorded_at":
+                    continue
+                updated[field] = value
+            if updated != current:
+                existing_rows[index[key]] = updated
+                changed += 1
+            continue
+        index[key] = len(existing_rows)
+        existing_rows.append(row)
+        changed += 1
+    text = "\n".join(json.dumps(row, sort_keys=True, ensure_ascii=False) for row in existing_rows)
+    if text:
+        text += "\n"
+    if not path.exists() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8")
+    return changed
 
 
 def build_fact_guard(root: Path = ROOT) -> dict:

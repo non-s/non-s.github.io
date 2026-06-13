@@ -31,7 +31,7 @@
 | `MIN_SLOT_PUBLISH_SCORE` | no | Minimum top-candidate publish score required for an adaptive slot to publish. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
 | `QUEUE_TARGET_PENDING` | no | Target number of unconsumed queue stories to keep ready. Defaults to `24` for a one-day free inventory buffer. |
-| `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target. Defaults to `12` so the upload job stays within runtime while the refresh workflow keeps the larger buffer. |
+| `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target. Defaults to `24` so the upload job keeps a one-day hourly queue buffer when free discovery quota allows it. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | no | When enabled, uploads are private scheduled videos using `publishAt` instead of immediate public uploads. Defaults to `0`. |
@@ -83,7 +83,7 @@ Google API quota and a matching `YOUTUBE_DAILY_QUOTA_BUDGET`.
 | `MIN_SLOT_PUBLISH_SCORE` | `72` | publishing | Minimum publish score for adaptive cadence. | Lower or disable adaptive cadence. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
 | `QUEUE_TARGET_PENDING` | `24` | publishing | Pending story target for hourly queue refresh. | Lower if free discovery/AI quotas become tight. |
-| `PUBLISH_BACKFILL_QUEUE_TARGET` | `12` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
+| `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |

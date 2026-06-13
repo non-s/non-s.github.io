@@ -45,6 +45,14 @@ def test_editorial_guard_blocks_bad_plural_verb():
     assert "bad_plural_verb" in editorial_issues({"title": "Cows reveals the next move"})
 
 
+def test_editorial_guard_blocks_non_animal_domain_grammar():
+    assert "bad_domain_plural" in editorial_issues({"title": "Geologies read the moment from one rock"})
+    assert "awkward_uncountable_one_cue" in editorial_issues(
+        {"title": "Earth systems read the moment from one clouds"}
+    )
+    assert "awkward_uncountable_one_cue" in editorial_issues({"hook": "Watch one rock layers before the payoff"})
+
+
 def test_editorial_guard_blocks_rely_loop():
     assert "robotic_rely_loop" in editorial_issues({"title": "Lions rely on movement to rely"})
 

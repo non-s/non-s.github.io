@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from scripts.merge_jsonl_state import merge_jsonl_lines, merge_state_dir
+from scripts.merge_jsonl_state import merge_fact_source_lines, merge_jsonl_lines, merge_state_dir
 
 
 def _write(path: Path, lines: list[str]) -> None:
@@ -15,6 +15,39 @@ def test_merge_jsonl_lines_keeps_latest_main_then_generated_rows():
         "shared",
         "generated-c",
     ]
+
+
+def test_merge_fact_sources_updates_existing_story_source_metadata():
+    current = [
+        json.dumps(
+            {
+                "story_id": "geo-1",
+                "source_url": "https://example.test/rock",
+                "title": "Geologies read the moment from one rocks",
+                "recorded_at": "2026-06-13T09:00:00+00:00",
+            },
+            sort_keys=True,
+        )
+    ]
+    incoming = [
+        json.dumps(
+            {
+                "story_id": "geo-1",
+                "source_url": "https://example.test/rock",
+                "title": "Geology signals through rock layers",
+                "recorded_at": "2026-06-13T10:00:00+00:00",
+            },
+            sort_keys=True,
+        ),
+        json.dumps({"story_id": "earth-1", "source_url": "https://example.test/cloud", "title": "Earth systems"}),
+    ]
+
+    merged = [json.loads(line) for line in merge_fact_source_lines(current, incoming)]
+
+    assert len(merged) == 2
+    assert merged[0]["title"] == "Geology signals through rock layers"
+    assert merged[0]["recorded_at"] == "2026-06-13T09:00:00+00:00"
+    assert merged[1]["story_id"] == "earth-1"
 
 
 def test_merge_state_dir_preserves_concurrent_ledger_rows(tmp_path):

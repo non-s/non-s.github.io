@@ -242,7 +242,7 @@ def recommend_schedule(analytics: dict | None = None) -> dict:
     global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
     cadence = len(global_slots)
     slots = global_slots
-    backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 1))
+    backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 24))
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "timezone": "UTC",

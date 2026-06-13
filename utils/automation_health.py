@@ -14,6 +14,58 @@ from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
 from utils.seo_optimizer import _ANIMAL_WORDS, optimise_title, seo_score
 
+_NATURE_SUBJECT_WORDS = {
+    "cacti",
+    "cactus",
+    "cloud",
+    "clouds",
+    "coral",
+    "earth",
+    "ecosystem",
+    "ecosystems",
+    "forest",
+    "forests",
+    "fungi",
+    "fungus",
+    "geology",
+    "glacier",
+    "glaciers",
+    "lava",
+    "mushroom",
+    "mushrooms",
+    "ocean",
+    "oceans",
+    "plant",
+    "plants",
+    "reef",
+    "reefs",
+    "river",
+    "rivers",
+    "rock",
+    "rocks",
+    "storm",
+    "storms",
+    "tree",
+    "trees",
+    "volcano",
+    "volcanoes",
+    "weather",
+}
+_SUBJECT_FRONTLOAD_WORDS = _ANIMAL_WORDS | _NATURE_SUBJECT_WORDS
+_SUBJECT_DESCRIPTOR_WORDS = {
+    "baby",
+    "carnivorous",
+    "giant",
+    "gray",
+    "great",
+    "little",
+    "mallard",
+    "nocturnal",
+    "tiny",
+    "wild",
+    "young",
+}
+
 
 def _safe_json(path: Path):
     if not path.exists():
@@ -30,7 +82,21 @@ def _script_key(text: str) -> str:
 
 def _frontloaded(title: str) -> bool:
     words = re.findall(r"[a-z]+", (title or "").lower())
-    return bool(words and words[0] in _ANIMAL_WORDS)
+    if not words:
+        return False
+    if words[0] in _SUBJECT_FRONTLOAD_WORDS:
+        return True
+    return len(words) > 1 and words[0] in _SUBJECT_DESCRIPTOR_WORDS and words[1] in _SUBJECT_FRONTLOAD_WORDS
+
+
+def _health_seo_score(title: str) -> dict:
+    scorecard = seo_score(title)
+    score = int(scorecard.get("score", 0) or 0)
+    issues = [str(issue) for issue in (scorecard.get("issues") or [])]
+    if _frontloaded(title) and "animal_not_front_loaded" in issues:
+        score += 28
+        issues = [issue for issue in issues if issue != "animal_not_front_loaded"]
+    return {"score": max(0, min(100, score)), "issues": issues}
 
 
 def build_health(root: Path | str = ".") -> dict:
@@ -54,7 +120,7 @@ def build_health(root: Path | str = ".") -> dict:
             tags=[str(t) for t in (item.get("yt_tags") or [])],
             category=str(item.get("category") or ""),
         )
-        seo_scores.append(int(seo_score(optimised)["score"]))
+        seo_scores.append(int(_health_seo_score(optimised)["score"]))
         if _frontloaded(optimised):
             frontloaded += 1
 
@@ -74,7 +140,7 @@ def build_health(root: Path | str = ".") -> dict:
     if avg_seo < 90:
         issues.append("seo_average_below_target")
     if frontloaded_pct < 95:
-        issues.append("animal_frontload_below_target")
+        issues.append("subject_frontload_below_target")
     if latest and latest.get("metric_scope") != "youtube_analytics_and_public_statistics":
         issues.append("youtube_analytics_scope_incomplete")
     if latest and float(latest.get("avg_view_pct", 0) or 0) < 55:
@@ -104,6 +170,7 @@ def build_health(root: Path | str = ".") -> dict:
         "seo": {
             "average_score": avg_seo,
             "animal_frontloaded_pct": frontloaded_pct,
+            "subject_frontloaded_pct": frontloaded_pct,
         },
         "agency": agency,
         "analytics": {
