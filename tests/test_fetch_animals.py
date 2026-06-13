@@ -417,6 +417,12 @@ def test_topic_fetch_plan_boosts_trending_animals():
     assert plan["ocean"]["trend_queries"] == ["orca animal behavior"]
 
 
+def test_backfill_per_topic_cap_spreads_short_queue_targets():
+    assert fetch_animals._backfill_per_topic_cap(5, topic_count=10) == 1
+    assert fetch_animals._backfill_per_topic_cap(24, topic_count=10) == 3
+    assert fetch_animals._backfill_per_topic_cap(0, topic_count=10) is None
+
+
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", tmp_path / "missing.json")
     assert fetch_animals.load_published_clip_keys() == set()

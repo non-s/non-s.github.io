@@ -117,7 +117,8 @@ jobs:
       - name: "Garantir fila minima"
         if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
-          pending="$(python - <<'PY'
+          pending_count() {
+            python - <<'PY'
           import json
           from pathlib import Path
 
@@ -128,20 +129,30 @@ jobs:
           data = json.loads(path.read_text(encoding="utf-8"))
           print(sum(1 for story in data.get("stories", []) if not story.get("consumed")))
           PY
-          )"
+          }
           target="${QUEUE_TARGET_PENDING:-1}"
+          max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-3}"
+          pending="$(pending_count)"
           echo "Pending queue before publish backfill: ${pending}/${target}"
-          if [ "${pending}" -lt "${target}" ]; then
-            echo "Queue is below target; refreshing one publish-ready candidate inside the YouTube Bot run."
+          attempt=1
+          while [ "${pending}" -lt "${target}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
+            echo "Queue is below target; backfill attempt ${attempt}/${max_attempts}."
             python fetch_animals.py
             python scripts/apply_topic_freshness.py || true
+            pending="$(pending_count)"
+            echo "Pending queue after backfill attempt ${attempt}: ${pending}/${target}"
+            attempt=$((attempt + 1))
+          done
+          if [ "${pending}" -lt "${target}" ]; then
+            echo "::warning::Publish queue still below target after ${max_attempts} attempt(s): ${pending}/${target}"
           else
-            echo "Queue already has enough pending candidates."
+            echo "Queue has enough pending candidates: ${pending}/${target}"
           fi
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '5' }}
+          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '12' }}
+          QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '3' }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
@@ -259,6 +270,7 @@ jobs:
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/comment_to_short_pipeline.py
       - name: "Salvar marcadores no git"
+        if: always() && steps.publish_window.outputs.should_publish == 'true'
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"

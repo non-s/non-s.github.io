@@ -1233,6 +1233,14 @@ def _topic_fetch_plan(
     return plan
 
 
+def _backfill_per_topic_cap(max_new_entries: int, topic_count: int | None = None) -> int | None:
+    """Cap short queue backfills so one early topic cannot fill the whole run."""
+    if max_new_entries <= 0:
+        return None
+    count = max(1, int(topic_count or len(ANIMAL_TOPICS)))
+    return max(1, (max_new_entries + count - 1) // count)
+
+
 def main() -> int:
     from utils.panic import abort_if_halted
 
@@ -1289,12 +1297,22 @@ def main() -> int:
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
+    per_topic_backfill_cap = None
+    if max_new_entries > 0 and target_pending:
+        per_topic_backfill_cap = _backfill_per_topic_cap(max_new_entries)
+        log.info(
+            "Backfill diversity cap: up to %d new entr%s per topic",
+            per_topic_backfill_cap,
+            "y" if per_topic_backfill_cap == 1 else "ies",
+        )
 
     for topic_key, topic_cfg in ANIMAL_TOPICS.items():
         if len(new_entries) >= max_new_entries:
             break
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
         per_topic_n = int(plan.get("budget") or MAX_PER_TOPIC)
+        if per_topic_backfill_cap is not None:
+            per_topic_n = min(per_topic_n, per_topic_backfill_cap)
         queries = _rotate_queries(
             topic_key,
             topic_cfg["queries"],
