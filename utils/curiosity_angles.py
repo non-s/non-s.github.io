@@ -581,6 +581,21 @@ ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
     ),
     "horse": (
         _angle(
+            key="horse_ear_focus",
+            keywords=("ear", "ears", "listen", "focus", "attention", "position"),
+            title="{subject} point their ears toward what matters",
+            hook="{subject} show attention with their ears.",
+            script_body=(
+                "Watch the ears before the body moves, because each ear can turn toward a sound "
+                "or animal the horse is tracking. That small shift shows where attention is going "
+                "before the next step. The ears are a radar dish, not decoration. Would you spot it?"
+            ),
+            thumbnail="EAR RADAR",
+            cue="ear focus",
+            story_format="animal_intelligence",
+            tags=("horses", "ears", "farm animals"),
+        ),
+        _angle(
             key="horse_standing_sleep",
             keywords=("sleep", "stand", "leg", "field", "rest"),
             title="{subject} sleep standing without falling over",

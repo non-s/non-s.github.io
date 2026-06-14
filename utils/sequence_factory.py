@@ -70,7 +70,14 @@ def build_sequence_plan(
             }
         )
         story["sequence_variant"] = "session_graph_sequel"
-        story["session_handoff"] = item
+        handoff = dict(item)
+        original_title = str(item.get("title") or "")
+        clean_title = str((story.get("remake_of") or {}).get("title") or story.get("title") or "")
+        if original_title and clean_title and not _recommendable_title(original_title):
+            handoff["title"] = clean_title
+            prompt = str(handoff.get("prompt") or "")
+            handoff["prompt"] = prompt.replace(original_title, clean_title)
+        story["session_handoff"] = handoff
         variants.append(story)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),

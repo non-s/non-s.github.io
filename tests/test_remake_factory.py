@@ -20,8 +20,8 @@ def test_build_remake_story_is_queue_compatible():
     assert story["script"].startswith(story["hook"])
     assert "original topic" not in story["script"].lower()
     assert "remake" not in story["script"].lower()
-    assert story["seo_title"] == "Ducklings choose the bigger group before they swim"
-    assert "object group" in story["script"]
+    assert story["seo_title"] == "Ducklings compare groups before they swim"
+    assert "number sense" in story["script"]
     assert "remake" not in story["description"].lower()
     assert "proven wild brief topic" not in story["yt_description"].lower()
     assert story["category"] == "farm"
@@ -41,8 +41,8 @@ def test_feeding_remake_has_action_and_scannable_thumbnail():
         generated_at="2026-06-06T00:00:00+00:00",
     )
 
-    assert story["seo_title"] == "Goats follow the feeding cue before the payoff"
-    assert "head movement" in story["script"]
+    assert story["seo_title"] == "Goats learn feeding routines fast"
+    assert "voices, smells" in story["script"]
     assert len(story["thumbnail_text"].split()) <= 4
     assert creator_premortem(story)["state"] == "publish_minded"
 
@@ -59,7 +59,7 @@ def test_remake_factory_rejects_bad_suggested_hook_grammar():
         generated_at="2026-06-06T00:00:00+00:00",
     )
 
-    assert story["hook"] == "Tigers show the useful cue before the payoff."
+    assert story["hook"] == "Tigers use stripes to break up their outline."
     assert "Tigers changes" not in story["script"]
 
 
@@ -104,20 +104,16 @@ def test_append_remakes_to_queue_dedupes_existing_source_url():
 
 
 def test_append_remakes_to_queue_dedupes_existing_angle():
-    queue = {
-        "stories": [
-            {
-                "id": "existing",
-                "source_url": "https://www.pexels.com/video/cow-1/",
-                "seo_title": "Cows remember the face cue",
-                "title": "Cows remember the face cue",
-                "category": "farm",
-                "script": "Cows remember the first movement because the detail points to the payoff.",
-                "thumbnail_text": "COWS FACE CUE",
-                "yt_tags": ["cow", "farm"],
-            }
-        ]
-    }
+    existing = build_remake_story(
+        {
+            "source_video_id": "cow-pexels",
+            "source_title": "Cows remember faces for years",
+        },
+        generated_at="2026-06-06T00:00:00+00:00",
+    )
+    existing["source_url"] = "https://www.pexels.com/video/cow-1/"
+    existing["url"] = "https://www.pexels.com/video/cow-1/"
+    queue = {"stories": [existing]}
 
     updated, created = append_remakes_to_queue(
         queue,

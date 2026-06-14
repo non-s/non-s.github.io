@@ -139,6 +139,7 @@ def test_editorial_guard_blocks_generic_successor_templates():
         {"title": "Dolphins recognize signals through call"}
     )
     assert "generic_rely_to_signal_cue" in editorial_issues({"title": "Cows rely on ear position to signal"})
+    assert "generic_rely_bodypart_to_outcome" in editorial_issues({"title": "Horses rely on ear position to survive"})
     assert "generic_next_move_cue" in editorial_issues({"title": "Tigers signal the next move with first movement"})
     assert "generic_rely_to_signal_cue" not in editorial_issues({"title": "Penguins rely on flipper movement to slide"})
     assert "generic_movement_changes_title" in editorial_issues(

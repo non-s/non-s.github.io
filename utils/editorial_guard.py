@@ -180,6 +180,10 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
         r"\brely on (?:the )?(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings) to signal\b",
     ),
     (
+        "generic_rely_bodypart_to_outcome",
+        r"\brely on (?:the )?(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings) to (?:escape|feed|find|follow|hide|hunt|protect|survive|use)\b",
+    ),
+    (
         "generic_next_move_cue",
         r"\bsignal the next move with (?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings)\b",
     ),
@@ -273,6 +277,10 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
     (
         "generic_rely_to_signal_cue",
         r"\brely on (?:the )?(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings) to signal\b",
+    ),
+    (
+        "generic_rely_bodypart_to_outcome",
+        r"\brely on (?:the )?(?:body cue|body posture|ear position|eye contact|face shape|feeding cue|fin movement|first movement|flipper movement|hand movement|head movement|tail position|wing movement|wing position|beak movement|ear|ears|eye|eyes|face|faces|feet|fin|fins|flipper|flippers|hand|hands|head|hoof|hooves|leg|legs|nose|paw|paws|tail|wing|wings) to (?:escape|feed|find|follow|hide|hunt|protect|survive|use)\b",
     ),
     (
         "generic_next_move_cue",

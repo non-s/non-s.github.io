@@ -623,6 +623,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "generic_movement_template",
             "generic_movement_promise",
             "generic_bodypart_movement_promise",
+            "generic_rely_bodypart_to_outcome",
             "generic_false_face_memory",
             "generic_signal_through_body_cue",
             "generic_rely_to_signal_cue",

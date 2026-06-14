@@ -6,6 +6,7 @@ import hashlib
 import re
 from datetime import datetime, timezone
 
+from utils.curiosity_angles import build_curiosity_package
 from utils.editorial_guard import editorial_issues
 from utils.packaging import extract_action, extract_animal, extract_cue
 
@@ -104,6 +105,28 @@ def _title_key(story: dict) -> str:
     return re.sub(r"\s+", " ", _clean(title).lower())
 
 
+def _recommendable_title(title: str) -> bool:
+    title = _clean(title)
+    if not title:
+        return False
+    return not editorial_issues({"title": title, "seo_title": title}, include_script=False)
+
+
+def _clean_source_reference(raw_title: str, replacement: str) -> str:
+    raw_title = _clean(raw_title)
+    replacement = _clean(replacement)
+    return raw_title if _recommendable_title(raw_title) else replacement
+
+
+def _clean_action_reference(action: str, raw_title: str, replacement: str) -> str:
+    action = str(action or "")
+    raw_title = _clean(raw_title)
+    replacement = _clean(replacement)
+    if raw_title and replacement and raw_title.lower() != replacement.lower():
+        action = action.replace(raw_title, replacement)
+    return _clean(action)
+
+
 def _title(animal: str, source_title: str) -> str:
     source = _clean(source_title)
     subject = _subject(animal)
@@ -170,6 +193,30 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
             "before the payoff. The clue appears early, then the behavior makes sense on replay. "
             "That gives viewers one clear setup, one visible action, and one reason to watch the opening again."
         )
+    yt_tags = [animal, category, "animal facts", "wildlife", "shorts"]
+    angle = build_curiosity_package(
+        {
+            "title": seo_title,
+            "seo_title": seo_title,
+            "source_title": source_title,
+            "hook": hook,
+            "script": script,
+            "category": category,
+            "yt_tags": yt_tags,
+        },
+        subject=animal,
+        context=source_title,
+        force=True,
+    )
+    if angle:
+        seo_title = str(angle["title"])
+        hook = str(angle["hook"])
+        script = str(angle["script"])
+        cue = str(angle["cue"])
+        thumbnail = str(angle["thumbnail_text"])
+        yt_tags = list(angle.get("yt_tags") or yt_tags)
+    clean_source_title = _clean_source_reference(source_title, seo_title)
+    clean_action = _clean_action_reference(str(remake.get("action") or ""), source_title, clean_source_title)
     source_id = str(remake.get("source_video_id") or source_title)
     digest = hashlib.sha256(f"remake:{source_id}:{seo_title}".encode("utf-8")).hexdigest()[:16]
     return {
@@ -184,7 +231,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "source": "Remake Factory",
         "source_license": "Derived analytics brief; new media required before render",
         "category": category,
-        "description": f"Watch the {cue} behind this animal behavior: {source_title}",
+        "description": f"Watch the {cue} behind this animal behavior: {clean_source_title}",
         "image_url": "",
         "breaking": False,
         "relevance": 9.5,
@@ -192,7 +239,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "safety_penalty": 0,
         "native_lang": "en",
         "seo_title": seo_title,
-        "yt_tags": [animal, category, "animal facts", "wildlife", "shorts"],
+        "yt_tags": yt_tags,
         "geo_hashtag": "Global",
         "topic_hashtag": category.title(),
         "yt_description": f"{seo_title}. Watch the {cue} first, then replay the payoff.",
@@ -204,11 +251,11 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "discovery_hashtags": [category.replace("_", ""), "animals", "animalfacts", "wildlife", "funfacts"],
         "remake_of": {
             "video_id": remake.get("source_video_id", ""),
-            "title": source_title,
+            "title": clean_source_title,
             "views": remake.get("views", 0),
             "retention": remake.get("retention", 0),
             "growth_score": remake.get("growth_score", 0),
-            "action": remake.get("action", ""),
+            "action": clean_action,
         },
         "experiments": {
             "hook_style": "outcome_first",
