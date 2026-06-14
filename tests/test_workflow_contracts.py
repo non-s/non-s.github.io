@@ -21,6 +21,11 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PUBLISH_BACKFILL_QUEUE_TARGET || '24'" in youtube_workflow
     assert 'target="${QUEUE_TARGET_PENDING:-24}"' in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
+    assert "REQUIRE_SHORT_ON_PUBLISH" in youtube_workflow
+    assert "REQUIRE_UPLOAD_ON_PUBLISH" in youtube_workflow
+    assert "Sincronizar diagnosticos da fila" in youtube_workflow
+    assert "python scripts/run_intelligence_suite.py queue" in youtube_workflow
+    assert "YouTube automation state -" in youtube_workflow
     assert "merge_jsonl_state.py" in youtube_workflow
     assert "reconcile_queue_uploads.py" in youtube_workflow
     assert "jsonl_merge_paths" in youtube_workflow

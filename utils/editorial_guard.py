@@ -183,7 +183,30 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
     ("awkward_head_cue_title", r"\bhead cue\b"),
-    ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns|leaves)\b"),
+    (
+        "awkward_uncountable_one_cue",
+        r"\bone (?:current|rock|rock layer|rocks|rock layers|cloud|cloud pattern|clouds|cloud patterns|leaf|leaves)\b",
+    ),
+    (
+        "impossible_marine_wing_cue",
+        r"\b(?:sharks?|whales?|dolphins?|fish|octopus|octopuses|sea turtles?)\b.{0,90}\b(?:wing|wings|wing angle|wing position|wing movement)\b",
+    ),
+    (
+        "impossible_hoofed_wing_or_fin_cue",
+        r"\b(?:cows?|goats?|horses?|sheep|donkeys?)\b.{0,90}\b(?:wing|wings|fin|fins|flipper|flippers|paw|paws)\b",
+    ),
+    (
+        "impossible_bird_hoof_cue",
+        r"\b(?:birds?|ducks?|chickens?|penguins?|macaws?|parrots?|owls?)\b.{0,90}\b(?:hoof|hooves|paw|paws)\b",
+    ),
+    (
+        "impossible_non_primate_hand_cue",
+        r"\b(?:cats?|dogs?|lions?|tigers?|wolves?|bears?|foxes?|cows?|goats?|horses?|sheep|ducks?|chickens?|sharks?|whales?|dolphins?)\b.{0,90}\b(?:hand|hands|hand cue|hand movement)\b",
+    ),
+    (
+        "anthropomorphic_nature_read_moment",
+        r"\b(?:earth systems?|forests?|trees?|geology|weather patterns?|mushrooms?|fungi)\s+reads?\s+the moment\b",
+    ),
     ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),

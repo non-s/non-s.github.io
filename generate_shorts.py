@@ -67,7 +67,7 @@ from utils.payoff_controller import score_payoff
 from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.publish_score import score_metadata, score_story as publish_score_story
 from utils.publish_priority import publish_priority_key
-from utils.queue_pruner import prune_queue
+from utils.queue_pruner import production_quality_issues, prune_queue
 from utils.rejected_queue import record_rejection
 from utils.local_rewriter import rescue_story
 from utils.nature_strategy import NATURE_BROLL_QUERIES
@@ -118,17 +118,7 @@ def _env_enabled(name: str, default: str = "0") -> bool:
 QUALITY_REQUIRE_MOTION_BROLL = _env_enabled("QUALITY_REQUIRE_MOTION_BROLL")
 QUALITY_REQUIRE_CAPTIONS = _env_enabled("QUALITY_REQUIRE_CAPTIONS")
 QUALITY_MIN_VISUAL_QA_SCORE = int(os.environ.get("QUALITY_MIN_VISUAL_QA_SCORE", "1"))
-
-REPETITIVE_TITLE_PHRASES = (
-    "another signal hiding in plain sight",
-    "another secret hiding in plain sight",
-    "secret hiding in plain sight",
-)
-GENERIC_SCRIPT_PHRASES = (
-    "reveal the reason in one tiny movement",
-    "not just hunting",
-    "one hidden reason",
-)
+REQUIRE_SHORT_ON_PUBLISH = _env_enabled("REQUIRE_SHORT_ON_PUBLISH")
 
 # Paleta de cores — identidade Wild Brief
 BG_DARK = (8, 8, 18)
@@ -429,53 +419,10 @@ def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "") -> str:
 
 def _queue_story_quality_issues(qs: dict, *, seen_scripts: set[str]) -> list[str]:
     """Hard reject queue entries that would make the channel look automated."""
-    issues: list[str] = []
     try:
-        import fetch_animals
+        return production_quality_issues(qs, seen_scripts=seen_scripts)
     except Exception as exc:  # pragma: no cover - import is stable in CI
         return [f"validator_unavailable:{exc}"]
-    category = str(qs.get("category") or "")
-    topic = fetch_animals.ANIMAL_TOPICS.get(category)
-    if not topic:
-        issues.append("unknown_category")
-        return issues
-    clip = type(
-        "Clip",
-        (),
-        {
-            "url": qs.get("url", ""),
-            "title": qs.get("title", ""),
-        },
-    )()
-    subject = fetch_animals._subject_from_clip(clip, category)
-    script = str(qs.get("script") or "")
-    title = str(qs.get("seo_title") or qs.get("title") or "")
-    if not fetch_animals._topic_accepts_subject(topic, subject):
-        issues.append("off_topic_visual")
-    if not fetch_animals._script_matches_visible_subject(subject, script):
-        issues.append("script_subject_mismatch")
-    if not fetch_animals._copy_matches_visible_subject(subject, title, str(qs.get("hook") or ""), script):
-        issues.append("copy_subject_mismatch")
-    script_key = fetch_animals._script_key(script)
-    if not script_key:
-        issues.append("empty_script")
-    elif script_key in seen_scripts:
-        issues.append("duplicate_script")
-    lower_title = title.lower()
-    lower_script = script.lower()
-    if any(phrase in lower_title for phrase in REPETITIVE_TITLE_PHRASES):
-        issues.append("repetitive_title_template")
-    if any(phrase in lower_script for phrase in GENERIC_SCRIPT_PHRASES):
-        issues.append("generic_script_template")
-    issues.extend(editorial_issues(qs))
-    words = re.findall(r"[a-z]+", lower_script)
-    if words:
-        top_word_count = max(words.count(word) for word in set(words))
-        if top_word_count >= 10:
-            issues.append("script_word_loop")
-    if not issues and script_key:
-        seen_scripts.add(script_key)
-    return issues
 
 
 # ── Extrai 3 bullet points da descrição ───────────────────────────
@@ -2334,6 +2281,11 @@ def main():
     log.info(f"Queue has {len(candidates)} pending stor{'y' if len(candidates)==1 else 'ies'}.")
     if not candidates:
         log.info("Nothing to do.")
+        if REQUIRE_SHORT_ON_PUBLISH:
+            log.error(
+                "Publish window required a Short, but no production-ready queue candidate survived quality gates."
+            )
+            sys.exit(1)
         return
 
     # Walk MORE candidates than we need so a single quality-gate

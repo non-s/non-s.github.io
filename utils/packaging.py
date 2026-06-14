@@ -472,6 +472,28 @@ def _return_hook(story: dict) -> str:
     return "Tomorrow: another nature signal." if _uses_nature_signal(story) else "Tomorrow: another animal signal."
 
 
+def _hook_mentions_subject(hook: str, subject: str) -> bool:
+    if not subject:
+        return True
+    return bool(re.search(r"\b" + re.escape(subject.lower()) + r"\b", (hook or "").lower()))
+
+
+def _plural_like_subject(subject: str) -> bool:
+    return subject.endswith("s") or subject in {"fish", "sheep", "deer"}
+
+
+def _subject_safe_hook(story: dict, hook: str) -> str:
+    subject = extract_subject(story).strip().lower()
+    if _hook_mentions_subject(hook, subject):
+        return hook
+    cue = extract_cue({**story, "hook": hook})
+    verb = "show" if _plural_like_subject(subject) else "shows"
+    subject_label = _title_case_subject(subject)
+    if cue != "cue":
+        return f"{subject_label} {verb} the {cue} before the payoff."
+    return f"{subject_label} {verb} the first clue before the payoff."
+
+
 def extract_action(story: dict) -> str:
     text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script")).lower()
     for verb in ACTION_VERBS:
@@ -708,10 +730,10 @@ def package_story(story: dict) -> dict:
         out["seo_title"] = best_variant["title"]
         out["title"] = best_variant["title"]
         out["thumbnail_text"] = best_variant["thumbnail_text"]
-        out["hook"] = best_variant["hook"]
+        out["hook"] = _subject_safe_hook(out, best_variant["hook"])
     titles = _safe_title_options(out, selected["options"]["titles"][:10])
     thumbs = selected["options"]["thumbnail_texts"][:10]
-    hooks = selected["options"]["hooks"][:5]
+    hooks = [_subject_safe_hook(out, hook) for hook in selected["options"]["hooks"][:5]]
     series_info = series_package(out, memory=memory)
     out["series"] = series_info["label"]
     out["cta_prompt"] = cta_prompt(out)

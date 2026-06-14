@@ -281,10 +281,10 @@ def test_rescue_story_repairs_non_animal_domain_grammar():
     assert "one rocks" not in geology["title"].lower()
     assert "that detail shows how geology shifts" in geology["script"].lower()
     assert earth_applied is True
-    assert earth["title"] == "Earth systems read the moment from one cloud pattern"
-    assert "Earth systems read" in earth["title"]
+    assert earth["title"] == "Earth systems signal through cloud pattern"
+    assert "Earth systems signal" in earth["title"]
     assert forest_applied is True
-    assert forest["title"] == "Forests read the moment from one leaf movement"
+    assert forest["title"] == "Forests signal through leaf movement"
     assert forest["thumbnail_text"] == "LEAF MOVEMENT"
     assert "one leaves" not in forest["script"].lower()
     assert "forests use it" not in forest["script"].lower()

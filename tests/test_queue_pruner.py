@@ -1,4 +1,4 @@
-from utils.queue_pruner import prune_queue, quality_issues
+from utils.queue_pruner import production_quality_issues, prune_queue, quality_issues
 
 
 def _story(idx="1", **overrides):
@@ -72,6 +72,24 @@ def test_quality_issues_rejects_script_subject_mismatch():
     assert "script_subject_mismatch" in issues
 
 
+def test_production_quality_blocks_copy_that_disagrees_with_visible_subject():
+    story = _story(
+        "bee-copy-mismatch",
+        title="bee collecting pollen on yellow flowers",
+        seo_title="Butterflies rely on wing movement to survive",
+        hook="Butterflies reveal the wing flash before they move.",
+        script="Butterflies flash their wings before they move across the flower.",
+        thumbnail_text="WING FLASH",
+        category="insects",
+        source_url="https://www.pexels.com/video/bee-collecting-pollen-on-yellow-flowers/",
+    )
+
+    issues = production_quality_issues(story)
+
+    assert "copy_subject_mismatch" in issues
+    assert "script_subject_mismatch" in issues
+
+
 def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     queue = {
         "stories": [
@@ -109,7 +127,7 @@ def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     assert summary["pending_after"] == 1
     assert len(rejected) == 2
     assert any("missing_source_url" in item["reasons"] for item in rejected)
-    assert any("queue_pruned_low_priority" in item["reasons"] for item in rejected)
+    assert any({"queue_pruned_low_priority", "queue_score_reject"} & set(item["reasons"]) for item in rejected)
 
 
 def test_prune_queue_repairs_editorial_do_not_publish_candidates_when_possible():
@@ -158,6 +176,31 @@ def test_prune_queue_repairs_publish_minded_brain_risks_before_ready():
     assert kept[0]["queue_prune"]["state"] == "publish_ready"
     assert summary["repaired"] == 1
     assert rejected == []
+
+
+def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is_weak(monkeypatch):
+    repeated = "Ducklings rely on wing position to survive"
+    monkeypatch.setattr("utils.queue_pruner.published_title_keys", lambda: {repeated.lower()})
+    story = _story(
+        "published-duplicate",
+        title=repeated,
+        seo_title=repeated,
+        hook="Ducklings rely on wing position.",
+        script=(
+            "Ducklings rely on wing position. Watch the wing angle, "
+            "because ducklings use it to stay safe when the moment changes."
+        ),
+        thumbnail_text="WING ANGLE",
+        source_url="https://www.pexels.com/video/duckling-swimming/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [story]}, max_pending=10)
+
+    assert [item for item in pruned["stories"] if not item.get("consumed")] == []
+    assert len(rejected) == 1
+    assert rejected[0]["story"]["seo_title"].lower() != repeated.lower()
+    assert "duplicate_title" in (rejected[0]["story"].get("local_rewrite") or {}).get("reasons", [])
+    assert summary["repair_needed"] == 1
 
 
 def test_prune_queue_caps_publish_ready_title_template_clusters(monkeypatch):

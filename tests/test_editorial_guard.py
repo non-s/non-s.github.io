@@ -48,16 +48,19 @@ def test_editorial_guard_blocks_bad_plural_verb():
 def test_editorial_guard_blocks_non_animal_domain_grammar():
     assert "bad_domain_plural" in editorial_issues({"title": "Geologies read the moment from one rock"})
     assert "awkward_uncountable_one_cue" in editorial_issues(
-        {"title": "Earth systems read the moment from one clouds"}
+        {"title": "Earth systems read the moment from one cloud pattern"}
     )
-    assert "awkward_uncountable_one_cue" in editorial_issues({"hook": "Watch one rock layers before the payoff"})
     assert "awkward_uncountable_one_cue" in editorial_issues(
-        {"title": "Forests read the moment from one leaves"}
+        {"title": "Ocean currents read the moment from one current"}
+    )
+    assert "awkward_uncountable_one_cue" in editorial_issues({"title": "Earth systems read the moment from one clouds"})
+    assert "awkward_uncountable_one_cue" in editorial_issues({"hook": "Watch one rock layers before the payoff"})
+    assert "awkward_uncountable_one_cue" in editorial_issues({"title": "Forests read the moment from one leaves"})
+    assert "anthropomorphic_nature_read_moment" in editorial_issues(
+        {"title": "Trees read the moment from one canopy shift"}
     )
     assert "bad_plural_verb" in editorial_issues({"hook": "This forests changes right before the payoff"})
-    assert "awkward_plural_loop_line" in editorial_issues(
-        {"script": "Now the forests at the start makes sense."}
-    )
+    assert "awkward_plural_loop_line" in editorial_issues({"script": "Now the forests at the start makes sense."})
     assert "awkward_non_animal_use_pronoun" in editorial_issues(
         {
             "script": "Forests reveal one visible signal. Watch the leaves, because forests use it to signal.",
@@ -157,6 +160,15 @@ def test_editorial_guard_blocks_generic_successor_templates():
         {"title": "This ear position changes what lions do next"}
     )
     assert "awkward_head_cue_title" in editorial_issues({"title": "This head cue changes what chickens do next"})
+    assert "impossible_marine_wing_cue" in editorial_issues({"title": "Sharks read the moment from one wing angle"})
+    assert "impossible_hoofed_wing_or_fin_cue" in editorial_issues({"title": "Cows rely on wing movement to survive"})
+    assert "impossible_bird_hoof_cue" in editorial_issues(
+        {"title": "Chickens reveal the next move through hoof movement"}
+    )
+    assert "impossible_non_primate_hand_cue" in editorial_issues({"title": "Cats read the moment from one hand cue"})
+    assert "impossible_non_primate_hand_cue" not in editorial_issues(
+        {"title": "Monkeys follow one hand cue before the payoff"}
+    )
 
 
 def test_editorial_guard_blocks_operator_meta_language_in_script():

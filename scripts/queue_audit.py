@@ -12,11 +12,36 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.queue_pruner import prune_queue
 from utils.rights_audit import audit_rights
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/queue_audit.json")
+PRUNE_REPORT = Path("_data/queue_prune_report.json")
+REJECTED_QUEUE = Path("_data/rejected_queue.jsonl")
+
+
+def _rejected_preview(limit: int = 30) -> list[dict]:
+    if not REJECTED_QUEUE.exists():
+        return []
+    rows: list[dict] = []
+    for line in reversed(REJECTED_QUEUE.read_text(encoding="utf-8").splitlines()):
+        try:
+            item = json.loads(line)
+        except Exception:
+            continue
+        if not isinstance(item, dict):
+            continue
+        rows.append(
+            {
+                "id": item.get("story_id", ""),
+                "title": item.get("title", ""),
+                "reasons": item.get("reasons") or [],
+                "stage": item.get("stage", ""),
+            }
+        )
+        if len(rows) >= limit:
+            break
+    return rows
 
 
 def main() -> int:
@@ -25,8 +50,11 @@ def main() -> int:
     states = Counter()
     rights = Counter()
     mechanism_clusters = Counter()
-    pruned, rejected, prune_summary = prune_queue(data)
-    for story in pruned.get("stories") or []:
+    if PRUNE_REPORT.exists():
+        prune_summary = json.loads(PRUNE_REPORT.read_text(encoding="utf-8"))
+    else:
+        prune_summary = {}
+    for story in data.get("stories") or []:
         if story.get("consumed"):
             continue
         score = story.get("publish_score") or {}
@@ -59,14 +87,7 @@ def main() -> int:
         "mechanism_clusters": dict(mechanism_clusters.most_common()),
         "rights": dict(rights),
         "prune_summary": prune_summary,
-        "rejected_preview": [
-            {
-                "id": item["story"].get("id", ""),
-                "title": item["story"].get("seo_title") or item["story"].get("title") or "",
-                "reasons": item["reasons"],
-            }
-            for item in rejected[:30]
-        ],
+        "rejected_preview": _rejected_preview(),
         "top": sorted(rows, key=lambda r: r["queue_score"], reverse=True)[:20],
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

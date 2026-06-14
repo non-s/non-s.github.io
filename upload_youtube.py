@@ -682,6 +682,10 @@ def main() -> None:
         log.error("YouTube auth failed: %s", exc)
         sys.exit(2)
     pending, attempted, uploaded = _collect_pending_meta(VIDEOS_DIR), 0, 0
+    require_upload = _env_bool("REQUIRE_UPLOAD_ON_PUBLISH", False)
+    if require_upload and not pending:
+        log.error("Publish window required an upload, but no generated Short metadata was found in %s.", VIDEOS_DIR)
+        sys.exit(1)
     quota_row = write_quota_ledger_row(estimate_publish_run_cost(videos=len(pending)))
     if (quota_row.get("guard") or {}).get("block"):
         log.error("Quota guard blocked upload: %s", (quota_row.get("guard") or {}).get("reason"))
@@ -763,7 +767,7 @@ def main() -> None:
         meta_file.unlink()
         uploaded += 1
     log.info("%d/%d video(s) uploaded to YouTube.", uploaded, attempted)
-    if attempted and uploaded == 0:
+    if (attempted and uploaded == 0) or (require_upload and uploaded == 0):
         sys.exit(1)
 
 

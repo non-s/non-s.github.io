@@ -42,6 +42,8 @@ jobs:
       QUALITY_REQUIRE_MOTION_BROLL: "1"
       QUALITY_REQUIRE_CAPTIONS: "1"
       QUALITY_MIN_VISUAL_QA_SCORE: "6"
+      REQUIRE_SHORT_ON_PUBLISH: "1"
+      REQUIRE_UPLOAD_ON_PUBLISH: "1"
       ADAPTIVE_CADENCE_ENABLED: ${{ vars.ADAPTIVE_CADENCE_ENABLED || '1' }}
       ALLOW_FLEX_SLOT: ${{ vars.ALLOW_FLEX_SLOT || '0' }}
       PUBLISH_SLOT_GRACE_MINUTES: ${{ vars.PUBLISH_SLOT_GRACE_MINUTES || '90' }}
@@ -270,6 +272,9 @@ jobs:
       - name: "Promover comentarios para ideias de Shorts"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/comment_to_short_pipeline.py
+      - name: "Sincronizar diagnosticos da fila"
+        if: always() && steps.publish_window.outputs.should_publish == 'true'
+        run: python scripts/run_intelligence_suite.py queue
       - name: "Salvar marcadores no git"
         if: always() && steps.publish_window.outputs.should_publish == 'true'
         run: |
@@ -407,7 +412,7 @@ jobs:
             echo "Nenhum arquivo novo para salvar."
             exit 0
           fi
-          git commit -m "YouTube Shorts - $(date -u +'%Y-%m-%d')"
+          git commit -m "YouTube automation state - $(date -u +'%Y-%m-%d')"
           for attempt in 1 2 3; do
             if git push origin HEAD; then
               exit 0
@@ -455,7 +460,7 @@ jobs:
               echo "Latest main already contains generated state."
               exit 0
             fi
-            git commit -m "YouTube Shorts - $(date -u +'%Y-%m-%d')"
+            git commit -m "YouTube automation state - $(date -u +'%Y-%m-%d')"
             sleep $((attempt * 5))
           done
           echo "Push failed after retries."

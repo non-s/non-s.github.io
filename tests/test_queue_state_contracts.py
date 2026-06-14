@@ -4,6 +4,7 @@ from pathlib import Path
 
 from utils.channel_objective import load_channel_objective
 from utils.editorial_guard import editorial_issues
+from utils.queue_pruner import production_quality_issues
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -39,6 +40,7 @@ def test_publish_ready_queue_has_no_known_copy_or_score_risks():
 
     for story in ready:
         assert editorial_issues(story) == []
+        assert production_quality_issues(story) == []
         assert not ((story.get("youtube_brain") or {}).get("risks") or [])
         assert not ((story.get("packaging") or {}).get("risks") or [])
 

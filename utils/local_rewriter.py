@@ -362,7 +362,17 @@ def _fallback_cue(animal: str) -> str:
 
 def _usable_cue(cue: str, animal: str = "") -> str:
     cue = (cue or "").lower().strip()
+    animal_key = _lower_subject(animal)
     if cue in {"", "cue", "movement", "first movement", "body", "body cue", "body posture", "detail"}:
+        return _fallback_cue(animal)
+    if cue in {"hand", "hands", "hand cue", "hand movement"} and animal_key not in {
+        "monkey",
+        "monkeys",
+        "macaque",
+        "macaques",
+        "orangutan",
+        "orangutans",
+    }:
         return _fallback_cue(animal)
     return {
         "ears": "ear position",
@@ -578,6 +588,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         reason in reasons
         for reason in (
             "repetitive_title_template",
+            "duplicate_title",
             "generic_script_template",
             "script_word_loop",
             "duplicate_script",
@@ -592,6 +603,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "generic_creator_language",
             "hook_shape_weak",
             "title_shape_weak",
+            "copy_subject_mismatch",
             "script_subject_mismatch",
             "encoding_artifact",
             "stacked_animal_title",
@@ -618,6 +630,10 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "awkward_ear_movement_changes",
             "awkward_this_ear_position_changes",
             "awkward_head_cue_title",
+            "impossible_marine_wing_cue",
+            "impossible_hoofed_wing_or_fin_cue",
+            "impossible_bird_hoof_cue",
+            "impossible_non_primate_hand_cue",
             "awkward_plural_loop_line",
             "generic_clickbait_language",
             "generic_hiding_plain_sight",
@@ -627,6 +643,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "bad_domain_plural",
             "awkward_uncountable_one_cue",
             "awkward_non_animal_use_pronoun",
+            "anthropomorphic_nature_read_moment",
             "bad_plural_verb",
             "bad_singular_subject_verb",
             "bad_because_changes",
@@ -664,6 +681,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     lower_subject = _lower_plural_subject(animal)
     read_verb = _verb(animal, "read")
     reveal_verb = _verb(animal, "reveal")
+    signal_verb = _verb(animal, "signal")
     use_verb = _verb(animal, "use")
     benefit = _benefit(action, fmt)
     cue_reference = _cue_reference(cue)
@@ -675,7 +693,13 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         benefit=benefit,
         use_verb=use_verb,
     )
-    if fmt == "animal_memory":
+    if _is_nature_subject(animal):
+        title = f"{subject} {signal_verb} through {_cue_signal(cue)}"
+        hook = f"{subject} {reveal_verb} one visible signal."
+    elif "duplicate_title" in reasons:
+        title = f"{subject} show the {_cue_signal(cue)} before the payoff"
+        hook = f"{subject} {reveal_verb} one visible signal."
+    elif fmt == "animal_memory":
         if cue in {"face", "faces", "face cue", "eye contact", "eyes"}:
             title = f"{subject} remember familiar faces by sight"
             hook = f"{subject} recognize familiar faces."

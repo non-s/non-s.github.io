@@ -85,6 +85,26 @@ def test_score_packaging_recognizes_concrete_ducklings_rely_shape():
     assert "missing_action_word" not in score["risks"]
 
 
+def test_package_story_keeps_visible_subject_in_selected_hook():
+    packaged = package_story(
+        _story(
+            title="Ducklings rely on wing position to survive",
+            seo_title="Ducklings rely on wing position to survive",
+            hook="Ducklings rely on wing position.",
+            script=(
+                "Ducklings rely on wing position. Watch the wing angle, "
+                "because ducklings use it to stay safe when the moment changes."
+            ),
+            thumbnail_text="WING ANGLE",
+            category="farm",
+            source_url="https://www.pexels.com/video/duckling-swimming/",
+        )
+    )
+
+    assert "ducklings" in packaged["hook"].lower()
+    assert "wing" in packaged["hook"].lower()
+
+
 def test_score_packaging_penalizes_generic_rely_to_signal_shape():
     weak = score_packaging(
         _story(

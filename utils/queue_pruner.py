@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import re
+import json
 from collections import Counter
 from datetime import datetime, timezone
+from pathlib import Path
 
 import fetch_animals
 from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
@@ -24,15 +26,30 @@ GENERIC_TITLE_PHRASES = (
     "another secret hiding in plain sight",
     "secret hiding in plain sight",
 )
+REPETITIVE_TITLE_PHRASES = (
+    "another signal hiding in plain sight",
+    "another secret hiding in plain sight",
+    "secret hiding in plain sight",
+)
+GENERIC_SCRIPT_PHRASES = (
+    "reveal the reason in one tiny movement",
+    "not just hunting",
+    "one hidden reason",
+)
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
+    "unknown_category",
     "unknown_source",
     "off_topic_visual",
-    "duplicate_title",
+    "empty_script",
+    "duplicate_script",
     "duplicate_source",
     "duplicate_angle",
+    "repetitive_title_template",
+    "generic_script_template",
+    "script_word_loop",
     "missing_source_license",
     "rights_guard_brand_manual_review",
     "rights_guard_person_manual_review",
@@ -66,6 +83,78 @@ def source_key(story: dict) -> str:
         if value:
             return value.lower()
     return ""
+
+
+def published_title_keys(root: Path | None = None) -> set[str]:
+    """Return normalised titles already uploaded by this channel."""
+    root = root or Path(".")
+    titles: set[str] = set()
+    for directory_name in ("_videos", "_videos_pt-BR"):
+        directory = root / directory_name
+        if not directory.exists():
+            continue
+        for path in directory.glob("*.done"):
+            try:
+                marker = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if isinstance(marker, dict):
+                key = normalise_title(marker)
+                if key:
+                    titles.add(key)
+    return titles
+
+
+def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = None) -> list[str]:
+    """Mirror the generator's hard queue gate before a story is publish-ready."""
+    issues: list[str] = []
+    category = str(story.get("category") or "")
+    topic = fetch_animals.ANIMAL_TOPICS.get(category)
+    if not topic:
+        issues.append("unknown_category")
+        return issues
+    clip = type(
+        "Clip",
+        (),
+        {
+            "url": story.get("url") or story.get("source_url") or "",
+            "title": story.get("source_title") or story.get("title") or "",
+        },
+    )()
+    subject = fetch_animals._subject_from_clip(clip, category)
+    script = str(story.get("script") or "")
+    title = str(story.get("seo_title") or story.get("title") or "")
+    if not fetch_animals._topic_accepts_subject(topic, subject):
+        issues.append("off_topic_visual")
+    if not fetch_animals._script_matches_visible_subject(subject, script):
+        issues.append("script_subject_mismatch")
+    if not fetch_animals._copy_matches_visible_subject(
+        subject,
+        title,
+        str(story.get("hook") or ""),
+        script,
+    ):
+        issues.append("copy_subject_mismatch")
+    script_key = fetch_animals._script_key(script)
+    if not script_key:
+        issues.append("empty_script")
+    elif seen_scripts is not None and script_key in seen_scripts:
+        issues.append("duplicate_script")
+    lower_title = title.lower()
+    lower_script = script.lower()
+    if any(phrase in lower_title for phrase in REPETITIVE_TITLE_PHRASES):
+        issues.append("repetitive_title_template")
+    if any(phrase in lower_script for phrase in GENERIC_SCRIPT_PHRASES):
+        issues.append("generic_script_template")
+    issues.extend(editorial_issues(story))
+    words = re.findall(r"[a-z]+", lower_script)
+    if words:
+        top_word_count = max(words.count(word) for word in set(words))
+        if top_word_count >= 10:
+            issues.append("script_word_loop")
+    if not issues and seen_scripts is not None and script_key:
+        seen_scripts.add(script_key)
+    return list(dict.fromkeys(issues))
 
 
 def sanitize_story_metadata(story: dict) -> dict:
@@ -138,9 +227,16 @@ def quality_issues(
     claim = evaluate_claim_risk(story)
     if claim.get("level") == "block":
         issues.append("fact_guard_block")
-    issues.extend(editorial_issues(story))
+    issues.extend(production_quality_issues(story))
     try:
-        clip = type("Clip", (), {"url": story.get("url", ""), "title": story.get("title", "")})()
+        clip = type(
+            "Clip",
+            (),
+            {
+                "url": story.get("url") or story.get("source_url") or "",
+                "title": story.get("source_title") or story.get("title") or "",
+            },
+        )()
         subject = fetch_animals._subject_from_clip(clip, str(story.get("category") or ""))
         topic = fetch_animals.ANIMAL_TOPICS.get(str(story.get("category") or ""))
         if topic and not fetch_animals._topic_accepts_subject(topic, subject):
@@ -169,7 +265,7 @@ def quality_issues(
             seen_scripts.add(script_key)
         if akey:
             seen_angles.add(akey)
-    return issues
+    return list(dict.fromkeys(issues))
 
 
 def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
@@ -275,7 +371,7 @@ def prune_queue(
         ),
         reverse=True,
     )
-    seen_titles: set[str] = set()
+    seen_titles: set[str] = published_title_keys()
     seen_angles: set[str] = set()
     seen_sources: set[str] = set()
     seen_scripts: set[str] = set()
@@ -307,13 +403,33 @@ def prune_queue(
                         duplicate_ids=duplicate_ids - {str(story.get("id") or "")},
                     )
                     if not retry_issues:
-                        story = rescued
+                        story = dict(rescued)
+                        story["_queue_quality_repair"] = {
+                            "attempted": True,
+                            "applied": True,
+                            "reasons": issues,
+                            "stage": "queue_quality",
+                        }
                         issues = []
             if issues:
                 reasons.update(issues)
                 rejected.append({"story": story, "reasons": issues, "stage": "queue_prune"})
                 continue
         scored = enriched_score(story, analytics_strategy=analytics_strategy)
+        quality_repair = story.get("_queue_quality_repair")
+        if isinstance(quality_repair, dict) and quality_repair.get("applied"):
+            score_repair = dict(scored.get("repair") or {})
+            scored["repair"] = {
+                "attempted": True,
+                "applied": True,
+                "reasons": list(
+                    dict.fromkeys(
+                        [str(reason) for reason in (quality_repair.get("reasons") or [])]
+                        + [str(reason) for reason in (score_repair.get("reasons") or [])]
+                    )
+                ),
+                "stage": "queue_quality",
+            }
         if scored["state"] == "reject":
             reject_reasons = list(
                 dict.fromkeys(
@@ -347,12 +463,13 @@ def prune_queue(
     max_mechanism_cluster = int(objective_targets.get("max_publish_ready_mechanism_cluster") or 2)
     template_clusters: Counter[str] = Counter()
     mechanism_clusters: Counter[str] = Counter()
-    final_seen_titles: set[str] = set()
+    final_seen_titles: set[str] = published_title_keys()
     final_seen_angles: set[str] = set()
     final_seen_sources: set[str] = set()
     final_seen_scripts: set[str] = set()
     for index, item in enumerate(accepted):
         story = dict(item["story"])
+        story.pop("_queue_quality_repair", None)
         final_issues = quality_issues(
             story,
             seen_titles=final_seen_titles,
@@ -361,6 +478,39 @@ def prune_queue(
             seen_scripts=final_seen_scripts,
             duplicate_ids=set(),
         )
+        if final_issues and not (set(final_issues) & HARD_QUALITY_ISSUES):
+            rescued, applied = rescue_story(story, final_issues)
+            if applied:
+                rescored = enriched_score(rescued, analytics_strategy=analytics_strategy)
+                if rescored["state"] != "reject":
+                    retry_story = dict(rescored["story"])
+                    retry_story.pop("_queue_quality_repair", None)
+                    retry_issues = quality_issues(
+                        retry_story,
+                        seen_titles=final_seen_titles,
+                        seen_angles=final_seen_angles,
+                        seen_sources=final_seen_sources,
+                        seen_scripts=final_seen_scripts,
+                        duplicate_ids=set(),
+                    )
+                    if not retry_issues:
+                        original_repair = dict(item.get("repair") or {})
+                        rescored_repair = dict(rescored.get("repair") or {})
+                        rescored["repair"] = {
+                            "attempted": True,
+                            "applied": True,
+                            "reasons": list(
+                                dict.fromkeys(
+                                    [str(reason) for reason in final_issues]
+                                    + [str(reason) for reason in (original_repair.get("reasons") or [])]
+                                    + [str(reason) for reason in (rescored_repair.get("reasons") or [])]
+                                )
+                            ),
+                            "stage": "queue_quality_final",
+                        }
+                        item = rescored
+                        story = retry_story
+                        final_issues = []
         if final_issues:
             reasons.update(final_issues)
             rejected.append({"story": story, "reasons": final_issues, "stage": "queue_prune_final"})
