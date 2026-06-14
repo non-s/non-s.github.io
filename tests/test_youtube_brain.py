@@ -72,6 +72,30 @@ def test_creator_premortem_accepts_natural_causal_payoff():
     assert "payoff_not_explicit" not in brain["risks"]
 
 
+def test_creator_premortem_accepts_fact_specific_nature_copy():
+    story = {
+        **_strong_story(),
+        "title": "Insects read the world with antennae",
+        "seo_title": "Insects read the world with antennae",
+        "hook": "Insects read the world with antennae.",
+        "script": (
+            "Insects read the world with antennae. Watch the head movement: those feelers sample touch, "
+            "smell, and air changes, so a tiny pause can be a full environmental check. The smallest "
+            "motion is doing real sensing. What did it test?"
+        ),
+        "thumbnail_text": "ANTENNA CHECK",
+        "category": "insects",
+    }
+
+    brain = creator_premortem(story)
+
+    assert "action_driven_promise" in brain["strengths"]
+    assert "visible_cue_for_viewer" in brain["strengths"]
+    assert "clear_payoff" in brain["strengths"]
+    assert "no_action_promise" not in brain["risks"]
+    assert "payoff_not_explicit" not in brain["risks"]
+
+
 def test_creator_premortem_treats_rely_as_visible_action():
     story = {
         **_strong_story(),

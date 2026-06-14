@@ -128,6 +128,10 @@ GENERIC_SCRIPT_PHRASES = (
     "reveal the reason in one tiny movement",
     "not just hunting",
     "one hidden reason",
+    "one visible signal",
+    "send a clear signal before the next move",
+    "the payoff appears before the final move",
+    "catch the hidden cue before it pays off again",
 )
 
 # Paleta de cores — identidade Wild Brief

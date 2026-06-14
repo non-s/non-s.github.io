@@ -83,7 +83,9 @@ def test_rescue_story_rewrites_editorial_template_but_not_visual_mismatch():
     assert rescued["local_rewrite"]["applied"] is True
     assert "hiding in plain sight" not in rescued["seo_title"].lower()
     assert "not random" not in rescued["script"].lower()
-    assert "because" in rescued["script"].lower()
+    assert "one visible signal" not in rescued["script"].lower()
+    assert "clear signal before the next move" not in rescued["script"].lower()
+    assert any(term in rescued["script"].lower() for term in ("wide", "cud", "stomach"))
     assert "to use" not in rescued["title"].lower()
     assert blocked is False
     assert unchanged is story
@@ -107,7 +109,8 @@ def test_rescue_story_does_not_generate_to_rely_title():
 
     assert applied is True
     assert "to rely" not in rescued["title"].lower()
-    assert rescued["title"] == "Lions rely on ear position to survive"
+    assert rescued["title"] == "Lions use wind before they stalk"
+    assert "wind" in rescued["script"].lower()
 
 
 def test_rescue_story_uses_sequel_source_title_for_subject():
@@ -168,7 +171,8 @@ def test_rescue_story_replaces_generic_body_posture_with_animal_cue():
 
     assert applied is True
     assert "body posture" not in rescued["title"].lower()
-    assert rescued["title"] == "Penguins read the moment from one flipper cue"
+    assert rescued["title"] == "Penguins use flippers like underwater wings"
+    assert "underwater" in rescued["script"].lower()
 
 
 def test_rescue_story_replaces_false_face_memory_with_signal_memory():
@@ -191,7 +195,8 @@ def test_rescue_story_replaces_false_face_memory_with_signal_memory():
     assert applied is True
     assert "recognize faces through tail" not in rescued["title"].lower()
     assert "recognize signals through" not in rescued["title"].lower()
-    assert rescued["title"] == "Bears react differently when their tails lift"
+    assert rescued["title"] == "Bears read the world mostly by smell"
+    assert "smell" in rescued["script"].lower()
 
 
 def test_rescue_story_handles_singular_truncated_and_stitched_titles():
@@ -279,16 +284,17 @@ def test_rescue_story_repairs_non_animal_domain_grammar():
     assert geology_applied is True
     assert "Geologies" not in geology["title"]
     assert "one rocks" not in geology["title"].lower()
-    assert "that detail shows how geology shifts" in geology["script"].lower()
+    assert geology["title"] == "Geology keeps old environments in rock layers"
+    assert "rock layers keep old environments" in geology["script"].lower()
     assert earth_applied is True
-    assert earth["title"] == "Earth systems read the moment from one cloud pattern"
-    assert "Earth systems read" in earth["title"]
+    assert earth["title"] == "Earth systems reveal moving air in cloud lines"
+    assert "Cloud lines reveal moving air" in earth["script"]
     assert forest_applied is True
-    assert forest["title"] == "Forests read the moment from one leaf movement"
-    assert forest["thumbnail_text"] == "LEAF MOVEMENT"
+    assert forest["title"] == "Forests trade signals through root partners"
+    assert forest["thumbnail_text"] == "ROOT NETWORK"
     assert "one leaves" not in forest["script"].lower()
     assert "forests use it" not in forest["script"].lower()
-    assert "that detail shows how forests shift" in forest["script"].lower()
+    assert "fungi connect with roots" in forest["script"].lower()
 
 
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):
@@ -492,7 +498,7 @@ def test_post24_review_suggests_title_repairs():
 
     row = review["items"][0]
     assert row["decision"] == "repair_package"
-    assert row["suggested_titles"] == ["Lions read the moment from one ear shift"]
+    assert row["suggested_titles"] == ["Lions use wind before they stalk"]
     assert review["items"][1]["suggested_titles"] == ["Tigers stay silent before they strike"]
 
 

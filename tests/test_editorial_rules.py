@@ -56,3 +56,34 @@ def test_editorial_rulebook_blocks_generic_duplicate_package():
     assert "hook overlaps too closely with recent uploads" in out["violations"]
     assert "CTA burden is too high" in out["violations"]
     assert out["score"] < 72
+
+
+def test_editorial_rulebook_counts_fact_specific_nature_details_as_concrete():
+    story = {
+        "category": "insects",
+        "title": "Insects read the world with antennae",
+        "hook": "Insects read the world with antennae.",
+        "script": (
+            "Insects read the world with antennae. Watch the head movement: those feelers sample touch, "
+            "smell, and air changes, so a tiny pause can be a full environmental check."
+        ),
+    }
+    package = {
+        "first_frame_text": "Antenna check",
+        "first_frame_text_words": 2,
+        "hook": story["hook"],
+        "hook_words": 6,
+        "first_2s_narration": "Insects read the world with antennae",
+        "visual_motion_score": 0.82,
+        "contrast_score": 0.9,
+        "caption_chars_per_second": 11,
+        "payoff_time_s": 9,
+        "loop_score": 0.72,
+        "cta_count": 1,
+        "novelty_score": 0.76,
+    }
+
+    out = evaluate_story_package(story, package, {"recent_hooks": []})
+
+    assert "script does not expose enough concrete visual detail" not in out["violations"]
+    assert out["approved"] is True

@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import re
 
-from utils.packaging import extract_action, extract_animal, extract_cue
+from utils.packaging import extract_animal, extract_cue
 from utils.story_intelligence import classify_format
 from utils.editorial_guard import editorial_issues
+from utils.fact_script import build_fact_rescue
 
 ANIMAL_TAG_WORDS = {
     "ant",
@@ -46,6 +47,8 @@ ANIMAL_TAG_WORDS = {
     "goats",
     "horse",
     "horses",
+    "insect",
+    "insects",
     "lion",
     "lions",
     "macaw",
@@ -123,6 +126,8 @@ FALLBACK_CUES = {
     "goats": "ear position",
     "horse": "ear position",
     "horses": "ear position",
+    "insect": "antenna movement",
+    "insects": "antenna movement",
     "lion": "ear position",
     "lions": "ear position",
     "macaw": "beak movement",
@@ -199,6 +204,8 @@ def _animal(text: str) -> str:
             "deer",
             "horse",
             "horses",
+            "insect",
+            "insects",
             "tiger",
             "tigers",
             "penguin",
@@ -626,6 +633,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "robotic_memory_title",
             "bad_domain_plural",
             "awkward_uncountable_one_cue",
+            "awkward_plural_one_cue",
+            "awkward_before_they_remember",
             "awkward_non_animal_use_pronoun",
             "bad_plural_verb",
             "bad_singular_subject_verb",
@@ -659,53 +668,21 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         animal = _animal(text)
     fmt = classify_format(text)
     cue = _usable_cue(extract_cue(out), animal)
-    action = _usable_action(extract_action(out), fmt)
     subject = _plural_subject(animal)
     lower_subject = _lower_plural_subject(animal)
-    read_verb = _verb(animal, "read")
-    reveal_verb = _verb(animal, "reveal")
-    use_verb = _verb(animal, "use")
-    benefit = _benefit(action, fmt)
-    cue_reference = _cue_reference(cue)
-    cue_object_pronoun = _cue_object_pronoun(cue)
-    reason_clause = _reason_clause(
-        animal=animal,
+
+    fact_update = build_fact_rescue(
+        out,
+        subject=subject,
         lower_subject=lower_subject,
-        cue_object_pronoun=cue_object_pronoun,
-        benefit=benefit,
-        use_verb=use_verb,
+        cue=cue,
+        category=str(out.get("category") or ""),
     )
-    if fmt == "animal_memory":
-        if cue in {"face", "faces", "face cue", "eye contact", "eyes"}:
-            title = f"{subject} remember familiar faces by sight"
-            hook = f"{subject} recognize familiar faces."
-        else:
-            title = f"{subject} react differently when {_cue_moment(cue)}"
-            hook = f"{subject} {read_verb} one visible signal."
-    elif fmt == "body_superpower":
-        if action == "signal":
-            title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
-            hook = f"{subject} {read_verb} one visible signal."
-        else:
-            title = f"{subject} rely on {cue} to {action}"
-            hook = f"{subject} rely on {cue}."
-    else:
-        title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
-        hook = f"{subject} {reveal_verb} one visible signal."
-    script = (
-        f"{hook} Watch {cue_reference}, because {reason_clause}. "
-        f"The payoff appears before the final move. "
-        f"That is why viewers can replay the first second and catch the hidden cue before it pays off again."
-    )
+    if not fact_update:
+        return story, False
     out.update(
         {
-            "seo_title": title[:60],
-            "title": title[:60],
-            "hook": hook,
-            "script": script,
-            "lead": script[:400],
-            "thumbnail_text": _thumbnail_label(cue),
-            "yt_tags": _clean_tags(out.get("yt_tags"), lower_subject, str(out.get("category") or "")),
+            **fact_update,
             "local_rewrite": {"applied": True, "reasons": reasons, "method": "deterministic_rescue"},
         }
     )

@@ -184,6 +184,11 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
     ("awkward_head_cue_title", r"\bhead cue\b"),
     ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns|leaves)\b"),
+    (
+        "awkward_plural_one_cue",
+        r"\bone (?:antennae|ears|eyes|feathers|feet|fins|flippers|hands|hooves|paws|whiskers|wings)\b",
+    ),
+    ("awkward_before_they_remember", r"\bbefore\s+(?:they|it)\s+remember\b"),
     ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),
@@ -246,6 +251,11 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_ear_movement_changes", r"\bwhen the ear movement changes\b"),
     ("awkward_this_ear_position_changes", r"\bthis ear position changes what [a-z]+s? do next\b"),
     ("awkward_uncountable_one_cue", r"\bone (?:rocks|rock layers|clouds|cloud patterns|leaves)\b"),
+    (
+        "awkward_plural_one_cue",
+        r"\bone (?:antennae|ears|eyes|feathers|feet|fins|flippers|hands|hooves|paws|whiskers|wings)\b",
+    ),
+    ("awkward_before_they_remember", r"\bbefore\s+(?:they|it)\s+remember\b"),
     (
         "bad_plural_verb",
         r"\b[a-z]+s\s+(gives|turns|makes|changes|reveals|uses|relies|recognizes|remembers|signals|hunts|grows|moves)\b",

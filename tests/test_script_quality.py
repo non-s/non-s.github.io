@@ -8,6 +8,7 @@ from utils.script_quality import (
     check_length,
     check_human_voice,
     check_script_starts_with_hook,
+    check_templated_narration,
     check_title_diverges_from_source,
     check_transformation_present,
     evaluate,
@@ -58,6 +59,28 @@ def test_human_voice_passes_with_host_detail():
         "and voices, then act differently around strangers."
     )
     assert issues == []
+
+
+def test_templated_rescue_narration_is_blocked():
+    script = (
+        "Bees reveal one visible signal. Watch the wing movement, because bees use it to send a clear signal "
+        "before the next move. The payoff appears before the final move. That is why viewers can replay the "
+        "first second and catch the hidden cue before it pays off again."
+    )
+
+    issues = check_templated_narration(script)
+
+    assert any(i.code == "templated_narration" and i.severity == "block" for i in issues)
+
+
+def test_fact_specific_narration_is_not_template_blocked():
+    script = (
+        "Bees dance directions inside the hive. Watch the wing and body vibration: the waggle points "
+        "nestmates toward food by encoding direction and distance. That tiny motion is a map, not random "
+        "buzzing. Would you follow the dance?"
+    )
+
+    assert check_templated_narration(script) == []
 
 
 # ── hook openers ─────────────────────────────────────────────────

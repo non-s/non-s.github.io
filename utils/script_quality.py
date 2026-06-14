@@ -109,6 +109,14 @@ _OUTCOME_INDICATORS_RE = re.compile(
     re.IGNORECASE,
 )
 
+_TEMPLATED_RESCUE_PATTERNS: tuple[tuple[str, str], ...] = (
+    ("visible_signal_template", r"\b\w+s?\s+(?:reveal|reveals|read|reads)\s+one visible signal\b"),
+    ("clear_signal_filler", r"\buse(?:s)? it to send a clear signal before the next move\b"),
+    ("payoff_filler", r"\bthe payoff appears before the final move\b"),
+    ("hidden_cue_filler", r"\bcatch the hidden cue before it pays off again\b"),
+    ("loop_callback_filler", r"\bnow the [a-z\s]+ at the start make(?:s)? sense\b"),
+)
+
 
 @dataclasses.dataclass
 class Issue:
@@ -281,6 +289,24 @@ def check_human_voice(script: str) -> list[Issue]:
     ]
 
 
+def check_templated_narration(script: str) -> list[Issue]:
+    """Block rescue-copy templates that only swap the subject and body part."""
+    if not script:
+        return []
+    lower = script.lower()
+    hits = [name for name, pattern in _TEMPLATED_RESCUE_PATTERNS if re.search(pattern, lower)]
+    if len(hits) < 2:
+        return []
+    return [
+        Issue(
+            code="templated_narration",
+            severity="block",
+            message="Narration matches a reusable rescue template instead of a specific nature fact",
+            span=", ".join(hits[:4]),
+        )
+    ]
+
+
 def evaluate(story: dict) -> tuple[int, list[Issue]]:
     """Run every check. Returns (grade_0_10, issues)."""
     hook = story.get("hook", "")
@@ -296,6 +322,7 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
     issues += check_transformation_present(script, description)
     issues += check_length(script)
     issues += check_title_diverges_from_source(seo_title, raw_title)
+    issues += check_templated_narration(script)
     issues += check_human_voice(script)
 
     # Grade: start at 10, subtract per issue. Blocks weigh 4, warns 1.

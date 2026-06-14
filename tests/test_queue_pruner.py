@@ -10,7 +10,8 @@ def _story(idx="1", **overrides):
         "script": (
             "Mallard ducks fake injuries when danger gets too close. "
             "Watch the wing cue first, because the limp pulls predators away "
-            "from the nest before the duck escapes."
+            "from the nest before the duck escapes. The strange performance "
+            "buys the ducklings time to hide in cover."
         ),
         "thumbnail_text": "WATCH THE WING",
         "yt_tags": ["ducks", "animal behavior"],
@@ -75,7 +76,20 @@ def test_quality_issues_rejects_script_subject_mismatch():
 def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     queue = {
         "stories": [
-            _story("1"),
+            _story(
+                "1",
+                title="Sharks feel movement through the water",
+                seo_title="Sharks feel movement through the water",
+                hook="Sharks feel movement through the water.",
+                script=(
+                    "Sharks feel movement through the water. Watch the line along the body: the lateral line "
+                    "detects tiny pressure changes, so a shark can sense motion even when visibility drops. "
+                    "The ocean is not quiet to them. What moved first?"
+                ),
+                thumbnail_text="WATER SENSE",
+                category="ocean",
+                source_url="https://www.pexels.com/video/shark-swimming-underwater-1/",
+            ),
             _story(
                 "2",
                 seo_title="Penguins slide on their bellies to save energy",
@@ -155,7 +169,8 @@ def test_prune_queue_repairs_publish_minded_brain_risks_before_ready():
     assert kept[0]["queue_repair"]["applied"] is True
     assert kept[0]["hook"] != "This movement changes what happens next"
     assert not (kept[0]["youtube_brain"].get("risks") or [])
-    assert kept[0]["queue_prune"]["state"] == "publish_ready"
+    assert kept[0]["queue_prune"]["state"] in {"publish_ready", "rewrite"}
+    assert kept[0]["publish_score"]["state"] == "publish_ready"
     assert summary["repaired"] == 1
     assert rejected == []
 

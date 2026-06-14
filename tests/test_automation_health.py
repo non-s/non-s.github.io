@@ -67,6 +67,44 @@ def test_automation_health_flags_duplicate_scripts(tmp_path: Path):
     assert "duplicate_scripts_in_queue" in out["issues"]
 
 
+def test_automation_health_flags_duplicate_script_templates(tmp_path: Path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    (data / "stories_queue.json").write_text(
+        json.dumps(
+            {
+                "stories": [
+                    {
+                        "id": "a",
+                        "category": "cats",
+                        "seo_title": "Cats read the moment from one paw position",
+                        "script": (
+                            "Cats reveal one visible signal. Watch paw position, because cats use it to send "
+                            "a clear signal before the next move."
+                        ),
+                    },
+                    {
+                        "id": "b",
+                        "category": "bees",
+                        "seo_title": "Bees read the moment from one wing movement",
+                        "script": (
+                            "Bees reveal one visible signal. Watch wing movement, because bees use it to send "
+                            "a clear signal before the next move."
+                        ),
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    out = build_health(tmp_path)
+
+    assert out["queue"]["duplicate_scripts"] == 0
+    assert out["queue"]["duplicate_script_templates"] == 1
+    assert "duplicate_script_templates_in_queue" in out["issues"]
+
+
 def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
     data = tmp_path / "_data"
     data.mkdir(parents=True)

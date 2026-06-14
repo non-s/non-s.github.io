@@ -181,6 +181,29 @@ def test_package_story_uses_nature_signal_language_for_trees():
     assert "trees quietly engineer" in cta_prompt(packaged).lower()
 
 
+def test_package_story_preserves_clean_fact_title_over_awkward_formulas():
+    packaged = package_story(
+        _story(
+            title="Cats reuse paw prints while stalking",
+            seo_title="Cats reuse paw prints while stalking",
+            hook="Cats reuse paw prints while stalking.",
+            script=(
+                "Cats reuse paw prints while stalking. Watch the feet: each hind paw often lands near the "
+                "front paw mark, which keeps steps quiet and reduces extra movement. That neat overlap is "
+                "why the walk can look almost single-file. Can you spot the second print?"
+            ),
+            thumbnail_text="PAW PRINTS",
+            category="cats",
+            yt_tags=["cats", "paw prints", "stealth"],
+        )
+    )
+
+    assert packaged["title"] == "Cats reuse paw prints while stalking"
+    assert "one paws" not in packaged["packaging"]["selected_variant"]["title"].lower()
+    assert "before they remember" not in packaged["packaging"]["selected_variant"]["title"].lower()
+    assert all("one paws" not in title.lower() for title in packaged["packaging"]["title_options"])
+
+
 def test_package_story_keeps_animal_signal_for_animals_in_nature_categories():
     packaged = package_story(
         _story(

@@ -30,6 +30,8 @@ _NATURE_SUBJECT_WORDS = {
     "geology",
     "glacier",
     "glaciers",
+    "insect",
+    "insects",
     "lava",
     "mushroom",
     "mushrooms",
@@ -80,6 +82,56 @@ def _script_key(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (text or "").lower()).strip()
 
 
+def _script_template_key(text: str) -> str:
+    key = _script_key(text)
+    for word in sorted(_SUBJECT_FRONTLOAD_WORDS | _SUBJECT_DESCRIPTOR_WORDS, key=len, reverse=True):
+        key = re.sub(r"\b" + re.escape(word) + r"\b", "{subject}", key)
+    cue_terms = {
+        "antenna",
+        "antennae",
+        "beak",
+        "body",
+        "canopy",
+        "cloud",
+        "clouds",
+        "ear",
+        "ears",
+        "eye",
+        "eyes",
+        "face",
+        "feather",
+        "feathers",
+        "fin",
+        "fins",
+        "flipper",
+        "flippers",
+        "hand",
+        "hands",
+        "head",
+        "hoof",
+        "hooves",
+        "leaf",
+        "leaves",
+        "movement",
+        "paw",
+        "paws",
+        "position",
+        "rock",
+        "rocks",
+        "root",
+        "tail",
+        "tails",
+        "whisker",
+        "whiskers",
+        "wing",
+        "wings",
+    }
+    for word in sorted(cue_terms, key=len, reverse=True):
+        key = re.sub(r"\b" + re.escape(word) + r"\b", "{cue}", key)
+    key = re.sub(r"(?:\{cue\}\s+){2,}", "{cue} ", key)
+    return re.sub(r"\s+", " ", key).strip()
+
+
 def _frontloaded(title: str) -> bool:
     words = re.findall(r"[a-z]+", (title or "").lower())
     if not words:
@@ -108,6 +160,8 @@ def build_health(root: Path | str = ".") -> dict:
     categories = Counter(str(item.get("category") or "unknown") for item in stories)
     scripts = [_script_key(str(item.get("script") or "")) for item in stories if item.get("script")]
     duplicate_scripts = len(scripts) - len(set(scripts))
+    script_templates = [_script_template_key(str(item.get("script") or "")) for item in stories if item.get("script")]
+    duplicate_script_templates = len(script_templates) - len(set(script_templates))
 
     seo_scores: list[int] = []
     frontloaded = 0
@@ -137,6 +191,8 @@ def build_health(root: Path | str = ".") -> dict:
         issues.append("no_agency_publish_now_candidate")
     if duplicate_scripts:
         issues.append("duplicate_scripts_in_queue")
+    if duplicate_script_templates:
+        issues.append("duplicate_script_templates_in_queue")
     if avg_seo < 90:
         issues.append("seo_average_below_target")
     if frontloaded_pct < 95:
@@ -148,6 +204,7 @@ def build_health(root: Path | str = ".") -> dict:
 
     score = 100
     score -= min(20, duplicate_scripts * 4)
+    score -= min(24, duplicate_script_templates * 3)
     score -= 15 if pending < 20 else 0
     score -= 12 if "no_agency_publish_now_candidate" in issues else 0
     score -= max(0, int(90 - avg_seo))
@@ -164,6 +221,7 @@ def build_health(root: Path | str = ".") -> dict:
             "pending": pending,
             "categories": dict(sorted(categories.items())),
             "duplicate_scripts": duplicate_scripts,
+            "duplicate_script_templates": duplicate_script_templates,
             "missing_scripts": sum(1 for item in stories if not item.get("script")),
             "missing_source": sum(1 for item in stories if not (item.get("source_url") or item.get("url"))),
         },

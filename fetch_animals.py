@@ -453,7 +453,11 @@ _AI_PROMPT_TEMPLATE = (
     "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
     "watch; 4-12s = mechanism; final beat = satisfying payoff plus a "
     "tiny comment question. Keep sentences short enough for yellow "
-    "CapCut-style captions.\n\n"
+    "CapCut-style captions. Every script must teach one specific, named "
+    "curiosity about the visible subject. Do not use reusable template "
+    "phrases such as 'one visible signal', 'read the moment', 'the payoff "
+    "appears', 'hidden cue', or 'before the next move'. If the script would "
+    "work after replacing the subject with another animal, rewrite it.\n\n"
     "Return this exact JSON shape:\n"
     "{{"
     '"score": <int 1-10 - how interesting is this subject for a global nature-science Short>,'
@@ -470,8 +474,8 @@ _AI_PROMPT_TEMPLATE = (
     'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
     '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
     '"script": "<the full voice-over for a 12-18 second short. 38-55 words MAX. '
-    "FIRST WORDS MUST BE the hook, verbatim. Then one visual cue, one mechanism, "
-    "and one payoff. Include because or that's why. Close with a tiny comment "
+    "FIRST WORDS MUST BE the hook, verbatim. Then one visual cue, one named "
+    "mechanism or body system, and one payoff. Include because or that's why. Close with a tiny comment "
     'question. No stage directions, no URLs.>",'
     '"sentiment": "positive"'
     "}}"

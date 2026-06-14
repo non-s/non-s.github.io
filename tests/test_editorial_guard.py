@@ -54,6 +54,11 @@ def test_editorial_guard_blocks_non_animal_domain_grammar():
     assert "awkward_uncountable_one_cue" in editorial_issues(
         {"title": "Forests read the moment from one leaves"}
     )
+    assert "awkward_plural_one_cue" in editorial_issues({"title": "Why cats trick after one paws"})
+    assert "awkward_plural_one_cue" in editorial_issues({"title": "One wings changes how birds react"})
+    assert "awkward_before_they_remember" in editorial_issues(
+        {"title": "Bees use wing flash before they remember"}
+    )
     assert "bad_plural_verb" in editorial_issues({"hook": "This forests changes right before the payoff"})
     assert "awkward_plural_loop_line" in editorial_issues(
         {"script": "Now the forests at the start makes sense."}
