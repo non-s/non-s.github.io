@@ -1,5 +1,27 @@
 {
-  "generated_at": "2026-06-14T20:13:39.843401+00:00",
-  "channel_epoch": "day_zero_hourly_restart_2026-06-14",
-  "items": []
+  "generated_at": "2026-06-14T20:52:24.149398+00:00",
+  "items": [
+    {
+      "video_id": "DnArcAvLXr8",
+      "title": "Sharks rely on fin movement to survive",
+      "category": "ocean",
+      "views": 0,
+      "retention": 0,
+      "growth_score": 200.0,
+      "decision": "pause_topic"
+    }
+  ],
+  "counts": {
+    "repair_package": 0,
+    "scale": 0,
+    "rewrite_hook": 0,
+    "pause_topic": 1,
+    "watch": 0
+  },
+  "rules": {
+    "repair_package": "title or packaging fails editorial guard",
+    "scale": "retention >= 62 and growth_score >= 180",
+    "rewrite_hook": "views >= 900 and retention < 62",
+    "pause_topic": "views < 500 and retention < 50"
+  }
 }
