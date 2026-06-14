@@ -7,13 +7,32 @@ from dataclasses import asdict, dataclass
 
 FORMAT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("animal_memory", ("remember", "recognize", "faces", "names", "grudge", "friend")),
-    ("animal_intelligence", ("solve", "smart", "learn", "tool", "plan", "name")),
+    ("animal_intelligence", ("solve", "smart", "learn", "tool", "plan", "name", "map", "imprint", "compare")),
     ("earth_engine", ("lava", "volcano", "storm", "lightning", "river", "glacier", "erosion", "weather")),
     ("hidden_network", ("fungi", "mushroom", "mycelium", "roots", "signals", "network", "communicate")),
     ("rare_nature", ("aurora", "eclipse", "bioluminescent", "rare", "glow", "phenomenon")),
     ("conservation_signal", ("restore", "recover", "conservation", "reforestation", "biodiversity")),
     ("survival_trick", ("escape", "survive", "hide", "camouflage", "defense", "venom")),
-    ("body_superpower", ("teeth", "bones", "eyes", "beak", "claw", "tail", "heart")),
+    (
+        "body_superpower",
+        (
+            "teeth",
+            "bones",
+            "eyes",
+            "beak",
+            "claw",
+            "tail",
+            "heart",
+            "sense",
+            "smell",
+            "taste",
+            "whisker",
+            "pupil",
+            "wing scales",
+            "magnetic",
+            "electric",
+        ),
+    ),
     ("myth_buster", ("not just", "isn't", "aren't", "myth", "think", "really")),
     ("cute_behavior", ("baby", "love", "play", "purr", "groom", "quietly", "bottle")),
 )
@@ -193,7 +212,12 @@ def audit_hook(hook: str) -> Audit:
     if not any(word.lower() in _ANIMAL_WORDS for word in words[:4]):
         score -= 12
         issues.append("animal_not_front_loaded")
-    if not re.search(r"\b(can|remember|recognize|use|survive|escape|heal|call|plan|love|have|are|is)\b", lower):
+    if not re.search(
+        r"\b(can|remember|recognize|use|survive|escape|heal|call|plan|love|have|are|is|"
+        r"aim|carry|carries|cover|covered|fly|leave|lay|wear|taste|smell|sense|track|"
+        r"steer|cool|imprint|compare|stabilize|trap|measure|detect|lock|sample)\b",
+        lower,
+    ):
         score -= 14
         issues.append("no_clear_payoff")
     if lower.endswith("?"):

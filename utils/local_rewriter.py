@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+from utils.curiosity_angles import build_curiosity_package
 from utils.packaging import extract_action, extract_animal, extract_cue
 from utils.story_intelligence import classify_format
 from utils.editorial_guard import editorial_issues
@@ -620,6 +621,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "generic_body_posture_template",
             "generic_detail_template",
             "generic_movement_template",
+            "generic_movement_promise",
+            "generic_bodypart_movement_promise",
             "generic_false_face_memory",
             "generic_signal_through_body_cue",
             "generic_rely_to_signal_cue",
@@ -674,6 +677,32 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         animal = extract_animal(out)
     if animal.lower() == "animal":
         animal = _animal(text)
+    angle_package = build_curiosity_package(out, subject=_plural_subject(animal), context=visual_text)
+    if angle_package and not _is_nature_subject(animal):
+        out.update(
+            {
+                "seo_title": str(angle_package["seo_title"])[:60],
+                "title": str(angle_package["title"])[:60],
+                "hook": angle_package["hook"],
+                "script": angle_package["script"],
+                "lead": angle_package["lead"],
+                "thumbnail_text": angle_package["thumbnail_text"],
+                "story_format": angle_package["story_format"],
+                "yt_tags": _clean_tags(
+                    angle_package.get("yt_tags"),
+                    str(angle_package.get("subject") or animal).lower(),
+                    str(out.get("category") or ""),
+                ),
+                "local_rewrite": {
+                    "applied": True,
+                    "reasons": reasons,
+                    "method": "curiosity_angle_rescue",
+                    "angle_key": angle_package.get("angle_key"),
+                },
+            }
+        )
+        if not editorial_issues(out):
+            return out, True
     fmt = classify_format(text)
     cue = _usable_cue(extract_cue(out), animal)
     action = _usable_action(extract_action(out), fmt)

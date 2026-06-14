@@ -107,7 +107,8 @@ def test_rescue_story_does_not_generate_to_rely_title():
 
     assert applied is True
     assert "to rely" not in rescued["title"].lower()
-    assert rescued["title"] == "Lions rely on ear position to survive"
+    assert rescued["title"] == "Lions use dark ear marks to guide cubs"
+    assert rescued["thumbnail_text"] == "EAR MARKS"
 
 
 def test_rescue_story_uses_sequel_source_title_for_subject():
@@ -168,7 +169,8 @@ def test_rescue_story_replaces_generic_body_posture_with_animal_cue():
 
     assert applied is True
     assert "body posture" not in rescued["title"].lower()
-    assert rescued["title"] == "Penguins read the moment from one flipper cue"
+    assert rescued["title"] == "Penguins trap air bubbles under feathers"
+    assert rescued["thumbnail_text"] == "AIR BUBBLES"
 
 
 def test_rescue_story_replaces_false_face_memory_with_signal_memory():
@@ -191,7 +193,8 @@ def test_rescue_story_replaces_false_face_memory_with_signal_memory():
     assert applied is True
     assert "recognize faces through tail" not in rescued["title"].lower()
     assert "recognize signals through" not in rescued["title"].lower()
-    assert rescued["title"] == "Bears react differently when their tails lift"
+    assert rescued["title"] == "Bears smell food from miles away"
+    assert rescued["thumbnail_text"] == "SCENT MAP"
 
 
 def test_rescue_story_handles_singular_truncated_and_stitched_titles():
@@ -492,7 +495,7 @@ def test_post24_review_suggests_title_repairs():
 
     row = review["items"][0]
     assert row["decision"] == "repair_package"
-    assert row["suggested_titles"] == ["Lions read the moment from one ear shift"]
+    assert row["suggested_titles"] == ["Lions use dark ear marks to guide cubs"]
     assert review["items"][1]["suggested_titles"] == ["Tigers stay silent before they strike"]
 
 
@@ -567,14 +570,15 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
         "stories": [
             {
                 "id": "ready",
-                "seo_title": "Chickens recognize alarm calls through head movement",
-                "title": "Chickens recognize alarm calls through head movement",
-                "hook": "Chickens recognize alarm calls before the payoff.",
+                "seo_title": "Chickens keep their view steady while walking",
+                "title": "Chickens keep their view steady while walking",
+                "hook": "Chickens lock their view between steps.",
                 "script": (
-                    "Chickens recognize alarm calls before the payoff. Watch the head movement first, "
-                    "because that cue changes how they react."
+                    "Chickens lock their view between steps. Watch the eyes stay level while the body "
+                    "steps forward, because chickens stabilize their view in tiny pauses. That helps "
+                    "them judge distance and spot danger without the world blurring. Did you notice it?"
                 ),
-                "thumbnail_text": "CHICKEN ALARM CALL",
+                "thumbnail_text": "STEADY EYES",
                 "yt_tags": ["chickens", "animal facts"],
                 "source": "Pexels",
                 "source_url": "https://www.pexels.com/video/chicken-1/",
@@ -631,9 +635,9 @@ def test_next_shorts_reports_repeated_title_shapes():
             "title": "Chickens recognize signals through head movement",
             "shape": "{subject} recognize signals through {cue}",
             "suggested_titles": [
+                "Chickens keep their view steady while walking",
                 "Chickens react differently when their heads move",
                 "Chickens read the moment from one head movement",
-                "The head movement that changes how chickens react",
             ],
             "window": 10,
             "action": "rewrite title with a different promise shape before publishing this cluster",

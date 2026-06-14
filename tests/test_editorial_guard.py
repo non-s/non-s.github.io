@@ -29,11 +29,11 @@ def test_editorial_guard_blocks_common_mojibake():
 
 def test_editorial_guard_allows_specific_natural_copy():
     story = {
-        "title": "Whales rely on movement to survive",
-        "hook": "Whales rely on movement before the turn.",
+        "title": "Whales slap the surface to warn the pod",
+        "hook": "Whales can turn one splash into a warning.",
         "script": (
-            "Whales rely on movement before the turn. Watch the body line first. "
-            "That detail helps them stay safe when the moment changes."
+            "Whales can turn one splash into a warning. Watch the white splash first, "
+            "because that hit sends pressure through the water before danger gets close."
         ),
     }
 

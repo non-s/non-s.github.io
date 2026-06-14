@@ -161,6 +161,15 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
         r"\b(?:signal the next move with detail|watch the detail when|the detail that explains)\b",
     ),
     ("generic_movement_template", r"\b(?:signal the next move with movement|rely on movement to signal)\b"),
+    (
+        "generic_movement_promise",
+        r"\b(?:rely on|through|watch|use|with)\s+(?:the\s+)?(?:first\s+)?movement\b",
+    ),
+    (
+        "generic_bodypart_movement_promise",
+        r"\b(?:rely on|through|watch|use|with)\s+(?:the\s+)?"
+        r"(?:antenna|beak|ear|fin|flipper|hand|head|tail|whisker|wing)\s+movement\b",
+    ),
     ("generic_false_face_memory", r"\brecognize faces through (?!face|eye)[a-z-]+(?:\s+[a-z-]+)?\b"),
     (
         "generic_signal_through_body_cue",
@@ -247,6 +256,15 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
         r"\b(?:signal the next move with detail|watch the detail when|the detail that explains)\b",
     ),
     ("generic_movement_template", r"\b(?:signal the next move with movement|rely on movement to signal)\b"),
+    (
+        "generic_movement_promise",
+        r"\b(?:rely on|through|watch|use|with)\s+(?:the\s+)?(?:first\s+)?movement\b",
+    ),
+    (
+        "generic_bodypart_movement_promise",
+        r"\b(?:rely on|through|watch|use|with)\s+(?:the\s+)?"
+        r"(?:antenna|beak|ear|fin|flipper|hand|head|tail|whisker|wing)\s+movement\b",
+    ),
     ("generic_false_face_memory", r"\brecognize faces through (?!face|eye)[a-z-]+(?:\s+[a-z-]+)?\b"),
     (
         "generic_signal_through_body_cue",

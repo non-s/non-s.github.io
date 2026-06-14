@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.publish_score import score_story
+from utils.curiosity_angles import build_curiosity_package
 from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment
 from utils.agency_gate import filter_candidates
 from utils.editorial_guard import editorial_issues
@@ -182,7 +183,11 @@ def title_rewrite_suggestions(title: str) -> list[str]:
     cue = _title_cue(title)
     cue_moment = _cue_moment(cue)
     cue_signal = _cue_signal(cue)
+    angle = build_curiosity_package(
+        {"title": title, "seo_title": title, "hook": title, "script": title}, subject=subject
+    )
     candidates = [
+        str(angle.get("title") or "") if angle else "",
         f"{subject} react differently when {cue_moment}",
         f"{subject} read the moment from one {cue_signal}",
         f"The {cue_signal} that changes how {lower_subject} react",

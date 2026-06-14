@@ -21,6 +21,12 @@ from pathlib import Path
 from utils.nature_strategy import NATURE_TOPICS
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import assess_confidence
+from utils.curiosity_angles import (
+    build_curiosity_package,
+    is_generic_movement_copy,
+    plural_subject,
+    subject_key_for_story,
+)
 from utils.editorial_guard import editorial_issues
 
 MEMORY_PATH = Path("_data/format_memory.json")
@@ -198,6 +204,37 @@ ACTION_TERMS = {
     "changes",
     "vanish",
     "recover",
+    "aim",
+    "aims",
+    "carry",
+    "carries",
+    "cover",
+    "covers",
+    "covered",
+    "fly",
+    "flies",
+    "leave",
+    "leaves",
+    "lay",
+    "lays",
+    "wear",
+    "wears",
+    "cool",
+    "compare",
+    "detect",
+    "feel",
+    "imprint",
+    "lock",
+    "measure",
+    "read",
+    "sample",
+    "sense",
+    "smell",
+    "stabilize",
+    "steer",
+    "taste",
+    "track",
+    "trap",
     "pull",
     "pulls",
     "follow",
@@ -232,6 +269,49 @@ ACTION_PRIORITY = (
     "chooses",
     "trick",
     "tricks",
+    "aim",
+    "aims",
+    "carry",
+    "carries",
+    "cover",
+    "covers",
+    "covered",
+    "fly",
+    "flies",
+    "leave",
+    "leaves",
+    "lay",
+    "lays",
+    "wear",
+    "wears",
+    "taste",
+    "tastes",
+    "smell",
+    "smells",
+    "sense",
+    "senses",
+    "track",
+    "tracks",
+    "steer",
+    "steers",
+    "cool",
+    "cools",
+    "imprint",
+    "imprints",
+    "compare",
+    "compares",
+    "stabilize",
+    "stabilizes",
+    "trap",
+    "traps",
+    "measure",
+    "measures",
+    "lock",
+    "locks",
+    "sample",
+    "samples",
+    "detect",
+    "detects",
     "pull",
     "pulls",
     "build",
@@ -782,6 +862,9 @@ def _subject(story: dict) -> str:
         text = str(source).strip()
         if text and len(text.split()) <= 3:
             return text.title()
+    inferred_key = subject_key_for_story(story)
+    if inferred_key:
+        return plural_subject("", key=inferred_key)
     category = str(story.get("category") or "Nature").replace("_", " ")
     return category.title()
 
@@ -1167,17 +1250,25 @@ def _countable_title_cue(cue: str) -> str:
 
 def generate_packaging_options(story: dict) -> dict:
     subject = _display_subject(_subject(story))
+    angle = build_curiosity_package(story, subject=subject)
+    if angle.get("subject"):
+        subject = str(angle["subject"])
     action = _plural_action(_action(story))
-    cue = _cue(story)
+    cue = str(angle.get("cue") or _cue(story))
     thumb_cue = _thumb_cue(cue)
     title_cue = _title_cue(cue)
     countable_cue = _countable_title_cue(cue)
     subject_pronoun = "they" if _subject_is_plural(subject) else "it"
     current_title = str(story.get("seo_title") or story.get("title") or f"{subject} {action}").strip()
     titles = []
+    angle_title = str(angle.get("title") or "").strip()
+    if angle_title:
+        titles.append(angle_title)
     current_title_candidate = {"title": current_title, "seo_title": current_title, "hook": str(story.get("hook") or "")}
-    if not _title_repeats_subject_as_cue(current_title, subject) and not editorial_issues(
-        current_title_candidate, include_script=False
+    if (
+        not is_generic_movement_copy(current_title)
+        and not _title_repeats_subject_as_cue(current_title, subject)
+        and not editorial_issues(current_title_candidate, include_script=False)
     ):
         titles.append(current_title)
     if action in {"signal", "connect", "communicate"}:
@@ -1197,6 +1288,9 @@ def generate_packaging_options(story: dict) -> dict:
         ]
     )
     thumbs = []
+    angle_thumb = str(angle.get("thumbnail_text") or "").upper().strip()
+    if angle_thumb:
+        thumbs.append(angle_thumb)
     current_thumb = str(story.get("thumbnail_text") or "").upper()
     if (
         current_thumb
@@ -1221,8 +1315,15 @@ def generate_packaging_options(story: dict) -> dict:
         ]
     )
     hooks = []
+    angle_hook = str(angle.get("hook") or "").strip()
+    if angle_hook:
+        hooks.append(angle_hook)
     current_hook = str(story.get("hook") or "").strip()
-    if current_hook and not editorial_issues({"title": current_hook, "hook": current_hook}, include_script=False):
+    if (
+        current_hook
+        and not is_generic_movement_copy(current_hook)
+        and not editorial_issues({"title": current_hook, "hook": current_hook}, include_script=False)
+    ):
         hooks.append(current_hook)
     hooks.extend(
         [
@@ -1296,6 +1397,16 @@ def score_package_variant(story: dict, title: str, thumbnail_text: str, hook: st
     )
     if editorial_issues(candidate, include_script=False):
         score -= 60
+    angle = build_curiosity_package(story)
+    if angle:
+        if str(title or "").strip().lower() == str(angle.get("title") or "").strip().lower():
+            score += 12
+        if str(thumbnail_text or "").strip().lower() == str(angle.get("thumbnail_text") or "").strip().lower():
+            score += 7
+        if str(hook or "").strip().lower() == str(angle.get("hook") or "").strip().lower():
+            score += 6
+        if is_generic_movement_copy(f"{title} {hook}"):
+            score -= 22
     return max(0, min(100, score))
 
 

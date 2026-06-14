@@ -450,8 +450,17 @@ _AI_PROMPT_TEMPLATE = (
     "facts; lava footage requires volcano or geology facts; storm "
     "footage requires weather facts. If multiple natural subjects are "
     "named, choose the one most visibly present.\n\n"
+    "ANGLE REQUIREMENT: do not default to movement/cue/position copy. "
+    "The Short must answer a real curiosity about the visible subject: "
+    "perception, memory, survival trick, feeding, anatomy, camouflage, "
+    "communication, parenting, navigation, or another concrete mechanism. "
+    "Use movement only when the exact fact is about that movement. Bad: "
+    "'Butterflies rely on wing movement.' Better: 'Butterflies carry color "
+    "on tiny wing scales' or 'Butterflies taste flowers with their feet.' "
+    "Bad: 'Chickens read one visible cue.' Better: 'Chickens keep their "
+    "view steady while walking.'\n\n"
     "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
-    "watch; 4-12s = mechanism; final beat = satisfying payoff plus a "
+    "watch; 4-12s = real mechanism; final beat = satisfying payoff plus a "
     "tiny comment question. Keep sentences short enough for yellow "
     "CapCut-style captions.\n\n"
     "Return this exact JSON shape:\n"
@@ -462,7 +471,7 @@ _AI_PROMPT_TEMPLATE = (
     'Good: \\"Mushrooms talk through underground threads\\". '
     'Good: \\"Lava builds land faster than you think\\".>",'
     '"yt_tags": ["<5 lowercase tags. First 3 are subject-specific '
-    "(subject, process, visual cue). Last 2 are evergreen "
+    "(subject, process, visible anchor). Last 2 are evergreen "
     '(\\"nature\\", \\"nature facts\\", \\"science\\", \\"earth science\\").>"],'
     '"topic_hashtag": "<one CamelCase hashtag identifying the nature category. '
     'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, Ecosystems.>",'
@@ -470,7 +479,7 @@ _AI_PROMPT_TEMPLATE = (
     'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
     '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
     '"script": "<the full voice-over for a 12-18 second short. 38-55 words MAX. '
-    "FIRST WORDS MUST BE the hook, verbatim. Then one visual cue, one mechanism, "
+    "FIRST WORDS MUST BE the hook, verbatim. Then one visible anchor, one mechanism, "
     "and one payoff. Include because or that's why. Close with a tiny comment "
     'question. No stage directions, no URLs.>",'
     '"sentiment": "positive"'

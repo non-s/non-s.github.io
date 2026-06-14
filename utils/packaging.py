@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from utils.curiosity_gap import CuriosityGapEngine
+from utils.curiosity_angles import CURIOUS_CUE_WORDS, build_curiosity_package, is_generic_movement_copy
 from utils.editorial_guard import editorial_issues
 from utils.editorial_rules import evaluate_story_package
 from utils.growth_engine import (
@@ -137,6 +138,11 @@ ACTION_VERBS = (
     "plan",
     "trick",
     "warn",
+    "aim",
+    "carry",
+    "carries",
+    "cover",
+    "covered",
     "choose",
     "save",
     "signal",
@@ -158,8 +164,30 @@ ACTION_VERBS = (
     "communicate",
     "build",
     "collapse",
+    "fly",
+    "leave",
+    "leaves",
+    "lay",
+    "lays",
+    "wear",
+    "cool",
+    "compare",
+    "detect",
+    "feel",
+    "imprint",
+    "lock",
+    "measure",
+    "sample",
+    "sense",
+    "smell",
+    "stabilize",
+    "steer",
+    "taste",
+    "track",
+    "trap",
 )
 CUE_WORDS = (
+    *CURIOUS_CUE_WORDS,
     "ear position",
     "ear movement",
     "head movement",
@@ -324,6 +352,8 @@ GENERIC_PHRASES = (
     "look closer",
     "wait for it",
     "the real reason",
+    "read the moment",
+    "one visible signal",
 )
 BODY_SIGNAL_TEMPLATE = re.compile(
     r"(?:(?:recognize signals through|signal the next move with) "
@@ -600,6 +630,7 @@ def score_packaging(story: dict) -> dict:
         any(phrase in text for phrase in GENERIC_PHRASES)
         or bool(BODY_SIGNAL_TEMPLATE.search(text))
         or bool(GENERIC_MOVEMENT_TITLE.search(text))
+        or is_generic_movement_copy(text)
     )
     if generic_hit:
         score -= 28
@@ -717,16 +748,43 @@ def package_story(story: dict) -> dict:
     normalized_category = _normalized_category(out)
     if normalized_category:
         out["category"] = normalized_category
-    memory = load_format_memory()
-    selected = _select_packaging(out, memory=memory)
-    best_variant = selected["best"]
     preserve_source_packaging = (
         str(out.get("studio_state") or "") == "comment_idea"
         or str(out.get("source") or "").strip().lower() == "youtube comment idea"
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
     )
-    if best_variant and not preserve_source_packaging:
+    angle_package = build_curiosity_package(out, subject=extract_subject(out))
+    angle_packaging_applied = False
+    if (
+        angle_package
+        and not preserve_source_packaging
+        and is_generic_movement_copy(
+            " ".join(str(out.get(key) or "") for key in ("seo_title", "title", "hook", "script", "thumbnail_text"))
+        )
+    ):
+        angle_packaging_applied = True
+        out.update(
+            {
+                "seo_title": angle_package["seo_title"],
+                "title": angle_package["title"],
+                "hook": angle_package["hook"],
+                "script": angle_package["script"],
+                "lead": angle_package["lead"],
+                "thumbnail_text": angle_package["thumbnail_text"],
+                "story_format": angle_package["story_format"],
+                "yt_tags": angle_package["yt_tags"],
+                "curiosity_angle": {
+                    "key": angle_package["angle_key"],
+                    "cue": angle_package["cue"],
+                    "source": "deterministic_angle_packaging",
+                },
+            }
+        )
+    memory = load_format_memory()
+    selected = _select_packaging(out, memory=memory)
+    best_variant = selected["best"]
+    if best_variant and not preserve_source_packaging and not angle_packaging_applied:
         out["seo_title"] = best_variant["title"]
         out["title"] = best_variant["title"]
         out["thumbnail_text"] = best_variant["thumbnail_text"]

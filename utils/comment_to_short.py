@@ -7,6 +7,7 @@ import re
 from datetime import datetime, timezone
 
 from utils.editorial_guard import editorial_issues
+from utils.curiosity_angles import build_curiosity_package
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
 from utils.publish_score import score_story
 from utils.youtube_brain import creator_premortem
@@ -294,6 +295,35 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
             "A viewer asked about one nature clue. Watch the visible cue first, because the payoff is easier to spot when the setup is clear.",
         )
     )
+    category = _category_for(animal, text) if animal != "nature" else "wildlife"
+    if animal != "nature":
+        angle = build_curiosity_package(
+            {
+                "title": title,
+                "seo_title": title,
+                "hook": hook,
+                "script": script,
+                "category": category,
+                "source_comment": text,
+                "yt_tags": [animal],
+            },
+            subject=animal,
+            context=text,
+            force=True,
+        )
+        if angle:
+            title = str(angle["title"])
+            hook = str(angle["hook"])
+            script = str(angle["script"])
+            cue = str(angle["cue"])
+            thumbnail_text = str(angle["thumbnail_text"])
+            yt_tags = list(angle.get("yt_tags") or [animal, "viewer question", "nature facts"])
+        else:
+            thumbnail_text = f"{animal.upper()} {cue.upper()}"[:28]
+            yt_tags = [animal, "viewer question", "nature facts"]
+    else:
+        thumbnail_text = "NATURE ANSWER"
+        yt_tags = [animal, "viewer question", "nature facts"]
     related = ""
     for marker in markers or []:
         if _text(marker.get("video_id")) == source_video:
@@ -313,12 +343,12 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
         "source_comment": text[:500],
         "title": title,
         "seo_title": title,
-        "category": _category_for(animal, text) if animal != "nature" else "wildlife",
+        "category": category,
         "description": f"Viewer question seed: {prompt}",
         "hook": hook,
         "script": script,
-        "thumbnail_text": f"{animal.upper()} {cue.upper()}"[:28] if animal != "nature" else "NATURE ANSWER",
-        "yt_tags": [animal, "viewer question", "nature facts"],
+        "thumbnail_text": thumbnail_text,
+        "yt_tags": yt_tags,
         "score": scored["score"],
         "comment_score": scored,
         "comment_context": {

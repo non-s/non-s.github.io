@@ -65,7 +65,7 @@ def reach_goal_status(objective: dict, reach_summary: dict | None = None) -> dic
         "state": "healthy" if stayed >= floor else "needs_first_second_work",
         "commands": (
             [
-                "Rewrite frame zero and the first spoken line around animal + visible cue + payoff.",
+                "Rewrite frame zero and the first spoken line around animal + real curiosity + visible anchor + payoff.",
                 "Reject packages with slow payoff, vague first-frame text, or medium/high swipe risk.",
                 "Use Studio Reach exports to replace this baseline with per-video stayed-to-watch data.",
             ]
@@ -139,6 +139,24 @@ def cognitive_mechanism_cluster(story: dict) -> str:
         return "group_choice"
     if "recognize faces" in lower or "recognizes faces" in lower:
         return "face_recognition"
+    if "face memory" in lower or "remember familiar faces" in lower:
+        return "face_recognition"
+    if "steady eyes" in lower or "view steady" in lower:
+        return "visual_stabilization"
+    if "wing scales" in lower:
+        return "wing_scales"
+    if "taste feet" in lower or "taste flowers" in lower:
+        return "taste_sensors"
+    if "tongue smell" in lower or "smell the air" in lower:
+        return "tongue_smell"
+    if "electric sense" in lower or "electric fields" in lower:
+        return "electric_sense"
+    if "scent map" in lower or "scent post" in lower:
+        return "scent_map"
+    if "magnetic map" in lower:
+        return "magnetic_navigation"
+    if "dance map" in lower:
+        return "dance_navigation"
     if "recognize signals through" in lower or "recognize familiar signals" in lower:
         return "signal_recognition"
     if "body posture" in lower or "body cue" in lower:

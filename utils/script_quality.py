@@ -105,6 +105,11 @@ _OUTCOME_INDICATORS_RE = re.compile(
     r"disappear|disappears|climb|climbs|bray|brays|chew|chews|have|has|"
     r"stop|stops|sleep|sleeps|groom|grooms|lie|lies|chase|chases|pant|pants|"
     r"fool|fools|hold|holds|cool|cools|turn|turns|born|wear|wears|wag|wags|"
+    r"aim|aims|carry|carries|cover|covers|covered|fly|flies|leave|leaves|"
+    r"lay|lays|"
+    r"taste|tastes|smell|smells|sense|senses|compare|compares|imprint|imprints|"
+    r"steer|steers|stabilize|stabilizes|trap|traps|measure|measures|lock|locks|"
+    r"sample|samples|detect|detects|feel|feels|"
     r"aren't|isn't|don't|can't)\b",
     re.IGNORECASE,
 )

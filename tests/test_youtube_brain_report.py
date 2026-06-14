@@ -8,14 +8,14 @@ def _ready_story(**overrides):
         "id": "ready",
         "title": "Ducks fake injuries to protect young",
         "seo_title": "Ducks fake injuries to protect young",
-        "hook": "Ducks fake injuries to protect their young.",
+        "hook": "Ducks can act injured to pull danger away.",
         "script": (
-            "Ducks fake injuries to protect their young. Watch the wing movement first, "
-            "because that cue pulls predators away from the nest. The duck escapes when "
-            "the chicks have cover. That is why the stumble is not random: it turns the "
-            "adult into the target for a few seconds, then flips back into a clean escape."
+            "Ducks can act injured to pull danger away. Watch the low awkward display, "
+            "because some ducks use a distraction act near the nest. Predators chase the "
+            "easier target while the young stay hidden. The drama is a decoy, not weakness. "
+            "Would you fall for the trick?"
         ),
-        "thumbnail_text": "WATCH THE WING",
+        "thumbnail_text": "FAKE INJURY",
         "category": "birds",
         "story_format": "animal_intelligence",
         "queue_prune": {"state": "publish_ready"},

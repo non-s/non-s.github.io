@@ -39,7 +39,7 @@ def test_thumbnail_options_are_short_scannable_phrases():
 
     assert options
     assert all(len(option.split()) <= 4 for option in options)
-    assert "WING FLASH" in options
+    assert "FAKE INJURY" in options
 
 
 def test_score_packaging_penalizes_generic_clickbait():
@@ -70,7 +70,7 @@ def test_score_packaging_penalizes_generic_successor_templates():
     assert "generic_clickbait_language" in weak["risks"]
 
 
-def test_score_packaging_recognizes_concrete_ducklings_rely_shape():
+def test_score_packaging_penalizes_generic_ducklings_movement_shape():
     score = score_packaging(
         _story(
             title="Ducklings rely on wing movement to steer",
@@ -80,7 +80,8 @@ def test_score_packaging_recognizes_concrete_ducklings_rely_shape():
         )
     )
 
-    assert score["state"] == "magnetic"
+    assert score["state"] == "rewrite_packaging"
+    assert "generic_clickbait_language" in score["risks"]
     assert "subject_not_clear" not in score["risks"]
     assert "missing_action_word" not in score["risks"]
 
@@ -102,7 +103,8 @@ def test_package_story_keeps_visible_subject_in_selected_hook():
     )
 
     assert "ducklings" in packaged["hook"].lower()
-    assert "wing" in packaged["hook"].lower()
+    assert "group" in packaged["hook"].lower()
+    assert packaged["thumbnail_text"] == "TINY MATH"
 
 
 def test_score_packaging_penalizes_generic_rely_to_signal_shape():
@@ -134,8 +136,9 @@ def test_title_options_use_natural_head_movement_language():
         )
     )
 
-    assert any("head tilt" in option.lower() for option in options)
+    assert any("view steady" in option.lower() for option in options)
     assert all("head cue" not in option.lower() for option in options)
+    assert all("head movement" not in option.lower() for option in options)
 
 
 def test_package_story_uses_fungi_detail_instead_of_subject_as_cue():

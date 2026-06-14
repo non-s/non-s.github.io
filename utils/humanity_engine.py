@@ -30,7 +30,8 @@ _COMMENT_RE = re.compile(
 _BODY_DETAIL_RE = re.compile(
     r"\b(eye|eyes|face|faces|beak|tail|skin|fur|feather|feathers|wing|"
     r"wings|paw|paws|hoof|hooves|claw|claws|teeth|bone|bones|ear|ears|"
-    r"nose|whiskers|neck|feet|legs|muscle|muscles|texture|colour|color)\b",
+    r"nose|whisker|whiskers|neck|feet|foot|legs|arm|arms|tongue|pupil|"
+    r"pupils|scale|scales|pore|pores|muscle|muscles|texture|colour|color)\b",
     re.IGNORECASE,
 )
 _GENERIC_TITLE_RE = re.compile(
