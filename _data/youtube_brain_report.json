@@ -1,15 +1,14 @@
 {
-  "generated_at": "2026-06-14T10:42:28.649412+00:00",
+  "generated_at": "2026-06-14T10:44:44.459707+00:00",
   "pending": 21,
   "summary": {
-    "average_score": 96.05,
+    "average_score": 95.95,
     "states": {
       "publish_minded": 20,
       "rewrite_before_publish": 1
     },
     "top_risks": {
-      "subject_not_immediately_clear": 3,
-      "missing_visual_cue": 1,
+      "subject_not_immediately_clear": 4,
       "no_action_promise": 1,
       "script_length_risk": 1
     }
@@ -17,7 +16,7 @@
   "publish_ready_summary": {
     "average_score": 100.0,
     "states": {
-      "publish_minded": 3
+      "publish_minded": 4
     },
     "top_risks": {}
   },
@@ -66,6 +65,38 @@
         "subject": "sharks",
         "story_format": "survival_trick",
         "viewer_promise": "See why sharks survival trick matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": []
+      }
+    },
+    {
+      "id": "901d5bc40593abc8",
+      "title": "Bees signal through leaf movement",
+      "category": "plants",
+      "queue_state": "publish_ready",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "bees",
+        "subject": "bees",
+        "story_format": "cute_behavior",
+        "viewer_promise": "See why this visible behavior matters for bees.",
         "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -409,38 +440,6 @@
       }
     },
     {
-      "id": "677b330e4980e87d",
-      "title": "Rocks use rock layers before they form",
-      "category": "geology",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "rocks",
-        "subject": "rocks",
-        "story_format": "animal_intelligence",
-        "viewer_promise": "See the rock detail that changes the whole scene.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      }
-    },
-    {
       "id": "27364e65ce486e95",
       "title": "Cats rely on hand movement to survive",
       "category": "cats",
@@ -537,41 +536,6 @@
       }
     },
     {
-      "id": "78564f8ac830bd1f",
-      "title": "Rivers use first move before they change",
-      "category": "rivers",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 89,
-        "state": "publish_minded",
-        "animal": "rivers",
-        "subject": "rivers",
-        "story_format": "earth_engine",
-        "viewer_promise": "See why this river earth engine matters.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "replay_reason": "weak",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "missing_visual_cue"
-        ],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": [
-          "Name the visual cue the viewer should watch in the first second."
-        ]
-      }
-    },
-    {
       "id": "3032d5677ea16c8d",
       "title": "Bees use wing flash before they remember",
       "category": "insects",
@@ -584,6 +548,41 @@
         "story_format": "animal_memory",
         "viewer_promise": "See why bees animal memory matters.",
         "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ]
+      }
+    },
+    {
+      "id": "055b5ba31c7d7c2b",
+      "title": "Fungis signal through mycelium network",
+      "category": "forests",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 87,
+        "state": "publish_minded",
+        "animal": "mycelium",
+        "subject": "mycelium",
+        "story_format": "hidden_network",
+        "viewer_promise": "See why this mycelium hidden network matters.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
@@ -1066,18 +1065,18 @@
       }
     },
     {
-      "id": "677b330e4980e87d",
-      "title": "Rocks use rock layers before they form",
-      "category": "geology",
-      "queue_state": "rewrite",
+      "id": "901d5bc40593abc8",
+      "title": "Bees signal through leaf movement",
+      "category": "plants",
+      "queue_state": "publish_ready",
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
-        "animal": "rocks",
-        "subject": "rocks",
-        "story_format": "animal_intelligence",
-        "viewer_promise": "See the rock detail that changes the whole scene.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "animal": "bees",
+        "subject": "bees",
+        "story_format": "cute_behavior",
+        "viewer_promise": "See why this visible behavior matters for bees.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
@@ -1226,41 +1225,6 @@
       }
     },
     {
-      "id": "78564f8ac830bd1f",
-      "title": "Rivers use first move before they change",
-      "category": "rivers",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 89,
-        "state": "publish_minded",
-        "animal": "rivers",
-        "subject": "rivers",
-        "story_format": "earth_engine",
-        "viewer_promise": "See why this river earth engine matters.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "replay_reason": "weak",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "missing_visual_cue"
-        ],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": [
-          "Name the visual cue the viewer should watch in the first second."
-        ]
-      }
-    },
-    {
       "id": "3032d5677ea16c8d",
       "title": "Bees use wing flash before they remember",
       "category": "insects",
@@ -1273,6 +1237,41 @@
         "story_format": "animal_memory",
         "viewer_promise": "See why bees animal memory matters.",
         "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ]
+      }
+    },
+    {
+      "id": "055b5ba31c7d7c2b",
+      "title": "Fungis signal through mycelium network",
+      "category": "forests",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 87,
+        "state": "publish_minded",
+        "animal": "mycelium",
+        "subject": "mycelium",
+        "story_format": "hidden_network",
+        "viewer_promise": "See why this mycelium hidden network matters.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
