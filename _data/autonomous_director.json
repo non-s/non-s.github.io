@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-14T20:57:11.474977+00:00",
-  "autonomy_score": 17,
+  "generated_at": "2026-06-14T21:30:51.084290+00:00",
+  "autonomy_score": 72,
   "state": "needs_operator_attention",
   "publish_mix": {
     "winner_sequels": 20,
@@ -9,37 +9,44 @@
     "recovery_categories": 0
   },
   "subscriber_conversion": {
-    "views": 0,
+    "views": 2,
     "subscribers_gained": 0,
     "subs_per_1000_views": 0.0,
     "state": "needs_focus"
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "YouTube token missing",
+    "reason": "traffic_source_report_not_ready",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 87,
-    "state": "watch",
-    "issues": [
-      "youtube_token_missing"
-    ],
-    "unavailable_reports": [
-      "video_core",
-      "daily_channel",
-      "country",
-      "traffic_source",
-      "device_type",
-      "subscriber_status"
-    ],
+    "risk_score": 0,
+    "state": "normal",
+    "issues": [],
+    "unavailable_reports": [],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
-  "category_priorities": [],
-  "format_priorities": [],
+  "category_priorities": [
+    {
+      "value": "farm",
+      "score": 200.0
+    },
+    {
+      "value": "ocean",
+      "score": 112.1
+    }
+  ],
+  "format_priorities": [
+    {
+      "value": "survival_trick",
+      "score": 156.05
+    }
+  ],
   "sequel_candidates": [],
   "duplicate_risk": 0,
   "decisions": [
+    "Double down on farm until another category beats its growth score.",
+    "Favor survival_trick as the next story format.",
     "Add a soft subscriber conversion CTA to strong candidates only."
   ]
 }

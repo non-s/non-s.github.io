@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-14T20:57:11.044338+00:00",
+  "generated_at": "2026-06-14T21:30:50.517863+00:00",
   "window": {
     "start_date": "2026-05-18",
     "end_date": "2026-06-14"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -12,30 +12,62 @@
     "Fail open for unavailable Analytics reports and record the exact missing capability."
   ],
   "channel": {
-    "id": "",
-    "title": "",
-    "custom_url": "",
-    "published_at": "",
-    "uploads_playlist": "",
-    "subscriber_count": 0,
-    "view_count": 0,
-    "video_count": 0,
-    "privacy_status": "",
+    "id": "UCWrQoappAOOxsaQK-43MbdQ",
+    "title": "Wild Brief",
+    "custom_url": "@wildbrief-e8o",
+    "published_at": "2024-05-08T11:58:22.022654Z",
+    "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
+    "subscriber_count": 50,
+    "view_count": 1038,
+    "video_count": 2,
+    "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 0,
-    "latest_uploads": []
+    "uploads_checked": 2,
+    "latest_uploads": [
+      {
+        "video_id": "XVkLJ_yXfCs",
+        "title": "Horses rely on ear position to survive",
+        "published_at": "2026-06-14T21:30:20Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLlhWa0xKX3lYZkNz"
+      },
+      {
+        "video_id": "DnArcAvLXr8",
+        "title": "Sharks rely on fin movement to survive",
+        "published_at": "2026-06-14T20:51:56Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLkRuQXJjQXZMWHI4"
+      }
+    ]
   },
   "video_audit": {
-    "videos_checked": 0,
-    "total_views": 0,
+    "videos_checked": 2,
+    "total_views": 2,
     "total_likes": 0,
-    "total_comments": 0,
+    "total_comments": 2,
     "private_or_unlisted": 0,
-    "shorts_like": 0,
-    "top_public_videos": []
+    "shorts_like": 2,
+    "top_public_videos": [
+      {
+        "video_id": "DnArcAvLXr8",
+        "title": "Sharks rely on fin movement to survive",
+        "views": 2,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-06-14T20:51:56Z"
+      },
+      {
+        "video_id": "XVkLJ_yXfCs",
+        "title": "Horses rely on ear position to survive",
+        "views": 0,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-06-14T21:30:20Z"
+      }
+    ]
   },
   "capabilities": [
     {
@@ -45,7 +77,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -54,7 +86,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -63,7 +95,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -121,9 +153,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "YouTube token missing"
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -131,9 +163,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "YouTube token missing"
+      "status": "ok",
+      "rows": 15,
+      "error": ""
     },
     {
       "id": "country",
@@ -141,9 +173,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "YouTube token missing"
+      "status": "ok",
+      "rows": 43,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -151,9 +183,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "YouTube token missing"
+      "status": "ok",
+      "rows": 11,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -161,9 +193,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "YouTube token missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -171,12 +203,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "YouTube token missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_token_missing"
-  ]
+  "issues": []
 }
