@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EPOCH = "day_zero_hourly_restart_2026-06-12"
+EPOCH = "day_zero_hourly_restart_2026-06-14"
 
 
 def _now() -> str:
@@ -36,6 +36,9 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_videos/*.done",
         "_videos/*.roundup",
         "_videos/shorts_done.json",
+        "_videos_pt-BR/*.done",
+        "_videos_pt-BR/*.roundup",
+        "_videos_pt-BR/shorts_done.json",
         "_data/published_thumbnails/*.jpg",
         "docs/published_packaging_repair_*.md",
         "_data/reports/weekly*.md",
@@ -86,6 +89,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "policy": "Old local video markers, old published-thumbnail repairs, and pending queue inventory were reset. Analytics can be re-collected from YouTube after the operator removes old videos.",
             "cadence": "one_short_per_hour",
             "queue_target_pending": 24,
+            "publish_ready_target": 6,
             "youtube_description_mode": "empty",
         },
         "_data/agency_gate.json": {"generated_at": stamp, "channel_epoch": EPOCH, "approved": [], "held": []},

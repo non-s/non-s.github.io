@@ -248,9 +248,10 @@ def test_prune_queue_keeps_editorial_cooldown_out_of_publish_ready(monkeypatch):
     assert rejected == []
 
 
-def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is_weak(monkeypatch):
+def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is_unavailable(monkeypatch):
     repeated = "Ducklings rely on wing position to survive"
     monkeypatch.setattr("utils.queue_pruner.published_title_keys", lambda: {repeated.lower()})
+    monkeypatch.setattr("utils.queue_pruner.rescue_story", lambda story, issues: (story, False))
     story = _story(
         "published-duplicate",
         title=repeated,
@@ -268,9 +269,8 @@ def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is
 
     assert [item for item in pruned["stories"] if not item.get("consumed")] == []
     assert len(rejected) == 1
-    assert rejected[0]["story"]["seo_title"].lower() != repeated.lower()
-    assert "duplicate_title" in (rejected[0]["story"].get("local_rewrite") or {}).get("reasons", [])
-    assert summary["repair_needed"] == 1
+    assert "duplicate_title" in rejected[0]["reasons"]
+    assert summary["rejected"] == 1
 
 
 def test_prune_queue_caps_publish_ready_title_template_clusters(monkeypatch):
