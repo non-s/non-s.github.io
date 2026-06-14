@@ -1,197 +1,197 @@
 {
-  "generated_at": "2026-06-14T22:41:16.454036+00:00",
-  "window": {
-    "start_date": "2026-05-18",
-    "end_date": "2026-06-14"
+  "analytics_reports": [
+    {
+      "dimensions": "video",
+      "error": "",
+      "id": "video_core",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
+      "rows": 0,
+      "sort": "-views",
+      "status": "ok",
+      "use": "Rank videos by growth, engagement, retention and subscriber conversion."
+    },
+    {
+      "dimensions": "day",
+      "error": "",
+      "id": "daily_channel",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "rows": 15,
+      "sort": "day",
+      "status": "ok",
+      "use": "Daily pacing and anomaly detection."
+    },
+    {
+      "dimensions": "country",
+      "error": "",
+      "id": "country",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "rows": 43,
+      "sort": "-views",
+      "status": "ok",
+      "use": "Geo demand and publish timing hints."
+    },
+    {
+      "dimensions": "insightTrafficSourceType",
+      "error": "",
+      "id": "traffic_source",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "rows": 11,
+      "sort": "-views",
+      "status": "ok",
+      "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth."
+    },
+    {
+      "dimensions": "deviceType",
+      "error": "",
+      "id": "device_type",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "rows": 4,
+      "sort": "-views",
+      "status": "ok",
+      "use": "Tune caption size, pacing and visual density for device mix."
+    },
+    {
+      "dimensions": "subscribedStatus",
+      "error": "",
+      "id": "subscriber_status",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "rows": 2,
+      "sort": "-views",
+      "status": "ok",
+      "use": "Separate existing subscriber behavior from discovery behavior."
+    }
+  ],
+  "capabilities": [
+    {
+      "api": "youtube.data",
+      "coverage": "implemented",
+      "id": "channel_profile",
+      "last_run": "ok",
+      "method": "channels.list",
+      "risk": "read_only",
+      "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "implemented",
+      "id": "uploaded_video_inventory",
+      "last_run": "ok",
+      "method": "playlistItems.list",
+      "risk": "read_only",
+      "use": "Compare YouTube uploads against local .done markers and detect missing local memory."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "implemented",
+      "id": "video_metadata_statistics",
+      "last_run": "ok",
+      "method": "videos.list",
+      "risk": "read_only",
+      "use": "Public stats, title/description/tag/status/duration audit for every tracked Short."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "implemented_elsewhere",
+      "id": "comment_threads",
+      "method": "commentThreads.list",
+      "risk": "read_only",
+      "use": "Audience questions, requested animals, sentiment and sequel prompts."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "implemented_elsewhere",
+      "id": "video_upload",
+      "method": "videos.insert",
+      "risk": "write_high_quota",
+      "use": "Publish generated Shorts."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "implemented_elsewhere",
+      "id": "thumbnail_upload",
+      "method": "thumbnails.set",
+      "risk": "write_medium_quota",
+      "use": "Upload custom thumbnail when YouTube permits it for the video type/account."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "planned_manual_gate",
+      "id": "playlist_management",
+      "method": "playlists.list,playlistItems.insert",
+      "risk": "write_requires_review",
+      "use": "Series packaging after winners are proven."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "blocked_by_human_review",
+      "id": "comment_replies_moderation",
+      "method": "comments.insert,comments.setModerationStatus,comments.delete",
+      "risk": "write_sensitive",
+      "use": "Reply/moderate comments only after explicit operator approval."
+    },
+    {
+      "api": "youtube.data",
+      "coverage": "blocked_by_human_review",
+      "id": "channel_branding_update",
+      "method": "channels.update",
+      "risk": "write_sensitive",
+      "use": "Branding changes are too sensitive for unattended automation."
+    }
+  ],
+  "channel": {
+    "custom_url": "@wildbrief-e8o",
+    "id": "UCWrQoappAOOxsaQK-43MbdQ",
+    "made_for_kids": false,
+    "privacy_status": "public",
+    "published_at": "2024-05-08T11:58:22.022654Z",
+    "self_declared_made_for_kids": false,
+    "subscriber_count": 50,
+    "title": "Wild Brief",
+    "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
+    "video_count": 1,
+    "view_count": 1038
   },
   "coverage_score": 80,
+  "generated_at": "2026-06-14T22:41:16.454036+00:00",
+  "issues": [],
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
     "Run write operations only in publishing workflows; keep intelligence refresh read-only.",
     "Fail open for unavailable Analytics reports and record the exact missing capability."
   ],
-  "channel": {
-    "id": "UCWrQoappAOOxsaQK-43MbdQ",
-    "title": "Wild Brief",
-    "custom_url": "@wildbrief-e8o",
-    "published_at": "2024-05-08T11:58:22.022654Z",
-    "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
-    "subscriber_count": 50,
-    "view_count": 1038,
-    "video_count": 1,
-    "privacy_status": "public",
-    "made_for_kids": false,
-    "self_declared_made_for_kids": false
-  },
   "uploads_inventory": {
-    "uploads_checked": 1,
     "latest_uploads": [
       {
-        "video_id": "zrCj37bLcxI",
-        "title": "Wolves rely on tail position to survive",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnpyQ2ozN2JMY3hJ",
         "published_at": "2026-06-14T22:40:55Z",
-        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnpyQ2ozN2JMY3hJ"
+        "title": "Wolves read scent posts like a map",
+        "video_id": "zrCj37bLcxI"
       }
-    ]
+    ],
+    "uploads_checked": 1
   },
   "video_audit": {
-    "videos_checked": 1,
-    "total_views": 0,
-    "total_likes": 0,
-    "total_comments": 1,
     "private_or_unlisted": 0,
     "shorts_like": 1,
     "top_public_videos": [
       {
-        "video_id": "zrCj37bLcxI",
-        "title": "Wolves rely on tail position to survive",
-        "views": 0,
-        "likes": 0,
         "comments": 1,
+        "likes": 0,
         "privacy_status": "public",
-        "published_at": "2026-06-14T22:40:55Z"
+        "published_at": "2026-06-14T22:40:55Z",
+        "title": "Wolves read scent posts like a map",
+        "video_id": "zrCj37bLcxI",
+        "views": 0
       }
-    ]
+    ],
+    "total_comments": 1,
+    "total_likes": 0,
+    "total_views": 0,
+    "videos_checked": 1
   },
-  "capabilities": [
-    {
-      "id": "channel_profile",
-      "api": "youtube.data",
-      "method": "channels.list",
-      "coverage": "implemented",
-      "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
-      "risk": "read_only",
-      "last_run": "ok"
-    },
-    {
-      "id": "uploaded_video_inventory",
-      "api": "youtube.data",
-      "method": "playlistItems.list",
-      "coverage": "implemented",
-      "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
-      "risk": "read_only",
-      "last_run": "ok"
-    },
-    {
-      "id": "video_metadata_statistics",
-      "api": "youtube.data",
-      "method": "videos.list",
-      "coverage": "implemented",
-      "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
-      "risk": "read_only",
-      "last_run": "ok"
-    },
-    {
-      "id": "comment_threads",
-      "api": "youtube.data",
-      "method": "commentThreads.list",
-      "coverage": "implemented_elsewhere",
-      "use": "Audience questions, requested animals, sentiment and sequel prompts.",
-      "risk": "read_only"
-    },
-    {
-      "id": "video_upload",
-      "api": "youtube.data",
-      "method": "videos.insert",
-      "coverage": "implemented_elsewhere",
-      "use": "Publish generated Shorts.",
-      "risk": "write_high_quota"
-    },
-    {
-      "id": "thumbnail_upload",
-      "api": "youtube.data",
-      "method": "thumbnails.set",
-      "coverage": "implemented_elsewhere",
-      "use": "Upload custom thumbnail when YouTube permits it for the video type/account.",
-      "risk": "write_medium_quota"
-    },
-    {
-      "id": "playlist_management",
-      "api": "youtube.data",
-      "method": "playlists.list,playlistItems.insert",
-      "coverage": "planned_manual_gate",
-      "use": "Series packaging after winners are proven.",
-      "risk": "write_requires_review"
-    },
-    {
-      "id": "comment_replies_moderation",
-      "api": "youtube.data",
-      "method": "comments.insert,comments.setModerationStatus,comments.delete",
-      "coverage": "blocked_by_human_review",
-      "use": "Reply/moderate comments only after explicit operator approval.",
-      "risk": "write_sensitive"
-    },
-    {
-      "id": "channel_branding_update",
-      "api": "youtube.data",
-      "method": "channels.update",
-      "coverage": "blocked_by_human_review",
-      "use": "Branding changes are too sensitive for unattended automation.",
-      "risk": "write_sensitive"
-    }
-  ],
-  "analytics_reports": [
-    {
-      "id": "video_core",
-      "dimensions": "video",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
-      "sort": "-views",
-      "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "ok",
-      "rows": 0,
-      "error": ""
-    },
-    {
-      "id": "daily_channel",
-      "dimensions": "day",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
-      "sort": "day",
-      "use": "Daily pacing and anomaly detection.",
-      "status": "ok",
-      "rows": 15,
-      "error": ""
-    },
-    {
-      "id": "country",
-      "dimensions": "country",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
-      "sort": "-views",
-      "use": "Geo demand and publish timing hints.",
-      "status": "ok",
-      "rows": 43,
-      "error": ""
-    },
-    {
-      "id": "traffic_source",
-      "dimensions": "insightTrafficSourceType",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
-      "sort": "-views",
-      "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "ok",
-      "rows": 11,
-      "error": ""
-    },
-    {
-      "id": "device_type",
-      "dimensions": "deviceType",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
-      "sort": "-views",
-      "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "ok",
-      "rows": 4,
-      "error": ""
-    },
-    {
-      "id": "subscriber_status",
-      "dimensions": "subscribedStatus",
-      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
-      "sort": "-views",
-      "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "ok",
-      "rows": 2,
-      "error": ""
-    }
-  ],
-  "issues": []
+  "window": {
+    "end_date": "2026-06-14",
+    "start_date": "2026-05-18"
+  }
 }

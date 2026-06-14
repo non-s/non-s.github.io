@@ -10,7 +10,6 @@ from utils.curiosity_angles import build_curiosity_package
 from utils.editorial_guard import editorial_issues
 from utils.packaging import extract_action, extract_animal, extract_cue
 
-
 CATEGORY_HINTS = {
     "farm": ("duck", "duckling", "cow", "goat", "chicken", "horse", "pig", "sheep"),
     "cats": ("cat", "kitten", "feline"),
