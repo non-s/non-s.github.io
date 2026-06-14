@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-14T05:13:17.212939+00:00",
+  "generated_at": "2026-06-14T08:01:45.599225+00:00",
   "window": {
     "start_date": "2026-05-18",
     "end_date": "2026-06-14"
   },
-  "coverage_score": 80,
+  "coverage_score": 40,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,26 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 50,
     "view_count": 1023,
-    "video_count": 17,
+    "video_count": 19,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 17,
+    "uploads_checked": 19,
     "latest_uploads": [
+      {
+        "video_id": "TjxrhWRAnig",
+        "title": "Wolves read the moment from one tail lift",
+        "published_at": "2026-06-14T07:11:31Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLlRqeHJoV1JBbmln"
+      },
+      {
+        "video_id": "dJddPSVoOZQ",
+        "title": "Trees signal through root network",
+        "published_at": "2026-06-14T05:13:35Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLmRKZGRQU1ZvT1pR"
+      },
       {
         "video_id": "7m3JBmQrfNU",
         "title": "Plants signal through leaf movement",
@@ -132,12 +144,12 @@
     ]
   },
   "video_audit": {
-    "videos_checked": 17,
+    "videos_checked": 19,
     "total_views": 1037,
     "total_likes": 51,
-    "total_comments": 17,
+    "total_comments": 19,
     "private_or_unlisted": 0,
-    "shorts_like": 17,
+    "shorts_like": 19,
     "top_public_videos": [
       {
         "video_id": "-S9qKWvq4qc",
@@ -239,7 +251,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "uploaded_video_inventory",
@@ -248,7 +260,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "video_metadata_statistics",
@@ -257,7 +269,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "comment_threads",
@@ -315,9 +327,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "ok",
+      "status": "not_authorized",
       "rows": 0,
-      "error": ""
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "daily_channel",
@@ -325,9 +337,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "ok",
-      "rows": 14,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "country",
@@ -335,9 +347,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "ok",
-      "rows": 43,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "traffic_source",
@@ -345,9 +357,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "ok",
-      "rows": 11,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "device_type",
@@ -355,9 +367,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "ok",
-      "rows": 4,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "subscriber_status",
@@ -365,10 +377,12 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "ok",
-      "rows": 2,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     }
   ],
-  "issues": []
+  "issues": [
+    "youtube_analytics_scope_missing"
+  ]
 }
