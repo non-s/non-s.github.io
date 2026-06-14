@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-06-14T12:03:52.244770+00:00",
-  "pending": 18,
+  "generated_at": "2026-06-14T12:30:20.870933+00:00",
+  "pending": 17,
   "states": {
     "rewrite": 14,
-    "publish_ready": 4
+    "publish_ready": 3
   },
   "mechanism_clusters": {
-    "ear_signal": 6,
     "survival_cue": 6,
+    "ear_signal": 5,
     "cue_timing_read": 3,
     "call_signal": 1
   },
   "rights": {
-    "approved": 18
+    "approved": 17
   },
   "prune_summary": {
-    "pending_before": 22,
-    "pending_after": 18,
+    "pending_before": 21,
+    "pending_after": 17,
     "rejected": 4,
     "repair_needed": 4,
     "repaired": 3,
     "reasons": {
-      "objective_gate:low_decision_confidence": 22,
+      "objective_gate:low_decision_confidence": 20,
       "objective_gate:observe_before_scaling": 10,
       "queue_score_reject": 4,
       "template_cluster_limit:rely_to_survive": 3,
@@ -207,7 +207,7 @@
       "queue_prune": {
         "score": 100.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-14T12:03:52.241232+00:00",
+        "checked_at": "2026-06-14T12:30:20.868578+00:00",
         "template_cluster": "",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
@@ -507,456 +507,6 @@
       }
     },
     {
-      "id": "e1a38f060ce4a709",
-      "title": "Plants signal through leaf movement",
-      "category": "plants",
-      "publish_score": {
-        "score": 95.5,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 65,
-          "signals": {
-            "viral_potential": 66,
-            "visual_potential": 55,
-            "replay_potential": 100,
-            "comment_potential": 54,
-            "educational_potential": 71,
-            "emotional_potential": 44,
-            "novelty": 55
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 82,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 14,
-          "state": "clear",
-          "reasons": [
-            "weak_hook_pattern"
-          ],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 8,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "plants",
-        "story_format": "animal_intelligence",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 10.0,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.35,
-          "template_cluster": "",
-          "mechanism_cluster": "ear_signal"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "score": 95.5,
-        "state": "publish_ready",
-        "checked_at": "2026-06-14T12:03:52.240616+00:00",
-        "template_cluster": "",
-        "mechanism_cluster": "ear_signal",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ]
-      },
-      "queue_score": 95.5,
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "plants",
-        "subject": "plants",
-        "story_format": "animal_intelligence",
-        "viewer_promise": "See the plant detail that changes the whole scene.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "commands": []
-      },
-      "packaging": {
-        "score": 95,
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "risks": [],
-        "title_options": [
-          "Plants signal through leaf movement",
-          "Plants use leaf movement before they signal",
-          "This leaf movement gives plants away",
-          "Why plants signal after one leaf movement",
-          "Plants reveal the answer with leaf movement",
-          "The leaf movement that changes the moment",
-          "Plants make one leaf movement matter",
-          "Plants show the hidden payoff in seconds",
-          "Plants: watch this leaf movement",
-          "Watch plants after the leaf movement"
-        ],
-        "thumbnail_options": [
-          "LEAF MOVEMENT",
-          "LEAF MOVE",
-          "WATCH LEAF MOVE",
-          "PLANTS SIGNAL",
-          "LEAF MOVE MATTERS",
-          "LEAF MOVE PAYOFF",
-          "LEAF MOVE FIRST",
-          "LEAF MOVE REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "hook_options": [
-          "Plants reveal one visible signal",
-          "Watch the leaf movement; the payoff lands seconds later",
-          "Start with the leaf movement; it explains the next move",
-          "The leaf movement is the detail most people miss",
-          "Plants give away the answer through leaf movement"
-        ],
-        "selected_variant": {
-          "score": 71,
-          "title": "Plants signal through leaf movement",
-          "thumbnail_text": "LEAF MOVEMENT",
-          "hook": "Plants reveal one visible signal"
-        },
-        "top_variants": [
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVEMENT",
-            "hook": "Plants reveal one visible signal"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVEMENT",
-            "hook": "Watch the leaf movement; the payoff lands seconds later"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVEMENT",
-            "hook": "Start with the leaf movement; it explains the next move"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVE",
-            "hook": "Plants reveal one visible signal"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVE",
-            "hook": "Watch the leaf movement; the payoff lands seconds later"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "LEAF MOVE",
-            "hook": "Start with the leaf movement; it explains the next move"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "WATCH LEAF MOVE",
-            "hook": "Plants reveal one visible signal"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "WATCH LEAF MOVE",
-            "hook": "Watch the leaf movement; the payoff lands seconds later"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "WATCH LEAF MOVE",
-            "hook": "Start with the leaf movement; it explains the next move"
-          },
-          {
-            "score": 71,
-            "title": "Plants signal through leaf movement",
-            "thumbnail_text": "PLANTS SIGNAL",
-            "hook": "Plants reveal one visible signal"
-          }
-        ],
-        "retention": {
-          "score": 82,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 100,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "experiment": {
-          "mode": "exploit",
-          "explore_rate": 0.18,
-          "winners": {
-            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}",
-            "thumbnail_pattern": "",
-            "hook_pattern": "{subject} {subject} one {subject} {action}"
-          },
-          "winning_experiments": {
-            "format:fresh_variant": 45.58,
-            "hook:new_hook": 45.58,
-            "cta:specific_question": 45.58,
-            "thumbnail:new_thumbnail": 41.33,
-            "format:winner_inspired": 39.78
-          },
-          "sample_count": 21,
-          "assignment": {
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail",
-            "cta": "follow_for_more"
-          }
-        },
-        "series_identity": {
-          "series": "Watch The Cue",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature."
-        },
-        "pinned_comment": "Watch the leaf movement again. Tomorrow: another nature signal. What part of this feels most impossible?",
-        "community_prompt": "Which nature topic should Wild Brief explain next after plants?",
-        "series": "Watch The Cue",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "replay_prompt": "End by pointing back to the leaf movement, so viewers rewatch the plants clip.",
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "curiosity_gap": {
-          "hook": "These plants change right before the payoff.",
-          "source": "template",
-          "score": 78.0,
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ]
-        },
-        "swipe_risk": {
-          "score": 0,
-          "band": "low",
-          "reasons": [],
-          "fixes": []
-        },
-        "loop_plan": {
-          "callback_keyword": "plants",
-          "opening_line": "Plants reveal one visible signal",
-          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
-          "final_line": "Now the plants at the start make sense.",
-          "audio_crossfade_ms": 120,
-          "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.381,
-          "render_hints": {
-            "carry_keyword": "plants",
-            "subtle_audio_tail": true,
-            "avoid_hard_stop": true
-          }
-        },
-        "loop_score": 0.381,
-        "editorial_rulebook": {
-          "approved": true,
-          "score": 100.0,
-          "violations": [],
-          "notes": [],
-          "recommended_format": "hidden_network",
-          "recommended_duration_s": 24
-        },
-        "preflight_inputs": {
-          "first_frame_text": "LEAF MOVEMENT",
-          "first_frame_text_words": 2,
-          "hook": "Plants reveal one visible signal",
-          "hook_words": 5,
-          "first_2s_narration": "Plants reveal one visible signal Watch the leaf movement because that detail",
-          "caption_chars_per_second": 15.35,
-          "visual_motion_score": 0.76,
-          "contrast_score": 0.74,
-          "hook_specificity": 0.78,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.350000000000001,
-          "cta_count": 1,
-          "loop_score": 0.381
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast."
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "state": "approved",
-        "issues": []
-      }
-    },
-    {
       "id": "b0960cfb12495b2b",
       "title": "Bees rely on wing movement to survive",
       "category": "insects",
@@ -1104,7 +654,7 @@
       "queue_prune": {
         "score": 94.4,
         "state": "publish_ready",
-        "checked_at": "2026-06-14T12:03:52.232114+00:00",
+        "checked_at": "2026-06-14T12:30:20.858950+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -1550,7 +1100,7 @@
       "queue_prune": {
         "score": 91.7,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.243284+00:00",
+        "checked_at": "2026-06-14T12:30:20.867861+00:00",
         "template_cluster": "",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
@@ -1999,7 +1549,7 @@
       "queue_prune": {
         "score": 91.7,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.244622+00:00",
+        "checked_at": "2026-06-14T12:30:20.870803+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -2449,7 +1999,7 @@
       "queue_prune": {
         "score": 88.5,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.237949+00:00",
+        "checked_at": "2026-06-14T12:30:20.864144+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -2895,7 +2445,7 @@
       "queue_prune": {
         "score": 86.2,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.237102+00:00",
+        "checked_at": "2026-06-14T12:30:20.864775+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -3342,7 +2892,7 @@
       "queue_prune": {
         "score": 84.4,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.239254+00:00",
+        "checked_at": "2026-06-14T12:30:20.866077+00:00",
         "template_cluster": "",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
@@ -3794,7 +3344,7 @@
       "queue_prune": {
         "score": 83.7,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.243899+00:00",
+        "checked_at": "2026-06-14T12:30:20.870084+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -4243,7 +3793,7 @@
       "queue_prune": {
         "score": 81.8,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.239841+00:00",
+        "checked_at": "2026-06-14T12:30:20.866655+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -4690,7 +4240,7 @@
       "queue_prune": {
         "score": 79.7,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.230897+00:00",
+        "checked_at": "2026-06-14T12:30:20.857747+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": []
@@ -5132,7 +4682,7 @@
       "queue_prune": {
         "score": 79.6,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.232750+00:00",
+        "checked_at": "2026-06-14T12:30:20.859585+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -5584,7 +5134,7 @@
       "queue_prune": {
         "score": 79.4,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.234919+00:00",
+        "checked_at": "2026-06-14T12:30:20.861748+00:00",
         "template_cluster": "read_the_moment",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
@@ -6034,7 +5584,7 @@
       "queue_prune": {
         "score": 79.0,
         "state": "publish_ready",
-        "checked_at": "2026-06-14T12:03:52.235566+00:00",
+        "checked_at": "2026-06-14T12:30:20.862390+00:00",
         "template_cluster": "rely_to_survive",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
@@ -6482,7 +6032,7 @@
       "queue_prune": {
         "score": 74.0,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.236451+00:00",
+        "checked_at": "2026-06-14T12:30:20.863279+00:00",
         "template_cluster": "",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
@@ -6932,7 +6482,7 @@
       "queue_prune": {
         "score": 72.0,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.231504+00:00",
+        "checked_at": "2026-06-14T12:30:20.858342+00:00",
         "template_cluster": "",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": []
@@ -7379,7 +6929,7 @@
       "queue_prune": {
         "score": 61.1,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.242089+00:00",
+        "checked_at": "2026-06-14T12:30:20.869446+00:00",
         "template_cluster": "",
         "mechanism_cluster": "",
         "objective_reasons": [
@@ -7837,7 +7387,7 @@
       "queue_prune": {
         "score": 56.4,
         "state": "rewrite",
-        "checked_at": "2026-06-14T12:03:52.233592+00:00",
+        "checked_at": "2026-06-14T12:30:20.860432+00:00",
         "template_cluster": "",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
