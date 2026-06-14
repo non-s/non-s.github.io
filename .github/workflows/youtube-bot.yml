@@ -24,6 +24,10 @@ concurrency:
 jobs:
   generate-and-upload:
     name: "Gerar e publicar Shorts no YouTube"
+    # Publishing is intentionally paused while we evaluate an Internet Archive
+    # public-domain source strategy. Set repository variable
+    # YOUTUBE_PUBLISHING_ENABLED=1 to resume this job.
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

@@ -14,6 +14,10 @@ concurrency:
 jobs:
   refresh-queue:
     name: "Refresh YouTube Shorts queue"
+    # Queue refresh is paused with publishing so Pexels/Pixabay candidates do
+    # not repopulate the project while Archive.org sourcing is being evaluated.
+    # Set repository variable QUEUE_REFRESH_ENABLED=1 to resume this job.
+    if: ${{ vars.QUEUE_REFRESH_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

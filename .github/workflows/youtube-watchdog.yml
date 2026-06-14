@@ -15,6 +15,9 @@ concurrency:
 jobs:
   recover-missed-slot:
     name: "Recover missed YouTube publishing slot"
+    # Disabled while YouTube publishing is paused; otherwise the watchdog would
+    # dispatch recovery runs for intentionally skipped slots.
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
