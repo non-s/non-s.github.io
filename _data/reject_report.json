@@ -1,23 +1,23 @@
 {
-  "total": 316,
+  "total": 323,
   "reasons": {
     "copy_subject_mismatch": 240,
-    "queue_score_reject": 21,
+    "queue_score_reject": 25,
     "duplicate_title": 18,
     "duplicate_angle": 18,
+    "title_shape_weak": 16,
+    "title_needs_stronger_shape": 16,
+    "subject_not_clear": 16,
     "subject repeated inside 3-day cooldown": 16,
+    "missing_visible_cue": 15,
+    "script_subject_mismatch": 15,
     "story angle repeated inside 10-day cooldown": 13,
-    "title_shape_weak": 12,
-    "title_needs_stronger_shape": 12,
-    "subject_not_clear": 12,
-    "script_subject_mismatch": 12,
-    "missing_visible_cue": 11,
+    "subject_not_immediately_clear": 12,
+    "missing_visual_cue": 12,
+    "missing_action_word": 12,
     "off_topic_visual": 11,
-    "subject_not_immediately_clear": 8,
-    "missing_visual_cue": 8,
-    "missing_action_word": 8,
+    "script_length_risk": 10,
     "duplicate_script": 7,
-    "script_length_risk": 6,
     "script does not expose enough concrete visual detail": 6,
     "editorial score 34 is below 62": 5,
     "editorial score 36 is below 62": 5,
@@ -32,36 +32,12 @@
   },
   "stages": {
     "queue_quality": 240,
-    "queue_prune_final": 33,
-    "queue_repair": 21,
+    "queue_prune_final": 36,
+    "queue_repair": 25,
     "editor_in_chief": 16,
     "queue_prune": 6
   },
   "latest": [
-    {
-      "story_id": "17f93bd1fd66bd13",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Trees read the moment from one canopy shift",
-      "category": "forests",
-      "source_url": "https://www.pexels.com/video/majestic-forest-scene-with-ancient-trees-28830547/",
-      "recorded_at": "2026-06-14T12:04:17.306236+00:00",
-      "rewrite_attempted": false
-    },
-    {
-      "story_id": "044f781f8d21d65c",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Geology signals through rock layers",
-      "category": "geology",
-      "source_url": "https://www.pexels.com/video/exploring-a-narrow-rocky-canyon-passage-37497803/",
-      "recorded_at": "2026-06-14T12:04:17.308635+00:00",
-      "rewrite_attempted": false
-    },
     {
       "story_id": "27364e65ce486e95",
       "stage": "queue_quality",
@@ -138,6 +114,26 @@
       "category": "primates",
       "source_url": "https://www.pexels.com/video/a-monkey-eating-cookies-from-a-plastic-bag-16025651/",
       "recorded_at": "2026-06-14T12:29:04.061396+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "fc11fccf4c0ea014",
+      "stage": "queue_repair",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "missing_visual_cue",
+        "script_length_risk",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "title": "Nocturnal Animals use first move before they move",
+      "category": "nocturnal",
+      "source_url": "https://www.pexels.com/video/colorful-flames-dancing-in-a-cozy-campfire-37885862/",
+      "recorded_at": "2026-06-14T12:29:04.064268+00:00",
       "rewrite_attempted": false
     },
     {
@@ -350,6 +346,18 @@
       "category": "birds",
       "source_url": "https://www.pexels.com/video/brown-rock-chat-20409688/",
       "recorded_at": "2026-06-14T13:17:38.551092+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "eb89fbef70d3a832",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "script_subject_mismatch"
+      ],
+      "title": "Forests signal through leaf movement",
+      "category": "forests",
+      "source_url": "https://www.pexels.com/video/gorillas-resting-in-autumn-forest-scene-35247061/",
+      "recorded_at": "2026-06-14T14:31:09.778750+00:00",
       "rewrite_attempted": false
     }
   ]
