@@ -134,7 +134,9 @@ def _best_frame_from_url(url: str, tmp_dir: Path, video_id: str) -> tuple[Path |
         candidates.append({"path": str(frame), "timestamp": ts, **score})
     if not candidates:
         return None, {"checked": False, "reason": "no_remote_frames", "candidates": []}
-    candidates.sort(key=lambda item: (int(item.get("score", 0) or 0), float(item.get("timestamp", 0) or 0)), reverse=True)
+    candidates.sort(
+        key=lambda item: (int(item.get("score", 0) or 0), float(item.get("timestamp", 0) or 0)), reverse=True
+    )
     best = candidates[0]
     return Path(str(best["path"])), {
         "checked": True,

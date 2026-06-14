@@ -65,6 +65,9 @@ def _eligible_stories(queue: dict) -> list[dict]:
         queue_prune = story.get("queue_prune") or {}
         if has_prune_state and queue_prune.get("state") != "publish_ready":
             continue
+        editorial = story.get("editorial") or {}
+        if editorial and editorial.get("approved") is not True:
+            continue
         publish = story.get("publish_score") or {}
         if publish and (publish.get("approved") is not True or publish.get("state") != "publish_ready"):
             continue
@@ -162,30 +165,31 @@ def evaluate_publish_window(
     elif not is_active_slot(current, schedule, env):
         decision = "skip_outside_slot"
         reasons.append("outside_recommended_slot")
-    else:
-        if active_label and active_label != current_label:
+
+    if decision == "publish":
+        if not manual and active_label and active_label != current_label:
             reasons.append("delayed_slot_recovery")
         uploaded_for_slot = duplicate_slot_uploaded(slot_key, root / UPLOAD_INTENTS_FILE)
         if uploaded_for_slot:
             decision = "skip_slot_already_uploaded"
             reasons.append("slot_already_uploaded")
-        if decision == "publish":
-            stories = _eligible_stories(_read_json(queue_file, {}))
-            if not stories:
-                decision = "skip_no_eligible_story"
-                reasons.append("no_eligible_story")
-            else:
-                top_story, top_score = _best_candidate(stories)
-                publish_score = float(top_score.get("score") or 0)
-                opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
-                quality_reasons: list[str] = []
-                if publish_score < flags["min_slot_publish_score"]:
-                    quality_reasons.append("publish_score_below_threshold")
-                if opportunity_score < flags["min_queue_opportunity_score"]:
-                    quality_reasons.append("opportunity_score_below_threshold")
-                if quality_reasons:
-                    decision = "skip_low_queue_quality"
-                    reasons.extend(quality_reasons)
+    if decision == "publish":
+        stories = _eligible_stories(_read_json(queue_file, {}))
+        if not stories:
+            decision = "skip_no_eligible_story"
+            reasons.append("no_eligible_story")
+        else:
+            top_story, top_score = _best_candidate(stories)
+            publish_score = float(top_score.get("score") or 0)
+            opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
+            quality_reasons: list[str] = []
+            if publish_score < flags["min_slot_publish_score"]:
+                quality_reasons.append("publish_score_below_threshold")
+            if opportunity_score < flags["min_queue_opportunity_score"]:
+                quality_reasons.append("opportunity_score_below_threshold")
+            if quality_reasons:
+                decision = "skip_low_queue_quality"
+                reasons.extend(quality_reasons)
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
         stories = _eligible_stories(_read_json(queue_file, {}))

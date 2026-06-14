@@ -11,6 +11,7 @@ from pathlib import Path
 import fetch_animals
 from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
 from utils.claim_risk import evaluate_claim_risk
+from utils.editorial import review as editorial_review
 from utils.fact_ledger import duplicate_angle_ids
 from utils.local_rewriter import rescue_story
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
@@ -274,6 +275,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
     brain = creator_premortem(packaged)
     rights = audit_rights(packaged)
     editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
+    editor = editorial_review(packaged)
     pkg = packaged.get("packaging") or {}
     repaired = False
     repair_reasons: list[str] = []
@@ -302,9 +304,27 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
             brain = creator_premortem(packaged)
             rights = audit_rights(packaged)
             editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
+            editor = editorial_review(packaged)
             pkg = packaged.get("packaging") or {}
             brain_risks = [str(risk) for risk in (brain.get("risks") or [])]
             packaging_risks = [str(risk) for risk in (pkg.get("risks") or [])]
+    editor_risks = [f"editor_in_chief:{reason}" for reason in editor.reasons]
+    if not editor.approved and editor.state == "needs_ai_rewrite":
+        rescue_reasons = editor_risks or [f"editor_in_chief:{editor.state}"]
+        rescued, applied = rescue_story(packaged, rescue_reasons)
+        if applied:
+            repaired = True
+            repair_reasons = list(dict.fromkeys(repair_reasons + rescue_reasons))
+            packaged = package_story(rescued)
+            publish = score_story(packaged, analytics_strategy=analytics_strategy)
+            brain = creator_premortem(packaged)
+            rights = audit_rights(packaged)
+            editorial = publish.get("editorial_guard") or {"approved": True, "issues": []}
+            editor = editorial_review(packaged)
+            pkg = packaged.get("packaging") or {}
+            brain_risks = [str(risk) for risk in (brain.get("risks") or [])]
+            packaging_risks = [str(risk) for risk in (pkg.get("risks") or [])]
+            editor_risks = [f"editor_in_chief:{reason}" for reason in editor.reasons]
     penalty = 0
     if not rights.get("approved"):
         penalty += 30
@@ -314,6 +334,13 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         penalty += 40 if publish.get("state") == "reject" else 22
     if not editorial.get("approved", True):
         penalty += 35
+    if not editor.approved:
+        if editor.state == "discard":
+            penalty += 40
+        elif editor.state == "cooldown_subject":
+            penalty += 28
+        else:
+            penalty += 22
     if brain.get("state") == "do_not_publish":
         penalty += 35
     elif brain.get("state") == "rewrite_before_publish":
@@ -339,6 +366,7 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         "packaging": pkg,
         "rights_audit": rights,
         "editorial_guard": editorial,
+        "editorial": editor.to_dict(),
         "repair": {
             "attempted": bool(repair_reasons),
             "applied": repaired,
@@ -522,11 +550,22 @@ def prune_queue(
         story["publish_score"] = item["publish_score"]
         story["youtube_brain"] = item["youtube_brain"]
         story["packaging"] = item["packaging"]
+        editor = item.get("editorial") or {"approved": True, "state": "publish_now", "reasons": []}
+        story["editorial"] = editor
+        if editor.get("series"):
+            story["series"] = editor["series"]
         story["queue_repair"] = item["repair"]
         effective_state = item["state"]
         effective_score = item["score"]
         gate = (item["publish_score"] or {}).get("objective_gate") or {}
         objective_reasons = [f"objective_gate:{reason}" for reason in (gate.get("reasons") or [])]
+        if editor and not editor.get("approved", False):
+            editor_reasons = [f"editor_in_chief:{reason}" for reason in (editor.get("reasons") or [])]
+            if not editor_reasons:
+                editor_reasons = [f"editor_in_chief:{editor.get('state') or 'not_approved'}"]
+            objective_reasons.extend(editor_reasons)
+            effective_state = "reject" if editor.get("state") == "discard" else "rewrite"
+            effective_score = max(0.0, float(effective_score) - 8.0)
         if objective_reasons:
             reasons.update(objective_reasons)
         cluster = title_template_cluster(str(story.get("seo_title") or story.get("title") or ""))

@@ -36,9 +36,11 @@ def build_dry_run(data: dict) -> dict:
             from utils.publish_score import score_story
 
             publish = score_story(story)
+        editorial = story.get("editorial") or {}
         queue_ready = queue_prune.get("state") == "publish_ready"
         if (
             queue_ready
+            and editorial.get("approved") is True
             and rights.get("approved") is True
             and publish.get("approved") is True
             and publish.get("state") == "publish_ready"

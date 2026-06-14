@@ -1,4 +1,13 @@
+import pytest
+
+from utils import editorial
 from utils.queue_pruner import production_quality_issues, prune_queue, quality_issues
+
+
+@pytest.fixture(autouse=True)
+def no_recent_editorial_memory(monkeypatch):
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
+    monkeypatch.setattr(editorial.channel_memory, "recent_angle_repeat", lambda story, days: False)
 
 
 def _story(idx="1", **overrides):
@@ -175,6 +184,67 @@ def test_prune_queue_repairs_publish_minded_brain_risks_before_ready():
     assert not (kept[0]["youtube_brain"].get("risks") or [])
     assert kept[0]["queue_prune"]["state"] == "publish_ready"
     assert summary["repaired"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_keeps_editorial_cooldown_out_of_publish_ready(monkeypatch):
+    class FakeEditorialReview:
+        approved = False
+        score = 61
+        state = "cooldown_subject"
+        series = "Tiny Worlds"
+        subject = "bee"
+        reasons = (
+            "subject repeated inside 3-day cooldown",
+            "editorial score 61 is below 62",
+        )
+
+        def to_dict(self):
+            return {
+                "approved": self.approved,
+                "score": self.score,
+                "state": self.state,
+                "series": self.series,
+                "subject": self.subject,
+                "humanity": {"score": 72},
+                "reasons": list(self.reasons),
+            }
+
+    monkeypatch.setattr("utils.queue_pruner.editorial_review", lambda story: FakeEditorialReview())
+    monkeypatch.setattr(
+        "utils.queue_pruner.score_story",
+        lambda story, analytics_strategy=None: {
+            "approved": True,
+            "state": "publish_ready",
+            "score": 95,
+            "editorial_guard": {"approved": True, "issues": []},
+        },
+    )
+    monkeypatch.setattr("utils.queue_pruner.creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr("utils.queue_pruner.audit_rights", lambda story: {"approved": True, "reasons": []})
+    story = _story(
+        "cooldown",
+        title="Bees show the wing beat before the payoff",
+        seo_title="Bees show the wing beat before the payoff",
+        hook="Bees show the wing beat before the payoff.",
+        script=(
+            "Bees show the wing beat before the payoff. Watch the wing beat first, "
+            "because the vibration changes how the nearby bees react."
+        ),
+        thumbnail_text="WING BEAT",
+        category="insects",
+        yt_tags=["bees", "wing beat", "insects"],
+        source_url="https://www.pexels.com/video/bee-on-flower/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [story]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert len(kept) == 1
+    assert kept[0]["queue_prune"]["state"] == "rewrite"
+    assert kept[0]["editorial"]["approved"] is False
+    assert "editor_in_chief:subject repeated inside 3-day cooldown" in kept[0]["queue_prune"]["objective_reasons"]
+    assert summary["pending_after"] == 1
     assert rejected == []
 
 

@@ -13,10 +13,16 @@ def _json(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
+def _publish_ready(story: dict) -> bool:
+    return (story.get("queue_prune") or {}).get("state") == "publish_ready" and (story.get("editorial") or {}).get(
+        "approved"
+    ) is True
+
+
 def test_publish_ready_queue_matches_operational_reports():
     queue = _json("_data/stories_queue.json")
     pending = [story for story in queue.get("stories") or [] if not story.get("consumed")]
-    ready = [story for story in pending if (story.get("queue_prune") or {}).get("state") == "publish_ready"]
+    ready = [story for story in pending if _publish_ready(story)]
     queue_audit = _json("_data/queue_audit.json")
     dry_run = _json("_data/dry_run_publish.json")
     next_shorts = _json("_data/next_shorts.json")
@@ -36,9 +42,10 @@ def test_publish_ready_queue_matches_operational_reports():
 def test_publish_ready_queue_has_no_known_copy_or_score_risks():
     queue = _json("_data/stories_queue.json")
     pending = [story for story in queue.get("stories") or [] if not story.get("consumed")]
-    ready = [story for story in pending if (story.get("queue_prune") or {}).get("state") == "publish_ready"]
+    ready = [story for story in pending if _publish_ready(story)]
 
     for story in ready:
+        assert (story.get("editorial") or {}).get("approved") is True
         assert editorial_issues(story) == []
         assert production_quality_issues(story) == []
         assert not ((story.get("youtube_brain") or {}).get("risks") or [])
@@ -50,7 +57,7 @@ def test_publish_ready_queue_respects_mechanism_cluster_limit():
     objective = load_channel_objective(ROOT / "_data" / "channel_objective.json")
     limit = int((objective.get("targets") or {}).get("max_publish_ready_mechanism_cluster") or 2)
     pending = [story for story in queue.get("stories") or [] if not story.get("consumed")]
-    ready = [story for story in pending if (story.get("queue_prune") or {}).get("state") == "publish_ready"]
+    ready = [story for story in pending if _publish_ready(story)]
     clusters = Counter(
         (story.get("queue_prune") or {}).get("mechanism_cluster")
         for story in ready

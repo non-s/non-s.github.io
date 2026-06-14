@@ -111,9 +111,7 @@ AXES: tuple[Axis, ...] = (
     ),
     Axis(
         name="thumbnail_style",
-        variants=(
-            "frame_first_side_caption",
-        ),
+        variants=("frame_first_side_caption",),
         description="Locked thumbnail format: real footage frame, large side cue, small Wild Brief brand.",
     ),
     Axis(

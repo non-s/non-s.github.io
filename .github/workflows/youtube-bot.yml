@@ -120,42 +120,39 @@ jobs:
       - name: "Garantir fila minima"
         if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
-          pending_count() {
-            python - <<'PY'
-          import json
-          from pathlib import Path
-
-          path = Path("_data/stories_queue.json")
-          if not path.exists():
-              print(0)
-              raise SystemExit
-          data = json.loads(path.read_text(encoding="utf-8"))
-          print(sum(1 for story in data.get("stories", []) if not story.get("consumed")))
-          PY
+          ready_count() {
+            python scripts/queue_ready_count.py --refresh --field publish_ready
           }
-          target="${QUEUE_TARGET_PENDING:-24}"
-          max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-3}"
-          pending="$(pending_count)"
-          echo "Pending queue before publish backfill: ${pending}/${target}"
+          target="${QUEUE_TARGET_PUBLISH_READY:-6}"
+          max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-6}"
+          base_pending_target="${QUEUE_TARGET_PENDING:-24}"
+          pending_batch="${QUEUE_BACKFILL_PENDING_BATCH:-12}"
+          ready="$(ready_count)"
+          echo "Publish-ready queue before publish backfill: ${ready}/${target}"
           attempt=1
-          while [ "${pending}" -lt "${target}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
-            echo "Queue is below target; backfill attempt ${attempt}/${max_attempts}."
+          while [ "${ready}" -lt "${target}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
+            echo "Publish-ready queue is below target; backfill attempt ${attempt}/${max_attempts}."
+            export QUEUE_TARGET_PENDING=$((base_pending_target + (attempt - 1) * pending_batch))
+            echo "Raw pending target for this attempt: ${QUEUE_TARGET_PENDING}"
             python fetch_animals.py
             python scripts/apply_topic_freshness.py || true
-            pending="$(pending_count)"
-            echo "Pending queue after backfill attempt ${attempt}: ${pending}/${target}"
+            ready="$(ready_count)"
+            echo "Publish-ready queue after backfill attempt ${attempt}: ${ready}/${target}"
             attempt=$((attempt + 1))
           done
-          if [ "${pending}" -lt "${target}" ]; then
-            echo "::warning::Publish queue still below target after ${max_attempts} attempt(s): ${pending}/${target}"
+          python scripts/queue_ready_count.py --json
+          if [ "${ready}" -lt "${target}" ]; then
+            echo "::warning::Publish-ready queue still below target after ${max_attempts} attempt(s): ${ready}/${target}"
           else
-            echo "Queue has enough pending candidates: ${pending}/${target}"
+            echo "Queue has enough publish-ready candidates: ${ready}/${target}"
           fi
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '6' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}
-          QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '3' }}
+          QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}
+          QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '6' }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}

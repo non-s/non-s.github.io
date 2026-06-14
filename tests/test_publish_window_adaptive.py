@@ -52,6 +52,21 @@ def test_publish_window_skips_empty_queue(tmp_path):
     assert "no_eligible_story" in decision["reasons"]
 
 
+def test_publish_window_still_requires_candidate_when_adaptive_cadence_is_disabled(tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(tmp_path / "_data" / "stories_queue.json", {"stories": []})
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "0"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_no_eligible_story"
+    assert decision["reasons"] == ["adaptive_cadence_disabled", "no_eligible_story"]
+
+
 def test_publish_window_skips_low_quality_candidate(monkeypatch, tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(tmp_path / "_data" / "stories_queue.json", {"stories": [{"id": "weak", "title": "Weak"}]})
@@ -98,6 +113,50 @@ def test_publish_window_ignores_queue_prune_rewrite_candidate(monkeypatch, tmp_p
         publish_window,
         "score_story",
         lambda story: {"score": 90 if story["id"] == "rewrite" else 80, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "ready"
+
+
+def test_publish_window_ignores_editor_rejected_candidate(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "cooldown",
+                    "title": "Bees show the wing beat before the payoff",
+                    "queue_prune": {"state": "publish_ready"},
+                    "editorial": {"approved": False, "state": "cooldown_subject"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                },
+                {
+                    "id": "ready",
+                    "title": "Octopuses vanish against coral in seconds",
+                    "queue_prune": {"state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                },
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {
+            "score": 95 if story["id"] == "cooldown" else 80,
+            "opportunity": {"score": 80},
+            "approved": True,
+        },
     )
 
     decision = publish_window.evaluate_publish_window(
@@ -304,7 +363,7 @@ def test_watchdog_dispatch_does_not_bypass_cadence(tmp_path):
     assert decision["decision"] == "skip_outside_slot"
 
 
-def test_publish_window_legacy_mode_does_not_block_empty_queue(tmp_path):
+def test_publish_window_legacy_mode_still_skips_empty_queue(tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,
         now=datetime(2026, 6, 11, 19, 23, tzinfo=timezone.utc),
@@ -312,11 +371,11 @@ def test_publish_window_legacy_mode_does_not_block_empty_queue(tmp_path):
         decisions_path=tmp_path / "decisions.jsonl",
     )
 
-    assert decision["decision"] == "publish"
-    assert "adaptive_cadence_disabled" in decision["reasons"]
+    assert decision["decision"] == "skip_no_eligible_story"
+    assert decision["reasons"] == ["adaptive_cadence_disabled", "no_eligible_story"]
 
 
-def test_publish_window_manual_dispatch_bypasses_adaptive_skip(tmp_path):
+def test_publish_window_manual_dispatch_bypasses_adaptive_skip_but_not_empty_queue(tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,
         now=datetime(2026, 6, 11, 19, 23, tzinfo=timezone.utc),
@@ -324,5 +383,5 @@ def test_publish_window_manual_dispatch_bypasses_adaptive_skip(tmp_path):
         decisions_path=tmp_path / "decisions.jsonl",
     )
 
-    assert decision["decision"] == "publish"
-    assert "manual_dispatch" in decision["reasons"]
+    assert decision["decision"] == "skip_no_eligible_story"
+    assert decision["reasons"] == ["manual_dispatch", "no_eligible_story"]

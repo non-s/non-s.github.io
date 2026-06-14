@@ -53,6 +53,27 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Raise only when prebuilding inventory.",
     ),
     FeatureFlag(
+        "PUBLISH_BACKFILL_QUEUE_TARGET",
+        "24",
+        "publishing",
+        "Raw pending-story target used by publish-workflow emergency backfill.",
+        "Lower if discovery approaches timeout.",
+    ),
+    FeatureFlag(
+        "PUBLISH_BACKFILL_READY_TARGET",
+        "6",
+        "publishing",
+        "Minimum editor-approved publish-ready candidates before a publish attempt.",
+        "Lower only during provider outages.",
+    ),
+    FeatureFlag(
+        "PUBLISH_BACKFILL_PENDING_BATCH",
+        "12",
+        "publishing",
+        "Extra raw pending target added on each emergency backfill attempt.",
+        "Lower if the publish workflow approaches timeout.",
+    ),
+    FeatureFlag(
         "YOUTUBE_DESCRIPTION_MODE",
         "empty",
         "publishing",

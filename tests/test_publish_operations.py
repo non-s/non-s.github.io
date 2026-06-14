@@ -496,7 +496,27 @@ def test_post24_review_suggests_title_repairs():
     assert review["items"][1]["suggested_titles"] == ["Tigers stay silent before they strike"]
 
 
-def test_dry_run_publish_uses_autonomy_priority_before_queue_score():
+def test_dry_run_publish_uses_autonomy_priority_before_queue_score(monkeypatch):
+    class ApprovedEditorialReview:
+        approved = True
+        score = 90
+        state = "publish_now"
+        series = "Ocean Mysteries"
+        subject = "whale"
+        reasons = ()
+
+        def to_dict(self):
+            return {
+                "approved": self.approved,
+                "score": self.score,
+                "state": self.state,
+                "series": self.series,
+                "subject": self.subject,
+                "humanity": {"score": 80},
+                "reasons": [],
+            }
+
+    monkeypatch.setattr("utils.queue_pruner.editorial_review", lambda story: ApprovedEditorialReview())
     base = {
         "seo_title": "Whales use tail slaps to warn the group",
         "title": "Whales use tail slaps to warn the group",
@@ -561,6 +581,7 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
                 "source_license": "Pexels License",
                 "category": "farm",
                 "queue_prune": {"state": "publish_ready", "score": 100},
+                "editorial": {"approved": True, "state": "publish_now"},
                 "autonomy": {"priority": 130},
                 "score": 9,
             }

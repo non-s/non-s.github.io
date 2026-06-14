@@ -18,8 +18,12 @@ def test_workflows_parse_and_include_growth_steps():
     assert "skip_quota_guard" in youtube_workflow
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
-    assert "PUBLISH_BACKFILL_QUEUE_TARGET || '24'" in youtube_workflow
-    assert 'target="${QUEUE_TARGET_PENDING:-24}"' in youtube_workflow
+    assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
+    assert "PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '6'" in youtube_workflow
+    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
+    assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}" in youtube_workflow
+    assert "QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}" in youtube_workflow
+    assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
     assert "REQUIRE_SHORT_ON_PUBLISH" in youtube_workflow
     assert "REQUIRE_UPLOAD_ON_PUBLISH" in youtube_workflow
@@ -31,7 +35,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "jsonl_merge_paths" in youtube_workflow
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "_data/rejected_queue.jsonl" in youtube_workflow
-    assert 'while [ "${pending}" -lt "${target}" ]' in youtube_workflow
+    assert 'while [ "${ready}" -lt "${target}" ]' in youtube_workflow
     assert "if: always() && steps.publish_window.outputs.should_publish == 'true'" in youtube_workflow
     assert 'cron: "20 * * * *"' in youtube_workflow
     assert 'cron: "40 * * * *"' in youtube_workflow

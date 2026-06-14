@@ -279,6 +279,9 @@ def main() -> int:
         queue_state = queue_prune.get("state")
         if queue_state and queue_state != "publish_ready":
             continue
+        editorial = story.get("editorial") or {}
+        if editorial.get("approved") is not True:
+            continue
         score = score_story(story)
         if score.get("approved") is True and score.get("state") == "publish_ready":
             lane_adjustment = mix_adjustment(story)
