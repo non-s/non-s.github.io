@@ -1,21 +1,25 @@
 {
-  "generated_at": "2026-06-14T18:59:33.889575+00:00",
-  "success_score": 32.6,
+  "generated_at": "2026-06-14T19:04:33.251008+00:00",
+  "success_score": 72.6,
   "state": "growth_building",
   "retention": {
     "target_floor": 62.0,
     "target_stretch": 70.0,
-    "average_retention": 0.0,
-    "gap_to_floor": 62.0,
-    "state": "needs_retention_work",
+    "average_retention": 66.73,
+    "gap_to_floor": 0.0,
+    "state": "scale",
     "below_floor_count": 0,
-    "scale_categories": [],
+    "scale_categories": [
+      {
+        "category": "cats",
+        "retention": 66.73
+      }
+    ],
     "watch_categories": [],
     "recovery_categories": [],
     "phrase_pressure": [],
     "commands": [
-      "Rewrite the first 2 seconds around the visible animal cue before publishing.",
-      "Keep one animal, one surprise, one payoff; remove second facts from weak scripts."
+      "Scale the categories already above 62% retention before adding new experiments."
     ]
   },
   "studio_reach": {
@@ -36,17 +40,13 @@
     "diagnosis": "Stayed-to-watch is 31.8%, 8.2 points below the operating floor."
   },
   "subscriber_conversion": {
-    "views": 1042,
-    "subscribers_gained": 0,
-    "subs_per_1000_views": 0.0,
+    "views": 1047,
+    "subscribers_gained": 4,
+    "subs_per_1000_views": 3.82,
     "target_subs_per_1000": 1.5,
-    "gap_to_target": 1.5,
-    "state": "needs_conversion_work",
-    "commands": [
-      "Use a soft channel promise CTA only after the payoff, never before it.",
-      "Connect the CTA to the viewer identity: follow for one animal signal a day.",
-      "Apply the CTA only to strong candidates so weak videos do not waste the close."
-    ]
+    "gap_to_target": 0.0,
+    "state": "strong",
+    "commands": []
   },
   "audience_recurrence": {
     "source": "operator_baseline",
@@ -68,7 +68,7 @@
   },
   "audience_loop": {
     "state": "active",
-    "comments_sampled": 21,
+    "comments_sampled": 22,
     "requested_animals": [],
     "prompts": [
       "Answer this viewer question: Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
@@ -82,39 +82,31 @@
     ]
   },
   "first_24h": {
-    "state": "monitoring",
+    "state": "winner_found",
     "winner_rules": [
       "If retention is above 62% and growth beats 180, make a sequel before chasing a new topic.",
       "If views are high but retention is below 62%, remake the hook instead of copying the topic.",
       "If both views and retention are low, retire the angle for 14 days."
     ],
-    "winners": [],
-    "rework": [],
-    "watch": [
+    "winners": [
       {
         "title": "Cats read the moment from one paw position",
         "video_id": "-S9qKWvq4qc",
         "views": 1001,
-        "views_per_hour": 25.391,
-        "growth_score": 207.691,
-        "retention": 0.0,
-        "retention_ready": false
-      },
-      {
-        "title": "Earth systems signal through cloud pattern",
-        "video_id": "yaYnOP50tnQ",
-        "views": 1,
-        "views_per_hour": 0.193,
-        "growth_score": 201.208,
-        "retention": 0.0,
-        "retention_ready": false
-      },
+        "views_per_hour": 24.14,
+        "growth_score": 340.242,
+        "retention": 66.73,
+        "retention_ready": true
+      }
+    ],
+    "rework": [],
+    "watch": [
       {
         "title": "Wolves read the moment from one tail lift",
         "video_id": "TjxrhWRAnig",
         "views": 1,
-        "views_per_hour": 0.102,
-        "growth_score": 200.662,
+        "views_per_hour": 0.084,
+        "growth_score": 200.554,
         "retention": 0.0,
         "retention_ready": false
       },
@@ -122,8 +114,8 @@
         "title": "Trees signal through root network",
         "video_id": "dJddPSVoOZQ",
         "views": 1,
-        "views_per_hour": 0.085,
-        "growth_score": 200.56,
+        "views_per_hour": 0.072,
+        "growth_score": 200.482,
         "retention": 0.0,
         "retention_ready": false
       },
@@ -131,8 +123,8 @@
         "title": "Horses read the moment from one hoof movement",
         "video_id": "TrnecJmi_y8",
         "views": 1,
-        "views_per_hour": 0.058,
-        "growth_score": 200.398,
+        "views_per_hour": 0.051,
+        "growth_score": 200.356,
         "retention": 0.0,
         "retention_ready": false
       },
@@ -140,8 +132,26 @@
         "title": "Goats read the moment from one hoof movement",
         "video_id": "RP9LdEKIoRI",
         "views": 1,
-        "views_per_hour": 0.054,
-        "growth_score": 200.374,
+        "views_per_hour": 0.048,
+        "growth_score": 200.338,
+        "retention": 0.0,
+        "retention_ready": false
+      },
+      {
+        "title": "Mushrooms signal through mycelium network",
+        "video_id": "1GREr9qj7DY",
+        "views": 1,
+        "views_per_hour": 0.044,
+        "growth_score": 200.314,
+        "retention": 0.0,
+        "retention_ready": false
+      },
+      {
+        "title": "Cows read the moment from one hoof movement",
+        "video_id": "lFPOgYER4vg",
+        "views": 1,
+        "views_per_hour": 0.04,
+        "growth_score": 200.29,
         "retention": 0.0,
         "retention_ready": false
       }
@@ -174,7 +184,7 @@
           "dogs"
         ],
         "promise": "home-animal behavior with stricter retention gates",
-        "priority_score": 207.691,
+        "priority_score": 340.242,
         "state": "active"
       },
       {
@@ -183,7 +193,7 @@
           "farm"
         ],
         "promise": "smart behavior in familiar animals",
-        "priority_score": 200.362,
+        "priority_score": 200.328,
         "state": "active"
       },
       {
@@ -192,7 +202,7 @@
           "wildlife"
         ],
         "promise": "body features that look impossible",
-        "priority_score": 157.576,
+        "priority_score": 150.513,
         "state": "active"
       },
       {
@@ -201,7 +211,7 @@
           "birds"
         ],
         "promise": "bird senses, memory and navigation",
-        "priority_score": 100.472,
+        "priority_score": 100.448,
         "state": "active"
       },
       {
@@ -210,7 +220,7 @@
           "ocean"
         ],
         "promise": "underwater behavior viewers can decode",
-        "priority_score": 83.885,
+        "priority_score": 83.861,
         "state": "active"
       }
     ],
@@ -222,10 +232,10 @@
   },
   "thirty_day_review": {
     "state": "baseline_building",
-    "shorts_tracked": 21,
+    "shorts_tracked": 22,
     "target_sample": 60,
-    "tracked_views": 1042,
-    "average_retention": 0.0,
+    "tracked_views": 1047,
+    "average_retention": 66.73,
     "review_questions": [
       "Which category creates both views and retention?",
       "Which format converts subscribers?",
@@ -234,16 +244,16 @@
     ]
   },
   "next_actions": [
-    "Rewrite the first 2 seconds around the visible animal cue before publishing.",
-    "Keep one animal, one surprise, one payoff; remove second facts from weak scripts.",
+    "Scale the categories already above 62% retention before adding new experiments.",
     "Rewrite frame zero and the first spoken line around animal + visible cue + payoff.",
     "Reject packages with slow payoff, vague first-frame text, or medium/high swipe risk.",
     "Use Studio Reach exports to replace this baseline with per-video stayed-to-watch data.",
-    "Use a soft channel promise CTA only after the payoff, never before it.",
-    "Connect the CTA to the viewer identity: follow for one animal signal a day.",
-    "Apply the CTA only to strong candidates so weak videos do not waste the close.",
     "Put the same channel promise after strong payoffs: Follow for one animal signal a day.",
-    "Publish recognizable lanes and sequels so new viewers know what returns tomorrow."
+    "Publish recognizable lanes and sequels so new viewers know what returns tomorrow.",
+    "Treat a video as a full winner only when it drives retention plus subscribers, comments, or return signals.",
+    "Turn repeated viewer questions into the next queue refresh.",
+    "Create sequels for first-day winners before broad discovery.",
+    "Name each new script internally by series so learning compounds."
   ],
   "objective": {
     "name": "Turn Shorts Feed discovery into retained viewers, subscribers, and recurring audience.",
