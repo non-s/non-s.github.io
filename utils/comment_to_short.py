@@ -6,8 +6,8 @@ import hashlib
 import re
 from datetime import datetime, timezone
 
-from utils.editorial_guard import editorial_issues
 from utils.curiosity_angles import build_curiosity_package
+from utils.editorial_guard import editorial_issues
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
 from utils.publish_score import score_story
 from utils.youtube_brain import creator_premortem
