@@ -1,72 +1,81 @@
 {
-  "generated_at": "2026-06-14T18:57:31.928366+00:00",
-  "pending": 16,
+  "generated_at": "2026-06-14T18:59:49.659933+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 16
+    "rewrite": 15,
+    "publish_ready": 3
   },
   "mechanism_clusters": {
     "cue_timing_read": 7,
-    "ear_signal": 4,
+    "ear_signal": 6,
     "survival_cue": 1
   },
   "rights": {
-    "approved": 16
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 16,
-    "pending_after": 16,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 2,
+    "pending_before": 24,
+    "pending_after": 18,
+    "rejected": 6,
+    "repair_needed": 1,
+    "repaired": 8,
     "reasons": {
-      "objective_gate:observe_before_scaling": 16,
-      "objective_gate:low_decision_confidence": 14,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 8
+      "objective_gate:observe_before_scaling": 18,
+      "objective_gate:low_decision_confidence": 16,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 6,
+      "off_topic_visual": 3,
+      "copy_subject_mismatch": 2,
+      "duplicate_title": 2,
+      "script_subject_mismatch": 1,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "missing_visible_cue": 1,
+      "script does not expose enough concrete visual detail": 1,
+      "queue_score_reject": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "80a214d0a2236cfe",
-      "title": "Sharks show the fin cue before the payoff",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "editorial score 61 is below 62"
-      ],
-      "stage": "editor_in_chief"
-    },
-    {
-      "id": "e22c7bfd6c2187b6",
-      "title": "Plants signal through leaf movement",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a84b2a9b8ba858f9",
-      "title": "Plants signal through first move",
+      "id": "4ae22b4b21d68405",
+      "title": "Glaciers read the moment from one glacier",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "ae2f8b32b0721400",
+      "id": "46ed955d26a0d9e8",
+      "title": "Forests signal through canopy shift",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "94798b274f8ffbdb",
       "title": "Earth systems signal through cloud pattern",
       "reasons": [
+        "copy_subject_mismatch",
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "e3eec0d061f8518c",
-      "title": "Bats use first move before they change",
+      "id": "96221908e5e4476a",
+      "title": "Trees signal through root network",
       "reasons": [
-        "missing_visual_cue",
-        "payoff_not_explicit",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
+        "off_topic_visual",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "95f57ed4cd9aa3c5",
+      "title": "Desert Bloom uses storm before it changes",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
         "missing_action_word",
         "missing_visible_cue",
         "script does not expose enough concrete visual detail",
@@ -75,37 +84,13 @@
       "stage": "queue_repair"
     },
     {
-      "id": "25443f54264f0455",
-      "title": "Owls use wing flash before they hunt",
+      "id": "75f5e780ef444caa",
+      "title": "Wetlands build islands you didn't see coming",
       "reasons": [
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
       ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "61e0327638cef862",
-      "title": "Monkeies read the moment from one hand cue",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "97c9af03cf330a25",
-      "title": "Clouds use storm before they pull",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "missing_visual_cue",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
+      "stage": "queue_prune"
     },
     {
       "id": "b0960cfb12495b2b",
@@ -301,9 +286,1367 @@
         "copy_subject_mismatch"
       ],
       "stage": "queue_quality"
+    },
+    {
+      "id": "27364e65ce486e95",
+      "title": "Cats rely on hand movement to survive",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_quality"
+    },
+    {
+      "id": "044f781f8d21d65c",
+      "title": "Geology signals through rock layers",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_quality"
     }
   ],
   "top": [
+    {
+      "id": "80a214d0a2236cfe",
+      "title": "Sharks show the fin cue before the payoff",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.395,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.193,
+          "data_quality": "estimated",
+          "data_quality_score": 0.41,
+          "minimum_sample_size": 30,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
+          "recommendation_strength": "observe",
+          "sample_size": 18
+        },
+        "distribution_adjustment": -3,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 74,
+        "objective_gate": {
+          "confidence_score": 0.193,
+          "mechanism_cluster": "ear_signal",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 69,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 68,
+            "emotional_potential": 39,
+            "novelty": 64,
+            "replay_potential": 96,
+            "viral_potential": 72,
+            "visual_potential": 74
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 84,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "cute_behavior",
+        "subscriber_conversion": {
+          "comment_probability": 0.233,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.272,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 90,
+          "state": "strong",
+          "subscriber_probability": 0.129
+        },
+        "title_score": 74,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 10
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "weak_hook_pattern"
+          ],
+          "risk": 14,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-14T18:59:41.163803+00:00",
+        "mechanism_cluster": "ear_signal",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "sharks",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "cute_behavior",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "sharks",
+        "viewer_promise": "See why this visible behavior matters for sharks."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "This ocean changes right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "mechanism_reveal",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 21,
+          "winners": {
+            "hook_pattern": "{subject} {subject} one {subject} {action}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
+          }
+        },
+        "hook_options": [
+          "Sharks reveal one visible signal",
+          "Sharks show the fin movement before the payoff.",
+          "Sharks show the fin movement before the payoff.",
+          "Sharks show the fin movement before the payoff.",
+          "Sharks give away the answer through fin cue"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "sharks",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the sharks at the start make sense.",
+          "loop_score": 0.381,
+          "opening_line": "Sharks reveal one visible signal",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "sharks",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.381,
+        "pinned_comment": "Watch the fin movement again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.72,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Sharks reveal one visible signal Watch the fin movement because sharks use",
+          "first_frame_text": "FIN CUE",
+          "first_frame_text_words": 2,
+          "hook": "Sharks reveal one visible signal",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.381,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the fin movement, so viewers rewatch the sharks clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 84,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 96,
+        "selected_variant": {
+          "hook": "Sharks reveal one visible signal",
+          "score": 62,
+          "thumbnail_text": "FIN CUE",
+          "title": "Sharks show the fin cue before the payoff"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.233,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.272,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 90,
+          "state": "strong",
+          "subscriber_probability": 0.129
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FIN CUE",
+          "FIN SHIFT",
+          "WATCH FIN SHIFT",
+          "SHARKS SIGNAL",
+          "FIN SHIFT MATTERS",
+          "FIN SHIFT PAYOFF",
+          "FIN SHIFT FIRST",
+          "FIN SHIFT REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Sharks show the fin cue before the payoff",
+          "Sharks signal through fin cue",
+          "Sharks use fin cue before they signal",
+          "This fin cue gives sharks away",
+          "Why sharks signal after one fin cue",
+          "Sharks reveal the answer with fin cue",
+          "The fin cue that changes the moment",
+          "Sharks make one fin cue matter",
+          "Sharks show the hidden payoff in seconds",
+          "Sharks: watch this fin cue"
+        ],
+        "top_variants": [
+          {
+            "hook": "Sharks reveal one visible signal",
+            "score": 62,
+            "thumbnail_text": "FIN CUE",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 62,
+            "thumbnail_text": "FIN CUE",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 62,
+            "thumbnail_text": "FIN CUE",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Sharks reveal one visible signal",
+            "score": 62,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 62,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 62,
+            "thumbnail_text": "FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Sharks reveal one visible signal",
+            "score": 62,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Watch the fin cue; the payoff lands seconds later",
+            "score": 62,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Start with the fin cue; it explains the next move",
+            "score": 62,
+            "thumbnail_text": "WATCH FIN SHIFT",
+            "title": "Sharks show the fin cue before the payoff"
+          },
+          {
+            "hook": "Sharks reveal one visible signal",
+            "score": 62,
+            "thumbnail_text": "SHARKS SIGNAL",
+            "title": "Sharks show the fin cue before the payoff"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "677b330e4980e87d",
+      "title": "Rocks use rock layers before they form",
+      "category": "geology",
+      "publish_score": {
+        "approved": true,
+        "category": "geology",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.31,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.08,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.9,
+          "penalty": 10.0,
+          "publish_blocking": false,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 64,
+          "signals": {
+            "comment_potential": 65,
+            "educational_potential": 74,
+            "emotional_potential": 30,
+            "novelty": 54,
+            "replay_potential": 67,
+            "viral_potential": 67,
+            "visual_potential": 74
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 10
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-14T18:59:41.181089+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "rocks",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "rocks",
+        "viewer_promise": "See the rock detail that changes the whole scene."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after rivers?",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "curiosity_gap": {
+          "hook": "This nature changes right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth_engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 21,
+          "winners": {
+            "hook_pattern": "{subject} {subject} one {subject} {action}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
+          }
+        },
+        "hook_options": [
+          "Rivers show the rocks before the payoff.",
+          "Rivers show the rocks before the payoff.",
+          "Rivers show the rocks before the payoff.",
+          "Rivers show the rocks before the payoff.",
+          "Rivers show the rocks before the payoff."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "rivers",
+          "ending_line": "What would you name this canyon if it was yours.",
+          "final_line": "Now the rivers at the start make sense.",
+          "loop_score": 0.417,
+          "opening_line": "Rivers show the rocks before the payoff.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "rivers",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.417,
+        "pinned_comment": "Watch the rocks again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.72,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "These rocks talk in layers See how the stripes curve and dip",
+          "first_frame_text": "ROCK LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Rivers show the rocks before the payoff.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.417,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the rocks, so viewers rewatch the rivers clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 93,
+        "selected_variant": {
+          "hook": "Watch the rock layers; the payoff lands seconds later",
+          "score": 63,
+          "thumbnail_text": "ROCK LAYER",
+          "title": "Rocks use rock layers before they form"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "ROCKS FORM",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER PAYOFF",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Rocks that whisper with mineral secrets",
+          "Rocks use rock layers before they form",
+          "This rock layer gives rocks away",
+          "Rocks reveal the answer with rock layers",
+          "The rock layer that changes the moment",
+          "Rocks show the hidden payoff in seconds",
+          "Rocks: watch this rock layer",
+          "Watch rocks after the rock layer"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 63,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "These rocks talk in layers",
+            "score": 63,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 63,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Start with the rock layer; it explains the next move",
+            "score": 63,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 63,
+            "thumbnail_text": "ROCKS FORM",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 63,
+            "thumbnail_text": "ROCK LAYER MATTERS",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 63,
+            "thumbnail_text": "ROCK LAYER PAYOFF",
+            "title": "Rocks use rock layers before they form"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 61,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Rocks that whisper with mineral secrets"
+          },
+          {
+            "hook": "These rocks talk in layers",
+            "score": 61,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rocks that whisper with mineral secrets"
+          },
+          {
+            "hook": "Watch the rock layers; the payoff lands seconds later",
+            "score": 61,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rocks that whisper with mineral secrets"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "fc11fccf4c0ea014",
+      "title": "Ecosystems signal through first move",
+      "category": "nocturnal",
+      "publish_score": {
+        "approved": true,
+        "category": "nocturnal",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.289,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.052,
+          "data_quality": "inferred",
+          "data_quality_score": 0.575,
+          "minimum_sample_size": 20,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.05.",
+          "recommendation_strength": "observe",
+          "sample_size": 3
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.052,
+          "mechanism_cluster": "ear_signal",
+          "payoff_time_s": 9.35,
+          "penalty": 10.0,
+          "publish_blocking": false,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 64,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 65,
+            "emotional_potential": 44,
+            "novelty": 55,
+            "replay_potential": 100,
+            "viral_potential": 66,
+            "visual_potential": 55
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 82,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 58
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 10
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-14T18:59:41.184964+00:00",
+        "mechanism_cluster": "ear_signal",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "ecosystems",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "ecosystems",
+        "viewer_promise": "See the ecosystem detail that changes the whole scene."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after ecosystems?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "Ecosystems show the first movement before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "story"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "mechanism_reveal",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 21,
+          "winners": {
+            "hook_pattern": "{subject} {subject} one {subject} {action}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
+          }
+        },
+        "hook_options": [
+          "Ecosystems reveal one visible signal",
+          "Ecosystems show the first movement before the payoff.",
+          "Ecosystems show the first movement before the payoff.",
+          "Ecosystems show the first movement before the payoff.",
+          "Ecosystems give away the answer through first move"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "first",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the first at the start makes sense.",
+          "loop_score": 0.581,
+          "opening_line": "Ecosystems show the first movement before the payoff.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "first",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.581,
+        "pinned_comment": "Watch the first movement again. Tomorrow: another nature signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.88,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Ecosystems reveal one visible signal Watch the first movement because that detail",
+          "first_frame_text": "FIRST MOVE",
+          "first_frame_text_words": 2,
+          "hook": "Ecosystems show the first movement before the payoff.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.581,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the first movement, so viewers rewatch the ecosystems clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 82,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 58
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 95,
+        "selected_variant": {
+          "hook": "Start with the first move; it explains the next move",
+          "score": 64,
+          "thumbnail_text": "FIRST MOVE",
+          "title": "Ecosystems signal through first move"
+        },
+        "series": "Nature Signals",
+        "series_identity": {
+          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Nature Signals",
+          "series": "Nature Signals"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FIRST MOVE",
+          "WATCH FIRST MOVE",
+          "ECOSYSTEMS SIGNAL",
+          "FIRST MOVE MATTERS",
+          "FIRST MOVE PAYOFF",
+          "FIRST MOVE FIRST",
+          "FIRST MOVE REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Ecosystems signal through first move",
+          "Ecosystems use first move before they signal",
+          "This first move gives ecosystems away",
+          "Why ecosystems signal after one first move",
+          "Ecosystems reveal the answer with first move",
+          "The first move that changes the moment",
+          "Ecosystems make one first move matter",
+          "Ecosystems show the hidden payoff in seconds",
+          "Ecosystems: watch this first move",
+          "Watch ecosystems after the first move"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE",
+            "title": "Ecosystems signal through first move"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "title": "Ecosystems signal through first move"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "ECOSYSTEMS SIGNAL",
+            "title": "Ecosystems signal through first move"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE MATTERS",
+            "title": "Ecosystems signal through first move"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE PAYOFF",
+            "title": "Ecosystems signal through first move"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE",
+            "title": "Ecosystems use first move before they signal"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "title": "Ecosystems use first move before they signal"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "ECOSYSTEMS SIGNAL",
+            "title": "Ecosystems use first move before they signal"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE MATTERS",
+            "title": "Ecosystems use first move before they signal"
+          },
+          {
+            "hook": "Start with the first move; it explains the next move",
+            "score": 64,
+            "thumbnail_text": "FIRST MOVE PAYOFF",
+            "title": "Ecosystems use first move before they signal"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "965914b8523cf456",
       "title": "Insects signal through leaf movement",
@@ -320,7 +1663,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.41.",
           "recommendation_strength": "observe",
-          "sample_size": 31
+          "sample_size": 30
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -436,9 +1779,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -450,7 +1793,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.068096+00:00",
+        "checked_at": "2026-06-14T18:59:41.155324+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [],
         "score": 96.0,
@@ -520,11 +1863,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -765,7 +2108,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.34.",
           "recommendation_strength": "observe",
-          "sample_size": 27
+          "sample_size": 26
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -847,7 +2190,7 @@
         "state": "publish_ready",
         "story_format": "cute_behavior",
         "subscriber_conversion": {
-          "comment_probability": 0.221,
+          "comment_probability": 0.209,
           "confidence": {
             "bootstrap_multiplier": 0.338,
             "can_adjust_strategy": false,
@@ -865,15 +2208,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.258,
+          "return_probability": 0.244,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 85,
+          "score": 80,
           "state": "strong",
-          "subscriber_probability": 0.121
+          "subscriber_probability": 0.114
         },
         "title_score": 74,
         "weak_content": {
@@ -884,9 +2227,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -898,7 +2241,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.073752+00:00",
+        "checked_at": "2026-06-14T18:59:41.159966+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -970,11 +2313,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -1066,7 +2409,7 @@
           "action_word"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.221,
+          "comment_probability": 0.209,
           "confidence": {
             "bootstrap_multiplier": 0.338,
             "can_adjust_strategy": false,
@@ -1084,15 +2427,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.258,
+          "return_probability": 0.244,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 85,
+          "score": 80,
           "state": "strong",
-          "subscriber_probability": 0.121
+          "subscriber_probability": 0.114
         },
         "swipe_risk": {
           "band": "low",
@@ -1200,6 +2543,456 @@
       }
     },
     {
+      "id": "055b5ba31c7d7c2b",
+      "title": "Fungis signal through mycelium network",
+      "category": "forests",
+      "publish_score": {
+        "approved": true,
+        "category": "forests",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.455,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.273,
+          "data_quality": "estimated",
+          "data_quality_score": 0.41,
+          "minimum_sample_size": 30,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27.",
+          "recommendation_strength": "observe",
+          "sample_size": 15
+        },
+        "distribution_adjustment": -3,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.273,
+          "mechanism_cluster": "ear_signal",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [],
+          "score": 69,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 71,
+            "emotional_potential": 36,
+            "novelty": 61,
+            "replay_potential": 93,
+            "viral_potential": 69,
+            "visual_potential": 81
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [],
+          "score": 85,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 74
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "hidden_network",
+        "subscriber_conversion": {
+          "comment_probability": 0.242,
+          "confidence": {
+            "bootstrap_multiplier": 0.338,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.118,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.283,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 94,
+          "state": "strong",
+          "subscriber_probability": 0.134
+        },
+        "title_score": 84,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 10
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-14T18:59:41.162530+00:00",
+        "mechanism_cluster": "ear_signal",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 94.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 94.0,
+      "youtube_brain": {
+        "animal": "mycelium",
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 87,
+        "state": "publish_minded",
+        "story_format": "hidden_network",
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "mycelium",
+        "viewer_promise": "See why this mycelium hidden network matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after mushroom?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "curiosity_gap": {
+          "hook": "These fungi change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "mechanism_reveal",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "explore",
+          "sample_count": 21,
+          "winners": {
+            "hook_pattern": "{subject} {subject} one {subject} {action}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
+          }
+        },
+        "hook_options": [
+          "Mushroom shows the mycelium before the payoff.",
+          "Mushroom shows the mycelium before the payoff.",
+          "Mushroom shows the mycelium before the payoff.",
+          "Mushroom shows the mycelium before the payoff.",
+          "Mushroom shows the mycelium before the payoff."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "before",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "loop_score": 0.586,
+          "opening_line": "Mushroom shows the mycelium before the payoff.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "before",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.586,
+        "pinned_comment": "Watch the mycelium again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.06,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Fungis reveal one visible signal Watch the mushroom because that detail shows",
+          "first_frame_text": "FUNGAL WEB",
+          "first_frame_text_words": 2,
+          "hook": "Mushroom shows the mycelium before the payoff.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.586,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the mycelium, so viewers rewatch the mushroom clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [],
+          "score": 85,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 74
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 96,
+        "selected_variant": {
+          "hook": "Fungis reveal one visible signal",
+          "score": 69,
+          "thumbnail_text": "FUNGAL WEB",
+          "title": "Fungis signal through mycelium network"
+        },
+        "series": "Hidden Network",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Hidden Network",
+          "series": "Hidden Network"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.242,
+          "confidence": {
+            "bootstrap_multiplier": 0.338,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.118,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.283,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 94,
+          "state": "strong",
+          "subscriber_probability": 0.134
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FUNGAL WEB",
+          "WATCH FUNGAL WEB",
+          "FUNGIS SIGNAL",
+          "FUNGAL WEB MATTERS",
+          "FUNGAL WEB PAYOFF",
+          "FUNGAL WEB FIRST",
+          "FUNGAL WEB REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Fungis signal through mushroom",
+          "Fungis signal through mycelium network",
+          "Fungis use mycelium network before they signal",
+          "This mycelium network gives fungis away",
+          "Why fungis signal after one mycelium network",
+          "Fungis reveal the answer with mycelium network",
+          "The mycelium network that changes the moment",
+          "Fungis make one mycelium network matter",
+          "Fungis show the hidden payoff in seconds",
+          "Fungis: watch this mycelium network"
+        ],
+        "top_variants": [
+          {
+            "hook": "Fungis reveal one visible signal",
+            "score": 69,
+            "thumbnail_text": "FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Watch the mycelium network; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Start with the mycelium network; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Fungis reveal one visible signal",
+            "score": 69,
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Watch the mycelium network; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Start with the mycelium network; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Fungis reveal one visible signal",
+            "score": 69,
+            "thumbnail_text": "FUNGIS SIGNAL",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Watch the mycelium network; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "FUNGIS SIGNAL",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Start with the mycelium network; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "FUNGIS SIGNAL",
+            "title": "Fungis signal through mycelium network"
+          },
+          {
+            "hook": "Fungis reveal one visible signal",
+            "score": 69,
+            "thumbnail_text": "FUNGAL WEB MATTERS",
+            "title": "Fungis signal through mycelium network"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "14f9e8f7fb4689a6",
       "title": "Weather Patterns signal through cloud patterns",
       "category": "earth_from_space",
@@ -1251,17 +3044,17 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 62,
+          "score": 64,
           "signals": {
-            "comment_potential": 46,
-            "educational_potential": 63,
-            "emotional_potential": 36,
-            "novelty": 47,
-            "replay_potential": 94,
-            "viral_potential": 58,
-            "visual_potential": 67
+            "comment_potential": 48,
+            "educational_potential": 65,
+            "emotional_potential": 38,
+            "novelty": 49,
+            "replay_potential": 96,
+            "viral_potential": 60,
+            "visual_potential": 69
           },
-          "verdict": "rewrite"
+          "verdict": "produce"
         },
         "phrase_risk": {
           "hits": [],
@@ -1295,7 +3088,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.247,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
@@ -1315,15 +3108,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.289,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 96,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.137
+          "subscriber_probability": 0.143
         },
         "title_score": 84,
         "weak_content": {
@@ -1334,9 +3127,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1346,7 +3139,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.080023+00:00",
+        "checked_at": "2026-06-14T18:59:41.179892+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:low_decision_confidence"
@@ -1421,11 +3214,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -1496,7 +3289,7 @@
         "score": 96,
         "selected_variant": {
           "hook": "Weather shows the cloud before the payoff",
-          "score": 71,
+          "score": 73,
           "thumbnail_text": "CLOUD PATTERN",
           "title": "Weather Patterns signal through cloud patterns"
         },
@@ -1516,7 +3309,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.247,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
@@ -1536,15 +3329,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.289,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 96,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.137
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -1576,61 +3369,61 @@
         "top_variants": [
           {
             "hook": "Weather shows the cloud before the payoff",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Watch the cloud patterns; the payoff lands seconds later",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Weather shows the cloud before the payoff",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WATCH CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Watch the cloud patterns; the payoff lands seconds later",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WATCH CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WATCH CLOUD PATTERN",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Weather shows the cloud before the payoff",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WEATHER PATTERNS SIGNAL",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Watch the cloud patterns; the payoff lands seconds later",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WEATHER PATTERNS SIGNAL",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "WEATHER PATTERNS SIGNAL",
             "title": "Weather Patterns signal through cloud patterns"
           },
           {
             "hook": "Weather shows the cloud before the payoff",
-            "score": 71,
+            "score": 73,
             "thumbnail_text": "CLOUD PATTERN MATTERS",
             "title": "Weather Patterns signal through cloud patterns"
           }
@@ -1784,9 +3577,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1796,7 +3589,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.083546+00:00",
+        "checked_at": "2026-06-14T18:59:41.185693+00:00",
         "mechanism_cluster": "survival_cue",
         "objective_reasons": [
           "objective_gate:low_decision_confidence"
@@ -1868,11 +3661,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -2116,7 +3909,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.34.",
           "recommendation_strength": "observe",
-          "sample_size": 27
+          "sample_size": 26
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -2237,9 +4030,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -2251,7 +4044,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.069245+00:00",
+        "checked_at": "2026-06-14T18:59:41.156274+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2323,11 +4116,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -2689,9 +4482,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -2704,7 +4497,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.075530+00:00",
+        "checked_at": "2026-06-14T18:59:41.163164+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2776,11 +4569,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -3058,15 +4851,15 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 58,
+          "score": 60,
           "signals": {
-            "comment_potential": 46,
-            "educational_potential": 63,
-            "emotional_potential": 36,
-            "novelty": 37,
-            "replay_potential": 74,
-            "viral_potential": 53,
-            "visual_potential": 77
+            "comment_potential": 48,
+            "educational_potential": 65,
+            "emotional_potential": 38,
+            "novelty": 39,
+            "replay_potential": 76,
+            "viral_potential": 55,
+            "visual_potential": 79
           },
           "verdict": "rewrite"
         },
@@ -3102,7 +4895,7 @@
         "state": "rewrite",
         "story_format": "animal_memory",
         "subscriber_conversion": {
-          "comment_probability": 0.247,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
@@ -3122,15 +4915,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.289,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 96,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.137
+          "subscriber_probability": 0.143
         },
         "title_score": 100,
         "weak_content": {
@@ -3141,9 +4934,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3153,7 +4946,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.081355+00:00",
+        "checked_at": "2026-06-14T18:59:41.182315+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:low_decision_confidence",
@@ -3226,11 +5019,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -3320,7 +5113,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.247,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
@@ -3340,15 +5133,15 @@
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.289,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 96,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.137
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -3457,34 +5250,34 @@
       }
     },
     {
-      "id": "122961788e527c4f",
-      "title": "Earleaf Tree signals through root network",
-      "category": "trees",
+      "id": "c6af1bb6e5565948",
+      "title": "Sharks use gill lines before they trick",
+      "category": "ocean",
       "publish_score": {
         "approved": false,
-        "category": "trees",
+        "category": "ocean",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
+          "bootstrap_multiplier": 0.31,
           "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
           "recommendation_strength": "observe",
-          "sample_size": 1
+          "sample_size": 5
         },
-        "distribution_adjustment": 0,
+        "distribution_adjustment": -3,
         "editorial_guard": {
           "approved": true,
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 86,
+        "hook_score": 74,
         "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "ear_signal",
-          "payoff_time_s": 12.1,
+          "confidence_score": 0.08,
+          "mechanism_cluster": "",
+          "payoff_time_s": 11.0,
           "penalty": 16.0,
           "publish_blocking": true,
           "reasons": [
@@ -3497,29 +5290,29 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 64,
+          "score": 62,
           "signals": {
-            "comment_potential": 62,
-            "educational_potential": 71,
-            "emotional_potential": 35,
-            "novelty": 55,
-            "replay_potential": 82,
-            "viral_potential": 63,
-            "visual_potential": 65
+            "comment_potential": 41,
+            "educational_potential": 68,
+            "emotional_potential": 30,
+            "novelty": 54,
+            "replay_potential": 76,
+            "viral_potential": 59,
+            "visual_potential": 84
           },
-          "verdict": "produce"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -3527,62 +5320,62 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 87,
-            "hook_score": 70,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "rewrite",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.221,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
             "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 82,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 95,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 74
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "rewrite",
+        "story_format": "single_fact",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "hook_invites_return",
             "debate_comment",
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.258,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 85,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.121
+          "subscriber_probability": 0.143
         },
-        "title_score": 100,
+        "title_score": 84,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.738,
@@ -3591,9 +5384,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3603,8 +5396,8 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.082669+00:00",
-        "mechanism_cluster": "ear_signal",
+        "checked_at": "2026-06-14T18:59:41.184366+00:00",
+        "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:low_decision_confidence",
           "objective_gate:payoff_too_late_for_current_swipe_baseline"
@@ -3615,7 +5408,7 @@
       },
       "queue_score": 78.0,
       "youtube_brain": {
-        "animal": "tree",
+        "animal": "sharks",
         "commands": [],
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -3625,10 +5418,10 @@
           "last 2s: payoff and follow signal"
         ],
         "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "animal_intelligence",
+        "story_format": "single_fact",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -3637,14 +5430,14 @@
           "shorts_length_fit",
           "thumbnail_text_scannable"
         ],
-        "subject": "tree",
-        "viewer_promise": "See the tree detail that changes the whole scene."
+        "subject": "sharks",
+        "viewer_promise": "See why sharks single fact matters."
       },
       "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after tree?",
-        "cta_prompt": "Want to see how trees quietly engineer the planet?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
         "curiosity_gap": {
-          "hook": "These ecosystems change right before the payoff.",
+          "hook": "This ocean changes right before the payoff.",
           "reasons": [
             "specific_detail",
             "payoff_gap"
@@ -3676,84 +5469,84 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
-          "Tree shows the root network before the payoff",
-          "Tree shows the root network before the payoff.",
-          "Tree shows the root network before the payoff.",
-          "Tree shows the root network before the payoff.",
-          "Earleaf Tree gives away the answer through root network"
+          "Sharks can pause right there",
+          "Sharks show the gills before the payoff.",
+          "Sharks show the gills before the payoff.",
+          "Sharks show the gills before the payoff.",
+          "Sharks give away the answer through gill lines"
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "tree",
-          "ending_line": "What's the first tree you'd plant to bring a forest back?",
-          "final_line": "What's the first tree you'd plant to bring a forest back?",
-          "loop_score": 0.676,
-          "opening_line": "Tree shows the root network before the payoff",
+          "callback_keyword": "sharks",
+          "ending_line": "Neat trick, huh.",
+          "final_line": "Now the sharks at the start make sense.",
+          "loop_score": 0.431,
+          "opening_line": "Sharks show the gills before the payoff.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "tree",
+            "carry_keyword": "sharks",
             "subtle_audio_tail": true
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.676,
-        "pinned_comment": "Watch the root network again. Tomorrow: another nature signal. Do trees feel more like structures, networks, or living machines?",
+        "loop_score": 0.431,
+        "pinned_comment": "Watch the gills again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.41,
+          "caption_chars_per_second": 15.65,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "first_2s_narration": "These trees grow where others can't that's why they're called the backbone",
-          "first_frame_text": "ROOT SIGNAL",
+          "first_2s_narration": "Sharks can pause right there Watch this one's gill slits flare not",
+          "first_frame_text": "GILL LINES",
           "first_frame_text_words": 2,
-          "hook": "Tree shows the root network before the payoff",
+          "hook": "Sharks show the gills before the payoff.",
           "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.676,
+          "hook_words": 7,
+          "loop_score": 0.431,
           "novelty_score": 0.58,
-          "payoff_time_s": 12.100000000000001,
+          "payoff_time_s": 11.0,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the root network, so viewers rewatch the tree clip.",
+        "replay_prompt": "End by pointing back to the gills, so viewers rewatch the sharks clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 76,
+          "score": 82,
           "signals": {
             "completion_prediction": 84,
-            "curiosity_score": 87,
-            "hook_score": 70,
+            "curiosity_score": 95,
+            "hook_score": 82,
             "replay_score": 72,
-            "visual_score": 66
+            "visual_score": 74
           },
-          "verdict": "rewrite"
+          "verdict": "ready"
         },
         "risks": [],
-        "score": 93,
+        "score": 95,
         "selected_variant": {
-          "hook": "Tree shows the root network before the payoff",
-          "score": 67,
-          "thumbnail_text": "ROOT SIGNAL",
-          "title": "Earleaf Tree signals through root network"
+          "hook": "Watch the gill lines; the payoff lands seconds later",
+          "score": 60,
+          "thumbnail_text": "GILL LINES",
+          "title": "Sharks use gill lines before they trick"
         },
         "series": "Watch The Cue",
         "series_identity": {
@@ -3771,34 +5564,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.221,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.061,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "hook_invites_return",
             "debate_comment",
             "return_prompt",
             "series_identity"
           ],
-          "return_probability": 0.258,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 85,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.121
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -3807,89 +5600,87 @@
           "score": 0
         },
         "thumbnail_options": [
-          "ROOT SIGNAL",
-          "ROOT NETWORK",
-          "WATCH ROOT NETWORK",
-          "EARLEAF TREE SIGNAL",
-          "ROOT NETWORK MATTERS",
-          "ROOT NETWORK PAYOFF",
-          "ROOT NETWORK FIRST",
-          "ROOT NETWORK REVEAL",
+          "GILL LINES",
+          "WATCH GILL LINES",
+          "SHARKS TRICK",
+          "GILL LINES MATTERS",
+          "GILL LINES PAYOFF",
+          "GILL LINES FIRST",
+          "GILL LINES REVEAL",
           "WATCH THE MOVE",
           "BEFORE THE PAYOFF"
         ],
         "title_options": [
-          "Earleaf Tree signals through root network",
-          "Earleaf Tree uses root network before it signals",
-          "This root network gives earleaf tree away",
-          "Why earleaf tree signals after one root network",
-          "Earleaf Tree reveals the answer with root network",
-          "The root network that changes the moment",
-          "Earleaf Tree makes one root network matter",
-          "Earleaf Tree shows the hidden payoff in seconds",
-          "Earleaf Tree: watch this root network",
-          "Watch earleaf tree after the root network"
+          "Sharks don't need to keep swimming to breathe",
+          "Sharks use gill lines before they trick",
+          "Why sharks trick after one gill lines",
+          "Sharks reveal the answer with gill lines",
+          "The gill lines that changes the moment",
+          "Sharks make one gill lines matter",
+          "Sharks show the hidden payoff in seconds",
+          "Sharks: watch this gill lines",
+          "Watch sharks after the gill lines"
         ],
         "top_variants": [
           {
-            "hook": "Tree shows the root network before the payoff",
-            "score": 67,
-            "thumbnail_text": "ROOT SIGNAL",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Watch the gill lines; the payoff lands seconds later",
+            "score": 60,
+            "thumbnail_text": "GILL LINES",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Start with the root network; it explains the next move",
-            "score": 67,
-            "thumbnail_text": "ROOT SIGNAL",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Start with the gill lines; it explains the next move",
+            "score": 60,
+            "thumbnail_text": "GILL LINES",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Tree shows the root network before the payoff",
-            "score": 67,
-            "thumbnail_text": "ROOT NETWORK",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Watch the gill lines; the payoff lands seconds later",
+            "score": 60,
+            "thumbnail_text": "WATCH GILL LINES",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Start with the root network; it explains the next move",
-            "score": 67,
-            "thumbnail_text": "ROOT NETWORK",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Start with the gill lines; it explains the next move",
+            "score": 60,
+            "thumbnail_text": "WATCH GILL LINES",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Tree shows the root network before the payoff",
-            "score": 67,
-            "thumbnail_text": "WATCH ROOT NETWORK",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Watch the gill lines; the payoff lands seconds later",
+            "score": 60,
+            "thumbnail_text": "SHARKS TRICK",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Start with the root network; it explains the next move",
-            "score": 67,
-            "thumbnail_text": "WATCH ROOT NETWORK",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Start with the gill lines; it explains the next move",
+            "score": 60,
+            "thumbnail_text": "SHARKS TRICK",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Tree shows the root network before the payoff",
-            "score": 67,
-            "thumbnail_text": "EARLEAF TREE SIGNAL",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Watch the gill lines; the payoff lands seconds later",
+            "score": 60,
+            "thumbnail_text": "GILL LINES MATTERS",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Start with the root network; it explains the next move",
-            "score": 67,
-            "thumbnail_text": "EARLEAF TREE SIGNAL",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Start with the gill lines; it explains the next move",
+            "score": 60,
+            "thumbnail_text": "GILL LINES MATTERS",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Tree shows the root network before the payoff",
-            "score": 67,
-            "thumbnail_text": "ROOT NETWORK MATTERS",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Watch the gill lines; the payoff lands seconds later",
+            "score": 60,
+            "thumbnail_text": "GILL LINES PAYOFF",
+            "title": "Sharks use gill lines before they trick"
           },
           {
-            "hook": "Start with the root network; it explains the next move",
-            "score": 67,
-            "thumbnail_text": "ROOT NETWORK MATTERS",
-            "title": "Earleaf Tree signals through root network"
+            "hook": "Start with the gill lines; it explains the next move",
+            "score": 60,
+            "thumbnail_text": "GILL LINES PAYOFF",
+            "title": "Sharks use gill lines before they trick"
           }
         ]
       },
@@ -3922,7 +5713,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.34.",
           "recommendation_strength": "observe",
-          "sample_size": 27
+          "sample_size": 26
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -4043,9 +5834,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -4058,7 +5849,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.070328+00:00",
+        "checked_at": "2026-06-14T18:59:41.157164+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4130,11 +5921,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -4375,7 +6166,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.34.",
           "recommendation_strength": "observe",
-          "sample_size": 27
+          "sample_size": 26
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -4496,9 +6287,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -4511,7 +6302,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.071104+00:00",
+        "checked_at": "2026-06-14T18:59:41.157796+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4583,11 +6374,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -4813,459 +6604,6 @@
       }
     },
     {
-      "id": "da1d76e2394f7738",
-      "title": "Butterflies use wing flash before they hide",
-      "category": "forests",
-      "publish_score": {
-        "approved": false,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.421,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.228,
-          "data_quality": "estimated",
-          "data_quality_score": 0.425,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23.",
-          "recommendation_strength": "observe",
-          "sample_size": 13
-        },
-        "distribution_adjustment": -3,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.228,
-          "mechanism_cluster": "",
-          "payoff_time_s": 11.0,
-          "penalty": 6.0,
-          "publish_blocking": true,
-          "reasons": [
-            "observe_before_scaling",
-            "payoff_too_late_for_current_swipe_baseline"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [],
-          "score": 57,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 64,
-            "emotional_potential": 27,
-            "novelty": 51,
-            "replay_potential": 63,
-            "viral_potential": 56,
-            "visual_potential": 71
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "rewrite",
-        "story_format": "survival_trick",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.338,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.118,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 11
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.076739+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "objective_gate:payoff_too_late_for_current_swipe_baseline"
-        ],
-        "score": 74.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 74.0,
-      "youtube_brain": {
-        "animal": "butterflies",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "survival_trick",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "butterflies",
-        "viewer_promise": "See why butterflies survival trick matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after butterflies?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "These ecosystems change right before the payoff.",
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": false,
-          "notes": [],
-          "recommended_duration_s": 18,
-          "recommended_format": "mechanism_reveal",
-          "score": 90.0,
-          "violations": [
-            "script does not expose enough concrete visual detail"
-          ]
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 21,
-          "winners": {
-            "hook_pattern": "{subject} {subject} one {subject} {action}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
-          }
-        },
-        "hook_options": [
-          "Butterflies show the leaves before the payoff",
-          "Butterflies show the leaves before the payoff.",
-          "Butterflies show the leaves before the payoff.",
-          "Butterflies show the leaves before the payoff.",
-          "Butterflies give away the answer through wing flash"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "butterflies",
-          "ending_line": "Bet you can't tell which one's real.",
-          "final_line": "Now the butterflies at the start make sense.",
-          "loop_score": 0.461,
-          "opening_line": "Butterflies show the leaves before the payoff.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "butterflies",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.461,
-        "pinned_comment": "Watch the leaves again. Tomorrow: another animal signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.15,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "These butterflies look like leaves but that's not just cute Their wings",
-          "first_frame_text": "WING FLASH",
-          "first_frame_text_words": 2,
-          "hook": "Butterflies show the leaves before the payoff.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.461,
-          "novelty_score": 0.58,
-          "payoff_time_s": 11.0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the leaves, so viewers rewatch the butterflies clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [
-          "script does not expose enough concrete visual detail"
-        ],
-        "score": 92,
-        "selected_variant": {
-          "hook": "Watch the wing flash; the payoff lands seconds later",
-          "score": 58,
-          "thumbnail_text": "WING FLASH",
-          "title": "Butterflies use wing flash before they hide"
-        },
-        "series": "Survival Tricks",
-        "series_identity": {
-          "continuity_prompt": "Next in Survival Tricks: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Survival Tricks",
-          "series": "Survival Tricks"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.338,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.118,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "WING FLASH",
-          "WATCH WING FLASH",
-          "BUTTERFLIES HIDE",
-          "WING FLASH MATTERS",
-          "WING FLASH PAYOFF",
-          "WING FLASH FIRST",
-          "WING FLASH REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "title_options": [
-          "Butterflies use wing flash before they hide",
-          "This wing flash gives butterflies away",
-          "Why butterflies hide after one wing flash",
-          "Butterflies reveal the answer with wing flash",
-          "The wing flash that changes the moment",
-          "Butterflies make one wing flash matter",
-          "Butterflies show the hidden payoff in seconds",
-          "Butterflies: watch this wing flash",
-          "Watch butterflies after the wing flash",
-          "One wing flash changes how butterflies react"
-        ],
-        "top_variants": [
-          {
-            "hook": "Watch the wing flash; the payoff lands seconds later",
-            "score": 58,
-            "thumbnail_text": "WING FLASH",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Watch the wing flash; the payoff lands seconds later",
-            "score": 58,
-            "thumbnail_text": "WATCH WING FLASH",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Start with the wing flash; it explains the next move",
-            "score": 58,
-            "thumbnail_text": "WATCH WING FLASH",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Watch the wing flash; the payoff lands seconds later",
-            "score": 58,
-            "thumbnail_text": "BUTTERFLIES HIDE",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Watch the wing flash; the payoff lands seconds later",
-            "score": 58,
-            "thumbnail_text": "WING FLASH MATTERS",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Watch the wing flash; the payoff lands seconds later",
-            "score": 58,
-            "thumbnail_text": "WING FLASH PAYOFF",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Start with the wing flash; it explains the next move",
-            "score": 56,
-            "thumbnail_text": "WING FLASH",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Butterflies show the leaves before the payoff",
-            "score": 56,
-            "thumbnail_text": "WATCH WING FLASH",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Start with the wing flash; it explains the next move",
-            "score": 56,
-            "thumbnail_text": "BUTTERFLIES HIDE",
-            "title": "Butterflies use wing flash before they hide"
-          },
-          {
-            "hook": "Start with the wing flash; it explains the next move",
-            "score": 56,
-            "thumbnail_text": "WING FLASH MATTERS",
-            "title": "Butterflies use wing flash before they hide"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "00489d96ccaf81c3",
       "title": "Cows read the moment from one face",
       "category": "farm",
@@ -5281,7 +6619,7 @@
           "minimum_sample_size": 30,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.34.",
           "recommendation_strength": "observe",
-          "sample_size": 27
+          "sample_size": 26
         },
         "distribution_adjustment": -3,
         "editorial_guard": {
@@ -5402,9 +6740,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -5417,7 +6755,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.072270+00:00",
+        "checked_at": "2026-06-14T18:59:41.158738+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5489,11 +6827,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -5719,458 +7057,6 @@
       }
     },
     {
-      "id": "4c2b54e47020ac12",
-      "title": "Dog Fur uses cloud patterns before it tricks",
-      "category": "weather",
-      "publish_score": {
-        "approved": true,
-        "category": "weather",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.34,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.12,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 20,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
-          "recommendation_strength": "observe",
-          "sample_size": 15
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.12,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.0,
-          "penalty": 10.0,
-          "publish_blocking": false,
-          "reasons": [
-            "low_decision_confidence"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "comment_potential": 70,
-            "educational_potential": 72,
-            "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 92,
-            "viral_potential": 72,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 81,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 74
-          },
-          "verdict": "ready"
-        },
-        "score": 86.3,
-        "state": "publish_ready",
-        "story_format": "cute_behavior",
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 11
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.077876+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:low_decision_confidence"
-        ],
-        "score": 72.3,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 72.3,
-      "youtube_brain": {
-        "animal": "dog",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "script_length_risk"
-        ],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 87,
-        "state": "publish_minded",
-        "story_format": "cute_behavior",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "dog",
-        "viewer_promise": "See why this visible behavior matters for dog."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after dog?",
-        "cta_prompt": "Want to see more extreme weather explained fast?",
-        "curiosity_gap": {
-          "hook": "This weather changes right before the payoff.",
-          "reasons": [
-            "specific_detail",
-            "payoff_gap"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": false,
-          "notes": [],
-          "recommended_duration_s": 18,
-          "recommended_format": "natural_phenomenon",
-          "score": 90.0,
-          "violations": [
-            "script does not expose enough concrete visual detail"
-          ]
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 21,
-          "winners": {
-            "hook_pattern": "{subject} {subject} one {subject} {action}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
-          }
-        },
-        "hook_options": [
-          "Dog shows the cloud before the payoff",
-          "Dog shows the cloud before the payoff.",
-          "Dog shows the cloud before the payoff.",
-          "Dog shows the cloud before the payoff.",
-          "Dog Fur gives away the answer through cloud pattern"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "dog",
-          "ending_line": "That’s the trick.",
-          "final_line": "Now the dog at the start makes sense.",
-          "loop_score": 0.403,
-          "opening_line": "Dog shows the cloud before the payoff",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "dog",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.403,
-        "pinned_comment": "Watch the cloud again. Tomorrow: another animal signal. Which is scarier: wind, water, lightning, or heat?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.29,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Watch this dog's fur Those fluffy guard hairs They trap air like",
-          "first_frame_text": "CLOUD PATTERN",
-          "first_frame_text_words": 2,
-          "hook": "Dog shows the cloud before the payoff",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.403,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the cloud, so viewers rewatch the dog clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 81,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 74
-          },
-          "verdict": "ready"
-        },
-        "risks": [
-          "missing_action_word",
-          "script does not expose enough concrete visual detail"
-        ],
-        "score": 87,
-        "selected_variant": {
-          "hook": "Dog shows the cloud before the payoff",
-          "score": 65,
-          "thumbnail_text": "CLOUD PATTERN",
-          "title": "Dog Fur uses cloud patterns before it tricks"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "CLOUD PATTERN",
-          "WATCH CLOUD PATTERN",
-          "DOG FUR TRICK",
-          "CLOUD PATTERN MATTERS",
-          "CLOUD PATTERN PAYOFF",
-          "CLOUD PATTERN FIRST",
-          "CLOUD PATTERN REVEAL",
-          "WATCH THE MOVE",
-          "BEFORE THE PAYOFF"
-        ],
-        "title_options": [
-          "Dog Fur uses cloud patterns before it tricks",
-          "Dog Fur uses cloud pattern before it tricks",
-          "This cloud pattern gives dog fur away",
-          "Dog Fur reveals the answer with cloud pattern",
-          "The cloud pattern that changes the moment",
-          "Dog Fur shows the hidden payoff in seconds",
-          "Dog Fur: watch this cloud pattern",
-          "Watch dog fur after the cloud pattern"
-        ],
-        "top_variants": [
-          {
-            "hook": "Dog shows the cloud before the payoff",
-            "score": 65,
-            "thumbnail_text": "CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Watch the cloud pattern; the payoff lands seconds later",
-            "score": 65,
-            "thumbnail_text": "CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 65,
-            "thumbnail_text": "CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Dog shows the cloud before the payoff",
-            "score": 65,
-            "thumbnail_text": "WATCH CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Watch the cloud pattern; the payoff lands seconds later",
-            "score": 65,
-            "thumbnail_text": "WATCH CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 65,
-            "thumbnail_text": "WATCH CLOUD PATTERN",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Dog shows the cloud before the payoff",
-            "score": 65,
-            "thumbnail_text": "DOG FUR TRICK",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Watch the cloud pattern; the payoff lands seconds later",
-            "score": 65,
-            "thumbnail_text": "DOG FUR TRICK",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Start with the cloud pattern; it explains the next move",
-            "score": 65,
-            "thumbnail_text": "DOG FUR TRICK",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          },
-          {
-            "hook": "Dog shows the cloud before the payoff",
-            "score": 65,
-            "thumbnail_text": "CLOUD PATTERN MATTERS",
-            "title": "Dog Fur uses cloud patterns before it tricks"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "d433c29b2a207deb",
       "title": "praying mantis strikes faster than its prey",
       "category": "insects",
@@ -6305,9 +7191,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6317,7 +7203,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.074740+00:00",
+        "checked_at": "2026-06-14T18:59:41.160867+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6396,11 +7282,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -6757,9 +7643,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6769,7 +7655,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.084627+00:00",
+        "checked_at": "2026-06-14T18:59:41.186687+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:low_decision_confidence",
@@ -6847,11 +7733,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
@@ -7092,7 +7978,7 @@
           "minimum_sample_size": 20,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
           "recommendation_strength": "observe",
-          "sample_size": 15
+          "sample_size": 14
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -7211,9 +8097,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 11/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 11
+            "sample_size": 10
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -7225,7 +8111,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-14T18:57:23.078665+00:00",
+        "checked_at": "2026-06-14T18:59:41.178753+00:00",
         "mechanism_cluster": "cue_timing_read",
         "objective_reasons": [
           "objective_gate:low_decision_confidence"
@@ -7299,11 +8185,11 @@
             "title_pattern": "{subject} {subject} the {subject} {subject} one {visual} {subject}"
           },
           "winning_experiments": {
-            "cta:specific_question": 41.65,
-            "format:fresh_variant": 41.65,
-            "format:winner_inspired": 37.72,
-            "hook:new_hook": 41.65,
-            "thumbnail:new_thumbnail": 38.81
+            "cta:specific_question": 41.75,
+            "format:fresh_variant": 41.75,
+            "format:winner_inspired": 38.65,
+            "hook:new_hook": 41.75,
+            "thumbnail:new_thumbnail": 39.56
           }
         },
         "hook_options": [
