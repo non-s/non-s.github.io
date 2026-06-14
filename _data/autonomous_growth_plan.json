@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T08:02:03.548369+00:00",
+  "generated_at": "2026-06-14T08:52:39.291565+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
@@ -335,11 +335,11 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 22,
-    "approved_candidates": 22,
+    "pending": 23,
+    "approved_candidates": 23,
     "lane_counts": {
       "fresh_experiment": 11,
-      "proven_category": 11
+      "proven_category": 12
     },
     "top_candidates": [
       {
@@ -1013,6 +1013,177 @@
             "Watch the hand movement again. Tomorrow: another animal signal. What part of this feels most impossible"
           ],
           "pinned_comment": "Watch the hand movement again. Tomorrow: another animal signal. What part of this feels most impossible?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "f6a8e104c02ac593",
+        "title": "Owls read the moment from one eye contact",
+        "category": "forests",
+        "story_format": "animal_intelligence",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 86.0,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 60,
+            "signals": {
+              "viral_potential": 64,
+              "visual_potential": 51,
+              "replay_potential": 86,
+              "comment_potential": 38,
+              "educational_potential": 71,
+              "emotional_potential": 36,
+              "novelty": 61
+            },
+            "verdict": "rewrite",
+            "reasons": [
+              "weak_visual_surface"
+            ],
+            "confidence": {
+              "confidence_score": 0.227,
+              "sample_size": 2,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            },
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "retention": {
+            "score": 81,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 50,
+              "replay_score": 100,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.227,
+              "sample_size": 2,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            },
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "weak_content": {
+            "risk": 14,
+            "state": "clear",
+            "reasons": [
+              "weak_hook_pattern"
+            ],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 8,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 85,
+            "state": "strong",
+            "subscriber_probability": 0.121,
+            "return_probability": 0.258,
+            "comment_probability": 0.221,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.089,
+              "sample_size": 3,
+              "minimum_sample_size": 10,
+              "data_quality": "inferred",
+              "data_quality_score": 0.5,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.154,
+            "sample_size": 9,
+            "minimum_sample_size": 25,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.365,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.15."
+          },
+          "category": "forests",
+          "story_format": "animal_intelligence",
+          "hook_score": 74,
+          "title_score": 74,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 10.0,
+            "reasons": [
+              "low_decision_confidence"
+            ],
+            "confidence_score": 0.154,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "read_the_moment",
+            "mechanism_cluster": "cue_timing_read"
+          }
+        },
+        "autonomy_priority": 110.56,
+        "packaging_lab": {
+          "title_variants": [
+            "Owls read the moment from one eye contact",
+            "Owls signal through eye contact",
+            "Owls use eye contact before they signal"
+          ],
+          "thumbnail_variants": [
+            "EYE CONTACT",
+            "WATCH EYE CONTACT",
+            "OWLS SIGNAL"
+          ],
+          "hook_variants": [
+            "Owls reveal one visible signal",
+            "Owls read the moment from one eye contact",
+            "Owls is the example. Tomorrow: another animal signal. Do forests feel more like places, systems, or living mac"
+          ],
+          "pinned_comment": "Owls is the example. Tomorrow: another animal signal. Do forests feel more like places, systems, or living machines?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -4085,6 +4256,6 @@
     "Bias production toward experiment winners: script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, subtitle_density=medium, cta_pattern=question_tease, title_shape=impossible_fact, music_bed=off.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 22,
-  "queue_annotations_changed": 22
+  "queue_annotations_written": 23,
+  "queue_annotations_changed": 23
 }
