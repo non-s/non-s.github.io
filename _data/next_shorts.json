@@ -474,7 +474,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 14,
+      "evergreen": 15,
       "recovery": 3
     },
     "items": [
@@ -484,7 +484,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.86
+        "freshness_score": 53.78
       },
       {
         "id": "965914b8523cf456",
@@ -492,7 +492,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.0
+        "freshness_score": 52.92
       },
       {
         "id": "b0960cfb12495b2b",
@@ -500,7 +500,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.22
+        "freshness_score": 52.16
       },
       {
         "id": "3032d5677ea16c8d",
@@ -508,7 +508,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.7
+        "freshness_score": 53.62
       },
       {
         "id": "4477582e8d1d1123",
@@ -516,7 +516,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.38
+        "freshness_score": 53.32
       },
       {
         "id": "f6a8e104c02ac593",
@@ -524,7 +524,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.7
+        "freshness_score": 54.64
       },
       {
         "id": "8886fd2d03846d46",
@@ -532,7 +532,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.96
+        "freshness_score": 54.9
       },
       {
         "id": "055b5ba31c7d7c2b",
@@ -540,7 +540,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.86
+        "freshness_score": 54.78
       },
       {
         "id": "17f93bd1fd66bd13",
@@ -548,7 +548,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.8
+        "freshness_score": 52.74
       },
       {
         "id": "80a214d0a2236cfe",
@@ -556,7 +556,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.56
+        "freshness_score": 52.48
       },
       {
         "id": "044f781f8d21d65c",
@@ -564,7 +564,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.8
+        "freshness_score": 52.74
       },
       {
         "id": "27364e65ce486e95",
@@ -572,7 +572,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.66
+        "freshness_score": 53.58
       },
       {
         "id": "14f9e8f7fb4689a6",
@@ -580,7 +580,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.92
+        "freshness_score": 52.86
       },
       {
         "id": "35208228f95f00a2",
@@ -588,7 +588,7 @@
         "category": "primates",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.06
+        "freshness_score": 53.0
       },
       {
         "id": "9a87307932045891",
@@ -596,7 +596,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.22
+        "freshness_score": 52.16
       },
       {
         "id": "e560a640c41de380",
@@ -604,7 +604,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.8
+        "freshness_score": 52.74
       },
       {
         "id": "156aac7b95aef8a4",
@@ -612,7 +612,15 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.38
+        "freshness_score": 54.32
+      },
+      {
+        "id": "739b3b1303ac769e",
+        "title": "Why plant roots remember after one movement",
+        "category": "trees",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -664,17 +672,17 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 21,
-    "pending_after": 17,
+    "pending_before": 22,
+    "pending_after": 18,
     "rejected": 4,
     "repair_needed": 4,
     "repaired": 3,
     "reasons": {
-      "objective_gate:low_decision_confidence": 20,
+      "objective_gate:low_decision_confidence": 22,
       "objective_gate:observe_before_scaling": 10,
       "queue_score_reject": 4,
-      "template_cluster_limit:rely_to_survive": 3,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 4,
+      "template_cluster_limit:rely_to_survive": 3
     }
   }
 }
