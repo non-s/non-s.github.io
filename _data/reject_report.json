@@ -1,20 +1,20 @@
 {
-  "total": 56,
+  "total": 57,
   "reasons": {
     "copy_subject_mismatch": 15,
     "duplicate_title": 14,
     "duplicate_angle": 14,
-    "queue_score_reject": 10,
-    "title_shape_weak": 7,
-    "title_needs_stronger_shape": 7,
-    "subject_not_clear": 7,
-    "missing_visible_cue": 7,
+    "queue_score_reject": 11,
+    "title_shape_weak": 8,
+    "title_needs_stronger_shape": 8,
+    "subject_not_clear": 8,
+    "missing_visible_cue": 8,
     "subject repeated inside 3-day cooldown": 7,
     "script_length_risk": 6,
+    "missing_visual_cue": 6,
+    "missing_action_word": 6,
     "script_subject_mismatch": 6,
     "subject_not_immediately_clear": 5,
-    "missing_visual_cue": 5,
-    "missing_action_word": 5,
     "duplicate_script": 5,
     "story angle repeated inside 10-day cooldown": 5,
     "editorial score 38 is below 62": 2,
@@ -25,30 +25,18 @@
     "no_action_promise": 1,
     "off_topic_visual": 1,
     "non_animal_body_language": 1,
-    "editorial score 36 is below 62": 1
+    "editorial score 36 is below 62": 1,
+    "payoff_not_explicit": 1,
+    "script does not expose enough concrete visual detail": 1
   },
   "stages": {
     "queue_prune_final": 18,
     "queue_quality": 15,
-    "queue_repair": 10,
+    "queue_repair": 11,
     "editor_in_chief": 7,
     "queue_prune": 6
   },
   "latest": [
-    {
-      "story_id": "b6e75690ad5aa13a",
-      "stage": "editor_in_chief",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "story angle repeated inside 10-day cooldown",
-        "editorial score 34 is below 62"
-      ],
-      "title": "Cats read the moment from one ear shift",
-      "category": "cats",
-      "source_url": "https://www.pexels.com/video/charming-cat-basking-in-sunlight-indoors-35155681/",
-      "recorded_at": "2026-06-13T15:21:45.726104+00:00",
-      "rewrite_attempted": false
-    },
     {
       "story_id": "33b5082b104c19f8",
       "stage": "queue_prune_final",
@@ -230,6 +218,26 @@
       "rewrite_attempted": false
     },
     {
+      "story_id": "e3eec0d061f8518c",
+      "stage": "queue_repair",
+      "reasons": [
+        "missing_visual_cue",
+        "payoff_not_explicit",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "title": "Bats use first move before they change",
+      "category": "nocturnal",
+      "source_url": "https://www.pexels.com/video/video-of-halloween-decorations-hanging-5604119/",
+      "recorded_at": "2026-06-14T00:14:44.318464+00:00",
+      "rewrite_attempted": false
+    },
+    {
       "story_id": "16c5dc66465d8eaa",
       "stage": "queue_quality",
       "reasons": [
@@ -238,7 +246,7 @@
       "title": "Mantis read the moment from one leaf movement",
       "category": "insects",
       "source_url": "https://www.pexels.com/video/close-up-of-a-praying-mantis-on-leaf-31005816/",
-      "recorded_at": "2026-06-13T23:37:14.130141+00:00",
+      "recorded_at": "2026-06-14T00:15:20.276183+00:00",
       "rewrite_attempted": false
     },
     {
@@ -250,7 +258,7 @@
       "title": "Bees rely on wing movement to survive",
       "category": "insects",
       "source_url": "https://www.pexels.com/video/bees-on-old-clothing-8233976/",
-      "recorded_at": "2026-06-13T23:37:14.132524+00:00",
+      "recorded_at": "2026-06-14T00:15:20.278289+00:00",
       "rewrite_attempted": false
     },
     {
@@ -262,7 +270,7 @@
       "title": "Bees use wing flash before they remember",
       "category": "insects",
       "source_url": "https://www.pexels.com/video/macro-shot-of-bee-on-lavender-flowers-33436585/",
-      "recorded_at": "2026-06-13T23:37:14.134273+00:00",
+      "recorded_at": "2026-06-14T00:15:20.279853+00:00",
       "rewrite_attempted": false
     },
     {
@@ -274,19 +282,7 @@
       "title": "Insects use leaf movement before they remember",
       "category": "insects",
       "source_url": "https://www.pexels.com/video/hand-holding-insects-11584753/",
-      "recorded_at": "2026-06-13T23:37:14.136218+00:00",
-      "rewrite_attempted": false
-    },
-    {
-      "story_id": "80a214d0a2236cfe",
-      "stage": "queue_quality",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Sharks rely on fin movement to survive",
-      "category": "ocean",
-      "source_url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
-      "recorded_at": "2026-06-13T23:37:14.137875+00:00",
+      "recorded_at": "2026-06-14T00:15:20.281603+00:00",
       "rewrite_attempted": false
     },
     {
@@ -298,7 +294,19 @@
       "title": "Chickens rely on eye contact to call",
       "category": "farm",
       "source_url": "https://www.pexels.com/video/close-up-on-chickens-10267918/",
-      "recorded_at": "2026-06-13T23:37:14.139432+00:00",
+      "recorded_at": "2026-06-14T00:15:20.283054+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "80a214d0a2236cfe",
+      "stage": "queue_quality",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "title": "Sharks rely on fin movement to survive",
+      "category": "ocean",
+      "source_url": "https://www.pexels.com/video/sharks-in-aquarium-12210147/",
+      "recorded_at": "2026-06-14T00:15:20.285106+00:00",
       "rewrite_attempted": false
     },
     {
@@ -310,7 +318,7 @@
       "title": "Cats rely on hand movement to survive",
       "category": "cats",
       "source_url": "https://www.pexels.com/video/adorable-kitten-playfully-biting-a-hand-34690395/",
-      "recorded_at": "2026-06-13T23:37:14.143259+00:00",
+      "recorded_at": "2026-06-14T00:15:20.287743+00:00",
       "rewrite_attempted": false
     },
     {
@@ -322,7 +330,7 @@
       "title": "Geology signals through rock layers",
       "category": "geology",
       "source_url": "https://www.pexels.com/video/exploring-a-narrow-rocky-canyon-passage-37497803/",
-      "recorded_at": "2026-06-13T23:37:14.146339+00:00",
+      "recorded_at": "2026-06-14T00:15:20.290369+00:00",
       "rewrite_attempted": false
     },
     {
@@ -334,7 +342,7 @@
       "title": "Monkeys rely on leaves to freeze",
       "category": "primates",
       "source_url": "https://www.pexels.com/video/a-group-of-monkeys-are-sitting-on-the-ground-26387638/",
-      "recorded_at": "2026-06-13T23:37:14.148170+00:00",
+      "recorded_at": "2026-06-14T00:15:20.291613+00:00",
       "rewrite_attempted": false
     },
     {
@@ -346,7 +354,7 @@
       "title": "Dogs rely on ear position to survive",
       "category": "dogs",
       "source_url": "https://www.pexels.com/video/a-dog-sitting-on-the-sidewalk-27875229/",
-      "recorded_at": "2026-06-13T23:37:14.150206+00:00",
+      "recorded_at": "2026-06-14T00:15:20.293343+00:00",
       "rewrite_attempted": false
     },
     {
@@ -358,7 +366,7 @@
       "title": "Carnivorous Plant uses movement before it moves",
       "category": "plants",
       "source_url": "https://www.pexels.com/video/hyena-feeding-in-nairobi-grasslands-31702131/",
-      "recorded_at": "2026-06-13T23:37:14.152169+00:00",
+      "recorded_at": "2026-06-14T00:15:20.294998+00:00",
       "rewrite_attempted": false
     }
   ]
