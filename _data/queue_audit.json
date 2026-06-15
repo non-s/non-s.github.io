@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-15T01:51:59.118999+00:00",
-  "pending": 3,
+  "generated_at": "2026-06-15T02:12:03.339543+00:00",
+  "pending": 4,
   "states": {
-    "rewrite": 3
+    "rewrite": 4
   },
   "mechanism_clusters": {
     "dance_navigation": 1,
@@ -10,20 +10,46 @@
     "tongue_smell": 1
   },
   "rights": {
-    "approved": 3
+    "approved": 4
   },
   "prune_summary": {
-    "pending_before": 3,
-    "pending_after": 3,
-    "rejected": 0,
-    "repair_needed": 0,
+    "pending_before": 6,
+    "pending_after": 4,
+    "rejected": 2,
+    "repair_needed": 1,
     "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 6,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2
+      "objective_gate:bootstrap_observe_before_scaling": 8,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2,
+      "subject_not_immediately_clear": 1,
+      "thumbnail_text_not_scannable": 1,
+      "thumbnail_not_2_4_words": 1,
+      "queue_score_reject": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "c0b3606e1f12ec0d",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9a1c62f1fe639b62",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "0a2b9b07a5324fb1",
       "title": "Beetles can steer by the Milky Way",
@@ -201,7 +227,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T01:51:56.425911+00:00",
+        "checked_at": "2026-06-15T02:11:59.760643+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -500,6 +526,450 @@
       }
     },
     {
+      "id": "2c08204817358657",
+      "title": "Beetles can steer by the Milky Way",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 8.8,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 82,
+            "viral_potential": 85,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-15T02:11:59.776537+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 96.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 96.0,
+      "youtube_brain": {
+        "animal": "beetles",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "beetles",
+        "viewer_promise": "See why beetles body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after beetles?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "These insects change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": false,
+          "notes": [],
+          "recommended_duration_s": 18,
+          "recommended_format": "mechanism_reveal",
+          "score": 80.0,
+          "violations": [
+            "script does not expose enough concrete visual detail"
+          ]
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "explore",
+          "sample_count": 1,
+          "winners": {
+            "hook_pattern": "{subject} {subject} the {subject} map {subject} the {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Beetles can use the night sky like a compass",
+          "Beetles see what we couldn't",
+          "Beetles show the star compass before the payoff.",
+          "Beetles show the star compass before the payoff.",
+          "Beetles show the star compass before the payoff."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "beetles",
+          "ending_line": "Tell me in the comments.",
+          "final_line": "Now the beetles at the start make sense.",
+          "loop_score": 0.406,
+          "opening_line": "Beetles see what we couldn't",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "beetles",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.406,
+        "pinned_comment": "Watch the star compass again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.44,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Beetles built special vision years ago Watch this one twice its eyes",
+          "first_frame_text": "STAR COMPASS",
+          "first_frame_text_words": 2,
+          "hook": "Beetles see what we couldn't",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.406,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.8,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the star compass, so viewers rewatch the beetles clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "script does not expose enough concrete visual detail"
+        ],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Beetles see what we couldn't",
+          "score": 80,
+          "thumbnail_text": "STAR COMPASS",
+          "title": "Beetles can steer by the Milky Way"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "STAR COMPASS",
+          "WATCH STAR COMPASS",
+          "BEETLES TRICK",
+          "STAR COMPASS MATTERS",
+          "STAR COMPASS PAYOFF",
+          "STAR COMPASS FIRST",
+          "STAR COMPASS REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Beetles can steer by the Milky Way",
+          "Beetles built special vision 100 years ago",
+          "Beetles use star compass before they trick",
+          "Why beetles trick after one star compass",
+          "Beetles reveal the answer with star compass",
+          "The star compass that changes the moment",
+          "Beetles make one star compass matter",
+          "Beetles show the hidden payoff in seconds",
+          "Beetles: watch this star compass"
+        ],
+        "top_variants": [
+          {
+            "hook": "Beetles see what we couldn't",
+            "score": 80,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 79,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Watch the star compass; the payoff lands seconds later",
+            "score": 79,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles see what we couldn't",
+            "score": 73,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles see what we couldn't",
+            "score": 73,
+            "thumbnail_text": "BEETLES TRICK",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles see what we couldn't",
+            "score": 73,
+            "thumbnail_text": "STAR COMPASS MATTERS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles see what we couldn't",
+            "score": 73,
+            "thumbnail_text": "STAR COMPASS PAYOFF",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 72,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Watch the star compass; the payoff lands seconds later",
+            "score": 72,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 72,
+            "thumbnail_text": "BEETLES TRICK",
+            "title": "Beetles can steer by the Milky Way"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/publicdomain/mark/1.0/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "edaa62bebbe142e8",
       "title": "Geology signals through rock layer",
       "category": "geology",
@@ -645,7 +1115,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T01:51:56.428224+00:00",
+        "checked_at": "2026-06-15T02:11:59.779067+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1088,7 +1558,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T01:51:56.429560+00:00",
+        "checked_at": "2026-06-15T02:11:59.780445+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
