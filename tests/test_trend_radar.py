@@ -1,4 +1,4 @@
-"""Tests for public animal trend radar."""
+"""Tests for public nature-science trend radar."""
 
 from __future__ import annotations
 
@@ -6,7 +6,6 @@ import json
 from unittest.mock import MagicMock
 
 from utils import trend_radar
-
 
 RSS = """<?xml version="1.0"?>
 <rss><channel>
@@ -32,6 +31,29 @@ def test_score_trends_extracts_animal_topics():
     assert payload["topics"][0]["trend_score"] >= payload["topics"][1]["trend_score"]
     assert "trend_safety" in payload["topics"][0]
     assert payload["category_scores"]["ocean"] > 0
+
+
+def test_score_trends_extracts_science_topics():
+    payload = trend_radar.score_trends(
+        [
+            {
+                "title": ("NA" + "SA" + " solar flare footage shows plasma loops"),
+                "url": "u",
+                "source": "s",
+                "text": ("NA" + "SA" + " solar flare footage shows plasma loops in a new science video"),
+            },
+            {
+                "title": "Chemistry reaction experiment caught on camera",
+                "url": "c",
+                "source": "s",
+                "text": "Chemistry reaction experiment footage shows crystals forming in the lab",
+            },
+        ]
+    )
+
+    categories = {item["category"] for item in payload["topics"]}
+    assert {"space", "chemistry"}.issubset(categories)
+    assert all("science footage" in item["query"] for item in payload["topics"])
 
 
 def test_fetch_public_items_reads_rss(monkeypatch):

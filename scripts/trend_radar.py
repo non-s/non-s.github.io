@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write the local public animal trend radar."""
+"""Write the local public nature-science trend radar."""
 from __future__ import annotations
 
 import json
@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.trend_radar import build_trend_radar
+from utils.trend_radar import build_trend_radar  # noqa: E402
 
 OUT = ROOT / "_data" / "trend_radar.json"
 

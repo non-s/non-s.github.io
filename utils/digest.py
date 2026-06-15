@@ -199,7 +199,7 @@ def render_digest(shorts: list[dict], analytics_summary: dict | None = None) -> 
             lines.append(f"- {anomaly.get('reason', '')}")
             lines.append(
                 "- Likely causes: channel strike, YouTube rate-limit, "
-                "workflow failure, or empty animal queue. Investigate."
+                "workflow failure, or empty science queue. Investigate."
             )
             lines.append("")
 

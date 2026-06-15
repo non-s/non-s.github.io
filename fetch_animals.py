@@ -433,12 +433,13 @@ _AI_PROMPT_TEMPLATE = (
     "nature-science channel covering animals, plants, trees, fungi, "
     "oceans, rivers, mountains, forests, volcanoes, weather, rare "
     "natural phenomena, geology, ecosystems, Earth from space, "
-    "conservation, and scientific discoveries. Every Short combines "
-    "real nature footage with one visual surprise. Tone: curious, "
-    "cinematic, direct, no clickbait, no AI-isms. Speak like one "
-    "curious host, not a fact card: include one small human reaction, "
-    "two concrete visual details the viewer can notice, one tension "
-    "beat (but/because/that's why), and no generic phrases like "
+    "astronomy, physics, chemistry, microscopy, conservation, and "
+    "scientific discoveries. Every Short combines real public-domain "
+    "footage with one visual surprise that can be understood fast. "
+    "Tone: curious, cinematic, direct, no clickbait, no AI-isms. Speak "
+    "like one curious host, not a fact card: include one small human "
+    "reaction, two concrete visual details the viewer can notice, one "
+    "tension beat (but/because/that's why), and no generic phrases like "
     "nature is amazing, hidden secret, or you won't believe. "
     "Respond ONLY with valid JSON.\n\n"
     "Clip:\n"
@@ -451,17 +452,22 @@ _AI_PROMPT_TEMPLATE = (
     "different subject just because it has a stronger fact. Turtle "
     "footage requires turtle facts; mushroom footage requires fungi "
     "facts; lava footage requires volcano or geology facts; storm "
-    "footage requires weather facts. If multiple natural subjects are "
-    "named, choose the one most visibly present.\n\n"
+    "footage requires weather facts; moon footage requires moon or "
+    "space facts; prism footage requires light or physics facts; "
+    "chemical reaction footage requires chemistry facts; microscope "
+    "footage requires microscopic biology or crystal facts. If multiple "
+    "subjects are named, choose the one most visibly present.\n\n"
     "ANGLE REQUIREMENT: do not default to movement/cue/position copy. "
     "The Short must answer a real curiosity about the visible subject: "
     "perception, memory, survival trick, feeding, anatomy, camouflage, "
-    "communication, parenting, navigation, or another concrete mechanism. "
+    "communication, parenting, navigation, force, light, reaction, phase "
+    "change, scale, orbit, atmosphere, or another concrete mechanism. "
     "Use movement only when the exact fact is about that movement. Bad: "
     "'Butterflies rely on wing movement.' Better: 'Butterflies carry color "
     "on tiny wing scales' or 'Butterflies taste flowers with their feet.' "
-    "Bad: 'Chickens read one visible cue.' Better: 'Chickens keep their "
-    "view steady while walking.'\n\n"
+    "Bad: 'The moon moves across space.' Better: 'The moon keeps one face "
+    "toward Earth because its spin is locked.' Bad: 'This reaction moves "
+    "fast.' Better: 'This reaction foams because gas is being made.'\n\n"
     "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
     "watch; 4-12s = real mechanism; final beat = satisfying payoff plus a "
     "tiny comment question. Keep sentences short enough for yellow "
@@ -476,8 +482,8 @@ _AI_PROMPT_TEMPLATE = (
     '"yt_tags": ["<5 lowercase tags. First 3 are subject-specific '
     "(subject, process, visible anchor). Last 2 are evergreen "
     '(\\"nature\\", \\"nature facts\\", \\"science\\", \\"earth science\\").>"],'
-    '"topic_hashtag": "<one CamelCase hashtag identifying the nature category. '
-    'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, Ecosystems.>",'
+    '"topic_hashtag": "<one CamelCase hashtag identifying the category. '
+    'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, SpaceScience, Physics, Chemistry, Microscopy.>",'
     '"thumbnail_text": "<2-4 word punchy phrase. ALL CAPS allowed. '
     'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
     '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'

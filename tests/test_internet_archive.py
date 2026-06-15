@@ -131,6 +131,20 @@ def test_archive_video_relevance_prefers_specific_nature_sources():
     assert weak_score < 18
 
 
+def test_archive_video_relevance_accepts_public_domain_space_science():
+    asset = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier=("na" + "sa" + "-solar-flare"),
+            title=("NA" + "SA" + " Solar Flare Footage"),
+            creator=("NA" + "SA" + " Goddard Space Flight Center"),
+            description="Public domain footage of a solar flare and plasma loops on the sun.",
+        )
+    )
+
+    assert asset is not None
+    assert ia.archive_video_relevance_score(asset, "solar flare") >= 18
+
+
 def test_archive_video_relevance_blocks_cartoon_false_positives():
     asset = ia.video_asset_from_metadata(
         _video_payload(

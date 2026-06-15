@@ -470,6 +470,28 @@ def test_topic_table_expands_discovery_surface():
     assert expected.issubset(set(fetch_animals.ANIMAL_TOPICS))
 
 
+def test_topic_table_expands_science_surface():
+    expected = {"space", "physics", "chemistry", "microscopy"}
+    assert expected.issubset(set(fetch_animals.ANIMAL_TOPICS))
+
+
+def test_science_topics_accept_matching_visible_subjects():
+    assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["space"], "Solar flare on the sun")
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["physics"],
+        "Pendulum experiment with a magnetic field",
+    )
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["chemistry"],
+        "Crystal growth chemical reaction",
+    )
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["microscopy"],
+        "Bacteria cells under a microscope",
+    )
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["chemistry"], "Solar flare on the sun")
+
+
 def test_topic_fetch_plan_boosts_thin_hot_topics():
     queue = {
         "stories": [

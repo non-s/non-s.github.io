@@ -1,9 +1,11 @@
-# Refresh the animal Shorts queue consumed by the YouTube publishing workflow.
-name: "Refresh animal queue"
+# Refresh the nature-science Shorts queue consumed by the YouTube workflow.
+name: "Refresh science queue"
 
 on:
   schedule:
-    - cron: "37 * * * *"
+    # GitHub scheduled workflows cannot run every minute; five minutes is the
+    # tightest reliable poll interval for Archive discovery.
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 # Serialise queue updates with YouTube publishing commits.
@@ -14,9 +16,8 @@ concurrency:
 jobs:
   refresh-queue:
     name: "Refresh YouTube Shorts queue"
-    # Queue refresh is paused with publishing while the Archive.org
-    # public-domain source strategy is being reviewed.
-    # Set repository variable QUEUE_REFRESH_ENABLED=1 to resume this job.
+    # Set QUEUE_REFRESH_ENABLED=1 to keep the free Archive.org discovery
+    # loop active. The job only admits explicit public-domain/CC0/US Gov media.
     if: ${{ vars.QUEUE_REFRESH_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -80,10 +81,10 @@ jobs:
       - name: "Harvest free freshness signals"
         run: python scripts/free_signal_harvester.py || true
 
-      - name: "Refresh public animal trend radar"
+      - name: "Refresh public science trend radar"
         run: python scripts/trend_radar.py || true
 
-      - name: "Refresh animal stories"
+      - name: "Refresh science stories"
         if: env.FETCH_QUOTA_BLOCKED != '1'
         timeout-minutes: 25
         run: python fetch_animals.py
@@ -221,7 +222,7 @@ jobs:
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
           if git diff --cached --quiet; then
-            echo "No new animal stories to commit."
+            echo "No new science stories to commit."
             exit 0
           fi
           PENDING=$(python -c "import json; d=json.load(open('_data/stories_queue.json')); print(sum(1 for s in d.get('stories', []) if not s.get('consumed')))")

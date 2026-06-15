@@ -1,9 +1,8 @@
-"""Safety and opportunity scoring for public animal trends."""
+"""Safety and opportunity scoring for public nature-science trends."""
 
 from __future__ import annotations
 
 import re
-
 
 HIGH_RISK = {
     "attack",

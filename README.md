@@ -1,10 +1,10 @@
 # Wild Brief - Nature Science Shorts Bot (YouTube)
 
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
-[![Refresh animal queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
+[![Refresh science queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns vetted nature footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
+Automated pipeline that turns vetted public-domain nature and science footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
 - Cadence: the workflow evaluates **one slot per hour, 00:00 through
   23:00 UTC**, for a 24/day publishing grid when quality and quota allow it.
@@ -19,7 +19,7 @@ Automated pipeline that turns vetted nature footage into vertical YouTube Shorts
   semantics stay aligned.
 - Duration target: **12-18 seconds**, biased toward high completion rate.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
-- Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, conservation and discoveries.
+- Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, astronomy, physics, chemistry, microscopy, conservation and discoveries.
 
 ## Pipeline
 

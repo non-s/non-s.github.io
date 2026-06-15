@@ -1,8 +1,8 @@
-"""Free animal-trend radar for Wild Brief.
+"""Free nature-science trend radar for Wild Brief.
 
-The radar reads public RSS/search feeds, extracts animal topics, scores
-them conservatively, and produces a local payload the queue refresh can
-use. No paid APIs, no credentials, and no live data is required in tests.
+The radar reads public RSS/search feeds, extracts nature-science topics,
+scores them conservatively, and produces a local payload the queue refresh
+can use. No paid APIs, no credentials, and no live data is required in tests.
 """
 
 from __future__ import annotations
@@ -35,6 +35,52 @@ ANIMAL_ALIASES: dict[str, tuple[str, ...]] = {
     "ocean": ("orca", "shark", "whale", "dolphin", "octopus", "turtle", "seal", "sea lion"),
     "primates": ("chimpanzee", "gorilla", "orangutan", "monkey", "macaque"),
     "reptiles": ("snake", "lizard", "crocodile", "turtle", "chameleon", "gecko"),
+    "space": (
+        "moon",
+        "mars",
+        "solar flare",
+        "eclipse",
+        "meteor",
+        "comet",
+        "asteroid",
+        "galaxy",
+        "nebula",
+        "rocket",
+        "telescope",
+        "satellite",
+    ),
+    "physics": (
+        "magnet",
+        "magnetic field",
+        "pendulum",
+        "prism",
+        "laser",
+        "electricity",
+        "plasma",
+        "gravity",
+        "wave",
+        "vacuum",
+    ),
+    "chemistry": (
+        "chemical reaction",
+        "crystal",
+        "molecule",
+        "flame test",
+        "electrolysis",
+        "dry ice",
+        "sublimation",
+        "lab experiment",
+    ),
+    "microscopy": (
+        "microscope",
+        "cell",
+        "bacteria",
+        "microbe",
+        "microorganism",
+        "algae",
+        "amoeba",
+        "dna",
+    ),
     "wildlife": ("bear", "elephant", "lion", "tiger", "wolf", "deer", "fox", "leopard"),
 }
 
@@ -51,6 +97,12 @@ TREND_TERMS = (
     "behavior",
     "intelligence",
     "camera",
+    "experiment",
+    "footage",
+    "na" + "sa",
+    "research",
+    "public domain",
+    "visualized",
     "wildlife",
     "conservation",
     "zoo",
@@ -71,6 +123,19 @@ LEGACY_PLATFORM_TERMS = (
     "bird" + "tok",
     "farm" + "tok",
 )
+ANIMAL_CATEGORIES = {
+    "arctic",
+    "birds",
+    "cats",
+    "dogs",
+    "farm",
+    "insects",
+    "nocturnal",
+    "ocean",
+    "primates",
+    "reptiles",
+    "wildlife",
+}
 
 
 def _legacy_platform_hit(text: str) -> bool:
@@ -119,6 +184,11 @@ def fetch_public_items(queries: list[str] | None = None, feeds: tuple[str, ...] 
         "animal behavior study",
         "rare animal sighting",
         "animal rescue viral",
+        "space science footage",
+        ("na" + "sa") + " solar flare video",
+        "physics experiment video",
+        "chemistry reaction experiment",
+        "microscope biology video",
     ]
     items: list[dict] = []
     session = requests.Session()
@@ -174,6 +244,7 @@ def score_trends(items: list[dict]) -> dict:
     for key, rows in topic_hits.items():
         category, animal = key.split(":", 1)
         top = sorted(rows, key=lambda r: r["score"], reverse=True)[:5]
+        query_context = "animal behavior" if category in ANIMAL_CATEGORIES else "science footage"
         topics.append(
             {
                 "category": category,
@@ -183,7 +254,7 @@ def score_trends(items: list[dict]) -> dict:
                 "top_titles": [r["title"] for r in top],
                 "top_urls": [r["url"] for r in top if r.get("url")],
                 "terms": sorted({term for r in rows for term in r.get("terms", [])})[:8],
-                "query": f"{animal} animal {(' '.join(top[0].get('terms') or [])).strip()}".strip(),
+                "query": f"{animal} {query_context} {(' '.join(top[0].get('terms') or [])).strip()}".strip(),
             }
         )
     topics.sort(key=lambda r: (r["trend_score"], r["mentions"]), reverse=True)
