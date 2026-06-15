@@ -40,8 +40,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/rejected_queue.jsonl" in youtube_workflow
     assert 'while [ "${ready}" -lt "${target}" ]' in youtube_workflow
     assert "if: always() && steps.publish_window.outputs.should_publish == 'true'" in youtube_workflow
-    assert 'cron: "20 * * * *"' in youtube_workflow
-    assert 'cron: "40 * * * *"' in youtube_workflow
+    assert 'cron: "2 * * * *"' in youtube_workflow
+    assert 'cron: "22 * * * *"' in youtube_workflow
+    assert 'cron: "42 * * * *"' in youtube_workflow
     watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
     assert 'GRACE_MINUTES: "35"' in watchdog_workflow

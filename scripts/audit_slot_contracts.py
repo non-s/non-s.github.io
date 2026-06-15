@@ -15,6 +15,8 @@ if str(ROOT) not in sys.path:
 
 from utils.publish_schedule import CANONICAL_SLOTS_UTC  # noqa: E402
 
+PUBLISH_SLOT_PROXY_MINUTES = {2, 20, 22, 40, 42}
+
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -56,6 +58,17 @@ def _cron_slots(text: str) -> set[str]:
     return slots
 
 
+def _intended_publish_slots(text: str) -> set[str]:
+    slots: set[str] = set()
+    for slot in _cron_slots(text):
+        hour, minute = [int(part) for part in slot.split(":", 1)]
+        if minute in PUBLISH_SLOT_PROXY_MINUTES:
+            slots.add(f"{hour:02d}:00")
+        else:
+            slots.add(slot)
+    return slots
+
+
 def _append_overlap_errors(errors: list[str], left_name: str, left: set[str], right_name: str, right: set[str]) -> None:
     overlap = sorted(left & right)
     if overlap:
@@ -81,7 +94,7 @@ def audit_slot_contracts(root: Path = ROOT) -> dict:
     watchdog_slots = _cron_slots(watchdog_text)
     fetch_slots = _cron_slots(fetch_text)
     errors: list[str] = []
-    missing_bot = sorted(canonical - bot_slots)
+    missing_bot = sorted(canonical - _intended_publish_slots(bot_text))
     if missing_bot:
         errors.append("youtube-bot.yml missing canonical slots: " + ", ".join(missing_bot))
     if fetch_slots:

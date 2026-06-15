@@ -13,6 +13,8 @@ if str(ROOT) not in sys.path:
 
 from utils.publish_schedule import CANONICAL_SLOTS_UTC  # noqa: E402
 
+PUBLISH_SLOT_PROXY_MINUTES = {2, 20, 22, 40, 42}
+
 REQUIRED_FLAGS = (
     "ADAPTIVE_CADENCE_ENABLED",
     "ALLOW_FLEX_SLOT",
@@ -39,11 +41,22 @@ def _workflow_slots(workflow: str) -> set[str]:
     return slots
 
 
+def _workflow_intended_publish_slots(workflow: str) -> set[str]:
+    slots = set()
+    for slot in _workflow_slots(workflow):
+        hour, minute = [int(part) for part in slot.split(":", 1)]
+        if minute in PUBLISH_SLOT_PROXY_MINUTES:
+            slots.add(f"{hour:02d}:00")
+        else:
+            slots.add(slot)
+    return slots
+
+
 def check_schedule_sync(root: Path = ROOT) -> list[str]:
     errors: list[str] = []
     canonical = set(CANONICAL_SLOTS_UTC)
     workflow = _read(root / ".github" / "workflows" / "youtube-bot.yml")
-    workflow_slots = _workflow_slots(workflow)
+    workflow_slots = _workflow_intended_publish_slots(workflow)
     missing_workflow = sorted(canonical - workflow_slots)
     if missing_workflow:
         errors.append(f"youtube-bot.yml cron is missing canonical slots: {', '.join(missing_workflow)}")

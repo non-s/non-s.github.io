@@ -80,7 +80,7 @@ def _target_slot_from_scheduled_time(scheduled: datetime) -> str:
     canonical_minutes = {int(str(slot).split(":", 1)[1]) for slot in CANONICAL_SLOTS_UTC}
     if scheduled.minute in canonical_minutes:
         target = scheduled
-    elif scheduled.minute in {20, 40}:
+    elif scheduled.minute in {2, 20, 22, 40, 42}:
         target = scheduled.replace(minute=0)
     elif scheduled.minute == 43:
         # Legacy recovery cron: :43 recovered the previous :23 slot.

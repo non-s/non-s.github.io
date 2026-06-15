@@ -5,11 +5,13 @@ name: "YouTube Bot - Shorts only"
 # is the source of truth that decides publish vs safe skip.
 on:
   schedule:
-    - cron: "0 * * * *"
+    # Offset from the crowded top-of-hour GitHub cron minute while still
+    # targeting the canonical HH:00 publishing slot in publish_schedule.py.
+    - cron: "2 * * * *"
     # Recovery launches for delayed/dropped GitHub schedule events.
     # scripts/publish_window.py only allows these inside the slot grace window.
-    - cron: "20 * * * *"
-    - cron: "40 * * * *"
+    - cron: "22 * * * *"
+    - cron: "42 * * * *"
   workflow_dispatch:
     inputs:
       reason:
