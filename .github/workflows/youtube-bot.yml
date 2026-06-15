@@ -70,7 +70,7 @@ jobs:
       PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
         with:
           fetch-depth: 0
       - name: "Python 3.11"
@@ -462,7 +462,7 @@ jobs:
           exit 1
       - name: "Log de execucao"
         if: always()
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7
         with:
           name: "youtube-log-${{ github.run_number }}"
           path: |
