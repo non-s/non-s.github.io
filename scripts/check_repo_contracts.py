@@ -94,6 +94,12 @@ WORKFLOW_TOKENS = {
         "merge_jsonl_state.py",
         "reconcile_queue_uploads.py",
     ),
+    ".github/workflows/youtube-hourly-heartbeat.yml": (
+        'TARGET_WORKFLOW: "youtube-bot.yml"',
+        "PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170'",
+        "watchdog recovery for missed slot",
+        "recent_publisher_run",
+    ),
     ".github/workflows/dashboard.yml": (
         "compact_analytics.py",
         "opening_audit_report.py",

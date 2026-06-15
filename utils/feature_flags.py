@@ -88,6 +88,27 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set to 40.",
     ),
     FeatureFlag(
+        "PUBLISH_HEARTBEAT_RUNTIME_MINUTES",
+        "170",
+        "publishing",
+        "Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots.",
+        "Lower to reduce runner time or disable the heartbeat workflow.",
+    ),
+    FeatureFlag(
+        "PUBLISH_HEARTBEAT_DISPATCH_MINUTE",
+        "6",
+        "publishing",
+        "Minute of each hour when the heartbeat dispatches a missed publisher run.",
+        "Use an off-peak minute between 3 and 12.",
+    ),
+    FeatureFlag(
+        "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES",
+        "10",
+        "publishing",
+        "Lookback before a slot used by the heartbeat to avoid duplicate publisher dispatches.",
+        "Raise if GitHub frequently delays publisher runs.",
+    ),
+    FeatureFlag(
         "STUDIO_REACH_IMPORT_ENABLED", "1", "analytics", "Import manually exported Shorts Reach CSV data.", "Set to 0."
     ),
     FeatureFlag(

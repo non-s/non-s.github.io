@@ -1,0 +1,130 @@
+name: "YouTube hourly heartbeat"
+
+# GitHub schedule events are best-effort and can be delayed or dropped,
+# especially near crowded cron minutes. This bounded heartbeat keeps a runner
+# alive for a few hours and dispatches youtube-bot.yml once per hourly slot.
+on:
+  schedule:
+    # Start away from busy minutes. The job is bounded below the 6h Actions
+    # limit and overlapping starts cancel the older heartbeat.
+    - cron: "13 */3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: youtube-hourly-heartbeat
+  cancel-in-progress: true
+
+jobs:
+  dispatch-hourly:
+    name: "Dispatch hourly YouTube publisher"
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      actions: write
+      contents: read
+    env:
+      TARGET_WORKFLOW: "youtube-bot.yml"
+      HEARTBEAT_RUNTIME_MINUTES: ${{ vars.PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170' }}
+      HEARTBEAT_DISPATCH_MINUTE: ${{ vars.PUBLISH_HEARTBEAT_DISPATCH_MINUTE || '6' }}
+      HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES: ${{ vars.PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '10' }}
+    steps:
+      - name: "Run bounded hourly heartbeat"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import os
+          import sys
+          import time
+          import urllib.error
+          import urllib.request
+          from datetime import datetime, timedelta, timezone
+
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GH_REPOSITORY"]
+          workflow = os.environ.get("TARGET_WORKFLOW", "youtube-bot.yml")
+          runtime_minutes = max(15, min(175, int(os.environ.get("HEARTBEAT_RUNTIME_MINUTES", "170"))))
+          dispatch_minute = max(0, min(59, int(os.environ.get("HEARTBEAT_DISPATCH_MINUTE", "6"))))
+          tolerance = timedelta(
+              minutes=max(0, int(os.environ.get("HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES", "10")))
+          )
+          end_at = datetime.now(timezone.utc) + timedelta(minutes=runtime_minutes)
+          dispatched_slots: set[str] = set()
+
+          def request_json(method: str, url: str, body: dict | None = None):
+              data = None if body is None else json.dumps(body).encode("utf-8")
+              req = urllib.request.Request(
+                  url,
+                  data=data,
+                  method=method,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "User-Agent": "wildbrief-youtube-hourly-heartbeat",
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  raw = response.read()
+                  return None if not raw else json.loads(raw.decode("utf-8"))
+
+          def recent_publisher_run(slot: datetime) -> bool:
+              threshold = slot - tolerance
+              runs_url = f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/runs?per_page=30"
+              runs = request_json("GET", runs_url).get("workflow_runs", [])
+              for run in runs:
+                  created_at = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+                  if created_at < threshold:
+                      continue
+                  status = run.get("status")
+                  conclusion = run.get("conclusion")
+                  if status in {"queued", "in_progress", "waiting", "requested", "pending"}:
+                      print(f"Publisher already active for {slot.isoformat()}: {run.get('html_url')}")
+                      return True
+                  if status == "completed" and conclusion == "success":
+                      print(f"Publisher already succeeded near {slot.isoformat()}: {run.get('html_url')}")
+                      return True
+              return False
+
+          def dispatch(slot: datetime) -> None:
+              dispatch_url = f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/dispatches"
+              reason = f"watchdog recovery for missed slot {slot.isoformat()}"
+              request_json("POST", dispatch_url, {"ref": "main", "inputs": {"reason": reason}})
+              print(f"Dispatched {workflow}: {reason}")
+
+          print(
+              "Heartbeat active until "
+              f"{end_at.isoformat()} with dispatch minute :{dispatch_minute:02d}."
+          )
+          while datetime.now(timezone.utc) < end_at:
+              now = datetime.now(timezone.utc)
+              slot = now.replace(minute=0, second=0, microsecond=0)
+              dispatch_at = slot.replace(minute=dispatch_minute)
+              if now < dispatch_at:
+                  sleep_for = min(60, max(1, int((dispatch_at - now).total_seconds())))
+                  time.sleep(sleep_for)
+                  continue
+
+              slot_key = slot.isoformat()
+              if slot_key not in dispatched_slots:
+                  dispatched_slots.add(slot_key)
+                  try:
+                      if not recent_publisher_run(slot):
+                          dispatch(slot)
+                  except urllib.error.HTTPError as exc:
+                      detail = exc.read().decode("utf-8", errors="replace")
+                      print(f"Heartbeat dispatch failed: HTTP {exc.code} {detail}", file=sys.stderr)
+                      raise
+
+              next_slot = slot + timedelta(hours=1)
+              next_dispatch = next_slot.replace(minute=dispatch_minute)
+              sleep_for = min(300, max(1, int((next_dispatch - datetime.now(timezone.utc)).total_seconds())))
+              time.sleep(sleep_for)
+
+          print("Heartbeat finished normally.")
+          PY

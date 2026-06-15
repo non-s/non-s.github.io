@@ -33,6 +33,9 @@
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `12`. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
+| `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | no | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. Defaults to `170`. |
+| `PUBLISH_HEARTBEAT_DISPATCH_MINUTE` | no | Minute of each hour when the heartbeat dispatches a missed publisher run. Defaults to `6`. |
+| `PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES` | no | Lookback before a slot used by the heartbeat to avoid duplicate publisher dispatches. Defaults to `10`. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | no | When enabled, uploads are private scheduled videos using `publishAt` instead of immediate public uploads. Defaults to `0`. |
 | `YOUTUBE_SCHEDULE_START_UTC` | no | Optional RFC3339 start time for scheduled upload batches. Defaults to one hour from upload time. |
 | `YOUTUBE_SCHEDULE_SLOTS_UTC` | no | Optional comma-separated `HH:MM` UTC slots for scheduled upload batches. Defaults to the canonical publish grid. |
@@ -87,6 +90,9 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
 | `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Keep the full-day stock target in `QUEUE_TARGET_PENDING` / `PUBLISH_BACKFILL_QUEUE_TARGET`. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `12` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
+| `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | `170` | publishing | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. | Lower to reduce runner time or disable the heartbeat workflow. |
+| `PUBLISH_HEARTBEAT_DISPATCH_MINUTE` | `6` | publishing | Minute of each hour when the heartbeat dispatches a missed publisher run. | Use an off-peak minute between 3 and 12. |
+| `PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES` | `10` | publishing | Lookback before a slot used by the heartbeat to avoid duplicate publisher dispatches. | Raise if GitHub frequently delays publisher runs. |
 | `BROLL_SOURCE_MODE` | `pexels` | discovery | Use Pexels as the only active production visual source. | Set back to `pexels`. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | `94371840` | production | Cap video-source downloads during rendering. | Lower during CI timeouts. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
