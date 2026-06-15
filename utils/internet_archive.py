@@ -10,6 +10,7 @@ with provenance attached.
 from __future__ import annotations
 
 import hashlib
+import html
 import logging
 import os
 import re
@@ -135,19 +136,34 @@ ARCHIVE_NATURE_TERMS = (
 )
 ARCHIVE_LOW_SIGNAL_TERMS = (
     "advertisement",
+    "animated",
+    "animation",
+    "behind the scenes",
+    "behind-the-scenes",
+    "bert the turtle",
     "cartoon",
+    "cartoons",
     "chapter",
+    "children's film",
+    "civil defense",
     "commercial",
+    "duck and cover",
     "episode",
     "feature film",
+    "featurette",
+    "fictional",
     "home movie",
     "interview",
     "lecture",
+    "magoo",
     "newsreel",
+    "once upon a forest",
+    "selected for the 2004 national film registry",
     "serial",
     "silent film",
     "talk show",
     "trailer",
+    "vhs",
 )
 
 
@@ -215,6 +231,13 @@ def _first(value: Any) -> str:
     return str(value or "")
 
 
+def _clean_text(value: Any) -> str:
+    text = html.unescape(_first(value))
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
 def _join_values(*values: Any) -> str:
     parts: list[str] = []
     for value in values:
@@ -265,8 +288,9 @@ def archive_video_relevance_score(asset: ArchiveVideoAsset, query: str) -> int:
         score -= 18
     if int(asset.downloads or 0) >= 100:
         score += 4
-    if any(term in haystack for term in ARCHIVE_LOW_SIGNAL_TERMS):
-        score -= 30
+    low_signal_hits = sum(1 for term in ARCHIVE_LOW_SIGNAL_TERMS if term in haystack)
+    if low_signal_hits:
+        score -= 90 + (low_signal_hits - 1) * 15
     return score
 
 
@@ -477,8 +501,8 @@ def asset_from_metadata(payload: dict[str, Any], *, mood: str = "upbeat") -> Arc
     return ArchiveAudioAsset(
         identifier=identifier,
         file_name=file_name,
-        title=_first(metadata.get("title")) or identifier,
-        creator=_first(metadata.get("creator")),
+        title=_clean_text(metadata.get("title")) or identifier,
+        creator=_clean_text(metadata.get("creator")),
         url=DOWNLOAD_URL.format(identifier=encoded_identifier, filename=encoded_file),
         source_url=f"https://archive.org/details/{encoded_identifier}",
         license=_first(metadata.get("licenseurl") or metadata.get("rights") or evidence),
@@ -511,15 +535,15 @@ def video_asset_from_metadata(payload: dict[str, Any]) -> ArchiveVideoAsset | No
     return ArchiveVideoAsset(
         identifier=identifier,
         file_name=file_name,
-        title=_first(metadata.get("title")) or identifier,
-        creator=_first(metadata.get("creator")),
+        title=_clean_text(metadata.get("title")) or identifier,
+        creator=_clean_text(metadata.get("creator")),
         url=DOWNLOAD_URL.format(identifier=encoded_identifier, filename=encoded_file),
         source_url=f"https://archive.org/details/{encoded_identifier}",
         license=_first(metadata.get("licenseurl") or metadata.get("rights") or evidence),
         license_evidence=evidence,
         mediatype=_first(metadata.get("mediatype")) or "movies",
         collection=collection_text,
-        description=_first(metadata.get("description"))[:500],
+        description=_clean_text(metadata.get("description"))[:500],
         downloads=_int_value(metadata.get("downloads") or payload.get("downloads")),
         width=_int_value(video_file.get("width")),
         height=_int_value(video_file.get("height")),

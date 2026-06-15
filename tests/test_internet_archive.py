@@ -126,9 +126,22 @@ def test_archive_video_relevance_prefers_specific_nature_sources():
     )
 
     assert strong is not None and weak is not None
-    assert ia.archive_video_relevance_score(strong, "birds wildlife") > ia.archive_video_relevance_score(
-        weak, "birds wildlife"
+    weak_score = ia.archive_video_relevance_score(weak, "birds wildlife")
+    assert ia.archive_video_relevance_score(strong, "birds wildlife") > weak_score
+    assert weak_score < 18
+
+
+def test_archive_video_relevance_blocks_cartoon_false_positives():
+    asset = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier="magoo-beats-the-heat-1956",
+            title="Magoo Beats the Heat (1956)",
+            description="Mr. Magoo goes to the beach and hooks a turtle in an animated cartoon.",
+        )
     )
+
+    assert asset is not None
+    assert ia.archive_video_relevance_score(asset, "sea turtle") < 18
 
 
 def test_video_asset_from_metadata_rejects_missing_public_domain_evidence():

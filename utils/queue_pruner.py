@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import re
 import json
+import re
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -12,6 +12,7 @@ import fetch_animals
 from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
 from utils.claim_risk import evaluate_claim_risk
 from utils.editorial import review as editorial_review
+from utils.editorial_guard import editorial_issues
 from utils.fact_ledger import duplicate_angle_ids
 from utils.local_rewriter import rescue_story
 from utils.packaging import extract_action, extract_animal, extract_cue, package_story
@@ -19,7 +20,6 @@ from utils.publish_score import score_story
 from utils.rights_audit import audit_rights
 from utils.rights_guard import evaluate_rights_guard
 from utils.youtube_brain import creator_premortem
-from utils.editorial_guard import editorial_issues
 
 GENERIC_TITLE_PHRASES = (
     "one visible cue for a reason",
@@ -119,7 +119,11 @@ def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = No
         (),
         {
             "url": story.get("url") or story.get("source_url") or "",
-            "title": story.get("source_title") or story.get("title") or "",
+            "title": story.get("source_title")
+            or story.get("source_description")
+            or story.get("description")
+            or story.get("title")
+            or "",
         },
     )()
     subject = fetch_animals._subject_from_clip(clip, category)
@@ -235,7 +239,11 @@ def quality_issues(
             (),
             {
                 "url": story.get("url") or story.get("source_url") or "",
-                "title": story.get("source_title") or story.get("title") or "",
+                "title": story.get("source_title")
+                or story.get("source_description")
+                or story.get("description")
+                or story.get("title")
+                or "",
             },
         )()
         subject = fetch_animals._subject_from_clip(clip, str(story.get("category") or ""))

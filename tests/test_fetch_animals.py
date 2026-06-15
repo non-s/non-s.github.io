@@ -202,6 +202,14 @@ def test_topic_rejects_visible_animal_in_nature_lane_without_reclassification():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["plants"], "bee on a flower")
 
 
+def test_topic_rejects_archive_title_that_only_mentions_animal_as_movie_context():
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["farm"], "Duck and Cover")
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["ocean"],
+        "Mr. Magoo hooks a turtle in an animated cartoon",
+    )
+
+
 def test_topic_for_subject_reclassifies_bee_from_plants_to_insects():
     key, cfg = fetch_animals._topic_for_subject(
         "plants",
@@ -316,6 +324,7 @@ def test_build_story_preserves_archive_rights_provenance():
     assert story["source_license_evidence"] == "creativecommons.org/publicdomain/mark"
     assert story["archive_identifier"] == "pd-wildlife-film"
     assert story["source_download_url"].endswith("wildlife.mp4")
+    assert story["source_title"] == "Public domain wildlife film"
     assert "source_description" in story
     assert story["pexels_download_url"] == ""
 

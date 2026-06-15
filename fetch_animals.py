@@ -749,6 +749,24 @@ _PROP_VISUAL_TERMS = {
     "stuffed",
     "toy",
 }
+_NON_WILDLIFE_CONTEXT_TERMS = {
+    "animated",
+    "animation",
+    "behind the scenes",
+    "behind-the-scenes",
+    "bert the turtle",
+    "cartoon",
+    "cartoons",
+    "children's film",
+    "civil defense",
+    "duck and cover",
+    "featurette",
+    "fictional",
+    "magoo",
+    "national film registry",
+    "once upon a forest",
+    "vhs",
+}
 _BLOCKED_COMMONS_TERMS = ("na" + "sa", "internet " + "archive")
 
 
@@ -787,6 +805,9 @@ def _copy_matches_visible_subject(subject: str, *texts: str) -> bool:
 
 def _looks_like_non_wildlife_visual(text: str) -> bool:
     """Catch videos where the animal word is only a costume, toy, or prop."""
+    low = (text or "").lower()
+    if any(term in low for term in _NON_WILDLIFE_CONTEXT_TERMS):
+        return True
     words = set(re.findall(r"[a-z]+", (text or "").lower()))
     if not words or not (words & _PROP_VISUAL_TERMS):
         return False
@@ -1182,6 +1203,7 @@ def _build_story(
         "url": url,
         "source": source_name,
         "source_url": url,
+        "source_title": pexels_clip.title or "",
         "source_license": pexels_clip.license,
         "source_license_evidence": license_evidence,
         "source_clip_id": _source_clip_id(pexels_clip),
