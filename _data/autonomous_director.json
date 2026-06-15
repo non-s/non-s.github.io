@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T01:36:02.058050+00:00",
-  "autonomy_score": 0,
+  "generated_at": "2026-06-15T01:51:51.470090+00:00",
+  "autonomy_score": 45,
   "state": "needs_operator_attention",
   "publish_mix": {
     "winner_sequels": 20,
@@ -16,30 +16,33 @@
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "YouTube token missing",
+    "reason": "traffic_source_report_not_ready",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 87,
-    "state": "watch",
-    "issues": [
-      "youtube_token_missing"
-    ],
-    "unavailable_reports": [
-      "video_core",
-      "daily_channel",
-      "country",
-      "traffic_source",
-      "device_type",
-      "subscriber_status"
-    ],
+    "risk_score": 0,
+    "state": "normal",
+    "issues": [],
+    "unavailable_reports": [],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
-  "category_priorities": [],
-  "format_priorities": [],
+  "category_priorities": [
+    {
+      "value": "arctic",
+      "score": 200.0
+    }
+  ],
+  "format_priorities": [
+    {
+      "value": "animal_intelligence",
+      "score": 200.0
+    }
+  ],
   "sequel_candidates": [],
   "duplicate_risk": 0,
   "decisions": [
+    "Double down on arctic until another category beats its growth score.",
+    "Favor animal_intelligence as the next story format.",
     "Add a soft subscriber conversion CTA to strong candidates only."
   ]
 }
