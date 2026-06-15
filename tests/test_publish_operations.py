@@ -1,14 +1,15 @@
+from scripts import next_shorts
+from scripts.backfill_done_markers import backfill_marker
+from scripts.dry_run_publish import build_dry_run
+from utils import rejected_queue as rejected_queue_module
+from utils.channel_objective import objective_gate_for_story
 from utils.local_rewriter import rescue_story
 from utils.post24_review import build_review, classify_video
 from utils.publish_schedule import recommend_schedule
 from utils.publish_score import score_story
-from utils import rejected_queue as rejected_queue_module
 from utils.rejected_queue import load_rejections, record_rejection
 from utils.rights_audit import audit_rights
 from utils.sequence_factory import build_sequence_plan
-from scripts.backfill_done_markers import backfill_marker
-from scripts.dry_run_publish import build_dry_run
-from scripts import next_shorts
 
 
 def _strong_story(**overrides):
@@ -68,6 +69,23 @@ def test_score_story_blocks_late_payoff_for_current_swipe_baseline():
     assert score["state"] in {"rewrite", "reject"}
     assert score["objective_gate"]["publish_blocking"] is True
     assert "payoff_too_late_for_current_swipe_baseline" in score["objective_gate"]["reasons"]
+
+
+def test_objective_gate_lets_day_zero_bootstrap_observe_without_penalty():
+    gate = objective_gate_for_story(
+        _strong_story(),
+        {
+            "decision_confidence": {
+                "confidence_score": 0.03,
+                "sample_size": 1,
+                "minimum_sample_size": 20,
+            }
+        },
+    )
+
+    assert gate["penalty"] == 0
+    assert gate["publish_blocking"] is False
+    assert "bootstrap_observe_before_scaling" in gate["reasons"]
 
 
 def test_rescue_story_rewrites_editorial_template_but_not_visual_mismatch():

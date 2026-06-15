@@ -30,6 +30,7 @@ def _video_payload(**metadata):
         "licenseurl": "https://creativecommons.org/publicdomain/mark/1.0/",
         "collection": ["prelinger", "publicdomain"],
         "creator": "Archive Curator",
+        "description": "A public-domain wildlife clip with birds in a wetland.",
     }
     base.update(metadata)
     return {
@@ -103,6 +104,31 @@ def test_video_asset_from_metadata_picks_mp4_and_provenance():
     assert asset.width == 1080
     assert asset.height == 1920
     assert asset.license_evidence == "creativecommons.org/publicdomain/mark"
+    assert "birds" in asset.description
+
+
+def test_archive_video_relevance_prefers_specific_nature_sources():
+    strong = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier="usfw-bird-clip",
+            title="Birds feeding in a wetland",
+            creator="U.S. Fish and Wildlife Service",
+            description="Public domain footage of birds in a wetland habitat.",
+        )
+    )
+    weak = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier="old-chapter-film",
+            title="Chapter 7 trailer",
+            creator="",
+            description="A public domain serial chapter and trailer.",
+        )
+    )
+
+    assert strong is not None and weak is not None
+    assert ia.archive_video_relevance_score(strong, "birds wildlife") > ia.archive_video_relevance_score(
+        weak, "birds wildlife"
+    )
 
 
 def test_video_asset_from_metadata_rejects_missing_public_domain_evidence():

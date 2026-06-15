@@ -35,15 +35,13 @@ import hashlib
 import json
 import logging
 import os
-import random
 import re
 import time
 from pathlib import Path
-from typing import Iterable
 
 import requests
 
-from utils.internet_archive import discover_public_domain_videos
+from utils.internet_archive import archive_video_relevance_score, discover_public_domain_videos
 
 log = logging.getLogger(__name__)
 
@@ -261,7 +259,7 @@ def fetch_archive(query: str, per_page: int = 8) -> list[BrollClip]:
     if not query:
         return []
     rows = max(12, min(int(per_page or 8) * 5, 50))
-    cache_path = _cache_key("archive", f"{query}|{rows}|pd-video-v1")
+    cache_path = _cache_key("archive", f"{query}|{rows}|pd-video-v2")
     cached = _cache_get(cache_path)
     if cached is not None:
         return [BrollClip(**c) for c in cached]
@@ -284,7 +282,9 @@ def fetch_archive(query: str, per_page: int = 8) -> list[BrollClip]:
                     "file_name": asset.file_name,
                     "creator": asset.creator,
                     "collection": asset.collection,
+                    "description": asset.description,
                     "downloads": asset.downloads,
+                    "relevance_score": archive_video_relevance_score(asset, query),
                     "rights_policy": "explicit_public_domain_cc0_or_usgov_only",
                 },
             )

@@ -8,10 +8,7 @@ network calls are mocked — no test should hit the real internet.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone, timedelta
-from unittest.mock import patch, MagicMock
-
-import pytest
+from datetime import datetime, timedelta, timezone
 
 import fetch_animals
 from utils.broll import BrollClip
@@ -186,8 +183,34 @@ def test_subject_from_archive_does_not_inject_query_when_title_is_generic():
     assert fetch_animals._subject_from_clip(clip, "wildlife animals") == "Old road trip"
 
 
+def test_subject_from_archive_can_use_description_when_title_is_generic():
+    clip = _archive_clip(
+        url="https://archive.org/details/generic-nature",
+        dl="https://archive.org/download/generic-nature/generic.mp4",
+        title="Generic nature reel",
+    )
+    clip.source_metadata["description"] = "A bee lands on a flower and gathers pollen."
+
+    assert fetch_animals._subject_from_clip(clip, "plants") == "A bee lands on a flower and gathers pollen."
+
+
 def test_topic_rejects_explicit_animal_from_wrong_category():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch")
+
+
+def test_topic_rejects_visible_animal_in_nature_lane_without_reclassification():
+    assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["plants"], "bee on a flower")
+
+
+def test_topic_for_subject_reclassifies_bee_from_plants_to_insects():
+    key, cfg = fetch_animals._topic_for_subject(
+        "plants",
+        fetch_animals.ANIMAL_TOPICS["plants"],
+        "bee on a flower",
+    )
+
+    assert key == "insects"
+    assert cfg is fetch_animals.ANIMAL_TOPICS["insects"]
 
 
 def test_topic_accepts_visible_animal_from_category():
@@ -293,6 +316,7 @@ def test_build_story_preserves_archive_rights_provenance():
     assert story["source_license_evidence"] == "creativecommons.org/publicdomain/mark"
     assert story["archive_identifier"] == "pd-wildlife-film"
     assert story["source_download_url"].endswith("wildlife.mp4")
+    assert "source_description" in story
     assert story["pexels_download_url"] == ""
 
 

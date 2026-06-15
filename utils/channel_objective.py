@@ -192,7 +192,10 @@ def objective_gate_for_story(
     objective = objective or load_channel_objective()
     targets = {**DEFAULT_TARGETS, **(objective.get("targets") or {})}
     packaging = packaging or story.get("packaging") or {}
-    confidence = _num((publish.get("decision_confidence") or {}).get("confidence_score"))
+    decision_confidence = publish.get("decision_confidence") or {}
+    confidence = _num(decision_confidence.get("confidence_score"))
+    sample_size = int(_num(decision_confidence.get("sample_size")))
+    minimum_sample_size = int(_num(decision_confidence.get("minimum_sample_size"), 1.0)) or 1
     swipe = packaging.get("swipe_risk") or {}
     preflight = packaging.get("preflight_inputs") or {}
     payoff_time = _num(preflight.get("payoff_time_s"))
@@ -206,6 +209,9 @@ def objective_gate_for_story(
     if confidence and confidence < _num(targets.get("decision_confidence_floor")):
         if viewer_request:
             reasons.append("viewer_request_observe_before_scaling")
+            penalty += 0
+        elif sample_size < minimum_sample_size:
+            reasons.append("bootstrap_observe_before_scaling")
             penalty += 0
         else:
             reasons.append("low_decision_confidence")

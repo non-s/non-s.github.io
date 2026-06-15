@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from utils import broll
+from utils.internet_archive import ArchiveVideoAsset
 
 
 def test_pexels_clip_title_uses_descriptive_url_slug():
@@ -208,6 +205,32 @@ def test_fetch_broll_legacy_mode_can_use_pexels(monkeypatch):
     ):
         out = broll.fetch_broll_clips("octopus underwater animal", want_n=3)
     assert out == pexels
+
+
+def test_fetch_archive_preserves_description_metadata(monkeypatch, tmp_path):
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    asset = ArchiveVideoAsset(
+        identifier="bee-public-domain",
+        file_name="bee.mp4",
+        title="Bee pollinating a flower",
+        creator="U.S. Fish and Wildlife Service",
+        url="https://archive.org/download/bee-public-domain/bee.mp4",
+        source_url="https://archive.org/details/bee-public-domain",
+        license="https://creativecommons.org/publicdomain/mark/1.0/",
+        license_evidence="creativecommons.org/publicdomain/mark",
+        collection="publicdomain",
+        description="A bee lands on a yellow flower and gathers pollen.",
+        downloads=1000,
+        width=1080,
+        height=1920,
+        duration_s=12,
+    )
+    monkeypatch.setattr(broll, "discover_public_domain_videos", lambda query, rows=20: [asset])
+
+    clip = broll.fetch_archive("bee pollination", per_page=1)[0]
+
+    assert clip.source_metadata["description"].startswith("A bee lands")
+    assert clip.source_metadata["relevance_score"] > 0
 
 
 # ── download_clip ────────────────────────────────────────────────

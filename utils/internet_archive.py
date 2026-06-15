@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -62,6 +63,92 @@ SAFE_AUDIO_FORMAT_HINTS = ("mp3", "ogg", "vorbis", "wave", "flac", "aac", "mpeg4
 SAFE_VIDEO_SUFFIXES = (".mp4", ".m4v", ".mov")
 SAFE_VIDEO_FORMAT_HINTS = ("mpeg4", "h.264", "h264", "quicktime")
 UNSAFE_VIDEO_NAME_HINTS = ("thumb", "thumbnail", "sprite", "sample", "metadata")
+ARCHIVE_QUERY_STOPWORDS = {
+    "animal",
+    "animals",
+    "clip",
+    "domain",
+    "film",
+    "footage",
+    "free",
+    "movie",
+    "nature",
+    "public",
+    "video",
+    "wildlife",
+}
+ARCHIVE_TRUSTED_SOURCE_TERMS = (
+    "u.s. fish and wildlife",
+    "us fish and wildlife",
+    "fish and wildlife service",
+    "national park service",
+    "noaa",
+    "usda",
+    "united states department of agriculture",
+    "u.s. department of agriculture",
+    "u.s. government",
+    "united states government",
+)
+ARCHIVE_NATURE_TERMS = (
+    "ant",
+    "bat",
+    "bear",
+    "bee",
+    "beetle",
+    "bird",
+    "butterfly",
+    "cat",
+    "chicken",
+    "coral",
+    "cow",
+    "deer",
+    "dog",
+    "dolphin",
+    "dragonfly",
+    "duck",
+    "eagle",
+    "elephant",
+    "fish",
+    "flower",
+    "forest",
+    "fox",
+    "frog",
+    "goat",
+    "horse",
+    "insect",
+    "lion",
+    "mammal",
+    "marine",
+    "monkey",
+    "octopus",
+    "owl",
+    "plant",
+    "pollinator",
+    "reptile",
+    "shark",
+    "snake",
+    "tiger",
+    "tree",
+    "turtle",
+    "whale",
+    "wolf",
+)
+ARCHIVE_LOW_SIGNAL_TERMS = (
+    "advertisement",
+    "cartoon",
+    "chapter",
+    "commercial",
+    "episode",
+    "feature film",
+    "home movie",
+    "interview",
+    "lecture",
+    "newsreel",
+    "serial",
+    "silent film",
+    "talk show",
+    "trailer",
+)
 
 
 @dataclass(frozen=True)
@@ -136,6 +223,51 @@ def _join_values(*values: Any) -> str:
         else:
             parts.append(str(value or ""))
     return " ".join(parts)
+
+
+def _tokens(text: str) -> set[str]:
+    return {token for token in (part.lower() for part in re.findall(r"[a-z][a-z0-9]+", text or "")) if len(token) >= 3}
+
+
+def archive_video_relevance_score(asset: ArchiveVideoAsset, query: str) -> int:
+    """Score an Archive video for visible nature/animal Short usefulness."""
+    query_tokens = _tokens(query) - ARCHIVE_QUERY_STOPWORDS
+    title = asset.title or asset.identifier
+    haystack = " ".join(
+        str(value or "")
+        for value in (
+            asset.identifier,
+            asset.file_name,
+            title,
+            asset.creator,
+            asset.collection,
+            asset.description,
+        )
+    ).lower()
+    score = 0
+    if query and query.lower() in haystack:
+        score += 28
+    token_hits = query_tokens & _tokens(haystack)
+    score += min(45, len(token_hits) * 15)
+    if any(term in haystack for term in ARCHIVE_TRUSTED_SOURCE_TERMS):
+        score += 35
+    if any(term in haystack for term in ARCHIVE_NATURE_TERMS):
+        score += 20
+    if any(term in (asset.collection or "").lower() for term in ("usgov", "publicdomain", "opensource_movies")):
+        score += 6
+    if asset.height >= asset.width and asset.height:
+        score += 12
+    if asset.height >= 720 or asset.width >= 720:
+        score += 8
+    if 4 <= float(asset.duration_s or 0) <= 180:
+        score += 12
+    elif float(asset.duration_s or 0) > 900:
+        score -= 18
+    if int(asset.downloads or 0) >= 100:
+        score += 4
+    if any(term in haystack for term in ARCHIVE_LOW_SIGNAL_TERMS):
+        score -= 30
+    return score
 
 
 def _contains_public_domain_marker(*values: Any) -> str:
@@ -409,16 +541,30 @@ def discover_public_domain_audio(
     return assets
 
 
-def discover_public_domain_videos(query: str, *, rows: int = 20, session=requests) -> list[ArchiveVideoAsset]:
-    assets: list[ArchiveVideoAsset] = []
+def discover_public_domain_videos(
+    query: str,
+    *,
+    rows: int = 20,
+    session=requests,
+    min_relevance: int | None = None,
+) -> list[ArchiveVideoAsset]:
+    assets: list[tuple[ArchiveVideoAsset, int]] = []
+    if min_relevance is None:
+        min_relevance = int(os.environ.get("ARCHIVE_VIDEO_MIN_RELEVANCE", "18"))
     for identifier in advanced_search_video(query, rows=rows, session=session):
         payload = fetch_metadata(identifier, session=session)
         if not payload:
             continue
         asset = video_asset_from_metadata(payload)
-        if asset:
-            assets.append(asset)
-    return assets
+        if not asset:
+            continue
+        relevance = archive_video_relevance_score(asset, query)
+        if relevance < int(min_relevance):
+            log.debug("internet_archive low relevance %s for %r: %s", relevance, query, asset.identifier)
+            continue
+        assets.append((asset, relevance))
+    assets.sort(key=lambda item: (item[1], item[0].downloads), reverse=True)
+    return [asset for asset, _score in assets]
 
 
 def cache_path_for_asset(asset: ArchiveAudioAsset, cache_dir: Path | None = None) -> Path:

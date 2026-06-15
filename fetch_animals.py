@@ -57,8 +57,9 @@ import os
 import random
 import re
 import sys
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
@@ -66,14 +67,17 @@ from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
 from utils.broll import fetch_archive
 from utils.growth_studio import studio_brief_for_story
+from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
+from utils.topic_freshness import annotate_queue, freshness_report
 from utils.trend_radar import (
     load_trends,
     trend_context_for_category,
     trend_queries_for_category,
     trend_weight_for_category,
 )
-from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
-from utils.topic_freshness import annotate_queue, freshness_report
+
+if TYPE_CHECKING:
+    from utils.broll import BrollClip
 
 logging.basicConfig(
     level=logging.INFO,
@@ -676,6 +680,46 @@ _GENERIC_VISIBLE_SUBJECTS = {
     "insect": {"ant", "bee", "beetle", "butterfly", "dragonfly", "mantis"},
 }
 _CONTEXT_ONLY_SUBJECTS = {"forest", "earth"}
+_SUBJECT_TOPIC_OVERRIDES = {
+    "ant": "insects",
+    "bee": "insects",
+    "beetle": "insects",
+    "butterfly": "insects",
+    "dragonfly": "insects",
+    "insect": "insects",
+    "mantis": "insects",
+    "bird": "birds",
+    "chicken": "farm",
+    "cow": "farm",
+    "duck": "farm",
+    "goat": "farm",
+    "horse": "farm",
+    "pig": "farm",
+    "sheep": "farm",
+    "dolphin": "ocean",
+    "fish": "ocean",
+    "jellyfish": "ocean",
+    "octopus": "ocean",
+    "seal": "ocean",
+    "shark": "ocean",
+    "turtle": "ocean",
+    "walrus": "ocean",
+    "whale": "ocean",
+    "bat": "nocturnal",
+    "hedgehog": "nocturnal",
+    "chameleon": "reptiles",
+    "crocodile": "reptiles",
+    "gecko": "reptiles",
+    "iguana": "reptiles",
+    "lizard": "reptiles",
+    "snake": "reptiles",
+    "chimpanzee": "primates",
+    "gorilla": "primates",
+    "lemur": "primates",
+    "macaque": "primates",
+    "monkey": "primates",
+    "orangutan": "primates",
+}
 _HUMAN_VISUAL_TERMS = {
     "baby",
     "boy",
@@ -766,11 +810,19 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
     slug = re.sub(r"[-_]+", " ", slug).strip()
     title = (getattr(clip, "title", "") or "").strip()
     source = (getattr(clip, "source", "") or "").lower()
+    source_meta = getattr(clip, "source_metadata", {}) or {}
     if source == "internet_archive":
-        if _animal_terms(title):
-            return title
-        if _animal_terms(slug):
-            return slug
+        archive_texts = [
+            title,
+            slug,
+            str(source_meta.get("description") or ""),
+            str(source_meta.get("collection") or ""),
+            str(source_meta.get("creator") or ""),
+        ]
+        for text in archive_texts:
+            cleaned = re.sub(r"\s+", " ", text).strip()
+            if cleaned and _animal_terms(cleaned):
+                return cleaned[:180]
         return title or slug or fallback_query
     if _animal_terms(slug):
         return slug
@@ -786,9 +838,11 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     visible_animals = _strict_animal_terms(subject)
     allowed_animals = set().union(*(_strict_animal_terms(query) for query in topic_cfg.get("queries", [])))
     if visible_animals:
-        if not allowed_animals or visible_animals & allowed_animals:
+        if allowed_animals and visible_animals & allowed_animals:
             return True
-        return any(bool(allowed_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
+        return bool(allowed_animals) and any(
+            bool(allowed_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals
+        )
     # Legacy animal categories often include environmental words in clip
     # titles ("forest", "snow", "night"). Those are context, not the
     # subject mismatch signal we want to catch.
@@ -797,6 +851,20 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     visible = _animal_terms(subject)
     allowed = set().union(*(_animal_terms(query) for query in topic_cfg.get("queries", [])))
     return not visible or not allowed or bool(visible & allowed)
+
+
+def _topic_for_subject(topic_key: str, topic_cfg: dict, subject: str) -> tuple[str, dict]:
+    """Move explicit Archive subjects into the lane they visually belong to."""
+    if _topic_accepts_subject(topic_cfg, subject):
+        return topic_key, topic_cfg
+    visible_animals = _strict_animal_terms(subject)
+    for animal in sorted(visible_animals):
+        override = _SUBJECT_TOPIC_OVERRIDES.get(animal)
+        if override and override in ANIMAL_TOPICS:
+            override_cfg = ANIMAL_TOPICS[override]
+            if _topic_accepts_subject(override_cfg, subject):
+                return override, override_cfg
+    return topic_key, topic_cfg
 
 
 def _safe_commons_value(value: str) -> str:
@@ -1088,6 +1156,8 @@ def _build_story(
     license_evidence = getattr(pexels_clip, "license_evidence", "") or ""
     url = pexels_clip.url or pexels_clip.download_url
     now = datetime.now(timezone.utc).isoformat()
+    source_description = str(source_meta.get("description") or "").strip()
+    visible_description = source_description or pexels_clip.title or clip_subject
     # Merge the AI-picked tags with the topic's evergreen tags,
     # deduplicating. Capped at 8 to leave room for upload_youtube's
     # tag-packer + evergreens it adds later.
@@ -1118,11 +1188,12 @@ def _build_story(
         "source_download_url": pexels_clip.download_url,
         "source_creator": source_meta.get("creator", ""),
         "source_collection": source_meta.get("collection", ""),
+        "source_description": source_description,
         "archive_identifier": source_meta.get("identifier", ""),
         "archive_file_name": source_meta.get("file_name", ""),
         "rights_policy": source_meta.get("rights_policy", ""),
         "category": topic_key,
-        "description": f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {pexels_clip.title or clip_subject}".strip(),
+        "description": f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {visible_description}".strip(),
         # BrollClip doesn't carry a preview image — leave empty; the
         # generator renders its own title card frame.
         "image_url": "",
@@ -1386,18 +1457,21 @@ def main() -> int:
             if (getattr(clip, "source", "") or "").lower() == "internet_archive" and not _animal_terms(subject):
                 log.warning("  skipping archive clip without animal/nature signal for %s: %s", topic_key, subject[:80])
                 continue
-            if not _topic_accepts_subject(topic_cfg, subject):
-                log.warning("  skipping off-topic video clip for %s: %s", topic_key, subject[:80])
+            story_topic_key, story_topic_cfg = _topic_for_subject(topic_key, topic_cfg, subject)
+            if story_topic_key != topic_key:
+                log.info("  reclassified archive subject %s -> %s: %s", topic_key, story_topic_key, subject[:80])
+            if not _topic_accepts_subject(story_topic_cfg, subject):
+                log.warning("  skipping off-topic video clip for %s: %s", story_topic_key, subject[:80])
                 continue
             enrichment = enrich_subject(subject)
-            context = topic_cfg.get("description_prefix", "an animal clip")
+            context = story_topic_cfg.get("description_prefix", "an animal clip")
             taxonomy = taxonomy_prompt(enrichment)
             if taxonomy:
                 context = f"{context}. {taxonomy}"
             ai_out = _ai_enhance_animal(
                 subject,
                 context,
-                trend_context_for_category(topic_key, trends),
+                trend_context_for_category(story_topic_key, trends),
             )
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])
@@ -1406,7 +1480,7 @@ def main() -> int:
             if not script_key or script_key in script_keys:
                 log.warning("  skipping repeated or empty script for %s", subject[:60])
                 continue
-            story = _build_story(subject, topic_key, topic_cfg, clip, ai_out, enrichment)
+            story = _build_story(subject, story_topic_key, story_topic_cfg, clip, ai_out, enrichment)
             new_entries.append(story)
             script_keys.add(script_key)
             dedupe_keys.add(story["id"])
