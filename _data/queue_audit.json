@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-15T15:41:02.251990+00:00",
-  "pending": 16,
+  "generated_at": "2026-06-15T16:10:17.853444+00:00",
+  "pending": 15,
   "states": {
     "rewrite": 11,
-    "publish_ready": 5
+    "publish_ready": 4
   },
   "mechanism_clusters": {
     "dance_navigation": 1,
@@ -11,16 +11,16 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 16
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 16,
-    "pending_after": 16,
+    "pending_before": 15,
+    "pending_after": 15,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 32
+      "objective_gate:bootstrap_observe_before_scaling": 30
     }
   },
   "rejected_preview": [
@@ -233,6 +233,21 @@
       "stage": "queue_repair"
     },
     {
+      "id": "c2fad3f40dd25a1c",
+      "title": "Cells copy instructions before splitting",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
       "id": "da75e424bfed1a10",
       "title": "Auroras glow when solar particles hit air",
       "reasons": [
@@ -272,6 +287,16 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "77979e7c4fa42f9a",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "c8b8749e95a96a1a",
       "title": "Earth spins against the moon's fixed face",
       "reasons": [
@@ -292,6 +317,19 @@
       "stage": "queue_repair"
     },
     {
+      "id": "1eb5124c32ad982a",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "3a14e88bd4a77538",
       "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
@@ -300,45 +338,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "77b67809dd1d75a0",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "6dc38620293b88fd",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "38a9a9876bc2c5d0",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -477,9 +476,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -489,7 +488,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.728437+00:00",
+        "checked_at": "2026-06-15T16:10:08.049705+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -556,18 +555,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -794,455 +793,6 @@
       }
     },
     {
-      "id": "09c97585910fcc35",
-      "title": "Mushrooms trade nutrients through underground threads",
-      "category": "fungi",
-      "publish_score": {
-        "approved": true,
-        "category": "fungi",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.035,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
-          "recommendation_strength": "observe",
-          "sample_size": 3
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.035,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 72,
-            "emotional_potential": 53,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 83,
-            "visual_potential": 100
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 80,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 100
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "hidden_network",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 6
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.731655+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "mushrooms",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "hidden_network",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "mushrooms",
-        "viewer_promise": "See why this mushroom hidden network matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after mushrooms?",
-        "cta_prompt": "Want more nature that feels like science fiction but is real?",
-        "curiosity_gap": {
-          "hook": "Why do these fungi change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "hidden network",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.35,
-          "mode": "explore",
-          "sample_count": 5,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} in the {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 46.5,
-            "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
-          }
-        },
-        "hook_options": [
-          "Mushrooms connect through threads under the soil",
-          "Mushrooms show why the underground threads matters.",
-          "Mushrooms show why the underground threads matters.",
-          "Mushrooms show why the underground threads matters.",
-          "Mushrooms give away the answer through mycelium threads"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "mushrooms",
-          "ending_line": "Which tiny network next?",
-          "final_line": "Which tiny network next?",
-          "loop_score": 0.241,
-          "opening_line": "Mushrooms connect through threads under the soil.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "mushrooms",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.241,
-        "pinned_comment": "Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.33,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Mushrooms connect through threads under the soil Watch the mushroom cap then",
-          "first_frame_text": "FUNGAL WEB",
-          "first_frame_text_words": 2,
-          "hook": "Mushrooms connect through threads under the soil.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.241,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the underground threads, so viewers rewatch the mushrooms clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 80,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 100
-          },
-          "verdict": "ready"
-        },
-        "risks": [],
-        "score": 94,
-        "selected_variant": {
-          "hook": "Mushrooms connect through threads under the soil",
-          "score": 90,
-          "thumbnail_text": "FUNGAL WEB",
-          "title": "Mushrooms trade nutrients through underground threads"
-        },
-        "series": "Animal Superpowers",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FUNGAL WEB",
-          "MYCELIUM THREADS",
-          "WATCH MYCELIUM THREADS",
-          "MUSHROOMS CONNECT",
-          "MYCELIUM THREADS MATTERS",
-          "MYCELIUM THREADS FIRST",
-          "MYCELIUM THREADS REVEAL",
-          "MYCELIUM THREADS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mushrooms trade nutrients through underground threads",
-          "Mushrooms connect through mycelium threads",
-          "Mushrooms use mycelium threads before they connect",
-          "Why mushrooms connect after one mycelium threads",
-          "Mushrooms reveal the answer with mycelium threads",
-          "The mycelium threads that changes the moment",
-          "Mushrooms make one mycelium threads matter",
-          "Mushrooms show the hidden answer in seconds",
-          "Mushrooms: watch this mycelium threads"
-        ],
-        "top_variants": [
-          {
-            "hook": "Mushrooms connect through threads under the soil",
-            "score": 90,
-            "thumbnail_text": "FUNGAL WEB",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Watch the mycelium threads; it explains the behavior",
-            "score": 90,
-            "thumbnail_text": "FUNGAL WEB",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Start with the mycelium threads; it changes the scene",
-            "score": 90,
-            "thumbnail_text": "FUNGAL WEB",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Mushrooms connect through threads under the soil",
-            "score": 83,
-            "thumbnail_text": "MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Watch the mycelium threads; it explains the behavior",
-            "score": 83,
-            "thumbnail_text": "MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Start with the mycelium threads; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Mushrooms connect through threads under the soil",
-            "score": 83,
-            "thumbnail_text": "WATCH MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Watch the mycelium threads; it explains the behavior",
-            "score": 83,
-            "thumbnail_text": "WATCH MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Start with the mycelium threads; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "WATCH MYCELIUM THREADS",
-            "title": "Mushrooms trade nutrients through underground threads"
-          },
-          {
-            "hook": "Mushrooms connect through threads under the soil",
-            "score": 83,
-            "thumbnail_text": "MUSHROOMS CONNECT",
-            "title": "Mushrooms trade nutrients through underground threads"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "4477582e8d1d1123",
       "title": "Beetles can steer by the Milky Way",
       "category": "insects",
@@ -1376,9 +926,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1388,7 +938,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.732810+00:00",
+        "checked_at": "2026-06-15T16:10:08.052428+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1453,18 +1003,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -1784,7 +1334,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -1800,17 +1350,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "title_score": 100,
         "weak_content": {
@@ -1821,9 +1372,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1833,7 +1384,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.738828+00:00",
+        "checked_at": "2026-06-15T16:10:08.065039+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1898,18 +1449,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -1984,11 +1535,11 @@
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
           "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Superpowers",
+          "episode": 2,
+          "label": "Animal Superpowers #2",
           "series": "Animal Superpowers"
         },
         "state": "magnetic",
@@ -2000,7 +1551,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -2016,17 +1567,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -2267,9 +1819,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -2279,7 +1831,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.749153+00:00",
+        "checked_at": "2026-06-15T16:10:08.074981+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2344,18 +1896,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -2714,9 +2266,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -2726,7 +2278,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.734307+00:00",
+        "checked_at": "2026-06-15T16:10:08.053742+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2793,18 +2345,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -3164,9 +2716,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3176,7 +2728,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.736128+00:00",
+        "checked_at": "2026-06-15T16:10:08.055515+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3243,18 +2795,18 @@
           },
           "explore_rate": 0.35,
           "mode": "explore",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -3577,7 +3129,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3594,17 +3146,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "title_score": 90,
         "weak_content": {
@@ -3615,9 +3168,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3627,7 +3180,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.740828+00:00",
+        "checked_at": "2026-06-15T16:10:08.067032+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3694,18 +3247,18 @@
           },
           "explore_rate": 0.35,
           "mode": "explore",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -3782,12 +3335,12 @@
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
+          "label": "Animal Superpowers #2",
+          "series": "Animal Superpowers #2"
         },
         "state": "magnetic",
         "strengths": [
@@ -3797,7 +3350,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3814,17 +3367,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -4064,9 +3618,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4076,7 +3630,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.730304+00:00",
+        "checked_at": "2026-06-15T16:10:08.051321+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4144,18 +3698,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -4477,7 +4031,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -4493,17 +4047,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "title_score": 90,
         "weak_content": {
@@ -4514,9 +4069,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4526,7 +4081,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.742507+00:00",
+        "checked_at": "2026-06-15T16:10:08.068653+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4596,18 +4151,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -4682,12 +4237,12 @@
           "thumbnail_text": "RIVER BEND",
           "title": "Rivers carve bends by stealing from one bank"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
+          "label": "Animal Superpowers #2",
+          "series": "Animal Superpowers #2"
         },
         "state": "magnetic",
         "strengths": [
@@ -4698,7 +4253,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -4714,17 +4269,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -4927,7 +4483,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -4943,17 +4499,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "title_score": 90,
         "weak_content": {
@@ -4964,9 +4521,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4976,7 +4533,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.744352+00:00",
+        "checked_at": "2026-06-15T16:10:08.070383+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5041,18 +4598,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -5130,12 +4687,12 @@
           "thumbnail_text": "ROCK TIME",
           "title": "Rock layers store ancient environments in stripes"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
+          "label": "Animal Superpowers #2",
+          "series": "Animal Superpowers #2"
         },
         "state": "usable",
         "strengths": [
@@ -5144,7 +4701,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -5160,17 +4717,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -5372,7 +4930,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -5388,17 +4946,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "title_score": 90,
         "weak_content": {
@@ -5409,9 +4968,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -5421,7 +4980,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.746196+00:00",
+        "checked_at": "2026-06-15T16:10:08.072091+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5491,18 +5050,18 @@
           },
           "explore_rate": 0.35,
           "mode": "explore",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -5579,12 +5138,12 @@
           "thumbnail_text": "TREE RINGS",
           "title": "Trees record wet years inside their rings"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
+          "label": "Animal Superpowers #2",
+          "series": "Animal Superpowers #2"
         },
         "state": "magnetic",
         "strengths": [
@@ -5594,7 +5153,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -5610,17 +5169,18 @@
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -5822,7 +5382,7 @@
         "state": "publish_ready",
         "story_format": "animal_intelligence",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -5839,17 +5399,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "title_score": 90,
         "weak_content": {
@@ -5860,9 +5421,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -5872,7 +5433,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.737385+00:00",
+        "checked_at": "2026-06-15T16:10:08.062901+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5944,18 +5505,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -6030,12 +5591,12 @@
           "thumbnail_text": "PRIDE PLAN",
           "title": "Lions hunt better when the pride coordinates"
         },
-        "series": "Animal Superpowers",
+        "series": "Animal Superpowers #2",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers",
-          "series": "Animal Superpowers"
+          "label": "Animal Superpowers #2",
+          "series": "Animal Superpowers #2"
         },
         "state": "magnetic",
         "strengths": [
@@ -6046,7 +5607,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -6063,17 +5624,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -6314,9 +5876,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6326,7 +5888,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.748119+00:00",
+        "checked_at": "2026-06-15T16:10:08.073984+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6394,18 +5956,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -6770,9 +6332,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6782,7 +6344,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.727385+00:00",
+        "checked_at": "2026-06-15T16:10:08.048791+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6847,18 +6409,18 @@
           },
           "explore_rate": 0.35,
           "mode": "exploit",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
@@ -7220,9 +6782,9 @@
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 6/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "reasoning": "pattern has 7/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
             "recommendation_strength": "test",
-            "sample_size": 6
+            "sample_size": 7
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -7232,7 +6794,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T15:40:51.750251+00:00",
+        "checked_at": "2026-06-15T16:10:08.076032+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7297,18 +6859,18 @@
           },
           "explore_rate": 0.35,
           "mode": "explore",
-          "sample_count": 5,
+          "sample_count": 6,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} in the {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 46.5,
+            "cta:follow_for_more": 46.7,
             "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
+            "format:winner_inspired": 46.7,
             "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.5
+            "thumbnail:new_thumbnail": 46.7
           }
         },
         "hook_options": [
