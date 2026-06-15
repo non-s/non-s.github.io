@@ -29,7 +29,7 @@
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
 | `QUEUE_TARGET_PENDING` | no | Target number of unconsumed queue stories to keep ready. Defaults to `24` for a one-day free inventory buffer. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target. Defaults to `24` so the upload job keeps a one-day hourly queue buffer when free discovery quota allows it. |
-| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `6` so hourly publishing does not spend the slot building a full-day buffer. |
+| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `1` so hourly publishing starts as soon as one approved candidate exists. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `12`. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
@@ -88,7 +88,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
 | `QUEUE_TARGET_PENDING` | `24` | publishing | Pending story target for hourly queue refresh. | Lower if free discovery/AI quotas become tight. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
-| `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Keep the full-day stock target in `QUEUE_TARGET_PENDING` / `PUBLISH_BACKFILL_QUEUE_TARGET`. |
+| `PUBLISH_BACKFILL_READY_TARGET` | `1` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Keep the full-day stock target in `QUEUE_TARGET_PENDING` / `PUBLISH_BACKFILL_QUEUE_TARGET`. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `12` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
 | `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | `170` | publishing | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. | Lower to reduce runner time or disable the heartbeat workflow. |
 | `PUBLISH_HEARTBEAT_DISPATCH_MINUTE` | `6` | publishing | Minute of each hour when the heartbeat dispatches a missed publisher run. | Use an off-peak minute between 3 and 12. |

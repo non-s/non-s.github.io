@@ -61,7 +61,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "PUBLISH_BACKFILL_READY_TARGET",
-        "6",
+        "1",
         "publishing",
         "Minimum editor-approved publish-ready candidates before a publish attempt.",
         "Lower only during provider outages.",
