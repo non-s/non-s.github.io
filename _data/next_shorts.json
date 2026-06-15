@@ -8,7 +8,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 9,
+      "evergreen": 10,
       "recovery": 1
     },
     "items": [
@@ -34,7 +34,15 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.12
+        "freshness_score": 54.1
+      },
+      {
+        "id": "eb19e03980b8ccc6",
+        "title": "Cows remember faces across the herd",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.46
       },
       {
         "id": "61e0327638cef862",
@@ -50,15 +58,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.12
-      },
-      {
-        "id": "eb19e03980b8ccc6",
-        "title": "Cows remember faces across the herd",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.1
       },
       {
         "id": "94798b274f8ffbdb",
@@ -66,7 +66,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.96
+        "freshness_score": 54.94
       },
       {
         "id": "d374e456b59d4dc4",
@@ -91,6 +91,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 53.96
+      },
+      {
+        "id": "360ed2f163e61f41",
+        "title": "Plants count touches before snapping shut",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -103,13 +111,13 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 10,
-    "pending_after": 10,
+    "pending_before": 11,
+    "pending_after": 11,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 8,
+    "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
+      "objective_gate:bootstrap_observe_before_scaling": 20,
       "objective_gate:observe_before_scaling": 2
     }
   }
