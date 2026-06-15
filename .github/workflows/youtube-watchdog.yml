@@ -7,7 +7,8 @@ on:
   schedule:
     # GitHub cron can be delayed or dropped. Check every 10 minutes so a
     # missed hourly slot gets recovered inside the configured grace window.
-    - cron: "5,15,25,35,45,55 * * * *"
+    # These checks are offset from both the publisher and queue refresh crons.
+    - cron: "7,17,27,37,47,57 * * * *"
   workflow_dispatch:
 
 concurrency:

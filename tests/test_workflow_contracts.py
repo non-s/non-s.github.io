@@ -42,9 +42,11 @@ def test_workflows_parse_and_include_growth_steps():
     assert "if: always() && steps.publish_window.outputs.should_publish == 'true'" in youtube_workflow
     assert 'cron: "20 * * * *"' in youtube_workflow
     assert 'cron: "40 * * * *"' in youtube_workflow
-    assert 'GRACE_MINUTES: "35"' in (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
+    watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
+    assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
+    assert 'GRACE_MINUTES: "35"' in watchdog_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
-    assert 'cron: "*/5 * * * *"' in fetch_workflow
+    assert 'cron: "4,9,14,19,24,29,34,39,44,49,54,59 * * * *"' in fetch_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' in fetch_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in fetch_workflow
     assert "apply_topic_freshness.py" in fetch_workflow

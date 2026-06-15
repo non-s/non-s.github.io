@@ -3,9 +3,9 @@ name: "Refresh Pexels queue"
 
 on:
   schedule:
-    # GitHub scheduled workflows cannot run every minute; five minutes is the
-    # tightest reliable poll interval for queue discovery.
-    - cron: "*/5 * * * *"
+    # Poll every five minutes, offset from YouTube publish/watchdog minutes so
+    # queue commits do not contend with hourly uploads.
+    - cron: "4,9,14,19,24,29,34,39,44,49,54,59 * * * *"
   workflow_dispatch:
 
 # Serialise queue updates with YouTube publishing commits.
