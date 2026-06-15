@@ -1,11 +1,15 @@
 {
-  "generated_at": "2026-06-15T09:44:36.841950+00:00",
-  "pending": 3,
+  "generated_at": "2026-06-15T11:19:59.401460+00:00",
+  "pending": 15,
   "states": {
-    "magnetic": 3
+    "magnetic": 14,
+    "usable": 1
   },
   "top_risks": {
-    "missing_action_word": 1
+    "title_needs_stronger_shape": 2,
+    "missing_action_word": 2,
+    "subject_not_clear": 1,
+    "script does not expose enough concrete visual detail": 1
   },
   "top": [
     {
@@ -151,12 +155,12 @@
           "mode": "explore",
           "explore_rate": 0.35,
           "winners": {
-            "title_pattern": "",
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "hook_pattern": ""
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
           },
           "winning_experiments": {},
-          "sample_count": 0,
+          "sample_count": 1,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -257,6 +261,761 @@
           "payoff_time_s": 9.350000000000001,
           "cta_count": 1,
           "loop_score": 0.557
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "ad108c6a266bd595",
+      "title": "Weather patterns signal through cloud pattern",
+      "thumbnail_text": "CLOUD PATTERN",
+      "category": "earth_from_space",
+      "packaging": {
+        "score": 96,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Weather patterns signal through cloud pattern",
+          "Weather Patterns signal through cloud patterns",
+          "Weather Patterns use cloud patterns before they signal",
+          "This cloud pattern gives weather patterns away",
+          "Weather Patterns reveal the answer with cloud patterns",
+          "The cloud pattern that changes the moment",
+          "Weather Patterns show the hidden payoff in seconds",
+          "Weather Patterns: watch this cloud pattern"
+        ],
+        "thumbnail_options": [
+          "CLOUD PATTERN",
+          "WATCH CLOUD PATTERN",
+          "WEATHER PATTERNS SIGNAL",
+          "CLOUD PATTERN MATTERS",
+          "CLOUD PATTERN PAYOFF",
+          "CLOUD PATTERN FIRST",
+          "CLOUD PATTERN REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Weather shows the cloud before the payoff",
+          "Weather shows the cloud before the payoff.",
+          "Weather shows the cloud before the payoff.",
+          "Weather shows the cloud before the payoff.",
+          "Weather Patterns give away the answer through cloud patterns"
+        ],
+        "selected_variant": {
+          "score": 72,
+          "title": "Weather patterns signal through cloud pattern",
+          "thumbnail_text": "CLOUD PATTERN",
+          "hook": "Weather shows the cloud before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "CLOUD PATTERN",
+            "hook": "Weather shows the cloud before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "CLOUD PATTERN",
+            "hook": "Watch the cloud patterns; the payoff lands seconds later"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "CLOUD PATTERN",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WATCH CLOUD PATTERN",
+            "hook": "Weather shows the cloud before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WATCH CLOUD PATTERN",
+            "hook": "Watch the cloud patterns; the payoff lands seconds later"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WATCH CLOUD PATTERN",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WEATHER PATTERNS SIGNAL",
+            "hook": "Weather shows the cloud before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WEATHER PATTERNS SIGNAL",
+            "hook": "Watch the cloud patterns; the payoff lands seconds later"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "WEATHER PATTERNS SIGNAL",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 72,
+            "title": "Weather patterns signal through cloud pattern",
+            "thumbnail_text": "CLOUD PATTERN MATTERS",
+            "hook": "Weather shows the cloud before the payoff"
+          }
+        ],
+        "retention": {
+          "score": 85,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 74,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the cloud again. Tomorrow: another nature signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after weather?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "replay_prompt": "End by pointing back to the cloud, so viewers rewatch the weather clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "Weather shows the cloud before the payoff",
+          "source": "story",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Weather shows the cloud before the payoff",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.588,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.588,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "CLOUD PATTERN",
+          "first_frame_text_words": 2,
+          "hook": "Weather shows the cloud before the payoff",
+          "hook_words": 7,
+          "first_2s_narration": "Weather patterns reveal one visible signal Watch the cloud pattern because that",
+          "caption_chars_per_second": 15.61,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.588
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "1c5cf1dd2f2391a8",
+      "title": "Mushrooms signal through mycelium network",
+      "thumbnail_text": "FUNGAL WEB",
+      "category": "fungi",
+      "packaging": {
+        "score": 96,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Mushrooms signal through mycelium network",
+          "Mushrooms use mycelium network before they signal",
+          "This mycelium network gives mushrooms away",
+          "Why mushrooms signal after one mycelium network",
+          "Mushrooms reveal the answer with mycelium network",
+          "The mycelium network that changes the moment",
+          "Mushrooms make one mycelium network matter",
+          "Mushrooms show the hidden payoff in seconds",
+          "Mushrooms: watch this mycelium network",
+          "Watch mushrooms after the mycelium network"
+        ],
+        "thumbnail_options": [
+          "FUNGAL WEB",
+          "WATCH FUNGAL WEB",
+          "MUSHROOMS SIGNAL",
+          "FUNGAL WEB MATTERS",
+          "FUNGAL WEB PAYOFF",
+          "FUNGAL WEB FIRST",
+          "FUNGAL WEB REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Mushrooms show the mycelium before the payoff",
+          "Mushrooms show the mycelium before the payoff.",
+          "Mushrooms show the mycelium before the payoff.",
+          "Mushrooms show the mycelium before the payoff.",
+          "Mushrooms give away the answer through mycelium network"
+        ],
+        "selected_variant": {
+          "score": 74,
+          "title": "Mushrooms signal through mycelium network",
+          "thumbnail_text": "FUNGAL WEB",
+          "hook": "Start with the mycelium network; it explains the next move"
+        },
+        "top_variants": [
+          {
+            "score": 74,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "FUNGAL WEB",
+            "hook": "Start with the mycelium network; it explains the next move"
+          },
+          {
+            "score": 74,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "hook": "Start with the mycelium network; it explains the next move"
+          },
+          {
+            "score": 74,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "MUSHROOMS SIGNAL",
+            "hook": "Start with the mycelium network; it explains the next move"
+          },
+          {
+            "score": 74,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "FUNGAL WEB MATTERS",
+            "hook": "Start with the mycelium network; it explains the next move"
+          },
+          {
+            "score": 74,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "FUNGAL WEB PAYOFF",
+            "hook": "Start with the mycelium network; it explains the next move"
+          },
+          {
+            "score": 73,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "FUNGAL WEB",
+            "hook": "Mushrooms show the mycelium before the payoff"
+          },
+          {
+            "score": 73,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "FUNGAL WEB",
+            "hook": "Watch the mycelium network; the payoff lands seconds later"
+          },
+          {
+            "score": 73,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "hook": "Mushrooms show the mycelium before the payoff"
+          },
+          {
+            "score": 73,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "WATCH FUNGAL WEB",
+            "hook": "Watch the mycelium network; the payoff lands seconds later"
+          },
+          {
+            "score": 73,
+            "title": "Mushrooms signal through mycelium network",
+            "thumbnail_text": "MUSHROOMS SIGNAL",
+            "hook": "Mushrooms show the mycelium before the payoff"
+          }
+        ],
+        "retention": {
+          "score": 85,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 74,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the mycelium again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after mushrooms?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Want more nature that feels like science fiction but is real?",
+        "replay_prompt": "End by pointing back to the mycelium, so viewers rewatch the mushrooms clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This nature changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Mushrooms show the mycelium before the payoff.",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.586,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.586,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "hidden_network",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "FUNGAL WEB",
+          "first_frame_text_words": 2,
+          "hook": "Mushrooms show the mycelium before the payoff.",
+          "hook_words": 7,
+          "first_2s_narration": "Mushrooms reveal one visible signal Watch the mycelium because that detail shows",
+          "caption_chars_per_second": 15.41,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.586
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "ae2f8b32b0721400",
+      "title": "Earth systems signal through rock layer",
+      "thumbnail_text": "ROCK LAYER",
+      "category": "earth_from_space",
+      "packaging": {
+        "score": 96,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Earth systems signal through rock layer",
+          "Earth systems use rock layer before they signal",
+          "This rock layer gives earth systems away",
+          "Earth systems reveal the answer with rock layer",
+          "The rock layer that changes the moment",
+          "Earth systems show the hidden payoff in seconds",
+          "Earth systems: watch this rock layer",
+          "Watch earth systems after the rock layer"
+        ],
+        "thumbnail_options": [
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "EARTH SYSTEMS SIGNAL",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER PAYOFF",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Earth shows the rock before the payoff",
+          "Earth shows the rock before the payoff.",
+          "Earth shows the rock before the payoff.",
+          "Earth shows the rock before the payoff.",
+          "Earth systems give away the answer through rock layer"
+        ],
+        "selected_variant": {
+          "score": 65,
+          "title": "Earth systems signal through rock layer",
+          "thumbnail_text": "ROCK LAYER",
+          "hook": "Earth shows the rock before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Earth shows the rock before the payoff"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Watch the rock layer; the payoff lands seconds later"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Earth shows the rock before the payoff"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Watch the rock layer; the payoff lands seconds later"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "EARTH SYSTEMS SIGNAL",
+            "hook": "Earth shows the rock before the payoff"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "EARTH SYSTEMS SIGNAL",
+            "hook": "Watch the rock layer; the payoff lands seconds later"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "EARTH SYSTEMS SIGNAL",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Earth systems signal through rock layer",
+            "thumbnail_text": "ROCK LAYER MATTERS",
+            "hook": "Earth shows the rock before the payoff"
+          }
+        ],
+        "retention": {
+          "score": 84,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the rock again. Tomorrow: another nature signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after earth?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "replay_prompt": "End by pointing back to the rock, so viewers rewatch the earth clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This geology changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Earth shows the rock before the payoff",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.598,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.598,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "ROCK LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Earth shows the rock before the payoff",
+          "hook_words": 7,
+          "first_2s_narration": "Earth systems reveal one visible signal Watch the rock layers because that",
+          "caption_chars_per_second": 15.17,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.598
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }
@@ -401,12 +1160,12 @@
           "mode": "explore",
           "explore_rate": 0.35,
           "winners": {
-            "title_pattern": "",
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "hook_pattern": ""
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
           },
           "winning_experiments": {},
-          "sample_count": 0,
+          "sample_count": 1,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -508,6 +1267,1525 @@
           "payoff_time_s": 9.9,
           "cta_count": 1,
           "loop_score": 0.595
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "c6e73e607da4d078",
+      "title": "Forests signal through canopy shift",
+      "thumbnail_text": "CANOPY SHIFT",
+      "category": "forests",
+      "packaging": {
+        "score": 95,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Forests signal through canopy shift",
+          "Forests use canopy shift before they signal",
+          "This canopy shift gives forests away",
+          "Why forests signal after one canopy shift",
+          "Forests reveal the answer with canopy shift",
+          "The canopy shift that changes the moment",
+          "Forests make one canopy shift matter",
+          "Forests show the hidden payoff in seconds",
+          "Forests: watch this canopy shift",
+          "Watch forests after the canopy shift"
+        ],
+        "thumbnail_options": [
+          "CANOPY SHIFT",
+          "WATCH CANOPY SHIFT",
+          "FORESTS SIGNAL",
+          "CANOPY SHIFT MATTERS",
+          "CANOPY SHIFT PAYOFF",
+          "CANOPY SHIFT FIRST",
+          "CANOPY SHIFT REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Forests show the canopy shift before the payoff",
+          "Forests show the canopy shift before the payoff.",
+          "Forests show the canopy shift before the payoff.",
+          "Forests show the canopy shift before the payoff.",
+          "Forests give away the answer through canopy shift"
+        ],
+        "selected_variant": {
+          "score": 66,
+          "title": "Forests signal through canopy shift",
+          "thumbnail_text": "CANOPY SHIFT",
+          "hook": "Start with the canopy shift; it explains the next move"
+        },
+        "top_variants": [
+          {
+            "score": 66,
+            "title": "Forests signal through canopy shift",
+            "thumbnail_text": "CANOPY SHIFT",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests signal through canopy shift",
+            "thumbnail_text": "WATCH CANOPY SHIFT",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests signal through canopy shift",
+            "thumbnail_text": "FORESTS SIGNAL",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests signal through canopy shift",
+            "thumbnail_text": "CANOPY SHIFT MATTERS",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests signal through canopy shift",
+            "thumbnail_text": "CANOPY SHIFT PAYOFF",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests use canopy shift before they signal",
+            "thumbnail_text": "CANOPY SHIFT",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests use canopy shift before they signal",
+            "thumbnail_text": "WATCH CANOPY SHIFT",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests use canopy shift before they signal",
+            "thumbnail_text": "FORESTS SIGNAL",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests use canopy shift before they signal",
+            "thumbnail_text": "CANOPY SHIFT MATTERS",
+            "hook": "Start with the canopy shift; it explains the next move"
+          },
+          {
+            "score": 66,
+            "title": "Forests use canopy shift before they signal",
+            "thumbnail_text": "CANOPY SHIFT PAYOFF",
+            "hook": "Start with the canopy shift; it explains the next move"
+          }
+        ],
+        "retention": {
+          "score": 82,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 58,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the canopy shift again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "replay_prompt": "End by pointing back to the canopy shift, so viewers rewatch the forests clip.",
+        "subscriber_conversion": {
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121,
+          "return_probability": 0.258,
+          "comment_probability": 0.221,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This forestscience changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Forests show the canopy shift before the payoff.",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.58,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.58,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "CANOPY SHIFT",
+          "first_frame_text_words": 2,
+          "hook": "Forests show the canopy shift before the payoff.",
+          "hook_words": 8,
+          "first_2s_narration": "Forests reveal one visible signal Watch the canopy shift because that detail",
+          "caption_chars_per_second": 15.41,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.58
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "c8b8749e95a96a1a",
+      "title": "Earth systems signal through cloud patterns",
+      "thumbnail_text": "CLOUD PATTERN",
+      "category": "earth_from_space",
+      "packaging": {
+        "score": 95,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Earth systems signal through cloud patterns",
+          "Earth systems signal through cloud pattern",
+          "Earth systems use cloud pattern before they signal",
+          "This cloud pattern gives earth systems away",
+          "Earth systems reveal the answer with cloud pattern",
+          "The cloud pattern that changes the moment",
+          "Earth systems show the hidden payoff in seconds",
+          "Earth systems: watch this cloud pattern"
+        ],
+        "thumbnail_options": [
+          "CLOUD PATTERN",
+          "WATCH CLOUD PATTERN",
+          "EARTH SYSTEMS SIGNAL",
+          "CLOUD PATTERN MATTERS",
+          "CLOUD PATTERN PAYOFF",
+          "CLOUD PATTERN FIRST",
+          "CLOUD PATTERN REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Earth shows the face memory before the payoff",
+          "Earth shows the face memory before the payoff.",
+          "Earth shows the face memory before the payoff.",
+          "Earth shows the face memory before the payoff.",
+          "Earth systems give away the answer through cloud pattern"
+        ],
+        "selected_variant": {
+          "score": 71,
+          "title": "Earth systems signal through cloud patterns",
+          "thumbnail_text": "CLOUD PATTERN",
+          "hook": "Watch the cloud pattern; the payoff lands seconds later"
+        },
+        "top_variants": [
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN",
+            "hook": "Watch the cloud pattern; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "WATCH CLOUD PATTERN",
+            "hook": "Watch the cloud pattern; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "WATCH CLOUD PATTERN",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "EARTH SYSTEMS SIGNAL",
+            "hook": "Watch the cloud pattern; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "EARTH SYSTEMS SIGNAL",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN MATTERS",
+            "hook": "Watch the cloud pattern; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN MATTERS",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN PAYOFF",
+            "hook": "Watch the cloud pattern; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Earth systems signal through cloud patterns",
+            "thumbnail_text": "CLOUD PATTERN PAYOFF",
+            "hook": "Start with the cloud pattern; it explains the next move"
+          }
+        ],
+        "retention": {
+          "score": 81,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the face memory again. Tomorrow: another nature signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after earth?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the earth clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This spacescience changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Earth shows the face memory before the payoff.",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.586,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.586,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "CLOUD PATTERN",
+          "first_frame_text_words": 2,
+          "hook": "Earth shows the face memory before the payoff.",
+          "hook_words": 8,
+          "first_2s_narration": "Earth systems reveal one visible signal Watch the face memory because that",
+          "caption_chars_per_second": 15.17,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.586
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "6fc82a4384c34151",
+      "title": "Rocks use rock layers before they hide",
+      "thumbnail_text": "ROCK LAYER",
+      "category": "geology",
+      "packaging": {
+        "score": 94,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [
+          "script does not expose enough concrete visual detail"
+        ],
+        "title_options": [
+          "Rocks use rock layers before they hide",
+          "This rock layer gives rocks away",
+          "Rocks reveal the answer with rock layers",
+          "The rock layer that changes the moment",
+          "Rocks show the hidden payoff in seconds",
+          "Rocks: watch this rock layer",
+          "Watch rocks after the rock layer"
+        ],
+        "thumbnail_options": [
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "ROCKS HIDE",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER PAYOFF",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Geology shows the rocks before the payoff",
+          "Geology shows the rocks before the payoff.",
+          "Geology shows the rocks before the payoff.",
+          "Geology shows the rocks before the payoff.",
+          "Geology shows the rocks before the payoff."
+        ],
+        "selected_variant": {
+          "score": 64,
+          "title": "Rocks use rock layers before they hide",
+          "thumbnail_text": "ROCK LAYER",
+          "hook": "Start with the rock layer; it explains the next move"
+        },
+        "top_variants": [
+          {
+            "score": 64,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCKS HIDE",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCK LAYER MATTERS",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCK LAYER PAYOFF",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 63,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Geology shows the rocks before the payoff"
+          },
+          {
+            "score": 63,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Watch the rock layers; the payoff lands seconds later"
+          },
+          {
+            "score": 63,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Geology shows the rocks before the payoff"
+          },
+          {
+            "score": 63,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Watch the rock layers; the payoff lands seconds later"
+          },
+          {
+            "score": 63,
+            "title": "Rocks use rock layers before they hide",
+            "thumbnail_text": "ROCKS HIDE",
+            "hook": "Geology shows the rocks before the payoff"
+          }
+        ],
+        "retention": {
+          "score": 79,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "explore",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail",
+            "cta": "specific_question"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the rocks again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after geology?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "replay_prompt": "End by pointing back to the rocks, so viewers rewatch the geology clip.",
+        "subscriber_conversion": {
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121,
+          "return_probability": 0.258,
+          "comment_probability": 0.221,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "Geology shows the rocks before the payoff.",
+          "source": "story",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "geology",
+          "opening_line": "Geology shows the rocks before the payoff.",
+          "ending_line": "You thinking this only happens in dry places?",
+          "final_line": "You thinking this only happens in dry places?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.272,
+          "render_hints": {
+            "carry_keyword": "geology",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.272,
+        "editorial_rulebook": {
+          "approved": false,
+          "score": 84.0,
+          "violations": [
+            "script does not expose enough concrete visual detail"
+          ],
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_format": "earth_engine",
+          "recommended_duration_s": 18
+        },
+        "preflight_inputs": {
+          "first_frame_text": "ROCK LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Geology shows the rocks before the payoff.",
+          "hook_words": 7,
+          "first_2s_narration": "Water hides in rock caves that's why desert springs surprise hikers These",
+          "caption_chars_per_second": 15.4,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 11.0,
+          "cta_count": 1,
+          "loop_score": 0.272
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "a113553b8210a4ce",
+      "title": "Crystal Caves use rock layers before they form",
+      "thumbnail_text": "ROCK LAYER",
+      "category": "geology",
+      "packaging": {
+        "score": 94,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Crystal Caves use rock layers before they form",
+          "This rock layer gives crystal caves away",
+          "Crystal Caves reveal the answer with rock layers",
+          "The rock layer that changes the moment",
+          "Crystal Caves show the hidden payoff in seconds",
+          "Crystal Caves: watch this rock layer",
+          "Watch crystal caves after the rock layer"
+        ],
+        "thumbnail_options": [
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "CRYSTAL CAVES FORM",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER PAYOFF",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Geology shows the rock before the payoff",
+          "Geology shows the rock before the payoff.",
+          "Geology shows the rock before the payoff.",
+          "Geology shows the rock before the payoff.",
+          "Geology shows the rock before the payoff."
+        ],
+        "selected_variant": {
+          "score": 64,
+          "title": "Crystal Caves use rock layers before they form",
+          "thumbnail_text": "ROCK LAYER",
+          "hook": "Geology shows the rock before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Geology shows the rock before the payoff"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Watch the rock layers; the payoff lands seconds later"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Geology shows the rock before the payoff"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Watch the rock layers; the payoff lands seconds later"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "CRYSTAL CAVES FORM",
+            "hook": "Geology shows the rock before the payoff"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "CRYSTAL CAVES FORM",
+            "hook": "Watch the rock layers; the payoff lands seconds later"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "CRYSTAL CAVES FORM",
+            "hook": "Start with the rock layer; it explains the next move"
+          },
+          {
+            "score": 64,
+            "title": "Crystal Caves use rock layers before they form",
+            "thumbnail_text": "ROCK LAYER MATTERS",
+            "hook": "Geology shows the rock before the payoff"
+          }
+        ],
+        "retention": {
+          "score": 80,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 74,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the rock again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after geology?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "replay_prompt": "End by pointing back to the rock, so viewers rewatch the geology clip.",
+        "subscriber_conversion": {
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121,
+          "return_probability": 0.258,
+          "comment_probability": 0.221,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "Geology shows the rock before the payoff",
+          "source": "story",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "geology",
+          "opening_line": "Geology shows the rock before the payoff",
+          "ending_line": "What’s your favorite crystal shape?",
+          "final_line": "What’s your favorite crystal shape?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.208,
+          "render_hints": {
+            "carry_keyword": "geology",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.208,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_format": "earth_engine",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "ROCK LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Geology shows the rock before the payoff",
+          "hook_words": 7,
+          "first_2s_narration": "Crystals grow fastest in black caves that why these huge gypsum spikes",
+          "caption_chars_per_second": 16.72,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.208
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "f329d4d9415a87cf",
+      "title": "Owls fly silently because feathers break sound",
+      "thumbnail_text": "SILENT WINGS",
+      "category": "birds",
+      "packaging": {
+        "score": 92,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Owls fly silently because feathers break sound",
+          "Owls use silent feathers before they hunt",
+          "Why owls hunt after one silent feathers",
+          "Owls reveal the answer with silent feathers",
+          "The silent feathers that changes the moment",
+          "Owls make one silent feathers matter",
+          "Owls show the hidden payoff in seconds",
+          "Owls: watch this silent feathers",
+          "Watch owls after the silent feathers"
+        ],
+        "thumbnail_options": [
+          "SILENT WINGS",
+          "SILENT FEATHERS",
+          "WATCH SILENT FEATHERS",
+          "OWLS HUNT",
+          "SILENT FEATHERS MATTERS",
+          "SILENT FEATHERS PAYOFF",
+          "SILENT FEATHERS FIRST",
+          "SILENT FEATHERS REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Owls can make a hunt almost silent",
+          "Owls show the silent feathers before the payoff",
+          "Owls show the silent feathers before the payoff.",
+          "Owls show the silent feathers before the payoff.",
+          "Owls show the silent feathers before the payoff."
+        ],
+        "selected_variant": {
+          "score": 80,
+          "title": "Owls fly silently because feathers break sound",
+          "thumbnail_text": "SILENT WINGS",
+          "hook": "Owls show the silent feathers before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 80,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT WINGS",
+            "hook": "Owls show the silent feathers before the payoff"
+          },
+          {
+            "score": 79,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT WINGS",
+            "hook": "Owls can make a hunt almost silent"
+          },
+          {
+            "score": 78,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT WINGS",
+            "hook": "Watch the silent feathers; the payoff lands seconds later"
+          },
+          {
+            "score": 72,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT FEATHERS",
+            "hook": "Owls show the silent feathers before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "WATCH SILENT FEATHERS",
+            "hook": "Owls show the silent feathers before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "OWLS HUNT",
+            "hook": "Owls show the silent feathers before the payoff"
+          },
+          {
+            "score": 72,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT FEATHERS MATTERS",
+            "hook": "Owls show the silent feathers before the payoff"
+          },
+          {
+            "score": 71,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "SILENT FEATHERS",
+            "hook": "Owls can make a hunt almost silent"
+          },
+          {
+            "score": 71,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "WATCH SILENT FEATHERS",
+            "hook": "Owls can make a hunt almost silent"
+          },
+          {
+            "score": 71,
+            "title": "Owls fly silently because feathers break sound",
+            "thumbnail_text": "OWLS HUNT",
+            "hook": "Owls can make a hunt almost silent"
+          }
+        ],
+        "retention": {
+          "score": 74,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 66,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Sky Intelligence",
+          "episode": 1,
+          "label": "Sky Intelligence",
+          "continuity_prompt": "Next in Sky Intelligence: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the silent feathers again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after owls?",
+        "series": "Sky Intelligence",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "replay_prompt": "End by pointing back to the silent feathers, so viewers rewatch the owls clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "These animals change right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "owls",
+          "opening_line": "Owls show the silent feathers before the payoff",
+          "ending_line": "Would you hear the landing?",
+          "final_line": "Would you hear the landing?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.284,
+          "render_hints": {
+            "carry_keyword": "owls",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.284,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_format": "body superpower",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "SILENT WINGS",
+          "first_frame_text_words": 2,
+          "hook": "Owls show the silent feathers before the payoff",
+          "hook_words": 8,
+          "first_2s_narration": "Owls can make hunt almost silent Watch the wing edge because owl",
+          "caption_chars_per_second": 15.18,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.284
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "079e4c96730df79c",
+      "title": "Horses remember familiar faces for months",
+      "thumbnail_text": "FACE MEMORY",
+      "category": "farm",
+      "packaging": {
+        "score": 92,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [],
+        "title_options": [
+          "Horses remember familiar faces for months",
+          "Horses use face memory before they remember",
+          "This face memory gives horses away",
+          "Why horses remember after one face memory",
+          "Horses reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Horses make one face memory matter",
+          "Horses show the hidden payoff in seconds",
+          "Horses: watch this face memory",
+          "Watch horses after the face memory"
+        ],
+        "thumbnail_options": [
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "HORSES REMEMBER",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY PAYOFF",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Horses can remember familiar faces",
+          "Horses show the face memory before the payoff",
+          "Horses show the face memory before the payoff.",
+          "Horses show the face memory before the payoff.",
+          "Horses show the face memory before the payoff."
+        ],
+        "selected_variant": {
+          "score": 78,
+          "title": "Horses remember familiar faces for months",
+          "thumbnail_text": "FACE MEMORY",
+          "hook": "Horses show the face memory before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 78,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses show the face memory before the payoff"
+          },
+          {
+            "score": 78,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Watch the face memory; the payoff lands seconds later"
+          },
+          {
+            "score": 77,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses can remember familiar faces"
+          },
+          {
+            "score": 72,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "hook": "Horses show the face memory before the payoff"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "hook": "Horses can remember familiar faces"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "hook": "Watch the face memory; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "HORSES REMEMBER",
+            "hook": "Horses show the face memory before the payoff"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "HORSES REMEMBER",
+            "hook": "Watch the face memory; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY MATTERS",
+            "hook": "Horses show the face memory before the payoff"
+          },
+          {
+            "score": 71,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY MATTERS",
+            "hook": "Watch the face memory; the payoff lands seconds later"
+          }
+        ],
+        "retention": {
+          "score": 73,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Farmyard Surprises",
+          "episode": 1,
+          "label": "Farmyard Surprises",
+          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the face memory again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after horses?",
+        "series": "Farmyard Surprises",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This veterinaryscience changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "horses",
+          "opening_line": "Horses show the face memory before the payoff",
+          "ending_line": "You ever notice a horse react to someone new?",
+          "final_line": "You ever notice a horse react to someone new?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.254,
+          "render_hints": {
+            "carry_keyword": "horses",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.254,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_format": "behavior_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "FACE MEMORY",
+          "first_frame_text_words": 2,
+          "hook": "Horses show the face memory before the payoff",
+          "hook_words": 8,
+          "first_2s_narration": "Horses remember faces for years not minutes Look how this one lifts",
+          "caption_chars_per_second": 15.47,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.254
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }
@@ -653,15 +2931,15 @@
           "mode": "exploit",
           "explore_rate": 0.35,
           "winners": {
-            "title_pattern": "",
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "hook_pattern": ""
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
           },
           "winning_experiments": {},
-          "sample_count": 0,
+          "sample_count": 1,
           "assignment": {
-            "format": "fresh_variant",
-            "hook": "new_hook",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
             "thumbnail": "new_thumbnail",
             "cta": "follow_for_more"
           }
@@ -759,6 +3037,769 @@
           "payoff_time_s": 9.350000000000001,
           "cta_count": 1,
           "loop_score": 0.591
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "19bd2d2c67129447",
+      "title": "Weather patterns signal through face memory",
+      "thumbnail_text": "FIRST MOVE",
+      "category": "weather",
+      "packaging": {
+        "score": 84,
+        "state": "magnetic",
+        "strengths": [
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [
+          "title_needs_stronger_shape"
+        ],
+        "title_options": [
+          "Weather patterns signal through face memory",
+          "Weather Patterns signal through first move",
+          "Weather Patterns use first move before they signal",
+          "This first move gives weather patterns away",
+          "Why weather patterns signal after one first move",
+          "Weather Patterns reveal the answer with first move",
+          "The first move that changes the moment",
+          "Weather Patterns make one first move matter",
+          "Weather Patterns show the hidden payoff in seconds",
+          "Weather Patterns: watch this first move"
+        ],
+        "thumbnail_options": [
+          "FIRST MOVE",
+          "WATCH FIRST MOVE",
+          "WEATHER PATTERNS SIGNAL",
+          "FIRST MOVE MATTERS",
+          "FIRST MOVE PAYOFF",
+          "FIRST MOVE FIRST",
+          "FIRST MOVE REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Weather shows the face memory before the payoff",
+          "Weather shows the face memory before the payoff.",
+          "Weather shows the face memory before the payoff.",
+          "Weather shows the face memory before the payoff.",
+          "Weather Patterns give away the answer through first move"
+        ],
+        "selected_variant": {
+          "score": 65,
+          "title": "Weather patterns signal through face memory",
+          "thumbnail_text": "FIRST MOVE",
+          "hook": "Start with the first move; it explains the next move"
+        },
+        "top_variants": [
+          {
+            "score": 65,
+            "title": "Weather patterns signal through face memory",
+            "thumbnail_text": "FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather patterns signal through face memory",
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather patterns signal through face memory",
+            "thumbnail_text": "WEATHER PATTERNS SIGNAL",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather patterns signal through face memory",
+            "thumbnail_text": "FIRST MOVE MATTERS",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather patterns signal through face memory",
+            "thumbnail_text": "FIRST MOVE PAYOFF",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather Patterns signal through first move",
+            "thumbnail_text": "FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather Patterns signal through first move",
+            "thumbnail_text": "WATCH FIRST MOVE",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather Patterns signal through first move",
+            "thumbnail_text": "WEATHER PATTERNS SIGNAL",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather Patterns signal through first move",
+            "thumbnail_text": "FIRST MOVE MATTERS",
+            "hook": "Start with the first move; it explains the next move"
+          },
+          {
+            "score": 65,
+            "title": "Weather Patterns signal through first move",
+            "thumbnail_text": "FIRST MOVE PAYOFF",
+            "hook": "Start with the first move; it explains the next move"
+          }
+        ],
+        "retention": {
+          "score": 78,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 87,
+            "visual_score": 50,
+            "replay_score": 100,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the face memory again. Tomorrow: another nature signal. Which is scarier: wind, water, lightning, or heat?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after weather?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Want to see more extreme weather explained fast?",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the weather clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "Weather shows the face memory before the payoff.",
+          "source": "story",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "before",
+          "opening_line": "Weather shows the face memory before the payoff.",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.58,
+          "render_hints": {
+            "carry_keyword": "before",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.58,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "natural_phenomenon",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "FIRST MOVE",
+          "first_frame_text_words": 2,
+          "hook": "Weather shows the face memory before the payoff.",
+          "hook_words": 8,
+          "first_2s_narration": "Weather patterns reveal one visible signal Watch the face memory because that",
+          "caption_chars_per_second": 15.5,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.58
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "58b7e2642a8e87c7",
+      "title": "Bees dance directions back to the hive",
+      "thumbnail_text": "DANCE MAP",
+      "category": "insects",
+      "packaging": {
+        "score": 82,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "risks": [
+          "missing_action_word"
+        ],
+        "title_options": [
+          "Bees dance directions back to the hive",
+          "Bees use dance map before they carry",
+          "This dance map gives bees away",
+          "Why bees carry after one dance map",
+          "Bees reveal the answer with dance map",
+          "The dance map that changes the moment",
+          "Bees make one dance map matter",
+          "Bees show the hidden payoff in seconds",
+          "Bees: watch this dance map",
+          "Watch bees after the dance map"
+        ],
+        "thumbnail_options": [
+          "DANCE MAP",
+          "WATCH DANCE MAP",
+          "BEES CARRY",
+          "DANCE MAP MATTERS",
+          "DANCE MAP PAYOFF",
+          "DANCE MAP FIRST",
+          "DANCE MAP REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Bees can point the hive toward food",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees give away the answer through dance map"
+        ],
+        "selected_variant": {
+          "score": 78,
+          "title": "Bees dance directions back to the hive",
+          "thumbnail_text": "DANCE MAP",
+          "hook": "Start with the dance map; it explains the next move"
+        },
+        "top_variants": [
+          {
+            "score": 78,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "DANCE MAP",
+            "hook": "Start with the dance map; it explains the next move"
+          },
+          {
+            "score": 76,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "DANCE MAP",
+            "hook": "Bees can point the hive toward food"
+          },
+          {
+            "score": 76,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "DANCE MAP",
+            "hook": "Watch the dance map; the payoff lands seconds later"
+          },
+          {
+            "score": 71,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "WATCH DANCE MAP",
+            "hook": "Start with the dance map; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "BEES CARRY",
+            "hook": "Start with the dance map; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "DANCE MAP MATTERS",
+            "hook": "Start with the dance map; it explains the next move"
+          },
+          {
+            "score": 71,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "DANCE MAP PAYOFF",
+            "hook": "Start with the dance map; it explains the next move"
+          },
+          {
+            "score": 69,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "WATCH DANCE MAP",
+            "hook": "Bees can point the hive toward food"
+          },
+          {
+            "score": 69,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "WATCH DANCE MAP",
+            "hook": "Watch the dance map; the payoff lands seconds later"
+          },
+          {
+            "score": 69,
+            "title": "Bees dance directions back to the hive",
+            "thumbnail_text": "BEES CARRY",
+            "hook": "Bees can point the hive toward food"
+          }
+        ],
+        "retention": {
+          "score": 68,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 50,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Tiny Worlds",
+          "episode": 1,
+          "label": "Tiny Worlds",
+          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
+        "series": "Tiny Worlds",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "replay_prompt": "End by pointing back to the dance map, so viewers rewatch the bees clip.",
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "This microscopy changes right before the payoff.",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "bees",
+          "opening_line": "Bees can point the hive toward food.",
+          "ending_line": "Which insect should we decode next?",
+          "final_line": "Which insect should we decode next?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.29,
+          "render_hints": {
+            "carry_keyword": "bees",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.29,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_format": "animal intelligence",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "DANCE MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bees can point the hive toward food.",
+          "hook_words": 7,
+          "first_2s_narration": "Bees can point the hive toward food Watch the body angle because",
+          "caption_chars_per_second": 15.28,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "cta_count": 1,
+          "loop_score": 0.29
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "492f73c44e00e808",
+      "title": "Magnets use eye contact before they trick",
+      "thumbnail_text": "EYE CONTACT",
+      "category": "physics",
+      "packaging": {
+        "score": 72,
+        "state": "usable",
+        "strengths": [
+          "thumbnail_scannable",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [
+          "title_needs_stronger_shape",
+          "subject_not_clear"
+        ],
+        "title_options": [
+          "Magnets use eye contact before they trick",
+          "This eye contact gives magnets away",
+          "Why magnets trick after one eye contact",
+          "Magnets reveal the answer with eye contact",
+          "The eye contact that changes the moment",
+          "Magnets make one eye contact matter",
+          "Magnets show the hidden payoff in seconds",
+          "Magnets: watch this eye contact",
+          "Watch magnets after the eye contact",
+          "One eye contact changes how magnets react"
+        ],
+        "thumbnail_options": [
+          "EYE CONTACT",
+          "WATCH EYE CONTACT",
+          "MAGNETS TRICK",
+          "EYE CONTACT MATTERS",
+          "EYE CONTACT PAYOFF",
+          "EYE CONTACT FIRST",
+          "EYE CONTACT REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "hook_options": [
+          "Physics show the eyes before the payoff",
+          "Physics show the eyes before the payoff.",
+          "Physics show the eyes before the payoff.",
+          "Physics show the eyes before the payoff.",
+          "Physics show the eyes before the payoff."
+        ],
+        "selected_variant": {
+          "score": 62,
+          "title": "Magnets use eye contact before they trick",
+          "thumbnail_text": "EYE CONTACT",
+          "hook": "Physics show the eyes before the payoff"
+        },
+        "top_variants": [
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT",
+            "hook": "Physics show the eyes before the payoff"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT",
+            "hook": "Start with the eye contact; it explains the next move"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "WATCH EYE CONTACT",
+            "hook": "Physics show the eyes before the payoff"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "WATCH EYE CONTACT",
+            "hook": "Start with the eye contact; it explains the next move"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "MAGNETS TRICK",
+            "hook": "Physics show the eyes before the payoff"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "MAGNETS TRICK",
+            "hook": "Start with the eye contact; it explains the next move"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT MATTERS",
+            "hook": "Physics show the eyes before the payoff"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT MATTERS",
+            "hook": "Start with the eye contact; it explains the next move"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT PAYOFF",
+            "hook": "Physics show the eyes before the payoff"
+          },
+          {
+            "score": 62,
+            "title": "Magnets use eye contact before they trick",
+            "thumbnail_text": "EYE CONTACT PAYOFF",
+            "hook": "Start with the eye contact; it explains the next move"
+          }
+        ],
+        "retention": {
+          "score": 80,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 95,
+            "visual_score": 66,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.35,
+          "winners": {
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {subject} the {subject} {action} {subject} the {subject}"
+          },
+          "winning_experiments": {},
+          "sample_count": 1,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 1,
+          "label": "Animal Superpowers",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the eyes again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after physics?",
+        "series": "Animal Superpowers",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "replay_prompt": "End by pointing back to the eyes, so viewers rewatch the physics clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "curiosity_gap": {
+          "hook": "Physics show the eyes before the payoff",
+          "source": "story",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "physics",
+          "opening_line": "Physics show the eyes before the payoff",
+          "ending_line": "Because metal fatigue doesn’t scare magnets.",
+          "final_line": "Now the physics at the start make sense.",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.431,
+          "render_hints": {
+            "carry_keyword": "physics",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.431,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "mechanism_reveal",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "EYE CONTACT",
+          "first_frame_text_words": 2,
+          "hook": "Physics show the eyes before the payoff",
+          "hook_words": 7,
+          "first_2s_narration": "Watch these magnets clack But those clicks aren just noise this is",
+          "caption_chars_per_second": 16.32,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 10.450000000000001,
+          "cta_count": 1,
+          "loop_score": 0.431
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }

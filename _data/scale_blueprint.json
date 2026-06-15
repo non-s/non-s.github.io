@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T09:44:38.434404+00:00",
+  "generated_at": "2026-06-15T11:20:10.983733+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -29,7 +29,7 @@
     "no_captions_view_rate": 0.944,
     "realtime_48h_views": 2954,
     "avg_view_percentage": 0.0,
-    "shorts_tracked": 0
+    "shorts_tracked": 1
   },
   "bottlenecks": [
     {
@@ -67,15 +67,6 @@
       "target": 0.85,
       "gap": 0.112,
       "action": "Add query-shaped titles and descriptions around animal behavior so winners can collect search/suggested traffic later."
-    },
-    {
-      "id": "comment_loop",
-      "severity": "medium",
-      "metric": "comments_sampled",
-      "current": 0,
-      "target": 20,
-      "gap": 20,
-      "action": "Ask specific animal-signal questions in pinned comments until comments become a topic source."
     }
   ],
   "operating_rules": [
@@ -115,7 +106,7 @@
       "state": "test",
       "retention": 0.0,
       "growth_score": 0.0,
-      "publish_ready_supply": 0
+      "publish_ready_supply": 1
     },
     {
       "lane": "Body Clues",
@@ -165,8 +156,21 @@
     }
   ],
   "video_action_plan": {
-    "actions": [],
-    "counts": {}
+    "actions": [
+      {
+        "video_id": "UBg6lj27McA",
+        "title": "Snakes smell the air with their tongues",
+        "views": 0,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.0,
+        "action": "observe",
+        "reason": "not enough signal yet"
+      }
+    ],
+    "counts": {
+      "observe": 1
+    }
   },
   "production_commands": [
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
@@ -199,7 +203,20 @@
       "job": "Compound format memory into a repeatable audience identity."
     }
   ],
-  "next_48h_watch": [],
+  "next_48h_watch": [
+    {
+      "title": "Snakes smell the air with their tongues",
+      "views": 0,
+      "views_per_hour": 0.0,
+      "breakout_probability": {
+        "pass_500": 0.0,
+        "pass_1000": 0.0,
+        "pass_5000": 0.0,
+        "pass_10000": 0.0,
+        "pass_50000": 0.0
+      }
+    }
+  ],
   "dashboard_summary": {
     "phase": "discovery_spike_to_loyalty",
     "views": 30314,
