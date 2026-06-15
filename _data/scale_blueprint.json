@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T07:46:07.020252+00:00",
+  "generated_at": "2026-06-15T07:58:56.920388+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -29,7 +29,7 @@
     "no_captions_view_rate": 0.944,
     "realtime_48h_views": 2954,
     "avg_view_percentage": 0.0,
-    "shorts_tracked": 4
+    "shorts_tracked": 3
   },
   "bottlenecks": [
     {
@@ -104,10 +104,10 @@
         "dogs"
       ],
       "promise": "home-animal behavior only when the hook beats retention gates",
-      "state": "scale",
+      "state": "test",
       "retention": 0.0,
-      "growth_score": 200.0,
-      "publish_ready_supply": 0
+      "growth_score": 0.0,
+      "publish_ready_supply": 1
     },
     {
       "lane": "Farmyard Minds",
@@ -163,23 +163,13 @@
         "views": 5,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.848,
+        "views_per_hour": 1.583,
         "action": "observe",
         "reason": "not enough signal yet"
       },
       {
         "video_id": "PARZJaJjsR4",
         "title": "Foxes hear tiny prey under snow",
-        "views": 0,
-        "retention": 0.0,
-        "subscribers_gained": 0,
-        "views_per_hour": 0.0,
-        "action": "observe",
-        "reason": "not enough signal yet"
-      },
-      {
-        "video_id": "jbJJ6Kvov7g",
-        "title": "Cats use whiskers like built-in rulers",
         "views": 0,
         "retention": 0.0,
         "subscribers_gained": 0,
@@ -199,14 +189,13 @@
       }
     ],
     "counts": {
-      "observe": 4
+      "observe": 3
     }
   },
   "production_commands": [
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
     "Attach a named series lane and next-episode pinned question to every strong candidate.",
-    "For each winner, add one searchable title/description variant around animal behavior intent.",
-    "Use the next publish block to deepen: Pet Signals."
+    "For each winner, add one searchable title/description variant around animal behavior intent."
   ],
   "milestone_path": [
     {
@@ -236,31 +225,7 @@
   ],
   "next_48h_watch": [
     {
-      "title": "Bears smell food from miles away",
-      "views": 5,
-      "views_per_hour": 0.847,
-      "breakout_probability": {
-        "pass_500": 0.0,
-        "pass_1000": 0.0,
-        "pass_5000": 0.0,
-        "pass_10000": 0.0,
-        "pass_50000": 0.0
-      }
-    },
-    {
       "title": "Foxes hear tiny prey under snow",
-      "views": 0,
-      "views_per_hour": 0.0,
-      "breakout_probability": {
-        "pass_500": 0.0,
-        "pass_1000": 0.0,
-        "pass_5000": 0.0,
-        "pass_10000": 0.0,
-        "pass_50000": 0.0
-      }
-    },
-    {
-      "title": "Cats use whiskers like built-in rulers",
       "views": 0,
       "views_per_hour": 0.0,
       "breakout_probability": {
@@ -275,6 +240,18 @@
       "title": "Earth systems use cloud patterns before they glow",
       "views": 0,
       "views_per_hour": 0.0,
+      "breakout_probability": {
+        "pass_500": 0.0,
+        "pass_1000": 0.0,
+        "pass_5000": 0.0,
+        "pass_10000": 0.0,
+        "pass_50000": 0.0
+      }
+    },
+    {
+      "title": "Bears smell food from miles away",
+      "views": 5,
+      "views_per_hour": 0.818,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,
