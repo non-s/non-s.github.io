@@ -80,3 +80,14 @@ def test_apply_plan_to_queue_writes_autonomy_annotations():
     assert annotation["lane"] in {"proven_category", "fresh_experiment", "sequence"}
     assert annotation["state"] != "reject"
     assert annotation["packaging_lab"]["thumbnail_variants"]
+
+
+def test_packaging_lab_filters_generic_retention_scaffold():
+    story = _story("turtle-1", category="reptiles", title="Turtles carry a magnetic map home")
+    story["hook"] = "Turtles show the magnetic map before the payoff"
+
+    plan = build_plan(queue={"stories": [story]})
+    hooks = plan["queue"]["top_candidates"][0]["packaging_lab"]["hook_variants"]
+
+    assert hooks
+    assert all("before the payoff" not in hook.lower() for hook in hooks)

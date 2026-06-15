@@ -1,9 +1,10 @@
 # Weekly Growth Review
 
-Generated: 2026-06-15T09:44:29.095080+00:00
+Generated: 2026-06-15T12:30:28.495839+00:00
 
 ## Winners
 
+- Category `cats`: score 0.0 across 1 rows
 
 ## Next Experiments
 

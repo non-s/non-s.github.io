@@ -19,8 +19,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
     assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
-    assert "PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '6'" in youtube_workflow
-    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
+    assert "PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24'" in youtube_workflow
+    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-24}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}" in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow

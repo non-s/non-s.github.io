@@ -83,7 +83,7 @@ def _words(value: object) -> list[str]:
 
 def _subject(story: dict) -> str:
     for key in ("subject", "animal", "topic_hashtag", "category"):
-        value = _clean(story.get(key)).replace("#", "")
+        value = _clean(story.get(key)).replace("#", "").replace("_", " ")
         if value:
             return value.lower()
     title_words = _words(story.get("title"))
@@ -179,14 +179,13 @@ class CuriosityGapEngine:
                 candidates.append(HookCandidate(text, source="story"))
         action = _clean(story.get("action") or context.get("action") or "changes")
         cue = _clean(story.get("cue") or context.get("cue") or "body cue")
-        outcome = _clean(story.get("outcome") or context.get("outcome") or "the payoff")
         subject_phrase = _this_subject(subject)
         subject_action = _plural_action(action) if _subject_is_plural(subject) else action
         templates = (
-            f"{subject_phrase.capitalize()} {subject_action} right before {outcome}.",
-            f"Watch the {cue} before {subject_phrase} {subject_action}.",
-            f"Why {_question_aux(subject)} {subject_phrase} {subject_action} before {outcome}?",
-            f"What looks like {cue} is actually the warning.",
+            f"{subject_phrase.capitalize()} {subject_action} after the {cue}.",
+            f"Watch the {cue}; it explains why {subject_phrase} {subject_action}.",
+            f"Why {_question_aux(subject)} {subject_phrase} {subject_action} after the {cue}?",
+            f"What looks like {cue} is actually the clue.",
         )
         for text in templates:
             candidates.append(HookCandidate(_clean(text), source="template"))
@@ -235,6 +234,6 @@ class CuriosityGapEngine:
             if _contains_specific_detail(candidate.hook):
                 reasons.append("specific_detail")
             if _implies_unresolved_payoff(candidate.hook):
-                reasons.append("payoff_gap")
+                reasons.append("open_loop")
             scored.append(HookCandidate(candidate.hook, candidate.source, score, tuple(reasons)))
         return self.choose_best(scored)

@@ -31,7 +31,6 @@ from __future__ import annotations
 
 import dataclasses
 import re
-from typing import Iterable
 
 from utils.human_voice import score_text
 
@@ -76,6 +75,12 @@ _BANNED_PHRASES = [
     r"\bmind[- ]?blowing\b",
 ]
 _BANNED_RE = [re.compile(p, re.IGNORECASE) for p in _BANNED_PHRASES]
+
+_GENERIC_RETENTION_SCAFFOLD_RE = re.compile(
+    r"\b(?:before the payoff|one visible signal|payoff appears before the final move|"
+    r"final move|hidden cue|replay the first second)\b",
+    re.IGNORECASE,
+)
 
 # Weak opening words — the hook should NOT start with these per the
 # fetch_animals.py prompt rules. We check the script's first sentence
@@ -147,6 +152,23 @@ def check_banned_phrases(text: str) -> list[Issue]:
                 )
             )
     return out
+
+
+def check_generic_retention_scaffold(text: str) -> list[Issue]:
+    """Block template language that describes retention mechanics to the viewer."""
+    if not text:
+        return []
+    match = _GENERIC_RETENTION_SCAFFOLD_RE.search(text)
+    if not match:
+        return []
+    return [
+        Issue(
+            code="generic_retention_scaffold",
+            severity="block",
+            message="Script contains internal retention-template language instead of a concrete fact",
+            span=match.group(0),
+        )
+    ]
 
 
 def check_hook_opens_strong(hook: str, script: str = "") -> list[Issue]:
@@ -296,6 +318,9 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
 
     issues: list[Issue] = []
     issues += check_banned_phrases(script)
+    issues += check_generic_retention_scaffold(
+        " ".join(str(story.get(k) or "") for k in ("seo_title", "hook", "script", "thumbnail_text"))
+    )
     issues += check_hook_opens_strong(hook, script)
     issues += check_script_starts_with_hook(hook, script)
     issues += check_transformation_present(script, description)

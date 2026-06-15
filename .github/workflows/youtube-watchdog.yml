@@ -5,7 +5,9 @@ name: "YouTube publishing watchdog"
 # recovery run after a grace window when GitHub drops the original cron.
 on:
   schedule:
-    - cron: "50 * * * *"
+    # GitHub cron can be delayed or dropped. Check every 10 minutes so a
+    # missed hourly slot gets recovered inside the configured grace window.
+    - cron: "5,15,25,35,45,55 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -59,8 +61,8 @@ jobs:
               "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
           )
 
-          # The watchdog runs hourly
-          # and only recovers the most recent slot whose grace window has ended.
+          # The watchdog runs frequently and only recovers the most recent
+          # slot whose grace window has ended.
           candidates = []
           for day_offset in (-1, 0):
               day = (now + timedelta(days=day_offset)).date()

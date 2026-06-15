@@ -89,7 +89,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "policy": "Local publish history, uploaded markers, pending queue inventory, and generated learning reports were reset after the old channel inventory was removed. Production video sourcing is Pexels-only.",
             "cadence": "hourly_active",
             "queue_target_pending": 24,
-            "publish_ready_target": 6,
+            "publish_ready_target": 24,
             "youtube_description_mode": "empty",
             "visual_source_strategy": "pexels_only",
         },

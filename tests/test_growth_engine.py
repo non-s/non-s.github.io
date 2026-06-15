@@ -74,7 +74,7 @@ def test_packaging_avoids_repeating_subject_as_visual_cue_for_fungi():
     assert "use mushrooms" not in titles
     assert "underground threads" in titles
     assert "use mushrooms" not in selected["best"]["title"].lower()
-    assert selected["best"]["title"] == "Mushrooms signal through underground threads"
+    assert selected["best"]["title"] == "Mushrooms trade nutrients through underground threads"
 
 
 def test_packaging_repairs_non_animal_domain_grammar():
@@ -138,11 +138,11 @@ def test_packaging_repairs_non_animal_domain_grammar():
     assert "one leaves" not in generated
     assert "this forests changes" not in generated
     assert "before it change" not in generated
-    assert geology_best["title"] == "Geology signals through rock layers"
-    assert geology_best["thumbnail_text"] == "ROCK LAYER"
-    assert earth_best["title"] == "Earth systems signal through cloud patterns"
-    assert forest_best["title"] == "Forests signal through leaf movement"
-    assert forest_best["thumbnail_text"] == "LEAF MOVE"
+    assert geology_best["title"] == "Rock layers store ancient environments in stripes"
+    assert geology_best["thumbnail_text"] == "ROCK TIME"
+    assert earth_best["title"] == "Storm clouds reveal a storm's heat engine"
+    assert forest_best["title"] == "Forests make cooler air under the canopy"
+    assert forest_best["thumbnail_text"] == "COOL CANOPY"
 
 
 def test_packaging_selector_returns_scored_variants():
@@ -168,8 +168,8 @@ def test_packaging_selector_rejects_stale_thumbnail_for_changed_cue():
 
     selected = select_best_packaging(story)["best"]
 
-    assert selected["title"] == "Earth systems signal through cloud patterns"
-    assert selected["thumbnail_text"] == "CLOUD PATTERN"
+    assert selected["title"] == "Storm clouds reveal a storm's heat engine"
+    assert selected["thumbnail_text"] == "STORM ENGINE"
 
 
 def test_packaging_selector_replaces_generic_thumbnail_when_specific_cue_exists():
@@ -188,7 +188,7 @@ def test_packaging_selector_replaces_generic_thumbnail_when_specific_cue_exists(
 
     selected = select_best_packaging(story)["best"]
 
-    assert selected["thumbnail_text"] == "EYE CONTACT"
+    assert selected["thumbnail_text"] == "STEADY EYES"
 
 
 def test_packaging_selector_hides_rejected_title_variants():

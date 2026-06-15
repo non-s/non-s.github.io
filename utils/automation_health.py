@@ -125,6 +125,13 @@ def build_health(root: Path | str = ".") -> dict:
             frontloaded += 1
 
     pending = len(stories)
+    publish_ready = sum(
+        1
+        for item in stories
+        if (item.get("queue_prune") or {}).get("state") == "publish_ready"
+        and (item.get("publish_score") or {}).get("approved") is True
+        and (item.get("editorial") or {}).get("approved") is True
+    )
     avg_seo = round(sum(seo_scores) / len(seo_scores), 2) if seo_scores else 0.0
     frontloaded_pct = round(frontloaded * 100 / pending, 2) if pending else 0.0
     polished = [polish_story(item) for item in stories]
@@ -133,7 +140,7 @@ def build_health(root: Path | str = ".") -> dict:
     issues: list[str] = []
     if pending < 20:
         issues.append("queue_inventory_low")
-    if pending and agency_ready == 0:
+    if pending and agency_ready == 0 and publish_ready == 0:
         issues.append("no_agency_publish_now_candidate")
     if duplicate_scripts:
         issues.append("duplicate_scripts_in_queue")
@@ -162,6 +169,7 @@ def build_health(root: Path | str = ".") -> dict:
         "issues": issues,
         "queue": {
             "pending": pending,
+            "publish_ready": publish_ready,
             "categories": dict(sorted(categories.items())),
             "duplicate_scripts": duplicate_scripts,
             "missing_scripts": sum(1 for item in stories if not item.get("script")),

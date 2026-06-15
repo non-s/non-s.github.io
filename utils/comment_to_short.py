@@ -235,7 +235,7 @@ def _title_for(animal: str, cue: str, comment_text: str) -> str:
         return "Ducklings follow the group before they swim"
     if animal == "lions" and re.search(r"\b(?:big cat|predator|hunt|hunting|noise)\b", lower):
         return "Lions keep the hunt quiet for a reason"
-    return f"{subject} follow one {cue} before the payoff"
+    return f"{subject} follow the {cue} for a reason"
 
 
 def _script_for(title: str, animal: str, cue: str, comment_text: str) -> tuple[str, str]:
@@ -244,23 +244,22 @@ def _script_for(title: str, animal: str, cue: str, comment_text: str) -> tuple[s
         script = (
             f"{hook} Watch the group movement first, because the useful clue is not one perfect "
             "number; it is whether the whole clutch stays close enough to follow the mother. "
-            "The payoff is the replay: the group shape tells you when the ducklings are ready to move."
+            "The group shape tells you when the ducklings are ready to move."
         )
         return hook, script
     if animal == "lions":
         hook = "Lions keep the hunt quiet for a reason."
         script = (
             f"{hook} Watch the ears and body first, because sound can warn prey before the chase "
-            "even starts. The payoff lands on replay: the quiet moment is part of the hunting setup. "
-            "That makes the first silent second the clue viewers should replay, not an empty pause."
+            "even starts. The quiet moment is part of the hunting setup, not an empty pause."
         )
         return hook, script
     subject = animal.title()
-    hook = f"{subject} follow one {cue} before the payoff."
+    hook = f"{subject} follow the {cue} for a reason."
     script = (
         f"{hook} Watch the {cue} first, because that small signal changes what happens next. "
-        "The useful part is timing: the cue shows up before the payoff, then the final move "
-        "makes sense when viewers replay the opening second."
+        "The useful part is timing: the cue shows up early, then the behavior makes sense "
+        "when viewers look back at the opening shot."
     )
     return hook, script
 
@@ -292,7 +291,7 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
         if animal != "nature"
         else (
             "A viewer asked about one nature clue.",
-            "A viewer asked about one nature clue. Watch the visible cue first, because the payoff is easier to spot when the setup is clear.",
+            "A viewer asked about one nature clue. Watch the visible cue first, because the answer is easier to spot when the setup is clear.",
         )
     )
     category = _category_for(animal, text) if animal != "nature" else "wildlife"

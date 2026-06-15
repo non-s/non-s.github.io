@@ -125,7 +125,7 @@ jobs:
           ready_count() {
             python scripts/queue_ready_count.py --refresh --field publish_ready
           }
-          target="${QUEUE_TARGET_PUBLISH_READY:-6}"
+          target="${QUEUE_TARGET_PUBLISH_READY:-24}"
           max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-6}"
           base_pending_target="${QUEUE_TARGET_PENDING:-24}"
           pending_batch="${QUEUE_BACKFILL_PENDING_BATCH:-12}"
@@ -151,7 +151,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '6' }}
+          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}
           QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}
           QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '6' }}

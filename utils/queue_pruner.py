@@ -11,6 +11,7 @@ from pathlib import Path
 import fetch_animals
 from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
 from utils.claim_risk import evaluate_claim_risk
+from utils.curiosity_angles import is_generic_movement_copy
 from utils.editorial import review as editorial_review
 from utils.editorial_guard import editorial_issues
 from utils.fact_ledger import duplicate_angle_ids
@@ -19,6 +20,7 @@ from utils.packaging import extract_action, extract_animal, extract_cue, package
 from utils.publish_score import score_story
 from utils.rights_audit import audit_rights
 from utils.rights_guard import evaluate_rights_guard
+from utils.script_quality import check_script_starts_with_hook
 from utils.youtube_brain import creator_premortem
 
 GENERIC_TITLE_PHRASES = (
@@ -59,6 +61,23 @@ HARD_QUALITY_ISSUES = {
 }
 COMMONS_FIELDS = ("commons_image_url", "commons_page_url", "commons_license", "commons_artist")
 PACKAGING_LAB_VARIANT_FIELDS = ("title_variants", "hook_variants", "thumbnail_variants")
+VIEWER_COPY_FIELDS = (
+    "seo_title",
+    "title",
+    "hook",
+    "script",
+    "thumbnail_text",
+    "pinned_comment",
+    "description",
+)
+PACKAGING_VIEWER_FIELDS = (
+    "title_options",
+    "hook_options",
+    "thumbnail_options",
+    "selected_variant",
+    "curiosity_gap",
+    "preflight_inputs",
+)
 
 
 def normalise_title(story: dict) -> str:
@@ -141,6 +160,8 @@ def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = No
         script,
     ):
         issues.append("copy_subject_mismatch")
+    if check_script_starts_with_hook(str(story.get("hook") or ""), script):
+        issues.append("script_hook_mismatch")
     script_key = fetch_animals._script_key(script)
     if not script_key:
         issues.append("empty_script")
@@ -199,6 +220,21 @@ def sanitize_story_metadata(story: dict) -> dict:
             autonomy = dict(out.get("autonomy") or {})
             autonomy["packaging_lab"] = clean_lab
             out["autonomy"] = autonomy
+    if out.get("consumed"):
+        viewer_chunks = [str(out.get(field) or "") for field in VIEWER_COPY_FIELDS]
+        packaging = out.get("packaging")
+        if isinstance(packaging, dict):
+            for field in PACKAGING_VIEWER_FIELDS:
+                viewer_chunks.append(json.dumps(packaging.get(field) or "", ensure_ascii=False))
+        if is_generic_movement_copy(" ".join(viewer_chunks)):
+            repackage_input = dict(out)
+            repackage_input.pop("local_rewrite", None)
+            out = package_story(repackage_input)
+            out["consumed"] = story.get("consumed")
+            if story.get("consumed_at"):
+                out["consumed_at"] = story.get("consumed_at")
+            if story.get("consumed_reason"):
+                out["consumed_reason"] = story.get("consumed_reason")
     return out
 
 

@@ -17,7 +17,7 @@ def _story(idx="1", **overrides):
         "seo_title": "Mallard ducks fake injuries to pull predators away",
         "hook": "Mallard ducks fake injuries to protect their young.",
         "script": (
-            "Mallard ducks fake injuries when danger gets too close. "
+            "Mallard ducks fake injuries to protect their young. "
             "Watch the wing cue first, because the limp pulls predators away "
             "from the nest before the duck escapes."
         ),

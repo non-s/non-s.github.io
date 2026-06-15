@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import re
 
-from utils.curiosity_gap import CuriosityGapEngine
 from utils.curiosity_angles import CURIOUS_CUE_WORDS, build_curiosity_package, is_generic_movement_copy
+from utils.curiosity_gap import CuriosityGapEngine
 from utils.editorial_guard import editorial_issues
 from utils.editorial_rules import evaluate_story_package
 from utils.growth_engine import (
@@ -15,7 +15,6 @@ from utils.growth_engine import (
     select_best_packaging,
 )
 from utils.loop_engine import LoopGenerator
-from utils.swipe_risk import SwipeRiskScore
 from utils.story_intelligence import audit_title, classify_format
 from utils.subscriber_conversion import (
     contextual_cta,
@@ -23,6 +22,7 @@ from utils.subscriber_conversion import (
     score_subscriber_conversion,
     series_identity,
 )
+from utils.swipe_risk import SwipeRiskScore
 
 SUBJECT_TERMS = {
     "cow",
@@ -354,6 +354,10 @@ GENERIC_PHRASES = (
     "the real reason",
     "read the moment",
     "one visible signal",
+    "before the payoff",
+    "hidden cue",
+    "final move",
+    "payoff appears",
 )
 BODY_SIGNAL_TEMPLATE = re.compile(
     r"(?:(?:recognize signals through|signal the next move with) "
@@ -520,8 +524,8 @@ def _subject_safe_hook(story: dict, hook: str) -> str:
     verb = "show" if _plural_like_subject(subject) else "shows"
     subject_label = _title_case_subject(subject)
     if cue != "cue":
-        return f"{subject_label} {verb} the {cue} before the payoff."
-    return f"{subject_label} {verb} the first clue before the payoff."
+        return f"{subject_label} {verb} why the {cue} matters."
+    return f"{subject_label} {verb} the first clue in seconds."
 
 
 def extract_action(story: dict) -> str:
@@ -753,6 +757,7 @@ def package_story(story: dict) -> dict:
         or str(out.get("source") or "").strip().lower() == "youtube comment idea"
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
+        or str((out.get("local_rewrite") or {}).get("method") or "") == "curiosity_angle_rescue"
     )
     angle_package = build_curiosity_package(out, subject=extract_subject(out))
     angle_packaging_applied = False

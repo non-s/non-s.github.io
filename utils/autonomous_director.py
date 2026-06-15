@@ -208,14 +208,14 @@ def build_sequel_story(candidate: dict, generated_at: str | None = None) -> dict
     visible_signal = f"the {cue}"
     if str(candidate.get("story_format")) == "animal_memory":
         title = f"{animal.capitalize()} remember the {cue} for a reason"
-        hook = f"{animal.capitalize()} remember the {cue} before the payoff."
+        hook = f"{animal.capitalize()} remember the {cue} fast."
     else:
         title = f"{animal.capitalize()} rely on the {cue} for a reason"
-        hook = f"{animal.capitalize()} rely on the {cue} before the payoff."
+        hook = f"{animal.capitalize()} rely on the {cue} for survival."
     script = (
-        f"{hook} Watch {visible_signal} first, because {animal} change the next move "
-        "around that clue. The signal appears before the payoff, so the replay has a "
-        "job: spot the setup, then watch the behavior land a second later."
+        f"{hook} Watch {visible_signal} first, because {animal} change the next decision "
+        "around that clue. The setup is visible early, then the behavior makes sense when "
+        "viewers look back at the opening shot."
     )
     return {
         "id": str(candidate.get("sequel_id") or "sequel-" + _slug(source_title)),

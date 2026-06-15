@@ -419,8 +419,10 @@ _AI_PROMPT_TEMPLATE = (
     "verbatim. Then 1-2 surprising facts about the subject, each "
     "as a short sentence. Include one brief host reaction such as "
     '\\"I love this detail\\" or \\"Watch the eyes\\" only if it fits. '
-    'Include a clear payoff phrase such as "that\'s why" or '
+    'Include a clear causal phrase such as "that\'s why" or '
     '"because" so the fact resolves, not just describes. '
+    "Do not say 'payoff', 'visible signal', 'hidden cue', "
+    "'final move', or 'replay the first second' in viewer-facing copy. "
     "Close with a tiny question for the "
     'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
     'no stage directions, no URLs.>",'
@@ -471,7 +473,9 @@ _AI_PROMPT_TEMPLATE = (
     "fast.' Better: 'This reaction foams because gas is being made.'\n\n"
     "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
     "watch; 4-12s = real mechanism; final beat = satisfying payoff plus a "
-    "tiny comment question. Keep sentences short enough for yellow "
+    "tiny comment question. Do not say 'payoff', 'visible signal', "
+    "'hidden cue', 'final move', or 'replay the first second' in the viewer-facing copy. "
+    "Keep sentences short enough for yellow "
     "CapCut-style captions.\n\n"
     "Return this exact JSON shape:\n"
     "{{"
@@ -490,7 +494,7 @@ _AI_PROMPT_TEMPLATE = (
     '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
     '"script": "<the full voice-over for a 12-18 second short. 38-55 words MAX. '
     "FIRST WORDS MUST BE the hook, verbatim. Then one visible anchor, one mechanism, "
-    "and one payoff. Include because or that's why. Close with a tiny comment "
+    "and one satisfying reason. Include because or that's why. Close with a tiny comment "
     'question. No stage directions, no URLs.>",'
     '"sentiment": "positive"'
     "}}"

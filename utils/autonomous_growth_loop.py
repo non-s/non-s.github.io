@@ -13,6 +13,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.curiosity_angles import is_generic_movement_copy
+from utils.editorial_guard import editorial_issues
 from utils.experiments import axis_names, variant_choices
 from utils.packaging import package_story
 from utils.publish_score import score_story
@@ -397,7 +399,13 @@ def _packaging_lab(story: dict) -> dict:
     for item in hook_variants:
         clean = " ".join(item.split())[:110]
         key = clean.lower()
-        if clean and key not in seen:
+        candidate = {**packaged, "title": clean, "seo_title": clean, "hook": clean, "thumbnail_text": clean}
+        if (
+            clean
+            and key not in seen
+            and not is_generic_movement_copy(clean)
+            and not editorial_issues(candidate, include_script=False)
+        ):
             clean_hooks.append(clean)
             seen.add(key)
     return {

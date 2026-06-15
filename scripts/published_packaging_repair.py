@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.editorial_guard import editorial_issues
+from utils.editorial_guard import editorial_issues  # noqa: E402
 
 VIDEOS_DIR = ROOT / "_videos"
 DATA_OUT = ROOT / "_data" / "published_packaging_repair.json"
@@ -23,7 +23,7 @@ OVERRIDES: dict[str, dict[str, str]] = {
     "U3muBbnmMbo": {
         "title": "Chickens remember up to 100 faces",
         "thumbnail_text": "FACE MEMORY",
-        "hook": "Watch the face memory payoff first; chickens remember friends and bullies.",
+        "hook": "Watch the face first; chickens remember friends and bullies.",
         "rationale": "Aligns the title and thumbnail with the actual published description about chicken face memory.",
     },
     "hrvLkfiyQLc": {
@@ -36,7 +36,7 @@ OVERRIDES: dict[str, dict[str, str]] = {
         "title": "Wolves give away intent with one tail lift",
         "thumbnail_text": "TAIL LIFT",
         "hook": "Watch the tail lift first; it changes how the pack reads the moment.",
-        "rationale": "Replaces a generic 'tail to signal' title with an observable payoff.",
+        "rationale": "Replaces a generic 'tail to signal' title with an observable behavior angle.",
     },
     "f4PDHoApChg": {
         "title": "Sheep recognize the herd by forehead bumps",
@@ -90,7 +90,7 @@ OVERRIDES: dict[str, dict[str, str]] = {
         "title": "Ducks fake injury to pull danger away",
         "thumbnail_text": "FAKE INJURY",
         "hook": "Watch the fake injury first; it pulls danger away from the nest.",
-        "rationale": "Turns a vague body trick into the known broken-wing display payoff.",
+        "rationale": "Turns a vague body trick into the known broken-wing display.",
     },
     "KHNEgmGZgKg": {
         "title": "Cows remember faces longer than you think",
@@ -138,7 +138,7 @@ OVERRIDES: dict[str, dict[str, str]] = {
         "title": "Those bird ear tufts are actually feathers",
         "thumbnail_text": "FAKE EARS",
         "hook": "Watch the ear tufts first; they are not ears at all.",
-        "rationale": "Removes the stitched category prefix while keeping the clear myth payoff.",
+        "rationale": "Removes the stitched category prefix while keeping the clear myth angle.",
     },
     "85VdygIXPBo": {
         "title": "Tigers stay silent before the ambush",
@@ -149,7 +149,7 @@ OVERRIDES: dict[str, dict[str, str]] = {
     "Dsk4uI1FncM": {
         "title": "Forests signal through leaf movement",
         "thumbnail_text": "LEAF MOVE",
-        "hook": "Watch the leaf movement first; it shows how the forest shifts before the payoff.",
+        "hook": "Watch the leaf movement first; it shows how the forest shifts.",
         "rationale": "Replaces the awkward 'one leaves' title with the new visual-cue thumbnail style.",
     },
 }
@@ -178,7 +178,7 @@ def _fallback_suggestion(data: dict[str, Any]) -> dict[str, str]:
     return {
         "title": repaired,
         "thumbnail_text": "WATCH THE CUE",
-        "hook": f"Watch the first cue; the payoff is visible before the move.",
+        "hook": "Watch the first cue; it explains what changes next.",
         "rationale": "Fallback repair for videos without a hand-authored override.",
     }
 

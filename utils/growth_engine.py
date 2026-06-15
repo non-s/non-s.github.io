@@ -10,15 +10,14 @@ into three decisions:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
-import hashlib
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from utils.nature_strategy import NATURE_TOPICS
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import assess_confidence
 from utils.curiosity_angles import (
@@ -28,6 +27,7 @@ from utils.curiosity_angles import (
     subject_key_for_story,
 )
 from utils.editorial_guard import editorial_issues
+from utils.nature_strategy import NATURE_TOPICS
 
 MEMORY_PATH = Path("_data/format_memory.json")
 WINNER_PATTERNS_PATH = Path("_data/winner_patterns.json")
@@ -334,7 +334,6 @@ PAYOFF_TERMS = {
     "that is why",
     "that's why",
     "explains why",
-    "payoff",
     "trick",
     "reason",
     "watch again",
@@ -362,6 +361,11 @@ SATURATED_PATTERNS = {
     "one tiny movement",
     "you won't believe",
     "wait for it",
+    "before the payoff",
+    "one visible signal",
+    "hidden cue",
+    "final move",
+    "payoff appears",
 }
 
 
@@ -1244,7 +1248,6 @@ def _countable_title_cue(cue: str) -> str:
         "leaf": "leaf movement",
         "leaves": "leaf movement",
         "root network": "root network",
-        "roots": "root network",
     }.get(cue, _title_cue(cue))
 
 
@@ -1281,7 +1284,7 @@ def generate_packaging_options(story: dict) -> dict:
             f"{subject} {_subject_verb(subject, 'reveal')} the answer with {title_cue}",
             f"The {countable_cue} that changes the moment",
             f"{subject} {_subject_verb(subject, 'make')} one {countable_cue} matter",
-            f"{subject} {_subject_verb(subject, 'show')} the hidden payoff in seconds",
+            f"{subject} {_subject_verb(subject, 'show')} the hidden answer in seconds",
             f"{subject}: watch this {countable_cue}",
             f"Watch {subject.lower()} after the {countable_cue}",
             f"One {countable_cue} changes how {subject.lower()} {_subject_verb(subject, 'react')}",
@@ -1307,11 +1310,11 @@ def generate_packaging_options(story: dict) -> dict:
             f"WATCH {thumb_cue}".upper(),
             f"{subject} {action}".upper(),
             f"{thumb_cue} MATTERS".upper(),
-            f"{thumb_cue} PAYOFF".upper(),
             f"{thumb_cue} FIRST".upper(),
             f"{thumb_cue} REVEAL".upper(),
+            f"{thumb_cue} CLUE".upper(),
             "WATCH THE MOVE",
-            "BEFORE THE PAYOFF",
+            "SPOT THE CLUE",
         ]
     )
     hooks = []
@@ -1327,8 +1330,8 @@ def generate_packaging_options(story: dict) -> dict:
         hooks.append(current_hook)
     hooks.extend(
         [
-            f"Watch the {title_cue}; the payoff lands seconds later.",
-            f"Start with the {countable_cue}; it explains the next move.",
+            f"Watch the {title_cue}; it explains the behavior.",
+            f"Start with the {countable_cue}; it changes the scene.",
             f"The {countable_cue} is the detail most people miss.",
             f"{subject} {_subject_verb(subject, 'give')} away the answer through {title_cue}.",
         ]

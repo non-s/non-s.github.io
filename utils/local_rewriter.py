@@ -5,9 +5,9 @@ from __future__ import annotations
 import re
 
 from utils.curiosity_angles import build_curiosity_package
+from utils.editorial_guard import editorial_issues
 from utils.packaging import extract_action, extract_animal, extract_cue
 from utils.story_intelligence import classify_format
-from utils.editorial_guard import editorial_issues
 
 ANIMAL_TAG_WORDS = {
     "ant",
@@ -439,7 +439,7 @@ def _reason_clause(
     use_verb: str,
 ) -> str:
     if _is_nature_subject(animal):
-        return f"that detail shows how {lower_subject} {_nature_motion_verb(animal)} before the payoff"
+        return f"that detail shows how {lower_subject} {_nature_motion_verb(animal)} over time"
     return f"{lower_subject} {use_verb} {cue_object_pronoun} to {benefit}"
 
 
@@ -467,7 +467,28 @@ def _clean_tags(existing: object, subject: str, category: str) -> list[str]:
         words = {word.lower() for word in re.findall(r"[A-Za-z]+", text)}
         if text and not (words & ANIMAL_TAG_WORDS):
             tags.append(text)
-    preferred = [subject.lower(), category.lower(), "animal facts"]
+    nature_categories = {
+        "chemistry",
+        "conservation",
+        "discoveries",
+        "earth_from_space",
+        "ecosystems",
+        "forests",
+        "fungi",
+        "geology",
+        "microscopy",
+        "mountains",
+        "physics",
+        "plants",
+        "rare_phenomena",
+        "rivers",
+        "space",
+        "trees",
+        "volcanoes",
+        "weather",
+    }
+    evergreen = "nature facts" if str(category or "").lower() in nature_categories else "animal facts"
+    preferred = [subject.lower(), category.lower(), evergreen]
     out: list[str] = []
     for tag in preferred + tags:
         clean = re.sub(r"\s+", " ", str(tag or "")).strip()
@@ -655,7 +676,9 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "stitched_category_title",
             "stitched_repeated_animal_title",
             "script_length_risk",
+            "script_hook_mismatch",
             "robotic_rely_loop",
+            "generic_retention_scaffold",
         )
     ):
         return story, False
@@ -678,8 +701,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         animal = extract_animal(out)
     if animal.lower() == "animal":
         animal = _animal(text)
-    angle_package = build_curiosity_package(out, subject=_plural_subject(animal), context=visual_text)
-    if angle_package and not _is_nature_subject(animal):
+    angle_package = build_curiosity_package(out, subject=_plural_subject(animal), context=visual_text, force=True)
+    if angle_package:
         out.update(
             {
                 "seo_title": str(angle_package["seo_title"])[:60],
@@ -704,6 +727,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         )
         if not editorial_issues(out):
             return out, True
+    if _is_nature_subject(animal):
+        return story, False
     fmt = classify_format(text)
     cue = _usable_cue(extract_cue(out), animal)
     action = _usable_action(extract_action(out), fmt)
@@ -725,31 +750,31 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     )
     if _is_nature_subject(animal):
         title = f"{subject} {signal_verb} through {_cue_signal(cue)}"
-        hook = f"{subject} {reveal_verb} one visible signal."
+        hook = f"{subject} {signal_verb} through {_cue_signal(cue)}."
     elif "duplicate_title" in reasons:
-        title = f"{subject} show the {_cue_signal(cue)} before the payoff"
-        hook = f"{subject} {reveal_verb} one visible signal."
+        title = f"{subject} show why {_cue_signal(cue)} matters"
+        hook = f"{subject} {reveal_verb} the {_cue_signal(cue)} in seconds."
     elif fmt == "animal_memory":
         if cue in {"face", "faces", "face cue", "eye contact", "eyes"}:
             title = f"{subject} remember familiar faces by sight"
             hook = f"{subject} recognize familiar faces."
         else:
             title = f"{subject} react differently when {_cue_moment(cue)}"
-            hook = f"{subject} {read_verb} one visible signal."
+            hook = f"{subject} {read_verb} the {_cue_signal(cue)} fast."
     elif fmt == "body_superpower":
         if action == "signal":
-            title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
-            hook = f"{subject} {read_verb} one visible signal."
+            title = f"{subject} use {_cue_signal(cue)} to solve a problem"
+            hook = f"{subject} use {_cue_signal(cue)} for a reason."
         else:
             title = f"{subject} rely on {cue} to {action}"
             hook = f"{subject} rely on {cue}."
     else:
-        title = f"{subject} {read_verb} the moment from one {_cue_signal(cue)}"
-        hook = f"{subject} {reveal_verb} one visible signal."
+        title = f"{subject} reveal the answer with {_cue_signal(cue)}"
+        hook = f"{subject} {reveal_verb} the {_cue_signal(cue)} fast."
     script = (
         f"{hook} Watch {cue_reference}, because {reason_clause}. "
-        f"The payoff appears before the final move. "
-        f"That is why viewers can replay the first second and catch the hidden cue before it pays off again."
+        f"That detail changes the next decision in the scene and gives viewers a reason "
+        f"to look back at the opening shot. Which {lower_subject} detail should we decode next?"
     )
     out.update(
         {

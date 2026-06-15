@@ -172,6 +172,18 @@ def test_editorial_guard_blocks_generic_successor_templates():
     )
 
 
+def test_editorial_guard_blocks_retention_scaffold_language():
+    issues = editorial_issues(
+        {
+            "title": "Forests reveal one visible signal",
+            "hook": "Forests reveal one visible signal.",
+            "script": "The payoff appears before the final move, so viewers catch the hidden cue.",
+        }
+    )
+
+    assert "generic_retention_scaffold" in issues
+
+
 def test_editorial_guard_blocks_operator_meta_language_in_script():
     issues = editorial_issues(
         {

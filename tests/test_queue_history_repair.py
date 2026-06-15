@@ -25,7 +25,7 @@ def test_repair_story_preserves_upload_state_for_consumed_records():
     assert repaired["consumed"] is True
     assert repaired["uploaded_video_id"] == "abc123"
     assert repaired["consumed_at"] == "2026-06-13T00:00:00+00:00"
-    assert repaired["title"] == "Forests signal through leaf movement"
+    assert repaired["title"] == "Forests make cooler air under the canopy"
     assert "forests use it" not in repaired["script"].lower()
     assert "one leaves" not in str(repaired.get("packaging", "")).lower()
     assert "cute behavior" not in str(repaired.get("youtube_brain", "")).lower()

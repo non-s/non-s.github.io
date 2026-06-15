@@ -37,12 +37,11 @@ def test_plural_subject_templates_use_plural_grammar():
     engine = CuriosityGapEngine()
     hooks = [
         item.hook
-        for item in engine.build_candidates(
-            {"category": "forests", "action": "changes", "cue": "leaf movement", "outcome": "the payoff"}
-        )
+        for item in engine.build_candidates({"category": "forests", "action": "changes", "cue": "leaf movement"})
     ]
     joined = " | ".join(hooks).lower()
 
     assert "this forests changes" not in joined
-    assert "these forests change" in joined
-    assert "why do these forests change" in joined
+    assert "these forests change after the leaf movement" in joined
+    assert "why do these forests change after the leaf movement" in joined
+    assert "payoff" not in joined

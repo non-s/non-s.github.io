@@ -134,7 +134,7 @@ def _title(animal: str, source_title: str) -> str:
     if "math" in source.lower():
         return f"{subject} choose the bigger group before they swim"
     if "bottle" in source.lower() or "feeding" in source.lower():
-        return f"{subject} follow the feeding cue before the payoff"
+        return f"{subject} follow the feeding cue for a reason"
     if "bury" in source.lower():
         return f"{subject} hide their heads for a reason"
     return f"{subject} reveal one body clue"
@@ -164,7 +164,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
     seo_title = _title(animal, source_title)
     suggested = str((remake.get("retention_surgery") or {}).get("suggested_hook") or "")
     hook = _suggested_hook(suggested, animal)
-    hook = hook or f"{subject} show the useful cue before the payoff."
+    hook = hook or f"{subject} show why the useful cue matters."
     hook = _clean(hook).rstrip(".") + "."
     source_lower = source_title.lower()
     is_feeding = "feeding" in source_lower or "bottle" in source_lower
@@ -183,14 +183,14 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         script = (
             f"{hook} Watch the {opening_detail} first, because ducklings can follow a small number pattern "
             "before they ever swim. The clue is the group they move toward, then the number fact makes sense "
-            "on replay. That gives viewers one clear setup, one visible action, and one reason to watch the "
-            "opening again."
+            "when viewers look back. That gives the Short one clear setup, one visible action, and one reason "
+            "to watch the opening again."
         )
     else:
         script = (
             f"{hook} Watch the {opening_detail} first, because that small detail changes how the animal moves "
-            "before the payoff. The clue appears early, then the behavior makes sense on replay. "
-            "That gives viewers one clear setup, one visible action, and one reason to watch the opening again."
+            "after the setup. The clue appears early, then the behavior makes sense on replay. That gives "
+            "viewers one clear setup, one visible action, and one reason to watch the opening again."
         )
     yt_tags = [animal, category, "animal facts", "wildlife", "shorts"]
     angle = build_curiosity_package(
@@ -241,7 +241,7 @@ def build_remake_story(remake: dict, *, generated_at: str | None = None) -> dict
         "yt_tags": yt_tags,
         "geo_hashtag": "Global",
         "topic_hashtag": category.title(),
-        "yt_description": f"{seo_title}. Watch the {cue} first, then replay the payoff.",
+        "yt_description": f"{seo_title}. Watch the {cue} first, then replay the opening clue.",
         "thumbnail_text": thumbnail[:32],
         "hook": hook,
         "script": script,

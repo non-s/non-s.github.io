@@ -3,40 +3,44 @@
     "reporting_video_metrics": {
       "partitions": [],
       "rows": 0,
-      "source": "_data/analytics/reporting_video_metrics.jsonl"
+      "source": "_data\\analytics\\reporting_video_metrics.jsonl"
     },
     "retention_curve": {
       "partitions": [],
       "rows": 0,
-      "source": "_data/analytics/retention_curve.jsonl"
+      "source": "_data\\analytics\\retention_curve.jsonl"
     },
     "segment_metrics": {
       "partitions": [],
       "rows": 0,
-      "source": "_data/analytics/segment_metrics.jsonl"
+      "source": "_data\\analytics\\segment_metrics.jsonl"
     },
     "studio_reach_daily": {
       "partitions": [],
       "rows": 0,
-      "source": "_data/analytics/studio_reach_daily.jsonl"
+      "source": "_data\\analytics\\studio_reach_daily.jsonl"
     },
     "traffic_source_daily": {
       "partitions": [],
       "rows": 0,
-      "source": "_data/analytics/traffic_source_daily.jsonl"
+      "source": "_data\\analytics\\traffic_source_daily.jsonl"
     },
     "video_core_daily": {
-      "partitions": [],
-      "rows": 0,
-      "source": "_data/analytics/video_core_daily.jsonl"
+      "partitions": [
+        "_data\\analytics\\partitions\\video_core_daily\\2026-06.jsonl"
+      ],
+      "rows": 1,
+      "source": "_data\\analytics\\video_core_daily.jsonl"
     },
     "video_metrics": {
-      "partitions": [],
-      "rows": 0,
-      "source": "_data/analytics/video_metrics.jsonl"
+      "partitions": [
+        "_data\\analytics\\partitions\\video_metrics\\2026-06.jsonl"
+      ],
+      "rows": 1,
+      "source": "_data\\analytics\\video_metrics.jsonl"
     }
   },
   "enabled": true,
-  "generated_at": "2026-06-15T09:44:38.611740+00:00",
-  "partition_root": "_data/analytics/partitions"
+  "generated_at": "2026-06-15T12:30:49.319875+00:00",
+  "partition_root": "_data\\analytics\\partitions"
 }

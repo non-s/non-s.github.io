@@ -178,8 +178,8 @@ def test_package_story_uses_nature_signal_language_for_forests():
         )
     )
 
-    assert packaged["title"] == "Forests signal through leaf movement"
-    assert packaged["thumbnail_text"] == "LEAF MOVE"
+    assert packaged["title"] == "Forests make cooler air under the canopy"
+    assert packaged["thumbnail_text"] == "COOL CANOPY"
     assert "another nature signal" in pinned_comment(packaged).lower()
     assert "one leaves" not in packaged["packaging"]["pinned_comment"].lower()
 
@@ -240,7 +240,7 @@ def test_package_story_normalizes_earth_category_from_title_and_tags():
     )
 
     assert packaged["category"] == "earth_from_space"
-    assert packaged["thumbnail_text"] == "CLOUD PATTERN"
+    assert packaged["thumbnail_text"] == "STORM ENGINE"
     assert "another nature signal" in pinned_comment(packaged).lower()
 
 

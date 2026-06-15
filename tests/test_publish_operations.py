@@ -300,16 +300,16 @@ def test_rescue_story_repairs_non_animal_domain_grammar():
     assert geology_applied is True
     assert "Geologies" not in geology["title"]
     assert "one rocks" not in geology["title"].lower()
-    assert "that detail shows how geology shifts" in geology["script"].lower()
+    assert "cliff becomes a timeline" in geology["script"].lower()
     assert earth_applied is True
-    assert earth["title"] == "Earth systems signal through cloud pattern"
-    assert "Earth systems signal" in earth["title"]
+    assert earth["title"] == "Storm clouds reveal a storm's heat engine"
+    assert "storm" in earth["title"].lower()
     assert forest_applied is True
-    assert forest["title"] == "Forests signal through leaf movement"
-    assert forest["thumbnail_text"] == "LEAF MOVEMENT"
+    assert forest["title"] == "Forests make cooler air under the canopy"
+    assert forest["thumbnail_text"] == "COOL CANOPY"
     assert "one leaves" not in forest["script"].lower()
     assert "forests use it" not in forest["script"].lower()
-    assert "that detail shows how forests shift" in forest["script"].lower()
+    assert "cooling machine" in forest["script"].lower()
 
 
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):

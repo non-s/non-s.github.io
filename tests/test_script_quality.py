@@ -4,16 +4,16 @@ from __future__ import annotations
 
 from utils.script_quality import (
     check_banned_phrases,
+    check_generic_retention_scaffold,
     check_hook_opens_strong,
-    check_length,
     check_human_voice,
+    check_length,
     check_script_starts_with_hook,
     check_title_diverges_from_source,
     check_transformation_present,
     evaluate,
     should_block,
 )
-
 
 # ── banned phrases ───────────────────────────────────────────────
 
@@ -42,6 +42,14 @@ def test_banned_phrase_repeat_only_counted_once():
 def test_clean_script_has_no_banned_phrases():
     issues = check_banned_phrases("This octopus changed colour and texture near the coral reef.")
     assert issues == []
+
+
+def test_generic_retention_scaffold_is_blocked():
+    issues = check_generic_retention_scaffold(
+        "Forests reveal one visible signal. The payoff appears before the final move."
+    )
+
+    assert any(i.code == "generic_retention_scaffold" and i.severity == "block" for i in issues)
 
 
 def test_low_human_voice_is_flagged():

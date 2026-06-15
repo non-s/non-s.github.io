@@ -222,6 +222,11 @@ ROBOTIC_TITLE_PATTERNS: tuple[tuple[str, str], ...] = (
     ),
     ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("generic_hiding_plain_sight", r"\bhiding in plain sight\b"),
+    (
+        "generic_retention_scaffold",
+        r"\b(?:before the payoff|one visible signal|payoff appears before the final move|"
+        r"final move|hidden cue|replay the first second)\b",
+    ),
     ("stitched_category_title", r"^\s*[a-z]+s?\s+this\s+[a-z]"),
     ("truncated_heres_title", r"\b(here'?s|here is)\s*$"),
     ("truncated_to_trick_title", r"\bto trick\s*$"),
@@ -302,6 +307,11 @@ ROBOTIC_TEXT_PATTERNS: tuple[tuple[str, str], ...] = (
     ("awkward_plural_loop_line", r"\bnow the [a-z]+s at the start makes sense\b"),
     ("bad_domain_plural", r"\b(earths|weathers|wildlifes|geologies)\b"),
     ("generic_payoff_filler", r"\bthat is why this moment matters before the payoff\b"),
+    (
+        "generic_retention_scaffold",
+        r"\b(?:before the payoff|one visible signal|payoff appears before the final move|"
+        r"final move|hidden cue|replay the first second)\b",
+    ),
 )
 
 

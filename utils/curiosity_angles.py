@@ -142,6 +142,142 @@ PLURAL_DISPLAY = {
     "wolf": "Wolves",
 }
 
+NATURE_ALIASES = {
+    "plant": "plants",
+    "plants": "plants",
+    "leaf": "plants",
+    "leaves": "plants",
+    "flower": "plants",
+    "flowers": "plants",
+    "tree": "trees",
+    "trees": "trees",
+    "root": "trees",
+    "roots": "trees",
+    "ring": "trees",
+    "rings": "trees",
+    "forest": "forests",
+    "forests": "forests",
+    "canopy": "forests",
+    "rainforest": "forests",
+    "fungi": "fungi",
+    "fungus": "fungi",
+    "mushroom": "fungi",
+    "mushrooms": "fungi",
+    "mycelium": "fungi",
+    "river": "rivers",
+    "rivers": "rivers",
+    "stream": "rivers",
+    "waterfall": "rivers",
+    "delta": "rivers",
+    "mountain": "mountains",
+    "mountains": "mountains",
+    "glacier": "mountains",
+    "glaciers": "mountains",
+    "volcano": "volcanoes",
+    "volcanoes": "volcanoes",
+    "lava": "volcanoes",
+    "magma": "volcanoes",
+    "crater": "volcanoes",
+    "storm": "weather",
+    "storms": "weather",
+    "weather": "weather",
+    "cloud": "weather",
+    "clouds": "weather",
+    "lightning": "weather",
+    "tornado": "weather",
+    "aurora": "rare_phenomena",
+    "eclipse": "rare_phenomena",
+    "bioluminescence": "rare_phenomena",
+    "bioluminescent": "rare_phenomena",
+    "rock": "geology",
+    "rocks": "geology",
+    "geology": "geology",
+    "mineral": "geology",
+    "minerals": "geology",
+    "crystal": "geology",
+    "crystals": "geology",
+    "cave": "geology",
+    "caves": "geology",
+    "ecosystem": "ecosystems",
+    "ecosystems": "ecosystems",
+    "habitat": "ecosystems",
+    "habitats": "ecosystems",
+    "coral": "ecosystems",
+    "reef": "ecosystems",
+    "earth": "earth_from_space",
+    "planet": "earth_from_space",
+    "atmosphere": "earth_from_space",
+    "satellite": "earth_from_space",
+    "hurricane": "earth_from_space",
+    "conservation": "conservation",
+    "restoration": "conservation",
+    "reforestation": "conservation",
+    "mangrove": "conservation",
+    "mangroves": "conservation",
+    "science": "discoveries",
+    "research": "discoveries",
+    "fossil": "discoveries",
+    "fossils": "discoveries",
+    "space": "space",
+    "moon": "space",
+    "mars": "space",
+    "sun": "space",
+    "solar": "space",
+    "galaxy": "space",
+    "nebula": "space",
+    "orbit": "space",
+    "rocket": "space",
+    "physics": "physics",
+    "magnet": "physics",
+    "magnets": "physics",
+    "magnetic": "physics",
+    "pendulum": "physics",
+    "prism": "physics",
+    "spectrum": "physics",
+    "light": "physics",
+    "wave": "physics",
+    "electricity": "physics",
+    "electric": "physics",
+    "fluid": "physics",
+    "chemistry": "chemistry",
+    "chemical": "chemistry",
+    "reaction": "chemistry",
+    "reactions": "chemistry",
+    "flame": "chemistry",
+    "electrolysis": "chemistry",
+    "sublimation": "chemistry",
+    "laboratory": "chemistry",
+    "microscope": "microscopy",
+    "microscopy": "microscopy",
+    "cell": "microscopy",
+    "cells": "microscopy",
+    "bacteria": "microscopy",
+    "microbe": "microscopy",
+    "microbes": "microscopy",
+    "algae": "microscopy",
+}
+
+NATURE_DISPLAY = {
+    "plants": "Plants",
+    "trees": "Trees",
+    "forests": "Forests",
+    "fungi": "Mushrooms",
+    "rivers": "Rivers",
+    "mountains": "Glaciers",
+    "volcanoes": "Lava",
+    "weather": "Lightning",
+    "rare_phenomena": "Auroras",
+    "geology": "Rock layers",
+    "ecosystems": "Coral reefs",
+    "earth_from_space": "Storm clouds",
+    "conservation": "Mangroves",
+    "discoveries": "Fossils",
+    "space": "The moon",
+    "physics": "Magnets",
+    "chemistry": "Crystals",
+    "microscopy": "Cells",
+}
+
 
 def _angle(
     *,
@@ -962,9 +1098,318 @@ ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
     ),
 }
 
+NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
+    "plants": (
+        _angle(
+            key="plant_touch_count",
+            keywords=("venus", "flytrap", "trap", "leaf", "plant", "touch"),
+            title="{subject} count touches before snapping shut",
+            hook="{subject} can count touches before closing.",
+            script_body=(
+                "Watch the trap hairs, because the plant waits for more than one touch before "
+                "spending energy on a snap. That delay helps it ignore rain and debris, then close "
+                "when prey is real. Which plant trick should we decode next?"
+            ),
+            thumbnail="TOUCH COUNT",
+            cue="trap hairs",
+            story_format="plant_mechanism",
+            tags=("plants", "venus flytrap", "botany"),
+        ),
+    ),
+    "trees": (
+        _angle(
+            key="tree_ring_weather",
+            keywords=("tree", "rings", "bark", "ancient", "root", "forest"),
+            title="{subject} record wet years inside their rings",
+            hook="{subject} keep weather history in their rings.",
+            script_body=(
+                "Watch the trunk pattern, because each growing season leaves a new layer. Wide "
+                "rings often mean easier growth, while thin rings can mark stress. That is why an "
+                "old tree can become a climate diary. Which hidden record should come next?"
+            ),
+            thumbnail="TREE RINGS",
+            cue="tree rings",
+            story_format="earth_engine",
+            tags=("trees", "tree rings", "earth science"),
+        ),
+    ),
+    "forests": (
+        _angle(
+            key="forest_cool_canopy",
+            keywords=("forest", "canopy", "rainforest", "mist", "shade", "jungle"),
+            title="{subject} make cooler air under the canopy",
+            hook="{subject} can cool the air below them.",
+            script_body=(
+                "Watch the shade and mist, because leaves block direct sun and release water vapor. "
+                "That combination can make the forest floor feel like a different climate. The canopy "
+                "is a cooling machine, not just cover. Which forest layer next?"
+            ),
+            thumbnail="COOL CANOPY",
+            cue="cool canopy",
+            story_format="earth_engine",
+            tags=("forests", "canopy", "ecosystems"),
+        ),
+    ),
+    "fungi": (
+        _angle(
+            key="fungi_thread_trade",
+            keywords=("mushroom", "mushrooms", "fungi", "mycelium", "thread", "threads", "forest"),
+            title="{subject} trade nutrients through underground threads",
+            hook="{subject} connect through threads under the soil.",
+            script_body=(
+                "Watch the mushroom cap, then imagine the hidden part below it. Mycelium spreads "
+                "through soil as fine threads, moving nutrients while breaking down dead material. "
+                "That is why the real fungal story is usually underground. Which tiny network next?"
+            ),
+            thumbnail="FUNGAL WEB",
+            cue="mycelium threads",
+            story_format="hidden_network",
+            tags=("mushrooms", "mycelium", "fungi"),
+        ),
+    ),
+    "rivers": (
+        _angle(
+            key="river_bend_erosion",
+            keywords=("river", "stream", "current", "waterfall", "delta", "flow"),
+            title="{subject} carve bends by stealing from one bank",
+            hook="{subject} move sideways while they flow.",
+            script_body=(
+                "Watch the outside of the bend, because faster water cuts that bank while slower "
+                "water drops sediment inside the curve. Over time the whole river shifts across the "
+                "landscape. A bend is motion written in mud. Which water shape next?"
+            ),
+            thumbnail="RIVER BEND",
+            cue="river bend",
+            story_format="earth_engine",
+            tags=("rivers", "erosion", "earth science"),
+        ),
+    ),
+    "mountains": (
+        _angle(
+            key="glacier_valley_carving",
+            keywords=("mountain", "glacier", "ice", "alpine", "valley", "snow"),
+            title="{subject} carve valleys while moving slowly",
+            hook="{subject} can reshape mountains while crawling.",
+            script_body=(
+                "Watch the ice line, because glaciers drag rock like sandpaper over long timescales. "
+                "That slow grinding can widen valleys and polish bedrock. The movement looks quiet, "
+                "but the landscape remembers it. Which mountain clue next?"
+            ),
+            thumbnail="GLACIER CARVE",
+            cue="glacier carve",
+            story_format="earth_engine",
+            tags=("glaciers", "mountains", "geology"),
+        ),
+    ),
+    "volcanoes": (
+        _angle(
+            key="lava_new_land",
+            keywords=("lava", "volcano", "magma", "crater", "eruption", "ash"),
+            title="{subject} turns into new ground as it cools",
+            hook="{subject} can become new land in minutes.",
+            script_body=(
+                "Watch the glowing edge, because lava starts as molten rock and hardens as heat "
+                "escapes. Fresh crust forms first, then thicker layers build underneath. That is how "
+                "an eruption can redraw the ground. Which volcanic clue next?"
+            ),
+            thumbnail="NEW LAND",
+            cue="cooling lava",
+            story_format="earth_engine",
+            tags=("lava", "volcanoes", "geology"),
+        ),
+    ),
+    "weather": (
+        _angle(
+            key="lightning_thunder_snap",
+            keywords=("lightning", "storm", "cloud", "rain", "tornado", "sky"),
+            title="{subject} makes air explode into thunder",
+            hook="{subject} turns air into a shock wave.",
+            script_body=(
+                "Watch the flash first, because lightning heats a narrow path of air extremely fast. "
+                "That air expands suddenly, and the pressure wave reaches us as thunder. The sound "
+                "is the atmosphere snapping back. Which storm signal next?"
+            ),
+            thumbnail="THUNDER SNAP",
+            cue="lightning flash",
+            story_format="earth_engine",
+            tags=("lightning", "weather", "storms"),
+        ),
+    ),
+    "rare_phenomena": (
+        _angle(
+            key="aurora_solar_air",
+            keywords=("aurora", "sky", "light", "eclipse", "bioluminescent", "ice"),
+            title="{subject} glow when solar particles hit air",
+            hook="{subject} start with charged particles from the sun.",
+            script_body=(
+                "Watch the moving color, because charged particles follow Earth's magnetic field "
+                "toward the upper atmosphere. When they hit oxygen and nitrogen, the air releases "
+                "light. The sky is reacting to space weather. Which rare sky event next?"
+            ),
+            thumbnail="AURORA GLOW",
+            cue="aurora glow",
+            story_format="rare_nature",
+            tags=("aurora", "space weather", "earth science"),
+        ),
+    ),
+    "geology": (
+        _angle(
+            key="rock_layer_time",
+            keywords=("rock", "rocks", "layer", "layers", "crystal", "cave", "mineral", "canyon"),
+            title="{subject} store ancient environments in stripes",
+            hook="{subject} are time stamps made of stone.",
+            script_body=(
+                "Watch the stripe pattern, because each layer can mark a different setting: river "
+                "mud, ocean floor, windblown sand, or volcanic ash. Stack enough layers and the cliff "
+                "becomes a timeline. Which rock clue should we read next?"
+            ),
+            thumbnail="ROCK TIME",
+            cue="rock layers",
+            story_format="earth_engine",
+            tags=("geology", "rock layers", "earth science"),
+        ),
+    ),
+    "ecosystems": (
+        _angle(
+            key="reef_tiny_builders",
+            keywords=("coral", "reef", "ecosystem", "habitat", "biodiversity", "tide"),
+            title="{subject} are cities built by tiny animals",
+            hook="{subject} are built by tiny living builders.",
+            script_body=(
+                "Watch the reef texture, because coral animals build hard skeletons that stack into "
+                "habitat. Fish, algae, and countless small creatures then use that structure like a "
+                "city. The color sits on top of engineering. Which habitat next?"
+            ),
+            thumbnail="REEF CITY",
+            cue="reef city",
+            story_format="ecosystem_engine",
+            tags=("coral reefs", "ecosystems", "biodiversity"),
+        ),
+    ),
+    "earth_from_space": (
+        _angle(
+            key="storm_heat_engine",
+            keywords=("earth", "cloud", "clouds", "hurricane", "satellite", "atmosphere", "space"),
+            title="{subject} reveal a storm's heat engine",
+            hook="{subject} show where a storm is feeding.",
+            script_body=(
+                "Watch the spiral shape, because warm ocean air rises near the center and releases "
+                "heat as clouds build. Rotation organizes that energy into bands. From above, the "
+                "storm is not random; it is an engine. Which satellite clue next?"
+            ),
+            thumbnail="STORM ENGINE",
+            cue="cloud spiral",
+            story_format="earth_engine",
+            tags=("earth", "storm clouds", "satellite"),
+        ),
+    ),
+    "conservation": (
+        _angle(
+            key="mangrove_wave_buffer",
+            keywords=("mangrove", "restoration", "reforestation", "coral", "cleanup", "protected"),
+            title="{subject} take power out of waves",
+            hook="{subject} can slow waves before they hit land.",
+            script_body=(
+                "Watch the roots in the water, because mangroves create a rough barrier that breaks "
+                "up wave energy. They also shelter young fish and hold muddy coastlines together. "
+                "Restoration can be infrastructure made of roots. Which repair story next?"
+            ),
+            thumbnail="WAVE BUFFER",
+            cue="mangrove roots",
+            story_format="conservation_signal",
+            tags=("mangroves", "conservation", "coasts"),
+        ),
+    ),
+    "discoveries": (
+        _angle(
+            key="fossil_time_clue",
+            keywords=("fossil", "research", "science", "discovery", "biology", "field"),
+            title="{subject} turn old bones into time clues",
+            hook="{subject} can preserve a clue from deep time.",
+            script_body=(
+                "Watch the shape in the rock, because fossils form when buried remains leave mineral "
+                "records behind. The original body is gone, but the pattern can reveal age, habitat, "
+                "and behavior. Which ancient clue should we read next?"
+            ),
+            thumbnail="FOSSIL CLUE",
+            cue="fossil shape",
+            story_format="science_clue",
+            tags=("fossils", "discoveries", "earth science"),
+        ),
+    ),
+    "space": (
+        _angle(
+            key="moon_locked_face",
+            keywords=("moon", "earth", "orbit", "space", "satellite", "planet"),
+            title="{subject} keeps one face turned toward Earth",
+            hook="{subject} shows us one face for a reason.",
+            script_body=(
+                "Watch the moon's position, because its rotation and orbit are locked together. It "
+                "spins once in about the same time it circles Earth, so the same side keeps facing us. "
+                "That is synchronized motion, not stillness. Which orbit clue next?"
+            ),
+            thumbnail="LOCKED FACE",
+            cue="locked orbit",
+            story_format="space_science",
+            tags=("moon", "space", "astronomy"),
+        ),
+    ),
+    "physics": (
+        _angle(
+            key="magnet_field_lines",
+            keywords=("magnet", "magnets", "magnetic", "iron", "filings", "field"),
+            title="{subject} make invisible fields visible",
+            hook="{subject} can show a hidden force map.",
+            script_body=(
+                "Watch the filings line up, because each tiny piece becomes a small magnet in the "
+                "field. Together they trace the direction of the force around the magnet. The pattern "
+                "is physics drawing itself. Which force next?"
+            ),
+            thumbnail="FIELD LINES",
+            cue="field lines",
+            story_format="physics_demo",
+            tags=("magnets", "physics", "field lines"),
+        ),
+    ),
+    "chemistry": (
+        _angle(
+            key="crystal_repeat_pattern",
+            keywords=("crystal", "crystals", "reaction", "chemical", "solution", "flame"),
+            title="{subject} grow by repeating one tiny pattern",
+            hook="{subject} build shape from repeating atoms.",
+            script_body=(
+                "Watch the edge grow, because atoms or molecules lock into a repeating arrangement. "
+                "Once the pattern starts, new pieces fit most easily along the same order. That is why "
+                "a crystal can look designed. Which reaction should we slow down next?"
+            ),
+            thumbnail="CRYSTAL GROWTH",
+            cue="crystal edge",
+            story_format="chemistry_demo",
+            tags=("crystals", "chemistry", "science"),
+        ),
+    ),
+    "microscopy": (
+        _angle(
+            key="cell_copy_first",
+            keywords=("cell", "cells", "microscope", "bacteria", "algae", "division"),
+            title="{subject} copy instructions before splitting",
+            hook="{subject} have to copy themselves before dividing.",
+            script_body=(
+                "Watch the cell boundary, because division only works after the internal instructions "
+                "are copied and organized. Then the cell can split the material into two working lives. "
+                "At this scale, reproduction is careful logistics. Which tiny process next?"
+            ),
+            thumbnail="CELL COPY",
+            cue="cell division",
+            story_format="microscopy_demo",
+            tags=("cells", "microscopy", "biology"),
+        ),
+    ),
+}
+
 CURIOUS_CUE_WORDS = tuple(
     sorted(
-        {angle.cue for angles in ANGLE_LIBRARY.values() for angle in angles}
+        {angle.cue for angles in (*ANGLE_LIBRARY.values(), *NATURE_ANGLE_LIBRARY.values()) for angle in angles}
         | {
             "air bubbles",
             "alarm call",
@@ -994,7 +1439,8 @@ CURIOUS_CUE_WORDS = tuple(
 GENERIC_MOVEMENT_RE = re.compile(
     r"\b(?:body|body cue|body posture|cue|ear position|fin position|first movement|head movement|movement|"
     r"one visible signal|read the moment|another signal|another secret|signal cue|tail position|"
-    r"watch the cue|wing movement|wing position)\b",
+    r"watch the cue|wing movement|wing position|before the payoff|hidden cue|final move|"
+    r"payoff appears|replay the first second)\b",
     re.I,
 )
 
@@ -1013,6 +1459,15 @@ def _subject_key_from_text(text: str) -> str:
         clean = word.replace("'s", "")
         if clean in ANIMAL_ALIASES:
             return ANIMAL_ALIASES[clean]
+    return ""
+
+
+def _nature_key_from_text(text: str) -> str:
+    normalised = re.sub(r"[-_/]+", " ", text or "")
+    for word in _words(normalised.lower()):
+        clean = word.replace("'s", "")
+        if clean in NATURE_ALIASES:
+            return NATURE_ALIASES[clean]
     return ""
 
 
@@ -1037,7 +1492,7 @@ def is_generic_movement_copy(text: str) -> bool:
 
 
 def _story_context(story: dict, subject: str = "", context: str = "") -> str:
-    values: list[str] = [subject, context]
+    values: list[str] = [str(subject or ""), str(context or "")]
     for key in (
         "source_title",
         "raw_title",
@@ -1067,7 +1522,14 @@ def subject_key_for_story(story: dict, subject: str = "", context: str = "") -> 
     body_key = _subject_key_from_text(_story_context(story, subject="", context=context))
     if subject_key in {"bird"} and body_key:
         return body_key
-    return subject_key or body_key
+    if subject_key or body_key:
+        return subject_key or body_key
+    category_key = str(story.get("category") or "").strip().lower()
+    if category_key in NATURE_ANGLE_LIBRARY:
+        return category_key
+    nature_subject = _nature_key_from_text(subject)
+    nature_body = _nature_key_from_text(_story_context(story, subject="", context=context))
+    return nature_subject or nature_body
 
 
 def select_curiosity_angle(
@@ -1075,7 +1537,7 @@ def select_curiosity_angle(
 ) -> CuriosityAngle | None:
     full_context = _story_context(story, subject=subject, context=context).lower()
     key = subject_key_for_story(story, subject=subject, context=context)
-    angles = ANGLE_LIBRARY.get(key)
+    angles = ANGLE_LIBRARY.get(key) or NATURE_ANGLE_LIBRARY.get(key)
     if not angles:
         return None
     scored: list[tuple[int, int, CuriosityAngle]] = []
@@ -1093,14 +1555,17 @@ def build_curiosity_package(story: dict, subject: str = "", context: str = "", *
     if not angle:
         return {}
     key = subject_key_for_story(story, subject=subject, context=context)
-    display = plural_subject(subject, key=key)
+    display = NATURE_DISPLAY.get(key) or plural_subject(subject, key=key)
     lower = display.lower()
     hook = _clean_spaces(angle.hook_template.format(subject=display, subject_lower=lower))
     if hook and hook[-1] not in ".!?":
         hook = f"{hook}."
     title = _clean_spaces(angle.title_template.format(subject=display, subject_lower=lower))
     script = _clean_spaces(angle.script_template.format(subject=display, subject_lower=lower, hook=hook))
-    tags = [display.lower(), *angle.tags, "animal facts", "wildlife"]
+    evergreen_tags = (
+        ("nature facts", "science", "wild brief") if key in NATURE_ANGLE_LIBRARY else ("animal facts", "wildlife")
+    )
+    tags = [display.lower(), *angle.tags, *evergreen_tags]
     clean_tags: list[str] = []
     for tag in tags:
         clean = _clean_spaces(tag.lower())

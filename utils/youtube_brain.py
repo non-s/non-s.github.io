@@ -204,6 +204,11 @@ GENERIC_PACKAGING_PATTERNS = (
     ),
     re.compile(r"\bwhen the ear movement changes\b", re.I),
     re.compile(r"\bthis ear position changes what [a-z]+s? do next\b", re.I),
+    re.compile(
+        r"\b(?:before the payoff|one visible signal|payoff appears before the final move|"
+        r"final move|hidden cue|replay the first second)\b",
+        re.I,
+    ),
 )
 OPERATOR_META_PATTERNS = (
     re.compile(r"\bprevious [a-z]+ short worked because\b", re.I),

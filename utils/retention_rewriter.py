@@ -98,7 +98,7 @@ def _better_hook(story: dict, diagnosis: dict) -> str:
     animal = _animal_from_story(story)
     if suggested and re.search(rf"\b{re.escape(animal.rstrip('s'))}s?\b", suggested.lower()):
         return suggested.rstrip(".!?") + "."
-    return f"{animal.capitalize()} reveal the reason in one tiny movement."
+    return f"{animal.capitalize()} reveal one useful detail fast."
 
 
 def rewrite_story(story: dict) -> tuple[dict, bool]:
@@ -147,8 +147,8 @@ def rewrite_story(story: dict) -> tuple[dict, bool]:
         "that tiny cue is what makes the fact land before the viewer swipes."
     )
     payoff = (
-        "That is why this version keeps one animal, one visible signal, "
-        "and one clear payoff instead of stretching the setup."
+        "That is why this version keeps one subject, one concrete detail, "
+        "and one clear reason instead of stretching the setup."
     )
     script = f"{hook} {body} {visual_detail} {payoff}".strip()
     words = _words(script)

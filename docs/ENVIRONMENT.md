@@ -29,7 +29,7 @@
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
 | `QUEUE_TARGET_PENDING` | no | Target number of unconsumed queue stories to keep ready. Defaults to `24` for a one-day free inventory buffer. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target. Defaults to `24` so the upload job keeps a one-day hourly queue buffer when free discovery quota allows it. |
-| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `6`. |
+| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `24` for a one-day hourly safety buffer. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `12`. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
@@ -85,7 +85,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
 | `QUEUE_TARGET_PENDING` | `24` | publishing | Pending story target for hourly queue refresh. | Lower if free discovery/AI quotas become tight. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
-| `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
+| `PUBLISH_BACKFILL_READY_TARGET` | `24` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `12` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
 | `BROLL_SOURCE_MODE` | `pexels` | discovery | Use Pexels as the only active production visual source. | Set back to `pexels`. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | `94371840` | production | Cap video-source downloads during rendering. | Lower during CI timeouts. |
