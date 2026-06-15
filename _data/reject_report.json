@@ -1,23 +1,23 @@
 {
-  "total": 62,
+  "total": 64,
   "reasons": {
-    "queue_score_reject": 20,
+    "queue_score_reject": 22,
+    "subject_not_immediately_clear": 17,
+    "missing_action_word": 16,
     "copy_subject_mismatch": 15,
-    "subject_not_immediately_clear": 15,
-    "missing_action_word": 14,
     "off_topic_visual": 13,
+    "no_action_promise": 12,
     "duplicate_title": 12,
     "duplicate_angle": 11,
-    "no_action_promise": 11,
+    "subject_not_clear": 11,
     "duplicate_script": 10,
+    "title_shape_weak": 10,
+    "title_needs_stronger_shape": 10,
     "script_subject_mismatch": 9,
-    "subject_not_clear": 9,
-    "title_shape_weak": 8,
-    "title_needs_stronger_shape": 8,
     "script does not expose enough concrete visual detail": 5,
+    "missing_visible_cue": 5,
     "script_hook_mismatch": 5,
     "rights_guard_person_manual_review": 4,
-    "missing_visible_cue": 4,
     "payoff_not_explicit": 3,
     "missing_visual_cue": 3,
     "script_length_risk": 3,
@@ -30,23 +30,10 @@
   },
   "stages": {
     "queue_prune_final": 33,
-    "queue_repair": 20,
+    "queue_repair": 22,
     "queue_prune": 9
   },
   "latest": [
-    {
-      "story_id": "2f1a805a19cfb39a",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "title": "Mushrooms signal through underground threads",
-      "category": "forests",
-      "source_url": "https://www.pexels.com/video/capturing-mushrooms-in-autumn-forest-37535513/",
-      "recorded_at": "2026-06-15T11:30:14.815173+00:00",
-      "rewrite_attempted": false
-    },
     {
       "story_id": "902198ba6a21360d",
       "stage": "queue_prune_final",
@@ -164,6 +151,25 @@
       "category": "physics",
       "source_url": "https://www.pexels.com/video/colorful-ink-diffusion-in-water-9668945/",
       "recorded_at": "2026-06-15T12:30:12.238335+00:00",
+      "rewrite_attempted": false
+    },
+    {
+      "story_id": "c2fad3f40dd25a1c",
+      "stage": "queue_repair",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "title": "Cells copy instructions before splitting",
+      "category": "microscopy",
+      "source_url": "https://www.pexels.com/video/glowing-green-microorganisms-in-motion-34912747/",
+      "recorded_at": "2026-06-15T13:19:35.387263+00:00",
       "rewrite_attempted": false
     },
     {

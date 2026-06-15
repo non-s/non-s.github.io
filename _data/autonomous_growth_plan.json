@@ -1,51 +1,59 @@
 {
-  "generated_at": "2026-06-15T13:43:12.934795+00:00",
+  "generated_at": "2026-06-15T14:51:41.159775+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 80,
   "operating_mode": "learn",
   "data_status": {
     "metric_scope": "public_video_statistics",
-    "shorts_tracked": 3,
+    "shorts_tracked": 4,
     "avg_view_pct": 0.0,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
       "name": "reptiles",
-      "score": 202.924
+      "score": 201.748
     },
     {
-      "name": "birds",
+      "name": "ocean",
       "score": 200.0
     },
     {
+      "name": "birds",
+      "score": 108.398
+    },
+    {
       "name": "cats",
-      "score": 106.508
+      "score": 103.718
     }
   ],
   "format_priorities": [
     {
-      "name": "single_fact",
+      "name": "hidden_network",
       "score": 200.0
     },
     {
       "name": "body_superpower",
-      "score": 154.716
+      "score": 152.733
+    },
+    {
+      "name": "single_fact",
+      "score": 108.398
     }
   ],
   "winning_terms": [
     "break",
     "built-in",
     "cats",
+    "electric",
     "feathers",
+    "fields",
     "like",
     "owls",
     "rulers",
-    "silently",
-    "smell",
-    "snakes",
-    "sound",
-    "tongues"
+    "sense",
+    "sharks",
+    "silently"
   ],
   "experiment_bank": {
     "winners": {},
@@ -171,14 +179,14 @@
       {
         "id": "H1_DOUBLE_DOWN_CATEGORY",
         "lane": "proven_category",
-        "statement": "Next Shorts in reptiles, birds should outperform cold topics.",
+        "statement": "Next Shorts in reptiles, ocean should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 202.924
+        "target": 201.748
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
-        "statement": "single_fact is the strongest current story shape.",
+        "statement": "hidden_network is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
         "target": 200.0
       },
@@ -207,7 +215,7 @@
   },
   "sequence_bank": {
     "source_winners": 0,
-    "variant_count": 3,
+    "variant_count": 4,
     "next_variants": [
       {
         "id": "remake-3a558012c8a57a73",
@@ -226,12 +234,19 @@
         "title": "Owls fly silently because feathers break sound",
         "variant": "session_graph_sequel",
         "category": "birds"
+      },
+      {
+        "id": "remake-5f1eba3ff757abf2",
+        "title": "Sharks sense tiny electric fields",
+        "variant": "session_graph_sequel",
+        "category": "ocean"
       }
     ]
   },
   "audience_requests": {
     "requested_animals": [],
     "comment_prompts": [
+      "Answer this viewer question: Watch the electric sense again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
       "Answer this viewer question: Watch the silent wings again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
       "Answer this viewer question: Watch the whisker map again. Tomorrow: another animal signal. What part of this feels most impossible?",
       "Answer this viewer question: Watch the tongue smell again. Tomorrow: another animal signal. Is this ancient design underrated?"
@@ -243,18 +258,26 @@
       {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 2,
-        "mean_growth_score": 153.254,
+        "mean_growth_score": 106.058,
         "mean_retention": 0.0,
-        "mean_views": 1.0,
+        "mean_views": 2.0,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "close_subject|feed_bright|medium_contrast",
         "n": 1,
-        "mean_growth_score": 202.924,
+        "mean_growth_score": 201.748,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 100.0
+      },
+      {
+        "profile": "subject_rich|feed_bright|medium_contrast",
+        "n": 1,
+        "mean_growth_score": 200.0,
+        "mean_retention": 0.0,
+        "mean_views": 0.0,
+        "mean_visual_ctr_score": 78.0
       }
     ],
     "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
@@ -267,10 +290,10 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 15,
-    "approved_candidates": 15,
+    "pending": 14,
+    "approved_candidates": 14,
     "lane_counts": {
-      "fresh_experiment": 12,
+      "fresh_experiment": 11,
       "proven_category": 3
     },
     "top_candidates": [
@@ -340,15 +363,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -420,7 +443,7 @@
             "mechanism_cluster": "magnetic_navigation"
           }
         },
-        "autonomy_priority": 116.19,
+        "autonomy_priority": 128.01,
         "packaging_lab": {
           "title_variants": [
             "Turtles carry a magnetic map home",
@@ -438,6 +461,174 @@
             "Watch the magnetic map again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, "
           ],
           "pinned_comment": "Watch the magnetic map again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "09c97585910fcc35",
+        "title": "Mushrooms trade nutrients through underground threads",
+        "category": "fungi",
+        "story_format": "hidden_network",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 75,
+            "signals": {
+              "viral_potential": 83,
+              "visual_potential": 100,
+              "replay_potential": 72,
+              "comment_potential": 62,
+              "educational_potential": 72,
+              "emotional_potential": 53,
+              "novelty": 59
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 80,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 71,
+              "visual_score": 100,
+              "replay_score": 62,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 5,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "fungi",
+          "story_format": "hidden_network",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.9,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 118.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Mushrooms trade nutrients through underground threads",
+            "Mushrooms connect through mycelium threads",
+            "Mushrooms use mycelium threads before they connect"
+          ],
+          "thumbnail_variants": [
+            "FUNGAL WEB",
+            "MYCELIUM THREADS",
+            "WATCH MYCELIUM THREADS"
+          ],
+          "hook_variants": [
+            "Mushrooms connect through threads under the soil.",
+            "Mushrooms trade nutrients through underground threads",
+            "Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning s"
+          ],
+          "pinned_comment": "Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -507,15 +698,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -588,7 +779,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 116.19,
+        "autonomy_priority": 116.11,
         "packaging_lab": {
           "title_variants": [
             "Mantises judge distance with 3D vision",
@@ -606,173 +797,6 @@
             "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-ani"
           ],
           "pinned_comment": "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "80a214d0a2236cfe",
-        "title": "Sharks sense tiny electric fields",
-        "category": "ocean",
-        "story_format": "body_superpower",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 70,
-            "signals": {
-              "viral_potential": 95,
-              "visual_potential": 69,
-              "replay_potential": 82,
-              "comment_potential": 46,
-              "educational_potential": 73,
-              "emotional_potential": 44,
-              "novelty": 59
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 76,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 79,
-              "visual_score": 58,
-              "replay_score": 72,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.089,
-              "sample_size": 3,
-              "minimum_sample_size": 10,
-              "data_quality": "inferred",
-              "data_quality_score": 0.5,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.317,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.063,
-            "sample_size": 5,
-            "minimum_sample_size": 25,
-            "data_quality": "inferred",
-            "data_quality_score": 0.575,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.297,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
-          },
-          "category": "ocean",
-          "story_format": "body_superpower",
-          "hook_score": 88,
-          "title_score": 74,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.063,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "",
-            "mechanism_cluster": "electric_sense"
-          }
-        },
-        "autonomy_priority": 116.19,
-        "packaging_lab": {
-          "title_variants": [
-            "Sharks sense tiny electric fields",
-            "Sharks signal through electric sense",
-            "Sharks use electric sense before they signal"
-          ],
-          "thumbnail_variants": [
-            "ELECTRIC SENSE",
-            "WATCH ELECTRIC SENSE",
-            "SHARKS SIGNAL"
-          ],
-          "hook_variants": [
-            "Sharks can feel electricity in the water.",
-            "Sharks sense tiny electric fields",
-            "Watch the electric sense again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth"
-          ],
-          "pinned_comment": "Watch the electric sense again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -842,15 +866,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -944,174 +968,6 @@
         }
       },
       {
-        "id": "09c97585910fcc35",
-        "title": "Mushrooms trade nutrients through underground threads",
-        "category": "fungi",
-        "story_format": "hidden_network",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 75,
-            "signals": {
-              "viral_potential": 83,
-              "visual_potential": 100,
-              "replay_potential": 72,
-              "comment_potential": 62,
-              "educational_potential": 72,
-              "emotional_potential": 53,
-              "novelty": 59
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 80,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 100,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.007,
-            "sample_size": 1,
-            "minimum_sample_size": 15,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.255,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-          },
-          "category": "fungi",
-          "story_format": "hidden_network",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.007,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 103.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Mushrooms trade nutrients through underground threads",
-            "Mushrooms connect through mycelium threads",
-            "Mushrooms use mycelium threads before they connect"
-          ],
-          "thumbnail_variants": [
-            "FUNGAL WEB",
-            "MYCELIUM THREADS",
-            "WATCH MYCELIUM THREADS"
-          ],
-          "hook_variants": [
-            "Mushrooms connect through threads under the soil.",
-            "Mushrooms trade nutrients through underground threads",
-            "Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning s"
-          ],
-          "pinned_comment": "Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
         "id": "4477582e8d1d1123",
         "title": "Beetles can steer by the Milky Way",
         "category": "insects",
@@ -1177,15 +1033,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1345,15 +1201,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1513,15 +1369,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1681,15 +1537,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1849,15 +1705,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2016,15 +1872,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2183,15 +2039,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2350,15 +2206,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2518,15 +2374,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2685,15 +2541,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2790,11 +2646,11 @@
     ]
   },
   "decisions": [
-    "Prioritize categories: reptiles, birds, cats.",
-    "Use formats first: single_fact, body_superpower.",
+    "Prioritize categories: reptiles, ocean, birds.",
+    "Use formats first: hidden_network, body_superpower, single_fact.",
     "No statistically locked experiment winners yet; reserve traffic for structured learning.",
     "Current operating mode: learn."
   ],
-  "queue_annotations_written": 15,
-  "queue_annotations_changed": 15
+  "queue_annotations_written": 14,
+  "queue_annotations_changed": 14
 }
