@@ -34,6 +34,31 @@ def _clip(
     )
 
 
+def _archive_clip(
+    url: str = "https://archive.org/details/pd-wildlife-film",
+    dl: str = "https://archive.org/download/pd-wildlife-film/wildlife.mp4",
+    title: str = "Public domain wildlife film",
+) -> BrollClip:
+    return BrollClip(
+        source="internet_archive",
+        url=url,
+        download_url=dl,
+        width=1080,
+        height=1920,
+        duration_s=12.0,
+        title=title,
+        license="https://creativecommons.org/publicdomain/mark/1.0/",
+        license_evidence="creativecommons.org/publicdomain/mark",
+        source_metadata={
+            "identifier": "pd-wildlife-film",
+            "file_name": "wildlife.mp4",
+            "creator": "Archive Curator",
+            "collection": "prelinger, publicdomain",
+            "rights_policy": "explicit_public_domain_cc0_or_usgov_only",
+        },
+    )
+
+
 _AI_OK_PAYLOAD = json.dumps(
     {
         "score": 8,
@@ -152,6 +177,15 @@ def test_subject_from_clip_prefers_descriptive_pexels_slug():
     assert fetch_animals._subject_from_clip(clip, "ocean") == "sea turtle over coral reef"
 
 
+def test_subject_from_archive_does_not_inject_query_when_title_is_generic():
+    clip = _archive_clip(
+        url="https://archive.org/details/old-road-trip",
+        dl="https://archive.org/download/old-road-trip/old-road-trip.mp4",
+        title="Old road trip",
+    )
+    assert fetch_animals._subject_from_clip(clip, "wildlife animals") == "Old road trip"
+
+
 def test_topic_rejects_explicit_animal_from_wrong_category():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch")
 
@@ -242,6 +276,24 @@ def test_build_story_starts_unconsumed():
     assert story["consumed_at"] is None
     assert story["source"] == "Pexels"
     assert story["category"] == "cats"
+
+
+def test_build_story_preserves_archive_rights_provenance():
+    ai_out = json.loads(_AI_OK_PAYLOAD)
+    ai_out.setdefault("geo_hashtag", "Global")
+    ai_out.setdefault("lead", ai_out["script"][:400])
+    story = fetch_animals._build_story(
+        "wildlife film",
+        "wildlife",
+        fetch_animals.ANIMAL_TOPICS["wildlife"],
+        _archive_clip(),
+        ai_out,
+    )
+    assert story["source"] == "Internet Archive"
+    assert story["source_license_evidence"] == "creativecommons.org/publicdomain/mark"
+    assert story["archive_identifier"] == "pd-wildlife-film"
+    assert story["source_download_url"].endswith("wildlife.mp4")
+    assert story["pexels_download_url"] == ""
 
 
 def test_build_story_scrubs_blocked_commons_terms():

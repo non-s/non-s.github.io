@@ -4,18 +4,17 @@
 
 Open **Settings -> Secrets and variables -> Actions** and add:
 
-- `PEXELS_API_KEY` or `PEXELS`
 - `YOUTUBE_TOKEN`
 - At least one AI text provider:
   `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
 Recommended free quality extensions:
 
-- `PIXABAY_API_KEY` or `PIXABAY`
 - `GEMINI_API_KEY` or `GEMINI`
 
-GBIF and Wikimedia Commons need no key. AI image generation is not enabled because
-the project is optimized for zero-cost operation.
+Internet Archive video discovery is the default zero-cost source and needs no
+API key. GBIF and Wikimedia Commons need no key. AI image generation is not
+enabled because the project is optimized for zero-cost operation.
 
 ## Create YouTube OAuth credentials
 
@@ -58,9 +57,10 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
 
 ## Start publishing
 
-1. Run `fetch-content.yml` manually.
-2. Run `youtube-bot.yml` manually.
-3. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`, `unlisted`, or `private`. Default: `public`.
+1. Set repository variables `QUEUE_REFRESH_ENABLED=1` and `YOUTUBE_PUBLISHING_ENABLED=1` when you are ready to resume automation.
+2. Run `fetch-content.yml` manually.
+3. Run `youtube-bot.yml` manually.
+4. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`, `unlisted`, or `private`. Default: `public`.
 
 ## Optional zero-cost imports
 

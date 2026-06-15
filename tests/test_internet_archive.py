@@ -22,6 +22,32 @@ def _metadata_payload(**metadata):
     }
 
 
+def _video_payload(**metadata):
+    base = {
+        "identifier": "pd-wildlife-film",
+        "title": "Public Domain Wildlife Film",
+        "mediatype": "movies",
+        "licenseurl": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "collection": ["prelinger", "publicdomain"],
+        "creator": "Archive Curator",
+    }
+    base.update(metadata)
+    return {
+        "metadata": base,
+        "files": [
+            {"name": "__ia_thumb.jpg", "format": "JPEG Thumb", "size": "1000"},
+            {
+                "name": "wildlife.mp4",
+                "format": "MPEG4",
+                "size": "1234567",
+                "width": "1080",
+                "height": "1920",
+                "length": "13.5",
+            },
+        ],
+    }
+
+
 def test_public_domain_evidence_accepts_pd_mark():
     payload = _metadata_payload()
     assert ia.public_domain_evidence(payload["metadata"]) == "creativecommons.org/publicdomain/mark"
@@ -31,6 +57,15 @@ def test_public_domain_evidence_accepts_pd_mark():
 def test_asset_from_metadata_rejects_missing_public_domain_evidence():
     payload = _metadata_payload(licenseurl="https://creativecommons.org/licenses/by-nc/4.0/")
     assert ia.asset_from_metadata(payload) is None
+
+
+def test_public_domain_evidence_rejects_blocked_rights_terms():
+    payload = _metadata_payload(
+        licenseurl="https://creativecommons.org/publicdomain/mark/1.0/",
+        rights="All rights reserved",
+    )
+    assert ia.public_domain_evidence(payload["metadata"]) == ""
+    assert not ia.is_public_domain_item(payload["metadata"])
 
 
 def test_asset_from_metadata_picks_audio_file_and_provenance():
@@ -55,6 +90,37 @@ def test_advanced_search_returns_identifiers():
     params = fake.get.call_args.kwargs["params"]
     assert "mediatype:audio" in params["q"]
     assert "publicdomain" in params["q"]
+
+
+def test_video_asset_from_metadata_picks_mp4_and_provenance():
+    asset = ia.video_asset_from_metadata(_video_payload())
+
+    assert asset is not None
+    assert asset.identifier == "pd-wildlife-film"
+    assert asset.file_name == "wildlife.mp4"
+    assert asset.url == "https://archive.org/download/pd-wildlife-film/wildlife.mp4"
+    assert asset.source_url == "https://archive.org/details/pd-wildlife-film"
+    assert asset.width == 1080
+    assert asset.height == 1920
+    assert asset.license_evidence == "creativecommons.org/publicdomain/mark"
+
+
+def test_video_asset_from_metadata_rejects_missing_public_domain_evidence():
+    payload = _video_payload(licenseurl="https://creativecommons.org/licenses/by-nc/4.0/")
+    assert ia.video_asset_from_metadata(payload) is None
+
+
+def test_advanced_search_video_returns_identifiers():
+    fake = MagicMock()
+    fake.get.return_value.json.return_value = {"response": {"docs": [{"identifier": "film-one"}]}}
+    fake.get.return_value.raise_for_status.return_value = None
+
+    out = ia.advanced_search_video('"wildlife film"', session=fake)
+
+    assert out == ["film-one"]
+    queries = [call.kwargs["params"]["q"] for call in fake.get.call_args_list]
+    assert all("mediatype:movies" in query for query in queries)
+    assert any("publicdomain" in query.lower() for query in queries)
 
 
 def test_download_asset_rejects_too_small(monkeypatch, tmp_path):

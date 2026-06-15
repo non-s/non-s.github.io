@@ -5,14 +5,15 @@
 | Name | Required | Use |
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
-| `PEXELS_API_KEY` or `PEXELS` | yes | Free b-roll/source clip discovery. |
 | One AI text provider key | yes | Queue/story rewriting and packaging assistance. Supported names include `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` and `GROQ_API_KEY`. |
 
 ## Optional Secrets and Settings
 
 | Name | Required | Use |
 | --- | --- | --- |
-| `PIXABAY_API_KEY` or `PIXABAY` | no | Additional free media source. |
+| `BROLL_SOURCE_MODE` | no | Video source mode. Defaults to `archive`; legacy providers require explicit opt-in such as `archive,pexels,pixabay`. |
+| `ARCHIVE_VIDEO_MAX_BYTES` | no | Maximum Internet Archive source video file size admitted by discovery. Defaults to `94371840` (90 MB). |
+| `BROLL_DOWNLOAD_MAX_BYTES` | no | Maximum b-roll download size during render. Defaults to `94371840` (90 MB). |
 | `GEMINI_API_KEY` or `GEMINI` | no | Visual QA when configured. |
 | `WILD_BRIEF_RSS_URLS` | no | Comma-separated RSS URLs for `scripts/free_signal_harvester.py`. |
 | `WILD_BRIEF_GMAIL_ALERTS` | no | Set to `1` only when alert payload generation should be enabled. |
@@ -90,6 +91,9 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
 | `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `12` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
+| `BROLL_SOURCE_MODE` | `archive` | discovery | Use Internet Archive public-domain/CC0/US Gov video as the default visual source. | Set to `legacy` or `archive,pexels,pixabay` only if the Archive lane is paused intentionally. |
+| `ARCHIVE_VIDEO_MAX_BYTES` | `94371840` | discovery | Reject overly large Archive source files before rendering. | Lower if downloads are slow; raise only after runner timing is observed. |
+| `BROLL_DOWNLOAD_MAX_BYTES` | `94371840` | production | Cap video-source downloads during rendering. | Lower during CI timeouts. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |
@@ -147,11 +151,14 @@ Do not commit:
 Operator-dropped Google Trends snapshots belong under `_data/trends/manual_import/`.
 Those files should contain public trend data only.
 
-Internet Archive audio is autonomous and conservative. `ARCHIVE_AUDIO_ENABLED=1`
-allows discovery only for items whose metadata contains explicit public-domain,
-Public Domain Mark or CC0-style evidence. Use
-`python scripts/archive_audio_report.py --json` to review candidate sources
-and license evidence.
+Internet Archive video and audio are autonomous and conservative. The default
+`BROLL_SOURCE_MODE=archive` admits only video items whose metadata contains
+explicit public-domain, Public Domain Mark, CC0 or U.S. Government evidence,
+then stores source URL, license and evidence in the queue and rendered
+metadata. `ARCHIVE_AUDIO_ENABLED=1` applies the same style of metadata check
+to music/audio candidates. Use `python scripts/archive_video_report.py --json`
+to review video candidate sources and `python scripts/archive_audio_report.py --json`
+to review audio candidate sources and license evidence.
 
 Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
 When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,

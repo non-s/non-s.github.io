@@ -14,8 +14,8 @@ concurrency:
 jobs:
   refresh-queue:
     name: "Refresh YouTube Shorts queue"
-    # Queue refresh is paused with publishing so Pexels/Pixabay candidates do
-    # not repopulate the project while Archive.org sourcing is being evaluated.
+    # Queue refresh is paused with publishing while the Archive.org
+    # public-domain source strategy is being reviewed.
     # Set repository variable QUEUE_REFRESH_ENABLED=1 to resume this job.
     if: ${{ vars.QUEUE_REFRESH_ENABLED == '1' }}
     runs-on: ubuntu-latest
@@ -90,8 +90,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
+          BROLL_SOURCE_MODE: "archive"
           QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '24' }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}

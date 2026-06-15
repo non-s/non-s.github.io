@@ -9,6 +9,25 @@ from pathlib import Path
 PROVENANCE_FILE = Path("_data/source_provenance.jsonl")
 BRAND_TERMS = {"disney", "netflix", "nike", "coca-cola", "national geographic", "nat geo", "bbc"}
 PERSON_TERMS = {"person", "people", "human", "celebrity", "interview"}
+ARCHIVE_SAFE_MARKERS = {
+    "creativecommons.org/publicdomain",
+    "public domain",
+    "publicdomain",
+    "cc0",
+    "u.s. government",
+    "united states government",
+    "usgov",
+}
+ARCHIVE_BLOCK_MARKERS = {
+    "by-nc",
+    "by-nd",
+    "noncommercial",
+    "non-commercial",
+    "no derivatives",
+    "all rights reserved",
+    "permission required",
+    "no known copyright",
+}
 
 
 def _text(value: object) -> str:
@@ -26,7 +45,10 @@ def source_provenance(meta: dict | None = None) -> dict:
         "story_id": _text(meta.get("story_id") or meta.get("id") or meta.get("story_slug")),
         "source": _text(meta.get("source")),
         "source_url": _text(meta.get("source_url") or meta.get("url")),
-        "source_license": _text(meta.get("source_license") or meta.get("commons_license")),
+        "source_license": _text(
+            meta.get("source_license") or meta.get("commons_license") or meta.get("source_license_evidence")
+        ),
+        "source_license_evidence": _text(meta.get("source_license_evidence") or meta.get("rights_policy")),
         "author": _text(meta.get("author") or meta.get("commons_artist")),
         "downloaded_at": _text(
             meta.get("downloaded_at") or meta.get("created_at") or datetime.now(timezone.utc).isoformat()
@@ -42,12 +64,20 @@ def evaluate_rights_guard(meta: dict | None = None) -> dict:
     brand_hits = _risk_terms(text, BRAND_TERMS)
     person_hits = _risk_terms(text, PERSON_TERMS)
     license_text = provenance["source_license"].lower()
+    evidence_text = provenance["source_license_evidence"].lower()
+    source = provenance["source"].lower()
     source_url = provenance["source_url"]
     reasons: list[str] = []
     if not source_url:
         reasons.append("missing_source_url")
     if not license_text:
         reasons.append("missing_source_license")
+    if source == "internet archive":
+        combined_rights = f"{license_text} {evidence_text}"
+        if any(marker in combined_rights for marker in ARCHIVE_BLOCK_MARKERS):
+            reasons.append("archive_blocked_license_marker")
+        if not any(marker in combined_rights for marker in ARCHIVE_SAFE_MARKERS):
+            reasons.append("archive_missing_public_domain_evidence")
     if brand_hits:
         reasons.append("brand_manual_review")
     if person_hits:
@@ -55,7 +85,9 @@ def evaluate_rights_guard(meta: dict | None = None) -> dict:
     state = "approved"
     if brand_hits or person_hits:
         state = "manual_review"
-    if "missing_source_url" in reasons:
+    if "missing_source_url" in reasons or "archive_missing_public_domain_evidence" in reasons:
+        state = "block"
+    if "archive_blocked_license_marker" in reasons:
         state = "block"
     return {
         "state": state,

@@ -150,46 +150,63 @@ def test_pixabay_returns_empty_without_key(monkeypatch):
 # ── fetch_broll_clips orchestration ──────────────────────────────
 
 
-def test_fetch_broll_returns_vetted_pexels_clips(monkeypatch):
-    fake_pexels = [
-        broll.BrollClip(source="pexels", url="", download_url=f"https://a/{i}", width=1080, height=1920, duration_s=10)
+def test_fetch_broll_returns_vetted_archive_clips(monkeypatch):
+    fake_archive = [
+        broll.BrollClip(
+            source="internet_archive",
+            url="https://archive.org/details/a",
+            download_url=f"https://archive.org/download/a/{i}.mp4",
+            width=1080,
+            height=1920,
+            duration_s=10,
+            license="https://creativecommons.org/publicdomain/mark/1.0/",
+            license_evidence="creativecommons.org/publicdomain/mark",
+        )
         for i in range(2)
     ]
-    with (
-        patch.object(broll, "fetch_pexels", return_value=fake_pexels),
-        patch.object(broll, "fetch_pixabay", return_value=[]),
-    ):
+    with patch.object(broll, "fetch_archive", return_value=fake_archive):
         out = broll.fetch_broll_clips("octopus underwater animal", want_n=3)
     assert len(out) == 2
     sources = {c.source for c in out}
-    assert "pexels" in sources
+    assert "internet_archive" in sources
 
 
 def test_fetch_broll_deduplicates_by_url(monkeypatch):
-    same = broll.BrollClip(source="pexels", url="", download_url="https://dup", width=1080, height=1920, duration_s=10)
-    with (
-        patch.object(broll, "fetch_pexels", return_value=[same]),
-        patch.object(broll, "fetch_pixabay", return_value=[same]),
-    ):
+    same = broll.BrollClip(
+        source="internet_archive", url="", download_url="https://dup", width=1080, height=1920, duration_s=10
+    )
+    with patch.object(broll, "fetch_archive", return_value=[same, same]):
         out = broll.fetch_broll_clips("x", want_n=5)
     assert len(out) == 1
 
 
 def test_fetch_broll_returns_empty_on_total_failure(monkeypatch):
-    with patch.object(broll, "fetch_pexels", return_value=[]), patch.object(broll, "fetch_pixabay", return_value=[]):
+    with patch.object(broll, "fetch_archive", return_value=[]):
         out = broll.fetch_broll_clips("x", want_n=3)
     assert out == []
 
 
-def test_fetch_broll_animal_only_uses_pexels(monkeypatch):
+def test_fetch_broll_animal_only_uses_archive(monkeypatch):
+    archive = [
+        broll.BrollClip(
+            source="internet_archive", url="", download_url="https://animal", width=1080, height=1920, duration_s=10
+        ),
+    ]
+    with patch.object(broll, "fetch_archive", return_value=archive):
+        out = broll.fetch_broll_clips("octopus underwater animal", want_n=3, animal_only=True)
+    assert out == archive
+
+
+def test_fetch_broll_legacy_mode_can_use_pexels(monkeypatch):
+    monkeypatch.setenv("BROLL_SOURCE_MODE", "legacy")
     pexels = [
-        broll.BrollClip(source="pexels", url="", download_url="https://animal", width=1080, height=1920, duration_s=10),
+        broll.BrollClip(source="pexels", url="", download_url="https://legacy", width=1080, height=1920, duration_s=10)
     ]
     with (
         patch.object(broll, "fetch_pexels", return_value=pexels),
         patch.object(broll, "fetch_pixabay", return_value=[]),
     ):
-        out = broll.fetch_broll_clips("octopus underwater animal", want_n=3, animal_only=True)
+        out = broll.fetch_broll_clips("octopus underwater animal", want_n=3)
     assert out == pexels
 
 
@@ -225,7 +242,7 @@ def test_download_clip_rejects_non_mp4(tmp_path):
         s = MagicMock()
         s.get.return_value = fake
         factory.return_value = s
-        assert not broll.download_clip(clip, dest)
+        assert not broll.download_clip(clip, dest, max_bytes=30 * 1024 * 1024)
 
 
 def test_download_clip_aborts_oversized(tmp_path):

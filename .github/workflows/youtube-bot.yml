@@ -39,6 +39,7 @@ jobs:
       MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '1' }}
       ARCHIVE_AUDIO_ENABLED: ${{ vars.ARCHIVE_AUDIO_ENABLED || '1' }}
       ARCHIVE_AUDIO_ROWS: ${{ vars.ARCHIVE_AUDIO_ROWS || '12' }}
+      BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'archive' }}
       # Open immediately on the animal and hook in the Shorts feed.
       BRAND_CARDS_ENABLED: "0"
       # Monetization-first mode: skip a candidate instead of shipping a
@@ -157,8 +158,6 @@ jobs:
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}
           QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}
           QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '6' }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
@@ -172,8 +171,6 @@ jobs:
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
       - name: "Decidir janela de publicacao"
         id: publish_window
         env:
@@ -243,8 +240,6 @@ jobs:
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY || secrets.PIXABAY }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
       - name: "Upload Shorts para YouTube"
         if: steps.publish_window.outputs.should_publish == 'true'

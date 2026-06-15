@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-fetch_animals.py — Build the daily Shorts queue from animal Pexels clips.
+fetch_animals.py — Build the daily Shorts queue from curated Internet Archive clips.
 
 Runs the channel's animal-facts queue from discovery to enrichment.
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
@@ -13,12 +13,12 @@ How it works
 ============
 
 1. Walks a static topic table (`ANIMAL_TOPICS`) that maps each animal
-   category to (a) Pexels search queries and (b) channel-side tags +
+   category to (a) Archive.org search queries and (b) channel-side tags +
    topic hashtag + a short description prefix used by the AI prompt.
 
-2. For each topic, queries Pexels (1 query per slot per run, rotating
+2. For each topic, queries Internet Archive (1 query per slot per run, rotating
    so we don't burn through the same 5 queries every 3 hours). Each
-   matching Pexels clip becomes one queue entry — the clip is what
+   matching public-domain/CC0/US Gov clip becomes one queue entry — the clip is what
    `generate_shorts.py` will see when it later asks the b-roll picker
    for "cats playing" or "dolphins jumping".
 
@@ -28,23 +28,22 @@ How it works
    schema is identical.
 
 4. Merges new entries onto the existing `stories_queue.json`,
-   deduplicating by `id` (= SHA-256-derived key of the Pexels clip URL). Older,
+   deduplicating by `id` (= SHA-256-derived key of the source clip URL). Older,
    consumed entries are pruned to keep the file bounded.
 
 What's intentionally NOT here
 =============================
 
-* Video discovery stays inside vetted free providers.
+* Video discovery stays inside explicit public-domain/CC0/US Gov Archive items.
 * No brand-safety filter — every queue item is already animal content.
 * No urgency classifier — evergreen facts do not need one.
 * No translation — start with EN, PT-BR is a future pass.
-* No native-lang feeds — Pexels metadata is mostly English regardless.
+* No native-lang feeds — Archive metadata is mostly English regardless.
 
 Operator knobs (env vars)
 =========================
 
-  PEXELS_API_KEY          (required unless PIXABAY_API_KEY is set)
-  PIXABAY_API_KEY         (optional supplemental video provider)
+  BROLL_SOURCE_MODE       (default archive) — legacy providers are opt-in
   MISTRAL/CEREBRAS/GEMINI/GROQ key (one required) — AI enhancement
   ANIMALS_MAX_PER_TOPIC   (default 4) — clips fetched per topic per run
   ANIMALS_KEEP_DAYS       (default 14) — prune older entries
@@ -65,7 +64,7 @@ from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
-from utils.broll import fetch_pexels, fetch_pixabay
+from utils.broll import fetch_archive
 from utils.growth_studio import studio_brief_for_story
 from utils.trend_radar import (
     load_trends,
@@ -756,7 +755,7 @@ def _script_key(script: str) -> str:
 
 
 def _subject_from_clip(clip, fallback_query: str) -> str:
-    """Prefer the descriptive Pexels URL slug over uploader metadata."""
+    """Prefer source-native subject text over the search query."""
     url = getattr(clip, "url", "") or ""
     parts = url.rstrip("/").split("/")
     tail = parts[-1] if parts else ""
@@ -766,6 +765,13 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
         slug = re.sub(r"-\d+$", "", tail)
     slug = re.sub(r"[-_]+", " ", slug).strip()
     title = (getattr(clip, "title", "") or "").strip()
+    source = (getattr(clip, "source", "") or "").lower()
+    if source == "internet_archive":
+        if _animal_terms(title):
+            return title
+        if _animal_terms(slug):
+            return slug
+        return title or slug or fallback_query
     if _animal_terms(slug):
         return slug
     if _animal_terms(title):
@@ -936,6 +942,17 @@ def _source_clip_id(clip) -> str:
     return f"{source}:{_story_id(url)}" if url else ""
 
 
+def _source_display_name(source: str) -> str:
+    source = (source or "").strip().lower()
+    names = {
+        "internet_archive": "Internet Archive",
+        "archive": "Internet Archive",
+        "pexels": "Pexels",
+        "pixabay": "Pixabay",
+    }
+    return names.get(source, source.replace("_", " ").title() if source else "Unknown")
+
+
 # ── Published-clips ledger ────────────────────────────────────────
 
 
@@ -975,6 +992,8 @@ def record_published_clip(
     source_clip_id: str = "",
     source: str = "",
     source_url: str = "",
+    source_license: str = "",
+    source_license_evidence: str = "",
     platform_video_id: str = "",
     **_legacy,
 ) -> None:
@@ -1008,6 +1027,8 @@ def record_published_clip(
             "source_clip_id": source_clip_id or "",
             "source": source or "",
             "source_url": source_url or "",
+            "source_license": source_license or "",
+            "source_license_evidence": source_license_evidence or "",
             "platform_video_id": platform_video_id or "",
             "uploaded_at": datetime.now(timezone.utc).isoformat(),
         }
@@ -1061,7 +1082,10 @@ def _build_story(
     enrichment = enrichment or {}
     commons = enrichment.get("commons") or {}
     gbif = enrichment.get("gbif") or {}
-    source_name = (pexels_clip.source or "unknown").title()
+    source_raw = getattr(pexels_clip, "source", "") or "unknown"
+    source_name = _source_display_name(source_raw)
+    source_meta = getattr(pexels_clip, "source_metadata", {}) or {}
+    license_evidence = getattr(pexels_clip, "license_evidence", "") or ""
     url = pexels_clip.url or pexels_clip.download_url
     now = datetime.now(timezone.utc).isoformat()
     # Merge the AI-picked tags with the topic's evergreen tags,
@@ -1089,8 +1113,14 @@ def _build_story(
         "source": source_name,
         "source_url": url,
         "source_license": pexels_clip.license,
+        "source_license_evidence": license_evidence,
         "source_clip_id": _source_clip_id(pexels_clip),
         "source_download_url": pexels_clip.download_url,
+        "source_creator": source_meta.get("creator", ""),
+        "source_collection": source_meta.get("collection", ""),
+        "archive_identifier": source_meta.get("identifier", ""),
+        "archive_file_name": source_meta.get("file_name", ""),
+        "rights_policy": source_meta.get("rights_policy", ""),
         "category": topic_key,
         "description": f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {pexels_clip.title or clip_subject}".strip(),
         # BrollClip doesn't carry a preview image — leave empty; the
@@ -1120,11 +1150,10 @@ def _build_story(
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
         "discovery_hashtags": list(topic_cfg.get("discovery_hashtags") or []),
-        # Pexels-specific extras — kept so a follow-up PR can later
-        # bias `generate_shorts.acquire_broll_clips` to PREFER the
-        # exact clip that informed the script.
+        # Legacy Pexels fields stay for old consumers; Archive uses the
+        # source_* fields above.
         "pexels_video_id": _pexels_id_from_clip(pexels_clip),
-        "pexels_download_url": pexels_clip.download_url,
+        "pexels_download_url": pexels_clip.download_url if source_raw.lower() == "pexels" else "",
         "gbif": gbif,
         "commons_image_url": _safe_commons_value(commons.get("image_url", "")),
         "commons_page_url": _safe_commons_value(commons.get("page_url", "")),
@@ -1254,17 +1283,13 @@ def main() -> int:
     from utils.panic import abort_if_halted
 
     abort_if_halted("fetch_animals")
-    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2))
+    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2, provider="internet_archive"))
 
     log.info("=" * 60)
     log.info("🐾 Wild Brief — animal queue refresh %s", datetime.now(timezone.utc).isoformat())
     log.info("=" * 60)
 
-    pexels_key = os.environ.get("PEXELS_API_KEY", "").strip()
-    pixabay_key = os.environ.get("PIXABAY_API_KEY", "").strip()
-    if not pexels_key and not pixabay_key:
-        log.error("No video provider configured. Set PEXELS_API_KEY or PIXABAY_API_KEY.")
-        return 2
+    log.info("Video provider: Internet Archive public-domain/CC0/US Gov curation")
     ai_keys = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
     if not any(os.environ.get(key, "").strip() for key in ai_keys):
         log.error("❌ No AI provider key set — configure MISTRAL, CEREBRAS, GEMINI or GROQ.")
@@ -1340,10 +1365,7 @@ def main() -> int:
             if len(clips) >= per_topic_n:
                 break
             try:
-                if pexels_key:
-                    clips.extend(fetch_pexels(q, per_page=4))
-                if pixabay_key:
-                    clips.extend(fetch_pixabay(q, per_page=4))
+                clips.extend(fetch_archive(q, per_page=4))
             except Exception as exc:
                 log.warning("video provider fetch failed for %r: %s", q, exc)
         # Cap, shuffle a little so consecutive runs don't always
@@ -1361,6 +1383,9 @@ def main() -> int:
             if sid in dedupe_keys or (pid and pid in dedupe_keys) or source_clip_id in dedupe_keys:
                 continue
             subject = _subject_from_clip(clip, queries[0])
+            if (getattr(clip, "source", "") or "").lower() == "internet_archive" and not _animal_terms(subject):
+                log.warning("  skipping archive clip without animal/nature signal for %s: %s", topic_key, subject[:80])
+                continue
             if not _topic_accepts_subject(topic_cfg, subject):
                 log.warning("  skipping off-topic video clip for %s: %s", topic_key, subject[:80])
                 continue

@@ -24,7 +24,7 @@ Automated pipeline that turns vetted nature footage into vertical YouTube Shorts
 ## Pipeline
 
 ```text
-Pexels + Pixabay clips -> nature taxonomy + enrichment -> fetch_animals.py
+Internet Archive public-domain clips -> nature taxonomy + enrichment -> fetch_animals.py
              -> _data/stories_queue.json
              -> generate_shorts.py -> _videos/*.mp4 + metadata
              -> upload_youtube.py -> YouTube Shorts + .done sidecar
@@ -98,19 +98,21 @@ replacing the current queue, render, upload or official YouTube APIs.
 
 ## Required secrets
 
-- `PEXELS_API_KEY` or `PEXELS`
 - `YOUTUBE_TOKEN`
 - At least one AI text provider:
   `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
 Recommended free quality extensions:
 
-- `PIXABAY_API_KEY` or `PIXABAY`
 - `GEMINI_API_KEY` or `GEMINI`
 - `AUDIO_LIBRARY_MANIFEST` for operator-curated YouTube Audio Library files
 - `COQUI_TTS_COMMAND` for a local TTS fallback if Edge TTS fails
 
 GBIF and Wikimedia Commons enrichment do not require secrets.
+Internet Archive video discovery is the default zero-cost source and requires
+no API key. It only admits items with explicit public-domain/CC0/US Gov
+metadata evidence; Pexels/Pixabay are legacy opt-in providers through
+`BROLL_SOURCE_MODE=archive,pexels,pixabay`.
 See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.
 
 AI image generation is intentionally disabled because current free-tier

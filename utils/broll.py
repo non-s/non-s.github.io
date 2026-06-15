@@ -11,18 +11,21 @@ of the bar we have to put MOTION on screen, ideally varied every 2-3s.
 This module keeps animal footage discovery small and reusable.
 Wild Brief intentionally uses vetted free sources:
 
-  1. Pexels Videos API   — best signal, requires a free key (no card)
+  1. Internet Archive public-domain/CC0 video — default, no API key
 
 Each source returns a list of `BrollClip` objects sorted by relevance.
 `fetch_broll_clips(query, want_n)` is the unified entry point.
 
-Pixabay supplements Pexels coverage when `PIXABAY_API_KEY` is configured.
+Pexels/Pixabay remain as opt-in legacy providers through
+`BROLL_SOURCE_MODE=archive,pexels,pixabay`, but they are no longer used by
+default.
 
 Caching
 -------
-Pexels rate-limits at 200/h. We cache discovery
-results in-memory per process and on disk under `_data/broll_cache/`
-so a re-run of the same story doesn't burn quota.
+Archive.org asks automated tools to use descriptive User-Agent headers,
+cache responses, and respect rate limits. We cache discovery on disk
+under `_data/broll_cache/` so a re-run of the same story avoids repeated
+metadata calls.
 """
 
 from __future__ import annotations
@@ -39,6 +42,8 @@ from pathlib import Path
 from typing import Iterable
 
 import requests
+
+from utils.internet_archive import discover_public_domain_videos
 
 log = logging.getLogger(__name__)
 
@@ -65,6 +70,8 @@ class BrollClip:
     duration_s: float
     title: str = ""
     license: str = ""
+    license_evidence: str = ""
+    source_metadata: dict = dataclasses.field(default_factory=dict)
 
 
 # ── HTTP session ─────────────────────────────────────────────────
@@ -249,6 +256,44 @@ def fetch_pixabay(query: str, per_page: int = 8) -> list[BrollClip]:
     return out
 
 
+def fetch_archive(query: str, per_page: int = 8) -> list[BrollClip]:
+    """Search Internet Archive for explicit public-domain/CC0 video clips."""
+    if not query:
+        return []
+    rows = max(12, min(int(per_page or 8) * 5, 50))
+    cache_path = _cache_key("archive", f"{query}|{rows}|pd-video-v1")
+    cached = _cache_get(cache_path)
+    if cached is not None:
+        return [BrollClip(**c) for c in cached]
+    assets = discover_public_domain_videos(query, rows=rows)
+    out: list[BrollClip] = []
+    for asset in assets:
+        out.append(
+            BrollClip(
+                source="internet_archive",
+                url=asset.source_url,
+                download_url=asset.url,
+                width=asset.width or 1280,
+                height=asset.height or 720,
+                duration_s=asset.duration_s or 10.0,
+                title=asset.title,
+                license=asset.license,
+                license_evidence=asset.license_evidence,
+                source_metadata={
+                    "identifier": asset.identifier,
+                    "file_name": asset.file_name,
+                    "creator": asset.creator,
+                    "collection": asset.collection,
+                    "downloads": asset.downloads,
+                    "rights_policy": "explicit_public_domain_cc0_or_usgov_only",
+                },
+            )
+        )
+    out = out[: max(1, int(per_page or 8))]
+    _cache_put(cache_path, [dataclasses.asdict(c) for c in out])
+    return out
+
+
 # ── 2. Discovery ─────────────────────────────────────────────────
 
 # Strip filler words so "The octopus changes colour today" becomes
@@ -315,6 +360,18 @@ def _build_query(text: str) -> str:
     return " ".join(kept)
 
 
+def _enabled_sources() -> list[str]:
+    raw = os.environ.get("BROLL_SOURCE_MODE", "archive").strip().lower()
+    if raw in {"legacy", "pexels"}:
+        return ["pexels", "pixabay"]
+    if raw in {"all", "archive+legacy"}:
+        return ["archive", "pexels", "pixabay"]
+    sources = [part.strip() for part in re.split(r"[,;+ ]+", raw) if part.strip()]
+    allowed = {"archive", "internet_archive", "pexels", "pixabay"}
+    normalised = ["archive" if source == "internet_archive" else source for source in sources if source in allowed]
+    return normalised or ["archive"]
+
+
 def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False) -> list[BrollClip]:
     """Collect up to `want_n` vetted animal clips."""
     seen_urls: set[str] = set()
@@ -323,14 +380,17 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_on
     cat_query = (category or "").strip().lower()
     queries = [q for q in (refined, query, cat_query) if q]
 
-    # Track per-source contribution so b-roll failures are visible at
-    # INFO. Without this the workflow log only shows the final count
-    # and operators can't tell whether a missing Pexels key, a quota
-    # wall, or an unlucky query phrase pushed the run into the static
-    # fallback.
-    per_source: dict[str, int] = {"pexels": 0, "pixabay": 0}
+    # Track per-source contribution so b-roll failures are visible at INFO.
+    fetcher_map = {
+        "archive": fetch_archive,
+        "pexels": fetch_pexels,
+        "pixabay": fetch_pixabay,
+    }
+    source_order = _enabled_sources()
+    per_source: dict[str, int] = {source: 0 for source in source_order}
 
-    for fetcher in (fetch_pexels, fetch_pixabay):
+    for source in source_order:
+        fetcher = fetcher_map[source]
         if len(collected) >= want_n:
             break
         for q in queries:
@@ -350,31 +410,22 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_on
                 if len(collected) >= want_n:
                     break
 
-    pexels_key_present = bool(os.environ.get("PEXELS_API_KEY", "").strip())
-    log.info(
-        "  B-roll supplement: pixabay=%d (key %s)",
-        per_source["pixabay"],
-        "present" if os.environ.get("PIXABAY_API_KEY", "").strip() else "MISSING",
-    )
-    log.info(
-        "  🔎 B-roll source: pexels=%d (key %s) · total=%d/%d",
-        per_source["pexels"],
-        "present" if pexels_key_present else "MISSING",
-        len(collected),
-        want_n,
-    )
+    source_counts = ", ".join(f"{source}={per_source.get(source, 0)}" for source in source_order)
+    log.info("  B-roll source mode: %s · total=%d/%d", source_counts, len(collected), want_n)
     return collected
 
 
 # ── Download helper ──────────────────────────────────────────────
 
 
-def download_clip(clip: BrollClip, dest: Path, max_bytes: int = 30 * 1024 * 1024) -> bool:
+def download_clip(clip: BrollClip, dest: Path, max_bytes: int | None = None) -> bool:
     """Download `clip.download_url` to `dest`. Caps body at `max_bytes`.
 
     Returns True on success. Uses streaming so a 30 MB clip doesn't
     blow up memory. Validates the MP4 magic bytes.
     """
+    if max_bytes is None:
+        max_bytes = int(os.environ.get("BROLL_DOWNLOAD_MAX_BYTES", str(90 * 1024 * 1024)))
     try:
         r = _session().get(clip.download_url, stream=True, timeout=_TIMEOUT * 2)
         if r.status_code != 200:

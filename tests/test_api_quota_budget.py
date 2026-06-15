@@ -1,6 +1,12 @@
 import json
 
-from utils.api_quota_budget import estimate_publish_run_cost, quota_ledger_row, should_block_run, write_quota_ledger_row
+from utils.api_quota_budget import (
+    estimate_fetch_content_cost,
+    estimate_publish_run_cost,
+    quota_ledger_row,
+    should_block_run,
+    write_quota_ledger_row,
+)
 
 
 def test_quota_estimate_separates_youtube_upload_bucket():
@@ -9,6 +15,13 @@ def test_quota_estimate_separates_youtube_upload_bucket():
     assert estimate["estimated_units"] == 50
     assert estimate["calls"]["youtube.videos.insert"] == 1
     assert estimate["calls"]["youtube.thumbnails.set"] == 1
+
+
+def test_fetch_content_estimate_uses_archive_by_default():
+    estimate = estimate_fetch_content_cost(search_calls=8)
+
+    assert estimate["calls"] == {"internet_archive.search": 8}
+    assert estimate["estimated_units"] == 0
 
 
 def test_quota_guard_blocks_only_in_block_mode(tmp_path):

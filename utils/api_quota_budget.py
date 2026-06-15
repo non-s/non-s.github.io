@@ -1,4 +1,4 @@
-"""Estimated YouTube/Pexels API quota budget ledger.
+"""Estimated YouTube/API quota budget ledger.
 
 This is intentionally conservative and centralized. YouTube upload calls use
 their own daily bucket, so unit spend and upload count must be guarded
@@ -25,6 +25,7 @@ UNIT_METHOD_COSTS = {
     "youtube.commentThreads.list": 1,
     "youtube.comments.insert": 50,
     "youtube.analytics.reports.query": 1,
+    "internet_archive.search": 0,
     "pexels.search": 1,
     "pixabay.search": 1,
 }
@@ -66,8 +67,13 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
     return {method: int(calls.get(method) or 0) for method in LIMITED_CALL_METHODS if int(calls.get(method) or 0) > 0}
 
 
-def estimate_fetch_content_cost(search_calls: int = 12, enrichment_calls: int = 0) -> dict:
-    calls = {"pexels.search": search_calls, "pixabay.search": max(0, search_calls // 3)}
+def estimate_fetch_content_cost(
+    search_calls: int = 12, enrichment_calls: int = 0, provider: str = "internet_archive"
+) -> dict:
+    if provider == "legacy_free_video":
+        calls = {"pexels.search": search_calls, "pixabay.search": max(0, search_calls // 3)}
+    else:
+        calls = {"internet_archive.search": search_calls}
     if enrichment_calls:
         calls["youtube.analytics.reports.query"] = enrichment_calls
     return {"workflow": "fetch-content", "calls": calls, "estimated_units": estimate_cost(calls)}
