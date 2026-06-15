@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:10:11.159975+00:00",
+  "generated_at": "2026-06-15T18:22:23.499182+00:00",
   "pending": 13,
   "states": {
     "rewrite": 11,
@@ -14,17 +14,137 @@
     "approved": 13
   },
   "prune_summary": {
-    "pending_before": 13,
+    "pending_before": 24,
     "pending_after": 13,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 9,
+    "rejected": 11,
+    "repair_needed": 1,
+    "repaired": 15,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 24,
-      "objective_gate:observe_before_scaling": 2
+      "copy_subject_mismatch": 5,
+      "duplicate_title": 5,
+      "script_subject_mismatch": 4,
+      "duplicate_script": 4,
+      "duplicate_angle": 4,
+      "script_hook_mismatch": 2,
+      "objective_gate:observe_before_scaling": 2,
+      "off_topic_visual": 2,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "queue_score_reject": 1,
+      "bad_plural_verb": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "14f9e8f7fb4689a6",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7e1a89ce9e521cac",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "cb4cb593e9502516",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0df8d0b2f6d64089",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0ee0c37ee7a5bdce",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "24a1fc90e06cea2a",
+      "title": "walrus uses rocks to take a shower",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0af584c7e3758201",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "1aa55b275f66b360",
+      "title": "Ocean cleanup: machines that clean faster than you think",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c6af1bb6e5565948",
+      "title": "Bull sharks remember their friends for weeks",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fdcf2795c1892bdf",
+      "title": "mushrooms use underground threads to share food",
+      "reasons": [
+        "copy_subject_mismatch",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "7ad7112976314499",
       "title": "Fossils turn old bones into time clues",
@@ -168,15 +288,6 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "1aa55b275f66b360",
-      "title": "Ocean cleanup: machines that clean faster than you think",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
       "id": "765bce968b92dc15",
       "title": "Earth's storms don't spin the way you think",
       "reasons": [
@@ -232,113 +343,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "c2fad3f40dd25a1c",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "da75e424bfed1a10",
-      "title": "Auroras glow when solar particles hit air",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "subject_not_clear",
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "5693f233c862d5b4",
-      "title": "Cats use whiskers like built-in rulers",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "4ca52c762f4a6c12",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e3eec0d061f8518c",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "77979e7c4fa42f9a",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c8b8749e95a96a1a",
-      "title": "Earth spins against the moon's fixed face",
-      "reasons": [
-        "script_hook_mismatch",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0af584c7e3758201",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "1eb5124c32ad982a",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3a14e88bd4a77538",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -488,7 +492,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.393194+00:00",
+        "checked_at": "2026-06-15T18:22:14.926025+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -935,7 +939,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.401089+00:00",
+        "checked_at": "2026-06-15T18:22:14.936284+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1383,7 +1387,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.386742+00:00",
+        "checked_at": "2026-06-15T18:22:14.913773+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1834,7 +1838,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.388719+00:00",
+        "checked_at": "2026-06-15T18:22:14.915682+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2140,7 +2144,7 @@
       }
     },
     {
-      "id": "cb4cb593e9502516",
+      "id": "38a9a9876bc2c5d0",
       "title": "Storm clouds reveal a storm's heat engine",
       "category": "earth_from_space",
       "publish_score": {
@@ -2235,7 +2239,7 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.223,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -2252,18 +2256,17 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.261,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 86,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.123
         },
         "title_score": 90,
         "weak_content": {
@@ -2286,7 +2289,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.395063+00:00",
+        "checked_at": "2026-06-15T18:22:14.920589+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2326,7 +2329,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after storm?",
         "cta_prompt": "Follow for one animal signal a day.",
         "curiosity_gap": {
-          "hook": "Why does this spacescience changes after the body cue?",
+          "hook": "Why does this weather changes after the body cue?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -2346,13 +2349,13 @@
         },
         "experiment": {
           "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
             "thumbnail": "new_thumbnail"
           },
           "explore_rate": 0.35,
-          "mode": "explore",
+          "mode": "exploit",
           "sample_count": 8,
           "winners": {
             "hook_pattern": "{subject} can {subject} a {action} {subject} {subject}",
@@ -2441,12 +2444,12 @@
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Animal Superpowers #2",
+        "series": "Watch The Cue",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #2: compare this with another force of nature.",
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #2",
-          "series": "Animal Superpowers #2"
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
         },
         "state": "magnetic",
         "strengths": [
@@ -2456,7 +2459,7 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.223,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -2473,18 +2476,17 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.261,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 86,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.123
         },
         "swipe_risk": {
           "band": "low",
@@ -2737,7 +2739,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.385372+00:00",
+        "checked_at": "2026-06-15T18:22:14.912040+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3189,7 +3191,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.396657+00:00",
+        "checked_at": "2026-06-15T18:22:14.929685+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3641,7 +3643,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.398376+00:00",
+        "checked_at": "2026-06-15T18:22:14.933378+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4088,7 +4090,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.400093+00:00",
+        "checked_at": "2026-06-15T18:22:14.935241+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4541,7 +4543,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.389957+00:00",
+        "checked_at": "2026-06-15T18:22:14.916949+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4997,7 +4999,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.391846+00:00",
+        "checked_at": "2026-06-15T18:22:14.924600+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5454,7 +5456,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.383769+00:00",
+        "checked_at": "2026-06-15T18:22:14.889411+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5904,7 +5906,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T18:10:02.402144+00:00",
+        "checked_at": "2026-06-15T18:22:14.937392+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
