@@ -1,22 +1,2275 @@
 {
-  "generated_at": "2026-06-15T01:21:27.247814+00:00",
-  "pending": 0,
-  "states": {},
-  "mechanism_clusters": {},
-  "rights": {},
+  "generated_at": "2026-06-15T01:36:15.621016+00:00",
+  "pending": 5,
+  "states": {
+    "publish_ready": 2,
+    "rewrite": 3
+  },
+  "mechanism_clusters": {
+    "scent_map": 1,
+    "tongue_smell": 1,
+    "dance_navigation": 1,
+    "ear_signal": 1
+  },
+  "rights": {
+    "approved": 5
+  },
   "prune_summary": {
-    "pending_before": 5,
-    "pending_after": 1,
-    "rejected": 4,
-    "repair_needed": 0,
-    "repaired": 0,
+    "pending_before": 7,
+    "pending_after": 5,
+    "rejected": 2,
+    "repair_needed": 1,
+    "repaired": 4,
     "reasons": {
-      "off_topic_visual": 3,
-      "copy_subject_mismatch": 2,
-      "objective_gate:bootstrap_observe_before_scaling": 2,
-      "script_subject_mismatch": 1
+      "objective_gate:bootstrap_observe_before_scaling": 10,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2,
+      "no_action_promise": 1,
+      "payoff_not_explicit": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "missing_action_word": 1,
+      "queue_score_reject": 1,
+      "off_topic_visual": 1
     }
   },
-  "rejected_preview": [],
-  "top": []
+  "rejected_preview": [
+    {
+      "id": "28b5fbba8123a903",
+      "title": "Trees signal through canopy shift",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "896d4313f3b4b201",
+      "title": "Fish that steals fish eyes",
+      "reasons": [
+        "no_action_promise",
+        "payoff_not_explicit",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    }
+  ],
+  "top": [
+    {
+      "id": "b212048997aeb01c",
+      "title": "Bears smell food from miles away",
+      "category": "arctic",
+      "publish_score": {
+        "approved": true,
+        "category": "arctic",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "scent_map",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 58,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 65,
+            "emotional_potential": 35,
+            "novelty": 55,
+            "replay_potential": 82,
+            "viral_potential": 58,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-15T01:36:11.663161+00:00",
+        "mechanism_cluster": "scent_map",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "bears",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "bears",
+        "viewer_promise": "See why bears body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after bears?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "These ecosystems change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 90.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "explore",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Bears can smell a meal long before seeing it",
+          "Bears show the scent map before the payoff.",
+          "Bears show the scent map before the payoff.",
+          "Bears show the scent map before the payoff.",
+          "Bears give away the answer through scent map"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "bears",
+          "ending_line": "Would you trust your nose that much?",
+          "final_line": "Would you trust your nose that much?",
+          "loop_score": 0.174,
+          "opening_line": "Bears can smell a meal long before seeing it.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "bears",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.174,
+        "pinned_comment": "Watch the scent map again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.44,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
+          "first_frame_text": "SCENT MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bears can smell a meal long before seeing it.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.174,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 93,
+        "selected_variant": {
+          "hook": "Start with the scent map; it explains the next move",
+          "score": 79,
+          "thumbnail_text": "SCENT MAP",
+          "title": "Bears smell food from miles away"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SCENT MAP",
+          "WATCH SCENT MAP",
+          "BEARS SMELL",
+          "SCENT MAP MATTERS",
+          "SCENT MAP PAYOFF",
+          "SCENT MAP FIRST",
+          "SCENT MAP REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Bears smell food from miles away",
+          "Bears use scent map before they smell",
+          "This scent map gives bears away",
+          "Why bears smell after one scent map",
+          "Bears reveal the answer with scent map",
+          "The scent map that changes the moment",
+          "Bears make one scent map matter",
+          "Bears show the hidden payoff in seconds",
+          "Bears: watch this scent map",
+          "Watch bears after the scent map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the scent map; it explains the next move",
+            "score": 79,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 78,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Watch the scent map; the payoff lands seconds later",
+            "score": 77,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it explains the next move",
+            "score": 72,
+            "thumbnail_text": "WATCH SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it explains the next move",
+            "score": 72,
+            "thumbnail_text": "BEARS SMELL",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it explains the next move",
+            "score": 72,
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it explains the next move",
+            "score": 72,
+            "thumbnail_text": "SCENT MAP PAYOFF",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 71,
+            "thumbnail_text": "WATCH SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 71,
+            "thumbnail_text": "BEARS SMELL",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 71,
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "title": "Bears smell food from miles away"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/licenses/publicdomain/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "0a2b9b07a5324fb1",
+      "title": "Beetles can steer by the Milky Way",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 64,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 59
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-15T01:36:11.670413+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "beetles",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "beetles",
+        "viewer_promise": "See why beetles animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after beetles?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "These insects change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Beetles can use the night sky like a compass",
+          "Beetles show the star compass before the payoff.",
+          "Beetles show the star compass before the payoff.",
+          "Beetles show the star compass before the payoff.",
+          "Beetles give away the answer through star compass"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "use",
+          "ending_line": "Would you expect a beetle to use astronomy?",
+          "final_line": "Would you expect a beetle to use astronomy?",
+          "loop_score": 0.83,
+          "opening_line": "Beetles can use the night sky like a compass.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "use",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.83,
+        "pinned_comment": "Watch the star compass again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.41,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Beetles can use the night sky like compass Watch the straight path",
+          "first_frame_text": "STAR COMPASS",
+          "first_frame_text_words": 2,
+          "hook": "Beetles can use the night sky like a compass.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.83,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the star compass, so viewers rewatch the beetles clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 90,
+        "selected_variant": {
+          "hook": "Start with the star compass; it explains the next move",
+          "score": 78,
+          "thumbnail_text": "STAR COMPASS",
+          "title": "Beetles can steer by the Milky Way"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "STAR COMPASS",
+          "WATCH STAR COMPASS",
+          "BEETLES STEER",
+          "STAR COMPASS MATTERS",
+          "STAR COMPASS PAYOFF",
+          "STAR COMPASS FIRST",
+          "STAR COMPASS REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Beetles can steer by the Milky Way",
+          "Beetles use star compass before they steer",
+          "Why beetles steer after one star compass",
+          "Beetles reveal the answer with star compass",
+          "The star compass that changes the moment",
+          "Beetles make one star compass matter",
+          "Beetles show the hidden payoff in seconds",
+          "Beetles: watch this star compass",
+          "Watch beetles after the star compass"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the star compass; it explains the next move",
+            "score": 78,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 76,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Watch the star compass; the payoff lands seconds later",
+            "score": 76,
+            "thumbnail_text": "STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Start with the star compass; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Start with the star compass; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "BEETLES STEER",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Start with the star compass; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "STAR COMPASS MATTERS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Start with the star compass; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "STAR COMPASS PAYOFF",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 69,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Watch the star compass; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "WATCH STAR COMPASS",
+            "title": "Beetles can steer by the Milky Way"
+          },
+          {
+            "hook": "Beetles can use the night sky like a compass",
+            "score": 69,
+            "thumbnail_text": "BEETLES STEER",
+            "title": "Beetles can steer by the Milky Way"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "9a5008ddd3944fd4",
+      "title": "Bees dance directions back to the hive",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "dance_navigation",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 63,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 59
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-15T01:36:11.665762+00:00",
+        "mechanism_cluster": "dance_navigation",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 96.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 96.0,
+      "youtube_brain": {
+        "animal": "bees",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "bees",
+        "viewer_promise": "See why bees animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "These plants change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 90.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Bees can point the hive toward food",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees give away the answer through dance map"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "bees",
+          "ending_line": "Which insect should we decode next?",
+          "final_line": "Which insect should we decode next?",
+          "loop_score": 0.29,
+          "opening_line": "Bees can point the hive toward food.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "bees",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.29,
+        "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.28,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Bees can point the hive toward food Watch the body angle because",
+          "first_frame_text": "DANCE MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bees can point the hive toward food.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.29,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the dance map, so viewers rewatch the bees clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 82,
+        "selected_variant": {
+          "hook": "Start with the dance map; it explains the next move",
+          "score": 78,
+          "thumbnail_text": "DANCE MAP",
+          "title": "Bees dance directions back to the hive"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "DANCE MAP",
+          "WATCH DANCE MAP",
+          "BEES CARRY",
+          "DANCE MAP MATTERS",
+          "DANCE MAP PAYOFF",
+          "DANCE MAP FIRST",
+          "DANCE MAP REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Bees dance directions back to the hive",
+          "Bees use dance map before they carry",
+          "This dance map gives bees away",
+          "Why bees carry after one dance map",
+          "Bees reveal the answer with dance map",
+          "The dance map that changes the moment",
+          "Bees make one dance map matter",
+          "Bees show the hidden payoff in seconds",
+          "Bees: watch this dance map",
+          "Watch bees after the dance map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 78,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 76,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; the payoff lands seconds later",
+            "score": 76,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "BEES CARRY",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "DANCE MAP MATTERS",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "DANCE MAP PAYOFF",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 69,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 69,
+            "thumbnail_text": "BEES CARRY",
+            "title": "Bees dance directions back to the hive"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/licenses/publicdomain/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "edaa62bebbe142e8",
+      "title": "Geology signals through rock layer",
+      "category": "geology",
+      "publish_score": {
+        "approved": true,
+        "category": "geology",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "ear_signal",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 80,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 79,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 100,
+            "viral_potential": 85,
+            "visual_potential": 99
+          },
+          "verdict": "scale"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 87,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 82
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "hidden_network",
+        "subscriber_conversion": {
+          "comment_probability": 0.221,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.258,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121
+        },
+        "title_score": 84,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-15T01:36:11.669357+00:00",
+        "mechanism_cluster": "ear_signal",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 90.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 90.0,
+      "youtube_brain": {
+        "animal": "rock",
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 87,
+        "state": "publish_minded",
+        "story_format": "hidden_network",
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "rock",
+        "viewer_promise": "See why this rock hidden network matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after geology?",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "curiosity_gap": {
+          "hook": "This nature changes right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth_engine",
+          "score": 96.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Geology shows the rock before the payoff.",
+          "Geology shows the rock before the payoff.",
+          "Geology shows the rock before the payoff.",
+          "Geology gives away the answer through rock layer"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "before",
+          "ending_line": "That is why viewers can replay the first second and catch the hidden cue before it pays off again.",
+          "final_line": "Now the before at the start makes sense.",
+          "loop_score": 0.602,
+          "opening_line": "Geology shows the rock before the payoff.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "before",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.602,
+        "pinned_comment": "Watch the rock again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.47,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Geology reveals one visible signal Watch the rock layers because that detail",
+          "first_frame_text": "ROCK LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Geology shows the rock before the payoff.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.602,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the rock, so viewers rewatch the geology clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 87,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 100,
+            "visual_score": 82
+          },
+          "verdict": "ready"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 89,
+        "selected_variant": {
+          "hook": "Watch the rock layer; the payoff lands seconds later",
+          "score": 69,
+          "thumbnail_text": "ROCK LAYER",
+          "title": "Geology signals through rock layer"
+        },
+        "series": "Animal Memory",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Animal Memory",
+          "series": "Animal Memory"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.221,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.258,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 85,
+          "state": "strong",
+          "subscriber_probability": 0.121
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "GEOLOGY SIGNAL",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER PAYOFF",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Geology signals through rock layer",
+          "Geology uses rock layer before it signals",
+          "This rock layer gives geology away",
+          "Geology reveals the answer with rock layer",
+          "The rock layer that changes the moment",
+          "Geology shows the hidden payoff in seconds",
+          "Geology: watch this rock layer",
+          "Watch geology after the rock layer"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the rock layer; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Start with the rock layer; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "The rock layer is the detail most people miss",
+            "score": 69,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Watch the rock layer; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Start with the rock layer; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "The rock layer is the detail most people miss",
+            "score": 69,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Watch the rock layer; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "GEOLOGY SIGNAL",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Start with the rock layer; it explains the next move",
+            "score": 69,
+            "thumbnail_text": "GEOLOGY SIGNAL",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "The rock layer is the detail most people miss",
+            "score": 69,
+            "thumbnail_text": "GEOLOGY SIGNAL",
+            "title": "Geology signals through rock layer"
+          },
+          {
+            "hook": "Watch the rock layer; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "ROCK LAYER MATTERS",
+            "title": "Geology signals through rock layer"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "c2663b1989aa2415",
+      "title": "Snakes smell the air with their tongues",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": false,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "tongue_smell",
+          "payoff_time_s": 12.1,
+          "penalty": 6.0,
+          "publish_blocking": true,
+          "reasons": [
+            "bootstrap_observe_before_scaling",
+            "payoff_too_late_for_current_swipe_baseline"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 62,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 72,
+            "visual_potential": 59
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "rewrite",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-15T01:36:11.664546+00:00",
+        "mechanism_cluster": "tongue_smell",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "objective_gate:payoff_too_late_for_current_swipe_baseline"
+        ],
+        "score": 78.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "snakes",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "snakes",
+        "viewer_promise": "See why snakes body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after snakes?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "These reptiles change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "mechanism_reveal",
+          "score": 89.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Snakes sample the air with a tongue flick",
+          "Snakes taste the air",
+          "Snakes show the tongue smell before the payoff.",
+          "Snakes show the tongue smell before the payoff.",
+          "Snakes show the tongue smell before the payoff."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "snakes",
+          "ending_line": "Me too.",
+          "final_line": "Now the snakes at the start make sense.",
+          "loop_score": 0.46,
+          "opening_line": "Snakes taste the air",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "snakes",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.46,
+        "pinned_comment": "Watch the tongue smell again. Tomorrow: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.23,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Snakes taste the air with their forked tongues They flick it in",
+          "first_frame_text": "TONGUE SMELL",
+          "first_frame_text_words": 2,
+          "hook": "Snakes taste the air",
+          "hook_specificity": 0.78,
+          "hook_words": 4,
+          "loop_score": 0.46,
+          "novelty_score": 0.58,
+          "payoff_time_s": 12.100000000000001,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Snakes taste the air",
+          "score": 78,
+          "thumbnail_text": "TONGUE SMELL",
+          "title": "Snakes smell the air with their tongues"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TONGUE SMELL",
+          "TONGUE TASTES AIR",
+          "WATCH TONGUE SMELL",
+          "SNAKES TASTE",
+          "TONGUE SMELL MATTERS",
+          "TONGUE SMELL PAYOFF",
+          "TONGUE SMELL FIRST",
+          "TONGUE SMELL REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Snakes smell the air with their tongues",
+          "Snakes use their tongues to taste the air",
+          "Snakes use tongue smell before they taste",
+          "This tongue smell gives snakes away",
+          "Why snakes taste after one tongue smell",
+          "Snakes reveal the answer with tongue smell",
+          "The tongue smell that changes the moment",
+          "Snakes make one tongue smell matter",
+          "Snakes show the hidden payoff in seconds",
+          "Snakes: watch this tongue smell"
+        ],
+        "top_variants": [
+          {
+            "hook": "Snakes taste the air",
+            "score": 78,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; the payoff lands seconds later",
+            "score": 78,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes sample the air with a tongue flick",
+            "score": 77,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes taste the air",
+            "score": 71,
+            "thumbnail_text": "TONGUE TASTES AIR",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; the payoff lands seconds later",
+            "score": 71,
+            "thumbnail_text": "TONGUE TASTES AIR",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes taste the air",
+            "score": 71,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; the payoff lands seconds later",
+            "score": 71,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes taste the air",
+            "score": 71,
+            "thumbnail_text": "SNAKES TASTE",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; the payoff lands seconds later",
+            "score": 71,
+            "thumbnail_text": "SNAKES TASTE",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes taste the air",
+            "score": 71,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/licenses/publicdomain/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    }
+  ]
 }
