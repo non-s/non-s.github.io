@@ -144,6 +144,19 @@ def test_archive_video_relevance_blocks_cartoon_false_positives():
     assert ia.archive_video_relevance_score(asset, "sea turtle") < 18
 
 
+def test_archive_video_relevance_blocks_character_name_false_positives():
+    asset = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier="img-1078",
+            title="Beetlejuice Promotes His Run For Senator",
+            description="Beetle stops by to announce his plans to run for senator in the 2000 New York election.",
+        )
+    )
+
+    assert asset is not None
+    assert ia.archive_video_relevance_score(asset, "beetle") < 18
+
+
 def test_video_asset_from_metadata_rejects_missing_public_domain_evidence():
     payload = _video_payload(licenseurl="https://creativecommons.org/licenses/by-nc/4.0/")
     assert ia.video_asset_from_metadata(payload) is None

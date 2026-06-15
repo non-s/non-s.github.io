@@ -755,16 +755,22 @@ _NON_WILDLIFE_CONTEXT_TERMS = {
     "behind the scenes",
     "behind-the-scenes",
     "bert the turtle",
+    "beetlejuice",
     "cartoon",
     "cartoons",
     "children's film",
     "civil defense",
     "duck and cover",
+    "election",
     "featurette",
     "fictional",
     "magoo",
     "national film registry",
     "once upon a forest",
+    "promotes his run",
+    "run for senator",
+    "senator",
+    "storyline cast",
     "vhs",
 }
 _BLOCKED_COMMONS_TERMS = ("na" + "sa", "internet " + "archive")
@@ -830,7 +836,7 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
         slug = re.sub(r"-\d+$", "", tail)
     slug = re.sub(r"[-_]+", " ", slug).strip()
     title = (getattr(clip, "title", "") or "").strip()
-    source = (getattr(clip, "source", "") or "").lower()
+    source = (getattr(clip, "source", "") or "").lower().replace(" ", "_")
     source_meta = getattr(clip, "source_metadata", {}) or {}
     if source == "internet_archive":
         archive_texts = [

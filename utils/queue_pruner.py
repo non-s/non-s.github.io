@@ -118,6 +118,7 @@ def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = No
         "Clip",
         (),
         {
+            "source": story.get("source") or "",
             "url": story.get("url") or story.get("source_url") or "",
             "title": story.get("source_title")
             or story.get("source_description")
@@ -238,6 +239,7 @@ def quality_issues(
             "Clip",
             (),
             {
+                "source": story.get("source") or "",
                 "url": story.get("url") or story.get("source_url") or "",
                 "title": story.get("source_title")
                 or story.get("source_description")

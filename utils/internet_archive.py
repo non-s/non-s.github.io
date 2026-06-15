@@ -141,6 +141,7 @@ ARCHIVE_LOW_SIGNAL_TERMS = (
     "behind the scenes",
     "behind-the-scenes",
     "bert the turtle",
+    "beetlejuice",
     "cartoon",
     "cartoons",
     "chapter",
@@ -158,9 +159,14 @@ ARCHIVE_LOW_SIGNAL_TERMS = (
     "magoo",
     "newsreel",
     "once upon a forest",
+    "political",
+    "promotes his run",
+    "run for senator",
     "selected for the 2004 national film registry",
+    "senator",
     "serial",
     "silent film",
+    "storyline cast",
     "talk show",
     "trailer",
     "vhs",
@@ -274,7 +280,7 @@ def archive_video_relevance_score(asset: ArchiveVideoAsset, query: str) -> int:
     score += min(45, len(token_hits) * 15)
     if any(term in haystack for term in ARCHIVE_TRUSTED_SOURCE_TERMS):
         score += 35
-    if any(term in haystack for term in ARCHIVE_NATURE_TERMS):
+    if _tokens(haystack) & set(ARCHIVE_NATURE_TERMS):
         score += 20
     if any(term in (asset.collection or "").lower() for term in ("usgov", "publicdomain", "opensource_movies")):
         score += 6

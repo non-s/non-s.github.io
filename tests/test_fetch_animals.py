@@ -183,6 +183,17 @@ def test_subject_from_archive_does_not_inject_query_when_title_is_generic():
     assert fetch_animals._subject_from_clip(clip, "wildlife animals") == "Old road trip"
 
 
+def test_subject_from_archive_display_name_does_not_inject_category():
+    clip = _archive_clip(
+        url="https://archive.org/details/img-1078",
+        dl="https://archive.org/download/img-1078/IMG_1078.mp4",
+        title="Beetlejuice Promotes His Run For Senator",
+    )
+    clip.source = "Internet Archive"
+
+    assert fetch_animals._subject_from_clip(clip, "insects") == "Beetlejuice Promotes His Run For Senator"
+
+
 def test_subject_from_archive_can_use_description_when_title_is_generic():
     clip = _archive_clip(
         url="https://archive.org/details/generic-nature",
@@ -207,6 +218,10 @@ def test_topic_rejects_archive_title_that_only_mentions_animal_as_movie_context(
     assert not fetch_animals._topic_accepts_subject(
         fetch_animals.ANIMAL_TOPICS["ocean"],
         "Mr. Magoo hooks a turtle in an animated cartoon",
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["insects"],
+        "Beetlejuice Promotes His Run For Senator",
     )
 
 

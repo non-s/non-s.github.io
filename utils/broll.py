@@ -259,7 +259,7 @@ def fetch_archive(query: str, per_page: int = 8) -> list[BrollClip]:
     if not query:
         return []
     rows = max(12, min(int(per_page or 8) * 5, 50))
-    cache_path = _cache_key("archive", f"{query}|{rows}|pd-video-v3")
+    cache_path = _cache_key("archive", f"{query}|{rows}|pd-video-v4")
     cached = _cache_get(cache_path)
     if cached is not None:
         return [BrollClip(**c) for c in cached]
