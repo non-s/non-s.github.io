@@ -35,7 +35,6 @@ NATURE_TERMS = {
     "moon",
     "mars",
     "solar",
-    "na" + "sa",
     "physics",
     "magnet",
     "light",

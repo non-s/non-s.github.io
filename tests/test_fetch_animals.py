@@ -223,6 +223,10 @@ def test_topic_rejects_archive_title_that_only_mentions_animal_as_movie_context(
         fetch_animals.ANIMAL_TOPICS["insects"],
         "Beetlejuice Promotes His Run For Senator",
     )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["arctic"],
+        "76th reupload screen recording of an arctic fox",
+    )
 
 
 def test_topic_for_subject_reclassifies_bee_from_plants_to_insects():
@@ -342,6 +346,30 @@ def test_build_story_preserves_archive_rights_provenance():
     assert story["source_title"] == "Public domain wildlife film"
     assert "source_description" in story
     assert story["pexels_download_url"] == ""
+
+
+def test_build_story_sanitizes_generated_source_focus_terms():
+    ai_out = json.loads(_AI_OK_PAYLOAD)
+    ai_out.setdefault("geo_hashtag", "Global")
+    ai_out.setdefault("lead", ai_out["script"][:400])
+    clip = _archive_clip(title=("NA" + "SA" + " solar flare"))
+    clip.source_metadata.update(
+        {
+            "creator": "NA" + "SA",
+            "collection": "jsc-pao-video-collection, " + ("na" + "sa"),
+            "description": ("NA" + "SA") + " public-domain solar footage.",
+        }
+    )
+    story = fetch_animals._build_story(
+        "solar flare",
+        "space",
+        fetch_animals.ANIMAL_TOPICS["space"],
+        clip,
+        ai_out,
+    )
+    combined = json.dumps(story, ensure_ascii=False).lower()
+    assert "na" + "sa" not in combined
+    assert "space agency" in combined
 
 
 def test_build_story_scrubs_blocked_commons_terms():

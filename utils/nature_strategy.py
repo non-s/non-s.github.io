@@ -8,8 +8,6 @@ astronomy, physics, chemistry, microscopy, and conservation.
 
 from __future__ import annotations
 
-SPACE_AGENCY_TAG = "na" + "sa"
-
 NATURE_TOPICS: dict[str, dict] = {
     "plants": {
         "queries": [
@@ -184,8 +182,8 @@ NATURE_TOPICS: dict[str, dict] = {
             "earth and moon",
         ],
         "topic_hashtag": "SpaceScience",
-        "tags": ["space", "astronomy", SPACE_AGENCY_TAG, "science"],
-        "discovery_hashtags": ["space", "astronomy", "science", SPACE_AGENCY_TAG, "wildbrief"],
+        "tags": ["space", "astronomy", "space science", "science"],
+        "discovery_hashtags": ["space", "astronomy", "science", "spacescience", "wildbrief"],
         "description_prefix": "A clip of space, planets, solar activity, rockets, satellites, or astronomy",
     },
     "physics": {
@@ -253,7 +251,7 @@ NATURE_BROLL_QUERIES: dict[str, str] = {
     "EARTH_FROM_SPACE": "earth atmosphere space nature",
     "CONSERVATION": "conservation restoration nature",
     "DISCOVERIES": "nature science discovery",
-    "SPACE": f"space astronomy {SPACE_AGENCY_TAG} public domain",
+    "SPACE": "space astronomy public domain",
     "PHYSICS": "physics experiment light magnet wave",
     "CHEMISTRY": "chemistry reaction crystal laboratory",
     "MICROSCOPY": "microscope cells microorganisms biology",

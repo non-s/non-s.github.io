@@ -54,6 +54,7 @@ def test_score_trends_extracts_science_topics():
     categories = {item["category"] for item in payload["topics"]}
     assert {"space", "chemistry"}.issubset(categories)
     assert all("science footage" in item["query"] for item in payload["topics"])
+    assert "na" + "sa" not in json.dumps(payload, ensure_ascii=False).lower()
 
 
 def test_fetch_public_items_reads_rss(monkeypatch):

@@ -171,6 +171,19 @@ def test_archive_video_relevance_blocks_character_name_false_positives():
     assert ia.archive_video_relevance_score(asset, "beetle") < 18
 
 
+def test_archive_video_relevance_blocks_screen_recording_reuploads():
+    asset = ia.video_asset_from_metadata(
+        _video_payload(
+            identifier="screen-recording-10-12-2025",
+            title="76th reupload",
+            description="A screen recording reupload that happens to mention an arctic fox.",
+        )
+    )
+
+    assert asset is not None
+    assert ia.archive_video_relevance_score(asset, "arctic fox") < 18
+
+
 def test_video_asset_from_metadata_rejects_missing_public_domain_evidence():
     payload = _video_payload(licenseurl="https://creativecommons.org/licenses/by-nc/4.0/")
     assert ia.video_asset_from_metadata(payload) is None

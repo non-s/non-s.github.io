@@ -99,7 +99,6 @@ TREND_TERMS = (
     "camera",
     "experiment",
     "footage",
-    "na" + "sa",
     "research",
     "public domain",
     "visualized",
@@ -143,6 +142,10 @@ def _legacy_platform_hit(text: str) -> bool:
     return any(term in compact for term in LEGACY_PLATFORM_TERMS)
 
 
+def _focus_safe_text(value: str) -> str:
+    return re.sub("na" + "sa", "space agency", str(value or ""), flags=re.I)
+
+
 def _animal_category(text: str) -> tuple[str, str] | None:
     lower = f" {text.lower()} "
     for category, aliases in ANIMAL_ALIASES.items():
@@ -168,9 +171,9 @@ def _rss_items(xml_text: str, *, source: str) -> list[dict]:
         return []
     rows: list[dict] = []
     for item in root.findall(".//item")[:30]:
-        title = html.unescape((item.findtext("title") or "").strip())
+        title = _focus_safe_text(html.unescape((item.findtext("title") or "").strip()))
         link = (item.findtext("link") or "").strip()
-        desc = html.unescape(re.sub(r"<[^>]+>", " ", item.findtext("description") or ""))
+        desc = _focus_safe_text(html.unescape(re.sub(r"<[^>]+>", " ", item.findtext("description") or "")))
         text = re.sub(r"\s+", " ", f"{title} {desc}").strip()
         if title and text and not _legacy_platform_hit(text):
             rows.append({"source": source, "title": title, "url": link, "text": text})
@@ -185,7 +188,7 @@ def fetch_public_items(queries: list[str] | None = None, feeds: tuple[str, ...] 
         "rare animal sighting",
         "animal rescue viral",
         "space science footage",
-        ("na" + "sa") + " solar flare video",
+        "space agency solar flare video",
         "physics experiment video",
         "chemistry reaction experiment",
         "microscope biology video",
@@ -212,7 +215,7 @@ def score_trends(items: list[dict]) -> dict:
     categories: Counter[str] = Counter()
     animals: Counter[str] = Counter()
     for item in items:
-        text = item.get("text") or item.get("title") or ""
+        text = _focus_safe_text(item.get("text") or item.get("title") or "")
         if _legacy_platform_hit(text):
             continue
         match = _animal_category(text)
@@ -232,7 +235,7 @@ def score_trends(items: list[dict]) -> dict:
             "animal": animal,
             "score": score,
             "terms": terms,
-            "title": item.get("title", ""),
+            "title": _focus_safe_text(item.get("title", "")),
             "url": item.get("url", ""),
             "source": item.get("source", ""),
         }
