@@ -67,9 +67,7 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
     return {method: int(calls.get(method) or 0) for method in LIMITED_CALL_METHODS if int(calls.get(method) or 0) > 0}
 
 
-def estimate_fetch_content_cost(
-    search_calls: int = 12, enrichment_calls: int = 0, provider: str = "pexels"
-) -> dict:
+def estimate_fetch_content_cost(search_calls: int = 12, enrichment_calls: int = 0, provider: str = "pexels") -> dict:
     if provider == "pexels":
         calls = {"pexels.search": search_calls}
     elif provider == "pixabay":
