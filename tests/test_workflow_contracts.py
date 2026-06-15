@@ -22,6 +22,10 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PUBLISH_BACKFILL_READY_TARGET || vars.PUBLISH_BACKFILL_QUEUE_TARGET || '6'" in youtube_workflow
     assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}" in youtube_workflow
+    assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
+    assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow
+    assert "MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}" in youtube_workflow
+    assert "ARCHIVE_AUDIO_ENABLED: ${{ vars.ARCHIVE_AUDIO_ENABLED || '0' }}" in youtube_workflow
     assert "QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}" in youtube_workflow
     assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
@@ -42,6 +46,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'GRACE_MINUTES: "35"' in (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert 'cron: "*/5 * * * *"' in fetch_workflow
+    assert 'BROLL_SOURCE_MODE: "pexels"' in fetch_workflow
+    assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in fetch_workflow
     assert "apply_topic_freshness.py" in fetch_workflow
     assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow

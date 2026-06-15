@@ -214,12 +214,12 @@ FLAGS: tuple[FeatureFlag, ...] = (
     FeatureFlag(
         "WAREHOUSE_COMPACTION_ENABLED", "1", "analytics", "Write monthly JSONL analytics partitions.", "Set to 0."
     ),
-    FeatureFlag("MUSIC_BED_ENABLED", "1", "production", "Allow autonomous public-domain music beds.", "Set to 0."),
+    FeatureFlag("MUSIC_BED_ENABLED", "0", "production", "Allow optional music beds.", "Set to 0."),
     FeatureFlag(
         "ARCHIVE_AUDIO_ENABLED",
-        "1",
+        "0",
         "production",
-        "Allow Internet Archive public-domain/CC0 audio candidates after license metadata checks.",
+        "Allow opt-in Internet Archive public-domain/CC0 audio candidates after license metadata checks.",
         "Set to 0.",
     ),
     FeatureFlag(

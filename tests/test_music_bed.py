@@ -25,6 +25,11 @@ def test_mood_default_upbeat():
     assert music_bed._mood_for_story(story) == "upbeat"
 
 
+def test_archive_audio_is_opt_in_by_default():
+    assert music_bed.MUSIC_ENABLED is False
+    assert music_bed.ARCHIVE_AUDIO_ENABLED is False
+
+
 def test_pick_track_is_deterministic(monkeypatch):
     from utils.internet_archive import ArchiveAudioAsset
 
@@ -153,6 +158,7 @@ def test_add_music_bed_returns_original_when_download_fails(monkeypatch, tmp_pat
 
 def test_add_music_bed_returns_mixed_when_pipeline_succeeds(monkeypatch, tmp_path):
     monkeypatch.setattr(music_bed, "MUSIC_ENABLED", True)
+    monkeypatch.setattr(music_bed, "ARCHIVE_AUDIO_ENABLED", True)
     fake_tts = tmp_path / "tts.mp3"
     fake_tts.write_bytes(b"x")
     fake_music = tmp_path / "music.mp3"

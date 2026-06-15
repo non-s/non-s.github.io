@@ -5,6 +5,7 @@
 Open **Settings -> Secrets and variables -> Actions** and add:
 
 - `YOUTUBE_TOKEN`
+- `PEXELS_API_KEY` or legacy secret name `PEXELS`
 - At least one AI text provider:
   `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
@@ -12,9 +13,11 @@ Recommended free quality extensions:
 
 - `GEMINI_API_KEY` or `GEMINI`
 
-Internet Archive video discovery is the default zero-cost source and needs no
-API key. GBIF and Wikimedia Commons need no key. AI image generation is not
-enabled because the project is optimized for zero-cost operation.
+Pexels is the production visual source. Set `BROLL_SOURCE_MODE=pexels` and add
+the free `PEXELS_API_KEY` secret. The workflows also accept the existing
+legacy name `PEXELS`. GBIF and Wikimedia Commons need no key. AI image
+generation is not enabled because the project is optimized for zero-cost
+operation.
 
 ## Create YouTube OAuth credentials
 

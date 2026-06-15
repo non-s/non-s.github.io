@@ -1931,9 +1931,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     )
 
     # ── 1.5. Music bed (background, ducked under narration). ─
-    # Archive audio is autonomous and license-gated. The helper is a
-    # no-op when disabled or when no safe public-domain/CC0 asset can be
-    # downloaded, so generation never fails just because music is absent.
+    # Music is opt-in for the Pexels-only restart. The helper is a no-op
+    # when disabled or when no safe asset can be downloaded, so generation
+    # never fails just because music is absent.
     before_music = audio_path
     audio_path = add_music_bed(audio_path, story, tmp_dir)
     story["music_bed_variant"] = "light_bed" if audio_path != before_music else "off"

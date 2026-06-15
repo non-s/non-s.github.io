@@ -68,9 +68,13 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
 
 
 def estimate_fetch_content_cost(
-    search_calls: int = 12, enrichment_calls: int = 0, provider: str = "internet_archive"
+    search_calls: int = 12, enrichment_calls: int = 0, provider: str = "pexels"
 ) -> dict:
-    if provider == "legacy_free_video":
+    if provider == "pexels":
+        calls = {"pexels.search": search_calls}
+    elif provider == "pixabay":
+        calls = {"pixabay.search": search_calls}
+    elif provider == "legacy_free_video":
         calls = {"pexels.search": search_calls, "pixabay.search": max(0, search_calls // 3)}
     else:
         calls = {"internet_archive.search": search_calls}

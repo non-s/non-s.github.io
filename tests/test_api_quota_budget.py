@@ -17,11 +17,11 @@ def test_quota_estimate_separates_youtube_upload_bucket():
     assert estimate["calls"]["youtube.thumbnails.set"] == 1
 
 
-def test_fetch_content_estimate_uses_archive_by_default():
+def test_fetch_content_estimate_uses_pexels_by_default():
     estimate = estimate_fetch_content_cost(search_calls=8)
 
-    assert estimate["calls"] == {"internet_archive.search": 8}
-    assert estimate["estimated_units"] == 0
+    assert estimate["calls"] == {"pexels.search": 8}
+    assert estimate["estimated_units"] == 8
 
 
 def test_quota_guard_blocks_only_in_block_mode(tmp_path):

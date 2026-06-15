@@ -1,9 +1,10 @@
 """
-Autonomous background music layer for Shorts.
+Optional background music layer for Shorts.
 
-Internet Archive is the only source used here. Discovery is restricted
-to audio items whose metadata explicitly indicates public-domain or CC0
-evidence, and downloads go through utils.internet_archive.
+The Pexels-only restart keeps music beds disabled by default. If the
+operator deliberately enables Archive audio, discovery is restricted to
+items whose metadata explicitly indicates public-domain or CC0 evidence,
+and downloads go through utils.internet_archive.
 
 Music is an enhancement, not a hard dependency: if discovery, download,
 or FFmpeg mixing fails, the caller still produces the Short with the
@@ -24,8 +25,8 @@ from utils.internet_archive import ArchiveAudioAsset, discover_public_domain_aud
 log = logging.getLogger(__name__)
 
 MUSIC_CACHE_DIR = Path(os.environ.get("MUSIC_CACHE_DIR", "_data/music_cache"))
-MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "1").strip().lower() not in {"0", "false", "no", "off"}
-ARCHIVE_AUDIO_ENABLED = os.environ.get("ARCHIVE_AUDIO_ENABLED", "1").strip().lower() in {"1", "true", "yes", "on"}
+MUSIC_ENABLED = os.environ.get("MUSIC_BED_ENABLED", "0").strip().lower() not in {"0", "false", "no", "off"}
+ARCHIVE_AUDIO_ENABLED = os.environ.get("ARCHIVE_AUDIO_ENABLED", "0").strip().lower() in {"1", "true", "yes", "on"}
 ARCHIVE_AUDIO_ROWS = int(os.environ.get("ARCHIVE_AUDIO_ROWS", "12"))
 # Volume of the music bed relative to the TTS. -26 dB keeps the narrator
 # dominant while adding enough ambience to avoid a bare voice-over.

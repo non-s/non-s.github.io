@@ -11,21 +11,18 @@ of the bar we have to put MOTION on screen, ideally varied every 2-3s.
 This module keeps animal footage discovery small and reusable.
 Wild Brief intentionally uses vetted free sources:
 
-  1. Internet Archive public-domain/CC0 video — default, no API key
+  1. Pexels video — default visual source for Shorts
 
 Each source returns a list of `BrollClip` objects sorted by relevance.
 `fetch_broll_clips(query, want_n)` is the unified entry point.
 
-Pexels/Pixabay remain as opt-in legacy providers through
-`BROLL_SOURCE_MODE=archive,pexels,pixabay`, but they are no longer used by
-default.
+Internet Archive and Pixabay remain as explicit opt-in providers through
+`BROLL_SOURCE_MODE=archive,pixabay`, but they are not used by default.
 
 Caching
 -------
-Archive.org asks automated tools to use descriptive User-Agent headers,
-cache responses, and respect rate limits. We cache discovery on disk
-under `_data/broll_cache/` so a re-run of the same story avoids repeated
-metadata calls.
+We cache discovery on disk under `_data/broll_cache/` so a re-run of the
+same story avoids repeated source API calls.
 """
 
 from __future__ import annotations
@@ -361,15 +358,17 @@ def _build_query(text: str) -> str:
 
 
 def _enabled_sources() -> list[str]:
-    raw = os.environ.get("BROLL_SOURCE_MODE", "archive").strip().lower()
-    if raw in {"legacy", "pexels"}:
+    raw = os.environ.get("BROLL_SOURCE_MODE", "pexels").strip().lower()
+    if raw == "pexels":
+        return ["pexels"]
+    if raw == "legacy":
         return ["pexels", "pixabay"]
     if raw in {"all", "archive+legacy"}:
         return ["archive", "pexels", "pixabay"]
     sources = [part.strip() for part in re.split(r"[,;+ ]+", raw) if part.strip()]
     allowed = {"archive", "internet_archive", "pexels", "pixabay"}
     normalised = ["archive" if source == "internet_archive" else source for source in sources if source in allowed]
-    return normalised or ["archive"]
+    return normalised or ["pexels"]
 
 
 def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False) -> list[BrollClip]:

@@ -1,10 +1,10 @@
 # Wild Brief - Nature Science Shorts Bot (YouTube)
 
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
-[![Refresh science queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
+[![Refresh Pexels queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns vetted public-domain nature and science footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
+Automated pipeline that turns curated Pexels nature and science footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
 
 - Cadence: the workflow evaluates **one slot per hour, 00:00 through
   23:00 UTC**, for a 24/day publishing grid when quality and quota allow it.
@@ -24,7 +24,7 @@ Automated pipeline that turns vetted public-domain nature and science footage in
 ## Pipeline
 
 ```text
-Internet Archive public-domain clips -> nature taxonomy + enrichment -> fetch_animals.py
+Pexels clips -> nature taxonomy + enrichment -> fetch_animals.py
              -> _data/stories_queue.json
              -> generate_shorts.py -> _videos/*.mp4 + metadata
              -> upload_youtube.py -> YouTube Shorts + .done sidecar
@@ -99,6 +99,7 @@ replacing the current queue, render, upload or official YouTube APIs.
 ## Required secrets
 
 - `YOUTUBE_TOKEN`
+- `PEXELS_API_KEY` or legacy secret name `PEXELS`
 - At least one AI text provider:
   `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
 
@@ -108,11 +109,10 @@ Recommended free quality extensions:
 - `AUDIO_LIBRARY_MANIFEST` for operator-curated YouTube Audio Library files
 - `COQUI_TTS_COMMAND` for a local TTS fallback if Edge TTS fails
 
-GBIF and Wikimedia Commons enrichment do not require secrets.
-Internet Archive video discovery is the default zero-cost source and requires
-no API key. It only admits items with explicit public-domain/CC0/US Gov
-metadata evidence; Pexels/Pixabay are legacy opt-in providers through
-`BROLL_SOURCE_MODE=archive,pexels,pixabay`.
+GBIF and Wikimedia Commons enrichment do not require secrets. Pexels is the
+default and only active visual source through `BROLL_SOURCE_MODE=pexels`.
+Internet Archive video remains an explicit opt-in research path only; it is not
+used by the production queue or publisher.
 See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.
 
 AI image generation is intentionally disabled because current free-tier

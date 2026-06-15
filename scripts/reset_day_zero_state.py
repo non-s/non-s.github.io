@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reset Wild Brief's local publishing state for a paused source-strategy reset."""
+"""Reset Wild Brief's local publishing state for a Pexels day-zero restart."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EPOCH = "archive_source_research_pause_2026-06-14"
+EPOCH = "pexels_day_zero_2026-06-15"
 
 
 def _now() -> str:
@@ -60,7 +60,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/stories_queue.json": {
             "updated_at": stamp,
             "channel_epoch": EPOCH,
-            "target_pending": 0,
+            "target_pending": 24,
             "stories": [],
         },
         "_data/published_clips.json": {"updated_at": stamp, "channel_epoch": EPOCH, "clips": []},
@@ -86,29 +86,29 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/channel_epoch.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "policy": "Local publish history, uploaded markers, pending queue inventory, and generated learning reports were reset while publishing is paused for Archive.org public-domain source research.",
-            "cadence": "publishing_paused",
-            "queue_target_pending": 0,
-            "publish_ready_target": 0,
+            "policy": "Local publish history, uploaded markers, pending queue inventory, and generated learning reports were reset after the old channel inventory was removed. Production video sourcing is Pexels-only.",
+            "cadence": "hourly_active",
+            "queue_target_pending": 24,
+            "publish_ready_target": 6,
             "youtube_description_mode": "empty",
-            "source_strategy_under_review": "internet_archive_public_domain",
+            "visual_source_strategy": "pexels_only",
         },
         "_data/agency_gate.json": {"generated_at": stamp, "channel_epoch": EPOCH, "approved": [], "held": []},
         "_data/agency_plan.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "status": "publishing_paused",
+            "status": "active",
             "publish_now_inventory": 0,
-            "weekly_goal": "Hold publishing while evaluating Archive.org public-domain source strategy.",
+            "weekly_goal": "Restart the channel cleanly with Pexels-only visuals, strong animal-first thumbnails, and hourly publishing.",
             "blocked_trends": [],
             "days": [],
         },
         "_data/automation_health.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "state": "publishing_paused",
+            "state": "active",
             "score": 100,
-            "issues": ["publishing_paused_for_source_strategy_review"],
+            "issues": [],
         },
         "_data/autonomous_director.json": {
             "generated_at": stamp,
@@ -118,7 +118,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/autonomous_growth_plan.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "mode": "publishing_paused",
+            "mode": "day_zero_pexels_restart",
             "pending": 0,
             "actions": [],
         },
@@ -202,7 +202,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/channel_success.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "state": "publishing_paused",
+            "state": "day_zero_pexels_restart",
             "first_24h": {"winners": [], "rework": []},
         },
         "_data/comment_reply_short_candidates.json": {
@@ -265,6 +265,14 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "items": [],
             "action_score_threshold": 55,
         },
+        "_data/music_bed_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "music_bed_enabled": False,
+            "archive_audio_enabled": False,
+            "rollout_state": "disabled_for_pexels_only_restart",
+            "source": "",
+        },
         "_data/next_shorts.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
@@ -312,7 +320,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/scale_blueprint.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
-            "state": "publishing_paused",
+            "state": "day_zero_pexels_restart",
             "lanes": [],
         },
         "_data/seo_metadata_lint.json": {

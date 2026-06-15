@@ -25,7 +25,7 @@ jobs:
   generate-and-upload:
     name: "Gerar e publicar Shorts no YouTube"
     # Set YOUTUBE_PUBLISHING_ENABLED=1 to keep the hourly YouTube publisher
-    # active. Archive.org remains the default public-domain visual source.
+    # active. Pexels is the default visual source.
     if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -33,12 +33,12 @@ jobs:
       contents: write
     env:
       MAX_SHORTS_PER_RUN: "1"
-      # Autonomous public-domain/CC0 music and ambience from Internet Archive.
-      # The selector rejects items without explicit public-domain evidence.
-      MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '1' }}
-      ARCHIVE_AUDIO_ENABLED: ${{ vars.ARCHIVE_AUDIO_ENABLED || '1' }}
+      # Optional music bed is off by default for the Pexels-only restart.
+      MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}
+      ARCHIVE_AUDIO_ENABLED: ${{ vars.ARCHIVE_AUDIO_ENABLED || '0' }}
       ARCHIVE_AUDIO_ROWS: ${{ vars.ARCHIVE_AUDIO_ROWS || '12' }}
-      BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'archive' }}
+      BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
       # Open immediately on the animal and hook in the Shorts feed.
       BRAND_CARDS_ENABLED: "0"
       # Monetization-first mode: skip a candidate instead of shipping a

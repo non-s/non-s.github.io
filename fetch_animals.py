@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-fetch_animals.py — Build the daily Shorts queue from curated Internet Archive clips.
+fetch_animals.py — Build the daily Shorts queue from curated Pexels clips.
 
 Runs the channel's animal-facts queue from discovery to enrichment.
 animal compilation Shorts. The downstream pipeline (generate_shorts.py
@@ -13,12 +13,12 @@ How it works
 ============
 
 1. Walks a static topic table (`ANIMAL_TOPICS`) that maps each animal
-   category to (a) Archive.org search queries and (b) channel-side tags +
+   category to (a) Pexels search queries and (b) channel-side tags +
    topic hashtag + a short description prefix used by the AI prompt.
 
-2. For each topic, queries Internet Archive (1 query per slot per run, rotating
+2. For each topic, queries Pexels (1 query per slot per run, rotating
    so we don't burn through the same 5 queries every 3 hours). Each
-   matching public-domain/CC0/US Gov clip becomes one queue entry — the clip is what
+   matching clip becomes one queue entry — the clip is what
    `generate_shorts.py` will see when it later asks the b-roll picker
    for "cats playing" or "dolphins jumping".
 
@@ -34,16 +34,17 @@ How it works
 What's intentionally NOT here
 =============================
 
-* Video discovery stays inside explicit public-domain/CC0/US Gov Archive items.
+* Video discovery stays inside Pexels by default; Archive video is not part of
+  the active channel source strategy.
 * No brand-safety filter — every queue item is already animal content.
 * No urgency classifier — evergreen facts do not need one.
 * No translation — start with EN, PT-BR is a future pass.
-* No native-lang feeds — Archive metadata is mostly English regardless.
+* No native-lang feeds — Pexels metadata and search phrases are English-first.
 
 Operator knobs (env vars)
 =========================
 
-  BROLL_SOURCE_MODE       (default archive) — legacy providers are opt-in
+  BROLL_SOURCE_MODE       (default pexels) — visual source mode
   MISTRAL/CEREBRAS/GEMINI/GROQ key (one required) — AI enhancement
   ANIMALS_MAX_PER_TOPIC   (default 4) — clips fetched per topic per run
   ANIMALS_KEEP_DAYS       (default 14) — prune older entries
@@ -65,7 +66,7 @@ from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
-from utils.broll import fetch_archive
+from utils.broll import fetch_pexels
 from utils.growth_studio import studio_brief_for_story
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
 from utils.topic_freshness import annotate_queue, freshness_report
@@ -1398,13 +1399,13 @@ def main() -> int:
     from utils.panic import abort_if_halted
 
     abort_if_halted("fetch_animals")
-    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2, provider="internet_archive"))
+    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2, provider="pexels"))
 
     log.info("=" * 60)
     log.info("🐾 Wild Brief — animal queue refresh %s", datetime.now(timezone.utc).isoformat())
     log.info("=" * 60)
 
-    log.info("Video provider: Internet Archive public-domain/CC0/US Gov curation")
+    log.info("Video provider: Pexels-only curated footage")
     ai_keys = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
     if not any(os.environ.get(key, "").strip() for key in ai_keys):
         log.error("❌ No AI provider key set — configure MISTRAL, CEREBRAS, GEMINI or GROQ.")
@@ -1480,7 +1481,7 @@ def main() -> int:
             if len(clips) >= per_topic_n:
                 break
             try:
-                clips.extend(fetch_archive(q, per_page=4))
+                clips.extend(fetch_pexels(q, per_page=4))
             except Exception as exc:
                 log.warning("video provider fetch failed for %r: %s", q, exc)
         # Cap, shuffle a little so consecutive runs don't always
@@ -1498,12 +1499,9 @@ def main() -> int:
             if sid in dedupe_keys or (pid and pid in dedupe_keys) or source_clip_id in dedupe_keys:
                 continue
             subject = _subject_from_clip(clip, queries[0])
-            if (getattr(clip, "source", "") or "").lower() == "internet_archive" and not _animal_terms(subject):
-                log.warning("  skipping archive clip without animal/nature signal for %s: %s", topic_key, subject[:80])
-                continue
             story_topic_key, story_topic_cfg = _topic_for_subject(topic_key, topic_cfg, subject)
             if story_topic_key != topic_key:
-                log.info("  reclassified archive subject %s -> %s: %s", topic_key, story_topic_key, subject[:80])
+                log.info("  reclassified Pexels subject %s -> %s: %s", topic_key, story_topic_key, subject[:80])
             if not _topic_accepts_subject(story_topic_cfg, subject):
                 log.warning("  skipping off-topic video clip for %s: %s", story_topic_key, subject[:80])
                 continue
