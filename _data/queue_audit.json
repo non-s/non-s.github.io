@@ -1,30 +1,100 @@
 {
-  "generated_at": "2026-06-15T13:25:20.557958+00:00",
-  "pending": 14,
+  "generated_at": "2026-06-15T13:43:17.201572+00:00",
+  "pending": 15,
   "states": {
-    "publish_ready": 5,
+    "publish_ready": 6,
     "rewrite": 9
   },
   "mechanism_clusters": {
     "magnetic_navigation": 1,
+    "electric_sense": 1,
     "dance_navigation": 1,
     "ear_signal": 1,
     "face_recognition": 1
   },
   "rights": {
-    "approved": 14
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 14,
-    "pending_after": 14,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 8,
+    "pending_before": 20,
+    "pending_after": 15,
+    "rejected": 5,
+    "repair_needed": 4,
+    "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 28
+      "objective_gate:bootstrap_observe_before_scaling": 30,
+      "subject_not_immediately_clear": 4,
+      "queue_score_reject": 4,
+      "subject_not_clear": 3,
+      "no_action_promise": 2,
+      "title_shape_weak": 2,
+      "title_needs_stronger_shape": 2,
+      "missing_action_word": 2,
+      "script does not expose enough concrete visual detail": 1,
+      "missing_visible_cue": 1,
+      "script_hook_mismatch": 1,
+      "duplicate_title": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1726a2ba5904db92",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "156aac7b95aef8a4",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "c2fad3f40dd25a1c",
+      "title": "Cells copy instructions before splitting",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "da75e424bfed1a10",
+      "title": "Auroras glow when solar particles hit air",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "subject_not_clear",
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5693f233c862d5b4",
+      "title": "Cats use whiskers like built-in rulers",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "4ca52c762f4a6c12",
       "title": "Forests make cooler air under the canopy",
@@ -132,21 +202,6 @@
         "subject_not_immediately_clear",
         "no_action_promise",
         "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "c2fad3f40dd25a1c",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "missing_visible_cue",
         "queue_score_reject"
       ],
       "stage": "queue_repair"
@@ -281,48 +336,6 @@
       "title": "Walrus uses its own shower trick",
       "reasons": [
         "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e613e6ddba5a5edd",
-      "title": "Mangroves don’t just stand there in the water",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "156aac7b95aef8a4",
-      "title": "Mexico City uses first move before it tricks",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "9b906f4af93aefb3",
-      "title": "Rivers use rock layer before they change",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "script_length_risk",
-        "missing_action_word",
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "2444c79daf654aa3",
-      "title": "tide pool life you didn't spot",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
       ],
       "stage": "queue_prune"
     }
@@ -473,7 +486,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.242769+00:00",
+        "checked_at": "2026-06-15T13:43:08.286006+00:00",
         "mechanism_cluster": "magnetic_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -775,6 +788,452 @@
       }
     },
     {
+      "id": "80a214d0a2236cfe",
+      "title": "Sharks sense tiny electric fields",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.297,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.063,
+          "data_quality": "inferred",
+          "data_quality_score": 0.575,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 88,
+        "objective_gate": {
+          "confidence_score": 0.063,
+          "mechanism_cluster": "electric_sense",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 95,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.317,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.089,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "title_score": 74,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.52,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-15T13:43:08.288485+00:00",
+        "mechanism_cluster": "electric_sense",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "sharks",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "sharks",
+        "viewer_promise": "See why sharks body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after sharks?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why does this ocean changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 3,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} the air {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 46.7,
+            "format:fresh_variant": 46.7,
+            "hook:new_hook": 46.7,
+            "thumbnail:new_thumbnail": 46.7
+          }
+        },
+        "hook_options": [
+          "Sharks can feel electricity in the water",
+          "Sharks show why the electric sense matters.",
+          "Sharks show why the electric sense matters.",
+          "Sharks show why the electric sense matters.",
+          "Sharks give away the answer through electric sense"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "sharks",
+          "ending_line": "Would you swim differently?",
+          "final_line": "Would you swim differently?",
+          "loop_score": 0.233,
+          "opening_line": "Sharks can feel electricity in the water.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "sharks",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.233,
+        "pinned_comment": "Watch the electric sense again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.39,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Sharks can feel electricity in the water Watch the head before the",
+          "first_frame_text": "ELECTRIC SENSE",
+          "first_frame_text_words": 2,
+          "hook": "Sharks can feel electricity in the water.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.233,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the electric sense, so viewers rewatch the sharks clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 93,
+        "selected_variant": {
+          "hook": "Sharks can feel electricity in the water",
+          "score": 81,
+          "thumbnail_text": "ELECTRIC SENSE",
+          "title": "Sharks sense tiny electric fields"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.317,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.089,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "ELECTRIC SENSE",
+          "WATCH ELECTRIC SENSE",
+          "SHARKS SIGNAL",
+          "ELECTRIC SENSE MATTERS",
+          "ELECTRIC SENSE FIRST",
+          "ELECTRIC SENSE REVEAL",
+          "ELECTRIC SENSE CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Sharks sense tiny electric fields",
+          "Sharks signal through electric sense",
+          "Sharks use electric sense before they signal",
+          "This electric sense gives sharks away",
+          "Why sharks signal after one electric sense",
+          "Sharks reveal the answer with electric sense",
+          "The electric sense that changes the moment",
+          "Sharks make one electric sense matter",
+          "Sharks show the hidden answer in seconds",
+          "Sharks: watch this electric sense"
+        ],
+        "top_variants": [
+          {
+            "hook": "Sharks can feel electricity in the water",
+            "score": 81,
+            "thumbnail_text": "ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Watch the electric sense; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Start with the electric sense; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Start with the electric sense; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "ELECTRIC SENSE FIRST",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Sharks can feel electricity in the water",
+            "score": 74,
+            "thumbnail_text": "WATCH ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Watch the electric sense; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Start with the electric sense; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH ELECTRIC SENSE",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Sharks can feel electricity in the water",
+            "score": 74,
+            "thumbnail_text": "SHARKS SIGNAL",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Watch the electric sense; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "SHARKS SIGNAL",
+            "title": "Sharks sense tiny electric fields"
+          },
+          {
+            "hook": "Start with the electric sense; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "SHARKS SIGNAL",
+            "title": "Sharks sense tiny electric fields"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "12c762a21030de6f",
       "title": "Forests make cooler air under the canopy",
       "category": "forests",
@@ -919,7 +1378,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.246066+00:00",
+        "checked_at": "2026-06-15T13:43:08.290385+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1364,7 +1823,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.247308+00:00",
+        "checked_at": "2026-06-15T13:43:08.291428+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1812,7 +2271,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.248369+00:00",
+        "checked_at": "2026-06-15T13:43:08.292375+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2257,7 +2716,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.262864+00:00",
+        "checked_at": "2026-06-15T13:43:08.304683+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2703,7 +3162,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.249790+00:00",
+        "checked_at": "2026-06-15T13:43:08.293559+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3152,7 +3611,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.251462+00:00",
+        "checked_at": "2026-06-15T13:43:08.295093+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3602,7 +4061,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.253331+00:00",
+        "checked_at": "2026-06-15T13:43:08.296715+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4050,7 +4509,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.244662+00:00",
+        "checked_at": "2026-06-15T13:43:08.287627+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4499,7 +4958,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.254941+00:00",
+        "checked_at": "2026-06-15T13:43:08.298115+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4948,7 +5407,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.257066+00:00",
+        "checked_at": "2026-06-15T13:43:08.299654+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5392,7 +5851,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.258874+00:00",
+        "checked_at": "2026-06-15T13:43:08.301170+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5842,7 +6301,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.260051+00:00",
+        "checked_at": "2026-06-15T13:43:08.302200+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6295,7 +6754,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-15T13:25:11.261876+00:00",
+        "checked_at": "2026-06-15T13:43:08.303821+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
