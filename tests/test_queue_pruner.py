@@ -99,17 +99,17 @@ def test_production_quality_blocks_copy_that_disagrees_with_visible_subject():
     assert "script_subject_mismatch" in issues
 
 
-def test_production_quality_uses_archive_source_title_before_ai_title():
+def test_production_quality_uses_source_title_before_ai_title():
     story = _story(
-        "archive-cartoon",
-        source="Internet Archive",
+        "source-title-cartoon",
+        source="Pexels",
         source_title="Magoo Beats the Heat (1956)",
         title="Turtles carry a magnetic map home",
         seo_title="Turtles carry a magnetic map home",
         hook="Turtles show the magnetic map before the payoff.",
         script="Turtles can navigate with Earth's magnetic field and return toward important coasts.",
         category="ocean",
-        source_url="https://archive.org/details/magoo-beats-the-heat-1956",
+        source_url="https://www.pexels.com/video/magoo-beats-the-heat-1956/",
         source_description="Mr. Magoo hooks a turtle in an animated cartoon.",
     )
 

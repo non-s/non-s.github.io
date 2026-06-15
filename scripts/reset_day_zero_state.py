@@ -269,8 +269,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "generated_at": stamp,
             "channel_epoch": EPOCH,
             "music_bed_enabled": False,
-            "archive_audio_enabled": False,
-            "rollout_state": "disabled_for_pexels_only_restart",
+            "rollout_state": "disabled",
             "source": "",
         },
         "_data/next_shorts.json": {

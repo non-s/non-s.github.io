@@ -1316,8 +1316,6 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "source_license_evidence": story.get("source_license_evidence", ""),
         "source_creator": story.get("source_creator", ""),
         "source_collection": story.get("source_collection", ""),
-        "archive_identifier": story.get("archive_identifier", ""),
-        "archive_file_name": story.get("archive_file_name", ""),
         "rights_policy": story.get("rights_policy", ""),
         "commons_page_url": story.get("commons_page_url", ""),
         "commons_license": story.get("commons_license", ""),

@@ -111,8 +111,6 @@ Recommended free quality extensions:
 
 GBIF and Wikimedia Commons enrichment do not require secrets. Pexels is the
 default and only active visual source through `BROLL_SOURCE_MODE=pexels`.
-Internet Archive video remains an explicit opt-in research path only; it is not
-used by the production queue or publisher.
 See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.
 
 AI image generation is intentionally disabled because current free-tier

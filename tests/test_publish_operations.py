@@ -356,7 +356,7 @@ def test_rights_audit_requires_known_source_license_and_url():
             "source_url": "https://www.pexels.com/video/1/",
         }
     )
-    rejected = audit_rights({"source": "mystery archive"})
+    rejected = audit_rights({"source": "mystery source"})
 
     assert approved["approved"] is True
     assert rejected["approved"] is False
@@ -364,26 +364,18 @@ def test_rights_audit_requires_known_source_license_and_url():
     assert "missing_source_url" in rejected["reasons"]
 
 
-def test_rights_audit_allows_only_safe_archive_license():
-    approved = audit_rights(
-        {
-            "source": "Internet Archive",
-            "source_license": "https://creativecommons.org/publicdomain/mark/1.0/",
-            "source_license_evidence": "creativecommons.org/publicdomain/mark",
-            "source_url": "https://archive.org/details/pd-film",
-        }
-    )
+def test_rights_audit_rejects_retired_source_as_unknown_source():
     rejected = audit_rights(
         {
-            "source": "Internet Archive",
-            "source_license": "https://creativecommons.org/licenses/by-nc/4.0/",
-            "source_url": "https://archive.org/details/not-safe",
+            "source": "Retired Video Source",
+            "source_license": "https://creativecommons.org/publicdomain/mark/1.0/",
+            "source_license_evidence": "creativecommons.org/publicdomain/mark",
+            "source_url": "https://example.invalid/removed-source",
         }
     )
 
-    assert approved["approved"] is True
     assert rejected["approved"] is False
-    assert "unsafe_archive_license" in rejected["reasons"]
+    assert "unknown_source" in rejected["reasons"]
 
 
 def test_backfill_done_marker_preserves_upload_identity_fields():

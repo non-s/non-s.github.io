@@ -113,20 +113,16 @@ def test_claim_risk_rights_and_originality_pack_are_deterministic():
     assert evaluate_claim_risk(unsupported)["level"] == "block"
     assert evaluate_claim_risk(supported)["level"] == "safe"
     assert evaluate_rights_guard({**supported, "title": "Disney animal face"})["state"] == "manual_review"
-    archive_safe = {
+    removed_source = {
         **supported,
-        "source": "Internet Archive",
-        "source_url": "https://archive.org/details/pd-film",
+        "source": "Retired Video Source",
+        "source_url": "https://example.invalid/removed-source",
         "source_license": "https://creativecommons.org/publicdomain/mark/1.0/",
         "source_license_evidence": "creativecommons.org/publicdomain/mark",
     }
-    archive_unsafe = {
-        **archive_safe,
-        "source_license": "https://creativecommons.org/licenses/by-nc/4.0/",
-        "source_license_evidence": "",
-    }
-    assert evaluate_rights_guard(archive_safe)["state"] == "approved"
-    assert evaluate_rights_guard(archive_unsafe)["state"] == "block"
+    removed_guard = evaluate_rights_guard(removed_source)
+    assert removed_guard["state"] == "block"
+    assert "unknown_source" in removed_guard["reasons"]
     pack = build_originality_pack(supported)
     assert pack["complete"] is True
     assert stable_hash(pack) == stable_hash(build_originality_pack(supported))

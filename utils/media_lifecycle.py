@@ -52,7 +52,6 @@ LIFECYCLE_ROOTS = (
     "_videos",
     "_data/audio_cache",
     "_data/music_cache",
-    "_data/archive_audio_cache",
     "tmp_render",
     "render_tmp",
 )

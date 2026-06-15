@@ -186,5 +186,5 @@ comments, and comment replies.
 - Duplicate prevention happens through done markers, rejected queues, cooldowns,
   and comment reply ledgers.
 - The system uses only free/open surfaces: GitHub Actions, configured free text
-  providers, Pexels, Pixabay, Wikimedia Commons, GBIF, and open-source Python
+  providers, Pexels, Wikimedia Commons, GBIF, and open-source Python
   libraries.

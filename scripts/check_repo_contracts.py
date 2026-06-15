@@ -30,7 +30,6 @@ REQUIRED_FILES = (
     "scripts/build_crosspost_pack.py",
     "scripts/render_bench.py",
     "scripts/music_bed_report.py",
-    "scripts/archive_audio_report.py",
     "scripts/security_manifest.py",
     "scripts/media_lifecycle.py",
     "scripts/merge_jsonl_state.py",
@@ -63,7 +62,6 @@ REQUIRED_FILES = (
     "utils/voice_registry.py",
     "utils/music_bed.py",
     "utils/media_lifecycle.py",
-    "utils/internet_archive.py",
     "utils/render_qa.py",
 )
 

@@ -112,7 +112,7 @@ def _stub_image_chain(monkeypatch, gs):
 
 
 def _stub_tts_and_captions(monkeypatch, gs):
-    """No real TTS, no real Whisper, no real Archive download."""
+    """No real TTS, no real Whisper, no external music download."""
 
     async def fake_tts(text, output_path, voice, **_kw):
         output_path.write_bytes(b"ID3" + b"\x00" * 10_000)

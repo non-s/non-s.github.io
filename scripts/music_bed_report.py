@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report autonomous Internet Archive music-bed readiness."""
+"""Report background music-bed readiness."""
 
 from __future__ import annotations
 
@@ -12,24 +12,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _enabled(name: str, default: str = "1") -> bool:
+def _enabled(name: str, default: str = "0") -> bool:
     return os.environ.get(name, default).strip().lower() in {"1", "true", "yes", "on"}
 
 
 def build_report(root: Path = ROOT) -> dict:
-    music_enabled = _enabled("MUSIC_BED_ENABLED", "1")
-    archive_enabled = _enabled("ARCHIVE_AUDIO_ENABLED", "1")
-    rows = int(os.environ.get("ARCHIVE_AUDIO_ROWS", "12"))
-    state = "archive_enabled" if music_enabled and archive_enabled else "disabled"
+    music_enabled = _enabled("MUSIC_BED_ENABLED", "0")
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "rollout_state": state,
-        "source": "Internet Archive",
+        "rollout_state": "disabled",
+        "source": "",
         "music_bed_enabled": music_enabled,
-        "archive_audio_enabled": archive_enabled,
-        "archive_audio_rows": rows,
-        "canary_percent": 100 if state == "archive_enabled" else 0,
-        "license_policy": "public-domain-or-cc0-only",
+        "canary_percent": 0,
+        "license_policy": "no-external-music-source",
         "manual_download_required": False,
     }
     out = root / "_data" / "music_bed_report.json"

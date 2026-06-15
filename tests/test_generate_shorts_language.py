@@ -106,8 +106,7 @@ def test_generate_short_translates_when_language_is_ptbr(monkeypatch, tmp_path):
     from unittest.mock import patch
 
     # Mock every external call we'd otherwise need ffmpeg / edge-tts /
-    # Pexels / Internet Archive for. Without mocking add_music_bed the test
-    # would hit the Archive network path and cache audio locally.
+    # Pexels for. Mock add_music_bed so the test stays focused on language.
     with (
         patch.object(gs, "translate_story", return_value=translated) as tx,
         patch.object(gs, "acquire_broll_clips", return_value=[]),

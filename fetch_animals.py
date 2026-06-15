@@ -34,7 +34,7 @@ How it works
 What's intentionally NOT here
 =============================
 
-* Video discovery stays inside Pexels by default; Archive video is not part of
+* Video discovery stays inside Pexels; no alternate video source is part of
   the active channel source strategy.
 * No brand-safety filter — every queue item is already animal content.
 * No urgency classifier — evergreen facts do not need one.
@@ -783,7 +783,7 @@ _NON_WILDLIFE_CONTEXT_TERMS = {
     "storyline cast",
     "vhs",
 }
-_BLOCKED_COMMONS_TERMS = ("na" + "sa", "internet " + "archive")
+_BLOCKED_COMMONS_TERMS = ("na" + "sa",)
 
 
 def _animal_terms(text: str) -> set[str]:
@@ -846,21 +846,6 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
         slug = re.sub(r"-\d+$", "", tail)
     slug = re.sub(r"[-_]+", " ", slug).strip()
     title = (getattr(clip, "title", "") or "").strip()
-    source = (getattr(clip, "source", "") or "").lower().replace(" ", "_")
-    source_meta = getattr(clip, "source_metadata", {}) or {}
-    if source == "internet_archive":
-        archive_texts = [
-            title,
-            slug,
-            str(source_meta.get("description") or ""),
-            str(source_meta.get("collection") or ""),
-            str(source_meta.get("creator") or ""),
-        ]
-        for text in archive_texts:
-            cleaned = re.sub(r"\s+", " ", text).strip()
-            if cleaned and _animal_terms(cleaned):
-                return cleaned[:180]
-        return title or slug or fallback_query
     if _animal_terms(slug):
         return slug
     if _animal_terms(title):
@@ -891,7 +876,7 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
 
 
 def _topic_for_subject(topic_key: str, topic_cfg: dict, subject: str) -> tuple[str, dict]:
-    """Move explicit Archive subjects into the lane they visually belong to."""
+    """Move explicit subjects into the lane they visually belong to."""
     if _topic_accepts_subject(topic_cfg, subject):
         return topic_key, topic_cfg
     visible_animals = _strict_animal_terms(subject)
@@ -1056,10 +1041,7 @@ def _source_clip_id(clip) -> str:
 def _source_display_name(source: str) -> str:
     source = (source or "").strip().lower()
     names = {
-        "internet_archive": "Internet Archive",
-        "archive": "Internet Archive",
         "pexels": "Pexels",
-        "pixabay": "Pixabay",
     }
     return names.get(source, source.replace("_", " ").title() if source else "Unknown")
 
@@ -1234,8 +1216,6 @@ def _build_story(
         "source_creator": _safe_generated_source_value(source_meta.get("creator", "")),
         "source_collection": _safe_generated_source_value(source_meta.get("collection", "")),
         "source_description": source_description,
-        "archive_identifier": source_meta.get("identifier", ""),
-        "archive_file_name": source_meta.get("file_name", ""),
         "rights_policy": source_meta.get("rights_policy", ""),
         "category": topic_key,
         "description": f"{topic_cfg.get('description_prefix', 'A clip of an animal')}: {visible_description}".strip(),
@@ -1266,8 +1246,7 @@ def _build_story(
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
         "discovery_hashtags": list(topic_cfg.get("discovery_hashtags") or []),
-        # Legacy Pexels fields stay for old consumers; Archive uses the
-        # source_* fields above.
+        # Legacy Pexels fields stay for old consumers.
         "pexels_video_id": _pexels_id_from_clip(pexels_clip),
         "pexels_download_url": pexels_clip.download_url if source_raw.lower() == "pexels" else "",
         "gbif": gbif,

@@ -428,7 +428,7 @@ Packaging:
 | --- | --- | --- | --- | --- |
 | TTS | existing edge-tts path | free | keep primary | `generate_shorts.py` |
 | TTS fallback | Coqui local models | free | optional only | `utils/tts_fallback.py` and `generate_shorts.py` |
-| Music | Internet Archive public-domain/CC0 audio | free | autonomous only, no manual download | `utils/music_bed.py` |
+| Music | no external music source | free | disabled; narration stays primary | `utils/music_bed.py` |
 | Trends | Google Trends official exports | free | support manual cached snapshots | `scripts/free_signal_harvester.py` |
 | Discovery validation | YouTube Data API low-cost calls | free quota | use carefully | analytics scripts |
 | Freshness | curated RSS sources | free | add as optional signal | `utils/trend_bridge.py` |

@@ -12,8 +12,7 @@
 
 | Name | Required | Use |
 | --- | --- | --- |
-| `BROLL_SOURCE_MODE` | no | Video source mode. Defaults to `pexels`; set to `archive` only for explicit research runs. |
-| `ARCHIVE_VIDEO_MAX_BYTES` | no | Maximum Internet Archive source video file size admitted by opt-in Archive discovery. Defaults to `94371840` (90 MB). |
+| `BROLL_SOURCE_MODE` | no | Video source mode. Defaults to `pexels`; Pexels is the only production visual source. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | no | Maximum b-roll download size during render. Defaults to `94371840` (90 MB). |
 | `GEMINI_API_KEY` or `GEMINI` | no | Visual QA when configured. |
 | `WILD_BRIEF_RSS_URLS` | no | Comma-separated RSS URLs for `scripts/free_signal_harvester.py`. |
@@ -21,10 +20,6 @@
 | `WILD_BRIEF_ALERT_TO` | no | Alert recipient used only when alerts are explicitly enabled. |
 | `COQUI_TTS_COMMAND` | no | Optional local Coqui-compatible TTS command. Edge TTS remains primary. |
 | `COQUI_TTS_MODEL` | no | Optional local Coqui model name. |
-| `ARCHIVE_AUDIO_ENABLED` | no | Enables opt-in Internet Archive public-domain/CC0 audio discovery as the autonomous music-bed source. Defaults to `0`. |
-| `ARCHIVE_AUDIO_ROWS` | no | Maximum Internet Archive search rows per mood query. Defaults to `12`. |
-| `ARCHIVE_AUDIO_CACHE_DIR` | no | Cache folder for downloaded Internet Archive audio. Defaults to `_data/archive_audio_cache`. |
-| `ARCHIVE_AUDIO_MAX_BYTES` | no | Maximum downloaded Archive audio file size. Defaults to `20971520`. |
 | `EXPERIMENTS_FILE` | no | Optional override for the experiment assignment cache. |
 | `VARIANT_ASSIGNMENTS_FILE` | no | Optional override for the durable variant-assignment JSONL log. |
 | `ADAPTIVE_CADENCE_ENABLED` | no | Enables publish vs safe-skip decisions from the canonical 24/day UTC grid: `00:00`, `01:00`, `02:00`, `03:00`, `04:00`, `05:00`, `06:00`, `07:00`, `08:00`, `09:00`, `10:00`, `11:00`, `12:00`, `13:00`, `14:00`, `15:00`, `16:00`, `17:00`, `18:00`, `19:00`, `20:00`, `21:00`, `22:00` and `23:00`. Defaults to enabled in the YouTube workflow. |
@@ -92,8 +87,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `24` | publishing | Emergency pending story target checked inside the publish workflow. | Lower if the publish workflow approaches its timeout. |
 | `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `12` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
-| `BROLL_SOURCE_MODE` | `pexels` | discovery | Use Pexels as the only active production visual source. | Set back to `pexels`; use `archive` only for explicit research runs. |
-| `ARCHIVE_VIDEO_MAX_BYTES` | `94371840` | discovery | Reject overly large opt-in Archive source files before rendering. | Leave unchanged unless Archive research is intentionally enabled. |
+| `BROLL_SOURCE_MODE` | `pexels` | discovery | Use Pexels as the only active production visual source. | Set back to `pexels`. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | `94371840` | production | Cap video-source downloads during rendering. | Lower during CI timeouts. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
@@ -129,9 +123,6 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `YOUTUBE_REPORTING_ENABLED` | `0` | analytics | Enable optional Reporting API CSV backfill folders. | Set to 0. |
 | `WAREHOUSE_COMPACTION_ENABLED` | `1` | analytics | Write monthly JSONL analytics partitions. | Set to 0. |
 | `MUSIC_BED_ENABLED` | `0` | production | Allow optional music beds. | Set to 0. |
-| `ARCHIVE_AUDIO_ENABLED` | `0` | production | Allow opt-in Internet Archive public-domain/CC0 audio candidates after license metadata checks. | Set to 0. |
-| `ARCHIVE_AUDIO_ROWS` | `12` | production | Limit Archive API search breadth per mood. | Lower rows or set ARCHIVE_AUDIO_ENABLED=0. |
-| `ARCHIVE_AUDIO_CACHE_DIR` | `_data/archive_audio_cache` | production | Cache downloaded Archive audio. | Remove cache and disable Archive audio. |
 | `MUSIC_BED_CANARY_PERCENT` | `5` | production | Percent of Shorts allowed into safe music-bed canary. | Set to 0. |
 | `SEO_METADATA_LINT_ENABLED` | `1` | production | Attach deterministic SEO/metadata lint to every Short. | Set to 0. |
 | `SEO_METADATA_LINT_STRICT` | `0` | production | Reject metadata with SEO lint errors. | Set to 0. |
@@ -153,15 +144,8 @@ Operator-dropped Google Trends snapshots belong under `_data/trends/manual_impor
 Those files should contain public trend data only.
 
 Pexels is the active production video source. `BROLL_SOURCE_MODE=pexels`
-keeps both queue discovery and render-time b-roll on Pexels only. Internet
-Archive video is kept as an explicit opt-in research path for future review;
-it is not used by the production queue or publisher unless `BROLL_SOURCE_MODE`
-is deliberately changed. `ARCHIVE_AUDIO_ENABLED=0` keeps Archive audio off by
-default; when it is deliberately enabled, metadata checks apply to optional
-music/audio candidates. Use `python scripts/archive_video_report.py
---json` only when reviewing Archive video candidates and
-`python scripts/archive_audio_report.py --json` to review audio candidate
-sources and license evidence.
+keeps both queue discovery and render-time b-roll on Pexels only. External
+music beds are disabled by default; narration remains the primary audio track.
 
 Publish slot decisions are appended to `_data/publish_slot_decisions.jsonl`.
 When adaptive cadence is enabled, a slot can safely return `skip_outside_slot`,

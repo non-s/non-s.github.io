@@ -1812,7 +1812,7 @@ def render_html() -> str:
             f"<div><small>Observe first</small><div class='metric'>{int(dry_run_publish.get('observe_before_scaling_count', 0) or 0)}</div></div>"
         )
         out.append(
-            f"<div><small>Rejected archive</small><div class='metric'>{int(reject_report.get('total', 0) or 0)}</div></div>"
+            f"<div><small>Rejected queue</small><div class='metric'>{int(reject_report.get('total', 0) or 0)}</div></div>"
         )
         out.append(
             f"<div><small>Sequence variants</small><div class='metric'>{len(sequence_plan.get('variants') or [])}</div></div>"

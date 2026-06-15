@@ -25,9 +25,7 @@ UNIT_METHOD_COSTS = {
     "youtube.commentThreads.list": 1,
     "youtube.comments.insert": 50,
     "youtube.analytics.reports.query": 1,
-    "internet_archive.search": 0,
     "pexels.search": 1,
-    "pixabay.search": 1,
 }
 
 DEFAULT_DAILY_BUDGET = int(os.environ.get("YOUTUBE_DAILY_QUOTA_BUDGET", "10000"))
@@ -68,14 +66,7 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
 
 
 def estimate_fetch_content_cost(search_calls: int = 12, enrichment_calls: int = 0, provider: str = "pexels") -> dict:
-    if provider == "pexels":
-        calls = {"pexels.search": search_calls}
-    elif provider == "pixabay":
-        calls = {"pixabay.search": search_calls}
-    elif provider == "legacy_free_video":
-        calls = {"pexels.search": search_calls, "pixabay.search": max(0, search_calls // 3)}
-    else:
-        calls = {"internet_archive.search": search_calls}
+    calls = {"pexels.search": search_calls}
     if enrichment_calls:
         calls["youtube.analytics.reports.query"] = enrichment_calls
     return {"workflow": "fetch-content", "calls": calls, "estimated_units": estimate_cost(calls)}
