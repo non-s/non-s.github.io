@@ -1,7 +1,488 @@
 {
-  "generated_at": "2026-06-14T23:04:19.198420+00:00",
-  "channel_epoch": "archive_source_research_pause_2026-06-14",
-  "pending": 0,
-  "items": [],
-  "mechanism_clusters": {}
+  "generated_at": "2026-06-15T00:25:28.122947+00:00",
+  "pending": 1,
+  "states": {
+    "rewrite": 1
+  },
+  "mechanism_clusters": {
+    "dance_navigation": 1
+  },
+  "rights": {
+    "approved": 1
+  },
+  "prune_summary": {
+    "pending_before": 2,
+    "pending_after": 1,
+    "rejected": 1,
+    "repair_needed": 1,
+    "repaired": 1,
+    "reasons": {
+      "objective_gate:low_decision_confidence": 2,
+      "missing_visual_cue": 1,
+      "script_length_risk": 1,
+      "missing_action_word": 1,
+      "missing_visible_cue": 1,
+      "queue_score_reject": 1
+    }
+  },
+  "rejected_preview": [
+    {
+      "id": "76e008c59f695da4",
+      "title": "Mississippi River uses first move before it changes",
+      "reasons": [
+        "missing_visual_cue",
+        "script_length_risk",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    }
+  ],
+  "top": [
+    {
+      "id": "bd0a7f349ca9aee7",
+      "title": "Bees dance directions back to the hive",
+      "category": "plants",
+      "publish_score": {
+        "approved": true,
+        "category": "plants",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "dance_navigation",
+          "payoff_time_s": 9.9,
+          "penalty": 10.0,
+          "publish_blocking": false,
+          "reasons": [
+            "low_decision_confidence"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 59,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 44,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 66,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 97.2,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-15T00:25:27.043937+00:00",
+        "mechanism_cluster": "dance_navigation",
+        "objective_reasons": [
+          "objective_gate:low_decision_confidence"
+        ],
+        "score": 93.2,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 93.2,
+      "youtube_brain": {
+        "animal": "bees",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "bees",
+        "viewer_promise": "See why bees animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "These plants change right before the payoff.",
+          "reasons": [
+            "specific_detail",
+            "payoff_gap"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 90.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 0,
+          "winners": {
+            "hook_pattern": "",
+            "thumbnail_pattern": "",
+            "title_pattern": ""
+          },
+          "winning_experiments": {}
+        },
+        "hook_options": [
+          "Bees can point the hive toward food",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees show the dance map before the payoff.",
+          "Bees give away the answer through dance map"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "bees",
+          "ending_line": "Which insect should we decode next?",
+          "final_line": "Which insect should we decode next?",
+          "loop_score": 0.29,
+          "opening_line": "Bees can point the hive toward food.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "bees",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.29,
+        "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.28,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Bees can point the hive toward food Watch the body angle because",
+          "first_frame_text": "DANCE MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bees can point the hive toward food.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.29,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.48
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the dance map, so viewers rewatch the bees clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 83,
+        "selected_variant": {
+          "hook": "Start with the dance map; it explains the next move",
+          "score": 78,
+          "thumbnail_text": "DANCE MAP",
+          "title": "Bees dance directions back to the hive"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "DANCE MAP",
+          "WATCH DANCE MAP",
+          "BEES CARRY",
+          "DANCE MAP MATTERS",
+          "DANCE MAP PAYOFF",
+          "DANCE MAP FIRST",
+          "DANCE MAP REVEAL",
+          "WATCH THE MOVE",
+          "BEFORE THE PAYOFF"
+        ],
+        "title_options": [
+          "Bees dance directions back to the hive",
+          "Bees use dance map before they carry",
+          "This dance map gives bees away",
+          "Why bees carry after one dance map",
+          "Bees reveal the answer with dance map",
+          "The dance map that changes the moment",
+          "Bees make one dance map matter",
+          "Bees show the hidden payoff in seconds",
+          "Bees: watch this dance map",
+          "Watch bees after the dance map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 78,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 76,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; the payoff lands seconds later",
+            "score": 76,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "BEES CARRY",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "DANCE MAP MATTERS",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it explains the next move",
+            "score": 71,
+            "thumbnail_text": "DANCE MAP PAYOFF",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 69,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; the payoff lands seconds later",
+            "score": 69,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 69,
+            "thumbnail_text": "BEES CARRY",
+            "title": "Bees dance directions back to the hive"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "internet archive",
+        "license": "http://creativecommons.org/licenses/publicdomain/",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    }
+  ]
 }
