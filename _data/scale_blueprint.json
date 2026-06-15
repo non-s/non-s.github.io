@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T11:20:10.983733+00:00",
+  "generated_at": "2026-06-15T11:32:47.559369+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -98,26 +98,15 @@
   ],
   "series_lanes": [
     {
-      "lane": "Farmyard Minds",
+      "lane": "Pet Signals",
       "categories": [
-        "farm"
+        "cats",
+        "dogs"
       ],
-      "promise": "familiar animals doing smarter things than viewers expect",
-      "state": "test",
+      "promise": "home-animal behavior only when the hook beats retention gates",
+      "state": "scale",
       "retention": 0.0,
-      "growth_score": 0.0,
-      "publish_ready_supply": 1
-    },
-    {
-      "lane": "Body Clues",
-      "categories": [
-        "wildlife",
-        "primates"
-      ],
-      "promise": "one visible body cue that explains the next move",
-      "state": "test",
-      "retention": 0.0,
-      "growth_score": 0.0,
+      "growth_score": 200.0,
       "publish_ready_supply": 0
     },
     {
@@ -126,6 +115,29 @@
         "ocean"
       ],
       "promise": "underwater behavior decoded through a visible signal",
+      "state": "test",
+      "retention": 0.0,
+      "growth_score": 0.0,
+      "publish_ready_supply": 1
+    },
+    {
+      "lane": "Farmyard Minds",
+      "categories": [
+        "farm"
+      ],
+      "promise": "familiar animals doing smarter things than viewers expect",
+      "state": "test",
+      "retention": 0.0,
+      "growth_score": 0.0,
+      "publish_ready_supply": 0
+    },
+    {
+      "lane": "Body Clues",
+      "categories": [
+        "wildlife",
+        "primates"
+      ],
+      "promise": "one visible body cue that explains the next move",
       "state": "test",
       "retention": 0.0,
       "growth_score": 0.0,
@@ -141,25 +153,13 @@
       "retention": 0.0,
       "growth_score": 0.0,
       "publish_ready_supply": 0
-    },
-    {
-      "lane": "Pet Signals",
-      "categories": [
-        "cats",
-        "dogs"
-      ],
-      "promise": "home-animal behavior only when the hook beats retention gates",
-      "state": "test",
-      "retention": 0.0,
-      "growth_score": 0.0,
-      "publish_ready_supply": 0
     }
   ],
   "video_action_plan": {
     "actions": [
       {
-        "video_id": "UBg6lj27McA",
-        "title": "Snakes smell the air with their tongues",
+        "video_id": "TNANKGDck-Y",
+        "title": "Cats use whiskers like built-in rulers",
         "views": 0,
         "retention": 0.0,
         "subscribers_gained": 0,
@@ -175,7 +175,8 @@
   "production_commands": [
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
     "Attach a named series lane and next-episode pinned question to every strong candidate.",
-    "For each winner, add one searchable title/description variant around animal behavior intent."
+    "For each winner, add one searchable title/description variant around animal behavior intent.",
+    "Use the next publish block to deepen: Pet Signals."
   ],
   "milestone_path": [
     {
@@ -205,7 +206,7 @@
   ],
   "next_48h_watch": [
     {
-      "title": "Snakes smell the air with their tongues",
+      "title": "Cats use whiskers like built-in rulers",
       "views": 0,
       "views_per_hour": 0.0,
       "breakout_probability": {
