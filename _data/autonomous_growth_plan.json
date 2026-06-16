@@ -1,40 +1,40 @@
 {
-  "generated_at": "2026-06-16T12:23:04.634880+00:00",
+  "generated_at": "2026-06-16T13:06:35.066935+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "public_video_statistics",
-    "shorts_tracked": 15,
+    "shorts_tracked": 16,
     "avg_view_pct": 0.0,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
       "name": "fungi",
-      "score": 200.368
+      "score": 200.338
     },
     {
       "name": "ocean",
-      "score": 200.35
+      "score": 200.326
     },
     {
       "name": "reptiles",
-      "score": 200.302
+      "score": 200.284
     },
     {
       "name": "primates",
       "score": 200.0
     },
     {
-      "name": "forests",
-      "score": 150.509
+      "name": "insects",
+      "score": 156.124
     }
   ],
   "format_priorities": [
     {
       "name": "hidden_network",
-      "score": 200.356
+      "score": 200.329
     },
     {
       "name": "myth_buster",
@@ -42,34 +42,36 @@
     },
     {
       "name": "animal_intelligence",
-      "score": 138.989
+      "score": 150.933
     },
     {
       "name": "body_superpower",
-      "score": 123.038
+      "score": 122.958
     },
     {
       "name": "single_fact",
-      "score": 103.296
+      "score": 101.089
     }
   ],
   "winning_terms": [
     "annoying",
+    "back",
+    "bees",
     "beetles",
-    "built-in",
     "canopy",
     "carry",
-    "cats",
     "cooler",
+    "dance",
+    "directions",
     "electric",
     "faces",
-    "familiar",
-    "fields",
-    "food"
+    "familiar"
   ],
   "experiment_bank": {
     "winners": {
+      "hook_style": "curiosity_gap",
       "script_tone": "analytical",
+      "narrator_voice": "jenny",
       "thumbnail_style": "frame_first_side_caption",
       "cta_style": "subscribe_channel",
       "subtitle_density": "medium",
@@ -79,14 +81,13 @@
     "gaps": [
       {
         "axis": "hook_style",
-        "winner": "",
+        "winner": "curiosity_gap",
         "needs_samples": [
           "outcome_first",
           "question",
-          "shocking_number",
-          "curiosity_gap"
+          "shocking_number"
         ],
-        "state": "collecting_signal"
+        "state": "winner_locked"
       },
       {
         "axis": "script_tone",
@@ -99,13 +100,12 @@
       },
       {
         "axis": "narrator_voice",
-        "winner": "",
+        "winner": "jenny",
         "needs_samples": [
           "aria",
-          "jenny",
           "guy"
         ],
-        "state": "collecting_signal"
+        "state": "winner_locked"
       },
       {
         "axis": "thumbnail_style",
@@ -192,14 +192,14 @@
         "lane": "proven_category",
         "statement": "Next Shorts in fungi, ocean should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 200.368
+        "target": 200.338
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "hidden_network is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 200.356
+        "target": 200.329
       },
       {
         "id": "H4_SUBSCRIBER_CONVERSION",
@@ -218,9 +218,9 @@
       {
         "id": "H8_VISUAL_PROFILE",
         "lane": "visual_ctr",
-        "statement": "Favor frame profile close_subject|feed_bright|high_contrast for stronger click and retention signals.",
+        "statement": "Favor frame profile close_subject|feed_bright|medium_contrast for stronger click and retention signals.",
         "success_metric": "growth_score_plus_retention",
-        "target": "close_subject|feed_bright|high_contrast"
+        "target": "close_subject|feed_bright|medium_contrast"
       }
     ]
   },
@@ -271,36 +271,36 @@
     ]
   },
   "visual_policy": {
-    "winner": "close_subject|feed_bright|high_contrast",
+    "winner": "close_subject|feed_bright|medium_contrast",
     "profiles": [
+      {
+        "profile": "close_subject|feed_bright|medium_contrast",
+        "n": 2,
+        "mean_growth_score": 200.142,
+        "mean_retention": 0.0,
+        "mean_views": 0.5,
+        "mean_visual_ctr_score": 93.0
+      },
       {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 11,
-        "mean_growth_score": 130.505,
+        "mean_growth_score": 129.751,
         "mean_retention": 0.0,
-        "mean_views": 2.0,
+        "mean_views": 2.091,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "subject_rich|feed_bright|medium_contrast",
         "n": 1,
-        "mean_growth_score": 200.344,
+        "mean_growth_score": 200.32,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 78.0
       },
       {
-        "profile": "close_subject|feed_bright|medium_contrast",
-        "n": 1,
-        "mean_growth_score": 200.302,
-        "mean_retention": 0.0,
-        "mean_views": 1.0,
-        "mean_visual_ctr_score": 100.0
-      },
-      {
         "profile": "subject_rich|usable_light|flat_contrast",
         "n": 1,
-        "mean_growth_score": 101.018,
+        "mean_growth_score": 100.898,
         "mean_retention": 0.0,
         "mean_views": 2.0,
         "mean_visual_ctr_score": 63.0
@@ -308,7 +308,7 @@
       {
         "profile": "close_subject|usable_light|high_contrast",
         "n": 1,
-        "mean_growth_score": 67.873,
+        "mean_growth_score": 67.765,
         "mean_retention": 0.0,
         "mean_views": 3.0,
         "mean_visual_ctr_score": 100.0
@@ -324,11 +324,11 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 12,
-    "approved_candidates": 12,
+    "pending": 11,
+    "approved_candidates": 11,
     "lane_counts": {
       "fresh_experiment": 9,
-      "proven_category": 3
+      "proven_category": 2
     },
     "top_candidates": [
       {
@@ -481,7 +481,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 109.35,
+        "autonomy_priority": 109.83,
         "packaging_lab": {
           "title_variants": [
             "Whales send songs across huge ocean distances",
@@ -499,6 +499,174 @@
             "Watch the ocean song again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pr"
           ],
           "pinned_comment": "Watch the ocean song again. Tomorrow: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "4d34ad4bed0a32bb",
+        "title": "Mantises judge distance with 3D vision",
+        "category": "insects",
+        "story_format": "body_superpower",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 91.7,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 60,
+            "signals": {
+              "viral_potential": 70,
+              "visual_potential": 64,
+              "replay_potential": 67,
+              "comment_potential": 41,
+              "educational_potential": 61,
+              "emotional_potential": 39,
+              "novelty": 64
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.227,
+              "sample_size": 2,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            },
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "retention": {
+            "score": 74,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 79,
+              "visual_score": 58,
+              "replay_score": 62,
+              "completion_prediction": 84
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.227,
+              "sample_size": 2,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            },
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 100,
+            "state": "strong",
+            "subscriber_probability": 0.143,
+            "return_probability": 0.3,
+            "comment_probability": 0.256,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.269,
+              "sample_size": 8,
+              "minimum_sample_size": 18,
+              "data_quality": "estimated",
+              "data_quality_score": 0.425,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.452,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.258,
+            "sample_size": 17,
+            "minimum_sample_size": 38,
+            "data_quality": "estimated",
+            "data_quality_score": 0.35,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.444,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.26."
+          },
+          "category": "insects",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "observe_before_scaling"
+            ],
+            "confidence_score": 0.258,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 9.35,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 108.96,
+        "packaging_lab": {
+          "title_variants": [
+            "Mantises judge distance with 3D vision",
+            "Mantises use 3d vision before they measure",
+            "This 3d vision gives mantises away"
+          ],
+          "thumbnail_variants": [
+            "3D STRIKE",
+            "3D VISION",
+            "WATCH 3D VISION"
+          ],
+          "hook_variants": [
+            "Mantises can measure a strike in 3D.",
+            "Mantises judge distance with 3D vision",
+            "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-ani"
+          ],
+          "pinned_comment": "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -649,7 +817,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 108.25,
+        "autonomy_priority": 108.73,
         "packaging_lab": {
           "title_variants": [
             "Lions hunt better when the pride coordinates",
@@ -667,345 +835,6 @@
             "Watch the pride plan again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
           ],
           "pinned_comment": "Watch the pride plan again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "ea53dd69eab9d395",
-        "title": "Bees dance directions back to the hive",
-        "category": "insects",
-        "story_format": "animal_intelligence",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 90.2,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 55,
-            "signals": {
-              "viral_potential": 62,
-              "visual_potential": 54,
-              "replay_potential": 59,
-              "comment_potential": 49,
-              "educational_potential": 61,
-              "emotional_potential": 39,
-              "novelty": 54
-            },
-            "verdict": "rewrite",
-            "reasons": [
-              "weak_visual_surface"
-            ],
-            "confidence": {
-              "confidence_score": 0.227,
-              "sample_size": 2,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.42,
-              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-            },
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-          },
-          "retention": {
-            "score": 68,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 71,
-              "visual_score": 50,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.227,
-              "sample_size": 2,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.42,
-              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-            },
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 100,
-            "state": "strong",
-            "subscriber_probability": 0.143,
-            "return_probability": 0.3,
-            "comment_probability": 0.256,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.269,
-              "sample_size": 8,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.425,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.452,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.258,
-            "sample_size": 17,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.35,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.444,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.26."
-          },
-          "category": "insects",
-          "story_format": "animal_intelligence",
-          "hook_score": 100,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.258,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "",
-            "mechanism_cluster": "dance_navigation"
-          }
-        },
-        "autonomy_priority": 105.75,
-        "packaging_lab": {
-          "title_variants": [
-            "Bees dance directions back to the hive",
-            "Bees use dance map before they carry",
-            "This dance map gives bees away"
-          ],
-          "thumbnail_variants": [
-            "DANCE MAP",
-            "WATCH DANCE MAP",
-            "BEES CARRY"
-          ],
-          "hook_variants": [
-            "Bees can point the hive toward food.",
-            "Bees dance directions back to the hive",
-            "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-ani"
-          ],
-          "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "e1a38f060ce4a709",
-        "title": "Plants count touches before snapping shut",
-        "category": "plants",
-        "story_format": "plant_mechanism",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 60,
-            "signals": {
-              "viral_potential": 63,
-              "visual_potential": 55,
-              "replay_potential": 82,
-              "comment_potential": 54,
-              "educational_potential": 71,
-              "emotional_potential": 35,
-              "novelty": 45
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 71,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 79,
-              "visual_score": 58,
-              "replay_score": 72,
-              "completion_prediction": 77
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 100,
-            "state": "strong",
-            "subscriber_probability": 0.143,
-            "return_probability": 0.3,
-            "comment_probability": 0.256,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.174,
-              "sample_size": 5,
-              "minimum_sample_size": 8,
-              "data_quality": "inferred",
-              "data_quality_score": 0.5,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.381,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 5,
-            "minimum_sample_size": 18,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
-          },
-          "category": "plants",
-          "story_format": "plant_mechanism",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.035,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.35,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 103.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Plants count touches before snapping shut",
-            "Plants use trap hairs before they trick",
-            "Why plants trick after one trap hairs"
-          ],
-          "thumbnail_variants": [
-            "TOUCH COUNT",
-            "TRAP HAIRS",
-            "WATCH TRAP HAIRS"
-          ],
-          "hook_variants": [
-            "Plants can count touches before closing.",
-            "Plants count touches before snapping shut",
-            "Watch the trap hairs again. Tomorrow: another nature signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the trap hairs again. Tomorrow: another nature signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -1848,65 +1677,65 @@
         }
       },
       {
-        "id": "4d34ad4bed0a32bb",
-        "title": "Mantises judge distance with 3D vision",
-        "category": "insects",
-        "story_format": "body_superpower",
+        "id": "e1a38f060ce4a709",
+        "title": "Plants count touches before snapping shut",
+        "category": "plants",
+        "story_format": "plant_mechanism",
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 91.7,
+          "score": 100,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
             "score": 60,
             "signals": {
-              "viral_potential": 70,
-              "visual_potential": 64,
-              "replay_potential": 67,
-              "comment_potential": 41,
-              "educational_potential": 61,
-              "emotional_potential": 39,
-              "novelty": 64
+              "viral_potential": 63,
+              "visual_potential": 55,
+              "replay_potential": 82,
+              "comment_potential": 54,
+              "educational_potential": 71,
+              "emotional_potential": 35,
+              "novelty": 45
             },
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.227,
-              "sample_size": 2,
+              "confidence_score": 0.0,
+              "sample_size": 0,
               "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.42,
-              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
             },
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "retention": {
-            "score": 74,
+            "score": 71,
             "signals": {
-              "hook_score": 82,
+              "hook_score": 70,
               "curiosity_score": 79,
               "visual_score": 58,
-              "replay_score": 62,
-              "completion_prediction": 84
+              "replay_score": 72,
+              "completion_prediction": 77
             },
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.227,
-              "sample_size": 2,
+              "confidence_score": 0.0,
+              "sample_size": 0,
               "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.42,
-              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
             },
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "weak_content": {
             "risk": 0,
@@ -1937,40 +1766,41 @@
               "hits": []
             },
             "reasons": [
+              "hook_invites_return",
               "identity_cta",
               "debate_comment",
               "return_prompt",
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.269,
-              "sample_size": 8,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.425,
+              "confidence_score": 0.174,
+              "sample_size": 5,
+              "minimum_sample_size": 8,
+              "data_quality": "inferred",
+              "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.452,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
+              "bootstrap_multiplier": 0.381,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.258,
-            "sample_size": 17,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.35,
+            "confidence_score": 0.035,
+            "sample_size": 5,
+            "minimum_sample_size": 18,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.444,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.26."
+            "bootstrap_multiplier": 0.276,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
           },
-          "category": "insects",
-          "story_format": "body_superpower",
+          "category": "plants",
+          "story_format": "plant_mechanism",
           "hook_score": 100,
-          "title_score": 90,
+          "title_score": 100,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -1983,9 +1813,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "observe_before_scaling"
+              "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.258,
+            "confidence_score": 0.035,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1994,24 +1824,24 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 99.61,
+        "autonomy_priority": 103.0,
         "packaging_lab": {
           "title_variants": [
-            "Mantises judge distance with 3D vision",
-            "Mantises use 3d vision before they measure",
-            "This 3d vision gives mantises away"
+            "Plants count touches before snapping shut",
+            "Plants use trap hairs before they trick",
+            "Why plants trick after one trap hairs"
           ],
           "thumbnail_variants": [
-            "3D STRIKE",
-            "3D VISION",
-            "WATCH 3D VISION"
+            "TOUCH COUNT",
+            "TRAP HAIRS",
+            "WATCH TRAP HAIRS"
           ],
           "hook_variants": [
-            "Mantises can measure a strike in 3D.",
-            "Mantises judge distance with 3D vision",
-            "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-ani"
+            "Plants can count touches before closing.",
+            "Plants count touches before snapping shut",
+            "Watch the trap hairs again. Tomorrow: another nature signal. What part of this feels most impossible"
           ],
-          "pinned_comment": "Watch the 3d vision again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "pinned_comment": "Watch the trap hairs again. Tomorrow: another nature signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -2360,9 +2190,9 @@
   "decisions": [
     "Prioritize categories: fungi, ocean, reptiles.",
     "Use formats first: hidden_network, myth_buster, animal_intelligence.",
-    "Bias production toward experiment winners: script_tone=analytical, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, subtitle_density=medium, end_card_style=series_tease, music_bed=light_bed.",
+    "Bias production toward experiment winners: hook_style=curiosity_gap, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, subtitle_density=medium, end_card_style=series_tease, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 12,
-  "queue_annotations_changed": 12
+  "queue_annotations_written": 11,
+  "queue_annotations_changed": 11
 }
