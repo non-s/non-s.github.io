@@ -1,159 +1,6 @@
 {
   "items": [
     {
-      "id": "d1697c106260a35b",
-      "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 70,
-          "signals": {
-            "viral_potential": 75,
-            "visual_potential": 89,
-            "replay_potential": 72,
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 74,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 74,
-            "replay_score": 62,
-            "completion_prediction": 77
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 81,
-          "state": "strong",
-          "subscriber_probability": 0.116,
-          "return_probability": 0.247,
-          "comment_probability": 0.212,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.174,
-            "sample_size": 5,
-            "minimum_sample_size": 8,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.381,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.035,
-          "sample_size": 5,
-          "minimum_sample_size": 18,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.276,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
-        },
-        "category": "ecosystems",
-        "story_format": "ecosystem_engine",
-        "hook_score": 100,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.035,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.35,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "ad108c6a266bd595",
       "title": "Lightning makes air explode into thunder",
       "category": "weather",
@@ -629,12 +476,20 @@
     },
     "items": [
       {
+        "id": "caaab83c9263290d",
+        "title": "Whales send songs across huge ocean distances",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.04
+      },
+      {
         "id": "44093772141841f6",
         "title": "Lions hunt better when the pride coordinates",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.78
+        "freshness_score": 52.68
       },
       {
         "id": "eb19e03980b8ccc6",
@@ -642,15 +497,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.12
-      },
-      {
-        "id": "d1697c106260a35b",
-        "title": "Coral reefs are cities built by tiny animals",
-        "category": "ecosystems",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.98
+        "freshness_score": 53.04
       },
       {
         "id": "ad108c6a266bd595",
@@ -658,7 +505,7 @@
         "category": "weather",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.98
+        "freshness_score": 53.9
       },
       {
         "id": "cb4cb593e9502516",
@@ -666,7 +513,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.76
+        "freshness_score": 53.68
       },
       {
         "id": "677b330e4980e87d",
@@ -674,7 +521,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.62
+        "freshness_score": 52.54
       },
       {
         "id": "d374e456b59d4dc4",
@@ -682,7 +529,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.6
+        "freshness_score": 53.52
       },
       {
         "id": "e1a38f060ce4a709",
@@ -690,7 +537,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.84
+        "freshness_score": 54.76
       },
       {
         "id": "ebd2fe53f2a694d8",
@@ -698,7 +545,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.86
+        "freshness_score": 54.76
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -710,59 +557,49 @@
     "windows": [
       {
         "window": 10,
-        "items": 4,
-        "dominant_shape": "{subject} reefs are cities built by tiny animals",
+        "items": 3,
+        "dominant_shape": "{subject} makes air explode into thunder",
         "dominant_count": 1,
-        "dominant_share": 0.25,
+        "dominant_share": 0.333,
         "top_shapes": [
-          {
-            "shape": "{subject} reefs are cities built by tiny animals",
-            "count": 1,
-            "share": 0.25
-          },
           {
             "shape": "{subject} makes air explode into thunder",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           },
           {
             "shape": "{subject} clouds reveal a storm s heat engine",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           },
           {
             "shape": "{subject} layers store ancient environments in stripes",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           }
         ]
       },
       {
         "window": 30,
-        "items": 4,
-        "dominant_shape": "{subject} reefs are cities built by tiny animals",
+        "items": 3,
+        "dominant_shape": "{subject} makes air explode into thunder",
         "dominant_count": 1,
-        "dominant_share": 0.25,
+        "dominant_share": 0.333,
         "top_shapes": [
-          {
-            "shape": "{subject} reefs are cities built by tiny animals",
-            "count": 1,
-            "share": 0.25
-          },
           {
             "shape": "{subject} makes air explode into thunder",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           },
           {
             "shape": "{subject} clouds reveal a storm s heat engine",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           },
           {
             "shape": "{subject} layers store ancient environments in stripes",
             "count": 1,
-            "share": 0.25
+            "share": 0.333
           }
         ]
       }
@@ -770,15 +607,14 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 10,
+    "pending_before": 9,
     "pending_after": 9,
-    "rejected": 1,
-    "repair_needed": 1,
+    "rejected": 0,
+    "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 16,
-      "objective_gate:observe_before_scaling": 2,
-      "queue_score_reject": 1
+      "objective_gate:bootstrap_observe_before_scaling": 14,
+      "objective_gate:observe_before_scaling": 4
     }
   }
 }
