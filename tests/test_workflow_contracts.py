@@ -83,8 +83,10 @@ def test_workflows_parse_and_include_growth_steps():
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
     assert 'cron: "13 */3 * * *"' in heartbeat_workflow
+    assert 'SELF_WORKFLOW: "youtube-hourly-heartbeat.yml"' in heartbeat_workflow
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
     assert "PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170'" in heartbeat_workflow
+    assert "self-renew from heartbeat run" in heartbeat_workflow
     assert "watchdog recovery for missed slot" in heartbeat_workflow
     assert "recent_publisher_run" in heartbeat_workflow
 

@@ -95,8 +95,10 @@ WORKFLOW_TOKENS = {
         "reconcile_queue_uploads.py",
     ),
     ".github/workflows/youtube-hourly-heartbeat.yml": (
+        'SELF_WORKFLOW: "youtube-hourly-heartbeat.yml"',
         'TARGET_WORKFLOW: "youtube-bot.yml"',
         "PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170'",
+        "self-renew from heartbeat run",
         "watchdog recovery for missed slot",
         "recent_publisher_run",
     ),

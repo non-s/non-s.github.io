@@ -153,7 +153,10 @@ def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     assert summary["pending_after"] == 1
     assert len(rejected) == 2
     assert any("missing_source_url" in item["reasons"] for item in rejected)
-    assert any({"queue_pruned_low_priority", "queue_score_reject"} & set(item["reasons"]) for item in rejected)
+    assert any(
+        {"queue_pruned_low_priority", "queue_score_reject", "copy_subject_mismatch"} & set(item["reasons"])
+        for item in rejected
+    )
 
 
 def test_prune_queue_repairs_editorial_do_not_publish_candidates_when_possible():

@@ -86,6 +86,43 @@ def test_score_packaging_penalizes_generic_ducklings_movement_shape():
     assert "missing_action_word" not in score["risks"]
 
 
+def test_score_packaging_recognizes_science_subjects_and_non_animal_action_verbs():
+    score = score_packaging(
+        _story(
+            title="Lightning makes air explode into thunder",
+            seo_title="Lightning makes air explode into thunder",
+            hook="Lightning turns hot air into thunder.",
+            script=(
+                "Lightning turns hot air into thunder. Watch the bright channel first, "
+                "because superheated air expands faster than sound can keep up."
+            ),
+            thumbnail_text="THUNDER SNAP",
+            category="weather",
+        )
+    )
+
+    assert "subject_not_clear" not in score["risks"]
+    assert "missing_action_word" not in score["risks"]
+
+
+def test_score_packaging_accepts_behavior_verbs_outside_old_animal_template_set():
+    score = score_packaging(
+        _story(
+            title="Bees dance directions back to the hive",
+            seo_title="Bees dance directions back to the hive",
+            hook="Bees dance a map back to the hive.",
+            script=(
+                "Bees dance a map back to the hive. Watch the angle and duration first, "
+                "because that pattern tells the others where food is waiting."
+            ),
+            thumbnail_text="DANCE MAP",
+            category="insects",
+        )
+    )
+
+    assert "missing_action_word" not in score["risks"]
+
+
 def test_package_story_keeps_visible_subject_in_selected_hook():
     packaged = package_story(
         _story(

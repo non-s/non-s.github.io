@@ -47,7 +47,12 @@ ACTION_WORDS = {
     "connect",
     "communicate",
     "build",
+    "built",
     "collapse",
+    "coordinate",
+    "count",
+    "dance",
+    "explode",
     "rely",
     "aim",
     "carry",
@@ -63,17 +68,24 @@ ACTION_WORDS = {
     "detect",
     "feel",
     "imprint",
+    "judge",
     "lock",
+    "make",
     "measure",
     "read",
+    "record",
+    "reveal",
     "sample",
     "sense",
+    "send",
     "smell",
     "stabilize",
+    "store",
     "steer",
     "taste",
     "track",
     "trap",
+    "wash",
 }
 WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thing"}
 GENERIC_CUE_WORDS = {"body", "cue", "movement"}
@@ -274,6 +286,10 @@ NATURE_SUBJECT_LABELS = {
 
 def _words(text: str) -> list[str]:
     return re.findall(r"[A-Za-z][A-Za-z'-]+", text or "")
+
+
+def _token_count(text: str) -> int:
+    return len([token for token in re.split(r"\s+", str(text or "").strip()) if token])
 
 
 def _contains_any(text: str, words: set[str]) -> bool:
@@ -559,7 +575,7 @@ def creator_premortem(story: dict) -> dict:
         score -= 8
         risks.append("script_length_risk")
 
-    if 2 <= len(_words(thumb)) <= 5:
+    if 2 <= _token_count(thumb) <= 5:
         score += 5
         strengths.append("thumbnail_text_scannable")
     else:

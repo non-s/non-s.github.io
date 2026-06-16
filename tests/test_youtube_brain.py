@@ -93,6 +93,26 @@ def test_creator_premortem_treats_rely_as_visible_action():
     assert "no_action_promise" not in brain["risks"]
 
 
+def test_creator_premortem_counts_alphanumeric_thumbnail_tokens():
+    story = {
+        **_strong_story(),
+        "title": "Mantises judge distance with 3D vision",
+        "seo_title": "Mantises judge distance with 3D vision",
+        "hook": "Mantises judge distance before they strike.",
+        "script": (
+            "Mantises judge distance before they strike. Watch the body angle first, "
+            "because that depth check decides when the strike lands."
+        ),
+        "thumbnail_text": "3D STRIKE",
+        "category": "insects",
+    }
+
+    brain = creator_premortem(story)
+
+    assert "thumbnail_text_scannable" in brain["strengths"]
+    assert "thumbnail_text_not_scannable" not in brain["risks"]
+
+
 def test_creator_premortem_flags_generic_successor_templates():
     story = {
         **_strong_story(),

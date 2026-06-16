@@ -9,6 +9,11 @@ on:
     # limit and overlapping starts cancel the older heartbeat.
     - cron: "13 */3 * * *"
   workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this heartbeat run was started"
+        required: false
+        default: "manual"
 
 concurrency:
   group: youtube-hourly-heartbeat
@@ -24,6 +29,7 @@ jobs:
       actions: write
       contents: read
     env:
+      SELF_WORKFLOW: "youtube-hourly-heartbeat.yml"
       TARGET_WORKFLOW: "youtube-bot.yml"
       HEARTBEAT_RUNTIME_MINUTES: ${{ vars.PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170' }}
       HEARTBEAT_DISPATCH_MINUTE: ${{ vars.PUBLISH_HEARTBEAT_DISPATCH_MINUTE || '6' }}
@@ -47,6 +53,7 @@ jobs:
 
           token = os.environ["GH_TOKEN"]
           repo = os.environ["GH_REPOSITORY"]
+          self_workflow = os.environ.get("SELF_WORKFLOW", "youtube-hourly-heartbeat.yml")
           workflow = os.environ.get("TARGET_WORKFLOW", "youtube-bot.yml")
           runtime_minutes = max(15, min(175, int(os.environ.get("HEARTBEAT_RUNTIME_MINUTES", "170"))))
           dispatch_minute = max(0, min(59, int(os.environ.get("HEARTBEAT_DISPATCH_MINUTE", "6"))))
@@ -54,7 +61,9 @@ jobs:
               minutes=max(0, int(os.environ.get("HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES", "10")))
           )
           end_at = datetime.now(timezone.utc) + timedelta(minutes=runtime_minutes)
+          renew_at = end_at - timedelta(minutes=12)
           dispatched_slots: set[str] = set()
+          renewed = False
 
           def request_json(method: str, url: str, body: dict | None = None):
               data = None if body is None else json.dumps(body).encode("utf-8")
@@ -97,12 +106,28 @@ jobs:
               request_json("POST", dispatch_url, {"ref": "main", "inputs": {"reason": reason}})
               print(f"Dispatched {workflow}: {reason}")
 
+          def renew_heartbeat(now: datetime) -> None:
+              dispatch_url = f"https://api.github.com/repos/{repo}/actions/workflows/{self_workflow}/dispatches"
+              run_id = os.environ.get("GITHUB_RUN_ID", "")
+              reason = f"self-renew from heartbeat run {run_id} at {now.isoformat()}"
+              request_json("POST", dispatch_url, {"ref": "main", "inputs": {"reason": reason}})
+              print(f"Dispatched {self_workflow}: {reason}")
+
           print(
               "Heartbeat active until "
-              f"{end_at.isoformat()} with dispatch minute :{dispatch_minute:02d}."
+              f"{end_at.isoformat()} with dispatch minute :{dispatch_minute:02d} "
+              f"and self-renew at {renew_at.isoformat()}."
           )
           while datetime.now(timezone.utc) < end_at:
               now = datetime.now(timezone.utc)
+              if not renewed and now >= renew_at:
+                  try:
+                      renew_heartbeat(now)
+                  except urllib.error.HTTPError as exc:
+                      detail = exc.read().decode("utf-8", errors="replace")
+                      print(f"Heartbeat self-renew failed: HTTP {exc.code} {detail}", file=sys.stderr)
+                      raise
+                  renewed = True
               slot = now.replace(minute=0, second=0, microsecond=0)
               dispatch_at = slot.replace(minute=dispatch_minute)
               if now < dispatch_at:
