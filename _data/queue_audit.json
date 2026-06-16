@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T05:41:07.603359+00:00",
+  "generated_at": "2026-06-16T07:22:02.597599+00:00",
   "pending": 12,
   "states": {
     "rewrite": 12
@@ -12,17 +12,131 @@
     "approved": 12
   },
   "prune_summary": {
-    "pending_before": 12,
+    "pending_before": 22,
     "pending_after": 12,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 10,
+    "rejected": 10,
+    "repair_needed": 4,
+    "repaired": 12,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 18,
-      "objective_gate:observe_before_scaling": 6
+      "objective_gate:observe_before_scaling": 6,
+      "missing_action_word": 4,
+      "queue_score_reject": 4,
+      "subject_not_immediately_clear": 3,
+      "no_action_promise": 3,
+      "script_hook_mismatch": 3,
+      "copy_subject_mismatch": 2,
+      "title_shape_weak": 2,
+      "title_needs_stronger_shape": 2,
+      "subject_not_clear": 2,
+      "script_subject_mismatch": 1,
+      "missing_visible_cue": 1,
+      "awkward_non_animal_use_pronoun": 1,
+      "off_topic_visual": 1,
+      "duplicate_title": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "25ae509b56b8aab8",
+      "title": "Volcanoes use lava before they erupt",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "771ca8cdd5163f74",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8712f418c9086d79",
+      "title": "Owls reveal the answer with silent wings",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c43204a5483fee1e",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "38a9a9876bc2c5d0",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "6dc38620293b88fd",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "a7e221399ab17cd9",
+      "title": "orange mushrooms reveal hidden forest signals",
+      "reasons": [
+        "script_hook_mismatch",
+        "awkward_non_animal_use_pronoun"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c2fad3f40dd25a1c",
+      "title": "Cells copy instructions before splitting",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "97c9af03cf330a25",
+      "title": "atmosphere seen from above looks this way",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "873f9d2ffd548b1e",
+      "title": "mangroves hide their secret in the water",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "bb02f3416ae11789",
       "title": "Rock layers store ancient environments in stripes",
@@ -118,14 +232,6 @@
       "stage": "queue_prune"
     },
     {
-      "id": "97c9af03cf330a25",
-      "title": "atmosphere seen from above looks this way",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
       "id": "bdd9c5c27b48b678",
       "title": "banyan trees build trunks out of their own branches",
       "reasons": [
@@ -167,52 +273,12 @@
       "stage": "queue_repair"
     },
     {
-      "id": "6dc38620293b88fd",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
       "id": "52c51ca366e2ac6a",
       "title": "cats know when rain’s coming before skies do",
       "reasons": [
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "38a9a9876bc2c5d0",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "c2fad3f40dd25a1c",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     },
     {
       "id": "78564f8ac830bd1f",
@@ -269,69 +335,6 @@
       "title": "Bees don’t just take nectar they leave messages",
       "reasons": [
         "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "daa3d20332717e31",
-      "title": "Beetles can steer by the Milky Way",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "2f503b0fb156ddce",
-      "title": "footprints on the forest floor",
-      "reasons": [
-        "script_hook_mismatch",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ebd2fe53f2a694d8",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "744f4362db04d235",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "98de1f4765e0edc1",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "5f51bc76f0d3ebe4",
-      "title": "Solar flares explode in a heartbeat",
-      "reasons": [
-        "encoding_artifact"
       ],
       "stage": "queue_prune"
     }
@@ -483,7 +486,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.583996+00:00",
+        "checked_at": "2026-06-16T07:21:54.127943+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -934,7 +937,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.585561+00:00",
+        "checked_at": "2026-06-16T07:21:54.129697+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1385,7 +1388,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.587159+00:00",
+        "checked_at": "2026-06-16T07:21:54.131527+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1836,7 +1839,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.578323+00:00",
+        "checked_at": "2026-06-16T07:21:54.093358+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2288,7 +2291,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.588566+00:00",
+        "checked_at": "2026-06-16T07:21:54.133061+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2742,7 +2745,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.590116+00:00",
+        "checked_at": "2026-06-16T07:21:54.134822+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3195,7 +3198,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.591641+00:00",
+        "checked_at": "2026-06-16T07:21:54.136524+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3643,7 +3646,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.582530+00:00",
+        "checked_at": "2026-06-16T07:21:54.105841+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4100,7 +4103,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.592859+00:00",
+        "checked_at": "2026-06-16T07:21:54.137897+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4559,7 +4562,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.581491+00:00",
+        "checked_at": "2026-06-16T07:21:54.103439+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5011,7 +5014,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.579399+00:00",
+        "checked_at": "2026-06-16T07:21:54.100944+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5463,7 +5466,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T05:41:00.580550+00:00",
+        "checked_at": "2026-06-16T07:21:54.102333+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
