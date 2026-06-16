@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-06-16T15:10:24.348531+00:00",
-  "pending": 9,
+  "generated_at": "2026-06-16T16:10:09.255297+00:00",
+  "pending": 8,
   "states": {
     "rewrite": 6,
-    "publish_ready": 3
+    "publish_ready": 2
   },
   "mechanism_clusters": {
-    "ear_signal": 2
+    "ear_signal": 1
   },
   "rights": {
-    "approved": 9
+    "approved": 8
   },
   "prune_summary": {
-    "pending_before": 9,
-    "pending_after": 9,
+    "pending_before": 8,
+    "pending_after": 8,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 14,
+      "objective_gate:bootstrap_observe_before_scaling": 12,
       "objective_gate:observe_before_scaling": 4
     }
   },
@@ -328,460 +328,6 @@
   ],
   "top": [
     {
-      "id": "ad108c6a266bd595",
-      "title": "Lightning makes air explode into thunder",
-      "category": "weather",
-      "publish_score": {
-        "approved": true,
-        "category": "weather",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.035,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 18,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
-          "recommendation_strength": "observe",
-          "sample_size": 5
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.035,
-          "mechanism_cluster": "ear_signal",
-          "payoff_time_s": 8.8,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 99
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.381,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.174,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.472496+00:00",
-        "mechanism_cluster": "ear_signal",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "lightning",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "lightning",
-        "viewer_promise": "See why lightning earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after lightning?",
-        "cta_prompt": "Want to see more extreme weather explained fast?",
-        "curiosity_gap": {
-          "hook": "Why does this nature changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 18,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
-            "format:winner_inspired": 43.12,
-            "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
-          }
-        },
-        "hook_options": [
-          "Lightning turns air into a shock wave",
-          "Watch the lightning flash; it explains the behavior",
-          "Start with the lightning flash; it changes the scene",
-          "The lightning flash is the detail most people miss",
-          "Lightning gives away the answer through lightning flash"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "lightning",
-          "ending_line": "Which storm signal next?",
-          "final_line": "Which storm signal next?",
-          "loop_score": 0.173,
-          "opening_line": "Lightning turns air into a shock wave.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "lightning",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.173,
-        "pinned_comment": "Watch the sound again. Tomorrow: another animal signal. Which is scarier: wind, water, lightning, or heat?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.38,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Lightning turns air into shock wave Watch the flash first because lightning",
-          "first_frame_text": "THUNDER SNAP",
-          "first_frame_text_words": 2,
-          "hook": "Lightning turns air into a shock wave.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.173,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8.8,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the sound, so viewers rewatch the lightning clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 93,
-        "selected_variant": {
-          "hook": "Lightning turns air into a shock wave",
-          "score": 82,
-          "thumbnail_text": "THUNDER SNAP",
-          "title": "Lightning makes air explode into thunder"
-        },
-        "series": "Animal Superpowers #7",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 7,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.381,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.174,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "THUNDER SNAP",
-          "LIGHTNING FLASH",
-          "WATCH LIGHTNING FLASH",
-          "LIGHTNING SIGNAL",
-          "LIGHTNING FLASH MATTERS",
-          "LIGHTNING FLASH FIRST",
-          "LIGHTNING FLASH REVEAL",
-          "LIGHTNING FLASH CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Lightning makes air explode into thunder",
-          "Lightning signals through lightning flash",
-          "Lightning uses lightning flash before it signals",
-          "This lightning flash gives lightning away",
-          "Why lightning signals after one lightning flash",
-          "Lightning reveals the answer with lightning flash",
-          "The lightning flash that changes the moment",
-          "Lightning makes one lightning flash matter",
-          "Lightning shows the hidden answer in seconds",
-          "Lightning: watch this lightning flash"
-        ],
-        "top_variants": [
-          {
-            "hook": "Lightning turns air into a shock wave",
-            "score": 82,
-            "thumbnail_text": "THUNDER SNAP",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Watch the lightning flash; it explains the behavior",
-            "score": 82,
-            "thumbnail_text": "THUNDER SNAP",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Start with the lightning flash; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "THUNDER SNAP",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Lightning turns air into a shock wave",
-            "score": 75,
-            "thumbnail_text": "LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Watch the lightning flash; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Start with the lightning flash; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Lightning turns air into a shock wave",
-            "score": 75,
-            "thumbnail_text": "WATCH LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Watch the lightning flash; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "WATCH LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Start with the lightning flash; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH LIGHTNING FLASH",
-            "title": "Lightning makes air explode into thunder"
-          },
-          {
-            "hook": "Lightning turns air into a shock wave",
-            "score": 75,
-            "thumbnail_text": "LIGHTNING SIGNAL",
-            "title": "Lightning makes air explode into thunder"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "cb4cb593e9502516",
       "title": "Storm clouds reveal a storm's heat engine",
       "category": "earth_from_space",
@@ -928,7 +474,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.474225+00:00",
+        "checked_at": "2026-06-16T16:10:03.559955+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -993,7 +539,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1001,10 +547,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -1079,11 +625,11 @@
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
           "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 7,
-          "label": "Animal Superpowers #7",
+          "episode": 8,
+          "label": "Animal Superpowers #8",
           "series": "Animal Superpowers"
         },
         "state": "magnetic",
@@ -1375,7 +921,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.475838+00:00",
+        "checked_at": "2026-06-16T16:10:03.561941+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1440,7 +986,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1448,10 +994,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -1526,11 +1072,11 @@
           "thumbnail_text": "ROCK TIME",
           "title": "Rock layers store ancient environments in stripes"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
           "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 7,
-          "label": "Animal Superpowers #7",
+          "episode": 8,
+          "label": "Animal Superpowers #8",
           "series": "Animal Superpowers"
         },
         "state": "magnetic",
@@ -1821,7 +1367,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.477165+00:00",
+        "checked_at": "2026-06-16T16:10:03.563552+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1891,7 +1437,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1899,10 +1445,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -1977,12 +1523,12 @@
           "thumbnail_text": "RIVER BEND",
           "title": "Rivers carve bends by stealing from one bank"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #7: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers #7"
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers #8"
         },
         "state": "magnetic",
         "strengths": [
@@ -2275,7 +1821,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.478363+00:00",
+        "checked_at": "2026-06-16T16:10:03.565001+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2345,7 +1891,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2353,10 +1899,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -2433,12 +1979,12 @@
           "thumbnail_text": "TOUCH COUNT",
           "title": "Plants count touches before snapping shut"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #7: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers #7"
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers #8"
         },
         "state": "magnetic",
         "strengths": [
@@ -2592,15 +2138,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.395,
+          "bootstrap_multiplier": 0.416,
           "can_adjust_strategy": false,
-          "confidence_score": 0.193,
+          "confidence_score": 0.222,
           "data_quality": "estimated",
           "data_quality_score": 0.35,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.22.",
           "recommendation_strength": "observe",
-          "sample_size": 15
+          "sample_size": 17
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2610,7 +2156,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.193,
+          "confidence_score": 0.222,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -2682,17 +2228,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.466,
+            "bootstrap_multiplier": 0.487,
             "can_adjust_strategy": false,
-            "confidence_score": 0.287,
+            "confidence_score": 0.316,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2731,7 +2277,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.469185+00:00",
+        "checked_at": "2026-06-16T16:10:03.555520+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2803,7 +2349,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2811,10 +2357,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -2889,12 +2435,12 @@
           "thumbnail_text": "PRIDE PLAN",
           "title": "Lions hunt better when the pride coordinates"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #7: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers #7"
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers #8"
         },
         "state": "magnetic",
         "strengths": [
@@ -2907,17 +2453,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.466,
+            "bootstrap_multiplier": 0.487,
             "can_adjust_strategy": false,
-            "confidence_score": 0.287,
+            "confidence_score": 0.316,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -3048,15 +2594,15 @@
         "approved": false,
         "category": "ocean",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.444,
+          "bootstrap_multiplier": 0.465,
           "can_adjust_strategy": false,
-          "confidence_score": 0.258,
+          "confidence_score": 0.286,
           "data_quality": "estimated",
           "data_quality_score": 0.35,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.26.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29.",
           "recommendation_strength": "observe",
-          "sample_size": 17
+          "sample_size": 19
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3066,7 +2612,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.258,
+          "confidence_score": 0.286,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -3142,17 +2688,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.195,
           "confidence": {
-            "bootstrap_multiplier": 0.452,
+            "bootstrap_multiplier": 0.473,
             "can_adjust_strategy": false,
-            "confidence_score": 0.269,
+            "confidence_score": 0.297,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -3190,7 +2736,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.468147+00:00",
+        "checked_at": "2026-06-16T16:10:03.554310+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3255,7 +2801,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3263,10 +2809,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -3359,17 +2905,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.195,
           "confidence": {
-            "bootstrap_multiplier": 0.452,
+            "bootstrap_multiplier": 0.473,
             "can_adjust_strategy": false,
-            "confidence_score": 0.269,
+            "confidence_score": 0.297,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -3641,7 +3187,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.470068+00:00",
+        "checked_at": "2026-06-16T16:10:03.556605+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3706,7 +3252,7 @@
           },
           "explore_rate": 0.18,
           "mode": "explore",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3714,10 +3260,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -4091,7 +3637,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T15:10:19.479460+00:00",
+        "checked_at": "2026-06-16T16:10:03.566313+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4160,7 +3706,7 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 18,
+          "sample_count": 19,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4168,10 +3714,10 @@
           },
           "winning_experiments": {
             "cta:follow_for_more": 41.96,
-            "cta:specific_question": 37.05,
+            "format:fresh_variant": 34.72,
             "format:winner_inspired": 43.12,
             "hook:pattern_reuse": 43.12,
-            "thumbnail:new_thumbnail": 41.2
+            "thumbnail:new_thumbnail": 40.12
           }
         },
         "hook_options": [
@@ -4249,12 +3795,12 @@
           "thumbnail_text": "FIELD LINES",
           "title": "Magnets make invisible fields visible"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #7: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers #7"
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers #8"
         },
         "state": "usable",
         "strengths": [
