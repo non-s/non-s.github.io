@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T17:10:15.525273+00:00",
+  "generated_at": "2026-06-16T17:29:10.511652+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,17 +12,95 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 7,
+    "pending_before": 15,
     "pending_after": 7,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 8,
+    "repair_needed": 1,
+    "repaired": 8,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "objective_gate:observe_before_scaling": 4
+      "duplicate_title": 5,
+      "objective_gate:observe_before_scaling": 4,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "queue_score_reject": 1,
+      "bad_plural_verb": 1,
+      "non_animal_body_language": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "bad1c12ae82bba6e",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "3a2777a20047f919",
+      "title": "Tigers wear stripe shadows as camouflage",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "4977fecc7ec5da21",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d433c29b2a207deb",
+      "title": "Mantises judge distance with 3D vision",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "3ddeeb7708519257",
+      "title": "canyon walls remember a whole herd",
+      "reasons": [
+        "non_animal_body_language"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "07172388b9a65046",
+      "title": "spring forest floor hides a tiny army",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3e7f77fdb4f98b64",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "cac5c4b8425e96c2",
       "title": "Storm clouds reveal a storm's heat engine",
@@ -62,14 +140,6 @@
       "reasons": [
         "copy_subject_mismatch",
         "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "01c9148ecf9c93ea",
-      "title": "Snakes smell the air with their tongues",
-      "reasons": [
-        "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
@@ -262,68 +332,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "739b3b1303ac769e",
-      "title": "Trees record wet years inside their rings",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0ee0c37ee7a5bdce",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e3eec0d061f8518c",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "subject_not_clear",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "24a1fc90e06cea2a",
-      "title": "walrus uses rocks to take a shower",
-      "reasons": [
-        "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "97c9af03cf330a25",
-      "title": "atmosphere seen from above looks this way",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "bdd9c5c27b48b678",
-      "title": "banyan trees build trunks out of their own branches",
-      "reasons": [
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "895e9c289b6b72e0",
-      "title": "moss wears water like invisible armor",
-      "reasons": [
-        "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -474,7 +482,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.186149+00:00",
+        "checked_at": "2026-06-16T17:29:05.578181+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -921,7 +929,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.187535+00:00",
+        "checked_at": "2026-06-16T17:29:05.579919+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1375,7 +1383,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.188804+00:00",
+        "checked_at": "2026-06-16T17:29:05.581504+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1831,7 +1839,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.183308+00:00",
+        "checked_at": "2026-06-16T17:29:05.228506+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2290,7 +2298,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.182193+00:00",
+        "checked_at": "2026-06-16T17:29:05.200453+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2741,7 +2749,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.184258+00:00",
+        "checked_at": "2026-06-16T17:29:05.556043+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3191,7 +3199,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T17:10:11.189996+00:00",
+        "checked_at": "2026-06-16T17:29:05.582942+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
