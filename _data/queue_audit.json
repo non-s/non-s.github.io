@@ -1,28 +1,148 @@
 {
-  "generated_at": "2026-06-16T00:07:23.349710+00:00",
-  "pending": 11,
+  "generated_at": "2026-06-16T02:03:32.254081+00:00",
+  "pending": 13,
   "states": {
-    "rewrite": 11
+    "rewrite": 13
   },
   "mechanism_clusters": {
-    "dance_navigation": 1,
-    "ear_signal": 1
+    "ear_signal": 2,
+    "dance_navigation": 1
   },
   "rights": {
-    "approved": 11
+    "approved": 13
   },
   "prune_summary": {
-    "pending_before": 11,
-    "pending_after": 11,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 9,
+    "pending_before": 23,
+    "pending_after": 13,
+    "rejected": 10,
+    "repair_needed": 4,
+    "repaired": 16,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 20,
-      "objective_gate:observe_before_scaling": 2
+      "objective_gate:bootstrap_observe_before_scaling": 24,
+      "subject_not_immediately_clear": 4,
+      "queue_score_reject": 4,
+      "missing_action_word": 3,
+      "duplicate_title": 3,
+      "off_topic_visual": 3,
+      "copy_subject_mismatch": 3,
+      "no_action_promise": 2,
+      "subject_not_clear": 2,
+      "script_hook_mismatch": 2,
+      "objective_gate:observe_before_scaling": 2,
+      "script_subject_mismatch": 2,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "awkward_non_animal_use_pronoun": 1,
+      "missing_visible_cue": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1511d95f98828313",
+      "title": "Auroras glow when solar particles hit air",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "fd402cc2c2ecee8e",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8712f418c9086d79",
+      "title": "Owls reveal the answer with silent wings",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "02190a0efcf50fcc",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "5f51bc76f0d3ebe4",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "e3eec0d061f8518c",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "a7e221399ab17cd9",
+      "title": "orange mushrooms reveal hidden forest signals",
+      "reasons": [
+        "script_hook_mismatch",
+        "awkward_non_animal_use_pronoun"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ef4b2691ffed6d03",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "daa3d20332717e31",
+      "title": "Beetles can steer by the Milky Way",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "faa31046c0311a93",
       "title": "Rock layers store ancient environments in stripes",
@@ -143,14 +263,6 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "01c9148ecf9c93ea",
-      "title": "Snakes smell the air with their tongues",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
       "id": "0af584c7e3758201",
       "title": "The moon keeps one face turned toward Earth",
       "reasons": [
@@ -202,15 +314,6 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "8712f418c9086d79",
-      "title": "Owls reveal the answer with silent wings",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
       "id": "5f0451e08a9ba40a",
       "title": "Birds see ultraviolet patterns we miss",
       "reasons": [
@@ -235,92 +338,6 @@
         "copy_subject_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "5f51bc76f0d3ebe4",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "7ad7112976314499",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "09e4ed46cb7f9ead",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "f9786d0b71f05145",
-      "title": "Rivers carve bends by stealing from one bank",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "38a9a9876bc2c5d0",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "984084a6aff9d81c",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2a0c7fc1ea7bf92f",
-      "title": "Forests use canopy before they trick",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a84b2a9b8ba858f9",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -470,7 +487,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.884935+00:00",
+        "checked_at": "2026-06-16T02:03:23.621165+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -922,7 +939,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.886817+00:00",
+        "checked_at": "2026-06-16T02:03:23.630072+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1227,6 +1244,454 @@
       }
     },
     {
+      "id": "d1697c106260a35b",
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ecosystems",
+      "publish_score": {
+        "approved": true,
+        "category": "ecosystems",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 89
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "ecosystem_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-16T02:03:23.638658+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 96.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 96.0,
+      "youtube_brain": {
+        "animal": "coral",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "ecosystem_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "coral",
+        "viewer_promise": "See why this coral ecosystem engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after coral?",
+        "cta_prompt": "Want to understand how nature really works?",
+        "curiosity_gap": {
+          "hook": "Why does this ocean changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "ecosystem engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 13,
+          "winners": {
+            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 46.76,
+            "format:fresh_variant": 46.5,
+            "format:winner_inspired": 46.77,
+            "hook:pattern_reuse": 46.77,
+            "thumbnail:new_thumbnail": 46.69
+          }
+        },
+        "hook_options": [
+          "Coral reefs are built by tiny living builders",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral reefs give away the answer through reef city"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "coral",
+          "ending_line": "Which habitat next?",
+          "final_line": "Which habitat next?",
+          "loop_score": 0.222,
+          "opening_line": "Coral reefs are built by tiny living builders.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "coral",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.222,
+        "pinned_comment": "Watch the reef city again. Tomorrow: another nature signal. Which matters more here: the individual species or the whole system?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.24,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
+          "first_frame_text": "REEF CITY",
+          "first_frame_text_words": 2,
+          "hook": "Coral reefs are built by tiny living builders.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.222,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the reef city, so viewers rewatch the coral clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 84,
+        "selected_variant": {
+          "hook": "Watch the reef city; it explains the behavior",
+          "score": 81,
+          "thumbnail_text": "REEF CITY",
+          "title": "Coral reefs are cities built by tiny animals"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "REEF CITY",
+          "WATCH REEF CITY",
+          "CORAL REEFS BUILD",
+          "REEF CITY MATTERS",
+          "REEF CITY FIRST",
+          "REEF CITY REVEAL",
+          "REEF CITY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Coral reefs are cities built by tiny animals",
+          "Coral reefs use reef city before they build",
+          "This reef city gives coral reefs away",
+          "Why coral reefs build after one reef city",
+          "Coral reefs reveal the answer with reef city",
+          "The reef city that changes the moment",
+          "Coral reefs make one reef city matter",
+          "Coral reefs show the hidden answer in seconds",
+          "Coral reefs: watch this reef city",
+          "Watch coral reefs after the reef city"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 80,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "REEF CITY FIRST",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "CORAL REEFS BUILD",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "CORAL REEFS BUILD",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "4d34ad4bed0a32bb",
       "title": "Mantises judge distance with 3D vision",
       "category": "insects",
@@ -1373,7 +1838,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.880958+00:00",
+        "checked_at": "2026-06-16T02:03:23.597887+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1825,7 +2290,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.888440+00:00",
+        "checked_at": "2026-06-16T02:03:23.631777+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2277,7 +2742,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.890161+00:00",
+        "checked_at": "2026-06-16T02:03:23.633562+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2579,6 +3044,459 @@
       }
     },
     {
+      "id": "ad108c6a266bd595",
+      "title": "Lightning makes air explode into thunder",
+      "category": "weather",
+      "publish_score": {
+        "approved": true,
+        "category": "weather",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "ear_signal",
+          "payoff_time_s": 8.8,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 99
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 82
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-16T02:03:23.640555+00:00",
+        "mechanism_cluster": "ear_signal",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 92.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 92.0,
+      "youtube_brain": {
+        "animal": "lightning",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "lightning",
+        "viewer_promise": "See why lightning earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after storm?",
+        "cta_prompt": "Want to see more extreme weather explained fast?",
+        "curiosity_gap": {
+          "hook": "Why does this nature changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 13,
+          "winners": {
+            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 46.76,
+            "format:fresh_variant": 46.5,
+            "format:winner_inspired": 46.77,
+            "hook:pattern_reuse": 46.77,
+            "thumbnail:new_thumbnail": 46.69
+          }
+        },
+        "hook_options": [
+          "Storm shows why the sound matters.",
+          "Storm shows why the lightning flash matters.",
+          "Storm shows why the lightning flash matters.",
+          "Storm shows why the lightning flash matters.",
+          "Storm shows why the lightning flash matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "lightning",
+          "ending_line": "Which storm signal next?",
+          "final_line": "Which storm signal next?",
+          "loop_score": 0.173,
+          "opening_line": "Lightning turns air into a shock wave.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "lightning",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.173,
+        "pinned_comment": "Watch the sound again. Tomorrow: another nature signal. Which is scarier: wind, water, lightning, or heat?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.38,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Lightning turns air into shock wave Watch the flash first because lightning",
+          "first_frame_text": "THUNDER SNAP",
+          "first_frame_text_words": 2,
+          "hook": "Lightning turns air into a shock wave.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.173,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.8,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the sound, so viewers rewatch the storm clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 82
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "subject_not_clear",
+          "missing_action_word"
+        ],
+        "score": 72,
+        "selected_variant": {
+          "hook": "Lightning turns air into a shock wave",
+          "score": 82,
+          "thumbnail_text": "THUNDER SNAP",
+          "title": "Lightning makes air explode into thunder"
+        },
+        "series": "Earth Engine",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Earth Engine",
+          "series": "Earth Engine"
+        },
+        "state": "usable",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "THUNDER SNAP",
+          "LIGHTNING FLASH",
+          "WATCH LIGHTNING FLASH",
+          "LIGHTNING SIGNAL",
+          "LIGHTNING FLASH MATTERS",
+          "LIGHTNING FLASH FIRST",
+          "LIGHTNING FLASH REVEAL",
+          "LIGHTNING FLASH CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Lightning makes air explode into thunder",
+          "Lightning signals through lightning flash",
+          "Lightning uses lightning flash before it signals",
+          "This lightning flash gives lightning away",
+          "Why lightning signals after one lightning flash",
+          "Lightning reveals the answer with lightning flash",
+          "The lightning flash that changes the moment",
+          "Lightning makes one lightning flash matter",
+          "Lightning shows the hidden answer in seconds",
+          "Lightning: watch this lightning flash"
+        ],
+        "top_variants": [
+          {
+            "hook": "Lightning turns air into a shock wave",
+            "score": 82,
+            "thumbnail_text": "THUNDER SNAP",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Watch the lightning flash; it explains the behavior",
+            "score": 82,
+            "thumbnail_text": "THUNDER SNAP",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Start with the lightning flash; it changes the scene",
+            "score": 82,
+            "thumbnail_text": "THUNDER SNAP",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Lightning turns air into a shock wave",
+            "score": 75,
+            "thumbnail_text": "LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Watch the lightning flash; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Start with the lightning flash; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Lightning turns air into a shock wave",
+            "score": 75,
+            "thumbnail_text": "WATCH LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Watch the lightning flash; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "WATCH LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Start with the lightning flash; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "WATCH LIGHTNING FLASH",
+            "title": "Lightning makes air explode into thunder"
+          },
+          {
+            "hook": "Lightning turns air into a shock wave",
+            "score": 75,
+            "thumbnail_text": "LIGHTNING SIGNAL",
+            "title": "Lightning makes air explode into thunder"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "739b3b1303ac769e",
       "title": "Trees record wet years inside their rings",
       "category": "trees",
@@ -2724,7 +3642,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.891893+00:00",
+        "checked_at": "2026-06-16T02:03:23.635325+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3177,7 +4095,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.883234+00:00",
+        "checked_at": "2026-06-16T02:03:23.617181+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3634,7 +4552,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.893312+00:00",
+        "checked_at": "2026-06-16T02:03:23.636801+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4093,7 +5011,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.882035+00:00",
+        "checked_at": "2026-06-16T02:03:23.615966+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4545,7 +5463,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.878074+00:00",
+        "checked_at": "2026-06-16T02:03:23.594821+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4997,7 +5915,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T00:07:15.879427+00:00",
+        "checked_at": "2026-06-16T02:03:23.596265+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
