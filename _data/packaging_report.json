@@ -1,11 +1,14 @@
 {
-  "generated_at": "2026-06-16T11:10:11.267655+00:00",
-  "pending": 11,
+  "generated_at": "2026-06-16T12:23:08.503105+00:00",
+  "pending": 12,
   "states": {
-    "magnetic": 11
+    "magnetic": 11,
+    "usable": 1
   },
   "top_risks": {
-    "missing_visible_cue": 1
+    "missing_visible_cue": 1,
+    "title_needs_stronger_shape": 1,
+    "subject_not_clear": 1
   },
   "top": [
     {
@@ -2608,7 +2611,7 @@
       }
     },
     {
-      "id": "360ed2f163e61f41",
+      "id": "e1a38f060ce4a709",
       "title": "Plants count touches before snapping shut",
       "thumbnail_text": "TOUCH COUNT",
       "category": "plants",
@@ -2866,6 +2869,266 @@
           "payoff_time_s": 9.350000000000001,
           "cta_count": 1,
           "loop_score": 0.299
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "ebd2fe53f2a694d8",
+      "title": "Magnets make invisible fields visible",
+      "thumbnail_text": "FIELD LINES",
+      "category": "physics",
+      "packaging": {
+        "score": 69,
+        "state": "usable",
+        "strengths": [
+          "thumbnail_scannable",
+          "action_word",
+          "visible_cue"
+        ],
+        "risks": [
+          "title_needs_stronger_shape",
+          "subject_not_clear"
+        ],
+        "title_options": [
+          "Magnets make invisible fields visible",
+          "Magnets use field lines before they change",
+          "Why magnets change after one field lines",
+          "Magnets reveal the answer with field lines",
+          "The field lines that changes the moment",
+          "Magnets make one field lines matter",
+          "Magnets show the hidden answer in seconds",
+          "Magnets: watch this field lines",
+          "Watch magnets after the field lines"
+        ],
+        "thumbnail_options": [
+          "FIELD LINES",
+          "WATCH FIELD LINES",
+          "MAGNETS CHANGE",
+          "FIELD LINES MATTERS",
+          "FIELD LINES FIRST",
+          "FIELD LINES REVEAL",
+          "FIELD LINES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "hook_options": [
+          "Physics show why the field lines matters.",
+          "Physics show why the field lines matters.",
+          "Physics show why the field lines matters.",
+          "Physics show why the field lines matters.",
+          "Physics show why the field lines matters."
+        ],
+        "selected_variant": {
+          "score": 80,
+          "title": "Magnets make invisible fields visible",
+          "thumbnail_text": "FIELD LINES",
+          "hook": "Start with the field lines; it changes the scene"
+        },
+        "top_variants": [
+          {
+            "score": 80,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES",
+            "hook": "Start with the field lines; it changes the scene"
+          },
+          {
+            "score": 79,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES",
+            "hook": "Watch the field lines; it explains the behavior"
+          },
+          {
+            "score": 77,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES",
+            "hook": "Magnets can show a hidden force map"
+          },
+          {
+            "score": 73,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "WATCH FIELD LINES",
+            "hook": "Start with the field lines; it changes the scene"
+          },
+          {
+            "score": 73,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "MAGNETS CHANGE",
+            "hook": "Watch the field lines; it explains the behavior"
+          },
+          {
+            "score": 73,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "MAGNETS CHANGE",
+            "hook": "Start with the field lines; it changes the scene"
+          },
+          {
+            "score": 73,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "hook": "Start with the field lines; it changes the scene"
+          },
+          {
+            "score": 73,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES FIRST",
+            "hook": "Start with the field lines; it changes the scene"
+          },
+          {
+            "score": 72,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "WATCH FIELD LINES",
+            "hook": "Watch the field lines; it explains the behavior"
+          },
+          {
+            "score": 72,
+            "title": "Magnets make invisible fields visible",
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "hook": "Watch the field lines; it explains the behavior"
+          }
+        ],
+        "retention": {
+          "score": 72,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 74,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.18,
+          "winners": {
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 47.05,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6,
+            "format:fresh_variant": 41.88
+          },
+          "sample_count": 15,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Animal Superpowers",
+          "episode": 6,
+          "label": "Animal Superpowers #6",
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the field lines again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after physics?",
+        "series": "Animal Superpowers #6",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "replay_prompt": "End by pointing back to the field lines, so viewers rewatch the physics clip.",
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "confidence": {
+            "confidence_score": 0.174,
+            "sample_size": 5,
+            "minimum_sample_size": 8,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.381,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17."
+        },
+        "curiosity_gap": {
+          "hook": "Why do these physics change after the body cue?",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "force",
+          "opening_line": "Magnets can show a hidden force map.",
+          "ending_line": "Which force next?",
+          "final_line": "Which force next?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.658,
+          "render_hints": {
+            "carry_keyword": "force",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.658,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "physics demo",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "FIELD LINES",
+          "first_frame_text_words": 2,
+          "hook": "Magnets can show a hidden force map.",
+          "hook_words": 6,
+          "first_2s_narration": "Magnets can show hidden force map Watch the filings line up because",
+          "caption_chars_per_second": 15.44,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.8,
+          "cta_count": 1,
+          "loop_score": 0.658
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }
