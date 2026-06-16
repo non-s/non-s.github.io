@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T22:27:29.951192+00:00",
+  "generated_at": "2026-06-16T22:35:08.670246+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,26 +12,14 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 19,
+    "pending_before": 7,
     "pending_after": 7,
-    "rejected": 12,
-    "repair_needed": 3,
-    "repaired": 8,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "copy_subject_mismatch": 5,
-      "duplicate_title": 5,
-      "objective_gate:observe_before_scaling": 4,
-      "queue_score_reject": 3,
-      "script_subject_mismatch": 3,
-      "duplicate_script": 3,
-      "duplicate_angle": 3,
-      "script_hook_mismatch": 2,
-      "subject_not_immediately_clear": 2,
-      "script does not expose enough concrete visual detail": 1,
-      "no_action_promise": 1,
-      "missing_action_word": 1,
-      "off_topic_visual": 1
+      "objective_gate:observe_before_scaling": 4
     }
   },
   "rejected_preview": [
@@ -186,6 +174,17 @@
       "stage": "queue_prune"
     },
     {
+      "id": "0af584c7e3758201",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
       "id": "d3791aba24b45e32",
       "title": "bare trees stand tall on windy days",
       "reasons": [
@@ -237,6 +236,14 @@
     {
       "id": "4977fecc7ec5da21",
       "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
       "reasons": [
         "duplicate_title"
       ],
@@ -299,25 +306,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "360ed2f163e61f41",
-      "title": "Plants count touches before snapping shut",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "47f36dffdfb07860",
-      "title": "Deer aim their ears like sound radar",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -329,17 +317,17 @@
         "approved": true,
         "category": "earth_from_space",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "minimum_sample_size": 18,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 1
+          "sample_size": 5
         },
-        "distribution_adjustment": 0,
+        "distribution_adjustment": -3,
         "editorial_guard": {
           "approved": true,
           "issues": [],
@@ -347,7 +335,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -373,14 +361,14 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 60,
+          "score": 59,
           "signals": {
             "comment_potential": 54,
             "educational_potential": 64,
             "emotional_potential": 35,
             "novelty": 45,
-            "replay_potential": 72,
-            "viral_potential": 53,
+            "replay_potential": 71,
+            "viral_potential": 50,
             "visual_potential": 75
           },
           "verdict": "rewrite"
@@ -417,34 +405,35 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.143
         },
         "title_score": 90,
         "weak_content": {
@@ -467,7 +456,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:24.579072+00:00",
+        "checked_at": "2026-06-16T22:35:03.606497+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -517,9 +506,7 @@
         },
         "editorial_rulebook": {
           "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
+          "notes": [],
           "recommended_duration_s": 24,
           "recommended_format": "earth engine",
           "score": 100.0,
@@ -558,9 +545,9 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "storm",
-          "ending_line": "Which satellite clue next?",
-          "final_line": "Which satellite clue next?",
-          "loop_score": 0.263,
+          "ending_line": "Which satellite clue next.",
+          "final_line": "Now the storm at the start makes sense.",
+          "loop_score": 0.408,
           "opening_line": "Storm clouds show where a storm is feeding.",
           "render_hints": {
             "avoid_hard_stop": true,
@@ -569,7 +556,7 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.263,
+        "loop_score": 0.408,
         "pinned_comment": "Watch the clouds again. Tomorrow: another nature signal. What part of this feels most impossible?",
         "preflight_inputs": {
           "caption_chars_per_second": 15.06,
@@ -581,7 +568,7 @@
           "hook": "Storm clouds show where a storm is feeding.",
           "hook_specificity": 0.78,
           "hook_words": 7,
-          "loop_score": 0.263,
+          "loop_score": 0.408,
           "novelty_score": 0.58,
           "payoff_time_s": 9.9,
           "visual_motion_score": 0.76
@@ -616,16 +603,16 @@
         "score": 93,
         "selected_variant": {
           "hook": "Watch the cloud spiral; it explains the behavior",
-          "score": 80,
+          "score": 77,
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Watch The Cue",
+        "series": "Animal Superpowers #9",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 9,
+          "label": "Animal Superpowers #9",
+          "series": "Animal Superpowers"
         },
         "state": "magnetic",
         "strengths": [
@@ -636,34 +623,35 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -696,61 +684,61 @@
         "top_variants": [
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 80,
+            "score": 77,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 80,
+            "score": 77,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 79,
+            "score": 76,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "STORM CLOUDS BUILD",
             "title": "Storm clouds reveal a storm's heat engine"
           }
@@ -915,7 +903,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:24.600710+00:00",
+        "checked_at": "2026-06-16T22:35:03.608243+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1229,17 +1217,17 @@
         "approved": true,
         "category": "plants",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "minimum_sample_size": 18,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 1
+          "sample_size": 5
         },
-        "distribution_adjustment": 0,
+        "distribution_adjustment": -3,
         "editorial_guard": {
           "approved": true,
           "issues": [],
@@ -1247,7 +1235,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -1273,14 +1261,14 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 60,
+          "score": 59,
           "signals": {
             "comment_potential": 54,
             "educational_potential": 71,
             "emotional_potential": 35,
             "novelty": 45,
-            "replay_potential": 82,
-            "viral_potential": 63,
+            "replay_potential": 81,
+            "viral_potential": 60,
             "visual_potential": 55
           },
           "verdict": "rewrite"
@@ -1317,35 +1305,36 @@
         "state": "publish_ready",
         "story_format": "plant_mechanism",
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "title_score": 100,
         "weak_content": {
@@ -1368,7 +1357,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:24.239274+00:00",
+        "checked_at": "2026-06-16T22:35:03.609818+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1522,16 +1511,16 @@
         "score": 85,
         "selected_variant": {
           "hook": "Watch the trap hairs; it explains the behavior",
-          "score": 79,
+          "score": 76,
           "thumbnail_text": "TOUCH COUNT",
           "title": "Plants count touches before snapping shut"
         },
-        "series": "Watch The Cue",
+        "series": "Animal Superpowers #9",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #9: compare this with another force of nature.",
           "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "label": "Animal Superpowers #9",
+          "series": "Animal Superpowers #9"
         },
         "state": "magnetic",
         "strengths": [
@@ -1541,35 +1530,36 @@
           "action_word"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -1603,61 +1593,61 @@
         "top_variants": [
           {
             "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 79,
+            "score": 76,
             "thumbnail_text": "TOUCH COUNT",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Start with the trap hairs; it changes the scene",
-            "score": 79,
+            "score": 76,
             "thumbnail_text": "TOUCH COUNT",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Plants can count touches before closing",
-            "score": 77,
+            "score": 74,
             "thumbnail_text": "TOUCH COUNT",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "TRAP HAIRS",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "TRAP HAIRS",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "WATCH TRAP HAIRS",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "WATCH TRAP HAIRS",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "PLANTS TRICK",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "PLANTS TRICK",
             "title": "Plants count touches before snapping shut"
           },
           {
             "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
+            "score": 69,
             "thumbnail_text": "TRAP HAIRS MATTERS",
             "title": "Plants count touches before snapping shut"
           }
@@ -1823,7 +1813,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:23.827394+00:00",
+        "checked_at": "2026-06-16T22:35:03.602338+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2282,7 +2272,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:23.826063+00:00",
+        "checked_at": "2026-06-16T22:35:03.600982+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2733,7 +2723,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:23.887926+00:00",
+        "checked_at": "2026-06-16T22:35:03.603495+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3183,7 +3173,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T22:27:24.603642+00:00",
+        "checked_at": "2026-06-16T22:35:03.611341+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
