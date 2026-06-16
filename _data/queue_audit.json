@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T23:55:13.857964+00:00",
+  "generated_at": "2026-06-16T23:58:33.499896+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,23 +12,14 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 17,
+    "pending_before": 7,
     "pending_after": 7,
-    "rejected": 10,
-    "repair_needed": 2,
-    "repaired": 9,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "duplicate_title": 5,
-      "objective_gate:observe_before_scaling": 4,
-      "copy_subject_mismatch": 3,
-      "script_subject_mismatch": 2,
-      "subject_not_immediately_clear": 2,
-      "queue_score_reject": 2,
-      "off_topic_visual": 2,
-      "script_hook_mismatch": 1,
-      "duplicate_script": 1,
-      "duplicate_angle": 1
+      "objective_gate:observe_before_scaling": 4
     }
   },
   "rejected_preview": [
@@ -190,6 +181,14 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "c43204a5483fee1e",
       "title": "Coral reefs are cities built by tiny animals",
       "reasons": [
@@ -304,16 +303,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "bad1c12ae82bba6e",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -325,17 +314,17 @@
         "approved": true,
         "category": "earth_from_space",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "minimum_sample_size": 18,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 1
+          "sample_size": 5
         },
-        "distribution_adjustment": 0,
+        "distribution_adjustment": -3,
         "editorial_guard": {
           "approved": true,
           "issues": [],
@@ -343,7 +332,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.007,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -369,14 +358,14 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 60,
+          "score": 59,
           "signals": {
             "comment_potential": 54,
             "educational_potential": 64,
             "emotional_potential": 35,
             "novelty": 45,
-            "replay_potential": 72,
-            "viral_potential": 53,
+            "replay_potential": 71,
+            "viral_potential": 50,
             "visual_potential": 75
           },
           "verdict": "rewrite"
@@ -413,34 +402,35 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.143
         },
         "title_score": 90,
         "weak_content": {
@@ -463,7 +453,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.804739+00:00",
+        "checked_at": "2026-06-16T23:58:28.451158+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -513,9 +503,7 @@
         },
         "editorial_rulebook": {
           "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
+          "notes": [],
           "recommended_duration_s": 24,
           "recommended_format": "earth engine",
           "score": 100.0,
@@ -554,9 +542,9 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "storm",
-          "ending_line": "Which satellite clue next?",
-          "final_line": "Which satellite clue next?",
-          "loop_score": 0.263,
+          "ending_line": "Which satellite clue next.",
+          "final_line": "Now the storm at the start makes sense.",
+          "loop_score": 0.408,
           "opening_line": "Storm clouds show where a storm is feeding.",
           "render_hints": {
             "avoid_hard_stop": true,
@@ -565,7 +553,7 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.263,
+        "loop_score": 0.408,
         "pinned_comment": "Watch the clouds again. Tomorrow: another nature signal. What part of this feels most impossible?",
         "preflight_inputs": {
           "caption_chars_per_second": 15.06,
@@ -577,7 +565,7 @@
           "hook": "Storm clouds show where a storm is feeding.",
           "hook_specificity": 0.78,
           "hook_words": 7,
-          "loop_score": 0.263,
+          "loop_score": 0.408,
           "novelty_score": 0.58,
           "payoff_time_s": 9.9,
           "visual_motion_score": 0.76
@@ -612,16 +600,16 @@
         "score": 93,
         "selected_variant": {
           "hook": "Watch the cloud spiral; it explains the behavior",
-          "score": 80,
+          "score": 77,
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Watch The Cue",
+        "series": "Animal Superpowers #9",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 9,
+          "label": "Animal Superpowers #9",
+          "series": "Animal Superpowers"
         },
         "state": "magnetic",
         "strengths": [
@@ -632,34 +620,35 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 8,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -692,61 +681,61 @@
         "top_variants": [
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 80,
+            "score": 77,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 80,
+            "score": 77,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 79,
+            "score": 76,
             "thumbnail_text": "STORM ENGINE",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Start with the cloud spiral; it changes the scene",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "WATCH CLOUD SPIRAL",
             "title": "Storm clouds reveal a storm's heat engine"
           },
           {
             "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
+            "score": 70,
             "thumbnail_text": "STORM CLOUDS BUILD",
             "title": "Storm clouds reveal a storm's heat engine"
           }
@@ -911,7 +900,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.808130+00:00",
+        "checked_at": "2026-06-16T23:58:28.458692+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1365,7 +1354,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.809602+00:00",
+        "checked_at": "2026-06-16T23:58:28.460249+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1821,7 +1810,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.434668+00:00",
+        "checked_at": "2026-06-16T23:58:28.446841+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2280,7 +2269,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.416678+00:00",
+        "checked_at": "2026-06-16T23:58:28.445576+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2731,7 +2720,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.464279+00:00",
+        "checked_at": "2026-06-16T23:58:28.447964+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3181,7 +3170,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T23:55:08.810936+00:00",
+        "checked_at": "2026-06-16T23:58:28.461843+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
