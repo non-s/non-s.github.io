@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-06-16T11:01:20.073841+00:00",
-  "pending": 12,
+  "generated_at": "2026-06-16T11:10:11.376829+00:00",
+  "pending": 11,
   "states": {
-    "publish_ready": 6,
-    "rewrite": 6
+    "rewrite": 5,
+    "publish_ready": 6
   },
   "mechanism_clusters": {
     "ear_signal": 2,
     "dance_navigation": 1
   },
   "rights": {
-    "approved": 12
+    "approved": 11
   },
   "prune_summary": {
-    "pending_before": 12,
-    "pending_after": 12,
+    "pending_before": 11,
+    "pending_after": 11,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
-      "objective_gate:observe_before_scaling": 6
+      "objective_gate:bootstrap_observe_before_scaling": 14,
+      "objective_gate:observe_before_scaling": 8
     }
   },
   "rejected_preview": [
@@ -339,6 +339,459 @@
   ],
   "top": [
     {
+      "id": "ea53dd69eab9d395",
+      "title": "Bees dance directions back to the hive",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.444,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.258,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.26.",
+          "recommendation_strength": "observe",
+          "sample_size": 17
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.258,
+          "mechanism_cluster": "dance_navigation",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [
+            "weak_visual_surface"
+          ],
+          "score": 55,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 61,
+            "emotional_potential": 39,
+            "novelty": 54,
+            "replay_potential": 59,
+            "viral_potential": 62,
+            "visual_potential": 54
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.452,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.269,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+            "recommendation_strength": "observe",
+            "sample_size": 8
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-16T11:10:03.911389+00:00",
+        "mechanism_cluster": "dance_navigation",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "bees",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "bees",
+        "viewer_promise": "See why bees animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "Why does this microscopy changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 15,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
+          }
+        },
+        "hook_options": [
+          "Bees can point the hive toward food",
+          "Bees show why the dance map matters.",
+          "Bees show why the dance map matters.",
+          "Bees show why the dance map matters.",
+          "Bees give away the answer through dance map"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "bees",
+          "ending_line": "Which insect should we decode next?",
+          "final_line": "Which insect should we decode next?",
+          "loop_score": 0.29,
+          "opening_line": "Bees can point the hive toward food.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "bees",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.29,
+        "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.28,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Bees can point the hive toward food Watch the body angle because",
+          "first_frame_text": "DANCE MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bees can point the hive toward food.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.29,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the dance map, so viewers rewatch the bees clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 90,
+        "selected_variant": {
+          "hook": "Start with the dance map; it changes the scene",
+          "score": 76,
+          "thumbnail_text": "DANCE MAP",
+          "title": "Bees dance directions back to the hive"
+        },
+        "series": "Tiny Worlds #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Tiny Worlds #3",
+          "series": "Tiny Worlds"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.452,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.269,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+            "recommendation_strength": "observe",
+            "sample_size": 8
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "DANCE MAP",
+          "WATCH DANCE MAP",
+          "BEES CARRY",
+          "DANCE MAP MATTERS",
+          "DANCE MAP FIRST",
+          "DANCE MAP REVEAL",
+          "DANCE MAP CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Bees dance directions back to the hive",
+          "Bees use dance map before they carry",
+          "This dance map gives bees away",
+          "Why bees carry after one dance map",
+          "Bees reveal the answer with dance map",
+          "The dance map that changes the moment",
+          "Bees make one dance map matter",
+          "Bees show the hidden answer in seconds",
+          "Bees: watch this dance map",
+          "Watch bees after the dance map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the dance map; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 74,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "BEES CARRY",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "DANCE MAP MATTERS",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Start with the dance map; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "DANCE MAP FIRST",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 68,
+            "thumbnail_text": "DANCE MAP FIRST",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Watch the dance map; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "DANCE MAP FIRST",
+            "title": "Bees dance directions back to the hive"
+          },
+          {
+            "hook": "Bees can point the hive toward food",
+            "score": 67,
+            "thumbnail_text": "WATCH DANCE MAP",
+            "title": "Bees dance directions back to the hive"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "4d34ad4bed0a32bb",
       "title": "Mantises judge distance with 3D vision",
       "category": "insects",
@@ -390,15 +843,15 @@
           },
           "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
-          "score": 56,
+          "score": 60,
           "signals": {
-            "comment_potential": 40,
-            "educational_potential": 60,
-            "emotional_potential": 38,
-            "novelty": 63,
-            "replay_potential": 58,
-            "viral_potential": 61,
-            "visual_potential": 63
+            "comment_potential": 41,
+            "educational_potential": 61,
+            "emotional_potential": 39,
+            "novelty": 64,
+            "replay_potential": 67,
+            "viral_potential": 70,
+            "visual_potential": 64
           },
           "verdict": "rewrite"
         },
@@ -485,7 +938,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.265366+00:00",
+        "checked_at": "2026-06-16T11:10:03.913031+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -552,18 +1005,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -634,7 +1087,7 @@
         "score": 92,
         "selected_variant": {
           "hook": "Mantises can measure a strike in 3D",
-          "score": 77,
+          "score": 78,
           "thumbnail_text": "3D STRIKE",
           "title": "Mantises judge distance with 3D vision"
         },
@@ -717,513 +1170,63 @@
         "top_variants": [
           {
             "hook": "Mantises can measure a strike in 3D",
-            "score": 77,
+            "score": 78,
             "thumbnail_text": "3D STRIKE",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Start with the 3d vision; it changes the scene",
-            "score": 77,
+            "score": 78,
             "thumbnail_text": "3D STRIKE",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Watch the 3d vision; it explains the behavior",
-            "score": 76,
+            "score": 77,
             "thumbnail_text": "3D STRIKE",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Mantises can measure a strike in 3D",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "3D VISION",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Start with the 3d vision; it changes the scene",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "3D VISION",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Mantises can measure a strike in 3D",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "WATCH 3D VISION",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Start with the 3d vision; it changes the scene",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "WATCH 3D VISION",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Mantises can measure a strike in 3D",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "MANTISES MEASURE",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Start with the 3d vision; it changes the scene",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "MANTISES MEASURE",
             "title": "Mantises judge distance with 3D vision"
           },
           {
             "hook": "Mantises can measure a strike in 3D",
-            "score": 70,
+            "score": 71,
             "thumbnail_text": "3D VISION MATTERS",
             "title": "Mantises judge distance with 3D vision"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "61e0327638cef862",
-      "title": "Monkeys wash food when grit gets annoying",
-      "category": "primates",
-      "publish_score": {
-        "approved": true,
-        "category": "primates",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.297,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.063,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
-          "recommendation_strength": "observe",
-          "sample_size": 5
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.063,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 55,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 50,
-            "visual_potential": 65
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.317,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.089,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.270363+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "monkeys",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "monkeys",
-        "viewer_promise": "See why monkeys animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after monkeys?",
-        "cta_prompt": "Want one animal signal a day? Follow for the next intelligence clue.",
-        "curiosity_gap": {
-          "hook": "Why do these animals change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "explore",
-          "sample_count": 14,
-          "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
-          }
-        },
-        "hook_options": [
-          "Monkeys can change habits to solve small problems",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys give away the answer through learned habit"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "monkeys",
-          "ending_line": "Which primate trick should come next?",
-          "final_line": "Which primate trick should come next?",
-          "loop_score": 0.221,
-          "opening_line": "Monkeys can change habits to solve small problems.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "monkeys",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.221,
-        "pinned_comment": "Watch the hands again. Tomorrow: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.28,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Monkeys can change habits to solve small problems Watch the hands near",
-          "first_frame_text": "SMART HANDS",
-          "first_frame_text_words": 2,
-          "hook": "Monkeys can change habits to solve small problems.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.221,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the hands, so viewers rewatch the monkeys clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 92,
-        "selected_variant": {
-          "hook": "Monkeys can change habits to solve small problems",
-          "score": 77,
-          "thumbnail_text": "SMART HANDS",
-          "title": "Monkeys wash food when grit gets annoying"
-        },
-        "series": "Primate Intelligence",
-        "series_identity": {
-          "continuity_prompt": "Next in Primate Intelligence: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Primate Intelligence",
-          "series": "Primate Intelligence"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.317,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.089,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SMART HANDS",
-          "LEARNED HABIT",
-          "WATCH LEARNED HABIT",
-          "MONKEYS TRICK",
-          "LEARNED HABIT MATTERS",
-          "LEARNED HABIT FIRST",
-          "LEARNED HABIT REVEAL",
-          "LEARNED HABIT CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Monkeys wash food when grit gets annoying",
-          "Monkeys use learned habit before they trick",
-          "This learned habit gives monkeys away",
-          "Why monkeys trick after one learned habit",
-          "Monkeys reveal the answer with learned habit",
-          "The learned habit that changes the moment",
-          "Monkeys make one learned habit matter",
-          "Monkeys show the hidden answer in seconds",
-          "Monkeys: watch this learned habit",
-          "Watch monkeys after the learned habit"
-        ],
-        "top_variants": [
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 77,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Watch the learned habit; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "WATCH LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "MONKEYS TRICK",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "MONKEYS TRICK",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT MATTERS",
-            "title": "Monkeys wash food when grit gets annoying"
           }
         ]
       },
@@ -1248,15 +1251,15 @@
         "approved": true,
         "category": "ecosystems",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1266,7 +1269,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -1336,34 +1339,34 @@
         "state": "publish_ready",
         "story_format": "ecosystem_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "title_score": 90,
         "weak_content": {
@@ -1386,7 +1389,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.274700+00:00",
+        "checked_at": "2026-06-16T11:10:03.918075+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1453,18 +1456,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -1555,34 +1558,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "swipe_risk": {
           "band": "low",
@@ -1697,15 +1700,15 @@
         "approved": true,
         "category": "weather",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1715,7 +1718,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "ear_signal",
           "payoff_time_s": 8.8,
           "penalty": 0.0,
@@ -1787,17 +1790,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -1837,7 +1840,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.276869+00:00",
+        "checked_at": "2026-06-16T11:10:03.920002+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1904,18 +1907,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -2008,17 +2011,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -2151,15 +2154,15 @@
         "approved": true,
         "category": "earth_from_space",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2169,7 +2172,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -2239,19 +2242,19 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2259,15 +2262,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "title_score": 90,
         "weak_content": {
@@ -2290,7 +2293,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.278608+00:00",
+        "checked_at": "2026-06-16T11:10:03.922011+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2355,18 +2358,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -2457,19 +2460,19 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2477,15 +2480,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -2599,15 +2602,15 @@
         "approved": true,
         "category": "geology",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2617,7 +2620,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -2687,34 +2690,34 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "title_score": 90,
         "weak_content": {
@@ -2737,7 +2740,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.281522+00:00",
+        "checked_at": "2026-06-16T11:10:03.923974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2802,18 +2805,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -2904,34 +2907,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "swipe_risk": {
           "band": "low",
@@ -3045,15 +3048,15 @@
         "approved": true,
         "category": "rivers",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3063,7 +3066,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "ear_signal",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -3133,34 +3136,34 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "title_score": 90,
         "weak_content": {
@@ -3183,7 +3186,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.283550+00:00",
+        "checked_at": "2026-06-16T11:10:03.925642+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3253,18 +3256,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -3355,34 +3358,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 89,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.127
         },
         "swipe_risk": {
           "band": "low",
@@ -3497,15 +3500,15 @@
         "approved": true,
         "category": "plants",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.269,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
           "minimum_sample_size": 18,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3515,7 +3518,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.025,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -3587,17 +3590,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -3637,7 +3640,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.285530+00:00",
+        "checked_at": "2026-06-16T11:10:03.927139+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3707,18 +3710,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -3812,17 +3815,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.345,
+            "bootstrap_multiplier": 0.381,
             "can_adjust_strategy": false,
-            "confidence_score": 0.127,
+            "confidence_score": 0.174,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -3954,15 +3957,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.312,
+          "bootstrap_multiplier": 0.395,
           "can_adjust_strategy": false,
-          "confidence_score": 0.082,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "confidence_score": 0.193,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
           "recommendation_strength": "observe",
-          "sample_size": 7
+          "sample_size": 15
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3972,13 +3975,13 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.082,
+          "confidence_score": 0.193,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
           "publish_blocking": false,
           "reasons": [
-            "bootstrap_observe_before_scaling"
+            "observe_before_scaling"
           ],
           "scale_ready": false,
           "swipe_risk_band": "low",
@@ -3986,27 +3989,27 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 69,
+          "score": 64,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 82,
-            "viral_potential": 72,
-            "visual_potential": 89
+            "comment_potential": 49,
+            "educational_potential": 61,
+            "emotional_potential": 30,
+            "novelty": 54,
+            "replay_potential": 77,
+            "viral_potential": 67,
+            "visual_potential": 84
           },
           "verdict": "produce"
         },
@@ -4016,17 +4019,17 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -4042,19 +4045,19 @@
         "state": "publish_ready",
         "story_format": "animal_intelligence",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.466,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.287,
             "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -4062,15 +4065,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "title_score": 90,
         "weak_content": {
@@ -4093,10 +4096,10 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.270363+00:00",
+        "checked_at": "2026-06-16T11:10:03.914328+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
+          "objective_gate:observe_before_scaling"
         ],
         "score": 88.0,
         "state": "rewrite",
@@ -4165,18 +4168,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -4221,17 +4224,17 @@
         "replay_prompt": "End by pointing back to the pride plan, so viewers rewatch the lions clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -4247,7 +4250,7 @@
         "score": 93,
         "selected_variant": {
           "hook": "Start with the pride plan; it changes the scene",
-          "score": 82,
+          "score": 81,
           "thumbnail_text": "PRIDE PLAN",
           "title": "Lions hunt better when the pride coordinates"
         },
@@ -4267,19 +4270,19 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.466,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.287,
             "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -4287,15 +4290,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -4329,517 +4332,63 @@
         "top_variants": [
           {
             "hook": "Start with the pride plan; it changes the scene",
-            "score": 82,
+            "score": 81,
             "thumbnail_text": "PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Lions turn hunting into a team problem",
-            "score": 81,
+            "score": 80,
             "thumbnail_text": "PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Watch the pride plan; it explains the behavior",
-            "score": 81,
+            "score": 80,
             "thumbnail_text": "PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Start with the pride plan; it changes the scene",
-            "score": 76,
+            "score": 75,
             "thumbnail_text": "PRIDE PLAN FIRST",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Start with the pride plan; it changes the scene",
-            "score": 75,
+            "score": 74,
             "thumbnail_text": "WATCH PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Start with the pride plan; it changes the scene",
-            "score": 75,
+            "score": 74,
             "thumbnail_text": "LIONS ESCAPE",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Start with the pride plan; it changes the scene",
-            "score": 75,
+            "score": 74,
             "thumbnail_text": "PRIDE PLAN MATTERS",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Lions turn hunting into a team problem",
-            "score": 74,
+            "score": 73,
             "thumbnail_text": "WATCH PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Watch the pride plan; it explains the behavior",
-            "score": 74,
+            "score": 73,
             "thumbnail_text": "WATCH PRIDE PLAN",
             "title": "Lions hunt better when the pride coordinates"
           },
           {
             "hook": "Lions turn hunting into a team problem",
-            "score": 74,
+            "score": 73,
             "thumbnail_text": "LIONS ESCAPE",
             "title": "Lions hunt better when the pride coordinates"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "ea53dd69eab9d395",
-      "title": "Bees dance directions back to the hive",
-      "category": "insects",
-      "publish_score": {
-        "approved": false,
-        "category": "insects",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.422,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.23,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23.",
-          "recommendation_strength": "observe",
-          "sample_size": 15
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.23,
-          "mechanism_cluster": "dance_navigation",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "score": 54,
-          "signals": {
-            "comment_potential": 48,
-            "educational_potential": 60,
-            "emotional_potential": 38,
-            "novelty": 53,
-            "replay_potential": 58,
-            "viral_potential": 61,
-            "visual_potential": 53
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "rewrite",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.43,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.241,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
-            "recommendation_strength": "observe",
-            "sample_size": 7
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.267371+00:00",
-        "mechanism_cluster": "dance_navigation",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling"
-        ],
-        "score": 78.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "bees",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "bees",
-        "viewer_promise": "See why bees animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after bees?",
-        "cta_prompt": "Want more small creatures doing impossible things?",
-        "curiosity_gap": {
-          "hook": "Why does this microscopy changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 14,
-          "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
-          }
-        },
-        "hook_options": [
-          "Bees can point the hive toward food",
-          "Bees show why the dance map matters.",
-          "Bees show why the dance map matters.",
-          "Bees show why the dance map matters.",
-          "Bees give away the answer through dance map"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "bees",
-          "ending_line": "Which insect should we decode next?",
-          "final_line": "Which insect should we decode next?",
-          "loop_score": 0.29,
-          "opening_line": "Bees can point the hive toward food.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "bees",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.29,
-        "pinned_comment": "Watch the dance map again. Tomorrow: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.28,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Bees can point the hive toward food Watch the body angle because",
-          "first_frame_text": "DANCE MAP",
-          "first_frame_text_words": 2,
-          "hook": "Bees can point the hive toward food.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.29,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the dance map, so viewers rewatch the bees clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 90,
-        "selected_variant": {
-          "hook": "Start with the dance map; it changes the scene",
-          "score": 76,
-          "thumbnail_text": "DANCE MAP",
-          "title": "Bees dance directions back to the hive"
-        },
-        "series": "Tiny Worlds #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Tiny Worlds #3",
-          "series": "Tiny Worlds"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.43,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.241,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
-            "recommendation_strength": "observe",
-            "sample_size": 7
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "DANCE MAP",
-          "WATCH DANCE MAP",
-          "BEES CARRY",
-          "DANCE MAP MATTERS",
-          "DANCE MAP FIRST",
-          "DANCE MAP REVEAL",
-          "DANCE MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Bees dance directions back to the hive",
-          "Bees use dance map before they carry",
-          "This dance map gives bees away",
-          "Why bees carry after one dance map",
-          "Bees reveal the answer with dance map",
-          "The dance map that changes the moment",
-          "Bees make one dance map matter",
-          "Bees show the hidden answer in seconds",
-          "Bees: watch this dance map",
-          "Watch bees after the dance map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the dance map; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Bees can point the hive toward food",
-            "score": 74,
-            "thumbnail_text": "DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Watch the dance map; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Start with the dance map; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "WATCH DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Start with the dance map; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "BEES CARRY",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Start with the dance map; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "DANCE MAP MATTERS",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Start with the dance map; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "DANCE MAP FIRST",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Bees can point the hive toward food",
-            "score": 67,
-            "thumbnail_text": "WATCH DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Watch the dance map; it explains the behavior",
-            "score": 67,
-            "thumbnail_text": "WATCH DANCE MAP",
-            "title": "Bees dance directions back to the hive"
-          },
-          {
-            "hook": "Bees can point the hive toward food",
-            "score": 67,
-            "thumbnail_text": "BEES CARRY",
-            "title": "Bees dance directions back to the hive"
           }
         ]
       },
@@ -4864,15 +4413,15 @@
         "approved": false,
         "category": "ocean",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.422,
+          "bootstrap_multiplier": 0.444,
           "can_adjust_strategy": false,
-          "confidence_score": 0.23,
+          "confidence_score": 0.258,
           "data_quality": "estimated",
           "data_quality_score": 0.35,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.26.",
           "recommendation_strength": "observe",
-          "sample_size": 15
+          "sample_size": 17
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -4882,7 +4431,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.23,
+          "confidence_score": 0.258,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -4956,34 +4505,34 @@
         "state": "rewrite",
         "story_format": "animal_intelligence",
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.195,
           "confidence": {
-            "bootstrap_multiplier": 0.43,
+            "bootstrap_multiplier": 0.452,
             "can_adjust_strategy": false,
-            "confidence_score": 0.241,
+            "confidence_score": 0.269,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 8
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.228,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
+          "score": 74,
+          "state": "usable",
+          "subscriber_probability": 0.106
         },
         "title_score": 90,
         "weak_content": {
@@ -5006,7 +4555,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.268360+00:00",
+        "checked_at": "2026-06-16T11:10:03.909963+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5071,18 +4620,18 @@
           },
           "explore_rate": 0.18,
           "mode": "exploit",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
@@ -5173,34 +4722,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.195,
           "confidence": {
-            "bootstrap_multiplier": 0.43,
+            "bootstrap_multiplier": 0.452,
             "can_adjust_strategy": false,
-            "confidence_score": 0.241,
+            "confidence_score": 0.269,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 8
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.228,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
+          "score": 74,
+          "state": "usable",
+          "subscriber_probability": 0.106
         },
         "swipe_risk": {
           "band": "low",
@@ -5362,15 +4911,15 @@
             "weak_visual_surface",
             "low_opportunity_score"
           ],
-          "score": 48,
+          "score": 49,
           "signals": {
-            "comment_potential": 48,
-            "educational_potential": 52,
-            "emotional_potential": 29,
-            "novelty": 49,
-            "replay_potential": 58,
-            "viral_potential": 44,
-            "visual_potential": 49
+            "comment_potential": 49,
+            "educational_potential": 53,
+            "emotional_potential": 30,
+            "novelty": 50,
+            "replay_potential": 59,
+            "viral_potential": 45,
+            "visual_potential": 50
           },
           "verdict": "discard"
         },
@@ -5457,7 +5006,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-16T11:00:11.269375+00:00",
+        "checked_at": "2026-06-16T11:10:03.915444+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5522,18 +5071,18 @@
           },
           "explore_rate": 0.18,
           "mode": "explore",
-          "sample_count": 14,
+          "sample_count": 15,
           "winners": {
-            "hook_pattern": "{subject} {subject} why the {subject} {subject} {subject}",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {emotion} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} in {subject}"
           },
           "winning_experiments": {
-            "cta:follow_for_more": 42.31,
-            "cta:specific_question": 46.1,
-            "format:winner_inspired": 43.92,
-            "hook:pattern_reuse": 43.92,
-            "thumbnail:new_thumbnail": 43.0
+            "cta:specific_question": 47.05,
+            "format:fresh_variant": 41.88,
+            "format:winner_inspired": 42.93,
+            "hook:pattern_reuse": 42.93,
+            "thumbnail:new_thumbnail": 42.6
           }
         },
         "hook_options": [
