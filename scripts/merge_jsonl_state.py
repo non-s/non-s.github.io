@@ -160,8 +160,7 @@ def write_quota_latest(state_dir: Path, merged_lines: list[str]) -> None:
     latest = max(rows, key=lambda row: str(row.get("timestamp_utc") or ""))
     latest_path = state_dir / QUOTA_LATEST_PATH
     latest_path.parent.mkdir(parents=True, exist_ok=True)
-    latest_path.write_text(json.dumps(latest, indent=2, sort_keys=True, ensure_ascii=False) + "
-", encoding="utf-8")
+    latest_path.write_text(json.dumps(latest, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
@@ -188,16 +187,12 @@ def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
         merged = merge_jsonl_lines(current_lines, incoming_lines)
         
     incoming_path.parent.mkdir(parents=True, exist_ok=True)
-    text = "
-".join(merged)
+    text = "\n".join(merged)
     if text:
-        text += "
-"
-    before = "
-".join(incoming_lines)
+        text += "\n"
+    before = "\n".join(incoming_lines)
     if before:
-        before += "
-"
+        before += "\n"
     changed = text != before
     incoming_path.write_text(text, encoding="utf-8")
     if relative_path == QUOTA_LEDGER_PATH:
