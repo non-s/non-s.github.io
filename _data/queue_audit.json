@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T15:08:14.836871+00:00",
+  "generated_at": "2026-06-17T15:44:43.942997+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,17 +12,103 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 7,
+    "pending_before": 15,
     "pending_after": 7,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 8,
+    "repair_needed": 1,
+    "repaired": 6,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "objective_gate:observe_before_scaling": 4
+      "objective_gate:observe_before_scaling": 4,
+      "copy_subject_mismatch": 3,
+      "script_hook_mismatch": 3,
+      "duplicate_title": 3,
+      "script_subject_mismatch": 2,
+      "off_topic_visual": 2,
+      "awkward_non_animal_use_pronoun": 1,
+      "bad_plural_verb": 1,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "queue_score_reject": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "ea149e2525f361a8",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "dc204166af48870f",
+      "title": "Lightning makes air explode into thunder",
+      "reasons": [
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7e1a89ce9e521cac",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "5f51bc76f0d3ebe4",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "07172388b9a65046",
+      "title": "spring forest floor hides a tiny army",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a7e221399ab17cd9",
+      "title": "orange mushrooms reveal hidden forest signals",
+      "reasons": [
+        "script_hook_mismatch",
+        "awkward_non_animal_use_pronoun"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "33ce66fcbada8b12",
+      "title": "Torre del Caballito’s night animals show off their eyes",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "5694a4ae2450652f",
+      "title": "Tide pools where fishing becomes feeding",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "8aba0c674ea76103",
       "title": "Storm clouds reveal a storm's heat engine",
@@ -228,80 +314,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "24a1fc90e06cea2a",
-      "title": "walrus uses rocks to take a shower",
-      "reasons": [
-        "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "3e7f77fdb4f98b64",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "4ca52c762f4a6c12",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "62355ffc4ca2773e",
-      "title": "mangroves feed more than they store",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ea149e2525f361a8",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "off_topic_visual",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "7526eee6bffce6fe",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "38a9a9876bc2c5d0",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d81ce7034dc230c8",
-      "title": "Why birds signal after one first move",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -452,7 +464,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.854904+00:00",
+        "checked_at": "2026-06-17T15:44:38.618616+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -899,7 +911,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.856524+00:00",
+        "checked_at": "2026-06-17T15:44:38.620316+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1353,7 +1365,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.857969+00:00",
+        "checked_at": "2026-06-17T15:44:38.621871+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1809,7 +1821,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.850759+00:00",
+        "checked_at": "2026-06-17T15:44:38.615478+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2268,7 +2280,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.849528+00:00",
+        "checked_at": "2026-06-17T15:44:38.614177+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2719,7 +2731,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.851853+00:00",
+        "checked_at": "2026-06-17T15:44:38.616618+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3169,7 +3181,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T15:08:09.859392+00:00",
+        "checked_at": "2026-06-17T15:44:38.623436+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
