@@ -33,8 +33,10 @@ DEFAULT_JSONL_STATE_PATHS = (
     "_data/upload_intents.jsonl",
 )
 
-KEY_MERGED_JSONL_PATHS = {
-    "_data/fact_sources.jsonl",
+# Files where we deduplicate by a specific unique key instead of the full line.
+KEY_MERGED_PATHS = {
+    "_data/ai_cache.jsonl": "k",
+    "_data/fact_sources.jsonl": "story_id",  # special handling in merge_fact_source_lines
 }
 
 
@@ -54,6 +56,42 @@ def merge_jsonl_lines(current_lines: list[str], incoming_lines: list[str]) -> li
         merged.append(line)
         seen.add(line)
     return merged
+
+
+def merge_keyed_jsonl_lines(current_lines: list[str], incoming_lines: list[str], key: str) -> list[str]:
+    """Merge rows by key so incoming (generated) data replaces existing matches."""
+    rows: dict[str, dict] = {}
+    raw_lines: list[str] = []
+    seen_raw: set[str] = set()
+
+    def add(line: str):
+        if not line.strip():
+            return
+        try:
+            row = json.loads(line)
+            if not isinstance(row, dict):
+                if line not in seen_raw:
+                    raw_lines.append(line)
+                    seen_raw.add(line)
+                return
+            k_val = row.get(key)
+            if k_val:
+                rows[str(k_val)] = row
+            else:
+                if line not in seen_raw:
+                    raw_lines.append(line)
+                    seen_raw.add(line)
+        except Exception:
+            if line not in seen_raw:
+                raw_lines.append(line)
+                seen_raw.add(line)
+
+    for line in current_lines:
+        add(line)
+    for line in incoming_lines:
+        add(line)
+
+    return [json.dumps(row, sort_keys=True, ensure_ascii=False) for row in rows.values()] + raw_lines
 
 
 def _fact_source_key(row: dict) -> tuple[str, str]:
@@ -122,7 +160,8 @@ def write_quota_latest(state_dir: Path, merged_lines: list[str]) -> None:
     latest = max(rows, key=lambda row: str(row.get("timestamp_utc") or ""))
     latest_path = state_dir / QUOTA_LATEST_PATH
     latest_path.parent.mkdir(parents=True, exist_ok=True)
-    latest_path.write_text(json.dumps(latest, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+    latest_path.write_text(json.dumps(latest, indent=2, sort_keys=True, ensure_ascii=False) + "
+", encoding="utf-8")
 
 
 def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
@@ -140,17 +179,25 @@ def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
             "changed": False,
             "skipped": True,
         }
-    if relative_path in KEY_MERGED_JSONL_PATHS:
+    
+    if relative_path == "_data/fact_sources.jsonl":
         merged = merge_fact_source_lines(current_lines, incoming_lines)
+    elif relative_path in KEY_MERGED_PATHS:
+        merged = merge_keyed_jsonl_lines(current_lines, incoming_lines, KEY_MERGED_PATHS[relative_path])
     else:
         merged = merge_jsonl_lines(current_lines, incoming_lines)
+        
     incoming_path.parent.mkdir(parents=True, exist_ok=True)
-    text = "\n".join(merged)
+    text = "
+".join(merged)
     if text:
-        text += "\n"
-    before = "\n".join(incoming_lines)
+        text += "
+"
+    before = "
+".join(incoming_lines)
     if before:
-        before += "\n"
+        before += "
+"
     changed = text != before
     incoming_path.write_text(text, encoding="utf-8")
     if relative_path == QUOTA_LEDGER_PATH:
