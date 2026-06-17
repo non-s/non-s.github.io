@@ -1,21 +1,52 @@
 {
-  "generated_at": "2026-06-17T18:06:32.744326+00:00",
-  "success_score": 32.6,
+  "generated_at": "2026-06-17T20:09:44.066947+00:00",
+  "success_score": 57.6,
   "state": "growth_building",
   "retention": {
     "target_floor": 62.0,
     "target_stretch": 70.0,
-    "average_retention": 0.0,
-    "gap_to_floor": 62.0,
-    "state": "needs_retention_work",
-    "below_floor_count": 0,
-    "scale_categories": [],
-    "watch_categories": [],
-    "recovery_categories": [],
+    "average_retention": 75.433,
+    "gap_to_floor": 0.0,
+    "state": "scale",
+    "below_floor_count": 5,
+    "scale_categories": [
+      {
+        "category": "cats",
+        "retention": 126.33
+      },
+      {
+        "category": "nocturnal",
+        "retention": 125.36
+      },
+      {
+        "category": "reptiles",
+        "retention": 86.82
+      },
+      {
+        "category": "birds",
+        "retention": 84.58
+      }
+    ],
+    "watch_categories": [
+      {
+        "category": "insects",
+        "retention": 55.15
+      },
+      {
+        "category": "ocean",
+        "retention": 54.715
+      }
+    ],
+    "recovery_categories": [
+      {
+        "category": "forests",
+        "retention": 36.08
+      }
+    ],
     "phrase_pressure": [],
     "commands": [
-      "Rewrite the first 2 seconds around the visible animal cue before publishing.",
-      "Keep one animal, one surprise, one payoff; remove second facts from weak scripts."
+      "Put recovery categories through stricter hooks before they can publish.",
+      "Scale the categories already above 62% retention before adding new experiments."
     ]
   },
   "studio_reach": {
@@ -36,7 +67,7 @@
     "diagnosis": "Stayed-to-watch is 31.8%, 8.2 points below the operating floor."
   },
   "subscriber_conversion": {
-    "views": 33,
+    "views": 50,
     "subscribers_gained": 0,
     "subs_per_1000_views": 0.0,
     "target_subs_per_1000": 1.5,
@@ -68,7 +99,7 @@
   },
   "audience_loop": {
     "state": "active",
-    "comments_sampled": 20,
+    "comments_sampled": 21,
     "requested_animals": [],
     "prompts": [
       "Answer this viewer question: Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
@@ -82,54 +113,64 @@
     ]
   },
   "first_24h": {
-    "state": "monitoring",
+    "state": "winner_found",
     "winner_rules": [
       "If retention is above 62% and growth beats 180, make a sequel before chasing a new topic.",
       "If views are high but retention is below 62%, remake the hook instead of copying the topic.",
       "If both views and retention are low, retire the angle for 14 days."
     ],
-    "winners": [],
+    "winners": [
+      {
+        "title": "Snakes smell the air with their tongues",
+        "video_id": "UBg6lj27McA",
+        "views": 1,
+        "views_per_hour": 0.018,
+        "growth_score": 278.296,
+        "retention": 86.82,
+        "retention_ready": true
+      },
+      {
+        "title": "Cats use whiskers like built-in rulers",
+        "video_id": "TNANKGDck-Y",
+        "views": 2,
+        "views_per_hour": 0.035,
+        "growth_score": 214.007,
+        "retention": 126.33,
+        "retention_ready": true
+      }
+    ],
     "rework": [],
     "watch": [
-      {
-        "title": "Monkeys wash food when grit gets annoying",
-        "video_id": "6HkUQ0MRzyU",
-        "views": 1,
-        "views_per_hour": 0.166,
-        "growth_score": 201.046,
-        "retention": 0.0,
-        "retention_ready": false
-      },
-      {
-        "title": "Mushrooms trade nutrients through underground threads",
-        "video_id": "FuPz6VYPLbM",
-        "views": 1,
-        "views_per_hour": 0.04,
-        "growth_score": 200.29,
-        "retention": 0.0,
-        "retention_ready": false
-      },
-      {
-        "title": "Turtles carry a magnetic map home",
-        "video_id": "ruf5CcK2jy4",
-        "views": 1,
-        "views_per_hour": 0.039,
-        "growth_score": 200.284,
-        "retention": 0.0,
-        "retention_ready": false
-      },
       {
         "title": "Sharks sense tiny electric fields",
         "video_id": "-fWOZI8euBk",
         "views": 1,
-        "views_per_hour": 0.038,
-        "growth_score": 200.278,
+        "views_per_hour": 0.019,
+        "growth_score": 235.381,
+        "retention": 39.13,
+        "retention_ready": true
+      },
+      {
+        "title": "Rock layers store ancient environments in stripes",
+        "video_id": "Au6gdgjfKIc",
+        "views": 1,
+        "views_per_hour": 0.037,
+        "growth_score": 200.272,
         "retention": 0.0,
         "retention_ready": false
       },
       {
-        "title": "Snakes smell the air with their tongues",
-        "video_id": "UBg6lj27McA",
+        "title": "Lightning makes air explode into thunder",
+        "video_id": "x_Nkhw023NY",
+        "views": 1,
+        "views_per_hour": 0.036,
+        "growth_score": 200.266,
+        "retention": 0.0,
+        "retention_ready": false
+      },
+      {
+        "title": "Coral reefs are cities built by tiny animals",
+        "video_id": "H9vhk4vjZfc",
         "views": 1,
         "views_per_hour": 0.034,
         "growth_score": 200.254,
@@ -137,11 +178,20 @@
         "retention_ready": false
       },
       {
-        "title": "Forests make cooler air under the canopy",
-        "video_id": "mZASa1k9TCE",
-        "views": 0,
-        "views_per_hour": 0.0,
-        "growth_score": 200.0,
+        "title": "Mantises judge distance with 3D vision",
+        "video_id": "hvksT2xkQuc",
+        "views": 1,
+        "views_per_hour": 0.033,
+        "growth_score": 200.248,
+        "retention": 0.0,
+        "retention_ready": false
+      },
+      {
+        "title": "Mushrooms trade nutrients through underground threads",
+        "video_id": "FuPz6VYPLbM",
+        "views": 1,
+        "views_per_hour": 0.019,
+        "growth_score": 200.164,
         "retention": 0.0,
         "retention_ready": false
       }
@@ -168,12 +218,22 @@
     "state": "ready",
     "lanes": [
       {
+        "series": "Pet Signals",
+        "categories": [
+          "cats",
+          "dogs"
+        ],
+        "promise": "home-animal behavior with stricter retention gates",
+        "priority_score": 214.007,
+        "state": "active"
+      },
+      {
         "series": "Ocean Signals",
         "categories": [
           "ocean"
         ],
         "promise": "underwater behavior viewers can decode",
-        "priority_score": 200.281,
+        "priority_score": 199.49,
         "state": "active"
       },
       {
@@ -182,26 +242,7 @@
           "wildlife"
         ],
         "promise": "body features that look impossible",
-        "priority_score": 152.083,
-        "state": "active"
-      },
-      {
-        "series": "Farmyard Minds",
-        "categories": [
-          "farm"
-        ],
-        "promise": "smart behavior in familiar animals",
-        "priority_score": 100.706,
-        "state": "active"
-      },
-      {
-        "series": "Pet Signals",
-        "categories": [
-          "cats",
-          "dogs"
-        ],
-        "promise": "home-animal behavior with stricter retention gates",
-        "priority_score": 100.508,
+        "priority_score": 153.704,
         "state": "active"
       },
       {
@@ -210,7 +251,16 @@
           "birds"
         ],
         "promise": "bird senses, memory and navigation",
-        "priority_score": 30.433,
+        "priority_score": 102.398,
+        "state": "active"
+      },
+      {
+        "series": "Farmyard Minds",
+        "categories": [
+          "farm"
+        ],
+        "promise": "smart behavior in familiar animals",
+        "priority_score": 67.201,
         "state": "active"
       }
     ],
@@ -222,10 +272,10 @@
   },
   "thirty_day_review": {
     "state": "baseline_building",
-    "shorts_tracked": 20,
+    "shorts_tracked": 21,
     "target_sample": 60,
-    "tracked_views": 33,
-    "average_retention": 0.0,
+    "tracked_views": 50,
+    "average_retention": 75.433,
     "review_questions": [
       "Which category creates both views and retention?",
       "Which format converts subscribers?",
@@ -234,8 +284,8 @@
     ]
   },
   "next_actions": [
-    "Rewrite the first 2 seconds around the visible animal cue before publishing.",
-    "Keep one animal, one surprise, one payoff; remove second facts from weak scripts.",
+    "Put recovery categories through stricter hooks before they can publish.",
+    "Scale the categories already above 62% retention before adding new experiments.",
     "Rewrite frame zero and the first spoken line around animal + real curiosity + visible anchor + payoff.",
     "Reject packages with slow payoff, vague first-frame text, or medium/high swipe risk.",
     "Use Studio Reach exports to replace this baseline with per-video stayed-to-watch data.",
