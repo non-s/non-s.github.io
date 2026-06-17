@@ -1,27 +1,114 @@
 {
-  "generated_at": "2026-06-17T20:09:56.839765+00:00",
-  "pending": 6,
+  "generated_at": "2026-06-17T20:29:29.723159+00:00",
+  "pending": 7,
   "states": {
-    "rewrite": 6
+    "rewrite": 7
   },
   "mechanism_clusters": {
     "ear_signal": 1
   },
   "rights": {
-    "approved": 6
+    "approved": 7
   },
   "prune_summary": {
-    "pending_before": 6,
-    "pending_after": 6,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "pending_before": 15,
+    "pending_after": 7,
+    "rejected": 8,
+    "repair_needed": 1,
+    "repaired": 8,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "objective_gate:observe_before_scaling": 2
+      "objective_gate:observe_before_scaling": 4,
+      "duplicate_title": 3,
+      "script_hook_mismatch": 2,
+      "bad_plural_verb": 2,
+      "copy_subject_mismatch": 2,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "queue_score_reject": 1,
+      "script_word_loop": 1,
+      "off_topic_visual": 1,
+      "script_subject_mismatch": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "6dc38620293b88fd",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1ae7d69631be51d2",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "984084a6aff9d81c",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "24a1fc90e06cea2a",
+      "title": "walrus uses rocks to take a shower",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "52c51ca366e2ac6a",
+      "title": "Why cat paws land almost silently right before the move",
+      "reasons": [
+        "bad_plural_verb",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "5ee52211d803d24c",
+      "title": "Science sees flowers in a new light",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d3791aba24b45e32",
+      "title": "bare trees stand tall on windy days",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "38a9a9876bc2c5d0",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "360ed2f163e61f41",
       "title": "Plants count touches before snapping shut",
@@ -96,14 +183,6 @@
         "copy_subject_mismatch"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "24a1fc90e06cea2a",
-      "title": "walrus uses rocks to take a shower",
-      "reasons": [
-        "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
     },
     {
       "id": "8712f418c9086d79",
@@ -244,70 +323,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "9e60249b9a978ac4",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4111626a62866b27",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5693f233c862d5b4",
-      "title": "Cats use whiskers like built-in rulers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c8b8749e95a96a1a",
-      "title": "Earth spins against the moon's fixed face",
-      "reasons": [
-        "script_hook_mismatch",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8712f418c9086d79",
-      "title": "Owls reveal the answer with silent wings",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "0af584c7e3758201",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "58b7e2642a8e87c7",
-      "title": "Bees don’t just take nectar they leave messages",
-      "reasons": [
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -457,7 +472,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.490162+00:00",
+        "checked_at": "2026-06-17T20:29:24.759226+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -764,6 +779,460 @@
       }
     },
     {
+      "id": "4c8ffd6c4999e548",
+      "title": "Birds see ultraviolet patterns we miss",
+      "category": "birds",
+      "publish_score": {
+        "approved": true,
+        "category": "birds",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.406,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.208,
+          "data_quality": "estimated",
+          "data_quality_score": 0.61,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.21.",
+          "recommendation_strength": "observe",
+          "sample_size": 11
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.208,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 57,
+          "signals": {
+            "comment_potential": 41,
+            "educational_potential": 55,
+            "emotional_potential": 39,
+            "novelty": 54,
+            "replay_potential": 55,
+            "viral_potential": 65,
+            "visual_potential": 74
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-17T20:29:24.756326+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 90.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 90.0,
+      "youtube_brain": {
+        "animal": "birds",
+        "commands": [
+          "Add a visible action verb: fake, protect, escape, remember, call, or use."
+        ],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "no_action_promise"
+        ],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 83,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "birds",
+        "viewer_promise": "See why birds body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after birds?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "curiosity_gap": {
+          "hook": "Why do these birds change after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "explore",
+          "sample_count": 21,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 41.54,
+            "cta:specific_question": 40.96,
+            "format:fresh_variant": 49.54,
+            "hook:new_hook": 49.54,
+            "thumbnail:new_thumbnail": 41.45
+          }
+        },
+        "hook_options": [
+          "Birds see colors humans cannot see",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds give away the answer through ultraviolet vision"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "birds",
+          "ending_line": "Which bird fact next?",
+          "final_line": "Which bird fact next?",
+          "loop_score": 0.297,
+          "opening_line": "Birds see colors humans cannot see.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "birds",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.297,
+        "pinned_comment": "Watch the uv vision again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.17,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Birds see colors humans cannot see Watch the feathers and eyes because",
+          "first_frame_text": "UV VISION",
+          "first_frame_text_words": 2,
+          "hook": "Birds see colors humans cannot see.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.297,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the uv vision, so viewers rewatch the birds clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 83,
+        "selected_variant": {
+          "hook": "Start with the ultraviolet vision; it changes the scene",
+          "score": 79,
+          "thumbnail_text": "UV VISION",
+          "title": "Birds see ultraviolet patterns we miss"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "UV VISION",
+          "ULTRAVIOLET VISION",
+          "WATCH ULTRAVIOLET VISION",
+          "BIRDS CHANGE",
+          "ULTRAVIOLET VISION MATTERS",
+          "ULTRAVIOLET VISION FIRST",
+          "ULTRAVIOLET VISION REVEAL",
+          "ULTRAVIOLET VISION CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Birds see ultraviolet patterns we miss",
+          "Birds use ultraviolet vision before they change",
+          "This ultraviolet vision gives birds away",
+          "Why birds change after one ultraviolet vision",
+          "Birds reveal the answer with ultraviolet vision",
+          "The ultraviolet vision that changes the moment",
+          "Birds make one ultraviolet vision matter",
+          "Birds show the hidden answer in seconds",
+          "Birds: watch this ultraviolet vision",
+          "Watch birds after the ultraviolet vision"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the ultraviolet vision; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 76,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Start with the ultraviolet vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Start with the ultraviolet vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Start with the ultraviolet vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Start with the ultraviolet vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "ULTRAVIOLET VISION MATTERS",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 70,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 69,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "e6e34ba035783ac3",
       "title": "Plants count touches before snapping shut",
       "category": "plants",
@@ -911,7 +1380,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.491878+00:00",
+        "checked_at": "2026-06-17T20:29:24.783290+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1368,7 +1837,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.485049+00:00",
+        "checked_at": "2026-06-17T20:29:24.753109+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -1817,7 +2286,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.487572+00:00",
+        "checked_at": "2026-06-17T20:29:24.757517+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2266,7 +2735,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.486418+00:00",
+        "checked_at": "2026-06-17T20:29:24.754366+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2723,7 +3192,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T20:09:52.493456+00:00",
+        "checked_at": "2026-06-17T20:29:24.784701+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
