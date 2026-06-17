@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T02:08:23.338228+00:00",
+  "generated_at": "2026-06-17T02:10:47.379584+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,17 +12,102 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 7,
+    "pending_before": 15,
     "pending_after": 7,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 8,
+    "repair_needed": 2,
+    "repaired": 7,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "objective_gate:observe_before_scaling": 4
+      "objective_gate:observe_before_scaling": 4,
+      "duplicate_title": 4,
+      "copy_subject_mismatch": 3,
+      "script_subject_mismatch": 2,
+      "subject_not_immediately_clear": 2,
+      "queue_score_reject": 2,
+      "off_topic_visual": 2,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "bad_plural_verb": 1,
+      "script_hook_mismatch": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "82b3b9d1b6c8dfca",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8a8286e991584421",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "09e4ed46cb7f9ead",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "16c5dc66465d8eaa",
+      "title": "Mantises judge distance with 3D vision",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "24a1fc90e06cea2a",
+      "title": "walrus uses rocks to take a shower",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3e7f77fdb4f98b64",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "4ca52c762f4a6c12",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "62355ffc4ca2773e",
+      "title": "mangroves feed more than they store",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "ea149e2525f361a8",
       "title": "Rock layers store ancient environments in stripes",
@@ -67,23 +152,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "16c5dc66465d8eaa",
-      "title": "Mantises judge distance with 3D vision",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4ca52c762f4a6c12",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     },
     {
       "id": "c6af1bb6e5565948",
@@ -218,15 +286,6 @@
       "stage": "queue_repair"
     },
     {
-      "id": "62355ffc4ca2773e",
-      "title": "mangroves breathe through their knees",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
       "id": "1eb5124c32ad982a",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
@@ -253,56 +312,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "6fc82a4384c34151",
-      "title": "rock caverns hide signal water factories",
-      "reasons": [
-        "bad_plural_verb"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0af584c7e3758201",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "d3791aba24b45e32",
-      "title": "bare trees stand tall on windy days",
-      "reasons": [
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "75f5e780ef444caa",
-      "title": "wetlands hide more than you think",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "98de1f4765e0edc1",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -453,7 +462,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.288497+00:00",
+        "checked_at": "2026-06-17T02:10:42.304138+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -900,7 +909,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.296404+00:00",
+        "checked_at": "2026-06-17T02:10:42.311746+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1354,7 +1363,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.297888+00:00",
+        "checked_at": "2026-06-17T02:10:42.313329+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1810,7 +1819,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.284391+00:00",
+        "checked_at": "2026-06-17T02:10:42.299808+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2269,7 +2278,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.283176+00:00",
+        "checked_at": "2026-06-17T02:10:42.278728+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2720,7 +2729,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.285484+00:00",
+        "checked_at": "2026-06-17T02:10:42.300913+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3170,7 +3179,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-17T02:08:18.299338+00:00",
+        "checked_at": "2026-06-17T02:10:42.314800+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
