@@ -33,7 +33,6 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: write
-      secrets: write
     env:
       MAX_SHORTS_PER_RUN: "1"
       # Optional music bed is off by default for the Pexels-only restart.
@@ -229,20 +228,6 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-      - name: "Auto-cura: Sincronizar Token renovado"
-        if: always() && steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          if [ -f youtube_token.json ]; then
-            # Minify JSON to save space in secret
-            TOKEN_DATA=$(python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin), separators=(',', ':')))" < youtube_token.json)
-            # Only update if it contains a refresh_token (to avoid overwriting with a weak token)
-            if echo "$TOKEN_DATA" | grep -q "refresh_token"; then
-              echo "Token com refresh_token detectado. Sincronizando com GitHub Secrets..."
-              gh secret set YOUTUBE_TOKEN --body "$TOKEN_DATA"
-            fi
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Gerar Shorts"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: |
@@ -263,17 +248,6 @@ jobs:
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
-      - name: "Auto-cura: Sincronizar Token após Upload"
-        if: always() && steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          if [ -f youtube_token.json ]; then
-            TOKEN_DATA=$(python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin), separators=(',', ':')))" < youtube_token.json)
-            if echo "$TOKEN_DATA" | grep -q "refresh_token"; then
-              gh secret set YOUTUBE_TOKEN --body "$TOKEN_DATA"
-            fi
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
