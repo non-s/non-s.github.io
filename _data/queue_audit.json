@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T19:53:57.607266+00:00",
+  "generated_at": "2026-06-18T21:54:29.878872+00:00",
   "pending": 6,
   "states": {
     "rewrite": 6
@@ -11,32 +11,91 @@
     "approved": 6
   },
   "prune_summary": {
-    "pending_before": 18,
+    "pending_before": 13,
     "pending_after": 6,
-    "rejected": 12,
-    "repair_needed": 3,
-    "repaired": 6,
+    "rejected": 7,
+    "repair_needed": 1,
+    "repaired": 7,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "subject_not_immediately_clear": 3,
-      "queue_score_reject": 3,
+      "script_subject_mismatch": 3,
       "copy_subject_mismatch": 3,
-      "script_subject_mismatch": 2,
       "script_hook_mismatch": 2,
       "objective_gate:observe_before_scaling": 2,
+      "off_topic_visual": 2,
       "duplicate_title": 2,
+      "subject_not_immediately_clear": 1,
       "no_action_promise": 1,
       "missing_action_word": 1,
-      "script does not expose enough concrete visual detail": 1,
-      "script_word_loop": 1,
-      "rights_guard_person_manual_review": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "subject_not_clear": 1,
-      "off_topic_visual": 1
+      "queue_score_reject": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "94d887217422d163",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1511d95f98828313",
+      "title": "Auroras glow when solar particles hit air",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "17421e6e69c1383b",
+      "title": "Dragonflies lock onto prey in midair",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d81ce7034dc230c8",
+      "title": "Why birds signal after one first move",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "33ce66fcbada8b12",
+      "title": "Torre del Caballito’s night animals show off their eyes",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "38a9a9876bc2c5d0",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "1aa55b275f66b360",
+      "title": "Ocean cleanup: machines that clean faster than you think",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "41bb91e14c9cd4f6",
       "title": "Forests make cooler air under the canopy",
@@ -202,6 +261,17 @@
       "stage": "queue_repair"
     },
     {
+      "id": "3fc8aa1dab7a25f8",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
       "id": "6dc38620293b88fd",
       "title": "Magnets make invisible fields visible",
       "reasons": [
@@ -229,94 +299,10 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "17421e6e69c1383b",
-      "title": "Dragonflies lock onto prey in midair",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
       "id": "44093772141841f6",
       "title": "Lions hunt better when the pride coordinates",
       "reasons": [
         "script_hook_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "f910ca9a58e86c1c",
-      "title": "Plants count touches before snapping shut",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c2fad3f40dd25a1c",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "62355ffc4ca2773e",
-      "title": "mangroves breathe through their knees",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0af584c7e3758201",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "44093772141841f6",
-      "title": "Lions hunt better when the pride coordinates",
-      "reasons": [
-        "missing_visual_cue",
-        "generic_creator_language",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "241667f9465ab6bb",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "6dc38620293b88fd",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
       ],
       "stage": "queue_prune_final"
     }
@@ -468,7 +454,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.200517+00:00",
+        "checked_at": "2026-06-18T21:54:25.497605+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -921,7 +907,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.176428+00:00",
+        "checked_at": "2026-06-18T21:54:25.475597+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1378,7 +1364,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.219911+00:00",
+        "checked_at": "2026-06-18T21:54:25.528366+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1835,7 +1821,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.174458+00:00",
+        "checked_at": "2026-06-18T21:54:25.473737+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -2284,7 +2270,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.197023+00:00",
+        "checked_at": "2026-06-18T21:54:25.495914+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2734,7 +2720,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T19:53:53.221332+00:00",
+        "checked_at": "2026-06-18T21:54:25.529857+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
