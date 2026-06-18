@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T02:33:56.123998+00:00",
+  "generated_at": "2026-06-18T07:04:16.662709+00:00",
   "pending": 7,
   "states": {
     "rewrite": 7
@@ -11,30 +11,111 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 13,
+    "pending_before": 15,
     "pending_after": 7,
-    "rejected": 6,
+    "rejected": 8,
     "repair_needed": 2,
-    "repaired": 6,
+    "repaired": 8,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 8,
+      "duplicate_title": 5,
       "objective_gate:observe_before_scaling": 4,
-      "script_hook_mismatch": 2,
       "subject_not_immediately_clear": 2,
-      "no_action_promise": 2,
       "missing_action_word": 2,
       "queue_score_reject": 2,
-      "script_subject_mismatch": 1,
-      "copy_subject_mismatch": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "subject_not_clear": 1,
+      "script_hook_mismatch": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
+      "bad_plural_verb": 1,
+      "script_word_loop": 1,
+      "no_action_promise": 1,
       "missing_visible_cue": 1,
-      "non_animal_body_language": 1,
-      "duplicate_title": 1
+      "off_topic_visual": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "241667f9465ab6bb",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9b906f4af93aefb3",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "dc204166af48870f",
+      "title": "Lightning makes air explode into thunder",
+      "reasons": [
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7e1a89ce9e521cac",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f5ee03b91a06fdfb",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e3eec0d061f8518c",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5f51bc76f0d3ebe4",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "52c51ca366e2ac6a",
+      "title": "Why cat paws land almost silently right before the move",
+      "reasons": [
+        "bad_plural_verb",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "d433c29b2a207deb",
       "title": "Mantises judge distance with 3D vision",
@@ -96,16 +177,6 @@
       "stage": "queue_prune"
     },
     {
-      "id": "9b906f4af93aefb3",
-      "title": "Rivers carve bends by stealing from one bank",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
       "id": "41bb91e14c9cd4f6",
       "title": "Forests make cooler air under the canopy",
       "reasons": [
@@ -130,6 +201,17 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "0af584c7e3758201",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
       "id": "8f5f7651dc005bd9",
       "title": "Crystals grow by repeating one tiny pattern",
       "reasons": [
@@ -150,16 +232,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "241667f9465ab6bb",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
     },
     {
       "id": "3eb3cdf3d09f0efb",
@@ -198,17 +270,6 @@
       "stage": "queue_prune"
     },
     {
-      "id": "5f51bc76f0d3ebe4",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
       "id": "3ddeeb7708519257",
       "title": "canyon walls remember a whole herd",
       "reasons": [
@@ -220,6 +281,21 @@
       "id": "6d2c90c9e5db5b08",
       "title": "Beetles can steer by the Milky Way",
       "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "c2fad3f40dd25a1c",
+      "title": "Cells copy instructions before splitting",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
         "queue_score_reject"
       ],
       "stage": "queue_repair"
@@ -254,70 +330,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "14f9e8f7fb4689a6",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "7ad7112976314499",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "77979e7c4fa42f9a",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4abb90f306b30615",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "46ed955d26a0d9e8",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "122961788e527c4f",
-      "title": "Trees record wet years inside their rings",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "41bb91e14c9cd4f6",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -467,7 +479,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.173330+00:00",
+        "checked_at": "2026-06-18T07:04:11.682760+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -920,7 +932,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.170114+00:00",
+        "checked_at": "2026-06-18T07:04:11.030820+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1377,7 +1389,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.174845+00:00",
+        "checked_at": "2026-06-18T07:04:11.685845+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1833,7 +1845,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.167893+00:00",
+        "checked_at": "2026-06-18T07:04:11.029022+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2290,7 +2302,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.166684+00:00",
+        "checked_at": "2026-06-18T07:04:11.027781+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -2739,7 +2751,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.171508+00:00",
+        "checked_at": "2026-06-18T07:04:11.681151+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3189,7 +3201,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-18T02:33:51.176221+00:00",
+        "checked_at": "2026-06-18T07:04:11.687186+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
