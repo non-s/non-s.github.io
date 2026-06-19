@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-18T08:24:45.286389+00:00",
+  "generated_at": "2026-06-19T01:11:07.561251+00:00",
   "window": {
-    "start_date": "2026-05-22",
-    "end_date": "2026-06-18"
+    "start_date": "2026-05-23",
+    "end_date": "2026-06-19"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,20 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 50,
     "view_count": 47,
-    "video_count": 24,
+    "video_count": 25,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 24,
+    "uploads_checked": 25,
     "latest_uploads": [
+      {
+        "video_id": "teE-o6UZPIo",
+        "title": "Dogs read the world through scent maps",
+        "published_at": "2026-06-19T01:10:35Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnRlRS1vNlVaUElv"
+      },
       {
         "video_id": "h3io95YXGQ0",
         "title": "Lions use dark ear marks to guide cubs",
@@ -174,17 +180,17 @@
     ]
   },
   "video_audit": {
-    "videos_checked": 24,
-    "total_views": 57,
+    "videos_checked": 25,
+    "total_views": 60,
     "total_likes": 0,
-    "total_comments": 24,
+    "total_comments": 25,
     "private_or_unlisted": 0,
-    "shorts_like": 24,
+    "shorts_like": 25,
     "top_public_videos": [
       {
         "video_id": "UxfEHJZ8zdg",
         "title": "Owls fly silently because feathers break sound",
-        "views": 8,
+        "views": 10,
         "likes": 0,
         "comments": 1,
         "privacy_status": "public",
@@ -281,7 +287,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -290,7 +296,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -299,7 +305,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -357,9 +363,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -367,9 +373,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 16,
+      "error": ""
     },
     {
       "id": "country",
@@ -377,9 +383,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 43,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -387,9 +393,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 10,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -397,9 +403,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -407,12 +413,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }
