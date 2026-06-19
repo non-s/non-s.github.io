@@ -6,12 +6,53 @@
   "objective_reasons": {},
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 0,
-    "pending_after": 0,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 0,
-    "reasons": {}
+    "pending_before": 4,
+    "pending_after": 1,
+    "rejected": 3,
+    "repair_needed": 3,
+    "repaired": 1,
+    "reasons": {
+      "queue_score_reject": 3,
+      "objective_gate:bootstrap_observe_before_scaling": 2,
+      "missing_visual_cue": 1,
+      "missing_visible_cue": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "subject_not_immediately_clear": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "subject_not_clear": 1
+    }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "53aab107fd6e2f76",
+      "title": "Plants count touches before snapping shut",
+      "reasons": [
+        "missing_visual_cue",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ]
+    },
+    {
+      "id": "6568a4ceeb37c856",
+      "title": "Horses point their ears toward what matters",
+      "reasons": [
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ]
+    },
+    {
+      "id": "d90633c695f5dd63",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "queue_score_reject"
+      ]
+    }
+  ]
 }

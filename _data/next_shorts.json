@@ -7,8 +7,19 @@
       "sequel": 0.25,
       "recovery": 0.15
     },
-    "counts": {},
-    "items": [],
+    "counts": {
+      "evergreen": 1
+    },
+    "items": [
+      {
+        "id": "bbd6ad1620d07e82",
+        "title": "Fossils turn old bones into time clues",
+        "category": "discoveries",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      }
+    ],
     "recommendation": "balance_underrepresented_lanes_first"
   },
   "title_shape_mix": {
@@ -19,11 +30,22 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 0,
-    "pending_after": 0,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 0,
-    "reasons": {}
+    "pending_before": 4,
+    "pending_after": 1,
+    "rejected": 3,
+    "repair_needed": 3,
+    "repaired": 1,
+    "reasons": {
+      "queue_score_reject": 3,
+      "objective_gate:bootstrap_observe_before_scaling": 2,
+      "missing_visual_cue": 1,
+      "missing_visible_cue": 1,
+      "no_action_promise": 1,
+      "missing_action_word": 1,
+      "subject_not_immediately_clear": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "subject_not_clear": 1
+    }
   }
 }
