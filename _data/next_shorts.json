@@ -18,7 +18,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.6
+        "freshness_score": 52.52
       },
       {
         "id": "eb19e03980b8ccc6",
@@ -26,7 +26,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 42.2
+        "freshness_score": 42.1
       },
       {
         "id": "d374e456b59d4dc4",
@@ -34,7 +34,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.68
+        "freshness_score": 42.6
       },
       {
         "id": "e1a38f060ce4a709",
@@ -42,7 +42,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.7
+        "freshness_score": 52.6
       },
       {
         "id": "ebd2fe53f2a694d8",
@@ -50,7 +50,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.94
+        "freshness_score": 49.84
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -63,15 +63,17 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 6,
+    "pending_before": 7,
     "pending_after": 5,
-    "rejected": 1,
-    "repair_needed": 1,
+    "rejected": 2,
+    "repair_needed": 2,
     "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 8,
+      "queue_score_reject": 2,
       "objective_gate:observe_before_scaling": 2,
-      "queue_score_reject": 1
+      "no_action_promise": 1,
+      "missing_action_word": 1
     }
   }
 }
