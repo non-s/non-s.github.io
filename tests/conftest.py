@@ -57,6 +57,18 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         if hasattr(mod, attr):
             monkeypatch.setattr(mod, attr, cache_root / frag, raising=False)
 
+    # Mock dynamic memory loaders to avoid breaking assertions with live weights
+    try:
+        import utils.growth_engine
+        import utils.publish_score
+        import utils.audience_memory
+        monkeypatch.setattr(utils.growth_engine, "load_format_memory", lambda *args, **kwargs: {})
+        monkeypatch.setattr(utils.publish_score, "load_format_memory", lambda *args, **kwargs: {})
+        monkeypatch.setattr(utils.publish_score, "load_audience_memory", lambda *args, **kwargs: {})
+        monkeypatch.setattr(utils.audience_memory, "load_audience_memory", lambda *args, **kwargs: {})
+    except Exception:
+        pass
+
     # The Mistral-429 circuit breaker in utils.ai_helper holds module-
     # level state (`_mistral_429_streak`, `_mistral_circuit_open`).
     # Without an explicit reset, a 429-heavy test that trips the breaker
