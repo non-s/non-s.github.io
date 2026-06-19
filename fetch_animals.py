@@ -806,13 +806,18 @@ def _script_matches_visible_subject(subject: str, script: str) -> bool:
     visible_animals = _strict_animal_terms(subject)
     if visible_animals:
         script_animals = _strict_animal_terms(script)
+        if not script_animals:  # No animal name in script - allowed (uses pronouns/synonyms)
+            return True
         if visible_animals & script_animals:
             return True
         return any(bool(script_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
     visible = _animal_terms(subject)
     if visible and visible <= _CONTEXT_ONLY_SUBJECTS:
         return True
-    return not visible or bool(visible & _animal_terms(script))
+    script_terms = _animal_terms(script)
+    if not script_terms:  # No animal terms at all - allowed
+        return True
+    return not visible or bool(visible & script_terms)
 
 
 def _copy_matches_visible_subject(subject: str, *texts: str) -> bool:
