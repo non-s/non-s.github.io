@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T21:41:30.878097+00:00",
+  "generated_at": "2026-06-19T21:51:13.103154+00:00",
   "pending": 7,
   "states": {
     "rewrite": 6,
@@ -12,23 +12,14 @@
     "approved": 7
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 7,
     "pending_after": 7,
-    "rejected": 16,
-    "repair_needed": 2,
-    "repaired": 10,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 6,
     "reasons": {
       "objective_gate:observe_before_scaling": 10,
-      "script_hook_mismatch": 8,
-      "duplicate_title": 8,
-      "objective_gate:bootstrap_observe_before_scaling": 4,
-      "copy_subject_mismatch": 3,
-      "subject_not_immediately_clear": 2,
-      "queue_score_reject": 2,
-      "no_action_promise": 1,
-      "missing_action_word": 1,
-      "script_subject_mismatch": 1,
-      "off_topic_visual": 1
+      "objective_gate:bootstrap_observe_before_scaling": 4
     }
   },
   "rejected_preview": [
@@ -182,6 +173,15 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "59f43eb105e5b908",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "script_hook_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "09d373e7bb5a13a5",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
@@ -235,6 +235,14 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "01c9148ecf9c93ea",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "24a1fc90e06cea2a",
       "title": "walrus uses rocks to take a shower",
       "reasons": [
@@ -257,6 +265,14 @@
       "stage": "queue_repair"
     },
     {
+      "id": "58b7e2642a8e87c7",
+      "title": "Bees don’t just take nectar they leave messages",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
       "id": "11b1a46f681a3328",
       "title": "Dogs read the world through scent maps",
       "reasons": [
@@ -272,34 +288,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "1aa55b275f66b360",
-      "title": "Ocean cleanup: machines that clean faster than you think",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5693f233c862d5b4",
-      "title": "cats groom by the window for a real reason",
-      "reasons": [
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "da75e424bfed1a10",
-      "title": "Auroras glow when solar particles hit air",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "subject_not_clear",
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -450,7 +438,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.050596+00:00",
+        "checked_at": "2026-06-19T21:51:08.160984+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -901,7 +889,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.054763+00:00",
+        "checked_at": "2026-06-19T21:51:08.165148+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1356,7 +1344,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.791467+00:00",
+        "checked_at": "2026-06-19T21:51:08.169832+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1670,15 +1658,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.387,
+          "bootstrap_multiplier": 0.408,
           "can_adjust_strategy": false,
-          "confidence_score": 0.183,
+          "confidence_score": 0.211,
           "data_quality": "estimated",
-          "data_quality_score": 0.54,
-          "minimum_sample_size": 30,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.18.",
+          "data_quality_score": 0.48,
+          "minimum_sample_size": 33,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.21.",
           "recommendation_strength": "observe",
-          "sample_size": 8
+          "sample_size": 16
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1686,9 +1674,9 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 74,
+        "hook_score": 88,
         "objective_gate": {
-          "confidence_score": 0.183,
+          "confidence_score": 0.211,
           "mechanism_cluster": "ear_signal",
           "payoff_time_s": 10.45,
           "penalty": 0.0,
@@ -1760,22 +1748,23 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.402,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.202,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "return_probability": 0.3,
           "robotic_title": {
@@ -1808,7 +1797,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.055879+00:00",
+        "checked_at": "2026-06-19T21:51:08.166391+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1892,7 +1881,7 @@
           }
         },
         "hook_options": [
-          "Wildlife reveal the ear shift fast",
+          "Wildlife use ear shift for a reason",
           "Wildlife shows why the ear position matters.",
           "Wildlife shows why the ear position matters.",
           "Wildlife shows why the ear position matters.",
@@ -1903,8 +1892,8 @@
           "callback_keyword": "wildlife",
           "ending_line": "Which wildlife detail should we decode next?",
           "final_line": "Which wildlife detail should we decode next?",
-          "loop_score": 0.676,
-          "opening_line": "Wildlife reveal the ear shift fast",
+          "loop_score": 0.659,
+          "opening_line": "Wildlife use ear shift for a reason",
           "render_hints": {
             "avoid_hard_stop": true,
             "carry_keyword": "wildlife",
@@ -1912,19 +1901,19 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.676,
+        "loop_score": 0.659,
         "pinned_comment": "Watch the ear position again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.0,
+          "caption_chars_per_second": 15.05,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "first_2s_narration": "Wildlife reveal the ear shift fast Watch the ear position because wildlife",
+          "first_2s_narration": "Wildlife use ear shift for reason Watch the ear position because wildlife",
           "first_frame_text": "EAR SHIFT",
           "first_frame_text_words": 2,
-          "hook": "Wildlife reveal the ear shift fast",
+          "hook": "Wildlife use ear shift for a reason",
           "hook_specificity": 0.78,
           "hook_words": 6,
-          "loop_score": 0.676,
+          "loop_score": 0.659,
           "novelty_score": 0.58,
           "payoff_time_s": 10.450000000000001,
           "visual_motion_score": 0.76
@@ -1961,17 +1950,17 @@
         ],
         "score": 72,
         "selected_variant": {
-          "hook": "Wildlife reveal the ear shift fast",
+          "hook": "Wildlife use ear shift for a reason",
           "score": 62,
           "thumbnail_text": "EAR SHIFT",
           "title": "Why wildlife signal after one ear shift"
         },
-        "series": "Survival Tricks",
+        "series": "Animal Superpowers #12",
         "series_identity": {
-          "continuity_prompt": "Next in Survival Tricks: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #12: compare this with another force of nature.",
           "episode": 1,
-          "label": "Survival Tricks",
-          "series": "Survival Tricks"
+          "label": "Animal Superpowers #12",
+          "series": "Animal Superpowers #12"
         },
         "state": "usable",
         "strengths": [
@@ -1982,22 +1971,23 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.402,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.202,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "return_probability": 0.3,
           "robotic_title": {
@@ -2027,20 +2017,20 @@
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Wildlife reveal the answer with ear shift",
+          "Wildlife use ear shift to solve a problem",
           "Wildlife signal through ear shift",
           "Wildlife use ear shift before they signal",
           "This ear shift gives wildlife away",
           "Why wildlife signal after one ear shift",
+          "Wildlife reveal the answer with ear shift",
           "The ear shift that changes the moment",
           "Wildlife make one ear shift matter",
           "Wildlife show the hidden answer in seconds",
-          "Wildlife: watch this ear shift",
-          "Watch wildlife after the ear shift"
+          "Wildlife: watch this ear shift"
         ],
         "top_variants": [
           {
-            "hook": "Wildlife reveal the ear shift fast",
+            "hook": "Wildlife use ear shift for a reason",
             "score": 62,
             "thumbnail_text": "EAR SHIFT",
             "title": "Why wildlife signal after one ear shift"
@@ -2058,7 +2048,7 @@
             "title": "Why wildlife signal after one ear shift"
           },
           {
-            "hook": "Wildlife reveal the ear shift fast",
+            "hook": "Wildlife use ear shift for a reason",
             "score": 62,
             "thumbnail_text": "WATCH EAR SHIFT",
             "title": "Why wildlife signal after one ear shift"
@@ -2076,7 +2066,7 @@
             "title": "Why wildlife signal after one ear shift"
           },
           {
-            "hook": "Wildlife reveal the ear shift fast",
+            "hook": "Wildlife use ear shift for a reason",
             "score": 62,
             "thumbnail_text": "WILDLIFE SIGNAL",
             "title": "Why wildlife signal after one ear shift"
@@ -2094,7 +2084,7 @@
             "title": "Why wildlife signal after one ear shift"
           },
           {
-            "hook": "Wildlife reveal the ear shift fast",
+            "hook": "Wildlife use ear shift for a reason",
             "score": 62,
             "thumbnail_text": "EAR SHIFT MATTERS",
             "title": "Why wildlife signal after one ear shift"
@@ -2265,7 +2255,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.017824+00:00",
+        "checked_at": "2026-06-19T21:51:08.160057+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2723,7 +2713,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.052968+00:00",
+        "checked_at": "2026-06-19T21:51:08.163232+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3179,7 +3169,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T21:41:25.417432+00:00",
+        "checked_at": "2026-06-19T21:51:08.167776+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
