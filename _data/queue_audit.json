@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T23:43:10.903446+00:00",
+  "generated_at": "2026-06-19T23:48:01.109072+00:00",
   "pending": 8,
   "states": {
     "rewrite": 7,
@@ -12,28 +12,14 @@
     "approved": 8
   },
   "prune_summary": {
-    "pending_before": 24,
+    "pending_before": 8,
     "pending_after": 8,
-    "rejected": 16,
-    "repair_needed": 2,
-    "repaired": 12,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 7,
     "reasons": {
       "objective_gate:observe_before_scaling": 10,
-      "duplicate_title": 10,
-      "script_hook_mismatch": 9,
-      "objective_gate:bootstrap_observe_before_scaling": 6,
-      "subject_not_immediately_clear": 2,
-      "no_action_promise": 2,
-      "missing_action_word": 2,
-      "queue_score_reject": 2,
-      "script_subject_mismatch": 2,
-      "copy_subject_mismatch": 2,
-      "duplicate_script": 2,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "subject_not_clear": 1,
-      "off_topic_visual": 1,
-      "duplicate_angle": 1
+      "objective_gate:bootstrap_observe_before_scaling": 6
     }
   },
   "rejected_preview": [
@@ -216,6 +202,14 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "bb02f3416ae11789",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "2cb61acdc17d1aae",
       "title": "Forests make cooler air under the canopy",
       "reasons": [
@@ -245,12 +239,28 @@
       "stage": "queue_prune_final"
     },
     {
+      "id": "90c58367b1fcc7ec",
+      "title": "Cats use whiskers like built-in rulers",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
       "id": "64f0da98afbdf831",
       "title": "Sharks sense tiny electric fields",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
+    },
+    {
+      "id": "8b566ceabf9d8c82",
+      "title": "Leopards vanish like a flick of the wrist",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
     },
     {
       "id": "f97afa1394db0617",
@@ -279,38 +289,18 @@
       "stage": "queue_prune"
     },
     {
-      "id": "79ed897e85fe1ee4",
-      "title": "Dogs read human pointing surprisingly well",
+      "id": "98de1f4765e0edc1",
+      "title": "Mangroves take power out of waves",
       "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "b0e4b7766c60ca16",
-      "title": "Aurora paints the sky with oxygen tricks",
-      "reasons": [
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6356a86605cc9695",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e017d50721a64250",
-      "title": "Lightning makes air explode into thunder",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -461,7 +451,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.496454+00:00",
+        "checked_at": "2026-06-19T23:47:55.498060+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -773,15 +763,15 @@
         "approved": true,
         "category": "rivers",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.297,
+          "bootstrap_multiplier": 0.319,
           "can_adjust_strategy": false,
-          "confidence_score": 0.063,
+          "confidence_score": 0.092,
           "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
+          "data_quality_score": 0.5,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
           "recommendation_strength": "observe",
-          "sample_size": 5
+          "sample_size": 13
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -791,7 +781,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.063,
+          "confidence_score": 0.092,
           "mechanism_cluster": "ear_signal",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -861,33 +851,34 @@
         "state": "publish_ready",
         "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.317,
+            "bootstrap_multiplier": 0.423,
             "can_adjust_strategy": false,
-            "confidence_score": 0.089,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "confidence_score": 0.231,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.23.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 11
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.23.",
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 89,
+          "state": "strong",
+          "subscriber_probability": 0.127
         },
         "title_score": 90,
         "weak_content": {
@@ -910,7 +901,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:04.830772+00:00",
+        "checked_at": "2026-06-19T23:47:55.507542+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1066,12 +1057,12 @@
           "thumbnail_text": "RIVER BEND",
           "title": "Rivers carve bends by stealing from one bank"
         },
-        "series": "Earth Engine",
+        "series": "Animal Superpowers #12",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #12: compare this with another force of nature.",
           "episode": 1,
-          "label": "Earth Engine",
-          "series": "Earth Engine"
+          "label": "Animal Superpowers #12",
+          "series": "Animal Superpowers #12"
         },
         "state": "magnetic",
         "strengths": [
@@ -1082,33 +1073,34 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.191,
+          "comment_probability": 0.23,
           "confidence": {
-            "bootstrap_multiplier": 0.317,
+            "bootstrap_multiplier": 0.423,
             "can_adjust_strategy": false,
-            "confidence_score": 0.089,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "confidence_score": 0.231,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.23.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 11
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.23.",
           "reasons": [
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.222,
+          "return_probability": 0.269,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
+          "score": 89,
+          "state": "strong",
+          "subscriber_probability": 0.127
         },
         "swipe_risk": {
           "band": "low",
@@ -1362,7 +1354,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.500739+00:00",
+        "checked_at": "2026-06-19T23:47:55.502267+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1817,7 +1809,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:05.172955+00:00",
+        "checked_at": "2026-06-19T23:47:55.509473+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2270,7 +2262,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.501893+00:00",
+        "checked_at": "2026-06-19T23:47:55.503411+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2728,7 +2720,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.477916+00:00",
+        "checked_at": "2026-06-19T23:47:55.497151+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3186,7 +3178,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.498928+00:00",
+        "checked_at": "2026-06-19T23:47:55.500509+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3642,7 +3634,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-19T23:43:03.852572+00:00",
+        "checked_at": "2026-06-19T23:47:55.504725+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
