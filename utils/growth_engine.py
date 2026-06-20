@@ -663,7 +663,7 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
     text = _text(story)
     category = str(story.get("category") or "").lower()
     tags = " ".join(str(t) for t in (story.get("yt_tags") or []))
-    base = {
+    base: dict[str, float] = {
         "viral_potential": 40 + _contains(text, EMOTIONAL_TERMS) * 8 + _contains(text, ACTION_TERMS) * 5,
         "visual_potential": 45 + _contains(text, VISUAL_TERMS) * 10,
         "replay_potential": 42 + _contains(text, {"watch", "spot", "notice", "again", "cue", "before"}) * 10,
@@ -715,14 +715,28 @@ def score_topic(story: dict, memory: dict | None = None) -> dict:
         + signals["emotional_potential"] * 0.10
         + signals["novelty"] * 0.10
     )
+    borderline_observe = (
+        48 <= score < 55
+        and signals["visual_potential"] >= 55
+        and signals["replay_potential"] >= 60
+        and signals["comment_potential"] >= 50
+    )
+    if borderline_observe:
+        score = max(50, score)
     reasons = []
     if signals["visual_potential"] < 55:
         reasons.append("weak_visual_surface")
     if signals["replay_potential"] < 50:
         reasons.append("weak_replay_reason")
-    if score < 55:
+    if score < 55 and not borderline_observe:
         reasons.append("low_opportunity_score")
-    verdict = "scale" if score >= 78 else ("produce" if score >= 64 else ("rewrite" if score >= 55 else "discard"))
+    verdict = (
+        "scale"
+        if score >= 78
+        else ("produce" if score >= 64 else ("rewrite" if score >= 55 or borderline_observe else "discard"))
+    )
+    if borderline_observe and verdict == "rewrite":
+        reasons.append("borderline_opportunity_observe")
     confidence = ((audience.get("category") or {}).get(category) or {}).get("confidence") or assess_confidence(
         "category",
         0,

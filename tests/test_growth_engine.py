@@ -36,6 +36,31 @@ def test_score_topic_returns_opportunity_breakdown():
     assert {"viral_potential", "visual_potential", "replay_potential"} <= set(out["signals"])
 
 
+def test_score_topic_keeps_borderline_visual_cue_candidates_observable():
+    out = score_topic(
+        _story(
+            title="Horses point their ears toward what matters",
+            seo_title="Horses point their ears toward what matters",
+            hook="Horses show attention with their ears.",
+            script=(
+                "Horses show attention with their ears. Watch the ears before the body moves, "
+                "because each ear can turn toward a sound or animal the horse is tracking. "
+                "That small shift shows where attention is going before the next step. "
+                "The ears are a radar dish, not decoration. Would you spot it?"
+            ),
+            thumbnail_text="EAR RADAR",
+            category="farm",
+            yt_tags=["horses", "animal facts"],
+        ),
+        memory={},
+    )
+
+    assert out["score"] >= 50
+    assert out["verdict"] == "rewrite"
+    assert "low_opportunity_score" not in out["reasons"]
+    assert "borderline_opportunity_observe" in out["reasons"]
+
+
 def test_retention_analyzer_flags_weak_scripts():
     weak = analyze_retention(
         _story(

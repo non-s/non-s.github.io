@@ -39,6 +39,32 @@ def test_score_story_approves_specific_winning_candidate():
     assert score["score"] >= 72
 
 
+def test_score_story_approves_borderline_visual_cue_candidate():
+    score = score_story(
+        _strong_story(
+            id="horse-borderline",
+            title="Horses point their ears toward what matters",
+            seo_title="Horses point their ears toward what matters",
+            hook="Horses show attention with their ears.",
+            script=(
+                "Horses show attention with their ears. Watch the ears before the body moves, "
+                "because each ear can turn toward a sound or animal the horse is tracking. "
+                "That small shift shows where attention is going before the next step. "
+                "The ears are a radar dish, not decoration. Would you spot it?"
+            ),
+            thumbnail_text="EAR RADAR",
+            category="farm",
+            story_format="animal_intelligence",
+            score=9,
+        )
+    )
+
+    assert score["approved"] is True
+    assert score["state"] == "publish_ready"
+    assert score["opportunity"]["score"] >= 50
+    assert score["opportunity"]["verdict"] == "rewrite"
+
+
 def test_score_story_sends_repetitive_template_to_rewrite_or_reject():
     story = _strong_story(
         title="Cows have another signal hiding in plain sight",
