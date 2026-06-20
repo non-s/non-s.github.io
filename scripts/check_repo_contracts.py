@@ -104,7 +104,7 @@ WORKFLOW_TOKENS = {
     ".github/workflows/fetch-content.yml": (
         "quota_preflight.py fetch-content",
         "apply_topic_freshness.py",
-        "QUEUE_TARGET_PENDING || '48'",
+        "QUEUE_TARGET_PENDING || '72'",
         "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}",
         "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}",
         "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}",

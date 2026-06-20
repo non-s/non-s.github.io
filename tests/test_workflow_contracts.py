@@ -76,7 +76,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow
     assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
     assert "leaving generated diagnostics uncommitted" in fetch_workflow
-    assert "QUEUE_TARGET_PENDING || '48'" in fetch_workflow
+    assert "QUEUE_TARGET_PENDING || '72'" in fetch_workflow
     assert "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}" in fetch_workflow
     assert "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}" in fetch_workflow
     assert "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}" in fetch_workflow

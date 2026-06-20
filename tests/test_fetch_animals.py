@@ -192,6 +192,28 @@ def test_subject_from_clip_prefers_descriptive_pexels_slug():
     assert fetch_animals._subject_from_clip(clip, "ocean") == "sea turtle over coral reef"
 
 
+def test_sheepdog_source_phrase_stays_in_dog_lane():
+    clip = _clip(url="https://www.pexels.com/video/woman-petting-a-sheep-dog-7197736/", title="Uploader Name")
+    subject = fetch_animals._subject_from_clip(clip, "dogs")
+
+    assert subject == "woman petting a working dog"
+    assert fetch_animals._animal_terms("woman petting a sheep dog") == {"dog"}
+    assert fetch_animals._strict_animal_terms(subject) == {"dog"}
+    assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], subject)
+    assert not fetch_animals._copy_matches_visible_subject(
+        subject,
+        "Sheep recognize faces across the flock",
+        "Sheep can remember familiar faces.",
+        "Sheep can remember familiar faces across the flock because they track visual patterns.",
+    )
+    assert fetch_animals._copy_matches_visible_subject(
+        subject,
+        "Dogs watch handlers for tiny signals",
+        "Dogs read human movement quickly.",
+        "Dogs read human movement quickly because working breeds track small posture changes.",
+    )
+
+
 def test_topic_rejects_explicit_animal_from_wrong_category():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch")
 

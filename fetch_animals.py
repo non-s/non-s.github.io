@@ -848,9 +848,14 @@ _NON_WILDLIFE_CONTEXT_TERMS = {
 _BLOCKED_COMMONS_TERMS = ("na" + "sa",)
 
 
+def _normalise_visible_subject_text(text: str) -> str:
+    """Resolve source-title phrases that otherwise look like two animals."""
+    return re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.IGNORECASE)
+
+
 def _animal_terms(text: str) -> set[str]:
     """Return canonical visible nature subjects explicitly present in text."""
-    words = re.findall(r"[a-z]+", (text or "").lower())
+    words = re.findall(r"[a-z]+", _normalise_visible_subject_text(text).lower())
     return {_ANIMAL_ALIASES[word] for word in words if word in _ANIMAL_ALIASES}
 
 
@@ -923,8 +928,8 @@ def _subject_from_clip(clip, fallback_query: str) -> str:
         slug = parts[-2]
     else:
         slug = re.sub(r"-\d+$", "", tail)
-    slug = re.sub(r"[-_]+", " ", slug).strip()
-    title = (getattr(clip, "title", "") or "").strip()
+    slug = _normalise_visible_subject_text(re.sub(r"[-_]+", " ", slug).strip()).strip()
+    title = _normalise_visible_subject_text((getattr(clip, "title", "") or "").strip()).strip()
     if _animal_terms(slug):
         return slug
     if _animal_terms(title):

@@ -15,6 +15,9 @@ from utils.humanity_engine import polish_story
 from utils.seo_optimizer import _ANIMAL_WORDS, optimise_title, seo_score
 
 _NATURE_SUBJECT_WORDS = {
+    "aurora",
+    "auroras",
+    "borealis",
     "cacti",
     "cactus",
     "cloud",

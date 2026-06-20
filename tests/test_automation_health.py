@@ -163,6 +163,12 @@ def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
                         "seo_title": "Lightning turns air into a shock wave",
                         "script": "Lightning turns air into a shock wave before thunder reaches you.",
                     },
+                    {
+                        "id": "aurora",
+                        "category": "weather",
+                        "seo_title": "Auroras glow when solar particles hit air",
+                        "script": "Auroras glow when solar particles hit air before the sky changes color.",
+                    },
                 ]
             }
         ),

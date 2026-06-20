@@ -47,7 +47,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "QUEUE_TARGET_PENDING",
-        "48",
+        "72",
         "publishing",
         "Raw pending story target for hourly queue refresh before quality pruning.",
         "Raise only when prebuilding inventory.",

@@ -32,7 +32,7 @@
 | `FLEX_SLOT_UTC` | no | Optional `HH:MM` UTC flex slot used only when `ALLOW_FLEX_SLOT=1`. |
 | `MIN_SLOT_PUBLISH_SCORE` | no | Minimum top-candidate publish score required for an adaptive slot to publish. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
-| `QUEUE_TARGET_PENDING` | no | Target number of raw unconsumed queue stories to build before the quality pruner runs. Defaults to `48`, giving the free discovery loop enough margin to keep a one-day hourly buffer after rejected clips are quarantined. |
+| `QUEUE_TARGET_PENDING` | no | Target number of raw unconsumed queue stories to build before the quality pruner runs. Defaults to `72`, giving the free discovery loop enough margin to keep a one-day hourly buffer after rejected clips are quarantined. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target used only when `publish_ready` supply is low. Defaults to `18` so the upload job does not spend the hourly slot filling deep raw inventory. |
 | `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `2` so a single consumed or held candidate does not stall the next hourly slot. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `6`. |
@@ -92,7 +92,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `FLEX_SLOT_UTC` | `` | publishing | Optional HH:MM UTC flex slot. | Unset it. |
 | `MIN_SLOT_PUBLISH_SCORE` | `72` | publishing | Minimum publish score for adaptive cadence. | Lower or disable adaptive cadence. |
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
-| `QUEUE_TARGET_PENDING` | `48` | publishing | Raw pending story target for hourly queue refresh before the quality pruner removes weak candidates. | Lower if free discovery/AI quotas become tight. |
+| `QUEUE_TARGET_PENDING` | `72` | publishing | Raw pending story target for hourly queue refresh before the quality pruner removes weak candidates. | Lower if free discovery/AI quotas become tight. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `18` | publishing | Emergency raw pending story target used only when publish-ready supply is below target. | Keep the full-day stock target in `QUEUE_TARGET_PENDING` for `fetch-content`. |
 | `PUBLISH_BACKFILL_READY_TARGET` | `2` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `6` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
