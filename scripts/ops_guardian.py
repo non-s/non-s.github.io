@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the Wild Brief operations guardian report."""
+
 from __future__ import annotations
 
 import json
@@ -11,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.ops_guardian import build_ops_report, should_enforce_pause
+from utils.ops_guardian import build_ops_report, should_enforce_pause  # noqa: E402
 
 OUT = ROOT / "_data" / "ops_guardian.json"
 
@@ -40,7 +41,7 @@ def main() -> int:
     paused = report.get("paused_topics") or []
     if paused:
         print("paused topics:", ", ".join(str(item.get("category")) for item in paused))
-    if os.environ.get("OPS_GUARDIAN_ENFORCE", "0") in {"1", "true", "True"} and should_enforce_pause(report):
+    if os.environ.get("OPS_GUARDIAN_ENFORCE", "1") in {"1", "true", "True"} and should_enforce_pause(report):
         print("ops guardian: critical risk; enforcement requested, stopping run")
         return 2
     return 0

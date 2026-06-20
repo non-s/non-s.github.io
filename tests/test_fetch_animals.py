@@ -528,6 +528,44 @@ def test_topic_iteration_order_recovers_empty_publish_ready_supply_with_visual_t
     assert order.index("birds") < order.index("plants")
 
 
+def test_topic_iteration_order_ignores_paused_or_held_publish_ready_supply(monkeypatch):
+    queue = {
+        "stories": [
+            *(
+                {
+                    "id": f"cat-{idx}",
+                    "category": "cats",
+                    "consumed": False,
+                    "queue_prune": {"state": "rewrite"},
+                    "publish_score": {"approved": False, "state": "rewrite"},
+                }
+                for idx in range(10)
+            ),
+            {
+                "id": "paused-ready",
+                "category": "wildlife",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+            },
+            {
+                "id": "held-ready",
+                "category": "dogs",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+            },
+        ]
+    }
+    plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+    monkeypatch.setattr(fetch_animals, "_agency_held_ids", lambda: {"held-ready"})
+
+    order = fetch_animals._topic_iteration_order(queue, plan, paused={"wildlife"})
+
+    assert order.index("ocean") < order.index("cats")
+    assert "wildlife" not in order
+
+
 def test_topic_iteration_order_keeps_table_order_when_publish_ready_supply_exists():
     queue = {
         "stories": [

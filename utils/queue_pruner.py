@@ -434,6 +434,33 @@ def _objective_rank(item: dict) -> tuple[int, float]:
     return scale_ready, confidence
 
 
+def _soft_rewrite_can_publish(item: dict, *, score: float, editor: dict) -> bool:
+    """Allow safe, already-approved soft rewrites to keep the live queue stocked."""
+    if score < 72:
+        return False
+    publish = item.get("publish_score") or {}
+    if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+        return False
+    rights = item.get("rights_audit") or {}
+    if rights.get("approved") is not True or rights.get("warnings"):
+        return False
+    if editor and editor.get("approved") is not True:
+        return False
+    brain = item.get("youtube_brain") or {}
+    if brain.get("state") in {"rewrite_before_publish", "do_not_publish"}:
+        return False
+    if brain.get("risks"):
+        return False
+    packaging = item.get("packaging") or {}
+    if packaging.get("state") == "rewrite_packaging":
+        return False
+    if packaging.get("risks"):
+        return False
+    if item.get("state") not in {"rewrite", "publish_ready"}:
+        return False
+    return True
+
+
 def prune_queue(
     queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING, analytics_strategy: dict | None = None
 ) -> tuple[dict, list[dict], dict]:
@@ -615,8 +642,11 @@ def prune_queue(
             objective_reasons.extend(editor_reasons)
             effective_state = "reject" if editor.get("state") == "discard" else "rewrite"
             effective_score = max(0.0, float(effective_score) - 8.0)
-        if objective_reasons:
-            reasons.update(objective_reasons)
+        if effective_state == "rewrite" and _soft_rewrite_can_publish(
+            item, score=float(effective_score), editor=editor
+        ):
+            effective_state = "publish_ready"
+            objective_reasons.append("soft_ready_fallback")
         cluster = title_template_cluster(str(story.get("seo_title") or story.get("title") or ""))
         mechanism = cognitive_mechanism_cluster(story)
         if cluster and effective_state == "publish_ready":

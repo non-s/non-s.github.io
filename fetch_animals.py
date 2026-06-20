@@ -366,13 +366,6 @@ PUBLISH_READY_RECOVERY_TOPICS = {
     "insects",
     "nocturnal",
     "arctic",
-    "fungi",
-    "rivers",
-    "volcanoes",
-    "weather",
-    "geology",
-    "space",
-    "chemistry",
 }
 
 
@@ -1380,10 +1373,31 @@ def _pending_count(queue: dict) -> int:
     return sum(1 for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed"))
 
 
-def _publish_ready_supply(queue: dict) -> int:
+def _agency_held_ids(path: Path = Path("_data/agency_gate.json")) -> set[str]:
+    if not path.exists():
+        return set()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {str(item.get("id") or "") for item in (payload.get("held_items") or []) if isinstance(item, dict)}
+
+
+def _publish_ready_supply(
+    queue: dict,
+    *,
+    paused: set[str] | None = None,
+    held_ids: set[str] | None = None,
+) -> int:
     ready = 0
+    paused = {str(item).strip().lower() for item in (paused or set()) if str(item).strip()}
+    held_ids = held_ids or set()
     for story in queue.get("stories") or []:
         if not isinstance(story, dict) or story.get("consumed"):
+            continue
+        story_id = str(story.get("id") or "")
+        category = str(story.get("category") or "").strip().lower()
+        if story_id in held_ids or (category and category in paused):
             continue
         queue_prune = story.get("queue_prune") or {}
         publish_score = story.get("publish_score") or {}
@@ -1400,7 +1414,7 @@ def _topic_iteration_order(queue: dict, plan: dict[str, dict[str, Any]], paused:
     """Return active topic keys in the order fetch backfill should try them."""
     paused = {str(item).strip().lower() for item in (paused or set()) if str(item).strip()}
     active = [topic_key for topic_key in ANIMAL_TOPICS if topic_key not in paused]
-    if _publish_ready_supply(queue) > 0:
+    if _publish_ready_supply(queue, paused=paused, held_ids=_agency_held_ids()) > 0:
         return active
 
     pending = _pending_category_counts(queue)

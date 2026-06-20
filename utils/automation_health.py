@@ -10,7 +10,7 @@ from pathlib import Path
 
 from utils.content_agency import agency_snapshot
 from utils.editorial import rank_candidates
-from utils.growth_strategy import load_strategy
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
 from utils.humanity_engine import polish_story
 from utils.seo_optimizer import _ANIMAL_WORDS, optimise_title, seo_score
 
@@ -80,6 +80,10 @@ def _script_key(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (text or "").lower()).strip()
 
 
+def _story_id(story: dict) -> str:
+    return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+
+
 def _frontloaded(title: str) -> bool:
     words = re.findall(r"[a-z]+", (title or "").lower())
     if not words:
@@ -102,6 +106,7 @@ def _health_seo_score(title: str) -> dict:
 def build_health(root: Path | str = ".") -> dict:
     root = Path(root)
     queue = _safe_json(root / "_data" / "stories_queue.json")
+    agency_gate = _safe_json(root / "_data" / "agency_gate.json")
     latest = _safe_json(root / "_data" / "analytics" / "latest.json")
     comments = _safe_json(root / "_data" / "analytics" / "comments.json")
     stories = [item for item in (queue.get("stories") or []) if isinstance(item, dict) and not item.get("consumed")]
@@ -125,11 +130,16 @@ def build_health(root: Path | str = ".") -> dict:
             frontloaded += 1
 
     pending = len(stories)
+    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or []) if isinstance(item, dict)}
+    paused = set(paused_categories(root / "_data" / "ops_guardian.json").keys()) if ops_guardian_enforced() else set()
     publish_ready = sum(
         1
         for item in stories
-        if (item.get("queue_prune") or {}).get("state") == "publish_ready"
+        if _story_id(item) not in held_ids
+        and str(item.get("category") or "").strip().lower() not in paused
+        and (item.get("queue_prune") or {}).get("state") == "publish_ready"
         and (item.get("publish_score") or {}).get("approved") is True
+        and (item.get("publish_score") or {}).get("state") == "publish_ready"
         and (item.get("editorial") or {}).get("approved") is True
     )
     avg_seo = round(sum(seo_scores) / len(seo_scores), 2) if seo_scores else 0.0

@@ -289,6 +289,66 @@ def test_prune_queue_keeps_editorial_cooldown_out_of_publish_ready(monkeypatch):
     assert rejected == []
 
 
+def test_prune_queue_promotes_soft_rewrite_when_publish_guards_are_clear(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 88,
+            "state": "rewrite",
+            "publish_score": {"approved": True, "state": "publish_ready", "score": 96},
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {"state": "magnetic", "risks": []},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": True, "applied": True, "reasons": ["soft_score_rewrite"]},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+
+    pruned, rejected, summary = prune_queue({"stories": [_story("soft")]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert kept[0]["queue_prune"]["state"] == "publish_ready"
+    assert "soft_ready_fallback" in kept[0]["queue_prune"]["objective_reasons"]
+    assert summary["reasons"]["soft_ready_fallback"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_keeps_brain_rewrite_out_of_soft_ready_fallback(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 88,
+            "state": "rewrite",
+            "publish_score": {"approved": True, "state": "publish_ready", "score": 96},
+            "youtube_brain": {"state": "rewrite_before_publish", "risks": ["subject_not_immediately_clear"]},
+            "packaging": {"state": "magnetic", "risks": []},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": True, "applied": True, "reasons": ["subject_not_immediately_clear"]},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+
+    pruned, rejected, summary = prune_queue({"stories": [_story("brain-rewrite")]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert kept[0]["queue_prune"]["state"] == "rewrite"
+    assert "soft_ready_fallback" not in kept[0]["queue_prune"]["objective_reasons"]
+    assert "soft_ready_fallback" not in summary["reasons"]
+    assert rejected == []
+
+
 def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is_unavailable(monkeypatch):
     repeated = "Ducklings rely on wing position to survive"
     monkeypatch.setattr("utils.queue_pruner.published_title_keys", lambda: {repeated.lower()})

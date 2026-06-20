@@ -67,6 +67,59 @@ def test_automation_health_flags_duplicate_scripts(tmp_path: Path):
     assert "duplicate_scripts_in_queue" in out["issues"]
 
 
+def test_automation_health_counts_only_operationally_publish_ready_items(tmp_path: Path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    ready_fields = {
+        "queue_prune": {"state": "publish_ready"},
+        "publish_score": {"approved": True, "state": "publish_ready"},
+        "editorial": {"approved": True},
+    }
+    (data / "stories_queue.json").write_text(
+        json.dumps(
+            {
+                "stories": [
+                    {
+                        **ready_fields,
+                        "id": "held",
+                        "category": "birds",
+                        "seo_title": "Birds see ultraviolet patterns we miss",
+                        "script": "Birds see ultraviolet patterns before the feather signal changes.",
+                    },
+                    {
+                        **ready_fields,
+                        "id": "paused",
+                        "category": "wildlife",
+                        "seo_title": "Elephants feel rumbles through the ground",
+                        "script": "Elephants feel rumbles through the ground before the herd turns.",
+                    },
+                    {
+                        **ready_fields,
+                        "id": "active",
+                        "category": "plants",
+                        "seo_title": "Plants count touches before snapping shut",
+                        "script": "Plants count touches before snapping shut around an insect.",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (data / "agency_gate.json").write_text(
+        json.dumps({"held_items": [{"id": "held", "reasons": ["success_recovery_hook_required"]}]}),
+        encoding="utf-8",
+    )
+    (data / "ops_guardian.json").write_text(
+        json.dumps({"paused_topics": [{"category": "wildlife", "reason": "low_retention"}]}),
+        encoding="utf-8",
+    )
+
+    out = build_health(tmp_path)
+
+    assert out["queue"]["pending"] == 3
+    assert out["queue"]["publish_ready"] == 1
+
+
 def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
     data = tmp_path / "_data"
     data.mkdir(parents=True)
