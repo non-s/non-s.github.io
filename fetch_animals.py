@@ -49,6 +49,7 @@ Operator knobs (env vars)
   ANIMALS_MAX_PER_TOPIC   (default 4) — clips fetched per topic per run
   ANIMALS_KEEP_DAYS       (default 14) — prune older entries
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -60,13 +61,14 @@ import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
 from utils.broll import fetch_pexels
+from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.growth_studio import studio_brief_for_story
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
 from utils.topic_freshness import annotate_queue, freshness_report
@@ -353,6 +355,25 @@ ANIMAL_TOPICS: dict[str, dict] = {
 # ANIMAL_TOPICS, but Wild Brief's actual editorial surface is now all nature.
 ANIMAL_TOPICS.update(NATURE_TOPICS)
 NATURE_QUEUE_TOPICS = ANIMAL_TOPICS
+
+PUBLISH_READY_RECOVERY_TOPICS = {
+    "cats",
+    "dogs",
+    "ocean",
+    "birds",
+    "farm",
+    "reptiles",
+    "insects",
+    "nocturnal",
+    "arctic",
+    "fungi",
+    "rivers",
+    "volcanoes",
+    "weather",
+    "geology",
+    "space",
+    "chemistry",
+}
 
 
 # ── AI prompt ─────────────────────────────────────────────────────
@@ -1010,7 +1031,7 @@ def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = 
         if len(clean_tags) >= 5:
             break
 
-    def _clean_tag(raw: str, fallback: str) -> str:
+    def _clean_tag(raw: object, fallback: str) -> str:
         cleaned = re.sub(r"[^A-Za-z0-9]", "", str(raw or ""))[:24]
         return cleaned or fallback
 
@@ -1153,7 +1174,7 @@ def record_published_clip(
     if not platform_video_id and _legacy.get("youtube_video_id"):
         platform_video_id = _legacy["youtube_video_id"]
     PUBLISHED_CLIPS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"clips": [], "updated_at": None}
+    payload: dict[str, Any] = {"clips": [], "updated_at": None}
     if PUBLISHED_CLIPS_FILE.exists():
         try:
             existing = json.loads(PUBLISHED_CLIPS_FILE.read_text(encoding="utf-8"))
@@ -1202,7 +1223,7 @@ def _prune_queue(stories: list[dict], keep_days: int) -> list[dict]:
             continue
         consumed_at_raw = s.get("consumed_at") or s.get("fetched_at")
         try:
-            consumed_at = datetime.fromisoformat(consumed_at_raw)
+            consumed_at = datetime.fromisoformat(str(consumed_at_raw))
         except (TypeError, ValueError):
             out.append(s)
             continue
@@ -1359,13 +1380,61 @@ def _pending_count(queue: dict) -> int:
     return sum(1 for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed"))
 
 
+def _publish_ready_supply(queue: dict) -> int:
+    ready = 0
+    for story in queue.get("stories") or []:
+        if not isinstance(story, dict) or story.get("consumed"):
+            continue
+        queue_prune = story.get("queue_prune") or {}
+        publish_score = story.get("publish_score") or {}
+        if (
+            queue_prune.get("state") == "publish_ready"
+            and publish_score.get("approved") is True
+            and publish_score.get("state") == "publish_ready"
+        ):
+            ready += 1
+    return ready
+
+
+def _topic_iteration_order(queue: dict, plan: dict[str, dict[str, Any]], paused: set[str] | None = None) -> list[str]:
+    """Return active topic keys in the order fetch backfill should try them."""
+    paused = {str(item).strip().lower() for item in (paused or set()) if str(item).strip()}
+    active = [topic_key for topic_key in ANIMAL_TOPICS if topic_key not in paused]
+    if _publish_ready_supply(queue) > 0:
+        return active
+
+    pending = _pending_category_counts(queue)
+    original_order = {topic_key: index for index, topic_key in enumerate(ANIMAL_TOPICS)}
+
+    def sort_key(topic_key: str) -> tuple[int, int, float, int, int]:
+        topic_plan = plan.get(topic_key) or {}
+        try:
+            trend_weight = float(topic_plan.get("trend_weight") or 1.0)
+        except (TypeError, ValueError):
+            trend_weight = 1.0
+        try:
+            budget = int(topic_plan.get("budget") or 0)
+        except (TypeError, ValueError):
+            budget = 0
+        recovery_bucket = 0 if topic_key in PUBLISH_READY_RECOVERY_TOPICS else 1
+        return (
+            recovery_bucket,
+            pending.get(topic_key, 0),
+            -trend_weight,
+            -budget,
+            original_order.get(topic_key, 10_000),
+        )
+
+    return sorted(active, key=sort_key)
+
+
 def _topic_fetch_plan(
     queue: dict,
     strategy: dict | None = None,
     comments: dict | None = None,
     trends: dict | None = None,
     max_per_topic: int = MAX_PER_TOPIC,
-) -> dict[str, dict[str, int]]:
+) -> dict[str, dict[str, Any]]:
     """Return per-topic fetch budgets tuned by queue pressure + analytics."""
     pending = _pending_category_counts(queue)
     weights = (strategy or {}).get("category_weights") or {}
@@ -1374,7 +1443,7 @@ def _topic_fetch_plan(
         for item in ((comments or {}).get("requested_animals") or [])
         if str(item).strip()
     }
-    plan: dict[str, dict[str, int]] = {}
+    plan: dict[str, dict[str, Any]] = {}
     base = max(1, int(max_per_topic))
     for topic_key, cfg in ANIMAL_TOPICS.items():
         count = pending.get(topic_key, 0)
@@ -1475,16 +1544,23 @@ def main() -> int:
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
+    paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
+    topic_order = _topic_iteration_order(queue, fetch_plan, paused)
+    if paused:
+        log.info("Ops guardian paused topic(s) skipped: %s", ", ".join(sorted(paused)))
+    if not topic_order:
+        log.warning("No active topics available for queue refresh.")
     per_topic_backfill_cap = None
     if max_new_entries > 0 and target_pending:
-        per_topic_backfill_cap = _backfill_per_topic_cap(max_new_entries)
+        per_topic_backfill_cap = _backfill_per_topic_cap(max_new_entries, topic_count=len(topic_order))
         log.info(
             "Backfill diversity cap: up to %d new entr%s per topic",
             per_topic_backfill_cap,
             "y" if per_topic_backfill_cap == 1 else "ies",
         )
 
-    for topic_key, topic_cfg in ANIMAL_TOPICS.items():
+    for topic_key in topic_order:
+        topic_cfg = ANIMAL_TOPICS[topic_key]
         if len(new_entries) >= max_new_entries:
             break
         plan = fetch_plan.get(topic_key, {"budget": MAX_PER_TOPIC, "query_take": 2})
@@ -1562,11 +1638,13 @@ def main() -> int:
     # Merge + prune.
     queue["stories"].extend(new_entries)
     queue["stories"] = _prune_queue(queue["stories"], KEEP_DAYS)
-    topic_candidates = []
+    topic_candidates: list[dict[str, Any]] = []
     try:
-        topic_candidates = (
+        raw_topic_candidates = (
             json.loads(Path("_data/trends/topic_candidates.json").read_text(encoding="utf-8")).get("candidates") or []
         )
+        if isinstance(raw_topic_candidates, list):
+            topic_candidates = [item for item in raw_topic_candidates if isinstance(item, dict)]
     except Exception:
         topic_candidates = []
     queue = annotate_queue(queue, topic_candidates)
@@ -1598,7 +1676,7 @@ def main() -> int:
 
     # Keep the AI disk cache bounded — same chore fetch_animals.py does.
     try:
-        ai_cache_prune(ttl_days=30)
+        ai_cache_prune()
     except Exception as exc:
         log.debug("ai_cache prune skipped: %s", exc)
 

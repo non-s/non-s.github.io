@@ -7,19 +7,31 @@ import argparse
 import json
 import sys
 from collections import Counter
+from collections.abc import Mapping
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
-from utils.queue_pruner import prune_queue
-from utils.rejected_queue import record_rejection
+from utils.agency_gate import (  # noqa: E402
+    evaluate_story,
+    load_duplicate_ids,
+    load_recovery_plans,
+    load_rewrite_ids,
+    load_success_plan,
+)
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
+from utils.queue_pruner import prune_queue  # noqa: E402
+from utils.rejected_queue import record_rejection  # noqa: E402
 
 QUEUE = ROOT / "_data" / "stories_queue.json"
 PRUNE_REPORT = ROOT / "_data" / "queue_prune_report.json"
 REPAIR_OUT = ROOT / "_data" / "repair_queue.jsonl"
+AGENCY_GATE = ROOT / "_data" / "agency_gate.json"
+CATEGORY_RECOVERY = ROOT / "_data" / "category_recovery.json"
+CHANNEL_SUCCESS = ROOT / "_data" / "channel_success.json"
+REWRITE_QUEUE = ROOT / "_data" / "retention_rewrite_queue.json"
 
 
 def _read_queue(path: Path = QUEUE) -> dict:
@@ -28,15 +40,71 @@ def _read_queue(path: Path = QUEUE) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _is_publish_ready(story: dict, *, paused: set[str] | None = None) -> tuple[bool, list[str]]:
+def _story_id(story: dict) -> str:
+    return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+
+
+def _agency_held_reasons(
+    path: Path | None = None,
+    *,
+    queue: dict | None = None,
+    queue_path: Path = QUEUE,
+) -> dict[str, list[str]]:
+    if queue is not None:
+        try:
+            rewrite_ids = load_rewrite_ids(REWRITE_QUEUE)
+            recovery = load_recovery_plans(CATEGORY_RECOVERY)
+            duplicate_ids = load_duplicate_ids(queue_path)
+            success_plan = load_success_plan(CHANNEL_SUCCESS)
+            computed: dict[str, list[str]] = {}
+            for story in queue.get("stories") or []:
+                if not isinstance(story, dict) or story.get("consumed"):
+                    continue
+                verdict = evaluate_story(story, rewrite_ids, recovery, duplicate_ids, success_plan)
+                if not verdict.get("approved"):
+                    story_id = _story_id(story)
+                    if story_id:
+                        computed[story_id] = [str(reason) for reason in (verdict.get("reasons") or ["held"])]
+            return computed
+        except Exception:
+            pass
+
+    gate_path = path or AGENCY_GATE
+    if not gate_path.exists():
+        return {}
+    try:
+        payload = json.loads(gate_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, list[str]] = {}
+    for item in payload.get("held_items") or []:
+        if not isinstance(item, dict):
+            continue
+        item_id = str(item.get("id") or "")
+        if item_id:
+            out[item_id] = [str(reason) for reason in (item.get("reasons") or [])]
+    return out
+
+
+def _is_publish_ready(
+    story: dict,
+    *,
+    paused: set[str] | None = None,
+    agency_held: dict[str, list[str]] | None = None,
+) -> tuple[bool, list[str]]:
     reasons: list[str] = []
     queue_prune = story.get("queue_prune") or {}
     publish = story.get("publish_score") or {}
     editorial = story.get("editorial") or {}
     paused = paused or set()
+    agency_held = agency_held or {}
 
     if story.get("consumed"):
         reasons.append("consumed")
+    story_id = _story_id(story)
+    if story_id in agency_held:
+        agency_reasons = agency_held.get(story_id) or ["held"]
+        reasons.extend(f"agency_gate:{reason}" for reason in agency_reasons)
     category = str(story.get("category") or "").strip().lower()
     if category and category in paused:
         reasons.append(f"ops_guardian_paused_category:{category}")
@@ -69,13 +137,20 @@ def refresh_queue(path: Path = QUEUE) -> dict:
     return pruned
 
 
-def build_payload(queue: dict, *, env: dict | None = None) -> dict:
+def build_payload(
+    queue: dict,
+    *,
+    env: Mapping[str, str] | None = None,
+    refresh_agency: bool = False,
+    queue_path: Path = QUEUE,
+) -> dict:
     pending = [story for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed")]
     ready: list[dict] = []
-    held = Counter()
+    held: Counter[str] = Counter()
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
+    agency_held = _agency_held_reasons(queue=queue, queue_path=queue_path) if refresh_agency else _agency_held_reasons()
     for story in pending:
-        ok, reasons = _is_publish_ready(story, paused=paused)
+        ok, reasons = _is_publish_ready(story, paused=paused, agency_held=agency_held)
         if ok:
             ready.append(story)
         else:
@@ -101,7 +176,7 @@ def main() -> int:
 
     queue_path = Path(args.queue)
     queue = refresh_queue(queue_path) if args.refresh else _read_queue(queue_path)
-    payload = build_payload(queue)
+    payload = build_payload(queue, refresh_agency=args.refresh, queue_path=queue_path)
     if args.field:
         print(int(payload.get(args.field, 0) or 0))
     elif args.json:

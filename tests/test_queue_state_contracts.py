@@ -14,27 +14,31 @@ def _json(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
-def _publish_ready(story: dict) -> bool:
+def _publish_ready(story: dict, *, held_ids: set[str] | None = None) -> bool:
     paused = paused_categories(ROOT / "_data" / "ops_guardian.json")
     category = str(story.get("category") or "").strip().lower()
-    return (story.get("queue_prune") or {}).get("state") == "publish_ready" and (story.get("editorial") or {}).get(
-        "approved"
-    ) is True and category not in paused
+    story_id = str(story.get("id") or "")
+    return (
+        (story.get("queue_prune") or {}).get("state") == "publish_ready"
+        and (story.get("editorial") or {}).get("approved") is True
+        and category not in paused
+        and story_id not in (held_ids or set())
+    )
 
 
 def test_publish_ready_queue_matches_operational_reports():
     queue = _json("_data/stories_queue.json")
     pending = [story for story in queue.get("stories") or [] if not story.get("consumed")]
-    ready = [story for story in pending if _publish_ready(story)]
     queue_audit = _json("_data/queue_audit.json")
     dry_run = _json("_data/dry_run_publish.json")
     next_shorts = _json("_data/next_shorts.json")
     agency_gate = _json("_data/agency_gate.json")
+    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or [])}
+    ready = [story for story in pending if _publish_ready(story, held_ids=held_ids)]
 
     assert queue_audit.get("pending") == len(pending)
     assert int(agency_gate.get("approved") or 0) + int(agency_gate.get("held") or 0) == len(pending)
     ready_ids = {str(story.get("id") or "") for story in ready}
-    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or [])}
     assert not (ready_ids & held_ids)
     assert dry_run.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
     assert next_shorts.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"

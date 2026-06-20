@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Decide whether the current publish slot should produce a Short."""
+
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import sys
+from collections.abc import Mapping
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -30,6 +32,7 @@ from utils.publish_score import score_story  # noqa: E402
 
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
+AGENCY_GATE_FILE = "_data/agency_gate.json"
 
 
 def _read_json(path: Path, default):
@@ -39,6 +42,18 @@ def _read_json(path: Path, default):
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return default
+
+
+def _agency_held_ids(root: Path) -> set[str]:
+    payload = _read_json(root / AGENCY_GATE_FILE, {})
+    out: set[str] = set()
+    for item in payload.get("held_items") or []:
+        if not isinstance(item, dict):
+            continue
+        item_id = str(item.get("id") or "")
+        if item_id:
+            out.add(item_id)
+    return out
 
 
 def _parse_now(value: str | None) -> datetime:
@@ -51,9 +66,10 @@ def _parse_now(value: str | None) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
-def _eligible_stories(queue: dict, env: dict | None = None) -> list[dict]:
+def _eligible_stories(queue: dict, env: Mapping[str, str] | None = None, *, root: Path = ROOT) -> list[dict]:
     stories = queue.get("stories") if isinstance(queue, dict) else []
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
+    agency_held = _agency_held_ids(root)
     has_prune_state = any(
         isinstance(story, dict) and not story.get("consumed") and bool(story.get("queue_prune"))
         for story in stories or []
@@ -63,6 +79,9 @@ def _eligible_stories(queue: dict, env: dict | None = None) -> list[dict]:
         if not isinstance(story, dict) or story.get("consumed"):
             continue
         if not (story.get("title") or story.get("seo_title")):
+            continue
+        story_id = _candidate_id(story)
+        if story_id and story_id in agency_held:
             continue
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:
@@ -127,19 +146,19 @@ def evaluate_publish_window(
     *,
     root: Path = ROOT,
     now: datetime | None = None,
-    env: dict | None = None,
+    env: Mapping[str, str] | None = None,
     queue_path: Path | None = None,
     schedule_path: Path | None = None,
     decisions_path: Path | None = None,
     write_decision: bool = True,
 ) -> dict:
     """Return and optionally persist the publish decision for this slot."""
-    env = env or os.environ
+    current_env: dict[str, str] = dict(os.environ if env is None else env)
     current = now or datetime.now(timezone.utc)
     if current.tzinfo is None:
         current = current.replace(tzinfo=timezone.utc)
     current = current.astimezone(timezone.utc)
-    flags = feature_flags(env)
+    flags = feature_flags(current_env)
     schedule_file = schedule_path or (root / SCHEDULE_FILE)
     queue_file = queue_path or (root / "_data" / "stories_queue.json")
     decision_file = decisions_path or (root / DECISIONS_FILE)
@@ -148,7 +167,9 @@ def evaluate_publish_window(
         schedule = recommend_schedule(_read_json(root / "_data" / "analytics" / "latest.json", {}))
 
     current_label = slot_label(current)
-    active_label = active_slot_label(current, schedule, env) if flags["adaptive_cadence_enabled"] else current_label
+    active_label = (
+        active_slot_label(current, schedule, current_env) if flags["adaptive_cadence_enabled"] else current_label
+    )
     label = active_label or current_label
     slot_key = _slot_key(current, label)
     reasons: list[str] = []
@@ -157,17 +178,17 @@ def evaluate_publish_window(
     top_score: dict = {}
     uploaded_for_slot: dict = {}
 
-    dispatch_reason = str(env.get("WORKFLOW_DISPATCH_REASON") or "").strip().lower()
+    dispatch_reason = str(current_env.get("WORKFLOW_DISPATCH_REASON") or "").strip().lower()
     is_watchdog_recovery = dispatch_reason.startswith("watchdog recovery")
-    manual = str(env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch" and not is_watchdog_recovery
+    manual = str(current_env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch" and not is_watchdog_recovery
     if manual:
         reasons.append("manual_dispatch")
     elif not flags["adaptive_cadence_enabled"]:
         reasons.append("adaptive_cadence_disabled")
-    elif env.get("PUBLISH_QUOTA_BLOCKED", "").strip().lower() in {"1", "true", "yes", "on"}:
+    elif current_env.get("PUBLISH_QUOTA_BLOCKED", "").strip().lower() in {"1", "true", "yes", "on"}:
         decision = "skip_quota_guard"
         reasons.append("quota_guard_blocked")
-    elif not is_active_slot(current, schedule, env):
+    elif not is_active_slot(current, schedule, current_env):
         decision = "skip_outside_slot"
         reasons.append("outside_recommended_slot")
 
@@ -179,30 +200,32 @@ def evaluate_publish_window(
             decision = "skip_slot_already_uploaded"
             reasons.append("slot_already_uploaded")
     if decision == "publish":
-        stories = _eligible_stories(_read_json(queue_file, {}), env)
+        stories = _eligible_stories(_read_json(queue_file, {}), current_env, root=root)
         if not stories:
             decision = "skip_no_eligible_story"
             reasons.append("no_eligible_story")
         else:
             top_story, top_score = _best_candidate(stories)
-            publish_score = float(top_score.get("score") or 0)
-            opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
+            candidate_publish_score = float(top_score.get("score") or 0)
+            candidate_opportunity_score = float((top_score.get("opportunity") or {}).get("score") or 0)
             quality_reasons: list[str] = []
-            if publish_score < flags["min_slot_publish_score"]:
+            if candidate_publish_score < flags["min_slot_publish_score"]:
                 quality_reasons.append("publish_score_below_threshold")
-            if opportunity_score < flags["min_queue_opportunity_score"]:
+            if candidate_opportunity_score < flags["min_queue_opportunity_score"]:
                 quality_reasons.append("opportunity_score_below_threshold")
             if quality_reasons:
                 decision = "skip_low_queue_quality"
                 reasons.extend(quality_reasons)
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
-        stories = _eligible_stories(_read_json(queue_file, {}), env)
+        stories = _eligible_stories(_read_json(queue_file, {}), current_env, root=root)
         if stories:
             top_story, top_score = _best_candidate(stories)
 
-    publish_score = None if not top_score else float(top_score.get("score") or 0)
-    opportunity_score = None if not top_score else float((top_score.get("opportunity") or {}).get("score") or 0)
+    publish_score: float | None = None if not top_score else float(top_score.get("score") or 0)
+    opportunity_score: float | None = (
+        None if not top_score else float((top_score.get("opportunity") or {}).get("score") or 0)
+    )
     payload = {
         "timestamp_utc": current.isoformat(),
         "slot_label": label,
@@ -215,7 +238,7 @@ def evaluate_publish_window(
         "slot_uploaded_video_id": str(uploaded_for_slot.get("video_id") or ""),
         "feature_flags": flags,
         "recommended_slots": schedule.get("recommended_slots") or [],
-        "next_slot": next_slot(current, schedule, env),
+        "next_slot": next_slot(current, schedule, current_env),
         "schedule_source": str(
             schedule_file.relative_to(root) if schedule_file.is_relative_to(root) else schedule_file
         ),

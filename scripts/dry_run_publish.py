@@ -1,32 +1,63 @@
 #!/usr/bin/env python3
 """Dry-run publish scoring without rendering/uploading."""
+
 from __future__ import annotations
 
 import json
 import os
 import sys
 from collections import Counter
+from collections.abc import Mapping
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.queue_pruner import prune_queue
-from utils.publish_priority import autonomy_priority, publish_priority_key
-from utils.growth_strategy import ops_guardian_enforced, paused_categories
+from utils.growth_strategy import ops_guardian_enforced, paused_categories  # noqa: E402
+from utils.publish_priority import autonomy_priority, publish_priority_key  # noqa: E402
+from utils.queue_pruner import prune_queue  # noqa: E402
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
+AGENCY_GATE = Path("_data/agency_gate.json")
 
 
-def build_dry_run(data: dict, *, env: dict | None = None) -> dict:
+def _story_id(story: dict) -> str:
+    return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+
+
+def _agency_held_reasons(path: Path | None = None) -> dict[str, list[str]]:
+    gate_path = path or AGENCY_GATE
+    if not gate_path.exists():
+        return {}
+    try:
+        payload = json.loads(gate_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, list[str]] = {}
+    for item in payload.get("held_items") or []:
+        if not isinstance(item, dict):
+            continue
+        item_id = str(item.get("id") or "")
+        if item_id:
+            out[item_id] = [str(reason) for reason in (item.get("reasons") or [])]
+    return out
+
+
+def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
     items = []
-    objective_reasons = Counter()
+    objective_reasons: Counter[str] = Counter()
     pruned, rejected, prune_summary = prune_queue(data)
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
+    agency_held = _agency_held_reasons()
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
+            continue
+        story_id = _story_id(story)
+        if story_id in agency_held:
+            for reason in agency_held[story_id]:
+                objective_reasons[f"agency_gate:{reason}"] += 1
             continue
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:

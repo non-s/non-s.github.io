@@ -85,6 +85,7 @@ def test_paused_category_reduces_growth_priority(tmp_path, monkeypatch):
 
 
 def test_ops_guardian_enforced_reads_boolean_env():
+    assert ops_guardian_enforced({}) is True
     assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "1"}) is True
     assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "true"}) is True
     assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "0"}) is False

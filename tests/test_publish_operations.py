@@ -625,6 +625,30 @@ def test_dry_run_publish_excludes_ops_paused_category(monkeypatch):
     assert payload["eligible_count"] == 0
 
 
+def test_dry_run_publish_excludes_agency_held_candidate(monkeypatch, tmp_path):
+    gate = tmp_path / "agency_gate.json"
+    gate.write_text(
+        '{"held_items":[{"id":"held","reasons":["success_recovery_hook_required"]}]}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr("scripts.dry_run_publish.AGENCY_GATE", gate)
+    monkeypatch.setattr("scripts.dry_run_publish.prune_queue", lambda data: (data, [], {}))
+    story = {
+        **_strong_story(id="held", category="birds"),
+        "queue_prune": {"state": "publish_ready", "score": 100},
+        "publish_score": {"approved": True, "state": "publish_ready", "score": 95},
+        "editorial": {"approved": True, "state": "publish_now"},
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/held/1/",
+        "source_license": "Pexels License",
+    }
+
+    payload = build_dry_run({"stories": [story]})
+
+    assert payload["eligible_count"] == 0
+    assert payload["objective_reasons"]["agency_gate:success_recovery_hook_required"] == 1
+
+
 def test_next_shorts_excludes_ops_paused_category(monkeypatch, tmp_path):
     import json
 

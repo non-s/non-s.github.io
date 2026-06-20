@@ -249,6 +249,43 @@ def test_publish_window_excludes_ops_paused_category(monkeypatch, tmp_path):
     assert "no_eligible_story" in decision["reasons"]
 
 
+def test_publish_window_excludes_agency_held_candidate(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "agency_gate.json",
+        {"held_items": [{"id": "held", "reasons": ["success_recovery_hook_required"]}]},
+    )
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "held",
+                    "title": "Held candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 90, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_no_eligible_story"
+    assert "no_eligible_story" in decision["reasons"]
+
+
 def test_publish_window_uses_autonomy_priority_before_raw_score(monkeypatch, tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Mapping
 from pathlib import Path
 
 from utils.story_intelligence import classify_format
@@ -67,10 +68,10 @@ def paused_categories(path: Path | None = None) -> dict[str, dict]:
     return out
 
 
-def ops_guardian_enforced(env: dict | None = None) -> bool:
+def ops_guardian_enforced(env: Mapping[str, str] | None = None) -> bool:
     """Return whether paused-topic enforcement is active for this process."""
     current_env = env or os.environ
-    return str(current_env.get("OPS_GUARDIAN_ENFORCE", "0")).strip().lower() in TRUE_VALUES
+    return str(current_env.get("OPS_GUARDIAN_ENFORCE", "1")).strip().lower() in TRUE_VALUES
 
 
 def is_paused_category(category: str, path: Path | None = None) -> bool:

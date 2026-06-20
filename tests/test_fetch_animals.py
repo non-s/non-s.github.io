@@ -492,6 +492,61 @@ def test_topic_fetch_plan_boosts_thin_hot_topics():
     assert plan["cats"]["query_take"] >= 2
 
 
+def test_topic_iteration_order_skips_ops_paused_categories():
+    queue = {"stories": []}
+    plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+
+    order = fetch_animals._topic_iteration_order(
+        queue,
+        plan,
+        paused={"wildlife", "primates", "forests"},
+    )
+
+    assert "wildlife" not in order
+    assert "primates" not in order
+    assert "forests" not in order
+    assert "cats" in order
+
+
+def test_topic_iteration_order_recovers_empty_publish_ready_supply_with_visual_topics():
+    queue = {
+        "stories": [
+            {
+                "category": "discoveries",
+                "consumed": False,
+                "queue_prune": {"state": "rewrite"},
+                "publish_score": {"approved": False, "state": "rewrite"},
+            }
+        ]
+    }
+    plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+
+    order = fetch_animals._topic_iteration_order(queue, plan)
+
+    assert order.index("cats") < order.index("discoveries")
+    assert order.index("dogs") < order.index("physics")
+    assert order.index("birds") < order.index("plants")
+
+
+def test_topic_iteration_order_keeps_table_order_when_publish_ready_supply_exists():
+    queue = {
+        "stories": [
+            {
+                "category": "cats",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+            }
+        ]
+    }
+    plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+
+    order = fetch_animals._topic_iteration_order(queue, plan, paused={"wildlife"})
+
+    assert order[:4] == ["cats", "dogs", "ocean", "birds"]
+    assert "wildlife" not in order
+
+
 def test_topic_fetch_plan_boosts_viewer_requested_animals():
     queue = {"stories": [{"category": "ocean", "consumed": False} for _ in range(10)]}
     plain = fetch_animals._topic_fetch_plan(queue, {}, {}, max_per_topic=4)
