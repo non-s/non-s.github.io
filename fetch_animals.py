@@ -1243,6 +1243,84 @@ def load_rejected_clip_keys(path: Path | None = None) -> set[str]:
     return keys
 
 
+def _copy_key(text: object) -> str:
+    text = re.sub(r"[^\w\s'-]", " ", str(text or "").lower(), flags=re.UNICODE)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _empty_copy_keys() -> dict[str, set[str]]:
+    return {"titles": set(), "scripts": set(), "angles": set()}
+
+
+def _story_angle_key(story: dict) -> str:
+    try:
+        from utils.packaging import extract_action, extract_animal, extract_cue  # noqa: PLC0415
+
+        return "|".join(
+            (
+                extract_animal(story).lower(),
+                extract_action(story).lower(),
+                extract_cue(story).lower(),
+                str(story.get("category") or "").lower(),
+            )
+        )
+    except Exception:
+        return ""
+
+
+def _add_story_copy_keys(keys: dict[str, set[str]], story: dict) -> None:
+    title_key = _copy_key(story.get("seo_title") or story.get("title") or "")
+    if title_key:
+        keys["titles"].add(title_key)
+    script_key = _script_key(str(story.get("script") or ""))
+    if script_key:
+        keys["scripts"].add(script_key)
+    angle = _story_angle_key(story)
+    if angle:
+        keys["angles"].add(angle)
+
+
+def _merge_copy_keys(*buckets: dict[str, set[str]]) -> dict[str, set[str]]:
+    merged = _empty_copy_keys()
+    for bucket in buckets:
+        for key in merged:
+            merged[key].update(bucket.get(key) or set())
+    return merged
+
+
+def load_published_copy_keys(root: Path | None = None) -> dict[str, set[str]]:
+    """Return title/script/angle memory from already uploaded Shorts."""
+    root = root or Path(".")
+    keys = _empty_copy_keys()
+    for directory_name in ("_videos", "_videos_pt-BR"):
+        directory = root / directory_name
+        if not directory.exists():
+            continue
+        for marker_path in directory.glob("*.done"):
+            try:
+                marker = json.loads(marker_path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if isinstance(marker, dict):
+                _add_story_copy_keys(keys, marker)
+    return keys
+
+
+def load_rejected_copy_keys(path: Path | None = None) -> dict[str, set[str]]:
+    """Return copy memory from quarantined candidates."""
+    keys = _empty_copy_keys()
+    for entry in load_rejections(path or REJECTED_QUEUE_FILE):
+        if not isinstance(entry, dict):
+            continue
+        title_key = _copy_key(entry.get("title") or "")
+        if title_key:
+            keys["titles"].add(title_key)
+        angle = _story_angle_key(entry)
+        if angle:
+            keys["angles"].add(angle)
+    return keys
+
+
 def record_published_clip(
     *,
     pexels_video_id: str = "",
@@ -1714,9 +1792,11 @@ def main() -> int:
     published_keys = load_published_clip_keys()
     rejected_keys = load_rejected_clip_keys()
     dedupe_keys: set[str] = queue_ids | queue_pexels_ids | queue_source_ids | published_keys | rejected_keys
-    script_keys: set[str] = {
-        _script_key(s.get("script", "")) for s in queue["stories"] if _script_key(s.get("script", ""))
-    }
+    queue_copy_keys = _empty_copy_keys()
+    for story in queue["stories"]:
+        if isinstance(story, dict):
+            _add_story_copy_keys(queue_copy_keys, story)
+    copy_keys = _merge_copy_keys(queue_copy_keys, load_published_copy_keys(), load_rejected_copy_keys())
     log.info(
         "🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
         len(queue_ids),
@@ -1724,6 +1804,12 @@ def main() -> int:
         len(dedupe_keys),
     )
     log.info("Rejected clips included in dedupe: %d", len(rejected_keys))
+    log.info(
+        "Copy memory: %d titles + %d scripts + %d angles",
+        len(copy_keys["titles"]),
+        len(copy_keys["scripts"]),
+        len(copy_keys["angles"]),
+    )
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
@@ -1808,13 +1894,21 @@ def main() -> int:
                 log.debug("  AI enrichment failed for %s", subject[:60])
                 continue
             script_key = _script_key(ai_out.get("script", ""))
-            if not script_key or script_key in script_keys:
+            title_key = _copy_key(ai_out.get("seo_title") or ai_out.get("title") or "")
+            if title_key and title_key in copy_keys["titles"]:
+                log.warning("  skipping repeated title for %s: %s", subject[:60], ai_out.get("seo_title", "")[:80])
+                continue
+            if not script_key or script_key in copy_keys["scripts"]:
                 log.warning("  skipping repeated or empty script for %s", subject[:60])
                 continue
             story = _build_story(subject, story_topic_key, story_topic_cfg, clip, ai_out, enrichment)
+            angle_key = _story_angle_key(story)
+            if angle_key and angle_key in copy_keys["angles"]:
+                log.warning("  skipping repeated angle for %s: %s", subject[:60], angle_key[:100])
+                continue
             new_entries.append(story)
             topic_new_entries += 1
-            script_keys.add(script_key)
+            _add_story_copy_keys(copy_keys, story)
             dedupe_keys.add(story["id"])
             if pid:
                 dedupe_keys.add(pid)

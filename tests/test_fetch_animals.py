@@ -561,6 +561,10 @@ def test_topic_table_expands_science_surface():
 def test_science_topics_accept_matching_visible_subjects():
     assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["space"], "Solar flare on the sun")
     assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["weather"],
+        "Auroras glow when solar particles hit air",
+    )
+    assert fetch_animals._topic_accepts_subject(
         fetch_animals.ANIMAL_TOPICS["physics"],
         "Pendulum experiment with a magnetic field",
     )
@@ -755,6 +759,39 @@ def test_load_published_clip_keys_tolerates_malformed_json(tmp_path, monkeypatch
     f.write_text("{not json", encoding="utf-8")
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)
     assert fetch_animals.load_published_clip_keys() == set()
+
+
+def test_copy_key_normalises_title_punctuation():
+    assert fetch_animals._copy_key("Cats: Measure  Spaces!") == "cats measure spaces"
+
+
+def test_load_published_copy_keys_reads_done_markers(tmp_path):
+    videos = tmp_path / "_videos"
+    videos.mkdir()
+    marker = {
+        "title": "Cats measure tight spaces with whiskers",
+        "script": "Cats measure tight spaces with whiskers. Watch the face.",
+        "category": "cats",
+    }
+    (videos / "short.done").write_text(json.dumps(marker), encoding="utf-8")
+
+    keys = fetch_animals.load_published_copy_keys(tmp_path)
+
+    assert "cats measure tight spaces with whiskers" in keys["titles"]
+    assert fetch_animals._script_key(marker["script"]) in keys["scripts"]
+    assert keys["angles"]
+
+
+def test_load_rejected_copy_keys_reads_quarantine_titles(tmp_path):
+    f = tmp_path / "rejected_queue.jsonl"
+    f.write_text(
+        json.dumps({"title": "Sharks can feel electricity in the water", "category": "ocean"}) + "\n",
+        encoding="utf-8",
+    )
+
+    keys = fetch_animals.load_rejected_copy_keys(f)
+
+    assert "sharks can feel electricity in the water" in keys["titles"]
 
 
 def test_load_rejected_clip_keys_extracts_source_identifiers(tmp_path):
