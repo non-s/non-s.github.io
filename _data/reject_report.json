@@ -1,18 +1,18 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 461,
+    "duplicate_title": 460,
     "off_topic_visual": 235,
-    "script_hook_mismatch": 212,
+    "script_hook_mismatch": 211,
     "duplicate_script": 172,
     "duplicate_angle": 171,
     "copy_subject_mismatch": 120,
-    "queue_score_reject": 119,
+    "queue_score_reject": 120,
     "subject_not_immediately_clear": 69,
     "script_subject_mismatch": 64,
     "non_animal_body_language": 39,
+    "missing_action_word": 30,
     "no_action_promise": 29,
-    "missing_action_word": 29,
     "rights_guard_person_manual_review": 28,
     "bad_plural_verb": 23,
     "subject_not_clear": 18,
@@ -28,30 +28,16 @@
     "generic_clickbait_language": 1,
     "payoff_not_explicit": 1,
     "thumbnail_text_not_scannable": 1,
-    "thumbnail_not_2_4_words": 1
+    "thumbnail_not_2_4_words": 1,
+    "script_length_risk": 1
   },
   "stages": {
     "queue_prune": 500,
-    "queue_prune_final": 379,
-    "queue_repair": 119,
+    "queue_prune_final": 378,
+    "queue_repair": 120,
     "editor_in_chief": 2
   },
   "latest": [
-    {
-      "story_id": "1908618592453875",
-      "stage": "queue_prune",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "title": "Flowers change scent when touched",
-      "category": "plants",
-      "source_url": "https://www.pexels.com/video/person-putting-a-flowering-plant-on-a-flat-surface-7815392/",
-      "pexels_video_id": "7815392",
-      "source_clip_id": "pexels:1908618592453875",
-      "recorded_at": "2026-06-20T23:30:52.897093+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
     {
       "story_id": "ab0adad7f58481f8",
       "stage": "queue_repair",
@@ -431,6 +417,23 @@
       "pexels_video_id": "31191129",
       "source_clip_id": "pexels:697e2cbeeb9097ef",
       "recorded_at": "2026-06-20T23:30:53.135262+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "ac098efb688f7a3e",
+      "stage": "queue_repair",
+      "reasons": [
+        "script_length_risk",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "title": "Storm clouds show air layers changing over time",
+      "category": "earth_from_space",
+      "source_url": "https://www.pexels.com/video/timelapse-of-overcast-sky-with-tree-branches-29887951/",
+      "pexels_video_id": "29887951",
+      "source_clip_id": "pexels:ac098efb688f7a3e",
+      "recorded_at": "2026-06-20T23:43:15.605871+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
