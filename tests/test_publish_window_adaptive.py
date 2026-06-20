@@ -170,6 +170,42 @@ def test_publish_window_ignores_editor_rejected_candidate(monkeypatch, tmp_path)
     assert decision["top_candidate_id"] == "ready"
 
 
+def test_publish_window_accepts_editorial_cooldown_supply_fallback(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "fallback",
+                    "title": "Snakes sample the air with a tongue flick",
+                    "queue_prune": {
+                        "state": "publish_ready",
+                        "objective_reasons": ["editorial_cooldown_supply_fallback"],
+                    },
+                    "editorial": {"approved": False, "state": "cooldown_subject"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 95, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "fallback"
+
+
 def test_publish_window_skips_when_only_rewrite_candidates_exist(tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(

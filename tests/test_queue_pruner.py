@@ -289,6 +289,71 @@ def test_prune_queue_keeps_editorial_cooldown_out_of_publish_ready(monkeypatch):
     assert rejected == []
 
 
+def test_prune_queue_uses_supply_fallback_for_clean_editorial_cooldown(monkeypatch):
+    class FakeEditorialReview:
+        approved = False
+        score = 71
+        state = "cooldown_subject"
+        series = "Cold-Blooded Secrets"
+        subject = "snake"
+        reasons = ("subject repeated inside 3-day cooldown",)
+
+        def to_dict(self):
+            return {
+                "approved": self.approved,
+                "score": self.score,
+                "state": self.state,
+                "series": self.series,
+                "subject": self.subject,
+                "humanity": {"score": 78},
+                "reasons": list(self.reasons),
+            }
+
+    monkeypatch.setattr("utils.queue_pruner.editorial_review", lambda story: FakeEditorialReview())
+    monkeypatch.setattr(
+        "utils.queue_pruner.score_story",
+        lambda story, analytics_strategy=None: {
+            "approved": True,
+            "state": "publish_ready",
+            "score": 100,
+            "objective_gate": {
+                "reasons": [],
+                "scale_ready": True,
+                "publish_blocking": False,
+            },
+            "editorial_guard": {"approved": True, "issues": []},
+        },
+    )
+    monkeypatch.setattr("utils.queue_pruner.creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(
+        "utils.queue_pruner.audit_rights", lambda story: {"approved": True, "reasons": [], "warnings": []}
+    )
+    story = _story(
+        "cooldown-fallback",
+        title="Snakes sample the air with a tongue flick",
+        seo_title="Snakes sample the air with a tongue flick",
+        hook="Snakes sample the air with a tongue flick.",
+        script=(
+            "Snakes sample the air with a tongue flick. Watch the tongue flick, "
+            "because it collects scent particles before the next move."
+        ),
+        thumbnail_text="TONGUE FLICK",
+        category="reptiles",
+        yt_tags=["snakes", "reptiles", "animal behavior"],
+        source_url="https://www.pexels.com/video/snake-moving-over-planks/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [story]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert kept[0]["queue_prune"]["state"] == "publish_ready"
+    assert "editorial_cooldown_supply_fallback" in kept[0]["queue_prune"]["objective_reasons"]
+    assert kept[0]["editorial"]["approved"] is True
+    assert kept[0]["editorial"]["override"] == "editorial_cooldown_supply_fallback"
+    assert summary["reasons"]["editorial_cooldown_supply_fallback"] == 1
+    assert rejected == []
+
+
 def test_prune_queue_promotes_soft_rewrite_when_publish_guards_are_clear(monkeypatch):
     def fake_quality_issues(*args, **kwargs):
         return []

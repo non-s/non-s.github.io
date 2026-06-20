@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-20T18:01:33.884159+00:00",
+  "generated_at": "2026-06-20T18:21:23.070515+00:00",
   "pending": 5,
   "states": {
-    "rewrite": 4,
-    "publish_ready": 1
+    "publish_ready": 2,
+    "rewrite": 3
   },
   "mechanism_clusters": {
     "tongue_smell": 1,
@@ -13,29 +13,16 @@
     "approved": 5
   },
   "prune_summary": {
-    "pending_before": 22,
+    "pending_before": 5,
     "pending_after": 5,
-    "rejected": 17,
-    "repair_needed": 2,
-    "repaired": 5,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
-      "off_topic_visual": 6,
-      "duplicate_title": 6,
-      "copy_subject_mismatch": 4,
       "objective_gate:bootstrap_observe_before_scaling": 3,
-      "subject_not_immediately_clear": 2,
-      "queue_score_reject": 2,
-      "script_hook_mismatch": 2,
-      "bad_plural_verb": 2,
-      "duplicate_script": 2,
-      "duplicate_angle": 2,
-      "script does not expose enough concrete visual detail": 1,
-      "rights_guard_person_manual_review": 1,
-      "non_animal_body_language": 1,
-      "script_word_loop": 1,
       "editor_in_chief:subject repeated inside 3-day cooldown": 1,
       "objective_gate:observe_before_scaling": 1,
-      "script_subject_mismatch": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
@@ -248,6 +235,23 @@
       "stage": "queue_repair"
     },
     {
+      "id": "24a1fc90e06cea2a",
+      "title": "Walrus uses tusks to shower like a hose",
+      "reasons": [
+        "bad_plural_verb"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "149ba9c11e045e1c",
+      "title": "Alpine lakes hide their own erosion clock",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
       "id": "027b2ecc65aa4856",
       "title": "Nocturnals reveal the answer with footwork",
       "reasons": [
@@ -287,25 +291,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "77560ff8a7444159",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c6af1bb6e5565948",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "script_hook_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -411,7 +396,7 @@
             "can_adjust_strategy": false,
             "confidence_score": 0.347,
             "data_quality": "estimated",
-            "data_quality_score": 0.587,
+            "data_quality_score": 0.588,
             "minimum_sample_size": 18,
             "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
             "recommendation_strength": "observe",
@@ -456,7 +441,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T18:01:29.892082+00:00",
+        "checked_at": "2026-06-20T18:21:13.630249+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -532,8 +517,8 @@
           "winning_experiments": {
             "cta:follow_for_more": 40.38,
             "cta:specific_question": 37.79,
-            "format:fresh_variant": 50.1,
-            "hook:new_hook": 50.1,
+            "format:fresh_variant": 50.11,
+            "hook:new_hook": 50.11,
             "thumbnail:new_thumbnail": 40.12
           }
         },
@@ -631,7 +616,7 @@
             "can_adjust_strategy": false,
             "confidence_score": 0.347,
             "data_quality": "estimated",
-            "data_quality_score": 0.587,
+            "data_quality_score": 0.588,
             "minimum_sample_size": 18,
             "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
             "recommendation_strength": "observe",
@@ -908,7 +893,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T18:01:29.893611+00:00",
+        "checked_at": "2026-06-20T18:21:13.630249+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -984,8 +969,8 @@
           "winning_experiments": {
             "cta:follow_for_more": 40.38,
             "cta:specific_question": 37.79,
-            "format:fresh_variant": 50.1,
-            "hook:new_hook": 50.1,
+            "format:fresh_variant": 50.11,
+            "hook:new_hook": 50.11,
             "thumbnail:new_thumbnail": 40.12
           }
         },
@@ -1360,7 +1345,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T18:01:29.895362+00:00",
+        "checked_at": "2026-06-20T18:21:13.644814+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1437,8 +1422,8 @@
           "winning_experiments": {
             "cta:follow_for_more": 40.38,
             "cta:specific_question": 37.79,
-            "format:fresh_variant": 50.1,
-            "hook:new_hook": 50.1,
+            "format:fresh_variant": 50.11,
+            "hook:new_hook": 50.11,
             "thumbnail:new_thumbnail": 40.12
           }
         },
@@ -1809,18 +1794,19 @@
           "state": "clear"
         }
       },
-      "editorial_state": "rewrite",
+      "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T18:01:29.891120+00:00",
+        "checked_at": "2026-06-20T18:21:13.630249+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
-          "editor_in_chief:subject repeated inside 3-day cooldown"
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
         ],
-        "score": 64.0,
-        "state": "rewrite",
+        "score": 72.0,
+        "state": "publish_ready",
         "template_cluster": ""
       },
-      "queue_score": 64.0,
+      "queue_score": 72.0,
       "youtube_brain": {
         "animal": "snakes",
         "commands": [],
@@ -1887,8 +1873,8 @@
           "winning_experiments": {
             "cta:follow_for_more": 40.38,
             "cta:specific_question": 37.79,
-            "format:fresh_variant": 50.1,
-            "hook:new_hook": 50.1,
+            "format:fresh_variant": 50.11,
+            "hook:new_hook": 50.11,
             "thumbnail:new_thumbnail": 40.12
           }
         },
@@ -2263,7 +2249,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T18:01:29.896765+00:00",
+        "checked_at": "2026-06-20T18:21:13.646323+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2341,8 +2327,8 @@
           "winning_experiments": {
             "cta:follow_for_more": 40.38,
             "cta:specific_question": 37.79,
-            "format:fresh_variant": 50.1,
-            "hook:new_hook": 50.1,
+            "format:fresh_variant": 50.11,
+            "hook:new_hook": 50.11,
             "thumbnail:new_thumbnail": 40.12
           }
         },

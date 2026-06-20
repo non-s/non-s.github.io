@@ -41,6 +41,7 @@ GENERIC_SCRIPT_PHRASES = (
 )
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
+EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
     "unknown_category",
@@ -461,6 +462,69 @@ def _soft_rewrite_can_publish(item: dict, *, score: float, editor: dict) -> bool
     return True
 
 
+def _editorial_cooldown_supply_candidate(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    editorial = story.get("editorial") or {}
+    if queue_prune.get("state") != "rewrite" or editorial.get("approved") is True:
+        return False
+    if editorial.get("state") != "cooldown_subject":
+        return False
+    if float(editorial.get("score", 0) or 0) < 70:
+        return False
+    editorial_reasons = {str(reason) for reason in (editorial.get("reasons") or [])}
+    if any("below" in reason.lower() for reason in editorial_reasons):
+        return False
+    objective_reasons = [str(reason) for reason in (queue_prune.get("objective_reasons") or [])]
+    publish = story.get("publish_score") or {}
+    gate = publish.get("objective_gate") or {}
+    gate_reasons = {str(reason) for reason in (gate.get("reasons") or [])}
+    objective_gate_reasons = {reason for reason in objective_reasons if reason.startswith("objective_gate:")}
+    objective_observe_only = objective_gate_reasons == {"objective_gate:observe_before_scaling"}
+    objective_clear = (
+        not objective_gate_reasons
+        and not gate_reasons
+        and gate.get("publish_blocking") is not True
+        and gate.get("scale_ready", True) is True
+    )
+    if not (objective_observe_only or objective_clear):
+        return False
+    if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+        return False
+    if float(publish.get("score", 0) or 0) < 90:
+        return False
+    rights = story.get("rights_audit") or {}
+    if rights.get("approved") is not True or rights.get("warnings"):
+        return False
+    brain = story.get("youtube_brain") or {}
+    if brain.get("state") != "publish_minded" or brain.get("risks"):
+        return False
+    packaging = story.get("packaging") or {}
+    if packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
+        return False
+    return True
+
+
+def _apply_editorial_cooldown_supply_fallback(story: dict) -> None:
+    queue_prune = dict(story.get("queue_prune") or {})
+    objective_reasons = [str(reason) for reason in (queue_prune.get("objective_reasons") or [])]
+    if EDITORIAL_COOLDOWN_SUPPLY_FALLBACK not in objective_reasons:
+        objective_reasons.append(EDITORIAL_COOLDOWN_SUPPLY_FALLBACK)
+    queue_prune["objective_reasons"] = objective_reasons
+    queue_prune["state"] = "publish_ready"
+    queue_prune["score"] = max(72.0, float(queue_prune.get("score", 0) or 0))
+    story["queue_prune"] = queue_prune
+    original_editorial = dict(story.get("editorial") or {})
+    story["editorial"] = {
+        **original_editorial,
+        "approved": True,
+        "state": "publish_now",
+        "override": EDITORIAL_COOLDOWN_SUPPLY_FALLBACK,
+        "original_approved": original_editorial.get("approved"),
+        "original_state": original_editorial.get("state"),
+        "original_reasons": list(original_editorial.get("reasons") or []),
+    }
+
+
 def prune_queue(
     queue: dict, *, max_pending: int = MAX_ACTIVE_PENDING, analytics_strategy: dict | None = None
 ) -> tuple[dict, list[dict], dict]:
@@ -681,6 +745,7 @@ def prune_queue(
         story["publish_score"] = item["publish_score"]
         story["youtube_brain"] = item["youtube_brain"]
         story["packaging"] = item["packaging"]
+        story["rights_audit"] = item["rights_audit"]
         editor = item.get("editorial") or {"approved": True, "state": "publish_now", "reasons": []}
         story["editorial"] = editor
         if editor.get("series"):
@@ -729,6 +794,21 @@ def prune_queue(
             "objective_reasons": objective_reasons,
         }
         kept.append(story)
+
+    publish_ready_count = sum(1 for story in kept if (story.get("queue_prune") or {}).get("state") == "publish_ready")
+    if publish_ready_count < 2:
+        fallback_candidates = [story for story in kept if _editorial_cooldown_supply_candidate(story)]
+        fallback_candidates.sort(
+            key=lambda story: (
+                float((story.get("autonomy") or {}).get("priority", 0) or 0),
+                float((story.get("publish_score") or {}).get("score", 0) or 0),
+                float((story.get("queue_prune") or {}).get("score", 0) or 0),
+            ),
+            reverse=True,
+        )
+        for story in fallback_candidates[: max(0, 2 - publish_ready_count)]:
+            _apply_editorial_cooldown_supply_fallback(story)
+            reasons.update([EDITORIAL_COOLDOWN_SUPPLY_FALLBACK])
 
     out = dict(queue)
     out["stories"] = consumed + kept

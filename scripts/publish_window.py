@@ -33,6 +33,7 @@ from utils.publish_score import score_story  # noqa: E402
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
 AGENCY_GATE_FILE = "_data/agency_gate.json"
+EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 
 
 def _read_json(path: Path, default):
@@ -54,6 +55,16 @@ def _agency_held_ids(root: Path) -> set[str]:
         if item_id:
             out.add(item_id)
     return out
+
+
+def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    editorial = story.get("editorial") or {}
+    return (
+        EDITORIAL_COOLDOWN_SUPPLY_FALLBACK in objective_reasons
+        or editorial.get("override") == EDITORIAL_COOLDOWN_SUPPLY_FALLBACK
+    )
 
 
 def _parse_now(value: str | None) -> datetime:
@@ -90,7 +101,7 @@ def _eligible_stories(queue: dict, env: Mapping[str, str] | None = None, *, root
         if has_prune_state and queue_prune.get("state") != "publish_ready":
             continue
         editorial = story.get("editorial") or {}
-        if editorial and editorial.get("approved") is not True:
+        if editorial and editorial.get("approved") is not True and not _has_editorial_cooldown_supply_fallback(story):
             continue
         publish = story.get("publish_score") or {}
         if publish and (publish.get("approved") is not True or publish.get("state") != "publish_ready"):

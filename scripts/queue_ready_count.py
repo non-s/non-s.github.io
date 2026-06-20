@@ -32,6 +32,7 @@ AGENCY_GATE = ROOT / "_data" / "agency_gate.json"
 CATEGORY_RECOVERY = ROOT / "_data" / "category_recovery.json"
 CHANNEL_SUCCESS = ROOT / "_data" / "channel_success.json"
 REWRITE_QUEUE = ROOT / "_data" / "retention_rewrite_queue.json"
+EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 
 
 def _read_queue(path: Path = QUEUE) -> dict:
@@ -42,6 +43,16 @@ def _read_queue(path: Path = QUEUE) -> dict:
 
 def _story_id(story: dict) -> str:
     return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+
+
+def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    editorial = story.get("editorial") or {}
+    return (
+        EDITORIAL_COOLDOWN_SUPPLY_FALLBACK in objective_reasons
+        or editorial.get("override") == EDITORIAL_COOLDOWN_SUPPLY_FALLBACK
+    )
 
 
 def _agency_held_reasons(
@@ -112,7 +123,7 @@ def _is_publish_ready(
         reasons.append(f"queue_prune:{queue_prune.get('state') or 'missing'}")
     if publish.get("approved") is not True or publish.get("state") != "publish_ready":
         reasons.append(f"publish_score:{publish.get('state') or 'missing'}")
-    if editorial.get("approved") is not True:
+    if editorial.get("approved") is not True and not _has_editorial_cooldown_supply_fallback(story):
         reasons.append(f"editor_in_chief:{editorial.get('state') or 'missing'}")
     return not reasons, reasons
 

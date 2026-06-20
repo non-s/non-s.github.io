@@ -35,6 +35,29 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
     assert payload["held_reasons"]["queue_prune:rewrite"] == 1
 
 
+def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback():
+    queue = {
+        "stories": [
+            {
+                "id": "fallback",
+                "category": "reptiles",
+                "queue_prune": {
+                    "state": "publish_ready",
+                    "objective_reasons": ["editorial_cooldown_supply_fallback"],
+                },
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": False, "state": "cooldown_subject"},
+            }
+        ]
+    }
+
+    payload = build_payload(queue)
+
+    assert payload["publish_ready"] == 1
+    assert payload["publish_ready_ids"] == ["fallback"]
+    assert "editor_in_chief:cooldown_subject" not in payload["held_reasons"]
+
+
 def test_queue_ready_count_excludes_ops_paused_category(monkeypatch):
     queue = {
         "stories": [

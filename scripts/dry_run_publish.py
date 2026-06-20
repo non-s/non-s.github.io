@@ -21,10 +21,21 @@ from utils.queue_pruner import prune_queue  # noqa: E402
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
 AGENCY_GATE = Path("_data/agency_gate.json")
+EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 
 
 def _story_id(story: dict) -> str:
     return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+
+
+def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    editorial = story.get("editorial") or {}
+    return (
+        EDITORIAL_COOLDOWN_SUPPLY_FALLBACK in objective_reasons
+        or editorial.get("override") == EDITORIAL_COOLDOWN_SUPPLY_FALLBACK
+    )
 
 
 def _agency_held_reasons(path: Path | None = None) -> dict[str, list[str]]:
@@ -75,9 +86,10 @@ def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
             publish = score_story(story)
         editorial = story.get("editorial") or {}
         queue_ready = queue_prune.get("state") == "publish_ready"
+        editorial_ready = editorial.get("approved") is True or _has_editorial_cooldown_supply_fallback(story)
         if (
             queue_ready
-            and editorial.get("approved") is True
+            and editorial_ready
             and rights.get("approved") is True
             and publish.get("approved") is True
             and publish.get("state") == "publish_ready"

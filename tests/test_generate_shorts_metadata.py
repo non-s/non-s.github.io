@@ -300,6 +300,7 @@ def test_thumbnail_copy_is_short_and_uppercase():
 
 def test_dynamic_thumbnails_change_with_story(tmp_path: Path):
     from PIL import Image, ImageStat
+
     from generate_shorts import create_short_thumbnail
 
     frame = Image.new("RGB", (1080, 1920), (80, 120, 90))
@@ -389,6 +390,52 @@ def test_load_pending_stories_uses_pruned_publish_ready_queue(monkeypatch, tmp_p
     assert queue == pruned
     saved = json.loads((data_dir / "stories_queue.json").read_text(encoding="utf-8"))
     assert saved == pruned
+
+
+def test_queue_adapter_preserves_editorial_cooldown_supply_fallback(monkeypatch):
+    import generate_shorts as gs
+
+    monkeypatch.setattr(gs, "package_story", lambda story: story)
+    monkeypatch.setattr(
+        gs,
+        "studio_brief_for_story",
+        lambda story: {
+            "narrator": {},
+            "narrative_template": {},
+            "production_mode": "short",
+        },
+    )
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "optimise_story", lambda story: story)
+    monkeypatch.setattr(gs, "polish_story", lambda story: story)
+
+    story = gs._queue_to_story(
+        {
+            "id": "fallback",
+            "seo_title": "Snakes sample the air with a tongue flick",
+            "title": "Snakes sample the air with a tongue flick",
+            "hook": "Snakes sample the air with a tongue flick.",
+            "script": "Snakes sample the air with a tongue flick. Watch the tongue before the next move.",
+            "thumbnail_text": "TONGUE FLICK",
+            "category": "reptiles",
+            "queue_prune": {
+                "state": "publish_ready",
+                "objective_reasons": ["editorial_cooldown_supply_fallback"],
+            },
+            "editorial": {
+                "approved": True,
+                "state": "publish_now",
+                "override": "editorial_cooldown_supply_fallback",
+            },
+            "rights_audit": {"approved": True, "warnings": []},
+            "publish_score": {"approved": True, "state": "publish_ready", "score": 100},
+        }
+    )
+
+    assert gs._has_editorial_cooldown_supply_fallback(story) is True
+    assert story["queue_prune"]["state"] == "publish_ready"
+    assert story["editorial"]["override"] == "editorial_cooldown_supply_fallback"
+    assert story["rights_audit"]["approved"] is True
 
 
 def test_load_pending_stories_keeps_publish_priority_after_agency_ranking(monkeypatch, tmp_path):

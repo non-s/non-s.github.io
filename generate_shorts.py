@@ -18,9 +18,19 @@ muito mais que duração — videos de 30s com 85% completion batem
 videos de 55s com 50% completion. We clip at 35s hard.
 """
 
-import os, re, json, asyncio, subprocess, logging, shutil, sys, time, contextlib, tempfile
-from pathlib import Path
+import asyncio
+import contextlib
+import json
+import logging
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
 from datetime import datetime, timezone
+from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 
@@ -31,58 +41,64 @@ try:
 except ImportError:  # pragma: no cover
     fcntl = None
 
-from utils.broll import BrollClip, download_clip, fetch_broll_clips
-from utils.animal_enrichment import download_commons_image
 from utils.agency_gate import filter_candidates
+from utils.animal_enrichment import download_commons_image
+from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
+from utils.broll import BrollClip, download_clip, fetch_broll_clips
 from utils.captions import (
     group_words_into_phrases,
-    transcribe as captions_transcribe,
     write_ass,
 )
+from utils.captions import (
+    transcribe as captions_transcribe,
+)
+from utils.claim_risk import evaluate_claim_risk
+from utils.content_agency import rank_for_agency
 from utils.digest import load_blocked_slugs
-from utils.editorial_guard import editorial_issues, editorial_verdict
-from utils.editorial import rank_candidates, review as editorial_review
+from utils.editorial import rank_candidates
+from utils.editorial import review as editorial_review
+from utils.editorial_guard import editorial_verdict
 from utils.experiments import assign_all_for_production, assign_variant, record_variant_assignments
 from utils.first_frame_audit import audit_opening_frames
-from utils.claim_risk import evaluate_claim_risk
 from utils.frame_zero_packaging import score_frame_zero
-from utils.growth_studio import studio_brief_for_story
-from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories, rank_for_growth
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories, rank_for_growth
+from utils.growth_studio import studio_brief_for_story
 from utils.hook_library import choose_hook_template, score_hook
-from utils.content_agency import rank_for_agency
-from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
-from utils.humanity_engine import polish_story, score_story as score_humanity_story
 from utils.human_voice import score_text as score_human_voice
-from utils.host_persona import load as load_persona
+from utils.humanity_engine import polish_story
+from utils.humanity_engine import score_story as score_humanity_story
 from utils.intro_outro import wrap_with_intro_outro
+from utils.local_rewriter import rescue_story
 from utils.loop_semantics import score_loop_semantics
-from utils.studio_rewrite import rewrite_if_needed
 from utils.monetization_audit import audit as audit_monetization
 from utils.music_bed import add_music_bed
+from utils.nature_strategy import NATURE_BROLL_QUERIES
 from utils.opening_gate_v2 import evaluate_opening_gate
 from utils.originality_pack import build_originality_pack, write_originality_pack
 from utils.packaging import package_story
 from utils.payoff_controller import score_payoff
 from utils.pre_publish_audit import audit_package as audit_publish_package
-from utils.publish_score import score_metadata, score_story as publish_score_story
 from utils.publish_priority import publish_priority_key
-from utils.queue_pruner import production_quality_issues, prune_queue
+from utils.publish_score import score_metadata
+from utils.publish_score import score_story as publish_score_story
+from utils.queue_pruner import EDITORIAL_COOLDOWN_SUPPLY_FALLBACK, production_quality_issues, prune_queue
 from utils.rejected_queue import record_rejection
-from utils.local_rewriter import rescue_story
-from utils.nature_strategy import NATURE_BROLL_QUERIES
 from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.rights_audit import audit_rights
 from utils.rights_guard import evaluate_rights_guard, write_source_provenance
-from utils.script_quality import evaluate as evaluate_script, should_block as quality_should_block
+from utils.script_quality import evaluate as evaluate_script
+from utils.script_quality import should_block as quality_should_block
 from utils.search_enrichment import enrich_search_terms
 from utils.seo_optimizer import lint_metadata, optimise_story, seo_score
-from utils.story_patterns import classify_story_pattern
 from utils.story_intelligence import audit_hook, audit_title, classify_format
+from utils.story_patterns import classify_story_pattern
+from utils.studio_rewrite import rewrite_if_needed
 from utils.text import humanize_for_tts
 from utils.time_semantics import temporal_fields
-from utils.tts_fallback import synthesize_with_coqui
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
+from utils.tts_fallback import synthesize_with_coqui
+from utils.video_common import draw_rounded_rect, get_font, wrap_text
 from utils.video_compose import build_broll_short, build_static_short
 from utils.visual_ctr import select_best_frame
 from utils.visual_qa import evaluate_frame, evaluate_local_frame
@@ -267,13 +283,6 @@ logging.basicConfig(
     ],
 )
 log = logging.getLogger(__name__)
-
-# ── Fontes / utilitários compartilhados com generate_video.py ─────
-from utils.video_common import (
-    get_font,
-    draw_rounded_rect,
-    wrap_text,
-)
 
 
 def clean_text(text: str, max_chars: int = 500) -> str:
@@ -642,7 +651,9 @@ def _render_solid_color_background(category: str, dest: Path) -> bool:
 
 
 # ── Frame vertical do Short ───────────────────────────────────────
-def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None) -> Image.Image:
+def _legacy_title_card_frame(
+    title: str, category: str, points: list[str], source: str, bg_path: Path | None
+) -> Image.Image:
     """
     Create a single 1080x1920 vertical frame for a YouTube Short.
     Layout (top to bottom):
@@ -731,7 +742,6 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
         title_lines = wrap_text(draw, title, title_font, title_max_w)
 
     line_height = 88
-    total_title_h = len(title_lines[:4]) * line_height
     ty = title_start_y
     for line in title_lines[:4]:
         lbbox = draw.textbbox((0, 0), line, font=title_font)
@@ -749,7 +759,6 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     # ── 3 bullet points ───────────────────────────────────────────
     bullet_start_y = div_y + 36
     bullet_font = get_font(46)
-    bullet_bold_font = get_font(46, bold=True)
     bullet_max_w = SHORT_W - padding * 2 - 60  # 60 for bullet icon
     bullet_labels = ["01", "02", "03"]
     bullet_spacing = 16  # vertical gap between bullets
@@ -1489,6 +1498,11 @@ def _queue_to_story(qs: dict) -> dict:
         "source_clip_id": qs.get("source_clip_id", ""),
         "source_download_url": qs.get("source_download_url", ""),
         "source_license": qs.get("source_license", ""),
+        "publish_score": dict(qs.get("publish_score") or {}),
+        "queue_prune": dict(qs.get("queue_prune") or {}),
+        "editorial": dict(qs.get("editorial") or {}),
+        "rights_audit": dict(qs.get("rights_audit") or {}),
+        "local_rewrite": dict(qs.get("local_rewrite") or {}),
         "trend_context": dict(qs.get("trend_context") or {}),
         "commons_image_url": qs.get("commons_image_url", ""),
         "commons_page_url": qs.get("commons_page_url", ""),
@@ -1729,6 +1743,16 @@ def commit_rejected(queue_id: str, reasons: list[str], *, stage: str) -> None:
 
 
 # ── Gera um único Short ───────────────────────────────────────────
+def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    editorial = story.get("editorial") or {}
+    return (
+        EDITORIAL_COOLDOWN_SUPPLY_FALLBACK in objective_reasons
+        or editorial.get("override") == EDITORIAL_COOLDOWN_SUPPLY_FALLBACK
+    )
+
+
 def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None:
     """
     Generate one Short for a story.
@@ -1810,10 +1834,22 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     # The editor-in-chief is stricter than the script linter: it also
     # considers thumbnail readability, source footage and recent channel
     # memory before spending free-tier resources on rendering.
+    editorial_override = _has_editorial_cooldown_supply_fallback(story)
     editorial = editorial_review(story)
-    story["editorial"] = editorial.to_dict()
     story["series"] = editorial.series
-    if not editorial.approved:
+    if not editorial.approved and editorial_override and editorial.state == "cooldown_subject":
+        story["editorial"] = {
+            **editorial.to_dict(),
+            "approved": True,
+            "state": "publish_now",
+            "override": EDITORIAL_COOLDOWN_SUPPLY_FALLBACK,
+            "original_approved": editorial.approved,
+            "original_state": editorial.state,
+            "original_reasons": list(editorial.reasons),
+        }
+    else:
+        story["editorial"] = editorial.to_dict()
+    if not story["editorial"].get("approved"):
         log.warning(
             "  Skipping Short - editor-in-chief rejected score=%d subject=%s reasons=%s",
             editorial.score,

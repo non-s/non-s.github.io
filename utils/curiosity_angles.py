@@ -423,6 +423,21 @@ ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
     ),
     "cat": (
         _angle(
+            key="cat_grooming_reset",
+            keywords=("groom", "grooming", "lick", "window", "fur", "coat", "paw"),
+            title="{subject} groom to reset their scent map",
+            hook="{subject} use grooming to reset their scent map.",
+            script_body=(
+                "Watch the tongue and paw movements, because grooming spreads familiar scent across the coat. "
+                "That can help a cat settle after a tense moment and keep the fur ready for the next move. "
+                "The cleanup is also a signal. Which pet behavior should we decode next?"
+            ),
+            thumbnail="GROOMING SIGNAL",
+            cue="grooming signal",
+            story_format="body_superpower",
+            tags=("cats", "grooming", "cat behavior"),
+        ),
+        _angle(
             key="cat_whisker_ruler",
             keywords=("whisker", "face", "jump", "gap", "night", "purr"),
             title="{subject} use whiskers like built-in rulers",
