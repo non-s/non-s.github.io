@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T19:42:15.271261+00:00",
+  "generated_at": "2026-06-20T19:44:38.484491+00:00",
   "pending": 11,
   "states": {
     "rewrite": 7,
@@ -14,19 +14,59 @@
     "approved": 11
   },
   "prune_summary": {
-    "pending_before": 11,
+    "pending_before": 15,
     "pending_after": 11,
-    "rejected": 0,
+    "rejected": 4,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 6,
       "objective_gate:observe_before_scaling": 4,
+      "duplicate_title": 3,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
+      "rights_guard_person_manual_review": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "492f73c44e00e808",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e1a38f060ce4a709",
+      "title": "Plants count touches before snapping shut",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1b0ce37e748845e9",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "3920c031e1131647",
+      "title": "Microscopes reveal what your eyes can't see",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "6cf0cffa9a59f969",
       "title": "Plants count touches before snapping shut",
@@ -252,41 +292,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "a469d835b176d049",
-      "title": "Dragonflies lock onto prey in midair",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "fdcf2795c1892bdf",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "3cf8e2dfd956e3bb",
-      "title": "Rivers carve bends by stealing from one bank",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "71bd82cbf976bb11",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -437,7 +442,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.676323+00:00",
+        "checked_at": "2026-06-20T19:44:29.830347+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -888,7 +893,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.677356+00:00",
+        "checked_at": "2026-06-20T19:44:29.831367+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1338,7 +1343,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.679955+00:00",
+        "checked_at": "2026-06-20T19:44:29.833834+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1787,7 +1792,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.682457+00:00",
+        "checked_at": "2026-06-20T19:44:29.835848+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2094,22 +2099,22 @@
       }
     },
     {
-      "id": "e1a38f060ce4a709",
+      "id": "21e0466ff54b66b5",
       "title": "Plants count touches before snapping shut",
       "category": "plants",
       "publish_score": {
         "approved": true,
         "category": "plants",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.278,
+          "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
-          "confidence_score": 0.038,
+          "confidence_score": 0.007,
           "data_quality": "inferred",
           "data_quality_score": 0.65,
-          "minimum_sample_size": 18,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04.",
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
           "recommendation_strength": "observe",
-          "sample_size": 8
+          "sample_size": 1
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2119,7 +2124,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.038,
+          "confidence_score": 0.007,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -2189,36 +2194,35 @@
         "state": "publish_ready",
         "story_format": "plant_mechanism",
         "subscriber_conversion": {
-          "comment_probability": 0.256,
+          "comment_probability": 0.253,
           "confidence": {
-            "bootstrap_multiplier": 0.392,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.19,
+            "confidence_score": 0.033,
             "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.3,
+          "return_probability": 0.297,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 100,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.143
+          "subscriber_probability": 0.141
         },
         "title_score": 100,
         "weak_content": {
@@ -2241,7 +2245,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.685787+00:00",
+        "checked_at": "2026-06-20T19:44:30.174315+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2396,12 +2400,12 @@
           "thumbnail_text": "TOUCH COUNT",
           "title": "Plants count touches before snapping shut"
         },
-        "series": "Animal Superpowers #15",
+        "series": "Watch The Cue",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #15: compare this with another force of nature.",
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #15",
-          "series": "Animal Superpowers #15"
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
         },
         "state": "magnetic",
         "strengths": [
@@ -2411,36 +2415,35 @@
           "action_word"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.256,
+          "comment_probability": 0.253,
           "confidence": {
-            "bootstrap_multiplier": 0.392,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.19,
+            "confidence_score": 0.033,
             "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.3,
+          "return_probability": 0.297,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 100,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.143
+          "subscriber_probability": 0.141
         },
         "swipe_risk": {
           "band": "low",
@@ -2693,7 +2696,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.687624+00:00",
+        "checked_at": "2026-06-20T19:44:30.884785+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3150,7 +3153,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.675341+00:00",
+        "checked_at": "2026-06-20T19:44:29.829408+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3603,7 +3606,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.678430+00:00",
+        "checked_at": "2026-06-20T19:44:29.832392+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4053,7 +4056,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.674386+00:00",
+        "checked_at": "2026-06-20T19:44:29.828500+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown"
@@ -4503,7 +4506,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.684166+00:00",
+        "checked_at": "2026-06-20T19:44:30.175933+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4955,7 +4958,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-20T19:42:07.689085+00:00",
+        "checked_at": "2026-06-20T19:44:30.886212+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
