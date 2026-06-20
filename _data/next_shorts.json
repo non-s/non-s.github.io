@@ -8,16 +8,24 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 4
+      "evergreen": 5
     },
     "items": [
+      {
+        "id": "01c9148ecf9c93ea",
+        "title": "Snakes sample the air with a tongue flick",
+        "category": "reptiles",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
       {
         "id": "261197331775d3c7",
         "title": "Elephants can feel rumbles through the ground",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.12
+        "freshness_score": 53.08
       },
       {
         "id": "add9ebd55cb4579a",
@@ -25,7 +33,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.96
+        "freshness_score": 54.94
       },
       {
         "id": "bbd6ad1620d07e82",
@@ -33,7 +41,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.96
       },
       {
         "id": "33ce66fcbada8b12",
@@ -41,7 +49,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.68
+        "freshness_score": 53.64
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -54,13 +62,14 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 4,
-    "pending_after": 4,
+    "pending_before": 5,
+    "pending_after": 5,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 3,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 1,
       "objective_gate:observe_before_scaling": 1
     }
   }
