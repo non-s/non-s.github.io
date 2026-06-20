@@ -390,6 +390,9 @@ _AI_PROMPT_TEMPLATE = (
     "Context: {context}\n"
     "Trend context: {trend_context}\n"
     "Studio direction: {studio_direction}\n\n"
+    "Clip variation key: {variation_key}. Use this only to choose a "
+    "distinct wording and mechanism when the same subject appears in "
+    "multiple clips. Do not mention the key.\n\n"
     "EDITORIAL REQUIREMENT: the narration, hook, title, and thumbnail "
     "MUST be about the animal visibly named in Subject. Never switch to "
     "a different animal just because it has a more surprising fact. "
@@ -464,6 +467,9 @@ _AI_PROMPT_TEMPLATE = (
     "Context: {context}\n"
     "Trend context: {trend_context}\n"
     "Studio direction: {studio_direction}\n\n"
+    "Clip variation key: {variation_key}. Use this only to choose a "
+    "distinct wording and mechanism when the same subject appears in "
+    "multiple clips. Do not mention the key.\n\n"
     "EDITORIAL REQUIREMENT: narration, hook, title, and thumbnail MUST "
     "be about the visible subject named in Subject. Never switch to a "
     "different subject just because it has a stronger fact. Turtle "
@@ -967,7 +973,20 @@ def _safe_generated_source_value(value: str) -> str:
     return re.sub("na" + "sa", "space agency", text, flags=re.I)
 
 
-def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = None) -> dict | None:
+def _variation_key(*parts: object) -> str:
+    material = "\x1f".join(str(part or "") for part in parts if str(part or "").strip())
+    if not material:
+        material = "wild-brief"
+    return hashlib.sha256(material.encode("utf-8")).hexdigest()[:12]
+
+
+def _ai_enhance_animal(
+    subject: str,
+    context: str,
+    trend_context: dict | None = None,
+    *,
+    variation_material: str = "",
+) -> dict | None:
     """Run the AI enhancement for an animal subject + return the
     parsed JSON, or None on parse failure. Mirrors the shape of
     fetch_animals._ai_enhance so downstream code is unchanged.
@@ -996,8 +1015,14 @@ def _ai_enhance_animal(subject: str, context: str, trend_context: dict | None = 
         context=context,
         trend_context=trend_line or "No specific trend context.",
         studio_direction=growth_studio.get("prompt_overlay", ""),
+        variation_key=_variation_key(subject, context, variation_material),
     )
-    raw = ai_text(prompt, seed=abs(hash(subject)) % 9999, timeout=25, json_mode=True)
+    raw = ai_text(
+        prompt,
+        seed=int(_variation_key(subject, variation_material)[:8], 16) % 9999,
+        timeout=25,
+        json_mode=True,
+    )
     if not raw:
         return None
     try:
@@ -1632,6 +1657,7 @@ def main() -> int:
                 subject,
                 context,
                 trend_context_for_category(story_topic_key, trends),
+                variation_material=clip.url or clip.download_url or _source_clip_id(clip),
             )
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])

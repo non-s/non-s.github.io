@@ -97,6 +97,34 @@ def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
     assert "not as a claim about the exact clip" in seen["prompt"]
 
 
+def test_variation_key_is_stable_and_clip_specific():
+    first = fetch_animals._variation_key("cat", "A clip of cats", "https://example.test/a")
+    again = fetch_animals._variation_key("cat", "A clip of cats", "https://example.test/a")
+    other = fetch_animals._variation_key("cat", "A clip of cats", "https://example.test/b")
+
+    assert first == again
+    assert first != other
+
+
+def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
+    seen = {}
+    clip_url = "https://www.pexels.com/video/cat-playing/123/"
+
+    def fake_ai(prompt, *args, **kwargs):
+        seen["prompt"] = prompt
+        seen["seed"] = kwargs.get("seed")
+        return _AI_OK_PAYLOAD
+
+    monkeypatch.setattr(fetch_animals, "ai_text", fake_ai)
+    out = fetch_animals._ai_enhance_animal("cat", "A clip of cats", variation_material=clip_url)
+
+    expected_key = fetch_animals._variation_key("cat", "A clip of cats", clip_url)
+    assert out is not None
+    assert f"Clip variation key: {expected_key}" in seen["prompt"]
+    assert clip_url not in seen["prompt"]
+    assert isinstance(seen["seed"], int)
+
+
 def test_ai_enhance_returns_none_on_empty_response(monkeypatch):
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: "")
     assert fetch_animals._ai_enhance_animal("cat", "a cat clip") is None

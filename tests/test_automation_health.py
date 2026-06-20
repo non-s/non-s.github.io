@@ -145,6 +145,24 @@ def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
                         "seo_title": "Carnivorous Plant uses movement before it moves",
                         "script": "Carnivorous Plant uses movement before the insect gets close.",
                     },
+                    {
+                        "id": "fossils",
+                        "category": "discoveries",
+                        "seo_title": "Fossils turn old bones into time clues",
+                        "script": "Fossils turn old bones into time clues before the layer tells the age.",
+                    },
+                    {
+                        "id": "magnets",
+                        "category": "physics",
+                        "seo_title": "Magnets make invisible fields visible",
+                        "script": "Magnets make invisible fields visible before the iron filings move.",
+                    },
+                    {
+                        "id": "lightning",
+                        "category": "weather",
+                        "seo_title": "Lightning turns air into a shock wave",
+                        "script": "Lightning turns air into a shock wave before thunder reaches you.",
+                    },
                 ]
             }
         ),

@@ -39,7 +39,13 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "_data/rejected_queue.jsonl" in youtube_workflow
     assert 'while [ "${ready}" -lt "${target}" ]' in youtube_workflow
-    assert "if: always() && steps.publish_window.outputs.should_publish == 'true'" in youtube_workflow
+    assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
+    assert "Sincronizar diagnosticos da fila" in youtube_workflow
+    assert "Salvar marcadores no git" in youtube_workflow
+    assert (
+        "steps.publish_window.outputs.should_publish == 'true'\n        run: python scripts/run_intelligence_suite.py queue"
+        not in youtube_workflow
+    )
     assert 'cron: "2 * * * *"' in youtube_workflow
     assert 'cron: "22 * * * *"' in youtube_workflow
     assert 'cron: "42 * * * *"' in youtube_workflow
