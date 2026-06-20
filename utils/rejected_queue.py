@@ -80,6 +80,8 @@ def record_rejection(
             "title": story.get("seo_title") or story.get("title") or "",
             "category": story.get("category") or "",
             "source_url": story.get("url") or story.get("source_url") or "",
+            "pexels_video_id": story.get("pexels_video_id") or "",
+            "source_clip_id": story.get("source_clip_id") or "",
             "recorded_at": datetime.now(timezone.utc).isoformat(),
             "rewrite_attempted": rewrite_attempted,
             "rewrite_applied": rewrite_applied,

@@ -684,6 +684,28 @@ def test_load_published_clip_keys_tolerates_malformed_json(tmp_path, monkeypatch
     assert fetch_animals.load_published_clip_keys() == set()
 
 
+def test_load_rejected_clip_keys_extracts_source_identifiers(tmp_path):
+    source_url = "https://www.pexels.com/video/river-bend-12345/"
+    f = tmp_path / "rejected_queue.jsonl"
+    f.write_text(
+        json.dumps(
+            {
+                "story_id": "story-hash",
+                "pexels_video_id": "999",
+                "source_clip_id": "pexels:abc",
+                "source_url": source_url,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    keys = fetch_animals.load_rejected_clip_keys(f)
+    source_hash = fetch_animals._story_id(source_url)
+
+    assert {"story-hash", "999", "pexels:abc", "12345", source_hash, f"pexels:{source_hash}"}.issubset(keys)
+
+
 def test_record_published_clip_appends_to_empty_ledger(tmp_path, monkeypatch):
     f = tmp_path / "p.json"
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", f)

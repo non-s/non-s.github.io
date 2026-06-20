@@ -71,6 +71,7 @@ from utils.broll import fetch_pexels
 from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.growth_studio import studio_brief_for_story
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
+from utils.rejected_queue import load_rejections
 from utils.topic_freshness import annotate_queue, freshness_report
 from utils.trend_radar import (
     load_trends,
@@ -101,6 +102,7 @@ QUEUE_FILE = Path("_data/stories_queue.json")
 # `record_published_clip()` below); `main()` filters Pexels candidates
 # against it before paying for AI enrichment.
 PUBLISHED_CLIPS_FILE = Path("_data/published_clips.json")
+REJECTED_QUEUE_FILE = Path("_data/rejected_queue.jsonl")
 MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
 KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 QUEUE_TARGET_PENDING = int(os.environ.get("QUEUE_TARGET_PENDING", "1"))
@@ -1119,6 +1121,21 @@ def _pexels_id_from_clip(clip) -> str:
         return ""
 
 
+def _pexels_id_from_url(url: str) -> str:
+    if not url:
+        return ""
+    try:
+        for candidate in reversed(str(url).rstrip("/").split("/")):
+            if candidate.isdigit():
+                return candidate
+            match = re.search(r"-(\d+)$", candidate)
+            if match:
+                return match.group(1)
+    except Exception:
+        return ""
+    return ""
+
+
 def _source_clip_id(clip) -> str:
     """Return a stable source-specific clip id for any video provider."""
     source = (getattr(clip, "source", "") or "unknown").lower()
@@ -1162,6 +1179,28 @@ def load_published_clip_keys() -> set[str]:
             val = entry.get(field)
             if val:
                 keys.add(str(val))
+    return keys
+
+
+def load_rejected_clip_keys(path: Path | None = None) -> set[str]:
+    """Return clip identifiers already quarantined by queue quality gates."""
+    keys: set[str] = set()
+    for entry in load_rejections(path or REJECTED_QUEUE_FILE):
+        if not isinstance(entry, dict):
+            continue
+        for field in ("story_id", "pexels_video_id", "source_clip_id"):
+            val = entry.get(field)
+            if val:
+                keys.add(str(val))
+        source_url = str(entry.get("source_url") or entry.get("url") or "").strip()
+        if source_url:
+            source_hash = _story_id(source_url)
+            if source_hash:
+                keys.add(source_hash)
+                keys.add(f"pexels:{source_hash}")
+            pexels_id = _pexels_id_from_url(source_url)
+            if pexels_id:
+                keys.add(pexels_id)
     return keys
 
 
@@ -1570,7 +1609,8 @@ def main() -> int:
     }
     queue_source_ids: set[str] = {str(s.get("source_clip_id", "")) for s in queue["stories"] if s.get("source_clip_id")}
     published_keys = load_published_clip_keys()
-    dedupe_keys: set[str] = queue_ids | queue_pexels_ids | queue_source_ids | published_keys
+    rejected_keys = load_rejected_clip_keys()
+    dedupe_keys: set[str] = queue_ids | queue_pexels_ids | queue_source_ids | published_keys | rejected_keys
     script_keys: set[str] = {
         _script_key(s.get("script", "")) for s in queue["stories"] if _script_key(s.get("script", ""))
     }
@@ -1580,6 +1620,7 @@ def main() -> int:
         len(published_keys),
         len(dedupe_keys),
     )
+    log.info("Rejected clips included in dedupe: %d", len(rejected_keys))
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
