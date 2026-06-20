@@ -60,6 +60,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set lower or rely on fetch-content during provider slowdowns.",
     ),
     FeatureFlag(
+        "FETCH_REFRESH_TIMEOUT_SECONDS",
+        "720",
+        "publishing",
+        "Maximum seconds for one Pexels queue refresh before skipping generated commits.",
+        "Lower it if refresh jobs approach publish attempts.",
+    ),
+    FeatureFlag(
         "PUBLISH_BACKFILL_READY_TARGET",
         "2",
         "publishing",

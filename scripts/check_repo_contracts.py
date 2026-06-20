@@ -102,8 +102,11 @@ WORKFLOW_TOKENS = {
         "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (
+        'cron: "9,23 * * * *"',
         "quota_preflight.py fetch-content",
         "apply_topic_freshness.py",
+        "FETCH_REFRESH_TIMEOUT_SECONDS || '720'",
+        "Pexels refresh timed out; leaving generated diagnostics uncommitted",
         "QUEUE_TARGET_PENDING || '72'",
         "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}",
         "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}",

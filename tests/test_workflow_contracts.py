@@ -68,9 +68,12 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
     assert 'GRACE_MINUTES: "35"' in watchdog_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
-    assert 'cron: "4,9,14,19,24,29,34,39,44,49,54,59 * * * *"' in fetch_workflow
+    assert 'cron: "9,23 * * * *"' in fetch_workflow
+    assert "do not hold the" in fetch_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' in fetch_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in fetch_workflow
+    assert "FETCH_REFRESH_TIMEOUT_SECONDS: ${{ vars.FETCH_REFRESH_TIMEOUT_SECONDS || '720' }}" in fetch_workflow
+    assert "Pexels refresh timed out; leaving generated diagnostics uncommitted" in fetch_workflow
     assert "apply_topic_freshness.py" in fetch_workflow
     assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow

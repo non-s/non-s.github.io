@@ -19,6 +19,7 @@
 | `PEXELS_BACKFILL_QUERY_TAKE` | no | Topic query count used during low-inventory Pexels backfill. Defaults to `6`. |
 | `PEXELS_TOPIC_CALL_BUDGET` | no | Maximum Pexels search calls allowed per topic per refresh run. Defaults to `2` to stay conservative with free provider quota. |
 | `PEXELS_DEEP_SEARCH_GAP` | no | Pending-story gap that enables deeper Pexels page search. Defaults to `8`. |
+| `FETCH_REFRESH_TIMEOUT_SECONDS` | no | Maximum seconds allowed for the Pexels refresh step before the run skips generated commits to protect publish attempts. Defaults to `720`. |
 | `GEMINI_API_KEY` or `GEMINI` | no | Visual QA when configured. |
 | `WILD_BRIEF_RSS_URLS` | no | Comma-separated RSS URLs for `scripts/free_signal_harvester.py`. |
 | `WILD_BRIEF_GMAIL_ALERTS` | no | Set to `1` only when alert payload generation should be enabled. |
@@ -107,6 +108,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PEXELS_BACKFILL_QUERY_TAKE` | `6` | discovery | Topic query count used during low-inventory Pexels backfill. | Lower if provider quota becomes tight. |
 | `PEXELS_TOPIC_CALL_BUDGET` | `2` | discovery | Maximum Pexels search calls allowed per topic per refresh run. | Lower if provider quota becomes tight. |
 | `PEXELS_DEEP_SEARCH_GAP` | `8` | discovery | Pending-story gap that enables deeper Pexels page search. | Raise it to reserve deeper paging for emergencies. |
+| `FETCH_REFRESH_TIMEOUT_SECONDS` | `720` | publishing | Maximum seconds allowed for the Pexels refresh step before skipping generated commits. | Lower it if refresh jobs approach publish attempts. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |

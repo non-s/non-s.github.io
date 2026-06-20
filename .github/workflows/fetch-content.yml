@@ -3,9 +3,9 @@ name: "Refresh Pexels queue"
 
 on:
   schedule:
-    # Poll every five minutes, offset from YouTube publish/watchdog minutes so
-    # queue commits do not contend with hourly uploads.
-    - cron: "4,9,14,19,24,29,34,39,44,49,54,59 * * * *"
+    # Refresh early in the hour so deeper Pexels backfills do not hold the
+    # main-write lock across the hourly YouTube publish attempts.
+    - cron: "9,23 * * * *"
   workflow_dispatch:
 
 # Serialise queue updates with YouTube publishing commits.
@@ -85,13 +85,26 @@ jobs:
 
       - name: "Refresh Pexels stories"
         if: env.FETCH_QUOTA_BLOCKED != '1'
-        timeout-minutes: 25
-        run: python fetch_animals.py
+        timeout-minutes: 13
+        run: |
+          refresh_timeout="${FETCH_REFRESH_TIMEOUT_SECONDS:-720}"
+          echo "Pexels refresh timeout: ${refresh_timeout}s"
+          set +e
+          timeout "${refresh_timeout}s" python fetch_animals.py
+          status=$?
+          set -e
+          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
+            echo "::warning::Pexels refresh timed out after ${refresh_timeout}s; leaving queue state unchanged for this run."
+            echo "FETCH_REFRESH_TIMED_OUT=1" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          exit "$status"
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           BROLL_SOURCE_MODE: "pexels"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          FETCH_REFRESH_TIMEOUT_SECONDS: ${{ vars.FETCH_REFRESH_TIMEOUT_SECONDS || '720' }}
           QUEUE_TARGET_PENDING: ${{ vars.QUEUE_TARGET_PENDING || '72' }}
           PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}
           PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}
@@ -104,9 +117,11 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
 
       - name: "Apply topic freshness"
+        if: env.FETCH_REFRESH_TIMED_OUT != '1'
         run: python scripts/apply_topic_freshness.py
 
       - name: "Reconcile uploaded queue state"
+        if: env.FETCH_REFRESH_TIMED_OUT != '1'
         run: python scripts/reconcile_queue_uploads.py
 
       - name: "Write run summary"
@@ -129,6 +144,7 @@ jobs:
         run: python -c "from utils import ai_cache; print('kept', ai_cache.prune(), 'entries')" || true
 
       - name: "Audit queue automation health"
+        if: env.FETCH_REFRESH_TIMED_OUT != '1'
         run: |
           python scripts/run_intelligence_suite.py queue --strict
 
@@ -136,6 +152,10 @@ jobs:
         run: |
           if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then
             echo "Quota guard blocked queue refresh; leaving generated diagnostics uncommitted to avoid data-write conflicts."
+            exit 0
+          fi
+          if [ "${FETCH_REFRESH_TIMED_OUT:-0}" = "1" ]; then
+            echo "Pexels refresh timed out; leaving generated diagnostics uncommitted to avoid partial queue state."
             exit 0
           fi
           git config user.name "Wild Brief Bot"
