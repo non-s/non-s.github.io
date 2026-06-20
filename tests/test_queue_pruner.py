@@ -99,6 +99,27 @@ def test_production_quality_blocks_copy_that_disagrees_with_visible_subject():
     assert "script_subject_mismatch" in issues
 
 
+def test_production_quality_blocks_copy_that_omits_explicit_visible_animal():
+    story = _story(
+        "leopard-magnets",
+        title="Magnets make invisible fields visible",
+        seo_title="Magnets make invisible fields visible",
+        hook="Magnets can show a hidden force map.",
+        script=(
+            "Magnets can show a hidden force map. Watch the filings line up, "
+            "because each tiny piece becomes a small magnet in the field."
+        ),
+        thumbnail_text="FIELD MAP",
+        category="wildlife",
+        source_title="amur leopard in snow at wildlife reserve",
+        source_url="https://www.pexels.com/video/amur-leopard-in-snow-at-wildlife-reserve/",
+    )
+
+    issues = production_quality_issues(story)
+
+    assert "copy_subject_mismatch" in issues
+
+
 def test_production_quality_uses_source_title_before_ai_title():
     story = _story(
         "source-title-cartoon",

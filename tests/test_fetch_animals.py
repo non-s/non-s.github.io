@@ -129,6 +129,21 @@ def test_ai_enhance_rejects_script_about_different_visible_animal(monkeypatch):
     assert fetch_animals._ai_enhance_animal("Sea turtle swimming over coral", "ocean") is None
 
 
+def test_copy_alignment_requires_explicit_visible_animal_in_viewer_copy():
+    assert not fetch_animals._copy_matches_visible_subject(
+        "amur leopard in snow",
+        "Magnets make invisible fields visible",
+        "Magnets can show a hidden force map.",
+        "Watch the filings line up because each tiny piece becomes a small magnet.",
+    )
+    assert fetch_animals._copy_matches_visible_subject(
+        "amur leopard in snow",
+        "Leopards vanish against snowy rocks",
+        "Leopards use stillness before the next move.",
+        "Leopards use their coat and silence to hide before they move.",
+    )
+
+
 def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
     dog = dict(json.loads(_AI_OK_PAYLOAD))
     dog["seo_title"] = "Dogs read snow trails by smell"
@@ -182,6 +197,17 @@ def test_topic_for_subject_reclassifies_bee_from_plants_to_insects():
 
     assert key == "insects"
     assert cfg is fetch_animals.ANIMAL_TOPICS["insects"]
+
+
+def test_topic_for_subject_reclassifies_leaf_clip_from_insects_to_plants():
+    key, cfg = fetch_animals._topic_for_subject(
+        "insects",
+        fetch_animals.ANIMAL_TOPICS["insects"],
+        "a vine with a green stem and a leaf",
+    )
+
+    assert key == "plants"
+    assert cfg is fetch_animals.ANIMAL_TOPICS["plants"]
 
 
 def test_topic_accepts_visible_animal_from_category():

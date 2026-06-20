@@ -1,5 +1,6 @@
 from utils.packaging import (
     cta_prompt,
+    normalize_story_category,
     package_story,
     pinned_comment,
     replay_prompt,
@@ -121,6 +122,65 @@ def test_score_packaging_accepts_behavior_verbs_outside_old_animal_template_set(
     )
 
     assert "missing_action_word" not in score["risks"]
+
+
+def test_score_packaging_recognizes_hourly_queue_nature_cues_and_actions():
+    rivers = score_packaging(
+        _story(
+            title="Rivers carve bends by stealing from one bank",
+            seo_title="Rivers carve bends by stealing from one bank",
+            hook="Rivers move sideways while they flow.",
+            script=(
+                "Rivers move sideways while they flow. Watch the outside bank, "
+                "because faster water cuts that side while sediment drops inside the bend."
+            ),
+            thumbnail_text="BANK SHIFT",
+            category="rivers",
+        )
+    )
+    birds = score_packaging(
+        _story(
+            title="Birds see ultraviolet patterns we miss",
+            seo_title="Birds see ultraviolet patterns we miss",
+            hook="Birds see colors humans cannot see.",
+            script=(
+                "Birds see colors humans cannot see. Watch the feathers, "
+                "because ultraviolet patterns can change mate and food signals."
+            ),
+            thumbnail_text="UV PATTERN",
+            category="birds",
+        )
+    )
+
+    assert "missing_visible_cue" not in rivers["risks"]
+    assert "missing_action_word" not in rivers["risks"]
+    assert "missing_visible_cue" not in birds["risks"]
+    assert "missing_action_word" not in birds["risks"]
+
+
+def test_normalize_story_category_recovers_science_lanes_from_copy():
+    assert (
+        normalize_story_category(
+            _story(
+                title="Plants count touches before snapping shut",
+                seo_title="Plants count touches before snapping shut",
+                hook="Plants can count touches before closing.",
+                category="insects",
+            )
+        )
+        == "plants"
+    )
+    assert (
+        normalize_story_category(
+            _story(
+                title="Magnets make invisible fields visible",
+                seo_title="Magnets make invisible fields visible",
+                hook="Magnets can show a hidden force map.",
+                category="wildlife",
+            )
+        )
+        == "physics"
+    )
 
 
 def test_package_story_keeps_visible_subject_in_selected_hook():

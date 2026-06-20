@@ -176,6 +176,8 @@ ACTION_VERBS = (
     "collapse",
     "coordinate",
     "count",
+    "close",
+    "closes",
     "dance",
     "explode",
     "fly",
@@ -187,15 +189,24 @@ ACTION_VERBS = (
     "make",
     "record",
     "reveal",
+    "see",
+    "sees",
     "wear",
     "cool",
     "compare",
     "carve",
+    "carves",
+    "cut",
+    "cuts",
     "detect",
     "feel",
     "imprint",
     "lock",
     "measure",
+    "point",
+    "points",
+    "preserve",
+    "preserves",
     "send",
     "sample",
     "sense",
@@ -206,6 +217,8 @@ ACTION_VERBS = (
     "taste",
     "track",
     "trap",
+    "turn",
+    "turns",
     "wash",
 )
 CUE_WORDS = (
@@ -271,6 +284,10 @@ CUE_WORDS = (
     "ash",
     "cloud",
     "clouds",
+    "bank",
+    "banks",
+    "bend",
+    "bends",
     "canopy shift",
     "canopy",
     "underground threads",
@@ -286,6 +303,9 @@ CUE_WORDS = (
     "leaf",
     "leaf movement",
     "leaves",
+    "trap hair",
+    "trap hairs",
+    "hairs",
     "mushroom",
     "object",
     "objects",
@@ -296,6 +316,11 @@ CUE_WORDS = (
     "wave",
     "waves",
     "current",
+    "currents",
+    "sediment",
+    "ultraviolet",
+    "pattern",
+    "patterns",
     "glacier",
     "rock",
     "rocks",
@@ -471,6 +496,10 @@ NATURE_CATEGORY_SIGNALS = (
     ("fungi", ("fungi", "fungal", "mushroom", "mushrooms", "mycelium")),
     ("geology", ("geology", "rock layers", "rocks", "minerals")),
     ("weather", ("weather", "storm", "lightning", "tornado")),
+    ("plants", ("plant", "plants", "leaf", "leaves", "flower", "flowers", "venus flytrap", "trap hairs")),
+    ("rivers", ("river", "rivers", "stream", "streams", "bend", "bends", "bank", "banks", "waterfall")),
+    ("physics", ("magnet", "magnets", "magnetic", "physics")),
+    ("discoveries", ("fossil", "fossils", "scientist", "research", "discovery")),
 )
 
 
@@ -514,6 +543,11 @@ def _normalized_category(story: dict) -> str:
         if any(re.search(r"\b" + re.escape(signal) + r"\b", text) for signal in signals):
             return category
     return current
+
+
+def normalize_story_category(story: dict) -> str:
+    """Return the category implied by viewer-facing copy and tags."""
+    return _normalized_category(story)
 
 
 def _uses_nature_signal(story: dict) -> bool:
@@ -771,7 +805,7 @@ def replay_prompt(story: dict) -> str:
 
 def package_story(story: dict) -> dict:
     out = dict(story)
-    normalized_category = _normalized_category(out)
+    normalized_category = normalize_story_category(out)
     if normalized_category:
         out["category"] = normalized_category
     preserve_source_packaging = (

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 OBJECTIVE_PATH = Path("_data/channel_objective.json")
@@ -181,7 +182,9 @@ def cognitive_mechanism_cluster(story: dict) -> str:
         ("beak", "beak_signal"),
         ("call", "call_signal"),
     ):
-        if cue in lower and any(word in lower for word in ("signal", "cue", "movement", "shift", "position")):
+        if re.search(r"\b" + re.escape(cue) + r"s?\b", lower) and any(
+            word in lower for word in ("signal", "cue", "movement", "shift", "position")
+        ):
             return cluster
     return ""
 

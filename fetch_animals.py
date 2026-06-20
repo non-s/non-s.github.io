@@ -731,6 +731,24 @@ _SUBJECT_TOPIC_OVERRIDES = {
     "monkey": "primates",
     "orangutan": "primates",
 }
+_NATURE_SUBJECT_TOPIC_OVERRIDES = {
+    "conservation": "conservation",
+    "earth": "earth_from_space",
+    "ecosystem": "ecosystems",
+    "forest": "forests",
+    "fungi": "fungi",
+    "geology": "geology",
+    "mountain": "mountains",
+    "ocean": "ocean",
+    "plant": "plants",
+    "rare_phenomena": "rare_phenomena",
+    "river": "rivers",
+    "science": "discoveries",
+    "space": "space",
+    "tree": "trees",
+    "volcano": "volcanoes",
+    "weather": "weather",
+}
 _HUMAN_VISUAL_TERMS = {
     "baby",
     "boy",
@@ -820,11 +838,23 @@ def _script_matches_visible_subject(subject: str, script: str) -> bool:
     return not visible or bool(visible & script_terms)
 
 
+def _mentions_visible_subject(subject: str, text: str) -> bool:
+    visible_animals = _strict_animal_terms(subject)
+    if not visible_animals:
+        return True
+    script_animals = _strict_animal_terms(text)
+    if visible_animals & script_animals:
+        return True
+    return any(bool(script_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
+
+
 def _copy_matches_visible_subject(subject: str, *texts: str) -> bool:
     """Require title, hook and narration to name the visible subject."""
     for text in texts:
         if not _script_matches_visible_subject(subject, text):
             return False
+    if _strict_animal_terms(subject) and not _mentions_visible_subject(subject, " ".join(texts)):
+        return False
     return True
 
 
@@ -878,6 +908,9 @@ def _topic_accepts_subject(topic_cfg: dict, subject: str) -> bool:
     # titles ("forest", "snow", "night"). Those are context, not the
     # subject mismatch signal we want to catch.
     if allowed_animals:
+        visible = _animal_terms(subject)
+        if visible and not visible_animals and not visible <= _CONTEXT_ONLY_SUBJECTS:
+            return False
         return True
     visible = _animal_terms(subject)
     allowed = set().union(*(_animal_terms(query) for query in topic_cfg.get("queries", [])))
@@ -891,6 +924,13 @@ def _topic_for_subject(topic_key: str, topic_cfg: dict, subject: str) -> tuple[s
     visible_animals = _strict_animal_terms(subject)
     for animal in sorted(visible_animals):
         override = _SUBJECT_TOPIC_OVERRIDES.get(animal)
+        if override and override in ANIMAL_TOPICS:
+            override_cfg = ANIMAL_TOPICS[override]
+            if _topic_accepts_subject(override_cfg, subject):
+                return override, override_cfg
+    visible_nature = _animal_terms(subject) - visible_animals
+    for item in sorted(visible_nature):
+        override = _NATURE_SUBJECT_TOPIC_OVERRIDES.get(item)
         if override and override in ANIMAL_TOPICS:
             override_cfg = ANIMAL_TOPICS[override]
             if _topic_accepts_subject(override_cfg, subject):

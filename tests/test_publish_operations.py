@@ -2,7 +2,7 @@ from scripts import next_shorts
 from scripts.backfill_done_markers import backfill_marker
 from scripts.dry_run_publish import build_dry_run
 from utils import rejected_queue as rejected_queue_module
-from utils.channel_objective import objective_gate_for_story
+from utils.channel_objective import cognitive_mechanism_cluster, objective_gate_for_story
 from utils.local_rewriter import rescue_story
 from utils.post24_review import build_review, classify_video
 from utils.publish_schedule import recommend_schedule
@@ -86,6 +86,23 @@ def test_objective_gate_lets_day_zero_bootstrap_observe_without_penalty():
     assert gate["penalty"] == 0
     assert gate["publish_blocking"] is False
     assert "bootstrap_observe_before_scaling" in gate["reasons"]
+
+
+def test_cognitive_mechanism_cluster_uses_whole_cue_words():
+    story = _strong_story(
+        title="Rivers carve bends by stealing from one bank",
+        seo_title="Rivers carve bends by stealing from one bank",
+        hook="Rivers move sideways while they flow.",
+        script=(
+            "Rivers move sideways while they flow. Watch the outside bank, "
+            "because faster water cuts that side while sediment drops inside the bend."
+        ),
+        thumbnail_text="BANK SHIFT",
+        category="rivers",
+        story_format="earth_engine",
+    )
+
+    assert cognitive_mechanism_cluster(story) == ""
 
 
 def test_rescue_story_rewrites_editorial_template_but_not_visual_mismatch():

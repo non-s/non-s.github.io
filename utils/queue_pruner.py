@@ -16,7 +16,7 @@ from utils.editorial import review as editorial_review
 from utils.editorial_guard import editorial_issues
 from utils.fact_ledger import duplicate_angle_ids
 from utils.local_rewriter import rescue_story
-from utils.packaging import extract_action, extract_animal, extract_cue, package_story
+from utils.packaging import extract_action, extract_animal, extract_cue, normalize_story_category, package_story
 from utils.publish_score import score_story
 from utils.rights_audit import audit_rights
 from utils.rights_guard import evaluate_rights_guard
@@ -186,6 +186,9 @@ def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = No
 
 def sanitize_story_metadata(story: dict) -> dict:
     out = dict(story)
+    normalized_category = normalize_story_category(out)
+    if normalized_category:
+        out["category"] = normalized_category
     for field in COMMONS_FIELDS:
         if field in out:
             out[field] = fetch_animals._safe_commons_value(str(out.get(field) or ""))
