@@ -1,44 +1,44 @@
 {
-  "generated_at": "2026-06-20T16:50:38.537937+00:00",
+  "generated_at": "2026-06-20T17:02:57.625335+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "youtube_analytics_and_public_statistics",
-    "shorts_tracked": 29,
+    "shorts_tracked": 30,
     "avg_view_pct": 68.802,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
       "name": "conservation",
-      "score": 251.164
+      "score": 251.134
     },
     {
       "name": "reptiles",
-      "score": 239.386
+      "score": 239.251
     },
     {
       "name": "cats",
-      "score": 213.905
+      "score": 213.893
     },
     {
       "name": "dogs",
-      "score": 200.296
+      "score": 200.2
     },
     {
       "name": "ecosystems",
-      "score": 200.122
+      "score": 200.11
     }
   ],
   "format_priorities": [
     {
       "name": "hidden_network",
-      "score": 217.713
+      "score": 217.707
     },
     {
       "name": "rare_nature",
-      "score": 200.53
+      "score": 200.266
     },
     {
       "name": "myth_buster",
@@ -46,11 +46,11 @@
     },
     {
       "name": "single_fact",
-      "score": 168.664
+      "score": 173.117
     },
     {
-      "name": "body_superpower",
-      "score": 166.536
+      "name": "animal_intelligence",
+      "score": 149.955
     }
   ],
   "winning_terms": [
@@ -189,14 +189,14 @@
         "lane": "proven_category",
         "statement": "Next Shorts in conservation, reptiles should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 251.164
+        "target": 251.134
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "hidden_network is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 217.713
+        "target": 217.707
       },
       {
         "id": "H4_SUBSCRIBER_CONVERSION",
@@ -215,9 +215,9 @@
       {
         "id": "H8_VISUAL_PROFILE",
         "lane": "visual_ctr",
-        "statement": "Favor frame profile close_subject|feed_bright|medium_contrast for stronger click and retention signals.",
+        "statement": "Favor frame profile close_subject|usable_light|medium_contrast for stronger click and retention signals.",
         "success_metric": "growth_score_plus_retention",
-        "target": "close_subject|feed_bright|medium_contrast"
+        "target": "close_subject|usable_light|medium_contrast"
       }
     ]
   },
@@ -262,16 +262,16 @@
         "category": "cats"
       },
       {
-        "id": "remake-a1c08225fbc213c0",
-        "title": "Horses remember familiar faces for months",
-        "variant": "session_graph_sequel",
-        "category": "farm"
-      },
-      {
         "id": "remake-68b81305804436ef",
         "title": "Wolves read scent posts like a map",
         "variant": "session_graph_sequel",
         "category": "forests"
+      },
+      {
+        "id": "remake-20bc4b1ea4568e21",
+        "title": "Dragonflies lock onto prey in midair",
+        "variant": "session_graph_sequel",
+        "category": "insects"
       }
     ]
   },
@@ -286,20 +286,12 @@
     ]
   },
   "visual_policy": {
-    "winner": "close_subject|feed_bright|medium_contrast",
+    "winner": "close_subject|usable_light|medium_contrast",
     "profiles": [
-      {
-        "profile": "close_subject|feed_bright|medium_contrast",
-        "n": 3,
-        "mean_growth_score": 206.029,
-        "mean_retention": 43.607,
-        "mean_views": 1.0,
-        "mean_visual_ctr_score": 95.333
-      },
       {
         "profile": "close_subject|usable_light|medium_contrast",
         "n": 2,
-        "mean_growth_score": 200.326,
+        "mean_growth_score": 200.188,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 99.5
@@ -307,23 +299,31 @@
       {
         "profile": "subject_rich|feed_bright|medium_contrast",
         "n": 2,
-        "mean_growth_score": 196.779,
+        "mean_growth_score": 196.757,
         "mean_retention": 70.23,
         "mean_views": 2.0,
         "mean_visual_ctr_score": 84.0
       },
       {
+        "profile": "close_subject|feed_bright|medium_contrast",
+        "n": 3,
+        "mean_growth_score": 172.979,
+        "mean_retention": 43.607,
+        "mean_views": 1.667,
+        "mean_visual_ctr_score": 95.333
+      },
+      {
         "profile": "close_subject|feed_bright|high_contrast",
-        "n": 18,
-        "mean_growth_score": 154.077,
-        "mean_retention": 37.117,
-        "mean_views": 2.667,
+        "n": 19,
+        "mean_growth_score": 147.715,
+        "mean_retention": 35.164,
+        "mean_views": 2.737,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "close_subject|usable_light|high_contrast",
         "n": 3,
-        "mean_growth_score": 126.704,
+        "mean_growth_score": 126.664,
         "mean_retention": 41.787,
         "mean_views": 1.333,
         "mean_visual_ctr_score": 98.667
@@ -331,7 +331,7 @@
       {
         "profile": "subject_rich|usable_light|flat_contrast",
         "n": 1,
-        "mean_growth_score": 99.469,
+        "mean_growth_score": 99.445,
         "mean_retention": 36.08,
         "mean_views": 3.0,
         "mean_visual_ctr_score": 63.0
@@ -347,10 +347,10 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 5,
-    "approved_candidates": 5,
+    "pending": 4,
+    "approved_candidates": 4,
     "lane_counts": {
-      "fresh_experiment": 5
+      "fresh_experiment": 4
     },
     "top_candidates": [
       {
@@ -500,7 +500,7 @@
             "mechanism_cluster": "call_signal"
           }
         },
-        "autonomy_priority": 109.12,
+        "autonomy_priority": 103.0,
         "packaging_lab": {
           "title_variants": [
             "Elephants can feel rumbles through the ground",
@@ -522,7 +522,7 @@
         }
       },
       {
-        "id": "9e22823752beb432",
+        "id": "add9ebd55cb4579a",
         "title": "Plants count touches before snapping shut",
         "category": "plants",
         "story_format": "plant_mechanism",
@@ -691,24 +691,24 @@
         }
       },
       {
-        "id": "e41c3d561083558b",
+        "id": "e3eec0d061f8518c",
         "title": "Fossils turn old bones into time clues",
         "category": "discoveries",
         "story_format": "science_clue",
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 96.8,
+          "score": 96.5,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
-            "score": 69,
+            "score": 67,
             "signals": {
               "viral_potential": 85,
               "visual_potential": 69,
               "replay_potential": 72,
               "comment_potential": 54,
-              "educational_potential": 86,
+              "educational_potential": 72,
               "emotional_potential": 44,
               "novelty": 59
             },
@@ -836,7 +836,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 99.8,
+        "autonomy_priority": 99.5,
         "packaging_lab": {
           "title_variants": [
             "Fossils turn old bones into time clues",
@@ -1025,176 +1025,6 @@
           "pinned_comment": "Watch the field lines again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
-      },
-      {
-        "id": "6568a4ceeb37c856",
-        "title": "Horses point their ears toward what matters",
-        "category": "farm",
-        "story_format": "animal_intelligence",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 92.2,
-          "approved": false,
-          "state": "rewrite",
-          "opportunity": {
-            "score": 49,
-            "signals": {
-              "viral_potential": 35,
-              "visual_potential": 60,
-              "replay_potential": 67,
-              "comment_potential": 57,
-              "educational_potential": 47,
-              "emotional_potential": 30,
-              "novelty": 40
-            },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 79,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 79,
-              "visual_score": 66,
-              "replay_score": 82,
-              "completion_prediction": 84
-            },
-            "verdict": "ready",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 100,
-            "state": "strong",
-            "subscriber_probability": 0.143,
-            "return_probability": 0.3,
-            "comment_probability": 0.256,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.25,
-              "sample_size": 8,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.425,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.437,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.231,
-            "sample_size": 16,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.35,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.423,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
-          },
-          "category": "farm",
-          "story_format": "animal_intelligence",
-          "hook_score": 86,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.231,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 10.45,
-            "template_cluster": "",
-            "mechanism_cluster": "ear_signal"
-          }
-        },
-        "autonomy_priority": 95.2,
-        "packaging_lab": {
-          "title_variants": [
-            "Horses point their ears toward what matters",
-            "Horses use ear focus before they change",
-            "Why horses change after one ear focus"
-          ],
-          "thumbnail_variants": [
-            "EAR RADAR",
-            "EAR FOCUS",
-            "WATCH EAR FOCUS"
-          ],
-          "hook_variants": [
-            "Horses show attention with their ears.",
-            "Horses point their ears toward what matters",
-            "Watch the sound again. Tomorrow: another animal signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the sound again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
       }
     ]
   },
@@ -1204,6 +1034,6 @@
     "Bias production toward experiment winners: hook_style=curiosity_gap, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=before_after, subtitle_density=low, loop_style=mirror_opening, cta_pattern=sequel_tease, end_card_style=series_tease, title_shape=curiosity_gap, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 5,
-  "queue_annotations_changed": 5
+  "queue_annotations_written": 4,
+  "queue_annotations_changed": 4
 }
