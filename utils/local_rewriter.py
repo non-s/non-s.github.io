@@ -216,7 +216,9 @@ NATURE_SUBJECTS = {
 
 
 def _animal(text: str) -> str:
-    normalised = re.sub(r"[-_/]+", " ", text or "")
+    normalised = re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.I)
+    normalised = re.sub(r"\belephant[\s_-]*seals?\b", "seal", normalised, flags=re.I)
+    normalised = re.sub(r"[-_/]+", " ", normalised)
     for word in re.findall(r"[A-Za-z][A-Za-z']+", normalised):
         low = word.lower().replace("'s", "")
         if low in {

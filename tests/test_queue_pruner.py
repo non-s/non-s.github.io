@@ -120,6 +120,28 @@ def test_production_quality_blocks_copy_that_omits_explicit_visible_animal():
     assert "copy_subject_mismatch" in issues
 
 
+def test_production_quality_blocks_elephant_seal_copy_as_elephant():
+    story = _story(
+        "elephant-seal-copy",
+        title="Elephants cool blood through giant ears",
+        seo_title="Elephants cool blood through giant ears",
+        hook="Elephants cool blood through giant ears.",
+        script=(
+            "Elephants cool blood through giant ears. Watch the ear movement, "
+            "because elephants use blood flow there to release heat."
+        ),
+        thumbnail_text="GIANT EARS",
+        category="arctic",
+        source_title="Elephant seals on coastal beach resting",
+        source_url="https://www.pexels.com/video/elephant-seals-on-coastal-beach-resting-35629750/",
+    )
+
+    issues = production_quality_issues(story)
+
+    assert "copy_subject_mismatch" in issues
+    assert "script_subject_mismatch" in issues
+
+
 def test_production_quality_uses_source_title_before_ai_title():
     story = _story(
         "source-title-cartoon",

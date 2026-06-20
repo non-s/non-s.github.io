@@ -507,13 +507,18 @@ def _words(text: str) -> list[str]:
     return re.findall(r"[A-Za-z][A-Za-z'-]+", text or "")
 
 
+def _normalise_subject_phrases(text: str) -> str:
+    normalised = re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.I)
+    return re.sub(r"\belephant[\s_-]*seals?\b", "seal", normalised, flags=re.I)
+
+
 def _title_case_subject(value: str) -> str:
     return value[:1].upper() + value[1:] if value else "Nature"
 
 
 def extract_subject(story: dict) -> str:
-    text = " ".join(
-        str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script", "category", "topic_hashtag")
+    text = _normalise_subject_phrases(
+        " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script", "category", "topic_hashtag"))
     )
     for token in _words(text.lower()):
         clean = token.replace("'s", "")

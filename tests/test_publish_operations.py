@@ -405,6 +405,33 @@ def test_rescue_story_uses_contextual_nature_duplicate_titles():
     assert package_story(weather_rescued)["title"] == weather_rescued["title"]
 
 
+def test_rescue_story_keeps_elephant_seal_in_seal_lane():
+    story = _strong_story(
+        id="elephant-seal-arctic",
+        title="Elephants cool blood through giant ears",
+        seo_title="Elephants cool blood through giant ears",
+        hook="Elephants cool blood through giant ears.",
+        script=(
+            "Elephants cool blood through giant ears. Watch the ear movement, "
+            "because elephants use blood flow there to release heat."
+        ),
+        thumbnail_text="GIANT EARS",
+        category="arctic",
+        source_title="Elephant seals on coastal beach resting",
+        source_url="https://www.pexels.com/video/elephant-seals-on-coastal-beach-resting-35629750/",
+    )
+
+    rescued, applied = rescue_story(story, ["copy_subject_mismatch", "script_subject_mismatch"])
+
+    assert applied is True
+    assert rescued["title"] == "Seals track fish trails with whiskers"
+    assert "elephant" not in " ".join(
+        str(rescued.get(key) or "").lower() for key in ("title", "hook", "script", "thumbnail_text")
+    )
+    assert not editorial_issues(rescued)
+    assert package_story(rescued)["title"] == rescued["title"]
+
+
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):
     path = tmp_path / "rejected_queue.json"
     story = {"id": "abc", "title": "Weak story"}

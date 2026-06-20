@@ -1763,12 +1763,17 @@ def _words(text: str) -> list[str]:
     return re.findall(r"[A-Za-z][A-Za-z'-]*", text or "")
 
 
+def _normalise_subject_phrases(text: str) -> str:
+    normalised = re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.I)
+    return re.sub(r"\belephant[\s_-]*seals?\b", "seal", normalised, flags=re.I)
+
+
 def _clean_spaces(text: str) -> str:
     return re.sub(r"\s+", " ", str(text or "")).strip()
 
 
 def _subject_key_from_text(text: str) -> str:
-    normalised = re.sub(r"[-_/]+", " ", text or "")
+    normalised = re.sub(r"[-_/]+", " ", _normalise_subject_phrases(text))
     for word in _words(normalised.lower()):
         clean = word.replace("'s", "")
         if clean in ANIMAL_ALIASES:

@@ -850,7 +850,8 @@ _BLOCKED_COMMONS_TERMS = ("na" + "sa",)
 
 def _normalise_visible_subject_text(text: str) -> str:
     """Resolve source-title phrases that otherwise look like two animals."""
-    return re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.IGNORECASE)
+    normalised = re.sub(r"\bsheep[\s_-]*dogs?\b", "working dog", text or "", flags=re.IGNORECASE)
+    return re.sub(r"\belephant[\s_-]*seals?\b", "seal", normalised, flags=re.IGNORECASE)
 
 
 def _animal_terms(text: str) -> set[str]:

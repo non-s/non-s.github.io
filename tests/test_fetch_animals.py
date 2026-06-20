@@ -214,6 +214,31 @@ def test_sheepdog_source_phrase_stays_in_dog_lane():
     )
 
 
+def test_elephant_seal_source_phrase_stays_in_seal_lane():
+    clip = _clip(
+        url="https://www.pexels.com/video/elephant-seals-on-coastal-beach-resting-35629750/",
+        title="Uploader Name",
+    )
+    subject = fetch_animals._subject_from_clip(clip, "arctic")
+
+    assert subject == "seal on coastal beach resting"
+    assert fetch_animals._animal_terms("elephant seals on coastal beach") == {"seal"}
+    assert fetch_animals._strict_animal_terms(subject) == {"seal"}
+    assert "elephant" not in fetch_animals._strict_animal_terms(subject)
+    assert not fetch_animals._copy_matches_visible_subject(
+        subject,
+        "Elephants cool blood through giant ears",
+        "Elephants cool blood through giant ears.",
+        "Elephants use giant ears to cool blood before the next move.",
+    )
+    assert fetch_animals._copy_matches_visible_subject(
+        subject,
+        "Seals track fish trails with whiskers",
+        "Seals can follow wakes with their whiskers.",
+        "Seals can sense tiny trails left by moving fish in the water.",
+    )
+
+
 def test_topic_rejects_explicit_animal_from_wrong_category():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["dogs"], "blue bird perched on branch")
 
