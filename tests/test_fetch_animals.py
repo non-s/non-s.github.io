@@ -450,6 +450,79 @@ def test_rotate_queries_is_deterministic_within_window():
 # ── Topic table ───────────────────────────────────────────────────
 
 
+def test_rotate_queries_caps_take_to_available_queries():
+    qs = ["a", "b", "c"]
+    out = fetch_animals._rotate_queries("cats", qs, take=10)
+    assert len(out) == 3
+    assert set(out) == set(qs)
+
+
+def test_pexels_id_from_clip_prefers_api_metadata():
+    clip = _clip(url="https://www.pexels.com/video/no-id-slug/")
+    clip.source_metadata["pexels_video_id"] = "98765"
+
+    assert fetch_animals._pexels_id_from_clip(clip) == "98765"
+
+
+def test_discover_topic_clips_filters_rejected_before_cap_and_pages(monkeypatch):
+    rejected = _clip(
+        url="https://www.pexels.com/video/rejected-cat/111/",
+        dl="https://files.pexels.com/v/rejected.mp4",
+    )
+    fresh = _clip(
+        url="https://www.pexels.com/video/fresh-cat/222/",
+        dl="https://files.pexels.com/v/fresh.mp4",
+    )
+    calls = []
+
+    def fake_fetch(query, per_page=8, page=1):
+        calls.append((query, per_page, page))
+        return [rejected] if page == 1 else [fresh]
+
+    monkeypatch.setattr(fetch_animals, "fetch_pexels", fake_fetch)
+    monkeypatch.setattr(fetch_animals, "PEXELS_SEARCH_PER_PAGE", 32)
+    monkeypatch.setattr(fetch_animals, "PEXELS_DISCOVERY_PAGES", 2)
+    monkeypatch.setattr(fetch_animals, "PEXELS_TOPIC_CALL_BUDGET", 2)
+    monkeypatch.setattr(fetch_animals, "PEXELS_DEEP_SEARCH_GAP", 1)
+    dedupe = fetch_animals._clip_dedupe_keys(rejected)
+
+    out = fetch_animals._discover_topic_clips(
+        ["cat playing"],
+        per_topic_n=1,
+        dedupe_keys=dedupe,
+        pending_gap=10,
+    )
+
+    assert out == [fresh]
+    assert calls == [("cat playing", 32, 1), ("cat playing", 32, 2)]
+
+
+def test_discover_topic_clips_uses_one_page_when_gap_is_small(monkeypatch):
+    clip = _clip(url="https://www.pexels.com/video/fresh-cat/333/")
+    calls = []
+
+    def fake_fetch(query, per_page=8, page=1):
+        calls.append((query, per_page, page))
+        return [clip]
+
+    monkeypatch.setattr(fetch_animals, "fetch_pexels", fake_fetch)
+    monkeypatch.setattr(fetch_animals, "PEXELS_SEARCH_PER_PAGE", 24)
+    monkeypatch.setattr(fetch_animals, "PEXELS_DISCOVERY_PAGES", 5)
+    monkeypatch.setattr(fetch_animals, "PEXELS_TOPIC_CALL_BUDGET", 5)
+    monkeypatch.setattr(fetch_animals, "PEXELS_DEEP_SEARCH_GAP", 20)
+
+    out = fetch_animals._discover_topic_clips(
+        ["cat playing", "kitten"],
+        per_topic_n=1,
+        dedupe_keys=set(),
+        pending_gap=2,
+    )
+
+    assert out == [clip]
+    assert calls
+    assert {page for _, _, page in calls} == {1}
+
+
 def test_topic_table_covers_expected_categories():
     """Pivot doc / channel branding refers to these 6 topics; if one
     drops out the channel suddenly stops covering, say, ocean life

@@ -121,6 +121,41 @@ FLAGS: tuple[FeatureFlag, ...] = (
     FeatureFlag(
         "TOPIC_FRESHNESS_ENABLED", "1", "discovery", "Annotate queue entries with free freshness signals.", "Set to 0."
     ),
+    FeatureFlag(
+        "PEXELS_SEARCH_PER_PAGE",
+        "32",
+        "discovery",
+        "Pexels video results requested per search call.",
+        "Lower if Pexels responses approach timeout.",
+    ),
+    FeatureFlag(
+        "PEXELS_DISCOVERY_PAGES",
+        "2",
+        "discovery",
+        "Maximum Pexels result pages searched when queue inventory is short.",
+        "Set to 1 to search only the first page.",
+    ),
+    FeatureFlag(
+        "PEXELS_BACKFILL_QUERY_TAKE",
+        "6",
+        "discovery",
+        "Topic query count used during low-inventory Pexels backfill.",
+        "Lower if provider quota becomes tight.",
+    ),
+    FeatureFlag(
+        "PEXELS_TOPIC_CALL_BUDGET",
+        "2",
+        "discovery",
+        "Maximum Pexels search calls allowed per topic per refresh run.",
+        "Lower if provider quota becomes tight.",
+    ),
+    FeatureFlag(
+        "PEXELS_DEEP_SEARCH_GAP",
+        "8",
+        "discovery",
+        "Pending-story gap that enables deeper Pexels page search.",
+        "Raise it to reserve deeper paging for emergencies.",
+    ),
     FeatureFlag("OPENING_AUDIT_ENABLED", "1", "production", "Score the first second opening package.", "Set to 0."),
     FeatureFlag(
         "OPENING_AUDIT_STRICT",

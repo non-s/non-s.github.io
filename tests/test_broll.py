@@ -36,9 +36,10 @@ def _pexels_payload():
     return {
         "videos": [
             {
+                "id": 12345,
                 "url": "https://www.pexels.com/video/x/",
                 "duration": 12,
-                "user": {"name": "Test Author"},
+                "user": {"name": "Test Author", "url": "https://www.pexels.com/@test"},
                 "video_files": [
                     {"link": "https://cdn.pexels.com/big.mp4", "width": 1080, "height": 1920},
                     {"link": "https://cdn.pexels.com/small.mp4", "width": 720, "height": 1280},
@@ -62,6 +63,11 @@ def test_pexels_returns_clips_when_key_set(monkeypatch, tmp_path):
     assert clips[0].source == "pexels"
     assert clips[0].download_url.endswith(".mp4")
     assert clips[0].height >= 1920 or clips[0].width >= 1080
+    assert clips[0].license_evidence == "https://www.pexels.com/video/x/"
+    assert clips[0].source_metadata["pexels_video_id"] == "12345"
+    params = session.get.call_args.kwargs["params"]
+    assert params["page"] == 1
+    assert str(session.get.call_args.args[0]).endswith("/v1/videos/search")
 
 
 def test_pexels_returns_empty_without_key(monkeypatch):
@@ -102,6 +108,30 @@ def test_pexels_cache_avoids_second_call(monkeypatch, tmp_path):
         broll.fetch_pexels("identical query")
         broll.fetch_pexels("identical query")
     assert calls["n"] == 1
+
+
+def test_pexels_cache_keeps_pages_separate(monkeypatch, tmp_path):
+    monkeypatch.setenv("PEXELS_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    fake = MagicMock(status_code=200)
+    fake.json.return_value = _pexels_payload()
+    calls = {"n": 0}
+
+    def make_session():
+        session = MagicMock()
+
+        def _get(*args, **kwargs):
+            calls["n"] += 1
+            return fake
+
+        session.get.side_effect = _get
+        return session
+
+    with patch.object(broll, "_session", side_effect=make_session):
+        broll.fetch_pexels("identical query", page=1)
+        broll.fetch_pexels("identical query", page=2)
+        broll.fetch_pexels("identical query", page=2)
+    assert calls["n"] == 2
 
 
 def test_enabled_sources_is_pexels_only(monkeypatch):

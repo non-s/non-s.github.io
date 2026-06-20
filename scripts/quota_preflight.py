@@ -22,7 +22,13 @@ from utils.api_quota_budget import (  # noqa: E402
 
 def preflight(workflow: str, *, check_only: bool = False) -> dict:
     if workflow == "fetch-content":
-        estimate = estimate_fetch_content_cost()
+        try:
+            import fetch_animals  # noqa: PLC0415
+
+            search_calls = min(len(fetch_animals.ANIMAL_TOPICS) * fetch_animals.PEXELS_TOPIC_CALL_BUDGET, 200)
+        except Exception:
+            search_calls = 12
+        estimate = estimate_fetch_content_cost(search_calls=search_calls)
     else:
         estimate = estimate_publish_run_cost()
     if check_only:

@@ -23,10 +23,16 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PUBLISH_BACKFILL_READY_TARGET || '2'" in youtube_workflow
     assert 'target="${QUEUE_TARGET_PUBLISH_READY:-2}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '48' }}" in youtube_workflow
+    assert 'BROLL_SOURCE_MODE: "pexels"' in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow
     assert "MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}" in youtube_workflow
     assert "QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}" in youtube_workflow
+    assert "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}" in youtube_workflow
+    assert "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}" in youtube_workflow
+    assert "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}" in youtube_workflow
+    assert "PEXELS_TOPIC_CALL_BUDGET: ${{ vars.PEXELS_TOPIC_CALL_BUDGET || '2' }}" in youtube_workflow
+    assert "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}" in youtube_workflow
     assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
     assert '[ "${pending}" -lt "${base_pending_target}" ]' in youtube_workflow
@@ -66,6 +72,11 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
     assert "leaving generated diagnostics uncommitted" in fetch_workflow
     assert "QUEUE_TARGET_PENDING || '48'" in fetch_workflow
+    assert "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}" in fetch_workflow
+    assert "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}" in fetch_workflow
+    assert "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}" in fetch_workflow
+    assert "PEXELS_TOPIC_CALL_BUDGET: ${{ vars.PEXELS_TOPIC_CALL_BUDGET || '2' }}" in fetch_workflow
+    assert "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}" in fetch_workflow
     assert "merge_jsonl_state.py" in fetch_workflow
     assert "reconcile_queue_uploads.py" in fetch_workflow
     assert "jsonl_merge_paths" in fetch_workflow

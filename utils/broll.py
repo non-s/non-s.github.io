@@ -24,7 +24,7 @@ _USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
 _TIMEOUT = 20
 _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
-_PEXELS_API = "https://api.pexels.com/videos/search"
+_PEXELS_API = "https://api.pexels.com/v1/videos/search"
 
 
 @dataclasses.dataclass
@@ -83,13 +83,15 @@ def _pexels_clip_title(url: str, uploader: str = "") -> str:
     return re.sub(r"[-_]+", " ", slug).strip() or uploader.strip()
 
 
-def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
+def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip]:
     """Search Pexels Videos for `query`. Empty list on any failure."""
     key = os.environ.get("PEXELS_API_KEY", "")
     if not key or not query:
         return []
 
-    cache_path = _cache_key("pexels", f"{query}|{per_page}")
+    per_page = max(1, min(80, int(per_page or 8)))
+    page = max(1, int(page or 1))
+    cache_path = _cache_key("pexels", f"{query}|{per_page}|{page}|v1")
     cached = _cache_get(cache_path)
     if cached is not None:
         return [BrollClip(**c) for c in cached]
@@ -100,6 +102,7 @@ def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
             params={
                 "query": query[:120],
                 "per_page": per_page,
+                "page": page,
                 "orientation": "portrait",
                 "size": "medium",
             },
@@ -140,6 +143,14 @@ def fetch_pexels(query: str, per_page: int = 8) -> list[BrollClip]:
                     (video.get("user", {}) or {}).get("name", ""),
                 ),
                 license="Pexels License (free for commercial use)",
+                license_evidence=video.get("url", ""),
+                source_metadata={
+                    "pexels_video_id": str(video.get("id") or ""),
+                    "pexels_page": page,
+                    "pexels_query": query[:120],
+                    "photographer": (video.get("user", {}) or {}).get("name", ""),
+                    "photographer_url": (video.get("user", {}) or {}).get("url", ""),
+                },
             )
         )
     _cache_put(cache_path, [dataclasses.asdict(clip) for clip in out])

@@ -103,9 +103,27 @@ QUEUE_FILE = Path("_data/stories_queue.json")
 # against it before paying for AI enrichment.
 PUBLISHED_CLIPS_FILE = Path("_data/published_clips.json")
 REJECTED_QUEUE_FILE = Path("_data/rejected_queue.jsonl")
+
+
+def _env_int(name: str, default: int, *, minimum: int = 0, maximum: int | None = None) -> int:
+    try:
+        value = int(os.environ.get(name, str(default)))
+    except Exception:
+        value = default
+    value = max(minimum, value)
+    if maximum is not None:
+        value = min(maximum, value)
+    return value
+
+
 MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
 KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 QUEUE_TARGET_PENDING = int(os.environ.get("QUEUE_TARGET_PENDING", "1"))
+PEXELS_SEARCH_PER_PAGE = _env_int("PEXELS_SEARCH_PER_PAGE", 32, minimum=4, maximum=80)
+PEXELS_DISCOVERY_PAGES = _env_int("PEXELS_DISCOVERY_PAGES", 2, minimum=1, maximum=5)
+PEXELS_BACKFILL_QUERY_TAKE = _env_int("PEXELS_BACKFILL_QUERY_TAKE", 6, minimum=2, maximum=12)
+PEXELS_TOPIC_CALL_BUDGET = _env_int("PEXELS_TOPIC_CALL_BUDGET", 2, minimum=1, maximum=12)
+PEXELS_DEEP_SEARCH_GAP = _env_int("PEXELS_DEEP_SEARCH_GAP", 8, minimum=0)
 
 
 # ── Topic table ───────────────────────────────────────────────────
@@ -1108,6 +1126,10 @@ def _pexels_id_from_clip(clip) -> str:
     chose for that clip. Empty string if we can't extract one."""
     if (getattr(clip, "source", "") or "").lower() != "pexels":
         return ""
+    metadata = getattr(clip, "source_metadata", None) or {}
+    candidate = str(metadata.get("pexels_video_id") or "").strip()
+    if candidate:
+        return candidate
     url = getattr(clip, "url", "") or ""
     if not url:
         return ""
@@ -1141,6 +1163,23 @@ def _source_clip_id(clip) -> str:
     source = (getattr(clip, "source", "") or "unknown").lower()
     url = getattr(clip, "url", "") or getattr(clip, "download_url", "") or ""
     return f"{source}:{_story_id(url)}" if url else ""
+
+
+def _clip_dedupe_keys(clip) -> set[str]:
+    """Return every stable key that identifies a candidate clip."""
+    keys: set[str] = set()
+    url = getattr(clip, "url", "") or getattr(clip, "download_url", "") or ""
+    if url:
+        story_hash = _story_id(url)
+        keys.add(story_hash)
+        keys.add(f"{(getattr(clip, 'source', '') or 'unknown').lower()}:{story_hash}")
+    pexels_id = _pexels_id_from_clip(clip)
+    if pexels_id:
+        keys.add(pexels_id)
+    source_clip_id = _source_clip_id(clip)
+    if source_clip_id:
+        keys.add(source_clip_id)
+    return keys
 
 
 def _source_display_name(source: str) -> str:
@@ -1394,9 +1433,68 @@ def _rotate_queries(topic_key: str, queries: list[str], take: int) -> list[str]:
     """
     if not queries:
         return []
+    take = max(0, min(int(take or 0), len(queries)))
+    if take <= 0:
+        return []
     window = datetime.now(timezone.utc).hour // 3  # 0..7
-    start = (hash(topic_key) + window) % len(queries)
+    seed = int(hashlib.sha256(f"{topic_key}:{window}".encode("utf-8")).hexdigest()[:8], 16)
+    start = seed % len(queries)
     return [queries[(start + i) % len(queries)] for i in range(take)]
+
+
+def _discover_topic_clips(
+    queries: list[str],
+    *,
+    per_topic_n: int,
+    dedupe_keys: set[str],
+    pending_gap: int = 0,
+) -> list:
+    """Fetch a deduped candidate pool before spending AI calls.
+
+    The queue can hold hundreds of rejected Pexels ids. Searching only
+    page 1 and slicing before dedupe makes backfills look successful
+    while yielding no usable clips. This helper walks a small, bounded
+    search surface and filters rejected/published clips before returning.
+    """
+    if per_topic_n <= 0 or not queries:
+        return []
+
+    max_pages = PEXELS_DISCOVERY_PAGES if pending_gap >= PEXELS_DEEP_SEARCH_GAP else 1
+    pool_target = max(per_topic_n, min(per_topic_n * 4, per_topic_n + 8))
+    collected: list = []
+    seen_keys: set[str] = set()
+    calls = 0
+
+    for page in range(1, max_pages + 1):
+        for query in queries:
+            if len(collected) >= pool_target or calls >= PEXELS_TOPIC_CALL_BUDGET:
+                break
+            calls += 1
+            try:
+                clips = fetch_pexels(query, per_page=PEXELS_SEARCH_PER_PAGE, page=page)
+            except Exception as exc:
+                log.warning("video provider fetch failed for %r page %d: %s", query, page, exc)
+                clips = []
+            for clip in clips:
+                clip_keys = _clip_dedupe_keys(clip)
+                if not clip_keys or clip_keys & dedupe_keys or clip_keys & seen_keys:
+                    continue
+                seen_keys.update(clip_keys)
+                collected.append(clip)
+                if len(collected) >= pool_target:
+                    break
+        if len(collected) >= pool_target or calls >= PEXELS_TOPIC_CALL_BUDGET:
+            break
+
+    log.info(
+        "  Pexels search calls=%d pages=%d per_page=%d usable_candidates=%d/%d",
+        calls,
+        max_pages,
+        PEXELS_SEARCH_PER_PAGE,
+        len(collected),
+        pool_target,
+    )
+    return collected
 
 
 def _latest_strategy(path: Path = Path("_data/analytics/latest.json")) -> dict:
@@ -1574,7 +1672,12 @@ def main() -> int:
     from utils.panic import abort_if_halted
 
     abort_if_halted("fetch_animals")
-    write_quota_ledger_row(estimate_fetch_content_cost(search_calls=MAX_PER_TOPIC * 2, provider="pexels"))
+    write_quota_ledger_row(
+        estimate_fetch_content_cost(
+            search_calls=min(len(ANIMAL_TOPICS) * PEXELS_TOPIC_CALL_BUDGET, 200),
+            provider="pexels",
+        )
+    )
 
     log.info("=" * 60)
     log.info("🐾 Wild Brief — animal queue refresh %s", datetime.now(timezone.utc).isoformat())
@@ -1647,10 +1750,13 @@ def main() -> int:
         per_topic_n = int(plan.get("budget") or MAX_PER_TOPIC)
         if per_topic_backfill_cap is not None:
             per_topic_n = min(per_topic_n, per_topic_backfill_cap)
+        query_take = int(plan.get("query_take") or 2)
+        if max_new_entries - len(new_entries) >= PEXELS_DEEP_SEARCH_GAP:
+            query_take = max(query_take, min(len(topic_cfg.get("queries") or []), PEXELS_BACKFILL_QUERY_TAKE))
         queries = _rotate_queries(
             topic_key,
             topic_cfg["queries"],
-            take=int(plan.get("query_take") or 2),
+            take=query_take,
         )
         for query in plan.get("trend_queries") or []:
             if query not in queries:
@@ -1658,24 +1764,22 @@ def main() -> int:
         for query in plan.get("comment_queries") or []:
             if query not in queries:
                 queries.insert(0, query)
-        queries = queries[: max(2, int(plan.get("query_take") or 2))]
+        queries = queries[: max(2, query_take)]
         log.info("🔎 %s: budget=%d queries=%s", topic_key, per_topic_n, queries)
-        clips: list = []
-        for q in queries:
-            if len(clips) >= per_topic_n:
-                break
-            try:
-                clips.extend(fetch_pexels(q, per_page=4))
-            except Exception as exc:
-                log.warning("video provider fetch failed for %r: %s", q, exc)
-        # Cap, shuffle a little so consecutive runs don't always
+        clips = _discover_topic_clips(
+            queries,
+            per_topic_n=per_topic_n,
+            dedupe_keys=dedupe_keys,
+            pending_gap=max_new_entries - len(new_entries),
+        )
+        # Shuffle usable candidates so consecutive runs do not always
         # consume the same top-of-results clip.
         random.shuffle(clips)
-        clips = clips[:per_topic_n]
-        log.info("📹 %s: %d vetted video clip(s) returned", topic_key, len(clips))
+        log.info("📹 %s: %d usable video candidate(s) returned", topic_key, len(clips))
 
+        topic_new_entries = 0
         for clip in clips:
-            if len(new_entries) >= max_new_entries:
+            if len(new_entries) >= max_new_entries or topic_new_entries >= per_topic_n:
                 break
             sid = _story_id(clip.url or clip.download_url)
             pid = _pexels_id_from_clip(clip)
@@ -1709,6 +1813,7 @@ def main() -> int:
                 continue
             story = _build_story(subject, story_topic_key, story_topic_cfg, clip, ai_out, enrichment)
             new_entries.append(story)
+            topic_new_entries += 1
             script_keys.add(script_key)
             dedupe_keys.add(story["id"])
             if pid:

@@ -14,6 +14,11 @@
 | --- | --- | --- |
 | `BROLL_SOURCE_MODE` | no | Video source mode. Defaults to `pexels`; Pexels is the only production visual source. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | no | Maximum b-roll download size during render. Defaults to `94371840` (90 MB). |
+| `PEXELS_SEARCH_PER_PAGE` | no | Pexels video results requested per search call. Defaults to `32` so one free API call can scan past already rejected first results. |
+| `PEXELS_DISCOVERY_PAGES` | no | Maximum Pexels result pages searched when queue inventory is short. Defaults to `2`. |
+| `PEXELS_BACKFILL_QUERY_TAKE` | no | Topic query count used during low-inventory Pexels backfill. Defaults to `6`. |
+| `PEXELS_TOPIC_CALL_BUDGET` | no | Maximum Pexels search calls allowed per topic per refresh run. Defaults to `2` to stay conservative with free provider quota. |
+| `PEXELS_DEEP_SEARCH_GAP` | no | Pending-story gap that enables deeper Pexels page search. Defaults to `8`. |
 | `GEMINI_API_KEY` or `GEMINI` | no | Visual QA when configured. |
 | `WILD_BRIEF_RSS_URLS` | no | Comma-separated RSS URLs for `scripts/free_signal_harvester.py`. |
 | `WILD_BRIEF_GMAIL_ALERTS` | no | Set to `1` only when alert payload generation should be enabled. |
@@ -95,6 +100,11 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES` | `10` | publishing | Lookback before a slot used by the heartbeat to avoid duplicate publisher dispatches. | Raise if GitHub frequently delays publisher runs. |
 | `BROLL_SOURCE_MODE` | `pexels` | discovery | Use Pexels as the only active production visual source. | Set back to `pexels`. |
 | `BROLL_DOWNLOAD_MAX_BYTES` | `94371840` | production | Cap video-source downloads during rendering. | Lower during CI timeouts. |
+| `PEXELS_SEARCH_PER_PAGE` | `32` | discovery | Pexels video results requested per search call. | Lower if Pexels responses approach timeout. |
+| `PEXELS_DISCOVERY_PAGES` | `2` | discovery | Maximum Pexels result pages searched when queue inventory is short. | Set to 1 to search only the first page. |
+| `PEXELS_BACKFILL_QUERY_TAKE` | `6` | discovery | Topic query count used during low-inventory Pexels backfill. | Lower if provider quota becomes tight. |
+| `PEXELS_TOPIC_CALL_BUDGET` | `2` | discovery | Maximum Pexels search calls allowed per topic per refresh run. | Lower if provider quota becomes tight. |
+| `PEXELS_DEEP_SEARCH_GAP` | `8` | discovery | Pending-story gap that enables deeper Pexels page search. | Raise it to reserve deeper paging for emergencies. |
 | `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |

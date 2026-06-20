@@ -158,10 +158,17 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+          BROLL_SOURCE_MODE: "pexels"
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '2' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '48' }}
           QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '12' }}
           QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '6' }}
+          PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}
+          PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}
+          PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}
+          PEXELS_TOPIC_CALL_BUDGET: ${{ vars.PEXELS_TOPIC_CALL_BUDGET || '2' }}
+          PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
