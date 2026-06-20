@@ -20,7 +20,9 @@ on:
         default: "manual"
 
 concurrency:
-  group: main-write
+  # Publishing must not wait behind long queue refreshes. State commits are
+  # replayed on latest main with retry in the final save step.
+  group: youtube-publisher
   cancel-in-progress: false
 
 jobs:

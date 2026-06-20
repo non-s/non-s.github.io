@@ -52,6 +52,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "merge_jsonl_state.py" in youtube_workflow
     assert "reconcile_queue_uploads.py" in youtube_workflow
     assert "jsonl_merge_paths" in youtube_workflow
+    assert yaml.safe_load(youtube_workflow)["concurrency"]["group"] == "youtube-publisher"
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "_data/rejected_queue.jsonl" in youtube_workflow
     assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
@@ -80,6 +81,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
     assert "leaving generated diagnostics uncommitted" in fetch_workflow
     assert "QUEUE_TARGET_PENDING || '72'" in fetch_workflow
+    assert yaml.safe_load(fetch_workflow)["concurrency"]["group"] == "queue-refresh"
     assert "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}" in fetch_workflow
     assert "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}" in fetch_workflow
     assert "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}" in fetch_workflow

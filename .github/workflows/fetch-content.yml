@@ -8,9 +8,10 @@ on:
     - cron: "9,23 * * * *"
   workflow_dispatch:
 
-# Serialise queue updates with YouTube publishing commits.
+# Keep queue refreshes serialized with each other without blocking the
+# publisher; both workflows replay generated state on latest main before push.
 concurrency:
-  group: main-write
+  group: queue-refresh
   cancel-in-progress: false
 
 jobs:
