@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Lint pending and uploaded Shorts metadata for SEO/search hygiene."""
+
 from __future__ import annotations
 
 import argparse

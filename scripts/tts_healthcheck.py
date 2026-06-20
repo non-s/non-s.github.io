@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Preflight optional local Coqui-compatible TTS fallback."""
+
 from __future__ import annotations
 
 import argparse

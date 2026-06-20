@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Check that publish cadence docs, workflow and env flags stay in sync."""
+
 from __future__ import annotations
 
 import argparse

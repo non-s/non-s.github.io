@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Validate repo contracts that commonly drift in automation-heavy runs."""
+
 from __future__ import annotations
 
 import argparse

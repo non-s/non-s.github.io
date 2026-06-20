@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Merge free external/manual signals into cached topic candidate files."""
+
 from __future__ import annotations
 
 import argparse

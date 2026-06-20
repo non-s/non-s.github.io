@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Prepare local folders for optional YouTube Reporting API CSV backfills."""
+
 from __future__ import annotations
 
 import argparse

@@ -5,6 +5,7 @@ This script is safe to run on an empty checkout and safe to rerun. It reads the
 current dashboard-oriented analytics when present, writes normalized JSONL
 files, and creates a compact weekly summary for future jobs to consume.
 """
+
 from __future__ import annotations
 
 import argparse

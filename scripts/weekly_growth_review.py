@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate a weekly Wild Brief decision summary from normalized analytics."""
+
 from __future__ import annotations
 
 import argparse

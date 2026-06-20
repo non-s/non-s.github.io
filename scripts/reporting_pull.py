@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Normalize operator-dropped YouTube Reporting API CSV files."""
+
 from __future__ import annotations
 
 import argparse

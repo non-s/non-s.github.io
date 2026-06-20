@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Normalize current analytics into durable JSONL growth rows."""
+
 from __future__ import annotations
 
 import argparse

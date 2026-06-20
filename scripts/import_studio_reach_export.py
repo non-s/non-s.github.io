@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Import optional YouTube Studio Shorts Reach CSV exports."""
+
 from __future__ import annotations
 
 import argparse

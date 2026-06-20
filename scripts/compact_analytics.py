@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Compact flat analytics JSONL files into monthly partitions."""
+
 from __future__ import annotations
 
 import argparse

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Annotate the queue with zero-cost topic freshness metadata."""
+
 from __future__ import annotations
 
 import argparse

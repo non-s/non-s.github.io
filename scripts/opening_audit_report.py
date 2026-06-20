@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Aggregate rendered opening-audit metadata for the dashboard."""
+
 from __future__ import annotations
 
 import argparse

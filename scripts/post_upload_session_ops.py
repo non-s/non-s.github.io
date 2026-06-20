@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate operator-assist recommendations for post-upload session growth."""
+
 from __future__ import annotations
 
 import argparse

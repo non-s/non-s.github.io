@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write an API quota estimate before expensive workflows."""
+
 from __future__ import annotations
 
 import argparse

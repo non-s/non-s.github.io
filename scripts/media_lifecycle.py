@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Clean generated media and audit tracked media policy."""
+
 from __future__ import annotations
 
 import argparse
