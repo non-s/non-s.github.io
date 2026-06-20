@@ -3,7 +3,9 @@ from scripts.backfill_done_markers import backfill_marker
 from scripts.dry_run_publish import build_dry_run
 from utils import rejected_queue as rejected_queue_module
 from utils.channel_objective import cognitive_mechanism_cluster, objective_gate_for_story
+from utils.editorial_guard import editorial_issues
 from utils.local_rewriter import rescue_story
+from utils.packaging import package_story
 from utils.post24_review import build_review, classify_video
 from utils.publish_schedule import recommend_schedule
 from utils.publish_score import score_story
@@ -353,6 +355,54 @@ def test_rescue_story_repairs_non_animal_domain_grammar():
     assert "one leaves" not in forest["script"].lower()
     assert "forests use it" not in forest["script"].lower()
     assert "cooling machine" in forest["script"].lower()
+
+
+def test_rescue_story_uses_contextual_nature_duplicate_titles():
+    geology = _strong_story(
+        id="geology-slot-canyon",
+        title="Rock layers store ancient environments in stripes",
+        seo_title="Rock layers store ancient environments in stripes",
+        hook="Rock layers are time stamps made of stone.",
+        script=(
+            "Rock layers are time stamps made of stone. Watch the stripe pattern, "
+            "because each layer can mark a different setting: river mud, ocean floor, "
+            "windblown sand, or volcanic ash. Stack enough layers and the cliff becomes "
+            "a timeline. Which rock clue should we read next?"
+        ),
+        thumbnail_text="ROCK TIME",
+        category="geology",
+        source_title="Exploring a majestic slot canyon in Utah deserts",
+        source_url="https://www.pexels.com/video/exploring-a-majestic-slot-canyon-in-utah-deserts-37526463/",
+    )
+    weather = _strong_story(
+        id="cloud-timelapse",
+        title="Storm clouds reveal a storm's heat engine",
+        seo_title="Storm clouds reveal a storm's heat engine",
+        hook="Storm clouds show where a storm is feeding.",
+        script=(
+            "Storm clouds show where a storm is feeding. Watch the spiral shape, "
+            "because warm ocean air rises near the center and releases heat as clouds build. "
+            "Rotation organizes that energy into bands. From above, the storm is not random; "
+            "it is an engine. Which satellite clue next?"
+        ),
+        thumbnail_text="STORM ENGINE",
+        category="earth_from_space",
+        source_title="Dynamic timelapse of changing cloudy sky",
+        source_url="https://www.pexels.com/video/dynamic-timelapse-of-changing-cloudy-sky-32571811/",
+    )
+
+    geology_rescued, geology_applied = rescue_story(geology, ["duplicate_title"])
+    weather_rescued, weather_applied = rescue_story(weather, ["duplicate_title"])
+
+    assert geology_applied is True
+    assert geology_rescued["title"] == "Rock layers reveal flood paths carved into stone"
+    assert "slot canyon" not in geology_rescued["title"].lower()
+    assert not editorial_issues(geology_rescued)
+    assert package_story(geology_rescued)["title"] == geology_rescued["title"]
+    assert weather_applied is True
+    assert weather_rescued["title"] == "Storm clouds show air layers changing over time"
+    assert not editorial_issues(weather_rescued)
+    assert package_story(weather_rescued)["title"] == weather_rescued["title"]
 
 
 def test_rejected_queue_records_and_replaces_same_story_stage(tmp_path):

@@ -169,6 +169,10 @@ NATURE_ALIASES = {
     "stream": "rivers",
     "waterfall": "rivers",
     "delta": "rivers",
+    "bank": "rivers",
+    "banks": "rivers",
+    "bend": "rivers",
+    "bends": "rivers",
     "mountain": "mountains",
     "mountains": "mountains",
     "glacier": "mountains",
@@ -181,6 +185,10 @@ NATURE_ALIASES = {
     "storm": "weather",
     "storms": "weather",
     "weather": "weather",
+    "sky": "weather",
+    "skies": "weather",
+    "cloudy": "weather",
+    "overcast": "weather",
     "cloud": "weather",
     "clouds": "weather",
     "lightning": "weather",
@@ -198,6 +206,12 @@ NATURE_ALIASES = {
     "crystals": "geology",
     "cave": "geology",
     "caves": "geology",
+    "canyon": "geology",
+    "canyons": "geology",
+    "badlands": "geology",
+    "geyser": "geology",
+    "geothermal": "geology",
+    "terrain": "geology",
     "ecosystem": "ecosystems",
     "ecosystems": "ecosystems",
     "habitat": "ecosystems",
@@ -1130,6 +1144,51 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             story_format="plant_mechanism",
             tags=("plants", "venus flytrap", "botany"),
         ),
+        _angle(
+            key="plant_leaf_sugar",
+            keywords=("leaf", "leaves", "sunlit", "sunlight", "green", "foliage"),
+            title="{subject} turn sunlight into stored sugar",
+            hook="{subject} turn light into food.",
+            script_body=(
+                "Watch the leaf surface, because chlorophyll captures light energy and uses it to "
+                "build sugar from air and water. The green color is a tiny factory at work. Which "
+                "plant clue should we decode next?"
+            ),
+            thumbnail="LIGHT TO SUGAR",
+            cue="leaf surface",
+            story_format="plant_mechanism",
+            tags=("plants", "photosynthesis", "botany"),
+        ),
+        _angle(
+            key="plant_desert_water",
+            keywords=("desert", "cactus", "dry", "windy", "sand", "arid"),
+            title="{subject} save water with slow desert tricks",
+            hook="{subject} survive by slowing water loss.",
+            script_body=(
+                "Watch the thick leaves or waxy surface, because many desert plants store water and "
+                "limit evaporation. The shape is not decoration; it is a survival budget. Which dry "
+                "land adaptation should come next?"
+            ),
+            thumbnail="WATER BUDGET",
+            cue="waxy surface",
+            story_format="plant_mechanism",
+            tags=("plants", "desert plants", "botany"),
+        ),
+        _angle(
+            key="plant_greenhouse_growth",
+            keywords=("greenhouse", "glass", "panning", "seedling", "houseplant", "grow"),
+            title="{subject} speed growth under protected glass",
+            hook="{subject} grow faster when warmth stays trapped.",
+            script_body=(
+                "Watch the protected leaves, because greenhouse glass keeps heat and humidity more "
+                "stable around the plant. That calmer microclimate lets growth spend less energy on "
+                "stress. Which growing trick should we test next?"
+            ),
+            thumbnail="GREENHOUSE BOOST",
+            cue="protected leaves",
+            story_format="plant_mechanism",
+            tags=("plants", "greenhouse", "botany"),
+        ),
     ),
     "trees": (
         _angle(
@@ -1164,6 +1223,36 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             story_format="earth_engine",
             tags=("forests", "canopy", "ecosystems"),
         ),
+        _angle(
+            key="forest_fog_hold",
+            keywords=("fog", "foggy", "mist", "misty", "trail", "bridge"),
+            title="{subject} hold cool fog between the trees",
+            hook="{subject} can trap cool fog near the ground.",
+            script_body=(
+                "Watch the low mist, because shade, leaves, and damp soil slow how fast the air "
+                "warms back up. That is why a forest path can feel cooler than open ground. Which "
+                "forest layer should we decode next?"
+            ),
+            thumbnail="FOG LAYER",
+            cue="low mist",
+            story_format="earth_engine",
+            tags=("forests", "fog", "ecosystems"),
+        ),
+        _angle(
+            key="forest_trail_edges",
+            keywords=("trail", "path", "hike", "spring", "rustic", "bridge"),
+            title="{subject} reveal edge climates along trails",
+            hook="{subject} change climate at the trail edge.",
+            script_body=(
+                "Watch the brighter opening beside the trees, because edges get more sun and wind "
+                "than the shaded interior. A few steps can shift moisture, heat, and plant life. "
+                "Which edge clue should we compare next?"
+            ),
+            thumbnail="EDGE CLIMATE",
+            cue="trail edge",
+            story_format="earth_engine",
+            tags=("forests", "microclimate", "ecosystems"),
+        ),
     ),
     "fungi": (
         _angle(
@@ -1181,6 +1270,36 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             story_format="hidden_network",
             tags=("mushrooms", "mycelium", "fungi"),
         ),
+        _angle(
+            key="fungi_spore_release",
+            keywords=("cap", "gills", "pumpkin", "mushroom", "mushrooms", "spore", "spores"),
+            title="{subject} release spores from hidden gills",
+            hook="{subject} spread by releasing tiny spores.",
+            script_body=(
+                "Watch under the cap, because many mushrooms carry spore-producing surfaces there. "
+                "When conditions are right, those tiny particles move out to start the next fungal "
+                "network. Which hidden structure should we look under next?"
+            ),
+            thumbnail="SPORE GILLS",
+            cue="mushroom gills",
+            story_format="hidden_network",
+            tags=("mushrooms", "spores", "fungi"),
+        ),
+        _angle(
+            key="fungi_decay_engine",
+            keywords=("log", "tree", "trunk", "decay", "forest", "oyster"),
+            title="{subject} turn fallen wood back into soil",
+            hook="{subject} break down wood into usable nutrients.",
+            script_body=(
+                "Watch where the mushrooms grow, because fungi release enzymes that take apart dead "
+                "wood. That slow cleanup returns nutrients to the forest instead of leaving a locked "
+                "pile of carbon. Which decomposer should we decode next?"
+            ),
+            thumbnail="DECAY ENGINE",
+            cue="fallen wood",
+            story_format="hidden_network",
+            tags=("mushrooms", "decomposition", "fungi"),
+        ),
     ),
     "rivers": (
         _angle(
@@ -1197,6 +1316,36 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             cue="river bend",
             story_format="earth_engine",
             tags=("rivers", "erosion", "earth science"),
+        ),
+        _angle(
+            key="river_stone_transport",
+            keywords=("rocky", "rocks", "stone", "stream", "mountain", "water"),
+            title="{subject} carry stone grains while they flow",
+            hook="{subject} move tiny pieces of stone downstream.",
+            script_body=(
+                "Watch the water near the rocks, because moving current can lift sand, roll pebbles, "
+                "and grind larger stones over time. The stream is carrying the landscape in small "
+                "pieces. Which water clue should we follow next?"
+            ),
+            thumbnail="STONE CURRENT",
+            cue="rocky current",
+            story_format="earth_engine",
+            tags=("rivers", "sediment", "earth science"),
+        ),
+        _angle(
+            key="river_bank_sorting",
+            keywords=("bank", "banks", "bend", "bends", "meadow", "peaceful", "flowing"),
+            title="{subject} sort mud and sand along each bank",
+            hook="{subject} sort sediment while they bend.",
+            script_body=(
+                "Watch the edge of the flow, because slower water drops heavier material while faster "
+                "water keeps cutting. That sorting is how a quiet bend slowly redraws the map. Which "
+                "river edge should we compare next?"
+            ),
+            thumbnail="BANK SORTING",
+            cue="river bank",
+            story_format="earth_engine",
+            tags=("rivers", "sediment", "earth science"),
         ),
     ),
     "mountains": (
@@ -1249,6 +1398,36 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             story_format="earth_engine",
             tags=("lightning", "weather", "storms"),
         ),
+        _angle(
+            key="cloud_layer_motion",
+            keywords=("cloud", "clouds", "cloudy", "timelapse", "sky", "changing", "moving"),
+            title="{subject} reveal air layers moving at different speeds",
+            hook="{subject} show stacked air moving at different speeds.",
+            script_body=(
+                "Watch the cloud layers, because wind can change direction and speed with height. "
+                "That makes one part of the sky slide past another, turning invisible air motion into "
+                "a visible map. Which sky layer should we read next?"
+            ),
+            thumbnail="AIR LAYERS",
+            cue="cloud layers",
+            story_format="earth_engine",
+            tags=("clouds", "weather", "earth science"),
+        ),
+        _angle(
+            key="overcast_light_filter",
+            keywords=("overcast", "grey", "gray", "cloudscape", "cloudy", "sky"),
+            title="{subject} filter sunlight into a softer glow",
+            hook="{subject} spread sunlight before it reaches the ground.",
+            script_body=(
+                "Watch the flat light, because thick cloud layers scatter direct sun in many directions. "
+                "That makes shadows softer and shows how weather can change a whole scene before rain "
+                "arrives. Which light clue should we compare next?"
+            ),
+            thumbnail="SOFT LIGHT",
+            cue="flat light",
+            story_format="earth_engine",
+            tags=("clouds", "weather", "light"),
+        ),
     ),
     "rare_phenomena": (
         _angle(
@@ -1283,6 +1462,81 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             story_format="earth_engine",
             tags=("geology", "rock layers", "earth science"),
         ),
+        _angle(
+            key="slot_canyon_flood_paths",
+            keywords=("slot", "canyon", "utah", "desert", "narrow", "sandstone"),
+            title="{subject} reveal flood paths carved into stone",
+            hook="{subject} can show where fast water carved the wall.",
+            script_body=(
+                "Watch the narrow curves, because floodwater and blowing sand wear weak rock over "
+                "long stretches of time. The smooth wall is erosion written into stone. Which canyon "
+                "clue should we read next?"
+            ),
+            thumbnail="CANYON PATHS",
+            cue="canyon wall",
+            story_format="earth_engine",
+            tags=("geology", "canyons", "erosion"),
+        ),
+        _angle(
+            key="cave_inside_layers",
+            keywords=("cave", "caves", "tunnel", "tunnels", "underground", "pillar", "pillars"),
+            title="{subject} show their timeline inside caves",
+            hook="{subject} keep a hidden timeline inside caves.",
+            script_body=(
+                "Watch the cave wall, because water can dissolve, deposit, and expose minerals over "
+                "long periods. The chamber becomes a cross-section of slow chemistry and stone. Which "
+                "underground clue should we inspect next?"
+            ),
+            thumbnail="CAVE TIMELINE",
+            cue="cave wall",
+            story_format="earth_engine",
+            tags=("geology", "caves", "earth science"),
+        ),
+        _angle(
+            key="geyser_heat_path",
+            keywords=("geyser", "geothermal", "steam", "steamy", "hot", "thermal"),
+            title="{subject} reveal heat moving under the surface",
+            hook="{subject} can expose heat moving below ground.",
+            script_body=(
+                "Watch the steam, because hot water rises through cracks after being heated underground. "
+                "Pressure and minerals turn hidden energy into a visible signal at the surface. Which "
+                "geothermal clue should come next?"
+            ),
+            thumbnail="HEAT PATH",
+            cue="steam vent",
+            story_format="earth_engine",
+            tags=("geology", "geothermal", "earth science"),
+        ),
+        _angle(
+            key="badlands_fast_erosion",
+            keywords=("badlands", "rolling", "hills", "terrain", "eroded", "desert"),
+            title="{subject} expose erosion in bare open hills",
+            hook="{subject} show erosion without much cover.",
+            script_body=(
+                "Watch the bare ridges, because soft rock and sparse plants let rain and wind carve "
+                "the surface quickly. Each groove is a small drainage path made visible. Which landform "
+                "should we compare next?"
+            ),
+            thumbnail="BARE EROSION",
+            cue="bare ridges",
+            story_format="earth_engine",
+            tags=("geology", "badlands", "erosion"),
+        ),
+        _angle(
+            key="mountain_uplift_exposure",
+            keywords=("himalayan", "himalaya", "nepal", "mountain", "mountains", "peak", "valley"),
+            title="{subject} rise into view when mountains lift",
+            hook="{subject} can be lifted high enough to read.",
+            script_body=(
+                "Watch the exposed slopes, because mountain building can push old rock upward while "
+                "erosion strips cover away. A peak can reveal material that formed far below. Which "
+                "uplift clue should we decode next?"
+            ),
+            thumbnail="UPLIFT CLUE",
+            cue="exposed slopes",
+            story_format="earth_engine",
+            tags=("geology", "mountains", "earth science"),
+        ),
     ),
     "ecosystems": (
         _angle(
@@ -1316,6 +1570,51 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
             cue="cloud spiral",
             story_format="earth_engine",
             tags=("earth", "storm clouds", "satellite"),
+        ),
+        _angle(
+            key="cloud_timelapse_air_layers",
+            keywords=("timelapse", "cloudy", "changing", "moving", "clouds", "sky"),
+            title="{subject} show air layers changing over time",
+            hook="{subject} show air layers changing over time.",
+            script_body=(
+                "Watch the cloud deck, because winds at different heights can push each layer in a "
+                "different direction. A timelapse turns that invisible motion into a map. Which sky "
+                "motion should we read next?"
+            ),
+            thumbnail="AIR LAYERS",
+            cue="cloud deck",
+            story_format="earth_engine",
+            tags=("clouds", "weather", "earth science"),
+        ),
+        _angle(
+            key="airplane_cloud_tops",
+            keywords=("airplane", "plane", "window", "above", "cloud", "clouds", "horizon"),
+            title="{subject} reveal weather from above the clouds",
+            hook="{subject} look different when seen from above.",
+            script_body=(
+                "Watch the cloud tops, because the upper shape shows where air is rising, flattening, "
+                "or spreading out. From above, weather becomes a texture map instead of a ceiling. "
+                "Which above-cloud clue should we compare next?"
+            ),
+            thumbnail="CLOUD TOPS",
+            cue="cloud tops",
+            story_format="earth_engine",
+            tags=("clouds", "weather", "earth science"),
+        ),
+        _angle(
+            key="ocean_cloud_bands",
+            keywords=("ocean", "horizon", "aerial", "clouds", "water", "coast"),
+            title="{subject} trace wind bands over the ocean",
+            hook="{subject} can trace wind moving over water.",
+            script_body=(
+                "Watch the long cloud bands, because wind, moisture, and temperature shape where air "
+                "rises over the ocean. The pattern is not random scenery; it is atmosphere in motion. "
+                "Which ocean-sky clue should come next?"
+            ),
+            thumbnail="WIND BANDS",
+            cue="cloud bands",
+            story_format="earth_engine",
+            tags=("clouds", "ocean", "earth science"),
         ),
     ),
     "conservation": (

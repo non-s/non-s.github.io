@@ -814,7 +814,12 @@ def package_story(story: dict) -> dict:
         or str(out.get("source") or "").strip().lower() == "youtube comment idea"
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
-        or local_rewrite_method in {"curiosity_angle_rescue", "curiosity_angle_duplicate_title_rescue"}
+        or local_rewrite_method
+        in {
+            "contextual_duplicate_title_rescue",
+            "curiosity_angle_rescue",
+            "curiosity_angle_duplicate_title_rescue",
+        }
     )
     angle_package = build_curiosity_package(out, subject=extract_subject(out))
     angle_packaging_applied = False

@@ -161,24 +161,55 @@ FALLBACK_CUES = {
     "wolves": "tail position",
 }
 NATURE_SUBJECTS = {
+    "aurora",
+    "auroras",
+    "badlands",
+    "canyon",
+    "canyons",
+    "chemistry",
+    "cloud",
+    "clouds",
+    "crystal",
+    "crystals",
+    "discoveries",
     "earth",
     "earth systems",
     "earth from space",
     "earth_from_space",
     "ecosystem",
     "ecosystems",
+    "fossil",
+    "fossils",
     "forest",
     "forests",
     "fungi",
     "fungus",
+    "geothermal",
     "geology",
     "geologies",
+    "lightning",
+    "magnet",
+    "magnets",
+    "mountain",
+    "mountains",
     "mushroom",
     "mushrooms",
+    "physics",
     "plant",
     "plants",
+    "rare phenomena",
+    "rare_phenomena",
+    "river",
+    "rivers",
+    "rock",
+    "rock layers",
+    "rocks",
+    "storm",
+    "storms",
     "tree",
     "trees",
+    "volcano",
+    "volcanoes",
     "weather",
     "weather patterns",
 }
@@ -609,6 +640,244 @@ def _title_key(title: object) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _context_has(context: str, *terms: str) -> bool:
+    return any(re.search(r"\b" + re.escape(term.lower()) + r"\b", context) for term in terms)
+
+
+def _duplicate_context_variant(story: dict, animal: str, visual_text: str) -> dict:
+    context = " ".join(
+        str(value or "")
+        for value in (
+            visual_text,
+            story.get("source_title"),
+            story.get("raw_title"),
+            story.get("source_url"),
+            story.get("url"),
+            story.get("category"),
+            animal,
+        )
+    ).lower()
+    category = str(story.get("category") or "").strip().lower()
+
+    def variant(
+        *,
+        title: str,
+        hook: str,
+        script: str,
+        thumbnail: str,
+        cue: str,
+        subject: str,
+        story_format: str = "earth_engine",
+    ) -> dict:
+        return {
+            "seo_title": title[:60],
+            "title": title[:60],
+            "hook": hook,
+            "script": script,
+            "lead": script[:400],
+            "thumbnail_text": thumbnail[:28],
+            "story_format": story_format,
+            "yt_tags": _clean_tags(story.get("yt_tags"), subject.lower(), category),
+        }
+
+    if category == "geology" or _context_has(context, "geology", "rock", "rocks", "canyon", "cave", "geyser"):
+        if _context_has(context, "slot", "canyon", "utah", "sandstone"):
+            title = "Rock layers reveal flood paths carved into stone"
+            hook = "Rock layers can show where fast water carved the wall."
+            script = (
+                f"{hook} Watch the narrow curves, because floodwater and blowing sand wear weak rock "
+                "over long stretches of time. The smooth wall is erosion written into stone. Which canyon "
+                "clue should we read next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="CANYON PATHS",
+                cue="canyon wall",
+                subject="rock layers",
+            )
+        if _context_has(context, "cave", "caves", "tunnel", "tunnels", "underground", "pillar", "pillars"):
+            title = "Rock layers show their timeline inside caves"
+            hook = "Rock layers keep a hidden timeline inside caves."
+            script = (
+                f"{hook} Watch the cave wall, because water can dissolve, deposit, and expose minerals "
+                "over long periods. The chamber becomes a cross-section of slow chemistry and stone. "
+                "Which underground clue should we inspect next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="CAVE TIMELINE", cue="cave wall", subject="rock layers"
+            )
+        if _context_has(context, "geyser", "geothermal", "steam", "steamy", "thermal"):
+            title = "Rock layers reveal heat moving under the surface"
+            hook = "Rock layers can expose heat moving below ground."
+            script = (
+                f"{hook} Watch the steam, because hot water rises through cracks after being heated "
+                "underground. Pressure and minerals turn hidden energy into a visible signal at the surface. "
+                "Which geothermal clue should come next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="HEAT PATH", cue="steam vent", subject="rock layers"
+            )
+        if _context_has(context, "badlands", "rolling", "eroded"):
+            title = "Rock layers expose erosion in bare open hills"
+            hook = "Rock layers show erosion without much cover."
+            script = (
+                f"{hook} Watch the bare ridges, because soft rock and sparse plants let rain and wind "
+                "carve the surface quickly. Each groove is a small drainage path made visible. Which landform "
+                "should we compare next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="BARE EROSION",
+                cue="bare ridges",
+                subject="rock layers",
+            )
+        if _context_has(context, "himalayan", "himalaya", "nepal", "mountain", "mountains", "peak", "valley"):
+            title = "Rock layers rise into view when mountains lift"
+            hook = "Rock layers can be lifted high enough to read."
+            script = (
+                f"{hook} Watch the exposed slopes, because mountain building can push old rock upward "
+                "while erosion strips cover away. A peak can reveal material that formed far below. Which "
+                "uplift clue should we decode next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="UPLIFT CLUE",
+                cue="exposed slopes",
+                subject="rock layers",
+            )
+
+    if category in {"earth_from_space", "weather"} or _context_has(context, "cloud", "clouds", "cloudy", "sky"):
+        if _context_has(context, "timelapse", "cloudy", "changing", "moving"):
+            title = "Storm clouds show air layers changing over time"
+            hook = "Storm clouds show air layers changing over time."
+            script = (
+                f"{hook} Watch the cloud deck, because winds at different heights can push each layer "
+                "in a different direction. A timelapse turns that invisible motion into a map. Which sky "
+                "motion should we read next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="AIR LAYERS", cue="cloud deck", subject="storm clouds"
+            )
+        if _context_has(context, "airplane", "plane", "window", "above", "horizon"):
+            title = "Storm clouds reveal weather from above the clouds"
+            hook = "Storm clouds look different when seen from above."
+            script = (
+                f"{hook} Watch the cloud tops, because the upper shape shows where air is rising, "
+                "flattening, or spreading out. From above, weather becomes a texture map instead of a "
+                "ceiling. Which above-cloud clue should we compare next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="CLOUD TOPS", cue="cloud tops", subject="storm clouds"
+            )
+        if _context_has(context, "ocean", "water", "coast"):
+            title = "Storm clouds trace wind bands over the ocean"
+            hook = "Storm clouds can trace wind moving over water."
+            script = (
+                f"{hook} Watch the long cloud bands, because wind, moisture, and temperature shape where "
+                "air rises over the ocean. The pattern is not random scenery; it is atmosphere in motion. "
+                "Which ocean-sky clue should come next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="WIND BANDS", cue="cloud bands", subject="storm clouds"
+            )
+        if _context_has(context, "overcast", "grey", "gray", "cloudscape"):
+            title = "Storm clouds filter sunlight into a softer glow"
+            hook = "Storm clouds spread sunlight before it reaches the ground."
+            script = (
+                f"{hook} Watch the flat light, because thick cloud layers scatter direct sun in many "
+                "directions. That makes shadows softer and shows how weather can change a scene before "
+                "rain arrives. Which light clue should we compare next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="SOFT LIGHT", cue="flat light", subject="storm clouds"
+            )
+
+    if category == "forests" or _context_has(context, "forest", "forests", "fog", "trail"):
+        if _context_has(context, "fog", "foggy", "mist", "misty"):
+            title = "Forests hold cool fog between the trees"
+            hook = "Forests can trap cool fog near the ground."
+            script = (
+                f"{hook} Watch the low mist, because shade, leaves, and damp soil slow how fast the "
+                "air warms back up. That is why a forest path can feel cooler than open ground. Which "
+                "forest layer should we decode next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="FOG LAYER", cue="low mist", subject="forests"
+            )
+        if _context_has(context, "trail", "path", "bridge", "hike"):
+            title = "Forests reveal edge climates along trails"
+            hook = "Forests change climate at the trail edge."
+            script = (
+                f"{hook} Watch the brighter opening beside the trees, because edges get more sun and "
+                "wind than the shaded interior. A few steps can shift moisture, heat, and plant life. "
+                "Which edge clue should we compare next?"
+            )
+            return variant(
+                title=title, hook=hook, script=script, thumbnail="EDGE CLIMATE", cue="trail edge", subject="forests"
+            )
+
+    if category == "plants" or _context_has(context, "plant", "plants", "leaf", "leaves", "greenhouse"):
+        if _context_has(context, "greenhouse", "glass"):
+            title = "Plants speed growth under protected glass"
+            hook = "Plants grow faster when warmth stays trapped."
+            script = (
+                f"{hook} Watch the protected leaves, because greenhouse glass keeps heat and humidity "
+                "more stable around the plant. That calmer microclimate lets growth spend less energy on "
+                "stress. Which growing trick should we test next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="GREENHOUSE BOOST",
+                cue="protected leaves",
+                subject="plants",
+                story_format="plant_mechanism",
+            )
+        if _context_has(context, "desert", "cactus", "dry", "windy", "sand"):
+            title = "Plants save water with slow desert tricks"
+            hook = "Plants survive by slowing water loss."
+            script = (
+                f"{hook} Watch the thick leaves or waxy surface, because many desert plants store water "
+                "and limit evaporation. The shape is not decoration; it is a survival budget. Which dry "
+                "land adaptation should come next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="WATER BUDGET",
+                cue="waxy surface",
+                subject="plants",
+                story_format="plant_mechanism",
+            )
+        if _context_has(context, "sunlit", "sunlight", "foliage", "green"):
+            title = "Plants turn sunlight into stored sugar"
+            hook = "Plants turn light into food."
+            script = (
+                f"{hook} Watch the leaf surface, because chlorophyll captures light energy and uses it "
+                "to build sugar from air and water. The green color is a tiny factory at work. Which "
+                "plant clue should we decode next?"
+            )
+            return variant(
+                title=title,
+                hook=hook,
+                script=script,
+                thumbnail="LIGHT TO SUGAR",
+                cue="leaf surface",
+                subject="plants",
+                story_format="plant_mechanism",
+            )
+
+    return {}
+
+
 def _cue_reference(cue: str) -> str:
     cue = str(cue or "cue").lower().strip()
     if cue.startswith(("the ", "their ", "its ")):
@@ -752,6 +1021,14 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
         candidate_title_key = _title_key(candidate.get("seo_title") or candidate.get("title") or "")
         still_duplicate_title = "duplicate_title" in reasons and candidate_title_key == original_title_key
         if still_duplicate_title:
+            contextual = _duplicate_context_variant(out, str(angle_package.get("subject") or animal), visual_text)
+            if contextual and _title_key(contextual.get("seo_title") or contextual.get("title")) != original_title_key:
+                candidate.update(contextual)
+                local_rewrite = dict(candidate.get("local_rewrite") or {})
+                local_rewrite["method"] = "contextual_duplicate_title_rescue"
+                candidate["local_rewrite"] = local_rewrite
+                still_duplicate_title = False
+        if still_duplicate_title:
             alternate_title = _title_from_hook(candidate.get("hook") or candidate.get("script") or "")
             if alternate_title and _title_key(alternate_title) != original_title_key:
                 candidate["seo_title"] = alternate_title
@@ -762,6 +1039,18 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
                 still_duplicate_title = False
         if not still_duplicate_title and not editorial_issues(candidate):
             return candidate, True
+    if "duplicate_title" in reasons:
+        contextual = _duplicate_context_variant(out, animal, visual_text)
+        if contextual:
+            candidate = dict(out)
+            candidate.update(contextual)
+            candidate["local_rewrite"] = {
+                "applied": True,
+                "reasons": reasons,
+                "method": "contextual_duplicate_title_rescue",
+            }
+            if not editorial_issues(candidate):
+                return candidate, True
     if _is_nature_subject(animal):
         return story, False
     fmt = classify_format(text)
