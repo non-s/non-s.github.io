@@ -17,6 +17,7 @@ from utils.curiosity_angles import build_curiosity_package
 from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment
 from utils.agency_gate import filter_candidates
 from utils.editorial_guard import editorial_issues
+from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.publish_priority import autonomy_priority, publish_priority_key, queue_score
 from utils.queue_pruner import prune_queue
 
@@ -278,8 +279,12 @@ def main() -> int:
     rows = []
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)
+    paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
     candidates, _held = filter_candidates([story for story in data.get("stories") or [] if not story.get("consumed")])
     for story in candidates:
+        category = str(story.get("category") or "").strip().lower()
+        if category and category in paused:
+            continue
         queue_prune = story.get("queue_prune") or {}
         queue_state = queue_prune.get("state")
         if queue_state and queue_state != "publish_ready":

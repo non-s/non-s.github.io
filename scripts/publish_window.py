@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.upload_intent import duplicate_slot_uploaded  # noqa: E402
+from utils.growth_strategy import ops_guardian_enforced, paused_categories  # noqa: E402
 from utils.publish_priority import publish_priority_key  # noqa: E402
 from utils.publish_schedule import (  # noqa: E402
     DECISIONS_FILE,
@@ -50,8 +51,9 @@ def _parse_now(value: str | None) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
-def _eligible_stories(queue: dict) -> list[dict]:
+def _eligible_stories(queue: dict, env: dict | None = None) -> list[dict]:
     stories = queue.get("stories") if isinstance(queue, dict) else []
+    paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     has_prune_state = any(
         isinstance(story, dict) and not story.get("consumed") and bool(story.get("queue_prune"))
         for story in stories or []
@@ -61,6 +63,9 @@ def _eligible_stories(queue: dict) -> list[dict]:
         if not isinstance(story, dict) or story.get("consumed"):
             continue
         if not (story.get("title") or story.get("seo_title")):
+            continue
+        category = str(story.get("category") or "").strip().lower()
+        if category and category in paused:
             continue
         queue_prune = story.get("queue_prune") or {}
         if has_prune_state and queue_prune.get("state") != "publish_ready":
@@ -174,7 +179,7 @@ def evaluate_publish_window(
             decision = "skip_slot_already_uploaded"
             reasons.append("slot_already_uploaded")
     if decision == "publish":
-        stories = _eligible_stories(_read_json(queue_file, {}))
+        stories = _eligible_stories(_read_json(queue_file, {}), env)
         if not stories:
             decision = "skip_no_eligible_story"
             reasons.append("no_eligible_story")
@@ -192,7 +197,7 @@ def evaluate_publish_window(
                 reasons.extend(quality_reasons)
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
-        stories = _eligible_stories(_read_json(queue_file, {}))
+        stories = _eligible_stories(_read_json(queue_file, {}), env)
         if stories:
             top_story, top_score = _best_candidate(stories)
 

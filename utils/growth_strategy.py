@@ -9,12 +9,14 @@ already proved they can earn views, retention, or subscribers.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from utils.story_intelligence import classify_format
 
 ANALYTICS_FILE = Path("_data/analytics/latest.json")
 OPS_FILE = Path("_data/ops_guardian.json")
+TRUE_VALUES = {"1", "true", "yes", "on"}
 
 
 def load_strategy(path: Path | None = None) -> dict:
@@ -63,6 +65,17 @@ def paused_categories(path: Path | None = None) -> dict[str, dict]:
         if category:
             out[category] = item
     return out
+
+
+def ops_guardian_enforced(env: dict | None = None) -> bool:
+    """Return whether paused-topic enforcement is active for this process."""
+    current_env = env or os.environ
+    return str(current_env.get("OPS_GUARDIAN_ENFORCE", "0")).strip().lower() in TRUE_VALUES
+
+
+def is_paused_category(category: str, path: Path | None = None) -> bool:
+    """Return whether a category is currently paused by the ops guardian."""
+    return str(category or "").strip().lower() in paused_categories(path)
 
 
 def score_story(story: dict, strategy: dict | None = None) -> float:

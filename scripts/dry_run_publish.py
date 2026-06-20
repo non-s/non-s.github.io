@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -13,17 +14,22 @@ if str(ROOT) not in sys.path:
 
 from utils.queue_pruner import prune_queue
 from utils.publish_priority import autonomy_priority, publish_priority_key
+from utils.growth_strategy import ops_guardian_enforced, paused_categories
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
 
 
-def build_dry_run(data: dict) -> dict:
+def build_dry_run(data: dict, *, env: dict | None = None) -> dict:
     items = []
     objective_reasons = Counter()
     pruned, rejected, prune_summary = prune_queue(data)
+    paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
+            continue
+        category = str(story.get("category") or "").strip().lower()
+        if category and category in paused:
             continue
         rights = story.get("rights_audit") or {}
         if not rights:
@@ -103,7 +109,7 @@ def build_dry_run(data: dict) -> dict:
 
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
-    payload = build_dry_run(data)
+    payload = build_dry_run(data, env=os.environ)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"dry_run_publish: {payload['eligible_count']} eligible candidates")

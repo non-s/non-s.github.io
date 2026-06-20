@@ -4,6 +4,7 @@ from pathlib import Path
 
 from utils.channel_objective import load_channel_objective
 from utils.editorial_guard import editorial_issues
+from utils.growth_strategy import paused_categories
 from utils.queue_pruner import production_quality_issues
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -14,9 +15,11 @@ def _json(path: str) -> dict:
 
 
 def _publish_ready(story: dict) -> bool:
+    paused = paused_categories(ROOT / "_data" / "ops_guardian.json")
+    category = str(story.get("category") or "").strip().lower()
     return (story.get("queue_prune") or {}).get("state") == "publish_ready" and (story.get("editorial") or {}).get(
         "approved"
-    ) is True
+    ) is True and category not in paused
 
 
 def test_publish_ready_queue_matches_operational_reports():
@@ -29,7 +32,10 @@ def test_publish_ready_queue_matches_operational_reports():
     agency_gate = _json("_data/agency_gate.json")
 
     assert queue_audit.get("pending") == len(pending)
-    assert not (agency_gate.get("held") or [])
+    assert int(agency_gate.get("approved") or 0) + int(agency_gate.get("held") or 0) == len(pending)
+    ready_ids = {str(story.get("id") or "") for story in ready}
+    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or [])}
+    assert not (ready_ids & held_ids)
     assert dry_run.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
     assert next_shorts.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
     assert dry_run.get("eligible_count") == len(ready)

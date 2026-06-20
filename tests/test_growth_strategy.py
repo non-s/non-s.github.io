@@ -1,6 +1,11 @@
-from pathlib import Path
-
-from utils.growth_strategy import category_weights, paused_categories, rank_for_growth, score_story
+from utils.growth_strategy import (
+    category_weights,
+    is_paused_category,
+    ops_guardian_enforced,
+    paused_categories,
+    rank_for_growth,
+    score_story,
+)
 
 
 def test_category_weights_are_bounded():
@@ -76,3 +81,10 @@ def test_paused_category_reduces_growth_priority(tmp_path, monkeypatch):
     normal = score_story(story, {"category_weights": {"cats": 1.0}})
     assert paused < normal
     assert paused_categories(ops)["cats"]["category"] == "cats"
+    assert is_paused_category("Cats", ops) is True
+
+
+def test_ops_guardian_enforced_reads_boolean_env():
+    assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "1"}) is True
+    assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "true"}) is True
+    assert ops_guardian_enforced({"OPS_GUARDIAN_ENFORCE": "0"}) is False

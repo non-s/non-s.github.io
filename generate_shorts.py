@@ -47,7 +47,7 @@ from utils.first_frame_audit import audit_opening_frames
 from utils.claim_risk import evaluate_claim_risk
 from utils.frame_zero_packaging import score_frame_zero
 from utils.growth_studio import studio_brief_for_story
-from utils.growth_strategy import load_strategy, paused_categories, rank_for_growth
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories, rank_for_growth
 from utils.growth_engine import analyze_retention, detect_weak_content, load_format_memory, score_topic
 from utils.hook_library import choose_hook_template, score_hook
 from utils.content_agency import rank_for_agency
@@ -1637,7 +1637,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         item["youtube_brain"] = brain
         scored_candidates.append(item)
     candidates = scored_candidates
-    if os.environ.get("OPS_GUARDIAN_ENFORCE", "0") in {"1", "true", "True"}:
+    if ops_guardian_enforced():
         paused = set(paused_categories().keys())
         if paused:
             before = len(candidates)

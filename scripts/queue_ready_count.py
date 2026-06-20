@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.growth_strategy import load_strategy
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
 from utils.queue_pruner import prune_queue
 from utils.rejected_queue import record_rejection
 
@@ -28,14 +28,18 @@ def _read_queue(path: Path = QUEUE) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _is_publish_ready(story: dict) -> tuple[bool, list[str]]:
+def _is_publish_ready(story: dict, *, paused: set[str] | None = None) -> tuple[bool, list[str]]:
     reasons: list[str] = []
     queue_prune = story.get("queue_prune") or {}
     publish = story.get("publish_score") or {}
     editorial = story.get("editorial") or {}
+    paused = paused or set()
 
     if story.get("consumed"):
         reasons.append("consumed")
+    category = str(story.get("category") or "").strip().lower()
+    if category and category in paused:
+        reasons.append(f"ops_guardian_paused_category:{category}")
     if queue_prune.get("state") != "publish_ready":
         reasons.append(f"queue_prune:{queue_prune.get('state') or 'missing'}")
     if publish.get("approved") is not True or publish.get("state") != "publish_ready":
@@ -65,12 +69,13 @@ def refresh_queue(path: Path = QUEUE) -> dict:
     return pruned
 
 
-def build_payload(queue: dict) -> dict:
+def build_payload(queue: dict, *, env: dict | None = None) -> dict:
     pending = [story for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed")]
     ready: list[dict] = []
     held = Counter()
+    paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     for story in pending:
-        ok, reasons = _is_publish_ready(story)
+        ok, reasons = _is_publish_ready(story, paused=paused)
         if ok:
             ready.append(story)
         else:

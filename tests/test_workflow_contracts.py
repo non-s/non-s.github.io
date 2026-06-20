@@ -19,8 +19,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
     assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
-    assert "PUBLISH_BACKFILL_READY_TARGET || '1'" in youtube_workflow
-    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-1}"' in youtube_workflow
+    assert "PUBLISH_BACKFILL_READY_TARGET || '2'" in youtube_workflow
+    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-2}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '24' }}" in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow
@@ -82,13 +82,11 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/post_upload_session_ops.json" in dashboard_workflow
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
-    assert 'cron: "13 */3 * * *"' in heartbeat_workflow
-    assert 'SELF_WORKFLOW: "youtube-hourly-heartbeat.yml"' in heartbeat_workflow
+    assert 'cron: "13 * * * *"' in heartbeat_workflow
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
-    assert "PUBLISH_HEARTBEAT_RUNTIME_MINUTES || '170'" in heartbeat_workflow
-    assert "self-renew from heartbeat run" in heartbeat_workflow
-    assert "watchdog recovery for missed slot" in heartbeat_workflow
-    assert "recent_publisher_run" in heartbeat_workflow
+    assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
+    assert "heartbeat recovery for slot" in heartbeat_workflow
+    assert "time.sleep" not in heartbeat_workflow
 
 
 def test_dashboard_strict_audit_keeps_youtube_token_when_available():
@@ -111,9 +109,11 @@ def test_dashboard_strict_audit_keeps_youtube_token_when_available():
 def test_expensive_workflows_have_realistic_timeouts():
     dashboard = yaml.safe_load((ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8"))
     quality_gate = yaml.safe_load((ROOT / ".github/workflows/quality-gate.yml").read_text(encoding="utf-8"))
+    heartbeat = yaml.safe_load((ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8"))
 
     assert dashboard["jobs"]["build"]["timeout-minutes"] >= 20
     assert quality_gate["jobs"]["validate"]["timeout-minutes"] >= 35
+    assert heartbeat["jobs"]["dispatch-hourly"]["timeout-minutes"] <= 8
 
 
 def test_queue_prune_refreshes_reports_after_mutating_queue():
