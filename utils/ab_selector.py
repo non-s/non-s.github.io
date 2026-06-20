@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 from utils.experiments import read_winner
 
@@ -18,7 +18,7 @@ def _num(value, default: float = 0.0) -> float:
 
 def _date_key(row: dict) -> str:
     value = str(row.get("pulled_at") or row.get("uploaded_at") or row.get("assigned_at") or "")
-    return value[:10] if len(value) >= 10 else datetime.utcnow().date().isoformat()
+    return value[:10] if len(value) >= 10 else datetime.now(timezone.utc).date().isoformat()
 
 
 def _bucket(axis: str, key: str, candidates: list[str]) -> str:
