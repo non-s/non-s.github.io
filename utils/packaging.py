@@ -808,12 +808,13 @@ def package_story(story: dict) -> dict:
     normalized_category = normalize_story_category(out)
     if normalized_category:
         out["category"] = normalized_category
+    local_rewrite_method = str((out.get("local_rewrite") or {}).get("method") or "")
     preserve_source_packaging = (
         str(out.get("studio_state") or "") == "comment_idea"
         or str(out.get("source") or "").strip().lower() == "youtube comment idea"
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
-        or str((out.get("local_rewrite") or {}).get("method") or "") == "curiosity_angle_rescue"
+        or local_rewrite_method in {"curiosity_angle_rescue", "curiosity_angle_duplicate_title_rescue"}
     )
     angle_package = build_curiosity_package(out, subject=extract_subject(out))
     angle_packaging_applied = False

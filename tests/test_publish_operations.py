@@ -379,6 +379,25 @@ def test_rejected_queue_jsonl_default_format_records_deduped_items(tmp_path):
     assert items[0]["reasons"] == ["generic_packaging"]
 
 
+def test_rejected_queue_records_rewrite_attempt_metadata(tmp_path):
+    path = tmp_path / "rejected_queue.jsonl"
+    story = {
+        "id": "abc",
+        "title": "Weak story",
+        "_queue_quality_repair": {
+            "attempted": True,
+            "applied": False,
+            "reasons": ["duplicate_title"],
+        },
+    }
+
+    record_rejection(story, ["duplicate_title"], path=path, stage="queue_prune")
+
+    items = load_rejections(path)
+    assert items[0]["rewrite_attempted"] is True
+    assert items[0]["rewrite_applied"] is False
+
+
 def test_rejected_queue_default_path_can_be_isolated(monkeypatch, tmp_path):
     path = tmp_path / "isolated_rejected_queue.jsonl"
     monkeypatch.setattr(rejected_queue_module, "REJECTED_QUEUE", path)

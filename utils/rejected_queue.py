@@ -65,6 +65,13 @@ def record_rejection(
     items = _read(path)
     story_id = str(story.get("id") or story.get("_queue_id") or story.get("title") or "")
     items = [item for item in items if not (item.get("story_id") == story_id and item.get("stage") == stage)]
+    quality_repair = story.get("_queue_quality_repair") if isinstance(story.get("_queue_quality_repair"), dict) else {}
+    queue_repair = story.get("queue_repair") if isinstance(story.get("queue_repair"), dict) else {}
+    local_rewrite = story.get("local_rewrite") if isinstance(story.get("local_rewrite"), dict) else {}
+    rewrite_attempted = bool(
+        quality_repair.get("attempted") or queue_repair.get("attempted") or local_rewrite.get("applied")
+    )
+    rewrite_applied = bool(quality_repair.get("applied") or queue_repair.get("applied") or local_rewrite.get("applied"))
     items.append(
         {
             "story_id": story_id,
@@ -74,7 +81,8 @@ def record_rejection(
             "category": story.get("category") or "",
             "source_url": story.get("url") or story.get("source_url") or "",
             "recorded_at": datetime.now(timezone.utc).isoformat(),
-            "rewrite_attempted": False,
+            "rewrite_attempted": rewrite_attempted,
+            "rewrite_applied": rewrite_applied,
         }
     )
     path.parent.mkdir(parents=True, exist_ok=True)

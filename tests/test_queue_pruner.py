@@ -374,6 +374,36 @@ def test_prune_queue_blocks_title_repeated_from_uploaded_history_when_rewrite_is
     assert summary["rejected"] == 1
 
 
+def test_prune_queue_rewrites_published_duplicate_title_when_source_is_unique(monkeypatch):
+    repeated = "Cats use whiskers like built-in rulers"
+    monkeypatch.setattr("utils.queue_pruner.published_title_keys", lambda: {repeated.lower()})
+    story = _story(
+        "cat-duplicate",
+        title=repeated,
+        seo_title=repeated,
+        hook="Cats use whiskers like built-in rulers.",
+        script=(
+            "Cats use whiskers like built-in rulers. Watch the whisker cue first, "
+            "because the whiskers brush tight spaces before the cat commits."
+        ),
+        thumbnail_text="WHISKER CUE",
+        category="cats",
+        yt_tags=["cats", "animal behavior"],
+        source_title="Stray cat eating from orange dish outdoors",
+        source_url="https://www.pexels.com/video/stray-cat-eating-from-orange-dish-outdoors-36254640/",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [story]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert len(kept) == 1
+    assert kept[0]["seo_title"].lower() != repeated.lower()
+    assert kept[0]["local_rewrite"]["applied"] is True
+    assert kept[0]["queue_repair"]["attempted"] is True
+    assert rejected == []
+    assert summary["repaired"] == 1
+
+
 def test_prune_queue_caps_publish_ready_title_template_clusters(monkeypatch):
     def fake_quality_issues(*args, **kwargs):
         return []

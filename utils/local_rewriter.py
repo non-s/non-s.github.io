@@ -380,6 +380,8 @@ def _usable_cue(cue: str, animal: str = "") -> str:
         "ear": "ear position",
         "eyes": "eye contact",
         "tail": "tail position",
+        "tongue": "tongue flick",
+        "tongues": "tongue flick",
         "paw": "paw position",
         "paws": "paw position",
         "wing": "wing position",
@@ -514,6 +516,9 @@ def _cue_moment(cue: str) -> str:
         "hands": "their hands move",
         "tail position": "their tails lift",
         "tail": "their tails lift",
+        "tongue flick": "their tongues flick",
+        "tongue": "their tongues flick",
+        "tongues": "their tongues flick",
         "wing movement": "their wings move",
         "wing position": "their wings shift",
         "wing": "their wings move",
@@ -557,6 +562,9 @@ def _cue_signal(cue: str) -> str:
         "hands": "hand cue",
         "tail position": "tail lift",
         "tail": "tail lift",
+        "tongue flick": "tongue flick",
+        "tongue": "tongue flick",
+        "tongues": "tongue flick",
         "wing movement": "wing beat",
         "wing position": "wing angle",
         "wing": "wing beat",
@@ -585,6 +593,20 @@ def _cue_signal(cue: str) -> str:
 
 def _thumbnail_label(cue: str) -> str:
     return _cue_signal(cue).upper()[:28]
+
+
+def _title_from_hook(text: object) -> str:
+    first_sentence = re.split(r"[.!?]", str(text or "").strip(), maxsplit=1)[0]
+    title = re.sub(r"\s+", " ", first_sentence).strip(" ,;:")
+    words = re.findall(r"[A-Za-z]+", title)
+    if len(words) < 4:
+        return ""
+    return title[:60].rstrip(" ,;:")
+
+
+def _title_key(title: object) -> str:
+    text = re.sub(r"[^\w\s'-]", " ", str(title or "").lower(), flags=re.UNICODE)
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _cue_reference(cue: str) -> str:
@@ -702,8 +724,10 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     if animal.lower() == "animal":
         animal = _animal(text)
     angle_package = build_curiosity_package(out, subject=_plural_subject(animal), context=visual_text, force=True)
+    original_title_key = _title_key(out.get("seo_title") or out.get("title") or "")
     if angle_package:
-        out.update(
+        candidate = dict(out)
+        candidate.update(
             {
                 "seo_title": str(angle_package["seo_title"])[:60],
                 "title": str(angle_package["title"])[:60],
@@ -725,8 +749,19 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
                 },
             }
         )
-        if not editorial_issues(out):
-            return out, True
+        candidate_title_key = _title_key(candidate.get("seo_title") or candidate.get("title") or "")
+        still_duplicate_title = "duplicate_title" in reasons and candidate_title_key == original_title_key
+        if still_duplicate_title:
+            alternate_title = _title_from_hook(candidate.get("hook") or candidate.get("script") or "")
+            if alternate_title and _title_key(alternate_title) != original_title_key:
+                candidate["seo_title"] = alternate_title
+                candidate["title"] = alternate_title
+                local_rewrite = dict(candidate.get("local_rewrite") or {})
+                local_rewrite["method"] = "curiosity_angle_duplicate_title_rescue"
+                candidate["local_rewrite"] = local_rewrite
+                still_duplicate_title = False
+        if not still_duplicate_title and not editorial_issues(candidate):
+            return candidate, True
     if _is_nature_subject(animal):
         return story, False
     fmt = classify_format(text)

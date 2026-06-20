@@ -127,6 +127,7 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
         "scripts/next_shorts.py",
         "scripts/packaging_report.py",
         "scripts/youtube_brain_report.py",
+        "scripts/audit_automation.py",
     ):
         assert max(i for i, script in enumerate(dashboard) if script == report) > prune_index
     for mode in ("pre_generate", "queue"):
@@ -139,6 +140,7 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
             "scripts/agency_gate_report.py",
             "scripts/packaging_report.py",
             "scripts/youtube_brain_report.py",
+            "scripts/audit_automation.py",
         ):
             assert max(i for i, script in enumerate(scripts) if script == report) > prune_index
         for report in (
@@ -160,8 +162,23 @@ def test_queue_prune_refreshes_reports_after_mutating_queue():
         "scripts/packaging_report.py",
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
+        "scripts/audit_automation.py",
     ):
         assert max(i for i, script in enumerate(post_publish) if script == report) > post_prune
+
+
+def test_final_automation_health_runs_after_queue_reports():
+    for mode in ("pre_generate", "post_publish", "queue", "dashboard"):
+        scripts = SCRIPT_SETS[mode]
+        final_audit = max(i for i, script in enumerate(scripts) if script == "scripts/audit_automation.py")
+        for report in (
+            "scripts/prune_queue.py",
+            "scripts/queue_audit.py",
+            "scripts/dry_run_publish.py",
+            "scripts/next_shorts.py",
+            "scripts/scale_blueprint.py",
+        ):
+            assert final_audit > max(i for i, script in enumerate(scripts) if script == report)
 
 
 def test_next_shorts_refreshes_after_queue_mutations_and_weekly_review():

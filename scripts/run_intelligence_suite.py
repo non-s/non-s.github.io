@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Run repeated Wild Brief intelligence/reporting scripts from one entrypoint."""
+
 from __future__ import annotations
 
 import argparse
@@ -51,6 +52,7 @@ SCRIPT_SETS = {
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
+        "scripts/audit_automation.py",
     ],
     "post_publish": [
         "scripts/reconcile_queue_uploads.py",
@@ -109,6 +111,7 @@ SCRIPT_SETS = {
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
+        "scripts/audit_automation.py",
     ],
     "queue": [
         "scripts/reconcile_queue_uploads.py",
@@ -161,6 +164,7 @@ SCRIPT_SETS = {
         "scripts/seo_metadata_lint.py",
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
+        "scripts/audit_automation.py",
     ],
     "dashboard": [
         "scripts/reconcile_queue_uploads.py",
@@ -244,6 +248,7 @@ SCRIPT_SETS = {
         "scripts/youtube_brain_report.py",
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
+        "scripts/audit_automation.py",
     ],
 }
 

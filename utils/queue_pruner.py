@@ -495,9 +495,14 @@ def prune_queue(
             duplicate_ids=duplicate_ids,
         )
         if issues:
+            rescue_attempted = False
+            rescue_applied = False
+            rescue_reasons = list(issues)
             if not (set(issues) & HARD_QUALITY_ISSUES):
+                rescue_attempted = True
                 rescued, applied = rescue_story(story, issues)
                 if applied:
+                    rescue_applied = True
                     retry_issues = quality_issues(
                         rescued,
                         seen_titles=seen_titles,
@@ -515,7 +520,24 @@ def prune_queue(
                             "stage": "queue_quality",
                         }
                         issues = []
+                    else:
+                        story = dict(rescued)
+                        story["_queue_quality_repair"] = {
+                            "attempted": True,
+                            "applied": True,
+                            "reasons": rescue_reasons,
+                            "stage": "queue_quality",
+                        }
+                        issues = retry_issues
             if issues:
+                if rescue_attempted:
+                    story = dict(story)
+                    story["_queue_quality_repair"] = {
+                        "attempted": True,
+                        "applied": rescue_applied,
+                        "reasons": rescue_reasons,
+                        "stage": "queue_quality",
+                    }
                 reasons.update(issues)
                 rejected.append({"story": story, "reasons": issues, "stage": "queue_prune"})
                 continue
@@ -583,8 +605,12 @@ def prune_queue(
             duplicate_ids=set(),
         )
         if final_issues and not (set(final_issues) & HARD_QUALITY_ISSUES):
+            rescue_attempted = True
+            rescue_applied = False
+            rescue_reasons = list(final_issues)
             rescued, applied = rescue_story(story, final_issues)
             if applied:
+                rescue_applied = True
                 rescored = enriched_score(rescued, analytics_strategy=analytics_strategy)
                 if rescored["state"] != "reject":
                     retry_story = dict(rescored["story"])
@@ -615,7 +641,36 @@ def prune_queue(
                         item = rescored
                         story = retry_story
                         final_issues = []
+                    else:
+                        story = retry_story
+                        story["_queue_quality_repair"] = {
+                            "attempted": True,
+                            "applied": True,
+                            "reasons": rescue_reasons,
+                            "stage": "queue_quality_final",
+                        }
+                        final_issues = retry_issues
+                else:
+                    story = dict(rescored.get("story") or rescued)
+                    story["_queue_quality_repair"] = {
+                        "attempted": True,
+                        "applied": True,
+                        "reasons": rescue_reasons,
+                        "stage": "queue_quality_final",
+                    }
+        else:
+            rescue_attempted = False
+            rescue_applied = False
+            rescue_reasons = []
         if final_issues:
+            if rescue_attempted:
+                story = dict(story)
+                story["_queue_quality_repair"] = {
+                    "attempted": True,
+                    "applied": rescue_applied,
+                    "reasons": rescue_reasons,
+                    "stage": "queue_quality_final",
+                }
             reasons.update(final_issues)
             rejected.append({"story": story, "reasons": final_issues, "stage": "queue_prune_final"})
             continue
