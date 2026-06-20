@@ -54,10 +54,10 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "PUBLISH_BACKFILL_QUEUE_TARGET",
-        "48",
+        "18",
         "publishing",
-        "Raw pending-story target used by publish-workflow emergency backfill.",
-        "Lower if discovery approaches timeout.",
+        "Raw pending-story target used only when publish-ready emergency backfill is needed.",
+        "Set lower or rely on fetch-content during provider slowdowns.",
     ),
     FeatureFlag(
         "PUBLISH_BACKFILL_READY_TARGET",
@@ -68,10 +68,17 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "PUBLISH_BACKFILL_PENDING_BATCH",
-        "12",
+        "6",
         "publishing",
         "Extra raw pending target added on each emergency backfill attempt.",
         "Lower if the publish workflow approaches timeout.",
+    ),
+    FeatureFlag(
+        "PUBLISH_BACKFILL_TIMEOUT_SECONDS",
+        "540",
+        "publishing",
+        "Maximum seconds allowed for one publish-workflow emergency backfill attempt.",
+        "Lower it to preserve the upload slot; fetch-content handles deep replenishment.",
     ),
     FeatureFlag(
         "YOUTUBE_DESCRIPTION_MODE",

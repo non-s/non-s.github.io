@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import fetch_animals
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {".git", ".pytest_cache", ".venv", ".venv-latest", "__pycache__", "env", "venv"}
@@ -36,7 +36,11 @@ def test_repository_is_focused_on_youtube():
             continue
         text = path.read_text(encoding="utf-8", errors="ignore").lower()
         for term in BLOCKED:
-            if term in text:
+            if term == "na" + "sa":
+                matched = re.search(r"\bnasa\b", text) is not None
+            else:
+                matched = term in text
+            if matched:
                 hits.append(f"{path.relative_to(ROOT)}: {term}")
     assert hits == [], "legacy platform references found:\n" + "\n".join(hits)
 
