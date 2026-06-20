@@ -40,7 +40,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "jsonl_merge_paths" in youtube_workflow
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "_data/rejected_queue.jsonl" in youtube_workflow
-    assert 'while { [ "${ready}" -lt "${target}" ] || [ "${pending}" -lt "${base_pending_target}" ]; }' in youtube_workflow
+    assert (
+        'while { [ "${ready}" -lt "${target}" ] || [ "${pending}" -lt "${base_pending_target}" ]; }' in youtube_workflow
+    )
     assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
     assert "Sincronizar diagnosticos da fila" in youtube_workflow
     assert "Salvar marcadores no git" in youtube_workflow
