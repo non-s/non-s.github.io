@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-21T22:28:34.210191+00:00",
+  "generated_at": "2026-06-21T22:40:56.852839+00:00",
   "pending": 23,
   "states": {
-    "publish_ready": 11,
-    "rewrite": 12
+    "publish_ready": 12,
+    "rewrite": 11
   },
   "mechanism_clusters": {
     "scent_map": 2,
@@ -15,37 +15,21 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 50,
+    "pending_before": 23,
     "pending_after": 23,
-    "rejected": 27,
-    "repair_needed": 4,
-    "repaired": 19,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 6,
     "reasons": {
-      "duplicate_title": 15,
       "objective_gate:bootstrap_observe_before_scaling": 10,
       "objective_gate:observe_before_scaling": 8,
-      "duplicate_script": 6,
-      "duplicate_angle": 6,
       "editor_in_chief:subject repeated inside 3-day cooldown": 6,
-      "off_topic_visual": 4,
-      "queue_score_reject": 4,
-      "copy_subject_mismatch": 3,
-      "publish_ready_supply_reserve_fallback": 3,
-      "script_subject_mismatch": 2,
-      "script_hook_mismatch": 2,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "rights_guard_person_manual_review": 1,
-      "script_word_loop": 1,
-      "subject_not_immediately_clear": 1,
-      "no_action_promise": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "subject_not_clear": 1,
-      "missing_action_word": 1,
-      "missing_visible_cue": 1,
+      "publish_ready_supply_reserve_fallback": 4,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 38 is below 62": 1,
+      "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
@@ -469,7 +453,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.042792+00:00",
+        "checked_at": "2026-06-21T22:40:40.971660+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -921,7 +905,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.049685+00:00",
+        "checked_at": "2026-06-21T22:40:40.977810+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1370,7 +1354,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:15.456295+00:00",
+        "checked_at": "2026-06-21T22:40:40.984896+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1818,7 +1802,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:16.135577+00:00",
+        "checked_at": "2026-06-21T22:40:40.987215+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2265,7 +2249,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.051493+00:00",
+        "checked_at": "2026-06-21T22:40:40.979369+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2719,7 +2703,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:17.684033+00:00",
+        "checked_at": "2026-06-21T22:40:41.000730+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3178,7 +3162,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:13.378391+00:00",
+        "checked_at": "2026-06-21T22:40:40.962909+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -3485,7 +3469,7 @@
       "title": "Whales slap the surface to warn the pod",
       "category": "ocean",
       "publish_score": {
-        "approved": false,
+        "approved": true,
         "category": "ocean",
         "decision_confidence": {
           "bootstrap_multiplier": 0.528,
@@ -3548,6 +3532,14 @@
           "hits": [],
           "penalty": 0
         },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.485,
@@ -3573,7 +3565,7 @@
           "verdict": "rewrite"
         },
         "score": 100,
-        "state": "rewrite",
+        "state": "publish_ready",
         "story_format": "animal_intelligence",
         "subscriber_conversion": {
           "comment_probability": 0.195,
@@ -3624,13 +3616,15 @@
           "state": "clear"
         }
       },
-      "editorial_state": "rewrite",
+      "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:13.380717+00:00",
+        "checked_at": "2026-06-21T22:40:40.965389+00:00",
         "mechanism_cluster": "tail_signal",
-        "objective_reasons": [],
+        "objective_reasons": [
+          "publish_ready_supply_reserve_fallback"
+        ],
         "score": 78.0,
-        "state": "rewrite",
+        "state": "publish_ready",
         "template_cluster": ""
       },
       "queue_score": 78.0,
@@ -4073,7 +4067,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:13.382270+00:00",
+        "checked_at": "2026-06-21T22:40:40.967058+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -4529,7 +4523,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:13.385616+00:00",
+        "checked_at": "2026-06-21T22:40:40.970361+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4990,7 +4984,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:15.113031+00:00",
+        "checked_at": "2026-06-21T22:40:40.983050+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5440,7 +5434,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.043928+00:00",
+        "checked_at": "2026-06-21T22:40:40.972795+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5891,7 +5885,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.045156+00:00",
+        "checked_at": "2026-06-21T22:40:40.974056+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6345,7 +6339,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:15.111611+00:00",
+        "checked_at": "2026-06-21T22:40:40.981639+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6799,7 +6793,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:14.047985+00:00",
+        "checked_at": "2026-06-21T22:40:40.976204+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7253,7 +7247,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:13.383675+00:00",
+        "checked_at": "2026-06-21T22:40:40.968492+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -7704,7 +7698,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:17.681917+00:00",
+        "checked_at": "2026-06-21T22:40:40.998659+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8156,7 +8150,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:16.480790+00:00",
+        "checked_at": "2026-06-21T22:40:40.990800+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8606,7 +8600,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:16.890347+00:00",
+        "checked_at": "2026-06-21T22:40:40.992870+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9057,7 +9051,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-21T22:28:17.680179+00:00",
+        "checked_at": "2026-06-21T22:40:40.994988+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
