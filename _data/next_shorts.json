@@ -1,5 +1,160 @@
 {
-  "items": [],
+  "items": [
+    {
+      "id": "6f11fa4fe89c6d1d",
+      "title": "Ducklings compare groups before they swim",
+      "category": "farm",
+      "autonomy_priority": 80.7,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling"
+      ],
+      "lane": "recovery",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 82.7,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 57,
+          "signals": {
+            "viral_potential": 55,
+            "visual_potential": 67,
+            "replay_potential": 76,
+            "comment_potential": 54,
+            "educational_potential": 57,
+            "emotional_potential": 36,
+            "novelty": 37
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "retention": {
+          "score": 81,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 74,
+            "replay_score": 82,
+            "completion_prediction": 84
+          },
+          "verdict": "ready",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.297,
+            "sample_size": 9,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.473,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.286,
+          "sample_size": 19,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.465,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29."
+        },
+        "category": "farm",
+        "story_format": "animal_intelligence",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.286,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.35,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    }
+  ],
   "editorial_mix": {
     "targets": {
       "trend": 0.25,
@@ -8,18 +163,10 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 19,
-      "recovery": 2
+      "evergreen": 20,
+      "recovery": 4
     },
     "items": [
-      {
-        "id": "286c6fe56686d442",
-        "title": "Dolphins use signature whistles like names",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.64
-      },
       {
         "id": "93762c1c48c3dd09",
         "title": "Whales slap the surface to warn the pod",
@@ -27,6 +174,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 53.84
+      },
+      {
+        "id": "fd63644781198e45",
+        "title": "Dolphins use signature whistles like names",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "1af1013cc6eed163",
@@ -43,6 +198,14 @@
         "lane": "recovery",
         "adjustment": 5.0,
         "freshness_score": 53.84
+      },
+      {
+        "id": "6f11fa4fe89c6d1d",
+        "title": "Ducklings compare groups before they swim",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "c54bd92793dd620a",
@@ -82,7 +245,15 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.74
+      },
+      {
+        "id": "5cd266470d76ab3e",
+        "title": "Ducks fake injuries to protect their young",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "7fdc62557df3560c",
@@ -117,6 +288,14 @@
         "freshness_score": 53.86
       },
       {
+        "id": "42bc9f9a065abe14",
+        "title": "Storm clouds reveal weather from above the clouds",
+        "category": "earth_from_space",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "eb0beb388f27c28c",
         "title": "Rivers carry stone grains while they flow",
         "category": "rivers",
@@ -133,12 +312,12 @@
         "freshness_score": 53.66
       },
       {
-        "id": "a6e69570a310cc68",
+        "id": "b69c801be93c47f2",
         "title": "Plants count touches before snapping shut",
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 55.0
       },
       {
         "id": "3fda9f315e7e5a36",
@@ -173,12 +352,12 @@
         "freshness_score": 53.62
       },
       {
-        "id": "fa3b287123834ac9",
+        "id": "70c5e6b12cc7024a",
         "title": "Plants turn sunlight into stored sugar",
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -187,24 +366,54 @@
     "status": "healthy",
     "warnings": [],
     "rewrite_candidates": [],
-    "windows": []
+    "windows": [
+      {
+        "window": 10,
+        "items": 1,
+        "dominant_shape": "{subject} compare groups before they swim",
+        "dominant_count": 1,
+        "dominant_share": 1.0,
+        "top_shapes": [
+          {
+            "shape": "{subject} compare groups before they swim",
+            "count": 1,
+            "share": 1.0
+          }
+        ]
+      },
+      {
+        "window": 30,
+        "items": 1,
+        "dominant_shape": "{subject} compare groups before they swim",
+        "dominant_count": 1,
+        "dominant_share": 1.0,
+        "top_shapes": [
+          {
+            "shape": "{subject} compare groups before they swim",
+            "count": 1,
+            "share": 1.0
+          }
+        ]
+      }
+    ]
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 21,
-    "pending_after": 21,
+    "pending_before": 24,
+    "pending_after": 24,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 11,
-      "objective_gate:observe_before_scaling": 7,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
-      "publish_ready_supply_reserve_fallback": 2,
+      "objective_gate:bootstrap_observe_before_scaling": 12,
+      "objective_gate:observe_before_scaling": 9,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 4,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:script quality gate blocked the narration": 1
+      "editor_in_chief:script quality gate blocked the narration": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   }
 }
