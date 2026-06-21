@@ -67,7 +67,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'cron: "42 * * * *"' in youtube_workflow
     watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
-    assert 'GRACE_MINUTES: "35"' in watchdog_workflow
+    assert 'GRACE_MINUTES: "12"' in watchdog_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert 'cron: "9,23 * * * *"' in fetch_workflow
     assert "do not hold the" in fetch_workflow

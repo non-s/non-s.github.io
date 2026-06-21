@@ -33,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPOSITORY: ${{ github.repository }}
           TARGET_WORKFLOW: "youtube-bot.yml"
-          GRACE_MINUTES: "35"
+          GRACE_MINUTES: "12"
           SLOT_TOLERANCE_MINUTES: "10"
         run: |
           python - <<'PY'
