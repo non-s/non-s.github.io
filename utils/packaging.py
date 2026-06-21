@@ -890,6 +890,7 @@ def package_story(story: dict) -> dict:
             "contextual_duplicate_title_rescue",
             "curiosity_angle_rescue",
             "curiosity_angle_duplicate_title_rescue",
+            "curiosity_angle_collision_rescue",
         }
     )
     angle_package = build_curiosity_package(out, subject=extract_subject(out))

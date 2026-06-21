@@ -841,6 +841,27 @@ def test_load_rejected_copy_keys_reads_quarantine_titles(tmp_path):
     assert "sharks can feel electricity in the water" in keys["titles"]
 
 
+def test_load_rejected_copy_keys_reads_script_and_angle_memory(tmp_path):
+    f = tmp_path / "rejected_queue.jsonl"
+    f.write_text(
+        json.dumps(
+            {
+                "title": "Ducks fake injuries to protect their young",
+                "script_key": "ducks fake injuries to protect their young watch the wing position",
+                "angle_key": "ducks|fake|wing position|farm",
+                "category": "farm",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    keys = fetch_animals.load_rejected_copy_keys(f)
+
+    assert "ducks fake injuries to protect their young watch the wing position" in keys["scripts"]
+    assert "ducks|fake|wing position|farm" in keys["angles"]
+
+
 def test_load_rejected_clip_keys_extracts_source_identifiers(tmp_path):
     source_url = "https://www.pexels.com/video/river-bend-12345/"
     f = tmp_path / "rejected_queue.jsonl"

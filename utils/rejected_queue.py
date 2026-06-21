@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -56,6 +57,26 @@ def _read(path: Path | None = None) -> list[dict]:
     return []
 
 
+def _script_key(script: object) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(script or "").lower()).strip()
+
+
+def _story_angle_key(story: dict) -> str:
+    try:
+        from utils.packaging import extract_action, extract_animal, extract_cue  # noqa: PLC0415
+
+        return "|".join(
+            (
+                extract_animal(story).lower(),
+                extract_action(story).lower(),
+                extract_cue(story).lower(),
+                str(story.get("category") or "").lower(),
+            )
+        )
+    except Exception:
+        return ""
+
+
 def record_rejection(
     story: dict, reasons: list[str], *, path: Path | None = None, stage: str = "queue_quality"
 ) -> None:
@@ -72,6 +93,8 @@ def record_rejection(
         quality_repair.get("attempted") or queue_repair.get("attempted") or local_rewrite.get("applied")
     )
     rewrite_applied = bool(quality_repair.get("applied") or queue_repair.get("applied") or local_rewrite.get("applied"))
+    script_key = _script_key(story.get("script"))
+    angle_key = _story_angle_key(story)
     items.append(
         {
             "story_id": story_id,
@@ -79,6 +102,8 @@ def record_rejection(
             "reasons": list(dict.fromkeys(str(r) for r in reasons)),
             "title": story.get("seo_title") or story.get("title") or "",
             "category": story.get("category") or "",
+            "script_key": script_key,
+            "angle_key": angle_key,
             "source_url": story.get("url") or story.get("source_url") or "",
             "pexels_video_id": story.get("pexels_video_id") or "",
             "source_clip_id": story.get("source_clip_id") or "",

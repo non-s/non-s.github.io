@@ -1321,7 +1321,10 @@ def load_rejected_copy_keys(path: Path | None = None) -> dict[str, set[str]]:
         title_key = _copy_key(entry.get("title") or "")
         if title_key:
             keys["titles"].add(title_key)
-        angle = _story_angle_key(entry)
+        script_key = str(entry.get("script_key") or "").strip()
+        if script_key:
+            keys["scripts"].add(script_key)
+        angle = str(entry.get("angle_key") or "").strip() or _story_angle_key(entry)
         if angle:
             keys["angles"].add(angle)
     return keys

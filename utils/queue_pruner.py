@@ -60,6 +60,11 @@ HARD_QUALITY_ISSUES = {
     "fact_guard_block",
     "subject_alignment_check_failed",
 }
+RESCUEABLE_HARD_QUALITY_ISSUES = {
+    "duplicate_script",
+    "duplicate_angle",
+}
+NON_RESCUEABLE_HARD_QUALITY_ISSUES = HARD_QUALITY_ISSUES - RESCUEABLE_HARD_QUALITY_ISSUES
 COMMONS_FIELDS = ("commons_image_url", "commons_page_url", "commons_license", "commons_artist")
 PACKAGING_LAB_VARIANT_FIELDS = ("title_variants", "hook_variants", "thumbnail_variants")
 VIEWER_COPY_FIELDS = (
@@ -562,7 +567,7 @@ def prune_queue(
             rescue_attempted = False
             rescue_applied = False
             rescue_reasons = list(issues)
-            if not (set(issues) & HARD_QUALITY_ISSUES):
+            if not (set(issues) & NON_RESCUEABLE_HARD_QUALITY_ISSUES):
                 rescue_attempted = True
                 rescued, applied = rescue_story(story, issues)
                 if applied:
@@ -668,7 +673,7 @@ def prune_queue(
             seen_scripts=final_seen_scripts,
             duplicate_ids=set(),
         )
-        if final_issues and not (set(final_issues) & HARD_QUALITY_ISSUES):
+        if final_issues and not (set(final_issues) & NON_RESCUEABLE_HARD_QUALITY_ISSUES):
             rescue_attempted = True
             rescue_applied = False
             rescue_reasons = list(final_issues)

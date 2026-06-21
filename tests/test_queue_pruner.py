@@ -1,7 +1,7 @@
 import pytest
 
 from utils import editorial
-from utils.queue_pruner import production_quality_issues, prune_queue, quality_issues
+from utils.queue_pruner import angle_key, production_quality_issues, prune_queue, quality_issues
 
 
 @pytest.fixture(autouse=True)
@@ -200,6 +200,51 @@ def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
         {"queue_pruned_low_priority", "queue_score_reject", "copy_subject_mismatch"} & set(item["reasons"])
         for item in rejected
     )
+
+
+def test_prune_queue_rescues_duplicate_script_and_angle_collisions():
+    first = _story("duck-a")
+    second = _story("duck-b")
+
+    pruned, rejected, summary = prune_queue({"stories": [first, second]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    titles = {story["seo_title"] for story in kept}
+    angles = {angle_key(story) for story in kept}
+    repaired = [story for story in kept if (story.get("local_rewrite") or {}).get("method")]
+    assert len(kept) == 2
+    assert len(titles) == 2
+    assert len(angles) == 2
+    assert repaired[0]["local_rewrite"]["method"] == "curiosity_angle_collision_rescue"
+    assert repaired[0]["queue_repair"]["applied"] is True
+    assert summary["repaired"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_keeps_off_topic_visual_as_hard_rejection():
+    good = _story("duck-a")
+    off_topic = _story(
+        "duck-b",
+        title="Ducks fake injuries to protect their young",
+        seo_title="Ducks fake injuries to protect their young",
+        hook="Ducks fake injuries to protect their young.",
+        script=(
+            "Ducks fake injuries to protect their young. Watch the wing cue first, "
+            "because the limp pulls predators away from the nest before the duck escapes."
+        ),
+        source_title="Magoo Beats the Heat (1956)",
+        source_description="An animated human character with a fishing rod in a cartoon scene.",
+        source_url="https://www.pexels.com/video/magoo-beats-the-heat-1956/",
+        category="ocean",
+    )
+
+    pruned, rejected, summary = prune_queue({"stories": [good, off_topic]}, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    assert len(kept) == 1
+    assert rejected
+    assert "off_topic_visual" in rejected[0]["reasons"]
+    assert summary["rejected"] == 1
 
 
 def test_prune_queue_repairs_editorial_do_not_publish_candidates_when_possible():

@@ -880,6 +880,74 @@ def _duplicate_context_variant(story: dict, animal: str, visual_text: str) -> di
     return {}
 
 
+def _collision_rescue_variant(story: dict, angle_package: dict, animal: str) -> dict:
+    """Build a second safe angle when the top deterministic angle already exists."""
+    subject = str(angle_package.get("subject") or _plural_subject(animal)).strip() or _plural_subject(animal)
+    if _is_nature_subject(subject):
+        return {}
+    lower_subject = subject.lower()
+    cue = _usable_cue(extract_cue(story), animal)
+    if cue in {"body posture", "cue", "first movement", "movement"}:
+        cue = str(angle_package.get("cue") or _fallback_cue(animal))
+    cue_signal = _cue_signal(cue)
+    cue_reference = _cue_reference(cue)
+    story_format = str(angle_package.get("story_format") or classify_format(_source_context(story)))
+    angle_key = str(angle_package.get("angle_key") or "")
+    if angle_key == "duck_fake_injury":
+        title = f"{subject} fake weak wings to protect ducklings"
+        hook = f"{subject} fake weak wings to protect ducklings."
+        script = (
+            f"{hook} Watch the wing position, because {lower_subject} make the adult look like the easier "
+            "target while predators search near the nest. The distraction buys a few seconds, "
+            f"and a few seconds can keep the ducklings safer. Which {lower_subject} survival detail should we compare next?"
+        )
+        return {
+            "seo_title": title[:60],
+            "title": title[:60],
+            "hook": hook,
+            "script": script,
+            "lead": script[:400],
+            "thumbnail_text": "WING DECOY",
+            "story_format": story_format,
+            "yt_tags": _clean_tags(story.get("yt_tags"), subject.lower(), str(story.get("category") or "")),
+        }
+    if story_format == "survival_trick":
+        title = f"{subject} redirect danger with {cue_signal}"
+        hook = f"{subject} can redirect danger with {cue_signal}."
+        body = (
+            f"Watch {cue_reference}, because {lower_subject} make that visible move more tempting "
+            "than the real target. The distraction buys a few seconds, and those seconds can change "
+            f"the escape window. Which {lower_subject} survival clue should we compare next?"
+        )
+    elif story_format == "animal_memory":
+        title = f"{subject} sort familiar clues with {cue_signal}"
+        hook = f"{subject} can sort familiar clues with {cue_signal}."
+        body = (
+            f"Watch {cue_reference}, because {lower_subject} connect that detail with what happened "
+            "before. The clue helps them react differently next time, instead of treating every "
+            f"moment as new. Which {lower_subject} memory clue should come next?"
+        )
+    else:
+        title = f"{subject} solve one problem with {cue_signal}"
+        hook = f"{subject} can solve one problem with {cue_signal}."
+        body = (
+            f"Watch {cue_reference}, because {lower_subject} use that detail to handle a real "
+            "physical problem in the scene. The useful part is visible before the payoff, which is "
+            f"why the clip is worth replaying. Which {lower_subject} clue should we decode next?"
+        )
+    script = f"{hook} {body}"
+    return {
+        "seo_title": title[:60],
+        "title": title[:60],
+        "hook": hook,
+        "script": script,
+        "lead": script[:400],
+        "thumbnail_text": _thumbnail_label(cue),
+        "story_format": story_format,
+        "yt_tags": _clean_tags(story.get("yt_tags"), subject.lower(), str(story.get("category") or "")),
+    }
+
+
 def _cue_reference(cue: str) -> str:
     cue = str(cue or "cue").lower().strip()
     if cue.startswith(("the ", "their ", "its ")):
@@ -907,6 +975,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "generic_script_template",
             "script_word_loop",
             "duplicate_script",
+            "duplicate_angle",
             "rewrite_packaging",
             "missing_visible_cue",
             "missing_action_word",
@@ -997,6 +1066,19 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
     angle_package = build_curiosity_package(out, subject=_plural_subject(animal), context=visual_text, force=True)
     original_title_key = _title_key(out.get("seo_title") or out.get("title") or "")
     if angle_package:
+        if set(reasons) & {"duplicate_script", "duplicate_angle"}:
+            collision = _collision_rescue_variant(out, angle_package, animal)
+            if collision:
+                candidate = dict(out)
+                candidate.update(collision)
+                candidate["local_rewrite"] = {
+                    "applied": True,
+                    "reasons": reasons,
+                    "method": "curiosity_angle_collision_rescue",
+                    "angle_key": angle_package.get("angle_key"),
+                }
+                if not editorial_issues(candidate):
+                    return candidate, True
         candidate = dict(out)
         candidate.update(
             {

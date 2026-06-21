@@ -475,6 +475,23 @@ def test_rejected_queue_records_rewrite_attempt_metadata(tmp_path):
     assert items[0]["rewrite_applied"] is False
 
 
+def test_rejected_queue_records_copy_memory_keys(tmp_path):
+    path = tmp_path / "rejected_queue.jsonl"
+    story = {
+        "id": "abc",
+        "title": "Ducks fake injuries to protect their young",
+        "script": "Ducks fake injuries to protect their young. Watch the wing position.",
+        "thumbnail_text": "WING POSITION",
+        "category": "farm",
+    }
+
+    record_rejection(story, ["duplicate_script"], path=path, stage="queue_prune")
+
+    items = load_rejections(path)
+    assert items[0]["script_key"] == "ducks fake injuries to protect their young watch the wing position"
+    assert items[0]["angle_key"] == "ducks|fake|wing position|farm"
+
+
 def test_rejected_queue_default_path_can_be_isolated(monkeypatch, tmp_path):
     path = tmp_path / "isolated_rejected_queue.jsonl"
     monkeypatch.setattr(rejected_queue_module, "REJECTED_QUEUE", path)
