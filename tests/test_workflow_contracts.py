@@ -118,6 +118,8 @@ def test_workflows_parse_and_include_growth_steps():
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
     assert 'cron: "13 * * * *"' in heartbeat_workflow
+    assert 'workflows: ["Refresh Pexels queue"]' in heartbeat_workflow
+    assert "github.event.workflow_run.conclusion == 'success'" in heartbeat_workflow
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
     assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
     assert "heartbeat recovery for slot" in heartbeat_workflow
