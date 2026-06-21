@@ -6,6 +6,11 @@ on:
     # Refresh early in the hour so deeper Pexels backfills do not hold the
     # main-write lock across the hourly YouTube publish attempts.
     - cron: "9,23 * * * *"
+  workflow_run:
+    # Replenish reserve supply immediately after a successful publish so the
+    # next hourly slot is not dependent on emergency backfill.
+    workflows: ["YouTube Bot - Shorts only"]
+    types: [completed]
   workflow_dispatch:
 
 # Keep queue refreshes serialized with each other without blocking the
@@ -18,7 +23,7 @@ jobs:
   refresh-queue:
     name: "Refresh YouTube Shorts queue"
     # Set QUEUE_REFRESH_ENABLED=1 to keep the Pexels discovery loop active.
-    if: ${{ vars.QUEUE_REFRESH_ENABLED == '1' }}
+    if: ${{ vars.QUEUE_REFRESH_ENABLED == '1' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

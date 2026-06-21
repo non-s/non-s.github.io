@@ -10,8 +10,9 @@ from pathlib import Path
 
 from utils.content_agency import agency_snapshot
 from utils.editorial import rank_candidates
-from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
+from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
+from utils.queue_readiness import build_readiness_payload
 from utils.seo_optimizer import _ANIMAL_WORDS, optimise_title, seo_score
 
 _NATURE_SUBJECT_WORDS = {
@@ -93,10 +94,6 @@ def _script_key(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (text or "").lower()).strip()
 
 
-def _story_id(story: dict) -> str:
-    return str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
-
-
 def _frontloaded(title: str) -> bool:
     words = re.findall(r"[a-z]+", (title or "").lower())
     if not words:
@@ -143,18 +140,13 @@ def build_health(root: Path | str = ".") -> dict:
             frontloaded += 1
 
     pending = len(stories)
-    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or []) if isinstance(item, dict)}
-    paused = set(paused_categories(root / "_data" / "ops_guardian.json").keys()) if ops_guardian_enforced() else set()
-    publish_ready = sum(
-        1
-        for item in stories
-        if _story_id(item) not in held_ids
-        and str(item.get("category") or "").strip().lower() not in paused
-        and (item.get("queue_prune") or {}).get("state") == "publish_ready"
-        and (item.get("publish_score") or {}).get("approved") is True
-        and (item.get("publish_score") or {}).get("state") == "publish_ready"
-        and (item.get("editorial") or {}).get("approved") is True
+    readiness = build_readiness_payload(
+        queue,
+        root=root,
+        refresh_agency=False,
+        queue_path=root / "_data" / "stories_queue.json",
     )
+    publish_ready = int(readiness.get("publish_ready", 0) or 0)
     avg_seo = round(sum(seo_scores) / len(seo_scores), 2) if seo_scores else 0.0
     frontloaded_pct = round(frontloaded * 100 / pending, 2) if pending else 0.0
     polished = [polish_story(item) for item in stories]
@@ -163,6 +155,8 @@ def build_health(root: Path | str = ".") -> dict:
     issues: list[str] = []
     if pending < 20:
         issues.append("queue_inventory_low")
+    if pending and publish_ready == 0:
+        issues.append("publish_ready_inventory_empty")
     if pending and agency_ready == 0 and publish_ready == 0:
         issues.append("no_agency_publish_now_candidate")
     if duplicate_scripts:
@@ -179,6 +173,7 @@ def build_health(root: Path | str = ".") -> dict:
     score = 100
     score -= min(20, duplicate_scripts * 4)
     score -= 15 if pending < 20 else 0
+    score -= 18 if "publish_ready_inventory_empty" in issues else 0
     score -= 12 if "no_agency_publish_now_candidate" in issues else 0
     score -= max(0, int(90 - avg_seo))
     score -= max(0, int(95 - frontloaded_pct))
@@ -197,6 +192,7 @@ def build_health(root: Path | str = ".") -> dict:
             "duplicate_scripts": duplicate_scripts,
             "missing_scripts": sum(1 for item in stories if not item.get("script")),
             "missing_source": sum(1 for item in stories if not (item.get("source_url") or item.get("url"))),
+            "held_reasons": readiness.get("held_reasons", {}),
         },
         "seo": {
             "average_score": avg_seo,

@@ -43,6 +43,9 @@ GENERIC_SCRIPT_PHRASES = (
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
+PUBLISH_READY_SUPPLY_RESERVE_FALLBACK = "publish_ready_supply_reserve_fallback"
+RESERVE_ALLOWED_PACKAGING_RISKS = {"missing_visible_cue", "subject_not_clear"}
+RESERVE_ALLOWED_BRAIN_RISKS = {"subject_not_immediately_clear"}
 AGENCY_GATE_FILE = Path("_data/agency_gate.json")
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
@@ -511,6 +514,48 @@ def _editorial_cooldown_supply_candidate(story: dict) -> bool:
     return True
 
 
+def _publish_ready_reserve_candidate(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    if queue_prune.get("state") != "rewrite":
+        return False
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    objective_gate_reasons = {reason for reason in objective_reasons if reason.startswith("objective_gate:")}
+    if objective_reasons - objective_gate_reasons:
+        return False
+    allowed_objective = {
+        "objective_gate:observe_before_scaling",
+        "objective_gate:bootstrap_observe_before_scaling",
+    }
+    if not objective_gate_reasons or not objective_gate_reasons <= allowed_objective:
+        return False
+    editorial = story.get("editorial") or {}
+    if editorial.get("approved") is not True:
+        return False
+    publish = story.get("publish_score") or {}
+    if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+        return False
+    if float(publish.get("score", 0) or 0) < 90:
+        return False
+    if float(queue_prune.get("score", 0) or 0) < 80:
+        return False
+    rights = story.get("rights_audit") or {}
+    if rights.get("approved") is not True or rights.get("warnings"):
+        return False
+    brain = story.get("youtube_brain") or {}
+    if brain.get("state") != "publish_minded":
+        return False
+    brain_risks = {str(risk) for risk in (brain.get("risks") or [])}
+    if brain_risks - RESERVE_ALLOWED_BRAIN_RISKS:
+        return False
+    packaging = story.get("packaging") or {}
+    if packaging.get("state") == "rewrite_packaging":
+        return False
+    packaging_risks = {str(risk) for risk in (packaging.get("risks") or [])}
+    if packaging_risks - RESERVE_ALLOWED_PACKAGING_RISKS:
+        return False
+    return True
+
+
 def _agency_held_ids(path: Path = AGENCY_GATE_FILE) -> set[str]:
     if not path.exists():
         return set()
@@ -574,6 +619,17 @@ def _apply_editorial_cooldown_supply_fallback(story: dict) -> None:
         "original_state": original_editorial.get("state"),
         "original_reasons": list(original_editorial.get("reasons") or []),
     }
+
+
+def _apply_publish_ready_reserve_fallback(story: dict) -> None:
+    queue_prune = dict(story.get("queue_prune") or {})
+    objective_reasons = [str(reason) for reason in (queue_prune.get("objective_reasons") or [])]
+    if PUBLISH_READY_SUPPLY_RESERVE_FALLBACK not in objective_reasons:
+        objective_reasons.append(PUBLISH_READY_SUPPLY_RESERVE_FALLBACK)
+    queue_prune["objective_reasons"] = objective_reasons
+    queue_prune["state"] = "publish_ready"
+    queue_prune["score"] = max(72.0, float(queue_prune.get("score", 0) or 0))
+    story["queue_prune"] = queue_prune
 
 
 def prune_queue(
@@ -860,6 +916,28 @@ def prune_queue(
         for story in fallback_candidates[: max(0, 2 - publish_ready_count)]:
             _apply_editorial_cooldown_supply_fallback(story)
             reasons.update([EDITORIAL_COOLDOWN_SUPPLY_FALLBACK])
+        publish_ready_count = _operational_publish_ready_count(kept)
+    if publish_ready_count < 2:
+        paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
+        held_ids = _agency_held_ids()
+        reserve_candidates = [
+            story
+            for story in kept
+            if _publish_ready_reserve_candidate(story)
+            and str(story.get("id") or "") not in held_ids
+            and str(story.get("category") or "").strip().lower() not in paused
+        ]
+        reserve_candidates.sort(
+            key=lambda story: (
+                float((story.get("autonomy") or {}).get("priority", 0) or 0),
+                float((story.get("publish_score") or {}).get("score", 0) or 0),
+                float((story.get("queue_prune") or {}).get("score", 0) or 0),
+            ),
+            reverse=True,
+        )
+        for story in reserve_candidates[: max(0, 2 - publish_ready_count)]:
+            _apply_publish_ready_reserve_fallback(story)
+            reasons.update([PUBLISH_READY_SUPPLY_RESERVE_FALLBACK])
 
     out = dict(queue)
     out["stories"] = consumed + kept

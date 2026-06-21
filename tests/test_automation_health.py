@@ -120,6 +120,35 @@ def test_automation_health_counts_only_operationally_publish_ready_items(tmp_pat
     assert out["queue"]["publish_ready"] == 1
 
 
+def test_automation_health_flags_empty_operational_publish_ready_inventory(tmp_path: Path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    (data / "stories_queue.json").write_text(
+        json.dumps(
+            {
+                "stories": [
+                    {
+                        "id": "rewrite",
+                        "category": "plants",
+                        "seo_title": "Plants signal stress through leaves",
+                        "script": "Plants signal stress through leaves before a neighbor changes chemistry.",
+                        "queue_prune": {"state": "rewrite"},
+                        "publish_score": {"approved": False, "state": "rewrite"},
+                        "editorial": {"approved": True},
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    out = build_health(tmp_path)
+
+    assert out["queue"]["publish_ready"] == 0
+    assert "publish_ready_inventory_empty" in out["issues"]
+    assert out["score"] < 100
+
+
 def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
     data = tmp_path / "_data"
     data.mkdir(parents=True)

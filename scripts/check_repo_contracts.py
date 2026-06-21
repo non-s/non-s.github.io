@@ -64,6 +64,7 @@ REQUIRED_FILES = (
     "utils/music_bed.py",
     "utils/media_lifecycle.py",
     "utils/render_qa.py",
+    "utils/queue_readiness.py",
 )
 
 WORKFLOW_TOKENS = {
@@ -101,11 +102,15 @@ WORKFLOW_TOKENS = {
         "Publish-ready inventory is enough; raw pending inventory is monitored by fetch-content.",
         "fetch-content owns deeper replenishment",
         'timeout "${backfill_timeout}s" python fetch_animals.py',
+        'hard_fail_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}',
+        "Publishing was required, but the publish window could not select an eligible Short",
         "base_pending_target + (attempt - 1) * pending_batch",
         "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (
         'cron: "9,23 * * * *"',
+        'workflows: ["YouTube Bot - Shorts only"]',
+        "github.event.workflow_run.conclusion == 'success'",
         "quota_preflight.py fetch-content",
         "apply_topic_freshness.py",
         "FETCH_REFRESH_TIMEOUT_SECONDS || '720'",

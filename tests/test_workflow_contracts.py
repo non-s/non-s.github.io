@@ -50,6 +50,8 @@ def test_workflows_parse_and_include_growth_steps():
         not in youtube_workflow
     )
     assert "REQUIRE_SHORT_ON_PUBLISH" in youtube_workflow
+    assert 'hard_fail_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}' in youtube_workflow
+    assert "Publishing was required, but the publish window could not select an eligible Short" in youtube_workflow
     assert "REQUIRE_UPLOAD_ON_PUBLISH" in youtube_workflow
     assert "Sincronizar diagnosticos da fila" in youtube_workflow
     assert "python scripts/run_intelligence_suite.py queue" in youtube_workflow
@@ -77,6 +79,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "python scripts/youtube_slot_dispatch.py watchdog" in watchdog_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert 'cron: "9,23 * * * *"' in fetch_workflow
+    assert 'workflows: ["YouTube Bot - Shorts only"]' in fetch_workflow
+    assert "github.event.workflow_run.conclusion == 'success'" in fetch_workflow
     assert "do not hold the" in fetch_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' in fetch_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in fetch_workflow

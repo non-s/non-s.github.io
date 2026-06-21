@@ -70,7 +70,10 @@ def test_queue_ready_count_excludes_ops_paused_category(monkeypatch):
             }
         ]
     }
-    monkeypatch.setattr("scripts.queue_ready_count.paused_categories", lambda: {"wildlife": {"category": "wildlife"}})
+    monkeypatch.setattr(
+        "utils.queue_readiness.paused_categories",
+        lambda path=None: {"wildlife": {"category": "wildlife"}},
+    )
 
     payload = build_payload(queue, env={"OPS_GUARDIAN_ENFORCE": "1"})
 
@@ -104,12 +107,12 @@ def test_queue_ready_count_excludes_agency_held_candidate(monkeypatch, tmp_path)
 
 
 def test_queue_ready_count_refresh_recomputes_agency_gate(monkeypatch, tmp_path):
-    monkeypatch.setattr("scripts.queue_ready_count.load_rewrite_ids", lambda path: set())
-    monkeypatch.setattr("scripts.queue_ready_count.load_recovery_plans", lambda path: {})
-    monkeypatch.setattr("scripts.queue_ready_count.load_duplicate_ids", lambda path: set())
-    monkeypatch.setattr("scripts.queue_ready_count.load_success_plan", lambda path: {})
+    monkeypatch.setattr("utils.queue_readiness.load_rewrite_ids", lambda path: set())
+    monkeypatch.setattr("utils.queue_readiness.load_recovery_plans", lambda path: {})
+    monkeypatch.setattr("utils.queue_readiness.load_duplicate_ids", lambda path: set())
+    monkeypatch.setattr("utils.queue_readiness.load_success_plan", lambda path: {})
     monkeypatch.setattr(
-        "scripts.queue_ready_count.evaluate_story",
+        "utils.queue_readiness.evaluate_story",
         lambda story, rewrite_ids, recovery, duplicate_ids, success_plan: {
             "approved": False,
             "reasons": ["success_recovery_hook_required"],
