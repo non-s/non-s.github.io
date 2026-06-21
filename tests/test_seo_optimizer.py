@@ -21,6 +21,13 @@ def test_seo_score_rewards_frontloaded_animal():
     assert "animal_not_front_loaded" in weak["issues"]
 
 
+def test_seo_score_does_not_require_animal_for_physical_nature():
+    score = seo_score("Lightning turns air into a shock wave", category="weather", subject="lightning")
+
+    assert score["score"] == 100
+    assert "animal_not_front_loaded" not in score["issues"]
+
+
 def test_optimise_story_records_before_and_after():
     story = optimise_story(
         {

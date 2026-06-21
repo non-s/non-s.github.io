@@ -1255,7 +1255,7 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
     queue_tags = [t for t in (story.get("yt_tags") or []) if isinstance(t, str)]
     all_tags = merge_search_tags(queue_tags, category)
 
-    seo = seo_score(base_title)
+    seo = seo_score(base_title, subject=str(story.get("subject") or ""), category=category)
     created_at = datetime.now(timezone.utc)
     temporal = temporal_fields(now=created_at)
     metadata = {

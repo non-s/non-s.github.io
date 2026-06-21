@@ -122,6 +122,22 @@ _ANIMAL_ALIASES = {
 }
 
 _ANIMAL_WORDS = set(_ANIMAL_ALIASES)
+_NON_ANIMAL_CATEGORIES = {
+    "earth_from_space",
+    "weather",
+    "volcanoes",
+    "geology",
+    "rivers",
+    "physics",
+    "forests",
+    "fungi",
+    "plants",
+    "trees",
+    "ecosystems",
+    "rare_phenomena",
+    "conservation",
+    "discoveries",
+}
 
 
 def _words(text: str) -> list[str]:
@@ -134,6 +150,14 @@ def _animal_from_text(*parts: str) -> str:
             if word in _ANIMAL_ALIASES:
                 return _ANIMAL_ALIASES[word]
     return ""
+
+
+def _category_key(category: str) -> str:
+    return str(category or "").strip().lower().replace("-", "_")
+
+
+def _is_non_animal_category(category: str, *parts: str) -> bool:
+    return _category_key(category) in _NON_ANIMAL_CATEGORIES and not _animal_from_text(*parts)
 
 
 def _clean_title(title: str) -> str:
@@ -201,16 +225,17 @@ def optimise_title(
     return out or _clean_title(title)
 
 
-def seo_score(title: str) -> dict:
+def seo_score(title: str, *, subject: str = "", category: str = "") -> dict:
     words = _words(title)
     first = [w.lower() for w in words[:3]]
     issues: list[str] = []
     score = 100
     weak_front = bool(first and first[0] in {"why", "how", "this", "these"})
+    non_animal_category = _is_non_animal_category(category, title, subject)
     if weak_front:
         score -= 10
         issues.append("weak_search_front")
-    if not first or first[0] not in _ANIMAL_WORDS:
+    if not non_animal_category and (not first or first[0] not in _ANIMAL_WORDS):
         score -= 28
         issues.append("animal_not_front_loaded")
     if len(title or "") < 32:
@@ -235,7 +260,11 @@ def lint_metadata(meta: dict, recent_titles: list[str] | None = None, *, strict:
     title = str(meta.get("title") or "")
     description = str(meta.get("description") or "")
     tags = [str(tag).strip().lstrip("#") for tag in (meta.get("tags") or []) if str(tag).strip()]
-    title_score = seo_score(title)
+    title_score = seo_score(
+        title,
+        subject=str(meta.get("subject") or meta.get("animal") or ""),
+        category=str(meta.get("category") or ""),
+    )
     score = int(title_score.get("score", 0))
     errors: list[str] = []
     warnings: list[str] = list(title_score.get("issues") or [])
@@ -291,6 +320,10 @@ def optimise_story(story: dict) -> dict:
         "applied": optimised != title,
         "before_title": title,
         "after_title": optimised,
-        **seo_score(optimised),
+        **seo_score(
+            optimised,
+            subject=str(out.get("subject") or out.get("animal") or ""),
+            category=str(out.get("category") or ""),
+        ),
     }
     return out

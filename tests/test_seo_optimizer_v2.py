@@ -23,6 +23,21 @@ def test_metadata_lint_accepts_searchable_short_title():
     assert lint["approved"] is True
 
 
+def test_metadata_lint_does_not_call_physical_nature_animal_missing():
+    lint = lint_metadata(
+        {
+            "title": "Lightning turns air into a shock wave",
+            "description": "A weather fact. #Shorts #NatureFacts #WildBrief",
+            "tags": ["lightning", "weather", "science"],
+            "category": "weather",
+            "subject": "lightning",
+        }
+    )
+
+    assert lint["approved"] is True
+    assert "animal_not_front_loaded" not in lint["warnings"]
+
+
 def test_optimise_story_keeps_seo_lint_compatible_title():
     story = optimise_story({"title": "why cats purr at night", "category": "cats"})
 
