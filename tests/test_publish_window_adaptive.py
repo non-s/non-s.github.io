@@ -223,6 +223,36 @@ def test_publish_window_skips_when_only_rewrite_candidates_exist(tmp_path):
     assert decision["decision"] == "skip_no_eligible_story"
 
 
+def test_publish_window_excludes_brain_or_packaging_risk_candidates(tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "risky",
+                    "title": "Risky candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "youtube_brain": {"state": "rewrite", "risks": ["script_length_risk"]},
+                    "packaging": {"state": "magnetic", "risks": []},
+                }
+            ]
+        },
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={"ADAPTIVE_CADENCE_ENABLED": "1"},
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_no_eligible_story"
+    assert "no_eligible_story" in decision["reasons"]
+
+
 def test_publish_window_ignores_unchecked_candidate_when_queue_has_prune_state(monkeypatch, tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
     _write_json(

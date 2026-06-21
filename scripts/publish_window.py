@@ -106,6 +106,10 @@ def _eligible_stories(queue: dict, env: Mapping[str, str] | None = None, *, root
         publish = story.get("publish_score") or {}
         if publish and (publish.get("approved") is not True or publish.get("state") != "publish_ready"):
             continue
+        brain = story.get("youtube_brain") or {}
+        packaging = story.get("packaging") or {}
+        if brain.get("risks") or packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
+            continue
         out.append(story)
     return out
 
