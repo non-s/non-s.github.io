@@ -24,6 +24,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "scripts/queue_ready_count.py --field pending" in youtube_workflow
     assert "PUBLISH_BACKFILL_READY_TARGET || '2'" in youtube_workflow
     assert 'target="${QUEUE_TARGET_PUBLISH_READY:-2}"' in youtube_workflow
+    assert "PUBLISH_MIN_READY_TO_PUBLISH || '1'" in youtube_workflow
+    assert 'minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}" in youtube_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
@@ -38,7 +40,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}" in youtube_workflow
     assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
-    assert 'while [ "${ready}" -lt "${target}" ]' in youtube_workflow
+    assert 'while [ "${ready}" -lt "${minimum_to_publish}" ]' in youtube_workflow
+    assert "Publish-ready inventory can satisfy this one-Short run" in youtube_workflow
     assert "Publish-ready inventory is enough; raw pending inventory is monitored by fetch-content." in youtube_workflow
     assert "fetch-content owns deeper replenishment" in youtube_workflow
     assert 'timeout "${backfill_timeout}s" python fetch_animals.py' in youtube_workflow

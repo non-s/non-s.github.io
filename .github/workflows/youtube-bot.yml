@@ -138,19 +138,23 @@ jobs:
             python scripts/queue_ready_count.py --field pending
           }
           target="${QUEUE_TARGET_PUBLISH_READY:-2}"
+          minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"
           max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-2}"
           base_pending_target="${QUEUE_TARGET_PENDING:-18}"
           pending_batch="${QUEUE_BACKFILL_PENDING_BATCH:-6}"
           backfill_timeout="${QUEUE_BACKFILL_TIMEOUT_SECONDS:-540}"
           ready="$(ready_count)"
           pending="$(pending_count)"
-          echo "Operational queue before publish backfill: publish-ready ${ready}/${target}; pending ${pending}/${base_pending_target}"
+          echo "Operational queue before publish backfill: publish-ready ${ready}/${target}; minimum-to-publish ${minimum_to_publish}; pending ${pending}/${base_pending_target}"
           if [ "${ready}" -ge "${target}" ]; then
             echo "Publish-ready inventory is enough; raw pending inventory is monitored by fetch-content."
           fi
+          if [ "${ready}" -ge "${minimum_to_publish}" ] && [ "${ready}" -lt "${target}" ]; then
+            echo "Publish-ready inventory can satisfy this one-Short run; reserve backfill is left to fetch-content."
+          fi
           attempt=1
-          while [ "${ready}" -lt "${target}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
-            echo "Publish-ready queue is below target; emergency backfill attempt ${attempt}/${max_attempts}."
+          while [ "${ready}" -lt "${minimum_to_publish}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
+            echo "Publish-ready queue is below the publish minimum; emergency backfill attempt ${attempt}/${max_attempts}."
             export QUEUE_TARGET_PENDING=$((base_pending_target + (attempt - 1) * pending_batch))
             echo "Raw pending target for this attempt: ${QUEUE_TARGET_PENDING}"
             if ! timeout "${backfill_timeout}s" python fetch_animals.py; then
@@ -160,7 +164,7 @@ jobs:
             python scripts/apply_topic_freshness.py || true
             ready="$(ready_count)"
             pending="$(pending_count)"
-            echo "Operational queue after backfill attempt ${attempt}: publish-ready ${ready}/${target}; pending ${pending}/${base_pending_target}"
+            echo "Operational queue after backfill attempt ${attempt}: publish-ready ${ready}/${target}; minimum-to-publish ${minimum_to_publish}; pending ${pending}/${base_pending_target}"
             attempt=$((attempt + 1))
           done
           python scripts/queue_ready_count.py --json
@@ -178,6 +182,7 @@ jobs:
           BROLL_SOURCE_MODE: "pexels"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
           QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '2' }}
+          QUEUE_MIN_READY_TO_PUBLISH: ${{ vars.PUBLISH_MIN_READY_TO_PUBLISH || '1' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}
           QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '6' }}
           QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '2' }}
