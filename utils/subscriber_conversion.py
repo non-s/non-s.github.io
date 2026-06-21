@@ -31,6 +31,7 @@ CATEGORY_CTA = {
     "oceans": "Want to uncover what is still hidden in the ocean?",
     "volcanoes": "Want more of Earth's forces in action?",
     "weather": "Want to see more extreme weather explained fast?",
+    "earth_from_space": "Want more planet-scale nature explained fast?",
     "geology": "Want to understand the planet under your feet?",
     "rivers": "Want to see how moving water reshapes the world?",
     "tree": "Want to see how trees quietly engineer the planet?",
@@ -47,6 +48,7 @@ CATEGORY_CTA = {
     "primates": "Want one animal signal a day? Follow for the next intelligence clue.",
     "insects": "Want more small creatures doing impossible things?",
     "reptiles": "Want more survival tricks from ancient designs?",
+    "plants": "Want to see how plants quietly engineer survival?",
 }
 
 DEBATE_PROMPTS = {
@@ -56,6 +58,7 @@ DEBATE_PROMPTS = {
     "oceans": "What feels more impossible: the ocean's depth, pressure, or creatures?",
     "volcanoes": "Is this destruction, construction, or both at once?",
     "weather": "Which is scarier: wind, water, lightning, or heat?",
+    "earth_from_space": "Which planet-scale clue should we compare next?",
     "geology": "Does this make Earth feel stable or constantly moving?",
     "rivers": "Are rivers more like roads, tools, or engines?",
     "tree": "Do trees feel more like structures, networks, or living machines?",
@@ -68,11 +71,13 @@ DEBATE_PROMPTS = {
     "birds": "Is this adaptation, instinct, or intelligence?",
     "insects": "Is this tiny design more impressive than large-animal survival?",
     "reptiles": "Is this ancient design underrated?",
+    "plants": "Do plants feel more passive, reactive, or strategic here?",
 }
 
 SERIES_BY_CATEGORY = {
     "volcanoes": "Earth Engine",
     "weather": "Earth Engine",
+    "earth_from_space": "Planet Earth",
     "geology": "Earth Engine",
     "rivers": "Earth Engine",
     "fungi": "Hidden Network",
@@ -91,6 +96,7 @@ SERIES_BY_CATEGORY = {
     "primates": "Animal Intelligence",
     "reptiles": "Survival Tricks",
     "insects": "Small Superpowers",
+    "plants": "Biology Brief",
 }
 
 

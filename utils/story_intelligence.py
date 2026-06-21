@@ -36,6 +36,22 @@ FORMAT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("myth_buster", ("not just", "isn't", "aren't", "myth", "think", "really")),
     ("cute_behavior", ("baby", "love", "play", "purr", "groom", "quietly", "bottle")),
 )
+NON_ANIMAL_CATEGORY_FORMATS = {
+    "earth_from_space": "earth_engine",
+    "weather": "earth_engine",
+    "volcanoes": "earth_engine",
+    "geology": "earth_engine",
+    "rivers": "earth_engine",
+    "forests": "hidden_network",
+    "fungi": "hidden_network",
+    "tree": "hidden_network",
+    "trees": "hidden_network",
+    "plants": "plant_mechanism",
+    "ecosystems": "ecosystem_engine",
+    "rare_phenomena": "rare_nature",
+    "conservation": "conservation_signal",
+    "discoveries": "science_clue",
+}
 
 TITLE_PATTERNS = (
     "{animal} can {surprising_ability}",
@@ -172,6 +188,78 @@ _ANIMAL_WORDS = {
     "fossil",
     "biology",
 }
+_STRICT_ANIMAL_WORDS = {
+    "ant",
+    "ants",
+    "bat",
+    "bats",
+    "bear",
+    "bears",
+    "bee",
+    "bees",
+    "beetle",
+    "beetles",
+    "bird",
+    "birds",
+    "butterfly",
+    "butterflies",
+    "cat",
+    "cats",
+    "chameleon",
+    "chameleons",
+    "chicken",
+    "chickens",
+    "cow",
+    "cows",
+    "deer",
+    "dog",
+    "dogs",
+    "dolphin",
+    "dolphins",
+    "duck",
+    "duckling",
+    "ducklings",
+    "ducks",
+    "eagle",
+    "elephant",
+    "elephants",
+    "fish",
+    "fox",
+    "goat",
+    "goats",
+    "horse",
+    "horses",
+    "lion",
+    "lions",
+    "macaw",
+    "mantis",
+    "mantises",
+    "monkey",
+    "monkeys",
+    "octopus",
+    "octopuses",
+    "orangutan",
+    "orangutans",
+    "owl",
+    "parrot",
+    "parrots",
+    "penguin",
+    "penguins",
+    "seal",
+    "seals",
+    "shark",
+    "sharks",
+    "sheep",
+    "snake",
+    "snakes",
+    "tiger",
+    "turtle",
+    "turtles",
+    "whale",
+    "whales",
+    "wolf",
+    "wolves",
+}
 
 
 @dataclass(frozen=True)
@@ -183,8 +271,20 @@ class Audit:
         return asdict(self)
 
 
-def classify_format(text: str) -> str:
+def _has_strict_animal(text: str) -> bool:
+    return any(word in _STRICT_ANIMAL_WORDS for word in re.findall(r"[a-z]+", (text or "").lower()))
+
+
+def classify_format(text: str, category: str = "") -> str:
     lower = (text or "").lower()
+    category_key = str(category or "").strip().lower()
+    if category_key in NON_ANIMAL_CATEGORY_FORMATS and not _has_strict_animal(lower):
+        return NON_ANIMAL_CATEGORY_FORMATS[category_key]
+    if not _has_strict_animal(lower):
+        for name in ("earth_engine", "hidden_network", "rare_nature", "conservation_signal"):
+            needles = next((needles for rule, needles in FORMAT_RULES if rule == name), ())
+            if any(needle in lower for needle in needles):
+                return name
     for name, needles in FORMAT_RULES:
         if any(needle in lower for needle in needles):
             return name

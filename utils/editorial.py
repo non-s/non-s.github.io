@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import re
 import os
+import re
 from dataclasses import asdict, dataclass
 
 from utils import channel_memory
@@ -28,6 +28,20 @@ SERIES_BY_CATEGORY = {
     "primates": "Primate Intelligence",
     "nocturnal": "Night Shift Nature",
     "arctic": "Polar Survival",
+    "earth_from_space": "Planet Earth",
+    "weather": "Earth Engine",
+    "volcanoes": "Earth Engine",
+    "geology": "Earth Engine",
+    "rivers": "Earth Engine",
+    "forests": "Hidden Network",
+    "fungi": "Hidden Network",
+    "tree": "Hidden Network",
+    "trees": "Hidden Network",
+    "plants": "Biology Brief",
+    "ecosystems": "Hidden Network",
+    "rare_phenomena": "Rare Earth",
+    "conservation": "Planet Repair",
+    "discoveries": "Discovery Brief",
 }
 
 _ANIMAL_ALIASES = {
@@ -185,7 +199,7 @@ def subject_for_story(story: dict) -> str:
 
 def series_for_story(story: dict) -> str:
     category = str(story.get("category") or "wildlife").strip().lower()
-    return SERIES_BY_CATEGORY.get(category, "Animal Superpowers")
+    return SERIES_BY_CATEGORY.get(category, "Nature Signals")
 
 
 def _recent_subject_repeat(subject: str, story: dict, days: int) -> bool:

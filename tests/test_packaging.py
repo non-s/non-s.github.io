@@ -341,6 +341,31 @@ def test_package_story_normalizes_earth_category_from_title_and_tags():
     assert "another nature signal" in pinned_comment(packaged).lower()
 
 
+def test_package_story_replaces_stale_animal_series_for_weather():
+    packaged = package_story(
+        _story(
+            title="Lightning turns air into a shock wave",
+            seo_title="Lightning turns air into a shock wave",
+            hook="Lightning turns air into a shock wave.",
+            script=(
+                "Lightning turns air into a shock wave. Watch the flash first, because lightning heats "
+                "a narrow path of air extremely fast. Which storm signal next?"
+            ),
+            thumbnail_text="THUNDER SNAP",
+            category="weather",
+            series="Animal Superpowers #16",
+            story_format="animal_intelligence",
+            yt_tags=["weather", "lightning"],
+        )
+    )
+
+    assert packaged["story_format"] == "earth_engine"
+    assert packaged["series"].startswith("Earth Engine")
+    assert "animal" not in packaged["series"].lower()
+    assert "animal signal" not in packaged["cta_prompt"].lower()
+    assert "another nature signal" in packaged["pinned_comment"].lower()
+
+
 def test_package_story_adds_comment_and_community_hook():
     packaged = package_story(_story(thumbnail_text=""))
 

@@ -439,6 +439,37 @@ SERIES_CATALOG = {
     "conservation_signal": "Planet Repair",
     "default": "Nature Signals",
 }
+NATURE_SERIES_BY_CATEGORY = {
+    "earth_from_space": "Planet Earth",
+    "weather": "Earth Engine",
+    "volcanoes": "Earth Engine",
+    "geology": "Earth Engine",
+    "rivers": "Earth Engine",
+    "forests": "Hidden Network",
+    "fungi": "Hidden Network",
+    "tree": "Hidden Network",
+    "trees": "Hidden Network",
+    "plants": "Biology Brief",
+    "ecosystems": "Hidden Network",
+    "rare_phenomena": "Rare Earth",
+    "conservation": "Planet Repair",
+    "discoveries": "Discovery Brief",
+}
+ANIMAL_SERIES_NAMES = {
+    "animal intelligence",
+    "animal memory",
+    "animal myths",
+    "animal superpowers",
+    "body clues",
+    "survival tricks",
+}
+ANIMAL_FORMAT_NAMES = {
+    "animal_intelligence",
+    "animal_memory",
+    "body_superpower",
+    "cute_behavior",
+    "survival_trick",
+}
 _PACKAGING_CACHE: dict[tuple[str, str], dict] = {}
 NATURE_SIGNAL_CATEGORIES = {
     "earth_from_space",
@@ -469,6 +500,7 @@ NATURE_SIGNAL_SUBJECTS = {
     "fungi",
     "geology",
     "glacier",
+    "lightning",
     "lava",
     "mushroom",
     "mushrooms",
@@ -483,6 +515,9 @@ NATURE_SIGNAL_SUBJECTS = {
     "rocks",
     "storm",
     "storms",
+    "cloud",
+    "clouds",
+    "thunder",
     "tree",
     "trees",
     "volcano",
@@ -565,6 +600,14 @@ def _uses_nature_signal(story: dict) -> bool:
 
 def _return_hook(story: dict) -> str:
     return "Tomorrow: another nature signal." if _uses_nature_signal(story) else "Tomorrow: another animal signal."
+
+
+def _series_base(value: str) -> str:
+    return re.sub(r"\s+#\d+$", "", str(value or "").strip())
+
+
+def _is_animal_series(value: str) -> bool:
+    return _series_base(value).lower() in ANIMAL_SERIES_NAMES
 
 
 def _hook_mentions_subject(hook: str, subject: str) -> bool:
@@ -777,9 +820,25 @@ def community_prompt(story: dict) -> str:
 def series_name(story: dict) -> str:
     current = str(story.get("series") or "").strip()
     if current:
+        if _uses_nature_signal(story) and _is_animal_series(current):
+            current = ""
+        else:
+            return current[:60]
+    if _uses_nature_signal(story):
+        category_series = NATURE_SERIES_BY_CATEGORY.get(str(story.get("category") or "").strip().lower())
+        if category_series:
+            return category_series
+        fmt = classify_format(
+            " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script")),
+            category=str(story.get("category") or ""),
+        )
+        if fmt in SERIES_CATALOG:
+            return SERIES_CATALOG[fmt]
+        return SERIES_CATALOG["default"]
+    if current:
         return current[:60]
     text = " ".join(str(story.get(k) or "") for k in ("seo_title", "title", "hook", "script")).lower()
-    fmt = classify_format(text)
+    fmt = classify_format(text, category=str(story.get("category") or ""))
     if any(word in text for word in ("myth", "really", "not true", "isn't true")):
         return SERIES_CATALOG["animal_myth"]
     if fmt in SERIES_CATALOG:
@@ -791,7 +850,7 @@ def series_name(story: dict) -> str:
 
 def series_package(story: dict, memory: dict | None = None) -> dict:
     base = dict(story)
-    if not base.get("series"):
+    if not base.get("series") or (_uses_nature_signal(base) and _is_animal_series(str(base.get("series") or ""))):
         base["series"] = series_name(base)
     return series_identity(base, memory=memory)
 
@@ -813,6 +872,13 @@ def package_story(story: dict) -> dict:
     normalized_category = normalize_story_category(out)
     if normalized_category:
         out["category"] = normalized_category
+    current_format = str(out.get("story_format") or "").strip()
+    inferred_format = classify_format(
+        " ".join(str(out.get(k) or "") for k in ("seo_title", "title", "hook", "script")),
+        category=str(out.get("category") or ""),
+    )
+    if not current_format or (_uses_nature_signal(out) and current_format in ANIMAL_FORMAT_NAMES):
+        out["story_format"] = inferred_format
     local_rewrite_method = str((out.get("local_rewrite") or {}).get("method") or "")
     preserve_source_packaging = (
         str(out.get("studio_state") or "") == "comment_idea"

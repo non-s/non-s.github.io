@@ -169,6 +169,35 @@ def test_metadata_includes_packaging_and_pinned_comment(tmp_path: Path):
     assert meta["pinned_comment"] == meta["packaging"]["pinned_comment"]
 
 
+def test_metadata_keeps_earth_from_space_out_of_animal_lane(tmp_path: Path):
+    from generate_shorts import _queue_to_story, build_short_metadata
+
+    story = _queue_to_story(
+        {
+            "id": "storm-story",
+            "seo_title": "Storm clouds filter sunlight into a softer glow",
+            "title": "Storm clouds filter sunlight into a softer glow",
+            "hook": "Storm clouds spread sunlight before it reaches the ground.",
+            "script": (
+                "Storm clouds spread sunlight before it reaches the ground. Watch the flat light, "
+                "because thick cloud layers scatter direct sun in many directions. Which light clue "
+                "should we compare next?"
+            ),
+            "thumbnail_text": "SOFT LIGHT",
+            "category": "earth_from_space",
+            "series": "Animal Superpowers #16",
+            "story_format": "animal_intelligence",
+            "yt_tags": ["earth_from_space", "clouds", "atmosphere"],
+        }
+    )
+    meta = build_short_metadata(story, tmp_path / "short.mp4", tmp_path / "thumb.jpg")
+
+    assert meta["story_format"] == "earth_engine"
+    assert meta["series"].startswith("Earth Engine") or meta["series"].startswith("Planet Earth")
+    assert "animal signal" not in meta["cta_prompt"].lower()
+    assert "another nature signal" in meta["pinned_comment"].lower()
+
+
 def test_metadata_includes_retention_surgery(tmp_path: Path):
     surgery = _meta(tmp_path)["retention_surgery"]
     assert "score" in surgery

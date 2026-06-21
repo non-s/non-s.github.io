@@ -66,6 +66,26 @@ def test_rank_candidates_puts_approved_story_first(monkeypatch):
     assert ranked[0]["editorial"]["humanity"]["label"] in {"human", "signature"}
 
 
+def test_editor_assigns_non_animal_series_for_weather(monkeypatch):
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
+    story = {
+        **_story(),
+        "title": "Lightning turns air into thunder",
+        "hook": "Lightning turns air into thunder.",
+        "script": (
+            "Lightning turns air into thunder. Watch the flash first, because lightning heats air "
+            "fast enough to make a pressure wave. The sound is the atmosphere snapping back."
+        ),
+        "thumbnail_text": "THUNDER SNAP",
+        "category": "weather",
+        "yt_tags": ["weather", "lightning"],
+    }
+
+    out = editorial.review(story)
+
+    assert out.series == "Earth Engine"
+
+
 def test_subject_normalises_plural_and_ignores_habitat_tag():
     story = _story()
     story["yt_tags"] = ["coral", "octopuses", "camouflage"]

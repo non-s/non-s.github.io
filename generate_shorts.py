@@ -1277,7 +1277,7 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "thumbnail_hook": story.get("thumbnail_text", "").strip(),
         "hook": story.get("hook", "").strip(),
         "story_format": story.get("story_format")
-        or classify_format(f"{base_title} {story.get('hook', '')} {story.get('script', '')}"),
+        or classify_format(f"{base_title} {story.get('hook', '')} {story.get('script', '')}", category=category),
         "hook_audit": audit_hook(story.get("hook", "")).to_dict(),
         "title_audit": audit_title(base_title).to_dict(),
         "seo_score": seo,
@@ -1908,7 +1908,9 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         narrator_variant=narrator_variant,
     )
     story["narrator_voice"] = voice
-    story["story_format"] = classify_format(f"{display_title} {hook_text} {queue_script}")
+    story["story_format"] = story.get("story_format") or classify_format(
+        f"{display_title} {hook_text} {queue_script}", category=category
+    )
     log.info(f"  🎤 Voice: {voice}{' [' + voice_tag + ']' if voice_tag else ''}")
 
     # Split-rate TTS: render the hook at a calmer rate (≈ 4 pp slower)
