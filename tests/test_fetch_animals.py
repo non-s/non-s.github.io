@@ -772,6 +772,32 @@ def test_backfill_per_topic_cap_spreads_short_queue_targets():
     assert fetch_animals._backfill_per_topic_cap(0, topic_count=10) is None
 
 
+def test_backfill_plan_opens_recovery_slots_when_publish_ready_is_low():
+    target, max_new = fetch_animals._backfill_plan_for_inventory(
+        pending_at_start=18,
+        target_pending=18,
+        publish_ready_at_start=0,
+        ready_target=2,
+        recovery_batch=6,
+    )
+
+    assert target == 30
+    assert max_new == 12
+
+
+def test_backfill_plan_keeps_raw_target_when_publish_ready_supply_exists():
+    target, max_new = fetch_animals._backfill_plan_for_inventory(
+        pending_at_start=17,
+        target_pending=18,
+        publish_ready_at_start=2,
+        ready_target=2,
+        recovery_batch=6,
+    )
+
+    assert target == 18
+    assert max_new == 1
+
+
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_animals, "PUBLISHED_CLIPS_FILE", tmp_path / "missing.json")
     assert fetch_animals.load_published_clip_keys() == set()

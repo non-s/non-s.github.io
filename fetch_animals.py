@@ -119,6 +119,8 @@ def _env_int(name: str, default: int, *, minimum: int = 0, maximum: int | None =
 MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("ANIMALS_MAX_PER_TOPIC", "4"))
 KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 QUEUE_TARGET_PENDING = int(os.environ.get("QUEUE_TARGET_PENDING", "1"))
+QUEUE_TARGET_PUBLISH_READY = _env_int("QUEUE_TARGET_PUBLISH_READY", 2, minimum=0, maximum=24)
+QUEUE_READY_RECOVERY_BATCH = _env_int("QUEUE_READY_RECOVERY_BATCH", 12, minimum=1, maximum=72)
 PEXELS_SEARCH_PER_PAGE = _env_int("PEXELS_SEARCH_PER_PAGE", 32, minimum=4, maximum=80)
 PEXELS_DISCOVERY_PAGES = _env_int("PEXELS_DISCOVERY_PAGES", 2, minimum=1, maximum=5)
 PEXELS_BACKFILL_QUERY_TAKE = _env_int("PEXELS_BACKFILL_QUERY_TAKE", 6, minimum=2, maximum=12)
@@ -1755,6 +1757,26 @@ def _backfill_per_topic_cap(max_new_entries: int, topic_count: int | None = None
     return max(1, (max_new_entries + count - 1) // count)
 
 
+def _backfill_plan_for_inventory(
+    *,
+    pending_at_start: int,
+    target_pending: int,
+    publish_ready_at_start: int,
+    ready_target: int = QUEUE_TARGET_PUBLISH_READY,
+    recovery_batch: int = QUEUE_READY_RECOVERY_BATCH,
+) -> tuple[int, int]:
+    """Return adjusted target_pending and max_new_entries for operational supply."""
+    target_pending = max(0, int(target_pending or 0))
+    pending_at_start = max(0, int(pending_at_start or 0))
+    max_new_entries = max(0, target_pending - pending_at_start) if target_pending else 10_000
+    if target_pending and ready_target and publish_ready_at_start < ready_target:
+        recovery_gap = ready_target - max(0, int(publish_ready_at_start or 0))
+        recovery_entries = max(recovery_batch, recovery_gap * recovery_batch)
+        max_new_entries = max(max_new_entries, recovery_entries)
+        target_pending = max(target_pending, pending_at_start + max_new_entries)
+    return target_pending, max_new_entries
+
+
 def main() -> int:
     from utils.panic import abort_if_halted
 
@@ -1779,7 +1801,20 @@ def main() -> int:
     queue = _load_queue()
     pending_at_start = _pending_count(queue)
     target_pending = max(0, int(QUEUE_TARGET_PENDING or 0))
-    max_new_entries = max(0, target_pending - pending_at_start) if target_pending else 10_000
+    paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
+    publish_ready_at_start = _publish_ready_supply(queue, paused=paused, held_ids=_agency_held_ids())
+    target_pending, max_new_entries = _backfill_plan_for_inventory(
+        pending_at_start=pending_at_start,
+        target_pending=target_pending,
+        publish_ready_at_start=publish_ready_at_start,
+    )
+    if target_pending and publish_ready_at_start < QUEUE_TARGET_PUBLISH_READY:
+        log.info(
+            "Operational publish-ready supply is low (%d/%d); opening %d recovery candidate slots.",
+            publish_ready_at_start,
+            QUEUE_TARGET_PUBLISH_READY,
+            max_new_entries,
+        )
     if target_pending:
         log.info("Queue target: %d pending stories; current pending=%d", target_pending, pending_at_start)
         if max_new_entries <= 0:
@@ -1822,7 +1857,6 @@ def main() -> int:
     new_entries: list[dict] = []
     trends = load_trends()
     fetch_plan = _topic_fetch_plan(queue, _latest_strategy(), _latest_comments(), trends)
-    paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
     topic_order = _topic_iteration_order(queue, fetch_plan, paused)
     if paused:
         log.info("Ops guardian paused topic(s) skipped: %s", ", ".join(sorted(paused)))

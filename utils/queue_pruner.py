@@ -15,6 +15,7 @@ from utils.curiosity_angles import is_generic_movement_copy
 from utils.editorial import review as editorial_review
 from utils.editorial_guard import editorial_issues
 from utils.fact_ledger import duplicate_angle_ids
+from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.local_rewriter import rescue_story
 from utils.packaging import extract_action, extract_animal, extract_cue, normalize_story_category, package_story
 from utils.publish_score import score_story
@@ -42,6 +43,7 @@ GENERIC_SCRIPT_PHRASES = (
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
+AGENCY_GATE_FILE = Path("_data/agency_gate.json")
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
     "unknown_category",
@@ -509,6 +511,50 @@ def _editorial_cooldown_supply_candidate(story: dict) -> bool:
     return True
 
 
+def _agency_held_ids(path: Path = AGENCY_GATE_FILE) -> set[str]:
+    if not path.exists():
+        return set()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {str(item.get("id") or "") for item in (payload.get("held_items") or []) if isinstance(item, dict)}
+
+
+def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    editorial = story.get("editorial") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    return (
+        EDITORIAL_COOLDOWN_SUPPLY_FALLBACK in objective_reasons
+        or editorial.get("override") == EDITORIAL_COOLDOWN_SUPPLY_FALLBACK
+    )
+
+
+def _operational_publish_ready_count(stories: list[dict]) -> int:
+    paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
+    held_ids = _agency_held_ids()
+    ready = 0
+    for story in stories:
+        if not isinstance(story, dict) or story.get("consumed"):
+            continue
+        story_id = str(story.get("id") or "")
+        category = str(story.get("category") or "").strip().lower()
+        if story_id in held_ids or (category and category in paused):
+            continue
+        queue_prune = story.get("queue_prune") or {}
+        publish = story.get("publish_score") or {}
+        editorial = story.get("editorial") or {}
+        if queue_prune.get("state") != "publish_ready":
+            continue
+        if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+            continue
+        if editorial.get("approved") is not True and not _has_editorial_cooldown_supply_fallback(story):
+            continue
+        ready += 1
+    return ready
+
+
 def _apply_editorial_cooldown_supply_fallback(story: dict) -> None:
     queue_prune = dict(story.get("queue_prune") or {})
     objective_reasons = [str(reason) for reason in (queue_prune.get("objective_reasons") or [])]
@@ -800,7 +846,7 @@ def prune_queue(
         }
         kept.append(story)
 
-    publish_ready_count = sum(1 for story in kept if (story.get("queue_prune") or {}).get("state") == "publish_ready")
+    publish_ready_count = _operational_publish_ready_count(kept)
     if publish_ready_count < 2:
         fallback_candidates = [story for story in kept if _editorial_cooldown_supply_candidate(story)]
         fallback_candidates.sort(

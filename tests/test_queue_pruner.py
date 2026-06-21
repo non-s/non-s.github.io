@@ -421,6 +421,61 @@ def test_prune_queue_uses_supply_fallback_for_clean_editorial_cooldown(monkeypat
     assert rejected == []
 
 
+def test_prune_queue_supply_fallback_counts_only_operational_ready(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        editorial = {"approved": True, "state": "publish_now", "score": 100, "reasons": []}
+        if story["id"] == "story-cooldown":
+            editorial = {
+                "approved": False,
+                "state": "cooldown_subject",
+                "score": 75,
+                "reasons": ["subject repeated inside 3-day cooldown"],
+            }
+        return {
+            "story": story,
+            "score": 95,
+            "state": "publish_ready",
+            "publish_score": {
+                "approved": True,
+                "state": "publish_ready",
+                "score": 95,
+                "objective_gate": {"reasons": [], "scale_ready": True, "publish_blocking": False},
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {"risks": []},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": editorial,
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    monkeypatch.setattr("utils.queue_pruner._agency_held_ids", lambda: {"story-held"})
+    monkeypatch.setattr("utils.queue_pruner.paused_categories", lambda: {"wildlife": {"category": "wildlife"}})
+    monkeypatch.setattr("utils.queue_pruner.ops_guardian_enforced", lambda: True)
+    queue = {
+        "stories": [
+            _story("held", category="birds"),
+            _story("paused", category="wildlife"),
+            _story("cooldown", category="reptiles"),
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    by_id = {story["id"]: story for story in pruned["stories"] if not story.get("consumed")}
+    assert by_id["story-held"]["queue_prune"]["state"] == "publish_ready"
+    assert by_id["story-paused"]["queue_prune"]["state"] == "publish_ready"
+    assert by_id["story-cooldown"]["queue_prune"]["state"] == "publish_ready"
+    assert "editorial_cooldown_supply_fallback" in by_id["story-cooldown"]["queue_prune"]["objective_reasons"]
+    assert summary["reasons"]["editorial_cooldown_supply_fallback"] == 1
+    assert rejected == []
+
+
 def test_prune_queue_promotes_soft_rewrite_when_publish_guards_are_clear(monkeypatch):
     def fake_quality_issues(*args, **kwargs):
         return []
