@@ -1,53 +1,56 @@
 {
   "items": [
     {
-      "id": "9350de4d49732d9c",
-      "title": "Butterflies carry color on tiny wing scales",
-      "category": "insects",
-      "autonomy_priority": 109.24,
-      "queue_score": 100.0,
+      "id": "5cd266470d76ab3e",
+      "title": "Ducks fake injuries to protect their young",
+      "category": "farm",
+      "autonomy_priority": 91.2,
+      "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "wing_scales",
+      "mechanism_cluster": "decoy_injury",
       "objective_reasons": [
-        "objective_gate:observe_before_scaling"
+        "objective_gate:observe_before_scaling",
+        "publish_ready_supply_reserve_fallback"
       ],
-      "lane": "evergreen",
+      "lane": "recovery",
       "mix_adjustment": 5.0,
       "score": {
         "score": 100.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 65,
+          "score": 52,
           "signals": {
-            "viral_potential": 75,
-            "visual_potential": 74,
-            "replay_potential": 67,
-            "comment_potential": 57,
-            "educational_potential": 68,
-            "emotional_potential": 39,
-            "novelty": 54
+            "viral_potential": 68,
+            "visual_potential": 57,
+            "replay_potential": 56,
+            "comment_potential": 38,
+            "educational_potential": 50,
+            "emotional_potential": 45,
+            "novelty": 37
           },
-          "verdict": "produce",
-          "reasons": [],
+          "verdict": "discard",
+          "reasons": [
+            "low_opportunity_score"
+          ],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.227,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
         },
         "retention": {
-          "score": 76,
+          "score": 74,
           "signals": {
             "hook_score": 82,
-            "curiosity_score": 79,
+            "curiosity_score": 71,
             "visual_score": 66,
             "replay_score": 62,
             "completion_prediction": 84
@@ -55,17 +58,17 @@
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.227,
+            "sample_size": 2,
             "minimum_sample_size": 5,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
         },
         "weak_content": {
           "risk": 0,
@@ -102,34 +105,34 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.265,
-            "sample_size": 7,
+            "confidence_score": 0.212,
+            "sample_size": 6,
             "minimum_sample_size": 18,
             "data_quality": "estimated",
-            "data_quality_score": 0.588,
+            "data_quality_score": 0.425,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.448,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
+            "bootstrap_multiplier": 0.409,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.246,
-          "sample_size": 14,
+          "confidence_score": 0.201,
+          "sample_size": 13,
           "minimum_sample_size": 38,
           "data_quality": "estimated",
-          "data_quality_score": 0.48,
+          "data_quality_score": 0.35,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.434,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.25."
+          "bootstrap_multiplier": 0.401,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.20."
         },
-        "category": "insects",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
+        "category": "farm",
+        "story_format": "survival_trick",
+        "hook_score": 88,
+        "title_score": 84,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -144,13 +147,21 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.246,
+          "confidence_score": 0.201,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
-          "payoff_time_s": 10.45,
+          "payoff_time_s": 9.35,
           "template_cluster": "",
-          "mechanism_cluster": "wing_scales"
+          "mechanism_cluster": "decoy_injury"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ]
         }
       }
     },
@@ -317,7 +328,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 21,
+      "evergreen": 20,
       "recovery": 4
     },
     "items": [
@@ -327,7 +338,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.84
+        "freshness_score": 53.8
       },
       {
         "id": "fd63644781198e45",
@@ -335,7 +346,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.94
       },
       {
         "id": "1af1013cc6eed163",
@@ -343,7 +354,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.52
       },
       {
         "id": "7e75471e057577bf",
@@ -351,7 +362,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.84
+        "freshness_score": 53.8
       },
       {
         "id": "6f11fa4fe89c6d1d",
@@ -359,7 +370,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.94
       },
       {
         "id": "c54bd92793dd620a",
@@ -367,7 +378,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.76
       },
       {
         "id": "261197331775d3c7",
@@ -375,7 +386,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.26
+        "freshness_score": 51.22
       },
       {
         "id": "463bfdc47b0763aa",
@@ -383,15 +394,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
-      },
-      {
-        "id": "9350de4d49732d9c",
-        "title": "Butterflies carry color on tiny wing scales",
-        "category": "insects",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.76
       },
       {
         "id": "18762a35e9b1f385",
@@ -399,7 +402,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.76
       },
       {
         "id": "5a79c67faae212d6",
@@ -407,7 +410,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.74
+        "freshness_score": 54.7
       },
       {
         "id": "5cd266470d76ab3e",
@@ -415,7 +418,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.94
       },
       {
         "id": "7fdc62557df3560c",
@@ -423,7 +426,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.84
+        "freshness_score": 53.8
       },
       {
         "id": "7e200344e8235a78",
@@ -431,7 +434,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.74
+        "freshness_score": 54.7
       },
       {
         "id": "9487272509216b49",
@@ -439,7 +442,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.96
       },
       {
         "id": "887da3d44d921125",
@@ -447,7 +450,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.84
+        "freshness_score": 53.8
       },
       {
         "id": "42bc9f9a065abe14",
@@ -455,7 +458,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.94
       },
       {
         "id": "eb0beb388f27c28c",
@@ -463,7 +466,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.6
       },
       {
         "id": "ca66243c1b8718b8",
@@ -471,7 +474,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.6
       },
       {
         "id": "b69c801be93c47f2",
@@ -479,7 +482,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.94
       },
       {
         "id": "3fda9f315e7e5a36",
@@ -487,7 +490,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.76
       },
       {
         "id": "bf83bedc0c4ebced",
@@ -495,7 +498,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.66
+        "freshness_score": 54.62
       },
       {
         "id": "ee3536d828a81ce9",
@@ -503,7 +506,7 @@
         "category": "chemistry",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.52
       },
       {
         "id": "9ee098ecdf0b7d81",
@@ -511,7 +514,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.62
+        "freshness_score": 53.58
       },
       {
         "id": "024f00851345a4f8",
@@ -519,7 +522,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.96
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -532,12 +535,12 @@
       {
         "window": 10,
         "items": 2,
-        "dominant_shape": "{subject} carry color on tiny {cue} scales",
+        "dominant_shape": "{subject} fake injuries to protect their young",
         "dominant_count": 1,
         "dominant_share": 0.5,
         "top_shapes": [
           {
-            "shape": "{subject} carry color on tiny {cue} scales",
+            "shape": "{subject} fake injuries to protect their young",
             "count": 1,
             "share": 0.5
           },
@@ -551,12 +554,12 @@
       {
         "window": 30,
         "items": 2,
-        "dominant_shape": "{subject} carry color on tiny {cue} scales",
+        "dominant_shape": "{subject} fake injuries to protect their young",
         "dominant_count": 1,
         "dominant_share": 0.5,
         "top_shapes": [
           {
-            "shape": "{subject} carry color on tiny {cue} scales",
+            "shape": "{subject} fake injuries to protect their young",
             "count": 1,
             "share": 0.5
           },
@@ -571,20 +574,21 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 25,
-    "pending_after": 25,
+    "pending_before": 24,
+    "pending_after": 24,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 12,
-      "objective_gate:observe_before_scaling": 10,
+      "objective_gate:observe_before_scaling": 9,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:script quality gate blocked the narration": 1
+      "editor_in_chief:script quality gate blocked the narration": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   }
 }
