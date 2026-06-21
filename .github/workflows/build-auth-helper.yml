@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v7.0.0
       - uses: actions/setup-python@v6.2.0
         with:
           python-version: "3.11"
@@ -25,7 +25,7 @@ jobs:
                       --name auth_youtube ^
                       auth_youtube.py
         shell: cmd
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7
         with:
           name: auth_youtube-windows
           path: dist/auth_youtube.exe

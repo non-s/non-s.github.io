@@ -1,4 +1,4 @@
-﻿name: "YouTube Bot - Shorts only"
+name: "YouTube Bot - Shorts only"
 
 # Shorts-only pipeline for YouTube.
 # The workflow evaluates every canonical global slot; scripts/publish_window.py
@@ -72,7 +72,7 @@ jobs:
       PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 0
       - name: "Sincronizar main remoto antes da decisao"
@@ -499,7 +499,7 @@ jobs:
           exit 1
       - name: "Log de execucao"
         if: always()
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7
         with:
           name: "youtube-log-${{ github.run_number }}"
           path: |
