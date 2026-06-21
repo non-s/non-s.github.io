@@ -880,6 +880,68 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
     assert payload["title_shape_mix"]["status"] == "healthy"
 
 
+def test_next_shorts_preserves_clean_publish_ready_reserve(monkeypatch, tmp_path):
+    import json
+
+    monkeypatch.chdir(tmp_path)
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    (data_dir / "stories_queue.json").write_text(json.dumps({"stories": []}), encoding="utf-8")
+    story = {
+        "id": "reserve",
+        "seo_title": "Chickens remember familiar faces in the flock",
+        "title": "Chickens remember familiar faces in the flock",
+        "hook": "Chickens can recognize familiar faces.",
+        "script": (
+            "Chickens can recognize familiar faces in the flock. Watch how quickly a bird reacts "
+            "to a known neighbor, because chickens learn faces and remember who belongs nearby. "
+            "That memory helps them keep order without starting over every morning."
+        ),
+        "thumbnail_text": "FACE MEMORY",
+        "category": "farm",
+        "queue_prune": {
+            "state": "publish_ready",
+            "score": 78,
+            "objective_reasons": ["publish_ready_supply_reserve_fallback"],
+        },
+        "publish_score": {
+            "approved": True,
+            "state": "publish_ready",
+            "score": 100,
+            "reserve_override": {"reason": "publish_ready_supply_reserve_fallback"},
+        },
+        "editorial": {"approved": True, "state": "publish_now"},
+        "youtube_brain": {"state": "publish_minded", "risks": []},
+        "packaging": {"state": "magnetic", "risks": []},
+        "autonomy": {"priority": 120},
+    }
+
+    monkeypatch.setattr(next_shorts, "QUEUE", data_dir / "stories_queue.json")
+    monkeypatch.setattr(next_shorts, "OUT", data_dir / "next_shorts.json")
+    monkeypatch.setattr(next_shorts, "prune_queue", lambda data: ({"stories": [story]}, [], {"pending_after": 1}))
+    monkeypatch.setattr(next_shorts, "filter_candidates", lambda stories: (list(stories), []))
+    monkeypatch.setattr(next_shorts, "paused_categories", lambda: {})
+    monkeypatch.setattr(next_shorts, "ops_guardian_enforced", lambda: False)
+    monkeypatch.setattr(
+        next_shorts,
+        "score_story",
+        lambda story: {
+            "approved": False,
+            "state": "rewrite",
+            "score": 91.9,
+            "opportunity": {"reasons": ["weak_visual_surface", "low_opportunity_score"]},
+        },
+    )
+
+    assert next_shorts.main() == 0
+    payload = json.loads((data_dir / "next_shorts.json").read_text(encoding="utf-8"))
+
+    assert payload["items"][0]["id"] == "reserve"
+    assert payload["items"][0]["score"]["state"] == "publish_ready"
+    assert payload["items"][0]["score"]["score"] == 100
+    assert payload["items"][0]["score"]["reserve_override"]["reason"] == "publish_ready_supply_reserve_fallback"
+
+
 def test_next_shorts_reports_repeated_title_shapes():
     rows = [
         {"title": "Bears recognize signals through tail position"},

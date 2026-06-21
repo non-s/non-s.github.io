@@ -79,18 +79,29 @@ def _has_publish_ready_supply_reserve(story: dict) -> bool:
     )
 
 
+def _float_score(value) -> float:
+    try:
+        return float(value or 0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def _score_for_next_short(story: dict) -> dict:
     score = score_story(story)
     current = story.get("publish_score") or {}
+    current_score = _float_score(current.get("score"))
+    recomputed_score = _float_score(score.get("score"))
+    reserve_floor_score = current_score or recomputed_score
     if (
         _has_publish_ready_supply_reserve(story)
         and current.get("approved") is True
         and current.get("state") == "publish_ready"
         and score.get("state") != "reject"
-        and float(score.get("score", 0) or 0) >= RESERVE_MIN_PUBLISH_SCORE
+        and reserve_floor_score >= RESERVE_MIN_PUBLISH_SCORE
     ):
         score = {
             **score,
+            "score": round(max(current_score, recomputed_score), 1),
             "approved": True,
             "state": "publish_ready",
             "reserve_override": current.get("reserve_override")
