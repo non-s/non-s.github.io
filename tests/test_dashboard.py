@@ -44,6 +44,41 @@ def test_main_writes_html_even_with_no_data(dashboard, tmp_path):
     assert "<html" in body
 
 
+def test_dashboard_renders_v1_closure_status(dashboard, tmp_path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    (data / "automation_health.json").write_text(
+        json.dumps({"state": "excellent", "score": 100, "issues": [], "queue": {"publish_ready": 6}}),
+        encoding="utf-8",
+    )
+    (data / "next_shorts.json").write_text(
+        json.dumps({"items": [{"id": "next", "title": "Ducks fake injuries to protect their young"}]}),
+        encoding="utf-8",
+    )
+    (data / "upload_intents.jsonl").write_text(
+        json.dumps(
+            {
+                "created_at": "2026-06-21T16:07:25+00:00",
+                "slot": "2026-06-21T16:00Z",
+                "status": "uploaded",
+                "video_id": "abc123",
+                "title": "Butterflies carry color on tiny wing scales",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+
+    assert "v1.0 closure status" in body
+    assert "2026-06-21T16:00Z" in body
+    assert "6/6" in body
+    assert "https://www.youtube.com/shorts/abc123" in body
+    assert "no required operator action pending" in body
+
+
 def test_dashboard_includes_top_performers(dashboard, tmp_path):
     analytics = tmp_path / "_data" / "analytics"
     analytics.mkdir(parents=True)

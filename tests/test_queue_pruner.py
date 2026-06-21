@@ -1,7 +1,13 @@
 import pytest
 
 from utils import editorial
-from utils.queue_pruner import angle_key, production_quality_issues, prune_queue, quality_issues
+from utils.queue_pruner import (
+    PUBLISH_READY_RESERVE_TARGET,
+    angle_key,
+    production_quality_issues,
+    prune_queue,
+    quality_issues,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -768,7 +774,7 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
                 "approved": False,
                 "state": "rewrite",
                 "score": 100,
-                "opportunity": {"reasons": ["low_opportunity_score"]},
+                "opportunity": {"reasons": ["weak_replay_reason", "low_opportunity_score"]},
                 "weak_content": {"state": "clear"},
                 "phrase_risk": {"hits": []},
                 "editorial_guard": {"approved": True},
@@ -811,6 +817,55 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
     assert story["publish_score"]["reserve_override"]["reason"] == "publish_ready_supply_reserve_fallback"
     assert "publish_ready_supply_reserve_fallback" in story["queue_prune"]["objective_reasons"]
     assert summary["reasons"]["publish_ready_supply_reserve_fallback"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_fills_v1_publish_ready_reserve_target(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 96,
+            "state": "rewrite",
+            "publish_score": {
+                "approved": False,
+                "state": "rewrite",
+                "score": 100,
+                "opportunity": {"reasons": ["weak_replay_reason", "low_opportunity_score"]},
+                "weak_content": {"state": "clear"},
+                "phrase_risk": {"hits": []},
+                "editorial_guard": {"approved": True},
+                "objective_gate": {
+                    "reasons": [],
+                    "scale_ready": False,
+                    "publish_blocking": False,
+                },
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {"state": "magnetic", "risks": []},
+            "rights_audit": {"approved": True, "warnings": [], "reasons": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {
+        "stories": [
+            _story(str(idx), title=f"Reserve story {idx}", seo_title=f"Reserve story {idx}")
+            for idx in range(PUBLISH_READY_RESERVE_TARGET + 2)
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    ready = [story for story in kept if (story.get("queue_prune") or {}).get("state") == "publish_ready"]
+    assert len(ready) == PUBLISH_READY_RESERVE_TARGET
+    assert summary["reasons"]["publish_ready_supply_reserve_fallback"] == PUBLISH_READY_RESERVE_TARGET
     assert rejected == []
 
 

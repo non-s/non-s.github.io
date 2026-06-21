@@ -46,6 +46,7 @@ ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR = Path("_site")
 OUT = SITE_DIR / "index.html"
 QUEUE_FILE = Path("_data/stories_queue.json")
+PUBLISH_READY_RESERVE_TARGET = 6
 
 
 def _read_csvs() -> list[dict]:
@@ -92,6 +93,20 @@ def _safe_json(path: Path) -> dict:
         return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def _latest_uploaded_intent(rows: list[dict]) -> dict:
+    uploaded = [
+        row
+        for row in rows
+        if isinstance(row, dict)
+        and str(row.get("status") or "").strip().lower() == "uploaded"
+        and str(row.get("slot") or "").strip()
+        and str(row.get("video_id") or "").strip()
+    ]
+    if not uploaded:
+        return {}
+    return max(uploaded, key=lambda row: str(row.get("created_at") or row.get("slot") or ""))
 
 
 def _recommendable_title(title: str) -> bool:
@@ -421,6 +436,43 @@ def render_html() -> str:
         f"<div class='metric'>{len(underperformers)}</div></div>"
     )
     out.append("</section>")
+
+    latest_upload = _latest_uploaded_intent(upload_intents)
+    if health or latest_upload or next_shorts:
+        queue_health = health.get("queue") or {}
+        issues = health.get("issues") or []
+        publish_ready = int(queue_health.get("publish_ready", 0) or 0)
+        next_items = next_shorts.get("items") or []
+        reserve_label = f"{publish_ready}/{PUBLISH_READY_RESERVE_TARGET}"
+        latest_slot = str(latest_upload.get("slot") or "none")
+        latest_video_id = str(latest_upload.get("video_id") or "")
+        latest_title = str(latest_upload.get("title") or "")
+        out.append("<div class='card'><h2>v1.0 closure status</h2>")
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>Operational state</small><div class='metric'>{html.escape(str(health.get('state', 'unknown')))}</div></div>"
+        )
+        out.append(
+            f"<div><small>Last uploaded slot</small><div class='metric'>{html.escape(latest_slot)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Publish-ready reserve</small><div class='metric'>{html.escape(reserve_label)}</div></div>"
+        )
+        out.append(f"<div><small>Next Shorts listed</small><div class='metric'>{len(next_items)}</div></div>")
+        out.append("</section>")
+        if latest_video_id:
+            url = f"https://www.youtube.com/shorts/{html.escape(latest_video_id)}"
+            out.append(
+                f"<p><strong>Latest upload:</strong> <a href='{url}'>{html.escape(latest_video_id)}</a>"
+                f" - {html.escape(latest_title[:120])}</p>"
+            )
+        if issues:
+            out.append("<p><strong>Action required:</strong> review health issues below before changing cadence.</p>")
+        elif publish_ready >= PUBLISH_READY_RESERVE_TARGET:
+            out.append("<p><strong>Closure gate:</strong> no required operator action pending.</p>")
+        else:
+            out.append("<p><strong>Closure gate:</strong> reserve is operational but still below the v1.0 target.</p>")
+        out.append("</div>")
 
     if health:
         queue_health = health.get("queue") or {}

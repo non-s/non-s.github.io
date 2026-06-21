@@ -137,7 +137,7 @@ jobs:
           pending_count() {
             python scripts/queue_ready_count.py --field pending
           }
-          target="${QUEUE_TARGET_PUBLISH_READY:-2}"
+          target="${QUEUE_TARGET_PUBLISH_READY:-6}"
           minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"
           max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-2}"
           base_pending_target="${QUEUE_TARGET_PENDING:-18}"
@@ -181,7 +181,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           BROLL_SOURCE_MODE: "pexels"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '2' }}
+          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '6' }}
           QUEUE_MIN_READY_TO_PUBLISH: ${{ vars.PUBLISH_MIN_READY_TO_PUBLISH || '1' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}
           QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '6' }}

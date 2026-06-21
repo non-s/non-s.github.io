@@ -44,9 +44,10 @@ REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 PUBLISH_READY_SUPPLY_RESERVE_FALLBACK = "publish_ready_supply_reserve_fallback"
+PUBLISH_READY_RESERVE_TARGET = 6
 RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = set()
 RESERVE_ALLOWED_BRAIN_RISKS: set[str] = set()
-RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_visual_surface"}
+RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_replay_reason", "weak_visual_surface"}
 RESERVE_MIN_PUBLISH_SCORE = 95.0
 RESERVE_MIN_QUEUE_SCORE = 78.0
 AGENCY_GATE_FILE = Path("_data/agency_gate.json")
@@ -941,7 +942,7 @@ def prune_queue(
         kept.append(story)
 
     publish_ready_count = _operational_publish_ready_count(kept)
-    if publish_ready_count < 2:
+    if publish_ready_count < PUBLISH_READY_RESERVE_TARGET:
         fallback_candidates = [story for story in kept if _editorial_cooldown_supply_candidate(story)]
         fallback_candidates.sort(
             key=lambda story: (
@@ -951,11 +952,11 @@ def prune_queue(
             ),
             reverse=True,
         )
-        for story in fallback_candidates[: max(0, 2 - publish_ready_count)]:
+        for story in fallback_candidates[: max(0, PUBLISH_READY_RESERVE_TARGET - publish_ready_count)]:
             _apply_editorial_cooldown_supply_fallback(story)
             reasons.update([EDITORIAL_COOLDOWN_SUPPLY_FALLBACK])
         publish_ready_count = _operational_publish_ready_count(kept)
-    if publish_ready_count < 2:
+    if publish_ready_count < PUBLISH_READY_RESERVE_TARGET:
         paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
         held_ids = _agency_held_ids()
         reserve_candidates = [
@@ -973,7 +974,7 @@ def prune_queue(
             ),
             reverse=True,
         )
-        for story in reserve_candidates[: max(0, 2 - publish_ready_count)]:
+        for story in reserve_candidates[: max(0, PUBLISH_READY_RESERVE_TARGET - publish_ready_count)]:
             _apply_publish_ready_reserve_fallback(story)
             reasons.update([PUBLISH_READY_SUPPLY_RESERVE_FALLBACK])
 

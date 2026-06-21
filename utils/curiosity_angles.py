@@ -1132,14 +1132,14 @@ NATURE_ANGLE_LIBRARY: dict[str, tuple[CuriosityAngle, ...]] = {
         _angle(
             key="plant_touch_count",
             keywords=("venus", "flytrap", "trap", "leaf", "plant", "touch"),
-            title="{subject} count touches before snapping shut",
-            hook="{subject} can count touches before closing.",
+            title="{subject} use trap hairs to count touches before snapping shut",
+            hook="{subject} use trap hairs to count touches before closing.",
             script_body=(
                 "Watch the trap hairs, because the plant waits for more than one touch before "
                 "spending energy on a snap. That delay helps it ignore rain and debris, then close "
                 "when prey is real. Which plant trick should we decode next?"
             ),
-            thumbnail="TOUCH COUNT",
+            thumbnail="TRAP HAIRS",
             cue="trap hairs",
             story_format="plant_mechanism",
             tags=("plants", "venus flytrap", "botany"),

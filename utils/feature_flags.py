@@ -68,7 +68,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "PUBLISH_BACKFILL_READY_TARGET",
-        "2",
+        "6",
         "publishing",
         "Minimum editor-approved publish-ready candidates before a publish attempt.",
         "Lower only during provider outages.",
@@ -251,6 +251,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "operations",
         "Apply ops guardian paused-topic guidance during candidate selection.",
         "Set to 0.",
+    ),
+    FeatureFlag(
+        "OPS_ALERTS_ENABLED",
+        "1",
+        "operations",
+        "Create a GitHub Issue when a critical automation workflow fails.",
+        "Set to 0 to silence issue alerts.",
     ),
     FeatureFlag(
         "QUOTA_GUARD_MAX_DAILY_RATIO",

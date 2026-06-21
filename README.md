@@ -65,6 +65,7 @@ Every candidate passes through an automated editor-in-chief before rendering:
 - applies loop-plan final lines to the rendered narration and captions, not only to metadata.
 - can recover from Edge TTS outages through an optional local Coqui-compatible command.
 - imports optional YouTube Studio Shorts Reach CSV exports into `_data/analytics/studio_reach_daily.jsonl` so stayed-to-watch and swipe signals are visible in weekly review and the dashboard.
+- defines the finished v1.0 operating contract in [`docs/V1_CLOSURE.md`](docs/V1_CLOSURE.md).
 - annotates the queue with `_data/trends/freshness_report.json` from free CSV/RSS/manual trend signals.
 - audits the first second of each Short through `opening_audit` metadata and `_data/opening_audit_report.json`.
 - applies `opening_gate_v2` scoring over the first 0.7s and 1.5s with motion,

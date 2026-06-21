@@ -981,6 +981,7 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "missing_action_word",
             "title_needs_stronger_shape",
             "animal_not_immediately_clear",
+            "subject_not_immediately_clear",
             "no_action_promise",
             "payoff_not_explicit",
             "missing_visual_cue",

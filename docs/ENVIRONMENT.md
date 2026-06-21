@@ -35,7 +35,7 @@
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | no | Minimum top-candidate opportunity score required for an adaptive slot to publish. |
 | `QUEUE_TARGET_PENDING` | no | Target number of raw unconsumed queue stories to build before the quality pruner runs. Defaults to `72`, giving the free discovery loop enough margin to keep a one-day hourly buffer after rejected clips are quarantined. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | no | Publish-workflow emergency backfill target used only when `publish_ready` supply is low. Defaults to `18` so the upload job does not spend the hourly slot filling deep raw inventory. |
-| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `2` so a single consumed or held candidate does not stall the next hourly slot. |
+| `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `6` so the system carries several hourly slots of clean reserve instead of living one clip from a stall. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `6`. |
 | `PUBLISH_BACKFILL_TIMEOUT_SECONDS` | no | Maximum time for one publish-workflow emergency backfill attempt. Defaults to `540`; deeper replenishment belongs to `fetch-content`. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
@@ -59,6 +59,7 @@
 | `RIGHTS_GUARD_MODE` | no | Rights guard mode: `warn` or `block`. |
 | `ORIGINALITY_PACK_MODE` | no | Originality pack completeness mode: `warn` or `block`. |
 | `OPS_GUARDIAN_ENFORCE` | no | Applies paused-topic guidance during candidate selection. Defaults to `1`. |
+| `OPS_ALERTS_ENABLED` | no | Enables the free GitHub Issues alert workflow for failed critical automation. Defaults to `1`; set to `0` to silence issue creation. |
 | `SESSION_GRAPH_ENABLED` | no | Enables post-upload handoff, sequel and next-session artifacts. |
 | `COMMENT_TO_SHORT_ENABLED` | no | Allows strong viewer questions to become queue ideas. |
 | `COMMENT_TO_SHORT_MIN_SCORE` | no | Minimum comment idea score before it can enter the queue. |
@@ -95,7 +96,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `MIN_QUEUE_OPPORTUNITY_SCORE` | `50` | publishing | Minimum queue opportunity score for a slot. | Lower or disable adaptive cadence. |
 | `QUEUE_TARGET_PENDING` | `72` | publishing | Raw pending story target for hourly queue refresh before the quality pruner removes weak candidates. | Lower if free discovery/AI quotas become tight. |
 | `PUBLISH_BACKFILL_QUEUE_TARGET` | `18` | publishing | Emergency raw pending story target used only when publish-ready supply is below target. | Keep the full-day stock target in `QUEUE_TARGET_PENDING` for `fetch-content`. |
-| `PUBLISH_BACKFILL_READY_TARGET` | `2` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
+| `PUBLISH_BACKFILL_READY_TARGET` | `6` | publishing | Minimum editor-approved publish-ready candidates before a publish attempt. | Lower only during provider outages. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | `6` | publishing | Extra raw pending target added on each emergency backfill attempt. | Lower if the publish workflow approaches timeout. |
 | `PUBLISH_BACKFILL_TIMEOUT_SECONDS` | `540` | publishing | Maximum seconds allowed for one publish-workflow emergency backfill attempt. | Lower it to preserve the upload slot; fetch-content handles deep replenishment. |
 | `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | `170` | publishing | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. | Lower to reduce runner time or disable the heartbeat workflow. |
@@ -136,6 +137,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `UPLOAD_SLOT_IDEMPOTENCY_MODE` | `block` | operations | Block a second successful upload for the same publish slot. | Use warn. |
 | `MEDIA_LIFECYCLE_CLEANUP` | `1` | operations | Delete generated media after successful upload while keeping metadata markers. | Set to 0 temporarily while debugging renders. |
 | `OPS_GUARDIAN_ENFORCE` | `1` | operations | Apply ops guardian paused-topic guidance during candidate selection. | Set to 0. |
+| `OPS_ALERTS_ENABLED` | `1` | operations | Create a GitHub Issue when a critical automation workflow fails. | Set to 0 to silence issue alerts. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.95` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |

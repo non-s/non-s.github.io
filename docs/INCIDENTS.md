@@ -18,8 +18,17 @@
 - `_data/analytics/api_quota_latest.json` for quota state.
 - `_data/rejected_queue.jsonl` for generation rejects.
 - `_data/seo_metadata_lint.json` for metadata drift.
+- `_data/upload_intents.jsonl` for the slot-level proof of upload.
+- The open `Wild Brief automation alert` issue if the alert workflow created one.
 
 ## Recovery Rule
 
 Prefer disabling the smallest feature flag first, then rerun the smallest
 workflow that regenerates the affected artifact.
+
+## Resolution Rule
+
+An incident is resolved only when the failed slot has either an `uploaded`
+ledger row or a documented intentional skip, the queue has clean publish-ready
+supply, the dashboard renders, and the v1.0 closure checks in
+[V1_CLOSURE.md](V1_CLOSURE.md) pass.

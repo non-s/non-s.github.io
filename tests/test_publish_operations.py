@@ -165,6 +165,31 @@ def test_rescue_story_rewrites_editorial_template_but_not_visual_mismatch():
     assert unchanged is story
 
 
+def test_rescue_story_preserves_visible_cue_for_plant_touch_count():
+    story = _strong_story(
+        title="Plants count touches before snapping shut",
+        seo_title="Plants count touches before snapping shut",
+        hook="Plants can count touches before closing.",
+        script=(
+            "Plants can count touches before closing. Watch the trap hairs, because the plant waits "
+            "for more than one touch before spending energy on a snap."
+        ),
+        thumbnail_text="TOUCH COUNT",
+        category="plants",
+        source_title="close up of the small plants in the ground",
+        source_url="https://www.pexels.com/video/close-up-of-the-small-plants-in-the-ground-8745499/",
+    )
+
+    rescued, applied = rescue_story(story, ["missing_visible_cue", "subject_not_immediately_clear"])
+    packaged = package_story(rescued)
+
+    assert applied is True
+    assert rescued["title"].startswith("Plants use trap hairs")
+    assert "trap hairs" in rescued["title"].lower()
+    assert rescued["thumbnail_text"] == "TRAP HAIRS"
+    assert "missing_visible_cue" not in packaged["packaging"]["risks"]
+
+
 def test_rescue_story_does_not_generate_to_rely_title():
     story = _strong_story(
         title="Lions rely on the ear position for a reason",

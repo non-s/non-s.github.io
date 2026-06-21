@@ -1,6 +1,6 @@
 # Weekly Growth Review
 
-Generated: 2026-06-21T08:16:06.616584+00:00
+Generated: 2026-06-21T16:49:32.599742+00:00
 
 ## Winners
 
@@ -8,7 +8,7 @@ Generated: 2026-06-21T08:16:06.616584+00:00
 - Category `conservation`: score 25.497 across 1 rows
 - Category `reptiles`: score 19.5345 across 2 rows
 - Category `ocean`: score 17.6085 across 1 rows
-- Category `birds`: score 0.0 across 1 rows
+- Category `nocturnal`: score 0.0 across 1 rows
 
 ## Next Experiments
 

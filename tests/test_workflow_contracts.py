@@ -22,8 +22,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "python fetch_animals.py" in youtube_workflow
     assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
     assert "scripts/queue_ready_count.py --field pending" in youtube_workflow
-    assert "PUBLISH_BACKFILL_READY_TARGET || '2'" in youtube_workflow
-    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-2}"' in youtube_workflow
+    assert "PUBLISH_BACKFILL_READY_TARGET || '6'" in youtube_workflow
+    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
     assert "PUBLISH_MIN_READY_TO_PUBLISH || '1'" in youtube_workflow
     assert 'minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"' in youtube_workflow
     assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}" in youtube_workflow
@@ -135,6 +135,22 @@ def test_workflows_parse_and_include_growth_steps():
     assert "heartbeat recovery for slot" in heartbeat_workflow
     assert "python scripts/youtube_slot_dispatch.py heartbeat" in heartbeat_workflow
     assert "time.sleep" not in heartbeat_workflow
+
+    alert_workflow = (ROOT / ".github/workflows/ops-alert.yml").read_text(encoding="utf-8")
+    parsed_alert = yaml.safe_load(alert_workflow)
+    assert parsed_alert["permissions"]["issues"] == "write"
+    assert "YouTube Bot - Shorts only" in alert_workflow
+    assert "Refresh Pexels queue" in alert_workflow
+    assert "YouTube hourly heartbeat" in alert_workflow
+    assert "YouTube publishing watchdog" in alert_workflow
+    assert "Production quality gate" in alert_workflow
+    assert "Build + deploy dashboard" in alert_workflow
+    assert "CodeQL" in alert_workflow
+    assert "Security, SBOM and license audit" in alert_workflow
+    assert "TTS fallback health" in alert_workflow
+    assert "OPS_ALERTS_ENABLED" in alert_workflow
+    assert "gh issue create" in alert_workflow
+    assert "gh issue comment" in alert_workflow
 
 
 def test_youtube_publisher_syncs_latest_main_before_publish_decision():
