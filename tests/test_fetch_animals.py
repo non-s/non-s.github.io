@@ -285,6 +285,28 @@ def test_topic_for_subject_reclassifies_leaf_clip_from_insects_to_plants():
     assert cfg is fetch_animals.ANIMAL_TOPICS["plants"]
 
 
+def test_topic_for_subject_reclassifies_dog_from_discoveries_to_dogs():
+    key, cfg = fetch_animals._topic_for_subject(
+        "discoveries",
+        fetch_animals.ANIMAL_TOPICS["discoveries"],
+        "Dogs build a map with smell",
+    )
+
+    assert key == "dogs"
+    assert cfg is fetch_animals.ANIMAL_TOPICS["dogs"]
+
+
+def test_topic_for_subject_recognizes_beagle_as_dog_lane():
+    key, cfg = fetch_animals._topic_for_subject(
+        "discoveries",
+        fetch_animals.ANIMAL_TOPICS["discoveries"],
+        "close up of a beagle in outdoor setting",
+    )
+
+    assert key == "dogs"
+    assert cfg is fetch_animals.ANIMAL_TOPICS["dogs"]
+
+
 def test_topic_accepts_visible_animal_from_category():
     assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["farm"], "baby goat in the grass")
     assert fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["farm"], "close up on chickens")
