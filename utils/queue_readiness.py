@@ -111,6 +111,14 @@ def publish_ready_verdict(
         reasons.append(f"publish_score:{publish.get('state') or 'missing'}")
     if editorial.get("approved") is not True and not has_editorial_cooldown_supply_fallback(story):
         reasons.append(f"editor_in_chief:{editorial.get('state') or 'missing'}")
+    brain = story.get("youtube_brain") or {}
+    for risk in brain.get("risks") or []:
+        reasons.append(f"youtube_brain:{risk}")
+    packaging = story.get("packaging") or {}
+    if packaging.get("state") == "rewrite_packaging":
+        reasons.append("packaging:rewrite_packaging")
+    for risk in packaging.get("risks") or []:
+        reasons.append(f"packaging:{risk}")
     return not reasons, reasons
 
 

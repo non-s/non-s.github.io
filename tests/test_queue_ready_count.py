@@ -23,16 +23,34 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
             },
+            {
+                "id": "dirty-packaging",
+                "category": "birds",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+                "packaging": {"risks": ["missing_visible_cue"]},
+            },
+            {
+                "id": "dirty-brain",
+                "category": "birds",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+                "youtube_brain": {"risks": ["subject_not_immediately_clear"]},
+            },
         ]
     }
 
     payload = build_payload(queue)
 
-    assert payload["pending"] == 3
+    assert payload["pending"] == 5
     assert payload["publish_ready"] == 1
     assert payload["publish_ready_ids"] == ["ready"]
     assert payload["held_reasons"]["editor_in_chief:cooldown_subject"] == 1
     assert payload["held_reasons"]["queue_prune:rewrite"] == 1
+    assert payload["held_reasons"]["packaging:missing_visible_cue"] == 1
+    assert payload["held_reasons"]["youtube_brain:subject_not_immediately_clear"] == 1
 
 
 def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback():

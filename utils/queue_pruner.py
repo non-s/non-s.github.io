@@ -44,8 +44,11 @@ REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 PUBLISH_READY_SUPPLY_RESERVE_FALLBACK = "publish_ready_supply_reserve_fallback"
-RESERVE_ALLOWED_PACKAGING_RISKS = {"missing_visible_cue", "subject_not_clear"}
-RESERVE_ALLOWED_BRAIN_RISKS = {"subject_not_immediately_clear"}
+RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = set()
+RESERVE_ALLOWED_BRAIN_RISKS: set[str] = set()
+RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_visual_surface"}
+RESERVE_MIN_PUBLISH_SCORE = 95.0
+RESERVE_MIN_QUEUE_SCORE = 78.0
 AGENCY_GATE_FILE = Path("_data/agency_gate.json")
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
@@ -526,17 +529,35 @@ def _publish_ready_reserve_candidate(story: dict) -> bool:
         "objective_gate:observe_before_scaling",
         "objective_gate:bootstrap_observe_before_scaling",
     }
-    if not objective_gate_reasons or not objective_gate_reasons <= allowed_objective:
+    publish = story.get("publish_score") or {}
+    publish_gate = publish.get("objective_gate") or {}
+    publish_gate_reasons = {f"objective_gate:{reason}" for reason in (publish_gate.get("reasons") or [])}
+    if objective_gate_reasons and not objective_gate_reasons <= allowed_objective:
+        return False
+    if publish_gate_reasons and not publish_gate_reasons <= allowed_objective:
+        return False
+    if publish_gate.get("publish_blocking") is True:
         return False
     editorial = story.get("editorial") or {}
     if editorial.get("approved") is not True:
         return False
-    publish = story.get("publish_score") or {}
-    if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+    publish_ready = publish.get("approved") is True and publish.get("state") == "publish_ready"
+    publish_rewrite = publish.get("state") == "rewrite" and publish.get("approved") is not True
+    if not (publish_ready or publish_rewrite):
         return False
-    if float(publish.get("score", 0) or 0) < 90:
+    if float(publish.get("score", 0) or 0) < RESERVE_MIN_PUBLISH_SCORE:
         return False
-    if float(queue_prune.get("score", 0) or 0) < 80:
+    if publish_rewrite:
+        opportunity_reasons = {str(reason) for reason in ((publish.get("opportunity") or {}).get("reasons") or [])}
+        if opportunity_reasons - RESERVE_ALLOWED_OPPORTUNITY_REASONS:
+            return False
+        if (publish.get("editorial_guard") or {}).get("approved") is False:
+            return False
+        if (publish.get("phrase_risk") or {}).get("hits"):
+            return False
+        if (publish.get("weak_content") or {}).get("state") not in {"", "clear", None}:
+            return False
+    if float(queue_prune.get("score", 0) or 0) < RESERVE_MIN_QUEUE_SCORE:
         return False
     rights = story.get("rights_audit") or {}
     if rights.get("approved") is not True or rights.get("warnings"):
@@ -596,6 +617,12 @@ def _operational_publish_ready_count(stories: list[dict]) -> int:
             continue
         if editorial.get("approved") is not True and not _has_editorial_cooldown_supply_fallback(story):
             continue
+        brain = story.get("youtube_brain") or {}
+        if brain.get("risks"):
+            continue
+        packaging = story.get("packaging") or {}
+        if packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
+            continue
         ready += 1
     return ready
 
@@ -630,6 +657,17 @@ def _apply_publish_ready_reserve_fallback(story: dict) -> None:
     queue_prune["state"] = "publish_ready"
     queue_prune["score"] = max(72.0, float(queue_prune.get("score", 0) or 0))
     story["queue_prune"] = queue_prune
+    publish = dict(story.get("publish_score") or {})
+    if publish.get("approved") is not True or publish.get("state") != "publish_ready":
+        publish["reserve_override"] = {
+            "reason": PUBLISH_READY_SUPPLY_RESERVE_FALLBACK,
+            "original_approved": publish.get("approved"),
+            "original_state": publish.get("state"),
+            "original_opportunity_reasons": list((publish.get("opportunity") or {}).get("reasons") or []),
+        }
+        publish["approved"] = True
+        publish["state"] = "publish_ready"
+        story["publish_score"] = publish
 
 
 def prune_queue(

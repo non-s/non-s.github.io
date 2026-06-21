@@ -765,17 +765,21 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
             "score": 96,
             "state": "rewrite",
             "publish_score": {
-                "approved": True,
-                "state": "publish_ready",
+                "approved": False,
+                "state": "rewrite",
                 "score": 100,
+                "opportunity": {"reasons": ["low_opportunity_score"]},
+                "weak_content": {"state": "clear"},
+                "phrase_risk": {"hits": []},
+                "editorial_guard": {"approved": True},
                 "objective_gate": {
-                    "reasons": ["bootstrap_observe_before_scaling"],
+                    "reasons": [],
                     "scale_ready": False,
                     "publish_blocking": False,
                 },
             },
             "youtube_brain": {"state": "publish_minded", "risks": []},
-            "packaging": {"state": "magnetic", "risks": ["missing_visible_cue"]},
+            "packaging": {"state": "magnetic", "risks": []},
             "rights_audit": {"approved": True, "reasons": [], "warnings": []},
             "editorial_guard": {"approved": True, "issues": []},
             "editorial": {"approved": True, "state": "publish_now", "reasons": []},
@@ -802,6 +806,61 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
 
     story = pruned["stories"][0]
     assert story["queue_prune"]["state"] == "publish_ready"
+    assert story["publish_score"]["state"] == "publish_ready"
+    assert story["publish_score"]["approved"] is True
+    assert story["publish_score"]["reserve_override"]["reason"] == "publish_ready_supply_reserve_fallback"
     assert "publish_ready_supply_reserve_fallback" in story["queue_prune"]["objective_reasons"]
     assert summary["reasons"]["publish_ready_supply_reserve_fallback"] == 1
+    assert rejected == []
+
+
+def test_prune_queue_keeps_risky_reserve_out_of_publish_ready(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 96,
+            "state": "rewrite",
+            "publish_score": {
+                "approved": True,
+                "state": "publish_ready",
+                "score": 100,
+                "objective_gate": {
+                    "reasons": ["bootstrap_observe_before_scaling"],
+                    "scale_ready": False,
+                    "publish_blocking": False,
+                },
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {"state": "magnetic", "risks": ["missing_visible_cue"]},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {
+        "stories": [
+            _story(
+                "reserve-risk",
+                title="Plants count touches before snapping shut",
+                seo_title="Plants count touches before snapping shut",
+                hook="Plants count touches before snapping shut.",
+                thumbnail_text="TWO TOUCHES",
+                script="Plants count touches before snapping shut. Watch the trigger hairs bend twice before the trap closes.",
+                category="plants",
+            )
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    story = pruned["stories"][0]
+    assert story["queue_prune"]["state"] == "rewrite"
+    assert "publish_ready_supply_reserve_fallback" not in story["queue_prune"]["objective_reasons"]
+    assert "publish_ready_supply_reserve_fallback" not in summary["reasons"]
     assert rejected == []

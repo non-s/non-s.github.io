@@ -100,6 +100,14 @@ def test_automation_health_counts_only_operationally_publish_ready_items(tmp_pat
                         "seo_title": "Plants count touches before snapping shut",
                         "script": "Plants count touches before snapping shut around an insect.",
                     },
+                    {
+                        **ready_fields,
+                        "id": "dirty",
+                        "category": "plants",
+                        "seo_title": "Plants count touches before snapping shut",
+                        "script": "Plants count touches before snapping shut around an insect.",
+                        "packaging": {"risks": ["missing_visible_cue"]},
+                    },
                 ]
             }
         ),
@@ -116,8 +124,9 @@ def test_automation_health_counts_only_operationally_publish_ready_items(tmp_pat
 
     out = build_health(tmp_path)
 
-    assert out["queue"]["pending"] == 3
+    assert out["queue"]["pending"] == 4
     assert out["queue"]["publish_ready"] == 1
+    assert out["queue"]["held_reasons"]["packaging:missing_visible_cue"] == 1
 
 
 def test_automation_health_flags_empty_operational_publish_ready_inventory(tmp_path: Path):
