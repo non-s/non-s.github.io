@@ -82,7 +82,14 @@ from utils.pre_publish_audit import audit_package as audit_publish_package
 from utils.publish_priority import publish_priority_key
 from utils.publish_score import score_metadata
 from utils.publish_score import score_story as publish_score_story
-from utils.queue_pruner import EDITORIAL_COOLDOWN_SUPPLY_FALLBACK, production_quality_issues, prune_queue
+from utils.queue_pruner import (
+    EDITORIAL_COOLDOWN_SUPPLY_FALLBACK,
+    PUBLISH_READY_SUPPLY_RESERVE_FALLBACK,
+    RESERVE_ALLOWED_OPPORTUNITY_REASONS,
+    RESERVE_MIN_PUBLISH_SCORE,
+    production_quality_issues,
+    prune_queue,
+)
 from utils.rejected_queue import record_rejection
 from utils.retention_surgeon import diagnose as diagnose_retention
 from utils.rights_audit import audit_rights
@@ -1348,6 +1355,8 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "music_bed_track": dict(story.get("music_bed_track") or {}),
         "autonomy": dict(story.get("autonomy") or {}),
         "editorial": dict(story.get("editorial") or {}),
+        "queue_prune": dict(story.get("queue_prune") or {}),
+        "publish_score": dict(story.get("publish_score") or {}),
         "studio_state": story.get("studio_state") or (story.get("editorial") or {}).get("state", ""),
         "series": story.get("series", ""),
     }
@@ -1526,6 +1535,73 @@ def _queue_to_story(qs: dict) -> dict:
     return optimise_story(polish_story(story))
 
 
+def _has_publish_ready_supply_reserve(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    publish = story.get("publish_score") or {}
+    reserve = publish.get("reserve_override") or {}
+    return (
+        PUBLISH_READY_SUPPLY_RESERVE_FALLBACK in objective_reasons
+        or reserve.get("reason") == PUBLISH_READY_SUPPLY_RESERVE_FALLBACK
+    )
+
+
+def _opportunity_allowed_for_reserve(opportunity: dict | None) -> bool:
+    if not opportunity:
+        return True
+    reasons = {str(reason) for reason in (opportunity.get("reasons") or [])}
+    return not (reasons - RESERVE_ALLOWED_OPPORTUNITY_REASONS)
+
+
+def _apply_publish_ready_supply_reserve_score(story: dict, score: dict) -> dict:
+    out = dict(score)
+    out["reserve_override"] = {
+        "reason": PUBLISH_READY_SUPPLY_RESERVE_FALLBACK,
+        "original_approved": score.get("approved"),
+        "original_state": score.get("state"),
+        "original_opportunity_reasons": list((score.get("opportunity") or {}).get("reasons") or []),
+    }
+    out["approved"] = True
+    out["state"] = "publish_ready"
+    story["publish_score"] = out
+    return out
+
+
+def _can_apply_publish_ready_supply_reserve(
+    story: dict,
+    *,
+    score: dict | None = None,
+    opportunity: dict | None = None,
+    weak: dict | None = None,
+    brain: dict | None = None,
+    packaging: dict | None = None,
+) -> bool:
+    if not _has_publish_ready_supply_reserve(story):
+        return False
+    if production_quality_issues(story):
+        return False
+    editorial = story.get("editorial") or {}
+    if editorial and editorial.get("approved") is not True and not _has_editorial_cooldown_supply_fallback(story):
+        return False
+    rights = story.get("rights_audit") or {}
+    if rights and (rights.get("approved") is False or rights.get("warnings")):
+        return False
+    if opportunity and not _opportunity_allowed_for_reserve(opportunity):
+        return False
+    if weak and weak.get("state") == "block":
+        return False
+    if score:
+        if score.get("state") == "reject":
+            return False
+        if float(score.get("score", 0) or 0) < RESERVE_MIN_PUBLISH_SCORE:
+            return False
+    if brain and (brain.get("state") != "publish_minded" or brain.get("risks")):
+        return False
+    if packaging and (packaging.get("state") == "rewrite_packaging" or packaging.get("risks")):
+        return False
+    return True
+
+
 def load_pending_stories() -> tuple[list[dict], dict]:
     """
     Return (pending_stories, raw_queue). Pending = not yet consumed AND
@@ -1601,7 +1677,9 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     scored_candidates: list[dict] = []
     for candidate in candidates:
         opportunity = score_topic(candidate, memory=format_memory)
-        if opportunity["verdict"] == "discard":
+        if opportunity["verdict"] == "discard" and not _can_apply_publish_ready_supply_reserve(
+            candidate, opportunity=opportunity
+        ):
             record_rejection(
                 candidate, opportunity.get("reasons") or ["low_opportunity_score"], stage="opportunity_score"
             )
@@ -1622,6 +1700,8 @@ def load_pending_stories() -> tuple[list[dict], dict]:
                 )
                 continue
         score = publish_score_story(candidate, analytics_strategy=strategy)
+        if _can_apply_publish_ready_supply_reserve(candidate, score=score, opportunity=opportunity, weak=weak):
+            score = _apply_publish_ready_supply_reserve_score(candidate, score)
         if score["state"] == "reject":
             record_rejection(candidate, [f"publish_score_{score['state']}"], stage="publish_score")
             continue
@@ -1636,18 +1716,38 @@ def load_pending_stories() -> tuple[list[dict], dict]:
         if brain["state"] == "do_not_publish":
             record_rejection(item, brain.get("risks") or [], stage="youtube_brain")
             continue
-        if brain["state"] == "rewrite_before_publish" or packaging.get("state") == "rewrite_packaging":
+        brain_risks = list(brain.get("risks") or [])
+        packaging_risks = list(packaging.get("risks") or [])
+        if (
+            brain["state"] == "rewrite_before_publish"
+            or packaging.get("state") == "rewrite_packaging"
+            or brain_risks
+            or packaging_risks
+        ):
             reasons = list(
-                dict.fromkeys((brain.get("risks") or []) + (packaging.get("risks") or ["rewrite_packaging"]))
+                dict.fromkeys(
+                    brain_risks
+                    + packaging_risks
+                    + (["rewrite_packaging"] if packaging.get("state") == "rewrite_packaging" else [])
+                )
             )
             rescued, applied = rescue_story(item, reasons)
             if applied:
                 item = package_story(rescued)
                 brain = creator_premortem(item)
                 packaging = item.get("packaging") or {}
-            if brain["state"] != "publish_minded" or packaging.get("state") == "rewrite_packaging":
+            if brain["state"] != "publish_minded" or brain.get("risks") or packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
                 record_rejection(item, reasons, stage="youtube_brain_rewrite")
                 continue
+        if _can_apply_publish_ready_supply_reserve(
+            item,
+            score=item.get("publish_score") or {},
+            opportunity=opportunity,
+            weak=weak,
+            brain=brain,
+            packaging=packaging,
+        ):
+            item["publish_score"] = _apply_publish_ready_supply_reserve_score(item, item.get("publish_score") or {})
         item["youtube_brain"] = brain
         scored_candidates.append(item)
     candidates = scored_candidates
@@ -2254,6 +2354,15 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     metadata["pre_publish_audit"] = audit_publish_package(metadata)
     metadata["publish_score"] = score_metadata(metadata)
     metadata["youtube_brain"] = publish_brain(metadata)
+    if _can_apply_publish_ready_supply_reserve(
+        metadata,
+        score=metadata["publish_score"],
+        opportunity=metadata.get("opportunity_score") or {},
+        weak=metadata.get("weak_content") or {},
+        brain=metadata.get("youtube_brain") or {},
+        packaging=metadata.get("packaging") or {},
+    ):
+        metadata["publish_score"] = _apply_publish_ready_supply_reserve_score(metadata, metadata["publish_score"])
     if metadata["youtube_brain"].get("state") in {"hold", "rewrite"}:
         log.warning(
             "  Skipping Short - YouTube brain held score=%s risks=%s",

@@ -17,9 +17,9 @@ from utils.curiosity_angles import build_curiosity_package
 from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment
 from utils.agency_gate import filter_candidates
 from utils.editorial_guard import editorial_issues
-from utils.growth_strategy import ops_guardian_enforced, paused_categories
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
 from utils.publish_priority import autonomy_priority, publish_priority_key, queue_score
-from utils.queue_pruner import prune_queue
+from utils.queue_pruner import PUBLISH_READY_SUPPLY_RESERVE_FALLBACK, RESERVE_MIN_PUBLISH_SCORE, prune_queue
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/next_shorts.json")
@@ -66,6 +66,46 @@ BODY_CUE_TERMS = (
     "wing",
     "wings",
 )
+
+
+def _has_publish_ready_supply_reserve(story: dict) -> bool:
+    queue_prune = story.get("queue_prune") or {}
+    objective_reasons = {str(reason) for reason in (queue_prune.get("objective_reasons") or [])}
+    publish = story.get("publish_score") or {}
+    reserve = publish.get("reserve_override") or {}
+    return (
+        PUBLISH_READY_SUPPLY_RESERVE_FALLBACK in objective_reasons
+        or reserve.get("reason") == PUBLISH_READY_SUPPLY_RESERVE_FALLBACK
+    )
+
+
+def _score_for_next_short(story: dict) -> dict:
+    score = score_story(story)
+    current = story.get("publish_score") or {}
+    if (
+        _has_publish_ready_supply_reserve(story)
+        and current.get("approved") is True
+        and current.get("state") == "publish_ready"
+        and score.get("state") != "reject"
+        and float(score.get("score", 0) or 0) >= RESERVE_MIN_PUBLISH_SCORE
+    ):
+        score = {
+            **score,
+            "approved": True,
+            "state": "publish_ready",
+            "reserve_override": current.get("reserve_override")
+            or {"reason": PUBLISH_READY_SUPPLY_RESERVE_FALLBACK},
+        }
+    return score
+
+
+def _prune_with_strategy(data: dict):
+    try:
+        return prune_queue(data, analytics_strategy=load_strategy())
+    except TypeError as exc:
+        if "analytics_strategy" not in str(exc):
+            raise
+        return prune_queue(data)
 
 
 def _console_safe(text: str) -> str:
@@ -275,7 +315,7 @@ def build_title_shape_mix(rows: list[dict], windows: tuple[int, ...] = (10, 30))
 
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
-    data, _rejected, prune_summary = prune_queue(data)
+    data, _rejected, prune_summary = _prune_with_strategy(data)
     rows = []
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)
@@ -292,7 +332,11 @@ def main() -> int:
         editorial = story.get("editorial") or {}
         if editorial.get("approved") is not True:
             continue
-        score = score_story(story)
+        brain = story.get("youtube_brain") or {}
+        packaging = story.get("packaging") or {}
+        if brain.get("risks") or packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
+            continue
+        score = _score_for_next_short(story)
         if score.get("approved") is True and score.get("state") == "publish_ready":
             lane_adjustment = mix_adjustment(story)
             score = {**score, "score": round(min(100.0, float(score.get("score") or 0) + lane_adjustment), 1)}

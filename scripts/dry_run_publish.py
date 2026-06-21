@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.growth_strategy import ops_guardian_enforced, paused_categories  # noqa: E402
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
 from utils.publish_priority import autonomy_priority, publish_priority_key  # noqa: E402
 from utils.queue_pruner import prune_queue  # noqa: E402
 
@@ -56,10 +56,19 @@ def _agency_held_reasons(path: Path | None = None) -> dict[str, list[str]]:
     return out
 
 
+def _prune_with_strategy(data: dict):
+    try:
+        return prune_queue(data, analytics_strategy=load_strategy())
+    except TypeError as exc:
+        if "analytics_strategy" not in str(exc):
+            raise
+        return prune_queue(data)
+
+
 def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
     items = []
     objective_reasons: Counter[str] = Counter()
-    pruned, rejected, prune_summary = prune_queue(data)
+    pruned, rejected, prune_summary = _prune_with_strategy(data)
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     agency_held = _agency_held_reasons()
     for story in pruned.get("stories") or []:
@@ -85,6 +94,8 @@ def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
 
             publish = score_story(story)
         editorial = story.get("editorial") or {}
+        brain = story.get("youtube_brain") or {}
+        packaging = story.get("packaging") or {}
         queue_ready = queue_prune.get("state") == "publish_ready"
         editorial_ready = editorial.get("approved") is True or _has_editorial_cooldown_supply_fallback(story)
         if (
@@ -93,6 +104,9 @@ def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
             and rights.get("approved") is True
             and publish.get("approved") is True
             and publish.get("state") == "publish_ready"
+            and not (brain.get("risks") or [])
+            and packaging.get("state") != "rewrite_packaging"
+            and not (packaging.get("risks") or [])
         ):
             autonomy = story.get("autonomy") or {}
             gate = publish.get("objective_gate") or {}

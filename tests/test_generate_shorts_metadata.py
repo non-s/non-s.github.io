@@ -467,6 +467,90 @@ def test_queue_adapter_preserves_editorial_cooldown_supply_fallback(monkeypatch)
     assert story["rights_audit"]["approved"] is True
 
 
+def test_load_pending_stories_allows_clean_publish_ready_reserve(monkeypatch, tmp_path):
+    import importlib
+    import json
+    import sys
+
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+
+    importlib.reload(gs)
+
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    queue = {
+        "stories": [
+            {
+                "id": "reserve",
+                "title": "Foxes can hunt sounds hidden under snow",
+                "seo_title": "Foxes can hunt sounds hidden under snow",
+                "hook": "Foxes can hunt sounds hidden under snow.",
+                "script": "Foxes can hunt sounds hidden under snow. Watch the head tilt before the leap.",
+                "thumbnail_text": "HEAD TILT",
+                "category": "nocturnal",
+                "source_url": "https://www.pexels.com/video/fox/",
+                "consumed": False,
+                "queue_prune": {
+                    "state": "publish_ready",
+                    "objective_reasons": [
+                        "objective_gate:observe_before_scaling",
+                        "publish_ready_supply_reserve_fallback",
+                    ],
+                },
+                "publish_score": {
+                    "approved": True,
+                    "state": "publish_ready",
+                    "score": 99,
+                    "reserve_override": {"reason": "publish_ready_supply_reserve_fallback"},
+                },
+                "editorial": {"approved": True, "state": "publish_now"},
+                "rights_audit": {"approved": True, "warnings": []},
+            }
+        ]
+    }
+    (data_dir / "stories_queue.json").write_text(json.dumps(queue), encoding="utf-8")
+
+    monkeypatch.setattr(gs, "prune_queue", lambda queue, analytics_strategy=None: (queue, [], {}))
+    monkeypatch.setattr(gs, "load_strategy", lambda: {})
+    monkeypatch.setattr(gs, "_queue_story_quality_issues", lambda story, seen_scripts: [])
+    monkeypatch.setattr(gs, "production_quality_issues", lambda story: [])
+    monkeypatch.setattr(gs, "_queue_to_story", lambda story: {"slug": story["id"], **story})
+    monkeypatch.setattr(
+        gs,
+        "score_topic",
+        lambda story, memory=None: {"verdict": "discard", "reasons": ["low_opportunity_score"]},
+    )
+    monkeypatch.setattr(gs, "detect_weak_content", lambda story, memory=None: {"state": "clear"})
+    monkeypatch.setattr(gs, "analyze_retention", lambda story: {"verdict": "keep"})
+    monkeypatch.setattr(
+        gs,
+        "publish_score_story",
+        lambda story, analytics_strategy=None: {
+            "state": "rewrite",
+            "approved": False,
+            "score": 99,
+            "opportunity": {"reasons": ["low_opportunity_score"]},
+        },
+    )
+    monkeypatch.setattr(gs, "package_story", lambda story: {**story, "packaging": {"state": "magnetic", "risks": []}})
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "load_format_memory", lambda: {})
+    monkeypatch.setattr(gs, "filter_candidates", lambda candidates: (candidates, []))
+    monkeypatch.setattr(gs, "rank_candidates", lambda candidates: candidates)
+    monkeypatch.setattr(gs, "rank_for_growth", lambda candidates, strategy: candidates)
+    monkeypatch.setattr(gs, "rank_for_agency", lambda candidates, strategy: candidates)
+
+    candidates, _queue = gs.load_pending_stories()
+
+    assert [item["id"] for item in candidates] == ["reserve"]
+    assert candidates[0]["publish_score"]["approved"] is True
+    assert candidates[0]["publish_score"]["state"] == "publish_ready"
+    assert candidates[0]["publish_score"]["reserve_override"]["reason"] == "publish_ready_supply_reserve_fallback"
+
+
 def test_load_pending_stories_keeps_publish_priority_after_agency_ranking(monkeypatch, tmp_path):
     import importlib
     import json
