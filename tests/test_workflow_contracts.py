@@ -81,6 +81,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "quota_preflight.py fetch-content --json --no-fail-on-block" in fetch_workflow
     assert "FETCH_QUOTA_BLOCKED" in fetch_workflow
     assert 'if [ "${FETCH_QUOTA_BLOCKED:-0}" = "1" ]; then' in fetch_workflow
+    assert "Sync latest main before queue refresh" in fetch_workflow
+    assert "git checkout -B main origin/main" in fetch_workflow
     assert "leaving generated diagnostics uncommitted" in fetch_workflow
     assert "QUEUE_TARGET_PENDING || '72'" in fetch_workflow
     assert yaml.safe_load(fetch_workflow)["concurrency"]["group"] == "queue-refresh"
@@ -131,6 +133,21 @@ def test_youtube_publisher_syncs_latest_main_before_publish_decision():
     assert sync_index < names.index("Garantir fila minima")
     assert sync_index < names.index("Preparar inteligencia pre-publicacao")
     assert sync_index < names.index("Decidir janela de publicacao")
+
+    sync_step = steps[sync_index]
+    assert "git fetch origin main" in sync_step["run"]
+    assert "git checkout -B main origin/main" in sync_step["run"]
+
+
+def test_queue_refresh_syncs_latest_main_before_generating_state():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["refresh-queue"]["steps"]
+    names = [step.get("name") for step in steps]
+
+    sync_index = names.index("Sync latest main before queue refresh")
+    assert sync_index < names.index("Refresh Pexels stories")
+    assert sync_index < names.index("Reconcile uploaded queue state")
+    assert sync_index < names.index("Commit queue state")
 
     sync_step = steps[sync_index]
     assert "git fetch origin main" in sync_step["run"]
