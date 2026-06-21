@@ -308,7 +308,8 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 16
+      "evergreen": 18,
+      "recovery": 2
     },
     "items": [
       {
@@ -317,7 +318,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.6
+        "freshness_score": 54.58
       },
       {
         "id": "01c9148ecf9c93ea",
@@ -325,7 +326,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.34
+        "freshness_score": 54.32
       },
       {
         "id": "893ffe8d80d16f7a",
@@ -333,7 +334,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.54
+        "freshness_score": 54.52
       },
       {
         "id": "286c6fe56686d442",
@@ -341,7 +342,15 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.8
+        "freshness_score": 54.78
+      },
+      {
+        "id": "93762c1c48c3dd09",
+        "title": "Whales slap the surface to warn the pod",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
       },
       {
         "id": "261197331775d3c7",
@@ -357,15 +366,31 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.44
+        "freshness_score": 54.42
       },
       {
-        "id": "cefbba0308304425",
+        "id": "7e5f0a5a1b964923",
+        "title": "Penguins trap air bubbles under feathers",
+        "category": "arctic",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
+        "id": "7e75471e057577bf",
+        "title": "Goats use wide pupils to watch danger",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
+      },
+      {
+        "id": "64227d00a21eab81",
         "title": "Forests can cool the air below them",
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 55.0
       },
       {
         "id": "ca66243c1b8718b8",
@@ -376,6 +401,14 @@
         "freshness_score": 54.8
       },
       {
+        "id": "7fdc62557df3560c",
+        "title": "Sheep recognize faces across the flock",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
+      },
+      {
         "id": "f9f1f04bb348651b",
         "title": "Auroras glow when solar particles hit air",
         "category": "weather",
@@ -384,12 +417,12 @@
         "freshness_score": 54.54
       },
       {
-        "id": "9c0b0d680157d87c",
+        "id": "887da3d44d921125",
         "title": "Rivers move sideways while they flow",
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.38
+        "freshness_score": 55.0
       },
       {
         "id": "eb0beb388f27c28c",
@@ -405,7 +438,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.9
       },
       {
         "id": "bbd6ad1620d07e82",
@@ -416,12 +449,12 @@
         "freshness_score": 54.3
       },
       {
-        "id": "33ce66fcbada8b12",
+        "id": "3fd0a32cda87cbc4",
         "title": "Magnets make invisible fields visible",
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.98
+        "freshness_score": 55.0
       },
       {
         "id": "9ee098ecdf0b7d81",
@@ -429,7 +462,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.78
+        "freshness_score": 54.76
       },
       {
         "id": "7ad7a90404ba7939",
@@ -437,7 +470,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.9
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -489,15 +522,15 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 16,
-    "pending_after": 16,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 6,
+    "repaired": 7,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 10,
+      "objective_gate:bootstrap_observe_before_scaling": 11,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
-      "objective_gate:observe_before_scaling": 2,
+      "objective_gate:observe_before_scaling": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
