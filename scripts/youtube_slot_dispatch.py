@@ -14,7 +14,14 @@ import sys
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Iterable
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.upload_intent import INTENTS_FILE, duplicate_slot_uploaded  # noqa: E402
 
 
 ACTIVE_STATUSES = {"queued", "in_progress", "waiting", "requested", "pending"}
@@ -57,6 +64,10 @@ def slot_window(slot: datetime, *, minutes: int = 60) -> tuple[datetime, datetim
     return start, start + timedelta(minutes=max(1, minutes))
 
 
+def slot_key(slot: datetime) -> str:
+    return slot.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+
+
 def run_covers_slot(run: dict, slot: datetime, *, window_minutes: int = 60) -> bool:
     created_raw = str(run.get("created_at") or "")
     if not created_raw:
@@ -64,6 +75,24 @@ def run_covers_slot(run: dict, slot: datetime, *, window_minutes: int = 60) -> b
     created_at = parse_utc(created_raw)
     start, end = slot_window(slot, minutes=window_minutes)
     return start <= created_at < end
+
+
+def slot_has_uploaded_intent(slot: datetime, path: Path = INTENTS_FILE) -> dict:
+    return duplicate_slot_uploaded(slot_key(slot), path)
+
+
+def successful_run_satisfies_slot(
+    run: dict,
+    slot: datetime,
+    *,
+    window_minutes: int = 60,
+    upload_intents_path: Path = INTENTS_FILE,
+) -> bool:
+    if not run_covers_slot(run, slot, window_minutes=window_minutes):
+        return False
+    if run.get("status") != "completed" or run.get("conclusion") != "success":
+        return False
+    return bool(slot_has_uploaded_intent(slot, upload_intents_path))
 
 
 def request_json(token: str, method: str, url: str, body: dict | None = None):
@@ -92,6 +121,7 @@ def dispatch_if_missing(
     slot: datetime,
     reason: str,
     window_minutes: int = 60,
+    upload_intents_path: Path = INTENTS_FILE,
 ) -> int:
     start, end = slot_window(slot, minutes=window_minutes)
     print(f"Auditing slot {slot.isoformat()} with window [{start.isoformat()}, {end.isoformat()}).")
@@ -109,8 +139,12 @@ def dispatch_if_missing(
             print("A publishing run is already active or queued for this slot; no recovery needed.")
             return 0
         if status == "completed" and conclusion == "success":
-            print("This slot already has a successful publishing run; no recovery needed.")
-            return 0
+            upload = slot_has_uploaded_intent(slot, upload_intents_path)
+            if upload:
+                video_id = upload.get("video_id")
+                print(f"This slot already has uploaded video_id={video_id}; no recovery needed.")
+                return 0
+            print("Successful run found, but no uploaded intent exists for this slot; treating slot as uncovered.")
 
     dispatch_url = f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/dispatches"
     try:
