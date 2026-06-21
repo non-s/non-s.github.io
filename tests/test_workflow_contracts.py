@@ -16,6 +16,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "Registrar quota consumida" not in youtube_workflow
     assert "PUBLISH_EVENT_SCHEDULE_CRON" in youtube_workflow
     assert "skip_quota_guard" in youtube_workflow
+    assert "Sincronizar main remoto antes da decisao" in youtube_workflow
+    assert "git checkout -B main origin/main" in youtube_workflow
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
     assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
@@ -118,6 +120,21 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
     assert "heartbeat recovery for slot" in heartbeat_workflow
     assert "time.sleep" not in heartbeat_workflow
+
+
+def test_youtube_publisher_syncs_latest_main_before_publish_decision():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["generate-and-upload"]["steps"]
+    names = [step.get("name") for step in steps]
+
+    sync_index = names.index("Sincronizar main remoto antes da decisao")
+    assert sync_index < names.index("Garantir fila minima")
+    assert sync_index < names.index("Preparar inteligencia pre-publicacao")
+    assert sync_index < names.index("Decidir janela de publicacao")
+
+    sync_step = steps[sync_index]
+    assert "git fetch origin main" in sync_step["run"]
+    assert "git checkout -B main origin/main" in sync_step["run"]
 
 
 def test_dashboard_strict_audit_keeps_youtube_token_when_available():
