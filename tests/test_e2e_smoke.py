@@ -225,6 +225,82 @@ def test_end_to_end_generate_short_ships_metadata(monkeypatch, tmp_path, fake_qu
     assert saved["title"] == metadata["title"]
 
 
+def test_generate_short_preserves_editorial_cooldown_supply_fallback(monkeypatch, tmp_path, fake_queue_story):
+    import importlib
+    import sys
+
+    from utils.editorial import EditorialReview
+
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+
+    importlib.reload(gs)
+
+    _stub_image_chain(monkeypatch, gs)
+    _stub_tts_and_captions(monkeypatch, gs)
+    _stub_broll_acquisition(monkeypatch, gs)
+    _silence_ffmpeg(monkeypatch, gs)
+    monkeypatch.setattr(
+        gs,
+        "editorial_review",
+        lambda story: EditorialReview(
+            approved=False,
+            score=75,
+            state="cooldown_subject",
+            series="Cold-Blooded Secrets",
+            subject="snake",
+            humanity={"score": 98, "label": "signature", "strengths": [], "issues": [], "rewrite_brief": []},
+            reasons=("subject repeated inside 3-day cooldown",),
+        ),
+    )
+
+    story = {
+        "slug": "snake-fallback",
+        "title": "Snakes sample the air with a tongue flick",
+        "description": "A snake samples scent particles with its tongue before the next move.",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/snake/",
+        "image_url": "",
+        "tags": ["reptiles"],
+        "category": "reptiles",
+        "date": "2026-05-18",
+        "hook": "Snakes sample the air with a tongue flick.",
+        "script": (
+            "Snakes sample the air with a tongue flick. Watch the tongue before the next move, "
+            "because it collects scent particles and sends them to a special organ in the mouth. "
+            "That helps snakes track prey, mates, and danger without needing a loud chase. "
+            "The air is information. Would you notice the trail?"
+        ),
+        "thumbnail_text": "TONGUE SMELL",
+        "key_points": ["tongue scent", "chemical trail"],
+        "yt_tags": ["snakes", "reptiles", "animal senses"],
+        "yt_description": fake_queue_story["yt_description"],
+        "geo_hashtag": "Wildlife",
+        "topic_hashtag": "Reptiles",
+        "discovery_hashtags": ["reptiles", "animals", "funfacts"],
+        "queue_prune": {
+            "state": "publish_ready",
+            "objective_reasons": ["editorial_cooldown_supply_fallback"],
+        },
+        "_queue_id": "snake-fallback",
+        "native_lang": "en",
+        "experiments": fake_queue_story["experiments"],
+    }
+
+    tmp = tmp_path / "tmp_fallback"
+    tmp.mkdir()
+    out = gs.generate_short(story, tmp)
+
+    assert out is not None
+    _, _, metadata = out
+    assert metadata["editorial"]["approved"] is True
+    assert metadata["editorial"]["override"] == "editorial_cooldown_supply_fallback"
+    assert metadata["pre_publish_audit"]["approved"] is True
+    assert metadata["publish_score"]["approved"] is True
+
+
 def test_end_to_end_quality_gate_blocks_slop(monkeypatch, tmp_path, fake_queue_story):
     """A bad story (banned phrases + weak hook) should be skipped."""
     import importlib, sys

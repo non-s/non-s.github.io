@@ -2172,10 +2172,11 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
         "captions_required": QUALITY_REQUIRE_CAPTIONS,
         "min_visual_qa_score": QUALITY_MIN_VISUAL_QA_SCORE,
     }
-    metadata["editorial"] = editorial.to_dict()
-    metadata["humanity"] = editorial.humanity
-    metadata["studio_state"] = editorial.state
-    metadata["series"] = editorial.series
+    effective_editorial = story.get("editorial") or editorial.to_dict()
+    metadata["editorial"] = effective_editorial
+    metadata["humanity"] = effective_editorial.get("humanity") or editorial.humanity
+    metadata["studio_state"] = effective_editorial.get("state") or editorial.state
+    metadata["series"] = effective_editorial.get("series") or editorial.series
     metadata["opening_audit"] = audit_opening_frames(
         {
             **metadata,

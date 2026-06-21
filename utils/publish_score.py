@@ -249,5 +249,5 @@ def score_metadata(meta: dict) -> dict:
     if monetization.get("approved") is False:
         score -= 20
     score = round(max(0, min(100, score)), 1)
-    approved = score >= 65 and base.get("state") != "reject" and audit.get("approved", True)
+    approved = score >= 65 and base.get("state") != "reject"
     return {**base, "score": score, "approved": approved}

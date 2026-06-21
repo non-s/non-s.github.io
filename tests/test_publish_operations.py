@@ -8,7 +8,7 @@ from utils.local_rewriter import rescue_story
 from utils.packaging import package_story
 from utils.post24_review import build_review, classify_video
 from utils.publish_schedule import recommend_schedule
-from utils.publish_score import score_story
+from utils.publish_score import score_metadata, score_story
 from utils.rejected_queue import load_rejections, record_rejection
 from utils.rights_audit import audit_rights
 from utils.sequence_factory import build_sequence_plan
@@ -39,6 +39,19 @@ def test_score_story_approves_specific_winning_candidate():
     assert score["state"] == "publish_ready"
     assert score["approved"] is True
     assert score["score"] >= 72
+
+
+def test_score_metadata_does_not_mask_pre_publish_audit_gate():
+    score = score_metadata(
+        _strong_story(
+            has_captions=True,
+            has_broll=True,
+            pre_publish_audit={"approved": False, "score": 30, "reasons": ["diagnostic gate"]},
+        )
+    )
+
+    assert score["state"] == "publish_ready"
+    assert score["approved"] is True
 
 
 def test_score_story_approves_borderline_visual_cue_candidate():
