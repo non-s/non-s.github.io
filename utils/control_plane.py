@@ -100,7 +100,7 @@ def build_control_plane_report(root: Path | str = ".") -> dict:
         "migration_lanes": [
             {
                 "lane": "queue_and_upload_intents",
-                "target": "Postgres/Supabase tables keyed by channel, language, state, and publish window",
+                "target": "Firebase/Firestore collections keyed by channel, language, state, and publish window",
                 "reason": "Queue and upload state change every run and should not be merged through Git.",
                 "priority": 1,
             },
