@@ -12,7 +12,7 @@ from utils.comment_policy import classify_comment
 from utils.experiment_registry import build_registry, validate_registry
 from utils.experiment_scheduler import plan_experiment_schedule
 from utils.frame_zero_packaging import score_frame_zero
-from utils.hook_library import score_hook
+from utils.hook_library import choose_hook_template, score_hook
 from utils.loop_semantics import score_loop_semantics
 from utils.opening_gate_v2 import evaluate_opening_gate
 from utils.originality_pack import build_originality_pack, stable_hash
@@ -94,6 +94,39 @@ def test_hook_patterns_payoff_and_loop_semantics_reward_specific_callbacks():
     loop = score_loop_semantics(story["script"], story["hook"])
     assert loop["state"] == "live_loop"
     assert loop["callback_keyword_overlap"] > 0
+
+
+def test_physical_nature_patterns_do_not_inherit_animal_minds():
+    story = {
+        "title": "Lightning turns air into a shock wave",
+        "hook": "Lightning turns air into a shock wave.",
+        "script": "Watch the flash first, because lightning heats air fast. Which storm signal next?",
+        "category": "weather",
+        "subject": "lightning",
+    }
+
+    pattern = classify_story_pattern(story)
+    hook = choose_hook_template(story, library={"templates": {}})
+
+    assert pattern["cluster"] == "Earth Engine"
+    assert "signal" not in pattern["matched_terms"]
+    assert hook["cluster"] == "Earth Engine"
+    assert "animal" not in hook["example"].lower()
+
+
+def test_plant_patterns_use_plant_cluster_even_with_signal_word():
+    story = {
+        "title": "Plants send sugar signals through roots",
+        "hook": "Plants send a quiet signal before the forest changes.",
+        "script": "Plants can move chemical cues through roots. That signal helps nearby growth respond.",
+        "category": "plants",
+        "subject": "plants",
+    }
+
+    pattern = classify_story_pattern(story)
+
+    assert pattern["cluster"] == "Plant Signals"
+    assert "signal" not in pattern["matched_terms"]
 
 
 def test_claim_risk_rights_and_originality_pack_are_deterministic():

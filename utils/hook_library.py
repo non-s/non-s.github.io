@@ -22,6 +22,9 @@ DEFAULT_TEMPLATES: dict[str, list[str]] = {
     "Baby Nature": ["This baby {subject} survives by doing the quietest thing."],
     "Impossible Biology": ["This {subject} body part does something biology should not allow."],
     "Hidden Behaviors": ["This {subject} move is invisible until the payoff starts."],
+    "Earth Engine": ["This {subject} force changes the scene before the payoff lands."],
+    "Plant Signals": ["This {subject} signal starts quietly, then changes the whole system."],
+    "Planet Systems": ["This {subject} system hides the clue until the pattern appears."],
 }
 
 
@@ -38,8 +41,9 @@ def load_hook_library(path: Path = HOOK_LIBRARY_FILE) -> dict:
         data = {}
     templates = data.get("templates") if isinstance(data, dict) else {}
     banned = data.get("banned_phrases") if isinstance(data, dict) else []
+    merged_templates = {**DEFAULT_TEMPLATES, **(templates or {})}
     return {
-        "templates": templates or DEFAULT_TEMPLATES,
+        "templates": merged_templates,
         "banned_phrases": banned or list(BANNED_GENERIC_PHRASES),
         "clusters": data.get("clusters", {}) if isinstance(data, dict) else {},
     }
@@ -74,7 +78,9 @@ def score_hook(hook: str, story: dict | None = None, library: dict | None = None
 def choose_hook_template(story: dict, library: dict | None = None) -> dict:
     library = library or load_hook_library()
     pattern = classify_story_pattern(story)
-    templates = (library.get("templates") or {}).get(pattern["cluster"]) or DEFAULT_TEMPLATES["Hidden Behaviors"]
+    templates = (library.get("templates") or {}).get(pattern["cluster"]) or DEFAULT_TEMPLATES.get(
+        pattern["cluster"], DEFAULT_TEMPLATES["Hidden Behaviors"]
+    )
     subject = str(story.get("subject") or story.get("category") or "animal").lower()
     text = str(templates[0]).format(subject=subject)
     return {"cluster": pattern["cluster"], "template": templates[0], "example": text}
