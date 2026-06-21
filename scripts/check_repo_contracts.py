@@ -116,10 +116,18 @@ WORKFLOW_TOKENS = {
         "merge_jsonl_state.py",
         "reconcile_queue_uploads.py",
     ),
+    ".github/workflows/youtube-watchdog.yml": (
+        'PUBLISH_SLOT_WINDOW_MINUTES: "60"',
+        "PUBLISH_SLOTS_UTC",
+        "watchdog recovery for missed slot",
+        "python scripts/youtube_slot_dispatch.py watchdog",
+    ),
     ".github/workflows/youtube-hourly-heartbeat.yml": (
         'TARGET_WORKFLOW: "youtube-bot.yml"',
         "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'",
+        'PUBLISH_SLOT_WINDOW_MINUTES: "60"',
         "heartbeat recovery for slot",
+        "python scripts/youtube_slot_dispatch.py heartbeat",
         "timeout-minutes: 8",
     ),
     ".github/workflows/dashboard.yml": (

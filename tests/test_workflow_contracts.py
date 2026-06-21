@@ -70,6 +70,8 @@ def test_workflows_parse_and_include_growth_steps():
     watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
     assert 'GRACE_MINUTES: "12"' in watchdog_workflow
+    assert 'PUBLISH_SLOT_WINDOW_MINUTES: "60"' in watchdog_workflow
+    assert "python scripts/youtube_slot_dispatch.py watchdog" in watchdog_workflow
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert 'cron: "9,23 * * * *"' in fetch_workflow
     assert "do not hold the" in fetch_workflow
@@ -122,7 +124,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "github.event.workflow_run.conclusion == 'success'" in heartbeat_workflow
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
     assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
+    assert 'PUBLISH_SLOT_WINDOW_MINUTES: "60"' in heartbeat_workflow
     assert "heartbeat recovery for slot" in heartbeat_workflow
+    assert "python scripts/youtube_slot_dispatch.py heartbeat" in heartbeat_workflow
     assert "time.sleep" not in heartbeat_workflow
 
 

@@ -28,106 +28,18 @@ jobs:
       contents: read
 
     steps:
+      - name: "Checkout dispatch helper"
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 1
+
       - name: "Check latest planned slot"
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPOSITORY: ${{ github.repository }}
           TARGET_WORKFLOW: "youtube-bot.yml"
           GRACE_MINUTES: "12"
-          SLOT_TOLERANCE_MINUTES: "10"
-        run: |
-          python - <<'PY'
-          from __future__ import annotations
-
-          import json
-          import os
-          import sys
-          import urllib.error
-          import urllib.request
-          from datetime import datetime, timedelta, timezone
-
-          token = os.environ["GH_TOKEN"]
-          repo = os.environ["GH_REPOSITORY"]
-          workflow = os.environ.get("TARGET_WORKFLOW", "youtube-bot.yml")
-          grace = timedelta(minutes=int(os.environ.get("GRACE_MINUTES", "45")))
-          tolerance = timedelta(minutes=int(os.environ.get("SLOT_TOLERANCE_MINUTES", "10")))
-          now = datetime.now(timezone.utc)
-
-          # Intended YouTube publishing times in UTC. Keep this tuple in sync
-          # with utils.publish_schedule.CANONICAL_SLOTS_UTC.
-          publish_slots = (
-              "00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
-              "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
-              "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
-              "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-          )
-
-          # The watchdog runs frequently and only recovers the most recent
-          # slot whose grace window has ended.
-          candidates = []
-          for day_offset in (-1, 0):
-              day = (now + timedelta(days=day_offset)).date()
-              for label in publish_slots:
-                  hour, minute = [int(part) for part in label.split(":", 1)]
-                  slot = datetime(day.year, day.month, day.day, hour, minute, tzinfo=timezone.utc)
-                  if now >= slot + grace:
-                      candidates.append(slot)
-
-          if not candidates:
-              print("No publishing slot is old enough to audit yet.")
-              sys.exit(0)
-
-          slot = max(candidates)
-          threshold = slot - tolerance
-          print(f"Auditing slot {slot.isoformat()} with threshold {threshold.isoformat()}.")
-
-          def request_json(method: str, url: str, body: dict | None = None):
-              data = None if body is None else json.dumps(body).encode("utf-8")
-              req = urllib.request.Request(
-                  url,
-                  data=data,
-                  method=method,
-                  headers={
-                      "Authorization": f"Bearer {token}",
-                      "Accept": "application/vnd.github+json",
-                      "X-GitHub-Api-Version": "2022-11-28",
-                      "User-Agent": "wildbrief-youtube-watchdog",
-                  },
-              )
-              with urllib.request.urlopen(req, timeout=30) as response:
-                  raw = response.read()
-                  return None if not raw else json.loads(raw.decode("utf-8"))
-
-          runs_url = f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/runs?per_page=20"
-          runs = request_json("GET", runs_url).get("workflow_runs", [])
-          relevant = []
-          for run in runs:
-              created_at = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
-              if created_at >= threshold:
-                  relevant.append(run)
-
-          for run in relevant:
-              status = run.get("status")
-              conclusion = run.get("conclusion")
-              event = run.get("event")
-              url = run.get("html_url")
-              created = run.get("created_at")
-              print(f"Found run after threshold: {created} status={status} conclusion={conclusion} event={event} {url}")
-              if status in {"queued", "in_progress", "waiting", "requested", "pending"}:
-                  print("A publishing run is already active or queued; no recovery needed.")
-                  sys.exit(0)
-              if status == "completed" and conclusion == "success":
-                  print("The slot already has a successful publishing run; no recovery needed.")
-                  sys.exit(0)
-
-          dispatch_url = f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/dispatches"
-          reason = f"watchdog recovery for missed slot {slot.isoformat()}"
-          try:
-              request_json("POST", dispatch_url, {"ref": "main", "inputs": {"reason": reason}})
-          except urllib.error.HTTPError as exc:
-              detail = exc.read().decode("utf-8", errors="replace")
-              print(f"Failed to dispatch recovery run: HTTP {exc.code} {detail}")
-              raise
-
-          print(f"Dispatched YouTube Bot recovery run: {reason}")
-          PY
+          PUBLISH_SLOT_WINDOW_MINUTES: "60"
+          PUBLISH_SLOTS_UTC: "00:00,01:00,02:00,03:00,04:00,05:00,06:00,07:00,08:00,09:00,10:00,11:00,12:00,13:00,14:00,15:00,16:00,17:00,18:00,19:00,20:00,21:00,22:00,23:00"
+          RECOVERY_REASON_PREFIX: "watchdog recovery for missed slot"
+        run: python scripts/youtube_slot_dispatch.py watchdog
