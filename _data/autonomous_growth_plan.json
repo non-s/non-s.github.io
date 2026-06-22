@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-22T06:53:14.041702+00:00",
+  "generated_at": "2026-06-22T07:48:30.331207+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "youtube_analytics_and_public_statistics",
-    "shorts_tracked": 50,
+    "shorts_tracked": 51,
     "avg_view_pct": 67.892,
     "subs_per_1000_views": 0.0
   },
@@ -20,11 +20,11 @@
     },
     {
       "name": "cats",
-      "score": 207.049
+      "score": 207.046
     },
     {
       "name": "plants",
-      "score": 200.542
+      "score": 200.5
     },
     {
       "name": "ecosystems",
@@ -38,7 +38,7 @@
     },
     {
       "name": "plant_mechanism",
-      "score": 200.542
+      "score": 200.5
     },
     {
       "name": "rare_nature",
@@ -54,6 +54,7 @@
     }
   ],
   "winning_terms": [
+    "auroras",
     "before",
     "built-in",
     "cats",
@@ -64,8 +65,7 @@
     "dragonflies",
     "ears",
     "electric",
-    "extreme",
-    "fields"
+    "extreme"
   ],
   "experiment_bank": {
     "winners": {
@@ -256,16 +256,16 @@
         "category": "cats"
       },
       {
-        "id": "remake-54f7af801b14fce9",
-        "title": "Mushrooms trade nutrients through underground threads",
-        "variant": "session_graph_sequel",
-        "category": "fungi"
-      },
-      {
         "id": "remake-4f0545c894abcc67",
         "title": "Coral reefs are cities built by tiny animals",
         "variant": "session_graph_sequel",
         "category": "ecosystems"
+      },
+      {
+        "id": "remake-4082074f6c8a5eeb",
+        "title": "Cats groom to reset their scent map",
+        "variant": "session_graph_sequel",
+        "category": "cats"
       }
     ]
   },
@@ -301,7 +301,7 @@
       {
         "profile": "close_subject|feed_bright|medium_contrast",
         "n": 4,
-        "mean_growth_score": 179.585,
+        "mean_growth_score": 179.582,
         "mean_retention": 32.705,
         "mean_views": 1.25,
         "mean_visual_ctr_score": 93.0
@@ -316,16 +316,24 @@
       },
       {
         "profile": "close_subject|feed_bright|high_contrast",
-        "n": 30,
-        "mean_growth_score": 155.645,
-        "mean_retention": 22.011,
-        "mean_views": 2.133,
+        "n": 31,
+        "mean_growth_score": 157.066,
+        "mean_retention": 21.301,
+        "mean_views": 2.065,
         "mean_visual_ctr_score": 100.0
       },
       {
         "profile": "close_subject|usable_light|flat_contrast",
         "n": 1,
-        "mean_growth_score": 200.542,
+        "mean_growth_score": 200.5,
+        "mean_retention": 0.0,
+        "mean_views": 1.0,
+        "mean_visual_ctr_score": 69.0
+      },
+      {
+        "profile": "subject_rich|dark_or_washed|high_contrast",
+        "n": 1,
+        "mean_growth_score": 200.386,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 69.0
@@ -333,18 +341,10 @@
       {
         "profile": "weak_subject|feed_bright|medium_contrast",
         "n": 1,
-        "mean_growth_score": 200.284,
+        "mean_growth_score": 200.278,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 87.0
-      },
-      {
-        "profile": "subject_rich|feed_bright|high_contrast",
-        "n": 1,
-        "mean_growth_score": 200.248,
-        "mean_retention": 0.0,
-        "mean_views": 1.0,
-        "mean_visual_ctr_score": 95.0
       }
     ],
     "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
@@ -357,10 +357,10 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 21,
-    "approved_candidates": 21,
+    "pending": 20,
+    "approved_candidates": 20,
     "lane_counts": {
-      "fresh_experiment": 21
+      "fresh_experiment": 20
     },
     "top_candidates": [
       {
@@ -2381,176 +2381,6 @@
         }
       },
       {
-        "id": "facf5c8f087fbb36",
-        "title": "Penguins carry tiny air pockets into the water",
-        "category": "birds",
-        "story_format": "body_superpower",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 90.8,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 63,
-            "signals": {
-              "viral_potential": 86,
-              "visual_potential": 55,
-              "replay_potential": 78,
-              "comment_potential": 50,
-              "educational_potential": 62,
-              "emotional_potential": 40,
-              "novelty": 55
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 73,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 79,
-              "visual_score": 50,
-              "replay_score": 72,
-              "completion_prediction": 77
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "weak_content": {
-            "risk": 22,
-            "state": "clear",
-            "reasons": [
-              "repetitive_script"
-            ],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 92,
-            "state": "strong",
-            "subscriber_probability": 0.131,
-            "return_probability": 0.278,
-            "comment_probability": 0.237,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.286,
-              "sample_size": 9,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.587,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.464,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.267,
-            "sample_size": 18,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.48,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.45,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
-          },
-          "category": "birds",
-          "story_format": "body_superpower",
-          "hook_score": 100,
-          "title_score": 90,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.267,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.9,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 93.8,
-        "packaging_lab": {
-          "title_variants": [
-            "Penguins trap air bubbles under feathers",
-            "Penguins carry tiny air pockets into the water",
-            "Penguins use air bubbles before they trick"
-          ],
-          "thumbnail_variants": [
-            "AIR BUBBLES",
-            "WATCH AIR BUBBLES",
-            "PENGUINS TRICK"
-          ],
-          "hook_variants": [
-            "Penguins carry tiny air pockets into the water.",
-            "Penguins carry tiny air pockets into the water",
-            "Watch the air bubbles again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence"
-          ],
-          "pinned_comment": "Watch the air bubbles again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
         "id": "887da3d44d921125",
         "title": "Rivers move sideways while they flow",
         "category": "rivers",
@@ -3910,6 +3740,6 @@
     "Bias production toward experiment winners: hook_style=question, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=before_after, subtitle_density=low, loop_style=mirror_opening, cta_pattern=sequel_tease, end_card_style=series_tease, title_shape=curiosity_gap, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 21,
-  "queue_annotations_changed": 21
+  "queue_annotations_written": 20,
+  "queue_annotations_changed": 20
 }
