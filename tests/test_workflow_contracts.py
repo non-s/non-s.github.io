@@ -25,8 +25,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "git checkout -B main origin/main" in youtube_workflow
     assert "Garantir fila minima" in youtube_workflow
     assert "python fetch_animals.py" in youtube_workflow
-    assert "scripts/queue_ready_count.py --refresh --field publish_ready" in youtube_workflow
-    assert "scripts/queue_ready_count.py --field pending" in youtube_workflow
+    assert "scripts/queue_ready_count.py --refresh --json" in youtube_workflow
+    assert "publish_eligible" in youtube_workflow
+    assert "count_field pending" in youtube_workflow
     assert "PUBLISH_BACKFILL_READY_TARGET || '6'" in youtube_workflow
     assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
     assert "PUBLISH_MIN_READY_TO_PUBLISH || '1'" in youtube_workflow
@@ -45,9 +46,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}" in youtube_workflow
     assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
     assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
-    assert 'while [ "${ready}" -lt "${minimum_to_publish}" ]' in youtube_workflow
-    assert "Publish-ready inventory can satisfy this one-Short run" in youtube_workflow
-    assert "Publish-ready inventory is enough; raw pending inventory is monitored by fetch-content." in youtube_workflow
+    assert 'while [ "${publishable}" -lt "${minimum_to_publish}" ]' in youtube_workflow
+    assert "Publish-eligible inventory can satisfy this one-Short run" in youtube_workflow
+    assert "at least one Short clears final publish quality" in youtube_workflow
     assert "fetch-content owns deeper replenishment" in youtube_workflow
     assert 'timeout "${backfill_timeout}s" python fetch_animals.py' in youtube_workflow
     assert (
@@ -85,7 +86,8 @@ def test_workflows_parse_and_include_growth_steps():
     fetch_workflow = (ROOT / ".github/workflows/fetch-content.yml").read_text(encoding="utf-8")
     assert 'cron: "9,23 * * * *"' in fetch_workflow
     assert 'workflows: ["YouTube Bot - Shorts only"]' in fetch_workflow
-    assert "github.event.workflow_run.conclusion == 'success'" in fetch_workflow
+    assert "github.event.workflow_run.conclusion != 'cancelled'" in fetch_workflow
+    assert "Failed publisher" in fetch_workflow
     assert "do not hold the" in fetch_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' in fetch_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in fetch_workflow

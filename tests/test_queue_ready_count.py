@@ -76,6 +76,44 @@ def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback():
     assert "editor_in_chief:cooldown_subject" not in payload["held_reasons"]
 
 
+def test_queue_ready_count_tracks_final_publish_quality_gate(monkeypatch):
+    queue = {
+        "stories": [
+            {
+                "id": "strong",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+            },
+            {
+                "id": "weak",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+            },
+        ]
+    }
+    monkeypatch.setattr(
+        "utils.publish_score.score_story",
+        lambda story: {
+            "score": 90 if story["id"] == "strong" else 60,
+            "opportunity": {"score": 80 if story["id"] == "strong" else 20},
+        },
+    )
+
+    payload = build_payload(
+        queue,
+        env={"MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        include_quality_gate=True,
+    )
+
+    assert payload["publish_ready"] == 2
+    assert payload["publish_eligible"] == 1
+    assert payload["publish_eligible_ids"] == ["strong"]
+    assert payload["publish_quality_reasons"]["publish_score_below_threshold"] == 1
+    assert payload["publish_quality_reasons"]["opportunity_score_below_threshold"] == 1
+
+
 def test_queue_ready_count_excludes_ops_paused_category(monkeypatch):
     queue = {
         "stories": [
