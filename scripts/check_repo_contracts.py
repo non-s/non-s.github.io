@@ -39,6 +39,7 @@ REQUIRED_FILES = (
     "scripts/upload_intent.py",
     "scripts/tts_healthcheck.py",
     "scripts/production_smoke.py",
+    ".well-known/security.txt",
     "utils/studio_reach_schema.py",
     "utils/topic_freshness.py",
     "utils/first_frame_audit.py",

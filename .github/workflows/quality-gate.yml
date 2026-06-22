@@ -81,6 +81,7 @@ jobs:
             tests/test_tts_healthcheck.py \
             tests/test_media_lifecycle.py \
             tests/test_production_smoke.py \
+            tests/test_security_txt.py \
             tests/test_workflow_contracts.py \
             tests/test_zero_cost_hardening.py
 
@@ -124,7 +125,7 @@ jobs:
             tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
             tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
             tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py \
-            tests/test_media_lifecycle.py tests/test_production_smoke.py
+            tests/test_media_lifecycle.py tests/test_production_smoke.py tests/test_security_txt.py
           python -m ruff check \
             utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
             utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
@@ -154,7 +155,7 @@ jobs:
             tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
             tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
             tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py \
-            tests/test_media_lifecycle.py tests/test_production_smoke.py
+            tests/test_media_lifecycle.py tests/test_production_smoke.py tests/test_security_txt.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt
