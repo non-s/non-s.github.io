@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-22T08:56:00.410717+00:00",
-  "autonomy_score": 77,
+  "generated_at": "2026-06-22T09:28:12.706209+00:00",
+  "autonomy_score": 60,
   "state": "needs_operator_attention",
   "publish_mix": {
     "winner_sequels": 20,
@@ -16,15 +16,22 @@
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "traffic_source_report_not_ready",
+    "reason": "yt-analytics.readonly scope missing",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 7,
-    "state": "normal",
-    "issues": [],
+    "risk_score": 52,
+    "state": "watch",
+    "issues": [
+      "youtube_analytics_scope_missing"
+    ],
     "unavailable_reports": [
-      "device_type"
+      "video_core",
+      "daily_channel",
+      "country",
+      "traffic_source",
+      "device_type",
+      "subscriber_status"
     ],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
