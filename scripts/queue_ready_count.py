@@ -59,6 +59,7 @@ def build_payload(
     env: Mapping[str, str] | None = None,
     refresh_agency: bool = False,
     queue_path: Path = QUEUE,
+    include_quality_gate: bool = False,
 ) -> dict:
     return build_readiness_payload(
         queue,
@@ -67,6 +68,7 @@ def build_payload(
         refresh_agency=refresh_agency,
         queue_path=queue_path,
         agency_gate_path=AGENCY_GATE,
+        include_quality_gate=include_quality_gate,
     )
 
 
@@ -77,12 +79,22 @@ def main() -> int:
         "--refresh", action="store_true", help="Refresh queue_prune/editorial metadata before counting."
     )
     parser.add_argument("--json", action="store_true", help="Print the full JSON payload.")
-    parser.add_argument("--field", choices=("pending", "publish_ready"), help="Print one numeric field only.")
+    parser.add_argument(
+        "--field",
+        choices=("pending", "publish_ready", "publish_eligible"),
+        help="Print one numeric field only.",
+    )
     args = parser.parse_args()
 
     queue_path = Path(args.queue)
     queue = refresh_queue(queue_path) if args.refresh else _read_queue(queue_path)
-    payload = build_payload(queue, refresh_agency=args.refresh, queue_path=queue_path)
+    include_quality_gate = args.json or args.field == "publish_eligible"
+    payload = build_payload(
+        queue,
+        refresh_agency=args.refresh,
+        queue_path=queue_path,
+        include_quality_gate=include_quality_gate,
+    )
     if args.field:
         print(int(payload.get(args.field, 0) or 0))
     elif args.json:

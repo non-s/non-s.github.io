@@ -122,6 +122,27 @@ def publish_ready_verdict(
     return not reasons, reasons
 
 
+def publish_quality_verdict(story: dict, *, env: Mapping[str, str] | None = None) -> tuple[bool, list[str], dict]:
+    """Return whether a ready story clears the final publish score gates."""
+    from utils.publish_schedule import feature_flags
+    from utils.publish_score import score_story
+
+    flags = feature_flags(dict(env or {}))
+    try:
+        score = score_story(story)
+    except Exception as exc:
+        return False, [f"publish_score_error:{exc.__class__.__name__}"], {"score": 0.0, "opportunity": {"score": 0.0}}
+
+    reasons: list[str] = []
+    publish_score = float(score.get("score") or 0)
+    opportunity_score = float((score.get("opportunity") or {}).get("score") or 0)
+    if publish_score < flags["min_slot_publish_score"]:
+        reasons.append("publish_score_below_threshold")
+    if opportunity_score < flags["min_queue_opportunity_score"]:
+        reasons.append("opportunity_score_below_threshold")
+    return not reasons, reasons, score
+
+
 def build_readiness_payload(
     queue: dict,
     *,
@@ -130,6 +151,7 @@ def build_readiness_payload(
     refresh_agency: bool = False,
     queue_path: Path | None = None,
     agency_gate_path: Path | None = None,
+    include_quality_gate: bool = False,
 ) -> dict:
     root = Path(root)
     pending = [story for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed")]
@@ -150,9 +172,27 @@ def build_readiness_payload(
         else:
             for reason in reasons:
                 held[reason] += 1
-    return {
+    payload = {
         "pending": len(pending),
         "publish_ready": len(ready),
         "publish_ready_ids": [str(story.get("id") or "") for story in ready[:20]],
         "held_reasons": dict(held.most_common()),
     }
+    if include_quality_gate:
+        publish_eligible: list[dict] = []
+        quality_held: Counter[str] = Counter()
+        for story in ready:
+            ok, reasons, _score = publish_quality_verdict(story, env=env)
+            if ok:
+                publish_eligible.append(story)
+            else:
+                for reason in reasons:
+                    quality_held[reason] += 1
+        payload.update(
+            {
+                "publish_eligible": len(publish_eligible),
+                "publish_eligible_ids": [str(story.get("id") or "") for story in publish_eligible[:20]],
+                "publish_quality_reasons": dict(quality_held.most_common()),
+            }
+        )
+    return payload
