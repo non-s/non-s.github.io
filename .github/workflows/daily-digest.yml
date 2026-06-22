@@ -16,6 +16,9 @@ on:
     - cron: "37 4 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # This workflow only writes to _data/blocked_slugs.json + GitHub Issues.
 # It's safe to overlap with the publishing workflows; we still serialise
 # against fetch-content so `_data/` writes don't collide.

@@ -2,9 +2,14 @@ from pathlib import Path
 
 import yaml
 
+from scripts.check_workflow_contracts import check_workflow_contracts
 from scripts.run_intelligence_suite import SCRIPT_SETS
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_all_workflows_follow_safety_contracts():
+    assert check_workflow_contracts(ROOT) == []
 
 
 def test_workflows_parse_and_include_growth_steps():

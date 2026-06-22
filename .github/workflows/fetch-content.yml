@@ -13,6 +13,9 @@ on:
     types: [completed]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # Keep queue refreshes serialized with each other without blocking the
 # publisher; both workflows replay generated state on latest main before push.
 concurrency:
