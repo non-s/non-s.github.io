@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 1
       - name: "Sync latest main before queue refresh"
@@ -300,7 +300,7 @@ jobs:
 
       - name: "Save execution log"
         if: always()
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7
         with:
           name: "fetch-animals-log-${{ github.run_number }}"
           path: fetch_animals.log
