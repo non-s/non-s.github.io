@@ -6,6 +6,9 @@ Please report security issues via **GitHub Security Advisories**:
 
   Repository → **Security** tab → **Report a vulnerability**
 
+The public web property also exposes `/.well-known/security.txt` with the
+current contact and policy URLs for automated vulnerability-report tooling.
+
 ## Supported Versions
 
 Only the current `main` branch is maintained. There are no LTS branches.
