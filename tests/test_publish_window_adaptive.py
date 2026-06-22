@@ -79,13 +79,122 @@ def test_publish_window_skips_low_quality_candidate(monkeypatch, tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,
         now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
-        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+        },
         decisions_path=tmp_path / "decisions.jsonl",
     )
 
     assert decision["decision"] == "skip_low_queue_quality"
     assert "publish_score_below_threshold" in decision["reasons"]
     assert "opportunity_score_below_threshold" in decision["reasons"]
+
+
+def test_publish_window_recovers_with_soft_agency_hold_when_strict_supply_is_weak(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "agency_gate.json",
+        {"held_items": [{"id": "soft", "reasons": ["success_recovery_hook_required"]}]},
+    )
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "weak",
+                    "title": "Weak strict candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                },
+                {
+                    "id": "soft",
+                    "title": "Strong soft held candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                },
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {
+            "score": 95 if story["id"] == "soft" else 60,
+            "opportunity": {"score": 70 if story["id"] == "soft" else 20},
+            "approved": story["id"] == "soft",
+        },
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "publish"
+    assert decision["top_candidate_id"] == "soft"
+    assert decision["reasons"] == ["soft_agency_hold_supply_recovery"]
+
+
+def test_publish_window_does_not_recover_with_hard_agency_hold(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+    _write_json(
+        tmp_path / "_data" / "agency_gate.json",
+        {"held_items": [{"id": "hard", "reasons": ["rights_guard_person_manual_review"]}]},
+    )
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {
+            "stories": [
+                {
+                    "id": "weak",
+                    "title": "Weak strict candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                },
+                {
+                    "id": "hard",
+                    "title": "Hard held candidate",
+                    "queue_prune": {"state": "publish_ready"},
+                    "publish_score": {"approved": True, "state": "publish_ready"},
+                    "editorial": {"approved": True, "state": "publish_now"},
+                },
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {
+            "score": 95 if story["id"] == "hard" else 60,
+            "opportunity": {"score": 70 if story["id"] == "hard" else 20},
+            "approved": story["id"] == "hard",
+        },
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_low_queue_quality"
+    assert decision["top_candidate_id"] == "weak"
 
 
 def test_publish_window_ignores_queue_prune_rewrite_candidate(monkeypatch, tmp_path):
@@ -118,7 +227,11 @@ def test_publish_window_ignores_queue_prune_rewrite_candidate(monkeypatch, tmp_p
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,
         now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
-        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+        },
         decisions_path=tmp_path / "decisions.jsonl",
     )
 
@@ -344,7 +457,12 @@ def test_publish_window_excludes_agency_held_candidate(monkeypatch, tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,
         now=datetime(2026, 6, 11, 5, 23, tzinfo=timezone.utc),
-        env={"ADAPTIVE_CADENCE_ENABLED": "1", "MIN_SLOT_PUBLISH_SCORE": "72", "MIN_QUEUE_OPPORTUNITY_SCORE": "50"},
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "MIN_SLOT_PUBLISH_SCORE": "72",
+            "MIN_QUEUE_OPPORTUNITY_SCORE": "50",
+            "PUBLISH_SOFT_AGENCY_RECOVERY": "0",
+        },
         decisions_path=tmp_path / "decisions.jsonl",
     )
 
