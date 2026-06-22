@@ -31,6 +31,13 @@ def test_security_txt_exposes_required_public_vulnerability_fields():
     assert expires > datetime.now(timezone.utc)
 
 
+def test_jekyll_pages_config_publishes_well_known_directory():
+    config = (ROOT / "_config.yml").read_text(encoding="utf-8")
+
+    assert "include:" in config
+    assert "- .well-known" in config
+
+
 def test_dashboard_build_publishes_security_txt(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     sys.path.insert(0, str(ROOT / "scripts"))
