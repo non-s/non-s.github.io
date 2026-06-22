@@ -1,0 +1,33 @@
+name: Production bug
+description: Report a production issue with enough evidence to reproduce and fix.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: impact
+    attributes:
+      label: Production impact
+      description: Who is affected and what fails?
+      placeholder: "Example: scheduled publish failed, dashboard section blank, generated Short rejected."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Steps, run URL, command, page, or workflow that shows the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, screenshots, failing check URLs, or smoke-test output. Do not paste secrets.
+    validations:
+      required: false
