@@ -496,6 +496,24 @@ def test_watchdog_dispatch_does_not_bypass_cadence(tmp_path):
     assert decision["decision"] == "skip_outside_slot"
 
 
+def test_heartbeat_dispatch_does_not_bypass_cadence(tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 11, 19, 23, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "1",
+            "GITHUB_EVENT_NAME": "workflow_dispatch",
+            "WORKFLOW_DISPATCH_REASON": "heartbeat recovery for slot 2026-06-11T19:00:00+00:00",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_outside_slot"
+    assert "manual_dispatch" not in decision["reasons"]
+
+
 def test_publish_window_legacy_mode_still_skips_empty_queue(tmp_path):
     decision = publish_window.evaluate_publish_window(
         root=tmp_path,

@@ -119,6 +119,13 @@ def _prune_with_strategy(data: dict):
         return prune_queue(data)
 
 
+def _write_json_if_changed(path: Path, payload: dict) -> None:
+    text = json.dumps(payload, indent=2, ensure_ascii=False)
+    if path.exists() and path.read_text(encoding="utf-8") == text:
+        return
+    path.write_text(text, encoding="utf-8")
+
+
 def _console_safe(text: str) -> str:
     return text.encode("ascii", errors="replace").decode("ascii")
 
@@ -327,6 +334,7 @@ def build_title_shape_mix(rows: list[dict], windows: tuple[int, ...] = (10, 30))
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
     data, _rejected, prune_summary = _prune_with_strategy(data)
+    _write_json_if_changed(QUEUE, data)
     rows = []
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)
@@ -378,19 +386,15 @@ def main() -> int:
         reverse=True,
     )[:30]
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(
-        json.dumps(
-            {
-                "items": rows,
-                "editorial_mix": mix_plan,
-                "title_shape_mix": build_title_shape_mix(rows),
-                "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
-                "prune_summary": prune_summary,
-            },
-            indent=2,
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
+    _write_json_if_changed(
+        OUT,
+        {
+            "items": rows,
+            "editorial_mix": mix_plan,
+            "title_shape_mix": build_title_shape_mix(rows),
+            "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
+            "prune_summary": prune_summary,
+        },
     )
     for row in rows[:10]:
         print(
