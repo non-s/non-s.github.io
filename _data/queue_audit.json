@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T06:44:27.025357+00:00",
+  "generated_at": "2026-06-22T06:53:21.179860+00:00",
   "pending": 21,
   "states": {
     "publish_ready": 11,
@@ -15,17 +15,32 @@
     "approved": 21
   },
   "prune_summary": {
-    "pending_before": 21,
+    "pending_before": 56,
     "pending_after": 21,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 6,
+    "rejected": 35,
+    "repair_needed": 7,
+    "repaired": 15,
     "reasons": {
+      "duplicate_title": 18,
       "objective_gate:bootstrap_observe_before_scaling": 9,
       "objective_gate:observe_before_scaling": 8,
+      "queue_score_reject": 7,
+      "copy_subject_mismatch": 5,
+      "duplicate_script": 5,
+      "duplicate_angle": 5,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
+      "rights_guard_person_manual_review": 4,
       "publish_ready_supply_reserve_fallback": 4,
+      "off_topic_visual": 3,
+      "script_length_risk": 2,
+      "script_hook_mismatch": 2,
+      "missing_action_word": 2,
+      "bad_plural_verb": 2,
+      "script_word_loop": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "missing_visible_cue": 1,
+      "subject_not_immediately_clear": 1,
+      "no_action_promise": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 38 is below 62": 1,
@@ -34,57 +49,8 @@
   },
   "rejected_preview": [
     {
-      "id": "463bfdc47b0763aa",
-      "title": "Bears smell food from miles away",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "c6022e82a67a94e9",
-      "title": "Plants use trap hairs to count touches before closing",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "b586b4e4ff060116",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "06d527c3e466e524",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "52885a0c4ca2d1e0",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "cd8c0f4a673b36a8",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "de2e4bb4229e2988",
-      "title": "Forests can cool the air below them",
+      "id": "842eb0c7bf69b726",
+      "title": "Magnets make invisible fields visible",
       "reasons": [
         "duplicate_title",
         "duplicate_script",
@@ -93,7 +59,51 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "17c87451c802bb11",
+      "id": "3fda9f315e7e5a36",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d46a60af3344c8d9",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f702adf22663c9ad",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "b63d258c5a0bd96d",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7b517bce7ebafc60",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7c8fc976d3b13a85",
       "title": "Trees record wet years inside their rings",
       "reasons": [
         "duplicate_title"
@@ -101,7 +111,7 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "f8c67a60fa7a1427",
+      "id": "c4a1048b1f7d34c0",
       "title": "Forests make cooler air under the canopy",
       "reasons": [
         "duplicate_title",
@@ -111,94 +121,87 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "69147123e81d6c0b",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "b26a4cab37dbd006",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c28b08e03b3d7c94",
-      "title": "Lightning turns air into a shock wave",
+      "id": "19a14a4050ab179a",
+      "title": "Sharks can feel electricity in the water",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "5099a7dc4c06b606",
-      "title": "Snakes sample the air with a tongue flick",
+      "id": "aa482fbddf4586cb",
+      "title": "Birds see colors humans cannot see",
       "reasons": [
-        "script_subject_mismatch",
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6c32ff2065f61535",
+      "title": "Birds see colors humans cannot see",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "529e28de6500d798",
+      "title": "Chickens keep their view steady while walking",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "eca0a37fdd6e16c2",
+      "title": "Chickens keep their view steady while walking",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "eaf47d4e61e60bd5",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d0fcbfdee0d0b013",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ca247d2f01c3e011",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
         "copy_subject_mismatch",
         "duplicate_title"
       ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "27238f54cf19503a",
-      "title": "Cats measure tight spaces with their whiskers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4baf15bb8f168b28",
-      "title": "rivers carve hidden shortcuts in forests",
-      "reasons": [
-        "off_topic_visual"
-      ],
       "stage": "queue_prune"
     },
     {
-      "id": "5fb7b58784a2afb8",
-      "title": "Lightning makes air explode into thunder",
+      "id": "715613b0fc5a731d",
+      "title": "Rivers sort mud and sand along each bank",
       "reasons": [
-        "duplicate_title"
+        "script_length_risk",
+        "missing_action_word",
+        "queue_score_reject"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_repair"
     },
     {
-      "id": "8ea3757601678968",
-      "title": "Horses know carrots and apples by smell",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "577c318386e03a04",
-      "title": "Horses point their ears toward what matters",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6fc5472093689969",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "fa05acd48f35d581",
-      "title": "Why cats jump like their legs are springs right before the move",
+      "id": "780162085ba8991f",
+      "title": "Why dog paws explain the move that most people miss",
       "reasons": [
         "bad_plural_verb",
         "script_word_loop"
@@ -206,33 +209,85 @@
       "stage": "queue_prune"
     },
     {
-      "id": "8f0bd71c7b6aa983",
-      "title": "Why a dog's nose changes the whole story in the first second",
+      "id": "4d8812e7adebed26",
+      "title": "Why dog paws explain the move that most people miss",
       "reasons": [
+        "bad_plural_verb",
         "script_word_loop"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "9be92e76369352fa",
-      "title": "bumblebees smell with their hairy bodies",
+      "id": "a865e6eb21581106",
+      "title": "Crows perch like watchtowers in treetops",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "f9b2c7203266d44c",
-      "title": "Owls watch you from frozen lakes",
+      "id": "f208ae622549b3fb",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "18fd39832d8f49f8",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "7bfcd30b60531541",
+      "title": "What cells do in the blink of an eye",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e32a23ba0a998760",
+      "title": "Cells that bend light to survive",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f93f1c51b62f9bbf",
+      "title": "Chipmunks test snake trust in a split second",
       "reasons": [
         "rights_guard_person_manual_review",
-        "script_subject_mismatch",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6c09590224ef4a0a",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "03651787f018c708",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "reasons": [
         "copy_subject_mismatch"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "b405880cbe5f73f9",
+      "id": "2656fdd996367f07",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
         "duplicate_title"
@@ -240,53 +295,20 @@
       "stage": "queue_prune"
     },
     {
-      "id": "7b6acc4f668245c4",
-      "title": "snow capped volcano builds land under waves",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "49160e5ec6c84214",
-      "title": "Tough iguana climbs a coconut tree",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "fc022a2ced84f355",
-      "title": "Crocodiles steer like submarines in rivers",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ce75facd05c58f83",
-      "title": "Bees carry pollen on their back legs",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "12da1950a3ab1387",
-      "title": "Owls fly silently because feathers break sound",
+      "id": "0aec8b47199784a1",
+      "title": "Plants use trap hairs to count touches before snapping shut",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "e87efc86b6169066",
-      "title": "Barred owl eyes that hunt in the dark",
+      "id": "292a3c0fff465db3",
+      "title": "Seals track fish trails with whiskers",
       "reasons": [
-        "off_topic_visual"
+        "queue_score_reject"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -437,7 +459,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.512391+00:00",
+        "checked_at": "2026-06-22T06:53:00.998411+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -887,7 +909,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.525732+00:00",
+        "checked_at": "2026-06-22T06:53:02.285726+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1191,7 +1213,7 @@
       }
     },
     {
-      "id": "c4a1048b1f7d34c0",
+      "id": "df5d6f70f6472819",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "publish_score": {
@@ -1242,17 +1264,17 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 65,
+          "score": 61,
           "signals": {
             "comment_potential": 49,
             "educational_potential": 67,
-            "emotional_potential": 39,
+            "emotional_potential": 30,
             "novelty": 54,
             "replay_potential": 67,
-            "viral_potential": 85,
-            "visual_potential": 74
+            "viral_potential": 77,
+            "visual_potential": 64
           },
-          "verdict": "produce"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -1272,13 +1294,13 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 73,
+          "score": 71,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 66
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
@@ -1335,7 +1357,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.528108+00:00",
+        "checked_at": "2026-06-22T06:53:02.631713+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1375,7 +1397,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
         "cta_prompt": "Want to see how forests quietly run the planet?",
         "curiosity_gap": {
-          "hook": "Why does this geology changes after the body cue?",
+          "hook": "Why does this forest changes after the body cue?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -1468,21 +1490,21 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 73,
+          "score": 71,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 66
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
         "risks": [],
-        "score": 92,
+        "score": 91,
         "selected_variant": {
           "hook": "Forests can cool the air below them",
-          "score": 79,
+          "score": 78,
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
@@ -1562,62 +1584,62 @@
         "top_variants": [
           {
             "hook": "Forests can cool the air below them",
-            "score": 79,
+            "score": 78,
             "thumbnail_text": "COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 79,
+            "score": 78,
             "thumbnail_text": "COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 79,
+            "score": 78,
             "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Start with the cool canopy; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY FIRST",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Forests can cool the air below them",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "WATCH COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "WATCH COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "WATCH COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Forests can cool the air below them",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "FORESTS COVER",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "FORESTS COVER",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 72,
+            "score": 71,
             "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 71,
+            "thumbnail_text": "COOL CANOPY MATTERS",
             "title": "Forests make cooler air under the canopy"
           }
         ]
@@ -1636,7 +1658,7 @@
       }
     },
     {
-      "id": "3fda9f315e7e5a36",
+      "id": "53621058d0424b1c",
       "title": "Fossils turn old bones into time clues",
       "category": "discoveries",
       "publish_score": {
@@ -1727,7 +1749,7 @@
           },
           "verdict": "rewrite"
         },
-        "score": 96.6,
+        "score": 97.8,
         "state": "publish_ready",
         "story_format": "science_clue",
         "subscriber_conversion": {
@@ -1780,16 +1802,16 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.538023+00:00",
+        "checked_at": "2026-06-22T06:53:02.283826+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
         ],
-        "score": 86.6,
+        "score": 87.8,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 86.6,
+      "queue_score": 87.8,
       "youtube_brain": {
         "animal": "rock",
         "commands": [
@@ -1823,7 +1845,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want fast updates from the edge of science?",
         "curiosity_gap": {
-          "hook": "Why does this wildlifebehavior changes after the body cue?",
+          "hook": "Why does this nature changes after the body cue?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -2239,7 +2261,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.505829+00:00",
+        "checked_at": "2026-06-22T06:53:00.991987+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -2695,7 +2717,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.507699+00:00",
+        "checked_at": "2026-06-22T06:53:00.993741+00:00",
         "mechanism_cluster": "tail_signal",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -3154,7 +3176,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.509267+00:00",
+        "checked_at": "2026-06-22T06:53:00.995298+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -3603,7 +3625,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.511090+00:00",
+        "checked_at": "2026-06-22T06:53:00.997113+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -4052,7 +4074,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.516335+00:00",
+        "checked_at": "2026-06-22T06:53:01.002377+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4513,7 +4535,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.523875+00:00",
+        "checked_at": "2026-06-22T06:53:01.627237+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4963,7 +4985,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.513508+00:00",
+        "checked_at": "2026-06-22T06:53:00.999530+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5414,7 +5436,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.514756+00:00",
+        "checked_at": "2026-06-22T06:53:01.000783+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5868,7 +5890,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.521420+00:00",
+        "checked_at": "2026-06-22T06:53:01.625708+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6323,7 +6345,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.519298+00:00",
+        "checked_at": "2026-06-22T06:53:01.005369+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6775,7 +6797,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.517906+00:00",
+        "checked_at": "2026-06-22T06:53:01.003962+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7230,7 +7252,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.531960+00:00",
+        "checked_at": "2026-06-22T06:53:03.663722+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7683,7 +7705,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.533751+00:00",
+        "checked_at": "2026-06-22T06:53:03.667144+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8132,7 +8154,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.535885+00:00",
+        "checked_at": "2026-06-22T06:53:04.075922+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8583,7 +8605,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.539783+00:00",
+        "checked_at": "2026-06-22T06:53:05.663817+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9037,7 +9059,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T06:44:12.541998+00:00",
+        "checked_at": "2026-06-22T06:53:05.665960+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
