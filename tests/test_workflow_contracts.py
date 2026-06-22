@@ -59,6 +59,9 @@ def test_workflows_parse_and_include_growth_steps():
     assert 'hard_fail_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}' in youtube_workflow
     assert "Publishing was required, but the publish window could not select an eligible Short" in youtube_workflow
     assert "REQUIRE_UPLOAD_ON_PUBLISH" in youtube_workflow
+    assert "top_candidate_id=$top_candidate_id" in youtube_workflow
+    assert "PUBLISH_WINDOW_TOP_CANDIDATE_ID=$top_candidate_id" in youtube_workflow
+    assert "PUBLISH_WINDOW_SELECTED_ONLY=1" in youtube_workflow
     assert "Sincronizar diagnosticos da fila" in youtube_workflow
     assert "python scripts/run_intelligence_suite.py queue" in youtube_workflow
     assert "YouTube automation state -" in youtube_workflow

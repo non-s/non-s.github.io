@@ -242,6 +242,17 @@ jobs:
           PY
           )"
           echo "should_publish=$should_publish" >> "$GITHUB_OUTPUT"
+          top_candidate_id="$(DECISION_JSON="$decision" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["DECISION_JSON"])
+          print(str(payload.get("top_candidate_id") or ""))
+          PY
+          )"
+          echo "top_candidate_id=$top_candidate_id" >> "$GITHUB_OUTPUT"
+          echo "PUBLISH_WINDOW_TOP_CANDIDATE_ID=$top_candidate_id" >> "$GITHUB_ENV"
+          echo "PUBLISH_WINDOW_SELECTED_ONLY=1" >> "$GITHUB_ENV"
           DECISION_JSON="$decision" python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
           import os

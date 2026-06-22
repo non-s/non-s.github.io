@@ -18,6 +18,16 @@ REWRITE_QUEUE = Path("_data/retention_rewrite_queue.json")
 CATEGORY_RECOVERY = Path("_data/category_recovery.json")
 QUEUE_FILE = Path("_data/stories_queue.json")
 CHANNEL_SUCCESS = Path("_data/channel_success.json")
+SOFT_AGENCY_HOLD_REASONS = {
+    "category_recovery_rules_not_met",
+    "success_recovery_format_required",
+    "success_recovery_hook_required",
+}
+
+
+def is_soft_agency_hold(reasons: set[str] | list[str] | tuple[str, ...] | None) -> bool:
+    reason_set = {str(reason) for reason in (reasons or []) if str(reason)}
+    return bool(reason_set) and reason_set <= SOFT_AGENCY_HOLD_REASONS
 
 
 def _safe_json(path: Path) -> dict:
