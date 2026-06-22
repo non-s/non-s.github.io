@@ -15,15 +15,25 @@ from typing import Callable, Iterable
 
 DEFAULT_URLS = (
     "https://non-s.github.io/",
+    "https://non-s.github.io/404.html",
     "https://non-s.github.io/.well-known/security.txt",
+    "https://non-s.github.io/robots.txt",
+    "https://non-s.github.io/sitemap.xml",
     "https://non-s.github.io/TakStud/",
+    "https://non-s.github.io/TakStud/404.html",
     "https://non-s.github.io/MathQuest-/",
+    "https://non-s.github.io/MathQuest-/404.html",
     "https://non-s.github.io/MathQuest-/teacher.html",
     "https://non-s.github.io/CHAMADA-/",
+    "https://non-s.github.io/CHAMADA-/404.html",
     "https://non-s.github.io/Non-s/",
+    "https://non-s.github.io/Non-s/404.html",
     "https://non-s.github.io/Portfolio/",
+    "https://non-s.github.io/Portfolio/404.html",
     "https://non-s.github.io/Uplift/",
+    "https://non-s.github.io/Uplift/404.html",
     "https://non-s.github.io/CLI-P2P/",
+    "https://non-s.github.io/CLI-P2P/404.html",
 )
 
 
@@ -112,6 +122,10 @@ def looks_like_pages_404(body: bytes) -> bool:
     return "<title>404</title>" in text or "There isn't a GitHub Pages site here" in text
 
 
+def is_html_response(content_type: str) -> bool:
+    return "html" in content_type.lower()
+
+
 def run_smoke(
     seed_urls: Iterable[str] = DEFAULT_URLS,
     *,
@@ -156,7 +170,7 @@ def run_smoke(
 
         if response.status >= 400:
             failures.append(f"{url} returned HTTP {response.status}")
-        if kind == "page":
+        if kind == "page" and is_html_response(response.content_type):
             if len(response.body) < 200:
                 failures.append(f"{url} returned a suspiciously small page")
             if looks_like_pages_404(response.body):
@@ -165,6 +179,8 @@ def run_smoke(
                 if len(targets) >= len(seed_list) + max_assets:
                     break
                 targets.setdefault(discovered, "asset")
+        elif kind == "page" and len(response.body) < 20:
+            failures.append(f"{url} returned a suspiciously small resource")
 
     return results, failures
 

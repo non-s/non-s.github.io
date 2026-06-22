@@ -7,6 +7,33 @@ def test_default_smoke_urls_include_public_security_contact():
     assert "https://non-s.github.io/.well-known/security.txt" in DEFAULT_URLS
 
 
+def test_default_smoke_urls_include_public_discovery_and_404_pages():
+    expected = {
+        "https://non-s.github.io/404.html",
+        "https://non-s.github.io/robots.txt",
+        "https://non-s.github.io/sitemap.xml",
+        "https://non-s.github.io/TakStud/404.html",
+        "https://non-s.github.io/MathQuest-/404.html",
+        "https://non-s.github.io/CHAMADA-/404.html",
+        "https://non-s.github.io/Non-s/404.html",
+        "https://non-s.github.io/Portfolio/404.html",
+        "https://non-s.github.io/Uplift/404.html",
+        "https://non-s.github.io/CLI-P2P/404.html",
+    }
+
+    assert expected.issubset(set(DEFAULT_URLS))
+
+
+def test_production_smoke_allows_short_text_seed_urls():
+    def fake_fetch(url: str, timeout: float) -> SmokeResponse:
+        return SmokeResponse(url, 200, b"User-agent: *\nAllow: /\n", "text/plain", 12)
+
+    results, failures = run_smoke(["https://non-s.github.io/robots.txt"], fetcher=fake_fetch)
+
+    assert len(results) == 1
+    assert failures == []
+
+
 def test_production_smoke_discovers_same_host_assets_and_blocks_404s():
     bodies = {
         "https://non-s.github.io/": b"""
