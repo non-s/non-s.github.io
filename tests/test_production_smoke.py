@@ -1,6 +1,10 @@
 import urllib.error
 
-from scripts.production_smoke import SmokeResponse, normalize_url, run_smoke
+from scripts.production_smoke import DEFAULT_URLS, SmokeResponse, normalize_url, run_smoke
+
+
+def test_default_smoke_urls_include_public_security_contact():
+    assert "https://non-s.github.io/.well-known/security.txt" in DEFAULT_URLS
 
 
 def test_production_smoke_discovers_same_host_assets_and_blocks_404s():

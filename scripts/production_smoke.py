@@ -15,6 +15,7 @@ from typing import Callable, Iterable
 
 DEFAULT_URLS = (
     "https://non-s.github.io/",
+    "https://non-s.github.io/.well-known/security.txt",
     "https://non-s.github.io/TakStud/",
     "https://non-s.github.io/MathQuest-/",
     "https://non-s.github.io/MathQuest-/teacher.html",
