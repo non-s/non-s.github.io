@@ -740,18 +740,51 @@ def test_topic_iteration_order_ignores_paused_or_held_publish_ready_supply(monke
     assert "wildlife" not in order
 
 
-def test_topic_iteration_order_keeps_table_order_when_publish_ready_supply_exists():
+def test_topic_iteration_order_recovers_when_ready_supply_fails_final_quality(monkeypatch):
     queue = {
         "stories": [
             {
-                "category": "cats",
+                "id": "weak-ready",
+                "category": "farm",
+                "title": "Cows remember faces across the herd",
                 "consumed": False,
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
             }
         ]
     }
     plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+    monkeypatch.setattr(
+        "utils.publish_score.score_story",
+        lambda story: {"score": 84, "opportunity": {"score": 46}},
+    )
+
+    order = fetch_animals._topic_iteration_order(queue, plan)
+
+    assert order.index("dogs") < order.index("physics")
+    assert order.index("ocean") < order.index("farm")
+
+
+def test_topic_iteration_order_keeps_table_order_when_publish_eligible_supply_exists(monkeypatch):
+    queue = {
+        "stories": [
+            {
+                "id": "ready-cat",
+                "category": "cats",
+                "title": "Cats rotate their ears toward tiny sounds",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+            }
+        ]
+    }
+    plan = fetch_animals._topic_fetch_plan(queue, max_per_topic=4)
+    monkeypatch.setattr(
+        "utils.publish_score.score_story",
+        lambda story: {"score": 90, "opportunity": {"score": 80}},
+    )
 
     order = fetch_animals._topic_iteration_order(queue, plan, paused={"wildlife"})
 
@@ -818,6 +851,20 @@ def test_backfill_plan_keeps_raw_target_when_publish_ready_supply_exists():
 
     assert target == 18
     assert max_new == 1
+
+
+def test_backfill_plan_recovers_when_publish_ready_is_not_publish_eligible():
+    target, max_new = fetch_animals._backfill_plan_for_inventory(
+        pending_at_start=18,
+        target_pending=18,
+        publish_ready_at_start=2,
+        publish_eligible_at_start=0,
+        ready_target=2,
+        recovery_batch=6,
+    )
+
+    assert target == 30
+    assert max_new == 12
 
 
 def test_load_published_clip_keys_returns_empty_when_no_file(tmp_path, monkeypatch):
