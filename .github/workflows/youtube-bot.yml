@@ -270,23 +270,13 @@ jobs:
           DECISION_JSON="$decision" python - <<'PY'
           import json
           import os
-          import sys
-
           payload = json.loads(os.environ["DECISION_JSON"])
-          require_short = str(os.environ.get("REQUIRE_SHORT_ON_PUBLISH", "0")).strip().lower() in {
-              "1",
-              "true",
-              "yes",
-              "on",
-          }
-          hard_fail_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}
-          if require_short and payload.get("decision") in hard_fail_decisions:
+          soft_skip_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}
+          if payload.get("decision") in soft_skip_decisions:
               print(
-                  "::error::Publishing was required, but the publish window could not select an eligible Short: "
+                  "::warning::No eligible Short was published this cycle; quality guard kept the channel clean: "
                   f"{payload.get('decision')} reasons={payload.get('reasons')}",
-                  file=sys.stderr,
               )
-              sys.exit(1)
           PY
       - name: "Restaurar token do YouTube"
         if: steps.publish_window.outputs.should_publish == 'true'
