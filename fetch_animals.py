@@ -71,6 +71,7 @@ from utils.broll import fetch_pexels
 from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.growth_studio import studio_brief_for_story
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
+from utils.queue_readiness import publish_quality_verdict, publish_ready_verdict
 from utils.rejected_queue import load_rejections
 from utils.topic_freshness import annotate_queue, freshness_report
 from utils.trend_radar import (
@@ -1663,25 +1664,22 @@ def _publish_ready_supply(
     *,
     paused: set[str] | None = None,
     held_ids: set[str] | None = None,
+    require_final_quality: bool = False,
 ) -> int:
     ready = 0
     paused = {str(item).strip().lower() for item in (paused or set()) if str(item).strip()}
-    held_ids = held_ids or set()
+    agency_held = {str(item): ["held"] for item in (held_ids or set()) if str(item)}
     for story in queue.get("stories") or []:
         if not isinstance(story, dict) or story.get("consumed"):
             continue
-        story_id = str(story.get("id") or "")
-        category = str(story.get("category") or "").strip().lower()
-        if story_id in held_ids or (category and category in paused):
+        ok, _reasons = publish_ready_verdict(story, paused=paused, agency_held=agency_held)
+        if not ok:
             continue
-        queue_prune = story.get("queue_prune") or {}
-        publish_score = story.get("publish_score") or {}
-        if (
-            queue_prune.get("state") == "publish_ready"
-            and publish_score.get("approved") is True
-            and publish_score.get("state") == "publish_ready"
-        ):
-            ready += 1
+        if require_final_quality:
+            quality_ok, _quality_reasons, _score = publish_quality_verdict(story, env=os.environ)
+            if not quality_ok:
+                continue
+        ready += 1
     return ready
 
 
@@ -1689,7 +1687,7 @@ def _topic_iteration_order(queue: dict, plan: dict[str, dict[str, Any]], paused:
     """Return active topic keys in the order fetch backfill should try them."""
     paused = {str(item).strip().lower() for item in (paused or set()) if str(item).strip()}
     active = [topic_key for topic_key in ANIMAL_TOPICS if topic_key not in paused]
-    if _publish_ready_supply(queue, paused=paused, held_ids=_agency_held_ids()) > 0:
+    if _publish_ready_supply(queue, paused=paused, held_ids=_agency_held_ids(), require_final_quality=True) > 0:
         return active
 
     pending = _pending_category_counts(queue)
@@ -1786,15 +1784,21 @@ def _backfill_plan_for_inventory(
     pending_at_start: int,
     target_pending: int,
     publish_ready_at_start: int,
+    publish_eligible_at_start: int | None = None,
     ready_target: int = QUEUE_TARGET_PUBLISH_READY,
     recovery_batch: int = QUEUE_READY_RECOVERY_BATCH,
 ) -> tuple[int, int]:
     """Return adjusted target_pending and max_new_entries for operational supply."""
     target_pending = max(0, int(target_pending or 0))
     pending_at_start = max(0, int(pending_at_start or 0))
+    operational_supply = (
+        max(0, int(publish_eligible_at_start or 0))
+        if publish_eligible_at_start is not None
+        else max(0, int(publish_ready_at_start or 0))
+    )
     max_new_entries = max(0, target_pending - pending_at_start) if target_pending else 10_000
-    if target_pending and ready_target and publish_ready_at_start < ready_target:
-        recovery_gap = ready_target - max(0, int(publish_ready_at_start or 0))
+    if target_pending and ready_target and operational_supply < ready_target:
+        recovery_gap = ready_target - operational_supply
         recovery_entries = max(recovery_batch, recovery_gap * recovery_batch)
         max_new_entries = max(max_new_entries, recovery_entries)
         target_pending = max(target_pending, pending_at_start + max_new_entries)
@@ -1826,17 +1830,26 @@ def main() -> int:
     pending_at_start = _pending_count(queue)
     target_pending = max(0, int(QUEUE_TARGET_PENDING or 0))
     paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
-    publish_ready_at_start = _publish_ready_supply(queue, paused=paused, held_ids=_agency_held_ids())
+    held_ids = _agency_held_ids()
+    publish_ready_at_start = _publish_ready_supply(queue, paused=paused, held_ids=held_ids)
+    publish_eligible_at_start = _publish_ready_supply(
+        queue,
+        paused=paused,
+        held_ids=held_ids,
+        require_final_quality=True,
+    )
     target_pending, max_new_entries = _backfill_plan_for_inventory(
         pending_at_start=pending_at_start,
         target_pending=target_pending,
         publish_ready_at_start=publish_ready_at_start,
+        publish_eligible_at_start=publish_eligible_at_start,
     )
-    if target_pending and publish_ready_at_start < QUEUE_TARGET_PUBLISH_READY:
+    if target_pending and publish_eligible_at_start < QUEUE_TARGET_PUBLISH_READY:
         log.info(
-            "Operational publish-ready supply is low (%d/%d); opening %d recovery candidate slots.",
-            publish_ready_at_start,
+            "Operational publish-eligible supply is low (%d/%d; publish-ready=%d); opening %d recovery candidate slots.",
+            publish_eligible_at_start,
             QUEUE_TARGET_PUBLISH_READY,
+            publish_ready_at_start,
             max_new_entries,
         )
     if target_pending:
