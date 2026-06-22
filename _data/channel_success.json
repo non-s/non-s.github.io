@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-22T22:29:57.116434+00:00",
-  "success_score": 65.6,
+  "generated_at": "2026-06-22T23:05:42.092802+00:00",
+  "success_score": 64.6,
   "state": "growth_building",
   "retention": {
     "target_floor": 62.0,
     "target_stretch": 70.0,
-    "average_retention": 67.892,
-    "gap_to_floor": 0.0,
-    "state": "scale",
-    "below_floor_count": 17,
+    "average_retention": 61.508,
+    "gap_to_floor": 0.492,
+    "state": "needs_retention_work",
+    "below_floor_count": 20,
     "scale_categories": [
       {
         "category": "trees",
@@ -29,10 +29,6 @@
       {
         "category": "reptiles",
         "retention": 86.82
-      },
-      {
-        "category": "birds",
-        "retention": 63.53
       }
     ],
     "watch_categories": [
@@ -59,6 +55,10 @@
     ],
     "recovery_categories": [
       {
+        "category": "birds",
+        "retention": 39.403
+      },
+      {
         "category": "forests",
         "retention": 38.88
       },
@@ -67,12 +67,18 @@
         "retention": 31.44
       },
       {
+        "category": "rivers",
+        "retention": 21.3
+      },
+      {
         "category": "wildlife",
         "retention": 17.4
       }
     ],
     "phrase_pressure": [],
     "commands": [
+      "Rewrite the first 2 seconds around the visible animal cue before publishing.",
+      "Keep one animal, one surprise, one payoff; remove second facts from weak scripts.",
       "Put recovery categories through stricter hooks before they can publish.",
       "Scale the categories already above 62% retention before adding new experiments."
     ]
@@ -95,7 +101,7 @@
     "diagnosis": "Stayed-to-watch is 31.8%, 8.2 points below the operating floor."
   },
   "subscriber_conversion": {
-    "views": 88,
+    "views": 92,
     "subscribers_gained": 0,
     "subs_per_1000_views": 0.0,
     "target_subs_per_1000": 1.5,
@@ -127,7 +133,7 @@
   },
   "audience_loop": {
     "state": "active",
-    "comments_sampled": 55,
+    "comments_sampled": 56,
     "requested_animals": [],
     "prompts": [
       "Answer this viewer question: Watch the underground threads again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
@@ -161,8 +167,8 @@
         "title": "Cats use whiskers like built-in rulers",
         "video_id": "TNANKGDck-Y",
         "views": 2,
-        "views_per_hour": 0.012,
-        "growth_score": 213.869,
+        "views_per_hour": 0.011,
+        "growth_score": 213.863,
         "retention": 126.33,
         "retention_ready": true
       }
@@ -182,8 +188,8 @@
         "title": "Deer aim their ears like sound radar",
         "video_id": "Pk8ys8H9vPg",
         "views": 1,
-        "views_per_hour": 0.009,
-        "growth_score": 251.098,
+        "views_per_hour": 0.008,
+        "growth_score": 251.092,
         "retention": 56.66,
         "retention_ready": true
       },
@@ -197,29 +203,29 @@
         "retention_ready": true
       },
       {
+        "title": "Owls can make a hunt almost silent",
+        "video_id": "2b_hmhFHb_U",
+        "views": 1,
+        "views_per_hour": 0.02,
+        "growth_score": 222.022,
+        "retention": 24.28,
+        "retention_ready": true
+      },
+      {
+        "title": "Forests can cool the air below them",
+        "video_id": "Zc6lSEFFEHI",
+        "views": 1,
+        "views_per_hour": 0.145,
+        "growth_score": 200.92,
+        "retention": 0.0,
+        "retention_ready": false
+      },
+      {
         "title": "Plants use trap hairs to count touches before snapping shut",
         "video_id": "PhxKQCtm9wU",
         "views": 1,
-        "views_per_hour": 0.046,
-        "growth_score": 200.326,
-        "retention": 0.0,
-        "retention_ready": false
-      },
-      {
-        "title": "Chickens keep their view steady while walking",
-        "video_id": "xWaeoRko9Yg",
-        "views": 1,
-        "views_per_hour": 0.04,
-        "growth_score": 200.29,
-        "retention": 0.0,
-        "retention_ready": false
-      },
-      {
-        "title": "Foxes can hunt sounds hidden under snow",
-        "video_id": "ahDNS97gc0A",
-        "views": 1,
-        "views_per_hour": 0.039,
-        "growth_score": 200.284,
+        "views_per_hour": 0.035,
+        "growth_score": 200.26,
         "retention": 0.0,
         "retention_ready": false
       }
@@ -252,7 +258,7 @@
           "dogs"
         ],
         "promise": "home-animal behavior with stricter retention gates",
-        "priority_score": 207.029,
+        "priority_score": 207.017,
         "state": "active"
       },
       {
@@ -261,7 +267,7 @@
           "ocean"
         ],
         "promise": "underwater behavior viewers can decode",
-        "priority_score": 193.1,
+        "priority_score": 193.098,
         "state": "active"
       },
       {
@@ -270,16 +276,7 @@
           "farm"
         ],
         "promise": "smart behavior in familiar animals",
-        "priority_score": 185.143,
-        "state": "active"
-      },
-      {
-        "series": "Sky Intelligence",
-        "categories": [
-          "birds"
-        ],
-        "promise": "bird senses, memory and navigation",
-        "priority_score": 135.795,
+        "priority_score": 185.133,
         "state": "active"
       },
       {
@@ -288,7 +285,16 @@
           "wildlife"
         ],
         "promise": "body features that look impossible",
-        "priority_score": 129.762,
+        "priority_score": 129.048,
+        "state": "recovery"
+      },
+      {
+        "series": "Sky Intelligence",
+        "categories": [
+          "birds"
+        ],
+        "promise": "bird senses, memory and navigation",
+        "priority_score": 125.79,
         "state": "recovery"
       }
     ],
@@ -300,10 +306,10 @@
   },
   "thirty_day_review": {
     "state": "baseline_building",
-    "shorts_tracked": 56,
+    "shorts_tracked": 57,
     "target_sample": 60,
-    "tracked_views": 88,
-    "average_retention": 67.892,
+    "tracked_views": 92,
+    "average_retention": 61.508,
     "review_questions": [
       "Which category creates both views and retention?",
       "Which format converts subscribers?",
@@ -312,6 +318,8 @@
     ]
   },
   "next_actions": [
+    "Rewrite the first 2 seconds around the visible animal cue before publishing.",
+    "Keep one animal, one surprise, one payoff; remove second facts from weak scripts.",
     "Put recovery categories through stricter hooks before they can publish.",
     "Scale the categories already above 62% retention before adding new experiments.",
     "Rewrite frame zero and the first spoken line around animal + real curiosity + visible anchor + payoff.",
@@ -319,9 +327,7 @@
     "Use Studio Reach exports to replace this baseline with per-video stayed-to-watch data.",
     "Use a soft channel promise CTA only after the payoff, never before it.",
     "Connect the CTA to the viewer identity: follow for one animal signal a day.",
-    "Apply the CTA only to strong candidates so weak videos do not waste the close.",
-    "Put the same channel promise after strong payoffs: Follow for one animal signal a day.",
-    "Publish recognizable lanes and sequels so new viewers know what returns tomorrow."
+    "Apply the CTA only to strong candidates so weak videos do not waste the close."
   ],
   "objective": {
     "name": "Turn Shorts Feed discovery into retained viewers, subscribers, and recurring audience.",
