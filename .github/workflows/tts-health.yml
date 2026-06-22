@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: tts-health-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   health:
     runs-on: ubuntu-latest
