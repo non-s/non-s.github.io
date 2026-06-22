@@ -16,6 +16,9 @@ on:
         required: false
         default: "manual"
 
+permissions:
+  contents: read
+
 concurrency:
   group: youtube-hourly-heartbeat
   cancel-in-progress: true

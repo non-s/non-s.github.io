@@ -69,6 +69,7 @@ REQUIRED_FILES = (
 
 WORKFLOW_TOKENS = {
     ".github/workflows/quality-gate.yml": (
+        "check_workflow_contracts.py",
         "check_repo_contracts.py",
         "audit_slot_contracts.py",
         "media_lifecycle.py --audit-tracked",

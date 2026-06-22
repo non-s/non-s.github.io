@@ -19,6 +19,9 @@ on:
         required: false
         default: "manual"
 
+permissions:
+  contents: read
+
 concurrency:
   # Publishing must not wait behind long queue refreshes. State commits are
   # replayed on latest main with retry in the final save step.
