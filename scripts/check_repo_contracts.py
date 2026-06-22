@@ -38,6 +38,7 @@ REQUIRED_FILES = (
     "scripts/doctor.py",
     "scripts/upload_intent.py",
     "scripts/tts_healthcheck.py",
+    "scripts/production_smoke.py",
     "utils/studio_reach_schema.py",
     "utils/topic_freshness.py",
     "utils/first_frame_audit.py",
@@ -149,6 +150,7 @@ WORKFLOW_TOKENS = {
         "CodeQL",
         "Security, SBOM and license audit",
         "TTS fallback health",
+        "Production smoke",
         "OPS_ALERTS_ENABLED",
         "issues: write",
         "gh issue create",
@@ -159,6 +161,10 @@ WORKFLOW_TOKENS = {
         "opening_audit_report.py",
         "experiment_governance.py",
         "fact_guard.py",
+    ),
+    ".github/workflows/production-smoke.yml": (
+        "production_smoke.py --json",
+        'cron: "17 */6 * * *"',
     ),
 }
 

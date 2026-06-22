@@ -153,6 +153,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "CodeQL" in alert_workflow
     assert "Security, SBOM and license audit" in alert_workflow
     assert "TTS fallback health" in alert_workflow
+    assert "Production smoke" in alert_workflow
     assert "OPS_ALERTS_ENABLED" in alert_workflow
     assert "gh issue create" in alert_workflow
     assert "gh issue comment" in alert_workflow
