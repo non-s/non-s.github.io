@@ -41,7 +41,7 @@ try:
 except ImportError:  # pragma: no cover
     fcntl = None
 
-from utils.agency_gate import filter_candidates
+from utils.agency_gate import filter_candidates, is_soft_agency_hold
 from utils.animal_enrichment import download_commons_image
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.broll import BrollClip, download_clip, fetch_broll_clips
@@ -132,6 +132,7 @@ LOG_FILE = f"generate_shorts{'' if LANGUAGE == 'en' else '_' + LANGUAGE}.log"
 # matches youtube-bot.yml schedule.
 MAX_SHORTS_PER_RUN = int(os.environ.get("MAX_SHORTS_PER_RUN", "3"))
 SHORT_W, SHORT_H = 1080, 1920  # vertical 9:16
+PUBLISH_WINDOW_TOP_CANDIDATE_ID = os.environ.get("PUBLISH_WINDOW_TOP_CANDIDATE_ID", "").strip()
 
 
 def _env_enabled(name: str, default: str = "0") -> bool:
@@ -142,6 +143,7 @@ QUALITY_REQUIRE_MOTION_BROLL = _env_enabled("QUALITY_REQUIRE_MOTION_BROLL")
 QUALITY_REQUIRE_CAPTIONS = _env_enabled("QUALITY_REQUIRE_CAPTIONS")
 QUALITY_MIN_VISUAL_QA_SCORE = int(os.environ.get("QUALITY_MIN_VISUAL_QA_SCORE", "1"))
 REQUIRE_SHORT_ON_PUBLISH = _env_enabled("REQUIRE_SHORT_ON_PUBLISH")
+PUBLISH_WINDOW_SELECTED_ONLY = _env_enabled("PUBLISH_WINDOW_SELECTED_ONLY", "1")
 
 # Paleta de cores — identidade Wild Brief
 BG_DARK = (8, 8, 18)
@@ -1423,6 +1425,38 @@ def _save_queue(queue: dict) -> None:
     tmp.replace(QUEUE_FILE)
 
 
+def _candidate_identity_values(story: dict) -> set[str]:
+    return {
+        str(value).strip()
+        for value in (
+            story.get("id"),
+            story.get("_queue_id"),
+            story.get("slug"),
+            story.get("source_clip_id"),
+        )
+        if str(value or "").strip()
+    }
+
+
+def _matches_publish_window_candidate(story: dict, target_id: str | None = None) -> bool:
+    target = (target_id or PUBLISH_WINDOW_TOP_CANDIDATE_ID).strip()
+    return bool(target) and target in _candidate_identity_values(story)
+
+
+def _prioritize_publish_window_candidate(candidates: list[dict], target_id: str | None = None) -> list[dict]:
+    target = (target_id or PUBLISH_WINDOW_TOP_CANDIDATE_ID).strip()
+    if not target:
+        return candidates
+    selected = [item for item in candidates if _matches_publish_window_candidate(item, target)]
+    if not selected:
+        log.error("Publish window selected %s, but no matching candidate survived generator gates.", target)
+        return [] if PUBLISH_WINDOW_SELECTED_ONLY else candidates
+    if PUBLISH_WINDOW_SELECTED_ONLY:
+        log.info("  Publish window selected candidate enforced: %s", target)
+        return selected[:1]
+    return selected + [item for item in candidates if not _matches_publish_window_candidate(item, target)]
+
+
 def _loop_enhanced_script(story: dict, script: str) -> str:
     """Apply LoopGenerator's final callback line to the rendered narration."""
     text = (script or "").strip()
@@ -1757,7 +1791,50 @@ def load_pending_stories() -> tuple[list[dict], dict]:
             before = len(candidates)
             candidates = [story for story in candidates if str(story.get("category") or "").lower() not in paused]
             log.info("  Ops guardian enforcement removed %d paused-category candidate(s)", before - len(candidates))
+    publish_window_target = PUBLISH_WINDOW_TOP_CANDIDATE_ID
     candidates, held = filter_candidates(candidates)
+    if publish_window_target:
+        selected_soft_holds = [
+            item
+            for item in held
+            if _matches_publish_window_candidate(item, publish_window_target)
+            and is_soft_agency_hold((item.get("agency_gate") or {}).get("reasons") or [])
+        ]
+        selected_hard_holds = [
+            item
+            for item in held
+            if _matches_publish_window_candidate(item, publish_window_target)
+            and not is_soft_agency_hold((item.get("agency_gate") or {}).get("reasons") or [])
+        ]
+        if selected_soft_holds:
+            reasons = sorted(
+                {
+                    str(reason)
+                    for item in selected_soft_holds
+                    for reason in (item.get("agency_gate") or {}).get("reasons", [])
+                }
+            )
+            log.info(
+                "  Publish window recovered soft agency hold for %s: %s",
+                publish_window_target,
+                ", ".join(reasons),
+            )
+            candidates.extend(selected_soft_holds)
+        elif selected_hard_holds:
+            reasons = sorted(
+                {
+                    str(reason)
+                    for item in selected_hard_holds
+                    for reason in (item.get("agency_gate") or {}).get("reasons", [])
+                }
+            )
+            log.error(
+                "Publish window selected %s, but agency gate held it for hard reasons: %s",
+                publish_window_target,
+                ", ".join(reasons),
+            )
+            if PUBLISH_WINDOW_SELECTED_ONLY:
+                return [], queue
     if held:
         log.info(
             "  Agency gate held %d candidate(s): %s",
@@ -1769,6 +1846,7 @@ def load_pending_stories() -> tuple[list[dict], dict]:
     growth_ranked = rank_for_growth(rank_candidates(candidates), strategy)
     agency_ranked = rank_for_agency(growth_ranked, strategy)
     agency_ranked.sort(key=lambda item: publish_priority_key(item), reverse=True)
+    agency_ranked = _prioritize_publish_window_candidate(agency_ranked, publish_window_target)
     return agency_ranked, queue
 
 

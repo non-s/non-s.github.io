@@ -626,3 +626,162 @@ def test_load_pending_stories_keeps_publish_priority_after_agency_ranking(monkey
     candidates, _queue = gs.load_pending_stories()
 
     assert [item["id"] for item in candidates] == ["high-priority", "low-priority"]
+
+
+def test_load_pending_stories_enforces_publish_window_soft_held_candidate(monkeypatch, tmp_path):
+    import importlib
+    import json
+    import sys
+
+    monkeypatch.setenv("PUBLISH_WINDOW_TOP_CANDIDATE_ID", "soft")
+    monkeypatch.setenv("PUBLISH_WINDOW_SELECTED_ONLY", "1")
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+
+    importlib.reload(gs)
+
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    queue = {
+        "stories": [
+            {
+                "id": "strict",
+                "title": "Strict candidate",
+                "seo_title": "Strict candidate",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 70},
+            },
+            {
+                "id": "soft",
+                "title": "Soft selected candidate",
+                "seo_title": "Soft selected candidate",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 100},
+            },
+        ]
+    }
+    (data_dir / "stories_queue.json").write_text(json.dumps(queue), encoding="utf-8")
+
+    monkeypatch.setattr(gs, "prune_queue", lambda queue, analytics_strategy=None: (queue, [], {}))
+    monkeypatch.setattr(gs, "load_strategy", lambda: {})
+    monkeypatch.setattr(gs, "_queue_story_quality_issues", lambda story, seen_scripts: [])
+    monkeypatch.setattr(gs, "_queue_to_story", lambda story: {"slug": story["id"], **story})
+    monkeypatch.setattr(gs, "score_topic", lambda story, memory=None: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "detect_weak_content", lambda story, memory=None: {"state": "clear"})
+    monkeypatch.setattr(gs, "analyze_retention", lambda story: {"verdict": "keep"})
+    monkeypatch.setattr(
+        gs,
+        "publish_score_story",
+        lambda story, analytics_strategy=None: {"state": "publish_ready", "approved": True, "score": 90},
+    )
+    monkeypatch.setattr(gs, "package_story", lambda story: story)
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "load_format_memory", lambda: {})
+
+    def fake_filter(candidates):
+        approved = []
+        held = []
+        for item in candidates:
+            item = dict(item)
+            if item["id"] == "soft":
+                item["agency_gate"] = {
+                    "approved": False,
+                    "state": "held",
+                    "reasons": ["success_recovery_hook_required"],
+                }
+                held.append(item)
+            else:
+                item["agency_gate"] = {"approved": True, "state": "approved", "reasons": []}
+                approved.append(item)
+        return approved, held
+
+    monkeypatch.setattr(gs, "filter_candidates", fake_filter)
+    monkeypatch.setattr(gs, "rank_candidates", lambda candidates: candidates)
+    monkeypatch.setattr(gs, "rank_for_growth", lambda candidates, strategy: candidates)
+    monkeypatch.setattr(gs, "rank_for_agency", lambda candidates, strategy: candidates)
+
+    candidates, _queue = gs.load_pending_stories()
+
+    assert [item["id"] for item in candidates] == ["soft"]
+    assert candidates[0]["agency_gate"]["reasons"] == ["success_recovery_hook_required"]
+
+
+def test_load_pending_stories_blocks_publish_window_hard_held_candidate(monkeypatch, tmp_path):
+    import importlib
+    import json
+    import sys
+
+    monkeypatch.setenv("PUBLISH_WINDOW_TOP_CANDIDATE_ID", "hard")
+    monkeypatch.setenv("PUBLISH_WINDOW_SELECTED_ONLY", "1")
+    if "generate_shorts" in sys.modules:
+        del sys.modules["generate_shorts"]
+    monkeypatch.chdir(tmp_path)
+    import generate_shorts as gs
+
+    importlib.reload(gs)
+
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    queue = {
+        "stories": [
+            {
+                "id": "strict",
+                "title": "Strict fallback candidate",
+                "seo_title": "Strict fallback candidate",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 70},
+            },
+            {
+                "id": "hard",
+                "title": "Hard held candidate",
+                "seo_title": "Hard held candidate",
+                "consumed": False,
+                "queue_prune": {"state": "publish_ready", "score": 100},
+            },
+        ]
+    }
+    (data_dir / "stories_queue.json").write_text(json.dumps(queue), encoding="utf-8")
+
+    monkeypatch.setattr(gs, "prune_queue", lambda queue, analytics_strategy=None: (queue, [], {}))
+    monkeypatch.setattr(gs, "load_strategy", lambda: {})
+    monkeypatch.setattr(gs, "_queue_story_quality_issues", lambda story, seen_scripts: [])
+    monkeypatch.setattr(gs, "_queue_to_story", lambda story: {"slug": story["id"], **story})
+    monkeypatch.setattr(gs, "score_topic", lambda story, memory=None: {"verdict": "keep"})
+    monkeypatch.setattr(gs, "detect_weak_content", lambda story, memory=None: {"state": "clear"})
+    monkeypatch.setattr(gs, "analyze_retention", lambda story: {"verdict": "keep"})
+    monkeypatch.setattr(
+        gs,
+        "publish_score_story",
+        lambda story, analytics_strategy=None: {"state": "publish_ready", "approved": True, "score": 90},
+    )
+    monkeypatch.setattr(gs, "package_story", lambda story: story)
+    monkeypatch.setattr(gs, "creator_premortem", lambda story: {"state": "publish_minded", "risks": []})
+    monkeypatch.setattr(gs, "load_format_memory", lambda: {})
+
+    def fake_filter(candidates):
+        approved = []
+        held = []
+        for item in candidates:
+            item = dict(item)
+            if item["id"] == "hard":
+                item["agency_gate"] = {
+                    "approved": False,
+                    "state": "held",
+                    "reasons": ["rights_guard_person_manual_review"],
+                }
+                held.append(item)
+            else:
+                item["agency_gate"] = {"approved": True, "state": "approved", "reasons": []}
+                approved.append(item)
+        return approved, held
+
+    monkeypatch.setattr(gs, "filter_candidates", fake_filter)
+    monkeypatch.setattr(gs, "rank_candidates", lambda candidates: candidates)
+    monkeypatch.setattr(gs, "rank_for_growth", lambda candidates, strategy: candidates)
+    monkeypatch.setattr(gs, "rank_for_agency", lambda candidates, strategy: candidates)
+
+    candidates, _queue = gs.load_pending_stories()
+
+    assert candidates == []

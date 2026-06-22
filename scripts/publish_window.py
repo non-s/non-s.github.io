@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.upload_intent import duplicate_slot_uploaded  # noqa: E402
+from utils.agency_gate import is_soft_agency_hold  # noqa: E402
 from utils.growth_strategy import ops_guardian_enforced, paused_categories  # noqa: E402
 from utils.publish_priority import publish_priority_key  # noqa: E402
 from utils.publish_schedule import (  # noqa: E402
@@ -35,11 +36,6 @@ UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
 AGENCY_GATE_FILE = "_data/agency_gate.json"
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 RECOVERY_DISPATCH_PREFIXES = ("watchdog recovery", "heartbeat recovery")
-SOFT_AGENCY_HOLD_REASONS = {
-    "category_recovery_rules_not_met",
-    "success_recovery_format_required",
-    "success_recovery_hook_required",
-}
 
 
 def _read_json(path: Path, default):
@@ -61,10 +57,6 @@ def _agency_held_reasons(root: Path) -> dict[str, set[str]]:
         if item_id:
             out[item_id] = {str(reason) for reason in (item.get("reasons") or ["held"])}
     return out
-
-
-def _is_soft_agency_hold(reasons: set[str]) -> bool:
-    return bool(reasons) and reasons <= SOFT_AGENCY_HOLD_REASONS
 
 
 def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
@@ -109,7 +101,7 @@ def _eligible_stories(
             continue
         story_id = _candidate_id(story)
         agency_reasons = agency_held.get(story_id) if story_id else None
-        if agency_reasons and not (allow_soft_agency_holds and _is_soft_agency_hold(agency_reasons)):
+        if agency_reasons and not (allow_soft_agency_holds and is_soft_agency_hold(agency_reasons)):
             continue
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:
