@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T22:10:26.217180+00:00",
+  "generated_at": "2026-06-22T22:22:32.549936+00:00",
   "pending": 16,
   "states": {
     "publish_ready": 6,
@@ -14,23 +14,180 @@
     "approved": 16
   },
   "prune_summary": {
-    "pending_before": 16,
+    "pending_before": 30,
     "pending_after": 16,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 6,
+    "rejected": 14,
+    "repair_needed": 6,
+    "repaired": 10,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 9,
+      "queue_score_reject": 6,
       "objective_gate:observe_before_scaling": 6,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
+      "subject_not_immediately_clear": 4,
+      "duplicate_title": 4,
+      "no_action_promise": 3,
+      "title_shape_weak": 3,
+      "title_needs_stronger_shape": 3,
+      "subject_not_clear": 3,
+      "missing_action_word": 3,
+      "off_topic_visual": 3,
+      "script_length_risk": 2,
+      "missing_visible_cue": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "title_not_editorial_case": 1,
+      "script_hook_mismatch": 1,
+      "non_animal_body_language": 1,
+      "rights_guard_person_manual_review": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "deb306742fbb30c9",
+      "title": "Storm clouds reveal weather from above the clouds",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "29f2d0decb1e668b",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e90ef362caff023d",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "590bddea424576be",
+      "title": "Birds see colors humans cannot see",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "105bf8d207d19926",
+      "title": "Plants turn sunlight into stored sugar",
+      "reasons": [
+        "script_length_risk",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "76cced75350f741a",
+      "title": "Owls don't need the wind to fly this way",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch",
+        "non_animal_body_language"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "b5614f8fe5706461",
+      "title": "Plants turn sunlight into stored sugar",
+      "reasons": [
+        "script_length_risk",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5512b6d44d5dc60b",
+      "title": "forest flowers make light work of dawn",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "title_not_editorial_case",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "bd0436e9d315b3fd",
+      "title": "squirrels remember every nut they hide",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e96be7636d2cc5d7",
+      "title": "black and white butterfly camouflage trick",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "35605759e03c1b73",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9249e8939b2216cf",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "3c0c3bd7fd873165",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "6d99eeac8ca4769d",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "e31a7b379017f1cb",
       "title": "Storm clouds reveal a storm's heat engine",
@@ -164,126 +321,6 @@
       "title": "sunbeams through trees reveal the forest's secret",
       "reasons": [
         "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "31efb121b5fdad7d",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "78d5f3e53a57c710",
-      "title": "Monkeys spot danger faster than you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f309aec431f5820f",
-      "title": "Solar flares explode in a split second of light",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c77025fd8eca4602",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2e788bb7cb53150a",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "f6c683df35a102f2",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "280f06f9caec0ae6",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "9c534294f8d373f0",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "321ae5866f6cfd45",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a5a50afe54147583",
-      "title": "Birds see colors humans cannot see",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "8c3b71d6ef1250b2",
-      "title": "Airplane shadows draw perfect circles in the sky",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "634f9bb8a53f961b",
-      "title": "squirrel's hidden tool in the forest",
-      "reasons": [
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a20d989b64868c1c",
-      "title": "feathers on the forest floor survive the rain",
-      "reasons": [
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0cff8fa5fb2021ab",
-      "title": "Fig trees feed their enemies to survive",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch",
-        "script_word_loop"
       ],
       "stage": "queue_prune"
     }
@@ -436,7 +473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.836893+00:00",
+        "checked_at": "2026-06-22T22:22:19.894550+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -884,7 +921,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.850076+00:00",
+        "checked_at": "2026-06-22T22:22:20.994183+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1346,7 +1383,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.818777+00:00",
+        "checked_at": "2026-06-22T22:22:19.580118+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -1797,7 +1834,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.824772+00:00",
+        "checked_at": "2026-06-22T22:22:19.586069+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2246,7 +2283,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.819983+00:00",
+        "checked_at": "2026-06-22T22:22:19.581436+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2697,7 +2734,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.821300+00:00",
+        "checked_at": "2026-06-22T22:22:19.582738+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3148,7 +3185,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.822860+00:00",
+        "checked_at": "2026-06-22T22:22:19.584320+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3602,7 +3639,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.829037+00:00",
+        "checked_at": "2026-06-22T22:22:19.892518+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4055,7 +4092,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.826382+00:00",
+        "checked_at": "2026-06-22T22:22:19.587726+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4511,7 +4548,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.851855+00:00",
+        "checked_at": "2026-06-22T22:22:20.996018+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4965,7 +5002,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.839719+00:00",
+        "checked_at": "2026-06-22T22:22:20.254451+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5413,7 +5450,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.843865+00:00",
+        "checked_at": "2026-06-22T22:22:20.604554+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5866,7 +5903,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.845719+00:00",
+        "checked_at": "2026-06-22T22:22:20.606522+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6315,7 +6352,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.847913+00:00",
+        "checked_at": "2026-06-22T22:22:20.608781+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6767,7 +6804,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.854068+00:00",
+        "checked_at": "2026-06-22T22:22:20.998305+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7222,7 +7259,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-22T22:10:14.841716+00:00",
+        "checked_at": "2026-06-22T22:22:20.601679+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
