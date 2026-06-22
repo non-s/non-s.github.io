@@ -16,7 +16,10 @@ from scripts.check_schedule_sync import check_schedule_sync  # noqa: E402
 from utils.feature_flags import docs_coverage  # noqa: E402
 
 REQUIRED_FILES = (
+    "404.html",
     "_config.yml",
+    "robots.txt",
+    "sitemap.xml",
     "scripts/import_studio_reach_export.py",
     "scripts/apply_topic_freshness.py",
     "scripts/opening_audit_report.py",
