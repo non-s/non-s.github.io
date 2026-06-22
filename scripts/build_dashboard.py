@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """
 scripts/build_dashboard.py — Generate a static analytics dashboard.
 
@@ -17,21 +18,24 @@ The dashboard shows:
 Zero external JS deps. Everything inline so a private CDN failure
 doesn't blank the page.
 """
+
 from __future__ import annotations
 
 import csv
 import html
 import json
 import re
+import shutil
 import sys
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.analytics_schema import read_jsonl
 from utils.automation_health import build_health
 from utils.content_agency import agency_snapshot, rank_for_agency
 from utils.editorial import rank_candidates
@@ -39,12 +43,12 @@ from utils.editorial_guard import editorial_issues
 from utils.growth_strategy import load_strategy
 from utils.humanity_engine import polish_story
 from utils.mission_control import build_mission_control
-from utils.analytics_schema import read_jsonl
 from utils.studio_reach_schema import summarize_reach
 
 ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR = Path("_site")
 OUT = SITE_DIR / "index.html"
+SECURITY_TXT = Path(".well-known/security.txt")
 QUEUE_FILE = Path("_data/stories_queue.json")
 PUBLISH_READY_RESERVE_TARGET = 6
 
@@ -410,9 +414,9 @@ def render_html() -> str:
     )
 
     out: list[str] = []
-    out.append(f"<!doctype html><html lang='en'><head><meta charset='utf-8'>")
-    out.append(f"<meta name='viewport' content='width=device-width,initial-scale=1'>")
-    out.append(f"<title>Wild Brief — channel dashboard</title>")
+    out.append("<!doctype html><html lang='en'><head><meta charset='utf-8'>")
+    out.append("<meta name='viewport' content='width=device-width,initial-scale=1'>")
+    out.append("<title>Wild Brief — channel dashboard</title>")
     out.append(f"<style>{CSS}</style></head><body>")
 
     out.append("<h1>Wild Brief — channel dashboard</h1>")
@@ -452,9 +456,7 @@ def render_html() -> str:
         out.append(
             f"<div><small>Operational state</small><div class='metric'>{html.escape(str(health.get('state', 'unknown')))}</div></div>"
         )
-        out.append(
-            f"<div><small>Last uploaded slot</small><div class='metric'>{html.escape(latest_slot)}</div></div>"
-        )
+        out.append(f"<div><small>Last uploaded slot</small><div class='metric'>{html.escape(latest_slot)}</div></div>")
         out.append(
             f"<div><small>Publish-ready reserve</small><div class='metric'>{html.escape(reserve_label)}</div></div>"
         )
@@ -706,7 +708,7 @@ def render_html() -> str:
         out.append("<div class='card'>")
         out.append(f"<h3>Daily views <small>({days[0]} → {days[-1]})</small></h3>")
         out.append(_sparkline_svg(views_series, stroke="#0ea5e9"))
-        out.append(f"<h3>Avg view % per day</h3>")
+        out.append("<h3>Avg view % per day</h3>")
         out.append(_sparkline_svg(view_pct_series, stroke="#f59e0b"))
         out.append("</div>")
 
@@ -2217,6 +2219,10 @@ def render_html() -> str:
 def main() -> None:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     OUT.write_text(render_html(), encoding="utf-8")
+    if SECURITY_TXT.exists():
+        destination = SITE_DIR / SECURITY_TXT
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(SECURITY_TXT, destination)
     print(f"Wrote {OUT}")
 
 
