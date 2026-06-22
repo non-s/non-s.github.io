@@ -2,25 +2,25 @@
   "state": "migration_needed",
   "pressure_score": 86,
   "metrics": {
-    "live_state_files": 182,
-    "data_state_files": 129,
+    "live_state_files": 431,
+    "data_state_files": 378,
     "video_done_markers": 52,
-    "live_state_bytes": 9797452,
-    "stories_queue_bytes": 1834197,
-    "stories_queue_lines": 48519,
+    "live_state_bytes": 11300377,
+    "stories_queue_bytes": 1926617,
+    "stories_queue_lines": 50346,
     "workflow_files": 16,
     "state_path_refs": 264
   },
   "largest_state_files": [
     {
-      "path": "_data/ai_cache.jsonl",
-      "bytes": 1867513,
-      "lines": 2477
+      "path": "_data/stories_queue.json",
+      "bytes": 1926617,
+      "lines": 50346
     },
     {
-      "path": "_data/stories_queue.json",
-      "bytes": 1834197,
-      "lines": 48519
+      "path": "_data/ai_cache.jsonl",
+      "bytes": 1888614,
+      "lines": 2505
     },
     {
       "path": "_data/rejected_queue.jsonl",
@@ -28,9 +28,14 @@
       "lines": 2171
     },
     {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 564287,
+      "lines": 46
+    },
+    {
       "path": "_data/early_performance.json",
-      "bytes": 473052,
-      "lines": 18262
+      "bytes": 473894,
+      "lines": 18294
     },
     {
       "path": "_data/queue_audit.json",
@@ -39,13 +44,13 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 278079,
-      "lines": 432
+      "bytes": 279309,
+      "lines": 434
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 198864,
-      "lines": 2559
+      "bytes": 201038,
+      "lines": 2587
     },
     {
       "path": "_data/packaging_report.json",
@@ -54,7 +59,7 @@
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 132911,
+      "bytes": 132908,
       "lines": 3577
     },
     {
@@ -66,11 +71,6 @@
       "path": "_data/comment_to_short_candidates.json",
       "bytes": 91369,
       "lines": 1931
-    },
-    {
-      "path": "_data/dry_run_publish.json",
-      "bytes": 86310,
-      "lines": 2374
     }
   ],
   "migration_lanes": [
