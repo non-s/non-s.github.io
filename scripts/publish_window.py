@@ -35,6 +35,11 @@ UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
 AGENCY_GATE_FILE = "_data/agency_gate.json"
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 RECOVERY_DISPATCH_PREFIXES = ("watchdog recovery", "heartbeat recovery")
+SOFT_AGENCY_HOLD_REASONS = {
+    "category_recovery_rules_not_met",
+    "success_recovery_format_required",
+    "success_recovery_hook_required",
+}
 
 
 def _read_json(path: Path, default):
@@ -46,16 +51,20 @@ def _read_json(path: Path, default):
         return default
 
 
-def _agency_held_ids(root: Path) -> set[str]:
+def _agency_held_reasons(root: Path) -> dict[str, set[str]]:
     payload = _read_json(root / AGENCY_GATE_FILE, {})
-    out: set[str] = set()
+    out: dict[str, set[str]] = {}
     for item in payload.get("held_items") or []:
         if not isinstance(item, dict):
             continue
         item_id = str(item.get("id") or "")
         if item_id:
-            out.add(item_id)
+            out[item_id] = {str(reason) for reason in (item.get("reasons") or ["held"])}
     return out
+
+
+def _is_soft_agency_hold(reasons: set[str]) -> bool:
+    return bool(reasons) and reasons <= SOFT_AGENCY_HOLD_REASONS
 
 
 def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
@@ -78,10 +87,16 @@ def _parse_now(value: str | None) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
-def _eligible_stories(queue: dict, env: Mapping[str, str] | None = None, *, root: Path = ROOT) -> list[dict]:
+def _eligible_stories(
+    queue: dict,
+    env: Mapping[str, str] | None = None,
+    *,
+    root: Path = ROOT,
+    allow_soft_agency_holds: bool = False,
+) -> list[dict]:
     stories = queue.get("stories") if isinstance(queue, dict) else []
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
-    agency_held = _agency_held_ids(root)
+    agency_held = _agency_held_reasons(root)
     has_prune_state = any(
         isinstance(story, dict) and not story.get("consumed") and bool(story.get("queue_prune"))
         for story in stories or []
@@ -93,7 +108,8 @@ def _eligible_stories(queue: dict, env: Mapping[str, str] | None = None, *, root
         if not (story.get("title") or story.get("seo_title")):
             continue
         story_id = _candidate_id(story)
-        if story_id and story_id in agency_held:
+        agency_reasons = agency_held.get(story_id) if story_id else None
+        if agency_reasons and not (allow_soft_agency_holds and _is_soft_agency_hold(agency_reasons)):
             continue
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:
@@ -216,7 +232,8 @@ def evaluate_publish_window(
             decision = "skip_slot_already_uploaded"
             reasons.append("slot_already_uploaded")
     if decision == "publish":
-        stories = _eligible_stories(_read_json(queue_file, {}), current_env, root=root)
+        queue_payload = _read_json(queue_file, {})
+        stories = _eligible_stories(queue_payload, current_env, root=root)
         if not stories:
             decision = "skip_no_eligible_story"
             reasons.append("no_eligible_story")
@@ -232,6 +249,36 @@ def evaluate_publish_window(
             if quality_reasons:
                 decision = "skip_low_queue_quality"
                 reasons.extend(quality_reasons)
+        if decision in {"skip_no_eligible_story", "skip_low_queue_quality"} and str(
+            current_env.get("PUBLISH_SOFT_AGENCY_RECOVERY", "1")
+        ).strip().lower() in {"1", "true", "yes", "on"}:
+            recovery_stories = _eligible_stories(
+                queue_payload,
+                current_env,
+                root=root,
+                allow_soft_agency_holds=True,
+            )
+            recovery_story, recovery_score = _best_candidate(recovery_stories)
+            if recovery_story:
+                recovery_publish_score = float(recovery_score.get("score") or 0)
+                recovery_opportunity_score = float((recovery_score.get("opportunity") or {}).get("score") or 0)
+                if (
+                    recovery_publish_score >= flags["min_slot_publish_score"]
+                    and recovery_opportunity_score >= flags["min_queue_opportunity_score"]
+                ):
+                    top_story, top_score = recovery_story, recovery_score
+                    decision = "publish"
+                    reasons = [
+                        reason
+                        for reason in reasons
+                        if reason
+                        not in {
+                            "no_eligible_story",
+                            "publish_score_below_threshold",
+                            "opportunity_score_below_threshold",
+                        }
+                    ]
+                    reasons.append("soft_agency_hold_supply_recovery")
 
     if flags["adaptive_cadence_enabled"] and not top_story and decision == "publish" and not manual:
         stories = _eligible_stories(_read_json(queue_file, {}), current_env, root=root)
