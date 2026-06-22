@@ -65,10 +65,22 @@ def _prune_with_strategy(data: dict):
         return prune_queue(data)
 
 
-def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
+def _write_json_if_changed(path: Path, payload: dict) -> None:
+    text = json.dumps(payload, indent=2, ensure_ascii=False)
+    if path.exists() and path.read_text(encoding="utf-8") == text:
+        return
+    path.write_text(text, encoding="utf-8")
+
+
+def build_dry_run(
+    data: dict,
+    *,
+    env: Mapping[str, str] | None = None,
+    prune_result: tuple[dict, list[dict], dict] | None = None,
+) -> dict:
     items = []
     objective_reasons: Counter[str] = Counter()
-    pruned, rejected, prune_summary = _prune_with_strategy(data)
+    pruned, rejected, prune_summary = prune_result or _prune_with_strategy(data)
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     agency_held = _agency_held_reasons()
     for story in pruned.get("stories") or []:
@@ -166,9 +178,12 @@ def build_dry_run(data: dict, *, env: Mapping[str, str] | None = None) -> dict:
 
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
-    payload = build_dry_run(data, env=os.environ)
+    prune_result = _prune_with_strategy(data)
+    pruned, _rejected, _summary = prune_result
+    _write_json_if_changed(QUEUE, pruned)
+    payload = build_dry_run(data, env=os.environ, prune_result=prune_result)
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    _write_json_if_changed(OUT, payload)
     print(f"dry_run_publish: {payload['eligible_count']} eligible candidates")
     return 0
 

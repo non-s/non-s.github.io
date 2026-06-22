@@ -302,7 +302,7 @@ code { background: #1f2433; padding: 1px 6px; border-radius: 4px; }
 def render_html() -> str:
     rows = _read_csvs() or _read_partition_rows()
     latest = _safe_json(ANALYTICS_DIR / "latest.json")
-    health = _safe_json(ROOT / "_data" / "automation_health.json") or build_health(ROOT)
+    health = _safe_json(Path("_data/automation_health.json")) or build_health(Path("."))
     comments = _safe_json(ANALYTICS_DIR / "comments.json")
     experiments = _safe_json(ANALYTICS_DIR / "experiments.json")
     cohort = _safe_json(ANALYTICS_DIR / "cohort_timing.json")
