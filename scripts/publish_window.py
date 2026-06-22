@@ -34,6 +34,7 @@ QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
 AGENCY_GATE_FILE = "_data/agency_gate.json"
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
+RECOVERY_DISPATCH_PREFIXES = ("watchdog recovery", "heartbeat recovery")
 
 
 def _read_json(path: Path, default):
@@ -194,8 +195,8 @@ def evaluate_publish_window(
     uploaded_for_slot: dict = {}
 
     dispatch_reason = str(current_env.get("WORKFLOW_DISPATCH_REASON") or "").strip().lower()
-    is_watchdog_recovery = dispatch_reason.startswith("watchdog recovery")
-    manual = str(current_env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch" and not is_watchdog_recovery
+    is_recovery_dispatch = dispatch_reason.startswith(RECOVERY_DISPATCH_PREFIXES)
+    manual = str(current_env.get("GITHUB_EVENT_NAME") or "").lower() == "workflow_dispatch" and not is_recovery_dispatch
     if manual:
         reasons.append("manual_dispatch")
     elif not flags["adaptive_cadence_enabled"]:
