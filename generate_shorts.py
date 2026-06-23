@@ -1931,7 +1931,7 @@ def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
     )
 
 
-def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None:
+def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, Path, dict] | None:
     """
     Generate one Short for a story.
 
@@ -1952,50 +1952,47 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     """
     # Defensive .get()s on the story dict — a queue entry with a bad
     # schema would crash the whole run otherwise.
+    title = story.get("title") or story.get("seo_title") or story.get("topic_hashtag") or "Untitled"
+    log.info(f"\n▶️ Starting render: {title[:60]}")
     slug = story.get("slug") or f"unknown-{int(time.time())}"
-    date_str = story.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    title = story.get("title") or "Animal fact of the day"
-    category = story.get("category", "wildlife")
-
-    log.info(f"  Generating Short for: [{category}] {title[:60]}")
 
     # English channel ignores stories from PT-BR-native feeds — they're
     # enriched in Portuguese by fetch_animals.py and would need a costly
     # back-translation. Cleaner to skip and let the PT-BR pipeline
     # render them natively.
     native = (story.get("native_lang") or "en").lower()
-    if LANGUAGE == "en" and native != "en":
+    if lang == "en" and native != "en":
         log.info("  ⏭  Skipping for English channel — story is native %s", native)
         return None
 
     # Sibling-language channel: translate the AI-authored fields first.
     # The translation already runs through ai_cache so repeat runs of
     # the same story don't double the Mistral burn.
-    if LANGUAGE != "en":
+    if lang != "en":
         # NATIVE-LANGUAGE FAST PATH: when the story originated from a
         # PT-BR feed (G1, UOL, Folha, etc.) tagged native_lang=pt-BR,
         # fetch_animals.py already enriched it in Portuguese. Skipping
         # translate_story here means zero extra AI calls AND higher
         # editorial quality (no round-trip translation artefacts).
         native = (story.get("native_lang") or "en").lower()
-        if native == LANGUAGE.lower():
-            log.info("  🇧🇷 Native %s source — no translation needed", LANGUAGE)
+        if native == lang.lower():
+            log.info("  🇧🇷 Native %s source — no translation needed", lang)
             # Still stamp voice_tag so pick_voice walks the locale panel.
             story = dict(
                 story,
-                language=LANGUAGE,
-                voice_tag=SUPPORTED_LANGUAGES[LANGUAGE]["voice_tag"],
-                lang_hashtag=SUPPORTED_LANGUAGES[LANGUAGE]["hashtag"],
+                language=lang,
+                voice_tag=SUPPORTED_LANGUAGES[lang]["voice_tag"],
+                lang_hashtag=SUPPORTED_LANGUAGES[lang]["hashtag"],
             )
         else:
-            translated = translate_story(story, LANGUAGE)
+            translated = translate_story(story, lang)
             if not translated:
-                log.warning("  ⏭  Skipping Short — translation to %s failed for %s", LANGUAGE, title[:60])
+                log.warning("  ⏭  Skipping Short — translation to %s failed for %s", lang, title[:60])
                 return None
             story = translated
-            log.info("  🌍 Translated to %s — voice=%s", LANGUAGE, story.get("voice_tag"))
+            log.info("  🌍 Translated to %s — voice=%s", lang, story.get("voice_tag"))
         title = story.get("title") or story.get("seo_title") or title
-        slug = f"{slug}-{LANGUAGE.lower().replace('-', '')}"
+        slug = f"{slug}-{lang.lower().replace('-', '')}"
 
     # Queue carries pre-enriched fields when fetch_animals.py is up to date.
     # We require `script` (the full opinionated voice-over) to proceed —
@@ -2489,6 +2486,23 @@ def generate_short(story: dict, tmp_dir: Path) -> tuple[Path, Path, dict] | None
     except Exception as exc:
         log.debug("channel_memory remember skipped: %s", exc)
 
+    # ── 10. Multi-Platform Manifest
+    # Write a clean, agnostic manifest for TikTok / Instagram Reels auto-posters.
+    # Excludes YouTube-specific tags, includes raw description and title.
+    manifest_path = video_path.with_suffix(".manifest.json")
+    clean_hashtags = [t for t in metadata.get("yt_tags", []) if t.lower() not in {"youtube", "shorts"}]
+    if metadata.get("topic_hashtag"):
+        clean_hashtags.append(metadata["topic_hashtag"])
+    manifest = {
+        "title": metadata.get("title", ""),
+        "description": metadata.get("yt_description", ""),
+        "hashtags": clean_hashtags,
+        "language": metadata.get("language", "en"),
+        "platform_ready": True
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    log.info(f"  Multi-platform manifest saved: {manifest_path.name}")
+
     return video_path, thumb_path, metadata
 
 
@@ -2561,7 +2575,7 @@ def main():
         if created >= MAX_SHORTS_PER_RUN:
             break
         attempted += 1
-        result = generate_short(story, tmp)
+        result = generate_short(story, tmp, lang=LANGUAGE)
         if result:
             video_path, thumb_path, metadata = result
             shorts_done.add(story["slug"])
@@ -2575,6 +2589,23 @@ def main():
             created += 1
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
+            
+            # MrBeast Multi-Lingual Empire (Spanish Dubbing)
+            if LANGUAGE == "en":
+                log.info("  >> Triggering Spanish (es-MX) Dubbing pipeline...")
+                es_tmp = Path(tempfile.mkdtemp(prefix="yt_shorts_es_"))
+                result_es = generate_short(story, es_tmp, lang="es-MX")
+                if result_es:
+                    video_es, thumb_es, meta_es = result_es
+                    final_es_video = video_path.parent / f"{video_path.stem}_es.mp4"
+                    final_es_thumb = thumb_path.parent / f"{thumb_path.stem}_es.jpg"
+                    final_es_meta = video_path.parent / f"{video_path.stem}_es.json"
+                    video_es.rename(final_es_video)
+                    thumb_es.rename(final_es_thumb)
+                    Path(video_es.with_suffix('.json')).rename(final_es_meta)
+                    log.info(f"  Spanish Short ready: {final_es_video.name}")
+                shutil.rmtree(es_tmp, ignore_errors=True)
+                
         else:
             log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
 

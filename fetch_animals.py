@@ -518,9 +518,10 @@ _AI_PROMPT_TEMPLATE = (
     "(e.g., 'What would you do?', 'Would you survive this?', 'Did you learn this wrong too?'). "
     "MRBEAST SERIES HOOK: In about 20% of the scripts, replace the final question with a cliffhanger "
     "to force a subscription (e.g., 'But this is nothing compared to what it does at night... Like and subscribe for Part 2!'). "
+    "GAMIFIED EASTER EGG: In about 10% of the scripts, mention that you hid a crown emoji 👑 in the video for 1 frame, "
+    "and challenge the viewer to pause exactly on it (e.g., 'I hid a crown in this video, tell me if you can pause on it!'). "
     "Do not say 'payoff', 'visible signal', 'hidden cue', 'final move', or 'replay the first second' in the viewer-facing copy. "
-    "Keep sentences short enough for yellow "
-    "CapCut-style captions.\n\n"
+    "Keep sentences short enough for yellow CapCut-style captions.\n\n"
     "Return this exact JSON shape:\n"
     "{{"
     '"score": <int 1-10 - how interesting is this subject for a global nature-science Short>,'

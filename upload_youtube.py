@@ -246,7 +246,7 @@ def _comment_text(meta: dict) -> str:
         or ""
     ).strip()
     if not text:
-        text = "Which part of nature feels the most impossible but real?"
+        text = "👇 What do you think about this? Is the science textbook lying to us? Drop your thoughts below!"
     return text[:500]
 
 

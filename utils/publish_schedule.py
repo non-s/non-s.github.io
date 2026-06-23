@@ -236,12 +236,17 @@ def _safe_json(path: Path) -> dict:
 
 def recommend_schedule(analytics: dict | None = None) -> dict:
     analytics = analytics or _safe_json(ANALYTICS_FILE)
-    # The operator's restart plan is one generated/uploaded Short per hour.
-    # Quality and quota guards can still skip a weak or expensive slot, but
-    # the canonical programming grid stays hourly.
     global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
-    cadence = len(global_slots)
-    slots = global_slots
+    
+    # MrBeast Heatmap Dynamic Scheduling
+    # Filter slots to only publish during peak global traffic hours (16h - 22h UTC).
+    # This ensures the algorithm has max concurrent users to test the video on.
+    peak_hours = {16, 17, 18, 19, 20, 21, 22}
+    slots = [s for s in global_slots if int(s.split(":")[0]) in peak_hours]
+    if not slots:
+        slots = global_slots # fallback
+
+    cadence = len(slots)
     backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 24))
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),

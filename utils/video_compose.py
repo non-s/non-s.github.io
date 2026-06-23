@@ -319,6 +319,21 @@ def build_broll_short(
         )
         last_label = "withbug"
 
+    # Gamified Easter Egg (MrBeast Retention Hack)
+    # Flashes a hidden text for exactly 1 frame around the middle of the video.
+    # Forces the user to re-watch multiple times to pause on the exact frame.
+    if font:
+        mid_time = max(0, float(audio_dur) / 2)
+        parts.append(
+            f"[{last_label}]drawtext=fontfile={font}"
+            f":text=' 👑 CROWN 👑 ':fontcolor=white:fontsize=120"
+            f":box=1:boxcolor=red@0.9:boxborderw=30"
+            f":x=(w-text_w)/2:y=(h-text_h)/2"
+            f":enable='between(t,{mid_time:.2f},{mid_time + 0.035:.2f})'"
+            f"[withegg]"
+        )
+        last_label = "withegg"
+
     # Burned ASS subtitles (word-level captions in the middle band).
     if ass_subtitle_path and ass_subtitle_path.exists():
         # Use the ASS filter so V4+ styles are honoured. Path is escaped
