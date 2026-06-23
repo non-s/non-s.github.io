@@ -1,51 +1,56 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 414,
-    "data_state_files": 355,
+    "live_state_files": 504,
+    "data_state_files": 445,
     "video_done_markers": 58,
-    "live_state_bytes": 11819570,
-    "stories_queue_bytes": 1905924,
-    "stories_queue_lines": 50434,
+    "live_state_bytes": 14168698,
+    "stories_queue_bytes": 1972069,
+    "stories_queue_lines": 51685,
     "workflow_files": 17,
     "state_path_refs": 264
   },
   "largest_state_files": [
     {
       "path": "_data/ai_cache.jsonl",
-      "bytes": 3014562,
+      "bytes": 3028509,
       "lines": 0
     },
     {
-      "path": "_data/stories_queue.json",
-      "bytes": 1905924,
-      "lines": 50434
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 2642544,
+      "lines": 3958
     },
     {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 797928,
-      "lines": 1000
+      "path": "_data/stories_queue.json",
+      "bytes": 1972069,
+      "lines": 51685
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 539465,
-      "lines": 20856
+      "bytes": 539635,
+      "lines": 20864
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 374409,
-      "lines": 586
+      "bytes": 375643,
+      "lines": 588
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 318160,
-      "lines": 4094
+      "bytes": 319637,
+      "lines": 4113
     },
     {
       "path": "_data/queue_audit.json",
       "bytes": 264693,
       "lines": 7537
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 226574,
+      "lines": 19
     },
     {
       "path": "_data/publish_slot_decisions.jsonl",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 93370,
       "lines": 117
-    },
-    {
-      "path": "_data/comment_to_short_candidates.json",
-      "bytes": 91617,
-      "lines": 1936
     }
   ],
   "migration_lanes": [
