@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-23T14:08:36.645475+00:00",
-  "pending": 15,
+  "generated_at": "2026-06-23T15:23:58.067341+00:00",
+  "pending": 16,
   "states": {
-    "publish_ready": 8,
+    "publish_ready": 9,
     "rewrite": 7
   },
   "mechanism_clusters": {
@@ -11,24 +11,80 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 15
+    "approved": 16
   },
   "prune_summary": {
-    "pending_before": 15,
-    "pending_after": 15,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 6,
+    "pending_before": 22,
+    "pending_after": 16,
+    "rejected": 6,
+    "repair_needed": 2,
+    "repaired": 7,
     "reasons": {
+      "objective_gate:observe_before_scaling": 8,
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "objective_gate:observe_before_scaling": 7,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "duplicate_title": 3,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
+      "queue_score_reject": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
+      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1
+      "editor_in_chief:editorial score 40 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "3bfa91c8958eb8d9",
+      "title": "Horses point their ears toward what matters",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "247dc375b4eddc15",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "898457f78de74759",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "937d2244a5deb24d",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "847b3db93eed5f86",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8cf6749788cdaac7",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "6af44a07c8f5be96",
       "title": "Storm clouds show air layers changing over time",
@@ -238,56 +294,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "f87e5268b32f5b4c",
-      "title": "Mushrooms trade nutrients through underground threads",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "dc397bc5a036cf55",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "16b7aefff63454b4",
-      "title": "Auroras glow when solar particles hit air",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "subject_not_clear",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "f075053cc00fa813",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "eeb5c13c98644fba",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "35742f963e90e853",
-      "title": "Lightning turns air into a shock wave",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -440,7 +446,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.884315+00:00",
+        "checked_at": "2026-06-23T15:23:46.353783+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -888,7 +894,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.894130+00:00",
+        "checked_at": "2026-06-23T15:23:46.711535+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1335,7 +1341,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.896272+00:00",
+        "checked_at": "2026-06-23T15:23:46.714003+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1784,7 +1790,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.889728+00:00",
+        "checked_at": "2026-06-23T15:23:46.707471+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2232,7 +2238,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.900603+00:00",
+        "checked_at": "2026-06-23T15:23:46.718669+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2684,7 +2690,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.885901+00:00",
+        "checked_at": "2026-06-23T15:23:46.355426+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3140,7 +3146,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.877529+00:00",
+        "checked_at": "2026-06-23T15:23:46.346845+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3591,7 +3597,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.878815+00:00",
+        "checked_at": "2026-06-23T15:23:46.348168+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4045,7 +4051,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.887849+00:00",
+        "checked_at": "2026-06-23T15:23:46.357421+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4498,7 +4504,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.880367+00:00",
+        "checked_at": "2026-06-23T15:23:46.349768+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4950,7 +4956,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.882642+00:00",
+        "checked_at": "2026-06-23T15:23:46.352072+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5256,6 +5262,455 @@
       }
     },
     {
+      "id": "96b7d39881124442",
+      "title": "Forests reveal edge climates along trails",
+      "category": "forests",
+      "publish_score": {
+        "approved": true,
+        "category": "forests",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.415,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.22,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.22.",
+          "recommendation_strength": "observe",
+          "sample_size": 14
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.22,
+          "mechanism_cluster": "",
+          "payoff_time_s": 8.8,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 64,
+            "emotional_potential": 27,
+            "novelty": 51,
+            "replay_potential": 64,
+            "viral_potential": 64,
+            "visual_potential": 61
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.395,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.193,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-23T15:23:46.699513+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
+        ],
+        "score": 72.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "forests",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "forests",
+        "viewer_promise": "See why this forest earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "curiosity_gap": {
+          "hook": "Why do these fungi change after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 59,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 40.4,
+            "cta:specific_question": 41.66,
+            "format:fresh_variant": 52.04,
+            "hook:new_hook": 52.04,
+            "thumbnail:new_thumbnail": 40.52
+          }
+        },
+        "hook_options": [
+          "Forests can cool the air below them",
+          "Forests change climate at the trail edge",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "edge",
+          "ending_line": "Which edge clue should we compare next?",
+          "final_line": "Which edge clue should we compare next?",
+          "loop_score": 0.629,
+          "opening_line": "Forests change climate at the trail edge.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "edge",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.629,
+        "pinned_comment": "Watch the trail edge again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.12,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Forests change climate at the trail edge Watch the brighter opening beside",
+          "first_frame_text": "EDGE CLIMATE",
+          "first_frame_text_words": 2,
+          "hook": "Forests change climate at the trail edge.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.629,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.8,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the trail edge, so viewers rewatch the forests clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Forests can cool the air below them",
+          "score": 77,
+          "thumbnail_text": "COOL CANOPY",
+          "title": "Forests make cooler air under the canopy"
+        },
+        "series": "Hidden Network #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network #3: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Hidden Network #3",
+          "series": "Hidden Network #3"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.395,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.193,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "COOL CANOPY",
+          "WATCH COOL CANOPY",
+          "FORESTS COMPARE",
+          "COOL CANOPY MATTERS",
+          "COOL CANOPY FIRST",
+          "COOL CANOPY REVEAL",
+          "COOL CANOPY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Forests make cooler air under the canopy",
+          "Forests reveal edge climates along trails",
+          "Forests use cool canopy before they compare",
+          "This cool canopy gives forests away",
+          "Why forests compare after one cool canopy",
+          "Forests reveal the answer with cool canopy",
+          "The cool canopy that changes the moment",
+          "Forests make one cool canopy matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this cool canopy"
+        ],
+        "top_variants": [
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 77,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests change climate at the trail edge",
+            "score": 77,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 70,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests change climate at the trail edge",
+            "score": 70,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 70,
+            "thumbnail_text": "FORESTS COMPARE",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests change climate at the trail edge",
+            "score": 70,
+            "thumbnail_text": "FORESTS COMPARE",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "FORESTS COMPARE",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 70,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "d5cc9d4c3df63823",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -5402,7 +5857,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.902312+00:00",
+        "checked_at": "2026-06-23T15:23:46.720430+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5854,7 +6309,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.904437+00:00",
+        "checked_at": "2026-06-23T15:23:46.722700+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6310,7 +6765,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.898504+00:00",
+        "checked_at": "2026-06-23T15:23:46.716494+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6758,7 +7213,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T14:08:25.892311+00:00",
+        "checked_at": "2026-06-23T15:23:46.709519+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
