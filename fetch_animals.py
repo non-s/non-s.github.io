@@ -1761,10 +1761,12 @@ def _topic_fetch_plan(
             weight = float(weights.get(topic_key, 1.0) or 1.0)
         except (TypeError, ValueError):
             weight = 1.0
-        if weight >= 1.35:
-            budget += 1
-        elif weight <= 0.85 and count >= 8:
-            budget = max(1, budget - 1)
+            
+        # Growth Hack: Apply true proportional scaling based on analytics views
+        if weight > 1.0:
+            budget = max(budget + 1, int(budget * weight))
+        elif weight < 1.0 and count >= 8:
+            budget = max(1, int(budget * weight))
         topic_animals = set().union(*(_animal_terms(query) for query in cfg.get("queries", [])))
         requested_for_topic = sorted(topic_animals & requested)
         if requested_for_topic:

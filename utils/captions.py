@@ -340,44 +340,31 @@ def _caption_text_with_emphasis(text: str) -> str:
 
 def group_words_into_phrases(
     words: list[Caption], max_words: int = 4, max_gap_s: float = 0.6, max_duration_s: float = 2.5
-) -> list[Caption]:
-    """Group word-level captions into 2-4 word phrases that fit on screen.
-
-    Word-level karaoke-style captions are jittery on a Short. Grouping
-    into 2-4 word chunks reads cleanly while preserving timing. We
-    break on long pauses (`max_gap_s`) so phrases don't span thoughts.
+) -> list[list[Caption]]:
+    """Group word-level captions into chunks of 2-4 words that fit on screen.
+    
+    Preserves individual word Captions so the ASS writer can apply Karaoke
+    word-by-word timing effects.
     """
     if not words:
         return []
-    groups: list[Caption] = []
+    groups: list[list[Caption]] = []
     buf: list[Caption] = []
     for w in words:
         if buf:
             gap = w.start - buf[-1].end
             phrase_dur = w.end - buf[0].start
             if len(buf) >= max_words or gap > max_gap_s or phrase_dur > max_duration_s:
-                groups.append(
-                    Caption(
-                        word=" ".join(b.word.strip() for b in buf),
-                        start=buf[0].start,
-                        end=buf[-1].end,
-                    )
-                )
+                groups.append(list(buf))
                 buf = []
         buf.append(w)
     if buf:
-        groups.append(
-            Caption(
-                word=" ".join(b.word.strip() for b in buf),
-                start=buf[0].start,
-                end=buf[-1].end,
-            )
-        )
+        groups.append(list(buf))
     return groups
 
 
 def write_ass(
-    captions: list[Caption],
+    captions: list[list[Caption]],
     path: Path,
     video_w: int = 1080,
     video_h: int = 1920,
@@ -387,18 +374,18 @@ def write_ass(
     shadow_colour: str = "&H00000000",
     margin_v: int = 360,
 ) -> bool:
-    """Write a Shorts-tuned ASS subtitle file.
+    """Write a Shorts-tuned ASS subtitle file with Karaoke word highlighting.
 
-    Default style: bold modern yellow, thick black outline, dropped shadow,
-    positioned in the upper-middle (margin_v from bottom). The 360px
-    margin clears YouTube's bottom UI band (caption preview + controls
-    link + share rail â‰ˆ 250px) and leaves the captions in the dead-
-    centre safe zone where the eye lands first on a vertical feed.
-    Tweak via
-    args if you want a different look. Returns True on success.
+    Default style: bold modern yellow (active), white (inactive), thick black outline, 
+    dropped shadow, positioned in the upper-middle (margin_v from bottom).
+    Returns True on success.
     """
     if not captions:
         return False
+    
+    # SecondaryColour sets the inactive word color (White) before Karaoke hits it
+    secondary_colour = "&H00FFFFFF"
+    
     header = (
         "[Script Info]\n"
         "ScriptType: v4.00+\n"
@@ -410,7 +397,7 @@ def write_ass(
         "ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, "
         "Alignment, MarginL, MarginR, MarginV, Encoding\n"
         # Alignment 2 = bottom-centre, MarginV from bottom.
-        f"Style: Shorts,Arial,{font_size},{primary_colour},&H000000FF,"
+        f"Style: Shorts,Arial,{font_size},{primary_colour},{secondary_colour},"
         f"{outline_colour},{shadow_colour},1,0,0,0,100,100,0,0,1,6,3,2,"
         f"60,60,{margin_v},1\n\n"
         "[Events]\n"
@@ -418,14 +405,37 @@ def write_ass(
         "MarginV, Effect, Text\n"
     )
     lines: list[str] = []
-    for cap in captions:
-        start = _format_ass_time(cap.start)
-        end = _format_ass_time(cap.end)
-        text = _caption_text_with_emphasis(cap.word)
-        # A tiny pop-in scale feels like CapCut captions without making
-        # the text bounce around or leave the Shorts safe zone.
+    for phrase_words in captions:
+        if not phrase_words:
+            continue
+        phrase_start = phrase_words[0].start
+        phrase_end = phrase_words[-1].end
+        start_str = _format_ass_time(phrase_start)
+        end_str = _format_ass_time(phrase_end)
+        
+        # Build the karaoke text
+        text_parts = []
+        current_time = phrase_start
+        for w in phrase_words:
+            # Add delay before word if there's a gap
+            if w.start > current_time:
+                gap_cs = int((w.start - current_time) * 100)
+                if gap_cs > 0:
+                    text_parts.append(f"{{\\k{gap_cs}}}")
+            
+            word_cs = int((w.end - w.start) * 100)
+            # Ensure word has at least 1cs to render properly
+            word_cs = max(1, word_cs)
+            
+            word_text = _caption_text_with_emphasis(w.word)
+            text_parts.append(f"{{\\k{word_cs}}}{word_text}")
+            current_time = w.end
+            
+        text = " ".join(text_parts).replace("} {", "} ") # Fix spacing around tags
+        
+        # A tiny pop-in scale feels like CapCut captions
         text = r"{\fad(45,60)\t(0,90,\fscx106\fscy106)}" + text
-        lines.append(f"Dialogue: 0,{start},{end},Shorts,,0,0,0,,{text}")
+        lines.append(f"Dialogue: 0,{start_str},{end_str},Shorts,,0,0,0,,{text}")
     try:
         path.write_text(header + "\n".join(lines) + "\n", encoding="utf-8")
         return True
