@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T12:31:20.108378+00:00",
+  "generated_at": "2026-06-23T12:36:40.752831+00:00",
   "pending": 16,
   "states": {
     "publish_ready": 9,
@@ -14,22 +14,125 @@
     "approved": 16
   },
   "prune_summary": {
-    "pending_before": 16,
+    "pending_before": 28,
     "pending_after": 16,
-    "rejected": 0,
+    "rejected": 12,
     "repair_needed": 0,
-    "repaired": 6,
+    "repaired": 8,
     "reasons": {
+      "duplicate_title": 9,
       "objective_gate:bootstrap_observe_before_scaling": 8,
       "objective_gate:observe_before_scaling": 7,
+      "copy_subject_mismatch": 4,
+      "off_topic_visual": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "script_hook_mismatch": 1,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 44 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "eeb5c13c98644fba",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "35742f963e90e853",
+      "title": "Lightning turns air into a shock wave",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "527fa14319f455d6",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "94fa318e03dee166",
+      "title": "mountain lakes hold winter secrets",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "1e68d74830d172af",
+      "title": "Glaciers carve mountains like giant bulldozers",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "40b2a9eebeb22211",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "cc4f9faf59649f6f",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6ddac33462da83ed",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9d7900463da820f9",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f0a7574bdf728731",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ce251990032fe452",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2a53881d3284db6f",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "77979e7c4fa42f9a",
       "title": "Storm clouds reveal a storm's heat engine",
@@ -177,111 +280,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "f0fae59882863be1",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "454cfd3de024a063",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "35992da326b300b9",
-      "title": "Seals track fish trails with whiskers",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "a137f5d20479a09c",
-      "title": "Owls fly silently because feathers break sound",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0abbd6e5b30549f9",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ff4daa85598c5851",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "1b0ce37e748845e9",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "82b3b9d1b6c8dfca",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "fe23f411cb61182d",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4feab6223d772a0c",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a512b7f1adbc0239",
-      "title": "Lions use dark ear marks to guide cubs",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "94d887217422d163",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -434,7 +432,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.726854+00:00",
+        "checked_at": "2026-06-23T12:36:28.251936+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -882,7 +880,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.737719+00:00",
+        "checked_at": "2026-06-23T12:36:28.983214+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1329,7 +1327,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.740008+00:00",
+        "checked_at": "2026-06-23T12:36:28.985230+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1778,7 +1776,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.733160+00:00",
+        "checked_at": "2026-06-23T12:36:28.257698+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2226,7 +2224,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.744576+00:00",
+        "checked_at": "2026-06-23T12:36:29.360631+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2678,7 +2676,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.728589+00:00",
+        "checked_at": "2026-06-23T12:36:28.253575+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3144,7 +3142,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.717614+00:00",
+        "checked_at": "2026-06-23T12:36:28.243885+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -3593,7 +3591,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.718896+00:00",
+        "checked_at": "2026-06-23T12:36:28.245076+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4044,7 +4042,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.720191+00:00",
+        "checked_at": "2026-06-23T12:36:28.246349+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4498,7 +4496,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.731036+00:00",
+        "checked_at": "2026-06-23T12:36:28.255690+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4951,7 +4949,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.721776+00:00",
+        "checked_at": "2026-06-23T12:36:28.247919+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5403,7 +5401,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.724528+00:00",
+        "checked_at": "2026-06-23T12:36:28.250251+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5855,7 +5853,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.746337+00:00",
+        "checked_at": "2026-06-23T12:36:29.362625+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6307,7 +6305,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.748600+00:00",
+        "checked_at": "2026-06-23T12:36:29.364817+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6617,7 +6615,7 @@
       }
     },
     {
-      "id": "eeb5c13c98644fba",
+      "id": "513e47be41ed76ab",
       "title": "Storm clouds reveal weather from above the clouds",
       "category": "earth_from_space",
       "publish_score": {
@@ -6763,13 +6761,11 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.742389+00:00",
+        "checked_at": "2026-06-23T12:36:28.630125+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:story angle repeated inside 10-day cooldown",
-          "editor_in_chief:editorial score 44 is below 62"
+          "editor_in_chief:subject repeated inside 3-day cooldown"
         ],
         "score": 64.0,
         "state": "rewrite",
@@ -6816,7 +6812,9 @@
         },
         "editorial_rulebook": {
           "approved": true,
-          "notes": [],
+          "notes": [
+            "loop callback is weak"
+          ],
           "recommended_duration_s": 24,
           "recommended_format": "earth engine",
           "score": 100.0,
@@ -6846,18 +6844,18 @@
           }
         },
         "hook_options": [
-          "Storm clouds show where a storm is feeding",
           "Storm clouds look different when seen from above",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters."
+          "Storm shows why the cloud tops matters.",
+          "Storm shows why the cloud tops matters.",
+          "Storm shows why the cloud tops matters.",
+          "Storm clouds give away the answer through cloud tops"
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "storm",
-          "ending_line": "Which above-cloud clue should we compare next.",
-          "final_line": "Now the storm at the start makes sense.",
-          "loop_score": 0.38,
+          "ending_line": "Which above-cloud clue should we compare next?",
+          "final_line": "Which above-cloud clue should we compare next?",
+          "loop_score": 0.213,
           "opening_line": "Storm clouds look different when seen from above.",
           "render_hints": {
             "avoid_hard_stop": true,
@@ -6866,7 +6864,7 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.38,
+        "loop_score": 0.213,
         "pinned_comment": "Watch the cloud tops again. Tomorrow: another nature signal. Which planet-scale clue should we compare next?",
         "preflight_inputs": {
           "caption_chars_per_second": 16.44,
@@ -6878,7 +6876,7 @@
           "hook": "Storm clouds look different when seen from above.",
           "hook_specificity": 0.78,
           "hook_words": 8,
-          "loop_score": 0.38,
+          "loop_score": 0.213,
           "novelty_score": 0.58,
           "payoff_time_s": 8.8,
           "visual_motion_score": 0.76
@@ -6912,17 +6910,17 @@
         "risks": [],
         "score": 93,
         "selected_variant": {
-          "hook": "Storm clouds show where a storm is feeding",
-          "score": 81,
-          "thumbnail_text": "STORM ENGINE",
-          "title": "Storm clouds reveal a storm's heat engine"
+          "hook": "Storm clouds look different when seen from above",
+          "score": 80,
+          "thumbnail_text": "CLOUD TOPS",
+          "title": "Storm clouds reveal weather from above the clouds"
         },
-        "series": "Planet Earth #2",
+        "series": "Earth Engine #4",
         "series_identity": {
-          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
-          "episode": 2,
-          "label": "Planet Earth #2",
-          "series": "Planet Earth"
+          "continuity_prompt": "Next in Earth Engine #4: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Earth Engine #4",
+          "series": "Earth Engine #4"
         },
         "state": "magnetic",
         "strengths": [
@@ -6970,87 +6968,85 @@
           "score": 0
         },
         "thumbnail_options": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL",
+          "CLOUD TOPS",
+          "WATCH CLOUD TOPS",
           "STORM CLOUDS COMPARE",
-          "CLOUD SPIRAL MATTERS",
-          "CLOUD SPIRAL FIRST",
-          "CLOUD SPIRAL REVEAL",
-          "CLOUD SPIRAL CLUE",
+          "CLOUD TOPS MATTERS",
+          "CLOUD TOPS FIRST",
+          "CLOUD TOPS REVEAL",
+          "CLOUD TOPS CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Storm clouds reveal a storm's heat engine",
           "Storm clouds reveal weather from above the clouds",
-          "Storm clouds use cloud spiral before they compare",
-          "This cloud spiral gives storm clouds away",
-          "Storm clouds reveal the answer with cloud spiral",
-          "The cloud spiral that changes the moment",
+          "Storm clouds use cloud tops before they compare",
+          "Storm clouds reveal the answer with cloud tops",
+          "The cloud tops that changes the moment",
           "Storm clouds show the hidden answer in seconds",
-          "Storm clouds: watch this cloud spiral"
+          "Storm clouds: watch this cloud tops",
+          "Watch storm clouds after the cloud tops"
         ],
         "top_variants": [
           {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 81,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Storm clouds look different when seen from above",
+            "score": 80,
+            "thumbnail_text": "CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
+          },
+          {
+            "hook": "Watch the cloud tops; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
+          },
+          {
+            "hook": "Start with the cloud tops; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
             "hook": "Storm clouds look different when seen from above",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Watch the cloud tops; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Start with the cloud tops; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD TOPS",
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
+            "hook": "Storm clouds look different when seen from above",
+            "score": 73,
             "thumbnail_text": "STORM CLOUDS COMPARE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "CLOUD SPIRAL MATTERS",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Watch the cloud tops; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "STORM CLOUDS COMPARE",
+            "title": "Storm clouds reveal weather from above the clouds"
+          },
+          {
+            "hook": "Start with the cloud tops; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "STORM CLOUDS COMPARE",
+            "title": "Storm clouds reveal weather from above the clouds"
           },
           {
             "hook": "Storm clouds look different when seen from above",
             "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 73,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "CLOUD TOPS MATTERS",
+            "title": "Storm clouds reveal weather from above the clouds"
           }
         ]
       },
@@ -7213,7 +7209,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T12:31:08.735761+00:00",
+        "checked_at": "2026-06-23T12:36:28.981476+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
