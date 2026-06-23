@@ -10,9 +10,9 @@ WildBrief is a YouTube Shorts automation pipeline:
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
 | 1 | Architectural & Functional Audit | Detailed file-by-file audit to identify bottlenecks and viral vectors. | None | DONE |
-| 2 | Apex Code Hardening & API Resilience | Refactor for zero defects, robust API error handling, and optimized FFmpeg commands. | M1 | IN_PROGRESS |
-| 3 | Viral Hooks & A/B Testing | Implement micro-animations, audio pacing, and an A/B testing framework. | M2 | PLANNED |
-| 4 | E2E Testing & Verification | Verify E2E generation for EN/PT and ES versions cleanly. | M3 | PLANNED |
+| 2 | Apex Code Hardening & API Resilience | Refactor for zero defects, robust API error handling, and optimized FFmpeg commands. | M1 | DONE |
+| 3 | Viral Hooks & A/B Testing | Implement micro-animations, audio pacing, and an A/B testing framework. | M2 | DONE |
+| 4 | E2E Testing & Verification | Verify E2E generation for EN/PT and ES versions cleanly. | M3 | DONE |
 
 ## Code Layout
 - `fetch_animals.py` - AI scripting logic
