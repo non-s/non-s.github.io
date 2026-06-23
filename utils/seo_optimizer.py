@@ -123,20 +123,24 @@ _ANIMAL_ALIASES = {
 
 _ANIMAL_WORDS = set(_ANIMAL_ALIASES)
 _NON_ANIMAL_CATEGORIES = {
-    "earth_from_space",
-    "weather",
-    "volcanoes",
-    "geology",
-    "rivers",
-    "physics",
-    "forests",
-    "fungi",
-    "plants",
-    "trees",
-    "ecosystems",
-    "rare_phenomena",
+    "astronomy",
+    "chemistry",
     "conservation",
     "discoveries",
+    "earth_from_space",
+    "ecosystems",
+    "forests",
+    "fungi",
+    "geology",
+    "microscopy",
+    "mountains",
+    "physics",
+    "plants",
+    "rare_phenomena",
+    "rivers",
+    "trees",
+    "volcanoes",
+    "weather",
 }
 
 

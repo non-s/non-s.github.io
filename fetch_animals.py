@@ -1336,6 +1336,20 @@ def load_published_copy_keys(root: Path | None = None) -> dict[str, set[str]]:
                 continue
             if isinstance(marker, dict):
                 _add_story_copy_keys(keys, marker)
+    
+    # Also load from permanent upload intents ledger since .done files are ephemeral
+    intents_path = root / "_data" / "upload_intents.jsonl"
+    if intents_path.exists():
+        for line in intents_path.read_text(encoding="utf-8").splitlines():
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+            if isinstance(row, dict) and row.get("status") == "uploaded":
+                title_key = _copy_key(row.get("title") or "")
+                if title_key:
+                    keys["titles"].add(title_key)
+                    
     return keys
 
 

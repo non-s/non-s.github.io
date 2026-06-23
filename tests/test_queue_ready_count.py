@@ -6,7 +6,7 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
         "stories": [
             {
                 "id": "ready",
-                "category": "birds",
+                "category": "dogs",
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
@@ -25,7 +25,7 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
             },
             {
                 "id": "dirty-packaging",
-                "category": "birds",
+                "category": "dogs",
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
@@ -33,7 +33,7 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
             },
             {
                 "id": "dirty-brain",
-                "category": "birds",
+                "category": "dogs",
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
@@ -148,7 +148,7 @@ def test_queue_ready_count_excludes_agency_held_candidate(monkeypatch, tmp_path)
         "stories": [
             {
                 "id": "held",
-                "category": "birds",
+                "category": "dogs",
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
@@ -178,7 +178,7 @@ def test_queue_ready_count_refresh_recomputes_agency_gate(monkeypatch, tmp_path)
         "stories": [
             {
                 "id": "fresh-held",
-                "category": "birds",
+                "category": "dogs",
                 "queue_prune": {"state": "publish_ready"},
                 "publish_score": {"approved": True, "state": "publish_ready"},
                 "editorial": {"approved": True, "state": "publish_now"},
