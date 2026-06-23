@@ -42,9 +42,9 @@ _AI_OK_PAYLOAD = json.dumps(
         "thumbnail_text": "WHY CATS PURR",
         "hook": "Cats purr to heal their own bones.",
         "script": "Cats purr to heal their own bones. The 25-150 Hz "
-        "frequency promotes bone density. Big cats can purr "
-        "too — sometimes. What's the strangest thing your "
-        "cat does?",
+        "frequency promotes bone density, which is incredibly useful for survival. "
+        "Big cats can purr too — sometimes. What's the strangest thing your "
+        "cat does when you are watching them closely?",
         "sentiment": "positive",
     }
 )
@@ -70,7 +70,7 @@ def test_ai_enhance_animal_parses_valid_json(monkeypatch):
 def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
     seen = {}
     dog_payload = dict(json.loads(_AI_OK_PAYLOAD))
-    dog_payload["script"] = "Dogs can read human gestures and remember social cues from people."
+    dog_payload["script"] = "Dogs read people better than most animals. They can read human gestures and remember social cues from people, which helps them form deep connections with their owners over many years. Do you think dogs are the smartest pets in the world?"
     dog_payload["hook"] = "Dogs read people better than most animals."
     dog_payload["seo_title"] = "Why dogs read people so well"
 
@@ -152,7 +152,7 @@ def test_ai_enhance_caps_tag_list_to_five(monkeypatch):
 
 def test_ai_enhance_rejects_script_about_different_visible_animal(monkeypatch):
     mismatch = dict(json.loads(_AI_OK_PAYLOAD))
-    mismatch["script"] = "Jellyfish drift through the ocean without a brain."
+    mismatch["script"] = "Jellyfish drift through the ocean without a brain. They use simple nerve nets to detect light and currents, which is a surprisingly effective way to survive in the deep ocean. Do you think they are actually smart?"
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(mismatch))
     assert fetch_animals._ai_enhance_animal("Sea turtle swimming over coral", "ocean") is None
 
@@ -177,7 +177,7 @@ def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
     dog["seo_title"] = "Dogs read snow trails by smell"
     dog["title"] = dog["seo_title"]
     dog["hook"] = "Dogs track snow trails by smell."
-    dog["script"] = "Dogs see blues and yellows better than reds and greens."
+    dog["script"] = "Dogs track snow trails by smell. They see blues and yellows better than reds and greens, which makes their winter hunting much more successful. They are built for extreme survival. Would you survive in the freezing cold?"
     dog["thumbnail_text"] = "DOG VISION"
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(dog))
     assert fetch_animals._ai_enhance_animal("Husky running through snow", "dogs") is not None
@@ -1072,3 +1072,95 @@ def test_pexels_id_from_clip_rejects_non_pexels_id():
         duration_s=10,
     )
     assert fetch_animals._pexels_id_from_clip(clip) == ""
+
+
+def test_validate_and_repair_json_repacks_valid_data():
+    valid = {
+        "seo_title": "Dolphin communication is complex",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart?",
+        "thumbnail_text": "DOLPHIN NAMES",
+        "topic_hashtag": "Ocean",
+        "score": 8,
+    }
+    # This script is 39 words, which is within the 38-55 word limit.
+    repaired = fetch_animals._validate_and_repair_json(valid.copy(), "Dolphin")
+    assert repaired is not None
+    assert repaired["seo_title"] == "Dolphin communication is complex"
+    assert repaired["thumbnail_text"] == "DOLPHIN NAMES"
+    assert repaired["topic_hashtag"] == "Ocean"
+    assert repaired["score"] == 8
+
+
+def test_validate_and_repair_json_detects_missing_required_keys():
+    bad = {
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles.",
+    }
+    assert fetch_animals._validate_and_repair_json(bad, "Dolphin") is None
+
+
+def test_validate_and_repair_json_repairs_minor_missing_keys():
+    data = {
+        "seo_title": "Dolphin communication is complex",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart?",
+    }
+    repaired = fetch_animals._validate_and_repair_json(data.copy(), "dolphin")
+    assert repaired is not None
+    assert repaired["thumbnail_text"] == "DOLPHIN"
+    assert repaired["topic_hashtag"] == "Nature"
+    assert repaired["score"] == 7
+
+
+def test_validate_and_repair_json_repairs_all_caps_and_punctuation():
+    data = {
+        "seo_title": "DOLPHIN COMMUNICATION IS COMPLEX!!",
+        "hook": "DOLPHINS CALL EACH OTHER BY NAME??",
+        "script": "Dolphins call each other by name... They use unique whistles for identity... This helps them stay coordinated in the wide ocean... especially when they hunt in cooperative teams... Do you think they remember old friends after many years apart...???",
+    }
+    repaired = fetch_animals._validate_and_repair_json(data.copy(), "dolphin")
+    assert repaired is not None
+    assert repaired["seo_title"] == "Dolphin communication is complex!"
+    assert repaired["hook"] == "Dolphins call each other by name?"
+    assert repaired["script"] == "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean. especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart.?"
+
+
+def test_validate_and_repair_json_word_count_limits():
+    # 14 words (major violation under 35 - should be rejected)
+    under_limit_major = {
+        "seo_title": "Dolphin communication",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles. This is very short.",
+    }
+    assert fetch_animals._validate_and_repair_json(under_limit_major, "dolphin") is None
+
+    # 35 words (minor violation under 38 - accepted as is)
+    under_limit_minor = {
+        "seo_title": "Dolphin communication",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends?",
+    }
+    repaired_minor = fetch_animals._validate_and_repair_json(under_limit_minor.copy(), "dolphin")
+    assert repaired_minor is not None
+    assert len(repaired_minor["script"].split()) == 35
+
+    # 58 words (minor violation over 55 - trimmed to 55)
+    over_limit_minor = {
+        "seo_title": "Dolphin communication",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart? Some researchers believe they do because their brain structure supports long term memory, which is quite fascinating to think.",
+    }
+    repaired_trim = fetch_animals._validate_and_repair_json(over_limit_minor.copy(), "dolphin")
+    assert repaired_trim is not None
+    assert len(repaired_trim["script"].split()) <= 55
+
+    # 66 words (major violation over 60 - rejected)
+    over_limit_major = {
+        "seo_title": "Dolphin communication",
+        "hook": "Dolphins call each other by name.",
+        "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart? Some researchers believe they do because their brain structure supports long term memory, which is quite fascinating to think about. That is why they are so smart, and we should protect them.",
+    }
+    assert fetch_animals._validate_and_repair_json(over_limit_major, "dolphin") is None
+
+

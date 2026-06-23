@@ -65,6 +65,7 @@ from typing import TYPE_CHECKING, Any
 
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
+from utils.prompt_safety import wrap_untrusted
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
 from utils.broll import fetch_pexels
@@ -393,82 +394,6 @@ PUBLISH_READY_RECOVERY_TOPICS = {
 
 
 # ── AI prompt ─────────────────────────────────────────────────────
-
-_AI_PROMPT_TEMPLATE = (
-    "You write fun, educational scripts about animals for YouTube "
-    "Shorts. Every Short combines stock footage of an animal with a "
-    "fast voice-over packed with one surprising animal fact. The viewer "
-    "should learn something they did not know. Tone: friendly, "
-    '"did you know..." energy, no clickbait, no AI-isms (avoid '
-    "'pivotal', 'unprecedented', 'paradigm shift', 'delve', 'in the "
-    "realm of'). Contractions are fine. Speak directly to camera. "
-    "Sound like one curious host, not a narrator reading a fact card: "
-    "include one small human reaction or observation, two concrete "
-    "visual/body details the viewer can notice, one tension beat "
-    "(but/because/that's why), and no generic phrases like 'animal "
-    "kingdom' or 'nature is amazing'. "
-    "Respond ONLY with valid JSON.\n\n"
-    "Clip:\n"
-    "Subject: {subject}\n"
-    "Context: {context}\n"
-    "Trend context: {trend_context}\n"
-    "Studio direction: {studio_direction}\n\n"
-    "Clip variation key: {variation_key}. Use this only to choose a "
-    "distinct wording and mechanism when the same subject appears in "
-    "multiple clips. Do not mention the key.\n\n"
-    "EDITORIAL REQUIREMENT: the narration, hook, title, and thumbnail "
-    "MUST be about the animal visibly named in Subject. Never switch to "
-    "a different animal just because it has a more surprising fact. "
-    "For example: turtle footage requires turtle facts, goat footage "
-    "requires goat facts, and elephant footage requires elephant facts. "
-    "If multiple animals are named, choose one that is visibly present.\n\n"
-    "Return this exact JSON shape:\n"
-    "{{"
-    '"score": <int 1-10 — how interesting is this subject for a '
-    "global animal-fact Short>,"
-    '"seo_title": "<38-58 chars. Start with the animal name or animal group, '
-    "then the curious angle. Avoid starting with Why/How/This/These. At most 1 relevant "
-    "emoji (🐱🐶🦅🐬 etc.) and only if it adds info. NO all-caps, "
-    "NO multiple punctuation. "
-    'Good: \\"Why cats really purr — it is not just happiness\\". '
-    'Good: \\"Dolphins call each other by name (yes, really)\\". '
-    'Bad: \\"You won\'t BELIEVE what this cat did!!!\\".>",'
-    '"yt_tags": ["<5 lowercase tags. First 3 are subject-specific '
-    "(animal name, behavior, body part). Last 2 are evergreen "
-    '(\\"animals\\", \\"animal facts\\", \\"wildlife\\", '
-    '\\"nature\\").>"],'
-    '"topic_hashtag": "<one CamelCase hashtag identifying the '
-    "animal group. NO leading #. Examples: Cats, Dogs, Wildlife, "
-    'Ocean, Birds, FarmAnimals.>",'
-    '"yt_description": "<2-3 sentences. Sentence 1 repeats the '
-    "subject keyword. Sentence 2 is the single most surprising "
-    "fact from the script. Last line is exactly "
-    '\\"Source: Pexels\\". Do NOT include any hashtags — the build '
-    'step adds YouTube Shorts hashtags afterwards. No URLs.>",'
-    '"thumbnail_text": "<2-4 word punchy phrase the thumbnail '
-    "overlay will use. ALL CAPS allowed. "
-    'E.g. WHY CATS PURR, DOLPHIN NAMES, FOX SECRETS.>",'
-    '"hook": "<the very first spoken line, max 12 words. Lead '
-    "with the surprising fact, not setup. "
-    'Good: \\"Cats purr to heal their own bones.\\". '
-    'Good: \\"Dolphins call each other by name.\\". '
-    'Bad: \\"Today I will tell you about cats.\\".>",'
-    '"script": "<the full voice-over for a 12-20 second short. '
-    "42-58 words MAX (YouTube Shorts rewards completion-rate; "
-    "shorter wins). The script's FIRST WORDS MUST BE the hook, "
-    "verbatim. Then 1-2 surprising facts about the subject, each "
-    "as a short sentence. Include one brief host reaction such as "
-    '\\"I love this detail\\" or \\"Watch the eyes\\" only if it fits. '
-    'Include a clear causal phrase such as "that\'s why" or '
-    '"because" so the fact resolves, not just describes. '
-    "Do not say 'payoff', 'visible signal', 'hidden cue', "
-    "'final move', or 'replay the first second' in viewer-facing copy. "
-    "Close with a tiny question for the "
-    'comments. No \\"In conclusion\\", no \\"To wrap up\\", '
-    'no stage directions, no URLs.>",'
-    '"sentiment": "positive"'
-    "}}"
-)
 
 
 _AI_PROMPT_TEMPLATE = (
@@ -923,10 +848,15 @@ def _mentions_visible_subject(subject: str, text: str) -> bool:
     return any(bool(script_animals & _GENERIC_VISIBLE_SUBJECTS.get(animal, set())) for animal in visible_animals)
 
 
-def _copy_matches_visible_subject(subject: str, *texts: str) -> bool:
+def _copy_matches_visible_subject(subject: str, *texts: str, strict_expected: bool = False) -> bool:
     """Require title, hook and narration to name the visible subject."""
     for text in texts:
         if not _script_matches_visible_subject(subject, text):
+            return False
+    if strict_expected:
+        subject_animals = _strict_animal_terms(subject)
+        script_animals = _strict_animal_terms(" ".join(texts))
+        if not subject_animals and not script_animals:
             return False
     if _strict_animal_terms(subject) and not _mentions_visible_subject(subject, " ".join(texts)):
         return False
@@ -1028,6 +958,63 @@ def _safe_generated_source_value(value: str) -> str:
     return re.sub("na" + "sa", "space agency", text, flags=re.I)
 
 
+def _validate_and_repair_json(data: dict, subject: str) -> dict | None:
+    # 1. Check missing keys
+    required = ["seo_title", "hook", "script"]
+    for k in required:
+        if k not in data or not data[k]:
+            return None
+
+    # Fallback minor missing keys
+    if "thumbnail_text" not in data or not data["thumbnail_text"]:
+        data["thumbnail_text"] = subject[:20].upper()
+    if "topic_hashtag" not in data or not data["topic_hashtag"]:
+        data["topic_hashtag"] = "Nature"
+    if "score" not in data:
+        data["score"] = 7
+
+    # 2. Capitalization and multiple punctuation repair
+    for key in ["seo_title", "hook", "script"]:
+        val = str(data[key]).strip()
+
+        # Check all caps (mostly all caps, say >80% uppercase letters)
+        letters = [c for c in val if c.isalpha()]
+        if letters and sum(1 for c in letters if c.isupper()) / len(letters) > 0.8:
+            # Repair: convert to sentence case
+            val = val.capitalize()
+
+        # Check multiple punctuation
+        # Replace multiple ! or ? with single
+        val = re.sub(r"([!?]){2,}", r"\1", val)
+        # Replace multiple periods with a single period
+        val = re.sub(r"\.{2,}", ".", val)
+
+        data[key] = val
+
+    # 3. Word count validation for script (38-55 words)
+    script = data["script"]
+    words = script.split()
+    word_count = len(words)
+    if not (38 <= word_count <= 55):
+        # If it's a minor violation, e.g. 35-37 or 56-60 words
+        if 35 <= word_count < 38:
+            pass
+        elif 55 < word_count <= 60:
+            # Trim the last few words up to a period, keeping it within 55
+            trimmed_words = words[:55]
+            trimmed_script = " ".join(trimmed_words)
+            last_period = trimmed_script.rfind(".")
+            if last_period != -1 and last_period > len(trimmed_script) * 0.7:
+                data["script"] = trimmed_script[:last_period + 1]
+            else:
+                data["script"] = trimmed_script
+        else:
+            # Major violation, reject
+            return None
+
+    return data
+
+
 def _variation_key(*parts: object) -> str:
     material = "\x1f".join(str(part or "") for part in parts if str(part or "").strip())
     if not material:
@@ -1041,6 +1028,7 @@ def _ai_enhance_animal(
     trend_context: dict | None = None,
     *,
     variation_material: str = "",
+    strict_expected: bool = False,
 ) -> dict | None:
     """Run the AI enhancement for an animal subject + return the
     parsed JSON, or None on parse failure. Mirrors the shape of
@@ -1065,11 +1053,18 @@ def _ai_enhance_animal(
             f"Use this only as timely context, not as a claim about the exact clip. "
             f"Representative headline: {headline}"
         ).strip()
+
+    # Sanitize and wrap untrusted inputs
+    wrapped_subject = wrap_untrusted(subject, label="subject")
+    wrapped_context = wrap_untrusted(context, label="context")
+    wrapped_trend_context = wrap_untrusted(trend_line or "No specific trend context.", label="trend_context")
+    wrapped_studio_direction = wrap_untrusted(growth_studio.get("prompt_overlay", ""), label="studio_direction")
+
     prompt = _AI_PROMPT_TEMPLATE.format(
-        subject=subject,
-        context=context,
-        trend_context=trend_line or "No specific trend context.",
-        studio_direction=growth_studio.get("prompt_overlay", ""),
+        subject=wrapped_subject,
+        context=wrapped_context,
+        trend_context=wrapped_trend_context,
+        studio_direction=wrapped_studio_direction,
         variation_key=_variation_key(subject, context, variation_material),
     )
     raw = ai_text(
@@ -1088,6 +1083,10 @@ def _ai_enhance_animal(
             return None
         data = json.loads(m.group(0), strict=False)
         if not isinstance(data, dict):
+            return None
+        # Validate and repair JSON output
+        data = _validate_and_repair_json(data, subject)
+        if not data:
             return None
     except (json.JSONDecodeError, ValueError) as exc:
         log.debug("nature AI parse error: %s | raw[:120]=%s", exc, raw[:120])
@@ -1128,7 +1127,7 @@ def _ai_enhance_animal(
         "production_mode": growth_studio.get("production_mode", ""),
         "trend_context": trend_context,
     }
-    if not _copy_matches_visible_subject(subject, out["seo_title"], out["hook"], out["script"]):
+    if not _copy_matches_visible_subject(subject, out["seo_title"], out["hook"], out["script"], strict_expected=strict_expected):
         log.warning(
             "AI copy changed or hid visible subject: subject=%r title=%r hook=%r script=%r",
             subject[:100],
@@ -1987,6 +1986,7 @@ def main() -> int:
                 context,
                 trend_context_for_category(story_topic_key, trends),
                 variation_material=clip.url or clip.download_url or _source_clip_id(clip),
+                strict_expected=(story_topic_key in PUBLISH_READY_RECOVERY_TOPICS),
             )
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])

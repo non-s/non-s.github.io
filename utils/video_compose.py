@@ -46,6 +46,9 @@ _FONT_CANDIDATES = (
     "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf",
+    "C:/Windows/Fonts/arialbd.ttf",
+    "/Library/Fonts/Arial Bold.ttf",
+    "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
 )
 
 
@@ -94,6 +97,37 @@ def _overlay_copy(text: str, max_chars: int = 42) -> str:
             break
         words.append(word)
     return (" ".join(words).rstrip(" .,;:-") + "...") if words else cleaned[: max_chars - 3] + "..."
+
+
+def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: int) -> str:
+    import random
+    bgm_candidates = [p for p in Path("_assets/audio/bgm").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]
+    sfx_candidates = [p for p in Path("_assets/audio/sfx").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]
+    bgm_path = random.choice(bgm_candidates) if bgm_candidates else None
+    sfx_path = random.choice(sfx_candidates) if sfx_candidates else None
+
+    audio_inputs_count = 1
+    amix_labels = f"[{audio_idx}:a]"
+
+    if bgm_path:
+        cmd += ["-stream_loop", "-1", "-i", str(bgm_path)]
+        bgm_idx = audio_idx + audio_inputs_count
+        parts.append(f"[{bgm_idx}:a]volume=0.10[abgm]")
+        amix_labels += "[abgm]"
+        audio_inputs_count += 1
+
+    if sfx_path:
+        cmd += ["-i", str(sfx_path)]
+        sfx_idx = audio_idx + audio_inputs_count
+        parts.append(f"[{sfx_idx}:a]volume=0.90[asfx]")
+        amix_labels += "[asfx]"
+        audio_inputs_count += 1
+
+    if audio_inputs_count > 1:
+        parts.append(f"{amix_labels}amix=inputs={audio_inputs_count}:duration=first:dropout_transition=2:normalize=0[aout]")
+        return "[aout]"
+    else:
+        return f"{audio_idx}:a"
 
 
 def build_broll_short(
@@ -198,15 +232,15 @@ def build_broll_short(
             # backslash-escaped â€” see the zoompan note above.
             crop_x = f"max(0\\,min(iw-ow\\," f"{fx:.4f}*iw-(ow/2)))"
             crop_y = f"max(0\\,min(ih-oh\\," f"{fy:.4f}*ih-(oh/2)))"
-            crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}:{crop_x}:{crop_y}"
+            crop_expr = f"crop=1350:2400:{crop_x}:{crop_y}"
         else:
-            crop_expr = f"crop={SHORT_W * 2}:{SHORT_H * 2}"
+            crop_expr = "crop=1350:2400"
         parts.append(
             # Loop short clips, trim long ones to the exact segment length.
             # `setpts=PTS-STARTPTS` resets timestamps so concat splices cleanly.
             f"[{i}:v]"
-            f"loop=loop=-1:size=10000:start=0,"  # cheap loop covers under-length clips
-            f"scale={SHORT_W * 2}:{SHORT_H * 2}:force_original_aspect_ratio=increase,"
+              # cheap loop covers under-length clips
+            f"scale=1350:2400:force_original_aspect_ratio=increase,"
             f"{crop_expr},"
             # Ken Burns push â€” `d=1` outputs one frame per input frame so
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
@@ -215,7 +249,7 @@ def build_broll_short(
             f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
             f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
             f"unsharp=5:5:0.55:3:3:0.25,"
-            f"fade=t=in:st=0:d=0.08,fade=t=out:st={max(seg_dur - 0.08, 0):.3f}:d=0.08,"
+            f""
             f"setsar=1,"
             f"trim=duration={seg_dur:.3f},setpts=PTS-STARTPTS"
             f"[v{i}]"
@@ -264,10 +298,11 @@ def build_broll_short(
 
     # Burn the hook text on the top half for the first 3 seconds.
     font = _font_path()
-    if hook_text and font:
+    font_param = f"fontfile={font}" if font else "font='Arial'"
+    if hook_text:
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
-            f"[{last_label}]drawtext=fontfile={font}"
+            f"[{last_label}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white:fontsize=72"
             f":borderw=5:bordercolor=black@0.92"
             f":box=1:boxcolor=black@0.30:boxborderw=18"
@@ -280,10 +315,10 @@ def build_broll_short(
 
     # Shorts do not accept an API-uploaded custom thumbnail. Put the
     # strongest 2-4 word cover inside the opening second of the MP4.
-    if cover_text and font:
+    if cover_text:
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
-            f"[{last_label}]drawtext=fontfile={font}"
+            f"[{last_label}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white:fontsize=122"
             f":borderw=8:bordercolor=black@0.94"
             f":x=64:y=h*0.43:enable='between(t,0,1.2)'"
@@ -292,11 +327,11 @@ def build_broll_short(
         last_label = "withcover"
 
     # Bottom CTA for the last 6 seconds.
-    if cta_text and font:
+    if cta_text:
         safe = _ffmpeg_escape(cta_text[:50])
         cta_start = max(0.0, audio_dur - 6.0)
         parts.append(
-            f"[{last_label}]drawtext=fontfile={font}"
+            f"[{last_label}]drawtext={font_param}"
             f":text='{safe}':fontcolor=0xFFF200:fontsize=54"
             f":box=1:boxcolor=black@0.65:boxborderw=18"
             f":x=(w-text_w)/2:y=h-260"
@@ -308,10 +343,10 @@ def build_broll_short(
     # Brand-bug watermark â€” drawn ALL THE TIME at the upper-right,
     # offset to clear YouTube's interaction rail at the right side.
     # Standard practice on short-form video; lets reposters get traced.
-    if watermark_text and font:
+    if watermark_text:
         safe = _ffmpeg_escape(watermark_text[:32])
         parts.append(
-            f"[{last_label}]drawtext=fontfile={font}"
+            f"[{last_label}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white@0.75:fontsize=36"
             f":box=1:boxcolor=black@0.30:boxborderw=10"
             f":x=w-text_w-40:y=140"
@@ -322,10 +357,10 @@ def build_broll_short(
     # Gamified Easter Egg (MrBeast Retention Hack)
     # Flashes a hidden text for exactly 1 frame around the middle of the video.
     # Forces the user to re-watch multiple times to pause on the exact frame.
-    if font:
+    if True:
         mid_time = max(0, float(audio_dur) / 2)
         parts.append(
-            f"[{last_label}]drawtext=fontfile={font}"
+            f"[{last_label}]drawtext={font_param}"
             f":text=' 👑 CROWN 👑 ':fontcolor=white:fontsize=120"
             f":box=1:boxcolor=red@0.9:boxborderw=30"
             f":x=(w-text_w)/2:y=(h-text_h)/2"
@@ -343,15 +378,9 @@ def build_broll_short(
         last_label = "final"
 
     # --- AUDIO MIXING (TTS + BGM + SFX) ---
-    import random
-    bgm_candidates = list(Path("_assets/audio/bgm").glob("*.*"))
-    sfx_candidates = list(Path("_assets/audio/sfx").glob("*.*"))
-    bgm_path = random.choice([p for p in bgm_candidates if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]) if bgm_candidates else None
-    sfx_path = random.choice([p for p in sfx_candidates if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]) if sfx_candidates else None
-    
     cmd = ["ffmpeg", "-y"]
     for clip in broll_paths:
-        cmd += ["-i", str(clip)]
+        cmd += ["-stream_loop", "-1", "-i", str(clip)]
     
     for card in extra_inputs:
         cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}", "-i", str(card)]
@@ -359,28 +388,7 @@ def build_broll_short(
     cmd += ["-i", str(audio_path)]
     audio_idx = n + len(extra_inputs)
     
-    audio_inputs_count = 1
-    amix_labels = f"[{audio_idx}:a]"
-    
-    if bgm_path:
-        cmd += ["-stream_loop", "-1", "-i", str(bgm_path)]
-        bgm_idx = audio_idx + audio_inputs_count
-        parts.append(f"[{bgm_idx}:a]volume=0.10[abgm]")
-        amix_labels += "[abgm]"
-        audio_inputs_count += 1
-        
-    if sfx_path:
-        cmd += ["-i", str(sfx_path)]
-        sfx_idx = audio_idx + audio_inputs_count
-        parts.append(f"[{sfx_idx}:a]volume=0.90[asfx]")
-        amix_labels += "[asfx]"
-        audio_inputs_count += 1
-        
-    if audio_inputs_count > 1:
-        parts.append(f"{amix_labels}amix=inputs={audio_inputs_count}:duration=first:dropout_transition=2[aout]")
-        final_audio_map = "[aout]"
-    else:
-        final_audio_map = f"{audio_idx}:a"
+    final_audio_map = _mix_audio(cmd, parts, audio_path, audio_idx)
     # --------------------------------------
 
     filtergraph = ";".join(parts)
@@ -449,6 +457,7 @@ def build_static_short(
         return False
     audio_dur = min(_audio_duration_s(audio_path), MAX_DURATION_S)
     font = _font_path()
+    font_param = f"fontfile={font}" if font else "font='Arial'"
     parts: list[str] = []
     last = "0:v"
     # Slow Ken Burns zoom-in (1.00 â†’ 1.04 over the full audio
@@ -473,40 +482,40 @@ def build_static_short(
         f"unsharp=5:5:0.45:3:3:0.20[scaled]"
     )
     last = "scaled"
-    if hook_text and font:
+    if hook_text:
         safe = _ffmpeg_escape(_overlay_copy(hook_text))
         parts.append(
-            f"[{last}]drawtext=fontfile={font}"
+            f"[{last}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white:fontsize=72"
             f":borderw=5:bordercolor=black@0.92"
             f":box=1:boxcolor=black@0.30:boxborderw=18"
             f":x=(w-text_w)/2:y=150:enable='between(t,0,3)'[withhook]"
         )
         last = "withhook"
-    if cover_text and font:
+    if cover_text:
         safe = _ffmpeg_escape(_overlay_copy(cover_text.upper(), max_chars=28))
         parts.append(
-            f"[{last}]drawtext=fontfile={font}"
+            f"[{last}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white:fontsize=122"
             f":borderw=8:bordercolor=black@0.94"
             f":x=64:y=h*0.43:enable='between(t,0,1.2)'[withcover]"
         )
         last = "withcover"
-    if cta_text and font:
+    if cta_text:
         safe = _ffmpeg_escape(cta_text[:50])
         cta_start = max(0.0, audio_dur - 6.0)
         parts.append(
-            f"[{last}]drawtext=fontfile={font}"
+            f"[{last}]drawtext={font_param}"
             f":text='{safe}':fontcolor=0xFFF200:fontsize=54"
             f":box=1:boxcolor=black@0.65:boxborderw=18"
             f":x=(w-text_w)/2:y=h-260"
             f":enable='between(t,{cta_start:.2f},{audio_dur:.2f})'[withcta]"
         )
         last = "withcta"
-    if watermark_text and font:
+    if watermark_text:
         safe = _ffmpeg_escape(watermark_text[:32])
         parts.append(
-            f"[{last}]drawtext=fontfile={font}"
+            f"[{last}]drawtext={font_param}"
             f":text='{safe}':fontcolor=white@0.75:fontsize=36"
             f":box=1:boxcolor=black@0.30:boxborderw=10"
             f":x=w-text_w-40:y=140[withbug]"
@@ -517,7 +526,6 @@ def build_static_short(
         parts.append(f"[{last}]ass={ass_path}[final]")
         last = "final"
 
-    filtergraph = ";".join(parts)
     cmd = [
         "ffmpeg",
         "-y",
@@ -527,12 +535,17 @@ def build_static_short(
         str(frame_path),
         "-i",
         str(audio_path),
+    ]
+    final_audio_map = _mix_audio(cmd, parts, audio_path, 1)
+
+    filtergraph = ";".join(parts)
+    cmd += [
         "-filter_complex",
         filtergraph,
         "-map",
         f"[{last}]",
         "-map",
-        "1:a",
+        final_audio_map,
         "-c:v",
         "libx264",
         "-preset",

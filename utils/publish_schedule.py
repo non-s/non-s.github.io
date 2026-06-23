@@ -239,12 +239,13 @@ def recommend_schedule(analytics: dict | None = None) -> dict:
     global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
     
     # MrBeast Heatmap Dynamic Scheduling
-    # Filter slots to only publish during peak global traffic hours (16h - 22h UTC).
-    # This ensures the algorithm has max concurrent users to test the video on.
-    peak_hours = {16, 17, 18, 19, 20, 21, 22}
-    slots = [s for s in global_slots if int(s.split(":")[0]) in peak_hours]
-    if not slots:
-        slots = global_slots # fallback
+    if _env_bool("MRBEAST_HEATMAP_ENABLED", False):
+        peak_hours = {16, 17, 18, 19, 20, 21, 22}
+        slots = [s for s in global_slots if int(s.split(":")[0]) in peak_hours]
+        if not slots:
+            slots = global_slots # fallback
+    else:
+        slots = global_slots
 
     cadence = len(slots)
     backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 24))

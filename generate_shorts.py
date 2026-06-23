@@ -145,6 +145,78 @@ QUALITY_MIN_VISUAL_QA_SCORE = int(os.environ.get("QUALITY_MIN_VISUAL_QA_SCORE", 
 REQUIRE_SHORT_ON_PUBLISH = _env_enabled("REQUIRE_SHORT_ON_PUBLISH")
 PUBLISH_WINDOW_SELECTED_ONLY = _env_enabled("PUBLISH_WINDOW_SELECTED_ONLY", "1")
 
+
+BRANDING_BY_LANG = {
+    "en": "WILD BRIEF",
+    "pt-BR": "BREVE SELVAGEM",
+    "es-ES": "BREVE SALVAJE",
+    "es-MX": "BREVE SALVAJE",
+}
+
+CATEGORY_MAPS = {
+    "pt-BR": {
+        "nature": "NATUREZA",
+        "wildlife": "VIDA SELVAGEM",
+        "ocean": "OCEANO",
+        "animals": "ANIMAIS",
+        "birds": "PÁSSAROS",
+        "mammals": "MAMÍFEROS",
+        "reptiles": "RÉPTEIS",
+        "insects": "INSETOS",
+        "dinosaurs": "DINOSSAUROS",
+        "extinct": "EXTINTOS",
+        "space": "ESPAÇO",
+        "science": "CIÊNCIA",
+        "earth": "TERRA",
+        "volcanoes": "VULCÕES",
+        "weather": "CLIMA",
+        "rivers": "RIOS",
+        "mountains": "MONTANHAS",
+        "geology": "GEOLOGIA",
+        "fungi": "FUNGOS",
+        "trees": "ÁRVORES",
+        "forests": "FLORESTAS",
+        "ecosystems": "ECOSSISTEMAS",
+        "rare_phenomena": "FENÔMENOS RAROS",
+        "earth_from_space": "TERRA DO ESPAÇO",
+        "conservation": "CONSERVAÇÃO",
+        "discoveries": "DESCOBERTAS",
+        "plants": "PLANTAS",
+        "biology": "BIOLOGIA",
+    },
+    "es-ES": {
+        "nature": "NATURALEZA",
+        "wildlife": "VIDA SALVAJE",
+        "ocean": "OCÉANO",
+        "animals": "ANIMALES",
+        "birds": "AVES",
+        "mammals": "MAMÍFEROS",
+        "reptiles": "REPTILES",
+        "insects": "INSECTOS",
+        "dinosaurs": "DINOSAURIOS",
+        "extinct": "EXTINTOS",
+        "space": "ESPACIO",
+        "science": "CIENCIA",
+        "earth": "TIERRA",
+        "volcanoes": "VOLCANES",
+        "weather": "CLIMA",
+        "rivers": "RÍOS",
+        "mountains": "MONTAÑAS",
+        "geology": "GEOLOGÍA",
+        "fungi": "HONGOS",
+        "trees": "ÁRBOLES",
+        "forests": "BOSQUES",
+        "ecosystems": "ECOSISTEMAS",
+        "rare_phenomena": "FENÓMENOS RAROS",
+        "earth_from_space": "TIERRA DESDE ESPACIO",
+        "conservation": "CONSERVACIÓN",
+        "discoveries": "DESCUBRIMIENTOS",
+        "plants": "PLANTAS",
+        "biology": "BIOLOGÍA",
+    },
+}
+CATEGORY_MAPS["es-MX"] = CATEGORY_MAPS["es-ES"]
+
 # Paleta de cores — identidade Wild Brief
 BG_DARK = (8, 8, 18)
 ACCENT_BLUE = (0, 195, 255)
@@ -831,7 +903,7 @@ def _legacy_title_card_frame(
     return img.convert("RGB")
 
 
-def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None) -> Image.Image:
+def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None, lang: str | None = None) -> Image.Image:
     """
     Create a first frame that works as a Shorts cover: visible animal,
     compact visual cue, and small brand lockup.
@@ -877,16 +949,21 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     cat_color = CATEGORY_COLORS.get(category.upper(), ACCENT_BLUE)
     padding = 70
 
+    lang_key = lang or "en"
+    brand_text = BRANDING_BY_LANG.get(lang_key, "WILD BRIEF")
+    cat_mapped = category or "nature"
+    if lang_key in CATEGORY_MAPS:
+        cat_mapped = CATEGORY_MAPS[lang_key].get(cat_mapped.lower(), cat_mapped)
+    cat_text = cat_mapped.replace("_", " ").upper()[:18]
     brand_font = get_font(38, bold=True)
     draw.text(
         (padding, 92),
-        "WILD BRIEF",
+        brand_text,
         font=brand_font,
         fill=(*TEXT_WHITE, 235),
         stroke_width=3,
         stroke_fill=(0, 0, 0, 190),
     )
-    cat_text = (category or "nature").replace("_", " ").upper()[:18]
     cat_font = get_font(30, bold=True)
     cat_box = draw.textbbox((0, 0), cat_text, font=cat_font)
     draw.text(
@@ -938,7 +1015,7 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     lock_font = get_font(54, bold=True)
     draw.text(
         (padding, brand_y + 34),
-        "WILD BRIEF",
+        brand_text,
         font=lock_font,
         fill=(*TEXT_WHITE, 250),
         stroke_width=3,
@@ -946,7 +1023,12 @@ def create_short_frame(title: str, category: str, points: list[str], source: str
     )
     src = (source or "").strip()
     if src:
-        draw.text((padding, brand_y + 104), f"source: {src[:42]}", font=get_font(28), fill=(224, 230, 235, 185))
+        source_label = "source"
+        if lang_key in {"es-ES", "es-MX"}:
+            source_label = "fuente"
+        elif lang_key == "pt-BR":
+            source_label = "fonte"
+        draw.text((padding, brand_y + 104), f"{source_label}: {src[:42]}", font=get_font(28), fill=(224, 230, 235, 185))
 
     return img.convert("RGB")
 
@@ -983,7 +1065,7 @@ def _side_caption_lines(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.Im
     return wrap_text(draw, " ".join(words), font, max_width)[:3]
 
 
-def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "") -> None:
+def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "", lang: str | None = None) -> None:
     """Render a frame-first thumbnail with a large side caption."""
     if frame_img is None:
         return
@@ -1031,16 +1113,21 @@ def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text:
     brand_x = 64
     brand_y = SHORT_H - 250
     draw.rectangle((brand_x, brand_y, brand_x + 214, brand_y + 12), fill=(*cat_color, 255))
+    lang_key = lang or "en"
+    brand_text = BRANDING_BY_LANG.get(lang_key, "WILD BRIEF")
+    cat_mapped = category or "nature"
+    if lang_key in CATEGORY_MAPS:
+        cat_mapped = CATEGORY_MAPS[lang_key].get(cat_mapped.lower(), cat_mapped)
+    sub = cat_mapped.replace("_", " ").upper()[:20]
     brand_font = get_font(50, bold=True)
     draw.text(
         (brand_x, brand_y + 34),
-        "WILD BRIEF",
+        brand_text,
         font=brand_font,
         fill=(*TEXT_WHITE, 245),
         stroke_width=3,
         stroke_fill=(0, 0, 0, 175),
     )
-    sub = (category or "nature science").replace("_", " ").upper()[:20]
     draw.text((brand_x, brand_y + 94), sub, font=get_font(30, bold=True), fill=(*cat_color, 250))
 
     thumb.save(str(output), "JPEG", quality=95, optimize=True)
@@ -1164,11 +1251,11 @@ def acquire_broll_clips(story: dict, tmp_dir: Path, want_n: int = 3) -> list[Pat
     return paths
 
 
-def generate_captions(audio_path: Path, tmp_dir: Path) -> Path | None:
+def generate_captions(audio_path: Path, tmp_dir: Path, lang: str | None = None) -> Path | None:
     """Transcribe `audio_path` and emit an ASS subtitle file. None if both
     Whisper providers fail; callers should still ship the Short."""
     try:
-        words = captions_transcribe(audio_path)
+        words = captions_transcribe(audio_path, lang=lang)
     except Exception as exc:
         log.warning("caption transcribe crashed: %s", exc)
         return None
@@ -1484,12 +1571,34 @@ def _end_card_text_for_story(story: dict) -> str:
     end_card_style = experiments.get("end_card_style", "subscribe_clean")
     loop_plan = (story.get("packaging") or {}).get("loop_plan") or {}
     callback = _normalise_editorial_text(loop_plan.get("callback_keyword") or "").upper()
+    
+    lang = story.get("language") or "en"
+    
     if end_card_style == "loop_callback" and callback and callback != "CUE":
+        if lang in {"es-ES", "es-MX"}:
+            return f"MIRA EL {callback} DE NUEVO"[:34]
+        elif lang == "pt-BR":
+            return f"ASSISTA AO {callback} NOVAMENTE"[:34]
         return f"WATCH THE {callback} AGAIN"[:34]
+        
     if end_card_style == "series_tease" or cta_pattern == "sequel_tease":
+        if lang in {"es-ES", "es-MX"}:
+            return "SIGUIENTE SEÑAL SALVAJE"
+        elif lang == "pt-BR":
+            return "PRÓXIMO SINAL SELVAGEM"
         return "NEXT WILD SIGNAL"
+        
     if cta_pattern == "question_tease":
+        if lang in {"es-ES", "es-MX"}:
+            return "COMENTA LA SIGUIENTE PREGUNTA"
+        elif lang == "pt-BR":
+            return "COMENTE A PRÓXIMA PERGUNTA"
         return "COMMENT THE NEXT QUESTION"
+        
+    if lang in {"es-ES", "es-MX"}:
+        return "SÍGUENOS PARA MÁS NATURALEZA"
+    elif lang == "pt-BR":
+        return "SIGA PARA NATUREZA SELVAGEM"
     return "FOLLOW FOR WILD NATURE"
 
 
@@ -1931,7 +2040,7 @@ def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
     )
 
 
-def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, Path, dict] | None:
+def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple[Path, Path, dict] | None:
     """
     Generate one Short for a story.
 
@@ -1950,6 +2059,11 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
 
     Returns (video_path, thumb_path, metadata) or None on failure.
     """
+    if lang is None:
+        lang = LANGUAGE
+    category = story.get("category") or "animals"
+    date_str = str(story.get("date") or "").split("T")[0] or datetime.now().strftime("%Y-%m-%d")
+
     # Defensive .get()s on the story dict — a queue entry with a bad
     # schema would crash the whole run otherwise.
     title = story.get("title") or story.get("seo_title") or story.get("topic_hashtag") or "Untitled"
@@ -2150,7 +2264,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
     story["music_bed_variant"] = "light_bed" if audio_path != before_music else "off"
 
     # ── 2. Captions (word-level) — biggest single retention lever. ─
-    ass_path = generate_captions(audio_path, tmp_dir)
+    ass_path = generate_captions(audio_path, tmp_dir, lang=lang)
     if not ass_path and QUALITY_REQUIRE_CAPTIONS:
         log.warning("  Skipping Short - production quality requires captions")
         return None
@@ -2169,9 +2283,10 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
         return None
 
     # ── 4. Output paths ───────────────────────────────────────────
-    VIDEOS_DIR.mkdir(exist_ok=True)
-    video_path = VIDEOS_DIR / f"short-{slug}-{date_str}.mp4"
-    thumb_path = VIDEOS_DIR / f"short-{slug}-{date_str}_thumb.jpg"
+    vdir = Path("_videos") if lang == "en" else Path(f"_videos_{lang}")
+    vdir.mkdir(exist_ok=True)
+    video_path = vdir / f"short-{slug}-{date_str}.mp4"
+    thumb_path = vdir / f"short-{slug}-{date_str}_thumb.jpg"
 
     # ── 5. Background image (always needed for thumbnail; sometimes
     # also for the static-frame video pipeline fallback). The b-roll
@@ -2250,6 +2365,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
         points=points,
         source=story.get("source", "Pexels"),
         bg_path=bg_path,
+        lang=lang,
     )
     frame_path = tmp_dir / f"frame_{slug}.png"
     frame.save(str(frame_path))
@@ -2264,7 +2380,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
         thumb_base = Image.open(bg_path).convert("RGB")
     except Exception:
         thumb_base = frame
-    create_short_thumbnail(thumb_base, thumb_path, thumbnail_text=thumbnail_text, category=category)
+    create_short_thumbnail(thumb_base, thumb_path, thumbnail_text=thumbnail_text, category=category, lang=lang)
     if not thumb_path.exists() or thumb_path.stat().st_size < 5 * 1024:
         log.warning("  ⏭  Skipping Short — thumbnail too small: %s", title[:80])
         return None
@@ -2487,7 +2603,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str = "en") -> tuple[Path, 
         log.debug("channel_memory remember skipped: %s", exc)
 
     # ── 10. Multi-Platform Manifest
-    # Write a clean, agnostic manifest for TikTok / Instagram Reels auto-posters.
+    # Write a clean, agnostic manifest for YouTube Shorts / Instagram Reels auto-posters.
     # Excludes YouTube-specific tags, includes raw description and title.
     manifest_path = video_path.with_suffix(".manifest.json")
     clean_hashtags = [t for t in metadata.get("yt_tags", []) if t.lower() not in {"youtube", "shorts"}]
@@ -2597,13 +2713,32 @@ def main():
                 result_es = generate_short(story, es_tmp, lang="es-MX")
                 if result_es:
                     video_es, thumb_es, meta_es = result_es
-                    final_es_video = video_path.parent / f"{video_path.stem}_es.mp4"
-                    final_es_thumb = thumb_path.parent / f"{thumb_path.stem}_es.jpg"
-                    final_es_meta = video_path.parent / f"{video_path.stem}_es.json"
+                    es_dir = Path("_videos_es-MX")
+                    es_dir.mkdir(exist_ok=True)
+                    final_es_video = es_dir / f"{video_path.name}"
+                    final_es_thumb = es_dir / f"{thumb_path.name}"
+                    final_es_meta = es_dir / f"{video_path.stem}.json"
                     video_es.rename(final_es_video)
                     thumb_es.rename(final_es_thumb)
                     Path(video_es.with_suffix('.json')).rename(final_es_meta)
-                    log.info(f"  Spanish Short ready: {final_es_video.name}")
+                    
+                    # Update Spanish done markers
+                    es_done_file = es_dir / "shorts_done.json"
+                    try:
+                        if es_done_file.exists():
+                            es_done_data = json.loads(es_done_file.read_text(encoding="utf-8"))
+                            es_done = set(es_done_data) if isinstance(es_done_data, list) else set()
+                        else:
+                            es_done = set()
+                    except Exception:
+                        es_done = set()
+                    es_done.add(story["slug"])
+                    es_done_file.write_text(
+                        json.dumps(sorted(es_done), indent=2, ensure_ascii=False),
+                        encoding="utf-8",
+                    )
+                    
+                    log.info(f"  Spanish Short ready: {final_es_video.name} in {es_dir}")
                 shutil.rmtree(es_tmp, ignore_errors=True)
                 
         else:

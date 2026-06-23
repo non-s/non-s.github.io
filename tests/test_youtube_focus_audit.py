@@ -9,7 +9,7 @@ from pathlib import Path
 import fetch_animals
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_DIRS = {".git", ".pytest_cache", ".venv", ".venv-latest", "__pycache__", "env", "venv"}
+SKIP_DIRS = {".git", ".pytest_cache", ".venv", ".venv-latest", "__pycache__", "env", "venv", ".agents"}
 BLOCKED = (
     "tik" + "tok",
     "f" + "yp",

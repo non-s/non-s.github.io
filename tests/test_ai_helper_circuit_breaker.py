@@ -100,16 +100,26 @@ def test_threshold_is_configurable(monkeypatch):
     assert ai_helper._mistral_circuit_open is True
 
 
-def test_5xx_failures_do_not_open_breaker(monkeypatch):
-    """The breaker is for 429 specifically — 5xx errors are usually
-    transient and shouldn't disable Mistral for the rest of the run.
-    The fallback chain still kicks in per-call."""
+def test_5xx_failures_open_breaker(monkeypatch):
+    """5xx errors should also open the breaker to protect the run
+    from long timeout/retry cycles when the provider is down."""
     monkeypatch.setenv("MISTRAL_API_KEY", "m")
     with patch.object(ai_helper, "_call_mistral", side_effect=_FakeHTTPError(503)):
-        for _ in range(5):
+        for _ in range(3):
             ai_helper.ai_text(f"prompt {_}")
-    assert ai_helper._mistral_circuit_open is False
-    assert ai_helper._mistral_429_streak == 0
+    assert ai_helper._mistral_circuit_open is True
+    assert ai_helper._mistral_429_streak >= 3
+
+
+def test_timeouts_open_breaker(monkeypatch):
+    """timeouts should also open the breaker to protect the run
+    from long timeout/retry cycles when the provider is down."""
+    monkeypatch.setenv("MISTRAL_API_KEY", "m")
+    with patch.object(ai_helper, "_call_mistral", side_effect=requests.exceptions.Timeout("Timeout info")):
+        for _ in range(3):
+            ai_helper.ai_text(f"prompt {_}")
+    assert ai_helper._mistral_circuit_open is True
+    assert ai_helper._mistral_429_streak >= 3
 
 
 def test_circuit_open_with_no_fallback_keys_returns_empty(monkeypatch):

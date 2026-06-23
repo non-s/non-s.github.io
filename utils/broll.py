@@ -86,7 +86,10 @@ def _pexels_clip_title(url: str, uploader: str = "") -> str:
 def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip]:
     """Search Pexels Videos for `query`. Empty list on any failure."""
     key = os.environ.get("PEXELS_API_KEY", "")
-    if not key or not query:
+    if not key:
+        log.warning("Pexels API key (PEXELS_API_KEY) is missing — cannot fetch B-roll")
+        return []
+    if not query:
         return []
 
     per_page = max(1, min(80, int(per_page or 8)))
@@ -110,7 +113,7 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip
             timeout=_TIMEOUT,
         )
         if response.status_code != 200:
-            log.debug("pexels %d for %r", response.status_code, query[:40])
+            log.warning("Pexels API request failed with status code %d for query %r", response.status_code, query[:40])
             return []
         videos = response.json().get("videos", []) or []
     except Exception as exc:

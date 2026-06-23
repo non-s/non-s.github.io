@@ -27,9 +27,8 @@ def _w(word: str, start: float, end: float) -> Caption:
 def test_groups_break_on_max_words():
     words = [_w(f"w{i}", i * 0.1, i * 0.1 + 0.08) for i in range(10)]
     phrases = group_words_into_phrases(words, max_words=3, max_gap_s=10, max_duration_s=10)
-    # Each phrase has 3 words, plus one final shorter one.
-    assert all(len(p.word.split()) <= 3 for p in phrases)
-    assert sum(len(p.word.split()) for p in phrases) == 10
+    assert all(len(p) <= 3 for p in phrases)
+    assert sum(len(p) for p in phrases) == 10
 
 
 def test_groups_break_on_gap():
@@ -37,8 +36,8 @@ def test_groups_break_on_gap():
     words = [_w("a", 0, 0.3), _w("b", 0.4, 0.7), _w("c", 3.0, 3.3), _w("d", 3.4, 3.7)]
     phrases = group_words_into_phrases(words, max_words=10, max_gap_s=0.6, max_duration_s=10)
     assert len(phrases) == 2
-    assert phrases[0].word == "a b"
-    assert phrases[1].word == "c d"
+    assert " ".join(w.word for w in phrases[0]) == "a b"
+    assert " ".join(w.word for w in phrases[1]) == "c d"
 
 
 def test_groups_break_on_duration():
@@ -56,7 +55,7 @@ def test_groups_handles_empty():
 
 
 def test_write_ass_creates_valid_file(tmp_path):
-    caps = [_w("Octopus camouflage", 0.0, 1.2), _w("Owl night vision", 1.5, 2.8)]
+    caps = [[_w("Octopus", 0.0, 0.5), _w("camouflage", 0.6, 1.2)], [_w("Owl", 1.5, 2.0), _w("night", 2.1, 2.4), _w("vision", 2.5, 2.8)]]
     out = tmp_path / "subs.ass"
     assert write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
@@ -65,14 +64,17 @@ def test_write_ass_creates_valid_file(tmp_path):
     assert "[Events]" in body
     # Words are uppercased.
     plain = _strip_ass_overrides(body)
-    assert "OCTOPUS CAMOUFLAGE" in plain
-    assert "OWL NIGHT VISION" in plain
+    assert "OCTOPUS" in plain
+    assert "CAMOUFLAGE" in plain
+    assert "OWL" in plain
+    assert "NIGHT" in plain
+    assert "VISION" in plain
     # Timing format `0:00:00.00`.
     assert "0:00:00.00" in body
 
 
 def test_write_ass_escapes_curly_braces(tmp_path):
-    caps = [_w("owl {night}", 0.0, 1.0)]
+    caps = [[_w("owl", 0.0, 0.5), _w("{night}", 0.6, 1.0)]]
     out = tmp_path / "subs.ass"
     write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
@@ -248,3 +250,30 @@ def test_transcribe_groq_gives_up_after_one_retry(tmp_path, monkeypatch):
     assert out is None
     # Original + 1 retry = 2 calls total.
     assert call_count["n"] == 2
+
+
+def test_transcribe_faster_whisper_uses_multilingual_model_when_language_is_ptbr(monkeypatch, tmp_path):
+    monkeypatch.setenv("LANGUAGE", "pt-BR")
+    audio = tmp_path / "a.mp3"
+    audio.write_bytes(b"x" * 100)
+    
+    model_passed = []
+    
+    class FakeWhisperModel:
+        def __init__(self, model_name, **kwargs):
+            model_passed.append(model_name)
+        def transcribe(self, *args, **kwargs):
+            return [], None
+            
+    import sys
+    fake_fw = MagicMock()
+    fake_fw.WhisperModel = FakeWhisperModel
+    sys.modules["faster_whisper"] = fake_fw
+    
+    try:
+        captions.transcribe_faster_whisper(audio)
+    finally:
+        sys.modules.pop("faster_whisper", None)
+        
+    assert "tiny" in model_passed
+    assert "tiny.en" not in model_passed

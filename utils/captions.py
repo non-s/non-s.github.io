@@ -65,7 +65,7 @@ _GROQ_MODEL = os.environ.get("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 _GROQ_RETRY_DELAY_S = 2.0
 
 
-def _whisper_language() -> str:
+def _whisper_language(lang: str | None = None) -> str:
     """Map the active LANGUAGE env to a Whisper-compatible 2-char code.
 
     Whisper accepts ISO-639-1 codes (`en`, `pt`, `es`, `fr`, â€¦). Our
@@ -74,7 +74,7 @@ def _whisper_language() -> str:
     Whisper auto-detect â€” better than poisoning the request with an
     invalid language code.
     """
-    locale = (os.environ.get("LANGUAGE", "en") or "en").strip().lower()
+    locale = (lang or os.environ.get("LANGUAGE", "en") or "en").strip().lower()
     if not locale:
         return "en"
     base = locale.split("-", 1)[0].split("_", 1)[0]
@@ -103,14 +103,14 @@ def _whisper_language() -> str:
     return base if base in known else ""
 
 
-def transcribe_groq(audio_path: Path) -> list[Caption] | None:
+def transcribe_groq(audio_path: Path, lang: str | None = None) -> list[Caption] | None:
     """Word-level transcribe via Groq Whisper. None on any failure."""
     key = os.environ.get("GROQ_API_KEY", "")
     if not key:
         return None
     if not audio_path.exists():
         return None
-    lang = _whisper_language()
+    lang = _whisper_language(lang)
     for attempt in range(2):
         try:
             with audio_path.open("rb") as fh:
@@ -177,10 +177,13 @@ def transcribe_groq(audio_path: Path) -> list[Caption] | None:
 # isn't impacted.
 
 
-def transcribe_faster_whisper(audio_path: Path, model_name: str = "tiny.en") -> list[Caption] | None:
+def transcribe_faster_whisper(audio_path: Path, model_name: str | None = None, lang: str | None = None) -> list[Caption] | None:
     """Local CPU transcription on the GitHub Actions runner. ~5-15s per 50s audio."""
     if not audio_path.exists():
         return None
+    if model_name is None:
+        wlang = _whisper_language(lang)
+        model_name = "tiny" if wlang and wlang != "en" else "tiny.en"
     try:
         from faster_whisper import WhisperModel  # type: ignore
     except Exception:
@@ -192,7 +195,7 @@ def transcribe_faster_whisper(audio_path: Path, model_name: str = "tiny.en") -> 
         model = WhisperModel(model_name, device="cpu", compute_type="int8")
         # Empty `language` lets faster-whisper auto-detect â€” same fallback
         # policy as the Groq path for unknown locales.
-        lang = _whisper_language() or None
+        lang = _whisper_language(lang) or None
         segments, _info = model.transcribe(
             str(audio_path),
             beam_size=1,
@@ -219,23 +222,25 @@ def transcribe_faster_whisper(audio_path: Path, model_name: str = "tiny.en") -> 
 # â”€â”€ Unified entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
-def transcribe(audio_path: Path) -> list[Caption] | None:
+def transcribe(audio_path: Path, lang: str | None = None) -> list[Caption] | None:
     """Try Groq first, faster-whisper second. None if both fail."""
     if not audio_path.exists():
         log.warning("captions: audio file missing: %s", audio_path)
         return None
-    out = transcribe_groq(audio_path)
+    out = transcribe_groq(audio_path, lang=lang)
     if out:
-        log.info("ðŸ“ Captions: %d words via Groq Whisper", len(out))
+        log.info("📌 Captions: %d words via Groq Whisper", len(out))
         return out
-    out = transcribe_faster_whisper(audio_path)
+    wlang = _whisper_language(lang)
+    model_name = "tiny" if wlang and wlang != "en" else "tiny.en"
+    out = transcribe_faster_whisper(audio_path, model_name=model_name, lang=lang)
     if out:
-        log.info("ðŸ“ Captions: %d words via faster-whisper", len(out))
+        log.info("📌 Captions: %d words via faster-whisper", len(out))
         return out
     return None
 
 
-# â”€â”€ ASS / SRT writers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ——————————————————————————————————————————————————————————————————————————————
 #
 # FFmpeg's `subtitles=` filter consumes SRT, but we use ASS because
 # Shorts captions need bigger fonts, drop shadows, and per-word
@@ -252,70 +257,30 @@ def _format_ass_time(seconds: float) -> str:
     return f"{h}:{m:02d}:{s:05.2f}"
 
 
-EMPHASIS_WORDS = {
-    "ancient",
-    "atom",
-    "aurora",
-    "because",
-    "breathe",
-    "burst",
-    "bursts",
-    "cell",
-    "coral",
-    "crystal",
-    "deadly",
-    "earth",
-    "escape",
-    "explode",
-    "fast",
-    "first",
-    "forest",
-    "fungi",
-    "giant",
-    "glacier",
-    "glow",
-    "gravity",
-    "hidden",
-    "lava",
-    "lightning",
-    "locked",
-    "molecule",
-    "moon",
-    "mushroom",
-    "mycelium",
-    "ocean",
-    "one",
-    "planet",
-    "prism",
-    "rare",
-    "reef",
-    "repeating",
-    "river",
-    "roots",
-    "second",
-    "secret",
-    "shock",
-    "signal",
-    "slow",
-    "space",
-    "spin",
-    "spins",
-    "star",
-    "storm",
-    "strike",
-    "strikes",
-    "survive",
-    "talk",
-    "third",
-    "three",
-    "tiny",
-    "tornado",
-    "tree",
-    "two",
-    "volcano",
-    "watch",
-    "wave",
-    "why",
+EMPHASIS_WORDS_BY_LANG = {
+    "en": {
+        "ancient", "atom", "aurora", "because", "breathe", "burst", "bursts",
+        "cell", "coral", "crystal", "deadly", "earth", "escape", "explode",
+        "fast", "first", "forest", "fungi", "giant", "glacier", "glow",
+        "gravity", "hidden", "lava", "lightning", "locked", "molecule",
+        "moon", "mushroom", "mycelium", "ocean", "one", "planet", "prism",
+        "rare", "reef", "repeating", "river", "roots", "second", "secret",
+        "shock", "signal", "slow", "space", "spin", "spins", "star", "storm",
+        "strike", "strikes", "survive", "talk", "third", "three", "tiny",
+        "tornado", "tree", "two", "volcano", "watch", "wave", "why",
+    },
+    "pt": {
+        "porque", "primeiro", "segundo", "terceiro", "unico", "olhe", "veja",
+        "planeta", "terra", "oceano", "segredo", "revelado", "incrivel",
+        "surpreendente", "escondido", "misterioso", "gigante", "minusculo",
+        "como", "porquê", "por que", "vida", "selvagem", "natureza", "sobrevive"
+    },
+    "es": {
+        "porque", "primero", "segundo", "tercero", "unico", "mira", "vea",
+        "planeta", "tierra", "oceano", "secreto", "revelado", "increible",
+        "sorprendente", "oculto", "misterioso", "gigante", "diminuto",
+        "como", "por que", "por qué", "vida", "salvaje", "naturaleza", "sobrevive"
+    }
 }
 
 
@@ -328,10 +293,12 @@ def _caption_text_with_emphasis(text: str) -> str:
     """ASS text with key words punched up for Shorts readability."""
     tokens = re.findall(r"[A-Za-z0-9']+|[^A-Za-z0-9']+", text or "")
     out: list[str] = []
+    lang = _whisper_language() or "en"
+    emphasis = EMPHASIS_WORDS_BY_LANG.get(lang, EMPHASIS_WORDS_BY_LANG["en"])
     for token in tokens:
         key = token.lower().strip("'")
         safe = _escape_ass(token.upper())
-        if key in EMPHASIS_WORDS or (token.isalpha() and len(token) >= 9):
+        if key in emphasis or (token.isalpha() and len(token) >= 9):
             out.append(r"{\c&H00FFFFFF&\3c&H00000000&\fscx108\fscy108}" + safe + r"{\rShorts}")
         else:
             out.append(safe)

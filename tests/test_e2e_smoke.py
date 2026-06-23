@@ -117,7 +117,7 @@ def _stub_tts_and_captions(monkeypatch, gs):
     async def fake_tts(text, output_path, voice, **_kw):
         output_path.write_bytes(b"ID3" + b"\x00" * 10_000)
 
-    def fake_captions(audio, tmp):
+    def fake_captions(audio, tmp, *args, **kwargs):
         ass = tmp / "captions.ass"
         ass.write_text("[Script Info]\nTitle: fake\n", encoding="utf-8")
         return ass

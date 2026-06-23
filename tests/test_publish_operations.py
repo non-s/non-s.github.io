@@ -1027,7 +1027,9 @@ def test_next_shorts_title_suggestions_handle_short_plural_cues():
     assert all("one wings" not in title for title in suggestions)
 
 
-def test_publish_schedule_adapts_to_retention_health():
+def test_publish_schedule_adapts_to_retention_health(monkeypatch):
+    # Test standard cadence (MRBEAST_HEATMAP_ENABLED=0)
+    monkeypatch.setenv("MRBEAST_HEATMAP_ENABLED", "0")
     low = recommend_schedule({"avg_view_pct": 45})
     mid = recommend_schedule({"avg_view_pct": 59})
     high = recommend_schedule({"avg_view_pct": 75})
@@ -1043,3 +1045,21 @@ def test_publish_schedule_adapts_to_retention_health():
     assert high["queue_target_pending"] == 24
     assert high["reason"] == "operator_day_zero_hourly_publish_with_quality_and_quota_guards"
     assert len(high["recommended_slots"]) == len(low["recommended_slots"]) == 24
+
+    # Test MrBeast Heatmap cadence (MRBEAST_HEATMAP_ENABLED=1)
+    monkeypatch.setenv("MRBEAST_HEATMAP_ENABLED", "1")
+    low_mb = recommend_schedule({"avg_view_pct": 45})
+    mid_mb = recommend_schedule({"avg_view_pct": 59})
+    high_mb = recommend_schedule({"avg_view_pct": 75})
+
+    expected_slots_mb = [f"{hour:02d}:00" for hour in {16, 17, 18, 19, 20, 21, 22}]
+
+    assert low_mb["recommended_shorts_per_day"] == 7
+    assert mid_mb["recommended_shorts_per_day"] == 7
+    assert sorted(mid_mb["recommended_slots"]) == sorted(expected_slots_mb)
+    assert high_mb["recommended_shorts_per_day"] == 7
+    assert sorted(high_mb["recommended_slots"]) == sorted(expected_slots_mb)
+    assert high_mb["rolling_batch_size"] == 24
+    assert high_mb["queue_target_pending"] == 24
+    assert len(high_mb["recommended_slots"]) == len(low_mb["recommended_slots"]) == 7
+

@@ -26,9 +26,15 @@ from utils.youtube_oauth import DEFAULT_SCOPES, credentials_from_token_info, loa
 from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
 
 _LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
+for i, arg in enumerate(sys.argv):
+    if arg == "--language" and i + 1 < len(sys.argv):
+        _LANGUAGE = sys.argv[i + 1]
+    elif arg.startswith("--language="):
+        _LANGUAGE = arg.split("=", 1)[1]
+
 LOG_FILE = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
 VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
-TOKEN_FILE = Path("youtube_token.json")
+TOKEN_FILE = Path("youtube_token.json") if _LANGUAGE == "en" else Path(f"youtube_token_{_LANGUAGE}.json")
 SCOPES = DEFAULT_SCOPES
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6

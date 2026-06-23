@@ -85,6 +85,8 @@ _TRANSLATABLE_FIELDS = (
     "thumbnail_text",
     "yt_description",
     "lead",
+    "title",
+    "description",
 )
 
 
