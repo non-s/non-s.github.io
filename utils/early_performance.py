@@ -385,6 +385,13 @@ def build_early_warning(early: dict) -> dict:
             }
             if title_issues:
                 entry["title_issues"] = title_issues
+            
+            # MrBeast Algorithmic Crisis Management:
+            # If the video has low views in the first few hours, trigger Title Auto-Repair
+            if item.get("age_hours", 0) >= 1 and item.get("views", 0) < 200:
+                entry["action"] = "TITLE_AUTO_REPAIR_TRIGGER"
+                entry["repair_reason"] = "Failed 1-hour view velocity threshold. Swapping title to Variant B."
+                
             risks.append(entry)
         if state in {"accelerating", "second_wave"} or item.get("early_velocity_score", 0) >= 70:
             entry = {

@@ -182,10 +182,10 @@ def build_broll_short(
         # separator and the zoompan splits into two malformed filters â†’
         # "Filter not found" hard error. Unescaped commas were silently
         # falling back to static-frame compose for every b-roll Short.
-        if zoom_in:
-            z_expr = "min(zoom+0.00125\\,1.12)"
-        else:
-            z_expr = "if(eq(on\\,0)\\,1.12\\,max(zoom-0.00125\\,1.00))"
+        # MrBeast Pacing: Aggressive Jump Cuts.
+        # Instead of a smooth Ken Burns pan, the camera abruptly punches in
+        # and out every ~1.5 seconds, artificially creating high-energy motion.
+        z_expr = "if(lt(mod(t\\, 1.5)\\, 0.75)\\, 1.05\\, 1.25)"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2Ã— the offset scales too.

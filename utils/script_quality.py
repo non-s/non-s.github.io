@@ -334,9 +334,11 @@ def evaluate(story: dict) -> tuple[int, list[Issue]]:
     return grade, issues
 
 
-def should_block(issues: list[Issue], min_grade: int = 4) -> bool:
-    """True if any issue is `block`-severity OR the grade is too low."""
+def should_block(issues: list[Issue], min_grade: int = 8) -> bool:
+    """MrBeast Kill Switch: True if any issue is `block`-severity OR the grade < 8."""
     if any(i.severity == "block" for i in issues):
         return True
-    warns = sum(1 for i in issues if i.severity == "warn")
-    return warns >= 6  # six warnings ≈ grade 4
+    
+    penalty = sum(4 if i.severity == "block" else 1 for i in issues)
+    grade = max(0, 10 - penalty)
+    return grade < min_grade
