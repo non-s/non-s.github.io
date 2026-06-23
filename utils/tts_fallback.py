@@ -24,6 +24,11 @@ def synthesize_with_coqui(text: str, output_path: Path, locale: str = "en") -> P
     cmd = [command, "--text", text, "--out_path", str(output_path)]
     if model:
         cmd += ["--model_name", model]
+    
+    speaker = os.environ.get("COQUI_SPEAKER_WAV")
+    if speaker and Path(speaker).exists():
+        cmd += ["--speaker_wav", str(speaker)]
+        
     if locale and os.environ.get("COQUI_TTS_LOCALE_ARG", "0") == "1":
         cmd += ["--language_idx", locale]
     try:

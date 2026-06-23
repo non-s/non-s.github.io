@@ -104,7 +104,7 @@ def build_broll_short(
     hook_text: str = "",
     cover_text: str = "",
     cta_text: str = "",
-    watermark_text: str = "",
+    watermark_text: str = "@WildBrief",
 ) -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
@@ -327,25 +327,56 @@ def build_broll_short(
         parts.append(f"[{last_label}]ass={ass_path}[final]")
         last_label = "final"
 
-    filtergraph = ";".join(parts)
-
+    # --- AUDIO MIXING (TTS + BGM + SFX) ---
+    import random
+    bgm_candidates = list(Path("_assets/audio/bgm").glob("*.*"))
+    sfx_candidates = list(Path("_assets/audio/sfx").glob("*.*"))
+    bgm_path = random.choice([p for p in bgm_candidates if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]) if bgm_candidates else None
+    sfx_path = random.choice([p for p in sfx_candidates if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]) if sfx_candidates else None
+    
     cmd = ["ffmpeg", "-y"]
     for clip in broll_paths:
         cmd += ["-i", str(clip)]
-    # Branded intro/outro PNGs come AFTER the b-roll inputs so their
-    # indexes are stable (n, n+1) regardless of how many b-roll clips
-    # we have. PNGs need `-loop 1` + a `-t` so FFmpeg knows when to stop.
+    
     for card in extra_inputs:
         cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}", "-i", str(card)]
+        
     cmd += ["-i", str(audio_path)]
     audio_idx = n + len(extra_inputs)
+    
+    audio_inputs_count = 1
+    amix_labels = f"[{audio_idx}:a]"
+    
+    if bgm_path:
+        cmd += ["-stream_loop", "-1", "-i", str(bgm_path)]
+        bgm_idx = audio_idx + audio_inputs_count
+        parts.append(f"[{bgm_idx}:a]volume=0.10[abgm]")
+        amix_labels += "[abgm]"
+        audio_inputs_count += 1
+        
+    if sfx_path:
+        cmd += ["-i", str(sfx_path)]
+        sfx_idx = audio_idx + audio_inputs_count
+        parts.append(f"[{sfx_idx}:a]volume=0.90[asfx]")
+        amix_labels += "[asfx]"
+        audio_inputs_count += 1
+        
+    if audio_inputs_count > 1:
+        parts.append(f"{amix_labels}amix=inputs={audio_inputs_count}:duration=first:dropout_transition=2[aout]")
+        final_audio_map = "[aout]"
+    else:
+        final_audio_map = f"{audio_idx}:a"
+    # --------------------------------------
+
+    filtergraph = ";".join(parts)
+
     cmd += [
         "-filter_complex",
         filtergraph,
         "-map",
         f"[{last_label}]",
         "-map",
-        f"{audio_idx}:a",
+        final_audio_map,
         "-c:v",
         "libx264",
         "-preset",
@@ -391,7 +422,7 @@ def build_static_short(
     hook_text: str = "",
     cover_text: str = "",
     cta_text: str = "",
-    watermark_text: str = "",
+    watermark_text: str = "@WildBrief",
 ) -> bool:
     """Single still image + audio, with optional burned captions.
 
