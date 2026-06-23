@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-23T23:10:17.989364+00:00",
-  "pending": 16,
+  "generated_at": "2026-06-23T23:19:44.885179+00:00",
+  "pending": 17,
   "states": {
-    "magnetic": 14,
+    "magnetic": 15,
     "usable": 2
   },
   "top_risks": {
-    "missing_visible_cue": 2,
+    "missing_visible_cue": 3,
     "title_needs_stronger_shape": 2,
     "subject_not_clear": 2
   },
@@ -3124,6 +3124,266 @@
           "payoff_time_s": 11.0,
           "cta_count": 1,
           "loop_score": 0.303
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "caea97ba241a822d",
+      "title": "Forests hold cool fog between the trees",
+      "thumbnail_text": "FOG LAYER",
+      "category": "forests",
+      "packaging": {
+        "score": 87,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word"
+        ],
+        "risks": [
+          "missing_visible_cue"
+        ],
+        "title_options": [
+          "Forests hold cool fog between the trees",
+          "Forests use low mist before they leaves",
+          "This low mist gives forests away",
+          "Why forests leaves after one low mist",
+          "Forests reveal the answer with low mist",
+          "The low mist that changes the moment",
+          "Forests make one low mist matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this low mist",
+          "Watch forests after the low mist"
+        ],
+        "thumbnail_options": [
+          "FOG LAYER",
+          "LOW MIST",
+          "WATCH LOW MIST",
+          "FORESTS LEAVES",
+          "LOW MIST MATTERS",
+          "LOW MIST FIRST",
+          "LOW MIST REVEAL",
+          "LOW MIST CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "hook_options": [
+          "Forests can trap cool fog near the ground",
+          "Forests show why the low mist matters.",
+          "Forests show why the low mist matters.",
+          "Forests show why the low mist matters.",
+          "Forests give away the answer through low mist"
+        ],
+        "selected_variant": {
+          "score": 81,
+          "title": "Forests hold cool fog between the trees",
+          "thumbnail_text": "FOG LAYER",
+          "hook": "Start with the low mist; it changes the scene"
+        },
+        "top_variants": [
+          {
+            "score": 81,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "FOG LAYER",
+            "hook": "Start with the low mist; it changes the scene"
+          },
+          {
+            "score": 80,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "FOG LAYER",
+            "hook": "Forests can trap cool fog near the ground"
+          },
+          {
+            "score": 79,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "FOG LAYER",
+            "hook": "Watch the low mist; it explains the behavior"
+          },
+          {
+            "score": 74,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "LOW MIST",
+            "hook": "Start with the low mist; it changes the scene"
+          },
+          {
+            "score": 74,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "WATCH LOW MIST",
+            "hook": "Start with the low mist; it changes the scene"
+          },
+          {
+            "score": 74,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "FORESTS LEAVES",
+            "hook": "Start with the low mist; it changes the scene"
+          },
+          {
+            "score": 74,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "LOW MIST MATTERS",
+            "hook": "Start with the low mist; it changes the scene"
+          },
+          {
+            "score": 73,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "LOW MIST",
+            "hook": "Forests can trap cool fog near the ground"
+          },
+          {
+            "score": 73,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "WATCH LOW MIST",
+            "hook": "Forests can trap cool fog near the ground"
+          },
+          {
+            "score": 73,
+            "title": "Forests hold cool fog between the trees",
+            "thumbnail_text": "FORESTS LEAVES",
+            "hook": "Forests can trap cool fog near the ground"
+          }
+        ],
+        "retention": {
+          "score": 77,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 74,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.1,
+          "winners": {
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "format:fresh_variant": 52.04,
+            "hook:new_hook": 52.04,
+            "cta:specific_question": 41.66,
+            "thumbnail:new_thumbnail": 40.52,
+            "cta:follow_for_more": 40.4
+          },
+          "sample_count": 60,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Hidden Network",
+          "episode": 4,
+          "label": "Hidden Network #4",
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the low mist again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
+        "series": "Hidden Network #4",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "replay_prompt": "End by pointing back to the low mist, so viewers rewatch the forests clip.",
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "confidence": {
+            "confidence_score": 0.165,
+            "sample_size": 5,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.374,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
+        },
+        "curiosity_gap": {
+          "hook": "Why does this forestscience changes after the body cue?",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "forests",
+          "opening_line": "Forests can trap cool fog near the ground.",
+          "ending_line": "Which forest layer should we decode next?",
+          "final_line": "Which forest layer should we decode next?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.319,
+          "render_hints": {
+            "carry_keyword": "forests",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.319,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "earth engine",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "FOG LAYER",
+          "first_frame_text_words": 2,
+          "hook": "Forests can trap cool fog near the ground.",
+          "hook_words": 8,
+          "first_2s_narration": "Forests can trap cool fog near the ground Watch the low mist",
+          "caption_chars_per_second": 14.0,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "cta_count": 1,
+          "loop_score": 0.319
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }
