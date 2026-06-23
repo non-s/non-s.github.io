@@ -1,59 +1,49 @@
 {
-  "generated_at": "2026-06-23T23:08:55.334664+00:00",
-  "pending": 17,
+  "generated_at": "2026-06-23T23:10:18.125394+00:00",
+  "pending": 16,
   "states": {
     "rewrite": 8,
-    "publish_ready": 9
+    "publish_ready": 8
   },
   "mechanism_clusters": {
     "scent_map": 3,
-    "face_recognition": 2,
+    "face_recognition": 1,
     "call_signal": 1
   },
   "rights": {
-    "approved": 17
+    "approved": 16
   },
   "prune_summary": {
-    "pending_before": 72,
-    "pending_after": 17,
-    "rejected": 55,
-    "repair_needed": 10,
-    "repaired": 16,
+    "pending_before": 16,
+    "pending_after": 16,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 6,
     "reasons": {
-      "duplicate_title": 24,
-      "off_topic_visual": 17,
-      "queue_score_reject": 10,
-      "script_hook_mismatch": 9,
-      "objective_gate:observe_before_scaling": 9,
+      "objective_gate:observe_before_scaling": 8,
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "missing_action_word": 5,
-      "copy_subject_mismatch": 4,
-      "subject_not_immediately_clear": 4,
-      "no_action_promise": 4,
-      "title_shape_weak": 3,
-      "title_needs_stronger_shape": 3,
-      "subject_not_clear": 3,
-      "missing_visible_cue": 3,
-      "bad_plural_verb": 2,
-      "script_word_loop": 2,
-      "script_subject_mismatch": 2,
-      "duplicate_script": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "script_length_risk": 1,
-      "non_animal_body_language": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1,
-      "duplicate_angle": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "457c009ce5f09f1b",
+      "id": "94eff649e5f3fc4c",
+      "title": "Horses can remember familiar faces",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "cfbe0fabfa713db1",
       "title": "Fossils turn old bones into time clues",
       "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
         "duplicate_title",
         "duplicate_script",
         "duplicate_angle"
@@ -61,15 +51,7 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "19ed0c3f97c794ca",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e0a6e40ccb73eea8",
+      "id": "25ae509b56b8aab8",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
         "duplicate_title"
@@ -77,24 +59,23 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "625bc2903a3e3385",
-      "title": "Rock layers store ancient environments in stripes",
+      "id": "adadadc04c388286",
+      "title": "Lightning turns air into a shock wave",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "cc5354a29ec297d4",
-      "title": "Turtles carry a magnetic map home",
+      "id": "35912aab0f6bfcfa",
+      "title": "Forests can cool the air below them",
       "reasons": [
-        "off_topic_visual",
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "859d8f2ddee55350",
+      "id": "9671b42813160143",
       "title": "Ants use scent road before they change",
       "reasons": [
         "script_hook_mismatch"
@@ -102,84 +83,91 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "59e073a600d2fb1a",
-      "title": "Ants use first move before they change",
+      "id": "d2beb8e7e1be9828",
+      "title": "Dogs read human pointing surprisingly well",
       "reasons": [
-        "script_hook_mismatch"
+        "rights_guard_person_manual_review"
       ],
-      "stage": "queue_prune_final"
+      "stage": "queue_prune"
     },
     {
-      "id": "e93b60e04244be02",
-      "title": "Deer can aim each ear toward danger",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e336489f11c026bf",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5c4c6a29e004761d",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "348ebb78ccea43a9",
-      "title": "Snakes can sense heat when light disappears",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "87d57e90a053c39f",
-      "title": "Cats measure tight spaces with their whiskers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "517e74a59fcb2059",
-      "title": "Snakes sample the air with a tongue flick",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "81583794419a09a7",
-      "title": "Cows remember faces across the herd",
+      "id": "30fc3667c3a03d57",
+      "title": "Snakes smell the air with their tongues",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "1770d849acc89e57",
-      "title": "Cows remember faces across the herd",
+      "id": "a24997171f6937ec",
+      "title": "Mountain valleys aren’t just pretty views",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ac098efb688f7a3e",
+      "title": "Storm clouds show air layers changing over time",
+      "reasons": [
+        "script_length_risk",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "03807fab7a12a4ae",
+      "title": "Mountains shapeshift faster than you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "17c87451c802bb11",
+      "title": "Trees record wet years inside their rings",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fe116fdf20834f3c",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6df9cbeeb815f888",
+      "title": "Seals track fish trails with whiskers",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "2b8c7f5cb568ae63",
+      "id": "9e66bddee6472e84",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "40b05d3f836a5e76",
+      "title": "mountains grow taller faster than you think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6a3837b2d8c521ff",
       "title": "Plants use trap hairs to count touches before snapping shut",
       "reasons": [
         "queue_score_reject"
@@ -187,120 +175,110 @@
       "stage": "queue_repair"
     },
     {
-      "id": "fdd28cfcc5054435",
-      "title": "Why cat paws land almost silently when the body freezes",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7098a09d7c5e9cd7",
-      "title": "Dogs read the world through scent maps",
+      "id": "5f0d5f0fea7b03ca",
+      "title": "Whales slap the surface to warn the pod",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "b26a4cab37dbd006",
-      "title": "Dogs read the world through scent maps",
+      "id": "e4ccdbc452b490e4",
+      "title": "Mushrooms trade nutrients through underground threads",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "8f0bd71c7b6aa983",
-      "title": "Dogs read the world through scent maps",
+      "id": "386dd58d0e0d8a19",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "88f9a8eded66e0a9",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "a8fdf5ae5f3981d3",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8b535e178c4f9a0f",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "14f207991dea2fc0",
+      "title": "Forests reveal edge climates along trails",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e0339bdd21560536",
+      "title": "Birds see colors humans cannot see",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "455c36b48352e053",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "607f55961d819a41",
+      "title": "Cows remember faces across the herd",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "abdb5bb75211ba1f",
-      "title": "Why cat paws land almost silently in the first second",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7f72434d0556b0d4",
-      "title": "Iguanas survive by pretending to be rocks",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a9d09cd0f1280549",
-      "title": "Seals actually love mossy rocks",
+      "id": "da5ad86504c76030",
+      "title": "dogs don’t see white snow as white",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "acdd68dea2bf9b74",
-      "title": "Seals blend into sand like they're invisible",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "53d394e39b025eb6",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9c5166ff31d1da2a",
-      "title": "Fluffy dogs are built for silent hunting",
+      "id": "973901f54330091d",
+      "title": "Penguins steer through rocks like fighter pilots",
       "reasons": [
         "off_topic_visual",
-        "script_hook_mismatch",
         "non_animal_body_language"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "3e7f77fdb4f98b64",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "db2eb7ca63e0a42a",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "dbbb3674187ae1e7",
-      "title": "Leh Ladakh mountains shift like sand",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9709d6aff939f846",
-      "title": "Mountains have a hidden heartbeat",
+      "id": "48ea91becc2462fb",
+      "title": "Plants don't grow the way you were taught",
       "reasons": [
         "off_topic_visual",
         "script_hook_mismatch"
@@ -458,7 +436,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:40.521334+00:00",
+        "checked_at": "2026-06-23T23:10:06.668285+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -906,7 +884,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:41.339258+00:00",
+        "checked_at": "2026-06-23T23:10:06.675386+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1353,7 +1331,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:41.342032+00:00",
+        "checked_at": "2026-06-23T23:10:06.677474+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1802,7 +1780,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:40.925080+00:00",
+        "checked_at": "2026-06-23T23:10:06.671738+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2250,7 +2228,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:42.158233+00:00",
+        "checked_at": "2026-06-23T23:10:06.681735+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2702,7 +2680,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:40.522940+00:00",
+        "checked_at": "2026-06-23T23:10:06.669873+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3158,7 +3136,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:38.226889+00:00",
+        "checked_at": "2026-06-23T23:10:06.656796+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3461,466 +3439,6 @@
       }
     },
     {
-      "id": "4681629feff2b44e",
-      "title": "Horses can remember familiar faces",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.463,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.284,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28.",
-          "recommendation_strength": "observe",
-          "sample_size": 17
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.284,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 9.35,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "score": 48,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 50,
-            "emotional_potential": 27,
-            "novelty": 37,
-            "replay_potential": 56,
-            "viral_potential": 42,
-            "visual_potential": 57
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_memory",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.381,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.174,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-            "recommendation_strength": "observe",
-            "sample_size": 6
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-23T23:08:40.181995+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "publish_ready_supply_reserve_fallback"
-        ],
-        "score": 78.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "horses",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_memory",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "horses",
-        "viewer_promise": "See why horses animal memory matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after horses?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why does this animalbehavior changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 60,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 40.4,
-            "cta:specific_question": 41.66,
-            "format:fresh_variant": 52.04,
-            "hook:new_hook": 52.04,
-            "thumbnail:new_thumbnail": 40.52
-          }
-        },
-        "hook_options": [
-          "Horses can remember familiar faces",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses give away the answer through face memory"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "horses",
-          "ending_line": "Which herd animal next?",
-          "final_line": "Which herd animal next?",
-          "loop_score": 0.253,
-          "opening_line": "Horses can remember familiar faces.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "horses",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.253,
-        "pinned_comment": "Watch the face memory again. Tomorrow: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.29,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
-          "first_frame_text": "FACE MEMORY",
-          "first_frame_text_words": 2,
-          "hook": "Horses can remember familiar faces.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.253,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.350000000000001,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.45,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.34,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 92,
-        "selected_variant": {
-          "hook": "Horses can remember familiar faces",
-          "score": 78,
-          "thumbnail_text": "FACE MEMORY",
-          "title": "Horses remember familiar faces for months"
-        },
-        "series": "Animal Memory",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Memory",
-          "series": "Animal Memory"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.381,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.174,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-            "recommendation_strength": "observe",
-            "sample_size": 6
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.17.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "HORSES REMEMBER",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Horses remember familiar faces for months",
-          "Horses can remember familiar faces",
-          "Horses use face memory before they remember",
-          "This face memory gives horses away",
-          "Why horses remember after one face memory",
-          "Horses reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Horses make one face memory matter",
-          "Horses show the hidden answer in seconds",
-          "Horses: watch this face memory"
-        ],
-        "top_variants": [
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 78,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 78,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 71,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 71,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 71,
-            "thumbnail_text": "FACE MEMORY MATTERS",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "FACE MEMORY MATTERS",
-            "title": "Horses remember familiar faces for months"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "261197331775d3c7",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
@@ -4067,7 +3585,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:39.193299+00:00",
+        "checked_at": "2026-06-23T23:10:06.660466+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4518,7 +4036,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:39.194690+00:00",
+        "checked_at": "2026-06-23T23:10:06.661724+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4969,7 +4487,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:39.196257+00:00",
+        "checked_at": "2026-06-23T23:10:06.663269+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5423,7 +4941,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:39.191722+00:00",
+        "checked_at": "2026-06-23T23:10:06.659035+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5877,7 +5395,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:39.199581+00:00",
+        "checked_at": "2026-06-23T23:10:06.666533+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6328,7 +5846,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:42.160954+00:00",
+        "checked_at": "2026-06-23T23:10:06.683898+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6784,7 +6302,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:41.753818+00:00",
+        "checked_at": "2026-06-23T23:10:06.679611+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7233,7 +6751,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:42.162592+00:00",
+        "checked_at": "2026-06-23T23:10:06.685590+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7685,7 +7203,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T23:08:41.337261+00:00",
+        "checked_at": "2026-06-23T23:10:06.673558+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
