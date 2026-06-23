@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T21:58:29.330263+00:00",
+  "generated_at": "2026-06-23T22:01:59.653838+00:00",
   "pending": 16,
   "states": {
     "rewrite": 8,
@@ -14,22 +14,55 @@
     "approved": 16
   },
   "prune_summary": {
-    "pending_before": 16,
+    "pending_before": 19,
     "pending_after": 16,
-    "rejected": 0,
+    "rejected": 3,
     "repair_needed": 0,
-    "repaired": 6,
+    "repaired": 9,
     "reasons": {
       "objective_gate:observe_before_scaling": 8,
       "objective_gate:bootstrap_observe_before_scaling": 8,
+      "duplicate_title": 3,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1
+      "editor_in_chief:editorial score 40 is below 62": 1,
+      "copy_subject_mismatch": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "6d2ea13d8ca23d7b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f38f3e577efb1c38",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6fc9aee997b76e23",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
     {
       "id": "bad1c12ae82bba6e",
       "title": "Magnets make invisible fields visible",
@@ -270,36 +303,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "c42bbf71094fdc2b",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "66cee73f111af86e",
-      "title": "Bears smell food from miles away",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "2794077e99b68043",
-      "title": "Wolves read scent posts like a map",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -452,7 +455,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.046054+00:00",
+        "checked_at": "2026-06-23T22:01:47.130627+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -900,7 +903,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.053461+00:00",
+        "checked_at": "2026-06-23T22:01:47.137642+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1347,7 +1350,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.055649+00:00",
+        "checked_at": "2026-06-23T22:01:47.139720+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1796,7 +1799,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.049661+00:00",
+        "checked_at": "2026-06-23T22:01:47.134065+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2244,7 +2247,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.060084+00:00",
+        "checked_at": "2026-06-23T22:01:47.552467+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2696,7 +2699,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.047710+00:00",
+        "checked_at": "2026-06-23T22:01:47.132193+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3152,7 +3155,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.033723+00:00",
+        "checked_at": "2026-06-23T22:01:47.120222+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3601,7 +3604,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.038831+00:00",
+        "checked_at": "2026-06-23T22:01:47.123665+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4052,7 +4055,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.040190+00:00",
+        "checked_at": "2026-06-23T22:01:47.124955+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4503,7 +4506,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.041769+00:00",
+        "checked_at": "2026-06-23T22:01:47.126499+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4957,7 +4960,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.037316+00:00",
+        "checked_at": "2026-06-23T22:01:47.122285+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5411,7 +5414,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.044370+00:00",
+        "checked_at": "2026-06-23T22:01:47.129024+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5862,7 +5865,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.062352+00:00",
+        "checked_at": "2026-06-23T22:01:47.554680+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6318,7 +6321,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.057907+00:00",
+        "checked_at": "2026-06-23T22:01:47.141857+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6767,7 +6770,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.064102+00:00",
+        "checked_at": "2026-06-23T22:01:47.556346+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7219,7 +7222,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T21:58:18.051540+00:00",
+        "checked_at": "2026-06-23T22:01:47.135839+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
