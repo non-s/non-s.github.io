@@ -8,10 +8,18 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 1,
-      "evergreen": 14
+      "evergreen": 15,
+      "recovery": 1
     },
     "items": [
+      {
+        "id": "a7a16f9ee7a25386",
+        "title": "Cats groom to reset their scent map",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
       {
         "id": "7fdc62557df3560c",
         "title": "Sheep recognize faces across the flock",
@@ -26,7 +34,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.8
+        "freshness_score": 40.78
       },
       {
         "id": "c54bd92793dd620a",
@@ -34,7 +42,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.34
+        "freshness_score": 50.32
       },
       {
         "id": "fad3f2887e3ab88d",
@@ -58,7 +66,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.32
+        "freshness_score": 50.3
       },
       {
         "id": "5a79c67faae212d6",
@@ -66,7 +74,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.28
+        "freshness_score": 50.26
       },
       {
         "id": "7e200344e8235a78",
@@ -82,7 +90,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.18
+        "freshness_score": 49.16
       },
       {
         "id": "887da3d44d921125",
@@ -90,7 +98,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.38
+        "freshness_score": 49.36
       },
       {
         "id": "fe0bfc2851fa40e1",
@@ -122,7 +130,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.14
+        "freshness_score": 54.12
       },
       {
         "id": "860a6c6c2c644d35",
@@ -143,16 +151,17 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 15,
-    "pending_after": 15,
+    "pending_before": 16,
+    "pending_after": 16,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 6,
     "reasons": {
+      "objective_gate:observe_before_scaling": 8,
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "objective_gate:observe_before_scaling": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1
     }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T19:48:28.923675+00:00",
+  "generated_at": "2026-06-23T21:28:45.131354+00:00",
   "score": 67,
   "state": "needs_work",
   "issues": [
@@ -7,13 +7,14 @@
     "publish_ready_inventory_empty"
   ],
   "queue": {
-    "pending": 15,
+    "pending": 16,
     "publish_ready": 0,
     "categories": {
       "chemistry": 1,
       "discoveries": 1,
       "earth_from_space": 1,
       "farm": 1,
+      "forests": 1,
       "geology": 1,
       "physics": 1,
       "rivers": 2,
@@ -23,19 +24,19 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
+      "agency_gate:success_recovery_hook_required": 10,
       "agency_gate:category_recovery_rules_not_met": 9,
-      "agency_gate:success_recovery_hook_required": 9,
-      "queue_prune:rewrite": 7,
+      "queue_prune:rewrite": 8,
       "ops_guardian_paused_category:wildlife": 7,
       "agency_gate:success_recovery_format_required": 5,
       "youtube_brain:subject_not_immediately_clear": 3,
+      "publish_score:rewrite": 2,
       "packaging:missing_visible_cue": 2,
       "editor_in_chief:cooldown_subject": 2,
       "ops_guardian_paused_category:rivers": 2,
       "youtube_brain:title_shape_weak": 2,
       "packaging:title_needs_stronger_shape": 2,
       "packaging:subject_not_clear": 2,
-      "publish_score:rewrite": 1,
       "youtube_brain:missing_visual_cue": 1,
       "youtube_brain:generic_creator_language": 1,
       "youtube_brain:script_length_risk": 1
@@ -47,13 +48,25 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 73.1,
+    "average_score": 73.9,
     "decisions": {
       "hold": 2,
-      "publish_now": 3,
+      "publish_now": 4,
       "strong_candidate": 10
     },
     "top": [
+      {
+        "title": "Cats groom to reset their scent map",
+        "category": "forests",
+        "score": 86,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
       {
         "title": "Bears smell food from miles away",
         "category": "wildlife",
@@ -126,17 +139,6 @@
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Crystals grow by repeating one tiny pattern",
-        "category": "chemistry",
-        "score": 80,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "timely_trend",
           "fresh_inventory"
         ]
       }
