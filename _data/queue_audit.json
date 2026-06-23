@@ -1,37 +1,31 @@
 {
-  "generated_at": "2026-06-23T15:23:58.067341+00:00",
-  "pending": 16,
+  "generated_at": "2026-06-23T15:35:25.050917+00:00",
+  "pending": 15,
   "states": {
-    "publish_ready": 9,
-    "rewrite": 7
+    "rewrite": 7,
+    "publish_ready": 8
   },
   "mechanism_clusters": {
     "scent_map": 2,
-    "call_signal": 1,
-    "face_recognition": 1
+    "face_recognition": 1,
+    "call_signal": 1
   },
   "rights": {
-    "approved": 16
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 22,
-    "pending_after": 16,
-    "rejected": 6,
-    "repair_needed": 2,
-    "repaired": 7,
+    "pending_before": 15,
+    "pending_after": 15,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 6,
     "reasons": {
-      "objective_gate:observe_before_scaling": 8,
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "duplicate_title": 3,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
-      "queue_score_reject": 2,
+      "objective_gate:observe_before_scaling": 7,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "duplicate_script": 1,
-      "duplicate_angle": 1,
-      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
@@ -446,7 +440,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.353783+00:00",
+        "checked_at": "2026-06-23T15:35:14.262462+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -511,7 +505,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -756,15 +750,15 @@
         "approved": true,
         "category": "rivers",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.305,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.07.",
+          "data_quality_score": 0.575,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 6
+          "sample_size": 3
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -774,7 +768,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -846,17 +840,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -894,7 +888,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.711535+00:00",
+        "checked_at": "2026-06-23T15:35:14.270424+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -959,7 +953,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1063,17 +1057,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -1203,15 +1197,15 @@
         "approved": true,
         "category": "rivers",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.305,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.07.",
+          "data_quality_score": 0.575,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 6
+          "sample_size": 3
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1221,7 +1215,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -1293,17 +1287,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -1341,7 +1335,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.714003+00:00",
+        "checked_at": "2026-06-23T15:35:14.272552+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1406,7 +1400,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1510,17 +1504,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -1735,7 +1729,7 @@
           },
           "verdict": "rewrite"
         },
-        "score": 98.2,
+        "score": 98.3,
         "state": "publish_ready",
         "story_format": "survival_trick",
         "subscriber_conversion": {
@@ -1790,16 +1784,16 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.707471+00:00",
+        "checked_at": "2026-06-23T15:35:14.265943+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
         ],
-        "score": 98.2,
+        "score": 98.3,
         "state": "publish_ready",
         "template_cluster": ""
       },
-      "queue_score": 98.2,
+      "queue_score": 98.3,
       "youtube_brain": {
         "animal": "lions",
         "commands": [],
@@ -1857,7 +1851,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2238,7 +2232,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.718669+00:00",
+        "checked_at": "2026-06-23T15:35:14.276843+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2306,7 +2300,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2690,7 +2684,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.355426+00:00",
+        "checked_at": "2026-06-23T15:35:14.264066+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -2762,7 +2756,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3007,15 +3001,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.473,
+          "bootstrap_multiplier": 0.468,
           "can_adjust_strategy": false,
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "data_quality": "estimated",
           "data_quality_score": 0.48,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29.",
           "recommendation_strength": "observe",
-          "sample_size": 20
+          "sample_size": 22
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3025,7 +3019,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "mechanism_cluster": "call_signal",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -3091,23 +3085,23 @@
           },
           "verdict": "ready"
         },
-        "score": 74.9,
+        "score": 75.2,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -3146,16 +3140,16 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.346845+00:00",
+        "checked_at": "2026-06-23T15:35:14.255188+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
         ],
-        "score": 74.9,
+        "score": 75.2,
         "state": "publish_ready",
         "template_cluster": ""
       },
-      "queue_score": 74.9,
+      "queue_score": 75.2,
       "youtube_brain": {
         "animal": "elephants",
         "commands": [],
@@ -3213,7 +3207,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3317,17 +3311,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -3458,15 +3452,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.473,
+          "bootstrap_multiplier": 0.468,
           "can_adjust_strategy": false,
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "data_quality": "estimated",
           "data_quality_score": 0.48,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29.",
           "recommendation_strength": "observe",
-          "sample_size": 20
+          "sample_size": 22
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3476,7 +3470,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "mechanism_cluster": "",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -3542,23 +3536,23 @@
           },
           "verdict": "ready"
         },
-        "score": 74.4,
+        "score": 74.8,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -3597,16 +3591,16 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.348168+00:00",
+        "checked_at": "2026-06-23T15:35:14.256527+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
         ],
-        "score": 74.4,
+        "score": 74.8,
         "state": "publish_ready",
         "template_cluster": ""
       },
-      "queue_score": 74.4,
+      "queue_score": 74.8,
       "youtube_brain": {
         "animal": "elephants",
         "commands": [],
@@ -3664,7 +3658,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3768,17 +3762,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -3902,22 +3896,22 @@
       }
     },
     {
-      "id": "7fdc62557df3560c",
-      "title": "Sheep recognize faces across the flock",
-      "category": "farm",
+      "id": "fad3f2887e3ab88d",
+      "title": "Deer can aim each ear toward danger",
+      "category": "wildlife",
       "publish_score": {
-        "approved": false,
-        "category": "farm",
+        "approved": true,
+        "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.422,
+          "bootstrap_multiplier": 0.468,
           "can_adjust_strategy": false,
-          "confidence_score": 0.23,
+          "confidence_score": 0.29,
           "data_quality": "estimated",
-          "data_quality_score": 0.35,
+          "data_quality_score": 0.48,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29.",
           "recommendation_strength": "observe",
-          "sample_size": 15
+          "sample_size": 22
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3927,7 +3921,458 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.23,
+          "confidence_score": 0.29,
+          "mechanism_cluster": "",
+          "payoff_time_s": 10.45,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 68,
+            "emotional_potential": 30,
+            "novelty": 64,
+            "replay_potential": 67,
+            "viral_potential": 72,
+            "visual_potential": 84
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 74.1,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.551,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.402,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
+            "recommendation_strength": "observe",
+            "sample_size": 13
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-23T15:35:14.258059+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 74.1,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 74.1,
+      "youtube_brain": {
+        "animal": "deer",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "deer",
+        "viewer_promise": "See why deer body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after deer?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these wildlife change after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 60,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 40.4,
+            "cta:specific_question": 41.66,
+            "format:fresh_variant": 52.04,
+            "hook:new_hook": 52.04,
+            "thumbnail:new_thumbnail": 40.52
+          }
+        },
+        "hook_options": [
+          "Deer can aim each ear toward danger",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer give away the answer through sound radar"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "deer",
+          "ending_line": "Would you freeze?",
+          "final_line": "Would you freeze?",
+          "loop_score": 0.203,
+          "opening_line": "Deer can aim each ear toward danger.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "deer",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.203,
+        "pinned_comment": "Watch the sound radar again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.89,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
+          "first_frame_text": "SOUND RADAR",
+          "first_frame_text_words": 2,
+          "hook": "Deer can aim each ear toward danger.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.203,
+          "novelty_score": 0.58,
+          "payoff_time_s": 10.450000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the sound radar, so viewers rewatch the deer clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Deer can aim each ear toward danger",
+          "score": 79,
+          "thumbnail_text": "SOUND RADAR",
+          "title": "Deer aim their ears like sound radar"
+        },
+        "series": "Animal Superpowers #15",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 15,
+          "label": "Animal Superpowers #15",
+          "series": "Animal Superpowers"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.551,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.402,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
+            "recommendation_strength": "observe",
+            "sample_size": 13
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SOUND RADAR",
+          "WATCH SOUND RADAR",
+          "DEER AIM",
+          "SOUND RADAR MATTERS",
+          "SOUND RADAR FIRST",
+          "SOUND RADAR REVEAL",
+          "SOUND RADAR CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Deer aim their ears like sound radar",
+          "Deer can aim each ear toward danger",
+          "Deer use sound radar before they aim",
+          "This sound radar gives deer away",
+          "Why deer aim after one sound radar",
+          "Deer reveal the answer with sound radar",
+          "The sound radar that changes the moment",
+          "Deer make one sound radar matter",
+          "Deer show the hidden answer in seconds",
+          "Deer: watch this sound radar"
+        ],
+        "top_variants": [
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 79,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Watch the sound radar; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR FIRST",
+            "title": "Deer aim their ears like sound radar"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "7fdc62557df3560c",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "publish_score": {
+        "approved": false,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.484,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.313,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.31.",
+          "recommendation_strength": "observe",
+          "sample_size": 20
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.313,
           "mechanism_cluster": "face_recognition",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -3941,17 +4386,17 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.42,
+            "bootstrap_multiplier": 0.45,
             "can_adjust_strategy": false,
-            "confidence_score": 0.227,
+            "confidence_score": 0.34,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
           "reasons": [
             "weak_visual_surface",
             "low_opportunity_score"
@@ -3974,17 +4419,17 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.42,
+            "bootstrap_multiplier": 0.45,
             "can_adjust_strategy": false,
-            "confidence_score": 0.227,
+            "confidence_score": 0.34,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
           "reasons": [],
           "score": 73,
           "signals": {
@@ -4002,17 +4447,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.43,
+            "bootstrap_multiplier": 0.487,
             "can_adjust_strategy": false,
-            "confidence_score": 0.241,
+            "confidence_score": 0.316,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -4051,7 +4496,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.357421+00:00",
+        "checked_at": "2026-06-23T15:35:14.254001+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4118,7 +4563,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4174,17 +4619,17 @@
         "replay_prompt": "End by pointing back to the group, so viewers rewatch the sheep clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.42,
+            "bootstrap_multiplier": 0.45,
             "can_adjust_strategy": false,
-            "confidence_score": 0.227,
+            "confidence_score": 0.34,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
           "reasons": [],
           "score": 73,
           "signals": {
@@ -4223,17 +4668,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.43,
+            "bootstrap_multiplier": 0.487,
             "can_adjust_strategy": false,
-            "confidence_score": 0.241,
+            "confidence_score": 0.316,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 9
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -4358,457 +4803,6 @@
       }
     },
     {
-      "id": "fad3f2887e3ab88d",
-      "title": "Deer can aim each ear toward danger",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.473,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.298,
-          "data_quality": "estimated",
-          "data_quality_score": 0.48,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30.",
-          "recommendation_strength": "observe",
-          "sample_size": 20
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.298,
-          "mechanism_cluster": "",
-          "payoff_time_s": 10.45,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 49,
-            "educational_potential": 68,
-            "emotional_potential": 30,
-            "novelty": 64,
-            "replay_potential": 67,
-            "viral_potential": 72,
-            "visual_potential": 84
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 73.8,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.557,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.409,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
-            "recommendation_strength": "observe",
-            "sample_size": 12
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.349768+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling"
-        ],
-        "score": 73.8,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 73.8,
-      "youtube_brain": {
-        "animal": "deer",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "deer",
-        "viewer_promise": "See why deer body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after deer?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why do these wildlife change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 59,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 40.4,
-            "cta:specific_question": 41.66,
-            "format:fresh_variant": 52.04,
-            "hook:new_hook": 52.04,
-            "thumbnail:new_thumbnail": 40.52
-          }
-        },
-        "hook_options": [
-          "Deer can aim each ear toward danger",
-          "Deer show why the sound radar matters.",
-          "Deer show why the sound radar matters.",
-          "Deer show why the sound radar matters.",
-          "Deer give away the answer through sound radar"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "deer",
-          "ending_line": "Would you freeze?",
-          "final_line": "Would you freeze?",
-          "loop_score": 0.203,
-          "opening_line": "Deer can aim each ear toward danger.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "deer",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.203,
-        "pinned_comment": "Watch the sound radar again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.89,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
-          "first_frame_text": "SOUND RADAR",
-          "first_frame_text_words": 2,
-          "hook": "Deer can aim each ear toward danger.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.203,
-          "novelty_score": 0.58,
-          "payoff_time_s": 10.450000000000001,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the sound radar, so viewers rewatch the deer clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 92,
-        "selected_variant": {
-          "hook": "Deer can aim each ear toward danger",
-          "score": 79,
-          "thumbnail_text": "SOUND RADAR",
-          "title": "Deer aim their ears like sound radar"
-        },
-        "series": "Animal Superpowers #15",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 15,
-          "label": "Animal Superpowers #15",
-          "series": "Animal Superpowers"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.557,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.409,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
-            "recommendation_strength": "observe",
-            "sample_size": 12
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SOUND RADAR",
-          "WATCH SOUND RADAR",
-          "DEER AIM",
-          "SOUND RADAR MATTERS",
-          "SOUND RADAR FIRST",
-          "SOUND RADAR REVEAL",
-          "SOUND RADAR CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Deer aim their ears like sound radar",
-          "Deer can aim each ear toward danger",
-          "Deer use sound radar before they aim",
-          "This sound radar gives deer away",
-          "Why deer aim after one sound radar",
-          "Deer reveal the answer with sound radar",
-          "The sound radar that changes the moment",
-          "Deer make one sound radar matter",
-          "Deer show the hidden answer in seconds",
-          "Deer: watch this sound radar"
-        ],
-        "top_variants": [
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 79,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Watch the sound radar; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "WATCH SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "DEER AIM",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "DEER AIM",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR MATTERS",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR MATTERS",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR FIRST",
-            "title": "Deer aim their ears like sound radar"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "463bfdc47b0763aa",
       "title": "Bears smell food from miles away",
       "category": "wildlife",
@@ -4816,15 +4810,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.473,
+          "bootstrap_multiplier": 0.468,
           "can_adjust_strategy": false,
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "data_quality": "estimated",
           "data_quality_score": 0.48,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29.",
           "recommendation_strength": "observe",
-          "sample_size": 20
+          "sample_size": 22
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -4834,7 +4828,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.298,
+          "confidence_score": 0.29,
           "mechanism_cluster": "scent_map",
           "payoff_time_s": 9.9,
           "penalty": 0.0,
@@ -4900,23 +4894,23 @@
           },
           "verdict": "rewrite"
         },
-        "score": 72.7,
+        "score": 73.0,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -4956,16 +4950,16 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.352072+00:00",
+        "checked_at": "2026-06-23T15:35:14.260776+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
         ],
-        "score": 72.7,
+        "score": 73.0,
         "state": "publish_ready",
         "template_cluster": ""
       },
-      "queue_score": 72.7,
+      "queue_score": 73.0,
       "youtube_brain": {
         "animal": "bears",
         "commands": [],
@@ -5023,7 +5017,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5127,17 +5121,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.557,
+            "bootstrap_multiplier": 0.551,
             "can_adjust_strategy": false,
-            "confidence_score": 0.409,
+            "confidence_score": 0.402,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
             "recommendation_strength": "observe",
-            "sample_size": 12
+            "sample_size": 13
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.41.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -5245,455 +5239,6 @@
             "score": 75,
             "thumbnail_text": "SCENT MAP FIRST",
             "title": "Bears smell food from miles away"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "96b7d39881124442",
-      "title": "Forests reveal edge climates along trails",
-      "category": "forests",
-      "publish_score": {
-        "approved": true,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.415,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.22,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.22.",
-          "recommendation_strength": "observe",
-          "sample_size": 14
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.22,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.8,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 56,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 64,
-            "emotional_potential": 27,
-            "novelty": 51,
-            "replay_potential": 64,
-            "viral_potential": 64,
-            "visual_potential": 61
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.395,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.193,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-            "recommendation_strength": "observe",
-            "sample_size": 6
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.699513+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
-        ],
-        "score": 72.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "forests",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "forests",
-        "viewer_promise": "See why this forest earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "Why do these fungi change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 59,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 40.4,
-            "cta:specific_question": 41.66,
-            "format:fresh_variant": 52.04,
-            "hook:new_hook": 52.04,
-            "thumbnail:new_thumbnail": 40.52
-          }
-        },
-        "hook_options": [
-          "Forests can cool the air below them",
-          "Forests change climate at the trail edge",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "edge",
-          "ending_line": "Which edge clue should we compare next?",
-          "final_line": "Which edge clue should we compare next?",
-          "loop_score": 0.629,
-          "opening_line": "Forests change climate at the trail edge.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "edge",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.629,
-        "pinned_comment": "Watch the trail edge again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.12,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Forests change climate at the trail edge Watch the brighter opening beside",
-          "first_frame_text": "EDGE CLIMATE",
-          "first_frame_text_words": 2,
-          "hook": "Forests change climate at the trail edge.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.629,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8.8,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the trail edge, so viewers rewatch the forests clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 92,
-        "selected_variant": {
-          "hook": "Forests can cool the air below them",
-          "score": 77,
-          "thumbnail_text": "COOL CANOPY",
-          "title": "Forests make cooler air under the canopy"
-        },
-        "series": "Hidden Network #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network #3: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Hidden Network #3",
-          "series": "Hidden Network #3"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.395,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.193,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-            "recommendation_strength": "observe",
-            "sample_size": 6
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "COOL CANOPY",
-          "WATCH COOL CANOPY",
-          "FORESTS COMPARE",
-          "COOL CANOPY MATTERS",
-          "COOL CANOPY FIRST",
-          "COOL CANOPY REVEAL",
-          "COOL CANOPY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Forests make cooler air under the canopy",
-          "Forests reveal edge climates along trails",
-          "Forests use cool canopy before they compare",
-          "This cool canopy gives forests away",
-          "Why forests compare after one cool canopy",
-          "Forests reveal the answer with cool canopy",
-          "The cool canopy that changes the moment",
-          "Forests make one cool canopy matter",
-          "Forests show the hidden answer in seconds",
-          "Forests: watch this cool canopy"
-        ],
-        "top_variants": [
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 77,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 77,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 70,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 70,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 70,
-            "thumbnail_text": "FORESTS COMPARE",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 70,
-            "thumbnail_text": "FORESTS COMPARE",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "FORESTS COMPARE",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 70,
-            "thumbnail_text": "COOL CANOPY MATTERS",
-            "title": "Forests make cooler air under the canopy"
           }
         ]
       },
@@ -5857,7 +5402,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.720430+00:00",
+        "checked_at": "2026-06-23T15:35:14.278509+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5926,7 +5471,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6309,7 +5854,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.722700+00:00",
+        "checked_at": "2026-06-23T15:35:14.280674+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6380,7 +5925,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6626,15 +6171,15 @@
         "approved": true,
         "category": "earth_from_space",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.297,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.063,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 5
+          "sample_size": 3
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -6644,7 +6189,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.063,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 8.8,
           "penalty": 0.0,
@@ -6716,17 +6261,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.317,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.089,
+            "confidence_score": 0.061,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -6765,7 +6310,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.716494+00:00",
+        "checked_at": "2026-06-23T15:35:14.274750+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6833,7 +6378,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6937,17 +6482,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.317,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.089,
+            "confidence_score": 0.061,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -7075,15 +6620,15 @@
         "approved": true,
         "category": "geology",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.305,
+          "bootstrap_multiplier": 0.276,
           "can_adjust_strategy": false,
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.07.",
+          "data_quality_score": 0.575,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
           "recommendation_strength": "observe",
-          "sample_size": 6
+          "sample_size": 3
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -7093,7 +6638,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.073,
+          "confidence_score": 0.035,
           "mechanism_cluster": "",
           "payoff_time_s": 8.25,
           "penalty": 0.0,
@@ -7165,17 +6710,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -7213,7 +6758,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-23T15:23:46.709519+00:00",
+        "checked_at": "2026-06-23T15:35:14.268516+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7284,7 +6829,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 59,
+          "sample_count": 60,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7388,17 +6933,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.137,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "debate_comment",
             "return_prompt",
