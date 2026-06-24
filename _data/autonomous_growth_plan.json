@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T13:36:32.471983+00:00",
+  "generated_at": "2026-06-24T13:42:57.162691+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -355,10 +355,10 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 20,
-    "approved_candidates": 20,
+    "pending": 19,
+    "approved_candidates": 19,
     "lane_counts": {
-      "fresh_experiment": 19,
+      "fresh_experiment": 18,
       "proven_category": 1
     },
     "top_candidates": [
@@ -3560,176 +3560,6 @@
           "pinned_comment": "Watch the group again. Tomorrow: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
-      },
-      {
-        "id": "fc23445e32c4b8bf",
-        "title": "Horses can remember familiar faces",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 71.2,
-          "approved": false,
-          "state": "rewrite",
-          "opportunity": {
-            "score": 48,
-            "signals": {
-              "viral_potential": 42,
-              "visual_potential": 57,
-              "replay_potential": 56,
-              "comment_potential": 54,
-              "educational_potential": 50,
-              "emotional_potential": 27,
-              "novelty": 37
-            },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
-            "confidence": {
-              "confidence_score": 0.34,
-              "sample_size": 3,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.45,
-              "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
-            },
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
-          },
-          "retention": {
-            "score": 73,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 66,
-              "replay_score": 62,
-              "completion_prediction": 77
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.34,
-              "sample_size": 3,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.45,
-              "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
-            },
-            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 100,
-            "state": "strong",
-            "subscriber_probability": 0.143,
-            "return_probability": 0.3,
-            "comment_probability": 0.256,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.316,
-              "sample_size": 9,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.425,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.487,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.313,
-            "sample_size": 20,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.35,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.484,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.31."
-          },
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "observe_before_scaling"
-            ],
-            "confidence_score": 0.313,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 9.35,
-            "template_cluster": "",
-            "mechanism_cluster": "face_recognition"
-          }
-        },
-        "autonomy_priority": 74.2,
-        "packaging_lab": {
-          "title_variants": [
-            "Horses remember familiar faces for months",
-            "Horses can remember familiar faces",
-            "Horses use face memory before they remember"
-          ],
-          "thumbnail_variants": [
-            "FACE MEMORY",
-            "WATCH FACE MEMORY",
-            "HORSES REMEMBER"
-          ],
-          "hook_variants": [
-            "Horses can remember familiar faces.",
-            "Horses can remember familiar faces",
-            "Watch the face memory again. Tomorrow: another animal signal. What part of this feels most impossible"
-          ],
-          "pinned_comment": "Watch the face memory again. Tomorrow: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
       }
     ]
   },
@@ -3739,6 +3569,6 @@
     "Bias production toward experiment winners: hook_style=question, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=before_after, subtitle_density=low, loop_style=mirror_opening, cta_pattern=sequel_tease, end_card_style=series_tease, title_shape=curiosity_gap, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 20,
-  "queue_annotations_changed": 20
+  "queue_annotations_written": 19,
+  "queue_annotations_changed": 19
 }
