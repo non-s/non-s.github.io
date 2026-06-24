@@ -1,6 +1,171 @@
 {
   "items": [
     {
+      "id": "81c9157700c4ca16",
+      "title": "Ducks can act injured to pull danger away",
+      "category": "farm",
+      "autonomy_priority": 83.8,
+      "queue_score": 78.0,
+      "template_cluster": "",
+      "mechanism_cluster": "decoy_injury",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "publish_ready_supply_reserve_fallback"
+      ],
+      "lane": "recovery",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 49,
+          "signals": {
+            "viral_potential": 55,
+            "visual_potential": 57,
+            "replay_potential": 56,
+            "comment_potential": 38,
+            "educational_potential": 50,
+            "emotional_potential": 36,
+            "novelty": 37
+          },
+          "verdict": "discard",
+          "reasons": [
+            "low_opportunity_score"
+          ],
+          "confidence": {
+            "confidence_score": 0.34,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.45,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
+        },
+        "retention": {
+          "score": 73,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.34,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.45,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.287,
+            "sample_size": 8,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.466,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.284,
+          "sample_size": 18,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.463,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28."
+        },
+        "category": "farm",
+        "story_format": "survival_trick",
+        "hook_score": 88,
+        "title_score": 84,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.284,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.35,
+          "template_cluster": "",
+          "mechanism_cluster": "decoy_injury"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ]
+        }
+      }
+    },
+    {
       "id": "5e4b5695af1c5289",
       "title": "Octopuses taste objects with their arms",
       "category": "ocean",
@@ -326,7 +491,7 @@
     },
     "counts": {
       "evergreen": 17,
-      "recovery": 3
+      "recovery": 4
     },
     "items": [
       {
@@ -351,7 +516,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.9
+        "freshness_score": 54.88
       },
       {
         "id": "7fdc62557df3560c",
@@ -375,7 +540,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.64
+        "freshness_score": 42.62
       },
       {
         "id": "fad3f2887e3ab88d",
@@ -394,12 +559,20 @@
         "freshness_score": 51.64
       },
       {
+        "id": "81c9157700c4ca16",
+        "title": "Ducks can act injured to pull danger away",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "18762a35e9b1f385",
         "title": "Wolves leave scent notes for the pack",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.62
+        "freshness_score": 42.6
       },
       {
         "id": "5a79c67faae212d6",
@@ -415,7 +588,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.46
+        "freshness_score": 53.44
       },
       {
         "id": "7e200344e8235a78",
@@ -479,7 +652,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 54.8
       },
       {
         "id": "860a6c6c2c644d35",
@@ -499,39 +672,49 @@
     "windows": [
       {
         "window": 10,
-        "items": 2,
-        "dominant_shape": "{subject} taste objects with their arms",
+        "items": 3,
+        "dominant_shape": "{subject} can act injured to pull danger away",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.333,
         "top_shapes": [
+          {
+            "shape": "{subject} can act injured to pull danger away",
+            "count": 1,
+            "share": 0.333
+          },
           {
             "shape": "{subject} taste objects with their arms",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           },
           {
             "shape": "{subject} sleep standing without falling over",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           }
         ]
       },
       {
         "window": 30,
-        "items": 2,
-        "dominant_shape": "{subject} taste objects with their arms",
+        "items": 3,
+        "dominant_shape": "{subject} can act injured to pull danger away",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.333,
         "top_shapes": [
+          {
+            "shape": "{subject} can act injured to pull danger away",
+            "count": 1,
+            "share": 0.333
+          },
           {
             "shape": "{subject} taste objects with their arms",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           },
           {
             "shape": "{subject} sleep standing without falling over",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           }
         ]
       }
@@ -539,19 +722,19 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 21,
+    "pending_after": 21,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 8,
     "reasons": {
-      "objective_gate:observe_before_scaling": 9,
+      "objective_gate:observe_before_scaling": 10,
       "objective_gate:bootstrap_observe_before_scaling": 9,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "publish_ready_supply_reserve_fallback": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }

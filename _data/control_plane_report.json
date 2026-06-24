@@ -2,19 +2,19 @@
   "state": "migration_needed",
   "pressure_score": 93,
   "metrics": {
-    "live_state_files": 196,
-    "data_state_files": 134,
+    "live_state_files": 542,
+    "data_state_files": 480,
     "video_done_markers": 60,
-    "live_state_bytes": 15175256,
-    "stories_queue_bytes": 2046049,
-    "stories_queue_lines": 54165,
+    "live_state_bytes": 17292422,
+    "stories_queue_bytes": 2088246,
+    "stories_queue_lines": 54975,
     "workflow_files": 17,
     "state_path_refs": 268
   },
   "largest_state_files": [
     {
       "path": "_data/ai_cache.jsonl",
-      "bytes": 5003060,
+      "bytes": 5012274,
       "lines": 0
     },
     {
@@ -24,23 +24,28 @@
     },
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2046049,
-      "lines": 54165
+      "bytes": 2088246,
+      "lines": 54975
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 941048,
+      "lines": 78
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 560095,
+      "bytes": 560068,
       "lines": 21654
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 533625,
-      "lines": 6865
+      "bytes": 534638,
+      "lines": 6878
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 472873,
-      "lines": 745
+      "bytes": 474105,
+      "lines": 747
     },
     {
       "path": "_data/queue_audit.json",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 101196,
       "lines": 127
-    },
-    {
-      "path": "_data/comment_to_short_candidates.json",
-      "bytes": 91696,
-      "lines": 1938
     }
   ],
   "migration_lanes": [

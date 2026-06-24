@@ -1,35 +1,115 @@
 {
-  "generated_at": "2026-06-24T17:48:47.378892+00:00",
-  "pending": 20,
+  "generated_at": "2026-06-24T17:55:10.912897+00:00",
+  "pending": 21,
   "states": {
-    "publish_ready": 10,
+    "publish_ready": 11,
     "rewrite": 10
   },
   "mechanism_clusters": {
     "scent_map": 3,
     "face_recognition": 1,
-    "call_signal": 1
+    "call_signal": 1,
+    "decoy_injury": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 21
   },
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 8,
+    "pending_before": 29,
+    "pending_after": 21,
+    "rejected": 8,
+    "repair_needed": 4,
+    "repaired": 11,
     "reasons": {
-      "objective_gate:observe_before_scaling": 9,
+      "objective_gate:observe_before_scaling": 10,
       "objective_gate:bootstrap_observe_before_scaling": 9,
+      "queue_score_reject": 4,
+      "thumbnail_text_not_scannable": 2,
+      "thumbnail_not_2_4_words": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "publish_ready_supply_reserve_fallback": 2,
+      "bad_plural_verb": 1,
+      "script_word_loop": 1,
+      "rights_guard_person_manual_review": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
+      "duplicate_title": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "09e3b3cb6147a1b6",
+      "title": "Cats measure tight spaces with their whiskers",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "07b3bb1f3e184120",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "acb4c68e2dd17bec",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "157e9c2cbc89fb35",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "43b5cb9893d7e557",
+      "title": "Why cat whiskers change the whole story when the body freezes",
+      "reasons": [
+        "bad_plural_verb",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "44007a15d4c1fc9e",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "8299a1913719513f",
+      "title": "Dogs read the world through scent maps",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "65652020492ea219",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "c10cad54f29defb2",
       "title": "Cats measure tight spaces with their whiskers",
@@ -221,77 +301,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "7dbb916b95207793",
-      "title": "What a dog's tail says before the bark in the first second",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "64b3d549fa2cb533",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "484d0194f1faa1dc",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "d3ea266e14308a40",
-      "title": "Ducks carry waterproof oil on their feathers",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "8461c60a7eb3296a",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f0a5ddb4d6da94c4",
-      "title": "Why cat paws land almost silently right before the move",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "fa9e829dcfd48e4f",
-      "title": "Ducks carry waterproof oil on their feathers",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "989407aaee496b6f",
-      "title": "Ducks carry waterproof oil on their feathers",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -444,7 +453,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.191608+00:00",
+        "checked_at": "2026-06-24T17:54:57.829233+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -892,7 +901,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.201663+00:00",
+        "checked_at": "2026-06-24T17:54:57.838690+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1339,7 +1348,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.203766+00:00",
+        "checked_at": "2026-06-24T17:54:57.840565+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1788,7 +1797,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.198079+00:00",
+        "checked_at": "2026-06-24T17:54:57.835360+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2238,7 +2247,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.208130+00:00",
+        "checked_at": "2026-06-24T17:54:57.844847+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2688,7 +2697,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.210194+00:00",
+        "checked_at": "2026-06-24T17:54:57.846737+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3140,7 +3149,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.193222+00:00",
+        "checked_at": "2026-06-24T17:54:57.830730+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3606,7 +3615,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.180367+00:00",
+        "checked_at": "2026-06-24T17:54:56.984523+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4060,7 +4069,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.181540+00:00",
+        "checked_at": "2026-06-24T17:54:56.985503+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4364,6 +4373,467 @@
       }
     },
     {
+      "id": "81c9157700c4ca16",
+      "title": "Ducks can act injured to pull danger away",
+      "category": "farm",
+      "publish_score": {
+        "approved": true,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.442,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.256,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.26.",
+          "recommendation_strength": "observe",
+          "sample_size": 15
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 88,
+        "objective_gate": {
+          "confidence_score": 0.256,
+          "mechanism_cluster": "decoy_injury",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [
+            "low_opportunity_score"
+          ],
+          "score": 49,
+          "signals": {
+            "comment_potential": 38,
+            "educational_potential": 50,
+            "emotional_potential": 36,
+            "novelty": 37,
+            "replay_potential": 56,
+            "viral_potential": 55,
+            "visual_potential": 57
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "survival_trick",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.359,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.146,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 84,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-24T17:54:57.827685+00:00",
+        "mechanism_cluster": "decoy_injury",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling",
+          "publish_ready_supply_reserve_fallback"
+        ],
+        "score": 78.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "ducks",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "survival_trick",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "ducks",
+        "viewer_promise": "See why ducks survival trick matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after ducks?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why does this nature changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "survival trick",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 60,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 40.42,
+            "cta:specific_question": 41.66,
+            "format:fresh_variant": 52.04,
+            "hook:new_hook": 52.04,
+            "thumbnail:new_thumbnail": 40.54
+          }
+        },
+        "hook_options": [
+          "Ducks can act injured to pull danger away",
+          "Ducks show why the injury display matters.",
+          "Ducks show why the injury display matters.",
+          "Ducks show why the injury display matters.",
+          "Ducks give away the answer through injury display"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ducks",
+          "ending_line": "Would you fall for the trick?",
+          "final_line": "Would you fall for the trick?",
+          "loop_score": 0.275,
+          "opening_line": "Ducks can act injured to pull danger away.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ducks",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.275,
+        "pinned_comment": "Watch the fake injury again. Tomorrow: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.24,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Ducks can act injured to pull danger away Watch the low awkward",
+          "first_frame_text": "FAKE INJURY",
+          "first_frame_text_words": 2,
+          "hook": "Ducks can act injured to pull danger away.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.275,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the fake injury, so viewers rewatch the ducks clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.45,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.34,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Start with the injury display; it changes the scene",
+          "score": 77,
+          "thumbnail_text": "FAKE INJURY",
+          "title": "Ducks fake injuries to protect their young"
+        },
+        "series": "Nature Signals",
+        "series_identity": {
+          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Nature Signals",
+          "series": "Nature Signals"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.359,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.146,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FAKE INJURY",
+          "INJURY DISPLAY",
+          "WATCH INJURY DISPLAY",
+          "DUCKS FAKE",
+          "INJURY DISPLAY MATTERS",
+          "INJURY DISPLAY FIRST",
+          "INJURY DISPLAY REVEAL",
+          "INJURY DISPLAY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Ducks fake injuries to protect their young",
+          "Ducks can act injured to pull danger away",
+          "Ducks use injury display before they fake",
+          "This injury display gives ducks away",
+          "Why ducks fake after one injury display",
+          "Ducks reveal the answer with injury display",
+          "The injury display that changes the moment",
+          "Ducks make one injury display matter",
+          "Ducks show the hidden answer in seconds",
+          "Ducks: watch this injury display"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the injury display; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "FAKE INJURY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Ducks can act injured to pull danger away",
+            "score": 76,
+            "thumbnail_text": "FAKE INJURY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Watch the injury display; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "FAKE INJURY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Start with the injury display; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "INJURY DISPLAY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Start with the injury display; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH INJURY DISPLAY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Start with the injury display; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "DUCKS FAKE",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Start with the injury display; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "INJURY DISPLAY MATTERS",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Ducks can act injured to pull danger away",
+            "score": 69,
+            "thumbnail_text": "INJURY DISPLAY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Ducks can act injured to pull danger away",
+            "score": 69,
+            "thumbnail_text": "WATCH INJURY DISPLAY",
+            "title": "Ducks fake injuries to protect their young"
+          },
+          {
+            "hook": "Ducks can act injured to pull danger away",
+            "score": 69,
+            "thumbnail_text": "DUCKS FAKE",
+            "title": "Ducks fake injuries to protect their young"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "261197331775d3c7",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
@@ -4510,7 +4980,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.184943+00:00",
+        "checked_at": "2026-06-24T17:54:57.553759+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4961,7 +5431,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.186231+00:00",
+        "checked_at": "2026-06-24T17:54:57.554878+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5412,7 +5882,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.187788+00:00",
+        "checked_at": "2026-06-24T17:54:57.556216+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5866,7 +6336,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.183738+00:00",
+        "checked_at": "2026-06-24T17:54:57.552616+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6320,7 +6790,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.189971+00:00",
+        "checked_at": "2026-06-24T17:54:57.558578+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6769,7 +7239,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.172122+00:00",
+        "checked_at": "2026-06-24T17:54:56.982960+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -7219,7 +7689,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.211877+00:00",
+        "checked_at": "2026-06-24T17:54:57.848311+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7671,7 +8141,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.214064+00:00",
+        "checked_at": "2026-06-24T17:54:57.851098+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8127,7 +8597,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.205895+00:00",
+        "checked_at": "2026-06-24T17:54:57.842594+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8577,7 +9047,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.196180+00:00",
+        "checked_at": "2026-06-24T17:54:57.833646+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8865,458 +9335,6 @@
             "score": 73,
             "thumbnail_text": "FORESTS LEAVES",
             "title": "Forests hold cool fog between the trees"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "ca66243c1b8718b8",
-      "title": "Rock layers reveal heat moving under the surface",
-      "category": "geology",
-      "publish_score": {
-        "approved": true,
-        "category": "geology",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.035,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
-          "recommendation_strength": "observe",
-          "sample_size": 3
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.035,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.25,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 72,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 100
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-24T17:48:33.199859+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:story angle repeated inside 10-day cooldown"
-        ],
-        "score": 58.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 58.0,
-      "youtube_brain": {
-        "animal": "rock",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "script_length_risk"
-        ],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 87,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
-        "cta_prompt": "Want to understand the planet under your feet?",
-        "curiosity_gap": {
-          "hook": "Why does this geology changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 60,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 40.42,
-            "cta:specific_question": 41.66,
-            "format:fresh_variant": 52.04,
-            "hook:new_hook": 52.04,
-            "thumbnail:new_thumbnail": 40.54
-          }
-        },
-        "hook_options": [
-          "Rock layers can expose heat moving below ground",
-          "Rock shows why the rock layers matters.",
-          "Rock shows why the rock layers matters.",
-          "Rock shows why the rock layers matters.",
-          "Rock layers give away the answer through steam vent"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "rock",
-          "ending_line": "Which geothermal clue should come next?",
-          "final_line": "Which geothermal clue should come next?",
-          "loop_score": 0.234,
-          "opening_line": "Rock layers can expose heat moving below ground.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "rock",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.234,
-        "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 17.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Rock layers can expose heat moving below ground Watch the steam because",
-          "first_frame_text": "HEAT PATH",
-          "first_frame_text_words": 2,
-          "hook": "Rock layers can expose heat moving below ground.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.234,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8.25,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "ready"
-        },
-        "risks": [],
-        "score": 94,
-        "selected_variant": {
-          "hook": "Start with the steam vent; it changes the scene",
-          "score": 83,
-          "thumbnail_text": "HEAT PATH",
-          "title": "Rock layers reveal heat moving under the surface"
-        },
-        "series": "Earth Engine #4",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #4: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Earth Engine #4",
-          "series": "Earth Engine #4"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "HEAT PATH",
-          "STEAM VENT",
-          "WATCH STEAM VENT",
-          "ROCK LAYERS SIGNAL",
-          "STEAM VENT MATTERS",
-          "STEAM VENT FIRST",
-          "STEAM VENT REVEAL",
-          "STEAM VENT CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Rock layers reveal heat moving under the surface",
-          "Rock layers signal through steam vent",
-          "Rock layers use steam vent before they signal",
-          "This steam vent gives rock layers away",
-          "Why rock layers signal after one steam vent",
-          "Rock layers reveal the answer with steam vent",
-          "The steam vent that changes the moment",
-          "Rock layers make one steam vent matter",
-          "Rock layers show the hidden answer in seconds",
-          "Rock layers: watch this steam vent"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "HEAT PATH",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Rock layers can expose heat moving below ground",
-            "score": 82,
-            "thumbnail_text": "HEAT PATH",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Watch the steam vent; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "HEAT PATH",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "HEAT PATH",
-            "title": "Rock layers signal through steam vent"
-          },
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "STEAM VENT",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "WATCH STEAM VENT",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "ROCK LAYERS SIGNAL",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Start with the steam vent; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "STEAM VENT MATTERS",
-            "title": "Rock layers reveal heat moving under the surface"
-          },
-          {
-            "hook": "Rock layers can expose heat moving below ground",
-            "score": 76,
-            "thumbnail_text": "HEAT PATH",
-            "title": "Rock layers signal through steam vent"
-          },
-          {
-            "hook": "Rock layers can expose heat moving below ground",
-            "score": 75,
-            "thumbnail_text": "STEAM VENT",
-            "title": "Rock layers reveal heat moving under the surface"
           }
         ]
       },
