@@ -207,16 +207,10 @@ def build_broll_short(
     segment_frames = int(round(seg_dur * TARGET_FPS))
     for i, clip in enumerate(broll_paths):
         zoom_in = i % 2 == 0
-        # zoompan z' starts at 1 and grows (or shrinks) per frame. A 1.08
-        # final zoom over seg_dur â‰ˆ 1.78 % per second â€” slow enough to
-        # feel cinematic, not so fast the viewer notices the crop walking.
         # MrBeast Pacing: Aggressive Jump Cuts.
         # Instead of a smooth Ken Burns pan, the camera abruptly punches in
         # and out every ~1.5 seconds, artificially creating high-energy motion.
-        # Every comma inside the z-expression has to be backslash-escaped
-        # (`\,`) or FFmpeg's filter_complex parser treats it as a filter
-        # separator.
-        z_expr = "if(lt(mod(t\\,1.5)\\,0.75)\\,1.05\\,1.25)"
+        z_expr = "if(lt(mod(t,1.5),0.75),1.05,1.25)"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2× the offset scales too.
@@ -224,11 +218,9 @@ def build_broll_short(
         if face is not None:
             fx, fy = face
             # In the scaled space iw = source_w × 2. We want the crop
-            # window of width ow centred at fx × iw, clamped. Every
-            # comma inside the max(0,min(...)) expressions has to be
-            # backslash-escaped.
-            crop_x = f"max(0\\,min(iw-ow\\," f"{fx:.4f}*iw-(ow/2)))"
-            crop_y = f"max(0\\,min(ih-oh\\," f"{fy:.4f}*ih-(oh/2)))"
+            # window of width ow centred at fx × iw, clamped.
+            crop_x = f"max(0\\,min(iw-ow\\,{fx:.4f}*iw-(ow/2)))"
+            crop_y = f"max(0\\,min(ih-oh\\,{fy:.4f}*ih-(oh/2)))"
             crop_expr = f"crop=1350:2400:{crop_x}:{crop_y}"
         else:
             crop_expr = "crop=1350:2400"
@@ -239,10 +231,13 @@ def build_broll_short(
               # cheap loop covers under-length clips
             f"scale=1350:2400:force_original_aspect_ratio=increase,"
             f"{crop_expr},"
-            # Ken Burns push â€” `d=1` outputs one frame per input frame so
+            # Ken Burns push — `d=1` outputs one frame per input frame so
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
             # the output back down to Shorts native after the crop walk.
-            f"zoompan=z={z_expr}:x=iw/2-(iw/zoom/2):y=ih/2-(ih/zoom/2)"
+            # Single quotes around z/x/y values protect commas and special
+            # chars from the filtergraph parser — no backslash escaping
+            # needed inside the quotes.
+            f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
             f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
             f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
             f"unsharp=5:5:0.55:3:3:0.25,"
