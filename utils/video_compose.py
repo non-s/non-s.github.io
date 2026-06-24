@@ -21,6 +21,7 @@ import logging
 import os
 import shlex
 import subprocess
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -384,9 +385,20 @@ def build_broll_short(
 
     filtergraph = ";".join(parts)
 
+    # Write filtergraph to a temp file and use -filter_complex_script.
+    # This avoids all comma-escaping issues: when read from a file,
+    # ffmpeg does not treat commas inside option values as filter
+    # separators, so expressions like if(lt(mod(t,1.5),0.75),...)
+    # work without any escaping.
+    fg_file = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".txt", delete=False, dir=str(output_path.parent)
+    )
+    fg_file.write(filtergraph)
+    fg_file.close()
+
     cmd += [
-        "-filter_complex",
-        filtergraph,
+        "-filter_complex_script",
+        fg_file.name,
         "-map",
         f"[{last_label}]",
         "-map",
@@ -417,15 +429,20 @@ def build_broll_short(
     except subprocess.TimeoutExpired:
         log.error("ffmpeg b-roll compose timed out after 180s")
         return False
+    finally:
+        try:
+            os.unlink(fg_file.name)
+        except OSError:
+            pass
 
     if result.returncode != 0:
         log.error("ffmpeg b-roll compose failed: %s", result.stderr[-1200:])
         return False
-    log.info("  ðŸŽ¬ B-roll Short ready (%s clips, %.1fs): %s", n, audio_dur, output_path.name)
+    log.info("  🎬 B-roll Short ready (%s clips, %.1fs): %s", n, audio_dur, output_path.name)
     return True
 
 
-# â”€â”€ Static-image fallback pipeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Static-image fallback pipeline ──────────────────────────
 
 
 def build_static_short(
