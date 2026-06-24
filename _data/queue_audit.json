@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T19:30:25.327905+00:00",
+  "generated_at": "2026-06-24T19:37:21.650526+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,23 +15,17 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 32,
+    "pending_before": 23,
     "pending_after": 23,
-    "rejected": 9,
-    "repair_needed": 1,
-    "repaired": 13,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 9,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "duplicate_title": 5,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
-      "duplicate_script": 1,
-      "duplicate_angle": 1,
-      "script_word_loop": 1,
-      "rights_guard_person_manual_review": 1,
-      "queue_score_reject": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editorial_cooldown_supply_fallback": 1
     }
@@ -195,6 +189,15 @@
       "stage": "queue_prune"
     },
     {
+      "id": "a218d50586d65394",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
       "id": "ebd7a036a721cc53",
       "title": "Lightning reveal air layers moving at different speeds",
       "reasons": [
@@ -271,16 +274,6 @@
     {
       "id": "0d2c0dab6cbb1d94",
       "title": "Storm clouds reveal weather from above the clouds",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0959e9adbf2d97ce",
-      "title": "Storm clouds show air layers changing over time",
       "reasons": [
         "duplicate_title",
         "duplicate_script",
@@ -436,7 +429,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.210559+00:00",
+        "checked_at": "2026-06-24T19:37:05.707562+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -886,7 +879,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.219539+00:00",
+        "checked_at": "2026-06-24T19:37:05.716666+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1334,7 +1327,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.955087+00:00",
+        "checked_at": "2026-06-24T19:37:05.727139+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1781,7 +1774,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.957642+00:00",
+        "checked_at": "2026-06-24T19:37:05.729306+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2230,7 +2223,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.549147+00:00",
+        "checked_at": "2026-06-24T19:37:05.722128+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2680,7 +2673,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:09.356250+00:00",
+        "checked_at": "2026-06-24T19:37:05.733838+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3130,7 +3123,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:09.358546+00:00",
+        "checked_at": "2026-06-24T19:37:05.735913+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3582,7 +3575,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.221115+00:00",
+        "checked_at": "2026-06-24T19:37:05.718219+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4048,7 +4041,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.204394+00:00",
+        "checked_at": "2026-06-24T19:37:05.701761+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4359,15 +4352,15 @@
         "approved": false,
         "category": "cats",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.486,
+          "bootstrap_multiplier": 0.511,
           "can_adjust_strategy": false,
-          "confidence_score": 0.314,
+          "confidence_score": 0.348,
           "data_quality": "observed",
           "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.31.",
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.35.",
           "recommendation_strength": "observe",
-          "sample_size": 17
+          "sample_size": 19
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -4377,7 +4370,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.314,
+          "confidence_score": 0.348,
           "mechanism_cluster": "scent_map",
           "payoff_time_s": 11.0,
           "penalty": 6.0,
@@ -4451,34 +4444,35 @@
         "state": "rewrite",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.195,
+          "comment_probability": 0.209,
           "confidence": {
-            "bootstrap_multiplier": 0.445,
+            "bootstrap_multiplier": 0.57,
             "can_adjust_strategy": false,
-            "confidence_score": 0.26,
+            "confidence_score": 0.427,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.228,
+          "return_probability": 0.244,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 74,
-          "state": "usable",
-          "subscriber_probability": 0.106
+          "score": 80,
+          "state": "strong",
+          "subscriber_probability": 0.114
         },
         "title_score": 90,
         "weak_content": {
@@ -4501,7 +4495,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.205453+00:00",
+        "checked_at": "2026-06-24T19:37:05.702840+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4653,12 +4647,12 @@
           "thumbnail_text": "GROOMING SIGNAL",
           "title": "Cats groom to reset their scent map"
         },
-        "series": "Watch The Cue",
+        "series": "Pet Secrets #5",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature.",
+          "episode": 5,
+          "label": "Pet Secrets #5",
+          "series": "Pet Secrets"
         },
         "state": "magnetic",
         "strengths": [
@@ -4669,34 +4663,35 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.195,
+          "comment_probability": 0.209,
           "confidence": {
-            "bootstrap_multiplier": 0.445,
+            "bootstrap_multiplier": 0.57,
             "can_adjust_strategy": false,
-            "confidence_score": 0.26,
+            "confidence_score": 0.427,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
             "recommendation_strength": "observe",
-            "sample_size": 8
+            "sample_size": 10
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.228,
+          "return_probability": 0.244,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 74,
-          "state": "usable",
-          "subscriber_probability": 0.106
+          "score": 80,
+          "state": "strong",
+          "subscriber_probability": 0.114
         },
         "swipe_risk": {
           "band": "low",
@@ -4960,7 +4955,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.217956+00:00",
+        "checked_at": "2026-06-24T19:37:05.715035+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5413,7 +5408,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.211705+00:00",
+        "checked_at": "2026-06-24T19:37:05.708694+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5864,7 +5859,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.212930+00:00",
+        "checked_at": "2026-06-24T19:37:05.709926+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6315,7 +6310,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.214420+00:00",
+        "checked_at": "2026-06-24T19:37:05.711420+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6769,7 +6764,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.207878+00:00",
+        "checked_at": "2026-06-24T19:37:05.704785+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7223,7 +7218,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.216596+00:00",
+        "checked_at": "2026-06-24T19:37:05.713713+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7672,7 +7667,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.202671+00:00",
+        "checked_at": "2026-06-24T19:37:05.699890+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8123,7 +8118,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:08.550676+00:00",
+        "checked_at": "2026-06-24T19:37:05.723639+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8574,7 +8569,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:09.360310+00:00",
+        "checked_at": "2026-06-24T19:37:05.737629+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9026,7 +9021,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T19:30:09.362497+00:00",
+        "checked_at": "2026-06-24T19:37:05.739804+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
