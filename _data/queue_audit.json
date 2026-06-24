@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T18:39:00.474377+00:00",
+  "generated_at": "2026-06-24T19:01:24.111225+00:00",
   "pending": 22,
   "states": {
     "publish_ready": 12,
@@ -15,22 +15,102 @@
     "approved": 22
   },
   "prune_summary": {
-    "pending_before": 22,
+    "pending_before": 31,
     "pending_after": 22,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 9,
+    "repair_needed": 3,
     "repaired": 8,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 9,
+      "duplicate_title": 4,
+      "queue_score_reject": 3,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "off_topic_visual": 1,
+      "script_hook_mismatch": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "ebd7a036a721cc53",
+      "title": "Lightning reveal air layers moving at different speeds",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "20cf047b8d41ffb8",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f2f9389335ada48d",
+      "title": "Cows remember faces across the herd",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "8983667ef777f21c",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "dd3d63ad1a6ae623",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "0b62e418fdec8c7d",
+      "title": "Giant sequoias don’t grow roots like we think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "675518df698179dd",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f9307ab184e34c52",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "424e778dcfff9a3a",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "0d2c0dab6cbb1d94",
       "title": "Storm clouds reveal weather from above the clouds",
@@ -214,83 +294,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "17958d7100f546d1",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "42b27a1c5a60bc5b",
-      "title": "Forests whisper through tangled roots",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "1b00eee08a873a2e",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7ba69ac6f9662103",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d50a3752b3fb1cd8",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e02ce9d369b922b4",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "ece91bd197b74623",
-      "title": "Forests reveal edge climates along trails",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "93cb275e393a3ede",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "34171f2055f93cf3",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -440,7 +443,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.224838+00:00",
+        "checked_at": "2026-06-24T19:01:09.424190+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -890,7 +893,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.234310+00:00",
+        "checked_at": "2026-06-24T19:01:09.432210+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1338,7 +1341,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.243652+00:00",
+        "checked_at": "2026-06-24T19:01:09.440802+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1785,7 +1788,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.245795+00:00",
+        "checked_at": "2026-06-24T19:01:09.442827+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2234,7 +2237,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.240000+00:00",
+        "checked_at": "2026-06-24T19:01:09.437682+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2684,7 +2687,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.250521+00:00",
+        "checked_at": "2026-06-24T19:01:09.446586+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3134,7 +3137,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.252743+00:00",
+        "checked_at": "2026-06-24T19:01:10.104196+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3586,7 +3589,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.235938+00:00",
+        "checked_at": "2026-06-24T19:01:09.433588+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4052,7 +4055,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.218561+00:00",
+        "checked_at": "2026-06-24T19:01:09.418372+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4506,7 +4509,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.219684+00:00",
+        "checked_at": "2026-06-24T19:01:09.419387+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4966,7 +4969,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.232683+00:00",
+        "checked_at": "2026-06-24T19:01:09.430829+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5419,7 +5422,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.226066+00:00",
+        "checked_at": "2026-06-24T19:01:09.425183+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5870,7 +5873,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.227330+00:00",
+        "checked_at": "2026-06-24T19:01:09.426269+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6321,7 +6324,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.228896+00:00",
+        "checked_at": "2026-06-24T19:01:09.427581+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6775,7 +6778,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.221928+00:00",
+        "checked_at": "2026-06-24T19:01:09.421578+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7229,7 +7232,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.231296+00:00",
+        "checked_at": "2026-06-24T19:01:09.429667+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7678,7 +7681,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.216796+00:00",
+        "checked_at": "2026-06-24T19:01:09.410116+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8128,7 +8131,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.254495+00:00",
+        "checked_at": "2026-06-24T19:01:10.105819+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8580,7 +8583,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.256746+00:00",
+        "checked_at": "2026-06-24T19:01:10.107741+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9036,7 +9039,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T18:38:45.248029+00:00",
+        "checked_at": "2026-06-24T19:01:09.444682+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
