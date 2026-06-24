@@ -1,6 +1,158 @@
 {
   "items": [
     {
+      "id": "5e4b5695af1c5289",
+      "title": "Octopuses taste objects with their arms",
+      "category": "ocean",
+      "autonomy_priority": 81.1,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 83.1,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 56,
+          "signals": {
+            "viral_potential": 51,
+            "visual_potential": 71,
+            "replay_potential": 56,
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 27,
+            "novelty": 61
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.427,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.711,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.55,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
+        },
+        "retention": {
+          "score": 74,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.427,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.711,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.55,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 56,
+          "state": "weak",
+          "subscriber_probability": 0.08,
+          "return_probability": 0.178,
+          "comment_probability": 0.153,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.495,
+            "sample_size": 13,
+            "minimum_sample_size": 18,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.621,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.49."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.49."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.497,
+          "sample_size": 28,
+          "minimum_sample_size": 38,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.623,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.50."
+        },
+        "category": "ocean",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [],
+          "confidence_score": 0.497,
+          "scale_ready": true,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 9.35,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "102be49d568b48c3",
       "title": "Horses sleep standing without falling over",
       "category": "farm",
@@ -173,17 +325,25 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 3,
-      "evergreen": 16
+      "evergreen": 17,
+      "recovery": 3
     },
     "items": [
+      {
+        "id": "5e4b5695af1c5289",
+        "title": "Octopuses taste objects with their arms",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
       {
         "id": "102be49d568b48c3",
         "title": "Horses sleep standing without falling over",
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.92
+        "freshness_score": 53.9
       },
       {
         "id": "a218d50586d65394",
@@ -199,7 +359,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 41.7
+        "freshness_score": 41.68
       },
       {
         "id": "261197331775d3c7",
@@ -223,7 +383,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.78
+        "freshness_score": 50.76
       },
       {
         "id": "463bfdc47b0763aa",
@@ -231,7 +391,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.68
+        "freshness_score": 51.66
       },
       {
         "id": "18762a35e9b1f385",
@@ -247,7 +407,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.6
+        "freshness_score": 42.58
       },
       {
         "id": "caea97ba241a822d",
@@ -263,7 +423,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.6
+        "freshness_score": 42.58
       },
       {
         "id": "ca66243c1b8718b8",
@@ -287,7 +447,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.16
+        "freshness_score": 49.14
       },
       {
         "id": "4882cb732abfab96",
@@ -295,7 +455,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.62
       },
       {
         "id": "0959e9adbf2d97ce",
@@ -303,7 +463,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.54
       },
       {
         "id": "53621058d0424b1c",
@@ -311,7 +471,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.12
+        "freshness_score": 50.1
       },
       {
         "id": "1d1277eef3a52425",
@@ -327,7 +487,7 @@
         "category": "chemistry",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.78
+        "freshness_score": 50.76
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -339,29 +499,39 @@
     "windows": [
       {
         "window": 10,
-        "items": 1,
-        "dominant_shape": "{subject} sleep standing without falling over",
+        "items": 2,
+        "dominant_shape": "{subject} taste objects with their arms",
         "dominant_count": 1,
-        "dominant_share": 1.0,
+        "dominant_share": 0.5,
         "top_shapes": [
+          {
+            "shape": "{subject} taste objects with their arms",
+            "count": 1,
+            "share": 0.5
+          },
           {
             "shape": "{subject} sleep standing without falling over",
             "count": 1,
-            "share": 1.0
+            "share": 0.5
           }
         ]
       },
       {
         "window": 30,
-        "items": 1,
-        "dominant_shape": "{subject} sleep standing without falling over",
+        "items": 2,
+        "dominant_shape": "{subject} taste objects with their arms",
         "dominant_count": 1,
-        "dominant_share": 1.0,
+        "dominant_share": 0.5,
         "top_shapes": [
+          {
+            "shape": "{subject} taste objects with their arms",
+            "count": 1,
+            "share": 0.5
+          },
           {
             "shape": "{subject} sleep standing without falling over",
             "count": 1,
-            "share": 1.0
+            "share": 0.5
           }
         ]
       }
@@ -369,17 +539,18 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 8,
     "reasons": {
       "objective_gate:observe_before_scaling": 9,
       "objective_gate:bootstrap_observe_before_scaling": 9,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 1,
+      "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   }
