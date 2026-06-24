@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T21:17:25.146840+00:00",
+  "generated_at": "2026-06-24T21:22:04.880772+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,14 +15,21 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 25,
     "pending_after": 23,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 2,
+    "repair_needed": 2,
     "repaired": 9,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 10,
+      "subject_not_immediately_clear": 2,
+      "no_action_promise": 2,
+      "title_shape_weak": 2,
+      "title_needs_stronger_shape": 2,
+      "subject_not_clear": 2,
+      "missing_action_word": 2,
+      "queue_score_reject": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
@@ -31,6 +38,74 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "8e1097b5127e4c6c",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "98de1f4765e0edc1",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "b8da7c35431324dd",
+      "title": "Plants turn sunlight into stored sugar",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8c6f10f7d2568582",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "a13475767fce6cb1",
+      "title": "cows survive deserts eating rocks",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e91a4735fb3ca096",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "fc07c74cdf57752e",
       "title": "Dogs read human pointing surprisingly well",
@@ -229,56 +304,6 @@
         "rights_guard_person_manual_review"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "599ad95f6fc689eb",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c422e16ddc401932",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "99d5abf94b91a7f0",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a448a57425a06737",
-      "title": "Why cat paws land almost silently that most people miss",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "74ff4928a18badfb",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9d7f2ba1da176df1",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -428,7 +453,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.836084+00:00",
+        "checked_at": "2026-06-24T21:21:49.246931+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -878,7 +903,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.844680+00:00",
+        "checked_at": "2026-06-24T21:21:49.255729+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1326,7 +1351,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.854850+00:00",
+        "checked_at": "2026-06-24T21:21:49.265953+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1773,7 +1798,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.856828+00:00",
+        "checked_at": "2026-06-24T21:21:49.267931+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2222,7 +2247,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.849986+00:00",
+        "checked_at": "2026-06-24T21:21:49.261098+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2672,7 +2697,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.861056+00:00",
+        "checked_at": "2026-06-24T21:21:49.272152+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3122,7 +3147,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.863056+00:00",
+        "checked_at": "2026-06-24T21:21:49.274188+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3574,7 +3599,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.846202+00:00",
+        "checked_at": "2026-06-24T21:21:49.257229+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4040,7 +4065,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.830255+00:00",
+        "checked_at": "2026-06-24T21:21:49.240832+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4494,7 +4519,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.831323+00:00",
+        "checked_at": "2026-06-24T21:21:49.241929+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4954,7 +4979,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.843137+00:00",
+        "checked_at": "2026-06-24T21:21:49.254197+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5407,7 +5432,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.837198+00:00",
+        "checked_at": "2026-06-24T21:21:49.248054+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5858,7 +5883,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.838446+00:00",
+        "checked_at": "2026-06-24T21:21:49.249253+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6309,7 +6334,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.839890+00:00",
+        "checked_at": "2026-06-24T21:21:49.250716+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6763,7 +6788,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.833427+00:00",
+        "checked_at": "2026-06-24T21:21:49.244357+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7217,7 +7242,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.841857+00:00",
+        "checked_at": "2026-06-24T21:21:49.252885+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7666,7 +7691,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.828446+00:00",
+        "checked_at": "2026-06-24T21:21:49.232564+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8117,7 +8142,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.851444+00:00",
+        "checked_at": "2026-06-24T21:21:49.262556+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8568,7 +8593,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.864698+00:00",
+        "checked_at": "2026-06-24T21:21:49.275841+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9020,7 +9045,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-24T21:17:09.866804+00:00",
+        "checked_at": "2026-06-24T21:21:49.277932+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
