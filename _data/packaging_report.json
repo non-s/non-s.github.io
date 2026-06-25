@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-25T15:00:01.771289+00:00",
-  "pending": 17,
+  "generated_at": "2026-06-25T15:57:08.988167+00:00",
+  "pending": 18,
   "states": {
-    "magnetic": 15,
+    "magnetic": 16,
     "usable": 2
   },
   "top_risks": {
     "missing_visible_cue": 4,
+    "missing_action_word": 2,
     "title_needs_stronger_shape": 2,
-    "subject_not_clear": 2,
-    "missing_action_word": 1
+    "subject_not_clear": 2
   },
   "top": [
     {
@@ -3912,6 +3912,266 @@
           "payoff_time_s": 9.350000000000001,
           "cta_count": 1,
           "loop_score": 0.651
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast."
+      }
+    },
+    {
+      "id": "ea149e2525f361a8",
+      "title": "Rivers sort mud and sand along each bank",
+      "thumbnail_text": "BANK SORTING",
+      "category": "rivers",
+      "packaging": {
+        "score": 83,
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue"
+        ],
+        "risks": [
+          "missing_action_word"
+        ],
+        "title_options": [
+          "Rivers sort mud and sand along each bank",
+          "Rivers use river bank before they compare",
+          "This river bank gives rivers away",
+          "Why rivers compare after one river bank",
+          "Rivers reveal the answer with river bank",
+          "The river bank that changes the moment",
+          "Rivers make one river bank matter",
+          "Rivers show the hidden answer in seconds",
+          "Rivers: watch this river bank",
+          "Watch rivers after the river bank"
+        ],
+        "thumbnail_options": [
+          "BANK SORTING",
+          "RIVER BANK",
+          "WATCH RIVER BANK",
+          "RIVERS COMPARE",
+          "RIVER BANK MATTERS",
+          "RIVER BANK FIRST",
+          "RIVER BANK REVEAL",
+          "RIVER BANK CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "hook_options": [
+          "Rivers sort sediment while they bend",
+          "Rivers show why the river bank matters.",
+          "Rivers show why the river bank matters.",
+          "Rivers show why the river bank matters.",
+          "Rivers give away the answer through river bank"
+        ],
+        "selected_variant": {
+          "score": 77,
+          "title": "Rivers sort mud and sand along each bank",
+          "thumbnail_text": "BANK SORTING",
+          "hook": "Watch the river bank; it explains the behavior"
+        },
+        "top_variants": [
+          {
+            "score": 77,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "BANK SORTING",
+            "hook": "Watch the river bank; it explains the behavior"
+          },
+          {
+            "score": 77,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "BANK SORTING",
+            "hook": "Start with the river bank; it changes the scene"
+          },
+          {
+            "score": 76,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "BANK SORTING",
+            "hook": "Rivers sort sediment while they bend"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "RIVER BANK",
+            "hook": "Watch the river bank; it explains the behavior"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "RIVER BANK",
+            "hook": "Start with the river bank; it changes the scene"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "WATCH RIVER BANK",
+            "hook": "Watch the river bank; it explains the behavior"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "WATCH RIVER BANK",
+            "hook": "Start with the river bank; it changes the scene"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "RIVERS COMPARE",
+            "hook": "Watch the river bank; it explains the behavior"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "RIVERS COMPARE",
+            "hook": "Start with the river bank; it changes the scene"
+          },
+          {
+            "score": 70,
+            "title": "Rivers sort mud and sand along each bank",
+            "thumbnail_text": "RIVER BANK MATTERS",
+            "hook": "Watch the river bank; it explains the behavior"
+          }
+        ],
+        "retention": {
+          "score": 70,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 58,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "experiment": {
+          "mode": "exploit",
+          "explore_rate": 0.1,
+          "winners": {
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}",
+            "thumbnail_pattern": "",
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "format:fresh_variant": 46.85,
+            "hook:new_hook": 46.85,
+            "cta:follow_for_more": 44.0,
+            "thumbnail:new_thumbnail": 42.87,
+            "format:winner_inspired": 41.55
+          },
+          "sample_count": 63,
+          "assignment": {
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail",
+            "cta": "follow_for_more"
+          }
+        },
+        "series_identity": {
+          "series": "Earth Engine",
+          "episode": 4,
+          "label": "Earth Engine #4",
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature."
+        },
+        "pinned_comment": "Watch the sediment again. Tomorrow: another nature signal. Are rivers more like roads, tools, or engines?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after rivers?",
+        "series": "Earth Engine #4",
+        "cta_prompt": "Want to see how moving water reshapes the world?",
+        "replay_prompt": "End by pointing back to the sediment, so viewers rewatch the rivers clip.",
+        "subscriber_conversion": {
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113,
+          "return_probability": 0.242,
+          "comment_probability": 0.207,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "confidence": {
+            "confidence_score": 0.328,
+            "sample_size": 6,
+            "minimum_sample_size": 13,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.496,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.33."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.33."
+        },
+        "curiosity_gap": {
+          "hook": "Why does this freshwater changes after the body cue?",
+          "source": "template",
+          "score": 78.0,
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ]
+        },
+        "swipe_risk": {
+          "score": 0,
+          "band": "low",
+          "reasons": [],
+          "fixes": []
+        },
+        "loop_plan": {
+          "callback_keyword": "rivers",
+          "opening_line": "Rivers sort sediment while they bend.",
+          "ending_line": "Which river edge should we compare next?",
+          "final_line": "Which river edge should we compare next?",
+          "audio_crossfade_ms": 120,
+          "subtitle_tail_mode": "carry-forward",
+          "loop_score": 0.32,
+          "render_hints": {
+            "carry_keyword": "rivers",
+            "subtle_audio_tail": true,
+            "avoid_hard_stop": true
+          }
+        },
+        "loop_score": 0.32,
+        "editorial_rulebook": {
+          "approved": true,
+          "score": 100.0,
+          "violations": [],
+          "notes": [],
+          "recommended_format": "earth engine",
+          "recommended_duration_s": 24
+        },
+        "preflight_inputs": {
+          "first_frame_text": "BANK SORTING",
+          "first_frame_text_words": 2,
+          "hook": "Rivers sort sediment while they bend.",
+          "hook_words": 6,
+          "first_2s_narration": "Rivers sort sediment while they bend Watch the edge of the flow",
+          "caption_chars_per_second": 16.07,
+          "visual_motion_score": 0.76,
+          "contrast_score": 0.74,
+          "hook_specificity": 0.78,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.25,
+          "cta_count": 1,
+          "loop_score": 0.32
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       }
