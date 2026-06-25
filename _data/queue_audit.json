@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T06:34:00.636440+00:00",
+  "generated_at": "2026-06-25T06:38:25.104688+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,22 +15,74 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 28,
     "pending_after": 23,
-    "rejected": 0,
+    "rejected": 5,
     "repair_needed": 0,
-    "repaired": 9,
+    "repaired": 11,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 10,
+      "duplicate_title": 4,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "off_topic_visual": 1,
+      "script_hook_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "db26d8821c78cc5f",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "53621058d0424b1c",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d46a60af3344c8d9",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6c0afeb572351a6a",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "715613b0fc5a731d",
+      "title": "Rivers carve land faster than you think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "4c811013eb38b5c0",
       "title": "Magnets make invisible fields visible",
@@ -267,52 +319,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "e91a4735fb3ca096",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "fc07c74cdf57752e",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "20087a99fa564011",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "f95f0a4ea2479aa0",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1ff02c515902b3b0",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -462,7 +468,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.794614+00:00",
+        "checked_at": "2026-06-25T06:38:08.352731+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -912,7 +918,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.803944+00:00",
+        "checked_at": "2026-06-25T06:38:08.361306+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1360,7 +1366,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.815337+00:00",
+        "checked_at": "2026-06-25T06:38:08.706932+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1807,7 +1813,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.817678+00:00",
+        "checked_at": "2026-06-25T06:38:08.708885+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2256,7 +2262,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.810005+00:00",
+        "checked_at": "2026-06-25T06:38:08.702226+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2706,7 +2712,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.822297+00:00",
+        "checked_at": "2026-06-25T06:38:08.712948+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3012,456 +3018,6 @@
       }
     },
     {
-      "id": "53621058d0424b1c",
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "publish_score": {
-        "approved": true,
-        "category": "discoveries",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 88,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.35,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 67,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 85,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 97.8,
-        "state": "publish_ready",
-        "story_format": "science_clue",
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "title_score": 74,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.824509+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 87.8,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 87.8,
-      "youtube_brain": {
-        "animal": "rock",
-        "commands": [
-          "Open with the visible subject before the behavior."
-        ],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "subject_not_immediately_clear"
-        ],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 87,
-        "state": "publish_minded",
-        "story_format": "science_clue",
-        "strengths": [
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock science clue matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
-        "cta_prompt": "Want fast updates from the edge of science?",
-        "curiosity_gap": {
-          "hook": "Why does this nature changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "science clue",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 60,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 40.42,
-            "cta:specific_question": 41.66,
-            "format:fresh_variant": 52.04,
-            "hook:new_hook": 52.04,
-            "thumbnail:new_thumbnail": 40.54
-          }
-        },
-        "hook_options": [
-          "Rock shows why the pattern matters.",
-          "Rock shows why the fossil shape matters.",
-          "Rock shows why the fossil shape matters.",
-          "Rock shows why the fossil shape matters.",
-          "Rock shows why the fossil shape matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "clue",
-          "ending_line": "Which ancient clue should we read next?",
-          "final_line": "Which ancient clue should we read next?",
-          "loop_score": 0.651,
-          "opening_line": "Fossils can preserve a clue from deep time.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "clue",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.651,
-        "pinned_comment": "Watch the pattern again. Tomorrow: another nature signal. Would you trust this explanation from footage alone?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.59,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Fossils can preserve clue from deep time Watch the shape in the",
-          "first_frame_text": "FOSSIL CLUE",
-          "first_frame_text_words": 2,
-          "hook": "Fossils can preserve a clue from deep time.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.651,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.350000000000001,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the rock clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [
-          "missing_visible_cue"
-        ],
-        "score": 85,
-        "selected_variant": {
-          "hook": "Start with the fossil shape; it changes the scene",
-          "score": 80,
-          "thumbnail_text": "FOSSIL CLUE",
-          "title": "Fossils turn old bones into time clues"
-        },
-        "series": "Discovery Brief",
-        "series_identity": {
-          "continuity_prompt": "Next in Discovery Brief: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Discovery Brief",
-          "series": "Discovery Brief"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FOSSIL CLUE",
-          "FOSSIL SHAPE",
-          "WATCH FOSSIL SHAPE",
-          "FOSSILS LEAVE",
-          "FOSSIL SHAPE MATTERS",
-          "FOSSIL SHAPE FIRST",
-          "FOSSIL SHAPE REVEAL",
-          "FOSSIL SHAPE CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Fossils turn old bones into time clues",
-          "Fossils use fossil shape before they leave",
-          "This fossil shape gives fossils away",
-          "Why fossils leave after one fossil shape",
-          "Fossils reveal the answer with fossil shape",
-          "The fossil shape that changes the moment",
-          "Fossils make one fossil shape matter",
-          "Fossils show the hidden answer in seconds",
-          "Fossils: watch this fossil shape",
-          "Watch fossils after the fossil shape"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the fossil shape; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "FOSSIL CLUE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Fossils can preserve a clue from deep time",
-            "score": 78,
-            "thumbnail_text": "FOSSIL CLUE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Watch the fossil shape; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "FOSSIL CLUE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Start with the fossil shape; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "FOSSIL SHAPE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Start with the fossil shape; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH FOSSIL SHAPE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Start with the fossil shape; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "FOSSILS LEAVE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Start with the fossil shape; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "FOSSIL SHAPE MATTERS",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Fossils can preserve a clue from deep time",
-            "score": 71,
-            "thumbnail_text": "FOSSIL SHAPE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Watch the fossil shape; it explains the behavior",
-            "score": 71,
-            "thumbnail_text": "FOSSIL SHAPE",
-            "title": "Fossils turn old bones into time clues"
-          },
-          {
-            "hook": "Fossils can preserve a clue from deep time",
-            "score": 71,
-            "thumbnail_text": "WATCH FOSSIL SHAPE",
-            "title": "Fossils turn old bones into time clues"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "5a79c67faae212d6",
       "title": "Lions hunt better when the pride coordinates",
       "category": "wildlife",
@@ -3608,7 +3164,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.805578+00:00",
+        "checked_at": "2026-06-25T06:38:08.362810+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3918,6 +3474,456 @@
       }
     },
     {
+      "id": "6350becf0392cf8d",
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "publish_score": {
+        "approved": true,
+        "category": "discoveries",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 88,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.35,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 67,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 85,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 96.6,
+        "state": "publish_ready",
+        "story_format": "science_clue",
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "title_score": 74,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-25T06:38:08.698481+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 86.6,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 86.6,
+      "youtube_brain": {
+        "animal": "rock",
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 87,
+        "state": "publish_minded",
+        "story_format": "science_clue",
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "rock",
+        "viewer_promise": "See why this rock science clue matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
+        "cta_prompt": "Want fast updates from the edge of science?",
+        "curiosity_gap": {
+          "hook": "Why does this wildlifescience changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "science clue",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 60,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 40.42,
+            "cta:specific_question": 41.66,
+            "format:fresh_variant": 52.04,
+            "hook:new_hook": 52.04,
+            "thumbnail:new_thumbnail": 40.54
+          }
+        },
+        "hook_options": [
+          "Rock shows why the pattern matters.",
+          "Rock shows why the fossil shape matters.",
+          "Rock shows why the fossil shape matters.",
+          "Rock shows why the fossil shape matters.",
+          "Rock shows why the fossil shape matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "clue",
+          "ending_line": "Which ancient clue should we read next?",
+          "final_line": "Which ancient clue should we read next?",
+          "loop_score": 0.651,
+          "opening_line": "Fossils can preserve a clue from deep time.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "clue",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.651,
+        "pinned_comment": "Watch the pattern again. Tomorrow: another nature signal. Would you trust this explanation from footage alone?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.59,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Fossils can preserve clue from deep time Watch the shape in the",
+          "first_frame_text": "FOSSIL CLUE",
+          "first_frame_text_words": 2,
+          "hook": "Fossils can preserve a clue from deep time.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.651,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.350000000000001,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the rock clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [
+          "missing_visible_cue"
+        ],
+        "score": 85,
+        "selected_variant": {
+          "hook": "Start with the fossil shape; it changes the scene",
+          "score": 80,
+          "thumbnail_text": "FOSSIL CLUE",
+          "title": "Fossils turn old bones into time clues"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FOSSIL CLUE",
+          "FOSSIL SHAPE",
+          "WATCH FOSSIL SHAPE",
+          "FOSSILS LEAVE",
+          "FOSSIL SHAPE MATTERS",
+          "FOSSIL SHAPE FIRST",
+          "FOSSIL SHAPE REVEAL",
+          "FOSSIL SHAPE CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Fossils turn old bones into time clues",
+          "Fossils use fossil shape before they leave",
+          "This fossil shape gives fossils away",
+          "Why fossils leave after one fossil shape",
+          "Fossils reveal the answer with fossil shape",
+          "The fossil shape that changes the moment",
+          "Fossils make one fossil shape matter",
+          "Fossils show the hidden answer in seconds",
+          "Fossils: watch this fossil shape",
+          "Watch fossils after the fossil shape"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the fossil shape; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "FOSSIL CLUE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Fossils can preserve a clue from deep time",
+            "score": 78,
+            "thumbnail_text": "FOSSIL CLUE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Watch the fossil shape; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "FOSSIL CLUE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Start with the fossil shape; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FOSSIL SHAPE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Start with the fossil shape; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH FOSSIL SHAPE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Start with the fossil shape; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FOSSILS LEAVE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Start with the fossil shape; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FOSSIL SHAPE MATTERS",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Fossils can preserve a clue from deep time",
+            "score": 71,
+            "thumbnail_text": "FOSSIL SHAPE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Watch the fossil shape; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "FOSSIL SHAPE",
+            "title": "Fossils turn old bones into time clues"
+          },
+          {
+            "hook": "Fossils can preserve a clue from deep time",
+            "score": 71,
+            "thumbnail_text": "WATCH FOSSIL SHAPE",
+            "title": "Fossils turn old bones into time clues"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "102be49d568b48c3",
       "title": "Horses sleep standing without falling over",
       "category": "farm",
@@ -4074,7 +4080,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.787522+00:00",
+        "checked_at": "2026-06-25T06:38:08.347249+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4528,7 +4534,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.788665+00:00",
+        "checked_at": "2026-06-25T06:38:08.348321+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4988,7 +4994,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.802281+00:00",
+        "checked_at": "2026-06-25T06:38:08.359781+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5441,7 +5447,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.795828+00:00",
+        "checked_at": "2026-06-25T06:38:08.353849+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5892,7 +5898,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.797120+00:00",
+        "checked_at": "2026-06-25T06:38:08.355061+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6343,7 +6349,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.798757+00:00",
+        "checked_at": "2026-06-25T06:38:08.356528+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6797,7 +6803,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.790850+00:00",
+        "checked_at": "2026-06-25T06:38:08.350178+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7251,7 +7257,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.800901+00:00",
+        "checked_at": "2026-06-25T06:38:08.358495+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7700,7 +7706,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.785642+00:00",
+        "checked_at": "2026-06-25T06:38:08.344157+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8151,7 +8157,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.811597+00:00",
+        "checked_at": "2026-06-25T06:38:08.703640+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8602,7 +8608,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.826288+00:00",
+        "checked_at": "2026-06-25T06:38:09.401441+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9054,7 +9060,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T06:33:44.828570+00:00",
+        "checked_at": "2026-06-25T06:38:09.403592+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
