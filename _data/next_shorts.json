@@ -8,7 +8,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 16,
+      "evergreen": 17,
       "recovery": 3
     },
     "items": [
@@ -18,7 +18,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.48
+        "freshness_score": 51.42
       },
       {
         "id": "7cc563fc5687b336",
@@ -26,7 +26,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.08
+        "freshness_score": 53.02
       },
       {
         "id": "144ab47c59f2f2f0",
@@ -34,7 +34,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.16
+        "freshness_score": 53.1
       },
       {
         "id": "261197331775d3c7",
@@ -42,7 +42,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.12
+        "freshness_score": 37.06
       },
       {
         "id": "c54bd92793dd620a",
@@ -50,7 +50,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.66
+        "freshness_score": 40.6
       },
       {
         "id": "fad3f2887e3ab88d",
@@ -58,7 +58,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.76
+        "freshness_score": 42.72
       },
       {
         "id": "463bfdc47b0763aa",
@@ -66,7 +66,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.66
+        "freshness_score": 49.62
       },
       {
         "id": "18762a35e9b1f385",
@@ -74,12 +74,20 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.64
+        "freshness_score": 40.58
       },
       {
         "id": "37497b80fa4328f9",
         "title": "Plants turn sunlight into stored sugar",
         "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.94
+      },
+      {
+        "id": "77ef7b4a016ae854",
+        "title": "Lavas use cloud patterns before they cool",
+        "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 55.0
@@ -90,7 +98,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.5
+        "freshness_score": 39.44
       },
       {
         "id": "fe0bfc2851fa40e1",
@@ -98,7 +106,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.14
+        "freshness_score": 41.1
       },
       {
         "id": "ea149e2525f361a8",
@@ -106,7 +114,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.86
+        "freshness_score": 54.82
       },
       {
         "id": "fa0b931d2a8c8a0c",
@@ -114,7 +122,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.36
       },
       {
         "id": "26ca036370f8ef51",
@@ -122,7 +130,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.08
+        "freshness_score": 53.02
       },
       {
         "id": "3553511a7ccbe768",
@@ -130,7 +138,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.94
       },
       {
         "id": "7fdc62557df3560c",
@@ -138,7 +146,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 39.68
+        "freshness_score": 39.64
       },
       {
         "id": "1d1277eef3a52425",
@@ -146,7 +154,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.84
+        "freshness_score": 52.78
       },
       {
         "id": "6350becf0392cf8d",
@@ -154,7 +162,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.1
+        "freshness_score": 54.04
       },
       {
         "id": "860a6c6c2c644d35",
@@ -162,7 +170,7 @@
         "category": "chemistry",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.76
+        "freshness_score": 42.72
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -175,17 +183,17 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 10,
+      "objective_gate:bootstrap_observe_before_scaling": 11,
       "objective_gate:observe_before_scaling": 6,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2,
       "editor_in_chief:editorial score 49 is below 62": 1
     }
   }
