@@ -208,10 +208,16 @@ def build_broll_short(
     segment_frames = int(round(seg_dur * TARGET_FPS))
     for i, clip in enumerate(broll_paths):
         zoom_in = i % 2 == 0
-        # MrBeast Pacing: Aggressive Jump Cuts.
-        # Instead of a smooth Ken Burns pan, the camera abruptly punches in
-        # and out every ~1.5 seconds, artificially creating high-energy motion.
-        z_expr = "if(lt(mod(t,1.5),0.75),1.05,1.25)"
+        # zoompan z starts at 1 and grows (or shrinks) per frame. A 1.08
+        # final zoom over seg_dur ≈ 1.78% per second — slow enough to
+        # feel cinematic, not so fast the viewer notices the crop walking.
+        # Direction alternates per clip (in / out / in) so consecutive
+        # segments feel different and the edit has energy.
+        zoom_step = 0.08 / max(segment_frames, 1)
+        if zoom_in:
+            z_expr = f"min(zoom+{zoom_step:.6f}\\,1.08)"
+        else:
+            z_expr = f"if(eq(on\\,0)\\,1.08\\,max(zoom-{zoom_step:.6f}\\,1.00))"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2× the offset scales too.
@@ -235,9 +241,6 @@ def build_broll_short(
             # Ken Burns push — `d=1` outputs one frame per input frame so
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
             # the output back down to Shorts native after the crop walk.
-            # Single quotes around z/x/y values protect commas and special
-            # chars from the filtergraph parser — no backslash escaping
-            # needed inside the quotes.
             f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
             f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
             f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
