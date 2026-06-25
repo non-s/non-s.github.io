@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T10:22:56.606031+00:00",
+  "generated_at": "2026-06-25T10:27:22.923382+00:00",
   "pending": 22,
   "states": {
     "rewrite": 11,
@@ -14,22 +14,61 @@
     "approved": 22
   },
   "prune_summary": {
-    "pending_before": 22,
+    "pending_before": 26,
     "pending_after": 22,
-    "rejected": 0,
+    "rejected": 4,
     "repair_needed": 0,
-    "repaired": 9,
+    "repaired": 10,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
       "objective_gate:observe_before_scaling": 9,
+      "rights_guard_person_manual_review": 3,
+      "script_hook_mismatch": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "script_word_loop": 1,
+      "duplicate_title": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "23cc4a86f71b80f4",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "2332f58b2599f4d8",
+      "title": "Lightning turns air into a shock wave",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1dbcc95d657cb978",
+      "title": "Why a dog's nose changes the whole story in the first second",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a2510564b5e95a85",
+      "title": "snowstorms are not white noise they're air factories",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "81c9157700c4ca16",
       "title": "Ducks Las patos fingen heridas para salvar a sus crías",
@@ -263,40 +302,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "10f86fe98c3b9749",
-      "title": "Cats measure tight spaces with their whiskers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "969dd963aca75fd5",
-      "title": "Cats use grooming to reset their scent map",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d5431c3229ceadcc",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c5f4d3ac8b2f33be",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -444,7 +449,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.281691+00:00",
+        "checked_at": "2026-06-25T10:27:07.472420+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 100.0,
@@ -892,7 +897,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.294391+00:00",
+        "checked_at": "2026-06-25T10:27:07.485453+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1340,7 +1345,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.299204+00:00",
+        "checked_at": "2026-06-25T10:27:07.490551+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1787,7 +1792,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.303158+00:00",
+        "checked_at": "2026-06-25T10:27:07.494648+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2236,7 +2241,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.304985+00:00",
+        "checked_at": "2026-06-25T10:27:07.496586+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2686,7 +2691,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.309344+00:00",
+        "checked_at": "2026-06-25T10:27:07.501141+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3138,7 +3143,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.295943+00:00",
+        "checked_at": "2026-06-25T10:27:07.487084+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3592,7 +3597,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.315211+00:00",
+        "checked_at": "2026-06-25T10:27:07.507257+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4047,7 +4052,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.282849+00:00",
+        "checked_at": "2026-06-25T10:27:07.473575+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:payoff_too_late_for_current_swipe_baseline"
@@ -4510,7 +4515,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.292822+00:00",
+        "checked_at": "2026-06-25T10:27:07.483793+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4961,7 +4966,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.286456+00:00",
+        "checked_at": "2026-06-25T10:27:07.477038+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5412,7 +5417,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.287687+00:00",
+        "checked_at": "2026-06-25T10:27:07.478327+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5866,7 +5871,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.311474+00:00",
+        "checked_at": "2026-06-25T10:27:07.503271+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6319,7 +6324,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.289196+00:00",
+        "checked_at": "2026-06-25T10:27:07.479882+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6771,7 +6776,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.291209+00:00",
+        "checked_at": "2026-06-25T10:27:07.482060+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7224,7 +7229,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.285326+00:00",
+        "checked_at": "2026-06-25T10:27:07.475870+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7676,7 +7681,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.297430+00:00",
+        "checked_at": "2026-06-25T10:27:07.488667+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -8127,7 +8132,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.313176+00:00",
+        "checked_at": "2026-06-25T10:27:07.505048+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8579,7 +8584,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.317374+00:00",
+        "checked_at": "2026-06-25T10:27:07.509541+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9035,7 +9040,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T10:22:41.307110+00:00",
+        "checked_at": "2026-06-25T10:27:07.498821+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
