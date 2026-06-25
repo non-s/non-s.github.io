@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T00:18:02.963680+00:00",
+  "generated_at": "2026-06-25T00:23:08.518676+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,22 +15,49 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 25,
     "pending_after": 23,
-    "rejected": 0,
+    "rejected": 2,
     "repair_needed": 0,
-    "repaired": 9,
+    "repaired": 10,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 10,
+      "duplicate_title": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "bb8d1bea98c9a6a3",
+      "title": "Storm clouds reveal weather from above the clouds",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1fd4f486d16503d8",
+      "title": "Lions hunt better when the pride coordinates",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "654f28cc2f073f6f",
       "title": "Dogs read human pointing surprisingly well",
@@ -290,22 +317,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "6acddd4526ed5670",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1f17c2fa70a3f8ef",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -455,7 +466,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.838735+00:00",
+        "checked_at": "2026-06-25T00:22:52.107529+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -905,7 +916,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.847496+00:00",
+        "checked_at": "2026-06-25T00:22:52.116538+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1353,7 +1364,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.857794+00:00",
+        "checked_at": "2026-06-25T00:22:52.127061+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1800,7 +1811,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.859874+00:00",
+        "checked_at": "2026-06-25T00:22:52.129133+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2249,7 +2260,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.852882+00:00",
+        "checked_at": "2026-06-25T00:22:52.122006+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2699,7 +2710,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.864299+00:00",
+        "checked_at": "2026-06-25T00:22:52.133546+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3149,7 +3160,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.866381+00:00",
+        "checked_at": "2026-06-25T00:22:52.520476+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3601,7 +3612,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.849041+00:00",
+        "checked_at": "2026-06-25T00:22:52.118101+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4067,7 +4078,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.833162+00:00",
+        "checked_at": "2026-06-25T00:22:52.100986+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4521,7 +4532,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.834229+00:00",
+        "checked_at": "2026-06-25T00:22:52.102091+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4981,7 +4992,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.845947+00:00",
+        "checked_at": "2026-06-25T00:22:52.114975+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5434,7 +5445,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.839847+00:00",
+        "checked_at": "2026-06-25T00:22:52.108649+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5885,7 +5896,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.841053+00:00",
+        "checked_at": "2026-06-25T00:22:52.109896+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6336,7 +6347,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.842517+00:00",
+        "checked_at": "2026-06-25T00:22:52.111381+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6790,7 +6801,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.836218+00:00",
+        "checked_at": "2026-06-25T00:22:52.104844+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7244,7 +7255,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.844618+00:00",
+        "checked_at": "2026-06-25T00:22:52.113637+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7693,7 +7704,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.831489+00:00",
+        "checked_at": "2026-06-25T00:22:52.099285+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8144,7 +8155,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.854337+00:00",
+        "checked_at": "2026-06-25T00:22:52.123504+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8595,7 +8606,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.868050+00:00",
+        "checked_at": "2026-06-25T00:22:52.522232+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9047,7 +9058,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T00:17:47.870167+00:00",
+        "checked_at": "2026-06-25T00:22:52.524496+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
