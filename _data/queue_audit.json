@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T04:34:12.751747+00:00",
+  "generated_at": "2026-06-25T04:40:05.865899+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,9 +15,9 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 25,
     "pending_after": 23,
-    "rejected": 0,
+    "rejected": 2,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
@@ -26,11 +26,31 @@
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "rights_guard_person_manual_review": 1,
+      "script_hook_mismatch": 1,
+      "off_topic_visual": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "aef0ae4dda4a4ce9",
+      "title": "Bees don’t pollinate the way your teacher said",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f7d206b9ab8705fc",
+      "title": "Houseplant pollination you're doing wrong",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "96b6015754c8b261",
       "title": "Bees don't just pollinate flowers they taste with their feet",
@@ -294,23 +314,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "e9560b7b545e9874",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "script does not expose enough concrete visual detail",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "a09ee569acae3803",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -460,7 +463,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.940466+00:00",
+        "checked_at": "2026-06-25T04:39:50.562575+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -910,7 +913,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.948136+00:00",
+        "checked_at": "2026-06-25T04:39:50.577637+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1358,7 +1361,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.957242+00:00",
+        "checked_at": "2026-06-25T04:39:50.588765+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1805,7 +1808,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.959032+00:00",
+        "checked_at": "2026-06-25T04:39:50.590909+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2254,7 +2257,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.952889+00:00",
+        "checked_at": "2026-06-25T04:39:50.583483+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2704,7 +2707,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.962850+00:00",
+        "checked_at": "2026-06-25T04:39:50.595415+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3154,7 +3157,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.964646+00:00",
+        "checked_at": "2026-06-25T04:39:50.597531+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3606,7 +3609,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.949495+00:00",
+        "checked_at": "2026-06-25T04:39:50.579344+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4072,7 +4075,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.935262+00:00",
+        "checked_at": "2026-06-25T04:39:50.556706+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4526,7 +4529,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.936202+00:00",
+        "checked_at": "2026-06-25T04:39:50.557828+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4986,7 +4989,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.946756+00:00",
+        "checked_at": "2026-06-25T04:39:50.576004+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5439,7 +5442,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.941465+00:00",
+        "checked_at": "2026-06-25T04:39:50.569528+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5890,7 +5893,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.942553+00:00",
+        "checked_at": "2026-06-25T04:39:50.570801+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6341,7 +6344,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.943868+00:00",
+        "checked_at": "2026-06-25T04:39:50.572369+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6795,7 +6798,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.938089+00:00",
+        "checked_at": "2026-06-25T04:39:50.559929+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7249,7 +7252,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.945601+00:00",
+        "checked_at": "2026-06-25T04:39:50.574568+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7698,7 +7701,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.933810+00:00",
+        "checked_at": "2026-06-25T04:39:50.555000+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8149,7 +8152,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.954201+00:00",
+        "checked_at": "2026-06-25T04:39:50.585040+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8600,7 +8603,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.966122+00:00",
+        "checked_at": "2026-06-25T04:39:50.599256+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9052,7 +9055,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T04:33:58.968005+00:00",
+        "checked_at": "2026-06-25T04:39:50.601468+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
