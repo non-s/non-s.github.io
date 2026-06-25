@@ -1,175 +1,5 @@
 {
-  "items": [
-    {
-      "id": "102be49d568b48c3",
-      "title": "Horses sleep standing without falling over",
-      "category": "farm",
-      "autonomy_priority": 87.8,
-      "queue_score": 78.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:observe_before_scaling",
-        "publish_ready_supply_reserve_fallback"
-      ],
-      "lane": "recovery",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 45,
-          "signals": {
-            "viral_potential": 40,
-            "visual_potential": 40,
-            "replay_potential": 59,
-            "comment_potential": 41,
-            "educational_potential": 60,
-            "emotional_potential": 30,
-            "novelty": 40
-          },
-          "verdict": "discard",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-        },
-        "weak_content": {
-          "risk": 14,
-          "state": "clear",
-          "reasons": [
-            "weak_hook_pattern"
-          ],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 94,
-          "state": "strong",
-          "subscriber_probability": 0.134,
-          "return_probability": 0.283,
-          "comment_probability": 0.242,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.293,
-            "sample_size": 8,
-            "minimum_sample_size": 18,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.47,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.274,
-          "sample_size": 16,
-          "minimum_sample_size": 38,
-          "data_quality": "estimated",
-          "data_quality_score": 0.48,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.456,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
-        },
-        "category": "farm",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "confidence_score": 0.274,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 9.9,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ]
-        }
-      }
-    }
-  ],
+  "items": [],
   "editorial_mix": {
     "targets": {
       "trend": 0.25,
@@ -179,7 +9,7 @@
     },
     "counts": {
       "evergreen": 18,
-      "recovery": 3
+      "recovery": 2
     },
     "items": [
       {
@@ -196,7 +26,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.56
+        "freshness_score": 53.54
       },
       {
         "id": "144ab47c59f2f2f0",
@@ -204,7 +34,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.62
       },
       {
         "id": "261197331775d3c7",
@@ -220,7 +50,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.14
+        "freshness_score": 41.12
       },
       {
         "id": "fad3f2887e3ab88d",
@@ -239,20 +69,12 @@
         "freshness_score": 50.14
       },
       {
-        "id": "102be49d568b48c3",
-        "title": "Horses sleep standing without falling over",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 52.38
-      },
-      {
         "id": "18762a35e9b1f385",
         "title": "Wolves leave scent notes for the pack",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.12
+        "freshness_score": 41.1
       },
       {
         "id": "5a79c67faae212d6",
@@ -268,7 +90,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.62
       },
       {
         "id": "887da3d44d921125",
@@ -308,7 +130,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.9
+        "freshness_score": 54.88
       },
       {
         "id": "26ca036370f8ef51",
@@ -316,7 +138,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.56
+        "freshness_score": 53.54
       },
       {
         "id": "7fdc62557df3560c",
@@ -357,51 +179,21 @@
     "status": "healthy",
     "warnings": [],
     "rewrite_candidates": [],
-    "windows": [
-      {
-        "window": 10,
-        "items": 1,
-        "dominant_shape": "{subject} sleep standing without falling over",
-        "dominant_count": 1,
-        "dominant_share": 1.0,
-        "top_shapes": [
-          {
-            "shape": "{subject} sleep standing without falling over",
-            "count": 1,
-            "share": 1.0
-          }
-        ]
-      },
-      {
-        "window": 30,
-        "items": 1,
-        "dominant_shape": "{subject} sleep standing without falling over",
-        "dominant_count": 1,
-        "dominant_share": 1.0,
-        "top_shapes": [
-          {
-            "shape": "{subject} sleep standing without falling over",
-            "count": 1,
-            "share": 1.0
-          }
-        ]
-      }
-    ]
+    "windows": []
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 21,
-    "pending_after": 21,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "objective_gate:observe_before_scaling": 8,
+      "objective_gate:observe_before_scaling": 7,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 1,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1
     }
   }
 }

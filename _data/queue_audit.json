@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-25T11:51:17.988853+00:00",
-  "pending": 21,
+  "generated_at": "2026-06-25T11:55:35.111185+00:00",
+  "pending": 20,
   "states": {
     "rewrite": 11,
-    "publish_ready": 10
+    "publish_ready": 9
   },
   "mechanism_clusters": {
     "scent_map": 3,
@@ -11,49 +11,32 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 21
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 24,
-    "pending_after": 21,
-    "rejected": 3,
+    "pending_before": 20,
+    "pending_after": 20,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 10,
+    "repaired": 9,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 10,
-      "objective_gate:observe_before_scaling": 8,
-      "rights_guard_person_manual_review": 2,
+      "objective_gate:observe_before_scaling": 7,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "off_topic_visual": 1,
       "editor_in_chief:subject repeated inside 3-day cooldown": 1,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "68cb61e88a725d37",
-      "title": "Dogs read human pointing surprisingly well",
+      "id": "102be49d568b48c3",
+      "title": "Horses Caballos duermen parados y no se caen",
       "reasons": [
-        "rights_guard_person_manual_review"
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 45 is below 62"
       ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "19b1f2428b4da471",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "bf71ec1d3f2a09d0",
-      "title": "Dogs sniff the ground for reasons you completely miss",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
+      "stage": "editor_in_chief"
     },
     {
       "id": "d8f8f6fdfe388e41",
@@ -295,6 +278,23 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "f7d206b9ab8705fc",
+      "title": "Houseplant pollination you're doing wrong",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "96b6015754c8b261",
+      "title": "Bees don't just pollinate flowers they taste with their feet",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -442,7 +442,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.155863+00:00",
+        "checked_at": "2026-06-25T11:55:21.217328+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 100.0,
@@ -507,7 +507,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -890,7 +890,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.167690+00:00",
+        "checked_at": "2026-06-25T11:55:21.226570+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -955,7 +955,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1338,7 +1338,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.172637+00:00",
+        "checked_at": "2026-06-25T11:55:21.231656+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1403,7 +1403,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1785,7 +1785,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.176503+00:00",
+        "checked_at": "2026-06-25T11:55:21.235952+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1850,7 +1850,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2234,7 +2234,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.178349+00:00",
+        "checked_at": "2026-06-25T11:55:21.237902+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2301,7 +2301,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2684,7 +2684,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.182690+00:00",
+        "checked_at": "2026-06-25T11:55:21.242578+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2752,7 +2752,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3136,7 +3136,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.169270+00:00",
+        "checked_at": "2026-06-25T11:55:21.228196+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3208,7 +3208,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3590,7 +3590,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.188350+00:00",
+        "checked_at": "2026-06-25T11:55:21.248903+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3658,7 +3658,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4045,7 +4045,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.157029+00:00",
+        "checked_at": "2026-06-25T11:55:21.218454+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:payoff_too_late_for_current_swipe_baseline"
@@ -4110,7 +4110,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4348,471 +4348,6 @@
       }
     },
     {
-      "id": "102be49d568b48c3",
-      "title": "Horses sleep standing without falling over",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.456,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.274,
-          "data_quality": "estimated",
-          "data_quality_score": 0.48,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27.",
-          "recommendation_strength": "observe",
-          "sample_size": 16
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.274,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "score": 45,
-          "signals": {
-            "comment_potential": 41,
-            "educational_potential": 60,
-            "emotional_potential": 30,
-            "novelty": 40,
-            "replay_potential": 59,
-            "viral_potential": 40,
-            "visual_potential": 40
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.47,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.293,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
-            "recommendation_strength": "observe",
-            "sample_size": 8
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "weak_hook_pattern"
-          ],
-          "risk": 14,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.164976+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "publish_ready_supply_reserve_fallback"
-        ],
-        "score": 78.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "horses",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "horses",
-        "viewer_promise": "See why horses body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after horses?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why does this nature changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 61,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 44.0,
-            "format:fresh_variant": 46.85,
-            "format:winner_inspired": 41.55,
-            "hook:new_hook": 46.85,
-            "thumbnail:new_thumbnail": 42.87
-          }
-        },
-        "hook_options": [
-          "Horses can lock their legs while resting",
-          "Horses show why the locked legs matters.",
-          "Horses show why the locked legs matters.",
-          "Horses show why the locked legs matters.",
-          "Horses give away the answer through locked legs"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "horses",
-          "ending_line": "Would you sleep like that?",
-          "final_line": "Would you sleep like that?",
-          "loop_score": 0.284,
-          "opening_line": "Horses can lock their legs while resting.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "horses",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.284,
-        "pinned_comment": "Watch the locked legs again. Tomorrow: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Horses can lock their legs while resting Watch the legs when the",
-          "first_frame_text": "LOCKED LEGS",
-          "first_frame_text_words": 2,
-          "hook": "Horses can lock their legs while resting.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.284,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the locked legs, so viewers rewatch the horses clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 91,
-        "selected_variant": {
-          "hook": "Horses can lock their legs while resting",
-          "score": 73,
-          "thumbnail_text": "LOCKED LEGS",
-          "title": "Horses sleep standing without falling over"
-        },
-        "series": "Farmyard Surprises #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 9,
-          "label": "Farmyard Surprises #9",
-          "series": "Farmyard Surprises"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.47,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.293,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
-            "recommendation_strength": "observe",
-            "sample_size": 8
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "LOCKED LEGS",
-          "WATCH LOCKED LEGS",
-          "HORSES LOCK",
-          "LOCKED LEGS MATTERS",
-          "LOCKED LEGS FIRST",
-          "LOCKED LEGS REVEAL",
-          "LOCKED LEGS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Horses sleep standing without falling over",
-          "Horses use locked legs before they lock",
-          "Why horses lock after one locked legs",
-          "Horses reveal the answer with locked legs",
-          "The locked legs that changes the moment",
-          "Horses make one locked legs matter",
-          "Horses show the hidden answer in seconds",
-          "Horses: watch this locked legs",
-          "Watch horses after the locked legs"
-        ],
-        "top_variants": [
-          {
-            "hook": "Horses can lock their legs while resting",
-            "score": 73,
-            "thumbnail_text": "LOCKED LEGS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Start with the locked legs; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "LOCKED LEGS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Watch the locked legs; it explains the behavior",
-            "score": 71,
-            "thumbnail_text": "LOCKED LEGS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Horses can lock their legs while resting",
-            "score": 66,
-            "thumbnail_text": "WATCH LOCKED LEGS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Start with the locked legs; it changes the scene",
-            "score": 66,
-            "thumbnail_text": "WATCH LOCKED LEGS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Horses can lock their legs while resting",
-            "score": 66,
-            "thumbnail_text": "HORSES LOCK",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Start with the locked legs; it changes the scene",
-            "score": 66,
-            "thumbnail_text": "HORSES LOCK",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Horses can lock their legs while resting",
-            "score": 66,
-            "thumbnail_text": "LOCKED LEGS MATTERS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Start with the locked legs; it changes the scene",
-            "score": 66,
-            "thumbnail_text": "LOCKED LEGS MATTERS",
-            "title": "Horses sleep standing without falling over"
-          },
-          {
-            "hook": "Horses can lock their legs while resting",
-            "score": 66,
-            "thumbnail_text": "LOCKED LEGS FIRST",
-            "title": "Horses sleep standing without falling over"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "261197331775d3c7",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
@@ -4959,7 +4494,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.158224+00:00",
+        "checked_at": "2026-06-25T11:55:21.219620+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5026,7 +4561,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5410,7 +4945,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.159468+00:00",
+        "checked_at": "2026-06-25T11:55:21.220917+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5477,7 +5012,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5864,7 +5399,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.184589+00:00",
+        "checked_at": "2026-06-25T11:55:21.244845+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5931,7 +5466,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6019,12 +5554,12 @@
           "thumbnail_text": "FLOCK MEMORY",
           "title": "Sheep recognize faces across the flock"
         },
-        "series": "Farmyard Surprises #9",
+        "series": "Farmyard Surprises #10",
         "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises #9: compare this with another force of nature.",
+          "continuity_prompt": "Next in Farmyard Surprises #10: compare this with another force of nature.",
           "episode": 1,
-          "label": "Farmyard Surprises #9",
-          "series": "Farmyard Surprises #9"
+          "label": "Farmyard Surprises #10",
+          "series": "Farmyard Surprises #10"
         },
         "state": "magnetic",
         "strengths": [
@@ -6317,7 +5852,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.160996+00:00",
+        "checked_at": "2026-06-25T11:55:21.222474+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6384,7 +5919,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6769,7 +6304,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.163255+00:00",
+        "checked_at": "2026-06-25T11:55:21.224904+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6836,7 +6371,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7222,7 +6757,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.170846+00:00",
+        "checked_at": "2026-06-25T11:55:21.229773+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7290,7 +6825,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7673,7 +7208,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.186288+00:00",
+        "checked_at": "2026-06-25T11:55:21.246726+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7742,7 +7277,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8125,7 +7660,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.190500+00:00",
+        "checked_at": "2026-06-25T11:55:21.251184+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8196,7 +7731,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8581,7 +8116,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.180470+00:00",
+        "checked_at": "2026-06-25T11:55:21.240134+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8649,7 +8184,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9029,7 +8564,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T11:51:03.153852+00:00",
+        "checked_at": "2026-06-25T11:55:21.215308+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown"
@@ -9094,7 +8629,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 61,
+          "sample_count": 62,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9316,6 +8851,458 @@
             "score": 73,
             "thumbnail_text": "FORESTS LEAVES",
             "title": "Forests hold cool fog between the trees"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "ca66243c1b8718b8",
+      "title": "Rock layers reveal heat moving under the surface",
+      "category": "geology",
+      "publish_score": {
+        "approved": true,
+        "category": "geology",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.376,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.168,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.17.",
+          "recommendation_strength": "observe",
+          "sample_size": 9
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.168,
+          "mechanism_cluster": "",
+          "payoff_time_s": 8.25,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 100
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 78,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.496,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.328,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-25T11:55:21.233600+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:story angle repeated inside 10-day cooldown"
+        ],
+        "score": 58.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 58.0,
+      "youtube_brain": {
+        "animal": "rock",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "script_length_risk"
+        ],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 87,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "rock",
+        "viewer_promise": "See why this rock earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "curiosity_gap": {
+          "hook": "Why does this geology changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 62,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} in {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 44.0,
+            "format:fresh_variant": 46.85,
+            "format:winner_inspired": 41.55,
+            "hook:new_hook": 46.85,
+            "thumbnail:new_thumbnail": 42.87
+          }
+        },
+        "hook_options": [
+          "Rock layers can expose heat moving below ground",
+          "Rock shows why the rock layers matters.",
+          "Rock shows why the rock layers matters.",
+          "Rock shows why the rock layers matters.",
+          "Rock layers give away the answer through steam vent"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "rock",
+          "ending_line": "Which geothermal clue should come next?",
+          "final_line": "Which geothermal clue should come next?",
+          "loop_score": 0.234,
+          "opening_line": "Rock layers can expose heat moving below ground.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "rock",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.234,
+        "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 17.0,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Rock layers can expose heat moving below ground Watch the steam because",
+          "first_frame_text": "HEAT PATH",
+          "first_frame_text_words": 2,
+          "hook": "Rock layers can expose heat moving below ground.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.234,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8.25,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 78,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 94,
+        "selected_variant": {
+          "hook": "Start with the steam vent; it changes the scene",
+          "score": 83,
+          "thumbnail_text": "HEAT PATH",
+          "title": "Rock layers reveal heat moving under the surface"
+        },
+        "series": "Earth Engine #4",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine #4: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Earth Engine #4",
+          "series": "Earth Engine #4"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.496,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.328,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "HEAT PATH",
+          "STEAM VENT",
+          "WATCH STEAM VENT",
+          "ROCK LAYERS SIGNAL",
+          "STEAM VENT MATTERS",
+          "STEAM VENT FIRST",
+          "STEAM VENT REVEAL",
+          "STEAM VENT CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rock layers reveal heat moving under the surface",
+          "Rock layers signal through steam vent",
+          "Rock layers use steam vent before they signal",
+          "This steam vent gives rock layers away",
+          "Why rock layers signal after one steam vent",
+          "Rock layers reveal the answer with steam vent",
+          "The steam vent that changes the moment",
+          "Rock layers make one steam vent matter",
+          "Rock layers show the hidden answer in seconds",
+          "Rock layers: watch this steam vent"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 83,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 82,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Watch the steam vent; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers signal through steam vent"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "WATCH STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "ROCK LAYERS SIGNAL",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "STEAM VENT MATTERS",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 76,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers signal through steam vent"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 75,
+            "thumbnail_text": "STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
           }
         ]
       },
