@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T08:06:46.538757+00:00",
+  "generated_at": "2026-06-25T08:33:46.977151+00:00",
   "pending": 23,
   "states": {
     "publish_ready": 12,
@@ -15,22 +15,62 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 27,
     "pending_after": 23,
-    "rejected": 0,
+    "rejected": 4,
     "repair_needed": 0,
-    "repaired": 9,
+    "repaired": 10,
     "reasons": {
       "objective_gate:observe_before_scaling": 11,
       "objective_gate:bootstrap_observe_before_scaling": 10,
+      "duplicate_title": 3,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "off_topic_visual": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "937a57083718aa60",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "599bda8aa4158ff4",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "980438ba6cfbaa5c",
+      "title": "Rainbows appear where sun and sea fight",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fe5657e366bddd9c",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "db26d8821c78cc5f",
       "title": "Magnets make invisible fields visible",
@@ -273,46 +313,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "98de1f4765e0edc1",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "title_shape_weak",
-        "title_needs_stronger_shape",
-        "subject_not_clear",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "b8da7c35431324dd",
-      "title": "Plants turn sunlight into stored sugar",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "8c6f10f7d2568582",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a13475767fce6cb1",
-      "title": "cows survive deserts eating rocks",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -462,7 +462,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.912067+00:00",
+        "checked_at": "2026-06-25T08:33:31.895927+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -912,7 +912,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.921366+00:00",
+        "checked_at": "2026-06-25T08:33:31.904867+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1360,7 +1360,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.932089+00:00",
+        "checked_at": "2026-06-25T08:33:31.915504+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1807,7 +1807,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.934186+00:00",
+        "checked_at": "2026-06-25T08:33:31.917599+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2256,7 +2256,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.927039+00:00",
+        "checked_at": "2026-06-25T08:33:31.910396+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2706,7 +2706,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.938387+00:00",
+        "checked_at": "2026-06-25T08:33:31.921986+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3158,7 +3158,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.922933+00:00",
+        "checked_at": "2026-06-25T08:33:31.906446+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3612,7 +3612,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.941911+00:00",
+        "checked_at": "2026-06-25T08:33:31.925775+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4074,7 +4074,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.905074+00:00",
+        "checked_at": "2026-06-25T08:33:31.890196+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
@@ -4528,7 +4528,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.906155+00:00",
+        "checked_at": "2026-06-25T08:33:31.891296+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4988,7 +4988,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.919729+00:00",
+        "checked_at": "2026-06-25T08:33:31.903268+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5441,7 +5441,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.913235+00:00",
+        "checked_at": "2026-06-25T08:33:31.897087+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5892,7 +5892,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.914525+00:00",
+        "checked_at": "2026-06-25T08:33:31.898360+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6343,7 +6343,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.916019+00:00",
+        "checked_at": "2026-06-25T08:33:31.899888+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -6797,7 +6797,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.909288+00:00",
+        "checked_at": "2026-06-25T08:33:31.893311+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7251,7 +7251,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.918363+00:00",
+        "checked_at": "2026-06-25T08:33:31.901932+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7700,7 +7700,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.902493+00:00",
+        "checked_at": "2026-06-25T08:33:31.888461+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8151,7 +8151,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.928575+00:00",
+        "checked_at": "2026-06-25T08:33:31.911929+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8602,7 +8602,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.939997+00:00",
+        "checked_at": "2026-06-25T08:33:31.923697+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9054,7 +9054,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-25T08:06:30.943945+00:00",
+        "checked_at": "2026-06-25T08:33:31.927974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
