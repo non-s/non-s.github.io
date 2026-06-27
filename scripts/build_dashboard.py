@@ -335,6 +335,7 @@ def render_html() -> str:
     autonomous_growth_plan = _safe_json(Path("_data/autonomous_growth_plan.json"))
     channel_success = _safe_json(Path("_data/channel_success.json"))
     scale_blueprint = _safe_json(Path("_data/scale_blueprint.json"))
+    level_system = _safe_json(Path("_data/level_system.json"))
     success_rewriter = _safe_json(Path("_data/success_rewriter.json"))
     winner_sequels = _safe_json(Path("_data/winner_sequel_factory.json"))
     queue_audit = _safe_json(Path("_data/queue_audit.json"))
@@ -474,6 +475,89 @@ def render_html() -> str:
             out.append("<p><strong>Closure gate:</strong> no required operator action pending.</p>")
         else:
             out.append("<p><strong>Closure gate:</strong> reserve is operational but still below the v1.0 target.</p>")
+        out.append("</div>")
+
+    if level_system:
+        current_level = level_system.get("current_level") or {}
+        boss = level_system.get("boss") or {}
+        next_upgrade = level_system.get("next_upgrade") or {}
+        game_loop = level_system.get("game_loop") or {}
+        out.append("<div class='card'><h2>Level-up loop</h2>")
+        out.append("<section class='row'>")
+        out.append(
+            f"<div><small>Current level</small><div class='metric'>"
+            f"{int(current_level.get('number', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Level name</small><div><strong>"
+            f"{html.escape(str(current_level.get('name', 'unknown')))}</strong></div></div>"
+        )
+        out.append(
+            f"<div><small>Level progress</small><div class='metric'>"
+            f"{float(current_level.get('progress_pct', 0) or 0):.1f}%</div></div>"
+        )
+        out.append(
+            f"<div><small>Total progress</small><div class='metric'>"
+            f"{float(level_system.get('overall_progress_pct', 0) or 0):.1f}%</div></div>"
+        )
+        out.append("</section>")
+        if boss:
+            out.append(
+                f"<p><strong>Boss:</strong> <span class='badge'>{html.escape(str(boss.get('severity', '')))}</span> "
+                f"{html.escape(str(boss.get('label', boss.get('id', 'unknown'))))}</p>"
+            )
+        if next_upgrade:
+            out.append(
+                f"<p><strong>Next upgrade:</strong> {html.escape(str(next_upgrade.get('title', '')))}"
+                f"<br><small>{html.escape(str(next_upgrade.get('success_gate', '')))}</small></p>"
+            )
+        if game_loop:
+            out.append(
+                f"<p><strong>Now:</strong> {html.escape(str(game_loop.get('now', '')))}"
+                f"<br><strong>Next:</strong> {html.escape(str(game_loop.get('next', '')))}"
+                f"<br><strong>After:</strong> {html.escape(str(game_loop.get('after_next', '')))}</p>"
+            )
+        actions = level_system.get("action_plan") or []
+        if actions:
+            out.append("<h3>Upgrade actions</h3><table><tr><th>Priority</th><th>Action</th><th>Target</th><th>Why</th></tr>")
+            for action in actions[:6]:
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(action.get('priority', '')))}</span></td>"
+                    f"<td>{html.escape(str(action.get('action', '')))}</td>"
+                    f"<td><code>{html.escape(str(action.get('target', '')))}</code></td>"
+                    f"<td>{html.escape(str(action.get('why', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        blockers = level_system.get("top_blockers") or []
+        if blockers:
+            out.append("<h3>Boss reasons</h3><table><tr><th>Reason</th><th>Count</th><th>Operator move</th></tr>")
+            for item in blockers[:6]:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('id', '')))}</code></td>"
+                    f"<td>{int(item.get('count', 0) or 0)}</td>"
+                    f"<td>{html.escape(str(item.get('operator_translation', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        levels = level_system.get("levels") or []
+        if levels:
+            out.append("<h3>Level map</h3><table><tr><th>Level</th><th>Status</th><th>Mission</th><th>Unlock</th></tr>")
+            for level in levels:
+                out.append(
+                    f"<tr><td>{int(level.get('number', 0) or 0)}. {html.escape(str(level.get('name', '')))}</td>"
+                    f"<td><span class='badge'>{html.escape(str(level.get('status', '')))}</span></td>"
+                    f"<td>{html.escape(str(level.get('mission', '')))}</td>"
+                    f"<td>{html.escape(str(level.get('unlock', '')))}</td></tr>"
+                )
+            out.append("</table>")
+        business_path = level_system.get("business_path") or []
+        if business_path:
+            out.append("<h3>Business path</h3><table><tr><th>Stage</th><th>Job</th></tr>")
+            for item in business_path:
+                out.append(
+                    f"<tr><td><code>{html.escape(str(item.get('stage', '')))}</code></td>"
+                    f"<td>{html.escape(str(item.get('job', '')))}</td></tr>"
+                )
+            out.append("</table>")
         out.append("</div>")
 
     if health:

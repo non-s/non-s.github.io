@@ -238,6 +238,7 @@ def test_operational_surfaces_do_not_promote_generic_body_signal_templates():
         "_data/packaging_report.json",
         "_data/autonomous_growth_plan.json",
         "_data/automation_health.json",
+        "_data/level_system.json",
         "_data/trends/freshness_report.json",
         "_site/index.html",
     ):

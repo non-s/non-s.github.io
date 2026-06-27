@@ -114,8 +114,10 @@ def test_workflows_parse_and_include_growth_steps():
     assert "reconcile_queue_uploads.py" in fetch_workflow
     assert "jsonl_merge_paths" in fetch_workflow
     assert "_data/scale_blueprint.json" in fetch_workflow
+    assert "_data/level_system.json" in fetch_workflow
     assert "compact_analytics.py" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "_data/scale_blueprint.json" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
+    assert "_data/level_system.json" in (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "check_repo_contracts.py" in (ROOT / ".github/workflows/quality-gate.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in fetch_workflow
     assert "_data/control_plane_report.json" in fetch_workflow
@@ -124,6 +126,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/reject_report.json" in fetch_workflow
     assert "_data/next_shorts.json" in youtube_workflow
     assert "_data/scale_blueprint.json" in youtube_workflow
+    assert "_data/level_system.json" in youtube_workflow
     assert "_data/control_plane_report.json" in youtube_workflow
     assert "_data/queue_audit.json" in youtube_workflow
     assert "_data/dry_run_publish.json" in youtube_workflow
@@ -284,6 +287,14 @@ def test_final_automation_health_runs_after_queue_reports():
             "scripts/scale_blueprint.py",
         ):
             assert final_audit > max(i for i, script in enumerate(scripts) if script == report)
+
+
+def test_level_system_runs_after_final_health_and_scale_blueprint():
+    for mode in ("pre_generate", "post_publish", "queue", "dashboard"):
+        scripts = SCRIPT_SETS[mode]
+        level_index = max(i for i, script in enumerate(scripts) if script == "scripts/level_system.py")
+        assert level_index > max(i for i, script in enumerate(scripts) if script == "scripts/audit_automation.py")
+        assert level_index > max(i for i, script in enumerate(scripts) if script == "scripts/scale_blueprint.py")
 
 
 def test_next_shorts_refreshes_after_queue_mutations_and_weekly_review():

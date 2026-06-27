@@ -79,6 +79,80 @@ def test_dashboard_renders_v1_closure_status(dashboard, tmp_path):
     assert "no required operator action pending" in body
 
 
+def test_dashboard_renders_level_up_loop(dashboard, tmp_path):
+    data = tmp_path / "_data"
+    data.mkdir(parents=True)
+    (data / "level_system.json").write_text(
+        json.dumps(
+            {
+                "overall_progress_pct": 17.0,
+                "current_level": {
+                    "number": 2,
+                    "name": "Publish supply engine",
+                    "progress_pct": 18.3,
+                },
+                "boss": {
+                    "id": "final_publish_supply_empty",
+                    "label": "No candidate clears the final publish gate",
+                    "severity": "critical",
+                },
+                "next_upgrade": {
+                    "title": "Turn held strong candidates into final-eligible reserve",
+                    "success_gate": "eligible_count >= 1",
+                },
+                "game_loop": {
+                    "now": "Repair one held high-score story until dry-run eligible_count reaches one.",
+                    "next": "Retention packaging",
+                    "after_next": "Repeat audience loop",
+                },
+                "action_plan": [
+                    {
+                        "priority": "P0",
+                        "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
+                        "target": "eligible_count >= 1",
+                        "why": "No candidate clears the final publish gate",
+                    }
+                ],
+                "top_blockers": [
+                    {
+                        "id": "queue_prune:rewrite",
+                        "count": 10,
+                        "operator_translation": "rewrite the held candidate until queue prune clears",
+                    }
+                ],
+                "levels": [
+                    {
+                        "number": 1,
+                        "name": "Launch safety",
+                        "status": "cleared",
+                        "mission": "Keep the publisher safe.",
+                        "unlock": "At least one real upload.",
+                    },
+                    {
+                        "number": 2,
+                        "name": "Publish supply engine",
+                        "status": "current",
+                        "mission": "Maintain final-eligible Shorts.",
+                        "unlock": "Six operationally publish-ready Shorts.",
+                    },
+                ],
+                "business_path": [{"stage": "attention_asset", "job": "Publish safely and learn."}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    dashboard.main()
+    body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
+
+    assert "Level-up loop" in body
+    assert "Publish supply engine" in body
+    assert "No candidate clears the final publish gate" in body
+    assert "Turn held strong candidates into final-eligible reserve" in body
+    assert "queue_prune:rewrite" in body
+    assert "attention_asset" in body
+
+
 def test_dashboard_includes_top_performers(dashboard, tmp_path):
     analytics = tmp_path / "_data" / "analytics"
     analytics.mkdir(parents=True)

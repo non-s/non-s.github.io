@@ -53,6 +53,7 @@ SCRIPT_SETS = {
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
         "scripts/audit_automation.py",
+        "scripts/level_system.py",
     ],
     "post_publish": [
         "scripts/reconcile_queue_uploads.py",
@@ -112,6 +113,7 @@ SCRIPT_SETS = {
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
         "scripts/audit_automation.py",
+        "scripts/level_system.py",
     ],
     "queue": [
         "scripts/reconcile_queue_uploads.py",
@@ -165,6 +167,7 @@ SCRIPT_SETS = {
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
         "scripts/audit_automation.py",
+        "scripts/level_system.py",
     ],
     "dashboard": [
         "scripts/reconcile_queue_uploads.py",
@@ -249,6 +252,7 @@ SCRIPT_SETS = {
         "scripts/next_shorts.py",
         "scripts/scale_blueprint.py",
         "scripts/audit_automation.py",
+        "scripts/level_system.py",
     ],
 }
 
