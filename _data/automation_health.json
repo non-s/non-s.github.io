@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-06-27T20:01:53.762529+00:00",
-  "score": 82,
+  "generated_at": "2026-06-27T20:23:22.016426+00:00",
+  "score": 85,
   "state": "watch",
   "issues": [
-    "publish_ready_inventory_empty"
+    "queue_inventory_low",
+    "subject_frontload_below_target"
   ],
   "queue": {
-    "pending": 21,
-    "publish_ready": 0,
+    "pending": 18,
+    "publish_ready": 5,
     "categories": {
       "cats": 1,
       "chemistry": 1,
       "discoveries": 1,
-      "earth_from_space": 2,
-      "farm": 2,
+      "farm": 1,
       "forests": 2,
       "geology": 2,
       "physics": 1,
@@ -25,38 +25,38 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 14,
-      "agency_gate:success_recovery_hook_required": 11,
-      "agency_gate:success_recovery_format_required": 7,
-      "agency_gate:category_recovery_rules_not_met": 7,
+      "queue_prune:rewrite": 11,
+      "agency_gate:success_recovery_format_required": 6,
+      "agency_gate:success_recovery_hook_required": 6,
       "packaging:missing_visible_cue": 5,
-      "publish_score:rewrite": 5,
-      "youtube_brain:script_length_risk": 5,
-      "editor_in_chief:cooldown_subject": 3,
+      "youtube_brain:script_length_risk": 4,
+      "publish_score:rewrite": 3,
       "youtube_brain:subject_not_immediately_clear": 3,
-      "packaging:missing_action_word": 2,
+      "agency_gate:category_recovery_rules_not_met": 2,
       "youtube_brain:title_shape_weak": 2,
       "packaging:title_needs_stronger_shape": 2,
-      "packaging:subject_not_clear": 2
+      "packaging:subject_not_clear": 2,
+      "editor_in_chief:cooldown_subject": 1,
+      "packaging:missing_action_word": 1
     }
   },
   "seo": {
-    "average_score": 98.67,
-    "animal_frontloaded_pct": 95.24,
-    "subject_frontloaded_pct": 95.24
+    "average_score": 98.44,
+    "animal_frontloaded_pct": 94.44,
+    "subject_frontloaded_pct": 94.44
   },
   "agency": {
-    "average_score": 73.7,
+    "average_score": 77.4,
     "decisions": {
-      "hold": 3,
+      "hold": 1,
       "publish_now": 3,
-      "strong_candidate": 15
+      "strong_candidate": 14
     },
     "top": [
       {
         "title": "Elephants cool blood through giant ears",
         "category": "wildlife",
-        "score": 83,
+        "score": 84,
         "decision": "publish_now",
         "strengths": [
           "strong_quality",
@@ -67,7 +67,7 @@
       {
         "title": "Bears smell food from miles away",
         "category": "wildlife",
-        "score": 83,
+        "score": 84,
         "decision": "publish_now",
         "strengths": [
           "strong_quality",
@@ -107,6 +107,15 @@
         ]
       },
       {
+        "title": "Wolves leave scent notes for the pack",
+        "category": "wildlife",
+        "score": 81,
+        "decision": "strong_candidate",
+        "strengths": [
+          "strong_quality"
+        ]
+      },
+      {
         "title": "Plants speed growth under protected glass",
         "category": "plants",
         "score": 81,
@@ -127,24 +136,15 @@
           "matches_channel_learning",
           "fresh_inventory"
         ]
-      },
-      {
-        "title": "Elephants can feel rumbles through the ground",
-        "category": "wildlife",
-        "score": 80,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality"
-        ]
       }
     ]
   },
   "analytics": {
-    "pulled_at": "2026-06-27T05:07:45.606828+00:00",
+    "pulled_at": "2026-06-27T20:20:53.603680+00:00",
     "metric_scope": "youtube_analytics_and_public_statistics",
-    "total_views": 109,
-    "avg_view_pct": 57.675,
-    "shorts_tracked": 66
+    "total_views": 114,
+    "avg_view_pct": 57.002,
+    "shorts_tracked": 67
   },
   "comments": {
     "comments_sampled": 59,
