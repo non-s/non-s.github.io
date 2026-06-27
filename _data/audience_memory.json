@@ -147,14 +147,14 @@
     },
     "ocean": {
       "n": 2,
-      "views": 5,
+      "views": 6,
       "retention_samples": 1,
       "watch_time_samples": 1,
       "avg_retention": 39.13,
       "avg_watch_time": 9.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 125.0,
-      "return_proxy": 270.608,
+      "comments_per_1k": 100.0,
+      "return_proxy": 220.608,
       "confidence": {
         "confidence_score": 0.313,
         "sample_size": 2,
@@ -435,14 +435,14 @@
     },
     "single_fact": {
       "n": 4,
-      "views": 18,
+      "views": 19,
       "retention_samples": 1,
       "watch_time_samples": 1,
       "avg_retention": 56.66,
       "avg_watch_time": 13.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 87.5,
-      "return_proxy": 206.497,
+      "comments_per_1k": 75.0,
+      "return_proxy": 181.497,
       "confidence": {
         "confidence_score": 0.54,
         "sample_size": 4,
@@ -635,14 +635,14 @@
     },
     "Ocean Mysteries": {
       "n": 2,
-      "views": 5,
+      "views": 6,
       "retention_samples": 1,
       "watch_time_samples": 1,
       "avg_retention": 39.13,
       "avg_watch_time": 9.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 125.0,
-      "return_proxy": 270.608,
+      "comments_per_1k": 100.0,
+      "return_proxy": 220.608,
       "confidence": {
         "confidence_score": 0.522,
         "sample_size": 2,
@@ -897,29 +897,6 @@
         }
       },
       {
-        "value": "ocean",
-        "n": 2,
-        "views": 5,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 39.13,
-        "avg_watch_time": 9.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 125.0,
-        "return_proxy": 270.608,
-        "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-        }
-      },
-      {
         "value": "weather",
         "n": 3,
         "views": 5,
@@ -930,6 +907,29 @@
         "subs_per_1k": 0.0,
         "comments_per_1k": 111.111,
         "return_proxy": 269.499,
+        "confidence": {
+          "confidence_score": 0.514,
+          "sample_size": 3,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.856,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+        }
+      },
+      {
+        "value": "forests",
+        "n": 3,
+        "views": 5,
+        "retention_samples": 2,
+        "watch_time_samples": 2,
+        "avg_retention": 32.59,
+        "avg_watch_time": 7.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 111.111,
+        "return_proxy": 241.388,
         "confidence": {
           "confidence_score": 0.514,
           "sample_size": 3,
@@ -1037,29 +1037,6 @@
         }
       },
       {
-        "value": "single_fact",
-        "n": 4,
-        "views": 18,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 56.66,
-        "avg_watch_time": 13.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 87.5,
-        "return_proxy": 206.497,
-        "confidence": {
-          "confidence_score": 0.54,
-          "sample_size": 4,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.675,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "format has 4/5 samples, observed data, confidence 0.54; observation only."
-        }
-      },
-      {
         "value": "body_superpower",
         "n": 6,
         "views": 15,
@@ -1080,6 +1057,29 @@
           "can_adjust_strategy": true,
           "bootstrap_multiplier": 0.837,
           "reasoning": "format has 6/5 samples, observed data, confidence 0.78; strategy changes allowed."
+        }
+      },
+      {
+        "value": "single_fact",
+        "n": 4,
+        "views": 19,
+        "retention_samples": 1,
+        "watch_time_samples": 1,
+        "avg_retention": 56.66,
+        "avg_watch_time": 13.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 75.0,
+        "return_proxy": 181.497,
+        "confidence": {
+          "confidence_score": 0.54,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.675,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 4/5 samples, observed data, confidence 0.54; observation only."
         }
       }
     ],
@@ -1156,14 +1156,14 @@
       {
         "value": "Ocean Mysteries",
         "n": 2,
-        "views": 5,
+        "views": 6,
         "retention_samples": 1,
         "watch_time_samples": 1,
         "avg_retention": 39.13,
         "avg_watch_time": 9.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 125.0,
-        "return_proxy": 270.608,
+        "comments_per_1k": 100.0,
+        "return_proxy": 220.608,
         "confidence": {
           "confidence_score": 0.522,
           "sample_size": 2,
@@ -1413,6 +1413,29 @@
         }
       },
       {
+        "value": "single_fact",
+        "n": 4,
+        "views": 19,
+        "retention_samples": 1,
+        "watch_time_samples": 1,
+        "avg_retention": 56.66,
+        "avg_watch_time": 13.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 75.0,
+        "return_proxy": 181.497,
+        "confidence": {
+          "confidence_score": 0.54,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.675,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "format has 4/5 samples, observed data, confidence 0.54; observation only."
+        }
+      },
+      {
         "value": "body_superpower",
         "n": 6,
         "views": 15,
@@ -1433,29 +1456,6 @@
           "can_adjust_strategy": true,
           "bootstrap_multiplier": 0.837,
           "reasoning": "format has 6/5 samples, observed data, confidence 0.78; strategy changes allowed."
-        }
-      },
-      {
-        "value": "single_fact",
-        "n": 4,
-        "views": 18,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 56.66,
-        "avg_watch_time": 13.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 87.5,
-        "return_proxy": 206.497,
-        "confidence": {
-          "confidence_score": 0.54,
-          "sample_size": 4,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.675,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "format has 4/5 samples, observed data, confidence 0.54; observation only."
         }
       },
       {
