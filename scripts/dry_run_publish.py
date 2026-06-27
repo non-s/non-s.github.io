@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
 from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
 from utils.publish_priority import autonomy_priority, publish_priority_key  # noqa: E402
 from utils.queue_pruner import prune_queue  # noqa: E402
+from utils.rejected_queue import load_publish_blocklist  # noqa: E402
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/dry_run_publish.json")
@@ -83,10 +84,15 @@ def build_dry_run(
     pruned, rejected, prune_summary = prune_result or _prune_with_strategy(data)
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     agency_held = _agency_held_reasons()
+    publish_blocked = load_publish_blocklist(Path("_data/rejected_queue.jsonl"))
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
             continue
         story_id = _story_id(story)
+        if story_id in publish_blocked:
+            for reason in publish_blocked[story_id]:
+                objective_reasons[f"publish_blocklist:{reason}"] += 1
+            continue
         if story_id in agency_held:
             for reason in agency_held[story_id]:
                 objective_reasons[f"agency_gate:{reason}"] += 1

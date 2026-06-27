@@ -15,6 +15,7 @@ from utils.agency_gate import (
     load_success_plan,
 )
 from utils.growth_strategy import ops_guardian_enforced, paused_categories
+from utils.rejected_queue import load_publish_blocklist
 
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 
@@ -88,6 +89,7 @@ def publish_ready_verdict(
     *,
     paused: set[str] | None = None,
     agency_held: dict[str, list[str]] | None = None,
+    publish_blocked: dict[str, list[str]] | None = None,
 ) -> tuple[bool, list[str]]:
     reasons: list[str] = []
     queue_prune = story.get("queue_prune") or {}
@@ -95,10 +97,14 @@ def publish_ready_verdict(
     editorial = story.get("editorial") or {}
     paused = paused or set()
     agency_held = agency_held or {}
+    publish_blocked = publish_blocked or {}
 
     if story.get("consumed"):
         reasons.append("consumed")
     item_id = story_id(story)
+    if item_id in publish_blocked:
+        for reason in publish_blocked.get(item_id) or ["final_publish_gate"]:
+            reasons.append(f"publish_blocklist:{reason}")
     if item_id in agency_held:
         agency_reasons = agency_held.get(item_id) or ["held"]
         reasons.extend(f"agency_gate:{reason}" for reason in agency_reasons)
@@ -157,7 +163,9 @@ def build_readiness_payload(
     pending = [story for story in queue.get("stories") or [] if isinstance(story, dict) and not story.get("consumed")]
     ready: list[dict] = []
     held: Counter[str] = Counter()
-    paused = set(paused_categories(root / "_data" / "ops_guardian.json").keys()) if ops_guardian_enforced(env) else set()
+    paused = (
+        set(paused_categories(root / "_data" / "ops_guardian.json").keys()) if ops_guardian_enforced(env) else set()
+    )
     agency_held = agency_held_reasons(
         root=root,
         queue=queue,
@@ -165,8 +173,14 @@ def build_readiness_payload(
         agency_gate_path=agency_gate_path,
         refresh=refresh_agency,
     )
+    publish_blocked = load_publish_blocklist(root / "_data" / "rejected_queue.jsonl")
     for story in pending:
-        ok, reasons = publish_ready_verdict(story, paused=paused, agency_held=agency_held)
+        ok, reasons = publish_ready_verdict(
+            story,
+            paused=paused,
+            agency_held=agency_held,
+            publish_blocked=publish_blocked,
+        )
         if ok:
             ready.append(story)
         else:

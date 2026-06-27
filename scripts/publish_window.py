@@ -30,6 +30,7 @@ from utils.publish_schedule import (  # noqa: E402
     slot_label,
 )
 from utils.publish_score import score_story  # noqa: E402
+from utils.rejected_queue import load_publish_blocklist  # noqa: E402
 
 QUEUE_FILE = ROOT / "_data" / "stories_queue.json"
 UPLOAD_INTENTS_FILE = Path("_data/upload_intents.jsonl")
@@ -89,6 +90,7 @@ def _eligible_stories(
     stories = queue.get("stories") if isinstance(queue, dict) else []
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     agency_held = _agency_held_reasons(root)
+    publish_blocked = load_publish_blocklist(root / "_data" / "rejected_queue.jsonl")
     has_prune_state = any(
         isinstance(story, dict) and not story.get("consumed") and bool(story.get("queue_prune"))
         for story in stories or []
@@ -100,6 +102,8 @@ def _eligible_stories(
         if not (story.get("title") or story.get("seo_title")):
             continue
         story_id = _candidate_id(story)
+        if story_id and story_id in publish_blocked:
+            continue
         agency_reasons = agency_held.get(story_id) if story_id else None
         if agency_reasons and not (allow_soft_agency_holds and is_soft_agency_hold(agency_reasons)):
             continue

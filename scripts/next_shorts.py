@@ -20,6 +20,7 @@ from utils.editorial_guard import editorial_issues
 from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
 from utils.publish_priority import autonomy_priority, publish_priority_key, queue_score
 from utils.queue_pruner import PUBLISH_READY_SUPPLY_RESERVE_FALLBACK, RESERVE_MIN_PUBLISH_SCORE, prune_queue
+from utils.rejected_queue import load_publish_blocklist
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/next_shorts.json")
@@ -338,8 +339,12 @@ def main() -> int:
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)
     paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
+    publish_blocked = load_publish_blocklist(Path("_data/rejected_queue.jsonl"))
     candidates, _held = filter_candidates([story for story in data.get("stories") or [] if not story.get("consumed")])
     for story in candidates:
+        story_id = str(story.get("id") or story.get("slug") or story.get("source_clip_id") or story.get("title") or "")
+        if story_id in publish_blocked:
+            continue
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:
             continue

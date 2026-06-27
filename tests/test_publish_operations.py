@@ -826,6 +826,28 @@ def test_dry_run_publish_excludes_agency_held_candidate(monkeypatch, tmp_path):
     assert payload["objective_reasons"]["agency_gate:success_recovery_hook_required"] == 1
 
 
+def test_dry_run_publish_excludes_final_publish_blocklist(monkeypatch):
+    monkeypatch.setattr(
+        "scripts.dry_run_publish.load_publish_blocklist",
+        lambda path: {"blocked": ["monetization audit needs review"]},
+    )
+    monkeypatch.setattr("scripts.dry_run_publish.prune_queue", lambda data: (data, [], {}))
+    story = {
+        **_strong_story(id="blocked", category="birds"),
+        "queue_prune": {"state": "publish_ready", "score": 100},
+        "publish_score": {"approved": True, "state": "publish_ready", "score": 95},
+        "editorial": {"approved": True, "state": "publish_now"},
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/blocked/1/",
+        "source_license": "Pexels License",
+    }
+
+    payload = build_dry_run({"stories": [story]})
+
+    assert payload["eligible_count"] == 0
+    assert payload["objective_reasons"]["publish_blocklist:monetization audit needs review"] == 1
+
+
 def test_next_shorts_excludes_ops_paused_category(monkeypatch, tmp_path):
     import json
 
@@ -851,6 +873,40 @@ def test_next_shorts_excludes_ops_paused_category(monkeypatch, tmp_path):
     monkeypatch.setattr(next_shorts, "prune_queue", lambda data: (pruned, [], {"pending_after": 1}))
     monkeypatch.setattr(next_shorts, "paused_categories", lambda: {"wildlife": {"category": "wildlife"}})
     monkeypatch.setenv("OPS_GUARDIAN_ENFORCE", "1")
+
+    assert next_shorts.main() == 0
+    payload = json.loads((data_dir / "next_shorts.json").read_text(encoding="utf-8"))
+    assert payload["items"] == []
+
+
+def test_next_shorts_excludes_final_publish_blocklist(monkeypatch, tmp_path):
+    import json
+
+    monkeypatch.chdir(tmp_path)
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    (data_dir / "stories_queue.json").write_text(json.dumps({"stories": []}), encoding="utf-8")
+    pruned = {
+        "stories": [
+            {
+                "id": "blocked",
+                "seo_title": "Blocked story",
+                "title": "Blocked story",
+                "category": "birds",
+                "queue_prune": {"state": "publish_ready", "score": 100},
+                "editorial": {"approved": True, "state": "publish_now"},
+            }
+        ]
+    }
+
+    monkeypatch.setattr(next_shorts, "QUEUE", data_dir / "stories_queue.json")
+    monkeypatch.setattr(next_shorts, "OUT", data_dir / "next_shorts.json")
+    monkeypatch.setattr(next_shorts, "prune_queue", lambda data: (pruned, [], {"pending_after": 1}))
+    monkeypatch.setattr(
+        next_shorts,
+        "load_publish_blocklist",
+        lambda path: {"blocked": ["monetization audit needs review"]},
+    )
 
     assert next_shorts.main() == 0
     payload = json.loads((data_dir / "next_shorts.json").read_text(encoding="utf-8"))

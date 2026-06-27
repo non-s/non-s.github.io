@@ -9,6 +9,18 @@ from pathlib import Path
 
 REJECTED_QUEUE = Path("_data/rejected_queue.jsonl")
 LEGACY_REJECTED_QUEUE = Path("_data/rejected_queue.json")
+FINAL_PUBLISH_BLOCKING_STAGES = {
+    "opening_gate_v2",
+    "opening_audit",
+    "rights_guard",
+    "rights_audit",
+    "editorial_guard",
+    "fact_guard",
+    "originality_pack",
+    "youtube_brain",
+    "final_publish_score",
+    "pre_publish_audit",
+}
 
 
 def _read_jsonl(path: Path) -> list[dict]:
@@ -45,7 +57,9 @@ def _read(path: Path | None = None) -> list[dict]:
         items = _read_jsonl(path)
         if items:
             return items
-        return _read_legacy()
+        if path == REJECTED_QUEUE:
+            return _read_legacy()
+        return _read_legacy(path.with_suffix(".json"))
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(data, dict):
@@ -123,3 +137,21 @@ def record_rejection(
 
 def load_rejections(path: Path | None = None) -> list[dict]:
     return _read(path)
+
+
+def load_publish_blocklist(
+    path: Path | None = None,
+    *,
+    stages: set[str] | None = None,
+) -> dict[str, list[str]]:
+    """Return story IDs rejected by late-stage publishing gates."""
+    blocking_stages = stages or FINAL_PUBLISH_BLOCKING_STAGES
+    blocked: dict[str, list[str]] = {}
+    for item in load_rejections(path):
+        story_id = str(item.get("story_id") or "")
+        stage = str(item.get("stage") or "")
+        if not story_id or stage not in blocking_stages:
+            continue
+        reasons = [str(reason) for reason in (item.get("reasons") or [stage])]
+        blocked.setdefault(story_id, []).extend(reasons)
+    return {story_id: list(dict.fromkeys(reasons)) for story_id, reasons in blocked.items()}

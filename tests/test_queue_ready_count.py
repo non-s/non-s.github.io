@@ -1,4 +1,5 @@
 from scripts.queue_ready_count import build_payload
+from utils.queue_readiness import build_readiness_payload
 
 
 def test_queue_ready_count_requires_editorial_and_publish_approval():
@@ -74,6 +75,30 @@ def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback():
     assert payload["publish_ready"] == 1
     assert payload["publish_ready_ids"] == ["fallback"]
     assert "editor_in_chief:cooldown_subject" not in payload["held_reasons"]
+
+
+def test_queue_ready_count_excludes_final_publish_blocklist(tmp_path):
+    data_dir = tmp_path / "_data"
+    data_dir.mkdir()
+    (data_dir / "rejected_queue.jsonl").write_text(
+        ('{"story_id":"blocked","stage":"pre_publish_audit",' '"reasons":["monetization audit needs review"]}\n'),
+        encoding="utf-8",
+    )
+    queue = {
+        "stories": [
+            {
+                "id": "blocked",
+                "queue_prune": {"state": "publish_ready"},
+                "publish_score": {"approved": True, "state": "publish_ready"},
+                "editorial": {"approved": True, "state": "publish_now"},
+            }
+        ]
+    }
+
+    payload = build_readiness_payload(queue, root=tmp_path)
+
+    assert payload["publish_ready"] == 0
+    assert payload["held_reasons"]["publish_blocklist:monetization audit needs review"] == 1
 
 
 def test_queue_ready_count_tracks_final_publish_quality_gate(monkeypatch):

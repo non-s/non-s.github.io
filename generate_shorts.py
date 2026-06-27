@@ -2578,6 +2578,11 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
             metadata["pre_publish_audit"].get("score"),
             "; ".join(metadata["pre_publish_audit"].get("reasons") or []),
         )
+        record_rejection(
+            metadata,
+            metadata["pre_publish_audit"].get("reasons") or ["pre_publish_audit_rejected"],
+            stage="pre_publish_audit",
+        )
         return None
     metadata["variant_assignment_log"] = record_variant_assignments(
         metadata.get("experiments") or {},
