@@ -261,9 +261,18 @@ OPTIONAL = {
     "scripts/free_signal_harvester.py",
 }
 
+SOFT_FAILURE_CODES = {
+    # Exit 2 means the guardian wrote a critical operational pause report. The
+    # suite should persist that diagnosis and keep generating recovery state.
+    "scripts/ops_guardian.py": {2},
+}
+
 
 def run_script(script: str, *, strict: bool) -> int:
     result = subprocess.run([sys.executable, script])
+    if result.returncode in SOFT_FAILURE_CODES.get(script, set()):
+        print(f"warning: {script} reported operational pause", file=sys.stderr)
+        return 0
     if result.returncode and strict and script not in OPTIONAL:
         return result.returncode
     if result.returncode:
