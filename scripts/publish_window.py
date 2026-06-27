@@ -195,9 +195,7 @@ def evaluate_publish_window(
         schedule = recommend_schedule(_read_json(root / "_data" / "analytics" / "latest.json", {}))
 
     current_label = slot_label(current)
-    active_label = (
-        active_slot_label(current, schedule, current_env) if flags["adaptive_cadence_enabled"] else current_label
-    )
+    active_label = active_slot_label(current, schedule, current_env)
     label = active_label or current_label
     slot_key = _slot_key(current, label)
     reasons: list[str] = []
@@ -221,7 +219,7 @@ def evaluate_publish_window(
         reasons.append("outside_recommended_slot")
 
     if decision == "publish":
-        if not manual and active_label and active_label != current_label:
+        if flags["adaptive_cadence_enabled"] and not manual and active_label and active_label != current_label:
             reasons.append("delayed_slot_recovery")
         uploaded_for_slot = duplicate_slot_uploaded(slot_key, root / UPLOAD_INTENTS_FILE)
         if uploaded_for_slot:

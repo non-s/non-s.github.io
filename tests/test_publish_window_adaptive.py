@@ -641,6 +641,42 @@ def test_publish_window_skips_slot_already_uploaded(monkeypatch, tmp_path):
     assert decision["top_candidate_id"] == ""
 
 
+def test_manual_dispatch_uses_active_slot_for_duplicate_guard(monkeypatch, tmp_path):
+    _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["22:00"]})
+    _write_json(
+        tmp_path / "_data" / "stories_queue.json",
+        {"stories": [{"id": "manual", "title": "Strong manual story", "script": "A strong story is ready."}]},
+    )
+    upload_intents = tmp_path / "_data" / "upload_intents.jsonl"
+    upload_intents.parent.mkdir(parents=True, exist_ok=True)
+    upload_intents.write_text(
+        json.dumps({"slot": "2026-06-27T22:00Z", "status": "uploaded", "video_id": "slot-video"}) + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        publish_window,
+        "score_story",
+        lambda story: {"score": 90, "opportunity": {"score": 80}, "approved": True},
+    )
+
+    decision = publish_window.evaluate_publish_window(
+        root=tmp_path,
+        now=datetime(2026, 6, 27, 22, 38, tzinfo=timezone.utc),
+        env={
+            "ADAPTIVE_CADENCE_ENABLED": "0",
+            "GITHUB_EVENT_NAME": "workflow_dispatch",
+            "PUBLISH_SLOT_GRACE_MINUTES": "90",
+        },
+        decisions_path=tmp_path / "decisions.jsonl",
+    )
+
+    assert decision["decision"] == "skip_slot_already_uploaded"
+    assert decision["slot_label"] == "22:00"
+    assert decision["slot_key"] == "2026-06-27T22:00Z"
+    assert decision["slot_uploaded_video_id"] == "slot-video"
+    assert decision["top_candidate_id"] == ""
+
+
 def test_watchdog_dispatch_does_not_bypass_cadence(tmp_path):
     _write_json(tmp_path / "_data" / "publish_schedule.json", {"recommended_slots": ["05:23"]})
 
