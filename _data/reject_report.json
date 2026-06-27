@@ -7,14 +7,14 @@
     "duplicate_angle": 165,
     "copy_subject_mismatch": 105,
     "rights_guard_person_manual_review": 95,
-    "queue_score_reject": 93,
+    "queue_score_reject": 92,
     "script_hook_mismatch": 88,
     "script_subject_mismatch": 50,
-    "missing_visual_cue": 33,
+    "missing_visual_cue": 34,
     "generic_creator_language": 32,
     "non_animal_body_language": 30,
+    "subject_not_immediately_clear": 21,
     "missing_action_word": 21,
-    "subject_not_immediately_clear": 20,
     "no_action_promise": 20,
     "subject repeated inside 3-day cooldown": 10,
     "humanity score is too low": 10,
@@ -25,12 +25,12 @@
     "title_needs_stronger_shape": 3,
     "subject_not_clear": 3,
     "missing_visible_cue": 3,
+    "payoff_not_explicit": 2,
     "bad_plural_verb": 2,
     "script_length_risk": 2,
     "editorial score 42 is below 62": 2,
     "editorial score 41 is below 62": 2,
     "editorial score 43 is below 62": 1,
-    "payoff_not_explicit": 1,
     "editorial score 45 is below 62": 1,
     "script quality gate blocked the narration": 1,
     "editorial score 37 is below 62": 1,
@@ -42,31 +42,11 @@
   "stages": {
     "queue_prune": 489,
     "queue_prune_final": 406,
-    "queue_repair": 93,
+    "queue_repair": 92,
     "editor_in_chief": 11,
-    "youtube_brain": 1
+    "youtube_brain": 2
   },
   "latest": [
-    {
-      "story_id": "621e6f18c54b7f5d",
-      "stage": "queue_repair",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "title": "The moon keeps one face turned toward Earth",
-      "category": "space",
-      "script_key": "the moon shows us one face for a reason watch the moon s position because its rotation and orbit are locked together it spins once in about the same time it circles earth so the same side keeps facing us that is synchronized motion not stillness which orbit clue next",
-      "angle_key": "earth|show|face|space",
-      "source_url": "https://www.pexels.com/video/african-lioness-resting-in-the-sun-37248018/",
-      "pexels_video_id": "37248018",
-      "source_clip_id": "pexels:621e6f18c54b7f5d",
-      "recorded_at": "2026-06-27T16:20:02.959497+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "1cf9d3feb5c8f683",
       "stage": "queue_prune",
@@ -494,6 +474,25 @@
       "recorded_at": "2026-06-27T21:46:45.798440+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
+    },
+    {
+      "story_id": "Elephants Elefantes enfrían su sangre con orejas gigantes",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "missing_visual_cue",
+        "payoff_not_explicit"
+      ],
+      "title": "Elephants Elefantes enfrían su sangre con orejas gigantes",
+      "category": "wildlife",
+      "script_key": "los elefantes usan sus orejas como radiadores vivos f jate en esa superficie llena de venas anchas el aire las recorre y elimina el calor antes de que llegue al cuerpo por eso no son solo para verse bonitas en el calor qu otro truco de animal gigante me cuentas which giant animal trick next",
+      "angle_key": "elephants|trick|cue|wildlife",
+      "source_url": "https://www.pexels.com/video/majestic-elephant-grazing-in-lush-landscape-35623748/",
+      "pexels_video_id": "35623748",
+      "source_clip_id": "pexels:308b50c8f4b07ecf",
+      "recorded_at": "2026-06-27T21:58:01.429475+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
     }
   ]
 }
