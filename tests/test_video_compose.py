@@ -23,7 +23,12 @@ def stub_ffmpeg_ok(monkeypatch):
     calls: list[list[str]] = []
 
     def _fake_run(cmd, **kw):
-        calls.append(cmd)
+        recorded = list(cmd)
+        if "-filter_complex_script" in recorded:
+            fg_idx = recorded.index("-filter_complex_script")
+            filtergraph = Path(recorded[fg_idx + 1]).read_text(encoding="utf-8")
+            recorded[fg_idx : fg_idx + 2] = ["-filter_complex", filtergraph]
+        calls.append(recorded)
         result = MagicMock()
         result.returncode = 0
         result.stderr = ""

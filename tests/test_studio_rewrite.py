@@ -10,19 +10,19 @@ from utils import studio_rewrite
 def _needs_rewrite_story() -> dict:
     return {
         "id": "rewrite-1",
-        "title": "Octopus camouflage changes in seconds",
-        "description": "A clip of an octopus underwater near coral and rocks.",
-        "hook": "This octopus changes colour.",
+        "title": "Nautilus camouflage changes in seconds",
+        "description": "A clip of a nautilus underwater near coral and rocks.",
+        "hook": "This nautilus changes colour.",
         "script": (
-            "This octopus changes colour. Watch the eyes and skin because "
+            "This nautilus changes colour. Watch the shell and skin because "
             "the texture shifts before the disguise works. That's why it "
             "can hide near coral and rocks. Which ocean animal should we decode next?"
         ),
         "thumbnail_text": "TOO MANY WORDS HERE",
-        "yt_tags": ["octopus", "camouflage"],
+        "yt_tags": ["nautilus", "camouflage"],
         "category": "ocean",
         "score": 7,
-        "source_url": "https://www.pexels.com/video/octopus-123/",
+        "source_url": "https://www.pexels.com/video/nautilus-123/",
     }
 
 
@@ -34,15 +34,15 @@ def test_ai_rewrite_accepts_better_script(monkeypatch):
         "ai_text",
         lambda *a, **k: json.dumps(
             {
-                "hook": "This octopus disappears against coral.",
+                "hook": "This nautilus disappears against coral.",
                 "script": (
-                    "This octopus disappears against coral. I love this detail: "
-                    "watch the skin and tiny muscles. Because they change colour "
+                    "This nautilus disappears against coral. I love this detail: "
+                    "watch the shell edge and tiny muscles. Because they change colour "
                     "and texture together, the body stops looking like an animal. "
                     "That's why predators can swim past it. Which ocean animal "
                     "should we decode next?"
                 ),
-                "thumbnail_text": "OCTOPUS VANISHES",
+                "thumbnail_text": "NAUTILUS VANISHES",
             }
         ),
     )

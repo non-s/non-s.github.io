@@ -463,7 +463,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 14,
+      "evergreen": 13,
       "recovery": 2
     },
     "items": [
@@ -522,14 +522,6 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 42.76
-      },
-      {
-        "id": "77ef7b4a016ae854",
-        "title": "Lavas use cloud patterns before they cool",
-        "category": "geology",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 50.72
       },
       {
         "id": "ca66243c1b8718b8",
@@ -655,16 +647,16 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 16,
-    "pending_after": 16,
+    "pending_before": 15,
+    "pending_after": 15,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 9,
+      "objective_gate:bootstrap_observe_before_scaling": 8,
       "objective_gate:observe_before_scaling": 3,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 1,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editorial_cooldown_supply_fallback": 1
     }

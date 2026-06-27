@@ -863,7 +863,9 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     data_dir = tmp_path / "_data"
     data_dir.mkdir()
-    (data_dir / "stories_queue.json").write_text(json.dumps({"stories": []}), encoding="utf-8")
+    raw_queue = {"stories": [{"id": "raw", "title": "Raw story"}]}
+    queue_path = data_dir / "stories_queue.json"
+    queue_path.write_text(json.dumps(raw_queue), encoding="utf-8")
     pruned = {
         "stories": [
             {
@@ -903,6 +905,7 @@ def test_next_shorts_uses_pruned_queue_for_reporting(monkeypatch, tmp_path):
     assert payload["items"][0]["autonomy_priority"] == 130
     assert payload["prune_summary"]["pending_after"] == 1
     assert payload["title_shape_mix"]["status"] == "healthy"
+    assert json.loads(queue_path.read_text(encoding="utf-8")) == raw_queue
 
 
 def test_next_shorts_preserves_clean_publish_ready_reserve(monkeypatch, tmp_path):
@@ -1062,4 +1065,3 @@ def test_publish_schedule_adapts_to_retention_health(monkeypatch):
     assert high_mb["rolling_batch_size"] == 24
     assert high_mb["queue_target_pending"] == 24
     assert len(high_mb["recommended_slots"]) == len(low_mb["recommended_slots"]) == 7
-

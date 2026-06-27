@@ -334,7 +334,6 @@ def build_title_shape_mix(rows: list[dict], windows: tuple[int, ...] = (10, 30))
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
     data, _rejected, prune_summary = _prune_with_strategy(data)
-    _write_json_if_changed(QUEUE, data)
     rows = []
     pending_stories = [story for story in data.get("stories") or [] if not story.get("consumed")]
     mix_plan = build_mix_plan(pending_stories)

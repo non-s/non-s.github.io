@@ -179,8 +179,6 @@ def build_dry_run(
 def main() -> int:
     data = json.loads(QUEUE.read_text(encoding="utf-8"))
     prune_result = _prune_with_strategy(data)
-    pruned, _rejected, _summary = prune_result
-    _write_json_if_changed(QUEUE, pruned)
     payload = build_dry_run(data, env=os.environ, prune_result=prune_result)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     _write_json_if_changed(OUT, payload)

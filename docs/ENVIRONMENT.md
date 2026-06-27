@@ -69,6 +69,7 @@
 | `UPLOAD_IDEMPOTENCY_MODE` | no | `warn` records duplicates; `block` skips an already uploaded intent key. |
 | `UPLOAD_SLOT_IDEMPOTENCY_MODE` | no | `warn` records duplicate slots; `block` skips a second successful upload for the same slot. |
 | `MEDIA_LIFECYCLE_CLEANUP` | no | Deletes generated video/audio/image artifacts after upload while preserving `.done` markers and analytics. Defaults to `1`. |
+| `RETENTION_EASTER_EGG_ENABLED` | no | Enables an experimental one-frame retention cue in rendered videos. Defaults to `0` so production renders stay deterministic. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | no | Daily budget ratio used by quota guard. |
 | `QUOTA_LEDGER_ENABLED` | no | Writes `_data/analytics/api_quota_ledger.jsonl` and latest summary. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | no | Conservative daily API unit budget, default `10000`. |
@@ -136,6 +137,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `UPLOAD_IDEMPOTENCY_MODE` | `block` | operations | Upload idempotency mode: warn or block duplicate completed intents. | Use warn. |
 | `UPLOAD_SLOT_IDEMPOTENCY_MODE` | `block` | operations | Block a second successful upload for the same publish slot. | Use warn. |
 | `MEDIA_LIFECYCLE_CLEANUP` | `1` | operations | Delete generated media after successful upload while keeping metadata markers. | Set to 0 temporarily while debugging renders. |
+| `RETENTION_EASTER_EGG_ENABLED` | `0` | production | Enable an experimental one-frame retention cue in rendered videos. | Set to 0. |
 | `OPS_GUARDIAN_ENFORCE` | `1` | operations | Apply ops guardian paused-topic guidance during candidate selection. | Set to 0. |
 | `OPS_ALERTS_ENABLED` | `1` | operations | Create a GitHub Issue when a critical automation workflow fails. | Set to 0 to silence issue alerts. |
 | `QUOTA_GUARD_MAX_DAILY_RATIO` | `0.95` | operations | Daily budget ratio before guard trips. | Raise ratio or disable. |

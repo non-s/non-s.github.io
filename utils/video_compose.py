@@ -40,6 +40,12 @@ MAX_DURATION_S = 24.0
 INTRO_CARD_S = 0.8
 OUTRO_CARD_S = 2.0
 BRAND_CARDS_ENABLED = os.environ.get("BRAND_CARDS_ENABLED", "1") not in ("0", "false", "False")
+RETENTION_EASTER_EGG_ENABLED = os.environ.get("RETENTION_EASTER_EGG_ENABLED", "0").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
 
 # Path to the system font we burn the hook overlay with. Falls back to
 # DejaVu if Liberation isn't installed (covers ubuntu-latest runners).
@@ -349,14 +355,13 @@ def build_broll_short(
         )
         last_label = "withbug"
 
-    # Gamified Easter Egg (MrBeast Retention Hack)
-    # Flashes a hidden text for exactly 1 frame around the middle of the video.
-    # Forces the user to re-watch multiple times to pause on the exact frame.
-    if True:
+    # Optional one-frame cue for experiments. Disabled by default so the
+    # production renderer stays deterministic and portable across platforms.
+    if RETENTION_EASTER_EGG_ENABLED:
         mid_time = max(0, float(audio_dur) / 2)
         parts.append(
             f"[{last_label}]drawtext={font_param}"
-            f":text=' 👑 CROWN 👑 ':fontcolor=white:fontsize=120"
+            f":text=' CUE FRAME ':fontcolor=white:fontsize=120"
             f":box=1:boxcolor=red@0.9:boxborderw=30"
             f":x=(w-text_w)/2:y=(h-text_h)/2"
             f":enable='between(t,{mid_time:.2f},{mid_time + 0.035:.2f})'"
@@ -394,7 +399,7 @@ def build_broll_short(
     # separators, so expressions like if(lt(mod(t,1.5),0.75),...)
     # work without any escaping.
     fg_file = tempfile.NamedTemporaryFile(
-        mode="w", suffix=".txt", delete=False, dir=str(output_path.parent)
+        mode="w", suffix=".txt", delete=False, dir=str(output_path.parent), encoding="utf-8"
     )
     fg_file.write(filtergraph)
     fg_file.close()

@@ -246,6 +246,13 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set to 0 temporarily while debugging renders.",
     ),
     FeatureFlag(
+        "RETENTION_EASTER_EGG_ENABLED",
+        "0",
+        "production",
+        "Enable an experimental one-frame retention cue in rendered videos.",
+        "Set to 0.",
+    ),
+    FeatureFlag(
         "OPS_GUARDIAN_ENFORCE",
         "1",
         "operations",

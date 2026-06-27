@@ -142,6 +142,10 @@ def _env_bool(name: str, default: bool = False) -> bool:
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _env_mode_blocks(name: str, default: str = "block") -> bool:
+    return os.environ.get(name, default).strip().lower() == "block"
+
+
 def _parse_utc(value: str) -> datetime | None:
     text = str(value or "").strip()
     if not text:
@@ -696,6 +700,7 @@ def main() -> None:
         log.error("YouTube auth failed: %s", exc)
         sys.exit(2)
     pending, attempted, uploaded = _collect_pending_meta(VIDEOS_DIR), 0, 0
+    skipped_duplicates = 0
     require_upload = _env_bool("REQUIRE_UPLOAD_ON_PUBLISH", False)
     if require_upload and not pending:
         log.error("Publish window required an upload, but no generated Short metadata was found in %s.", VIDEOS_DIR)
@@ -720,23 +725,25 @@ def main() -> None:
         meta["publish_slot_key"] = meta.get("publish_slot_key") or slot_key
         intent_slot = str(meta.get("publish_slot_key") or meta.get("publish_slot") or "")
         slot_duplicate = duplicate_slot_uploaded(intent_slot)
-        if slot_duplicate and os.environ.get("UPLOAD_SLOT_IDEMPOTENCY_MODE", "block").strip().lower() == "block":
+        if slot_duplicate and _env_mode_blocks("UPLOAD_SLOT_IDEMPOTENCY_MODE"):
             log.warning(
                 "Skipping duplicate publish slot %s already published as %s",
                 intent_slot,
                 slot_duplicate.get("video_id"),
             )
+            skipped_duplicates += 1
             continue
         intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
         duplicate = duplicate_uploaded(intent)
         meta["upload_intent_key"] = intent["idempotency_key"]
         meta["upload_intent"] = intent
-        if duplicate and os.environ.get("UPLOAD_IDEMPOTENCY_MODE", "block").strip().lower() == "block":
+        if duplicate and _env_mode_blocks("UPLOAD_IDEMPOTENCY_MODE"):
             log.warning(
                 "Skipping duplicate upload intent %s already published as %s",
                 intent["idempotency_key"],
                 duplicate.get("video_id"),
             )
+            skipped_duplicates += 1
             continue
         write_upload_intent(intent)
         attempted += 1
@@ -783,6 +790,12 @@ def main() -> None:
         meta_file.unlink()
         uploaded += 1
     log.info("%d/%d video(s) uploaded to YouTube.", uploaded, attempted)
+    if uploaded == 0 and attempted == 0 and skipped_duplicates:
+        log.info(
+            "%d generated metadata item(s) skipped because upload idempotency already satisfied the slot.",
+            skipped_duplicates,
+        )
+        return
     if (attempted and uploaded == 0) or (require_upload and uploaded == 0):
         sys.exit(1)
 
