@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-06-27T22:01:29.610746+00:00",
-  "pending": 13,
+  "generated_at": "2026-06-27T22:11:27.415950+00:00",
+  "pending": 12,
   "states": {
-    "publish_ready": 3,
-    "rewrite": 10
+    "rewrite": 10,
+    "publish_ready": 2
   },
   "mechanism_clusters": {
-    "scent_map": 2,
-    "face_recognition": 1
+    "face_recognition": 1,
+    "scent_map": 1
   },
   "rights": {
-    "approved": 13
+    "approved": 12
   },
   "prune_summary": {
-    "pending_before": 13,
-    "pending_after": 13,
+    "pending_before": 12,
+    "pending_after": 12,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
@@ -26,6 +26,16 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "463bfdc47b0763aa",
+      "title": "Bears Los osos huelen comida a kilómetros de distancia",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 43 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "Elephants Elefantes enfrían su sangre con orejas gigantes",
       "title": "Elephants Elefantes enfrían su sangre con orejas gigantes",
@@ -285,468 +295,9 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "27364e65ce486e95",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
-    {
-      "id": "463bfdc47b0763aa",
-      "title": "Bears smell food from miles away",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.581,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.441,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.44.",
-          "recommendation_strength": "observe",
-          "sample_size": 27
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.441,
-          "mechanism_cluster": "scent_map",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [],
-          "scale_ready": true,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 60,
-          "signals": {
-            "comment_potential": 40,
-            "educational_potential": 67,
-            "emotional_potential": 29,
-            "novelty": 63,
-            "replay_potential": 76,
-            "viral_potential": 66,
-            "visual_potential": 63
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 94,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.613,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.484,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
-            "recommendation_strength": "observe",
-            "sample_size": 15
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.177749+00:00",
-        "mechanism_cluster": "scent_map",
-        "objective_reasons": [],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "bears",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "bears",
-        "viewer_promise": "See why bears body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after bears?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why does this wildlifescience changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 68,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "hook_options": [
-          "Bears can smell a meal long before seeing it",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears give away the answer through scent map"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "bears",
-          "ending_line": "Would you trust your nose that much?",
-          "final_line": "Would you trust your nose that much?",
-          "loop_score": 0.174,
-          "opening_line": "Bears can smell a meal long before seeing it.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "bears",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.174,
-        "pinned_comment": "Watch the scent map again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.44,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
-          "first_frame_text": "SCENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Bears can smell a meal long before seeing it.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.174,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 94,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "ready"
-        },
-        "risks": [],
-        "score": 94,
-        "selected_variant": {
-          "hook": "Bears can smell a meal long before seeing it",
-          "score": 82,
-          "thumbnail_text": "SCENT MAP",
-          "title": "Bears smell food from miles away"
-        },
-        "series": "Animal Superpowers #17",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 17,
-          "label": "Animal Superpowers #17",
-          "series": "Animal Superpowers"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.613,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.484,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
-            "recommendation_strength": "observe",
-            "sample_size": 15
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SCENT MAP",
-          "WATCH SCENT MAP",
-          "BEARS SMELL",
-          "SCENT MAP MATTERS",
-          "SCENT MAP FIRST",
-          "SCENT MAP REVEAL",
-          "SCENT MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Bears smell food from miles away",
-          "Bears use scent map before they smell",
-          "This scent map gives bears away",
-          "Why bears smell after one scent map",
-          "Bears reveal the answer with scent map",
-          "The scent map that changes the moment",
-          "Bears make one scent map matter",
-          "Bears show the hidden answer in seconds",
-          "Bears: watch this scent map",
-          "Watch bears after the scent map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 82,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Watch the scent map; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Bears smell food from miles away"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
     {
       "id": "7cc563fc5687b336",
       "title": "Orangutans use leaves like rain umbrellas",
@@ -893,7 +444,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.186643+00:00",
+        "checked_at": "2026-06-27T22:11:18.622161+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -960,11 +511,11 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -1340,7 +891,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.191283+00:00",
+        "checked_at": "2026-06-27T22:11:18.626051+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1405,11 +956,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -1788,7 +1339,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.184224+00:00",
+        "checked_at": "2026-06-27T22:11:18.620133+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1853,11 +1404,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -2237,7 +1788,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.193954+00:00",
+        "checked_at": "2026-06-27T22:11:18.628101+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2303,11 +1854,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -2687,7 +2238,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.195582+00:00",
+        "checked_at": "2026-06-27T22:11:18.629571+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2755,11 +2306,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -3139,7 +2690,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.196851+00:00",
+        "checked_at": "2026-06-27T22:11:18.630819+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3207,11 +2758,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -3589,7 +3140,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.200651+00:00",
+        "checked_at": "2026-06-27T22:11:18.634541+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3657,11 +3208,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -4045,7 +3596,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.181084+00:00",
+        "checked_at": "2026-06-27T22:11:18.616752+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4111,11 +3662,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -4496,7 +4047,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.179900+00:00",
+        "checked_at": "2026-06-27T22:11:18.615559+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [],
         "score": 74.0,
@@ -4561,11 +4112,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -4947,7 +4498,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.198556+00:00",
+        "checked_at": "2026-06-27T22:11:18.632501+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5016,11 +4567,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -5399,7 +4950,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.202809+00:00",
+        "checked_at": "2026-06-27T22:11:18.636639+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5470,11 +5021,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
@@ -5854,7 +5405,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-27T22:01:20.188627+00:00",
+        "checked_at": "2026-06-27T22:11:18.623925+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5923,11 +5474,11 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject} {subject}"
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
             "cta:follow_for_more": 43.04,
