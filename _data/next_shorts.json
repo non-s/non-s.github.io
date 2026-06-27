@@ -9,7 +9,7 @@
     },
     "counts": {
       "recovery": 2,
-      "evergreen": 10
+      "evergreen": 9
     },
     "items": [
       {
@@ -26,7 +26,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 42.74
+        "freshness_score": 42.72
       },
       {
         "id": "caea97ba241a822d",
@@ -34,15 +34,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.06
-      },
-      {
-        "id": "7cc563fc5687b336",
-        "title": "Orangutans use leaves like rain umbrellas",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 42.66
+        "freshness_score": 41.04
       },
       {
         "id": "ca66243c1b8718b8",
@@ -66,7 +58,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.44
+        "freshness_score": 50.42
       },
       {
         "id": "37497b80fa4328f9",
@@ -119,15 +111,16 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 12,
-    "pending_after": 12,
+    "pending_before": 11,
+    "pending_after": 11,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 9,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 8,
-      "objective_gate:observe_before_scaling": 3,
+      "objective_gate:observe_before_scaling": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1
     }
   }
