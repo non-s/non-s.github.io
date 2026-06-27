@@ -137,6 +137,8 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/analytics/weekly_summary.json" in dashboard_workflow
     assert "_data/experiments_recommendations.json" in dashboard_workflow
     assert "_data/post_upload_session_ops.json" in dashboard_workflow
+    assert "Analytics persistence skipped because live state changed during dashboard build" in dashboard_workflow
+    assert "Analytics persistence skipped after repeated non-fast-forward pushes" in dashboard_workflow
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
     assert 'cron: "13 * * * *"' in heartbeat_workflow
