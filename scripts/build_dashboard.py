@@ -5,8 +5,9 @@ scripts/build_dashboard.py — Generate a static analytics dashboard.
 
 Reads every CSV in `_data/analytics/*.csv` plus `latest.json`,
 `experiments.json`, `cohort_timing.json`, and writes a single
-self-contained HTML file at `_site/index.html` that GitHub Pages
-serves at `https://<owner>.github.io/<repo>/`.
+self-contained HTML file at `_site/index.html`. It also mirrors the same
+dashboard to root `index.html` because this repository currently uses legacy
+GitHub Pages from the `main` branch root.
 
 The dashboard shows:
   * Views + average view % over time (sparkline)
@@ -48,6 +49,7 @@ from utils.studio_reach_schema import summarize_reach
 ANALYTICS_DIR = Path("_data/analytics")
 SITE_DIR = Path("_site")
 OUT = SITE_DIR / "index.html"
+ROOT_OUT = Path("index.html")
 SECURITY_TXT = Path(".well-known/security.txt")
 QUEUE_FILE = Path("_data/stories_queue.json")
 PUBLISH_READY_RESERVE_TARGET = 6
@@ -2302,7 +2304,9 @@ def render_html() -> str:
 
 def main() -> None:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(render_html(), encoding="utf-8")
+    body = render_html()
+    OUT.write_text(body, encoding="utf-8")
+    ROOT_OUT.write_text(body, encoding="utf-8")
     if SECURITY_TXT.exists():
         destination = SITE_DIR / SECURITY_TXT
         destination.parent.mkdir(parents=True, exist_ok=True)

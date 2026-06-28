@@ -240,6 +240,7 @@ def test_operational_surfaces_do_not_promote_generic_body_signal_templates():
         "_data/automation_health.json",
         "_data/level_system.json",
         "_data/trends/freshness_report.json",
+        "index.html",
         "_site/index.html",
     ):
         target = ROOT / path

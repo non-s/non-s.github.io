@@ -38,8 +38,11 @@ def _write_csv(path: Path, rows: list[dict]) -> None:
 def test_main_writes_html_even_with_no_data(dashboard, tmp_path):
     dashboard.main()
     out = tmp_path / "_site" / "index.html"
+    root_out = tmp_path / "index.html"
     assert out.exists()
+    assert root_out.exists()
     body = out.read_text(encoding="utf-8")
+    assert root_out.read_text(encoding="utf-8") == body
     assert "channel dashboard" in body.lower()
     assert "<html" in body
 
