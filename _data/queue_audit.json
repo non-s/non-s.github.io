@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T01:57:31.133121+00:00",
+  "generated_at": "2026-06-28T02:02:39.214043+00:00",
   "pending": 10,
   "states": {
     "rewrite": 8,
@@ -12,22 +12,69 @@
     "approved": 10
   },
   "prune_summary": {
-    "pending_before": 10,
+    "pending_before": 15,
     "pending_after": 10,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 5,
+    "repair_needed": 1,
+    "repaired": 6,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 3,
+      "off_topic_visual": 2,
+      "duplicate_title": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "objective_gate:observe_before_scaling": 2,
+      "queue_score_reject": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "4cc1d25ec9993efa",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "2a465f0412650ed8",
+      "title": "Lightning turns air into a shock wave",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f60f501e9f4a4881",
+      "title": "Deer and sheep share a forest secret",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "009ccf8bd3e66f6c",
+      "title": "Deer don’t just watch you in forests",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3b4c2a16aeed40f0",
+      "title": "Deer aim their ears like sound radar",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "37497b80fa4328f9",
       "title": "Las plantas convierten luz en azúcar almacenado",
@@ -248,51 +295,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "2cb1318bb347e521",
-      "title": "Deer aim their ears like sound radar",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0621db87c63748af",
-      "title": "Deer aren’t peaceful—they’re always listening",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "634272f911f0fe02",
-      "title": "Deer don't bolt for no reason in the forest",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0717d3b5340800ce",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "bc3d6e9c53e043b3",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -442,7 +444,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.371439+00:00",
+        "checked_at": "2026-06-28T02:02:31.231936+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -890,7 +892,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.373364+00:00",
+        "checked_at": "2026-06-28T02:02:31.233882+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1338,7 +1340,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.378142+00:00",
+        "checked_at": "2026-06-28T02:02:31.238640+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1793,7 +1795,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.364569+00:00",
+        "checked_at": "2026-06-28T02:02:31.226283+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2242,7 +2244,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.367672+00:00",
+        "checked_at": "2026-06-28T02:02:31.228287+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2693,7 +2695,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.376191+00:00",
+        "checked_at": "2026-06-28T02:02:31.236683+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3145,7 +3147,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.380167+00:00",
+        "checked_at": "2026-06-28T02:02:31.240692+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3599,7 +3601,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.363353+00:00",
+        "checked_at": "2026-06-28T02:02:31.225256+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4051,7 +4053,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.369311+00:00",
+        "checked_at": "2026-06-28T02:02:31.229969+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4504,7 +4506,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T01:57:23.374574+00:00",
+        "checked_at": "2026-06-28T02:02:31.235086+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
