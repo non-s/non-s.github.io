@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-28T02:03:38.633294+00:00",
+  "generated_at": "2026-06-28T02:14:31.208766+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 21.4,
+  "overall_progress_pct": 16.4,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,17 +10,17 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 50.0
+    "progress_pct": 15.0
   },
   "boss": {
-    "id": "publish_ready_reserve_low",
-    "label": "Publish-ready reserve is below target",
+    "id": "final_publish_supply_empty",
+    "label": "No candidate clears the final publish gate",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 1,
+      "eligible_count": 0,
       "operational_publish_ready": 0,
-      "apparent_publish_ready": 2,
-      "pending": 10,
+      "apparent_publish_ready": 1,
+      "pending": 9,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
@@ -36,18 +36,18 @@
         },
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 6,
+          "count": 4,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
-          "id": "agency_gate:success_recovery_format_required",
+          "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
           "count": 4,
-          "operator_translation": "match the recovery format rule"
+          "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
         },
         {
-          "id": "agency_gate:success_recovery_hook_required",
-          "count": 4,
-          "operator_translation": "rewrite the recovery hook"
+          "id": "editor_in_chief:cooldown_subject",
+          "count": 3,
+          "operator_translation": "pick a fresh subject inside the same lane"
         }
       ]
     }
@@ -69,7 +69,7 @@
       "priority": "P0",
       "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
       "target": "eligible_count >= 1",
-      "why": "Publish-ready reserve is below target"
+      "why": "No candidate clears the final publish gate"
     },
     {
       "priority": "P0",
@@ -86,21 +86,21 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 10/20",
+      "target": "pending 9/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 55,
     "health_state": "needs_work",
-    "pending": 10,
+    "pending": 9,
     "operational_publish_ready": 0,
-    "apparent_publish_ready": 2,
-    "eligible_count": 1,
+    "apparent_publish_ready": 1,
+    "eligible_count": 0,
     "scale_ready_count": 0,
     "next_shorts_count": 0,
-    "editorial_candidate_count": 10,
-    "published_count": 71,
+    "editorial_candidate_count": 9,
+    "published_count": 72,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -124,18 +124,8 @@
     },
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 6,
+      "count": 4,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
-      "id": "agency_gate:success_recovery_format_required",
-      "count": 4,
-      "operator_translation": "match the recovery format rule"
-    },
-    {
-      "id": "agency_gate:success_recovery_hook_required",
-      "count": 4,
-      "operator_translation": "rewrite the recovery hook"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -143,14 +133,19 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 4,
-      "operator_translation": "observe this pattern before scaling it"
-    },
-    {
       "id": "editor_in_chief:cooldown_subject",
       "count": 3,
       "operator_translation": "pick a fresh subject inside the same lane"
+    },
+    {
+      "id": "agency_gate:success_recovery_format_required",
+      "count": 3,
+      "operator_translation": "match the recovery format rule"
+    },
+    {
+      "id": "agency_gate:success_recovery_hook_required",
+      "count": 3,
+      "operator_translation": "rewrite the recovery hook"
     },
     {
       "id": "youtube_brain:subject_not_immediately_clear",
@@ -158,19 +153,24 @@
       "operator_translation": "front-load the subject in the opening"
     },
     {
-      "id": "soft_agency_hold_supply_recovery",
-      "count": 3,
-      "operator_translation": "soft agency hold supply recovery"
-    },
-    {
       "id": "agency_gate:category_recovery_rules_not_met",
       "count": 2,
       "operator_translation": "follow the category recovery rule"
     },
     {
-      "id": "ops_guardian_paused_category:rivers",
+      "id": "youtube_brain:title_shape_weak",
       "count": 2,
-      "operator_translation": "ops guardian paused category:rivers"
+      "operator_translation": "youtube brain:title shape weak"
+    },
+    {
+      "id": "packaging:title_needs_stronger_shape",
+      "count": 2,
+      "operator_translation": "packaging:title needs stronger shape"
+    },
+    {
+      "id": "packaging:subject_not_clear",
+      "count": 2,
+      "operator_translation": "packaging:subject not clear"
     }
   ],
   "levels": [
@@ -183,7 +183,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 71,
+        "published_count": 72,
         "health_score": 55
       }
     },
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 50.0,
+      "progress_pct": 15.0,
       "evidence": {
         "operational_publish_ready": 0,
-        "eligible_count": 1,
-        "pending": 10,
+        "eligible_count": 0,
+        "pending": 9,
         "target_publish_ready": 6,
         "target_pending": 20
       }

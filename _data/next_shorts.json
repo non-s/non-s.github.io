@@ -8,7 +8,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 9,
+      "evergreen": 8,
       "recovery": 1
     },
     "items": [
@@ -18,7 +18,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.9
       },
       {
         "id": "144ab47c59f2f2f0",
@@ -26,15 +26,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 42.46
-      },
-      {
-        "id": "caea97ba241a822d",
-        "title": "Forests hold cool fog between the trees",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 40.76
+        "freshness_score": 42.44
       },
       {
         "id": "ca66243c1b8718b8",
@@ -42,7 +34,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 34.78
+        "freshness_score": 34.76
       },
       {
         "id": "fe0bfc2851fa40e1",
@@ -50,7 +42,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 36.44
+        "freshness_score": 36.42
       },
       {
         "id": "ea149e2525f361a8",
@@ -58,7 +50,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.16
+        "freshness_score": 50.14
       },
       {
         "id": "5ee52211d803d24c",
@@ -66,7 +58,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.26
+        "freshness_score": 51.24
       },
       {
         "id": "90c581f4c7a0b07c",
@@ -74,7 +66,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.38
+        "freshness_score": 50.36
       },
       {
         "id": "6350becf0392cf8d",
@@ -82,7 +74,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.38
+        "freshness_score": 49.36
       },
       {
         "id": "860a6c6c2c644d35",
@@ -90,7 +82,7 @@
         "category": "chemistry",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.06
+        "freshness_score": 38.04
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -103,19 +95,18 @@
   },
   "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
   "prune_summary": {
-    "pending_before": 10,
-    "pending_after": 10,
+    "pending_before": 9,
+    "pending_after": 9,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 7,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "objective_gate:observe_before_scaling": 2,
       "editor_in_chief:editorial score 47 is below 62": 1,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "objective_gate:observe_before_scaling": 1,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1
     }
   }
 }

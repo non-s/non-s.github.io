@@ -1,38 +1,44 @@
 {
-  "generated_at": "2026-06-28T02:02:39.214043+00:00",
-  "pending": 10,
+  "generated_at": "2026-06-28T02:13:46.962382+00:00",
+  "pending": 9,
   "states": {
     "rewrite": 8,
-    "publish_ready": 2
+    "publish_ready": 1
   },
   "mechanism_clusters": {
     "scent_map": 1
   },
   "rights": {
-    "approved": 10
+    "approved": 9
   },
   "prune_summary": {
-    "pending_before": 15,
-    "pending_after": 10,
-    "rejected": 5,
-    "repair_needed": 1,
-    "repaired": 6,
+    "pending_before": 9,
+    "pending_after": 9,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 7,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
-      "off_topic_visual": 2,
-      "duplicate_title": 2,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "objective_gate:observe_before_scaling": 2,
-      "queue_score_reject": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
-      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
-      "duplicate_script": 1,
-      "duplicate_angle": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "objective_gate:observe_before_scaling": 1,
+      "objective_gate:payoff_too_late_for_current_swipe_baseline": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "Los bosques atrapan niebla fría entre los árboles",
+      "title": "Los bosques atrapan niebla fría entre los árboles",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "missing_visual_cue",
+        "payoff_not_explicit",
+        "title_shape_weak"
+      ],
+      "stage": "youtube_brain"
+    },
     {
       "id": "4cc1d25ec9993efa",
       "title": "Fossils turn old bones into time clues",
@@ -287,14 +293,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "69c44b10265f6934",
-      "title": "owls sleep with one eye open",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -444,7 +442,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.231936+00:00",
+        "checked_at": "2026-06-28T02:13:41.639048+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -509,7 +507,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -892,7 +890,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.233882+00:00",
+        "checked_at": "2026-06-28T02:13:41.641034+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -957,7 +955,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1340,7 +1338,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.238640+00:00",
+        "checked_at": "2026-06-28T02:13:41.645120+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1408,7 +1406,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1795,7 +1793,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.226283+00:00",
+        "checked_at": "2026-06-28T02:13:41.634905+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -1861,7 +1859,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2099,456 +2097,6 @@
       }
     },
     {
-      "id": "caea97ba241a822d",
-      "title": "Forests hold cool fog between the trees",
-      "category": "forests",
-      "publish_score": {
-        "approved": true,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.406,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.208,
-          "data_quality": "estimated",
-          "data_quality_score": 0.61,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.21.",
-          "recommendation_strength": "observe",
-          "sample_size": 11
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.208,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.35,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "comment_potential": 65,
-            "educational_potential": 74,
-            "emotional_potential": 30,
-            "novelty": 54,
-            "replay_potential": 67,
-            "viral_potential": 77,
-            "visual_potential": 84
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.392,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.189,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.228287+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
-        ],
-        "score": 72.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "forests",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "forests",
-        "viewer_promise": "See why this forest earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "Why does this forestscience changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 71,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "hook_options": [
-          "Forests can trap cool fog near the ground",
-          "Forests show why the low mist matters.",
-          "Forests show why the low mist matters.",
-          "Forests show why the low mist matters.",
-          "Forests give away the answer through low mist"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "forests",
-          "ending_line": "Which forest layer should we decode next?",
-          "final_line": "Which forest layer should we decode next?",
-          "loop_score": 0.319,
-          "opening_line": "Forests can trap cool fog near the ground.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "forests",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.319,
-        "pinned_comment": "Watch the low mist again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Forests can trap cool fog near the ground Watch the low mist",
-          "first_frame_text": "FOG LAYER",
-          "first_frame_text_words": 2,
-          "hook": "Forests can trap cool fog near the ground.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.319,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.350000000000001,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the low mist, so viewers rewatch the forests clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 93,
-        "selected_variant": {
-          "hook": "Forests can trap cool fog near the ground",
-          "score": 81,
-          "thumbnail_text": "FOG LAYER",
-          "title": "Forests hold cool fog between the trees"
-        },
-        "series": "Hidden Network #4",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 4,
-          "label": "Hidden Network #4",
-          "series": "Hidden Network"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.392,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.189,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FOG LAYER",
-          "LOW MIST",
-          "WATCH LOW MIST",
-          "FORESTS LEAVES",
-          "LOW MIST MATTERS",
-          "LOW MIST FIRST",
-          "LOW MIST REVEAL",
-          "LOW MIST CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Forests hold cool fog between the trees",
-          "Forests use low mist before they leaves",
-          "This low mist gives forests away",
-          "Why forests leaves after one low mist",
-          "Forests reveal the answer with low mist",
-          "The low mist that changes the moment",
-          "Forests make one low mist matter",
-          "Forests show the hidden answer in seconds",
-          "Forests: watch this low mist",
-          "Watch forests after the low mist"
-        ],
-        "top_variants": [
-          {
-            "hook": "Forests can trap cool fog near the ground",
-            "score": 81,
-            "thumbnail_text": "FOG LAYER",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Start with the low mist; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "FOG LAYER",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Watch the low mist; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "FOG LAYER",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Forests can trap cool fog near the ground",
-            "score": 74,
-            "thumbnail_text": "LOW MIST",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Start with the low mist; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "LOW MIST",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Forests can trap cool fog near the ground",
-            "score": 74,
-            "thumbnail_text": "WATCH LOW MIST",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Start with the low mist; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH LOW MIST",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Forests can trap cool fog near the ground",
-            "score": 74,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Start with the low mist; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests hold cool fog between the trees"
-          },
-          {
-            "hook": "Forests can trap cool fog near the ground",
-            "score": 74,
-            "thumbnail_text": "LOW MIST MATTERS",
-            "title": "Forests hold cool fog between the trees"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "90c581f4c7a0b07c",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -2695,7 +2243,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.236683+00:00",
+        "checked_at": "2026-06-28T02:13:41.643432+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2764,7 +2312,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3147,7 +2695,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.240692+00:00",
+        "checked_at": "2026-06-28T02:13:41.646859+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3218,7 +2766,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3601,7 +3149,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.225256+00:00",
+        "checked_at": "2026-06-28T02:13:41.634005+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -3670,7 +3218,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4053,7 +3601,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.229969+00:00",
+        "checked_at": "2026-06-28T02:13:41.636878+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4121,7 +3669,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4506,7 +4054,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T02:02:31.235086+00:00",
+        "checked_at": "2026-06-28T02:13:41.642050+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4574,7 +4122,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 71,
+          "sample_count": 72,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
