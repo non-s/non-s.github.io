@@ -1,17 +1,15 @@
 {
   "items": [
     {
-      "id": "c50c818bfdea64b9",
+      "id": "d8984d44b4413a7a",
       "title": "Forest shade keeps soil moisture from leaving",
       "category": "forests",
       "autonomy_priority": 103.0,
-      "queue_score": 72.0,
+      "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
       "objective_reasons": [
-        "objective_gate:observe_before_scaling",
-        "editor_in_chief:subject repeated inside 3-day cooldown",
-        "editorial_cooldown_supply_fallback"
+        "objective_gate:observe_before_scaling"
       ],
       "lane": "evergreen",
       "mix_adjustment": 5.0,
@@ -20,54 +18,54 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 64,
+          "score": 65,
           "signals": {
-            "viral_potential": 62,
-            "visual_potential": 94,
-            "replay_potential": 67,
-            "comment_potential": 41,
-            "educational_potential": 67,
-            "emotional_potential": 30,
-            "novelty": 64
+            "viral_potential": 67,
+            "visual_potential": 79,
+            "replay_potential": 72,
+            "comment_potential": 46,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 69
           },
           "verdict": "produce",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 75,
+          "score": 73,
           "signals": {
             "hook_score": 82,
             "curiosity_score": 71,
-            "visual_score": 82,
+            "visual_score": 66,
             "replay_score": 62,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "opening_retention": {
           "score": 100.0,
@@ -75,6 +73,8 @@
           "approved": true,
           "subject": "forest",
           "cue_terms": [
+            "canop",
+            "cool",
             "hold",
             "leaf",
             "shade",
@@ -116,11 +116,11 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113,
-          "return_probability": 0.242,
-          "comment_probability": 0.207,
+          "score": 63,
+          "state": "usable",
+          "subscriber_probability": 0.09,
+          "return_probability": 0.197,
+          "comment_probability": 0.17,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
@@ -132,29 +132,29 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.249,
+            "confidence_score": 0.215,
             "sample_size": 9,
-            "minimum_sample_size": 15,
+            "minimum_sample_size": 10,
             "data_quality": "observed",
-            "data_quality_score": 0.667,
+            "data_quality_score": 0.825,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.437,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
+            "bootstrap_multiplier": 0.411,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.268,
-          "sample_size": 19,
-          "minimum_sample_size": 35,
-          "data_quality": "estimated",
-          "data_quality_score": 0.61,
+          "confidence_score": 0.189,
+          "sample_size": 17,
+          "minimum_sample_size": 25,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.451,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
+          "bootstrap_multiplier": 0.392,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
         },
         "category": "forests",
         "story_format": "body_superpower",
@@ -174,7 +174,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.268,
+          "confidence_score": 0.189,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -185,10 +185,10 @@
       }
     },
     {
-      "id": "44adc77357342236",
-      "title": "This rock layer gives rock layers away",
+      "id": "7d42811974c363c8",
+      "title": "Rock layers expose erosion in bare open hills",
       "category": "geology",
-      "autonomy_priority": 103.0,
+      "autonomy_priority": 102.9,
       "queue_score": 72.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -204,15 +204,15 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 71,
+          "score": 66,
           "signals": {
-            "viral_potential": 67,
-            "visual_potential": 100,
+            "viral_potential": 72,
+            "visual_potential": 79,
             "replay_potential": 72,
             "comment_potential": 54,
             "educational_potential": 72,
             "emotional_potential": 35,
-            "novelty": 69
+            "novelty": 59
           },
           "verdict": "produce",
           "reasons": [],
@@ -230,15 +230,15 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 78,
+          "score": 74,
           "signals": {
             "hook_score": 82,
             "curiosity_score": 71,
-            "visual_score": 90,
+            "visual_score": 66,
             "replay_score": 62,
             "completion_prediction": 84
           },
-          "verdict": "ready",
+          "verdict": "rewrite",
           "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
@@ -259,16 +259,16 @@
           "approved": true,
           "subject": "rock",
           "cue_terms": [
-            "layer",
-            "pattern",
-            "rock"
+            "erosion",
+            "rock",
+            "time"
           ],
           "frame_hook_bridge": [
-            "rock"
+            "bare",
+            "erosion"
           ],
           "cue_bridge": [
-            "layer",
-            "pattern",
+            "erosion",
             "rock"
           ],
           "strengths": [
@@ -342,7 +342,7 @@
         },
         "category": "geology",
         "story_format": "earth_engine",
-        "hook_score": 86,
+        "hook_score": 100,
         "title_score": 90,
         "phrase_risk": {
           "penalty": 0,
@@ -372,7 +372,7 @@
       "id": "7ea6de9283de7ea9",
       "title": "Ants reveal the answer with scent road",
       "category": "insects",
-      "autonomy_priority": 99.7,
+      "autonomy_priority": 102.7,
       "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -498,29 +498,29 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.348,
-            "sample_size": 8,
+            "confidence_score": 0.32,
+            "sample_size": 7,
             "minimum_sample_size": 18,
             "data_quality": "observed",
             "data_quality_score": 0.912,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.511,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
+            "bootstrap_multiplier": 0.49,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.343,
-          "sample_size": 17,
+          "confidence_score": 0.314,
+          "sample_size": 15,
           "minimum_sample_size": 38,
           "data_quality": "observed",
           "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.507,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.34."
+          "bootstrap_multiplier": 0.486,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.31."
         },
         "category": "insects",
         "story_format": "animal_intelligence",
@@ -540,7 +540,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.343,
+          "confidence_score": 0.314,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -554,7 +554,7 @@
       "id": "d8788a5ac1927d53",
       "title": "Forests trap cool air below thick leaves",
       "category": "forests",
-      "autonomy_priority": 99.5,
+      "autonomy_priority": 101.0,
       "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -568,30 +568,30 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 63,
+          "score": 68,
           "signals": {
-            "viral_potential": 72,
-            "visual_potential": 84,
-            "replay_potential": 67,
-            "comment_potential": 33,
-            "educational_potential": 67,
-            "emotional_potential": 30,
-            "novelty": 64
+            "viral_potential": 77,
+            "visual_potential": 89,
+            "replay_potential": 72,
+            "comment_potential": 38,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 69
           },
-          "verdict": "rewrite",
+          "verdict": "produce",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
           "score": 74,
@@ -605,17 +605,17 @@
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.113,
-            "sample_size": 1,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.335,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "opening_retention": {
           "score": 100.0,
@@ -667,11 +667,11 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113,
-          "return_probability": 0.242,
-          "comment_probability": 0.207,
+          "score": 63,
+          "state": "usable",
+          "subscriber_probability": 0.09,
+          "return_probability": 0.197,
+          "comment_probability": 0.17,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
@@ -683,29 +683,29 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.249,
+            "confidence_score": 0.215,
             "sample_size": 9,
-            "minimum_sample_size": 15,
+            "minimum_sample_size": 10,
             "data_quality": "observed",
-            "data_quality_score": 0.667,
+            "data_quality_score": 0.825,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.437,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
+            "bootstrap_multiplier": 0.411,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.25."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.268,
-          "sample_size": 19,
-          "minimum_sample_size": 35,
-          "data_quality": "estimated",
-          "data_quality_score": 0.61,
+          "confidence_score": 0.189,
+          "sample_size": 17,
+          "minimum_sample_size": 25,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.451,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
+          "bootstrap_multiplier": 0.392,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
         },
         "category": "forests",
         "story_format": "body_superpower",
@@ -725,7 +725,189 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.268,
+          "confidence_score": 0.189,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "11137f107a134f04",
+      "title": "Lions hunt better when the pride coordinates",
+      "category": "wildlife",
+      "autonomy_priority": 100.2,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 58,
+          "signals": {
+            "viral_potential": 58,
+            "visual_potential": 73,
+            "replay_potential": 58,
+            "comment_potential": 48,
+            "educational_potential": 60,
+            "emotional_potential": 29,
+            "novelty": 63
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.313,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.783,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.485,
+            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          },
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+        },
+        "retention": {
+          "score": 71,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.313,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.783,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.485,
+            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          },
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "lions",
+          "cue_terms": [
+            "plan",
+            "pride"
+          ],
+          "frame_hook_bridge": [
+            "plan",
+            "pride"
+          ],
+          "cue_bridge": [
+            "plan",
+            "pride"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.374,
+            "sample_size": 10,
+            "minimum_sample_size": 18,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.53,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.37."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.37."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.325,
+          "sample_size": 18,
+          "minimum_sample_size": 38,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.494,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.33."
+        },
+        "category": "wildlife",
+        "story_format": "animal_intelligence",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.325,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -739,7 +921,7 @@
       "id": "b9b63282a8ab9d48",
       "title": "Foxes use snow hearing before they hunt",
       "category": "nocturnal",
-      "autonomy_priority": 98.5,
+      "autonomy_priority": 98.7,
       "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -866,28 +1048,28 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.221,
-            "sample_size": 8,
+            "confidence_score": 0.215,
+            "sample_size": 9,
             "minimum_sample_size": 10,
             "data_quality": "observed",
             "data_quality_score": 0.825,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.415,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+            "bootstrap_multiplier": 0.411,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.195,
-          "sample_size": 15,
+          "confidence_score": 0.189,
+          "sample_size": 17,
           "minimum_sample_size": 25,
           "data_quality": "observed",
           "data_quality_score": 0.825,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.396,
+          "bootstrap_multiplier": 0.392,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
         },
         "category": "nocturnal",
@@ -908,186 +1090,8 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.195,
+          "confidence_score": 0.189,
           "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "11137f107a134f04",
-      "title": "Lions hunt better when the pride coordinates",
-      "category": "wildlife",
-      "autonomy_priority": 97.3,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 99.3,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 58,
-          "signals": {
-            "viral_potential": 58,
-            "visual_potential": 73,
-            "replay_potential": 58,
-            "comment_potential": 48,
-            "educational_potential": 60,
-            "emotional_potential": 29,
-            "novelty": 63
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.313,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.485,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 70,
-            "curiosity_score": 71,
-            "visual_score": 66,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.313,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.485,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "lions",
-          "cue_terms": [
-            "plan",
-            "pride"
-          ],
-          "frame_hook_bridge": [
-            "plan",
-            "pride"
-          ],
-          "cue_bridge": [
-            "plan",
-            "pride"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.395,
-            "sample_size": 12,
-            "minimum_sample_size": 18,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.546,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.40."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.40."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.352,
-          "sample_size": 21,
-          "minimum_sample_size": 38,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.514,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.35."
-        },
-        "category": "wildlife",
-        "story_format": "animal_intelligence",
-        "hook_score": 100,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.352,
-          "scale_ready": true,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
@@ -1106,7 +1110,7 @@
     },
     "counts": {
       "recovery": 7,
-      "evergreen": 23
+      "evergreen": 21
     },
     "items": [
       {
@@ -1115,7 +1119,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.2
+        "freshness_score": 54.14
       },
       {
         "id": "f91185d89ae014ba",
@@ -1123,31 +1127,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.54
-      },
-      {
-        "id": "12db41497baea103",
-        "title": "Turtles steer home by reading hidden currents",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.6
-      },
-      {
-        "id": "fc8688ca9a9e53be",
-        "title": "Elephants cool blood through giant ears",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.82
-      },
-      {
-        "id": "2a8f3f3725c00fe2",
-        "title": "Elephants can feel rumbles through the ground",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
+        "freshness_score": 54.48
       },
       {
         "id": "925c162335924983",
@@ -1155,23 +1135,31 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 54.76
       },
       {
-        "id": "11137f107a134f04",
-        "title": "Lions hunt better when the pride coordinates",
+        "id": "12db41497baea103",
+        "title": "Turtles steer home by reading hidden currents",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.54
+      },
+      {
+        "id": "fc8688ca9a9e53be",
+        "title": "Elephants cool blood through giant ears",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.6
+        "freshness_score": 53.76
       },
       {
-        "id": "7ea6de9283de7ea9",
-        "title": "Ants reveal the answer with scent road",
-        "category": "insects",
+        "id": "2a8f3f3725c00fe2",
+        "title": "Elephants can feel rumbles through the ground",
+        "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.0
       },
       {
         "id": "ca1c61729ac28b9e",
@@ -1179,7 +1167,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.46
       },
       {
         "id": "4681629feff2b44e",
@@ -1187,7 +1175,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.94
       },
       {
         "id": "2da9f8fda07f3d1b",
@@ -1195,7 +1183,23 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 54.44
+      },
+      {
+        "id": "11137f107a134f04",
+        "title": "Lions hunt better when the pride coordinates",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.54
+      },
+      {
+        "id": "7ea6de9283de7ea9",
+        "title": "Ants reveal the answer with scent road",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.7
       },
       {
         "id": "ff4daa85598c5851",
@@ -1203,23 +1207,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.36
-      },
-      {
-        "id": "c50c818bfdea64b9",
-        "title": "Forest shade keeps soil moisture from leaving",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.76
-      },
-      {
-        "id": "d8788a5ac1927d53",
-        "title": "Forests trap cool air below thick leaves",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.3
       },
       {
         "id": "3966cfc20f36bfc3",
@@ -1227,7 +1215,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.74
+        "freshness_score": 53.68
       },
       {
         "id": "8b3843792150cb90",
@@ -1235,15 +1223,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.84
-      },
-      {
-        "id": "44adc77357342236",
-        "title": "This rock layer gives rock layers away",
-        "category": "geology",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.78
       },
       {
         "id": "f9d94f8f411a03aa",
@@ -1251,7 +1231,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.82
+        "freshness_score": 53.76
       },
       {
         "id": "7d42811974c363c8",
@@ -1259,7 +1239,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 54.44
       },
       {
         "id": "09c8f40beafab256",
@@ -1267,7 +1247,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.82
+        "freshness_score": 53.76
       },
       {
         "id": "f56ccfee31bdc152",
@@ -1275,7 +1255,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.46
       },
       {
         "id": "9d83eac332b110af",
@@ -1283,7 +1263,23 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.74
+        "freshness_score": 53.68
+      },
+      {
+        "id": "d8984d44b4413a7a",
+        "title": "Forest shade keeps soil moisture from leaving",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.94
+      },
+      {
+        "id": "d8788a5ac1927d53",
+        "title": "Forests trap cool air below thick leaves",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.7
       },
       {
         "id": "b9b63282a8ab9d48",
@@ -1291,7 +1287,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.36
       },
       {
         "id": "866e1c66b313b9c1",
@@ -1299,7 +1295,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.94
       },
       {
         "id": "ebd76ab310b5675e",
@@ -1307,15 +1303,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.4
-      },
-      {
-        "id": "d8984d44b4413a7a",
-        "title": "Forest canopies slow heat near the ground",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.34
       },
       {
         "id": "fe0bfc2851fa40e1",
@@ -1323,7 +1311,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.06
+        "freshness_score": 35.0
       },
       {
         "id": "51ac060b5eded716",
@@ -1331,7 +1319,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.84
+        "freshness_score": 54.78
       },
       {
         "id": "6106b34ab2e95c49",
@@ -1339,7 +1327,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.86
+        "freshness_score": 54.8
       },
       {
         "id": "7f3db6135bcccc99",
@@ -1347,7 +1335,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.84
+        "freshness_score": 54.78
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1370,7 +1358,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} rock layer gives rock layers away",
+            "shape": "{subject} layers expose erosion in bare open hills",
             "count": 1,
             "share": 0.167
           },
@@ -1385,7 +1373,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} use snow hearing before they hunt",
+            "shape": "{subject} hunt better when the pride coordinates",
             "count": 1,
             "share": 0.167
           }
@@ -1404,7 +1392,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} rock layer gives rock layers away",
+            "shape": "{subject} layers expose erosion in bare open hills",
             "count": 1,
             "share": 0.167
           },
@@ -1419,7 +1407,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} use snow hearing before they hunt",
+            "shape": "{subject} hunt better when the pride coordinates",
             "count": 1,
             "share": 0.167
           }
@@ -1429,23 +1417,23 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 30,
-    "pending_after": 30,
+    "pending_before": 28,
+    "pending_after": 28,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "objective_gate:observe_before_scaling": 17,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "objective_gate:bootstrap_observe_before_scaling": 6,
-      "editor_in_chief:script quality gate blocked the narration": 3,
+      "objective_gate:observe_before_scaling": 14,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 13,
+      "objective_gate:bootstrap_observe_before_scaling": 5,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
-      "editorial_cooldown_supply_fallback": 2,
+      "editor_in_chief:script quality gate blocked the narration": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editor_in_chief:editorial score 61 is below 62": 1
+      "editor_in_chief:editorial score 61 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }
