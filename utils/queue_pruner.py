@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import fetch_animals
+from utils.agency_gate import is_soft_agency_hold
 from utils.channel_objective import cognitive_mechanism_cluster, load_channel_objective, title_template_cluster
 from utils.claim_risk import evaluate_claim_risk
 from utils.curiosity_angles import is_generic_movement_copy
@@ -579,13 +580,24 @@ def _publish_ready_reserve_candidate(story: dict) -> bool:
 
 
 def _agency_held_ids(path: Path = AGENCY_GATE_FILE) -> set[str]:
+    return set(_agency_held_reasons(path))
+
+
+def _agency_held_reasons(path: Path = AGENCY_GATE_FILE) -> dict[str, list[str]]:
     if not path.exists():
-        return set()
+        return {}
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except Exception:
-        return set()
-    return {str(item.get("id") or "") for item in (payload.get("held_items") or []) if isinstance(item, dict)}
+        return {}
+    out: dict[str, list[str]] = {}
+    for item in payload.get("held_items") or []:
+        if not isinstance(item, dict):
+            continue
+        item_id = str(item.get("id") or "")
+        if item_id:
+            out[item_id] = [str(reason) for reason in (item.get("reasons") or ["held"])]
+    return out
 
 
 def _has_editorial_cooldown_supply_fallback(story: dict) -> bool:
@@ -958,12 +970,15 @@ def prune_queue(
         publish_ready_count = _operational_publish_ready_count(kept)
     if publish_ready_count < PUBLISH_READY_RESERVE_TARGET:
         paused = set(paused_categories().keys()) if ops_guardian_enforced() else set()
-        held_ids = _agency_held_ids()
+        held_reasons = _agency_held_reasons()
         reserve_candidates = [
             story
             for story in kept
             if _publish_ready_reserve_candidate(story)
-            and str(story.get("id") or "") not in held_ids
+            and (
+                str(story.get("id") or "") not in held_reasons
+                or is_soft_agency_hold(held_reasons.get(str(story.get("id") or "")))
+            )
             and str(story.get("category") or "").strip().lower() not in paused
         ]
         reserve_candidates.sort(

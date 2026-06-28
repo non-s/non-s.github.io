@@ -26,6 +26,27 @@ def test_creator_premortem_rewards_visible_action_and_payoff():
     assert brain["replay_reason"] == "watch_the_cue_again"
 
 
+def test_creator_premortem_accepts_tight_forty_word_short_script():
+    story = {
+        "title": "Plants turn sunlight into stored sugar",
+        "seo_title": "Plants turn sunlight into stored sugar",
+        "hook": "Plants turn light into food.",
+        "script": (
+            "Plants turn light into food. Watch the leaf surface, because chlorophyll captures light "
+            "and builds sugar from air and water. The green color is a tiny factory at work. "
+            "Which plant clue should we decode next?"
+        ),
+        "thumbnail_text": "LIGHT TO SUGAR",
+        "category": "plants",
+        "story_format": "plant_mechanism",
+    }
+
+    brain = creator_premortem(story)
+
+    assert "shorts_length_fit" in brain["strengths"]
+    assert "script_length_risk" not in brain["risks"]
+
+
 def test_creator_premortem_flags_generic_no_payoff_story():
     story = {
         "title": "Animals have another amazing secret",

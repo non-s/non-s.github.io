@@ -792,6 +792,9 @@ def test_dry_run_publish_excludes_ops_paused_category(monkeypatch):
         "queue_prune": {"state": "publish_ready", "score": 100},
         "publish_score": {"approved": True, "state": "publish_ready", "score": 95},
         "editorial": {"approved": True, "state": "publish_now"},
+        "youtube_brain": {"state": "publish_minded", "risks": []},
+        "packaging": {"state": "magnetic", "risks": []},
+        "rights_audit": {"approved": True, "warnings": []},
         "source": "Pexels",
         "source_url": "https://www.pexels.com/video/paused/",
         "source_license": "Pexels License",
@@ -815,15 +818,45 @@ def test_dry_run_publish_excludes_agency_held_candidate(monkeypatch, tmp_path):
         "queue_prune": {"state": "publish_ready", "score": 100},
         "publish_score": {"approved": True, "state": "publish_ready", "score": 95},
         "editorial": {"approved": True, "state": "publish_now"},
+        "youtube_brain": {"state": "publish_minded", "risks": []},
+        "packaging": {"state": "magnetic", "risks": []},
+        "rights_audit": {"approved": True, "warnings": []},
         "source": "Pexels",
         "source_url": "https://www.pexels.com/video/held/1/",
         "source_license": "Pexels License",
     }
 
-    payload = build_dry_run({"stories": [story]})
+    payload = build_dry_run({"stories": [story]}, env={"PUBLISH_SOFT_AGENCY_RECOVERY": "0"})
 
     assert payload["eligible_count"] == 0
     assert payload["objective_reasons"]["agency_gate:success_recovery_hook_required"] == 1
+
+
+def test_dry_run_publish_counts_soft_agency_recovery_candidate(monkeypatch, tmp_path):
+    gate = tmp_path / "agency_gate.json"
+    gate.write_text(
+        '{"held_items":[{"id":"held","reasons":["success_recovery_hook_required"]}]}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr("scripts.dry_run_publish.AGENCY_GATE", gate)
+    monkeypatch.setattr("scripts.dry_run_publish.prune_queue", lambda data: (data, [], {}))
+    story = {
+        **_strong_story(id="held", category="birds"),
+        "queue_prune": {"state": "publish_ready", "score": 100},
+        "publish_score": {"approved": True, "state": "publish_ready", "score": 95},
+        "editorial": {"approved": True, "state": "publish_now"},
+        "youtube_brain": {"state": "publish_minded", "risks": []},
+        "packaging": {"state": "magnetic", "risks": []},
+        "rights_audit": {"approved": True, "warnings": []},
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/video/held/1/",
+        "source_license": "Pexels License",
+    }
+
+    payload = build_dry_run({"stories": [story]}, env={"OPS_GUARDIAN_ENFORCE": "0"})
+
+    assert payload["eligible_count"] == 1
+    assert payload["objective_reasons"]["soft_agency_hold_supply_recovery"] == 1
 
 
 def test_dry_run_publish_excludes_final_publish_blocklist(monkeypatch):

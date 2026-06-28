@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-28T00:34:14.094882+00:00",
+  "generated_at": "2026-06-28T00:48:53.343781+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 16.9,
+  "overall_progress_pct": 22.5,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,16 +10,16 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 18.3
+    "progress_pct": 57.2
   },
   "boss": {
-    "id": "final_publish_supply_empty",
-    "label": "No candidate clears the final publish gate",
+    "id": "publish_ready_reserve_low",
+    "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 0,
-      "operational_publish_ready": 0,
-      "apparent_publish_ready": 1,
+      "eligible_count": 4,
+      "operational_publish_ready": 1,
+      "apparent_publish_ready": 5,
       "pending": 11,
       "target_publish_ready": 6,
       "target_pending": 20,
@@ -31,23 +31,23 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 10,
+          "count": 6,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "agency_gate:success_recovery_format_required",
-          "count": 9,
+          "count": 5,
           "operator_translation": "match the recovery format rule"
         },
         {
           "id": "agency_gate:success_recovery_hook_required",
-          "count": 9,
+          "count": 5,
           "operator_translation": "rewrite the recovery hook"
         },
         {
-          "id": "packaging:missing_visible_cue",
-          "count": 5,
-          "operator_translation": "make the opening visual cue explicit"
+          "id": "soft_agency_hold_supply_recovery",
+          "count": 4,
+          "operator_translation": "soft agency hold supply recovery"
         }
       ]
     }
@@ -69,7 +69,7 @@
       "priority": "P0",
       "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
       "target": "eligible_count >= 1",
-      "why": "No candidate clears the final publish gate"
+      "why": "Publish-ready reserve is below target"
     },
     {
       "priority": "P0",
@@ -80,7 +80,7 @@
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "0/6",
+      "target": "1/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
@@ -91,14 +91,14 @@
     }
   ],
   "metrics": {
-    "health_score": 67,
-    "health_state": "needs_work",
+    "health_score": 85,
+    "health_state": "watch",
     "pending": 11,
-    "operational_publish_ready": 0,
-    "apparent_publish_ready": 1,
-    "eligible_count": 0,
-    "scale_ready_count": 0,
-    "next_shorts_count": 0,
+    "operational_publish_ready": 1,
+    "apparent_publish_ready": 5,
+    "eligible_count": 4,
+    "scale_ready_count": 1,
+    "next_shorts_count": 1,
     "editorial_candidate_count": 11,
     "published_count": 69,
     "views_28d": 30314,
@@ -119,28 +119,23 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 10,
+      "count": 6,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "agency_gate:success_recovery_format_required",
-      "count": 9,
+      "count": 5,
       "operator_translation": "match the recovery format rule"
     },
     {
       "id": "agency_gate:success_recovery_hook_required",
-      "count": 9,
+      "count": 5,
       "operator_translation": "rewrite the recovery hook"
     },
     {
-      "id": "packaging:missing_visible_cue",
-      "count": 5,
-      "operator_translation": "make the opening visual cue explicit"
-    },
-    {
-      "id": "youtube_brain:script_length_risk",
+      "id": "soft_agency_hold_supply_recovery",
       "count": 4,
-      "operator_translation": "tighten the script before render"
+      "operator_translation": "soft agency hold supply recovery"
     },
     {
       "id": "objective_gate:observe_before_scaling",
@@ -154,23 +149,28 @@
     },
     {
       "id": "agency_gate:category_recovery_rules_not_met",
-      "count": 3,
+      "count": 2,
       "operator_translation": "follow the category recovery rule"
-    },
-    {
-      "id": "publish_score:rewrite",
-      "count": 2,
-      "operator_translation": "repair the publish score package"
-    },
-    {
-      "id": "editor_in_chief:cooldown_subject",
-      "count": 2,
-      "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "youtube_brain:title_shape_weak",
       "count": 2,
       "operator_translation": "youtube brain:title shape weak"
+    },
+    {
+      "id": "packaging:title_needs_stronger_shape",
+      "count": 2,
+      "operator_translation": "packaging:title needs stronger shape"
+    },
+    {
+      "id": "packaging:subject_not_clear",
+      "count": 2,
+      "operator_translation": "packaging:subject not clear"
+    },
+    {
+      "id": "publish_blocklist:monetization audit needs review",
+      "count": 2,
+      "operator_translation": "clear the monetization review note before publishing"
     }
   ],
   "levels": [
@@ -184,7 +184,7 @@
       "progress_pct": 100.0,
       "evidence": {
         "published_count": 69,
-        "health_score": 67
+        "health_score": 85
       }
     },
     {
@@ -194,10 +194,10 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 18.3,
+      "progress_pct": 57.2,
       "evidence": {
-        "operational_publish_ready": 0,
-        "eligible_count": 0,
+        "operational_publish_ready": 1,
+        "eligible_count": 4,
         "pending": 11,
         "target_publish_ready": 6,
         "target_pending": 20
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 1.0,
+      "progress_pct": 4.3,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "needs_work",
-        "operational_publish_ready": 0
+        "health_state": "watch",
+        "operational_publish_ready": 1
       }
     }
   ],

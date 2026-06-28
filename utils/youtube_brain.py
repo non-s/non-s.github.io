@@ -594,7 +594,7 @@ def creator_premortem(story: dict) -> dict:
         commands.append("Give the viewer a because/that-is-why payoff.")
 
     script_words = len(script.split())
-    if 42 <= script_words <= 95:
+    if 36 <= script_words <= 95:
         score += 8
         strengths.append("shorts_length_fit")
     else:

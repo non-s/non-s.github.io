@@ -704,6 +704,8 @@ def score_packaging(story: dict) -> dict:
     thumb = str(story.get("thumbnail_text") or "")
     hook = str(story.get("hook") or "")
     text = f"{title} {thumb} {hook}".lower()
+    early_script = str(story.get("script") or "")[:180].lower()
+    cue_text = f"{text} {early_script}"
     score = 42
     strengths: list[str] = []
     risks: list[str] = []
@@ -729,7 +731,7 @@ def score_packaging(story: dict) -> dict:
         strengths.append("action_word")
     else:
         risks.append("missing_action_word")
-    if any(re.search(r"\b" + re.escape(c) + r"\b", text) for c in CUE_WORDS):
+    if any(re.search(r"\b" + re.escape(c) + r"\b", cue_text) for c in CUE_WORDS):
         score += 10
         strengths.append("visible_cue")
     else:

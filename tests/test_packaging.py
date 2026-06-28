@@ -158,6 +158,24 @@ def test_score_packaging_recognizes_hourly_queue_nature_cues_and_actions():
     assert "missing_action_word" not in birds["risks"]
 
 
+def test_score_packaging_accepts_visible_cue_in_opening_script():
+    score = score_packaging(
+        _story(
+            title="Plants turn sunlight into stored sugar",
+            seo_title="Plants turn sunlight into stored sugar",
+            hook="Plants turn light into food.",
+            script=(
+                "Plants turn light into food. Watch the leaf surface, because chlorophyll captures light "
+                "and builds sugar from air and water."
+            ),
+            thumbnail_text="LIGHT TO SUGAR",
+            category="plants",
+        )
+    )
+
+    assert "missing_visible_cue" not in score["risks"]
+
+
 def test_normalize_story_category_recovers_science_lanes_from_copy():
     assert (
         normalize_story_category(

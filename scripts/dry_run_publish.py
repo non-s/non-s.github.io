@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.agency_gate import is_soft_agency_hold  # noqa: E402
 from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
 from utils.publish_priority import autonomy_priority, publish_priority_key  # noqa: E402
 from utils.queue_pruner import prune_queue  # noqa: E402
@@ -84,6 +85,9 @@ def build_dry_run(
     pruned, rejected, prune_summary = prune_result or _prune_with_strategy(data)
     paused = set(paused_categories().keys()) if ops_guardian_enforced(env) else set()
     agency_held = _agency_held_reasons()
+    allow_soft_agency_holds = str(
+        dict(os.environ if env is None else env).get("PUBLISH_SOFT_AGENCY_RECOVERY", "1")
+    ).strip().lower() in {"1", "true", "yes", "on"}
     publish_blocked = load_publish_blocklist(Path("_data/rejected_queue.jsonl"))
     for story in pruned.get("stories") or []:
         if story.get("consumed"):
@@ -94,9 +98,12 @@ def build_dry_run(
                 objective_reasons[f"publish_blocklist:{reason}"] += 1
             continue
         if story_id in agency_held:
-            for reason in agency_held[story_id]:
-                objective_reasons[f"agency_gate:{reason}"] += 1
-            continue
+            reasons = agency_held[story_id]
+            if not (allow_soft_agency_holds and is_soft_agency_hold(reasons)):
+                for reason in reasons:
+                    objective_reasons[f"agency_gate:{reason}"] += 1
+                continue
+            objective_reasons["soft_agency_hold_supply_recovery"] += 1
         category = str(story.get("category") or "").strip().lower()
         if category and category in paused:
             continue

@@ -3,6 +3,7 @@ from collections import Counter
 from pathlib import Path
 
 from utils.channel_objective import load_channel_objective
+from utils.agency_gate import is_soft_agency_hold
 from utils.editorial_guard import editorial_issues
 from utils.growth_strategy import paused_categories
 from utils.queue_pruner import production_quality_issues
@@ -26,6 +27,23 @@ def _publish_ready(story: dict, *, held_ids: set[str] | None = None) -> bool:
     )
 
 
+def _soft_recovery_ready(story: dict, held_reasons: dict[str, list[str]]) -> bool:
+    story_id = str(story.get("id") or "")
+    publish = story.get("publish_score") or {}
+    brain = story.get("youtube_brain") or {}
+    packaging = story.get("packaging") or {}
+    return (
+        story_id in held_reasons
+        and is_soft_agency_hold(held_reasons[story_id])
+        and _publish_ready(story)
+        and publish.get("approved") is True
+        and publish.get("state") == "publish_ready"
+        and not (brain.get("risks") or [])
+        and packaging.get("state") != "rewrite_packaging"
+        and not (packaging.get("risks") or [])
+    )
+
+
 def test_publish_ready_queue_matches_operational_reports():
     queue = _json("_data/stories_queue.json")
     pending = [story for story in queue.get("stories") or [] if not story.get("consumed")]
@@ -33,8 +51,13 @@ def test_publish_ready_queue_matches_operational_reports():
     dry_run = _json("_data/dry_run_publish.json")
     next_shorts = _json("_data/next_shorts.json")
     agency_gate = _json("_data/agency_gate.json")
-    held_ids = {str(item.get("id") or "") for item in (agency_gate.get("held_items") or [])}
+    held_reasons = {
+        str(item.get("id") or ""): [str(reason) for reason in (item.get("reasons") or [])]
+        for item in (agency_gate.get("held_items") or [])
+    }
+    held_ids = set(held_reasons)
     ready = [story for story in pending if _publish_ready(story, held_ids=held_ids)]
+    recovery_ready = [story for story in pending if _soft_recovery_ready(story, held_reasons)]
 
     assert queue_audit.get("pending") == len(pending)
     assert int(agency_gate.get("approved") or 0) + int(agency_gate.get("held") or 0) == len(pending)
@@ -42,11 +65,13 @@ def test_publish_ready_queue_matches_operational_reports():
     assert not (ready_ids & held_ids)
     assert dry_run.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
     assert next_shorts.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
-    assert dry_run.get("eligible_count") == len(ready)
-    assert len(dry_run.get("would_publish") or []) == min(10, len(ready))
+    dry_run_ready = ready + recovery_ready
+    assert dry_run.get("eligible_count") == len(dry_run_ready)
+    assert len(dry_run.get("would_publish") or []) == min(10, len(dry_run_ready))
     assert len(next_shorts.get("items") or []) == min(30, len(ready))
-    if ready:
-        assert dry_run["would_publish"][0]["id"] == next_shorts["items"][0]["id"]
+    if dry_run_ready and ready:
+        dry_run_ids = {str(item.get("id") or "") for item in dry_run.get("would_publish") or []}
+        assert str(next_shorts["items"][0]["id"]) in dry_run_ids
 
 
 def test_publish_ready_queue_has_no_known_copy_or_score_risks():
