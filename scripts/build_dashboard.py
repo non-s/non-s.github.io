@@ -51,6 +51,14 @@ SITE_DIR = Path("_site")
 OUT = SITE_DIR / "index.html"
 ROOT_OUT = Path("index.html")
 SECURITY_TXT = Path(".well-known/security.txt")
+PUBLIC_SITE_FILES = (
+    Path("404.html"),
+    Path("robots.txt"),
+    Path("sitemap.xml"),
+    Path("privacy.html"),
+    Path("terms.html"),
+    SECURITY_TXT,
+)
 QUEUE_FILE = Path("_data/stories_queue.json")
 PUBLISH_READY_RESERVE_TARGET = 6
 
@@ -2368,10 +2376,12 @@ def main() -> None:
     body = render_html()
     OUT.write_text(body, encoding="utf-8")
     ROOT_OUT.write_text(body, encoding="utf-8")
-    if SECURITY_TXT.exists():
-        destination = SITE_DIR / SECURITY_TXT
+    for source in PUBLIC_SITE_FILES:
+        if not source.exists():
+            continue
+        destination = SITE_DIR / source
         destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(SECURITY_TXT, destination)
+        shutil.copyfile(source, destination)
     print(f"Wrote {OUT}")
 
 

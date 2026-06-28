@@ -38,12 +38,19 @@ def test_jekyll_pages_config_publishes_well_known_directory():
     assert "- .well-known" in config
 
 
-def test_dashboard_build_publishes_security_txt(tmp_path, monkeypatch):
+def test_dashboard_build_publishes_public_root_files(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     sys.path.insert(0, str(ROOT / "scripts"))
     (tmp_path / ".well-known").mkdir()
     source = (ROOT / ".well-known/security.txt").read_text(encoding="utf-8")
     (tmp_path / ".well-known/security.txt").write_text(source, encoding="utf-8")
+    public_files = {
+        "404.html": "<!doctype html><title>Not found</title>",
+        "robots.txt": "User-agent: *\nAllow: /\n",
+        "sitemap.xml": "<?xml version='1.0'?><urlset></urlset>",
+    }
+    for name, body in public_files.items():
+        (tmp_path / name).write_text(body, encoding="utf-8")
 
     if "build_dashboard" in sys.modules:
         del sys.modules["build_dashboard"]
@@ -54,3 +61,5 @@ def test_dashboard_build_publishes_security_txt(tmp_path, monkeypatch):
 
     published = tmp_path / "_site/.well-known/security.txt"
     assert published.read_text(encoding="utf-8") == source
+    for name, body in public_files.items():
+        assert (tmp_path / "_site" / name).read_text(encoding="utf-8") == body
