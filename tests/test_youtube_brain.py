@@ -136,6 +136,30 @@ def test_creator_premortem_accepts_space_action_verbs():
     assert "no_action_promise" not in brain["risks"]
 
 
+def test_creator_premortem_accepts_group_hunt_spacing_as_visual_cue():
+    story = {
+        **_strong_story(),
+        "title": "Lions hunt better when the pride coordinates",
+        "seo_title": "Lions hunt better when the pride coordinates",
+        "hook": "Lions turn hunting into a team problem.",
+        "script": (
+            "Lions turn hunting into a team problem. Watch the spacing before the chase, "
+            "because lions can use different positions in a group hunt. One animal pressures "
+            "while another blocks the escape path. The power is not just muscle."
+        ),
+        "thumbnail_text": "PRIDE SPACING",
+        "category": "wildlife",
+        "story_format": "animal_intelligence",
+    }
+
+    brain = creator_premortem(story)
+
+    assert brain["state"] == "publish_minded"
+    assert brain["replay_reason"] == "watch_the_cue_again"
+    assert "missing_visual_cue" not in brain["risks"]
+    assert "generic_creator_language" not in brain["risks"]
+
+
 def test_creator_premortem_counts_alphanumeric_thumbnail_tokens():
     story = {
         **_strong_story(),

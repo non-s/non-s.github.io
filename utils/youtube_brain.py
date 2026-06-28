@@ -112,7 +112,7 @@ ACTION_WORDS = {
     "turns",
     "wash",
 }
-WEAK_WORDS = {"secret", "another", "amazing", "incredible", "interesting", "thing"}
+WEAK_WORDS = {"secret", "amazing", "incredible", "interesting", "thing"}
 GENERIC_CUE_WORDS = {"body", "cue", "movement"}
 VISIBLE_CUE_WORDS = {
     "eyes",
@@ -185,6 +185,10 @@ VISIBLE_CUE_WORDS = {
     "sediment",
     "pattern",
     "patterns",
+    "path",
+    "position",
+    "positions",
+    "spacing",
     "ultraviolet",
     "glacier",
     "rock",
