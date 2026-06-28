@@ -6,7 +6,6 @@ import re
 
 from utils.curiosity_angles import build_curiosity_package, is_generic_movement_copy
 
-
 GENERIC_FRAME_ZERO_RE = re.compile(
     r"\b(?:detect changes with (?:their|its)|show why the [a-z ]+ matters|"
     r"read the moment from one|one visible signal|before the payoff|hidden cue|final move)\b",
