@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EPOCH = "pexels_day_zero_2026-06-15"
+SELECTION_RULE = "autonomy_priority with retention lift, then queue_score and publish_score"
 
 
 def _now() -> str:
@@ -48,7 +49,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
     for pattern in delete_patterns:
         delete_targets.extend(root.glob(pattern))
 
-    selection_rule = "autonomy_priority first, queue_score and publish_score as tie-breakers"
+    selection_rule = SELECTION_RULE
     for path in sorted({target.resolve() for target in delete_targets}):
         if not path.is_file() or not path.is_relative_to(root):
             continue

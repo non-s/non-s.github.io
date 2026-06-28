@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """List the strongest next Shorts without rendering."""
+
 from __future__ import annotations
 
 import json
@@ -12,15 +13,19 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.publish_score import score_story
-from utils.curiosity_angles import build_curiosity_package
-from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment
-from utils.agency_gate import filter_candidates
-from utils.editorial_guard import editorial_issues
-from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories
-from utils.publish_priority import autonomy_priority, publish_priority_key, queue_score
-from utils.queue_pruner import PUBLISH_READY_SUPPLY_RESERVE_FALLBACK, RESERVE_MIN_PUBLISH_SCORE, prune_queue
-from utils.rejected_queue import load_publish_blocklist
+from utils.agency_gate import filter_candidates  # noqa: E402
+from utils.curiosity_angles import build_curiosity_package  # noqa: E402
+from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.editorial_mix_optimizer import build_mix_plan, classify_lane, mix_adjustment  # noqa: E402
+from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
+from utils.publish_priority import SELECTION_RULE, autonomy_priority, publish_priority_key, queue_score  # noqa: E402
+from utils.publish_score import score_story  # noqa: E402
+from utils.queue_pruner import (  # noqa: E402
+    PUBLISH_READY_SUPPLY_RESERVE_FALLBACK,
+    RESERVE_MIN_PUBLISH_SCORE,
+    prune_queue,
+)
+from utils.rejected_queue import load_publish_blocklist  # noqa: E402
 
 QUEUE = Path("_data/stories_queue.json")
 OUT = Path("_data/next_shorts.json")
@@ -105,8 +110,7 @@ def _score_for_next_short(story: dict) -> dict:
             "score": round(max(current_score, recomputed_score), 1),
             "approved": True,
             "state": "publish_ready",
-            "reserve_override": current.get("reserve_override")
-            or {"reason": PUBLISH_READY_SUPPLY_RESERVE_FALLBACK},
+            "reserve_override": current.get("reserve_override") or {"reason": PUBLISH_READY_SUPPLY_RESERVE_FALLBACK},
         }
     return score
 
@@ -396,7 +400,7 @@ def main() -> int:
             "items": rows,
             "editorial_mix": mix_plan,
             "title_shape_mix": build_title_shape_mix(rows),
-            "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
+            "selection_rule": SELECTION_RULE,
             "prune_summary": prune_summary,
         },
     )

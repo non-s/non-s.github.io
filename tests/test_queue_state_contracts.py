@@ -2,10 +2,11 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from utils.channel_objective import load_channel_objective
 from utils.agency_gate import is_soft_agency_hold
+from utils.channel_objective import load_channel_objective
 from utils.editorial_guard import editorial_issues
 from utils.growth_strategy import paused_categories
+from utils.publish_priority import SELECTION_RULE
 from utils.queue_pruner import production_quality_issues
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -63,8 +64,8 @@ def test_publish_ready_queue_matches_operational_reports():
     assert int(agency_gate.get("approved") or 0) + int(agency_gate.get("held") or 0) == len(pending)
     ready_ids = {str(story.get("id") or "") for story in ready}
     assert not (ready_ids & held_ids)
-    assert dry_run.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
-    assert next_shorts.get("selection_rule") == "autonomy_priority first, queue_score and publish_score as tie-breakers"
+    assert dry_run.get("selection_rule") == SELECTION_RULE
+    assert next_shorts.get("selection_rule") == SELECTION_RULE
     dry_run_ready = ready + recovery_ready
     assert dry_run.get("eligible_count") == len(dry_run_ready)
     assert len(dry_run.get("would_publish") or []) == min(10, len(dry_run_ready))

@@ -136,7 +136,7 @@ def _candidate_id(story: dict | None) -> str:
 def _best_candidate(stories: list[dict]) -> tuple[dict | None, dict]:
     best_story: dict | None = None
     best_score: dict = {}
-    best_key = (-1.0, -1.0, -1.0)
+    best_key = (-1.0, -1.0, -1.0, -1.0)
     for story in stories:
         try:
             score = score_story(story)

@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 10,
-      "high": 0,
+      "high": 1,
       "manual_review": 0,
       "total": 10,
-      "urgent": 4
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-06-28T13:16:32.195144+00:00",
+    "generated_at": "2026-06-28T13:24:09.556430+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.067,
+        "age_hours": 12.194,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.091,
+        "age_hours": 11.218,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.821,
+        "age_hours": 9.948,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -91,24 +91,24 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 5.979,
+        "age_hours": 6.107,
         "automation_safe": true,
         "category": "fungi",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "due",
         "current_views": 0,
-        "due_at": "2026-06-28T08:17:46.086561+00:00",
+        "due_at": "2026-06-28T13:17:46.086561+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:nwCMaiPdC20:analytics_due:1h",
+        "id": "fresh-upload:nwCMaiPdC20:analytics_due:6h",
         "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
         "series": "Hidden Network",
         "state": "analytics_due",
-        "target_views": 24,
+        "target_views": 105,
         "title": "Mushrooms release spores from hidden gills",
         "url": "https://www.youtube.com/shorts/nwCMaiPdC20",
         "video_id": "nwCMaiPdC20",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.218,
+        "age_hours": 0.345,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.73,
+        "age_hours": 4.857,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.752,
+        "age_hours": 3.879,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.919,
+        "age_hours": 3.046,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.171,
+        "age_hours": 2.298,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.113,
+        "age_hours": 1.24,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-06-28T13:16:32.194275+00:00"
+    "source_generated_at": "2026-06-28T13:24:09.554433+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -288,11 +288,11 @@
       "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-06-28T13:16:32.194275+00:00",
+    "generated_at": "2026-06-28T13:24:09.554433+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.218,
+        "age_hours": 0.345,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.113,
+        "age_hours": 1.24,
         "category": "weather",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.171,
+        "age_hours": 2.298,
         "category": "geology",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.919,
+        "age_hours": 3.046,
         "category": "physics",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.752,
+        "age_hours": 3.879,
         "category": "trees",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.73,
+        "age_hours": 4.857,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -622,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 5.979,
+        "age_hours": 6.107,
         "category": "fungi",
         "checkpoints": [
           {
@@ -635,11 +635,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-06-28T13:17:46.086561+00:00",
             "label": "6h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 105,
             "views": 0
           },
@@ -656,12 +656,12 @@
         "current_views": 0,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-06-28T08:17:46.086561+00:00",
-          "label": "1h",
+          "delta_to_target": -105,
+          "due_at": "2026-06-28T13:17:46.086561+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
+          "state": "due",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
@@ -677,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.821,
+        "age_hours": 9.948,
         "category": "dogs",
         "checkpoints": [
           {
@@ -732,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.091,
+        "age_hours": 11.218,
         "category": "forests",
         "checkpoints": [
           {
@@ -787,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.067,
+        "age_hours": 12.194,
         "category": "plants",
         "checkpoints": [
           {
@@ -848,7 +848,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-06-28T13:16:32.195233+00:00",
+  "generated_at": "2026-06-28T13:24:09.557440+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."

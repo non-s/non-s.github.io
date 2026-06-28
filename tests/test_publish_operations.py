@@ -839,7 +839,9 @@ def test_dry_run_publish_uses_autonomy_priority_before_queue_score(monkeypatch):
 
     assert payload["would_publish"][0]["id"] == "high"
     assert payload["would_publish"][0]["autonomy_lane"] == "proven_category"
-    assert payload["selection_rule"] == "autonomy_priority first, queue_score and publish_score as tie-breakers"
+    from utils.publish_priority import SELECTION_RULE
+
+    assert payload["selection_rule"] == SELECTION_RULE
 
 
 def test_dry_run_publish_excludes_ops_paused_category(monkeypatch):

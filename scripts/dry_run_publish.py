@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
 
 from utils.agency_gate import is_soft_agency_hold  # noqa: E402
 from utils.growth_strategy import load_strategy, ops_guardian_enforced, paused_categories  # noqa: E402
-from utils.publish_priority import autonomy_priority, publish_priority_key  # noqa: E402
+from utils.publish_priority import SELECTION_RULE, autonomy_priority, publish_priority_key  # noqa: E402
 from utils.queue_pruner import prune_queue  # noqa: E402
 from utils.rejected_queue import load_publish_blocklist  # noqa: E402
 
@@ -176,7 +176,7 @@ def build_dry_run(
             1 for item in items if "observe_before_scaling" in (item.get("objective_reasons") or [])
         ),
         "objective_reasons": dict(objective_reasons.most_common()),
-        "selection_rule": "autonomy_priority first, queue_score and publish_score as tie-breakers",
+        "selection_rule": SELECTION_RULE,
         "prune_summary": prune_summary,
         "rejected_preview": [
             {
