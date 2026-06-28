@@ -903,7 +903,9 @@ def _legacy_title_card_frame(
     return img.convert("RGB")
 
 
-def create_short_frame(title: str, category: str, points: list[str], source: str, bg_path: Path | None, lang: str | None = None) -> Image.Image:
+def create_short_frame(
+    title: str, category: str, points: list[str], source: str, bg_path: Path | None, lang: str | None = None
+) -> Image.Image:
     """
     Create a first frame that works as a Shorts cover: visible animal,
     compact visual cue, and small brand lockup.
@@ -1065,7 +1067,9 @@ def _side_caption_lines(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.Im
     return wrap_text(draw, " ".join(words), font, max_width)[:3]
 
 
-def create_short_thumbnail(frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "", lang: str | None = None) -> None:
+def create_short_thumbnail(
+    frame_img: Image.Image, output: Path, thumbnail_text: str = "", category: str = "", lang: str | None = None
+) -> None:
     """Render a frame-first thumbnail with a large side caption."""
     if frame_img is None:
         return
@@ -1539,8 +1543,13 @@ def _prioritize_publish_window_candidate(candidates: list[dict], target_id: str 
         log.error("Publish window selected %s, but no matching candidate survived generator gates.", target)
         return [] if PUBLISH_WINDOW_SELECTED_ONLY else candidates
     if PUBLISH_WINDOW_SELECTED_ONLY:
-        log.info("  Publish window selected candidate enforced: %s", target)
-        return selected[:1]
+        reserve = [item for item in candidates if not _matches_publish_window_candidate(item, target)]
+        log.info(
+            "  Publish window selected candidate prioritized: %s (%d reserve candidate(s))",
+            target,
+            len(reserve),
+        )
+        return selected[:1] + reserve
     return selected + [item for item in candidates if not _matches_publish_window_candidate(item, target)]
 
 
@@ -1571,30 +1580,30 @@ def _end_card_text_for_story(story: dict) -> str:
     end_card_style = experiments.get("end_card_style", "subscribe_clean")
     loop_plan = (story.get("packaging") or {}).get("loop_plan") or {}
     callback = _normalise_editorial_text(loop_plan.get("callback_keyword") or "").upper()
-    
+
     lang = story.get("language") or "en"
-    
+
     if end_card_style == "loop_callback" and callback and callback != "CUE":
         if lang in {"es-ES", "es-MX"}:
             return f"MIRA EL {callback} DE NUEVO"[:34]
         elif lang == "pt-BR":
             return f"ASSISTA AO {callback} NOVAMENTE"[:34]
         return f"WATCH THE {callback} AGAIN"[:34]
-        
+
     if end_card_style == "series_tease" or cta_pattern == "sequel_tease":
         if lang in {"es-ES", "es-MX"}:
             return "SIGUIENTE SEÑAL SALVAJE"
         elif lang == "pt-BR":
             return "PRÓXIMO SINAL SELVAGEM"
         return "NEXT WILD SIGNAL"
-        
+
     if cta_pattern == "question_tease":
         if lang in {"es-ES", "es-MX"}:
             return "COMENTA LA SIGUIENTE PREGUNTA"
         elif lang == "pt-BR":
             return "COMENTE A PRÓXIMA PERGUNTA"
         return "COMMENT THE NEXT QUESTION"
-        
+
     if lang in {"es-ES", "es-MX"}:
         return "SÍGUENOS PARA MÁS NATURALEZA"
     elif lang == "pt-BR":
@@ -1879,7 +1888,12 @@ def load_pending_stories() -> tuple[list[dict], dict]:
                 item = package_story(rescued)
                 brain = creator_premortem(item)
                 packaging = item.get("packaging") or {}
-            if brain["state"] != "publish_minded" or brain.get("risks") or packaging.get("state") == "rewrite_packaging" or packaging.get("risks"):
+            if (
+                brain["state"] != "publish_minded"
+                or brain.get("risks")
+                or packaging.get("state") == "rewrite_packaging"
+                or packaging.get("risks")
+            ):
                 record_rejection(item, reasons, stage="youtube_brain_rewrite")
                 continue
         if _can_apply_publish_ready_supply_reserve(
@@ -2619,7 +2633,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         "description": metadata.get("yt_description", ""),
         "hashtags": clean_hashtags,
         "language": metadata.get("language", "en"),
-        "platform_ready": True
+        "platform_ready": True,
     }
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info(f"  Multi-platform manifest saved: {manifest_path.name}")
@@ -2710,7 +2724,7 @@ def main():
             created += 1
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
-            
+
             # MrBeast Multi-Lingual Empire (Spanish Dubbing)
             if LANGUAGE == "en":
                 log.info("  >> Triggering Spanish (es-MX) Dubbing pipeline...")
@@ -2725,8 +2739,8 @@ def main():
                     final_es_meta = es_dir / f"{video_path.stem}.json"
                     video_es.rename(final_es_video)
                     thumb_es.rename(final_es_thumb)
-                    Path(video_es.with_suffix('.json')).rename(final_es_meta)
-                    
+                    Path(video_es.with_suffix(".json")).rename(final_es_meta)
+
                     # Update Spanish done markers
                     es_done_file = es_dir / "shorts_done.json"
                     try:
@@ -2742,10 +2756,10 @@ def main():
                         json.dumps(sorted(es_done), indent=2, ensure_ascii=False),
                         encoding="utf-8",
                     )
-                    
+
                     log.info(f"  Spanish Short ready: {final_es_video.name} in {es_dir}")
                 shutil.rmtree(es_tmp, ignore_errors=True)
-                
+
         else:
             log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
 

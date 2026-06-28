@@ -704,7 +704,7 @@ def test_load_pending_stories_enforces_publish_window_soft_held_candidate(monkey
 
     candidates, _queue = gs.load_pending_stories()
 
-    assert [item["id"] for item in candidates] == ["soft"]
+    assert [item["id"] for item in candidates] == ["soft", "strict"]
     assert candidates[0]["agency_gate"]["reasons"] == ["success_recovery_hook_required"]
 
 
