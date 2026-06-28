@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T12:27:18.573284+00:00",
+  "generated_at": "2026-06-28T12:39:43.877549+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 40.8,
@@ -21,11 +21,6 @@
       "avg_view_percentage": 57.002,
       "top_blockers": [
         {
-          "id": "duplicate_title",
-          "count": 28,
-          "operator_translation": "duplicate title"
-        },
-        {
           "id": "objective_gate:observe_before_scaling",
           "count": 22,
           "operator_translation": "observe this pattern before scaling it"
@@ -44,6 +39,11 @@
           "id": "objective_gate:bootstrap_observe_before_scaling",
           "count": 12,
           "operator_translation": "collect more observed signal before scaling this pattern"
+        },
+        {
+          "id": "objective_gate:payoff_too_late_for_current_swipe_baseline",
+          "count": 10,
+          "operator_translation": "move the payoff earlier"
         }
       ]
     }
@@ -108,11 +108,6 @@
   },
   "top_blockers": [
     {
-      "id": "duplicate_title",
-      "count": 28,
-      "operator_translation": "duplicate title"
-    },
-    {
       "id": "objective_gate:observe_before_scaling",
       "count": 22,
       "operator_translation": "observe this pattern before scaling it"
@@ -131,16 +126,6 @@
       "id": "objective_gate:bootstrap_observe_before_scaling",
       "count": 12,
       "operator_translation": "collect more observed signal before scaling this pattern"
-    },
-    {
-      "id": "queue_score_reject",
-      "count": 11,
-      "operator_translation": "queue score reject"
-    },
-    {
-      "id": "off_topic_visual",
-      "count": 11,
-      "operator_translation": "off topic visual"
     },
     {
       "id": "objective_gate:payoff_too_late_for_current_swipe_baseline",
@@ -163,9 +148,24 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "copy_subject_mismatch",
-      "count": 6,
-      "operator_translation": "copy subject mismatch"
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 4,
+      "operator_translation": "editorial cooldown supply fallback"
+    },
+    {
+      "id": "observe_before_scaling",
+      "count": 3,
+      "operator_translation": "observe before scaling"
+    },
+    {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 3,
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "ops_guardian_paused_category:rivers",
+      "count": 2,
+      "operator_translation": "ops guardian paused category:rivers"
     }
   ],
   "levels": [
