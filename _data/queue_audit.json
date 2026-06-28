@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-28T07:10:58.385708+00:00",
-  "pending": 22,
+  "generated_at": "2026-06-28T07:21:52.155029+00:00",
+  "pending": 21,
   "states": {
     "rewrite": 12,
-    "publish_ready": 10
+    "publish_ready": 9
   },
   "mechanism_clusters": {
     "call_signal": 1,
@@ -11,46 +11,39 @@
     "scent_map": 1
   },
   "rights": {
-    "approved": 22
+    "approved": 21
   },
   "prune_summary": {
-    "pending_before": 66,
-    "pending_after": 22,
-    "rejected": 44,
-    "repair_needed": 10,
-    "repaired": 15,
+    "pending_before": 21,
+    "pending_after": 21,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 1,
     "reasons": {
-      "duplicate_title": 24,
-      "objective_gate:bootstrap_observe_before_scaling": 15,
-      "queue_score_reject": 10,
-      "duplicate_script": 10,
+      "objective_gate:bootstrap_observe_before_scaling": 14,
       "editor_in_chief:subject repeated inside 3-day cooldown": 9,
-      "off_topic_visual": 8,
-      "duplicate_angle": 8,
-      "copy_subject_mismatch": 4,
       "objective_gate:observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "opening_retention_gap_risk": 3,
-      "opening promise is not concrete enough": 3,
-      "no_action_promise": 2,
-      "missing_action_word": 2,
-      "missing_visible_cue": 2,
-      "rights_guard_person_manual_review": 2,
-      "script_hook_mismatch": 2,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editorial_cooldown_supply_fallback": 2,
-      "subject_not_immediately_clear": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "script_subject_mismatch": 1,
-      "script_word_loop": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
+      "editor_in_chief:editorial score 48 is below 62": 1,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1c5cf1dd2f2391a8",
+      "title": "Hongos lanzan esporas por sus branquias ocultas",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 53 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "4613608eca72cbbe",
       "title": "The moon keeps one face turned toward Earth",
@@ -302,16 +295,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "1ed041f37faca315",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -490,7 +473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:36.564046+00:00",
+        "checked_at": "2026-06-28T07:21:37.473786+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -586,7 +569,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1096,7 +1079,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:37.888665+00:00",
+        "checked_at": "2026-06-28T07:21:37.484608+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1192,7 +1175,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1257,9 +1240,9 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "trees",
-          "ending_line": "Which hidden record should come next?",
-          "final_line": "Which hidden record should come next?",
-          "loop_score": 0.259,
+          "ending_line": "Which hidden record should come next.",
+          "final_line": "Now the first clue at the start makes sense.",
+          "loop_score": 0.153,
           "opening_line": "Trees keep weather history in their rings.",
           "render_hints": {
             "avoid_hard_stop": true,
@@ -1268,7 +1251,7 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.259,
+        "loop_score": 0.153,
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -1308,7 +1291,7 @@
           "hook": "Trees keep weather history in their rings.",
           "hook_specificity": 0.78,
           "hook_words": 7,
-          "loop_score": 0.259,
+          "loop_score": 0.153,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
@@ -1376,12 +1359,12 @@
           "thumbnail_text": "TREE RINGS",
           "title": "Trees record wet years inside their rings"
         },
-        "series": "Hidden Network #5",
+        "series": "Hidden Network #6",
         "series_identity": {
-          "continuity_prompt": "Next in Hidden Network #5: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Hidden Network #5",
-          "series": "Hidden Network #5"
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Hidden Network #6",
+          "series": "Hidden Network"
         },
         "state": "magnetic",
         "strengths": [
@@ -1698,7 +1681,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:38.552460+00:00",
+        "checked_at": "2026-06-28T07:21:37.488851+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1790,7 +1773,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2297,7 +2280,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:38.567249+00:00",
+        "checked_at": "2026-06-28T07:21:37.495622+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2394,7 +2377,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2910,7 +2893,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:38.569348+00:00",
+        "checked_at": "2026-06-28T07:21:37.497647+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3003,7 +2986,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3337,603 +3320,6 @@
       }
     },
     {
-      "id": "1c5cf1dd2f2391a8",
-      "title": "Mushrooms release spores from hidden gills",
-      "category": "fungi",
-      "publish_score": {
-        "approved": true,
-        "category": "fungi",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.292,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.057,
-          "data_quality": "observed",
-          "data_quality_score": 0.825,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
-          "recommendation_strength": "observe",
-          "sample_size": 3
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.057,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.25,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "spore"
-          ],
-          "cue_terms": [
-            "gill",
-            "spore"
-          ],
-          "frame_hook_bridge": [
-            "spore"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mushrooms"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 53,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 88,
-            "visual_potential": 100
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 80,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 100
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "hidden_network",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.312,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.083,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-28T07:10:40.232164+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "mushrooms",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "spore"
-          ],
-          "cue_terms": [
-            "gill",
-            "spore"
-          ],
-          "frame_hook_bridge": [
-            "spore"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mushrooms"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "hidden_network",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "mushrooms",
-        "viewer_promise": "See why this mushroom hidden network matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after mushrooms?",
-        "cta_prompt": "Want more nature that feels like science fiction but is real?",
-        "curiosity_gap": {
-          "hook": "Why do these fungi change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "hidden network",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 73,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "spore"
-            ],
-            "cue_terms": [
-              "gill",
-              "spore"
-            ],
-            "frame_hook_bridge": [
-              "spore"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mushrooms"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Mushrooms spread by releasing tiny spores",
-          "Mushrooms show why the mushroom gills matters.",
-          "Mushrooms show why the mushroom gills matters.",
-          "Mushrooms show why the mushroom gills matters.",
-          "Mushrooms give away the answer through mushroom gills"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "mushrooms",
-          "ending_line": "Which hidden structure should we look under next?",
-          "final_line": "Which hidden structure should we look under next?",
-          "loop_score": 0.229,
-          "opening_line": "Mushrooms spread by releasing tiny spores.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "mushrooms",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.229,
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "spore"
-          ],
-          "cue_terms": [
-            "gill",
-            "spore"
-          ],
-          "frame_hook_bridge": [
-            "spore"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mushrooms"
-        },
-        "pinned_comment": "Watch the spores again. Tomorrow: another nature signal. Is this closer to a network, a warning system, or something stranger?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 17.67,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Mushrooms spread by releasing tiny spores Watch under the cap because many",
-          "first_frame_text": "SPORE GILLS",
-          "first_frame_text_words": 2,
-          "hook": "Mushrooms spread by releasing tiny spores.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.229,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "spore"
-            ],
-            "cue_terms": [
-              "gill",
-              "spore"
-            ],
-            "frame_hook_bridge": [
-              "spore"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mushrooms"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_time_s": 8.25,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the spores, so viewers rewatch the mushrooms clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 80,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 100
-          },
-          "verdict": "ready"
-        },
-        "risks": [],
-        "score": 98,
-        "selected_variant": {
-          "hook": "Mushrooms spread by releasing tiny spores",
-          "score": 84,
-          "thumbnail_text": "SPORE GILLS",
-          "title": "Mushrooms release spores from hidden gills"
-        },
-        "series": "Hidden Network #5",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Hidden Network #5",
-          "series": "Hidden Network"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.312,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.083,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SPORE GILLS",
-          "MUSHROOM GILLS",
-          "WATCH MUSHROOM GILLS",
-          "MUSHROOMS CARRY",
-          "MUSHROOM GILLS MATTERS",
-          "MUSHROOM GILLS FIRST",
-          "MUSHROOM GILLS REVEAL",
-          "MUSHROOM GILLS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mushrooms release spores from hidden gills",
-          "Mushrooms use mushroom gills before they carry",
-          "Why mushrooms carry after one mushroom gills",
-          "Mushrooms reveal the answer with mushroom gills",
-          "The mushroom gills that changes the moment",
-          "Mushrooms make one mushroom gills matter",
-          "Mushrooms show the hidden answer in seconds",
-          "Mushrooms: watch this mushroom gills",
-          "Watch mushrooms after the mushroom gills"
-        ],
-        "top_variants": [
-          {
-            "hook": "Mushrooms spread by releasing tiny spores",
-            "score": 84,
-            "thumbnail_text": "SPORE GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Watch the mushroom gills; it explains the behavior",
-            "score": 84,
-            "thumbnail_text": "SPORE GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Start with the mushroom gills; it changes the scene",
-            "score": 84,
-            "thumbnail_text": "SPORE GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Mushrooms spread by releasing tiny spores",
-            "score": 77,
-            "thumbnail_text": "MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Watch the mushroom gills; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Start with the mushroom gills; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Mushrooms spread by releasing tiny spores",
-            "score": 77,
-            "thumbnail_text": "WATCH MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Watch the mushroom gills; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "WATCH MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Start with the mushroom gills; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "WATCH MUSHROOM GILLS",
-            "title": "Mushrooms release spores from hidden gills"
-          },
-          {
-            "hook": "Mushrooms spread by releasing tiny spores",
-            "score": 77,
-            "thumbnail_text": "MUSHROOMS CARRY",
-            "title": "Mushrooms release spores from hidden gills"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "90c581f4c7a0b07c",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -4110,7 +3496,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:40.715520+00:00",
+        "checked_at": "2026-06-28T07:21:37.512235+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4206,7 +3592,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4727,7 +4113,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:36.565171+00:00",
+        "checked_at": "2026-06-28T07:21:37.480791+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4823,7 +4209,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5346,7 +4732,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:40.718324+00:00",
+        "checked_at": "2026-06-28T07:21:37.515132+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5441,7 +4827,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5944,7 +5330,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:36.216408+00:00",
+        "checked_at": "2026-06-28T07:21:37.470015+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -6041,7 +5427,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6549,7 +5935,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:37.890214+00:00",
+        "checked_at": "2026-06-28T07:21:37.486257+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6643,7 +6029,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6821,11 +6207,11 @@
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
-        "series": "Hidden Network #5",
+        "series": "Hidden Network #6",
         "series_identity": {
           "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Hidden Network #5",
+          "episode": 6,
+          "label": "Hidden Network #6",
           "series": "Hidden Network"
         },
         "state": "magnetic",
@@ -7149,7 +6535,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:38.562529+00:00",
+        "checked_at": "2026-06-28T07:21:37.491798+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7247,7 +6633,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7764,7 +7150,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:40.228566+00:00",
+        "checked_at": "2026-06-28T07:21:37.507554+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7859,7 +7245,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8043,11 +7429,11 @@
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
-        "series": "Hidden Network #5",
+        "series": "Hidden Network #6",
         "series_identity": {
           "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Hidden Network #5",
+          "episode": 6,
+          "label": "Hidden Network #6",
           "series": "Hidden Network"
         },
         "state": "magnetic",
@@ -8368,7 +7754,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:40.230093+00:00",
+        "checked_at": "2026-06-28T07:21:37.509100+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8463,7 +7849,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8647,11 +8033,11 @@
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
-        "series": "Hidden Network #5",
+        "series": "Hidden Network #6",
         "series_identity": {
           "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Hidden Network #5",
+          "episode": 6,
+          "label": "Hidden Network #6",
           "series": "Hidden Network"
         },
         "state": "magnetic",
@@ -8975,7 +8361,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:36.214664+00:00",
+        "checked_at": "2026-06-28T07:21:37.468138+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -9077,7 +8463,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9433,15 +8819,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.554,
+          "bootstrap_multiplier": 0.581,
           "can_adjust_strategy": false,
-          "confidence_score": 0.406,
+          "confidence_score": 0.441,
           "data_quality": "observed",
           "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.41.",
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.44.",
           "recommendation_strength": "observe",
-          "sample_size": 21
+          "sample_size": 27
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -9451,7 +8837,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.406,
+          "confidence_score": 0.441,
           "mechanism_cluster": "call_signal",
           "payoff_time_s": 9.35,
           "penalty": 0.0,
@@ -9541,34 +8927,35 @@
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.242,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.48,
+            "bootstrap_multiplier": 0.613,
             "can_adjust_strategy": false,
-            "confidence_score": 0.306,
+            "confidence_score": 0.484,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 15
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.283,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 94,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.134
+          "subscriber_probability": 0.143
         },
         "title_score": 100,
         "weak_content": {
@@ -9591,10 +8978,12 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:36.217503+00:00",
+        "checked_at": "2026-06-28T07:21:37.471504+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
-          "editor_in_chief:subject repeated inside 3-day cooldown"
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "editor_in_chief:editorial score 48 is below 62"
         ],
         "score": 64.0,
         "state": "rewrite",
@@ -9681,7 +9070,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9847,12 +9236,12 @@
           "thumbnail_text": "GROUND SIGNAL",
           "title": "Elephants can feel rumbles through the ground"
         },
-        "series": "Body Clues",
+        "series": "Animal Superpowers #18",
         "series_identity": {
-          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Body Clues",
-          "series": "Body Clues"
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 18,
+          "label": "Animal Superpowers #18",
+          "series": "Animal Superpowers"
         },
         "state": "magnetic",
         "strengths": [
@@ -9863,34 +9252,35 @@
           "visible_cue"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.242,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.48,
+            "bootstrap_multiplier": 0.613,
             "can_adjust_strategy": false,
-            "confidence_score": 0.306,
+            "confidence_score": 0.484,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 15
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.283,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 94,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.134
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -10171,7 +9561,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:38.565230+00:00",
+        "checked_at": "2026-06-28T07:21:37.493728+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10268,7 +9658,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10781,7 +10171,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:39.366181+00:00",
+        "checked_at": "2026-06-28T07:21:37.499797+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10878,7 +10268,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11394,7 +10784,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:39.368081+00:00",
+        "checked_at": "2026-06-28T07:21:37.501533+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11491,7 +10881,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12007,7 +11397,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T07:10:39.799144+00:00",
+        "checked_at": "2026-06-28T07:21:37.503764+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12110,7 +11500,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 73,
+          "sample_count": 74,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12447,6 +11837,621 @@
             "score": 73,
             "thumbnail_text": "STORM CLOUDS COOLS",
             "title": "Storm clouds reveal a storm's heat engine"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "80c7fb8f6acf5690",
+      "title": "Plants turn light into food",
+      "category": "plants",
+      "publish_score": {
+        "approved": true,
+        "category": "plants",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 8.25,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "leaf",
+            "light",
+            "surface"
+          ],
+          "cue_terms": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "light"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "plants"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 61,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 44,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 66,
+            "visual_potential": 65
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "plant_mechanism",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-28T07:21:37.510501+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "plants",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "leaf",
+            "light",
+            "surface"
+          ],
+          "cue_terms": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "light"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "plants"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "plant_mechanism",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "plants",
+        "viewer_promise": "See why this plant plant mechanism matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after plants?",
+        "cta_prompt": "Want to see how plants quietly engineer survival?",
+        "curiosity_gap": {
+          "hook": "Why does this nature changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "plant mechanism",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 74,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.04,
+            "cta:specific_question": 41.66,
+            "format:winner_inspired": 43.57,
+            "hook:pattern_reuse": 43.57,
+            "thumbnail:new_thumbnail": 42.9
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "leaf",
+              "light",
+              "surface"
+            ],
+            "cue_terms": [
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "light"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "plants"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 3
+        },
+        "hook_options": [
+          "Plants turn light into food",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters.",
+          "Plants give away the answer through leaf surface"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "plants",
+          "ending_line": "Which plant clue should we decode next?",
+          "final_line": "Which plant clue should we decode next?",
+          "loop_score": 0.284,
+          "opening_line": "Plants turn light into food.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "plants",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.284,
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "leaf",
+            "light",
+            "surface"
+          ],
+          "cue_terms": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "light"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "plants"
+        },
+        "pinned_comment": "Watch the leaf surface again. Tomorrow: another nature signal. Do plants feel more passive, reactive, or strategic here?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.93,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Plants turn light into food Watch the leaf surface because chlorophyll captures",
+          "first_frame_text": "LIGHT TO SUGAR",
+          "first_frame_text_words": 3,
+          "hook": "Plants turn light into food.",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.284,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "leaf",
+              "light",
+              "surface"
+            ],
+            "cue_terms": [
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "light"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "plants"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_time_s": 8.25,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the leaf surface, so viewers rewatch the plants clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 95,
+        "selected_variant": {
+          "hook": "Start with the leaf surface; it changes the scene",
+          "score": 79,
+          "thumbnail_text": "LIGHT TO SUGAR",
+          "title": "Plants turn sunlight into stored sugar"
+        },
+        "series": "Biology Brief #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Biology Brief #3",
+          "series": "Biology Brief"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "LIGHT TO SUGAR",
+          "LEAF SURFACE",
+          "WATCH LEAF SURFACE",
+          "PLANTS LEAVES",
+          "LEAF SURFACE MATTERS",
+          "LEAF SURFACE FIRST",
+          "LEAF SURFACE REVEAL",
+          "LEAF SURFACE CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Plants turn sunlight into stored sugar",
+          "Plants turn light into food",
+          "Plants use leaf surface before they leaves",
+          "This leaf surface gives plants away",
+          "Plants reveal the answer with leaf surface",
+          "The leaf surface that changes the moment",
+          "Plants show the hidden answer in seconds",
+          "Plants: watch this leaf surface"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Plants turn light into food",
+            "score": 77,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Watch the leaf surface; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "PLANTS LEAVES",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "LEAF SURFACE MATTERS",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Plants turn light into food",
+            "score": 70,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Watch the leaf surface; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
+          },
+          {
+            "hook": "Plants turn light into food",
+            "score": 70,
+            "thumbnail_text": "WATCH LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           }
         ]
       },
