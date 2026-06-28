@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 7,
-    "high": 1,
-    "manual_review": 3,
+    "automation_safe": 8,
+    "high": 0,
+    "manual_review": 2,
     "total": 10,
-    "urgent": 3
+    "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-06-28T19:14:52.930768+00:00",
+  "generated_at": "2026-06-28T19:44:56.258415+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.892,
+      "age_hours": 9.393,
       "automation_safe": true,
       "category": "physics",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.143,
+      "age_hours": 8.644,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.085,
+      "age_hours": 7.586,
       "automation_safe": true,
       "category": "weather",
       "checkpoint_label": "1h",
@@ -88,34 +88,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 6.19,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 6.691,
+      "automation_safe": true,
       "category": "chemistry",
-      "checkpoint_label": "24h",
-      "checkpoint_state": "pending",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "overdue",
       "current_views": 0,
-      "due_at": "2026-06-29T13:03:29.012385+00:00",
+      "due_at": "2026-06-28T14:03:29.012385+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:W8pfsTzlVsk:repair_candidate:24h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:W8pfsTzlVsk:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "priority": "urgent",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Nature Signals",
-      "state": "repair_candidate",
-      "target_views": 300,
+      "state": "analytics_due",
+      "target_views": 24,
       "title": "Crystals grow by repeating one tiny pattern",
       "url": "https://www.youtube.com/shorts/W8pfsTzlVsk",
       "video_id": "W8pfsTzlVsk",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "rewrite_next_opening",
-      "age_hours": 1.792,
+      "age_hours": 2.293,
       "automation_safe": false,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "rewrite_next_opening",
-      "age_hours": 1.18,
+      "age_hours": 1.681,
       "automation_safe": false,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.178,
+      "age_hours": 5.679,
       "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.138,
+      "age_hours": 0.638,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.116,
+      "age_hours": 4.617,
       "automation_safe": true,
       "category": "discoveries",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.09,
+      "age_hours": 3.591,
       "automation_safe": true,
       "category": "rivers",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-06-28T19:14:52.929725+00:00"
+  "source_generated_at": "2026-06-28T19:44:56.257244+00:00"
 }
