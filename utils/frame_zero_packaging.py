@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from utils.curiosity_angles import build_curiosity_package, is_generic_movement_copy
+from utils.opening_retention import score_retention_opening
 
 GENERIC_FRAME_ZERO_RE = re.compile(
     r"\b(?:detect changes with (?:their|its)|show why the [a-z ]+ matters|"
@@ -32,12 +33,19 @@ def score_frame_zero(meta: dict | None = None) -> dict:
         score += 10
     if meta.get("opening_audit", {}).get("score", 0) >= 78:
         score += 8
+    retention_opening = score_retention_opening(meta) if any(meta.get(k) for k in ("hook", "script")) else {}
+    if retention_opening:
+        if retention_opening["score"] >= 82:
+            score += 8
+        elif retention_opening["score"] < 68:
+            score -= 12
     return {
         "score": max(0, min(100, score)),
         "safe_area": safe_area_4x5(),
         "first_frame_preview": str(meta.get("first_frame_preview") or "first_frame_preview.png"),
         "word_count": len(words),
         "approved": score >= 72,
+        "retention_opening": retention_opening,
     }
 
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from utils.channel_objective import objective_gate_for_story
+from utils.opening_retention import score_retention_opening
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 from utils.growth_engine import (
     _distribution_adjustment,
@@ -17,7 +18,6 @@ from utils.subscriber_conversion import score_subscriber_conversion
 from utils.audience_memory import load_audience_memory
 from utils.confidence_engine import combined_confidence
 from utils.editorial_guard import editorial_verdict
-
 
 WINNING_CATEGORIES = {"fungi", "forests", "ocean", "volcanoes", "weather", "geology", "ecosystems", "rare_phenomena"}
 RECOVERY_CATEGORIES = {"cats", "dogs", "farm"}
@@ -143,6 +143,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     audience = load_audience_memory()
     opportunity = score_topic(story, memory=memory)
     retention = analyze_retention(story)
+    opening_retention = score_retention_opening(story)
     weak = detect_weak_content(story, memory=memory)
     subscriber = score_subscriber_conversion(story, memory=memory)
     distribution_adjustment = _distribution_adjustment(story)
@@ -168,6 +169,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
     score += min(12, _as_score(story.get("score")) * 1.2)
     score += opportunity["score"] * 0.16 - 8
     score += retention["score"] * 0.20 - 10
+    score += opening_retention["score"] * 0.10 - 6
     score += subscriber["score"] * 0.12 - 7
     score += distribution_adjustment
     if category in WINNING_CATEGORIES:
@@ -213,6 +215,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         and weak["state"] != "block"
         and subscriber["robotic_title"]["state"] != "block"
         and editorial["approved"]
+        and opening_retention["score"] >= 64
         and not objective_gate.get("publish_blocking")
     )
     return {
@@ -221,6 +224,7 @@ def score_story(story: dict, *, analytics_strategy: dict | None = None) -> dict:
         "state": "publish_ready" if approved else ("rewrite" if score >= 55 else "reject"),
         "opportunity": opportunity,
         "retention": retention,
+        "opening_retention": opening_retention,
         "weak_content": weak,
         "subscriber_conversion": subscriber,
         "distribution_adjustment": distribution_adjustment,

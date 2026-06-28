@@ -12,6 +12,7 @@ from utils.first_frame_audit import (
     check_text_safe_zone,
     score_motion_first_1s,
 )
+from utils.opening_retention import score_retention_opening
 
 CURIOSITY_TERMS = {
     "because",
@@ -110,17 +111,19 @@ def evaluate_opening_gate(
         "reason": "cover_text_and_safe_zone",
     }
     curiosity = _curiosity_score(metadata)
+    retention_opening = score_retention_opening(metadata)
     timing = _first_word_timing(transcript_words, str(metadata.get("hook") or ""))
 
     score_0_7 = round(
         motion["score"] * 0.35 + contrast["score"] * 0.2 + legibility["score"] * 0.25 + timing["score"] * 0.2, 2
     )
     score_1_5 = round(
-        motion["score"] * 0.22
-        + contrast["score"] * 0.17
-        + legibility["score"] * 0.2
-        + curiosity["score"] * 0.26
-        + timing["score"] * 0.15,
+        motion["score"] * 0.18
+        + contrast["score"] * 0.14
+        + legibility["score"] * 0.17
+        + curiosity["score"] * 0.18
+        + timing["score"] * 0.13
+        + retention_opening["score"] * 0.20,
         2,
     )
     score = round(score_0_7 * 0.46 + score_1_5 * 0.54, 2)
@@ -129,6 +132,7 @@ def evaluate_opening_gate(
         "contrast": contrast,
         "legibility": legibility,
         "curiosity": curiosity,
+        "retention_opening": retention_opening,
         "first_word_timing": timing,
         "score_first_0_7s": score_0_7,
         "score_first_1_5s": score_1_5,
@@ -144,6 +148,8 @@ def evaluate_opening_gate(
         reasons.append("opening_text_legibility_risk")
     if curiosity["score"] < 62:
         reasons.append("opening_curiosity_gap_weak")
+    if retention_opening["score"] < 68:
+        reasons.append("opening_retention_promise_weak")
     if timing["score"] < 65:
         reasons.append("first_word_after_1_5s")
     approved = not (gate_mode == "block" and reasons)

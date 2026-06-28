@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 
+from utils.opening_retention import score_retention_opening
 from utils.story_intelligence import audit_hook, audit_title, classify_format
 
 ACTION_WORDS = {
@@ -621,6 +622,7 @@ def creator_premortem(story: dict) -> dict:
     story_format = str(story.get("story_format") or classify_format(text))
     hook_audit = audit_hook(hook)
     title_audit = audit_title(title)
+    opening_retention = score_retention_opening(story)
 
     score = 44
     strengths: list[str] = []
@@ -686,6 +688,14 @@ def creator_premortem(story: dict) -> dict:
         score -= 5
         risks.append("title_shape_weak")
 
+    if opening_retention["score"] >= 82:
+        score += 7
+        strengths.append("retention_opening_aligned")
+    elif opening_retention["score"] < 68:
+        score -= 10
+        risks.append("opening_retention_gap_risk")
+        commands.append("Align thumbnail, hook, and first sentence around the same visible cue.")
+
     weak_hits = [word for word in WEAK_WORDS if re.search(r"\b" + re.escape(word) + r"\b", text.lower())]
     if weak_hits:
         score -= min(10, len(weak_hits) * 3)
@@ -699,6 +709,8 @@ def creator_premortem(story: dict) -> dict:
         commands.append("Rewrite the title like a human editor: subject, visible action, and one clean payoff.")
     if "operator_meta_language" in language_risks:
         commands.append("Remove internal channel strategy language from the viewer script.")
+    if any(risk in language_risks for risk in ("malformed_packaging_language", "operator_meta_language")):
+        score = min(score, 77)
 
     replay_reason = "watch_the_cue_again" if _contains_any(text, VISIBLE_CUE_WORDS) else "weak"
     viewer_promise = _viewer_promise(subject, story_format, category)
@@ -725,6 +737,7 @@ def creator_premortem(story: dict) -> dict:
             "4-18s: mechanism",
             "last 2s: payoff and follow signal",
         ],
+        "opening_retention": opening_retention,
         "risks": list(dict.fromkeys(risks)),
         "strengths": list(dict.fromkeys(strengths)),
         "commands": list(dict.fromkeys(commands)),

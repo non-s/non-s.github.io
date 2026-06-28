@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 
 from utils.first_frame_audit import audit_opening_frames
+from utils.opening_retention import score_retention_opening
 
 SPECIFIC_TERMS = {
     "before",
@@ -259,6 +260,25 @@ class EditorialRulebook:
         elif opening_score < 72:
             score -= 4
             notes.append("opening audit is below target")
+
+        opening_retention = package.get("opening_retention") or story.get("opening_retention") or {}
+        if not opening_retention:
+            opening_retention = score_retention_opening(
+                {
+                    **story,
+                    "first_frame_text": package.get("first_frame_text") or story.get("thumbnail_text"),
+                    "first_2s_narration": package.get("first_2s_narration") or "",
+                }
+            )
+        opening_retention_score = _to_float(opening_retention.get("score"), 72)
+        if opening_retention_score >= 82:
+            score += 5
+        elif opening_retention_score < 64:
+            score -= 12
+            violations.append("opening promise is not concrete enough")
+        elif opening_retention_score < 74:
+            score -= 5
+            notes.append("opening promise needs a clearer visual bridge")
 
         overlap = _recent_overlap(hook, context)
         if overlap > 0.52:

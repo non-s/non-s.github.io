@@ -16,6 +16,7 @@ from utils.growth_engine import (
     select_best_packaging,
 )
 from utils.loop_engine import LoopGenerator
+from utils.opening_retention import score_retention_opening
 from utils.story_intelligence import audit_title, classify_format
 from utils.subscriber_conversion import (
     contextual_cta,
@@ -837,6 +838,13 @@ def score_packaging(story: dict) -> dict:
     if "?" in title:
         score += 4
         strengths.append("curiosity_question")
+    retention_opening = score_retention_opening(story)
+    if retention_opening["score"] >= 82:
+        score += 6
+        strengths.append("retention_opening_aligned")
+    elif retention_opening["score"] < 68:
+        score -= 12
+        risks.append("opening_retention_gap_risk")
     retention_score = analyze_retention(story)["score"]
     score = round(score * 0.65 + retention_score * 0.35)
     if generic_hit:
@@ -880,6 +888,15 @@ def _package_preflight(story: dict) -> dict:
         "payoff_time_s": min(18, max(8, duration_hint * 0.55)),
         "cta_count": 1 if story.get("cta_prompt") else 0,
     }
+    retention_opening = score_retention_opening(
+        {
+            **story,
+            "first_frame_text": thumb,
+            "first_2s_narration": first_2s,
+        }
+    )
+    package["opening_retention"] = retention_opening
+    package["opening_retention_score"] = retention_opening["score"]
     loop_plan = LoopGenerator().plan({"script": script, "hook": hook}, package)
     package["loop_score"] = loop_plan["loop_score"]
     swipe = SwipeRiskScore().score_opening(package)
@@ -888,6 +905,7 @@ def _package_preflight(story: dict) -> dict:
         "curiosity_gap": best_hook.to_dict(),
         "swipe_risk": swipe,
         "loop_plan": loop_plan,
+        "opening_retention": retention_opening,
         "editorial_rulebook": rulebook,
         "preflight_inputs": package,
     }
@@ -1069,6 +1087,7 @@ def package_story(story: dict) -> dict:
         "subscriber_conversion": subscriber_score,
         "frame_zero": out.get("frame_zero_packaging") or {},
         "curiosity_gap": preflight["curiosity_gap"],
+        "opening_retention": preflight["opening_retention"],
         "swipe_risk": preflight["swipe_risk"],
         "loop_plan": preflight["loop_plan"],
         "loop_score": preflight["loop_plan"]["loop_score"],

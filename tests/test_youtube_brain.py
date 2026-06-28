@@ -61,6 +61,7 @@ def test_creator_premortem_flags_generic_no_payoff_story():
     assert brain["state"] == "do_not_publish"
     assert "no_action_promise" in brain["risks"]
     assert "payoff_not_explicit" in brain["risks"]
+    assert "opening_retention_gap_risk" in brain["risks"]
 
 
 def test_creator_premortem_penalizes_malformed_packaging_language():

@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from utils.opening_retention import score_retention_opening
+
 
 def _num(value, default: float = 0.0) -> float:
     try:
@@ -81,6 +83,8 @@ def explain_opening_failures(audit: dict, min_score: float = 72.0) -> list[str]:
         reasons.append("weak_motion_first_1s")
     if (checks.get("contrast") or {}).get("score", 0) < 55:
         reasons.append("low_opening_contrast")
+    if (checks.get("retention_opening") or {}).get("score", 100) < 68:
+        reasons.append("opening_retention_promise_weak")
     return reasons
 
 
@@ -103,13 +107,25 @@ def audit_opening_frames(
         "safe_zone": check_text_safe_zone(text_boxes or metadata.get("opening_text_boxes") or []),
         "contrast": check_contrast_heuristic(metadata),
     }
-    score = round(
-        checks["motion"]["score"] * 0.36
-        + checks["cover_text_budget"]["score"] * 0.24
-        + checks["safe_zone"]["score"] * 0.20
-        + checks["contrast"]["score"] * 0.20,
-        2,
-    )
+    has_opening_copy = any(metadata.get(key) for key in ("hook", "script", "first_2s_narration"))
+    if has_opening_copy:
+        checks["retention_opening"] = score_retention_opening(metadata)
+        score = round(
+            checks["motion"]["score"] * 0.30
+            + checks["cover_text_budget"]["score"] * 0.20
+            + checks["safe_zone"]["score"] * 0.16
+            + checks["contrast"]["score"] * 0.16
+            + checks["retention_opening"]["score"] * 0.18,
+            2,
+        )
+    else:
+        score = round(
+            checks["motion"]["score"] * 0.36
+            + checks["cover_text_budget"]["score"] * 0.24
+            + checks["safe_zone"]["score"] * 0.20
+            + checks["contrast"]["score"] * 0.20,
+            2,
+        )
     audit = {"enabled": True, "score": score, "checks": checks}
     reasons = explain_opening_failures(audit, min_score)
     strict = os.environ.get("OPENING_AUDIT_STRICT", "0").strip().lower() in {"1", "true", "yes", "on"}

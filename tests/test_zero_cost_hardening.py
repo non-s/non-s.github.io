@@ -76,8 +76,10 @@ def test_opening_gate_v2_scores_first_windows_and_can_block():
 
     assert strong["approved"] is True
     assert strong["subscores"]["score_first_0_7s"] >= 70
+    assert strong["subscores"]["retention_opening"]["score"] >= 70
     assert weak["approved"] is False
     assert "first_word_after_1_5s" in weak["reasons"]
+    assert "opening_retention_promise_weak" in weak["reasons"]
 
 
 def test_hook_patterns_payoff_and_loop_semantics_reward_specific_callbacks():

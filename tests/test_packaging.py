@@ -363,6 +363,16 @@ def test_package_story_repairs_generic_frame_zero_copy():
     assert "detect changes with their pattern" not in packaged["script"].lower()
     assert packaged["frame_zero_repair"]["method"] == "curiosity_angle_frame_zero_repair"
     assert packaged["packaging"]["frame_zero"]["approved"] is True
+    assert packaged["packaging"]["opening_retention"]["approved"] is True
+
+
+def test_package_story_attaches_opening_retention_bridge():
+    packaged = package_story(_story())
+
+    retention_opening = packaged["packaging"]["opening_retention"]
+    assert retention_opening["approved"] is True
+    assert "frame_hook_bridge" in retention_opening["strengths"]
+    assert "reason_arrives_early" in retention_opening["strengths"]
 
 
 def test_package_story_uses_nature_signal_language_for_trees():
