@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.fresh_upload_actions import build_fresh_upload_actions  # noqa: E402
 from utils.fresh_upload_sentinel import build_fresh_upload_watchlist  # noqa: E402
 from utils.session_graph import build_session_graph  # noqa: E402
 from utils.video_markers import sorted_done_markers  # noqa: E402
@@ -93,6 +94,7 @@ def build_session_ops(root: Path = ROOT) -> dict:
         early_performance=_read_json(root / "_data" / "early_performance.json", {}),
         early_warning=_read_json(root / "_data" / "early_warning.json", {}),
     )
+    fresh_upload_actions = build_fresh_upload_actions(fresh_upload_watchlist)
     comment_candidates = []
     for item in comments.get("top_comments") or comments.get("comments") or []:
         if not isinstance(item, dict):
@@ -115,6 +117,7 @@ def build_session_ops(root: Path = ROOT) -> dict:
         ],
         "comment_reply_short_candidates": comment_candidates[:20],
         "fresh_upload_watchlist": fresh_upload_watchlist,
+        "fresh_upload_actions": fresh_upload_actions,
         "sequel_opportunities": [
             {
                 "video_id": item.get("video_id"),
@@ -137,6 +140,10 @@ def build_session_ops(root: Path = ROOT) -> dict:
     )
     (data_dir / "fresh_upload_watchlist.json").write_text(
         json.dumps(fresh_upload_watchlist, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    (data_dir / "fresh_upload_actions.json").write_text(
+        json.dumps(fresh_upload_actions, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     (data_dir / "related_video_recommendations.json").write_text(

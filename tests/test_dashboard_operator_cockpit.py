@@ -23,10 +23,32 @@ def test_dashboard_renders_comment_and_session_actions(tmp_path, monkeypatch):
         ),
         encoding="utf-8",
     )
+    (tmp_path / "_data" / "fresh_upload_actions.json").write_text(
+        json.dumps(
+            {
+                "counts": {"total": 1},
+                "items": [
+                    {
+                        "priority": "high",
+                        "lane": "measurement",
+                        "video_id": "fresh",
+                        "title": "Mushrooms release spores from hidden gills",
+                        "url": "https://www.youtube.com/shorts/fresh",
+                        "checkpoint_label": "1h",
+                        "checkpoint_state": "due",
+                        "recommended_action": "Pull fresh YouTube Studio analytics.",
+                        "why": "First-hour checkpoint is due.",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
 
     dashboard.main()
     body = (tmp_path / "_site" / "index.html").read_text(encoding="utf-8")
 
     assert "Reply with a Short" in body
     assert "Next session actions" in body
+    assert "Fresh upload action queue" in body
     assert "sharks" in body

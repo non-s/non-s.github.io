@@ -125,6 +125,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/dry_run_publish.json" in fetch_workflow
     assert "_data/reject_report.json" in fetch_workflow
     assert "_data/fresh_upload_watchlist.json" in fetch_workflow
+    assert "_data/fresh_upload_actions.json" in fetch_workflow
     assert "_data/next_shorts.json" in youtube_workflow
     assert "_data/scale_blueprint.json" in youtube_workflow
     assert "_data/level_system.json" in youtube_workflow
@@ -133,6 +134,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/dry_run_publish.json" in youtube_workflow
     assert "_data/reject_report.json" in youtube_workflow
     assert "_data/fresh_upload_watchlist.json" in youtube_workflow
+    assert "_data/fresh_upload_actions.json" in youtube_workflow
     dashboard_workflow = (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in dashboard_workflow
     assert "_data/control_plane_report.json" in dashboard_workflow
@@ -140,6 +142,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/experiments_recommendations.json" in dashboard_workflow
     assert "_data/post_upload_session_ops.json" in dashboard_workflow
     assert "_data/fresh_upload_watchlist.json" in dashboard_workflow
+    assert "_data/fresh_upload_actions.json" in dashboard_workflow
     assert "for path in index.html _data/analytics/latest.json" in dashboard_workflow
     assert "Analytics persistence skipped because live state changed during dashboard build" in dashboard_workflow
     assert "Analytics persistence skipped after repeated non-fast-forward pushes" in dashboard_workflow

@@ -248,6 +248,9 @@ def test_session_ops_writes_fresh_upload_watchlist(tmp_path):
 
     out = build_session_ops(tmp_path)
     written = json.loads((tmp_path / "_data" / "fresh_upload_watchlist.json").read_text(encoding="utf-8"))
+    actions = json.loads((tmp_path / "_data" / "fresh_upload_actions.json").read_text(encoding="utf-8"))
 
     assert out["fresh_upload_watchlist"]["items"]
+    assert out["fresh_upload_actions"]["items"]
     assert written["items"][0]["video_id"] == "fresh"
+    assert actions["items"][0]["video_id"] == "fresh"

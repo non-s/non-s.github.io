@@ -306,6 +306,13 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
                 "items": [],
                 "counts": {"tracked": 0},
             },
+            "fresh_upload_actions": {
+                "generated_at": stamp,
+                "source": "fresh_upload_watchlist",
+                "free_only": True,
+                "items": [],
+                "counts": {"total": 0, "urgent": 0, "high": 0, "manual_review": 0, "automation_safe": 0},
+            },
             "related_video_recommendations": [],
             "sequel_opportunities": [],
         },
@@ -314,6 +321,14 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "channel_epoch": EPOCH,
             "items": [],
             "counts": {"tracked": 0},
+        },
+        "_data/fresh_upload_actions.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "source": "fresh_upload_watchlist",
+            "free_only": True,
+            "items": [],
+            "counts": {"total": 0, "urgent": 0, "high": 0, "manual_review": 0, "automation_safe": 0},
         },
         "_data/queue_audit.json": {
             "generated_at": stamp,

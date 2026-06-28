@@ -350,6 +350,9 @@ def render_html() -> str:
     fresh_upload_watchlist = _safe_json(Path("_data/fresh_upload_watchlist.json")) or (
         session_ops.get("fresh_upload_watchlist") if isinstance(session_ops.get("fresh_upload_watchlist"), dict) else {}
     )
+    fresh_upload_actions = _safe_json(Path("_data/fresh_upload_actions.json")) or (
+        session_ops.get("fresh_upload_actions") if isinstance(session_ops.get("fresh_upload_actions"), dict) else {}
+    )
     related_video_recommendations = _safe_json(Path("_data/related_video_recommendations.json"))
     comment_reply_short_candidates = _safe_json(Path("_data/comment_reply_short_candidates.json"))
     dry_run_publish = _safe_json(Path("_data/dry_run_publish.json"))
@@ -598,6 +601,7 @@ def render_html() -> str:
         or next_shorts
         or session_ops
         or fresh_upload_watchlist
+        or fresh_upload_actions
         or topic_candidates
         or studio_reach_summary.get("rows")
         or freshness_report
@@ -624,11 +628,15 @@ def render_html() -> str:
             f"<div><small>Session coverage</small><div class='metric'>{float(session_graph.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
         )
         fresh_counts = fresh_upload_watchlist.get("counts") or {}
+        fresh_action_counts = fresh_upload_actions.get("counts") or {}
         out.append(
             f"<div><small>Fresh uploads</small><div class='metric'>{int(fresh_counts.get('tracked', 0) or 0)}</div></div>"
         )
         out.append(
             f"<div><small>Due checks</small><div class='metric'>{int(fresh_counts.get('analytics_due', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Fresh actions</small><div class='metric'>{int(fresh_action_counts.get('total', 0) or 0)}</div></div>"
         )
         session_targets = {
             str(edge.get("target_video_id") or "")
@@ -660,6 +668,25 @@ def render_html() -> str:
                     f"<span class='badge'>{html.escape(checkpoint_state)}</span></td>"
                     f"<td>{float(item.get('opening_retention_score', 0) or 0):.0f}</td>"
                     f"<td>{html.escape(action[:150])}</td></tr>"
+                )
+            out.append("</table>")
+        fresh_actions = fresh_upload_actions.get("items") or []
+        if fresh_actions:
+            out.append(
+                "<h3>Fresh upload action queue</h3>"
+                "<table><tr><th>Priority</th><th>Lane</th><th>Short</th><th>Action</th><th>Why</th></tr>"
+            )
+            for item in fresh_actions[:8]:
+                title = str(item.get("title") or item.get("video_id") or "")
+                url = html.escape(str(item.get("url") or "#"))
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(item.get('priority') or 'normal'))}</span></td>"
+                    f"<td>{html.escape(str(item.get('lane') or ''))}</td>"
+                    f"<td><a href='{url}'>{html.escape(title[:80])}</a>"
+                    f"<br><small>{html.escape(str(item.get('checkpoint_label') or ''))} "
+                    f"{html.escape(str(item.get('checkpoint_state') or ''))}</small></td>"
+                    f"<td>{html.escape(str(item.get('recommended_action') or '')[:150])}</td>"
+                    f"<td>{html.escape(str(item.get('why') or '')[:140])}</td></tr>"
                 )
             out.append("</table>")
         if weekly_growth:
