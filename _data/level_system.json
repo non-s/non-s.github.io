@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T17:58:09.998911+00:00",
+  "generated_at": "2026-06-28T18:08:35.112242+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 40.8,
@@ -21,29 +21,29 @@
       "avg_view_percentage": 57.002,
       "top_blockers": [
         {
+          "id": "objective_gate:observe_before_scaling",
+          "count": 30,
+          "operator_translation": "observe this pattern before scaling it"
+        },
+        {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
           "count": 28,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
-          "id": "objective_gate:observe_before_scaling",
-          "count": 28,
-          "operator_translation": "observe this pattern before scaling it"
-        },
-        {
           "id": "queue_prune:rewrite",
-          "count": 22,
+          "count": 21,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 13,
+          "count": 12,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
-          "id": "duplicate_title",
-          "count": 13,
-          "operator_translation": "duplicate title"
+          "id": "objective_gate:bootstrap_observe_before_scaling",
+          "count": 10,
+          "operator_translation": "collect more observed signal before scaling this pattern"
         }
       ]
     }
@@ -88,14 +88,14 @@
   "metrics": {
     "health_score": 100,
     "health_state": "excellent",
-    "pending": 28,
+    "pending": 27,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 1,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 28,
-    "published_count": 84,
+    "editorial_candidate_count": 27,
+    "published_count": 85,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -108,29 +108,24 @@
   },
   "top_blockers": [
     {
+      "id": "objective_gate:observe_before_scaling",
+      "count": 30,
+      "operator_translation": "observe this pattern before scaling it"
+    },
+    {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
       "count": 28,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 28,
-      "operator_translation": "observe this pattern before scaling it"
-    },
-    {
       "id": "queue_prune:rewrite",
-      "count": 22,
+      "count": 21,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 13,
+      "count": 12,
       "operator_translation": "pick a fresh subject inside the same lane"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 13,
-      "operator_translation": "duplicate title"
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
@@ -158,14 +153,19 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "duplicate_angle",
-      "count": 3,
-      "operator_translation": "duplicate angle"
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 4,
+      "operator_translation": "editorial cooldown supply fallback"
     },
     {
       "id": "youtube_brain:missing_visual_cue",
       "count": 2,
       "operator_translation": "youtube brain:missing visual cue"
+    },
+    {
+      "id": "editor_in_chief:editorial score 49 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -178,7 +178,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 84,
+        "published_count": 85,
         "health_score": 100
       }
     },
@@ -193,7 +193,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 28,
+        "pending": 27,
         "target_publish_ready": 6,
         "target_pending": 20
       }
