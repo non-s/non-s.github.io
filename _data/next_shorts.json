@@ -1107,7 +1107,7 @@
     },
     "counts": {
       "recovery": 6,
-      "evergreen": 21
+      "evergreen": 22
     },
     "items": [
       {
@@ -1156,7 +1156,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.68
+        "freshness_score": 54.66
       },
       {
         "id": "2da9f8fda07f3d1b",
@@ -1236,7 +1236,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.98
+        "freshness_score": 54.96
       },
       {
         "id": "b9b63282a8ab9d48",
@@ -1284,7 +1284,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.68
+        "freshness_score": 54.66
       },
       {
         "id": "9d83eac332b110af",
@@ -1308,7 +1308,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.22
+        "freshness_score": 35.2
       },
       {
         "id": "51ac060b5eded716",
@@ -1317,6 +1317,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 54.98
+      },
+      {
+        "id": "6106b34ab2e95c49",
+        "title": "Rivers sort mud and sand along each bank",
+        "category": "rivers",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "7f3db6135bcccc99",
@@ -1406,15 +1414,15 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 27,
-    "pending_after": 27,
+    "pending_before": 28,
+    "pending_after": 28,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
+      "editor_in_chief:subject repeated inside 3-day cooldown": 14,
       "objective_gate:observe_before_scaling": 14,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 13,
-      "objective_gate:bootstrap_observe_before_scaling": 4,
+      "objective_gate:bootstrap_observe_before_scaling": 5,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:script quality gate blocked the narration": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
