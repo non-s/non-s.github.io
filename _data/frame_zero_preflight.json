@@ -1,17 +1,62 @@
 {
-  "generated_at": "2026-06-28T10:25:55.298211+00:00",
+  "generated_at": "2026-06-28T10:33:18.252267+00:00",
   "floor": 82.0,
-  "pending": 19,
-  "ready": 19,
-  "held": 0,
-  "rewritten": 5,
-  "average_opening_score": 97.47,
-  "render_gate": "approved",
+  "pending": 24,
+  "ready": 22,
+  "held": 2,
+  "rewritten": 7,
+  "average_opening_score": 93.58,
+  "render_gate": "hold",
   "counts": {
-    "approved": 19,
-    "rewritten": 5
+    "approved": 22,
+    "rewritten": 7,
+    "hold": 2
   },
   "items": [
+    {
+      "id": "79cdeee529d80932",
+      "title": "Bears can smell a meal long before seeing it",
+      "category": "wildlife",
+      "render_gate": "hold",
+      "opening_score": 34.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "rewrite_opening",
+      "opening_line": "Bears can smell a meal long before seeing it.",
+      "first_frame_text": "SCENT MAP",
+      "visible_cue": "scent map",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 72.0,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded",
+        "frame_text_not_echoed_early",
+        "visible_cue_not_repeated_early",
+        "missing_early_action"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "4adfaf5fa95ebe2d",
+      "title": "Plant leaves reveal where energy comes from",
+      "category": "plants",
+      "render_gate": "hold",
+      "opening_score": 68.0,
+      "frame_zero_score": 84.0,
+      "opening_state": "rewrite_opening",
+      "opening_line": "Plant leaves reveal where energy comes from.",
+      "first_frame_text": "LEAF ANGLE",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 68.0,
+      "risks": [
+        "subject_not_frontloaded",
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Hold until opening is rewritten."
+    },
     {
       "id": "0a5c470fc1d66a86",
       "title": "Deer use sound radar before they aim",
@@ -29,6 +74,26 @@
       "after_score": 90.0,
       "risks": [
         "frame_text_not_echoed_early"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "5956fe4f1707bf87",
+      "title": "Rock layers show their timeline inside caves",
+      "category": "geology",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Rock layers keep a hidden timeline inside caves.",
+      "first_frame_text": "CAVE TIMELINE",
+      "visible_cue": "rock layers",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 74.0,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
       ],
       "action": "Use the frame-zero rewrite before rendering."
     },
@@ -259,6 +324,24 @@
       "action": "Ready to render with current first frame."
     },
     {
+      "id": "360ed2f163e61f41",
+      "title": "Plants turn leaf angles into light maps",
+      "category": "plants",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Plants turn leaf angles into light maps.",
+      "first_frame_text": "LEAF ANGLE",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Ready to render with current first frame."
+    },
+    {
       "id": "6942dd48be66c985",
       "title": "Plants turn light into food",
       "category": "plants",
@@ -268,6 +351,24 @@
       "opening_state": "retention_ready",
       "opening_line": "Plants turn light into food.",
       "first_frame_text": "LIGHT TO SUGAR",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "faae665358248677",
+      "title": "Plants use trap hairs to count touches before closing",
+      "category": "plants",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Plants use trap hairs to count touches before closing.",
+      "first_frame_text": "TRAP HAIRS",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",
