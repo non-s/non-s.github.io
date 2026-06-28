@@ -1,13 +1,15 @@
 {
-  "generated_at": "2026-06-28T01:05:14.141707+00:00",
-  "score": 85,
-  "state": "watch",
+  "generated_at": "2026-06-28T01:14:53.529749+00:00",
+  "score": 55,
+  "state": "needs_work",
   "issues": [
-    "queue_inventory_low"
+    "queue_inventory_low",
+    "publish_ready_inventory_empty",
+    "no_agency_publish_now_candidate"
   ],
   "queue": {
-    "pending": 11,
-    "publish_ready": 1,
+    "pending": 10,
+    "publish_ready": 0,
     "categories": {
       "cats": 1,
       "chemistry": 1,
@@ -15,7 +17,7 @@
       "forests": 1,
       "geology": 1,
       "physics": 1,
-      "plants": 2,
+      "plants": 1,
       "rivers": 2,
       "wildlife": 1
     },
@@ -23,17 +25,16 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 6,
-      "agency_gate:success_recovery_format_required": 5,
-      "agency_gate:success_recovery_hook_required": 5,
+      "queue_prune:rewrite": 8,
+      "agency_gate:success_recovery_format_required": 4,
+      "agency_gate:success_recovery_hook_required": 4,
+      "editor_in_chief:cooldown_subject": 3,
       "youtube_brain:subject_not_immediately_clear": 3,
       "agency_gate:category_recovery_rules_not_met": 2,
-      "ops_guardian_paused_category:rivers": 2,
       "youtube_brain:title_shape_weak": 2,
       "packaging:title_needs_stronger_shape": 2,
       "packaging:subject_not_clear": 2,
       "publish_score:rewrite": 1,
-      "editor_in_chief:cooldown_subject": 1,
       "publish_blocklist:monetization audit needs review": 1,
       "packaging:missing_action_word": 1
     }
@@ -44,24 +45,12 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 67.5,
+    "average_score": 61.8,
     "decisions": {
-      "hold": 3,
-      "publish_now": 1,
-      "strong_candidate": 7
+      "hold": 4,
+      "strong_candidate": 6
     },
     "top": [
-      {
-        "title": "Plants turn sunlight into stored sugar",
-        "category": "plants",
-        "score": 82,
-        "decision": "publish_now",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
       {
         "title": "Cats groom to reset their scent map",
         "category": "cats",
@@ -71,17 +60,6 @@
           "strong_quality",
           "timely_trend",
           "matches_channel_learning"
-        ]
-      },
-      {
-        "title": "Plants speed growth under protected glass",
-        "category": "plants",
-        "score": 81,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
         ]
       },
       {
@@ -132,15 +110,38 @@
           "strong_quality",
           "fresh_inventory"
         ]
+      },
+      {
+        "title": "Deer can aim each ear toward danger",
+        "category": "wildlife",
+        "score": 40,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Plants speed growth under protected glass",
+        "category": "plants",
+        "score": 39,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
       }
     ]
   },
   "analytics": {
-    "pulled_at": "2026-06-28T00:55:39.835283+00:00",
+    "pulled_at": "2026-06-28T01:12:32.630300+00:00",
     "metric_scope": "youtube_analytics_and_public_statistics",
     "total_views": 115,
     "avg_view_pct": 57.002,
-    "shorts_tracked": 70
+    "shorts_tracked": 71
   },
   "comments": {
     "comments_sampled": 59,

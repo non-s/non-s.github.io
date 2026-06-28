@@ -1,106 +1,56 @@
 {
-  "generated_at": "2026-06-28T01:05:14.184245+00:00",
+  "generated_at": "2026-06-28T01:16:53.416802+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 22.5,
+  "overall_progress_pct": 13.7,
   "current_level": {
-    "number": 2,
-    "name": "Publish supply engine",
-    "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
-    "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
-    "revenue_job": "Turn production from lucky shots into repeatable inventory.",
+    "number": 1,
+    "name": "Launch safety",
+    "mission": "Keep the publisher safe, recoverable, and able to upload without manual drama.",
+    "unlock": "At least one real upload is recorded and automation health is usable.",
+    "revenue_job": "Protect the channel asset before chasing volume.",
     "status": "boss_fight",
-    "progress_pct": 57.2
+    "progress_pct": 95.8
   },
   "boss": {
-    "id": "publish_ready_reserve_low",
-    "label": "Publish-ready reserve is below target",
-    "severity": "critical",
+    "id": "launch_proof_missing",
+    "label": "Launch proof is incomplete",
+    "severity": "high",
     "evidence": {
-      "eligible_count": 3,
-      "operational_publish_ready": 1,
-      "apparent_publish_ready": 5,
-      "pending": 11,
-      "target_publish_ready": 6,
-      "target_pending": 20,
-      "top_blockers": [
-        {
-          "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 16,
-          "operator_translation": "collect more observed signal before scaling this pattern"
-        },
-        {
-          "id": "queue_prune:rewrite",
-          "count": 6,
-          "operator_translation": "rewrite the held candidate until queue prune clears"
-        },
-        {
-          "id": "agency_gate:success_recovery_format_required",
-          "count": 5,
-          "operator_translation": "match the recovery format rule"
-        },
-        {
-          "id": "agency_gate:success_recovery_hook_required",
-          "count": 5,
-          "operator_translation": "rewrite the recovery hook"
-        },
-        {
-          "id": "soft_agency_hold_supply_recovery",
-          "count": 4,
-          "operator_translation": "soft agency hold supply recovery"
-        }
-      ]
+      "published_count": 71,
+      "health_score": 55
     }
   },
   "next_upgrade": {
-    "id": "repair_final_publish_supply",
-    "title": "Turn held strong candidates into final-eligible reserve",
-    "why": "The automation can publish safely, but the final gate has zero eligible candidates.",
-    "success_gate": "eligible_count >= 1, operational_publish_ready >= 6, pending >= 20",
+    "id": "prove_safe_launch",
+    "title": "Get the safe launch proof on record",
+    "why": "The business starts with reliable publishing.",
+    "success_gate": "published_count >= 1 and health_score >= 60",
     "free_only": true,
     "primary_files": [
-      "_data/automation_health.json",
-      "_data/dry_run_publish.json",
-      "_data/queue_audit.json"
+      "_data/upload_intents.jsonl",
+      "_data/automation_health.json"
     ]
   },
   "action_plan": [
     {
       "priority": "P0",
-      "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
-      "target": "eligible_count >= 1",
-      "why": "Publish-ready reserve is below target"
-    },
-    {
-      "priority": "P0",
-      "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "objective_gate:bootstrap_observe_before_scaling, queue_prune:rewrite, agency_gate:success_recovery_format_required",
-      "why": "Current supply has strong ideas but fails late gates."
-    },
-    {
-      "priority": "P1",
-      "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "1/6",
-      "why": "One upload slot should never depend on one fragile candidate."
-    },
-    {
-      "priority": "P1",
-      "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 11/20",
-      "why": "Bigger inventory helps only when the gate can accept winners."
+      "action": "Keep compounding only lanes that clear supply, retention, and return-viewer gates.",
+      "target": "compound scale",
+      "why": "The final level rewards consistency over novelty."
     }
   ],
   "metrics": {
-    "health_score": 85,
-    "health_state": "watch",
-    "pending": 11,
-    "operational_publish_ready": 1,
-    "apparent_publish_ready": 5,
-    "eligible_count": 3,
+    "health_score": 55,
+    "health_state": "needs_work",
+    "pending": 10,
+    "operational_publish_ready": 0,
+    "apparent_publish_ready": 2,
+    "eligible_count": 1,
     "scale_ready_count": 0,
     "next_shorts_count": 0,
-    "editorial_candidate_count": 11,
-    "published_count": 70,
+    "editorial_candidate_count": 10,
+    "published_count": 71,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -114,33 +64,33 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 16,
+      "count": 14,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 6,
+      "count": 8,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
+      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+      "count": 6,
+      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
+    },
+    {
       "id": "agency_gate:success_recovery_format_required",
-      "count": 5,
+      "count": 4,
       "operator_translation": "match the recovery format rule"
     },
     {
       "id": "agency_gate:success_recovery_hook_required",
-      "count": 5,
+      "count": 4,
       "operator_translation": "rewrite the recovery hook"
     },
     {
-      "id": "soft_agency_hold_supply_recovery",
+      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
       "count": 4,
-      "operator_translation": "soft agency hold supply recovery"
-    },
-    {
-      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 4,
-      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
+      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
       "id": "objective_gate:observe_before_scaling",
@@ -148,29 +98,29 @@
       "operator_translation": "observe this pattern before scaling it"
     },
     {
+      "id": "editor_in_chief:cooldown_subject",
+      "count": 3,
+      "operator_translation": "pick a fresh subject inside the same lane"
+    },
+    {
       "id": "youtube_brain:subject_not_immediately_clear",
       "count": 3,
       "operator_translation": "front-load the subject in the opening"
     },
     {
-      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
+      "id": "soft_agency_hold_supply_recovery",
       "count": 3,
-      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
-    },
-    {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 3,
-      "operator_translation": "editorial cooldown supply fallback"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 3,
-      "operator_translation": "duplicate title"
+      "operator_translation": "soft agency hold supply recovery"
     },
     {
       "id": "agency_gate:category_recovery_rules_not_met",
       "count": 2,
       "operator_translation": "follow the category recovery rule"
+    },
+    {
+      "id": "youtube_brain:title_shape_weak",
+      "count": 2,
+      "operator_translation": "youtube brain:title shape weak"
     }
   ],
   "levels": [
@@ -180,11 +130,11 @@
       "mission": "Keep the publisher safe, recoverable, and able to upload without manual drama.",
       "unlock": "At least one real upload is recorded and automation health is usable.",
       "revenue_job": "Protect the channel asset before chasing volume.",
-      "status": "cleared",
-      "progress_pct": 100.0,
+      "status": "current",
+      "progress_pct": 95.8,
       "evidence": {
-        "published_count": 70,
-        "health_score": 85
+        "published_count": 71,
+        "health_score": 55
       }
     },
     {
@@ -193,12 +143,12 @@
       "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
-      "status": "current",
-      "progress_pct": 57.2,
+      "status": "locked",
+      "progress_pct": 50.0,
       "evidence": {
-        "operational_publish_ready": 1,
-        "eligible_count": 3,
-        "pending": 11,
+        "operational_publish_ready": 0,
+        "eligible_count": 1,
+        "pending": 10,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -262,18 +212,18 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 4.3,
+      "progress_pct": 1.0,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "watch",
-        "operational_publish_ready": 1
+        "health_state": "needs_work",
+        "operational_publish_ready": 0
       }
     }
   ],
   "game_loop": {
-    "now": "Repair one held high-score story until dry-run eligible_count reaches one.",
-    "next": "Retention packaging",
-    "after_next": "Repeat audience loop"
+    "now": "Keep compounding only lanes that clear supply, retention, and return-viewer gates.",
+    "next": "Publish supply engine",
+    "after_next": "Retention packaging"
   },
   "free_resource_policy": {
     "paid_tools_required": false,
