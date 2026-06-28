@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-28T09:51:20.797494+00:00",
+  "generated_at": "2026-06-28T10:27:06.113368+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 27.8,
+  "overall_progress_pct": 26.7,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 94.4
+    "progress_pct": 87.2
   },
   "boss": {
     "id": "publish_ready_reserve_low",
@@ -18,15 +18,15 @@
     "severity": "critical",
     "evidence": {
       "eligible_count": 6,
-      "operational_publish_ready": 5,
-      "apparent_publish_ready": 8,
-      "pending": 20,
+      "operational_publish_ready": 4,
+      "apparent_publish_ready": 7,
+      "pending": 19,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 28,
+          "count": 26,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -80,27 +80,27 @@
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "5/6",
+      "target": "4/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 20/20",
+      "target": "pending 19/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 100,
-    "health_state": "excellent",
-    "pending": 20,
-    "operational_publish_ready": 5,
-    "apparent_publish_ready": 8,
+    "health_score": 85,
+    "health_state": "watch",
+    "pending": 19,
+    "operational_publish_ready": 4,
+    "apparent_publish_ready": 7,
     "eligible_count": 6,
     "scale_ready_count": 2,
-    "next_shorts_count": 5,
-    "editorial_candidate_count": 20,
-    "published_count": 76,
+    "next_shorts_count": 4,
+    "editorial_candidate_count": 19,
+    "published_count": 77,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -114,7 +114,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 28,
+      "count": 26,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -183,8 +183,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 76,
-        "health_score": 100
+        "published_count": 77,
+        "health_score": 85
       }
     },
     {
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 94.4,
+      "progress_pct": 87.2,
       "evidence": {
-        "operational_publish_ready": 5,
+        "operational_publish_ready": 4,
         "eligible_count": 6,
-        "pending": 20,
+        "pending": 19,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 51.0,
+      "progress_pct": 14.3,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "excellent",
-        "operational_publish_ready": 5
+        "health_state": "watch",
+        "operational_publish_ready": 4
       }
     }
   ],

@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 5,
-    "awaiting_1h": 1,
-    "high_priority": 7,
-    "repair_candidates": 2,
+    "awaiting_1h": 2,
+    "high_priority": 6,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-06-28T09:47:53.731854+00:00",
+  "generated_at": "2026-06-28T10:24:52.884881+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.274,
+      "age_hours": 0.058,
+      "category": "physics",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-28T11:21:22.964438+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-28T16:21:22.964438+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-29T10:21:22.964438+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-28T11:21:22.964438+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Nature Signals",
+      "state": "awaiting_1h",
+      "title": "Magnets make invisible fields visible",
+      "uploaded_at": "2026-06-28T10:21:22.964438+00:00",
+      "url": "https://www.youtube.com/shorts/P7yqlO8WTgQ",
+      "video_id": "P7yqlO8WTgQ",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.891,
       "category": "trees",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.253,
+      "age_hours": 1.869,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.502,
+      "age_hours": 3.119,
       "category": "fungi",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.344,
+      "age_hours": 6.96,
       "category": "dogs",
       "checkpoints": [
         {
@@ -245,16 +300,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.614,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.23,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-28T03:11:04.312213+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -278,41 +333,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-06-29T02:11:04.312213+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-28T03:11:04.312213+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 0.0,
       "opening_retention_state": "unknown",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Forests hold cool fog between the trees",
       "uploaded_at": "2026-06-28T02:11:04.312213+00:00",
       "url": "https://www.youtube.com/shorts/eeypg-lWzW4",
       "video_id": "eeypg-lWzW4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Forests hold cool fog between the trees",
-        "video_id": "eeypg-lWzW4",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.59,
+      "age_hours": 9.206,
       "category": "plants",
       "checkpoints": [
         {
@@ -367,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.871,
+      "age_hours": 9.487,
       "category": "farm",
       "checkpoints": [
         {
@@ -422,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.665,
+      "age_hours": 12.281,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -477,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.456,
+      "age_hours": 13.073,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -528,61 +572,6 @@
       "uploaded_at": "2026-06-27T21:20:31.345842+00:00",
       "url": "https://www.youtube.com/shorts/Q2pnVXzxF40",
       "video_id": "Q2pnVXzxF40",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.452,
-      "category": "earth_from_space",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-27T21:20:46.840196+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-28T02:20:46.840196+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-06-28T20:20:46.840196+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-27T21:20:46.840196+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 0.0,
-      "opening_retention_state": "unknown",
-      "priority": "high",
-      "series": "Planet Earth",
-      "state": "analytics_due",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "uploaded_at": "2026-06-27T20:20:46.840196+00:00",
-      "url": "https://www.youtube.com/shorts/K_p15_I6Szc",
-      "video_id": "K_p15_I6Szc",
       "views_per_hour": 0.0
     }
   ],
