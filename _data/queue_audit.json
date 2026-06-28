@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-28T11:57:30.433284+00:00",
+  "generated_at": "2026-06-28T12:03:00.432340+00:00",
   "pending": 20,
   "states": {
-    "rewrite": 14,
-    "publish_ready": 6
+    "rewrite": 13,
+    "publish_ready": 7
   },
   "mechanism_clusters": {
     "visual_stabilization": 1,
@@ -14,31 +14,38 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 55,
     "pending_after": 20,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 3,
+    "rejected": 35,
+    "repair_needed": 1,
+    "repaired": 9,
     "reasons": {
+      "duplicate_title": 24,
       "objective_gate:observe_before_scaling": 10,
+      "off_topic_visual": 9,
+      "duplicate_script": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 7,
+      "copy_subject_mismatch": 6,
+      "objective_gate:bootstrap_observe_before_scaling": 6,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 5,
-      "objective_gate:bootstrap_observe_before_scaling": 5,
+      "script_subject_mismatch": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "duplicate_angle": 3,
+      "script_hook_mismatch": 2,
+      "editor_in_chief:script quality gate blocked the narration": 2,
+      "publish_ready_supply_reserve_fallback": 2,
+      "queue_score_reject": 1,
+      "non_animal_body_language": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "duplicate_title": 1,
-      "editor_in_chief:script quality gate blocked the narration": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "4b69d21cf89487c2",
+      "id": "9f6176a189c74791",
       "title": "The moon keeps one face turned toward Earth",
       "reasons": [
         "duplicate_title",
@@ -48,225 +55,25 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "ebd7a036a721cc53",
-      "title": "The moon keeps one face turned toward Earth",
+      "id": "cf1d867c52e523e4",
+      "title": "Crystals build shape from repeating atoms",
       "reasons": [
-        "duplicate_title",
         "duplicate_script",
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "bec7f20f5b1c25a1",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1f4d4eeb2441657a",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "40ff29259ef7099c",
-      "title": "Mangroves can slow waves before they hit land",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "de60abcb3ff5c2ad",
-      "title": "Cats measure tight spaces with their whiskers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "87b253d9749b06f3",
-      "title": "Snakes sample the air with a tongue flick",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3e6a47c4a22cd970",
-      "title": "Snakes sample the air with a tongue flick",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "f8c49a07a7d004e7",
-      "title": "Turtles carry a magnetic map home",
-      "reasons": [
-        "off_topic_visual",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "78a62129ceec7938",
-      "title": "Sloth bears chew like vacuum cleaners",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7a88ee9df5dfd4c0",
-      "title": "Wild horses aren't farm animals they're athletes",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "307f5194e13c5f66",
-      "title": "Horses point their ears toward what matters",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "d99bc3c78a669d88",
-      "title": "Penguins trap air bubbles under feathers",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "e5651d43196c825e",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "83c3a7e5a737aff4",
-      "title": "Whales teach aquarium divers underwater",
-      "reasons": [
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6da286bcb67d10d6",
-      "title": "Ladybug vs ladybird the naming trap",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7330763513000060",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8acd31eb2b70e4f8",
-      "title": "Brown bears hunt like silent assassins",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ed35e516dfd0e835",
-      "title": "Dolphins swim in a straight line for a reason",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f9b1f59a8a2d6b3e",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "11cf6c9bbb42b198",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a5278abbbe4df07d",
-      "title": "Trees record wet years inside their rings",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "c35a5cf94534eb81",
-      "title": "Penguins trap air bubbles under feathers",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "29e033504d57b7b4",
-      "title": "Lightning makes air explode into thunder",
+      "id": "7a83306338181369",
+      "title": "Rock layers store ancient environments in stripes",
       "reasons": [
         "duplicate_title",
         "duplicate_script"
       ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "d6ad5da3018d0673",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "50071ebef0b25f84",
-      "title": "Mangroves can slow waves before they hit land",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3fdcb905488a546c",
+      "id": "17d73d8675cd6844",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
         "duplicate_title"
@@ -274,15 +81,51 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "fbb4cb00792b03b5",
-      "title": "Storm clouds reveal a storm's heat engine",
+      "id": "e30788b62a102510",
+      "title": "Rock layers store ancient environments in stripes",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "862cb7e0bdc9f3be",
+      "id": "d90633c695f5dd63",
+      "title": "Butterflies taste flowers with their feet",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c13b491992bf020c",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "140f2b7e274d0d54",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "581d34fe44b01eb7",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0694c35c3c6c2de1",
       "title": "Cats measure tight spaces with their whiskers",
       "reasons": [
         "duplicate_title"
@@ -290,12 +133,176 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "d87bcdfdeda576f2",
-      "title": "Bees dance directions back to the hive",
+      "id": "fc795d71f22f53be",
+      "title": "Snakes sample the air with a tongue flick",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6be9d46508e849bf",
+      "title": "Rock layers show their timeline inside caves",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "a6a0e1aee3fe8ec2",
+      "title": "Horses point their ears toward what matters",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
+    },
+    {
+      "id": "3108b125c265cbc9",
+      "title": "horses aren't just big cows",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "718bfe85560fb610",
+      "title": "Mountains grow taller in winter and you didn't know",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "aaa61c85d17a2936",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2fda7341c1c6936f",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "793451dbb6e0621a",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "dde975094eb50ac0",
+      "title": "Sharks sense tiny electric fields",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fa9e1172c3c6b8b9",
+      "title": "Bears save energy with the slowest trick ever",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "989132ebac44cf98",
+      "title": "Penguins use rocks to stay cool too",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "13f8a8810323d410",
+      "title": "Dragonfly eyes see the world backwards",
+      "reasons": [
+        "off_topic_visual",
+        "non_animal_body_language"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "21ee776c4c2ead44",
+      "title": "Auroras glow when solar particles hit air",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c47a001341d89609",
+      "title": "Dolphins use signature whistles like names",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5c4c6a29e004761d",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9313238ad0b07edf",
+      "title": "Bees taste with their feet not their tongues",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f6a8e104c02ac593",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0e80fc5e0aef8b6d",
+      "title": "Penguins trap air bubbles under feathers",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "72768fa8d532ed77",
+      "title": "Mountains don't sit still like you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "517e74a59fcb2059",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -473,7 +480,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.817832+00:00",
+        "checked_at": "2026-06-28T12:02:33.833842+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 100.0,
@@ -1079,7 +1086,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.831159+00:00",
+        "checked_at": "2026-06-28T12:02:35.839982+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1686,7 +1693,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.609047+00:00",
+        "checked_at": "2026-06-28T12:02:37.385720+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2294,7 +2301,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.613969+00:00",
+        "checked_at": "2026-06-28T12:02:37.390351+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2908,7 +2915,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.815514+00:00",
+        "checked_at": "2026-06-28T12:02:33.831630+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [],
         "score": 78.0,
@@ -3511,7 +3518,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.821419+00:00",
+        "checked_at": "2026-06-28T12:02:34.508990+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3955,7 +3962,7 @@
       }
     },
     {
-      "id": "f6a8e104c02ac593",
+      "id": "94d887217422d163",
       "title": "Forest shade keeps soil moisture from leaving",
       "category": "forests",
       "publish_score": {
@@ -4036,7 +4043,7 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 60,
+          "score": 62,
           "signals": {
             "comment_potential": 41,
             "educational_potential": 67,
@@ -4044,7 +4051,7 @@
             "novelty": 64,
             "replay_potential": 67,
             "viral_potential": 62,
-            "visual_potential": 74
+            "visual_potential": 84
           },
           "verdict": "rewrite"
         },
@@ -4066,13 +4073,13 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 76,
           "signals": {
             "completion_prediction": 86,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 66
+            "visual_score": 74
           },
           "verdict": "rewrite"
         },
@@ -4130,7 +4137,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.824456+00:00",
+        "checked_at": "2026-06-28T12:02:34.513459+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4221,13 +4228,13 @@
         },
         "experiment": {
           "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
             "thumbnail": "new_thumbnail"
           },
           "explore_rate": 0.1,
-          "mode": "exploit",
+          "mode": "explore",
           "sample_count": 78,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
@@ -4337,7 +4344,7 @@
         },
         "pinned_comment": "Watch the leaves again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.45,
+          "caption_chars_per_second": 15.27,
           "contrast_score": 0.74,
           "cta_count": 1,
           "first_2s_narration": "Forest shade keeps soil moisture from leaving Watch the leaf shade first",
@@ -4397,18 +4404,18 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 76,
           "signals": {
             "completion_prediction": 86,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 66
+            "visual_score": 74
           },
           "verdict": "rewrite"
         },
         "risks": [],
-        "score": 96,
+        "score": 97,
         "selected_variant": {
           "hook": "Forests can cool the air below them",
           "score": 78,
@@ -4745,7 +4752,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.826576+00:00",
+        "checked_at": "2026-06-28T12:02:34.515640+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5364,7 +5371,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.829927+00:00",
+        "checked_at": "2026-06-28T12:02:35.838728+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5994,7 +6001,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.260156+00:00",
+        "checked_at": "2026-06-28T12:02:37.045115+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6603,7 +6610,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.611280+00:00",
+        "checked_at": "2026-06-28T12:02:37.387806+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7039,7 +7046,7 @@
       "title": "The moon keeps one face turned toward Earth",
       "category": "space",
       "publish_score": {
-        "approved": false,
+        "approved": true,
         "category": "space",
         "decision_confidence": {
           "bootstrap_multiplier": 0.255,
@@ -7130,6 +7137,14 @@
           "hits": [],
           "penalty": 0
         },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -7155,7 +7170,7 @@
           "verdict": "rewrite"
         },
         "score": 100,
-        "state": "rewrite",
+        "state": "publish_ready",
         "story_format": "space_science",
         "subscriber_conversion": {
           "comment_probability": 0.24,
@@ -7207,15 +7222,16 @@
           "state": "clear"
         }
       },
-      "editorial_state": "rewrite",
+      "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.623263+00:00",
+        "checked_at": "2026-06-28T12:02:37.393586+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
+          "objective_gate:bootstrap_observe_before_scaling",
+          "publish_ready_supply_reserve_fallback"
         ],
         "score": 78.0,
-        "state": "rewrite",
+        "state": "publish_ready",
         "template_cluster": ""
       },
       "queue_score": 78.0,
@@ -7809,7 +7825,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.833743+00:00",
+        "checked_at": "2026-06-28T12:02:35.845361+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8244,22 +8260,22 @@
       }
     },
     {
-      "id": "17d73d8675cd6844",
-      "title": "Rock layers use rock layers before they change",
-      "category": "geology",
+      "id": "62355ffc4ca2773e",
+      "title": "Forest canopies slow heat near the ground",
+      "category": "forests",
       "publish_score": {
         "approved": true,
-        "category": "geology",
+        "category": "forests",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.397,
+          "bootstrap_multiplier": 0.348,
           "can_adjust_strategy": false,
-          "confidence_score": 0.196,
-          "data_quality": "observed",
-          "data_quality_score": 0.825,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.20.",
+          "confidence_score": 0.13,
+          "data_quality": "estimated",
+          "data_quality_score": 0.61,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.13.",
           "recommendation_strength": "observe",
-          "sample_size": 11
+          "sample_size": 7
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -8267,15 +8283,15 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 100,
+        "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.196,
+          "confidence_score": 0.13,
           "mechanism_cluster": "",
-          "payoff_time_s": 9.35,
+          "payoff_time_s": 8.25,
           "penalty": 0.0,
           "publish_blocking": false,
           "reasons": [
-            "observe_before_scaling"
+            "bootstrap_observe_before_scaling"
           ],
           "scale_ready": false,
           "swipe_risk_band": "low",
@@ -8284,18 +8300,16 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
-            "pattern",
-            "rock"
+            "canop",
+            "heat"
           ],
           "cue_terms": [
-            "layer",
-            "pattern",
-            "rock"
+            "canop",
+            "cool",
+            "heat"
           ],
           "frame_hook_bridge": [
-            "rock",
-            "time"
+            "canop"
           ],
           "risks": [],
           "score": 100.0,
@@ -8309,31 +8323,31 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rock"
+          "subject": "forest"
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 72,
+          "score": 64,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 99
+            "comment_potential": 49,
+            "educational_potential": 67,
+            "emotional_potential": 30,
+            "novelty": 64,
+            "replay_potential": 77,
+            "viral_potential": 67,
+            "visual_potential": 74
           },
           "verdict": "produce"
         },
@@ -8343,62 +8357,62 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 73,
           "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 66
           },
           "verdict": "rewrite"
         },
         "score": 100,
         "state": "publish_ready",
-        "story_format": "earth_engine",
+        "story_format": "hidden_network",
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.253,
           "confidence": {
-            "bootstrap_multiplier": 0.517,
+            "bootstrap_multiplier": 0.333,
             "can_adjust_strategy": false,
-            "confidence_score": 0.356,
+            "confidence_score": 0.111,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.36.",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.36.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.297,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.141
         },
-        "title_score": 90,
+        "title_score": 100,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.738,
@@ -8419,35 +8433,33 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.671941+00:00",
+        "checked_at": "2026-06-28T12:02:37.046492+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:script quality gate blocked the narration"
         ],
-        "score": 72.0,
+        "score": 70.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 72.0,
+      "queue_score": 70.0,
       "youtube_brain": {
-        "animal": "rock",
+        "animal": "forest",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
-            "pattern",
-            "rock"
+            "canop",
+            "heat"
           ],
           "cue_terms": [
-            "layer",
-            "pattern",
-            "rock"
+            "canop",
+            "cool",
+            "heat"
           ],
           "frame_hook_bridge": [
-            "rock",
-            "time"
+            "canop"
           ],
           "risks": [],
           "score": 100.0,
@@ -8461,7 +8473,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rock"
+          "subject": "forest"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -8474,7 +8486,7 @@
         "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "earth_engine",
+        "story_format": "hidden_network",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -8484,14 +8496,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock earth engine matters."
+        "subject": "forest",
+        "viewer_promise": "See why this forest hidden network matters."
       },
       "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
-        "cta_prompt": "Want to understand the planet under your feet?",
+        "community_prompt": "Which nature topic should Wild Brief explain next after forest?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
         "curiosity_gap": {
-          "hook": "Watch the rock layers; it explains why this rock changes.",
+          "hook": "Why does this forest changes after the cool canopy?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -8503,7 +8515,7 @@
           "approved": true,
           "notes": [],
           "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
+          "recommended_format": "hidden network",
           "score": 100.0,
           "violations": []
         },
@@ -8536,18 +8548,16 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "layer",
-              "pattern",
-              "rock"
+              "canop",
+              "heat"
             ],
             "cue_terms": [
-              "layer",
-              "pattern",
-              "rock"
+              "canop",
+              "cool",
+              "heat"
             ],
             "frame_hook_bridge": [
-              "rock",
-              "time"
+              "canop"
             ],
             "risks": [],
             "score": 100.0,
@@ -8561,7 +8571,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "rock"
+            "subject": "forest"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -8574,44 +8584,40 @@
           "word_count": 2
         },
         "hook_options": [
-          "Rock layers are time stamps made of stone",
-          "Watch the rock layers; it explains the behavior",
-          "Start with the rock layer; it changes the scene",
-          "The rock layer is the detail most people miss",
-          "Rock layers give away the answer through rock layers"
+          "Forest shows why the cool canopy matters.",
+          "Forest canopies slow heat near the ground",
+          "Forest shows why the cool canopy matters.",
+          "Forest shows why the cool canopy matters.",
+          "Forest shows why the cool canopy matters."
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "rock",
-          "ending_line": "Which rock clue should we read next?",
-          "final_line": "Which rock clue should we read next?",
-          "loop_score": 0.662,
-          "opening_line": "Rock layers are time stamps made of stone.",
+          "callback_keyword": "forest",
+          "ending_line": "Which forest layer should we decode next?",
+          "final_line": "Which forest layer should we decode next?",
+          "loop_score": 0.689,
+          "opening_line": "Forest canopies slow heat near the ground.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "rock",
+            "carry_keyword": "forest",
             "subtle_audio_tail": true
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.662,
+        "loop_score": 0.689,
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
-            "pattern",
-            "rock",
-            "stripe"
+            "canop",
+            "heat"
           ],
           "cue_terms": [
-            "layer",
-            "pattern",
-            "rock",
-            "stripe"
+            "canop",
+            "cool",
+            "heat"
           ],
           "frame_hook_bridge": [
-            "rock",
-            "time"
+            "canop"
           ],
           "risks": [],
           "score": 100.0,
@@ -8625,38 +8631,34 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rock"
+          "subject": "forest"
         },
-        "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "pinned_comment": "Watch the cool canopy again. Tomorrow: another nature signal. Do forests feel more like places, systems, or living machines?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.59,
+          "caption_chars_per_second": 15.47,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
-          "first_frame_text": "ROCK TIME",
+          "first_2s_narration": "Forest canopies slow heat near the ground Watch the canopy first because",
+          "first_frame_text": "COOL CANOPY",
           "first_frame_text_words": 2,
-          "hook": "Rock layers are time stamps made of stone.",
+          "hook": "Forest canopies slow heat near the ground.",
           "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.662,
+          "hook_words": 7,
+          "loop_score": 0.689,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "layer",
-              "pattern",
-              "rock",
-              "stripe"
+              "canop",
+              "heat"
             ],
             "cue_terms": [
-              "layer",
-              "pattern",
-              "rock",
-              "stripe"
+              "canop",
+              "cool",
+              "heat"
             ],
             "frame_hook_bridge": [
-              "rock",
-              "time"
+              "canop"
             ],
             "risks": [],
             "score": 100.0,
@@ -8670,52 +8672,52 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "rock"
+            "subject": "forest"
           },
           "opening_retention_score": 100.0,
-          "payoff_time_s": 9.350000000000001,
+          "payoff_time_s": 8.25,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
+        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forest clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 73,
           "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 66
           },
           "verdict": "rewrite"
         },
         "risks": [],
-        "score": 97,
+        "score": 96,
         "selected_variant": {
-          "hook": "Rock layers are time stamps made of stone",
-          "score": 82,
-          "thumbnail_text": "ROCK TIME",
-          "title": "Rock layers store ancient environments in stripes"
+          "hook": "Forests can cool the air below them",
+          "score": 80,
+          "thumbnail_text": "COOL CANOPY",
+          "title": "Forests make cooler air under the canopy"
         },
-        "series": "Earth Engine #5",
+        "series": "Hidden Network #7",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #5: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Earth Engine #5",
-          "series": "Earth Engine #5"
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 7,
+          "label": "Hidden Network #7",
+          "series": "Hidden Network"
         },
         "state": "magnetic",
         "strengths": [
@@ -8727,34 +8729,34 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.207,
+          "comment_probability": 0.253,
           "confidence": {
-            "bootstrap_multiplier": 0.517,
+            "bootstrap_multiplier": 0.333,
             "can_adjust_strategy": false,
-            "confidence_score": 0.356,
+            "confidence_score": 0.111,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.36.",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 7
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.36.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.242,
+          "return_probability": 0.297,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 79,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.113
+          "subscriber_probability": 0.141
         },
         "swipe_risk": {
           "band": "low",
@@ -8763,87 +8765,88 @@
           "score": 0
         },
         "thumbnail_options": [
-          "ROCK TIME",
-          "ROCK LAYER",
-          "WATCH ROCK LAYER",
-          "ROCK LAYERS CHANGE",
-          "ROCK LAYER MATTERS",
-          "ROCK LAYER FIRST",
-          "ROCK LAYER REVEAL",
-          "ROCK LAYER CLUE",
+          "COOL CANOPY",
+          "WATCH COOL CANOPY",
+          "FORESTS LEAVES",
+          "COOL CANOPY MATTERS",
+          "COOL CANOPY FIRST",
+          "COOL CANOPY REVEAL",
+          "COOL CANOPY CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Rock layers store ancient environments in stripes",
-          "Rock layers use rock layers before they change",
-          "This rock layer gives rock layers away",
-          "Rock layers reveal the answer with rock layers",
-          "The rock layer that changes the moment",
-          "Rock layers show the hidden answer in seconds",
-          "Rock layers: watch this rock layer",
-          "Watch rock layers after the rock layer"
+          "Forests make cooler air under the canopy",
+          "Forest canopies slow heat near the ground",
+          "Forests use cool canopy before they leaves",
+          "This cool canopy gives forests away",
+          "Why forests leaves after one cool canopy",
+          "Forests reveal the answer with cool canopy",
+          "The cool canopy that changes the moment",
+          "Forests make one cool canopy matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this cool canopy"
         ],
         "top_variants": [
           {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 82,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forests can cool the air below them",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 82,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forest canopies slow heat near the ground",
+            "score": 79,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 75,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "FORESTS LEAVES",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 75,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "FORESTS LEAVES",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
           },
           {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 75,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "COOL CANOPY FIRST",
+            "title": "Forests make cooler air under the canopy"
           }
         ]
       },
@@ -9037,7 +9040,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.819270+00:00",
+        "checked_at": "2026-06-28T12:02:33.864886+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -9666,7 +9669,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.828239+00:00",
+        "checked_at": "2026-06-28T12:02:35.155235+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10286,7 +10289,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.835447+00:00",
+        "checked_at": "2026-06-28T12:02:35.847124+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10891,7 +10894,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.256190+00:00",
+        "checked_at": "2026-06-28T12:02:36.647556+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11514,7 +11517,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:08.257972+00:00",
+        "checked_at": "2026-06-28T12:02:36.651061+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12123,7 +12126,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:57:07.820348+00:00",
+        "checked_at": "2026-06-28T12:02:33.865991+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
