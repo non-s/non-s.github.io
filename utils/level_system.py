@@ -194,8 +194,8 @@ def _metrics(
 def _level_checks(metrics: dict, *, ready_target: int, pending_target: int) -> dict[int, dict]:
     return {
         1: {
-            "passed": metrics["published_count"] >= 1 and metrics["health_score"] >= 60,
-            "progress": (_ratio(metrics["published_count"], 1) + _ratio(metrics["health_score"], 60)) / 2,
+            "passed": metrics["published_count"] >= 1 and metrics["health_score"] >= 50,
+            "progress": (_ratio(metrics["published_count"], 1) + _ratio(metrics["health_score"], 50)) / 2,
             "evidence": {
                 "published_count": metrics["published_count"],
                 "health_score": metrics["health_score"],
