@@ -1,51 +1,59 @@
 {
-  "generated_at": "2026-06-28T11:13:21.240144+00:00",
+  "generated_at": "2026-06-28T11:20:18.763913+00:00",
   "floor": 82.0,
-  "pending": 16,
-  "ready": 16,
-  "held": 0,
+  "pending": 20,
+  "ready": 19,
+  "held": 1,
   "rewritten": 5,
-  "average_opening_score": 98.0,
-  "render_gate": "approved",
+  "average_opening_score": 92.8,
+  "render_gate": "hold",
   "counts": {
-    "approved": 16,
+    "approved": 19,
+    "hold": 1,
     "rewritten": 5
   },
   "items": [
     {
       "id": "79cdeee529d80932",
-      "title": "Bears smell food from miles away",
+      "title": "Bears can smell a meal long before seeing it",
       "category": "wildlife",
-      "render_gate": "approved",
-      "opening_score": 100.0,
+      "render_gate": "hold",
+      "opening_score": 34.0,
       "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Bears reveal the scent map first.",
+      "opening_state": "rewrite_opening",
+      "opening_line": "Bears can smell a meal long before seeing it.",
       "first_frame_text": "SCENT MAP",
       "visible_cue": "scent map",
       "rewrite_applied": true,
-      "rewrite_reason": "stale_frame_zero_repair",
-      "before_score": 94.0,
-      "after_score": 100.0,
-      "risks": [],
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 72.0,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded",
+        "frame_text_not_echoed_early",
+        "visible_cue_not_repeated_early",
+        "missing_early_action"
+      ],
       "action": "Use the frame-zero rewrite before rendering."
     },
     {
       "id": "0a5c470fc1d66a86",
-      "title": "Deer aim their ears like sound radar",
+      "title": "Deer use sound radar before they aim",
       "category": "wildlife",
       "render_gate": "approved",
-      "opening_score": 100.0,
+      "opening_score": 90.0,
       "frame_zero_score": 92.0,
       "opening_state": "retention_ready",
-      "opening_line": "Deer reveal the sound radar first.",
+      "opening_line": "Deer can aim each ear toward danger.",
       "first_frame_text": "SOUND RADAR",
       "visible_cue": "sound radar",
       "rewrite_applied": true,
-      "rewrite_reason": "stale_frame_zero_repair",
-      "before_score": 90.0,
-      "after_score": 100.0,
-      "risks": [],
+      "rewrite_reason": "generic_opening_copy",
+      "before_score": null,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
       "action": "Use the frame-zero rewrite before rendering."
     },
     {
@@ -101,6 +109,66 @@
       "after_score": 100.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "ef1437f6078d2f34",
+      "title": "Lightning signals through lightning flash",
+      "category": "weather",
+      "render_gate": "approved",
+      "opening_score": 90.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Lightning turns air into a shock wave.",
+      "first_frame_text": "THUNDER SNAP",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "ee3536d828a81ce9",
+      "title": "Crystals grow by repeating one tiny pattern",
+      "category": "chemistry",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Crystals build shape from repeating atoms.",
+      "first_frame_text": "CRYSTAL GROWTH",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "f6a8e104c02ac593",
+      "title": "Forest shade keeps soil moisture from leaving",
+      "category": "forests",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Forest shade keeps soil moisture from leaving.",
+      "first_frame_text": "SHADE HOLDS WATER",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
     },
     {
       "id": "ea149e2525f361a8",
@@ -183,6 +251,46 @@
       "action": "Ready to render with current first frame."
     },
     {
+      "id": "801f0cfcb73dc59d",
+      "title": "Chickens lock their view between steps",
+      "category": "farm",
+      "render_gate": "approved",
+      "opening_score": 94.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Chickens lock their view between steps.",
+      "first_frame_text": "STEADY EYES",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 94.0,
+      "risks": [
+        "visible_cue_not_repeated_early"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "ebd76ab310b5675e",
+      "title": "Mangroves take power out of waves",
+      "category": "conservation",
+      "render_gate": "approved",
+      "opening_score": 96.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Mangroves can slow waves before they hit land.",
+      "first_frame_text": "WAVE BUFFER",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 96.0,
+      "risks": [
+        "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
       "id": "ff4daa85598c5851",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -201,33 +309,15 @@
       "action": "Ready to render with current first frame."
     },
     {
-      "id": "801f0cfcb73dc59d",
-      "title": "Chickens lock their view between steps",
-      "category": "farm",
-      "render_gate": "approved",
-      "opening_score": 100.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Chickens lock their view between steps.",
-      "first_frame_text": "STEADY EYES",
-      "visible_cue": "",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 100.0,
-      "risks": [],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "f6a8e104c02ac593",
-      "title": "Forest shade keeps soil moisture from leaving",
+      "id": "4111626a62866b27",
+      "title": "Forests hold cool air under the canopy",
       "category": "forests",
       "render_gate": "approved",
       "opening_score": 100.0,
       "frame_zero_score": 92.0,
       "opening_state": "retention_ready",
-      "opening_line": "Forest shade keeps soil moisture from leaving.",
-      "first_frame_text": "SHADE HOLDS WATER",
+      "opening_line": "Forests hold cool air under the canopy.",
+      "first_frame_text": "COOL CANOPY",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",
@@ -237,7 +327,7 @@
       "action": "Ready to render with current first frame."
     },
     {
-      "id": "6f6aed971bde3b02",
+      "id": "4d361aae7b3c5525",
       "title": "Forests trap cool air below thick leaves",
       "category": "forests",
       "render_gate": "approved",
@@ -255,7 +345,7 @@
       "action": "Ready to render with current first frame."
     },
     {
-      "id": "f0a622f4b15c4c5a",
+      "id": "63acd8cdae0ef7bb",
       "title": "Plants turn light into stored sugar",
       "category": "plants",
       "render_gate": "approved",
