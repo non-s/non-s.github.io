@@ -23,6 +23,7 @@ REQUIRED_FILES = (
     "scripts/import_studio_reach_export.py",
     "scripts/apply_topic_freshness.py",
     "scripts/opening_audit_report.py",
+    "scripts/frame_zero_preflight.py",
     "scripts/comment_to_short_pipeline.py",
     "scripts/compact_analytics.py",
     "scripts/seo_metadata_lint.py",
@@ -81,6 +82,7 @@ WORKFLOW_TOKENS = {
         "media_lifecycle.py --audit-tracked",
         "tts_healthcheck.py",
         "seo_metadata_lint.py",
+        "frame_zero_preflight.py",
     ),
     ".github/workflows/youtube-bot.yml": (
         "quota_preflight.py youtube-bot",
@@ -114,6 +116,7 @@ WORKFLOW_TOKENS = {
         "No eligible Short was published this cycle; quality guard kept the channel clean",
         "base_pending_target + (attempt - 1) * pending_batch",
         "upload_intents.jsonl",
+        "_data/frame_zero_preflight.json",
     ),
     ".github/workflows/fetch-content.yml": (
         'cron: "9,23 * * * *"',
@@ -132,6 +135,7 @@ WORKFLOW_TOKENS = {
         "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}",
         "merge_jsonl_state.py",
         "reconcile_queue_uploads.py",
+        "_data/frame_zero_preflight.json",
     ),
     ".github/workflows/youtube-watchdog.yml": (
         'PUBLISH_SLOT_WINDOW_MINUTES: "60"',
@@ -168,6 +172,7 @@ WORKFLOW_TOKENS = {
         "opening_audit_report.py",
         "experiment_governance.py",
         "fact_guard.py",
+        "_data/frame_zero_preflight.json",
     ),
     ".github/workflows/production-smoke.yml": (
         "production_smoke.py --json",

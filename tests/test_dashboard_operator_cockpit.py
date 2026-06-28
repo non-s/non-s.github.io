@@ -44,6 +44,29 @@ def test_dashboard_renders_comment_and_session_actions(tmp_path, monkeypatch):
         ),
         encoding="utf-8",
     )
+    (tmp_path / "_data" / "frame_zero_preflight.json").write_text(
+        json.dumps(
+            {
+                "pending": 1,
+                "ready": 1,
+                "rewritten": 1,
+                "items": [
+                    {
+                        "render_gate": "approved",
+                        "title": "Elephants can feel rumbles through the ground",
+                        "opening_line": "Elephants reveal the ground signal first.",
+                        "opening_score": 100,
+                        "frame_zero_score": 92,
+                        "rewrite_applied": True,
+                        "before_score": 70,
+                        "after_score": 100,
+                        "action": "Use the frame-zero rewrite before rendering.",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
     (tmp_path / "_data" / "sequence_plan.json").write_text(
         json.dumps(
             {
@@ -70,4 +93,7 @@ def test_dashboard_renders_comment_and_session_actions(tmp_path, monkeypatch):
     assert "Fresh upload action queue" in body
     assert "Fresh handoffs" in body
     assert "fresh upload" in body
+    assert "Frame-zero ready" in body
+    assert "Frame-zero preflight" in body
+    assert "ground signal" in body
     assert "sharks" in body

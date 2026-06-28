@@ -1,100 +1,105 @@
 {
-  "generated_at": "2026-06-28T09:43:37.834128+00:00",
+  "generated_at": "2026-06-28T09:51:20.797494+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 40.8,
+  "overall_progress_pct": 27.8,
   "current_level": {
-    "number": 3,
-    "name": "Retention packaging",
-    "mission": "Make the opening frame and first sentence clear enough that strangers keep watching.",
-    "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
-    "revenue_job": "Convert reach into watch time and proof that the format works.",
+    "number": 2,
+    "name": "Publish supply engine",
+    "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
+    "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
+    "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 85.7
+    "progress_pct": 94.4
   },
   "boss": {
-    "id": "opening_retention_gap",
-    "label": "Opening retention is below scale floor",
+    "id": "publish_ready_reserve_low",
+    "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "stayed_to_watch_rate": 0.318,
-      "avg_view_percentage": 57.002,
+      "eligible_count": 6,
+      "operational_publish_ready": 5,
+      "apparent_publish_ready": 8,
+      "pending": 20,
+      "target_publish_ready": 6,
+      "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 36,
+          "count": 28,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
-          "id": "duplicate_title",
-          "count": 23,
-          "operator_translation": "duplicate title"
-        },
-        {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 20,
+          "count": 18,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 15,
+          "count": 12,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
+          "id": "editor_in_chief:cooldown_subject",
+          "count": 8,
+          "operator_translation": "pick a fresh subject inside the same lane"
+        },
+        {
           "id": "editor_in_chief:script quality gate blocked the narration",
-          "count": 12,
+          "count": 8,
           "operator_translation": "editor in chief:script quality gate blocked the narration"
         }
       ]
     }
   },
   "next_upgrade": {
-    "id": "raise_opening_retention",
-    "title": "Make every opening instantly legible",
-    "why": "The channel needs stronger first-second clarity before volume compounds.",
-    "success_gate": "stayed_to_watch_rate >= 0.40 and avg_view_percentage >= 62",
+    "id": "repair_final_publish_supply",
+    "title": "Turn held strong candidates into final-eligible reserve",
+    "why": "The automation can publish safely, but the final gate has zero eligible candidates.",
+    "success_gate": "eligible_count >= 1, operational_publish_ready >= 6, pending >= 20",
     "free_only": true,
     "primary_files": [
-      "_data/scale_blueprint.json",
-      "_data/opening_audit_report.json"
+      "_data/automation_health.json",
+      "_data/dry_run_publish.json",
+      "_data/queue_audit.json"
     ]
   },
   "action_plan": [
     {
       "priority": "P0",
-      "action": "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
+      "target": "eligible_count >= 1",
+      "why": "Publish-ready reserve is below target"
+    },
+    {
+      "priority": "P0",
+      "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
+      "target": "objective_gate:bootstrap_observe_before_scaling, editor_in_chief:subject repeated inside 3-day cooldown, queue_prune:rewrite",
+      "why": "Current supply has strong ideas but fails late gates."
     },
     {
       "priority": "P1",
-      "action": "Attach a named series lane and next-episode pinned question to every strong candidate.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Build the reserve to six operational publish-ready Shorts.",
+      "target": "5/6",
+      "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
-      "action": "For each winner, add one searchable title/description variant around animal behavior intent.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
-    },
-    {
-      "priority": "P1",
-      "action": "Use the next publish block to deepen: Pet Signals, Farmyard Minds.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Refresh free discovery only after the current repair batch is clean.",
+      "target": "pending 20/20",
+      "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 100,
     "health_state": "excellent",
-    "pending": 24,
-    "operational_publish_ready": 6,
-    "apparent_publish_ready": 9,
-    "eligible_count": 7,
+    "pending": 20,
+    "operational_publish_ready": 5,
+    "apparent_publish_ready": 8,
+    "eligible_count": 6,
     "scale_ready_count": 2,
-    "next_shorts_count": 6,
-    "editorial_candidate_count": 24,
+    "next_shorts_count": 5,
+    "editorial_candidate_count": 20,
     "published_count": 76,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -109,63 +114,63 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 36,
+      "count": 28,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
-      "id": "duplicate_title",
-      "count": 23,
-      "operator_translation": "duplicate title"
-    },
-    {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 20,
+      "count": 18,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 15,
+      "count": 12,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
-      "id": "editor_in_chief:script quality gate blocked the narration",
-      "count": 12,
-      "operator_translation": "editor in chief:script quality gate blocked the narration"
-    },
-    {
-      "id": "off_topic_visual",
-      "count": 10,
-      "operator_translation": "off topic visual"
-    },
-    {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 9,
+      "count": 8,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
+      "id": "editor_in_chief:script quality gate blocked the narration",
+      "count": 8,
+      "operator_translation": "editor in chief:script quality gate blocked the narration"
+    },
+    {
       "id": "agency_gate:success_recovery_format_required",
-      "count": 9,
+      "count": 6,
       "operator_translation": "match the recovery format rule"
     },
     {
       "id": "agency_gate:success_recovery_hook_required",
-      "count": 9,
+      "count": 6,
       "operator_translation": "rewrite the recovery hook"
     },
     {
-      "id": "duplicate_script",
-      "count": 9,
-      "operator_translation": "duplicate script"
+      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
+      "count": 6,
+      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
       "id": "soft_agency_hold_supply_recovery",
-      "count": 8,
+      "count": 5,
       "operator_translation": "soft agency hold supply recovery"
     },
     {
-      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
-      "count": 7,
-      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
+      "id": "objective_gate:observe_before_scaling",
+      "count": 4,
+      "operator_translation": "observe this pattern before scaling it"
+    },
+    {
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 4,
+      "operator_translation": "editorial cooldown supply fallback"
+    },
+    {
+      "id": "publish_ready_supply_reserve_fallback",
+      "count": 4,
+      "operator_translation": "publish ready supply reserve fallback"
     }
   ],
   "levels": [
@@ -188,12 +193,12 @@
       "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
-      "status": "cleared",
-      "progress_pct": 100.0,
+      "status": "current",
+      "progress_pct": 94.4,
       "evidence": {
-        "operational_publish_ready": 6,
-        "eligible_count": 7,
-        "pending": 24,
+        "operational_publish_ready": 5,
+        "eligible_count": 6,
+        "pending": 20,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -204,7 +209,7 @@
       "mission": "Make the opening frame and first sentence clear enough that strangers keep watching.",
       "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
       "revenue_job": "Convert reach into watch time and proof that the format works.",
-      "status": "current",
+      "status": "locked",
       "progress_pct": 85.7,
       "evidence": {
         "stayed_to_watch_rate": 0.318,
@@ -257,18 +262,18 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 54.3,
+      "progress_pct": 51.0,
       "evidence": {
         "views_28d": 30314,
         "health_state": "excellent",
-        "operational_publish_ready": 6
+        "operational_publish_ready": 5
       }
     }
   ],
   "game_loop": {
-    "now": "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
-    "next": "Repeat audience loop",
-    "after_next": "Free distribution mesh"
+    "now": "Repair one held high-score story until dry-run eligible_count reaches one.",
+    "next": "Retention packaging",
+    "after_next": "Repeat audience loop"
   },
   "free_resource_policy": {
     "paid_tools_required": false,

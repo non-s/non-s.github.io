@@ -340,6 +340,7 @@ def render_html() -> str:
     youtube_intelligence = _safe_json(Path("_data/youtube_intelligence.json"))
     ai_provider_report = _safe_json(Path("_data/ai_provider_report.json"))
     packaging_report = _safe_json(Path("_data/packaging_report.json"))
+    frame_zero_preflight = _safe_json(Path("_data/frame_zero_preflight.json"))
     youtube_brain_report = _safe_json(Path("_data/youtube_brain_report.json"))
     autonomous_director = _safe_json(Path("_data/autonomous_director.json"))
     autonomous_growth_plan = _safe_json(Path("_data/autonomous_growth_plan.json"))
@@ -614,6 +615,7 @@ def render_html() -> str:
         or studio_reach_summary.get("rows")
         or freshness_report
         or opening_audit_report
+        or frame_zero_preflight
         or quota_latest
         or session_graph
         or comment_to_short
@@ -632,6 +634,9 @@ def render_html() -> str:
         out.append(
             f"<div><small>Opening audit pass</small><div class='metric'>{float(opening_audit_report.get('pass_rate', 0) or 0) * 100:.0f}%</div></div>"
         )
+        frame_pending = int(frame_zero_preflight.get("pending", 0) or 0)
+        frame_ready = int(frame_zero_preflight.get("ready", 0) or 0)
+        out.append(f"<div><small>Frame-zero ready</small><div class='metric'>{frame_ready}/{frame_pending}</div></div>")
         out.append(
             f"<div><small>Session coverage</small><div class='metric'>{float(session_graph.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
         )
@@ -780,6 +785,34 @@ def render_html() -> str:
                     f"<tr><td>{html.escape(str(item.get('title') or item.get('video_id') or '')[:100])}</td>"
                     f"<td>{float(audit.get('score', 0) or 0):.1f}</td>"
                     f"<td>{html.escape(', '.join(map(str, audit.get('reasons') or []))[:140])}</td></tr>"
+                )
+            out.append("</table>")
+        frame_items = frame_zero_preflight.get("items") or []
+        if frame_items:
+            out.append(
+                "<h3>Frame-zero preflight</h3>"
+                "<table><tr><th>Gate</th><th>Title</th><th>Opening</th><th>Frame</th><th>Action</th></tr>"
+            )
+            for item in frame_items[:8]:
+                score_text = (
+                    f"{float(item.get('opening_score', 0) or 0):.0f}/"
+                    f"{float(item.get('frame_zero_score', 0) or 0):.0f}"
+                )
+                opening = str(item.get("opening_line") or "")
+                if (
+                    item.get("rewrite_applied")
+                    and item.get("before_score") is not None
+                    and item.get("after_score") is not None
+                ):
+                    before = item.get("before_score")
+                    after = item.get("after_score")
+                    opening += f" ({before} -> {after})"
+                out.append(
+                    f"<tr><td><span class='badge'>{html.escape(str(item.get('render_gate') or 'hold'))}</span></td>"
+                    f"<td>{html.escape(str(item.get('title', ''))[:90])}</td>"
+                    f"<td>{html.escape(opening[:130])}</td>"
+                    f"<td>{html.escape(score_text)}</td>"
+                    f"<td>{html.escape(str(item.get('action') or '')[:140])}</td></tr>"
                 )
             out.append("</table>")
         related = related_video_recommendations.get("items") or session_ops.get("related_video_recommendations") or []

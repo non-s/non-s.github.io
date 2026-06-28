@@ -995,6 +995,7 @@ def package_story(story: dict) -> dict:
         or str(out.get("source") or "").strip().lower() == "youtube comment idea"
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
+        or bool(out.get("frame_zero_repair"))
         or local_rewrite_method
         in {
             "contextual_duplicate_title_rescue",

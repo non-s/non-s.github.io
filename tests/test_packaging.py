@@ -366,6 +366,56 @@ def test_package_story_repairs_generic_frame_zero_copy():
     assert packaged["packaging"]["opening_retention"]["approved"] is True
 
 
+def test_package_story_rewrites_low_frame_zero_retention_bridge():
+    packaged = package_story(
+        _story(
+            title="Elephants can feel rumbles through the ground",
+            seo_title="Elephants can feel rumbles through the ground",
+            hook="Elephants can sense low rumbles underfoot.",
+            script=(
+                "Elephants can sense low rumbles underfoot. Watch the feet and stillness, "
+                "because low elephant calls can travel through ground as vibrations."
+            ),
+            thumbnail_text="GROUND SIGNAL",
+            category="wildlife",
+        )
+    )
+
+    repair = packaged["frame_zero_repair"]
+    assert repair["method"] == "curiosity_angle_frame_zero_retention_rewrite"
+    assert repair["before"]["score"] < 82
+    assert repair["after"]["score"] >= 82
+    assert "Watch the ground signal first" in packaged["script"]
+    assert packaged["packaging"]["opening_retention"]["approved"] is True
+
+
+def test_package_story_reapplies_stale_frame_zero_repair_text():
+    packaged = package_story(
+        _story(
+            title="Elephants can feel rumbles through the ground",
+            seo_title="Elephants can feel rumbles through the ground",
+            hook="Elephants can sense low rumbles underfoot.",
+            script=(
+                "Elephants can sense low rumbles underfoot. Watch the feet and stillness, "
+                "because low elephant calls can travel through ground as vibrations."
+            ),
+            thumbnail_text="GROUND SIGNAL",
+            category="wildlife",
+            first_2s_narration="Elephants reveal the ground signal first Watch the ground signal first",
+            frame_zero_repair={
+                "method": "curiosity_angle_frame_zero_retention_rewrite",
+                "reason": "opening_retention_below_floor",
+                "cue": "ground signal",
+                "after": {"score": 100, "approved": True},
+            },
+        )
+    )
+
+    assert packaged["hook"] == "Elephants reveal the ground signal first."
+    assert packaged["frame_zero_repair"]["before"]["score"] < 82
+    assert packaged["packaging"]["opening_retention"]["approved"] is True
+
+
 def test_package_story_attaches_opening_retention_bridge():
     packaged = package_story(_story())
 
