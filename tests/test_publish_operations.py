@@ -653,6 +653,60 @@ def test_sequence_plan_skips_malformed_winner_titles():
     assert "hiding in plain sight" not in str(plan["variants"]).lower()
 
 
+def test_sequence_plan_turns_fresh_upload_actions_into_review_variants():
+    plan = build_sequence_plan(
+        {"top_performers": []},
+        fresh_upload_actions={
+            "items": [
+                {
+                    "id": "fresh-upload:fresh:repair_candidate:1h",
+                    "priority": "urgent",
+                    "lane": "package_rescue",
+                    "action_type": "prepare_package_rescue",
+                    "video_id": "fresh",
+                    "title": "Mushrooms release spores from hidden gills",
+                    "category": "fungi",
+                    "series": "Hidden Network",
+                    "url": "https://www.youtube.com/shorts/fresh",
+                    "checkpoint_label": "1h",
+                    "checkpoint_state": "observed",
+                    "current_views": 5,
+                    "opening_retention_score": 100,
+                    "recommended_action": "Prepare a tighter title around the visible gill cue.",
+                    "manual_approval_required": True,
+                    "free_only": True,
+                }
+            ]
+        },
+    )
+
+    assert plan["fresh_upload_handoffs"] == 1
+    variant = plan["variants"][0]
+    assert variant["sequence_variant"] == "fresh_upload_package_rescue"
+    assert variant["sequence_source"] == "fresh_upload_actions"
+    assert variant["fresh_upload_handoff"]["series"] == "Hidden Network"
+    assert (variant.get("remake_of") or {}).get("video_id") == "fresh"
+
+
+def test_sequence_plan_skips_observe_only_fresh_upload_actions():
+    plan = build_sequence_plan(
+        {"top_performers": []},
+        fresh_upload_actions={
+            "items": [
+                {
+                    "lane": "observe",
+                    "video_id": "watch",
+                    "title": "Mushrooms release spores from hidden gills",
+                    "recommended_action": "Keep observing through the next checkpoint.",
+                }
+            ]
+        },
+    )
+
+    assert plan["fresh_upload_handoffs"] == 0
+    assert plan["variants"] == []
+
+
 def test_post24_review_classifies_scale_rewrite_pause_and_watch():
     assert classify_video({"views": 1200, "view_pct": 70, "growth_score": 250}) == "scale"
     assert (

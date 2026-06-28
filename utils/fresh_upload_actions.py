@@ -135,6 +135,8 @@ def _action_from_item(item: dict) -> dict:
         "action_type": playbook["action_type"],
         "video_id": video_id,
         "title": str(item.get("title") or ""),
+        "category": str(item.get("category") or ""),
+        "series": str(item.get("series") or ""),
         "url": str(item.get("url") or (f"https://www.youtube.com/shorts/{video_id}" if video_id else "")),
         "state": state,
         "checkpoint_label": str(checkpoint.get("label") or ""),

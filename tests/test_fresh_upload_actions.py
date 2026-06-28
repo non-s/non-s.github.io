@@ -9,6 +9,8 @@ def _watch_item(video_id: str, state: str, checkpoint_state: str, **overrides):
     item = {
         "video_id": video_id,
         "title": "Mushrooms release spores from hidden gills",
+        "category": "fungi",
+        "series": "Hidden Network",
         "url": f"https://www.youtube.com/shorts/{video_id}",
         "state": state,
         "priority": "high" if state in {"analytics_due", "repair_candidate"} else "low",
@@ -45,6 +47,8 @@ def test_fresh_upload_actions_prioritizes_due_measurement_before_watch():
     assert payload["free_only"] is True
     assert first["video_id"] == "due"
     assert first["lane"] == "measurement"
+    assert first["category"] == "fungi"
+    assert first["series"] == "Hidden Network"
     assert first["automation_safe"] is True
     assert "Check the 1h sample first" in first["recommended_action"]
 

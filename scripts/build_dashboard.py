@@ -2026,6 +2026,9 @@ def render_html() -> str:
         out.append(
             f"<div><small>Sequence variants</small><div class='metric'>{len(sequence_plan.get('variants') or [])}</div></div>"
         )
+        out.append(
+            f"<div><small>Fresh handoffs</small><div class='metric'>{int(sequence_plan.get('fresh_upload_handoffs', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         schedule_slots = publish_schedule.get("recommended_slots") or []
         if publish_schedule:
@@ -2118,10 +2121,20 @@ def render_html() -> str:
             out.append("</table>")
         variants = sequence_plan.get("variants") or []
         if variants:
-            out.append("<h3>Sequence factory</h3><table><tr><th>Variant</th><th>Title</th><th>Category</th></tr>")
-            for item in variants[:8]:
+            out.append(
+                "<h3>Sequence factory</h3>"
+                "<table><tr><th>Variant</th><th>Source</th><th>Title</th><th>Category</th></tr>"
+            )
+            visible_variants = [item for item in variants if item.get("fresh_upload_handoff")] + [
+                item for item in variants if not item.get("fresh_upload_handoff")
+            ]
+            for item in visible_variants[:8]:
+                source = (
+                    "fresh upload" if item.get("fresh_upload_handoff") else str(item.get("sequence_source") or "winner")
+                )
                 out.append(
                     f"<tr><td><code>{html.escape(str(item.get('sequence_variant', '')))}</code></td>"
+                    f"<td>{html.escape(source)}</td>"
                     f"<td>{html.escape(str(item.get('title') or item.get('seo_title') or '')[:100])}</td>"
                     f"<td>{html.escape(str(item.get('category', '')))}</td></tr>"
                 )
