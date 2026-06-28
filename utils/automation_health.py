@@ -54,6 +54,8 @@ _NATURE_SUBJECT_WORDS = {
     "molecule",
     "molecules",
     "moon",
+    "mountain",
+    "mountains",
     "mushroom",
     "mushrooms",
     "ocean",
@@ -116,6 +118,10 @@ def _script_key(text: str) -> str:
 
 def _frontloaded(title: str) -> bool:
     words = re.findall(r"[a-z]+", (title or "").lower())
+    if not words:
+        return False
+    while words and words[0] in {"a", "an", "the"}:
+        words = words[1:]
     if not words:
         return False
     if words[0] in _SUBJECT_FRONTLOAD_WORDS:

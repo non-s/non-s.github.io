@@ -8,6 +8,7 @@ from utils.curiosity_angles import CURIOUS_CUE_WORDS, build_curiosity_package, i
 from utils.curiosity_gap import CuriosityGapEngine
 from utils.editorial_guard import editorial_issues
 from utils.editorial_rules import evaluate_story_package
+from utils.frame_zero_packaging import apply_frame_zero_repair
 from utils.growth_engine import (
     analyze_retention,
     experiment_plan,
@@ -186,6 +187,10 @@ ACTION_VERBS = (
     "choose",
     "save",
     "signal",
+    "slow",
+    "slows",
+    "sort",
+    "sorts",
     "follow",
     "rely",
     "digest",
@@ -217,8 +222,12 @@ ACTION_VERBS = (
     "leaves",
     "lay",
     "lays",
+    "keep",
+    "keeps",
     "make",
     "record",
+    "release",
+    "releases",
     "reveal",
     "see",
     "sees",
@@ -247,6 +256,8 @@ ACTION_VERBS = (
     "steer",
     "taste",
     "track",
+    "trace",
+    "traces",
     "trap",
     "turn",
     "turns",
@@ -952,6 +963,7 @@ def package_story(story: dict) -> dict:
     normalized_category = normalize_story_category(out)
     if normalized_category:
         out["category"] = normalized_category
+    out = apply_frame_zero_repair(out)
     current_format = str(out.get("story_format") or "").strip()
     inferred_format = classify_format(
         " ".join(str(out.get(k) or "") for k in ("seo_title", "title", "hook", "script")),
@@ -1055,6 +1067,7 @@ def package_story(story: dict) -> dict:
         "cta_prompt": out["cta_prompt"],
         "replay_prompt": out["replay_prompt"],
         "subscriber_conversion": subscriber_score,
+        "frame_zero": out.get("frame_zero_packaging") or {},
         "curiosity_gap": preflight["curiosity_gap"],
         "swipe_risk": preflight["swipe_risk"],
         "loop_plan": preflight["loop_plan"],

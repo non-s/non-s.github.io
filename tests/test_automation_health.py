@@ -207,6 +207,18 @@ def test_automation_health_counts_nature_subject_frontload(tmp_path: Path):
                         "seo_title": "Auroras glow when solar particles hit air",
                         "script": "Auroras glow when solar particles hit air before the sky changes color.",
                     },
+                    {
+                        "id": "mountains",
+                        "category": "mountains",
+                        "seo_title": "Mountains carve valleys while moving slowly",
+                        "script": "Mountains carve valleys while moving slowly before the landscape changes.",
+                    },
+                    {
+                        "id": "moon",
+                        "category": "space",
+                        "seo_title": "The moon keeps one face turned toward Earth",
+                        "script": "The moon keeps one face turned toward Earth before the orbit clue appears.",
+                    },
                 ]
             }
         ),

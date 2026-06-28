@@ -2,6 +2,7 @@ import pytest
 
 from utils import editorial
 from utils.queue_pruner import (
+    INVENTORY_RESERVE_FALLBACK,
     PUBLISH_READY_RESERVE_TARGET,
     angle_key,
     production_quality_issues,
@@ -766,9 +767,10 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
         return []
 
     def fake_enriched_score(story, analytics_strategy=None):
+        reserve_title = f"Reserve angle {story['id'].removeprefix('story-')}"
         return {
             "story": story,
-            "score": 96,
+            "score": 77.2,
             "state": "rewrite",
             "publish_score": {
                 "approved": False,
@@ -785,7 +787,11 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
                 },
             },
             "youtube_brain": {"state": "publish_minded", "risks": []},
-            "packaging": {"state": "magnetic", "risks": []},
+            "packaging": {
+                "state": "magnetic",
+                "risks": [],
+                "title_options": [story.get("seo_title"), reserve_title],
+            },
             "rights_audit": {"approved": True, "reasons": [], "warnings": []},
             "editorial_guard": {"approved": True, "issues": []},
             "editorial": {"approved": True, "state": "publish_now", "reasons": []},
@@ -919,3 +925,62 @@ def test_prune_queue_keeps_risky_reserve_out_of_publish_ready(monkeypatch):
     assert "publish_ready_supply_reserve_fallback" not in story["queue_prune"]["objective_reasons"]
     assert "publish_ready_supply_reserve_fallback" not in summary["reasons"]
     assert rejected == []
+
+
+def test_prune_queue_uses_inventory_reserve_for_soft_duplicates(monkeypatch):
+    def fake_quality_issues(story, *args, **kwargs):
+        return ["duplicate_title"] if str(story.get("id") or "").startswith("story-dup") else []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        reserve_title = f"Reserve angle {story['id'].removeprefix('story-')}"
+        return {
+            "story": story,
+            "score": 96,
+            "state": "publish_ready",
+            "publish_score": {
+                "approved": True,
+                "state": "publish_ready",
+                "score": 100,
+                "objective_gate": {"reasons": [], "scale_ready": True, "publish_blocking": False},
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {
+                "state": "magnetic",
+                "risks": [],
+                "title_options": [story.get("seo_title"), reserve_title],
+            },
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {
+        "stories": [
+            _story(str(idx), title=f"Clean story {idx}", seo_title=f"Clean story {idx}")
+            for idx in range(18)
+        ]
+        + [
+            _story(f"dup-{idx}", title="Clean story 0", seo_title="Clean story 0")
+            for idx in range(4)
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue)
+
+    kept = [story for story in pruned["stories"] if not story.get("consumed")]
+    reserves = [
+        story
+        for story in kept
+        if INVENTORY_RESERVE_FALLBACK in ((story.get("queue_prune") or {}).get("objective_reasons") or [])
+    ]
+    assert len(kept) == 20
+    assert len(reserves) == 2
+    assert all((story.get("queue_prune") or {}).get("state") == "rewrite" for story in reserves)
+    reserve_titles = {story["seo_title"] for story in reserves}
+    assert len(reserve_titles) == len(reserves)
+    assert "Clean story 0" not in reserve_titles
+    assert len(rejected) == 2
+    assert summary["reasons"][INVENTORY_RESERVE_FALLBACK] == 2

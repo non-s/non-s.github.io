@@ -43,14 +43,16 @@ GENERIC_SCRIPT_PHRASES = (
 )
 REQUIRED_FIELDS = ("seo_title", "script", "thumbnail_text", "yt_tags")
 MAX_ACTIVE_PENDING = 120
+MIN_ACTIVE_PENDING = 20
 EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 PUBLISH_READY_SUPPLY_RESERVE_FALLBACK = "publish_ready_supply_reserve_fallback"
+INVENTORY_RESERVE_FALLBACK = "inventory_reserve_fallback"
 PUBLISH_READY_RESERVE_TARGET = 6
 RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = set()
 RESERVE_ALLOWED_BRAIN_RISKS: set[str] = set()
 RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_replay_reason", "weak_visual_surface"}
 RESERVE_MIN_PUBLISH_SCORE = 95.0
-RESERVE_MIN_QUEUE_SCORE = 78.0
+RESERVE_MIN_QUEUE_SCORE = 76.0
 AGENCY_GATE_FILE = Path("_data/agency_gate.json")
 HARD_QUALITY_ISSUES = {
     "missing_source_url",
@@ -75,6 +77,16 @@ RESCUEABLE_HARD_QUALITY_ISSUES = {
     "duplicate_angle",
 }
 NON_RESCUEABLE_HARD_QUALITY_ISSUES = HARD_QUALITY_ISSUES - RESCUEABLE_HARD_QUALITY_ISSUES
+INVENTORY_RESERVE_BLOCKING_ISSUES = NON_RESCUEABLE_HARD_QUALITY_ISSUES | {
+    "copy_subject_mismatch",
+    "script_subject_mismatch",
+    "subject_alignment_check_failed",
+}
+INVENTORY_RESERVE_ALLOWED_ISSUES = {
+    "duplicate_title",
+    "duplicate_angle",
+    "queue_pruned_low_priority",
+}
 COMMONS_FIELDS = ("commons_image_url", "commons_page_url", "commons_license", "commons_artist")
 PACKAGING_LAB_VARIANT_FIELDS = ("title_variants", "hook_variants", "thumbnail_variants")
 VIEWER_COPY_FIELDS = (
@@ -494,9 +506,13 @@ def _editorial_cooldown_supply_candidate(story: dict) -> bool:
     gate = publish.get("objective_gate") or {}
     gate_reasons = {str(reason) for reason in (gate.get("reasons") or [])}
     objective_gate_reasons = {reason for reason in objective_reasons if reason.startswith("objective_gate:")}
+    inventory_reserve_only = set(objective_reasons) <= {
+        INVENTORY_RESERVE_FALLBACK,
+        "inventory_reserve:duplicate_title",
+    }
     objective_observe_only = objective_gate_reasons == {"objective_gate:observe_before_scaling"}
     objective_clear = (
-        not objective_gate_reasons
+        (not objective_gate_reasons or inventory_reserve_only)
         and not gate_reasons
         and gate.get("publish_blocking") is not True
         and gate.get("scale_ready", True) is True
@@ -681,6 +697,152 @@ def _apply_publish_ready_reserve_fallback(story: dict) -> None:
         publish["approved"] = True
         publish["state"] = "publish_ready"
         story["publish_score"] = publish
+
+
+def _inventory_reserve_candidate(story: dict, reject_reasons: list[str]) -> bool:
+    reasons = {str(reason) for reason in reject_reasons}
+    if not reasons or reasons - INVENTORY_RESERVE_ALLOWED_ISSUES:
+        return False
+    if reasons & INVENTORY_RESERVE_BLOCKING_ISSUES:
+        return False
+    if not str(story.get("id") or "").strip():
+        return False
+    if not (story.get("source_url") or story.get("url")):
+        return False
+    for field in REQUIRED_FIELDS:
+        if not story.get(field):
+            return False
+    rights = audit_rights(story)
+    if rights.get("approved") is not True or rights.get("warnings"):
+        return False
+    return True
+
+
+def _clean_inventory_title(title: str) -> str:
+    title = re.sub(r"\s+", " ", str(title or "")).strip(" -.,")
+    return title[:1].upper() + title[1:] if title else ""
+
+
+def _apply_inventory_title_variant(story: dict, seen_title_keys: set[str]) -> bool:
+    packaging = story.get("packaging") or {}
+    candidates: list[str] = []
+    candidates.extend(str(title or "") for title in (packaging.get("title_options") or []))
+    selected = packaging.get("selected_variant") or {}
+    if isinstance(selected, dict):
+        candidates.append(str(selected.get("title") or ""))
+    candidates.extend(str(story.get(key) or "") for key in ("seo_title", "title"))
+    cue = extract_cue(story)
+    subject = extract_animal(story).title()
+    if cue != "cue" and subject:
+        candidates.extend(
+            [
+                f"{subject} reveal the story through {cue}",
+                f"{subject} make {cue} matter in seconds",
+                f"{subject}: watch the {cue}",
+            ]
+        )
+    for candidate in candidates:
+        title = _clean_inventory_title(candidate)
+        if not title or len(title) > 60:
+            continue
+        probe = {**story, "title": title, "seo_title": title}
+        if editorial_issues(probe, include_script=False):
+            continue
+        key = normalise_title(probe)
+        if not key or key in seen_title_keys:
+            continue
+        story["seo_title"] = title
+        story["title"] = title
+        seen_title_keys.add(key)
+        return True
+    return False
+
+
+def _inventory_reserve_story(
+    story: dict,
+    reject_reasons: list[str],
+    *,
+    seen_title_keys: set[str],
+    analytics_strategy: dict | None = None,
+) -> dict | None:
+    try:
+        scored = enriched_score(story, analytics_strategy=analytics_strategy)
+    except Exception:
+        return None
+    if scored.get("state") == "reject":
+        return None
+    reserve = dict(scored["story"])
+    reserve["publish_score"] = scored["publish_score"]
+    reserve["youtube_brain"] = scored["youtube_brain"]
+    reserve["packaging"] = scored["packaging"]
+    reserve["rights_audit"] = scored["rights_audit"]
+    reserve["editorial"] = scored.get("editorial") or {"approved": True, "state": "publish_now", "reasons": []}
+    reserve["queue_repair"] = scored.get("repair") or {"attempted": False, "applied": False, "reasons": []}
+    if not _apply_inventory_title_variant(reserve, seen_title_keys):
+        return None
+    reserve["queue_prune"] = {
+        "score": round(max(72.0, float(scored.get("score", 0) or 0)), 1),
+        "state": "rewrite",
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "template_cluster": title_template_cluster(str(reserve.get("seo_title") or reserve.get("title") or "")),
+        "mechanism_cluster": cognitive_mechanism_cluster(reserve),
+        "objective_reasons": [INVENTORY_RESERVE_FALLBACK]
+        + [f"inventory_reserve:{reason}" for reason in reject_reasons],
+    }
+    return reserve
+
+
+def _fill_inventory_reserve(
+    *,
+    pending_before: int,
+    kept: list[dict],
+    rejected: list[dict],
+    reasons: Counter,
+    max_pending: int,
+    analytics_strategy: dict | None = None,
+) -> set[str]:
+    inventory_floor = min(max_pending, MIN_ACTIVE_PENDING)
+    if pending_before < inventory_floor or len(kept) >= inventory_floor:
+        return set()
+    kept_ids = {str(story.get("id") or "") for story in kept}
+    seen_title_keys = published_title_keys() | {normalise_title(story) for story in kept if normalise_title(story)}
+    candidates: list[tuple[float, dict, list[str]]] = []
+    for item in rejected:
+        story = item.get("story") or {}
+        if not isinstance(story, dict):
+            continue
+        story_id = str(story.get("id") or "")
+        reject_reasons = [str(reason) for reason in (item.get("reasons") or [])]
+        if story_id in kept_ids or not _inventory_reserve_candidate(story, reject_reasons):
+            continue
+        candidates.append(
+            (
+                float((story.get("autonomy") or {}).get("priority", 0) or 0),
+                story,
+                reject_reasons,
+            )
+        )
+    candidates.sort(reverse=True, key=lambda row: row[0])
+    promoted_ids: set[str] = set()
+    for _priority, story, reject_reasons in candidates:
+        if len(kept) >= inventory_floor:
+            break
+        reserve = _inventory_reserve_story(
+            story,
+            reject_reasons,
+            seen_title_keys=seen_title_keys,
+            analytics_strategy=analytics_strategy,
+        )
+        if not reserve:
+            continue
+        story_id = str(reserve.get("id") or "")
+        if story_id in kept_ids:
+            continue
+        kept.append(reserve)
+        kept_ids.add(story_id)
+        promoted_ids.add(story_id)
+        reasons.update([INVENTORY_RESERVE_FALLBACK])
+    return promoted_ids
 
 
 def prune_queue(
@@ -992,6 +1154,39 @@ def prune_queue(
         for story in reserve_candidates[: max(0, PUBLISH_READY_RESERVE_TARGET - publish_ready_count)]:
             _apply_publish_ready_reserve_fallback(story)
             reasons.update([PUBLISH_READY_SUPPLY_RESERVE_FALLBACK])
+
+    inventory_promoted_ids = _fill_inventory_reserve(
+        pending_before=len(pending),
+        kept=kept,
+        rejected=rejected,
+        reasons=reasons,
+        max_pending=max_pending,
+        analytics_strategy=analytics_strategy,
+    )
+    if inventory_promoted_ids:
+        publish_ready_count = _operational_publish_ready_count(kept)
+        if publish_ready_count < PUBLISH_READY_RESERVE_TARGET:
+            inventory_cooldown_candidates = [
+                story
+                for story in kept
+                if str(story.get("id") or "") in inventory_promoted_ids and _editorial_cooldown_supply_candidate(story)
+            ]
+            inventory_cooldown_candidates.sort(
+                key=lambda story: (
+                    float((story.get("publish_score") or {}).get("score", 0) or 0),
+                    float((story.get("queue_prune") or {}).get("score", 0) or 0),
+                ),
+                reverse=True,
+            )
+            for story in inventory_cooldown_candidates[: max(0, PUBLISH_READY_RESERVE_TARGET - publish_ready_count)]:
+                _apply_editorial_cooldown_supply_fallback(story)
+                reasons.update([EDITORIAL_COOLDOWN_SUPPLY_FALLBACK])
+        rejected = [
+            item
+            for item in rejected
+            if str(((item.get("story") or {}) if isinstance(item, dict) else {}).get("id") or "")
+            not in inventory_promoted_ids
+        ]
 
     out = dict(queue)
     out["stories"] = consumed + kept

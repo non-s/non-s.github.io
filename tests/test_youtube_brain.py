@@ -114,6 +114,27 @@ def test_creator_premortem_treats_rely_as_visible_action():
     assert "no_action_promise" not in brain["risks"]
 
 
+def test_creator_premortem_accepts_space_action_verbs():
+    story = {
+        **_strong_story(),
+        "title": "The moon keeps one face turned toward Earth",
+        "seo_title": "The moon keeps one face turned toward Earth",
+        "hook": "The moon keeps one face turned toward Earth.",
+        "script": (
+            "The moon keeps one face turned toward Earth. Watch the locked orbit first, "
+            "because its spin and path around Earth stay synchronized."
+        ),
+        "thumbnail_text": "LOCKED FACE",
+        "category": "space",
+        "story_format": "space_engine",
+    }
+
+    brain = creator_premortem(story)
+
+    assert "action_driven_promise" in brain["strengths"]
+    assert "no_action_promise" not in brain["risks"]
+
+
 def test_creator_premortem_counts_alphanumeric_thumbnail_tokens():
     story = {
         **_strong_story(),

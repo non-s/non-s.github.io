@@ -106,6 +106,48 @@ def test_score_packaging_recognizes_science_subjects_and_non_animal_action_verbs
     assert "missing_action_word" not in score["risks"]
 
 
+def test_score_packaging_accepts_nature_reserve_action_verbs():
+    stories = [
+        _story(
+            title="Mushrooms release spores from hidden gills",
+            seo_title="Mushrooms release spores from hidden gills",
+            hook="Mushrooms release spores from hidden gills.",
+            script=(
+                "Mushrooms release spores from hidden gills. Watch under the cap first, "
+                "because that surface sends the next fungal generation into the air."
+            ),
+            thumbnail_text="SPORE GILLS",
+            category="fungi",
+        ),
+        _story(
+            title="Rivers sort mud and sand along each bank",
+            seo_title="Rivers sort mud and sand along each bank",
+            hook="Rivers sort sediment while they bend.",
+            script=(
+                "Rivers sort sediment while they bend. Watch the river bank first, "
+                "because slower water drops heavier grains along the edge."
+            ),
+            thumbnail_text="BANK SORTING",
+            category="rivers",
+        ),
+        _story(
+            title="The moon keeps one face turned toward Earth",
+            seo_title="The moon keeps one face turned toward Earth",
+            hook="The moon keeps one face turned toward Earth.",
+            script=(
+                "The moon keeps one face turned toward Earth. Watch the locked orbit first, "
+                "because its spin and path around Earth stay synchronized."
+            ),
+            thumbnail_text="LOCKED FACE",
+            category="space",
+        ),
+    ]
+
+    for story in stories:
+        score = score_packaging(story)
+        assert "missing_action_word" not in score["risks"]
+
+
 def test_score_packaging_accepts_behavior_verbs_outside_old_animal_template_set():
     score = score_packaging(
         _story(
@@ -297,6 +339,30 @@ def test_package_story_uses_nature_signal_language_for_forests():
     assert packaged["thumbnail_text"] == "COOL CANOPY"
     assert "another nature signal" in pinned_comment(packaged).lower()
     assert "one leaves" not in packaged["packaging"]["pinned_comment"].lower()
+
+
+def test_package_story_repairs_generic_frame_zero_copy():
+    packaged = package_story(
+        _story(
+            title="Forests detect changes with their pattern",
+            seo_title="Forests detect changes with their pattern",
+            hook="Forests detect changes with their pattern.",
+            script=(
+                "Forests detect changes with their pattern. Watch the pattern, because that detail "
+                "helps viewers understand what changes next."
+            ),
+            thumbnail_text="FORESTS PATTERN",
+            category="forests",
+            local_rewrite={"method": "deterministic_subject_fallback"},
+        )
+    )
+
+    assert packaged["title"] == "Forests make cooler air under the canopy"
+    assert packaged["hook"] == "Forests can cool the air below them."
+    assert packaged["thumbnail_text"] == "COOL CANOPY"
+    assert "detect changes with their pattern" not in packaged["script"].lower()
+    assert packaged["frame_zero_repair"]["method"] == "curiosity_angle_frame_zero_repair"
+    assert packaged["packaging"]["frame_zero"]["approved"] is True
 
 
 def test_package_story_uses_nature_signal_language_for_trees():
