@@ -11,19 +11,74 @@
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-06-28T16:03:17.987330+00:00",
+  "generated_at": "2026-06-28T16:12:13.607677+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.923,
-      "category": "discoveries",
+      "age_hours": 0.046,
+      "category": "rivers",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-06-28T16:07:54.436158+00:00",
+          "due_at": "2026-06-28T17:09:29.268170+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-28T22:09:29.268170+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-29T16:09:29.268170+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-28T17:09:29.268170+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "River bends sort sand from larger stones",
+      "uploaded_at": "2026-06-28T16:09:29.268170+00:00",
+      "url": "https://www.youtube.com/shorts/xfOfa8OLwNw",
+      "video_id": "xfOfa8OLwNw",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.072,
+      "category": "discoveries",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-06-28T16:07:54.436158+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-28T16:07:54.436158+00:00",
-        "label": "1h",
+        "due_at": "2026-06-28T21:07:54.436158+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Discovery Brief",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Fossils turn old bones into time clues",
       "uploaded_at": "2026-06-28T15:07:54.436158+00:00",
       "url": "https://www.youtube.com/shorts/WPRlhQVdM8k",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.985,
+      "age_hours": 2.134,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.997,
+      "age_hours": 3.146,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.892,
+      "age_hours": 4.041,
       "category": "weather",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.95,
+      "age_hours": 5.099,
       "category": "geology",
       "checkpoints": [
         {
@@ -289,16 +344,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.699,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 5.847,
       "category": "physics",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-28T11:21:22.964438+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -322,21 +377,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-06-28T16:21:22.964438+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-28T11:21:22.964438+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 105,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Nature Signals",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Magnets make invisible fields visible",
       "uploaded_at": "2026-06-28T10:21:22.964438+00:00",
       "url": "https://www.youtube.com/shorts/P7yqlO8WTgQ",
@@ -345,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.531,
+      "age_hours": 6.68,
       "category": "trees",
       "checkpoints": [
         {
@@ -400,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.509,
+      "age_hours": 7.658,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -455,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.759,
+      "age_hours": 8.908,
       "category": "fungi",
       "checkpoints": [
         {
@@ -506,61 +561,6 @@
       "uploaded_at": "2026-06-28T07:17:46.086561+00:00",
       "url": "https://www.youtube.com/shorts/nwCMaiPdC20",
       "video_id": "nwCMaiPdC20",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.6,
-      "category": "dogs",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-28T04:27:16.222029+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-28T09:27:16.222029+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-06-29T03:27:16.222029+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-28T04:27:16.222029+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 0.0,
-      "opening_retention_state": "unknown",
-      "priority": "high",
-      "series": "Pet Secrets",
-      "state": "analytics_due",
-      "title": "Dogs detect changes with their nose",
-      "uploaded_at": "2026-06-28T03:27:16.222029+00:00",
-      "url": "https://www.youtube.com/shorts/RcB6Ec_j3E4",
-      "video_id": "RcB6Ec_j3E4",
       "views_per_hour": 0.0
     }
   ],
