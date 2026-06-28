@@ -510,6 +510,35 @@ def test_package_story_replaces_stale_animal_series_for_weather():
     assert "another nature signal" in packaged["pinned_comment"].lower()
 
 
+def test_package_story_preserves_success_recovery_format_and_copy():
+    packaged = package_story(
+        _story(
+            title="Forests cool the ground through canopy shade",
+            seo_title="Forests cool the ground through canopy shade",
+            hook="Forests cool the ground with canopy shade.",
+            script=(
+                "Forests cool the ground with canopy shade. Watch the canopy shade first, "
+                "because leaves block direct sun and hold moisture near the soil."
+            ),
+            thumbnail_text="COOL CANOPY",
+            category="forests",
+            story_format="earth_engine",
+            success_recovery={
+                "category": "forests",
+                "visible": "canopy shade",
+                "format": "body_superpower",
+                "hook_style": "outcome_first",
+            },
+            experiments={"hook_style": "outcome_first"},
+        )
+    )
+
+    assert packaged["story_format"] == "body_superpower"
+    assert packaged["seo_title"] == "Forests cool the ground through canopy shade"
+    assert packaged["hook"] == "Forests cool the ground with canopy shade."
+    assert packaged["thumbnail_text"] == "COOL CANOPY"
+
+
 def test_package_story_adds_comment_and_community_hook():
     packaged = package_story(_story(thumbnail_text=""))
 

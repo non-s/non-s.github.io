@@ -983,11 +983,17 @@ def package_story(story: dict) -> dict:
         out["category"] = normalized_category
     out = apply_frame_zero_repair(out)
     current_format = str(out.get("story_format") or "").strip()
+    recovery_format = str((out.get("success_recovery") or {}).get("format") or "").strip()
+    preserve_recovery_format = bool(out.get("success_recovery"))
     inferred_format = classify_format(
         " ".join(str(out.get(k) or "") for k in ("seo_title", "title", "hook", "script")),
         category=str(out.get("category") or ""),
     )
-    if not current_format or (_uses_nature_signal(out) and current_format in ANIMAL_FORMAT_NAMES):
+    if recovery_format:
+        out["story_format"] = recovery_format
+    elif not current_format or (
+        _uses_nature_signal(out) and current_format in ANIMAL_FORMAT_NAMES and not preserve_recovery_format
+    ):
         out["story_format"] = inferred_format
     local_rewrite_method = str((out.get("local_rewrite") or {}).get("method") or "")
     preserve_source_packaging = (
@@ -996,6 +1002,7 @@ def package_story(story: dict) -> dict:
         or str(out.get("production_mode") or "").strip().lower() == "remake_factory"
         or str(out.get("source") or "").strip().lower() == "remake factory"
         or bool(out.get("frame_zero_repair"))
+        or bool(out.get("success_recovery"))
         or local_rewrite_method
         in {
             "contextual_duplicate_title_rescue",

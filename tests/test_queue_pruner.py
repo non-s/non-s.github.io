@@ -826,6 +826,68 @@ def test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty(monk
     assert rejected == []
 
 
+def test_prune_queue_promotes_clean_success_recovery_reserve_at_lower_floor(monkeypatch):
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 91,
+            "state": "rewrite",
+            "publish_score": {
+                "approved": False,
+                "state": "rewrite",
+                "score": 91,
+                "opportunity": {"reasons": ["weak_replay_reason"]},
+                "weak_content": {"state": "clear"},
+                "phrase_risk": {"hits": []},
+                "editorial_guard": {"approved": True},
+                "objective_gate": {
+                    "reasons": [],
+                    "scale_ready": False,
+                    "publish_blocking": False,
+                },
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": []},
+            "packaging": {"state": "magnetic", "risks": []},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {
+        "stories": [
+            _story(
+                "success-recovery",
+                title="Forests trap cool air below thick leaves",
+                seo_title="Forests trap cool air below thick leaves",
+                hook="Forests trap cool air below thick leaves.",
+                thumbnail_text="COOL CANOPY",
+                script=(
+                    "Forests trap cool air below thick leaves. Watch the shadow line first, "
+                    "because shade holds soil moisture near the ground."
+                ),
+                category="forests",
+                story_format="body_superpower",
+                success_recovery={"format": "body_superpower", "hook_style": "outcome_first"},
+            )
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    story = pruned["stories"][0]
+    assert story["queue_prune"]["state"] == "publish_ready"
+    assert story["publish_score"]["state"] == "publish_ready"
+    assert story["publish_score"]["reserve_override"]["reason"] == "publish_ready_supply_reserve_fallback"
+    assert summary["reasons"]["publish_ready_supply_reserve_fallback"] == 1
+    assert rejected == []
+
+
 def test_prune_queue_fills_v1_publish_ready_reserve_target(monkeypatch):
     def fake_quality_issues(*args, **kwargs):
         return []
@@ -958,14 +1020,8 @@ def test_prune_queue_uses_inventory_reserve_for_soft_duplicates(monkeypatch):
     monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
     monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
     queue = {
-        "stories": [
-            _story(str(idx), title=f"Clean story {idx}", seo_title=f"Clean story {idx}")
-            for idx in range(18)
-        ]
-        + [
-            _story(f"dup-{idx}", title="Clean story 0", seo_title="Clean story 0")
-            for idx in range(4)
-        ]
+        "stories": [_story(str(idx), title=f"Clean story {idx}", seo_title=f"Clean story {idx}") for idx in range(18)]
+        + [_story(f"dup-{idx}", title="Clean story 0", seo_title="Clean story 0") for idx in range(4)]
     }
 
     pruned, rejected, summary = prune_queue(queue)

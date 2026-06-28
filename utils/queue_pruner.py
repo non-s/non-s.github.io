@@ -52,6 +52,7 @@ RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = set()
 RESERVE_ALLOWED_BRAIN_RISKS: set[str] = set()
 RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_replay_reason", "weak_visual_surface"}
 RESERVE_MIN_PUBLISH_SCORE = 95.0
+SUCCESS_RECOVERY_RESERVE_MIN_PUBLISH_SCORE = 90.0
 RESERVE_MIN_QUEUE_SCORE = 76.0
 AGENCY_GATE_FILE = Path("_data/agency_gate.json")
 HARD_QUALITY_ISSUES = {
@@ -365,13 +366,21 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         publish_risks.append("repetitive_title_template")
     if not editorial.get("approved", True):
         publish_risks.extend(str(issue) for issue in editorial.get("issues") or [])
+    preserve_success_recovery = (
+        bool(packaged.get("success_recovery"))
+        and set(publish_risks) <= {"publish_score_rewrite"}
+        and not brain_risks
+        and pkg.get("state") != "rewrite_packaging"
+        and not packaging_risks
+        and editorial.get("approved", True)
+    )
     if (
         brain.get("state") in {"rewrite_before_publish", "do_not_publish"}
         or brain_risks
         or pkg.get("state") == "rewrite_packaging"
         or packaging_risks
         or publish_risks
-    ):
+    ) and not preserve_success_recovery:
         repair_reasons = list(dict.fromkeys(brain_risks + packaging_risks + publish_risks))
         rescued, applied = rescue_story(packaged, repair_reasons)
         if applied:
@@ -434,6 +443,21 @@ def enriched_score(story: dict, analytics_strategy: dict | None = None) -> dict:
         state = "reject"
     elif not publish.get("approved") or publish.get("state") != "publish_ready" or penalty or total < 72:
         state = "rewrite"
+    if (
+        state == "reject"
+        and packaged.get("success_recovery")
+        and publish.get("approved") is True
+        and publish.get("state") == "publish_ready"
+        and rights.get("approved") is True
+        and not rights.get("warnings")
+        and not brain_risks
+        and pkg.get("state") != "rewrite_packaging"
+        and not packaging_risks
+        and editor.state == "cooldown_subject"
+        and float(editor.score or 0) >= 68.0
+    ):
+        state = "rewrite"
+        total = max(total, RESERVE_MIN_QUEUE_SCORE)
     return {
         "story": packaged,
         "score": round(total, 1),
@@ -496,7 +520,8 @@ def _editorial_cooldown_supply_candidate(story: dict) -> bool:
         return False
     if editorial.get("state") != "cooldown_subject":
         return False
-    if float(editorial.get("score", 0) or 0) < 70:
+    min_editorial_score = 68.0 if story.get("success_recovery") else 70.0
+    if float(editorial.get("score", 0) or 0) < min_editorial_score:
         return False
     editorial_reasons = {str(reason) for reason in (editorial.get("reasons") or [])}
     if any("below" in reason.lower() for reason in editorial_reasons):
@@ -510,7 +535,11 @@ def _editorial_cooldown_supply_candidate(story: dict) -> bool:
         INVENTORY_RESERVE_FALLBACK,
         "inventory_reserve:duplicate_title",
     }
-    objective_observe_only = objective_gate_reasons == {"objective_gate:observe_before_scaling"}
+    allowed_observe_gates = {
+        "objective_gate:observe_before_scaling",
+        "objective_gate:bootstrap_observe_before_scaling",
+    }
+    objective_observe_only = bool(objective_gate_reasons) and objective_gate_reasons <= allowed_observe_gates
     objective_clear = (
         (not objective_gate_reasons or inventory_reserve_only)
         and not gate_reasons
@@ -563,7 +592,10 @@ def _publish_ready_reserve_candidate(story: dict) -> bool:
     publish_rewrite = publish.get("state") == "rewrite" and publish.get("approved") is not True
     if not (publish_ready or publish_rewrite):
         return False
-    if float(publish.get("score", 0) or 0) < RESERVE_MIN_PUBLISH_SCORE:
+    min_publish_score = (
+        SUCCESS_RECOVERY_RESERVE_MIN_PUBLISH_SCORE if story.get("success_recovery") else RESERVE_MIN_PUBLISH_SCORE
+    )
+    if float(publish.get("score", 0) or 0) < min_publish_score:
         return False
     if publish_rewrite:
         opportunity_reasons = {str(reason) for reason in ((publish.get("opportunity") or {}).get("reasons") or [])}

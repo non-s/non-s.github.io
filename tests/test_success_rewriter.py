@@ -1,5 +1,6 @@
 from utils.agency_gate import success_allows
-from utils.success_rewriter import rewrite_queue, rewrite_story, _word_count
+from utils.editorial_guard import editorial_issues
+from utils.success_rewriter import _word_count, rewrite_queue, rewrite_story
 
 
 def _story(**extra):
@@ -58,3 +59,58 @@ def test_rewrite_queue_repairs_gate_verdict_without_external_rewrite_id():
 
     assert len(changed) == 1
     assert _word_count(updated["stories"][0]["script"]) <= 105
+
+
+def test_success_rewriter_repairs_recovery_format_and_hook_gate():
+    story = _story(
+        category="forests",
+        seo_title="Forests use cool canopy before they cover",
+        title="Forests use cool canopy before they cover",
+        hook="Why does the canopy matter?",
+        script="Why does the canopy matter? Forests cover the ground with shade before heat builds.",
+        thumbnail_text="CANOPY",
+        story_format="earth_engine",
+        experiments={},
+    )
+    plan = {"retention": {"recovery_categories": [{"category": "forests"}]}}
+    before_ok, before_reasons = success_allows(story, plan)
+
+    updated, changed = rewrite_story(story, ["success_recovery_format_required", "success_recovery_hook_required"])
+    after_ok, after_reasons = success_allows(updated, plan)
+
+    assert not before_ok
+    assert "success_recovery_format_required" in before_reasons
+    assert "success_recovery_hook_required" in before_reasons
+    assert changed
+    assert after_ok, after_reasons
+    assert updated["title"] == updated["seo_title"]
+    assert updated["story_format"] == "body_superpower"
+    assert updated["experiments"]["hook_style"] == "outcome_first"
+    assert _word_count(updated["script"]) <= 95
+    assert updated["success_recovery"]["visible"] in {"shadow line", "leaf shade", "canopy layers"}
+    assert editorial_issues(updated) == []
+
+
+def test_rewrite_queue_repairs_success_recovery_gate_without_external_rewrite_id():
+    queue = {
+        "stories": [
+            _story(
+                category="plants",
+                seo_title="Plants turn light into food",
+                title="Plants turn light into food",
+                story_format="plant_mechanism",
+                experiments={},
+            )
+        ]
+    }
+
+    updated, changed = rewrite_queue(
+        queue,
+        set(),
+        {"a": ["success_recovery_format_required", "success_recovery_hook_required"]},
+    )
+
+    assert len(changed) == 1
+    story = updated["stories"][0]
+    assert story["story_format"] == "body_superpower"
+    assert story["experiments"]["hook_style"] == "outcome_first"

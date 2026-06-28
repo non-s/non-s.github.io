@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Repair queue stories held by the channel success gate."""
+
 from __future__ import annotations
 
 import json
@@ -12,14 +13,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.agency_gate import (
+from utils.agency_gate import (  # noqa: E402
     evaluate_story,
     load_duplicate_ids,
     load_recovery_plans,
     load_rewrite_ids,
     load_success_plan,
 )
-from utils.success_rewriter import evaluate_pending, rewrite_queue
+from utils.queue_readiness import build_readiness_payload  # noqa: E402
+from utils.success_rewriter import evaluate_pending, rewrite_queue  # noqa: E402
 
 QUEUE = ROOT / "_data" / "stories_queue.json"
 OUT = ROOT / "_data" / "success_rewriter.json"
@@ -47,6 +49,16 @@ def _count_held(
     return held, reasons
 
 
+def _readiness(queue: dict) -> dict:
+    return build_readiness_payload(
+        queue,
+        root=ROOT,
+        refresh_agency=True,
+        queue_path=QUEUE,
+        include_quality_gate=True,
+    )
+
+
 def main() -> int:
     queue = _load_queue()
     rewrite_ids = load_rewrite_ids(ROOT / "_data" / "retention_rewrite_queue.json")
@@ -54,6 +66,7 @@ def main() -> int:
     success_plan = load_success_plan(ROOT / "_data" / "channel_success.json")
     duplicate_ids = load_duplicate_ids(QUEUE)
     before_held, before_reasons = _count_held(queue, rewrite_ids, recovery, duplicate_ids, success_plan)
+    before_readiness = _readiness(queue)
     verdicts = evaluate_pending(queue, rewrite_ids, recovery, duplicate_ids, success_plan)
     updated, changed = rewrite_queue(queue, set(verdicts), verdicts, limit=250)
     if changed:
@@ -61,11 +74,16 @@ def main() -> int:
     duplicate_after = load_duplicate_ids(QUEUE)
     final_queue = _load_queue()
     after_held, after_reasons = _count_held(final_queue, rewrite_ids, recovery, duplicate_after, success_plan)
+    after_readiness = _readiness(final_queue)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "before_held": before_held,
         "after_held": after_held,
         "rewritten": len(changed),
+        "publish_ready_before": int(before_readiness.get("publish_ready", 0) or 0),
+        "publish_ready_after": int(after_readiness.get("publish_ready", 0) or 0),
+        "publish_eligible_before": int(before_readiness.get("publish_eligible", 0) or 0),
+        "publish_eligible_after": int(after_readiness.get("publish_eligible", 0) or 0),
         "before_reasons": dict(before_reasons.most_common()),
         "after_reasons": dict(after_reasons.most_common()),
         "items": changed[:100],

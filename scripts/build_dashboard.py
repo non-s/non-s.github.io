@@ -1710,6 +1710,11 @@ def render_html() -> str:
         out.append(
             f"<div><small>Held after</small><div class='metric'>{int(success_rewriter.get('after_held', 0) or 0)}</div></div>"
         )
+        out.append(
+            f"<div><small>Ready lift</small><div class='metric'>"
+            f"{int(success_rewriter.get('publish_ready_before', 0) or 0)}"
+            f"->{int(success_rewriter.get('publish_ready_after', 0) or 0)}</div></div>"
+        )
         out.append("</section>")
         before_reasons = success_rewriter.get("before_reasons") or {}
         after_reasons = success_rewriter.get("after_reasons") or {}
