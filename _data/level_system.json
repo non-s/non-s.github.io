@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T15:40:55.742427+00:00",
+  "generated_at": "2026-06-28T16:00:26.055070+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 40.8,
@@ -32,18 +32,18 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 17,
+          "count": 19,
           "operator_translation": "rewrite the held candidate until queue prune clears"
+        },
+        {
+          "id": "editor_in_chief:cooldown_subject",
+          "count": 11,
+          "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
           "count": 10,
           "operator_translation": "collect more observed signal before scaling this pattern"
-        },
-        {
-          "id": "editor_in_chief:cooldown_subject",
-          "count": 9,
-          "operator_translation": "pick a fresh subject inside the same lane"
         }
       ]
     }
@@ -90,7 +90,7 @@
     "health_state": "excellent",
     "pending": 26,
     "operational_publish_ready": 6,
-    "apparent_publish_ready": 9,
+    "apparent_publish_ready": 7,
     "eligible_count": 6,
     "scale_ready_count": 1,
     "next_shorts_count": 6,
@@ -119,18 +119,18 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 17,
+      "count": 19,
       "operator_translation": "rewrite the held candidate until queue prune clears"
+    },
+    {
+      "id": "editor_in_chief:cooldown_subject",
+      "count": 11,
+      "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
       "count": 10,
       "operator_translation": "collect more observed signal before scaling this pattern"
-    },
-    {
-      "id": "editor_in_chief:cooldown_subject",
-      "count": 9,
-      "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "publish_score:rewrite",
@@ -143,29 +143,29 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "observe_before_scaling",
-      "count": 5,
-      "operator_translation": "observe before scaling"
-    },
-    {
       "id": "editor_in_chief:script quality gate blocked the narration",
       "count": 4,
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 4,
-      "operator_translation": "editorial cooldown supply fallback"
-    },
-    {
-      "id": "ops_guardian_paused_category:rivers",
+      "id": "observe_before_scaling",
       "count": 3,
-      "operator_translation": "ops guardian paused category:rivers"
+      "operator_translation": "observe before scaling"
     },
     {
       "id": "publish_blocklist:monetization audit needs review",
       "count": 2,
       "operator_translation": "clear the monetization review note before publishing"
+    },
+    {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 2,
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "editor_in_chief:editorial score 49 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
