@@ -1022,6 +1022,224 @@ def _variation_key(*parts: object) -> str:
     return hashlib.sha256(material.encode("utf-8")).hexdigest()[:12]
 
 
+DETERMINISTIC_COPY_METHOD = "deterministic_subject_fallback"
+
+_IRREGULAR_PLURALS = {
+    "deer": "Deer",
+    "fish": "Fish",
+    "jellyfish": "Jellyfish",
+    "sheep": "Sheep",
+}
+
+_ANIMAL_FALLBACK_CUES = {
+    "bird": "wing",
+    "cat": "whiskers",
+    "chameleon": "eyes",
+    "dog": "nose",
+    "dolphin": "fin",
+    "fish": "gills",
+    "fox": "ears",
+    "jellyfish": "current",
+    "octopus": "arms",
+    "owl": "feathers",
+    "seal": "flippers",
+    "shark": "fin",
+    "snake": "tongue",
+    "turtle": "flippers",
+    "whale": "fin",
+}
+
+_CATEGORY_FALLBACKS = {
+    "earth_from_space": {
+        "title": "Earth clouds reveal moving air from above",
+        "hook": "Earth clouds reveal moving air from above.",
+        "body": (
+            "Watch the cloud pattern first because rising air cools into visible shapes. "
+            "From above, those shapes expose wind lanes, storm edges, and moisture flow "
+            "that the ground view hides. Which sky clue should we decode next?"
+        ),
+        "thumb": "CLOUD MAP",
+        "tags": ["earth", "clouds", "weather", "science", "nature facts"],
+    },
+    "forests": {
+        "title": "Forests hold cool air under the canopy",
+        "hook": "Forests hold cool air under the canopy.",
+        "body": (
+            "Watch the canopy first because leaves block direct sun and release water vapor. "
+            "That shade and moisture slow the heat before it reaches the ground. "
+            "Which forest layer should we decode next?"
+        ),
+        "thumb": "COOL CANOPY",
+        "tags": ["forests", "canopy", "trees", "science", "nature facts"],
+    },
+    "fungi": {
+        "title": "Mushrooms release spores from the cap",
+        "hook": "Mushrooms release spores from the cap.",
+        "body": (
+            "Watch the cap first because tiny spores fall from hidden gills underneath. "
+            "Air movement carries them away before the next colony starts. "
+            "The still mushroom is actually sending life outward. Which fungi clue should we decode next?"
+        ),
+        "thumb": "SPORE CLOUD",
+        "tags": ["mushrooms", "spores", "fungi", "science", "nature facts"],
+    },
+    "geology": {
+        "title": "Rock layers store old environments in stripes",
+        "hook": "Rock layers store old environments in stripes.",
+        "body": (
+            "Watch the stripe pattern first because each layer can mark mud, sand, ash, or ocean floor. "
+            "Stack enough layers and the cliff turns into a timeline. "
+            "Which rock clue should we decode next?"
+        ),
+        "thumb": "ROCK TIMELINE",
+        "tags": ["rocks", "geology", "layers", "science", "nature facts"],
+    },
+    "plants": {
+        "title": "Plants track light through their leaves",
+        "hook": "Plants track light through their leaves.",
+        "body": (
+            "Watch the leaves first because their angle changes how much light reaches each surface. "
+            "That tiny adjustment helps the plant feed without wasting water. "
+            "Which plant clue should we decode next?"
+        ),
+        "thumb": "LEAF ANGLE",
+        "tags": ["plants", "leaves", "growth", "science", "nature facts"],
+    },
+    "rivers": {
+        "title": "Rivers sort sand along every bend",
+        "hook": "Rivers sort sand along every bend.",
+        "body": (
+            "Watch the bank first because fast water carries grains while slower water drops them. "
+            "That sorting builds bars, islands, and new channels over time. "
+            "Which river clue should we decode next?"
+        ),
+        "thumb": "RIVER SORTING",
+        "tags": ["rivers", "sediment", "water", "science", "nature facts"],
+    },
+    "weather": {
+        "title": "Storm clouds reveal rising air engines",
+        "hook": "Storm clouds reveal rising air engines.",
+        "body": (
+            "Watch the cloud edge first because warm air lifts moisture until it cools into shape. "
+            "The tallest edge marks the engine feeding the storm. "
+            "Which cloud clue should we decode next?"
+        ),
+        "thumb": "STORM ENGINE",
+        "tags": ["clouds", "weather", "storm", "science", "nature facts"],
+    },
+}
+
+
+def _title_label(term: str) -> str:
+    term = str(term or "").strip().lower()
+    if not term:
+        return "Nature"
+    if term in _IRREGULAR_PLURALS:
+        return _IRREGULAR_PLURALS[term]
+    if term.endswith("s"):
+        return term[:1].upper() + term[1:]
+    return (term + "s")[:1].upper() + (term + "s")[1:]
+
+
+def _fallback_subject(subject: str, topic_key: str) -> tuple[str, str, str]:
+    strict = sorted(_strict_animal_terms(subject))
+    if strict:
+        term = strict[0]
+        return term, _title_label(term), _ANIMAL_FALLBACK_CUES.get(term, "eyes")
+    visible = sorted(_animal_terms(subject))
+    if visible:
+        term = visible[0]
+        return term, _title_label(term), _ANIMAL_FALLBACK_CUES.get(term, "pattern")
+    topic = str(topic_key or "nature").replace("_", " ").strip().lower()
+    term = topic.split()[0] if topic else "nature"
+    return term, _title_label(term), "pattern"
+
+
+def _clean_fallback_tags(raw_tags: list[str], term: str, cue: str, topic_key: str) -> list[str]:
+    tags = [term, cue, topic_key.replace("_", " "), *raw_tags, "science", "nature facts"]
+    out: list[str] = []
+    for tag in tags:
+        cleaned = re.sub(r"[^a-z0-9 ]+", "", str(tag or "").lower()).strip()
+        if cleaned and cleaned not in out and 2 <= len(cleaned) <= 30:
+            out.append(cleaned)
+        if len(out) >= 5:
+            break
+    return out
+
+
+def _deterministic_enhance_animal(
+    subject: str,
+    topic_key: str,
+    topic_cfg: dict,
+    trend_context: dict | None = None,
+    *,
+    variation_material: str = "",
+) -> dict | None:
+    """Create a safe local copy package when AI hides the visible subject."""
+    trend_context = trend_context or {}
+    topic_key = str(topic_key or "nature")
+    topic_hashtag = re.sub(r"[^A-Za-z0-9]", "", str(topic_cfg.get("topic_hashtag") or "Nature")) or "Nature"
+    term, label, cue = _fallback_subject(subject, topic_key)
+    category_fallback = _CATEGORY_FALLBACKS.get(topic_key)
+    if category_fallback and not _strict_animal_terms(subject):
+        title = category_fallback["title"]
+        hook = category_fallback["hook"]
+        body = category_fallback["body"]
+        thumb = category_fallback["thumb"]
+        tags = _clean_fallback_tags(list(category_fallback.get("tags") or []), term, cue, topic_key)
+    else:
+        title = f"{label} detect changes with their {cue}"
+        hook = f"{label} detect changes with their {cue}."
+        singular = term if term in _IRREGULAR_PLURALS else term.rstrip("s")
+        body = (
+            f"Watch the {cue} first because that small signal shows where attention shifts "
+            f"before the body commits. The clip looks simple, but timing turns it into survival "
+            f"information. Which {singular} clue should we decode next?"
+        )
+        thumb = f"{cue} signal".upper()[:30]
+        tags = _clean_fallback_tags([], term, cue, topic_key)
+    script = f"{hook} {body}"
+    data = {
+        "score": 7,
+        "seo_title": title[:60],
+        "yt_tags": tags,
+        "topic_hashtag": topic_hashtag,
+        "thumbnail_text": thumb[:30],
+        "hook": hook,
+        "script": script,
+        "sentiment": "positive",
+    }
+    data = _validate_and_repair_json(data, subject)
+    if not data:
+        return None
+    out = {
+        "score": int(data.get("score", 7) or 7),
+        "seo_title": str(data["seo_title"])[:60],
+        "yt_tags": tags,
+        "geo_hashtag": "Global",
+        "topic_hashtag": topic_hashtag,
+        "yt_description": "",
+        "thumbnail_text": str(data["thumbnail_text"]).strip()[:30],
+        "hook": str(data["hook"]).strip()[:140],
+        "script": str(data["script"]).strip()[:900],
+        "lead": str(data["script"])[:400],
+        "sentiment": "positive",
+        "growth_studio": {},
+        "narrative_template": {},
+        "production_mode": DETERMINISTIC_COPY_METHOD,
+        "trend_context": trend_context,
+        "generation_method": DETERMINISTIC_COPY_METHOD,
+        "local_rewrite": {
+            "method": DETERMINISTIC_COPY_METHOD,
+            "reason": "ai_copy_failed_visible_subject_contract",
+            "variation_key": _variation_key(subject, topic_key, variation_material),
+        },
+    }
+    if not _copy_matches_visible_subject(subject, out["seo_title"], out["hook"], out["script"]):
+        return None
+    return out
+
+
 def _ai_enhance_animal(
     subject: str,
     context: str,
@@ -1537,6 +1755,9 @@ def _build_story(
         "lead": ai_out["lead"],
         "sentiment": ai_out["sentiment"],
         "trend_context": dict(ai_out.get("trend_context") or {}),
+        "generation_method": ai_out.get("generation_method", "ai_enhanced"),
+        "production_mode": ai_out.get("production_mode", ""),
+        "local_rewrite": dict(ai_out.get("local_rewrite") or {}),
         # YouTube Shorts discovery hashtags.
         # Carried on the queue so generate_shorts can drop them into the
         # caption without reaching back into ANIMAL_TOPICS.
@@ -1839,9 +2060,18 @@ def main() -> int:
 
     log.info("Video provider: Pexels-only curated footage")
     ai_keys = ("MISTRAL_API_KEY", "CEREBRAS_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY")
-    if not any(os.environ.get(key, "").strip() for key in ai_keys):
+    ai_available = any(os.environ.get(key, "").strip() for key in ai_keys)
+    deterministic_fallback_enabled = str(os.environ.get("DETERMINISTIC_COPY_FALLBACK", "1")).strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+    if not ai_available and not deterministic_fallback_enabled:
         log.error("❌ No AI provider key set — configure MISTRAL, CEREBRAS, GEMINI or GROQ.")
         return 2
+    if not ai_available:
+        log.warning("No AI provider key set; using deterministic visible-subject copy fallback.")
 
     queue = _load_queue()
     pending_at_start = _pending_count(queue)
@@ -1981,13 +2211,29 @@ def main() -> int:
             taxonomy = taxonomy_prompt(enrichment)
             if taxonomy:
                 context = f"{context}. {taxonomy}"
-            ai_out = _ai_enhance_animal(
-                subject,
-                context,
-                trend_context_for_category(story_topic_key, trends),
-                variation_material=clip.url or clip.download_url or _source_clip_id(clip),
-                strict_expected=(story_topic_key in PUBLISH_READY_RECOVERY_TOPICS),
+            trend_context = trend_context_for_category(story_topic_key, trends)
+            variation_material = clip.url or clip.download_url or _source_clip_id(clip)
+            ai_out = (
+                _ai_enhance_animal(
+                    subject,
+                    context,
+                    trend_context,
+                    variation_material=variation_material,
+                    strict_expected=(story_topic_key in PUBLISH_READY_RECOVERY_TOPICS),
+                )
+                if ai_available
+                else None
             )
+            if not ai_out and deterministic_fallback_enabled:
+                ai_out = _deterministic_enhance_animal(
+                    subject,
+                    story_topic_key,
+                    story_topic_cfg,
+                    trend_context,
+                    variation_material=variation_material,
+                )
+                if ai_out:
+                    log.info("  deterministic copy fallback used for %s", subject[:80])
             if not ai_out:
                 log.debug("  AI enrichment failed for %s", subject[:60])
                 continue

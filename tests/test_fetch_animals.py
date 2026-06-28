@@ -125,6 +125,71 @@ def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
     assert isinstance(seen["seed"], int)
 
 
+def test_deterministic_fallback_keeps_visible_subject_contract():
+    out = fetch_animals._deterministic_enhance_animal(
+        "sea turtle over coral reef",
+        "ocean",
+        fetch_animals.ANIMAL_TOPICS["ocean"],
+        variation_material="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+    )
+
+    assert out is not None
+    assert out["generation_method"] == fetch_animals.DETERMINISTIC_COPY_METHOD
+    assert out["local_rewrite"]["method"] == fetch_animals.DETERMINISTIC_COPY_METHOD
+    assert 35 <= len(out["script"].split()) <= 55
+    assert fetch_animals._copy_matches_visible_subject(
+        "sea turtle over coral reef",
+        out["seo_title"],
+        out["hook"],
+        out["script"],
+        strict_expected=True,
+    )
+
+
+def test_build_story_carries_deterministic_fallback_metadata():
+    out = fetch_animals._deterministic_enhance_animal(
+        "river bend with sand bank",
+        "rivers",
+        fetch_animals.ANIMAL_TOPICS["rivers"],
+        variation_material="https://www.pexels.com/video/river-bend-12345/",
+    )
+
+    story = fetch_animals._build_story(
+        "river bend with sand bank",
+        "rivers",
+        fetch_animals.ANIMAL_TOPICS["rivers"],
+        _clip(url="https://www.pexels.com/video/river-bend-12345/"),
+        out,
+    )
+
+    assert story["generation_method"] == fetch_animals.DETERMINISTIC_COPY_METHOD
+    assert story["production_mode"] == fetch_animals.DETERMINISTIC_COPY_METHOD
+    assert story["local_rewrite"]["method"] == fetch_animals.DETERMINISTIC_COPY_METHOD
+
+
+def test_packaging_preserves_deterministic_fallback_copy():
+    from utils.packaging import package_story
+
+    out = fetch_animals._deterministic_enhance_animal(
+        "sea turtle over coral reef",
+        "ocean",
+        fetch_animals.ANIMAL_TOPICS["ocean"],
+        variation_material="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/",
+    )
+    story = fetch_animals._build_story(
+        "sea turtle over coral reef",
+        "ocean",
+        fetch_animals.ANIMAL_TOPICS["ocean"],
+        _clip(url="https://www.pexels.com/video/sea-turtle-over-coral-reef-12345/"),
+        out,
+    )
+    packaged = package_story(story)
+
+    assert packaged["seo_title"] == out["seo_title"]
+    assert packaged["hook"] == out["hook"]
+    assert packaged["packaging"]["state"] == "magnetic"
+
+
 def test_ai_enhance_returns_none_on_empty_response(monkeypatch):
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: "")
     assert fetch_animals._ai_enhance_animal("cat", "a cat clip") is None
@@ -1162,5 +1227,4 @@ def test_validate_and_repair_json_word_count_limits():
         "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart? Some researchers believe they do because their brain structure supports long term memory, which is quite fascinating to think about. That is why they are so smart, and we should protect them.",
     }
     assert fetch_animals._validate_and_repair_json(over_limit_major, "dolphin") is None
-
 

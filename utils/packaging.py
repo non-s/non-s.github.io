@@ -893,6 +893,7 @@ def package_story(story: dict) -> dict:
             "curiosity_angle_rescue",
             "curiosity_angle_duplicate_title_rescue",
             "curiosity_angle_collision_rescue",
+            "deterministic_subject_fallback",
         }
     )
     angle_package = build_curiosity_package(out, subject=extract_subject(out))
