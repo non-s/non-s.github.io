@@ -622,6 +622,9 @@ def test_sequence_plan_generates_three_variants_per_winner():
         "same_animal_new_behavior",
         "same_topic_stronger_hook",
     }
+    assert len({item["id"] for item in plan["variants"]}) == 3
+    assert len({item["title"] for item in plan["variants"]}) == 3
+    assert all(item.get("sequence_brief", {}).get("free_only") is True for item in plan["variants"])
 
 
 def test_sequence_plan_skips_malformed_winner_titles():
