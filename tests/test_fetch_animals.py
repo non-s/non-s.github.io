@@ -446,9 +446,25 @@ def test_topic_rejects_human_or_urban_dominated_science_visuals():
         fetch_animals.ANIMAL_TOPICS["earth_from_space"],
         "hurricane from space: a city at night from an airplane",
     )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["chemistry"],
+        "a scientist doing an experiment",
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["geology"],
+        "mineral close up: pouring sunflower seeds on wooden table",
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["conservation"],
+        "reforestation: a couple of farmers harvesting crops by hand",
+    )
     assert fetch_animals._topic_accepts_subject(
         fetch_animals.ANIMAL_TOPICS["reptiles"],
         "woman holding a snake with strength",
+    )
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["wildlife"],
+        "female elephant crossing a road",
     )
 
 

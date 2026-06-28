@@ -745,18 +745,28 @@ _NATURE_SUBJECT_TOPIC_OVERRIDES = {
 }
 _HUMAN_VISUAL_TERMS = {
     "baby",
+    "botanist",
     "boy",
     "child",
     "children",
+    "couple",
+    "farmer",
+    "farmers",
+    "female",
     "girl",
     "human",
     "kid",
     "kids",
+    "male",
     "man",
     "people",
     "person",
+    "scientist",
+    "scientists",
     "toddler",
     "woman",
+    "worker",
+    "workers",
 }
 _PROP_VISUAL_TERMS = {
     "cartoon",
@@ -814,9 +824,11 @@ _NON_NATURE_SCENE_TERMS = {
     "sport",
     "sports",
     "street",
+    "table",
     "traffic",
     "truck",
     "urban",
+    "wooden",
 }
 _BLOCKED_COMMONS_TERMS = ("na" + "sa",)
 
