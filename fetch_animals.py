@@ -1049,6 +1049,299 @@ _ANIMAL_FALLBACK_CUES = {
     "whale": "fin",
 }
 
+_CATEGORY_LABELS = {
+    "chemistry": "Chemistry",
+    "conservation": "Conservation",
+    "earth": "Earth",
+    "ecosystem": "Ecosystems",
+    "fungi": "Fungi",
+    "geology": "Rock layers",
+    "microscopy": "Cells",
+    "physics": "Magnets",
+    "rare_phenomena": "Auroras",
+    "science": "Fossils",
+    "space": "The Moon",
+    "weather": "Storm clouds",
+}
+
+_CATEGORY_FALLBACK_SUBJECTS = {
+    "chemistry": "chemistry",
+    "conservation": "conservation",
+    "discoveries": "science",
+    "earth_from_space": "earth",
+    "ecosystems": "ecosystem",
+    "forests": "forest",
+    "fungi": "fungi",
+    "geology": "geology",
+    "microscopy": "microscopy",
+    "mountains": "mountain",
+    "ocean": "ocean",
+    "physics": "physics",
+    "plants": "plant",
+    "rare_phenomena": "rare_phenomena",
+    "rivers": "river",
+    "space": "space",
+    "trees": "tree",
+    "volcanoes": "volcano",
+    "weather": "weather",
+}
+
+_SUBJECT_FALLBACKS = {
+    "bird": {
+        "title": "Birds steer with tiny wing changes",
+        "hook": "Birds steer with tiny wing changes.",
+        "body": (
+            "Watch the wing edge first because small feather shifts change lift before the bird turns. "
+            "That tiny correction keeps the whole body stable in moving air. "
+            "Which bird clue should we decode next?"
+        ),
+        "thumb": "WING SHIFT",
+        "tags": ["birds", "wings", "flight", "science", "nature facts"],
+    },
+    "cat": {
+        "title": "Cats map tight spaces with their whiskers",
+        "hook": "Cats map tight spaces with their whiskers.",
+        "body": (
+            "Watch the whiskers first because each hair measures gaps before the body squeezes through. "
+            "That touch map helps the cat move without wasting motion. "
+            "Which cat clue should we decode next?"
+        ),
+        "thumb": "WHISKER MAP",
+        "tags": ["cats", "whiskers", "senses", "science", "nature facts"],
+    },
+    "dog": {
+        "title": "Dogs read the world through scent maps",
+        "hook": "Dogs read the world through scent maps.",
+        "body": (
+            "Watch the nose first because each sniff samples a trail the eyes cannot see. "
+            "Those scent layers help the dog locate people, food, and danger. "
+            "Which dog clue should we decode next?"
+        ),
+        "thumb": "SCENT MAP",
+        "tags": ["dogs", "scent", "nose", "science", "nature facts"],
+    },
+    "turtle": {
+        "title": "Turtles steer home by reading hidden currents",
+        "hook": "Turtles steer home by reading hidden currents.",
+        "body": (
+            "Watch the flippers first because each slow stroke corrects direction against moving water. "
+            "The motion looks gentle, but the turtle is constantly reading the route. "
+            "Which turtle clue should we decode next?"
+        ),
+        "thumb": "CURRENT MAP",
+        "tags": ["turtles", "currents", "ocean", "science", "nature facts"],
+    },
+    "chemistry": {
+        "title": "Crystals grow by repeating one tiny pattern",
+        "hook": "Crystals grow by repeating one tiny pattern.",
+        "body": (
+            "Watch the crystal edge first because dissolved particles attach in the same ordered shape again and again. "
+            "That repeated chemistry turns invisible structure into something the camera can see. "
+            "Which reaction clue should we decode next?"
+        ),
+        "thumb": "CRYSTAL PATTERN",
+        "tags": ["crystals", "chemistry", "reaction", "science", "nature facts"],
+    },
+    "conservation": {
+        "title": "Conservation helps forests recover damaged ground",
+        "hook": "Conservation helps forests recover damaged ground.",
+        "body": (
+            "Watch the new shade first because young plants protect soil before a habitat feels full again. "
+            "That recovery gives water, insects, and roots a place to return. "
+            "Which restoration clue should we decode next?"
+        ),
+        "thumb": "RECOVERY GROUND",
+        "tags": ["conservation", "restoration", "forests", "science", "nature facts"],
+    },
+    "earth": {
+        "title": "Earth clouds reveal moving air from above",
+        "hook": "Earth clouds reveal moving air from above.",
+        "body": (
+            "Watch the cloud pattern first because rising air cools into visible shapes. "
+            "From above, those shapes expose wind lanes, storm edges, and moisture flow that the ground view hides. "
+            "Which sky clue should we decode next?"
+        ),
+        "thumb": "CLOUD MAP",
+        "tags": ["earth", "clouds", "weather", "science", "nature facts"],
+    },
+    "ecosystem": {
+        "title": "Ecosystems move energy through tiny links",
+        "hook": "Ecosystems move energy through tiny links.",
+        "body": (
+            "Watch the habitat edge first because every plant, grazer, and predator changes what the next one can do. "
+            "Those small links turn a landscape into a working system. "
+            "Which ecosystem clue should we decode next?"
+        ),
+        "thumb": "FOOD WEB",
+        "tags": ["ecosystems", "habitats", "biodiversity", "science", "nature facts"],
+    },
+    "forest": {
+        "title": "Forests hold cool air under the canopy",
+        "hook": "Forests hold cool air under the canopy.",
+        "body": (
+            "Watch the canopy first because leaves block direct sun and release water vapor. "
+            "That shade and moisture slow the heat before it reaches the ground. "
+            "Which forest layer should we decode next?"
+        ),
+        "thumb": "COOL CANOPY",
+        "tags": ["forests", "canopy", "trees", "science", "nature facts"],
+    },
+    "fungi": {
+        "title": "Mushrooms release spores from the cap",
+        "hook": "Mushrooms release spores from the cap.",
+        "body": (
+            "Watch the cap first because tiny spores fall from hidden gills underneath. "
+            "Air movement carries them away before the next colony starts. "
+            "The still mushroom is actually sending life outward. Which fungi clue should we decode next?"
+        ),
+        "thumb": "SPORE CLOUD",
+        "tags": ["mushrooms", "spores", "fungi", "science", "nature facts"],
+    },
+    "geology": {
+        "title": "Rock layers store old environments in stripes",
+        "hook": "Rock layers store old environments in stripes.",
+        "body": (
+            "Watch the stripe pattern first because each layer can mark mud, sand, ash, or ocean floor. "
+            "Stack enough layers and the cliff turns into a timeline. "
+            "Which rock clue should we decode next?"
+        ),
+        "thumb": "ROCK TIMELINE",
+        "tags": ["rocks", "geology", "layers", "science", "nature facts"],
+    },
+    "microscopy": {
+        "title": "Cells reveal hidden motion under the microscope",
+        "hook": "Cells reveal hidden motion under the microscope.",
+        "body": (
+            "Watch the cell edge first because tiny movements show where living material is changing. "
+            "The microscope turns a hidden world into visible motion. "
+            "Which micro clue should we decode next?"
+        ),
+        "thumb": "CELL MOTION",
+        "tags": ["cells", "microscope", "biology", "science", "nature facts"],
+    },
+    "mountain": {
+        "title": "Mountains reveal weather lines in snow",
+        "hook": "Mountains reveal weather lines in snow.",
+        "body": (
+            "Watch the snow line first because temperature, wind, and slope decide where white turns into rock. "
+            "That boundary makes a mountain show the weather without any graph. "
+            "Which mountain clue should we decode next?"
+        ),
+        "thumb": "SNOW LINE",
+        "tags": ["mountains", "weather", "geology", "science", "nature facts"],
+    },
+    "ocean": {
+        "title": "Ocean waves sort energy along the shore",
+        "hook": "Ocean waves sort energy along the shore.",
+        "body": (
+            "Watch the wave edge first because water slows, folds, and breaks as the bottom rises. "
+            "That motion sorts sand and energy across the beach. "
+            "Which ocean clue should we decode next?"
+        ),
+        "thumb": "WAVE EDGE",
+        "tags": ["ocean", "waves", "shore", "science", "nature facts"],
+    },
+    "physics": {
+        "title": "Magnets reveal invisible fields in filings",
+        "hook": "Magnets reveal invisible fields in filings.",
+        "body": (
+            "Watch the filings first because each tiny piece lines up with the field around the magnet. "
+            "The hidden force becomes a visible map in seconds. "
+            "Which physics clue should we decode next?"
+        ),
+        "thumb": "FIELD MAP",
+        "tags": ["magnets", "physics", "fields", "science", "nature facts"],
+    },
+    "plant": {
+        "title": "Plants track light through their leaves",
+        "hook": "Plants track light through their leaves.",
+        "body": (
+            "Watch the leaves first because their angle changes how much light reaches each surface. "
+            "That tiny adjustment helps the plant feed without wasting water. "
+            "Which plant clue should we decode next?"
+        ),
+        "thumb": "LEAF ANGLE",
+        "tags": ["plants", "leaves", "growth", "science", "nature facts"],
+    },
+    "rare_phenomena": {
+        "title": "Auroras reveal charged particles in the sky",
+        "hook": "Auroras reveal charged particles in the sky.",
+        "body": (
+            "Watch the glow first because charged particles hit the upper atmosphere and make gases shine. "
+            "The color turns invisible space weather into a sky signal. "
+            "Which rare sky clue should we decode next?"
+        ),
+        "thumb": "SKY CHARGE",
+        "tags": ["aurora", "sky", "space weather", "science", "nature facts"],
+    },
+    "river": {
+        "title": "Rivers sort sand along every bend",
+        "hook": "Rivers sort sand along every bend.",
+        "body": (
+            "Watch the bank first because fast water carries grains while slower water drops them. "
+            "That sorting builds bars, islands, and new channels over time. "
+            "Which river clue should we decode next?"
+        ),
+        "thumb": "RIVER SORTING",
+        "tags": ["rivers", "sediment", "water", "science", "nature facts"],
+    },
+    "science": {
+        "title": "Fossils turn old bones into time clues",
+        "hook": "Fossils turn old bones into time clues.",
+        "body": (
+            "Watch the fossil shape first because minerals can replace bone while preserving the original outline. "
+            "That preserved shape lets scientists read environments after the animal is gone. "
+            "Which discovery clue should we decode next?"
+        ),
+        "thumb": "FOSSIL CLUE",
+        "tags": ["fossils", "science", "discovery", "nature facts", "biology"],
+    },
+    "space": {
+        "title": "The Moon records impacts in bright scars",
+        "hook": "The Moon records impacts in bright scars.",
+        "body": (
+            "Watch the Moon surface first because space rocks leave circular marks that do not wash away. "
+            "Those scars turn old collisions into a map we can still read. "
+            "Which space clue should we decode next?"
+        ),
+        "thumb": "MOON SCARS",
+        "tags": ["moon", "space", "astronomy", "science", "nature facts"],
+    },
+    "tree": {
+        "title": "Trees record hard seasons inside rings",
+        "hook": "Trees record hard seasons inside rings.",
+        "body": (
+            "Watch the ring pattern first because fast growth leaves wider bands and stress leaves tighter ones. "
+            "A trunk can store weather history year by year. "
+            "Which tree clue should we decode next?"
+        ),
+        "thumb": "TREE RINGS",
+        "tags": ["trees", "rings", "forests", "science", "nature facts"],
+    },
+    "volcano": {
+        "title": "Volcanoes build land from flowing lava",
+        "hook": "Volcanoes build land from flowing lava.",
+        "body": (
+            "Watch the lava edge first because molten rock cools into new surface as it spreads. "
+            "The same flow that destroys can also build fresh ground. "
+            "Which volcano clue should we decode next?"
+        ),
+        "thumb": "LAVA EDGE",
+        "tags": ["volcanoes", "lava", "geology", "science", "nature facts"],
+    },
+    "weather": {
+        "title": "Storm clouds reveal rising air engines",
+        "hook": "Storm clouds reveal rising air engines.",
+        "body": (
+            "Watch the cloud edge first because warm air lifts moisture until it cools into shape. "
+            "The tallest edge marks the engine feeding the storm. "
+            "Which cloud clue should we decode next?"
+        ),
+        "thumb": "STORM ENGINE",
+        "tags": ["clouds", "weather", "storm", "science", "nature facts"],
+    },
+}
+
 _CATEGORY_FALLBACKS = {
     "earth_from_space": {
         "title": "Earth clouds reveal moving air from above",
@@ -1134,6 +1427,8 @@ def _title_label(term: str) -> str:
     term = str(term or "").strip().lower()
     if not term:
         return "Nature"
+    if term in _CATEGORY_LABELS:
+        return _CATEGORY_LABELS[term]
     if term in _IRREGULAR_PLURALS:
         return _IRREGULAR_PLURALS[term]
     if term.endswith("s"):
@@ -1148,11 +1443,80 @@ def _fallback_subject(subject: str, topic_key: str) -> tuple[str, str, str]:
         return term, _title_label(term), _ANIMAL_FALLBACK_CUES.get(term, "eyes")
     visible = sorted(_animal_terms(subject))
     if visible:
-        term = visible[0]
+        category_term = _CATEGORY_FALLBACK_SUBJECTS.get(str(topic_key or "").strip().lower())
+        term = category_term if category_term in visible else visible[0]
         return term, _title_label(term), _ANIMAL_FALLBACK_CUES.get(term, "pattern")
     topic = str(topic_key or "nature").replace("_", " ").strip().lower()
     term = topic.split()[0] if topic else "nature"
     return term, _title_label(term), "pattern"
+
+
+def _fallback_variants(package: dict | None) -> list[dict]:
+    if not package:
+        return []
+    base = {
+        key: package[key]
+        for key in ("title", "hook", "body", "thumb", "tags")
+        if key in package
+    }
+    variants: list[dict] = []
+    if {"title", "hook", "body", "thumb"} <= set(base):
+        variants.append(base)
+    for item in package.get("alternates") or []:
+        if isinstance(item, dict) and {"title", "hook", "body", "thumb"} <= set(item):
+            variants.append(item)
+    return variants
+
+
+def _ordered_fallback_variants(package: dict | None, *seed_parts: object) -> list[dict]:
+    variants = _fallback_variants(package)
+    if len(variants) <= 1:
+        return variants
+    start = int(_variation_key(*seed_parts), 16) % len(variants)
+    return variants[start:] + variants[:start]
+
+
+def _package_matches_subject(subject: str, package: dict) -> bool:
+    return _copy_matches_visible_subject(
+        subject,
+        str(package.get("title") or ""),
+        str(package.get("hook") or ""),
+        str(package.get("body") or ""),
+    )
+
+
+def _select_fallback_package(
+    subject: str,
+    term: str,
+    topic_key: str,
+    variation_material: str,
+) -> dict | None:
+    candidates: list[dict] = []
+    candidates.extend(_ordered_fallback_variants(_SUBJECT_FALLBACKS.get(term), subject, topic_key, variation_material))
+    category_term = _CATEGORY_FALLBACK_SUBJECTS.get(topic_key)
+    if category_term and category_term != term:
+        candidates.extend(
+            _ordered_fallback_variants(
+                _SUBJECT_FALLBACKS.get(category_term),
+                subject,
+                topic_key,
+                variation_material,
+                "category",
+            )
+        )
+    candidates.extend(
+        _ordered_fallback_variants(
+            _CATEGORY_FALLBACKS.get(topic_key),
+            subject,
+            topic_key,
+            variation_material,
+            "legacy",
+        )
+    )
+    for package in candidates:
+        if _package_matches_subject(subject, package):
+            return package
+    return None
 
 
 def _clean_fallback_tags(raw_tags: list[str], term: str, cue: str, topic_key: str) -> list[str]:
@@ -1180,13 +1544,13 @@ def _deterministic_enhance_animal(
     topic_key = str(topic_key or "nature")
     topic_hashtag = re.sub(r"[^A-Za-z0-9]", "", str(topic_cfg.get("topic_hashtag") or "Nature")) or "Nature"
     term, label, cue = _fallback_subject(subject, topic_key)
-    category_fallback = _CATEGORY_FALLBACKS.get(topic_key)
-    if category_fallback and not _strict_animal_terms(subject):
-        title = category_fallback["title"]
-        hook = category_fallback["hook"]
-        body = category_fallback["body"]
-        thumb = category_fallback["thumb"]
-        tags = _clean_fallback_tags(list(category_fallback.get("tags") or []), term, cue, topic_key)
+    fallback_package = _select_fallback_package(subject, term, topic_key, variation_material)
+    if fallback_package:
+        title = str(fallback_package["title"])
+        hook = str(fallback_package["hook"])
+        body = str(fallback_package["body"])
+        thumb = str(fallback_package["thumb"])
+        tags = _clean_fallback_tags(list(fallback_package.get("tags") or []), term, cue, topic_key)
     else:
         title = f"{label} detect changes with their {cue}"
         hook = f"{label} detect changes with their {cue}."

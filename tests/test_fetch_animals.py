@@ -146,6 +146,42 @@ def test_deterministic_fallback_keeps_visible_subject_contract():
     )
 
 
+def test_deterministic_fallback_uses_specific_science_packages():
+    out = fetch_animals._deterministic_enhance_animal(
+        "crystal growth chemical reaction",
+        "chemistry",
+        fetch_animals.ANIMAL_TOPICS["chemistry"],
+        variation_material="https://www.pexels.com/video/crystal-growth-12345/",
+    )
+
+    assert out is not None
+    assert out["seo_title"] == "Crystals grow by repeating one tiny pattern"
+    assert "detect changes with their pattern" not in out["script"]
+    assert fetch_animals._copy_matches_visible_subject(
+        "crystal growth chemical reaction",
+        out["seo_title"],
+        out["hook"],
+        out["script"],
+    )
+
+
+def test_deterministic_fallback_maps_category_labels_without_bad_plurals():
+    assert fetch_animals._title_label("science") == "Fossils"
+    assert fetch_animals._title_label("physics") == "Magnets"
+    assert fetch_animals._title_label("microscopy") == "Cells"
+
+    out = fetch_animals._deterministic_enhance_animal(
+        "fossil discovery in rock layers",
+        "discoveries",
+        fetch_animals.ANIMAL_TOPICS["discoveries"],
+        variation_material="https://www.pexels.com/video/fossil-discovery-12345/",
+    )
+
+    assert out is not None
+    assert out["seo_title"] == "Fossils turn old bones into time clues"
+    assert "Sciences detect" not in out["seo_title"]
+
+
 def test_build_story_carries_deterministic_fallback_metadata():
     out = fetch_animals._deterministic_enhance_animal(
         "river bend with sand bank",
@@ -1227,4 +1263,3 @@ def test_validate_and_repair_json_word_count_limits():
         "script": "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean, especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart? Some researchers believe they do because their brain structure supports long term memory, which is quite fascinating to think about. That is why they are so smart, and we should protect them.",
     }
     assert fetch_animals._validate_and_repair_json(over_limit_major, "dolphin") is None
-

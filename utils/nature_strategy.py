@@ -335,6 +335,7 @@ NATURE_TERMS: dict[str, str] = {
     "experiment": "science",
     "experiments": "science",
     "fossil": "science",
+    "fossils": "science",
     "biology": "science",
     "space": "space",
     "astronomy": "space",

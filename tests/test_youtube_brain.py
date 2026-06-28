@@ -232,6 +232,37 @@ def test_creator_premortem_keeps_animal_subject_inside_nature_category():
     assert brain["satisfaction_bet"] == "The viewer gets one visible behavior and one reason, fast."
 
 
+def test_creator_premortem_recognizes_plural_science_subjects():
+    fossil_story = {
+        "title": "Fossils turn old bones into time clues",
+        "seo_title": "Fossils turn old bones into time clues",
+        "hook": "Fossils turn old bones into time clues.",
+        "script": (
+            "Fossils turn old bones into time clues. Watch the fossil shape first because minerals can "
+            "replace bone while preserving the original outline. That preserved shape lets scientists "
+            "read environments after the animal is gone."
+        ),
+        "thumbnail_text": "FOSSIL CLUE",
+        "category": "discoveries",
+        "story_format": "science_clue",
+    }
+    magnet_story = {
+        "title": "Magnets reveal invisible fields in filings",
+        "seo_title": "Magnets reveal invisible fields in filings",
+        "hook": "Magnets reveal invisible fields in filings.",
+        "script": (
+            "Magnets reveal invisible fields in filings. Watch the filings first because each tiny piece "
+            "lines up with the field around the magnet. The hidden force becomes a visible map in seconds."
+        ),
+        "thumbnail_text": "FIELD MAP",
+        "category": "physics",
+        "story_format": "physics_demo",
+    }
+
+    assert "subject_not_immediately_clear" not in creator_premortem(fossil_story)["risks"]
+    assert "subject_not_immediately_clear" not in creator_premortem(magnet_story)["risks"]
+
+
 def test_creator_premortem_flags_internal_strategy_language():
     story = {
         **_strong_story(),
