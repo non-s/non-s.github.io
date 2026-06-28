@@ -1,19 +1,18 @@
 {
-  "generated_at": "2026-06-28T10:40:33.823077+00:00",
-  "score": 85,
-  "state": "watch",
-  "issues": [
-    "queue_inventory_low"
-  ],
+  "generated_at": "2026-06-28T10:48:05.121524+00:00",
+  "score": 100,
+  "state": "excellent",
+  "issues": [],
   "queue": {
-    "pending": 19,
-    "publish_ready": 5,
+    "pending": 22,
+    "publish_ready": 6,
     "categories": {
       "cats": 1,
       "earth_from_space": 4,
       "farm": 1,
-      "forests": 2,
+      "forests": 4,
       "geology": 4,
+      "plants": 1,
       "rivers": 2,
       "space": 1,
       "wildlife": 4
@@ -22,12 +21,15 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 13,
+      "queue_prune:rewrite": 15,
       "editor_in_chief:cooldown_subject": 7,
       "publish_score:rewrite": 5,
+      "editor_in_chief:needs_ai_rewrite": 3,
+      "agency_gate:success_recovery_format_required": 2,
+      "agency_gate:success_recovery_hook_required": 2,
+      "ops_guardian_paused_category:rivers": 2,
       "packaging:opening promise is not concrete enough": 1,
       "youtube_brain:missing_visual_cue": 1,
-      "editor_in_chief:needs_ai_rewrite": 1,
       "packaging:missing_action_word": 1,
       "publish_blocklist:monetization audit needs review": 1
     }
@@ -38,14 +40,26 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 61.7,
+    "average_score": 61.4,
     "decisions": {
-      "hold": 9,
+      "hold": 11,
       "needs_polish": 1,
-      "publish_now": 3,
-      "strong_candidate": 6
+      "publish_now": 5,
+      "strong_candidate": 5
     },
     "top": [
+      {
+        "title": "Cats groom to reset their scent map",
+        "category": "cats",
+        "score": 85,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
       {
         "title": "Rock layers store old environments in stripes",
         "category": "geology",
@@ -53,18 +67,6 @@
         "decision": "publish_now",
         "strengths": [
           "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Cats groom to reset their scent map",
-        "category": "cats",
-        "score": 84,
-        "decision": "publish_now",
-        "strengths": [
-          "strong_quality",
-          "timely_trend",
           "matches_channel_learning",
           "fresh_inventory"
         ]
@@ -81,10 +83,21 @@
         ]
       },
       {
+        "title": "Forests trap cool air below thick leaves",
+        "category": "forests",
+        "score": 83,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Forest shade keeps soil moisture from leaving",
         "category": "forests",
-        "score": 80,
-        "decision": "strong_candidate",
+        "score": 82,
+        "decision": "publish_now",
         "strengths": [
           "strong_quality",
           "matches_channel_learning",
@@ -114,24 +127,14 @@
         ]
       },
       {
-        "title": "Forests trap cool air below thick leaves",
-        "category": "forests",
-        "score": 78,
+        "title": "Plants turn light into stored sugar",
+        "category": "plants",
+        "score": 77,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
           "matches_channel_learning",
           "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Rivers move sideways while they flow",
-        "category": "rivers",
-        "score": 76,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning"
         ]
       }
     ]
