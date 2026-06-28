@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-28T20:12:03.112505+00:00",
-  "pending": 29,
+  "generated_at": "2026-06-28T20:24:25.299422+00:00",
+  "pending": 27,
   "states": {
-    "rewrite": 22,
-    "publish_ready": 7
+    "rewrite": 21,
+    "publish_ready": 6
   },
   "mechanism_clusters": {
     "face_recognition": 3,
@@ -12,39 +12,44 @@
     "scent_map": 1
   },
   "rights": {
-    "approved": 29
+    "approved": 27
   },
   "prune_summary": {
-    "pending_before": 49,
-    "pending_after": 29,
-    "rejected": 20,
-    "repair_needed": 1,
-    "repaired": 13,
+    "pending_before": 27,
+    "pending_after": 27,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 6,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 14,
-      "objective_gate:observe_before_scaling": 14,
-      "duplicate_title": 13,
-      "objective_gate:bootstrap_observe_before_scaling": 6,
-      "off_topic_visual": 4,
-      "duplicate_script": 4,
-      "duplicate_angle": 4,
-      "copy_subject_mismatch": 3,
+      "objective_gate:observe_before_scaling": 13,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 12,
+      "objective_gate:bootstrap_observe_before_scaling": 5,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
-      "script_word_loop": 2,
       "editor_in_chief:script quality gate blocked the narration": 2,
       "editorial_cooldown_supply_fallback": 2,
-      "script_hook_mismatch": 1,
-      "queue_score_reject": 1,
-      "non_animal_body_language": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 46 is below 62": 1,
-      "editor_in_chief:editorial score 61 is below 62": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editor_in_chief:editorial score 46 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "b9174285d8d8c44a",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "42e2613a6c81db7f",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "4e5253ba785c6392",
       "title": "Fossils turn old bones into time clues",
@@ -289,23 +294,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "56e4cb1ef6867779",
-      "title": "Why dog play is more serious than it looks in the first second",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5a417bea550f73f2",
-      "title": "Dragonflys detect changes with their eyes",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -484,7 +472,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.025022+00:00",
+        "checked_at": "2026-06-28T20:23:58.046969+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1130,7 +1118,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.333691+00:00",
+        "checked_at": "2026-06-28T20:23:58.055520+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1778,7 +1766,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.348034+00:00",
+        "checked_at": "2026-06-28T20:23:58.068134+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1987,7 +1975,7 @@
         },
         "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.91,
+          "caption_chars_per_second": 15.22,
           "contrast_score": 0.74,
           "cta_count": 1,
           "duration_hint_s": 23,
@@ -2430,7 +2418,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.349128+00:00",
+        "checked_at": "2026-06-28T20:23:58.069393+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3029,7 +3017,7 @@
         "state": "publish_ready",
         "story_format": "microscopy_demo",
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3047,17 +3035,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "title_score": 90,
         "weak_content": {
@@ -3080,7 +3069,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:36.005232+00:00",
+        "checked_at": "2026-06-28T20:23:58.425096+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3152,7 +3141,7 @@
         "viewer_promise": "See why this cell microscopy demo matters."
       },
       "packaging": {
-        "community_prompt": "Which cells clue should Wild Brief compare next in Micro World?",
+        "community_prompt": "Which cells clue should Wild Brief compare next in Nature Signals?",
         "cta_prompt": "Follow for one animal signal a day.",
         "curiosity_gap": {
           "hook": "Why does this microscopy changes after the cell motion?",
@@ -3261,7 +3250,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.796,
-        "next_episode_question": "Tomorrow in Micro World: another nature signal. What part of this feels most impossible?",
+        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -3293,7 +3282,7 @@
           ],
           "subject": "microscopy"
         },
-        "pinned_comment": "Cells is the example. Tomorrow in Micro World: another nature signal. What part of this feels most impossible?",
+        "pinned_comment": "Cells is the example. Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
         "preflight_inputs": {
           "caption_chars_per_second": 17.24,
           "contrast_score": 0.74,
@@ -3373,12 +3362,12 @@
         "retention_contract": {
           "first_2s_narration": "Cells have to copy themselves before dividing Watch the cell boundary because",
           "first_frame_text": "CELL COPY",
-          "next_episode_question": "Tomorrow in Micro World: another nature signal. What part of this feels most impossible?",
+          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
           "opening_retention_score": 96.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Cells microscopy demo in a fast Wild Brief.",
-            "series": "Micro World",
+            "series": "Nature Signals",
             "subject": "cells",
             "terms": [
               "cells",
@@ -3388,7 +3377,7 @@
             "title_variant": "Cells microscopy demo explained fast",
             "visible_cue": ""
           },
-          "series": "Micro World",
+          "series": "Nature Signals",
           "subject": "cells",
           "visible_cue": ""
         },
@@ -3399,7 +3388,7 @@
         "score": 81,
         "search_intent": {
           "description_line": "This Short explains Cells microscopy demo in a fast Wild Brief.",
-          "series": "Micro World",
+          "series": "Nature Signals",
           "subject": "cells",
           "terms": [
             "cells",
@@ -3415,12 +3404,12 @@
           "thumbnail_text": "CELL COPY",
           "title": "Cells copy instructions before splitting"
         },
-        "series": "Micro World",
+        "series": "Nature Signals #3",
         "series_identity": {
-          "continuity_prompt": "Next in Micro World: compare this with another force of nature.",
+          "continuity_prompt": "Next in Nature Signals #3: compare this with another force of nature.",
           "episode": 1,
-          "label": "Micro World",
-          "series": "Micro World"
+          "label": "Nature Signals #3",
+          "series": "Nature Signals #3"
         },
         "state": "usable",
         "strengths": [
@@ -3430,7 +3419,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3448,17 +3437,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -3739,7 +3729,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.008055+00:00",
+        "checked_at": "2026-06-28T20:23:58.032717+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [],
         "score": 78.0,
@@ -4375,7 +4365,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.015187+00:00",
+        "checked_at": "2026-06-28T20:23:58.034946+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 78.0,
@@ -5020,7 +5010,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.021427+00:00",
+        "checked_at": "2026-06-28T20:23:58.042765+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [],
         "score": 78.0,
@@ -5673,7 +5663,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.022671+00:00",
+        "checked_at": "2026-06-28T20:23:58.044219+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [],
         "score": 78.0,
@@ -6316,7 +6306,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.023761+00:00",
+        "checked_at": "2026-06-28T20:23:58.045500+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [],
         "score": 78.0,
@@ -6958,7 +6948,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.025947+00:00",
+        "checked_at": "2026-06-28T20:23:58.048062+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -7444,7 +7434,7 @@
       "title": "Mangroves take power out of waves",
       "category": "conservation",
       "publish_score": {
-        "approved": true,
+        "approved": false,
         "category": "conservation",
         "decision_confidence": {
           "bootstrap_multiplier": 0.352,
@@ -7538,14 +7528,6 @@
           "hits": [],
           "penalty": 0
         },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.4,
@@ -7571,7 +7553,7 @@
           "verdict": "rewrite"
         },
         "score": 100,
-        "state": "publish_ready",
+        "state": "rewrite",
         "story_format": "conservation_signal",
         "subscriber_conversion": {
           "comment_probability": 0.214,
@@ -7622,16 +7604,15 @@
           "state": "clear"
         }
       },
-      "editorial_state": "publish_ready",
+      "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.985002+00:00",
+        "checked_at": "2026-06-28T20:23:58.073596+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "publish_ready_supply_reserve_fallback"
+          "objective_gate:bootstrap_observe_before_scaling"
         ],
         "score": 78.0,
-        "state": "publish_ready",
+        "state": "rewrite",
         "template_cluster": ""
       },
       "queue_score": 78.0,
@@ -8275,7 +8256,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:35.656628+00:00",
+        "checked_at": "2026-06-28T20:23:58.427830+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8914,7 +8895,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.018322+00:00",
+        "checked_at": "2026-06-28T20:23:58.039130+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 72.0,
@@ -9562,7 +9543,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.337428+00:00",
+        "checked_at": "2026-06-28T20:23:58.058956+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10215,7 +10196,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.350650+00:00",
+        "checked_at": "2026-06-28T20:23:58.071190+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10871,7 +10852,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.016867+00:00",
+        "checked_at": "2026-06-28T20:23:58.037406+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:script quality gate blocked the narration"
@@ -11512,7 +11493,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.019417+00:00",
+        "checked_at": "2026-06-28T20:23:58.040415+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -12180,7 +12161,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.322275+00:00",
+        "checked_at": "2026-06-28T20:23:58.050548+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12839,7 +12820,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T20:11:34.336005+00:00",
+        "checked_at": "2026-06-28T20:23:58.057327+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
