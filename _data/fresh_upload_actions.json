@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 8,
-    "high": 0,
-    "manual_review": 2,
+    "automation_safe": 9,
+    "high": 1,
+    "manual_review": 1,
     "total": 10,
     "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-06-28T18:22:58.462590+00:00",
+  "generated_at": "2026-06-28T18:27:28.242872+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.859,
+      "age_hours": 8.934,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.027,
+      "age_hours": 8.101,
       "automation_safe": true,
       "category": "physics",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.278,
+      "age_hours": 7.353,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 6.22,
+      "age_hours": 6.295,
       "automation_safe": true,
       "category": "weather",
       "checkpoint_label": "1h",
@@ -114,34 +114,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "rewrite_next_opening",
-      "age_hours": 0.927,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.002,
+      "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-06-28T18:27:21.477158+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:u5VrAUBYcKg:opening_rewrite_next:1h",
-      "lane": "opening_iteration",
-      "manual_approval_required": true,
+      "id": "fresh-upload:u5VrAUBYcKg:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 72.0,
-      "priority": "normal",
-      "recommended_action": "Rewrite the next version around a clearer first-frame cue and first sentence.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Biology Brief",
-      "state": "opening_rewrite_next",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Flowers use trap hairs to count touches before snapping shut",
       "url": "https://www.youtube.com/shorts/u5VrAUBYcKg",
       "video_id": "u5VrAUBYcKg",
       "wait_until": "",
-      "why": "The published opening was below the retention promise floor."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "rewrite_next_opening",
-      "age_hours": 0.315,
+      "age_hours": 0.39,
       "automation_safe": false,
       "category": "plants",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.325,
+      "age_hours": 5.4,
       "automation_safe": true,
       "category": "chemistry",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.313,
+      "age_hours": 4.388,
       "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.251,
+      "age_hours": 3.326,
       "automation_safe": true,
       "category": "discoveries",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.225,
+      "age_hours": 2.3,
       "automation_safe": true,
       "category": "rivers",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-06-28T18:22:58.461506+00:00"
+  "source_generated_at": "2026-06-28T18:27:28.241743+00:00"
 }
