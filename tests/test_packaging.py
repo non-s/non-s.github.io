@@ -2,11 +2,13 @@ import re
 
 from utils.packaging import (
     cta_prompt,
+    next_episode_question,
     normalize_story_category,
     package_story,
     pinned_comment,
     replay_prompt,
     score_packaging,
+    search_intent_package,
     series_name,
     thumbnail_options,
     title_options,
@@ -681,6 +683,23 @@ def test_package_story_adds_comment_and_community_hook():
     assert packaged["thumbnail_text"]
     assert "adaptation" in pinned_comment(packaged).lower()
     assert "tomorrow" in pinned_comment(packaged).lower()
+
+
+def test_package_story_attaches_series_return_and_search_contract():
+    packaged = package_story(_story())
+
+    question = next_episode_question(packaged)
+    search = search_intent_package(packaged)
+    contract = packaged["packaging"]["retention_contract"]
+
+    assert "Tomorrow in" in question
+    assert "another animal signal" in packaged["pinned_comment"]
+    assert packaged["series"].split(" #")[0] in packaged["pinned_comment"]
+    assert search["description_line"] == packaged["search_intent"]["description_line"]
+    assert "Ducks behavior" in search["description_line"]
+    assert packaged["search_intent"]["visible_cue"] in search["description_line"]
+    assert contract["next_episode_question"] == question
+    assert contract["search_intent"]["description_line"] == search["description_line"]
 
 
 def test_package_story_preserves_remake_factory_packaging():

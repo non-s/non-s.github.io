@@ -701,6 +701,77 @@ def _is_animal_series(value: str) -> bool:
     return _series_base(value).lower() in ANIMAL_SERIES_NAMES
 
 
+def _series_prompt_label(story: dict) -> str:
+    label = str(story.get("series") or "").strip()
+    if not label:
+        label = series_name(story)
+    return _series_base(label)[:60] or "Wild Brief"
+
+
+def _signal_kind(story: dict) -> str:
+    return "nature" if _uses_nature_signal(story) else "animal"
+
+
+def next_episode_question(story: dict) -> str:
+    series = _series_prompt_label(story)
+    signal = _signal_kind(story)
+    prompt = debate_prompt(story).strip()
+    if not prompt.endswith("?"):
+        prompt = f"{prompt}?"
+    return f"Tomorrow in {series}: another {signal} signal. {prompt}"[:240]
+
+
+def search_intent_package(story: dict) -> dict:
+    subject = extract_subject(story)
+    cue = extract_cue(story)
+    category = str(story.get("category") or "").strip().lower()
+    text = " ".join(str(story.get(key) or "") for key in ("seo_title", "title", "hook", "script"))
+    story_format = str(story.get("story_format") or classify_format(text, category=category)).replace("_", " ")
+    subject_label = _title_case_subject(subject)
+    cue_is_specific = cue != "cue"
+    if cue_is_specific and _uses_nature_signal(story):
+        description_line = (
+            f"This Short explains the visible {cue} behind {subject_label} in a fast nature science story."
+        )
+        title_variant = f"{subject_label} {cue} explained fast"
+    elif cue_is_specific:
+        description_line = f"This Short explains {subject_label} behavior through the visible {cue}."
+        title_variant = f"{subject_label} behavior: {cue} explained"
+    else:
+        description_line = f"This Short explains {subject_label} {story_format} in a fast Wild Brief."
+        title_variant = f"{subject_label} {story_format} explained fast"
+    terms = [subject, category, story_format]
+    if cue_is_specific:
+        terms.insert(1, cue)
+    terms = [re.sub(r"\s+", " ", term).strip().lower() for term in terms if str(term or "").strip()]
+    return {
+        "subject": subject,
+        "visible_cue": "" if cue == "cue" else cue,
+        "series": _series_prompt_label(story),
+        "title_variant": _clean_title(title_variant),
+        "description_line": description_line[:240],
+        "terms": list(dict.fromkeys(terms))[:6],
+    }
+
+
+def retention_contract(story: dict) -> dict:
+    opening = score_retention_opening(story)
+    script = str(story.get("script") or "")
+    first_2s = str(story.get("first_2s_narration") or "").strip() or " ".join(_words(script)[:12])
+    search = search_intent_package(story)
+    return {
+        "subject": search["subject"],
+        "visible_cue": search["visible_cue"],
+        "first_frame_text": str(story.get("thumbnail_text") or story.get("first_frame_text") or "").strip(),
+        "first_2s_narration": first_2s,
+        "series": search["series"],
+        "next_episode_question": next_episode_question(story),
+        "search_intent": search,
+        "opening_retention_score": opening["score"],
+        "opening_retention_state": opening["state"],
+    }
+
+
 def _hook_mentions_subject(hook: str, subject: str) -> bool:
     if not subject:
         return True
@@ -920,16 +991,15 @@ def _package_preflight(story: dict) -> dict:
 def pinned_comment(story: dict) -> str:
     subject = extract_subject(story)
     cue = extract_cue(story)
-    prompt = debate_prompt(story)
-    return_hook = _return_hook(story)
+    prompt = next_episode_question(story)
     if cue != "cue":
-        return f"Watch the {cue} again. {return_hook} {prompt}"[:280]
-    return f"{_title_case_subject(subject)} is the example. {return_hook} {prompt}"[:280]
+        return f"Watch the {cue} again. {prompt}"[:280]
+    return f"{_title_case_subject(subject)} is the example. {prompt}"[:280]
 
 
 def community_prompt(story: dict) -> str:
     subject = extract_subject(story)
-    return f"Which nature topic should Wild Brief explain next after {subject}?"
+    return f"Which {subject} clue should Wild Brief compare next in {_series_prompt_label(story)}?"
 
 
 def series_name(story: dict) -> str:
@@ -1062,6 +1132,9 @@ def package_story(story: dict) -> dict:
     out["series"] = series_info["label"]
     out["cta_prompt"] = cta_prompt(out)
     out["replay_prompt"] = replay_prompt(out)
+    out["next_episode_question"] = next_episode_question(out)
+    out["search_intent"] = search_intent_package(out)
+    out["retention_contract"] = retention_contract(out)
     out["pinned_comment"] = pinned_comment(out)
     out["community_prompt"] = community_prompt(out)
     packaged_score = score_packaging(out)
@@ -1098,6 +1171,9 @@ def package_story(story: dict) -> dict:
         "pinned_comment": out["pinned_comment"],
         "community_prompt": out["community_prompt"],
         "series": out["series"],
+        "next_episode_question": out["next_episode_question"],
+        "search_intent": out["search_intent"],
+        "retention_contract": out["retention_contract"],
         "cta_prompt": out["cta_prompt"],
         "replay_prompt": out["replay_prompt"],
         "subscriber_conversion": subscriber_score,

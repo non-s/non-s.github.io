@@ -1292,6 +1292,14 @@ def save_shorts_done(done: set):
 
 
 # ── Metadata for upload_youtube.py ───────────────────────────────
+def _search_intent_line(story: dict) -> str:
+    search = story.get("search_intent")
+    if not isinstance(search, dict):
+        search = (story.get("packaging") or {}).get("search_intent") or {}
+    line = str(search.get("description_line") or "").strip()
+    return line[:240] if line else ""
+
+
 def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dict:
     """
     Build the JSON metadata payload that upload_youtube.py consumes.
@@ -1347,6 +1355,9 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
     if not body:
         lead = story.get("description") or story.get("script") or ""
         body = f"{base_title}. {lead}".strip()[:380] + f"\n\nSource: {source}"
+    search_line = _search_intent_line(story)
+    if search_line and search_line.lower() not in body.lower():
+        body = f"{body}\n\n{search_line}".strip()
 
     caption = f"{body}\n\n{hashtag_block}"[:5000]
 
@@ -1397,6 +1408,12 @@ def build_short_metadata(story: dict, video_path: Path, thumb_path: Path) -> dic
         "swipe_risk": dict((story.get("packaging") or {}).get("swipe_risk") or {}),
         "loop_plan": dict((story.get("packaging") or {}).get("loop_plan") or {}),
         "loop_score": (story.get("packaging") or {}).get("loop_score", 0),
+        "search_intent": dict(story.get("search_intent") or (story.get("packaging") or {}).get("search_intent") or {}),
+        "retention_contract": dict(
+            story.get("retention_contract") or (story.get("packaging") or {}).get("retention_contract") or {}
+        ),
+        "next_episode_question": story.get("next_episode_question")
+        or (story.get("packaging") or {}).get("next_episode_question", ""),
         "loop_render_applied": dict(story.get("loop_render_applied") or {}),
         "end_card_text": story.get("end_card_text", ""),
         "editorial_rulebook": dict((story.get("packaging") or {}).get("editorial_rulebook") or {}),

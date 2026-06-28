@@ -169,6 +169,32 @@ def test_metadata_includes_packaging_and_pinned_comment(tmp_path: Path):
     assert meta["pinned_comment"] == meta["packaging"]["pinned_comment"]
 
 
+def test_metadata_appends_search_intent_line(tmp_path: Path):
+    from generate_shorts import _queue_to_story, build_short_metadata
+
+    story = _queue_to_story(
+        {
+            "id": "search-story",
+            "seo_title": "Ducks fake injuries to protect young",
+            "title": "Ducks fake injuries to protect young",
+            "hook": "Ducks fake injuries to protect their young.",
+            "script": (
+                "Ducks fake injuries to protect their young. Watch the wing movement first, "
+                "because that cue pulls predators away from the nest."
+            ),
+            "thumbnail_text": "WATCH THE WING",
+            "category": "birds",
+            "yt_description": "AI-authored Short description.",
+        }
+    )
+
+    meta = build_short_metadata(story, tmp_path / "short.mp4", tmp_path / "thumb.jpg")
+
+    assert meta["search_intent"]["description_line"] in meta["description"]
+    assert meta["retention_contract"]["search_intent"]["description_line"] == meta["search_intent"]["description_line"]
+    assert meta["next_episode_question"] == meta["packaging"]["next_episode_question"]
+
+
 def test_metadata_keeps_earth_from_space_out_of_animal_lane(tmp_path: Path):
     from generate_shorts import _queue_to_story, build_short_metadata
 
