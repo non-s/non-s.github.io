@@ -1,0 +1,137 @@
+name: "YouTube metadata repair"
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: "Optional YouTube video id to repair"
+        required: false
+        default: ""
+      apply:
+        description: "Apply the repair to YouTube"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-metadata-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    name: "Repair published YouTube metadata"
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      YOUTUBE_DAILY_QUOTA_BUDGET: ${{ vars.YOUTUBE_DAILY_QUOTA_BUDGET || '10000' }}
+      QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
+      QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Install dependencies"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Plan metadata repair"
+        id: plan
+        env:
+          TARGET_VIDEO_ID: ${{ inputs.video_id }}
+        run: |
+          args=(--json)
+          if [ -n "$TARGET_VIDEO_ID" ]; then
+            args+=(--video-id "$TARGET_VIDEO_ID")
+          fi
+          python scripts/repair_youtube_metadata.py "${args[@]}" | tee metadata-repair-plan.json
+          planned="$(python - <<'PY'
+          import json
+
+          with open("metadata-repair-plan.json", encoding="utf-8") as fh:
+              payload = json.load(fh)
+          print(int(payload.get("planned") or 0))
+          PY
+          )"
+          echo "planned=$planned" >> "$GITHUB_OUTPUT"
+      - name: "Restore YouTube token"
+        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -z "$YOUTUBE_TOKEN" ]; then
+            echo "YOUTUBE_TOKEN is required to apply metadata repairs." >&2
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+          chmod 600 youtube_token.json
+      - name: "Quota preflight"
+        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        run: |
+          quota="$(
+          python - <<'PY'
+          import json
+          from utils.api_quota_budget import estimate_metadata_repair_cost, write_quota_ledger_row
+
+          row = write_quota_ledger_row(estimate_metadata_repair_cost(updates=${{ steps.plan.outputs.planned }}))
+          print(json.dumps(row, sort_keys=True))
+          PY
+          )"
+          echo "$quota"
+          blocked="$(QUOTA_JSON="$quota" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["QUOTA_JSON"])
+          print("1" if (payload.get("guard") or {}).get("block") else "0")
+          PY
+          )"
+          if [ "$blocked" = "1" ]; then
+            echo "Quota guard blocked metadata repair." >&2
+            exit 3
+          fi
+      - name: "Repair metadata"
+        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        env:
+          TARGET_VIDEO_ID: ${{ inputs.video_id }}
+        run: |
+          args=(--json --apply)
+          if [ -n "$TARGET_VIDEO_ID" ]; then
+            args+=(--video-id "$TARGET_VIDEO_ID")
+          fi
+          python scripts/repair_youtube_metadata.py "${args[@]}" | tee metadata-repair.json
+      - name: "Commit repair state"
+        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _videos/*.done _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json
+          if git diff --cached --quiet; then
+            echo "No metadata repair state to commit."
+            exit 0
+          fi
+          git commit -m "Repair YouTube metadata - $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          echo "Failed to push metadata repair state." >&2
+          exit 1
+      - name: "Remove YouTube token"
+        if: always()
+        run: rm -f youtube_token.json

@@ -16,6 +16,7 @@ from utils.time_semantics import quota_day_pt
 
 UNIT_METHOD_COSTS = {
     "youtube.videos.insert": 0,
+    "youtube.videos.update": 50,
     "youtube.thumbnails.set": 50,
     "youtube.playlists.list": 1,
     "youtube.playlists.insert": 50,
@@ -88,6 +89,11 @@ def estimate_publish_run_cost(
         "youtube.analytics.reports.query": analytics_queries,
     }
     return {"workflow": "youtube-bot", "calls": calls, "estimated_units": estimate_cost(calls)}
+
+
+def estimate_metadata_repair_cost(updates: int = 1) -> dict:
+    calls = {"youtube.videos.update": updates}
+    return {"workflow": "youtube-metadata-repair", "calls": calls, "estimated_units": estimate_cost(calls)}
 
 
 def _read_rows(path: Path) -> list[dict]:
