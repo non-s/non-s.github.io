@@ -50,6 +50,30 @@ def test_unique_upload_title_uses_concrete_detail_for_repeated_title():
     assert meta["upload_title_dedupe"]["reason"] == "published_title_collision"
 
 
+def test_unique_upload_title_preserves_story_subject_when_visual_tags_conflict():
+    meta = {
+        "title": "Plants use trap hairs to count touches before snapping shut",
+        "description": "Plants use trap hairs to count touches before snapping shut. A plant short.",
+        "category": "plants",
+        "tags": ["wasp", "pollination", "flower", "insects", "plants"],
+        "search_intent": {
+            "visible_cue": "leaf surface",
+            "terms": ["plants", "leaf surface", "plant mechanism"],
+        },
+        "story_id": "0ea9a0496d40aaef",
+    }
+
+    result = _apply_unique_upload_title(
+        meta,
+        {"plants use trap hairs to count touches before snapping shut"},
+    )
+
+    assert result["applied"] is True
+    assert meta["title"] == "Plants use trap hairs to count touches before snapping shut | Leaf surface"
+    assert not meta["title"].lower().startswith("wasp ")
+    assert meta["description"].startswith("Plants use trap hairs to count touches before snapping shut | Leaf surface.")
+
+
 def test_unique_upload_title_leaves_fresh_title_unchanged():
     meta = {"title": "Sharks sense tiny electric fields", "tags": ["sharks"]}
 

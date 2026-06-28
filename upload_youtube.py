@@ -134,6 +134,86 @@ def _display_phrase(value: str) -> str:
     return phrase[:1].upper() + phrase[1:] if phrase else ""
 
 
+_CATEGORY_DETAIL_CONFLICTS = {
+    "plants": {
+        "bee",
+        "bees",
+        "bird",
+        "birds",
+        "butterfly",
+        "butterflies",
+        "insect",
+        "insects",
+        "pollinator",
+        "pollinators",
+        "wasp",
+        "wasps",
+    }
+}
+
+_CATEGORY_REPLACEMENT_TERMS = {
+    "plants": {
+        "algae",
+        "blooms",
+        "blossoms",
+        "buds",
+        "flowers",
+        "fronds",
+        "grasses",
+        "hairs",
+        "leaves",
+        "mosses",
+        "petals",
+        "plants",
+        "roots",
+        "seeds",
+        "stems",
+        "trees",
+        "vines",
+    }
+}
+
+
+def _category_key(value: str) -> str:
+    words = _phrase_words(str(value or "").lower().replace("_", " "))
+    return words[0] if words else ""
+
+
+def _detail_conflicts_with_category(detail: str, category: str) -> bool:
+    conflicts = _CATEGORY_DETAIL_CONFLICTS.get(_category_key(category), set())
+    return bool(conflicts and conflicts & {word.lower() for word in _phrase_words(detail)})
+
+
+def _can_replace_category_anchor(detail: str, category: str) -> bool:
+    allowed = _CATEGORY_REPLACEMENT_TERMS.get(_category_key(category))
+    if not allowed:
+        return True
+    words = {word.lower() for word in _phrase_words(detail)}
+    return bool(words & allowed)
+
+
+def _search_intent_title_details(meta: dict) -> list[str]:
+    values: list[str] = []
+
+    def collect(package) -> None:
+        if not isinstance(package, dict):
+            return
+        for key in ("visible_cue", "subject"):
+            value = str(package.get(key) or "").strip()
+            if value:
+                values.append(value)
+        terms = package.get("terms") or []
+        if isinstance(terms, list):
+            values.extend(str(term) for term in terms if str(term or "").strip())
+        nested = package.get("search_intent")
+        if isinstance(nested, dict):
+            collect(nested)
+
+    collect(meta.get("search_intent"))
+    collect(meta.get("retention_contract"))
+    return values
+
+
 def _candidate_title_details(meta: dict) -> list[str]:
     generic = {
         "animal",
@@ -153,7 +233,7 @@ def _candidate_title_details(meta: dict) -> list[str]:
     generic.update(_phrase_words(category))
     title_key = _title_key(_youtube_title(meta))
     candidates: list[str] = []
-    values: list[str] = []
+    values: list[str] = _search_intent_title_details(meta)
     for key in ("yt_tags", "tags", "discovery_hashtags"):
         values.extend(str(item) for item in (meta.get(key) or []))
     values.extend(
@@ -170,6 +250,8 @@ def _candidate_title_details(meta: dict) -> list[str]:
             continue
         words = [word.lower() for word in _phrase_words(phrase)]
         if len(words) > 4 or all(word in generic for word in words):
+            continue
+        if _detail_conflicts_with_category(phrase, category):
             continue
         key = " ".join(words)
         if key in title_key or key in {_title_key(item) for item in candidates}:
@@ -191,10 +273,13 @@ def _title_variants(title: str, meta: dict) -> list[str]:
     rest = title[len(words[0]) :].strip()
     variants: list[str] = []
     for detail in _candidate_title_details(meta):
-        detail_lower = detail.lower()
-        if rest and words[0].lower() in category_words:
+        if (
+            rest
+            and words[0].lower() in category_words
+            and _can_replace_category_anchor(detail, str(meta.get("category") or ""))
+        ):
             variants.append(f"{detail} {rest}")
-        variants.append(f"{title} in {detail_lower}")
+        variants.append(f"{title} | {detail}")
     story_id = re.sub(r"[^A-Za-z0-9]", "", str(meta.get("story_id") or meta.get("id") or ""))
     if story_id:
         variants.append(f"{title} clip {story_id[:6]}")
