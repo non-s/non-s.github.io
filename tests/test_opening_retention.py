@@ -36,3 +36,23 @@ def test_score_retention_opening_flags_generic_unbridged_opening():
     assert score["score"] < 64
     assert "generic_opening_language" in score["risks"]
     assert "frame_text_not_echoed_early" in score["risks"]
+
+
+def test_score_retention_opening_recognizes_bears_as_frontloaded_subject():
+    score = score_retention_opening(
+        {
+            "title": "Bears reveal the scent map first",
+            "hook": "Bears reveal the scent map first.",
+            "script": (
+                "Bears reveal the scent map first. Watch the scent map first, "
+                "because smell can guide a bear before the eyes do."
+            ),
+            "thumbnail_text": "SCENT MAP",
+            "category": "wildlife",
+        }
+    )
+
+    assert score["approved"] is True
+    assert score["subject"] == "bears"
+    assert "subject_not_frontloaded" not in score["risks"]
+    assert "frame_hook_bridge" in score["strengths"]

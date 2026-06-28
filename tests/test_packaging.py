@@ -416,6 +416,37 @@ def test_package_story_reapplies_stale_frame_zero_repair_text():
     assert packaged["packaging"]["opening_retention"]["approved"] is True
 
 
+def test_package_story_reapplies_stale_frame_zero_repair_below_tightening_band():
+    packaged = package_story(
+        _story(
+            title="Bears can smell a meal long before seeing it",
+            seo_title="Bears can smell a meal long before seeing it",
+            hook="Bears can smell a meal long before seeing it.",
+            script=(
+                "Bears can smell a meal long before seeing it. Watch the nose first, "
+                "because smell drives many bear decisions before the eyes do. That huge scent map "
+                "helps them find food, avoid danger, and read who crossed the area earlier."
+            ),
+            thumbnail_text="SCENT MAP",
+            category="wildlife",
+            local_rewrite={"method": "curiosity_angle_duplicate_title_rescue"},
+            first_2s_narration="Bears reveal the scent map first. Watch the scent map first, because",
+            frame_zero_repair={
+                "method": "curiosity_angle_frame_zero_retention_rewrite",
+                "reason": "opening_retention_below_floor",
+                "cue": "scent map",
+                "after": {"score": 92, "approved": True},
+            },
+        )
+    )
+
+    assert packaged["hook"] == "Bears reveal the scent map first."
+    assert packaged["script"].startswith("Bears reveal the scent map first. Watch the scent map first")
+    assert packaged["frame_zero_repair"]["reason"] == "stale_frame_zero_repair"
+    assert packaged["packaging"]["opening_retention"]["approved"] is True
+    assert "frame_text_not_echoed_early" not in packaged["packaging"]["opening_retention"]["risks"]
+
+
 def test_package_story_attaches_opening_retention_bridge():
     packaged = package_story(_story())
 

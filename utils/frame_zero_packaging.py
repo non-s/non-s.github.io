@@ -25,6 +25,12 @@ DETERMINISTIC_TIGHTENING_CATEGORIES = {
     "trees",
     "weather",
 }
+RETENTION_BRIDGE_RISKS = {
+    "frame_text_not_echoed_early",
+    "visible_cue_not_repeated_early",
+    "generic_opening_language",
+    "formulaic_opening_language",
+}
 
 GENERIC_FRAME_ZERO_RE = re.compile(
     r"\b(?:detect changes with (?:their|its)|show why the [a-z ]+ matters|"
@@ -193,7 +199,19 @@ def apply_frame_zero_repair(story: dict) -> dict:
         and (not _deterministic_source(out) or deterministic_tightening_allowed)
         and 70 <= before_score < OPENING_RETENTION_FLOOR
     )
-    if not generic_repair and not low_retention:
+    existing_repair = bool(out.get("frame_zero_repair"))
+    repair_risks = {str(risk) for risk in (before_opening.get("risks") or [])}
+    stale_existing_repair = (
+        existing_repair and not _preserve_opening_source(out) and before_score < OPENING_RETENTION_FLOOR
+    )
+    bridge_gap = (
+        existing_repair
+        and not _preserve_opening_source(out)
+        and before_score >= OPENING_RETENTION_FLOOR
+        and bool(repair_risks & RETENTION_BRIDGE_RISKS)
+    )
+    retention_rewrite = low_retention or stale_existing_repair or bridge_gap
+    if not generic_repair and not retention_rewrite:
         out["frame_zero_packaging"] = score_frame_zero(out)
         return out
 
@@ -203,7 +221,7 @@ def apply_frame_zero_repair(story: dict) -> dict:
         return out
 
     original_title = str(out.get("seo_title") or out.get("title") or "")
-    if low_retention and not generic_repair:
+    if retention_rewrite and not generic_repair:
         package = _frontload_package(package)
     candidate = _apply_package_fields(out, package)
     after_opening = score_retention_opening(candidate)
@@ -211,11 +229,19 @@ def apply_frame_zero_repair(story: dict) -> dict:
         out["frame_zero_packaging"] = score_frame_zero(out)
         return out
     out = candidate
+    if generic_repair:
+        reason = "generic_opening_copy"
+    elif stale_existing_repair or (existing_repair and bridge_gap):
+        reason = "stale_frame_zero_repair"
+    elif bridge_gap:
+        reason = "opening_bridge_gap"
+    else:
+        reason = "opening_retention_below_floor"
     out["frame_zero_repair"] = {
         "method": (
             "curiosity_angle_frame_zero_repair" if generic_repair else "curiosity_angle_frame_zero_retention_rewrite"
         ),
-        "reason": "generic_opening_copy" if generic_repair else "opening_retention_below_floor",
+        "reason": reason,
         "original_title": original_title,
         "angle_key": package["angle_key"],
         "cue": package["cue"],
