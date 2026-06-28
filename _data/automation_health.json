@@ -1,60 +1,76 @@
 {
-  "generated_at": "2026-06-28T04:01:43.280359+00:00",
-  "score": 100,
+  "generated_at": "2026-06-28T04:23:13.181858+00:00",
+  "score": 98,
   "state": "excellent",
-  "issues": [],
+  "issues": [
+    "subject_frontload_below_target"
+  ],
   "queue": {
-    "pending": 23,
-    "publish_ready": 7,
+    "pending": 27,
+    "publish_ready": 8,
     "categories": {
       "birds": 1,
       "chemistry": 1,
       "discoveries": 1,
       "earth_from_space": 3,
       "ecosystems": 1,
-      "forests": 2,
+      "forests": 3,
       "fungi": 1,
-      "geology": 2,
+      "geology": 3,
       "nocturnal": 1,
       "ocean": 1,
       "physics": 1,
       "plants": 4,
       "reptiles": 1,
       "rivers": 2,
-      "wildlife": 1
+      "space": 1,
+      "wildlife": 2
     },
     "duplicate_scripts": 0,
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 13,
-      "agency_gate:success_recovery_format_required": 9,
-      "agency_gate:success_recovery_hook_required": 9,
+      "queue_prune:rewrite": 16,
+      "agency_gate:success_recovery_format_required": 10,
+      "agency_gate:success_recovery_hook_required": 10,
       "editor_in_chief:cooldown_subject": 8,
+      "editor_in_chief:needs_ai_rewrite": 5,
       "agency_gate:category_recovery_rules_not_met": 3,
-      "editor_in_chief:needs_ai_rewrite": 3,
+      "packaging:missing_action_word": 3,
       "ops_guardian_paused_category:rivers": 2,
-      "packaging:missing_action_word": 2,
       "ops_guardian_paused_category:birds": 1,
-      "publish_blocklist:monetization audit needs review": 1
+      "publish_blocklist:monetization audit needs review": 1,
+      "publish_score:rewrite": 1,
+      "youtube_brain:no_action_promise": 1
     }
   },
   "seo": {
-    "average_score": 98.43,
-    "animal_frontloaded_pct": 95.65,
-    "subject_frontloaded_pct": 95.65
+    "average_score": 97.63,
+    "animal_frontloaded_pct": 92.59,
+    "subject_frontloaded_pct": 92.59
   },
   "agency": {
-    "average_score": 62.2,
+    "average_score": 61.6,
     "decisions": {
-      "hold": 11,
-      "publish_now": 5,
+      "hold": 14,
+      "publish_now": 6,
       "strong_candidate": 7
     },
     "top": [
       {
         "title": "Forests detect changes with their pattern",
         "category": "forests",
+        "score": 85,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Rock layers store old environments in stripes",
+        "category": "geology",
         "score": 84,
         "decision": "publish_now",
         "strengths": [
@@ -75,13 +91,13 @@
         ]
       },
       {
-        "title": "Rock layers store old environments in stripes",
-        "category": "geology",
-        "score": 83,
+        "title": "The moon keeps one face turned toward Earth",
+        "category": "space",
+        "score": 82,
         "decision": "publish_now",
         "strengths": [
           "strong_quality",
-          "matches_channel_learning",
+          "timely_trend",
           "fresh_inventory"
         ]
       },
@@ -127,16 +143,6 @@
           "strong_quality",
           "matches_channel_learning",
           "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Crystals grow by repeating one tiny pattern",
-        "category": "chemistry",
-        "score": 78,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "timely_trend"
         ]
       }
     ]
