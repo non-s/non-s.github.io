@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T11:33:22.530133+00:00",
+  "generated_at": "2026-06-28T11:42:40.630808+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 100,
   "operating_mode": "exploit",
@@ -430,6 +430,7 @@
             "cue_terms": [
               "air",
               "flash",
+              "snap",
               "thunder"
             ],
             "frame_hook_bridge": [],
@@ -563,7 +564,7 @@
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 95.4,
+          "score": 95.7,
           "approved": false,
           "state": "rewrite",
           "opportunity": {
@@ -619,21 +620,24 @@
             "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
           },
           "opening_retention": {
-            "score": 96.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "conservation",
+            "subject": "mangroves",
             "cue_terms": [
               "buffer",
-              "root"
+              "root",
+              "wave"
             ],
             "frame_hook_bridge": [
               "wave"
             ],
             "cue_bridge": [
-              "root"
+              "root",
+              "wave"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -642,9 +646,7 @@
               "frame_text_scannable",
               "curiosity_shape"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -732,7 +734,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.4,
+        "autonomy_priority": 117.7,
         "packaging_lab": {
           "title_variants": [
             "Mangroves take power out of waves",
@@ -820,6 +822,7 @@
             "approved": true,
             "subject": "rivers",
             "cue_terms": [
+              "bend",
               "river"
             ],
             "frame_hook_bridge": [
@@ -827,6 +830,7 @@
               "river"
             ],
             "cue_bridge": [
+              "bend",
               "river"
             ],
             "strengths": [
@@ -1154,7 +1158,7 @@
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 95.9,
+          "score": 96.7,
           "approved": false,
           "state": "rewrite",
           "opportunity": {
@@ -1208,11 +1212,12 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "rivers",
+            "subject": "river",
             "cue_terms": [
+              "bend",
               "sort"
             ],
             "frame_hook_bridge": [
@@ -1220,9 +1225,11 @@
               "sort"
             ],
             "cue_bridge": [
+              "bend",
               "sort"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -1230,9 +1237,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -1320,7 +1325,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 106.3,
+        "autonomy_priority": 107.1,
         "packaging_lab": {
           "title_variants": [
             "Rivers sort mud and sand along each bank",
@@ -1408,15 +1413,19 @@
             "approved": true,
             "subject": "clouds",
             "cue_terms": [
+              "cloud",
               "engine",
               "shape",
+              "spiral",
               "storm"
             ],
             "frame_hook_bridge": [
               "storm"
             ],
             "cue_bridge": [
+              "cloud",
               "shape",
+              "spiral",
               "storm"
             ],
             "strengths": [
@@ -1465,11 +1474,11 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.264,
+              "confidence_score": 0.265,
               "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
-              "data_quality_score": 0.587,
+              "data_quality_score": 0.588,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
               "bootstrap_multiplier": 0.448,
@@ -1599,22 +1608,25 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "geology",
+            "subject": "rock",
             "cue_terms": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "frame_hook_bridge": [
               "rock"
             ],
             "cue_bridge": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -1622,9 +1634,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -1794,22 +1804,22 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "geology",
+            "subject": "rock",
             "cue_terms": [
               "heat",
-              "layer"
+              "path"
             ],
             "frame_hook_bridge": [
               "heat"
             ],
             "cue_bridge": [
-              "heat",
-              "layer"
+              "heat"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -1817,9 +1827,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -1989,10 +1997,10 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "chemistry",
+            "subject": "crystals",
             "cue_terms": [
               "crystal",
               "edge",
@@ -2008,6 +2016,7 @@
               "shape"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2015,9 +2024,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -2384,13 +2391,14 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "geology",
+            "subject": "rock",
             "cue_terms": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "frame_hook_bridge": [
               "rock",
@@ -2398,9 +2406,11 @@
             ],
             "cue_bridge": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2408,9 +2418,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -2527,7 +2535,7 @@
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 99.0,
+          "score": 99.8,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
@@ -2581,12 +2589,13 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "geology",
+            "subject": "rock",
             "cue_terms": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
@@ -2596,10 +2605,12 @@
             ],
             "cue_bridge": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2607,9 +2618,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -2696,7 +2705,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 102.0,
+        "autonomy_priority": 102.8,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -2725,7 +2734,7 @@
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 96.8,
+          "score": 97.6,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
@@ -2779,13 +2788,13 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 92.0,
+            "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "geology",
+            "subject": "rock",
             "cue_terms": [
-              "layer",
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
@@ -2793,11 +2802,12 @@
               "rock"
             ],
             "cue_bridge": [
-              "layer",
               "pattern",
+              "rock",
               "stripe"
             ],
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2805,9 +2815,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ]
+            "risks": []
           },
           "weak_content": {
             "risk": 0,
@@ -2894,7 +2902,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 99.8,
+        "autonomy_priority": 100.6,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -2983,12 +2991,14 @@
             "subject": "foxes",
             "cue_terms": [
               "hear",
+              "snow",
               "sound"
             ],
             "frame_hook_bridge": [
               "snow"
             ],
             "cue_bridge": [
+              "snow",
               "sound"
             ],
             "strengths": [
@@ -3767,6 +3777,7 @@
             "cue_terms": [
               "air",
               "canop",
+              "cool",
               "leave"
             ],
             "frame_hook_bridge": [
@@ -3774,6 +3785,7 @@
             ],
             "cue_bridge": [
               "air",
+              "cool",
               "leave"
             ],
             "strengths": [

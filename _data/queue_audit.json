@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T11:33:36.497726+00:00",
+  "generated_at": "2026-06-28T11:43:03.169774+00:00",
   "pending": 20,
   "states": {
     "rewrite": 13,
@@ -14,29 +14,22 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 44,
+    "pending_before": 20,
     "pending_after": 20,
-    "rejected": 24,
-    "repair_needed": 5,
-    "repaired": 11,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
-      "duplicate_title": 12,
       "objective_gate:observe_before_scaling": 10,
-      "off_topic_visual": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 7,
-      "copy_subject_mismatch": 6,
-      "duplicate_script": 5,
-      "queue_score_reject": 5,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 5,
       "objective_gate:bootstrap_observe_before_scaling": 5,
-      "duplicate_angle": 4,
-      "script_subject_mismatch": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "publish_ready_supply_reserve_fallback": 2,
-      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
+      "duplicate_title": 1,
       "editor_in_chief:script quality gate blocked the narration": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
@@ -351,6 +344,7 @@
           "cue_terms": [
             "air",
             "flash",
+            "snap",
             "thunder"
           ],
           "frame_hook_bridge": [],
@@ -479,7 +473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:10.822733+00:00",
+        "checked_at": "2026-06-28T11:42:27.293678+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [],
         "score": 100.0,
@@ -499,6 +493,7 @@
           "cue_terms": [
             "air",
             "flash",
+            "snap",
             "thunder"
           ],
           "frame_hook_bridge": [],
@@ -545,7 +540,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after lightning?",
         "cta_prompt": "Want to see more extreme weather explained fast?",
         "curiosity_gap": {
-          "hook": "Why does this weather changes after the body cue?",
+          "hook": "Why does this lightning changes after the thunder snap?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -596,6 +591,7 @@
             "cue_terms": [
               "air",
               "flash",
+              "snap",
               "thunder"
             ],
             "frame_hook_bridge": [],
@@ -655,6 +651,7 @@
           "cue_terms": [
             "air",
             "flash",
+            "snap",
             "thunder"
           ],
           "frame_hook_bridge": [],
@@ -695,6 +692,7 @@
             "cue_terms": [
               "air",
               "flash",
+              "snap",
               "thunder"
             ],
             "frame_hook_bridge": [],
@@ -946,10 +944,12 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "snow",
             "sound"
           ],
           "cue_terms": [
             "hear",
+            "snow",
             "sound"
           ],
           "frame_hook_bridge": [
@@ -1027,7 +1027,7 @@
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.226,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.421,
             "can_adjust_strategy": false,
@@ -1045,17 +1045,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.264,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 87,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.124
+          "subscriber_probability": 0.133
         },
         "title_score": 84,
         "weak_content": {
@@ -1078,7 +1079,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.403996+00:00",
+        "checked_at": "2026-06-28T11:42:27.318794+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1094,10 +1095,12 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "snow",
             "sound"
           ],
           "cue_terms": [
             "hear",
+            "snow",
             "sound"
           ],
           "frame_hook_bridge": [
@@ -1145,13 +1148,13 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after foxes?",
         "cta_prompt": "Follow for one animal signal a day.",
         "curiosity_gap": {
-          "hook": "Why do these mammals change after the body cue?",
+          "hook": "Foxes use snow hearing before they hunt",
           "reasons": [
             "specific_detail",
             "open_loop"
           ],
           "score": 78.0,
-          "source": "template"
+          "source": "story"
         },
         "editorial_rulebook": {
           "approved": true,
@@ -1192,10 +1195,12 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
+              "snow",
               "sound"
             ],
             "cue_terms": [
               "hear",
+              "snow",
               "sound"
             ],
             "frame_hook_bridge": [
@@ -1250,10 +1255,12 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "snow",
             "sound"
           ],
           "cue_terms": [
             "hear",
+            "snow",
             "sound"
           ],
           "frame_hook_bridge": [
@@ -1289,10 +1296,12 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
+              "snow",
               "sound"
             ],
             "cue_terms": [
               "hear",
+              "snow",
               "sound"
             ],
             "frame_hook_bridge": [
@@ -1350,12 +1359,12 @@
           "thumbnail_text": "SNOW HEARING",
           "title": "Foxes hear tiny prey under snow"
         },
-        "series": "Rare Earth",
+        "series": "Night Shift Nature #3",
         "series_identity": {
-          "continuity_prompt": "Next in Rare Earth: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Rare Earth",
-          "series": "Rare Earth"
+          "continuity_prompt": "Next in Night Shift Nature: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Night Shift Nature #3",
+          "series": "Night Shift Nature"
         },
         "state": "magnetic",
         "strengths": [
@@ -1367,7 +1376,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.226,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.421,
             "can_adjust_strategy": false,
@@ -1385,17 +1394,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.264,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 87,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.124
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -1543,9 +1553,11 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "river"
           ],
           "cue_terms": [
+            "bend",
             "river"
           ],
           "frame_hook_bridge": [
@@ -1674,7 +1686,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:13.136101+00:00",
+        "checked_at": "2026-06-28T11:42:28.474078+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1690,9 +1702,11 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "river"
           ],
           "cue_terms": [
+            "bend",
             "river"
           ],
           "frame_hook_bridge": [
@@ -1741,7 +1755,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rivers?",
         "cta_prompt": "Want to see how moving water reshapes the world?",
         "curiosity_gap": {
-          "hook": "Why does this hydrology changes after the body cue?",
+          "hook": "Why do these rivers change after the river bend?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -1788,9 +1802,11 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
+              "bend",
               "river"
             ],
             "cue_terms": [
+              "bend",
               "river"
             ],
             "frame_hook_bridge": [
@@ -1846,9 +1862,11 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "river"
           ],
           "cue_terms": [
+            "bend",
             "river"
           ],
           "frame_hook_bridge": [
@@ -1885,9 +1903,11 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
+              "bend",
               "river"
             ],
             "cue_terms": [
+              "bend",
               "river"
             ],
             "frame_hook_bridge": [
@@ -2151,12 +2171,11 @@
           "frame_hook_bridge": [
             "crystal"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -2164,7 +2183,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "chemistry"
+          "subject": "crystals"
         },
         "opportunity": {
           "confidence": {
@@ -2275,7 +2294,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:13.174819+00:00",
+        "checked_at": "2026-06-28T11:42:28.480257+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2304,12 +2323,11 @@
           "frame_hook_bridge": [
             "crystal"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -2317,7 +2335,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "chemistry"
+          "subject": "crystals"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -2347,7 +2365,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after crystals?",
         "cta_prompt": "Follow for one animal signal a day.",
         "curiosity_gap": {
-          "hook": "Why does this chemistry changes after the body cue?",
+          "hook": "Why do these crystals change after the crystal growth?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -2407,12 +2425,11 @@
             "frame_hook_bridge": [
               "crystal"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2420,7 +2437,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "chemistry"
+            "subject": "crystals"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -2470,12 +2487,11 @@
           "frame_hook_bridge": [
             "crystal"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -2483,7 +2499,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "chemistry"
+          "subject": "crystals"
         },
         "pinned_comment": "Watch the pattern again. Tomorrow: another nature signal. What part of this feels most impossible?",
         "preflight_inputs": {
@@ -2514,12 +2530,11 @@
             "frame_hook_bridge": [
               "crystal"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -2527,9 +2542,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "chemistry"
+            "subject": "crystals"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 9.350000000000001,
           "visual_motion_score": 0.76
         },
@@ -2893,7 +2908,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:10.820576+00:00",
+        "checked_at": "2026-06-28T11:42:27.293678+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [],
         "score": 78.0,
@@ -2958,7 +2973,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after chickens?",
         "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
         "curiosity_gap": {
-          "hook": "Why do these animals change after the body cue?",
+          "hook": "Why do these chickens change after the steady eyes?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -3496,7 +3511,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.070147+00:00",
+        "checked_at": "2026-06-28T11:42:27.293678+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3569,7 +3584,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after cats?",
         "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
         "curiosity_gap": {
-          "hook": "Why do these wildlife change after the body cue?",
+          "hook": "Why do these cats change after the grooming signal?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -4115,7 +4130,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.075064+00:00",
+        "checked_at": "2026-06-28T11:42:27.310842+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4186,7 +4201,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after forest?",
         "cta_prompt": "Want to see how forests quietly run the planet?",
         "curiosity_gap": {
-          "hook": "Why do these nocturnalanimals change after the body cue?",
+          "hook": "Why does this forest changes after the shade holds water?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -4594,11 +4609,13 @@
           "approved": true,
           "cue_bridge": [
             "air",
+            "cool",
             "leave"
           ],
           "cue_terms": [
             "air",
             "canop",
+            "cool",
             "leave"
           ],
           "frame_hook_bridge": [
@@ -4728,7 +4745,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.084542+00:00",
+        "checked_at": "2026-06-28T11:42:27.313893+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4746,11 +4763,13 @@
           "approved": true,
           "cue_bridge": [
             "air",
+            "cool",
             "leave"
           ],
           "cue_terms": [
             "air",
             "canop",
+            "cool",
             "leave"
           ],
           "frame_hook_bridge": [
@@ -4798,7 +4817,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after forests?",
         "cta_prompt": "Want to see how forests quietly run the planet?",
         "curiosity_gap": {
-          "hook": "Why do these trees change after the body cue?",
+          "hook": "Why do these forests change after the cool canopy?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -4846,11 +4865,13 @@
             "approved": true,
             "cue_bridge": [
               "air",
+              "cool",
               "leave"
             ],
             "cue_terms": [
               "air",
               "canop",
+              "cool",
               "leave"
             ],
             "frame_hook_bridge": [
@@ -4906,11 +4927,13 @@
           "approved": true,
           "cue_bridge": [
             "air",
+            "cool",
             "leave"
           ],
           "cue_terms": [
             "air",
             "canop",
+            "cool",
             "leave"
           ],
           "frame_hook_bridge": [
@@ -4947,11 +4970,13 @@
             "approved": true,
             "cue_bridge": [
               "air",
+              "cool",
               "leave"
             ],
             "cue_terms": [
               "air",
               "canop",
+              "cool",
               "leave"
             ],
             "frame_hook_bridge": [
@@ -5339,7 +5364,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.402747+00:00",
+        "checked_at": "2026-06-28T11:42:27.318794+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5413,7 +5438,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after plants?",
         "cta_prompt": "Want to see how plants quietly engineer survival?",
         "curiosity_gap": {
-          "hook": "Why does this botany changes after the body cue?",
+          "hook": "Why do these plants change after the light to sugar?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -5825,21 +5850,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "root"
+            "root",
+            "wave"
           ],
           "cue_terms": [
             "buffer",
-            "root"
+            "root",
+            "wave"
           ],
           "frame_hook_bridge": [
             "wave"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -5848,7 +5874,7 @@
             "frame_text_scannable",
             "curiosity_shape"
           ],
-          "subject": "conservation"
+          "subject": "mangroves"
         },
         "opportunity": {
           "confidence": {
@@ -5968,7 +5994,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.424305+00:00",
+        "checked_at": "2026-06-28T11:42:27.977341+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5985,21 +6011,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "root"
+            "root",
+            "wave"
           ],
           "cue_terms": [
             "buffer",
-            "root"
+            "root",
+            "wave"
           ],
           "frame_hook_bridge": [
             "wave"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -6008,7 +6035,7 @@
             "frame_text_scannable",
             "curiosity_shape"
           ],
-          "subject": "conservation"
+          "subject": "mangroves"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -6038,13 +6065,13 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after waves?",
         "cta_prompt": "Want real examples of nature fighting back?",
         "curiosity_gap": {
-          "hook": "Why does this nature changes after the body cue?",
+          "hook": "Mangroves can slow waves before they hit land.",
           "reasons": [
             "specific_detail",
             "open_loop"
           ],
           "score": 78.0,
-          "source": "template"
+          "source": "story"
         },
         "editorial_rulebook": {
           "approved": true,
@@ -6083,21 +6110,22 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "root"
+              "root",
+              "wave"
             ],
             "cue_terms": [
               "buffer",
-              "root"
+              "root",
+              "wave"
             ],
             "frame_hook_bridge": [
               "wave"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 96.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -6106,7 +6134,7 @@
               "frame_text_scannable",
               "curiosity_shape"
             ],
-            "subject": "conservation"
+            "subject": "mangroves"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -6143,21 +6171,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "root"
+            "root",
+            "wave"
           ],
           "cue_terms": [
             "buffer",
-            "root"
+            "root",
+            "wave"
           ],
           "frame_hook_bridge": [
             "wave"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -6166,7 +6195,7 @@
             "frame_text_scannable",
             "curiosity_shape"
           ],
-          "subject": "conservation"
+          "subject": "mangroves"
         },
         "pinned_comment": "Watch the roots again. Tomorrow: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
         "preflight_inputs": {
@@ -6184,21 +6213,22 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "root"
+              "root",
+              "wave"
             ],
             "cue_terms": [
               "buffer",
-              "root"
+              "root",
+              "wave"
             ],
             "frame_hook_bridge": [
               "wave"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 96.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -6207,9 +6237,9 @@
               "frame_text_scannable",
               "curiosity_shape"
             ],
-            "subject": "conservation"
+            "subject": "mangroves"
           },
-          "opening_retention_score": 96.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 9.350000000000001,
           "visual_motion_score": 0.76
         },
@@ -6440,21 +6470,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "sort"
           ],
           "cue_terms": [
+            "bend",
             "sort"
           ],
           "frame_hook_bridge": [
             "bend",
             "sort"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -6462,7 +6493,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rivers"
+          "subject": "river"
         },
         "opportunity": {
           "confidence": {
@@ -6572,7 +6603,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:13.146313+00:00",
+        "checked_at": "2026-06-28T11:42:28.477253+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6589,21 +6620,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "sort"
           ],
           "cue_terms": [
+            "bend",
             "sort"
           ],
           "frame_hook_bridge": [
             "bend",
             "sort"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -6611,7 +6643,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rivers"
+          "subject": "river"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -6641,7 +6673,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after river?",
         "cta_prompt": "Want to see how moving water reshapes the world?",
         "curiosity_gap": {
-          "hook": "Why does this freshwater changes after the body cue?",
+          "hook": "Why does this river changes after the bend sorting?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -6686,21 +6718,22 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
+              "bend",
               "sort"
             ],
             "cue_terms": [
+              "bend",
               "sort"
             ],
             "frame_hook_bridge": [
               "bend",
               "sort"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -6708,7 +6741,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "rivers"
+            "subject": "river"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -6745,21 +6778,22 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "bend",
             "sort"
           ],
           "cue_terms": [
+            "bend",
             "sort"
           ],
           "frame_hook_bridge": [
             "bend",
             "sort"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -6767,7 +6801,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "rivers"
+          "subject": "river"
         },
         "pinned_comment": "Watch the river bend again. Tomorrow: another nature signal. Are rivers more like roads, tools, or engines?",
         "preflight_inputs": {
@@ -6785,21 +6819,22 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
+              "bend",
               "sort"
             ],
             "cue_terms": [
+              "bend",
               "sort"
             ],
             "frame_hook_bridge": [
               "bend",
               "sort"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -6807,9 +6842,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "rivers"
+            "subject": "river"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 11.55,
           "visual_motion_score": 0.76
         },
@@ -7182,7 +7217,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:13.177726+00:00",
+        "checked_at": "2026-06-28T11:42:28.482935+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7250,7 +7285,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after moon?",
         "cta_prompt": "Follow for one animal signal a day.",
         "curiosity_gap": {
-          "hook": "Why does this spacescience changes after the body cue?",
+          "hook": "Why does this moon changes after the locked face?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -7650,21 +7685,22 @@
           "approved": true,
           "cue_bridge": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "cue_terms": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -7672,7 +7708,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "opportunity": {
           "confidence": {
@@ -7782,7 +7818,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.407011+00:00",
+        "checked_at": "2026-06-28T11:42:27.318794+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7801,21 +7837,22 @@
           "approved": true,
           "cue_bridge": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "cue_terms": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -7823,7 +7860,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -7853,7 +7890,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want to understand the planet under your feet?",
         "curiosity_gap": {
-          "hook": "Why do these volcanoes change after the body cue?",
+          "hook": "Watch the rock layers; it explains why this rock changes.",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -7899,21 +7936,22 @@
             "approved": true,
             "cue_bridge": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "cue_terms": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "frame_hook_bridge": [
               "rock"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -7921,7 +7959,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -7959,21 +7997,22 @@
           "approved": true,
           "cue_bridge": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "cue_terms": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -7981,7 +8020,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
         "preflight_inputs": {
@@ -8000,21 +8039,22 @@
             "approved": true,
             "cue_bridge": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "cue_terms": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "frame_hook_bridge": [
               "rock"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -8022,9 +8062,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 9.350000000000001,
           "visual_motion_score": 0.76
         },
@@ -8064,10 +8104,10 @@
         },
         "series": "Earth Engine #5",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #5: compare this with another force of nature.",
-          "episode": 1,
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 5,
           "label": "Earth Engine #5",
-          "series": "Earth Engine #5"
+          "series": "Earth Engine"
         },
         "state": "magnetic",
         "strengths": [
@@ -8254,22 +8294,23 @@
           "approved": true,
           "cue_bridge": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "cue_terms": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "frame_hook_bridge": [
             "rock",
             "time"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -8277,7 +8318,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "opportunity": {
           "confidence": {
@@ -8387,7 +8428,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:14.380552+00:00",
+        "checked_at": "2026-06-28T11:42:28.571599+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -8405,22 +8446,23 @@
           "approved": true,
           "cue_bridge": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "cue_terms": [
             "layer",
-            "pattern"
+            "pattern",
+            "rock"
           ],
           "frame_hook_bridge": [
             "rock",
             "time"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -8428,7 +8470,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -8458,7 +8500,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want to understand the planet under your feet?",
         "curiosity_gap": {
-          "hook": "Why does this ocean changes after the body cue?",
+          "hook": "Watch the rock layers; it explains why this rock changes.",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -8504,22 +8546,23 @@
             "approved": true,
             "cue_bridge": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "cue_terms": [
               "layer",
-              "pattern"
+              "pattern",
+              "rock"
             ],
             "frame_hook_bridge": [
               "rock",
               "time"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -8527,7 +8570,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -8566,23 +8609,24 @@
           "cue_bridge": [
             "layer",
             "pattern",
+            "rock",
             "stripe"
           ],
           "cue_terms": [
             "layer",
             "pattern",
+            "rock",
             "stripe"
           ],
           "frame_hook_bridge": [
             "rock",
             "time"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -8590,7 +8634,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
         "preflight_inputs": {
@@ -8610,23 +8654,24 @@
             "cue_bridge": [
               "layer",
               "pattern",
+              "rock",
               "stripe"
             ],
             "cue_terms": [
               "layer",
               "pattern",
+              "rock",
               "stripe"
             ],
             "frame_hook_bridge": [
               "rock",
               "time"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -8634,9 +8679,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 9.350000000000001,
           "visual_motion_score": 0.76
         },
@@ -9001,7 +9046,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:10.824091+00:00",
+        "checked_at": "2026-06-28T11:42:27.293678+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -9076,7 +9121,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after elephants?",
         "cta_prompt": "Want more wild behavior explained without the fluff?",
         "curiosity_gap": {
-          "hook": "Why do these wildlife change after the body cue?",
+          "hook": "Why do these elephants change after the ear radiator?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -9492,12 +9537,16 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "cloud",
             "shape",
+            "spiral",
             "storm"
           ],
           "cue_terms": [
+            "cloud",
             "engine",
             "shape",
+            "spiral",
             "storm"
           ],
           "frame_hook_bridge": [
@@ -9579,9 +9628,9 @@
           "confidence": {
             "bootstrap_multiplier": 0.448,
             "can_adjust_strategy": false,
-            "confidence_score": 0.264,
+            "confidence_score": 0.265,
             "data_quality": "estimated",
-            "data_quality_score": 0.587,
+            "data_quality_score": 0.588,
             "minimum_sample_size": 18,
             "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
             "recommendation_strength": "observe",
@@ -9626,7 +9675,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.401040+00:00",
+        "checked_at": "2026-06-28T11:42:27.316900+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9643,12 +9692,16 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "cloud",
             "shape",
+            "spiral",
             "storm"
           ],
           "cue_terms": [
+            "cloud",
             "engine",
             "shape",
+            "spiral",
             "storm"
           ],
           "frame_hook_bridge": [
@@ -9696,13 +9749,13 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after storm?",
         "cta_prompt": "Want more planet-scale nature explained fast?",
         "curiosity_gap": {
-          "hook": "Why do these mountains change after the body cue?",
+          "hook": "Storm clouds use cloud spiral before they build",
           "reasons": [
             "specific_detail",
             "open_loop"
           ],
           "score": 78.0,
-          "source": "template"
+          "source": "story"
         },
         "editorial_rulebook": {
           "approved": true,
@@ -9743,12 +9796,16 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
+              "cloud",
               "shape",
+              "spiral",
               "storm"
             ],
             "cue_terms": [
+              "cloud",
               "engine",
               "shape",
+              "spiral",
               "storm"
             ],
             "frame_hook_bridge": [
@@ -9803,12 +9860,16 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
+            "cloud",
             "shape",
+            "spiral",
             "storm"
           ],
           "cue_terms": [
+            "cloud",
             "engine",
             "shape",
+            "spiral",
             "storm"
           ],
           "frame_hook_bridge": [
@@ -9844,12 +9905,16 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
+              "cloud",
               "shape",
+              "spiral",
               "storm"
             ],
             "cue_terms": [
+              "cloud",
               "engine",
               "shape",
+              "spiral",
               "storm"
             ],
             "frame_hook_bridge": [
@@ -9928,9 +9993,9 @@
           "confidence": {
             "bootstrap_multiplier": 0.448,
             "can_adjust_strategy": false,
-            "confidence_score": 0.264,
+            "confidence_score": 0.265,
             "data_quality": "estimated",
-            "data_quality_score": 0.587,
+            "data_quality_score": 0.588,
             "minimum_sample_size": 18,
             "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
             "recommendation_strength": "observe",
@@ -10099,22 +10164,20 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "heat",
-            "layer"
+            "heat"
           ],
           "cue_terms": [
             "heat",
-            "layer"
+            "path"
           ],
           "frame_hook_bridge": [
             "heat"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -10122,7 +10185,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "opportunity": {
           "confidence": {
@@ -10232,7 +10295,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.408725+00:00",
+        "checked_at": "2026-06-28T11:42:27.325832+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10251,22 +10314,20 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "heat",
-            "layer"
+            "heat"
           ],
           "cue_terms": [
             "heat",
-            "layer"
+            "path"
           ],
           "frame_hook_bridge": [
             "heat"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -10274,7 +10335,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -10304,7 +10365,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want to understand the planet under your feet?",
         "curiosity_gap": {
-          "hook": "Why do these volcanoes change after the body cue?",
+          "hook": "Why does this rock changes after the heat path?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -10351,22 +10412,20 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "heat",
-              "layer"
+              "heat"
             ],
             "cue_terms": [
               "heat",
-              "layer"
+              "path"
             ],
             "frame_hook_bridge": [
               "heat"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -10374,7 +10433,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -10411,22 +10470,20 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "heat",
-            "layer"
+            "heat"
           ],
           "cue_terms": [
             "heat",
-            "layer"
+            "path"
           ],
           "frame_hook_bridge": [
             "heat"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -10434,7 +10491,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
         "preflight_inputs": {
@@ -10452,22 +10509,20 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "heat",
-              "layer"
+              "heat"
             ],
             "cue_terms": [
               "heat",
-              "layer"
+              "path"
             ],
             "frame_hook_bridge": [
               "heat"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -10475,9 +10530,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 8.25,
           "visual_motion_score": 0.76
         },
@@ -10709,11 +10764,13 @@
           "approved": true,
           "cue_bridge": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "cue_terms": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
@@ -10721,12 +10778,11 @@
             "rock",
             "timeline"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -10734,7 +10790,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "opportunity": {
           "confidence": {
@@ -10844,7 +10900,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.412460+00:00",
+        "checked_at": "2026-06-28T11:42:27.969412+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10864,11 +10920,13 @@
           "approved": true,
           "cue_bridge": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "cue_terms": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
@@ -10876,12 +10934,11 @@
             "rock",
             "timeline"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -10889,7 +10946,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -10919,7 +10976,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want to understand the planet under your feet?",
         "curiosity_gap": {
-          "hook": "Why does this rarenature changes after the body cue?",
+          "hook": "Watch the rock timeline; it explains why this rock changes.",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -10965,11 +11022,13 @@
             "approved": true,
             "cue_bridge": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
             "cue_terms": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
@@ -10977,12 +11036,11 @@
               "rock",
               "timeline"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -10990,7 +11048,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -11028,11 +11086,13 @@
           "approved": true,
           "cue_bridge": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "cue_terms": [
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
@@ -11040,12 +11100,11 @@
             "rock",
             "timeline"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11053,7 +11112,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "pinned_comment": "Watch the pattern again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
         "preflight_inputs": {
@@ -11072,11 +11131,13 @@
             "approved": true,
             "cue_bridge": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
             "cue_terms": [
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
@@ -11084,12 +11145,11 @@
               "rock",
               "timeline"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -11097,9 +11157,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 8.25,
           "visual_motion_score": 0.76
         },
@@ -11328,25 +11388,24 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
             "pattern",
+            "rock",
             "stripe"
           ],
           "cue_terms": [
-            "layer",
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11354,7 +11413,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "opportunity": {
           "confidence": {
@@ -11464,7 +11523,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:12.421687+00:00",
+        "checked_at": "2026-06-28T11:42:27.974179+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11481,25 +11540,24 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
             "pattern",
+            "rock",
             "stripe"
           ],
           "cue_terms": [
-            "layer",
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11507,7 +11565,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -11537,7 +11595,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after rock?",
         "cta_prompt": "Want to understand the planet under your feet?",
         "curiosity_gap": {
-          "hook": "Why does this geology changes after the body cue?",
+          "hook": "Watch the rock timeline; it explains why this rock changes.",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -11582,25 +11640,24 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "layer",
               "pattern",
+              "rock",
               "stripe"
             ],
             "cue_terms": [
-              "layer",
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
             "frame_hook_bridge": [
               "rock"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -11608,7 +11665,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -11645,25 +11702,24 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "layer",
             "pattern",
+            "rock",
             "stripe"
           ],
           "cue_terms": [
-            "layer",
             "pattern",
+            "rock",
             "stripe",
             "timeline"
           ],
           "frame_hook_bridge": [
             "rock"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11671,7 +11727,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "geology"
+          "subject": "rock"
         },
         "pinned_comment": "Watch the rock layers again. Tomorrow: another nature signal. Does this make Earth feel stable or constantly moving?",
         "preflight_inputs": {
@@ -11689,25 +11745,24 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "layer",
               "pattern",
+              "rock",
               "stripe"
             ],
             "cue_terms": [
-              "layer",
               "pattern",
+              "rock",
               "stripe",
               "timeline"
             ],
             "frame_hook_bridge": [
               "rock"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -11715,9 +11770,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "geology"
+            "subject": "rock"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_time_s": 8.25,
           "visual_motion_score": 0.76
         },
@@ -12077,7 +12132,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T11:33:10.825238+00:00",
+        "checked_at": "2026-06-28T11:42:27.293678+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -12148,7 +12203,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after elephants?",
         "cta_prompt": "Want more wild behavior explained without the fluff?",
         "curiosity_gap": {
-          "hook": "Why do these wildlife change after the body cue?",
+          "hook": "Why do these elephants change after the ground signal?",
           "reasons": [
             "specific_detail",
             "open_loop"

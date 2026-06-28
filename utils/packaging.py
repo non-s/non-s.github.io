@@ -8,7 +8,7 @@ from utils.curiosity_angles import CURIOUS_CUE_WORDS, build_curiosity_package, i
 from utils.curiosity_gap import CuriosityGapEngine
 from utils.editorial_guard import editorial_issues
 from utils.editorial_rules import evaluate_story_package
-from utils.frame_zero_packaging import apply_frame_zero_repair
+from utils.frame_zero_packaging import apply_frame_zero_repair, materialize_opening_contract, score_frame_zero
 from utils.growth_engine import (
     analyze_retention,
     experiment_plan,
@@ -1050,6 +1050,8 @@ def package_story(story: dict) -> dict:
     titles = _safe_title_options(out, selected["options"]["titles"][:10])
     thumbs = selected["options"]["thumbnail_texts"][:10]
     hooks = [_subject_safe_hook(out, hook) for hook in selected["options"]["hooks"][:5]]
+    out = materialize_opening_contract(out)
+    out["frame_zero_packaging"] = score_frame_zero(out)
     series_info = series_package(out, memory=memory)
     out["series"] = series_info["label"]
     out["cta_prompt"] = cta_prompt(out)

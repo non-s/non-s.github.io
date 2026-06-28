@@ -1,3 +1,5 @@
+import re
+
 from utils.packaging import (
     cta_prompt,
     normalize_story_category,
@@ -454,6 +456,32 @@ def test_package_story_attaches_opening_retention_bridge():
     assert retention_opening["approved"] is True
     assert "frame_hook_bridge" in retention_opening["strengths"]
     assert "reason_arrives_early" in retention_opening["strengths"]
+    assert packaged["first_2s_narration"] == " ".join(re.findall(r"[A-Za-z0-9']+", packaged["script"])[:12])
+    assert packaged["subject"] == "ducks"
+    assert packaged["cue"] not in {"", "cue", "visible cue"}
+    assert packaged["visual_cue"] == packaged["cue"]
+
+
+def test_package_story_recognizes_science_subjects_in_first_words():
+    packaged = package_story(
+        _story(
+            title="Crystals grow by repeating one tiny pattern",
+            seo_title="Crystals grow by repeating one tiny pattern",
+            hook="Crystals build shape from repeating atoms.",
+            script=(
+                "Crystals build shape from repeating atoms. Watch the crystal edge first, "
+                "because each repeating unit gives the next layer a place to lock in."
+            ),
+            thumbnail_text="CRYSTAL GROWTH",
+            category="chemistry",
+        )
+    )
+
+    retention_opening = packaged["packaging"]["opening_retention"]
+    assert retention_opening["subject"] == "crystals"
+    assert "subject_not_frontloaded" not in retention_opening["risks"]
+    assert packaged["subject"] == "crystals"
+    assert packaged["cue"] == "crystal growth"
 
 
 def test_package_story_uses_nature_signal_language_for_trees():

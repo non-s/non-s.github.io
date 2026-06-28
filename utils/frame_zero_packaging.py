@@ -31,6 +31,25 @@ RETENTION_BRIDGE_RISKS = {
     "generic_opening_language",
     "formulaic_opening_language",
 }
+GENERIC_CUE_VALUES = {
+    "",
+    "cue",
+    "visible cue",
+    "first cue",
+    "hidden cue",
+    "one visible cue",
+    "watch the cue",
+}
+THUMBNAIL_FILLER_WORDS = {
+    "a",
+    "an",
+    "and",
+    "the",
+    "this",
+    "these",
+    "watch",
+    "why",
+}
 
 GENERIC_FRAME_ZERO_RE = re.compile(
     r"\b(?:detect changes with (?:their|its)|show why the [a-z ]+ matters|"
@@ -135,6 +154,57 @@ def _because_tail(script: str) -> str:
     return _first_sentence_tail(script).strip(" .")
 
 
+def _words(text: str) -> list[str]:
+    return re.findall(r"[A-Za-z0-9']+", str(text or ""))
+
+
+def _clean_phrase(value: object) -> str:
+    return re.sub(r"\s+", " ", str(value or "")).strip(" .,:;!?").lower()
+
+
+def _first_words(text: str, limit: int = 12) -> str:
+    return " ".join(_words(text)[:limit])
+
+
+def _cue_from_thumbnail(text: str) -> str:
+    words = [word.lower() for word in _words(text) if word.lower() not in THUMBNAIL_FILLER_WORDS]
+    return " ".join(words[:3]).strip()
+
+
+def _contract_cue(story: dict, opening: dict) -> str:
+    for value in (
+        story.get("cue"),
+        story.get("visual_cue"),
+        (story.get("curiosity_angle") or {}).get("cue"),
+        (story.get("frame_zero_repair") or {}).get("cue"),
+        _cue_from_thumbnail(str(story.get("thumbnail_text") or "")),
+    ):
+        cue = _clean_phrase(value)
+        if cue not in GENERIC_CUE_VALUES:
+            return cue
+    cue_terms = [term for term in (opening.get("cue_terms") or []) if _clean_phrase(term) not in GENERIC_CUE_VALUES]
+    return " ".join(cue_terms[:2]).strip()
+
+
+def materialize_opening_contract(story: dict) -> dict:
+    """Persist the same opening contract that the retention gate is scoring."""
+    out = dict(story)
+    script = str(out.get("script") or out.get("hook") or out.get("seo_title") or out.get("title") or "")
+    if script and not str(out.get("first_2s_narration") or "").strip():
+        out["first_2s_narration"] = _first_words(script, 12)
+    opening = score_retention_opening(out) if any(out.get(k) for k in ("hook", "script", "title")) else {}
+    subject = _clean_phrase(out.get("subject")) or _clean_phrase(opening.get("subject"))
+    cue = _contract_cue(out, opening)
+    if subject and not str(out.get("subject") or "").strip():
+        out["subject"] = subject
+    if cue:
+        if not str(out.get("cue") or "").strip():
+            out["cue"] = cue
+        if not str(out.get("visual_cue") or "").strip():
+            out["visual_cue"] = cue
+    return out
+
+
 def _frontload_package(package: dict) -> dict:
     """Make the generated angle repeat the visible cue in the first swipe window."""
     out = dict(package)
@@ -229,6 +299,7 @@ def apply_frame_zero_repair(story: dict) -> dict:
         out["frame_zero_packaging"] = score_frame_zero(out)
         return out
     out = candidate
+    out = materialize_opening_contract(out)
     if generic_repair:
         reason = "generic_opening_copy"
     elif stale_existing_repair or (existing_repair and bridge_gap):
