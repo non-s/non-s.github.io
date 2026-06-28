@@ -1,55 +1,116 @@
 {
-  "generated_at": "2026-06-28T02:11:28.484876+00:00",
-  "score": 55,
-  "state": "needs_work",
-  "issues": [
-    "queue_inventory_low",
-    "publish_ready_inventory_empty",
-    "no_agency_publish_now_candidate"
-  ],
+  "generated_at": "2026-06-28T03:21:33.386846+00:00",
+  "score": 100,
+  "state": "excellent",
+  "issues": [],
   "queue": {
-    "pending": 9,
-    "publish_ready": 0,
+    "pending": 22,
+    "publish_ready": 5,
     "categories": {
+      "birds": 1,
       "cats": 1,
       "chemistry": 1,
       "discoveries": 1,
-      "geology": 1,
+      "dogs": 1,
+      "earth_from_space": 3,
+      "ecosystems": 1,
+      "forests": 2,
+      "geology": 2,
       "physics": 1,
-      "plants": 1,
+      "plants": 4,
       "rivers": 2,
-      "wildlife": 1
+      "wildlife": 2
     },
     "duplicate_scripts": 0,
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 8,
-      "editor_in_chief:cooldown_subject": 3,
-      "agency_gate:success_recovery_format_required": 3,
-      "agency_gate:success_recovery_hook_required": 3,
+      "queue_prune:rewrite": 14,
+      "agency_gate:success_recovery_format_required": 9,
+      "agency_gate:success_recovery_hook_required": 9,
+      "editor_in_chief:cooldown_subject": 7,
+      "agency_gate:category_recovery_rules_not_met": 3,
       "youtube_brain:subject_not_immediately_clear": 3,
-      "agency_gate:category_recovery_rules_not_met": 2,
+      "ops_guardian_paused_category:rivers": 2,
+      "editor_in_chief:needs_ai_rewrite": 2,
       "youtube_brain:title_shape_weak": 2,
       "packaging:title_needs_stronger_shape": 2,
       "packaging:subject_not_clear": 2,
       "publish_score:rewrite": 1,
+      "ops_guardian_paused_category:birds": 1,
       "publish_blocklist:monetization audit needs review": 1,
       "packaging:missing_action_word": 1
     }
   },
   "seo": {
-    "average_score": 100.0,
-    "animal_frontloaded_pct": 100.0,
-    "subject_frontloaded_pct": 100.0
+    "average_score": 98.36,
+    "animal_frontloaded_pct": 95.45,
+    "subject_frontloaded_pct": 95.45
   },
   "agency": {
-    "average_score": 64.4,
+    "average_score": 63.4,
     "decisions": {
-      "hold": 3,
-      "strong_candidate": 6
+      "hold": 10,
+      "publish_now": 5,
+      "strong_candidate": 7
     },
     "top": [
+      {
+        "title": "Dogs detect changes with their nose",
+        "category": "dogs",
+        "score": 90,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Forests detect changes with their pattern",
+        "category": "forests",
+        "score": 84,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Birds detect changes with their wing",
+        "category": "birds",
+        "score": 83,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Rock layers store old environments in stripes",
+        "category": "geology",
+        "score": 83,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Mountains detect changes with their pattern",
+        "category": "earth_from_space",
+        "score": 82,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
       {
         "title": "Cats groom to reset their scent map",
         "category": "cats",
@@ -62,6 +123,17 @@
         ]
       },
       {
+        "title": "Ecosystems detect changes with their pattern",
+        "category": "ecosystems",
+        "score": 79,
+        "decision": "strong_candidate",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Crystals grow by repeating one tiny pattern",
         "category": "chemistry",
         "score": 78,
@@ -69,68 +141,6 @@
         "strengths": [
           "strong_quality",
           "timely_trend"
-        ]
-      },
-      {
-        "title": "Rivers carry stone grains while they flow",
-        "category": "rivers",
-        "score": 78,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality"
-        ]
-      },
-      {
-        "title": "Rivers sort mud and sand along each bank",
-        "category": "rivers",
-        "score": 78,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Magnets make invisible fields visible",
-        "category": "physics",
-        "score": 76,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Fossils turn old bones into time clues",
-        "category": "discoveries",
-        "score": 73,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Deer can aim each ear toward danger",
-        "category": "wildlife",
-        "score": 40,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "timely_trend",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Plants speed growth under protected glass",
-        "category": "plants",
-        "score": 39,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
         ]
       }
     ]
