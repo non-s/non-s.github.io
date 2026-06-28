@@ -1,52 +1,73 @@
 {
-  "generated_at": "2026-06-28T03:20:41.736189+00:00",
-  "pending": 22,
+  "generated_at": "2026-06-28T03:31:24.078534+00:00",
+  "pending": 21,
   "states": {
-    "rewrite": 14,
-    "publish_ready": 8
+    "rewrite": 15,
+    "publish_ready": 6
   },
   "mechanism_clusters": {
     "scent_map": 1,
     "wing_signal": 1
   },
   "rights": {
-    "approved": 22
+    "approved": 21
   },
   "prune_summary": {
-    "pending_before": 40,
-    "pending_after": 22,
-    "rejected": 18,
-    "repair_needed": 3,
-    "repaired": 12,
+    "pending_before": 21,
+    "pending_after": 21,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 17,
-      "duplicate_title": 10,
       "editor_in_chief:subject repeated inside 3-day cooldown": 7,
-      "off_topic_visual": 5,
-      "duplicate_script": 5,
-      "duplicate_angle": 5,
-      "subject_not_immediately_clear": 3,
-      "no_action_promise": 3,
-      "missing_action_word": 3,
-      "queue_score_reject": 3,
-      "objective_gate:observe_before_scaling": 3,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
-      "copy_subject_mismatch": 2,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "rights_guard_person_manual_review": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "subject_not_clear": 1,
-      "missing_visible_cue": 1,
-      "editor_in_chief:editorial score 47 is below 62": 1,
+      "editor_in_chief:editorial score 47 is below 62": 2,
+      "objective_gate:observe_before_scaling": 2,
       "objective_gate:payoff_too_late_for_current_swipe_baseline": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "script_subject_mismatch": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editor_in_chief:editorial score 48 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "02d8431c440c5385",
+      "title": "Dogs Perros detectan cambios con su nariz",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 43 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
+    {
+      "id": "3966cfc20f36bfc3",
+      "title": "Mountains detect changes with their pattern",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "5e0570702e95d59d",
+      "title": "Ecosystems detect changes with their pattern",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "6e259136a0dfd4c6",
+      "title": "Forests detect changes with their pattern",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "e410eda7a6649700",
       "title": "Crystals grow by repeating one tiny pattern",
@@ -291,43 +312,6 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "131bf03d9d2bc6bc",
-      "title": "Sambar deer ears aren’t just for hearing",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "651f8ab823f9f06f",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0101e531c22a03df",
-      "title": "Cats use whiskers like built-in rulers",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7fdc62557df3560c",
-      "title": "Sheep Ovejas reconocen rostros en el rebaño",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 40 is below 62"
-      ],
-      "stage": "editor_in_chief"
     }
   ],
   "top": [
@@ -339,15 +323,15 @@
         "approved": true,
         "category": "birds",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.427,
+          "bootstrap_multiplier": 0.434,
           "can_adjust_strategy": false,
-          "confidence_score": 0.236,
+          "confidence_score": 0.246,
           "data_quality": "estimated",
-          "data_quality_score": 0.61,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.24.",
+          "data_quality_score": 0.48,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.25.",
           "recommendation_strength": "observe",
-          "sample_size": 13
+          "sample_size": 14
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -357,7 +341,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.236,
+          "confidence_score": 0.246,
           "mechanism_cluster": "wing_signal",
           "payoff_time_s": 8.25,
           "penalty": 0.0,
@@ -429,23 +413,24 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.413,
+            "bootstrap_multiplier": 0.448,
             "can_adjust_strategy": false,
-            "confidence_score": 0.217,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
+            "confidence_score": 0.264,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
             "recommendation_strength": "observe",
-            "sample_size": 6
+            "sample_size": 7
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "return_probability": 0.3,
           "robotic_title": {
@@ -478,7 +463,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.104406+00:00",
+        "checked_at": "2026-06-28T03:31:09.313478+00:00",
         "mechanism_cluster": "wing_signal",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -545,7 +530,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -631,12 +616,12 @@
           "thumbnail_text": "UV VISION",
           "title": "Birds see ultraviolet patterns we miss"
         },
-        "series": "Watch The Cue",
+        "series": "Sky Intelligence #6",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Sky Intelligence: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Sky Intelligence #6",
+          "series": "Sky Intelligence"
         },
         "state": "magnetic",
         "strengths": [
@@ -649,23 +634,24 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.413,
+            "bootstrap_multiplier": 0.448,
             "can_adjust_strategy": false,
-            "confidence_score": 0.217,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
+            "confidence_score": 0.264,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
             "recommendation_strength": "observe",
-            "sample_size": 6
+            "sample_size": 7
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "return_probability": 0.3,
           "robotic_title": {
@@ -929,7 +915,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.355899+00:00",
+        "checked_at": "2026-06-28T03:31:09.318367+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -994,7 +980,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1377,7 +1363,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.358884+00:00",
+        "checked_at": "2026-06-28T03:31:09.320352+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1442,7 +1428,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1685,15 +1671,15 @@
         "approved": true,
         "category": "earth_from_space",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.376,
+          "bootstrap_multiplier": 0.351,
           "can_adjust_strategy": false,
-          "confidence_score": 0.168,
+          "confidence_score": 0.135,
           "data_quality": "observed",
           "data_quality_score": 0.825,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.17.",
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.14.",
           "recommendation_strength": "observe",
-          "sample_size": 9
+          "sample_size": 7
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1703,7 +1689,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.168,
+          "confidence_score": 0.135,
           "mechanism_cluster": "",
           "payoff_time_s": 8.25,
           "penalty": 0.0,
@@ -1775,17 +1761,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.496,
+            "bootstrap_multiplier": 0.371,
             "can_adjust_strategy": false,
-            "confidence_score": 0.328,
+            "confidence_score": 0.161,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 6
+            "sample_size": 4
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -1825,7 +1811,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.663160+00:00",
+        "checked_at": "2026-06-28T03:31:09.326617+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1892,7 +1878,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1978,12 +1964,12 @@
           "thumbnail_text": "STORM ENGINE",
           "title": "Storm clouds reveal a storm's heat engine"
         },
-        "series": "Earth Engine #4",
+        "series": "Planet Earth #3",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
-          "episode": 4,
-          "label": "Earth Engine #4",
-          "series": "Earth Engine"
+          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Planet Earth #3",
+          "series": "Planet Earth"
         },
         "state": "magnetic",
         "strengths": [
@@ -1996,17 +1982,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.496,
+            "bootstrap_multiplier": 0.371,
             "can_adjust_strategy": false,
-            "confidence_score": 0.328,
+            "confidence_score": 0.161,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 6
+            "sample_size": 4
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.33.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -2276,7 +2262,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.668678+00:00",
+        "checked_at": "2026-06-28T03:31:09.330816+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2343,7 +2329,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2727,7 +2713,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:29.451643+00:00",
+        "checked_at": "2026-06-28T03:31:09.340896+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2794,7 +2780,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3177,7 +3163,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.357454+00:00",
+        "checked_at": "2026-06-28T03:31:09.322419+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3242,7 +3228,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3625,7 +3611,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.675621+00:00",
+        "checked_at": "2026-06-28T03:31:09.344487+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3693,7 +3679,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4080,7 +4066,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.101939+00:00",
+        "checked_at": "2026-06-28T03:31:09.311617+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4146,7 +4132,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4232,11 +4218,11 @@
           "thumbnail_text": "GROOMING SIGNAL",
           "title": "Cats groom to reset their scent map"
         },
-        "series": "Pet Secrets #5",
+        "series": "Pet Secrets #6",
         "series_identity": {
           "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Pet Secrets #5",
+          "episode": 6,
+          "label": "Pet Secrets #6",
           "series": "Pet Secrets"
         },
         "state": "magnetic",
@@ -4367,918 +4353,6 @@
             "score": 65,
             "thumbnail_text": "CATS SIGNAL",
             "title": "Cats groom to reset their scent map"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "02d8431c440c5385",
-      "title": "Dogs detect changes with their nose",
-      "category": "dogs",
-      "publish_score": {
-        "approved": true,
-        "category": "dogs",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.39,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.187,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
-          "recommendation_strength": "observe",
-          "sample_size": 7
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.187,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.25,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "score": 46,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 50,
-            "emotional_potential": 27,
-            "novelty": 47,
-            "replay_potential": 66,
-            "viral_potential": 47,
-            "visual_potential": 37
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "cute_behavior",
-        "subscriber_conversion": {
-          "comment_probability": 0.247,
-          "confidence": {
-            "bootstrap_multiplier": 0.349,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.133,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.289,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 96,
-          "state": "strong",
-          "subscriber_probability": 0.137
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.352530+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "publish_ready_supply_reserve_fallback"
-        ],
-        "score": 78.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "dogs",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "cute_behavior",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "dogs",
-        "viewer_promise": "See why this visible behavior matters for dogs."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after dogs?",
-        "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
-        "curiosity_gap": {
-          "hook": "Why do these dogs change after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "cute behavior",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 72,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "hook_options": [
-          "Dogs build a map with smell",
-          "Dogs detect changes with their nose",
-          "Dogs show why the scent map matters.",
-          "Dogs show why the scent map matters.",
-          "Dogs show why the scent map matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "dogs",
-          "ending_line": "Which dog clue should we decode next?",
-          "final_line": "Which dog clue should we decode next?",
-          "loop_score": 0.286,
-          "opening_line": "Dogs detect changes with their nose.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "dogs",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.286,
-        "pinned_comment": "Watch the body again. Tomorrow: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.33,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Dogs detect changes with their nose Watch the nose first because that",
-          "first_frame_text": "NOSE SIGNAL",
-          "first_frame_text_words": 2,
-          "hook": "Dogs detect changes with their nose.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.286,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8.25,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the body, so viewers rewatch the dogs clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 93,
-        "selected_variant": {
-          "hook": "Dogs build a map with smell",
-          "score": 76,
-          "thumbnail_text": "SCENT MAP",
-          "title": "Dogs read the world through scent maps"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.247,
-          "confidence": {
-            "bootstrap_multiplier": 0.349,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.133,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.289,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 96,
-          "state": "strong",
-          "subscriber_probability": 0.137
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SCENT MAP",
-          "WATCH SCENT MAP",
-          "DOGS SIGNAL",
-          "SCENT MAP MATTERS",
-          "SCENT MAP FIRST",
-          "SCENT MAP REVEAL",
-          "SCENT MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Dogs read the world through scent maps",
-          "Dogs detect changes with their nose",
-          "Dogs signal through scent map",
-          "Dogs use scent map before they signal",
-          "This scent map gives dogs away",
-          "Why dogs signal after one scent map",
-          "Dogs reveal the answer with scent map",
-          "The scent map that changes the moment",
-          "Dogs make one scent map matter",
-          "Dogs show the hidden answer in seconds"
-        ],
-        "top_variants": [
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 76,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs detect changes with their nose",
-            "score": 76,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Watch the scent map; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 69,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs detect changes with their nose",
-            "score": 69,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 69,
-            "thumbnail_text": "DOGS SIGNAL",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs detect changes with their nose",
-            "score": 69,
-            "thumbnail_text": "DOGS SIGNAL",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 69,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs detect changes with their nose",
-            "score": 69,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 69,
-            "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Dogs read the world through scent maps"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "99913d1f2071110b",
-      "title": "Elephants cool blood through giant ears",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.554,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.406,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.41.",
-          "recommendation_strength": "observe",
-          "sample_size": 21
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.406,
-          "mechanism_cluster": "",
-          "payoff_time_s": 9.9,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [],
-          "scale_ready": true,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 56,
-            "educational_potential": 67,
-            "emotional_potential": 38,
-            "novelty": 53,
-            "replay_potential": 76,
-            "viral_potential": 74,
-            "visual_potential": 73
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 81,
-          "signals": {
-            "completion_prediction": 94,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.242,
-          "confidence": {
-            "bootstrap_multiplier": 0.48,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.306,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
-            "recommendation_strength": "observe",
-            "sample_size": 9
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.283,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 94,
-          "state": "strong",
-          "subscriber_probability": 0.134
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-28T03:20:27.827862+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
-        ],
-        "score": 72.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "elephants",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "elephants",
-        "viewer_promise": "See why elephants body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after elephants?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why does this conservation changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "loop callback is weak"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 72,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "hook_options": [
-          "Elephants use their ears as living radiators",
-          "Elephants show why the ear radiator matters.",
-          "Elephants show why the ear radiator matters.",
-          "Elephants show why the ear radiator matters.",
-          "Elephants give away the answer through ear radiator"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "elephants",
-          "ending_line": "Which giant animal trick next?",
-          "final_line": "Which giant animal trick next?",
-          "loop_score": 0.252,
-          "opening_line": "Elephants use their ears as living radiators.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "elephants",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.252,
-        "pinned_comment": "Watch the ear radiator again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.17,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
-          "first_frame_text": "EAR RADIATOR",
-          "first_frame_text_words": 2,
-          "hook": "Elephants use their ears as living radiators.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.252,
-          "novelty_score": 0.58,
-          "payoff_time_s": 9.9,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ear radiator, so viewers rewatch the elephants clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.485,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.313,
-            "data_quality": "observed",
-            "data_quality_score": 0.783,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
-          "reasons": [],
-          "score": 81,
-          "signals": {
-            "completion_prediction": 94,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "ready"
-        },
-        "risks": [],
-        "score": 95,
-        "selected_variant": {
-          "hook": "Elephants use their ears as living radiators",
-          "score": 80,
-          "thumbnail_text": "EAR RADIATOR",
-          "title": "Elephants cool blood through giant ears"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.242,
-          "confidence": {
-            "bootstrap_multiplier": 0.48,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.306,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
-            "recommendation_strength": "observe",
-            "sample_size": 9
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.31.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.283,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 94,
-          "state": "strong",
-          "subscriber_probability": 0.134
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "EAR RADIATOR",
-          "WATCH EAR RADIATOR",
-          "ELEPHANTS TRICK",
-          "EAR RADIATOR MATTERS",
-          "EAR RADIATOR FIRST",
-          "EAR RADIATOR REVEAL",
-          "EAR RADIATOR CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Elephants cool blood through giant ears",
-          "Elephants use ear radiator before they trick",
-          "This ear radiator gives elephants away",
-          "Why elephants trick after one ear radiator",
-          "Elephants reveal the answer with ear radiator",
-          "The ear radiator that changes the moment",
-          "Elephants make one ear radiator matter",
-          "Elephants show the hidden answer in seconds",
-          "Elephants: watch this ear radiator",
-          "Watch elephants after the ear radiator"
-        ],
-        "top_variants": [
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 80,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "EAR RADIATOR FIRST",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 73,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
           }
         ]
       },
@@ -5441,7 +4515,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.669987+00:00",
+        "checked_at": "2026-06-28T03:31:09.332343+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5507,7 +4581,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5889,7 +4963,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.672698+00:00",
+        "checked_at": "2026-06-28T03:31:09.336297+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5957,7 +5031,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6339,7 +5413,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.674025+00:00",
+        "checked_at": "2026-06-28T03:31:09.342511+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6408,7 +5482,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6791,7 +5865,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.953165+00:00",
+        "checked_at": "2026-06-28T03:31:09.346564+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6862,7 +5936,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7245,7 +6319,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:27.826786+00:00",
+        "checked_at": "2026-06-28T03:31:09.309311+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -7314,7 +6388,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7552,6 +6626,457 @@
       }
     },
     {
+      "id": "99913d1f2071110b",
+      "title": "Elephants cool blood through giant ears",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.581,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.441,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.44.",
+          "recommendation_strength": "observe",
+          "sample_size": 27
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.441,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [],
+          "scale_ready": true,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.485,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.313,
+            "data_quality": "observed",
+            "data_quality_score": 0.783,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 56,
+            "educational_potential": 67,
+            "emotional_potential": 38,
+            "novelty": 53,
+            "replay_potential": 76,
+            "viral_potential": 74,
+            "visual_potential": 73
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.485,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.313,
+            "data_quality": "observed",
+            "data_quality_score": 0.783,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+          "reasons": [],
+          "score": 81,
+          "signals": {
+            "completion_prediction": 94,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.613,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.484,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
+            "recommendation_strength": "observe",
+            "sample_size": 15
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-28T03:31:09.310541+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "editor_in_chief:editorial score 47 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "elephants",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "elephants",
+        "viewer_promise": "See why elephants body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after elephants?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why does this conservation changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "loop callback is weak"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 73,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.04,
+            "cta:specific_question": 41.66,
+            "format:winner_inspired": 43.57,
+            "hook:pattern_reuse": 43.57,
+            "thumbnail:new_thumbnail": 42.9
+          }
+        },
+        "hook_options": [
+          "Elephants use their ears as living radiators",
+          "Elephants show why the ear radiator matters.",
+          "Elephants show why the ear radiator matters.",
+          "Elephants show why the ear radiator matters.",
+          "Elephants give away the answer through ear radiator"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "elephants",
+          "ending_line": "Which giant animal trick next?",
+          "final_line": "Which giant animal trick next?",
+          "loop_score": 0.252,
+          "opening_line": "Elephants use their ears as living radiators.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "elephants",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.252,
+        "pinned_comment": "Watch the ear radiator again. Tomorrow: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.17,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
+          "first_frame_text": "EAR RADIATOR",
+          "first_frame_text_words": 2,
+          "hook": "Elephants use their ears as living radiators.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.252,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ear radiator, so viewers rewatch the elephants clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.485,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.313,
+            "data_quality": "observed",
+            "data_quality_score": 0.783,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only.",
+          "reasons": [],
+          "score": 81,
+          "signals": {
+            "completion_prediction": 94,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "risks": [],
+        "score": 95,
+        "selected_variant": {
+          "hook": "Elephants use their ears as living radiators",
+          "score": 80,
+          "thumbnail_text": "EAR RADIATOR",
+          "title": "Elephants cool blood through giant ears"
+        },
+        "series": "Animal Superpowers #18",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 18,
+          "label": "Animal Superpowers #18",
+          "series": "Animal Superpowers"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.613,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.484,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
+            "recommendation_strength": "observe",
+            "sample_size": 15
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.48.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "EAR RADIATOR",
+          "WATCH EAR RADIATOR",
+          "ELEPHANTS TRICK",
+          "EAR RADIATOR MATTERS",
+          "EAR RADIATOR FIRST",
+          "EAR RADIATOR REVEAL",
+          "EAR RADIATOR CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Elephants cool blood through giant ears",
+          "Elephants use ear radiator before they trick",
+          "This ear radiator gives elephants away",
+          "Why elephants trick after one ear radiator",
+          "Elephants reveal the answer with ear radiator",
+          "The ear radiator that changes the moment",
+          "Elephants make one ear radiator matter",
+          "Elephants show the hidden answer in seconds",
+          "Elephants: watch this ear radiator",
+          "Watch elephants after the ear radiator"
+        ],
+        "top_variants": [
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 80,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "EAR RADIATOR FIRST",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 73,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "ca66243c1b8718b8",
       "title": "Rock layers reveal heat moving under the surface",
       "category": "geology",
@@ -7697,7 +7222,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.354363+00:00",
+        "checked_at": "2026-06-28T03:31:09.316238+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7765,7 +7290,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8003,457 +7528,6 @@
       }
     },
     {
-      "id": "6071d1c9c459c55b",
-      "title": "Storm clouds reveal rising air engines",
-      "category": "earth_from_space",
-      "publish_score": {
-        "approved": true,
-        "category": "earth_from_space",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.351,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.135,
-          "data_quality": "observed",
-          "data_quality_score": 0.825,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.14.",
-          "recommendation_strength": "observe",
-          "sample_size": 7
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.135,
-          "mechanism_cluster": "",
-          "payoff_time_s": 8.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 60,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 55,
-            "replay_potential": 60,
-            "viral_potential": 48,
-            "visual_potential": 95
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.371,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.161,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.664981+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:script quality gate blocked the narration",
-          "editor_in_chief:editorial score 40 is below 62"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "storm",
-        "commands": [],
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "storm",
-        "viewer_promise": "See why this storm earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which nature topic should Wild Brief explain next after storm?",
-        "cta_prompt": "Want more planet-scale nature explained fast?",
-        "curiosity_gap": {
-          "hook": "Why does this weather changes after the body cue?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 72,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.04,
-            "cta:specific_question": 41.66,
-            "format:winner_inspired": 43.57,
-            "hook:pattern_reuse": 43.57,
-            "thumbnail:new_thumbnail": 42.9
-          }
-        },
-        "hook_options": [
-          "Storm clouds show where a storm is feeding",
-          "Storm clouds reveal rising air engines",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "storm",
-          "ending_line": "Which cloud clue should we decode next?",
-          "final_line": "Which cloud clue should we decode next?",
-          "loop_score": 0.303,
-          "opening_line": "Storm clouds reveal rising air engines.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "storm",
-            "subtle_audio_tail": true
-          },
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.303,
-        "pinned_comment": "Watch the clouds again. Tomorrow: another nature signal. Which planet-scale clue should we compare next?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.57,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "first_2s_narration": "Storm clouds reveal rising air engines Watch the cloud edge first because",
-          "first_frame_text": "STORM ENGINE",
-          "first_frame_text_words": 2,
-          "hook": "Storm clouds reveal rising air engines.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.303,
-          "novelty_score": 0.58,
-          "payoff_time_s": 8,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the clouds, so viewers rewatch the storm clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "rewrite"
-        },
-        "risks": [],
-        "score": 93,
-        "selected_variant": {
-          "hook": "Storm clouds show where a storm is feeding",
-          "score": 80,
-          "thumbnail_text": "STORM ENGINE",
-          "title": "Storm clouds reveal a storm's heat engine"
-        },
-        "series": "Planet Earth #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Planet Earth #3",
-          "series": "Planet Earth"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.371,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.161,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL",
-          "STORM CLOUDS COOLS",
-          "CLOUD SPIRAL MATTERS",
-          "CLOUD SPIRAL FIRST",
-          "CLOUD SPIRAL REVEAL",
-          "CLOUD SPIRAL CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Storm clouds reveal a storm's heat engine",
-          "Storm clouds reveal rising air engines",
-          "Storm clouds use cloud spiral before they cools",
-          "This cloud spiral gives storm clouds away",
-          "Storm clouds reveal the answer with cloud spiral",
-          "The cloud spiral that changes the moment",
-          "Storm clouds show the hidden answer in seconds",
-          "Storm clouds: watch this cloud spiral"
-        ],
-        "top_variants": [
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds reveal rising air engines",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds reveal rising air engines",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds reveal rising air engines",
-            "score": 73,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 73,
-            "thumbnail_text": "STORM CLOUDS COOLS",
-            "title": "Storm clouds reveal a storm's heat engine"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "38ddb92e41313cd3",
       "title": "Earth clouds reveal moving air from above",
       "category": "earth_from_space",
@@ -8600,7 +7674,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.667132+00:00",
+        "checked_at": "2026-06-28T03:31:09.324467+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8666,7 +7740,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8903,8 +7977,910 @@
       }
     },
     {
-      "id": "5ee52211d803d24c",
-      "title": "Plants speed growth under protected glass",
+      "id": "6071d1c9c459c55b",
+      "title": "Storm clouds reveal rising air engines",
+      "category": "earth_from_space",
+      "publish_score": {
+        "approved": true,
+        "category": "earth_from_space",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.351,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.135,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.14.",
+          "recommendation_strength": "observe",
+          "sample_size": 7
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.135,
+          "mechanism_cluster": "",
+          "payoff_time_s": 8.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 60,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 55,
+            "replay_potential": 60,
+            "viral_potential": 48,
+            "visual_potential": 95
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.371,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.161,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-28T03:31:09.328860+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:script quality gate blocked the narration",
+          "editor_in_chief:editorial score 40 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "storm",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "storm",
+        "viewer_promise": "See why this storm earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after storm?",
+        "cta_prompt": "Want more planet-scale nature explained fast?",
+        "curiosity_gap": {
+          "hook": "Why does this weather changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 73,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.04,
+            "cta:specific_question": 41.66,
+            "format:winner_inspired": 43.57,
+            "hook:pattern_reuse": 43.57,
+            "thumbnail:new_thumbnail": 42.9
+          }
+        },
+        "hook_options": [
+          "Storm clouds show where a storm is feeding",
+          "Storm clouds reveal rising air engines",
+          "Storm shows why the cloud spiral matters.",
+          "Storm shows why the cloud spiral matters.",
+          "Storm shows why the cloud spiral matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "storm",
+          "ending_line": "Which cloud clue should we decode next?",
+          "final_line": "Which cloud clue should we decode next?",
+          "loop_score": 0.303,
+          "opening_line": "Storm clouds reveal rising air engines.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "storm",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.303,
+        "pinned_comment": "Watch the clouds again. Tomorrow: another nature signal. Which planet-scale clue should we compare next?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.57,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Storm clouds reveal rising air engines Watch the cloud edge first because",
+          "first_frame_text": "STORM ENGINE",
+          "first_frame_text_words": 2,
+          "hook": "Storm clouds reveal rising air engines.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.303,
+          "novelty_score": 0.58,
+          "payoff_time_s": 8,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the clouds, so viewers rewatch the storm clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 93,
+        "selected_variant": {
+          "hook": "Storm clouds show where a storm is feeding",
+          "score": 80,
+          "thumbnail_text": "STORM ENGINE",
+          "title": "Storm clouds reveal a storm's heat engine"
+        },
+        "series": "Planet Earth #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Planet Earth #3",
+          "series": "Planet Earth"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.371,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.161,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "STORM ENGINE",
+          "CLOUD SPIRAL",
+          "WATCH CLOUD SPIRAL",
+          "STORM CLOUDS COOLS",
+          "CLOUD SPIRAL MATTERS",
+          "CLOUD SPIRAL FIRST",
+          "CLOUD SPIRAL REVEAL",
+          "CLOUD SPIRAL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Storm clouds reveal a storm's heat engine",
+          "Storm clouds reveal rising air engines",
+          "Storm clouds use cloud spiral before they cools",
+          "This cloud spiral gives storm clouds away",
+          "Storm clouds reveal the answer with cloud spiral",
+          "The cloud spiral that changes the moment",
+          "Storm clouds show the hidden answer in seconds",
+          "Storm clouds: watch this cloud spiral"
+        ],
+        "top_variants": [
+          {
+            "hook": "Storm clouds show where a storm is feeding",
+            "score": 80,
+            "thumbnail_text": "STORM ENGINE",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds reveal rising air engines",
+            "score": 80,
+            "thumbnail_text": "STORM ENGINE",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Watch the cloud spiral; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "STORM ENGINE",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds show where a storm is feeding",
+            "score": 73,
+            "thumbnail_text": "CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds reveal rising air engines",
+            "score": 73,
+            "thumbnail_text": "CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Watch the cloud spiral; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds show where a storm is feeding",
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds reveal rising air engines",
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Watch the cloud spiral; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH CLOUD SPIRAL",
+            "title": "Storm clouds reveal a storm's heat engine"
+          },
+          {
+            "hook": "Storm clouds show where a storm is feeding",
+            "score": 73,
+            "thumbnail_text": "STORM CLOUDS COOLS",
+            "title": "Storm clouds reveal a storm's heat engine"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "38dbf456533a02c3",
+      "title": "Plants use trap hairs to count touches before closing",
+      "category": "plants",
+      "publish_score": {
+        "approved": true,
+        "category": "plants",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 9.9,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 60,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 71,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 82,
+            "viral_potential": 63,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "plant_mechanism",
+        "subscriber_conversion": {
+          "comment_probability": 0.237,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.278,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 92,
+          "state": "strong",
+          "subscriber_probability": 0.131
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-28T03:31:09.334198+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "editor_in_chief:editorial score 48 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "plants",
+        "commands": [],
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "plant_mechanism",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "plants",
+        "viewer_promise": "See why this plant plant mechanism matters."
+      },
+      "packaging": {
+        "community_prompt": "Which nature topic should Wild Brief explain next after plants?",
+        "cta_prompt": "Want to see how plants quietly engineer survival?",
+        "curiosity_gap": {
+          "hook": "Why does this plantscience changes after the body cue?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "plant mechanism",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 73,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.04,
+            "cta:specific_question": 41.66,
+            "format:winner_inspired": 43.57,
+            "hook:pattern_reuse": 43.57,
+            "thumbnail:new_thumbnail": 42.9
+          }
+        },
+        "hook_options": [
+          "Plants use trap hairs to count touches before closing",
+          "Plants show why the trap hairs matters.",
+          "Plants show why the trap hairs matters.",
+          "Plants show why the trap hairs matters.",
+          "Plants give away the answer through trap hairs"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "plants",
+          "ending_line": "Which plant trick should we decode next?",
+          "final_line": "Which plant trick should we decode next?",
+          "loop_score": 0.319,
+          "opening_line": "Plants use trap hairs to count touches before closing.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "plants",
+            "subtle_audio_tail": true
+          },
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.319,
+        "pinned_comment": "Watch the trap hairs again. Tomorrow: another nature signal. Do plants feel more passive, reactive, or strategic here?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.17,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "first_2s_narration": "Plants use trap hairs to count touches before closing Watch the trap",
+          "first_frame_text": "TRAP HAIRS",
+          "first_frame_text_words": 2,
+          "hook": "Plants use trap hairs to count touches before closing.",
+          "hook_specificity": 0.78,
+          "hook_words": 9,
+          "loop_score": 0.319,
+          "novelty_score": 0.58,
+          "payoff_time_s": 9.9,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the trap hairs, so viewers rewatch the plants clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "risks": [],
+        "score": 92,
+        "selected_variant": {
+          "hook": "Watch the trap hairs; it explains the behavior",
+          "score": 79,
+          "thumbnail_text": "TRAP HAIRS",
+          "title": "Plants use trap hairs to count touches before snapping shut"
+        },
+        "series": "Biology Brief #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Biology Brief #3",
+          "series": "Biology Brief"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.237,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.278,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 92,
+          "state": "strong",
+          "subscriber_probability": 0.131
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TRAP HAIRS",
+          "WATCH TRAP HAIRS",
+          "PLANTS TRICK",
+          "TRAP HAIRS MATTERS",
+          "TRAP HAIRS FIRST",
+          "TRAP HAIRS REVEAL",
+          "TRAP HAIRS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Plants use trap hairs to count touches before snapping shut",
+          "Plants use trap hairs to count touches before closing",
+          "Plants use trap hairs before they trick",
+          "Why plants trick after one trap hairs",
+          "Plants reveal the answer with trap hairs",
+          "The trap hairs that changes the moment",
+          "Plants make one trap hairs matter",
+          "Plants show the hidden answer in seconds",
+          "Plants: watch this trap hairs"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Plants use trap hairs to count touches before closing",
+            "score": 78,
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "PLANTS TRICK",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "PLANTS TRICK",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS MATTERS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS MATTERS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS FIRST",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "80c7fb8f6acf5690",
+      "title": "Plants turn light into food",
       "category": "plants",
       "publish_score": {
         "approved": true,
@@ -8953,18 +8929,16 @@
             "sample_size": 0
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [
-            "weak_visual_surface"
-          ],
-          "score": 55,
+          "reasons": [],
+          "score": 61,
           "signals": {
             "comment_potential": 54,
-            "educational_potential": 78,
-            "emotional_potential": 35,
+            "educational_potential": 64,
+            "emotional_potential": 44,
             "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 55,
-            "visual_potential": 45
+            "replay_potential": 72,
+            "viral_potential": 66,
+            "visual_potential": 65
           },
           "verdict": "rewrite"
         },
@@ -8986,13 +8960,13 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 71,
+          "score": 70,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 71,
-            "hook_score": 82,
+            "hook_score": 70,
             "replay_score": 62,
-            "visual_score": 50
+            "visual_score": 66
           },
           "verdict": "rewrite"
         },
@@ -9050,7 +9024,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-28T03:20:28.670965+00:00",
+        "checked_at": "2026-06-28T03:31:09.337648+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9091,7 +9065,7 @@
         "community_prompt": "Which nature topic should Wild Brief explain next after plants?",
         "cta_prompt": "Want to see how plants quietly engineer survival?",
         "curiosity_gap": {
-          "hook": "Why does this biology changes after the body cue?",
+          "hook": "Why does this nature changes after the body cue?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -9118,7 +9092,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 72,
+          "sample_count": 73,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9133,19 +9107,19 @@
           }
         },
         "hook_options": [
-          "Plants grow faster when warmth stays trapped",
-          "Plants show why the protected leaves matters.",
-          "Plants show why the protected leaves matters.",
-          "Plants show why the protected leaves matters.",
-          "Plants give away the answer through protected leaves"
+          "Plants turn light into food",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters.",
+          "Plants give away the answer through leaf surface"
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "plants",
-          "ending_line": "Which growing trick should we test next?",
-          "final_line": "Which growing trick should we test next?",
-          "loop_score": 0.249,
-          "opening_line": "Plants grow faster when warmth stays trapped.",
+          "ending_line": "Which plant clue should we decode next?",
+          "final_line": "Which plant clue should we decode next?",
+          "loop_score": 0.284,
+          "opening_line": "Plants turn light into food.",
           "render_hints": {
             "avoid_hard_stop": true,
             "carry_keyword": "plants",
@@ -9153,25 +9127,25 @@
           },
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.249,
-        "pinned_comment": "Watch the protected leaves again. Tomorrow: another nature signal. Do plants feel more passive, reactive, or strategic here?",
+        "loop_score": 0.284,
+        "pinned_comment": "Watch the leaf surface again. Tomorrow: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "preflight_inputs": {
-          "caption_chars_per_second": 17.27,
+          "caption_chars_per_second": 14.93,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "first_2s_narration": "Plants grow faster when warmth stays trapped Watch the protected leaves because",
-          "first_frame_text": "GREENHOUSE BOOST",
-          "first_frame_text_words": 2,
-          "hook": "Plants grow faster when warmth stays trapped.",
+          "first_2s_narration": "Plants turn light into food Watch the leaf surface because chlorophyll captures",
+          "first_frame_text": "LIGHT TO SUGAR",
+          "first_frame_text_words": 3,
+          "hook": "Plants turn light into food.",
           "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.249,
+          "hook_words": 5,
+          "loop_score": 0.284,
           "novelty_score": 0.58,
           "payoff_time_s": 8.25,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the protected leaves, so viewers rewatch the plants clip.",
+        "replay_prompt": "End by pointing back to the leaf surface, so viewers rewatch the plants clip.",
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -9186,23 +9160,23 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 71,
+          "score": 70,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 71,
-            "hook_score": 82,
+            "hook_score": 70,
             "replay_score": 62,
-            "visual_score": 50
+            "visual_score": 66
           },
           "verdict": "rewrite"
         },
         "risks": [],
         "score": 91,
         "selected_variant": {
-          "hook": "Plants grow faster when warmth stays trapped",
-          "score": 76,
-          "thumbnail_text": "GREENHOUSE BOOST",
-          "title": "Plants speed growth under protected glass"
+          "hook": "Start with the leaf surface; it changes the scene",
+          "score": 79,
+          "thumbnail_text": "LIGHT TO SUGAR",
+          "title": "Plants turn sunlight into stored sugar"
         },
         "series": "Biology Brief #3",
         "series_identity": {
@@ -9256,88 +9230,87 @@
           "score": 0
         },
         "thumbnail_options": [
-          "GREENHOUSE BOOST",
-          "PROTECTED LEAVES",
-          "WATCH PROTECTED LEAVES",
-          "PLANTS TRICK",
-          "PROTECTED LEAVES MATTERS",
-          "PROTECTED LEAVES FIRST",
-          "PROTECTED LEAVES REVEAL",
-          "PROTECTED LEAVES CLUE",
+          "LIGHT TO SUGAR",
+          "LEAF SURFACE",
+          "WATCH LEAF SURFACE",
+          "PLANTS LEAVES",
+          "LEAF SURFACE MATTERS",
+          "LEAF SURFACE FIRST",
+          "LEAF SURFACE REVEAL",
+          "LEAF SURFACE CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Plants speed growth under protected glass",
-          "Plants use protected leaves before they trick",
-          "Why plants trick after one protected leaves",
-          "Plants reveal the answer with protected leaves",
-          "The protected leaves that changes the moment",
-          "Plants make one protected leaves matter",
+          "Plants turn sunlight into stored sugar",
+          "Plants turn light into food",
+          "Plants use leaf surface before they leaves",
+          "This leaf surface gives plants away",
+          "Plants reveal the answer with leaf surface",
+          "The leaf surface that changes the moment",
           "Plants show the hidden answer in seconds",
-          "Plants: watch this protected leaves",
-          "Watch plants after the protected leaves"
+          "Plants: watch this leaf surface"
         ],
         "top_variants": [
           {
-            "hook": "Plants grow faster when warmth stays trapped",
-            "score": 76,
-            "thumbnail_text": "GREENHOUSE BOOST",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Watch the protected leaves; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "GREENHOUSE BOOST",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Plants turn light into food",
+            "score": 77,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Start with the protected leaves; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "GREENHOUSE BOOST",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Watch the leaf surface; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "LIGHT TO SUGAR",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Plants grow faster when warmth stays trapped",
-            "score": 69,
-            "thumbnail_text": "PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Watch the protected leaves; it explains the behavior",
-            "score": 69,
-            "thumbnail_text": "PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Start with the protected leaves; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "PLANTS LEAVES",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Plants grow faster when warmth stays trapped",
-            "score": 69,
-            "thumbnail_text": "WATCH PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Start with the leaf surface; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "LEAF SURFACE MATTERS",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Watch the protected leaves; it explains the behavior",
-            "score": 69,
-            "thumbnail_text": "WATCH PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Plants turn light into food",
+            "score": 70,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Start with the protected leaves; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "WATCH PROTECTED LEAVES",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Watch the leaf surface; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           },
           {
-            "hook": "Plants grow faster when warmth stays trapped",
-            "score": 69,
-            "thumbnail_text": "PLANTS TRICK",
-            "title": "Plants speed growth under protected glass"
+            "hook": "Plants turn light into food",
+            "score": 70,
+            "thumbnail_text": "WATCH LEAF SURFACE",
+            "title": "Plants turn sunlight into stored sugar"
           }
         ]
       },
