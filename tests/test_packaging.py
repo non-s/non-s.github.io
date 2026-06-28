@@ -462,6 +462,56 @@ def test_package_story_attaches_opening_retention_bridge():
     assert packaged["visual_cue"] == packaged["cue"]
 
 
+def test_package_story_scores_payoff_from_reveal_sentence_not_total_duration():
+    packaged = package_story(
+        _story(
+            title="Forests trap cool air below thick leaves",
+            seo_title="Forests trap cool air below thick leaves",
+            hook="Forests trap cool air below thick leaves.",
+            script=(
+                "Forests trap cool air below thick leaves. Watch the shadow line first, because that detail "
+                "shows the mechanism in motion. The shaded layer keeps soil moisture from leaving as fast, "
+                "so air near the ground heats more slowly during the warmest hours. That is why small forest "
+                "paths can feel cooler than open grass even when both places sit under the same sun. By the "
+                "last line, the opening detail has a job viewers can name."
+            ),
+            thumbnail_text="COOL SHADE",
+            category="forests",
+            yt_tags=["forests"],
+            local_rewrite={"method": "curiosity_angle_rescue"},
+        )
+    )
+
+    preflight = packaged["packaging"]["preflight_inputs"]
+    assert preflight["duration_hint_s"] > 19
+    assert preflight["payoff_time_s"] <= 10.5
+    assert preflight["payoff_reveal_sentence_index"] == 0
+
+
+def test_package_story_still_flags_genuinely_late_payoff():
+    packaged = package_story(
+        _story(
+            title="A forest path hides a cool-air trick",
+            seo_title="A forest path hides a cool-air trick",
+            hook="A forest path hides a cool-air trick.",
+            script=(
+                "The path looks ordinary at first. The camera moves across moss, trunks, leaf litter, roots, "
+                "stones, damp soil, low branches, and a slow pan under the canopy before any explanation "
+                "starts. The shade line matters because leaves block direct sun and slow evaporation near "
+                "the ground."
+            ),
+            thumbnail_text="COOL SHADE",
+            category="forests",
+            yt_tags=["forests"],
+            local_rewrite={"method": "curiosity_angle_rescue"},
+        )
+    )
+
+    preflight = packaged["packaging"]["preflight_inputs"]
+    assert preflight["payoff_time_s"] > 10.5
+    assert preflight["payoff_reveal_sentence_index"] == 2
+
+
 def test_package_story_recognizes_science_subjects_in_first_words():
     packaged = package_story(
         _story(

@@ -17,6 +17,7 @@ from utils.growth_engine import (
 )
 from utils.loop_engine import LoopGenerator
 from utils.opening_retention import score_retention_opening
+from utils.payoff_controller import score_payoff
 from utils.story_intelligence import audit_title, classify_format
 from utils.subscriber_conversion import (
     contextual_cta,
@@ -871,6 +872,8 @@ def _package_preflight(story: dict) -> dict:
     )
     hook_specificity = min(1.0, max(0.0, best_hook.score / 100))
     duration_hint = max(12, min(35, round(len(_words(script)) / 2.6))) if script else 18
+    payoff = score_payoff(script, hook)
+    payoff_time = float(payoff.get("payoff_second", duration_hint * 0.55) or 0)
     first_2s = " ".join(_words(script)[:12])
     package = {
         "first_frame_text": thumb,
@@ -885,7 +888,10 @@ def _package_preflight(story: dict) -> dict:
         "contrast_score": float(story.get("contrast_score") or 0.74),
         "hook_specificity": hook_specificity,
         "novelty_score": float(story.get("novelty_score") or 0.58),
-        "payoff_time_s": min(18, max(8, duration_hint * 0.55)),
+        "duration_hint_s": duration_hint,
+        "payoff_time_s": round(min(18, max(0, payoff_time)), 2),
+        "payoff_score": payoff["score"],
+        "payoff_reveal_sentence_index": payoff["reveal_sentence_index"],
         "cta_count": 1 if story.get("cta_prompt") else 0,
     }
     retention_opening = score_retention_opening(
