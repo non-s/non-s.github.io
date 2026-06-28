@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Upload generated vertical videos to YouTube Shorts."""
+
 from __future__ import annotations
 
 import json
 import logging
 import os
 import random
+import re
 import sys
 import time
-from datetime import datetime, time as dt_time, timedelta, timezone
+from datetime import datetime, timedelta, timezone
+from datetime import time as dt_time
 from pathlib import Path
 
 from google.oauth2.credentials import Credentials
@@ -20,10 +23,10 @@ from googleapiclient.http import MediaFileUpload
 from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, duplicate_uploaded, write_upload_intent
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
 from utils.media_lifecycle import cleanup_meta_artifacts
+from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
 from utils.session_graph import pinned_comment_payload
 from utils.time_semantics import temporal_fields
 from utils.youtube_oauth import DEFAULT_SCOPES, credentials_from_token_info, load_token_info, token_status_message
-from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
 
 _LANGUAGE = os.environ.get("LANGUAGE", "en").strip() or "en"
 for i, arg in enumerate(sys.argv):
@@ -101,6 +104,125 @@ def _normalise_tags(tags) -> list[str]:
 def _youtube_title(meta: dict) -> str:
     title = (meta.get("title") or "Nature fact of the day").strip()
     return title if len(title) <= 100 else title[:97].rstrip(" .,;:-") + "..."
+
+
+def _title_key(title: str) -> str:
+    return re.sub(r"\s+", " ", str(title or "").strip().lower())
+
+
+def _existing_upload_titles(videos_dir: Path = VIDEOS_DIR) -> set[str]:
+    titles: set[str] = set()
+    for path in sorted(videos_dir.glob("*.done")):
+        try:
+            marker = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(marker, dict):
+            key = _title_key(marker.get("title") or "")
+            if key:
+                titles.add(key)
+    return titles
+
+
+def _phrase_words(value: str) -> list[str]:
+    return re.findall(r"[A-Za-z0-9']+", str(value or ""))
+
+
+def _display_phrase(value: str) -> str:
+    words = _phrase_words(value)
+    phrase = " ".join(words[:4]).lower()
+    return phrase[:1].upper() + phrase[1:] if phrase else ""
+
+
+def _candidate_title_details(meta: dict) -> list[str]:
+    generic = {
+        "animal",
+        "animals",
+        "biology",
+        "earth",
+        "fact",
+        "facts",
+        "nature",
+        "science",
+        "short",
+        "shorts",
+        "wild",
+        "wildlife",
+    }
+    category = str(meta.get("category") or "").strip().lower().replace("_", " ")
+    generic.update(_phrase_words(category))
+    title_key = _title_key(_youtube_title(meta))
+    candidates: list[str] = []
+    values: list[str] = []
+    for key in ("yt_tags", "tags", "discovery_hashtags"):
+        values.extend(str(item) for item in (meta.get(key) or []))
+    values.extend(
+        str(meta.get(key) or "")
+        for key in ("subject", "source_caption", "visual_search", "description")
+        if meta.get(key)
+    )
+    for value in values:
+        text = str(value or "")
+        if ":" in text:
+            text = text.rsplit(":", 1)[-1]
+        phrase = _display_phrase(text)
+        if not phrase:
+            continue
+        words = [word.lower() for word in _phrase_words(phrase)]
+        if len(words) > 4 or all(word in generic for word in words):
+            continue
+        key = " ".join(words)
+        if key in title_key or key in {_title_key(item) for item in candidates}:
+            continue
+        candidates.append(phrase)
+    return candidates
+
+
+def _title_variants(title: str, meta: dict) -> list[str]:
+    words = _phrase_words(title)
+    if not words:
+        return []
+    category_words = {word.lower() for word in _phrase_words(str(meta.get("category") or ""))}
+    for word in list(category_words):
+        if word.endswith("s"):
+            category_words.add(word[:-1])
+        else:
+            category_words.add(word + "s")
+    rest = title[len(words[0]) :].strip()
+    variants: list[str] = []
+    for detail in _candidate_title_details(meta):
+        detail_lower = detail.lower()
+        if rest and words[0].lower() in category_words:
+            variants.append(f"{detail} {rest}")
+        variants.append(f"{title} in {detail_lower}")
+    story_id = re.sub(r"[^A-Za-z0-9]", "", str(meta.get("story_id") or meta.get("id") or ""))
+    if story_id:
+        variants.append(f"{title} clip {story_id[:6]}")
+    return variants
+
+
+def _apply_unique_upload_title(meta: dict, existing_titles: set[str] | None = None) -> dict:
+    """Mutate upload metadata so a Short never repeats an already published title."""
+    existing = set(existing_titles or set())
+    original = _youtube_title(meta)
+    if _title_key(original) not in existing:
+        return {"applied": False, "title": original}
+    for variant in _title_variants(original, meta):
+        candidate = _youtube_title({"title": variant})
+        if not candidate or _title_key(candidate) in existing:
+            continue
+        description = str(meta.get("description") or "")
+        meta["title"] = candidate
+        if description and _title_key(description[: len(original)]) == _title_key(original):
+            meta["description"] = candidate + description[len(original) :]
+        meta["upload_title_dedupe"] = {
+            "applied": True,
+            "reason": "published_title_collision",
+            "before": original,
+            "after": candidate,
+        }
+        return meta["upload_title_dedupe"]
+    return {"applied": False, "title": original, "reason": "no_unique_variant_available"}
 
 
 def _youtube_description(meta: dict) -> str:
@@ -212,7 +334,7 @@ def _video_url(video_id: str) -> str:
     return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
 
 
-def _safe_label(value: str, fallback: str = "Nature Facts") -> str:
+def _safe_label(value: object, fallback: str = "Nature Facts") -> str:
     label = " ".join(str(value or "").replace("_", " ").split()).strip(" -|")
     if not label:
         label = fallback
@@ -242,7 +364,8 @@ def _playlist_titles(meta: dict) -> list[str]:
 
 
 def _comment_text(meta: dict) -> str:
-    packaging = meta.get("packaging") if isinstance(meta.get("packaging"), dict) else {}
+    raw_packaging = meta.get("packaging")
+    packaging: dict = raw_packaging if isinstance(raw_packaging, dict) else {}
     text = str(
         meta.get("pinned_comment")
         or packaging.get("pinned_comment")
@@ -357,6 +480,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "session_handoff",
         "session_action",
         "audience_strategy",
+        "upload_title_dedupe",
     )
     defaults = {
         "title": "",
@@ -445,6 +569,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "session_handoff": {},
         "session_action": {},
         "audience_strategy": {},
+        "upload_title_dedupe": {},
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
     if not marker.get("subscriber_conversion") and isinstance(marker.get("packaging"), dict):
@@ -709,6 +834,7 @@ def main() -> None:
     if (quota_row.get("guard") or {}).get("block"):
         log.error("Quota guard blocked upload: %s", (quota_row.get("guard") or {}).get("reason"))
         return
+    existing_titles = _existing_upload_titles(VIDEOS_DIR)
     for meta_file in pending:
         try:
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
@@ -733,6 +859,13 @@ def main() -> None:
             )
             skipped_duplicates += 1
             continue
+        title_dedupe = _apply_unique_upload_title(meta, existing_titles)
+        if title_dedupe.get("applied"):
+            log.info(
+                "Adjusted duplicate upload title: %s -> %s",
+                title_dedupe.get("before"),
+                title_dedupe.get("after"),
+            )
         intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
         duplicate = duplicate_uploaded(intent)
         meta["upload_intent_key"] = intent["idempotency_key"]
@@ -788,6 +921,7 @@ def main() -> None:
         except Exception as exc:
             log.warning("published_clips ledger update failed: %s", exc)
         meta_file.unlink()
+        existing_titles.add(_title_key(_youtube_title(meta)))
         uploaded += 1
     log.info("%d/%d video(s) uploaded to YouTube.", uploaded, attempted)
     if uploaded == 0 and attempted == 0 and skipped_duplicates:

@@ -56,3 +56,21 @@ def test_score_retention_opening_recognizes_bears_as_frontloaded_subject():
     assert score["subject"] == "bears"
     assert "subject_not_frontloaded" not in score["risks"]
     assert "frame_hook_bridge" in score["strengths"]
+
+
+def test_score_retention_opening_counts_science_action_verbs():
+    score = score_retention_opening(
+        {
+            "title": "Rock layers preserve the history of water",
+            "hook": "Rock layers preserve the history of water.",
+            "script": (
+                "Rock layers preserve the history of water. Watch the stripe pattern first "
+                "because each layer can mark mud, sand, ash, or ocean floor."
+            ),
+            "thumbnail_text": "ROCK TIMELINE",
+            "category": "geology",
+        }
+    )
+
+    assert "action_promise_early" in score["strengths"]
+    assert "missing_early_action" not in score["risks"]

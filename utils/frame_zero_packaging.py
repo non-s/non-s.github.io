@@ -190,8 +190,16 @@ def materialize_opening_contract(story: dict) -> dict:
     """Persist the same opening contract that the retention gate is scoring."""
     out = dict(story)
     script = str(out.get("script") or out.get("hook") or out.get("seo_title") or out.get("title") or "")
-    if script and not str(out.get("first_2s_narration") or "").strip():
-        out["first_2s_narration"] = _first_words(script, 12)
+    if script:
+        current_first_2s = _first_words(script, 12)
+        existing_first_2s = str(out.get("first_2s_narration") or "").strip()
+        if _clean_phrase(existing_first_2s) != _clean_phrase(current_first_2s):
+            out["first_2s_narration"] = current_first_2s
+            out["opening_contract_refresh"] = {
+                "reason": "first_2s_narration_stale",
+                "before": existing_first_2s,
+                "after": current_first_2s,
+            }
     opening = score_retention_opening(out) if any(out.get(k) for k in ("hook", "script", "title")) else {}
     subject = _clean_phrase(out.get("subject")) or _clean_phrase(opening.get("subject"))
     cue = _contract_cue(out, opening)

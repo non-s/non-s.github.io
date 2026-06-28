@@ -462,6 +462,28 @@ def test_package_story_attaches_opening_retention_bridge():
     assert packaged["visual_cue"] == packaged["cue"]
 
 
+def test_package_story_refreshes_stale_first_2s_narration():
+    packaged = package_story(
+        _story(
+            title="Rock layers expose erosion in bare open hills",
+            seo_title="Rock layers expose erosion in bare open hills",
+            hook="Rock layers show erosion without much cover.",
+            script=(
+                "Rock layers show erosion without much cover. Watch the bare ridges, because soft rock "
+                "and sparse plants let rain and wind carve the surface quickly."
+            ),
+            thumbnail_text="BARE EROSION",
+            category="geology",
+            first_2s_narration="Old hook words that no longer match the current script",
+        )
+    )
+
+    expected = " ".join(re.findall(r"[A-Za-z0-9']+", packaged["script"])[:12])
+    assert packaged["first_2s_narration"] == expected
+    assert packaged["opening_contract_refresh"]["reason"] == "first_2s_narration_stale"
+    assert "Old hook words" in packaged["opening_contract_refresh"]["before"]
+
+
 def test_package_story_scores_payoff_from_reveal_sentence_not_total_duration():
     packaged = package_story(
         _story(

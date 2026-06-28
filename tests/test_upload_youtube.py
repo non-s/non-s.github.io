@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -11,8 +12,10 @@ pytest.importorskip("googleapiclient")
 from googleapiclient.errors import HttpError
 
 from upload_youtube import (
+    _apply_unique_upload_title,
     _comment_text,
     _done_marker,
+    _existing_upload_titles,
     _is_uploadable_meta,
     _normalise_tags,
     _playlist_titles,
@@ -28,6 +31,39 @@ from upload_youtube import (
 
 def test_title_respects_youtube_limit():
     assert len(_youtube_title({"title": "x" * 140})) <= 100
+
+
+def test_unique_upload_title_uses_concrete_detail_for_repeated_title():
+    meta = {
+        "title": "Plants turn sunlight into stored sugar",
+        "description": "Plants turn sunlight into stored sugar. A plant short.",
+        "category": "plants",
+        "tags": ["tropical leaves", "plant physics", "nature"],
+        "story_id": "8e163c589af35632",
+    }
+
+    result = _apply_unique_upload_title(meta, {"plants turn sunlight into stored sugar"})
+
+    assert result["applied"] is True
+    assert meta["title"] == "Tropical leaves turn sunlight into stored sugar"
+    assert meta["description"].startswith("Tropical leaves turn sunlight into stored sugar.")
+    assert meta["upload_title_dedupe"]["reason"] == "published_title_collision"
+
+
+def test_unique_upload_title_leaves_fresh_title_unchanged():
+    meta = {"title": "Sharks sense tiny electric fields", "tags": ["sharks"]}
+
+    result = _apply_unique_upload_title(meta, {"cats purr when muscles vibrate"})
+
+    assert result == {"applied": False, "title": "Sharks sense tiny electric fields"}
+    assert meta["title"] == "Sharks sense tiny electric fields"
+
+
+def test_existing_upload_titles_reads_done_markers(tmp_path):
+    (tmp_path / "short.done").write_text(json.dumps({"title": "Cats purr softly"}), encoding="utf-8")
+    (tmp_path / "ignored.json").write_text(json.dumps({"title": "Not uploaded yet"}), encoding="utf-8")
+
+    assert _existing_upload_titles(tmp_path) == {"cats purr softly"}
 
 
 def test_description_adds_shorts_discovery_tags():
