@@ -799,6 +799,25 @@ _NON_WILDLIFE_CONTEXT_TERMS = {
     "storyline cast",
     "vhs",
 }
+_NON_NATURE_SCENE_TERMS = {
+    "airplane",
+    "airport",
+    "building",
+    "buildings",
+    "car",
+    "cars",
+    "city",
+    "cricket",
+    "office",
+    "plane",
+    "road",
+    "sport",
+    "sports",
+    "street",
+    "traffic",
+    "truck",
+    "urban",
+}
 _BLOCKED_COMMONS_TERMS = ("na" + "sa",)
 
 
@@ -869,9 +888,16 @@ def _looks_like_non_wildlife_visual(text: str) -> bool:
     if any(term in low for term in _NON_WILDLIFE_CONTEXT_TERMS):
         return True
     words = set(re.findall(r"[a-z]+", (text or "").lower()))
-    if not words or not (words & _PROP_VISUAL_TERMS):
+    if not words:
         return False
-    return bool((words & _HUMAN_VISUAL_TERMS) or _strict_animal_terms(text))
+    strict_animals = _strict_animal_terms(text)
+    if words & _PROP_VISUAL_TERMS:
+        return bool((words & _HUMAN_VISUAL_TERMS) or strict_animals)
+    if words & _HUMAN_VISUAL_TERMS and not strict_animals:
+        return True
+    if words & _NON_NATURE_SCENE_TERMS and not strict_animals:
+        return True
+    return False
 
 
 def _script_key(script: str) -> str:

@@ -433,6 +433,25 @@ def test_topic_rejects_animal_costume_or_prop_subject():
     assert not fetch_animals._topic_accepts_subject(fetch_animals.ANIMAL_TOPICS["cats"], "toy cat on a table")
 
 
+def test_topic_rejects_human_or_urban_dominated_science_visuals():
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["microscopy"],
+        "a girl looking at a microscope",
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["weather"],
+        "person throwing snow in air",
+    )
+    assert not fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["earth_from_space"],
+        "hurricane from space: a city at night from an airplane",
+    )
+    assert fetch_animals._topic_accepts_subject(
+        fetch_animals.ANIMAL_TOPICS["reptiles"],
+        "woman holding a snake with strength",
+    )
+
+
 # ── Story builder ─────────────────────────────────────────────────
 
 
