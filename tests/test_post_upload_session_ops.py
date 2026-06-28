@@ -228,3 +228,26 @@ def test_session_ops_orders_latest_markers_by_uploaded_at(tmp_path):
 
     assert "old" not in sequel_ids
     assert sequel_ids == [f"new-{index}" for index in range(5)]
+
+
+def test_session_ops_writes_fresh_upload_watchlist(tmp_path):
+    videos = tmp_path / "_videos"
+    videos.mkdir()
+    (videos / "fresh.done").write_text(
+        json.dumps(
+            {
+                "video_id": "fresh",
+                "title": "Mushrooms release spores from hidden gills",
+                "category": "fungi",
+                "uploaded_at": "2999-01-01T00:00:00+00:00",
+                "publish_score": {"opening_retention": {"score": 100, "state": "retention_ready"}},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    out = build_session_ops(tmp_path)
+    written = json.loads((tmp_path / "_data" / "fresh_upload_watchlist.json").read_text(encoding="utf-8"))
+
+    assert out["fresh_upload_watchlist"]["items"]
+    assert written["items"][0]["video_id"] == "fresh"

@@ -347,6 +347,9 @@ def render_html() -> str:
     experiment_recommendations = _safe_json(Path("_data/experiments_recommendations.json"))
     topic_candidates = _safe_json(Path("_data/trends/topic_candidates.json"))
     session_ops = _safe_json(Path("_data/post_upload_session_ops.json"))
+    fresh_upload_watchlist = _safe_json(Path("_data/fresh_upload_watchlist.json")) or (
+        session_ops.get("fresh_upload_watchlist") if isinstance(session_ops.get("fresh_upload_watchlist"), dict) else {}
+    )
     related_video_recommendations = _safe_json(Path("_data/related_video_recommendations.json"))
     comment_reply_short_candidates = _safe_json(Path("_data/comment_reply_short_candidates.json"))
     dry_run_publish = _safe_json(Path("_data/dry_run_publish.json"))
@@ -521,7 +524,9 @@ def render_html() -> str:
             )
         actions = level_system.get("action_plan") or []
         if actions:
-            out.append("<h3>Upgrade actions</h3><table><tr><th>Priority</th><th>Action</th><th>Target</th><th>Why</th></tr>")
+            out.append(
+                "<h3>Upgrade actions</h3><table><tr><th>Priority</th><th>Action</th><th>Target</th><th>Why</th></tr>"
+            )
             for action in actions[:6]:
                 out.append(
                     f"<tr><td><span class='badge'>{html.escape(str(action.get('priority', '')))}</span></td>"
@@ -592,6 +597,7 @@ def render_html() -> str:
         weekly_growth
         or next_shorts
         or session_ops
+        or fresh_upload_watchlist
         or topic_candidates
         or studio_reach_summary.get("rows")
         or freshness_report
@@ -617,6 +623,13 @@ def render_html() -> str:
         out.append(
             f"<div><small>Session coverage</small><div class='metric'>{float(session_graph.get('coverage', 0) or 0) * 100:.0f}%</div></div>"
         )
+        fresh_counts = fresh_upload_watchlist.get("counts") or {}
+        out.append(
+            f"<div><small>Fresh uploads</small><div class='metric'>{int(fresh_counts.get('tracked', 0) or 0)}</div></div>"
+        )
+        out.append(
+            f"<div><small>Due checks</small><div class='metric'>{int(fresh_counts.get('analytics_due', 0) or 0)}</div></div>"
+        )
         session_targets = {
             str(edge.get("target_video_id") or "")
             for edge in (session_graph.get("edges") or [])
@@ -628,6 +641,27 @@ def render_html() -> str:
             f"<div><small>Quota guard</small><div class='metric'>{html.escape(str(quota_guard.get('mode') or 'ok'))}</div></div>"
         )
         out.append("</section>")
+        fresh_items = fresh_upload_watchlist.get("items") or []
+        if fresh_items:
+            out.append(
+                "<h3>Fresh upload sentinel</h3>"
+                "<table><tr><th>Short</th><th>Age</th><th>Next check</th><th>Opening</th><th>Action</th></tr>"
+            )
+            for item in fresh_items[:6]:
+                checkpoint = item.get("next_checkpoint") or {}
+                checkpoint_label = str(checkpoint.get("label") or "")
+                checkpoint_state = str(checkpoint.get("state") or "")
+                action = str(item.get("action") or "")
+                out.append(
+                    f"<tr><td><a href='{html.escape(str(item.get('url') or '#'))}'>{html.escape(str(item.get('title') or item.get('video_id') or '')[:90])}</a>"
+                    f"<br><small>{html.escape(str(item.get('state') or 'watch'))}</small></td>"
+                    f"<td>{float(item.get('age_hours', 0) or 0):.1f}h</td>"
+                    f"<td><code>{html.escape(checkpoint_label)}</code> "
+                    f"<span class='badge'>{html.escape(checkpoint_state)}</span></td>"
+                    f"<td>{float(item.get('opening_retention_score', 0) or 0):.0f}</td>"
+                    f"<td>{html.escape(action[:150])}</td></tr>"
+                )
+            out.append("</table>")
         if weekly_growth:
             out.append("<section class='row'>")
             out.append(

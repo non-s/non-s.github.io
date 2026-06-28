@@ -72,6 +72,11 @@ def test_session_and_related_outputs_expose_only_recommendable_titles():
         _assert_recommendable((item.get("recommendation") or {}).get("title", ""))
     for item in session_ops.get("sequel_opportunities") or []:
         _assert_recommendable(item.get("title", ""))
+    fresh_uploads = _json("_data/fresh_upload_watchlist.json")
+    for item in (fresh_uploads.get("items") or []) + (
+        (session_ops.get("fresh_upload_watchlist") or {}).get("items") or []
+    ):
+        _assert_recommendable(item.get("title", ""))
 
 
 def test_session_outputs_cap_repeated_targets():

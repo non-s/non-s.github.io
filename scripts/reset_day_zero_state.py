@@ -301,8 +301,19 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/post_upload_session_ops.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
+            "fresh_upload_watchlist": {
+                "generated_at": stamp,
+                "items": [],
+                "counts": {"tracked": 0},
+            },
             "related_video_recommendations": [],
             "sequel_opportunities": [],
+        },
+        "_data/fresh_upload_watchlist.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+            "counts": {"tracked": 0},
         },
         "_data/queue_audit.json": {
             "generated_at": stamp,

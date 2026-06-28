@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.editorial_guard import editorial_issues  # noqa: E402
+from utils.fresh_upload_sentinel import build_fresh_upload_watchlist  # noqa: E402
 from utils.session_graph import build_session_graph  # noqa: E402
 from utils.video_markers import sorted_done_markers  # noqa: E402
 
@@ -87,6 +88,11 @@ def build_session_ops(root: Path = ROOT) -> dict:
                 }
             )
     comments = _read_json(root / "_data" / "analytics" / "comments.json", {})
+    fresh_upload_watchlist = build_fresh_upload_watchlist(
+        markers,
+        early_performance=_read_json(root / "_data" / "early_performance.json", {}),
+        early_warning=_read_json(root / "_data" / "early_warning.json", {}),
+    )
     comment_candidates = []
     for item in comments.get("top_comments") or comments.get("comments") or []:
         if not isinstance(item, dict):
@@ -108,6 +114,7 @@ def build_session_ops(root: Path = ROOT) -> dict:
             "Use related video manually in Studio when official automation is unavailable.",
         ],
         "comment_reply_short_candidates": comment_candidates[:20],
+        "fresh_upload_watchlist": fresh_upload_watchlist,
         "sequel_opportunities": [
             {
                 "video_id": item.get("video_id"),
@@ -127,6 +134,10 @@ def build_session_ops(root: Path = ROOT) -> dict:
     }
     (data_dir / "post_upload_session_ops.json").write_text(
         json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    (data_dir / "fresh_upload_watchlist.json").write_text(
+        json.dumps(fresh_upload_watchlist, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
     )
     (data_dir / "related_video_recommendations.json").write_text(
         json.dumps(
@@ -201,7 +212,8 @@ def main() -> int:
     print(
         "post_upload_session_ops: "
         f"{len(payload['related_video_recommendations'])} related, "
-        f"{len(payload['comment_reply_short_candidates'])} comment candidates"
+        f"{len(payload['comment_reply_short_candidates'])} comment candidates, "
+        f"{payload['fresh_upload_watchlist']['counts']['tracked']} fresh uploads watched"
     )
     return 0
 
