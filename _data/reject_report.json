@@ -1,7 +1,7 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 522,
+    "duplicate_title": 521,
     "off_topic_visual": 227,
     "duplicate_script": 146,
     "queue_score_reject": 135,
@@ -15,9 +15,9 @@
     "missing_action_word": 20,
     "non_animal_body_language": 19,
     "no_action_promise": 17,
+    "subject repeated inside 3-day cooldown": 16,
+    "humanity score is too low": 16,
     "subject_not_immediately_clear": 15,
-    "subject repeated inside 3-day cooldown": 15,
-    "humanity score is too low": 15,
     "script_word_loop": 15,
     "opening_retention_gap_risk": 15,
     "opening promise is not concrete enough": 15,
@@ -40,35 +40,19 @@
     "editorial score 40 is below 62": 1,
     "editorial score 47 is below 62": 1,
     "generic_bodypart_movement_promise": 1,
-    "editorial score 37 is below 62": 1
+    "editorial score 37 is below 62": 1,
+    "editorial score 39 is below 62": 1
   },
   "stages": {
-    "queue_prune": 475,
+    "queue_prune": 474,
     "queue_prune_final": 369,
     "queue_repair": 135,
-    "editor_in_chief": 15,
+    "editor_in_chief": 16,
     "youtube_brain_rewrite": 3,
     "youtube_brain": 2,
     "pre_publish_audit": 1
   },
   "latest": [
-    {
-      "story_id": "686a56644d50d29d",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "title": "Rivers carve bends by stealing from one bank",
-      "category": "rivers",
-      "script_key": "rivers move sideways while they flow watch the outside of the bend because faster water cuts that bank while slower water drops sediment inside the curve over time the whole river shifts across the landscape a bend is motion written in mud which water shape next",
-      "angle_key": "rivers|flow|river bend|rivers",
-      "source_url": "https://www.pexels.com/video/serene-river-boat-ride-in-lush-mangrove-landscape-37624741/",
-      "pexels_video_id": "37624741",
-      "source_clip_id": "pexels:686a56644d50d29d",
-      "recorded_at": "2026-06-28T12:54:53.079573+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "305b06797b2bb696",
       "stage": "queue_prune",
@@ -491,6 +475,25 @@
       "pexels_video_id": "7686981",
       "source_clip_id": "pexels:8d67529d4ddcb6ce",
       "recorded_at": "2026-06-28T12:54:53.452057+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "ee3536d828a81ce9",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 39 is below 62"
+      ],
+      "title": "Los cristales crecen repitiendo un solo patrón",
+      "category": "chemistry",
+      "script_key": "los cristales crecen repitiendo tomos mira c mo el borde se expande porque los tomos o mol culas se acomodan en un orden que se repite una vez que empieza el patr n las nuevas piezas encajan mejor en el mismo orden por eso un cristal parece dise ado qu reacci n preferir as ver m s lento now the crystal growth at the start makes sense",
+      "angle_key": "crystal|sense|cue|chemistry",
+      "source_url": "https://www.pexels.com/video/chemist-pouring-chemical-in-a-test-tube-8540615/",
+      "pexels_video_id": "8540615",
+      "source_clip_id": "pexels:ee3536d828a81ce9",
+      "recorded_at": "2026-06-28T13:03:21.277548+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
