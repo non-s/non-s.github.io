@@ -1,14 +1,11 @@
 {
-  "generated_at": "2026-06-28T03:45:16.839690+00:00",
-  "score": 85,
-  "state": "watch",
-  "issues": [
-    "queue_inventory_low",
-    "subject_frontload_below_target"
-  ],
+  "generated_at": "2026-06-28T04:01:43.280359+00:00",
+  "score": 100,
+  "state": "excellent",
+  "issues": [],
   "queue": {
-    "pending": 19,
-    "publish_ready": 6,
+    "pending": 23,
+    "publish_ready": 7,
     "categories": {
       "birds": 1,
       "chemistry": 1,
@@ -16,9 +13,13 @@
       "earth_from_space": 3,
       "ecosystems": 1,
       "forests": 2,
+      "fungi": 1,
       "geology": 2,
+      "nocturnal": 1,
+      "ocean": 1,
       "physics": 1,
       "plants": 4,
+      "reptiles": 1,
       "rivers": 2,
       "wildlife": 1
     },
@@ -26,29 +27,29 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 10,
+      "queue_prune:rewrite": 13,
       "agency_gate:success_recovery_format_required": 9,
       "agency_gate:success_recovery_hook_required": 9,
-      "editor_in_chief:cooldown_subject": 7,
+      "editor_in_chief:cooldown_subject": 8,
       "agency_gate:category_recovery_rules_not_met": 3,
+      "editor_in_chief:needs_ai_rewrite": 3,
       "ops_guardian_paused_category:rivers": 2,
-      "editor_in_chief:needs_ai_rewrite": 2,
+      "packaging:missing_action_word": 2,
       "ops_guardian_paused_category:birds": 1,
-      "publish_blocklist:monetization audit needs review": 1,
-      "packaging:missing_action_word": 1
+      "publish_blocklist:monetization audit needs review": 1
     }
   },
   "seo": {
-    "average_score": 98.11,
-    "animal_frontloaded_pct": 94.74,
-    "subject_frontloaded_pct": 94.74
+    "average_score": 98.43,
+    "animal_frontloaded_pct": 95.65,
+    "subject_frontloaded_pct": 95.65
   },
   "agency": {
-    "average_score": 62.0,
+    "average_score": 62.2,
     "decisions": {
-      "hold": 9,
-      "publish_now": 4,
-      "strong_candidate": 6
+      "hold": 11,
+      "publish_now": 5,
+      "strong_candidate": 7
     },
     "top": [
       {
@@ -85,10 +86,32 @@
         ]
       },
       {
+        "title": "Snakes detect changes with their tongue",
+        "category": "reptiles",
+        "score": 82,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Mountains detect changes with their pattern",
         "category": "earth_from_space",
         "score": 82,
         "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Mushrooms release spores from hidden gills",
+        "category": "fungi",
+        "score": 80,
+        "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
           "matches_channel_learning",
@@ -114,25 +137,6 @@
         "strengths": [
           "strong_quality",
           "timely_trend"
-        ]
-      },
-      {
-        "title": "Rivers carry stone grains while they flow",
-        "category": "rivers",
-        "score": 78,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality"
-        ]
-      },
-      {
-        "title": "Rivers sort mud and sand along each bank",
-        "category": "rivers",
-        "score": 78,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
         ]
       }
     ]
