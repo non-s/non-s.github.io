@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T16:48:03.658376+00:00",
+  "generated_at": "2026-06-28T17:31:44.773835+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 40.8,
@@ -27,17 +27,17 @@
         },
         {
           "id": "objective_gate:observe_before_scaling",
-          "count": 28,
+          "count": 26,
           "operator_translation": "observe this pattern before scaling it"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 22,
+          "count": 21,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 13,
+          "count": 12,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
@@ -88,14 +88,14 @@
   "metrics": {
     "health_score": 100,
     "health_state": "excellent",
-    "pending": 28,
+    "pending": 27,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 1,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 28,
-    "published_count": 83,
+    "editorial_candidate_count": 27,
+    "published_count": 84,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -114,28 +114,23 @@
     },
     {
       "id": "objective_gate:observe_before_scaling",
-      "count": 28,
+      "count": 26,
       "operator_translation": "observe this pattern before scaling it"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 22,
+      "count": 21,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 13,
+      "count": 12,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
       "count": 10,
       "operator_translation": "collect more observed signal before scaling this pattern"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 10,
-      "operator_translation": "duplicate title"
     },
     {
       "id": "publish_score:rewrite",
@@ -158,14 +153,19 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "copy_subject_mismatch",
+      "id": "editorial_cooldown_supply_fallback",
       "count": 4,
-      "operator_translation": "copy subject mismatch"
+      "operator_translation": "editorial cooldown supply fallback"
     },
     {
-      "id": "off_topic_visual",
-      "count": 4,
-      "operator_translation": "off topic visual"
+      "id": "youtube_brain:missing_visual_cue",
+      "count": 2,
+      "operator_translation": "youtube brain:missing visual cue"
+    },
+    {
+      "id": "editor_in_chief:editorial score 49 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -178,7 +178,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 83,
+        "published_count": 84,
         "health_score": 100
       }
     },
@@ -193,7 +193,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 28,
+        "pending": 27,
         "target_publish_ready": 6,
         "target_pending": 20
       }

@@ -2,7 +2,7 @@
   "total": 1000,
   "reasons": {
     "duplicate_title": 541,
-    "off_topic_visual": 232,
+    "off_topic_visual": 231,
     "queue_score_reject": 145,
     "duplicate_script": 129,
     "duplicate_angle": 115,
@@ -15,9 +15,9 @@
     "opening promise is not concrete enough": 22,
     "non_animal_body_language": 17,
     "missing_action_word": 14,
-    "subject repeated inside 3-day cooldown": 11,
+    "subject repeated inside 3-day cooldown": 12,
+    "humanity score is too low": 11,
     "bad_plural_verb": 11,
-    "humanity score is too low": 10,
     "thumbnail_text_not_scannable": 9,
     "thumbnail_not_2_4_words": 9,
     "no_action_promise": 6,
@@ -26,9 +26,9 @@
     "missing_visual_cue": 5,
     "generic_creator_language": 5,
     "subject_not_immediately_clear": 3,
+    "editorial score 43 is below 62": 3,
     "title_shape_weak": 2,
     "title_needs_stronger_shape": 2,
-    "editorial score 43 is below 62": 2,
     "editorial score 53 is below 62": 2,
     "editorial score 37 is below 62": 2,
     "editorial score 39 is below 62": 2,
@@ -38,30 +38,13 @@
     "editorial score 41 is below 62": 1
   },
   "stages": {
-    "queue_prune": 506,
+    "queue_prune": 505,
     "queue_prune_final": 335,
     "queue_repair": 145,
-    "editor_in_chief": 11,
+    "editor_in_chief": 12,
     "youtube_brain_rewrite": 3
   },
   "latest": [
-    {
-      "story_id": "7d6287b811d85bb0",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "title": "Cats measure tight spaces with their whiskers",
-      "category": "cats",
-      "script_key": "cats measure tight spaces with their whiskers watch the whiskers near the face because they sense tiny touches and air changes that helps cats judge gaps hunt in low light and protect their eyes before contact the face is doing math what pet sense should we test next",
-      "angle_key": "cats|protect|whisker map|cats",
-      "source_url": "https://www.pexels.com/video/playful-kittens-on-a-sunny-terrace-chair-35148112/",
-      "pexels_video_id": "35148112",
-      "source_clip_id": "pexels:7d6287b811d85bb0",
-      "recorded_at": "2026-06-28T16:32:43.287286+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "07b3bb1f3e184120",
       "stage": "queue_prune_final",
@@ -487,6 +470,25 @@
       "recorded_at": "2026-06-28T16:47:04.217919+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
+    },
+    {
+      "story_id": "f05ec39064f35742",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 43 is below 62"
+      ],
+      "title": "Plantas usan tricomas para contar toques y atrapar",
+      "category": "plants",
+      "script_key": "las plantas cuentan toques antes de cerrar en los tricomas est el truco cada roce las hace sumar si superan un umbral la trampa se activa ves c mo los detalles en la hoja no son casualidad cu ntos toques crees que aguanta una antes de moverse now the trap hairs at the start make sense",
+      "angle_key": "plants|make|trap hairs|plants",
+      "source_url": "https://www.pexels.com/video/close-up-video-of-a-flower-7713841/",
+      "pexels_video_id": "7713841",
+      "source_clip_id": "pexels:f05ec39064f35742",
+      "recorded_at": "2026-06-28T17:27:16.411702+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
     }
   ]
 }
