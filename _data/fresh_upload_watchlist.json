@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 1,
-    "high_priority": 4,
+    "analytics_due": 5,
+    "awaiting_1h": 0,
+    "high_priority": 5,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-06-28T15:01:55.681633+00:00",
+  "generated_at": "2026-06-28T15:06:40.848372+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.962,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.041,
       "category": "plants",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-06-28T15:04:12.582437+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-06-28T15:04:12.582437+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 96.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Biology Brief",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Tropical leaves turn sunlight into stored sugar",
       "uploaded_at": "2026-06-28T14:04:12.582437+00:00",
       "url": "https://www.youtube.com/shorts/JGE_LHh_GDQ",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.974,
+      "age_hours": 2.053,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.87,
+      "age_hours": 2.949,
       "category": "weather",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.927,
+      "age_hours": 4.007,
       "category": "geology",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.676,
+      "age_hours": 4.755,
       "category": "physics",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.508,
+      "age_hours": 5.587,
       "category": "trees",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.486,
+      "age_hours": 6.566,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -400,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.736,
+      "age_hours": 7.815,
       "category": "fungi",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.578,
+      "age_hours": 11.657,
       "category": "dogs",
       "checkpoints": [
         {
@@ -510,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.848,
+      "age_hours": 12.927,
       "category": "forests",
       "checkpoints": [
         {
