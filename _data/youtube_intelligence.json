@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-28T08:09:13.868881+00:00",
+  "generated_at": "2026-06-28T08:35:47.435957+00:00",
   "window": {
     "start_date": "2026-06-01",
     "end_date": "2026-06-28"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,20 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 49,
     "view_count": 117,
-    "video_count": 74,
+    "video_count": 75,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 74,
+    "uploads_checked": 75,
     "latest_uploads": [
+      {
+        "video_id": "suLTp3pmtko",
+        "title": "Snakes use tongue smell before they smell",
+        "published_at": "2026-06-28T08:33:00Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnN1TFRwM3BtdGtv"
+      },
       {
         "video_id": "nwCMaiPdC20",
         "title": "Mushrooms release spores from hidden gills",
@@ -170,22 +176,16 @@
         "title": "Penguins carry tiny air pockets into the water",
         "published_at": "2026-06-22T07:46:50Z",
         "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnR0RTB5QnU0X05B"
-      },
-      {
-        "video_id": "MIQuop8gYxw",
-        "title": "Bees can point the hive toward food",
-        "published_at": "2026-06-22T06:41:22Z",
-        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLk1JUXVvcDhnWXh3"
       }
     ]
   },
   "video_audit": {
-    "videos_checked": 74,
+    "videos_checked": 75,
     "total_views": 120,
     "total_likes": 0,
-    "total_comments": 74,
+    "total_comments": 75,
     "private_or_unlisted": 0,
-    "shorts_like": 74,
+    "shorts_like": 75,
     "top_public_videos": [
       {
         "video_id": "UxfEHJZ8zdg",
@@ -287,7 +287,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -296,7 +296,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -305,7 +305,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -363,9 +363,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 3,
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -373,9 +373,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 25,
+      "error": ""
     },
     {
       "id": "country",
@@ -383,9 +383,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 43,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -393,9 +393,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 10,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -403,9 +403,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -413,12 +413,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }

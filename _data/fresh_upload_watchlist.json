@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 0,
-    "high_priority": 9,
-    "repair_candidates": 3,
+    "analytics_due": 3,
+    "awaiting_1h": 1,
+    "high_priority": 7,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-06-28T08:30:45.846505+00:00",
+  "generated_at": "2026-06-28T08:35:56.377085+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.217,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.053,
+      "category": "reptiles",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-28T09:32:44.685099+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-28T14:32:44.685099+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-29T08:32:44.685099+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-28T09:32:44.685099+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Cold-Blooded Secrets",
+      "state": "awaiting_1h",
+      "title": "Snakes use tongue smell before they smell",
+      "uploaded_at": "2026-06-28T08:32:44.685099+00:00",
+      "url": "https://www.youtube.com/shorts/suLTp3pmtko",
+      "video_id": "suLTp3pmtko",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.303,
       "category": "fungi",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-28T08:17:46.086561+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-28T08:17:46.086561+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-28T13:17:46.086561+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Mushrooms release spores from hidden gills",
       "uploaded_at": "2026-06-28T07:17:46.086561+00:00",
       "url": "https://www.youtube.com/shorts/nwCMaiPdC20",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.058,
+      "age_hours": 5.144,
       "category": "dogs",
       "checkpoints": [
         {
@@ -124,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.328,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.414,
       "category": "forests",
       "checkpoints": [
         {
@@ -141,8 +196,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-28T08:11:04.312213+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-28T08:11:04.312213+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-29T02:11:04.312213+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 0.0,
       "opening_retention_state": "unknown",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Forests hold cool fog between the trees",
       "uploaded_at": "2026-06-28T02:11:04.312213+00:00",
       "url": "https://www.youtube.com/shorts/eeypg-lWzW4",
       "video_id": "eeypg-lWzW4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Forests hold cool fog between the trees",
+        "video_id": "eeypg-lWzW4",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.304,
+      "age_hours": 7.39,
       "category": "plants",
       "checkpoints": [
         {
@@ -246,7 +312,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.586,
+      "age_hours": 7.672,
       "category": "farm",
       "checkpoints": [
         {
@@ -312,7 +378,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.379,
+      "age_hours": 10.465,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -367,7 +433,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.171,
+      "age_hours": 11.257,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -422,7 +488,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.166,
+      "age_hours": 12.253,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -477,7 +543,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.384,
+      "age_hours": 27.47,
       "category": "ocean",
       "checkpoints": [
         {
@@ -528,7 +594,7 @@
       "uploaded_at": "2026-06-27T05:07:44.093350+00:00",
       "url": "https://www.youtube.com/shorts/D7-O2JMBHWo",
       "video_id": "D7-O2JMBHWo",
-      "views_per_hour": 0.185,
+      "views_per_hour": 0.182,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -540,61 +606,6 @@
         "views": 5,
         "warning_state": "repair_risk"
       }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 51.592,
-      "category": "farm",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-26T05:55:13.523257+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-26T10:55:13.523257+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-06-27T04:55:13.523257+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-26T05:55:13.523257+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 0.0,
-      "opening_retention_state": "unknown",
-      "priority": "high",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "title": "Cows can remember who belongs in the herd",
-      "uploaded_at": "2026-06-26T04:55:13.523257+00:00",
-      "url": "https://www.youtube.com/shorts/JDlUkYIZV3o",
-      "video_id": "JDlUkYIZV3o",
-      "views_per_hour": 0.0
     }
   ],
   "targets": {
