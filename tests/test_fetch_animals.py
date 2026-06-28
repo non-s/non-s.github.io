@@ -182,6 +182,21 @@ def test_deterministic_fallback_maps_category_labels_without_bad_plurals():
     assert "Sciences detect" not in out["seo_title"]
 
 
+def test_deterministic_fallback_varies_titles_by_clip_seed():
+    titles = {
+        fetch_animals._deterministic_enhance_animal(
+            "crystal growth chemical reaction",
+            "chemistry",
+            fetch_animals.ANIMAL_TOPICS["chemistry"],
+            variation_material=f"https://example.com/clip-{idx}",
+        )["seo_title"]
+        for idx in range(8)
+    }
+
+    assert len(titles) >= 3
+    assert all("detect changes with their pattern" not in title for title in titles)
+
+
 def test_build_story_carries_deterministic_fallback_metadata():
     out = fetch_animals._deterministic_enhance_animal(
         "river bend with sand bank",

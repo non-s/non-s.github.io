@@ -1089,6 +1089,11 @@ _CATEGORY_FALLBACK_SUBJECTS = {
 _SUBJECT_FALLBACKS = {
     "bird": {
         "title": "Birds steer with tiny wing changes",
+        "title_alternates": [
+            "Birds adjust lift with tiny feather shifts",
+            "Birds turn fast by changing wing angles",
+            "Bird wings reveal the next turn early",
+        ],
         "hook": "Birds steer with tiny wing changes.",
         "body": (
             "Watch the wing edge first because small feather shifts change lift before the bird turns. "
@@ -1100,6 +1105,11 @@ _SUBJECT_FALLBACKS = {
     },
     "cat": {
         "title": "Cats map tight spaces with their whiskers",
+        "title_alternates": [
+            "Cat whiskers measure gaps before the jump",
+            "Cats read narrow spaces through whiskers",
+            "Cats test the room with their whiskers",
+        ],
         "hook": "Cats map tight spaces with their whiskers.",
         "body": (
             "Watch the whiskers first because each hair measures gaps before the body squeezes through. "
@@ -1111,6 +1121,11 @@ _SUBJECT_FALLBACKS = {
     },
     "dog": {
         "title": "Dogs read the world through scent maps",
+        "title_alternates": [
+            "Dogs follow invisible trails with their nose",
+            "Dog noses turn scent into a map",
+            "Dogs sample the scene before they move",
+        ],
         "hook": "Dogs read the world through scent maps.",
         "body": (
             "Watch the nose first because each sniff samples a trail the eyes cannot see. "
@@ -1122,6 +1137,11 @@ _SUBJECT_FALLBACKS = {
     },
     "turtle": {
         "title": "Turtles steer home by reading hidden currents",
+        "title_alternates": [
+            "Turtles correct every turn with their flippers",
+            "Turtles read moving water before they steer",
+            "Turtle flippers reveal the route home",
+        ],
         "hook": "Turtles steer home by reading hidden currents.",
         "body": (
             "Watch the flippers first because each slow stroke corrects direction against moving water. "
@@ -1133,6 +1153,11 @@ _SUBJECT_FALLBACKS = {
     },
     "chemistry": {
         "title": "Crystals grow by repeating one tiny pattern",
+        "title_alternates": [
+            "Crystal edges build the same pattern again",
+            "Crystals reveal order while they grow",
+            "Crystals turn dissolved particles into shape",
+        ],
         "hook": "Crystals grow by repeating one tiny pattern.",
         "body": (
             "Watch the crystal edge first because dissolved particles attach in the same ordered shape again and again. "
@@ -1144,6 +1169,11 @@ _SUBJECT_FALLBACKS = {
     },
     "conservation": {
         "title": "Conservation helps forests recover damaged ground",
+        "title_alternates": [
+            "Conservation rebuilds shade from damaged soil",
+            "Restoration turns bare ground into habitat",
+            "Young forests show recovery before the canopy",
+        ],
         "hook": "Conservation helps forests recover damaged ground.",
         "body": (
             "Watch the new shade first because young plants protect soil before a habitat feels full again. "
@@ -1155,6 +1185,11 @@ _SUBJECT_FALLBACKS = {
     },
     "earth": {
         "title": "Earth clouds reveal moving air from above",
+        "title_alternates": [
+            "Earth clouds draw wind lanes from orbit",
+            "Cloud maps reveal Earth's hidden air flow",
+            "Storm bands expose motion across Earth",
+        ],
         "hook": "Earth clouds reveal moving air from above.",
         "body": (
             "Watch the cloud pattern first because rising air cools into visible shapes. "
@@ -1166,6 +1201,11 @@ _SUBJECT_FALLBACKS = {
     },
     "ecosystem": {
         "title": "Ecosystems move energy through tiny links",
+        "title_alternates": [
+            "Coral reefs move energy through tiny links",
+            "Tide pools reveal ecosystem links in miniature",
+            "Ecosystems show the chain behind one move",
+        ],
         "hook": "Ecosystems move energy through tiny links.",
         "body": (
             "Watch the habitat edge first because every plant, grazer, and predator changes what the next one can do. "
@@ -1177,6 +1217,11 @@ _SUBJECT_FALLBACKS = {
     },
     "forest": {
         "title": "Forests hold cool air under the canopy",
+        "title_alternates": [
+            "Forests make cooler air below the canopy",
+            "Forest canopies slow heat near the ground",
+            "Leaves turn a forest into a cooler room",
+        ],
         "hook": "Forests hold cool air under the canopy.",
         "body": (
             "Watch the canopy first because leaves block direct sun and release water vapor. "
@@ -1188,6 +1233,11 @@ _SUBJECT_FALLBACKS = {
     },
     "fungi": {
         "title": "Mushrooms release spores from the cap",
+        "title_alternates": [
+            "Mushroom caps send spores into moving air",
+            "Fungi spread life from hidden gills",
+            "Mushrooms launch tiny spores below the cap",
+        ],
         "hook": "Mushrooms release spores from the cap.",
         "body": (
             "Watch the cap first because tiny spores fall from hidden gills underneath. "
@@ -1199,6 +1249,11 @@ _SUBJECT_FALLBACKS = {
     },
     "geology": {
         "title": "Rock layers store old environments in stripes",
+        "title_alternates": [
+            "Rock stripes turn cliffs into timelines",
+            "Geology stores old worlds in stacked layers",
+            "Rock layers preserve the history of water",
+        ],
         "hook": "Rock layers store old environments in stripes.",
         "body": (
             "Watch the stripe pattern first because each layer can mark mud, sand, ash, or ocean floor. "
@@ -1210,6 +1265,11 @@ _SUBJECT_FALLBACKS = {
     },
     "microscopy": {
         "title": "Cells reveal hidden motion under the microscope",
+        "title_alternates": [
+            "Microscopes turn tiny cell motion visible",
+            "Cells show a hidden world in motion",
+            "Cell edges reveal movement we normally miss",
+        ],
         "hook": "Cells reveal hidden motion under the microscope.",
         "body": (
             "Watch the cell edge first because tiny movements show where living material is changing. "
@@ -1221,6 +1281,11 @@ _SUBJECT_FALLBACKS = {
     },
     "mountain": {
         "title": "Mountains reveal weather lines in snow",
+        "title_alternates": [
+            "Mountain snow lines expose changing weather",
+            "Mountains show where cold air holds",
+            "Snow lines turn mountains into weather maps",
+        ],
         "hook": "Mountains reveal weather lines in snow.",
         "body": (
             "Watch the snow line first because temperature, wind, and slope decide where white turns into rock. "
@@ -1232,6 +1297,11 @@ _SUBJECT_FALLBACKS = {
     },
     "ocean": {
         "title": "Ocean waves sort energy along the shore",
+        "title_alternates": [
+            "Waves reveal where the shore steals energy",
+            "Ocean edges turn wave motion into patterns",
+            "Ocean waves show the beach changing shape",
+        ],
         "hook": "Ocean waves sort energy along the shore.",
         "body": (
             "Watch the wave edge first because water slows, folds, and breaks as the bottom rises. "
@@ -1243,6 +1313,11 @@ _SUBJECT_FALLBACKS = {
     },
     "physics": {
         "title": "Magnets reveal invisible fields in filings",
+        "title_alternates": [
+            "Magnetic filings draw invisible force lines",
+            "Magnets turn hidden fields into visible maps",
+            "Iron filings reveal the shape of magnetism",
+        ],
         "hook": "Magnets reveal invisible fields in filings.",
         "body": (
             "Watch the filings first because each tiny piece lines up with the field around the magnet. "
@@ -1254,6 +1329,11 @@ _SUBJECT_FALLBACKS = {
     },
     "plant": {
         "title": "Plants track light through their leaves",
+        "title_alternates": [
+            "Leaves angle toward the light they can use",
+            "Plants turn leaf angles into light maps",
+            "Plant leaves reveal where energy comes from",
+        ],
         "hook": "Plants track light through their leaves.",
         "body": (
             "Watch the leaves first because their angle changes how much light reaches each surface. "
@@ -1265,6 +1345,11 @@ _SUBJECT_FALLBACKS = {
     },
     "rare_phenomena": {
         "title": "Auroras reveal charged particles in the sky",
+        "title_alternates": [
+            "Auroras turn space weather into color",
+            "Sky glow reveals particles hitting the air",
+            "Auroras show invisible space weather above us",
+        ],
         "hook": "Auroras reveal charged particles in the sky.",
         "body": (
             "Watch the glow first because charged particles hit the upper atmosphere and make gases shine. "
@@ -1276,6 +1361,11 @@ _SUBJECT_FALLBACKS = {
     },
     "river": {
         "title": "Rivers sort sand along every bend",
+        "title_alternates": [
+            "River bends sort sand by speed",
+            "Rivers build new shapes by dropping sediment",
+            "Water speed decides where river sand lands",
+        ],
         "hook": "Rivers sort sand along every bend.",
         "body": (
             "Watch the bank first because fast water carries grains while slower water drops them. "
@@ -1287,6 +1377,11 @@ _SUBJECT_FALLBACKS = {
     },
     "science": {
         "title": "Fossils turn old bones into time clues",
+        "title_alternates": [
+            "Fossils preserve old bodies as mineral clues",
+            "Fossil shapes turn rocks into timelines",
+            "Fossils keep ancient outlines inside stone",
+        ],
         "hook": "Fossils turn old bones into time clues.",
         "body": (
             "Watch the fossil shape first because minerals can replace bone while preserving the original outline. "
@@ -1298,6 +1393,11 @@ _SUBJECT_FALLBACKS = {
     },
     "space": {
         "title": "The Moon records impacts in bright scars",
+        "title_alternates": [
+            "Moon scars map impacts that never washed away",
+            "The Moon stores old collisions in craters",
+            "Space rocks left a map on the Moon",
+        ],
         "hook": "The Moon records impacts in bright scars.",
         "body": (
             "Watch the Moon surface first because space rocks leave circular marks that do not wash away. "
@@ -1309,6 +1409,11 @@ _SUBJECT_FALLBACKS = {
     },
     "tree": {
         "title": "Trees record hard seasons inside rings",
+        "title_alternates": [
+            "Tree rings reveal years of stress and growth",
+            "Trees turn weather history into rings",
+            "Trunks store old seasons in narrow bands",
+        ],
         "hook": "Trees record hard seasons inside rings.",
         "body": (
             "Watch the ring pattern first because fast growth leaves wider bands and stress leaves tighter ones. "
@@ -1320,6 +1425,11 @@ _SUBJECT_FALLBACKS = {
     },
     "volcano": {
         "title": "Volcanoes build land from flowing lava",
+        "title_alternates": [
+            "Lava edges turn eruptions into new ground",
+            "Volcanoes create fresh land while lava cools",
+            "Flowing lava records how volcanoes build",
+        ],
         "hook": "Volcanoes build land from flowing lava.",
         "body": (
             "Watch the lava edge first because molten rock cools into new surface as it spreads. "
@@ -1331,6 +1441,11 @@ _SUBJECT_FALLBACKS = {
     },
     "weather": {
         "title": "Storm clouds reveal rising air engines",
+        "title_alternates": [
+            "Storm clouds show where warm air rises",
+            "Cloud towers mark the engine inside storms",
+            "Weather reveals itself in one cloud edge",
+        ],
         "hook": "Storm clouds reveal rising air engines.",
         "body": (
             "Watch the cloud edge first because warm air lifts moisture until it cools into shape. "
@@ -1462,6 +1577,17 @@ def _fallback_variants(package: dict | None) -> list[dict]:
     variants: list[dict] = []
     if {"title", "hook", "body", "thumb"} <= set(base):
         variants.append(base)
+        for title in package.get("title_alternates") or []:
+            clean_title = str(title or "").strip()
+            if not clean_title:
+                continue
+            variants.append(
+                {
+                    **base,
+                    "title": clean_title,
+                    "hook": clean_title.rstrip(".") + ".",
+                }
+            )
     for item in package.get("alternates") or []:
         if isinstance(item, dict) and {"title", "hook", "body", "thumb"} <= set(item):
             variants.append(item)
