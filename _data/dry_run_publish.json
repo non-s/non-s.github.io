@@ -3979,26 +3979,29 @@
   "scale_ready_count": 0,
   "observe_before_scaling_count": 6,
   "objective_reasons": {
-    "observe_before_scaling": 6
+    "observe_before_scaling": 6,
+    "soft_agency_hold_supply_recovery": 1
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 27,
-    "pending_after": 27,
+    "pending_before": 30,
+    "pending_after": 30,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
+      "editor_in_chief:subject repeated inside 3-day cooldown": 15,
       "objective_gate:observe_before_scaling": 13,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 12,
-      "objective_gate:bootstrap_observe_before_scaling": 5,
+      "objective_gate:bootstrap_observe_before_scaling": 8,
+      "editor_in_chief:script quality gate blocked the narration": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
-      "editor_in_chief:script quality gate blocked the narration": 2,
       "editorial_cooldown_supply_fallback": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "editor_in_chief:editorial score 46 is below 62": 1
+      "editor_in_chief:editorial score 46 is below 62": 1,
+      "editor_in_chief:editorial score 40 is below 62": 1,
+      "editor_in_chief:editorial score 61 is below 62": 1
     }
   },
   "rejected_preview": []
