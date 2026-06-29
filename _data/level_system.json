@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-29T20:24:06.776237+00:00",
+  "generated_at": "2026-06-29T20:30:44.451195+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 26.0,
+  "overall_progress_pct": 27.0,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,17 +10,17 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 82.2
+    "progress_pct": 88.9
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 4,
+      "eligible_count": 5,
       "operational_publish_ready": 4,
       "apparent_publish_ready": 4,
-      "pending": 16,
+      "pending": 20,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
@@ -31,23 +31,23 @@
         },
         {
           "id": "objective_gate:observe_before_scaling",
-          "count": 22,
+          "count": 23,
           "operator_translation": "observe this pattern before scaling it"
         },
         {
+          "id": "duplicate_title",
+          "count": 22,
+          "operator_translation": "duplicate title"
+        },
+        {
           "id": "queue_prune:rewrite",
-          "count": 12,
+          "count": 16,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 10,
+          "count": 13,
           "operator_translation": "pick a fresh subject inside the same lane"
-        },
-        {
-          "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
-          "count": 6,
-          "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
         }
       ]
     }
@@ -74,7 +74,7 @@
     {
       "priority": "P0",
       "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, queue_prune:rewrite",
+      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, duplicate_title",
       "why": "Current supply has strong ideas but fails late gates."
     },
     {
@@ -86,20 +86,20 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 16/20",
+      "target": "pending 20/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 84,
-    "health_state": "watch",
-    "pending": 16,
+    "health_score": 92,
+    "health_state": "excellent",
+    "pending": 20,
     "operational_publish_ready": 4,
     "apparent_publish_ready": 4,
-    "eligible_count": 4,
+    "eligible_count": 5,
     "scale_ready_count": 0,
-    "next_shorts_count": 4,
-    "editorial_candidate_count": 16,
+    "next_shorts_count": 5,
+    "editorial_candidate_count": 18,
     "published_count": 95,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -119,18 +119,28 @@
     },
     {
       "id": "objective_gate:observe_before_scaling",
-      "count": 22,
+      "count": 23,
       "operator_translation": "observe this pattern before scaling it"
     },
     {
+      "id": "duplicate_title",
+      "count": 22,
+      "operator_translation": "duplicate title"
+    },
+    {
       "id": "queue_prune:rewrite",
-      "count": 12,
+      "count": 16,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 10,
+      "count": 13,
       "operator_translation": "pick a fresh subject inside the same lane"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 8,
+      "operator_translation": "off topic visual"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -149,28 +159,18 @@
     },
     {
       "id": "observe_before_scaling",
-      "count": 4,
+      "count": 5,
       "operator_translation": "observe before scaling"
     },
     {
       "id": "editorial_cooldown_supply_fallback",
-      "count": 4,
+      "count": 5,
       "operator_translation": "editorial cooldown supply fallback"
     },
     {
-      "id": "packaging:missing_action_word",
-      "count": 2,
-      "operator_translation": "packaging:missing action word"
-    },
-    {
-      "id": "editor_in_chief:editorial score 49 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 42 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 42 is below 62"
+      "id": "inventory_reserve_fallback",
+      "count": 5,
+      "operator_translation": "inventory reserve fallback"
     }
   ],
   "levels": [
@@ -184,7 +184,7 @@
       "progress_pct": 100.0,
       "evidence": {
         "published_count": 95,
-        "health_score": 84
+        "health_score": 92
       }
     },
     {
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 82.2,
+      "progress_pct": 88.9,
       "evidence": {
         "operational_publish_ready": 4,
-        "eligible_count": 4,
-        "pending": 16,
+        "eligible_count": 5,
+        "pending": 20,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -262,10 +262,10 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 14.3,
+      "progress_pct": 47.7,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "watch",
+        "health_state": "excellent",
         "operational_publish_ready": 4
       }
     }

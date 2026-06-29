@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 7,
+    "automation_safe": 6,
     "high": 2,
-    "manual_review": 3,
+    "manual_review": 4,
     "total": 10,
     "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-06-29T20:23:06.408166+00:00",
+  "generated_at": "2026-06-29T20:29:10.085456+00:00",
   "items": [
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 25.275,
+      "age_hours": 25.376,
       "automation_safe": false,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 24.344,
+      "age_hours": 24.445,
       "automation_safe": false,
       "category": "forests",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 23.045,
+      "age_hours": 23.146,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 10.367,
+      "age_hours": 10.468,
       "automation_safe": true,
       "category": "conservation",
       "checkpoint_label": "1h",
@@ -114,34 +114,8 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "pull_fresh_analytics",
-      "age_hours": 6.017,
-      "automation_safe": true,
-      "category": "space",
-      "checkpoint_label": "6h",
-      "checkpoint_state": "due",
-      "current_views": 0,
-      "due_at": "2026-06-29T20:22:05.678381+00:00",
-      "free_only": true,
-      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:mk0JV1QLoiw:analytics_due:6h",
-      "lane": "measurement",
-      "manual_approval_required": false,
-      "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
-      "series": "Nature Signals",
-      "state": "analytics_due",
-      "target_views": 105,
-      "title": "The moon keeps one face turned toward Earth",
-      "url": "https://www.youtube.com/shorts/mk0JV1QLoiw",
-      "video_id": "mk0JV1QLoiw",
-      "wait_until": "",
-      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-    },
-    {
       "action_type": "prepare_package_rescue",
-      "age_hours": 8.945,
+      "age_hours": 9.046,
       "automation_safe": false,
       "category": "wildlife",
       "checkpoint_label": "24h",
@@ -166,8 +140,34 @@
       "why": "Observed velocity is weak enough to prepare a package intervention."
     },
     {
+      "action_type": "prepare_package_rescue",
+      "age_hours": 6.118,
+      "automation_safe": false,
+      "category": "space",
+      "checkpoint_label": "24h",
+      "checkpoint_state": "pending",
+      "current_views": 0,
+      "due_at": "2026-06-30T14:22:05.678381+00:00",
+      "free_only": true,
+      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+      "id": "fresh-upload:mk0JV1QLoiw:repair_candidate:24h",
+      "lane": "package_rescue",
+      "manual_approval_required": true,
+      "opening_retention_score": 100.0,
+      "priority": "high",
+      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "series": "Nature Signals",
+      "state": "repair_candidate",
+      "target_views": 300,
+      "title": "The moon keeps one face turned toward Earth",
+      "url": "https://www.youtube.com/shorts/mk0JV1QLoiw",
+      "video_id": "mk0JV1QLoiw",
+      "wait_until": "",
+      "why": "Observed velocity is weak enough to prepare a package intervention."
+    },
+    {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.111,
+      "age_hours": 0.212,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.226,
+      "age_hours": 4.327,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.998,
+      "age_hours": 3.099,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.162,
+      "age_hours": 1.263,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-06-29T20:23:06.406865+00:00"
+  "source_generated_at": "2026-06-29T20:29:10.084068+00:00"
 }
