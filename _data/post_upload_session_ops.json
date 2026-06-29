@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 6,
-      "high": 2,
-      "manual_review": 4,
+      "automation_safe": 8,
+      "high": 1,
+      "manual_review": 2,
       "total": 10,
       "urgent": 4
     },
     "free_only": true,
-    "generated_at": "2026-06-29T21:01:30.240297+00:00",
+    "generated_at": "2026-06-29T21:10:13.669842+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 25.915,
-        "automation_safe": false,
-        "category": "geology",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-06-28T20:06:37.895741+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Jm1bnXNsYb0:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "series": "Earth Engine",
-        "state": "repair_candidate",
-        "target_views": 24,
-        "title": "This rock layer gives rock layers away",
-        "url": "https://www.youtube.com/shorts/Jm1bnXNsYb0",
-        "video_id": "Jm1bnXNsYb0",
-        "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
-      },
-      {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 24.984,
+        "age_hours": 25.129,
         "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 23.685,
+        "age_hours": 23.83,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.007,
+        "age_hours": 11.153,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "1h",
@@ -116,34 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 9.585,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 9.73,
+        "automation_safe": true,
         "category": "wildlife",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-06-30T11:26:25.555830+00:00",
+        "due_at": "2026-06-29T12:26:25.555830+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:aMLo86lOqY4:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:aMLo86lOqY4:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Lions hunt better when the pride coordinates",
         "url": "https://www.youtube.com/shorts/aMLo86lOqY4",
         "video_id": "aMLo86lOqY4",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.657,
+        "age_hours": 6.802,
         "automation_safe": false,
         "category": "space",
         "checkpoint_label": "24h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.751,
+        "age_hours": 0.897,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -194,8 +168,34 @@
         "why": "The upload is still inside the no-panic observation window."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.039,
+        "automation_safe": true,
+        "category": "nocturnal",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-06-29T22:07:51.800774+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:sYDWYtlDirw:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Night Shift Nature",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Owls use silent feathers before they hunt",
+        "url": "https://www.youtube.com/shorts/sYDWYtlDirw",
+        "video_id": "sYDWYtlDirw",
+        "wait_until": "2026-06-29T22:07:51.800774+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.866,
+        "age_hours": 5.011,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.638,
+        "age_hours": 3.783,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.802,
+        "age_hours": 1.947,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-06-29T21:01:30.238834+00:00"
+    "source_generated_at": "2026-06-29T21:10:13.667961+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
-      "awaiting_1h": 1,
-      "high_priority": 6,
-      "repair_candidates": 4,
+      "analytics_due": 3,
+      "awaiting_1h": 2,
+      "high_priority": 5,
+      "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-06-29T21:01:30.238834+00:00",
+    "generated_at": "2026-06-29T21:10:13.667961+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.751,
+        "age_hours": 0.039,
+        "category": "nocturnal",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-29T22:07:51.800774+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-30T03:07:51.800774+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-30T21:07:51.800774+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-06-29T22:07:51.800774+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Night Shift Nature",
+        "state": "awaiting_1h",
+        "title": "Owls use silent feathers before they hunt",
+        "uploaded_at": "2026-06-29T21:07:51.800774+00:00",
+        "url": "https://www.youtube.com/shorts/sYDWYtlDirw",
+        "video_id": "sYDWYtlDirw",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.897,
         "category": "trees",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.802,
+        "age_hours": 1.947,
         "category": "farm",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.638,
+        "age_hours": 3.783,
         "category": "ocean",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.866,
+        "age_hours": 5.011,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.657,
+        "age_hours": 6.802,
         "category": "space",
         "checkpoints": [
           {
@@ -577,16 +632,16 @@
         }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.585,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 9.73,
         "category": "wildlife",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-06-29T12:26:25.555830+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -610,41 +665,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-06-30T11:26:25.555830+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-06-29T12:26:25.555830+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Lions hunt better when the pride coordinates",
         "uploaded_at": "2026-06-29T11:26:25.555830+00:00",
         "url": "https://www.youtube.com/shorts/aMLo86lOqY4",
         "video_id": "aMLo86lOqY4",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Lions hunt better when the pride coordinates",
-          "video_id": "aMLo86lOqY4",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.007,
+        "age_hours": 11.153,
         "category": "conservation",
         "checkpoints": [
           {
@@ -699,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.685,
+        "age_hours": 23.83,
         "category": "geology",
         "checkpoints": [
           {
@@ -754,7 +798,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.984,
+        "age_hours": 25.129,
         "category": "forests",
         "checkpoints": [
           {
@@ -817,72 +861,6 @@
           "views": 0,
           "warning_state": "repair_risk"
         }
-      },
-      {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 25.915,
-        "category": "geology",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-06-28T20:06:37.895741+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-06-29T01:06:37.895741+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": -300,
-            "due_at": "2026-06-29T19:06:37.895741+00:00",
-            "label": "24h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-06-28T20:06:37.895741+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Earth Engine",
-        "state": "repair_candidate",
-        "title": "This rock layer gives rock layers away",
-        "uploaded_at": "2026-06-28T19:06:37.895741+00:00",
-        "url": "https://www.youtube.com/shorts/Jm1bnXNsYb0",
-        "video_id": "Jm1bnXNsYb0",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "This rock layer gives rock layers away",
-          "video_id": "Jm1bnXNsYb0",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
       }
     ],
     "targets": {
@@ -892,23 +870,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-06-29T21:01:30.240398+00:00",
+  "generated_at": "2026-06-29T21:10:13.669935+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 30.0,
-        "title": "Magnets make invisible fields visible",
-        "url": "https://www.youtube.com/shorts/P7yqlO8WTgQ",
-        "video_id": "P7yqlO8WTgQ"
-      },
-      "source_title": "The moon keeps one face turned toward Earth",
-      "source_video_id": "mk0JV1QLoiw"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -952,14 +919,20 @@
       },
       "source_title": "Trees use tree rings before they leaves",
       "source_video_id": "OXyJCq6HgMo"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Foxes hear tiny prey under snow",
+        "url": "https://www.youtube.com/shorts/fv17_BK_Wu4",
+        "video_id": "fv17_BK_Wu4"
+      },
+      "source_title": "Owls use silent feathers before they hunt",
+      "source_video_id": "sYDWYtlDirw"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: The moon keeps one face turned toward Earth",
-      "title": "The moon keeps one face turned toward Earth",
-      "video_id": "mk0JV1QLoiw"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Foxes use snow hearing before they hunt",
       "title": "Foxes use snow hearing before they hunt",
@@ -979,13 +952,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Trees use tree rings before they leaves",
       "title": "Trees use tree rings before they leaves",
       "video_id": "OXyJCq6HgMo"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Owls use silent feathers before they hunt",
+      "title": "Owls use silent feathers before they hunt",
+      "video_id": "sYDWYtlDirw"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.7,
     "edges": 20,
-    "nodes": 95,
+    "nodes": 96,
     "target_reuse_limit": 2
   }
 }
