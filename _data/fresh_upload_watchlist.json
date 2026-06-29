@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 5,
+    "analytics_due": 4,
     "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 1,
+    "high_priority": 7,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-06-29T17:25:34.790642+00:00",
+  "generated_at": "2026-06-29T17:29:56.574085+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.039,
+      "age_hours": 0.112,
       "category": "ocean",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.267,
+      "age_hours": 1.34,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.058,
+      "age_hours": 3.131,
       "category": "space",
       "checkpoints": [
         {
@@ -179,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.986,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.059,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -193,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T17:26:25.555830+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-29T17:26:25.555830+00:00",
-        "label": "6h",
+        "due_at": "2026-06-30T11:26:25.555830+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Animal Superpowers",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Lions hunt better when the pride coordinates",
       "uploaded_at": "2026-06-29T11:26:25.555830+00:00",
       "url": "https://www.youtube.com/shorts/aMLo86lOqY4",
       "video_id": "aMLo86lOqY4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 20/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Lions hunt better when the pride coordinates",
+        "video_id": "aMLo86lOqY4",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.409,
+      "age_hours": 7.481,
       "category": "conservation",
       "checkpoints": [
         {
@@ -291,7 +302,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Fish Mangroves take power out of waves",
         "video_id": "q7XFYARNqgs",
@@ -301,7 +312,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.086,
+      "age_hours": 20.159,
       "category": "geology",
       "checkpoints": [
         {
@@ -356,15 +367,15 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.385,
+      "age_hours": 21.458,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-28T21:02:29.373888+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -390,12 +401,12 @@
       "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-29T02:02:29.373888+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-28T21:02:29.373888+00:00",
+        "label": "1h",
         "source": "estimated",
         "state": "overdue",
-        "target_views": 105,
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
@@ -411,15 +422,15 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.316,
+      "age_hours": 22.389,
       "category": "geology",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-28T20:06:37.895741+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -445,12 +456,12 @@
       "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-29T01:06:37.895741+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-28T20:06:37.895741+00:00",
+        "label": "1h",
         "source": "estimated",
         "state": "overdue",
-        "target_views": 105,
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
@@ -466,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.359,
+      "age_hours": 23.431,
       "category": "plants",
       "checkpoints": [
         {
@@ -494,10 +505,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 2
         }
       ],
-      "current_views": 0,
+      "current_views": 2,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -517,11 +528,11 @@
       "uploaded_at": "2026-06-28T18:04:03.383685+00:00",
       "url": "https://www.youtube.com/shorts/uMBHm6tNXkg",
       "video_id": "uMBHm6tNXkg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.085
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.97,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.043,
       "category": "plants",
       "checkpoints": [
         {
@@ -543,17 +554,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-06-29T17:27:21.477158+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-06-28T18:27:21.477158+00:00",
@@ -567,12 +578,23 @@
       "opening_retention_state": "needs_tightening",
       "priority": "high",
       "series": "Biology Brief",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Flowers use trap hairs to count touches before snapping shut",
       "uploaded_at": "2026-06-28T17:27:21.477158+00:00",
       "url": "https://www.youtube.com/shorts/u5VrAUBYcKg",
       "video_id": "u5VrAUBYcKg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Flowers use trap hairs to count touches before snapping shut",
+        "video_id": "u5VrAUBYcKg",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     }
   ],
   "targets": {
