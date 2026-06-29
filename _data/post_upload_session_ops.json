@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 8,
-      "high": 1,
+      "high": 2,
       "manual_review": 2,
       "total": 10,
       "urgent": 6
     },
     "free_only": true,
-    "generated_at": "2026-06-29T16:17:37.008504+00:00",
+    "generated_at": "2026-06-29T17:16:51.109600+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 24.135,
+        "age_hours": 25.123,
         "automation_safe": false,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.838,
+        "age_hours": 23.825,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.226,
+        "age_hours": 23.213,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.953,
+        "age_hours": 19.94,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 21.183,
+        "age_hours": 22.17,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.252,
+        "age_hours": 21.239,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "6h",
@@ -168,8 +168,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.122,
+        "automation_safe": true,
+        "category": "nocturnal",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-06-29T17:09:32.276643+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:VgUn1CFEhhc:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "series": "Night Shift Nature",
+        "state": "analytics_due",
+        "target_views": 24,
+        "title": "Foxes use snow hearing before they hunt",
+        "url": "https://www.youtube.com/shorts/VgUn1CFEhhc",
+        "video_id": "VgUn1CFEhhc",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.276,
+        "age_hours": 7.263,
         "automation_safe": false,
         "category": "conservation",
         "checkpoint_label": "24h",
@@ -194,34 +220,8 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.135,
-        "automation_safe": true,
-        "category": "nocturnal",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-06-29T17:09:32.276643+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:VgUn1CFEhhc:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Night Shift Nature",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Foxes use snow hearing before they hunt",
-        "url": "https://www.youtube.com/shorts/VgUn1CFEhhc",
-        "video_id": "VgUn1CFEhhc",
-        "wait_until": "2026-06-29T17:09:32.276643+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.853,
+        "age_hours": 5.84,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.925,
+        "age_hours": 2.913,
         "automation_safe": true,
         "category": "space",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-06-29T16:17:37.007316+00:00"
+    "source_generated_at": "2026-06-29T17:16:51.108426+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 5,
-      "awaiting_1h": 1,
-      "high_priority": 7,
+      "analytics_due": 6,
+      "awaiting_1h": 0,
+      "high_priority": 8,
       "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-06-29T16:17:37.007316+00:00",
+    "generated_at": "2026-06-29T17:16:51.108426+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.135,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.122,
         "category": "nocturnal",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-06-29T17:09:32.276643+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-06-29T17:09:32.276643+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Night Shift Nature",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Foxes use snow hearing before they hunt",
         "uploaded_at": "2026-06-29T16:09:32.276643+00:00",
         "url": "https://www.youtube.com/shorts/VgUn1CFEhhc",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.925,
+        "age_hours": 2.913,
         "category": "space",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.853,
+        "age_hours": 5.84,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.276,
+        "age_hours": 7.263,
         "category": "conservation",
         "checkpoints": [
           {
@@ -513,7 +513,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 22/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 23/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Fish Mangroves take power out of waves",
           "video_id": "q7XFYARNqgs",
@@ -523,7 +523,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.953,
+        "age_hours": 19.94,
         "category": "geology",
         "checkpoints": [
           {
@@ -578,7 +578,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.252,
+        "age_hours": 21.239,
         "category": "forests",
         "checkpoints": [
           {
@@ -633,7 +633,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.183,
+        "age_hours": 22.17,
         "category": "geology",
         "checkpoints": [
           {
@@ -688,7 +688,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.226,
+        "age_hours": 23.213,
         "category": "plants",
         "checkpoints": [
           {
@@ -743,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.838,
+        "age_hours": 23.825,
         "category": "plants",
         "checkpoints": [
           {
@@ -798,7 +798,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.135,
+        "age_hours": 25.123,
         "category": "rivers",
         "checkpoints": [
           {
@@ -849,7 +849,7 @@
         "uploaded_at": "2026-06-28T16:09:29.268170+00:00",
         "url": "https://www.youtube.com/shorts/xfOfa8OLwNw",
         "video_id": "xfOfa8OLwNw",
-        "views_per_hour": 0.125,
+        "views_per_hour": 0.124,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -870,7 +870,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-06-29T16:17:37.008598+00:00",
+  "generated_at": "2026-06-29T17:16:51.109693+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
