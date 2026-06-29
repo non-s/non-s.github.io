@@ -370,6 +370,371 @@
       }
     },
     {
+      "id": "41fa6aac6724f4ff",
+      "title": "Dragonflies use motion lock before they track",
+      "category": "insects",
+      "autonomy_priority": 101.6,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 65,
+          "signals": {
+            "viral_potential": 77,
+            "visual_potential": 66,
+            "replay_potential": 79,
+            "comment_potential": 51,
+            "educational_potential": 70,
+            "emotional_potential": 41,
+            "novelty": 56
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.2,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.4,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+        },
+        "retention": {
+          "score": 77,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.2,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.4,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+        },
+        "opening_retention": {
+          "score": 90.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "dragonflies",
+          "cue_terms": [
+            "eyes",
+            "lock",
+            "motion"
+          ],
+          "frame_hook_bridge": [],
+          "cue_bridge": [
+            "eyes"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 73,
+          "state": "usable",
+          "subscriber_probability": 0.104,
+          "return_probability": 0.225,
+          "comment_probability": 0.193,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.354,
+            "sample_size": 10,
+            "minimum_sample_size": 18,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.515,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.341,
+          "sample_size": 20,
+          "minimum_sample_size": 38,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.506,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.34."
+        },
+        "category": "insects",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.341,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "84831aec079367e9",
+      "title": "Trees use tree rings before they leaves",
+      "category": "trees",
+      "autonomy_priority": 100.6,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 64,
+          "signals": {
+            "viral_potential": 61,
+            "visual_potential": 65,
+            "replay_potential": 82,
+            "comment_potential": 62,
+            "educational_potential": 71,
+            "emotional_potential": 44,
+            "novelty": 55
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "trees",
+          "cue_terms": [
+            "pattern",
+            "ring",
+            "tree"
+          ],
+          "frame_hook_bridge": [
+            "ring",
+            "tree"
+          ],
+          "cue_bridge": [
+            "pattern",
+            "ring",
+            "tree"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 63,
+          "state": "usable",
+          "subscriber_probability": 0.09,
+          "return_probability": 0.197,
+          "comment_probability": 0.17,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.217,
+            "sample_size": 6,
+            "minimum_sample_size": 10,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.413,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.191,
+          "sample_size": 11,
+          "minimum_sample_size": 25,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.394,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
+        },
+        "category": "trees",
+        "story_format": "earth_engine",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.191,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "ff4daa85598c5851",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -568,397 +933,13 @@
       }
     },
     {
-      "id": "ca1c61729ac28b9e",
-      "title": "Horses sort familiar clues with face memory",
+      "id": "4c80c000c2670a05",
+      "title": "Cows use herd memory before they remember",
       "category": "farm",
-      "autonomy_priority": 83.5,
+      "autonomy_priority": 77.9,
       "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "face_recognition",
-      "objective_reasons": [
-        "publish_ready_supply_reserve_fallback"
-      ],
-      "lane": "recovery",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 46,
-          "signals": {
-            "viral_potential": 37,
-            "visual_potential": 37,
-            "replay_potential": 66,
-            "comment_potential": 54,
-            "educational_potential": 57,
-            "emotional_potential": 27,
-            "novelty": 47
-          },
-          "verdict": "discard",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-        },
-        "retention": {
-          "score": 70,
-          "signals": {
-            "hook_score": 70,
-            "curiosity_score": 79,
-            "visual_score": 50,
-            "replay_score": 72,
-            "completion_prediction": 77
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "horses",
-          "cue_terms": [
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face",
-            "memor"
-          ],
-          "cue_bridge": [
-            "face",
-            "memor"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.375,
-            "sample_size": 7,
-            "minimum_sample_size": 13,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.531,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.383,
-          "sample_size": 16,
-          "minimum_sample_size": 28,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.538,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.38."
-        },
-        "category": "farm",
-        "story_format": "animal_memory",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.383,
-          "scale_ready": true,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": "face_recognition"
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ]
-        }
-      }
-    },
-    {
-      "id": "05599f551d65f776",
-      "title": "Horses can remember familiar faces",
-      "category": "farm",
-      "autonomy_priority": 83.3,
-      "queue_score": 78.0,
-      "template_cluster": "",
-      "mechanism_cluster": "face_recognition",
-      "objective_reasons": [
-        "publish_ready_supply_reserve_fallback"
-      ],
-      "lane": "recovery",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 48,
-          "signals": {
-            "viral_potential": 42,
-            "visual_potential": 57,
-            "replay_potential": 56,
-            "comment_potential": 54,
-            "educational_potential": 50,
-            "emotional_potential": 27,
-            "novelty": 37
-          },
-          "verdict": "discard",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-        },
-        "retention": {
-          "score": 73,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 66,
-            "replay_score": 62,
-            "completion_prediction": 77
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "horses",
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.375,
-            "sample_size": 7,
-            "minimum_sample_size": 13,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.531,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.383,
-          "sample_size": 16,
-          "minimum_sample_size": 28,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.538,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.38."
-        },
-        "category": "farm",
-        "story_format": "animal_memory",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.383,
-          "scale_ready": true,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": "face_recognition"
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ]
-        }
-      }
-    },
-    {
-      "id": "2da9f8fda07f3d1b",
-      "title": "Chickens remember familiar faces in the flock",
-      "category": "farm",
-      "autonomy_priority": 80.9,
-      "queue_score": 78.0,
-      "template_cluster": "",
-      "mechanism_cluster": "face_recognition",
+      "mechanism_cluster": "",
       "objective_reasons": [
         "publish_ready_supply_reserve_fallback"
       ],
@@ -971,12 +952,12 @@
         "opportunity": {
           "score": 47,
           "signals": {
-            "viral_potential": 55,
-            "visual_potential": 37,
-            "replay_potential": 56,
-            "comment_potential": 38,
-            "educational_potential": 57,
-            "emotional_potential": 36,
+            "viral_potential": 42,
+            "visual_potential": 47,
+            "replay_potential": 66,
+            "comment_potential": 46,
+            "educational_potential": 50,
+            "emotional_potential": 27,
             "novelty": 47
           },
           "verdict": "discard",
@@ -998,12 +979,12 @@
           "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
         },
         "retention": {
-          "score": 71,
+          "score": 76,
           "signals": {
             "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
             "completion_prediction": 84
           },
           "verdict": "rewrite",
@@ -1025,13 +1006,15 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "chickens",
+          "subject": "cow",
           "cue_terms": [
             "face",
-            "memor"
+            "hoof",
+            "memor",
+            "timing"
           ],
           "frame_hook_bridge": [
-            "face"
+            "herd"
           ],
           "cue_bridge": [
             "face"
@@ -1082,32 +1065,32 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.375,
-            "sample_size": 7,
-            "minimum_sample_size": 13,
+            "confidence_score": 0.563,
+            "sample_size": 14,
+            "minimum_sample_size": 18,
             "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.531,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
+            "data_quality_score": 0.912,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.672,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.383,
-          "sample_size": 16,
-          "minimum_sample_size": 28,
+          "confidence_score": 0.571,
+          "sample_size": 30,
+          "minimum_sample_size": 38,
           "data_quality": "observed",
           "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.538,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.38."
+          "recommendation_strength": "test",
+          "can_adjust_strategy": true,
+          "bootstrap_multiplier": 0.679,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.57."
         },
         "category": "farm",
-        "story_format": "animal_memory",
+        "story_format": "body_superpower",
         "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
@@ -1122,13 +1105,13 @@
         "objective_gate": {
           "penalty": 0.0,
           "reasons": [],
-          "confidence_score": 0.383,
+          "confidence_score": 0.571,
           "scale_ready": true,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": "face_recognition"
+          "mechanism_cluster": ""
         },
         "reserve_override": {
           "reason": "publish_ready_supply_reserve_fallback",
@@ -1150,65 +1133,17 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 7,
-      "evergreen": 15
+      "recovery": 2,
+      "evergreen": 18
     },
     "items": [
       {
-        "id": "801f0cfcb73dc59d",
-        "title": "Chickens lock their view between steps",
+        "id": "4c80c000c2670a05",
+        "title": "Cows use herd memory before they remember",
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.12
-      },
-      {
-        "id": "f91185d89ae014ba",
-        "title": "Horses can lock their legs while resting",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 52.46
-      },
-      {
-        "id": "12db41497baea103",
-        "title": "Turtles steer home by reading hidden currents",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 52.52
-      },
-      {
-        "id": "925c162335924983",
-        "title": "Ducklings imprint on the first safe guide",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 52.74
-      },
-      {
-        "id": "ca1c61729ac28b9e",
-        "title": "Horses sort familiar clues with face memory",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 52.46
-      },
-      {
-        "id": "05599f551d65f776",
-        "title": "Horses can remember familiar faces",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.62
-      },
-      {
-        "id": "2da9f8fda07f3d1b",
-        "title": "Chickens remember familiar faces in the flock",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 52.42
+        "freshness_score": 55.0
       },
       {
         "id": "fc8688ca9a9e53be",
@@ -1227,6 +1162,22 @@
         "freshness_score": 51.98
       },
       {
+        "id": "c325a07f88dbaa06",
+        "title": "This tongue smell gives snakes away",
+        "category": "reptiles",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
+        "id": "41fa6aac6724f4ff",
+        "title": "Dragonflies use motion lock before they track",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "ff4daa85598c5851",
         "title": "Cats groom to reset their scent map",
         "category": "cats",
@@ -1243,12 +1194,12 @@
         "freshness_score": 51.66
       },
       {
-        "id": "8b3843792150cb90",
+        "id": "26ca036370f8ef51",
         "title": "Storm clouds show air layers changing over time",
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.76
+        "freshness_score": 55.0
       },
       {
         "id": "f9d94f8f411a03aa",
@@ -1264,7 +1215,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.62
+        "freshness_score": 54.6
       },
       {
         "id": "09c8f40beafab256",
@@ -1280,7 +1231,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.46
+        "freshness_score": 52.44
       },
       {
         "id": "9d83eac332b110af",
@@ -1304,7 +1255,15 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.62
+        "freshness_score": 54.6
+      },
+      {
+        "id": "84831aec079367e9",
+        "title": "Trees use tree rings before they leaves",
+        "category": "trees",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "a5e2ce0a3ca4926e",
@@ -1328,7 +1287,15 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.1
+        "freshness_score": 53.08
+      },
+      {
+        "id": "cd8c0f4a673b36a8",
+        "title": "Rock layers use rock layers before they change",
+        "category": "geology",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1356,17 +1323,17 @@
             "share": 0.167
           },
           {
+            "shape": "{subject} use motion lock before they track",
+            "count": 1,
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use tree rings before they leaves",
+            "count": 1,
+            "share": 0.167
+          },
+          {
             "shape": "{subject} groom to reset their scent map",
-            "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} sort familiar clues with {cue} memory",
-            "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} can remember familiar {cue}",
             "count": 1,
             "share": 0.167
           }
@@ -1390,17 +1357,17 @@
             "share": 0.167
           },
           {
+            "shape": "{subject} use motion lock before they track",
+            "count": 1,
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use tree rings before they leaves",
+            "count": 1,
+            "share": 0.167
+          },
+          {
             "shape": "{subject} groom to reset their scent map",
-            "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} sort familiar clues with {cue} memory",
-            "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} can remember familiar {cue}",
             "count": 1,
             "share": 0.167
           }
@@ -1410,24 +1377,26 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 22,
-    "pending_after": 22,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 8,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
-      "objective_gate:observe_before_scaling": 10,
-      "editor_in_chief:script quality gate blocked the narration": 4,
-      "publish_ready_supply_reserve_fallback": 4,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 13,
+      "objective_gate:observe_before_scaling": 13,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "editor_in_chief:script quality gate blocked the narration": 3,
       "objective_gate:bootstrap_observe_before_scaling": 3,
+      "editorial_cooldown_supply_fallback": 2,
+      "publish_ready_supply_reserve_fallback": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
+      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "inventory_reserve_fallback": 1
     }
   }
 }
