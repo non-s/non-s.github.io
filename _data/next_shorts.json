@@ -183,6 +183,189 @@
       }
     },
     {
+      "id": "9b6a7f5d8c3c7fe0",
+      "title": "Forests use cool canopy before they cover",
+      "category": "forests",
+      "autonomy_priority": 103.0,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 68,
+          "signals": {
+            "viral_potential": 82,
+            "visual_potential": 69,
+            "replay_potential": 82,
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 92.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "layers",
+          "cue_terms": [
+            "air",
+            "canop",
+            "layer"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "cue_bridge": [
+            "air"
+          ],
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ]
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 63,
+          "state": "usable",
+          "subscriber_probability": 0.09,
+          "return_probability": 0.197,
+          "comment_probability": 0.17,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.221,
+            "sample_size": 8,
+            "minimum_sample_size": 10,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.415,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.195,
+          "sample_size": 15,
+          "minimum_sample_size": 25,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.396,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
+        },
+        "category": "forests",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.195,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "a205d9f6e3a1ec29",
       "title": "Forests trap cool air below thick leaves",
       "category": "forests",
@@ -360,6 +543,191 @@
             "observe_before_scaling"
           ],
           "confidence_score": 0.195,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "84831aec079367e9",
+      "title": "Trees use tree rings before they leaves",
+      "category": "trees",
+      "autonomy_priority": 100.6,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 64,
+          "signals": {
+            "viral_potential": 61,
+            "visual_potential": 65,
+            "replay_potential": 82,
+            "comment_potential": 62,
+            "educational_potential": 71,
+            "emotional_potential": 44,
+            "novelty": 55
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 87,
+            "visual_score": 66,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "trees",
+          "cue_terms": [
+            "pattern",
+            "ring",
+            "tree"
+          ],
+          "frame_hook_bridge": [
+            "ring",
+            "tree"
+          ],
+          "cue_bridge": [
+            "pattern",
+            "ring",
+            "tree"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 63,
+          "state": "usable",
+          "subscriber_probability": 0.09,
+          "return_probability": 0.197,
+          "comment_probability": 0.17,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.217,
+            "sample_size": 6,
+            "minimum_sample_size": 10,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.413,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.191,
+          "sample_size": 11,
+          "minimum_sample_size": 25,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.394,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
+        },
+        "category": "trees",
+        "story_format": "earth_engine",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.191,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -566,6 +934,190 @@
           ]
         }
       }
+    },
+    {
+      "id": "0ef428432eac25bb",
+      "title": "Leaves turn a forest into a cooler room",
+      "category": "earth_from_space",
+      "autonomy_priority": 91.9,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 93.9,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 56,
+          "signals": {
+            "viral_potential": 50,
+            "visual_potential": 70,
+            "replay_potential": 69,
+            "comment_potential": 49,
+            "educational_potential": 59,
+            "emotional_potential": 30,
+            "novelty": 50
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "retention": {
+          "score": 77,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 74,
+            "replay_score": 72,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "forest",
+          "cue_terms": [
+            "canop",
+            "cool",
+            "leave"
+          ],
+          "frame_hook_bridge": [
+            "canop"
+          ],
+          "cue_bridge": [
+            "canop",
+            "leave"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 94,
+          "state": "strong",
+          "subscriber_probability": 0.134,
+          "return_probability": 0.283,
+          "comment_probability": 0.242,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.293,
+            "sample_size": 8,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.47,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.274,
+          "sample_size": 16,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.48,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.456,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
+        },
+        "category": "earth_from_space",
+        "story_format": "earth_engine",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.274,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
     }
   ],
   "editorial_mix": {
@@ -576,7 +1128,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 14,
+      "evergreen": 18,
       "recovery": 1
     },
     "items": [
@@ -586,7 +1138,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.74
+        "freshness_score": 51.72
       },
       {
         "id": "2a8f3f3725c00fe2",
@@ -594,7 +1146,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.98
+        "freshness_score": 51.96
       },
       {
         "id": "ff4daa85598c5851",
@@ -610,15 +1162,23 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.66
+        "freshness_score": 51.64
       },
       {
-        "id": "8b3843792150cb90",
+        "id": "26ca036370f8ef51",
         "title": "Storm clouds show air layers changing over time",
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.76
+        "freshness_score": 55.0
+      },
+      {
+        "id": "0ef428432eac25bb",
+        "title": "Leaves turn a forest into a cooler room",
+        "category": "earth_from_space",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "f9d94f8f411a03aa",
@@ -658,7 +1218,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.66
+        "freshness_score": 51.64
       },
       {
         "id": "7ea6de9283de7ea9",
@@ -666,7 +1226,15 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.68
+        "freshness_score": 52.66
+      },
+      {
+        "id": "9b6a7f5d8c3c7fe0",
+        "title": "Forests use cool canopy before they cover",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "a205d9f6e3a1ec29",
@@ -675,6 +1243,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 54.6
+      },
+      {
+        "id": "84831aec079367e9",
+        "title": "Trees use tree rings before they leaves",
+        "category": "trees",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "a5e2ce0a3ca4926e",
@@ -699,6 +1275,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 53.08
+      },
+      {
+        "id": "424e778dcfff9a3a",
+        "title": "Rock layers use rock layers before they change",
+        "category": "geology",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -710,49 +1294,69 @@
     "windows": [
       {
         "window": 10,
-        "items": 3,
+        "items": 6,
         "dominant_shape": "{subject} reveal the answer with scent road",
         "dominant_count": 1,
-        "dominant_share": 0.333,
+        "dominant_share": 0.167,
         "top_shapes": [
           {
             "shape": "{subject} reveal the answer with scent road",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use cool canopy before they cover",
+            "count": 1,
+            "share": 0.167
           },
           {
             "shape": "{subject} trap cool air below thick leaves",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use tree rings before they leaves",
+            "count": 1,
+            "share": 0.167
           },
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
           }
         ]
       },
       {
         "window": 30,
-        "items": 3,
+        "items": 6,
         "dominant_shape": "{subject} reveal the answer with scent road",
         "dominant_count": 1,
-        "dominant_share": 0.333,
+        "dominant_share": 0.167,
         "top_shapes": [
           {
             "shape": "{subject} reveal the answer with scent road",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use cool canopy before they cover",
+            "count": 1,
+            "share": 0.167
           },
           {
             "shape": "{subject} trap cool air below thick leaves",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
+          },
+          {
+            "shape": "{subject} use tree rings before they leaves",
+            "count": 1,
+            "share": 0.167
           },
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.333
+            "share": 0.167
           }
         ]
       }
@@ -760,24 +1364,28 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 15,
-    "pending_after": 15,
-    "rejected": 0,
+    "pending_before": 20,
+    "pending_after": 19,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 6,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
-      "objective_gate:observe_before_scaling": 10,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 14,
+      "objective_gate:observe_before_scaling": 13,
+      "editorial_cooldown_supply_fallback": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:script quality gate blocked the narration": 3,
       "objective_gate:bootstrap_observe_before_scaling": 3,
+      "duplicate_title": 2,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "publish_ready_supply_reserve_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
