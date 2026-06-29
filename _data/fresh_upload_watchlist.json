@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 5,
-    "repair_candidates": 2,
+    "analytics_due": 4,
+    "awaiting_1h": 2,
+    "high_priority": 4,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-06-29T22:48:25.787322+00:00",
+  "generated_at": "2026-06-29T23:15:52.884208+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.401,
+      "age_hours": 0.042,
+      "category": "weather",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T00:13:20.974300+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T05:13:20.974300+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T23:13:20.974300+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T00:13:20.974300+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 90.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Lightning uses lightning flash before it signals",
+      "uploaded_at": "2026-06-29T23:13:20.974300+00:00",
+      "url": "https://www.youtube.com/shorts/Mmi-lyfFJuA",
+      "video_id": "Mmi-lyfFJuA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.859,
       "category": "geology",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.676,
+      "age_hours": 2.134,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.534,
+      "age_hours": 2.991,
       "category": "trees",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.584,
+      "age_hours": 4.042,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.42,
+      "age_hours": 5.877,
       "category": "ocean",
       "checkpoints": [
         {
@@ -289,16 +344,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.648,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.106,
       "category": "nocturnal",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-29T17:09:32.276643+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -322,41 +377,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-06-30T16:09:32.276643+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-29T17:09:32.276643+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Night Shift Nature",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Foxes use snow hearing before they hunt",
       "uploaded_at": "2026-06-29T16:09:32.276643+00:00",
       "url": "https://www.youtube.com/shorts/VgUn1CFEhhc",
       "video_id": "VgUn1CFEhhc",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Foxes use snow hearing before they hunt",
-        "video_id": "VgUn1CFEhhc",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.439,
+      "age_hours": 8.896,
       "category": "space",
       "checkpoints": [
         {
@@ -411,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.367,
+      "age_hours": 11.824,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -466,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.789,
+      "age_hours": 13.247,
       "category": "conservation",
       "checkpoints": [
         {
@@ -482,8 +526,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-29T16:01:03.929588+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -518,72 +562,6 @@
       "url": "https://www.youtube.com/shorts/q7XFYARNqgs",
       "video_id": "q7XFYARNqgs",
       "views_per_hour": 0.0
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.467,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-28T22:20:25.711108+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-29T03:20:25.711108+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-06-29T21:20:25.711108+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-28T22:20:25.711108+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "repair_candidate",
-      "title": "Rock layers expose erosion in bare open hills",
-      "uploaded_at": "2026-06-28T21:20:25.711108+00:00",
-      "url": "https://www.youtube.com/shorts/AdQTndo_VR4",
-      "video_id": "AdQTndo_VR4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers expose erosion in bare open hills",
-        "video_id": "AdQTndo_VR4",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
     }
   ],
   "targets": {
