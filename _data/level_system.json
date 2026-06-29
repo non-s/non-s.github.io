@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-29T21:50:01.114969+00:00",
+  "generated_at": "2026-06-29T21:54:57.893367+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 27.8,
+  "overall_progress_pct": 27.0,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,16 +10,16 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 94.4
+    "progress_pct": 88.9
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 6,
-      "operational_publish_ready": 5,
-      "apparent_publish_ready": 5,
+      "eligible_count": 5,
+      "operational_publish_ready": 4,
+      "apparent_publish_ready": 4,
       "pending": 20,
       "target_publish_ready": 6,
       "target_pending": 20,
@@ -35,19 +35,19 @@
           "operator_translation": "observe this pattern before scaling it"
         },
         {
-          "id": "duplicate_title",
-          "count": 19,
-          "operator_translation": "duplicate title"
-        },
-        {
           "id": "queue_prune:rewrite",
-          "count": 15,
+          "count": 16,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 13,
+          "count": 14,
           "operator_translation": "pick a fresh subject inside the same lane"
+        },
+        {
+          "id": "duplicate_title",
+          "count": 13,
+          "operator_translation": "duplicate title"
         }
       ]
     }
@@ -74,13 +74,13 @@
     {
       "priority": "P0",
       "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, duplicate_title",
+      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, queue_prune:rewrite",
       "why": "Current supply has strong ideas but fails late gates."
     },
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "5/6",
+      "target": "4/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
@@ -94,11 +94,11 @@
     "health_score": 100,
     "health_state": "excellent",
     "pending": 20,
-    "operational_publish_ready": 5,
-    "apparent_publish_ready": 5,
-    "eligible_count": 6,
-    "scale_ready_count": 2,
-    "next_shorts_count": 6,
+    "operational_publish_ready": 4,
+    "apparent_publish_ready": 4,
+    "eligible_count": 5,
+    "scale_ready_count": 1,
+    "next_shorts_count": 5,
     "editorial_candidate_count": 20,
     "published_count": 96,
     "views_28d": 30314,
@@ -123,29 +123,19 @@
       "operator_translation": "observe this pattern before scaling it"
     },
     {
-      "id": "duplicate_title",
-      "count": 19,
-      "operator_translation": "duplicate title"
-    },
-    {
       "id": "queue_prune:rewrite",
-      "count": 15,
+      "count": 16,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 13,
+      "count": 14,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
-      "id": "off_topic_visual",
-      "count": 9,
-      "operator_translation": "off topic visual"
-    },
-    {
-      "id": "queue_score_reject",
-      "count": 7,
-      "operator_translation": "queue score reject"
+      "id": "duplicate_title",
+      "count": 13,
+      "operator_translation": "duplicate title"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -171,6 +161,16 @@
       "id": "publish_ready_supply_reserve_fallback",
       "count": 4,
       "operator_translation": "publish ready supply reserve fallback"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 4,
+      "operator_translation": "off topic visual"
+    },
+    {
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 3,
+      "operator_translation": "editorial cooldown supply fallback"
     }
   ],
   "levels": [
@@ -194,10 +194,10 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 94.4,
+      "progress_pct": 88.9,
       "evidence": {
-        "operational_publish_ready": 5,
-        "eligible_count": 6,
+        "operational_publish_ready": 4,
+        "eligible_count": 5,
         "pending": 20,
         "target_publish_ready": 6,
         "target_pending": 20
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 51.0,
+      "progress_pct": 47.7,
       "evidence": {
         "views_28d": 30314,
         "health_state": "excellent",
-        "operational_publish_ready": 5
+        "operational_publish_ready": 4
       }
     }
   ],

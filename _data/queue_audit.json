@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-06-29T21:49:43.886722+00:00",
+  "generated_at": "2026-06-29T21:54:29.570614+00:00",
   "pending": 20,
   "states": {
-    "publish_ready": 5,
-    "rewrite": 15
+    "publish_ready": 4,
+    "rewrite": 16
   },
   "mechanism_clusters": {
+    "face_recognition": 1,
     "call_signal": 1,
     "scent_map": 1
   },
@@ -13,37 +14,196 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 57,
+    "pending_before": 38,
     "pending_after": 20,
-    "rejected": 37,
-    "repair_needed": 7,
-    "repaired": 10,
+    "rejected": 18,
+    "repair_needed": 2,
+    "repaired": 9,
     "reasons": {
-      "duplicate_title": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 13,
+      "duplicate_title": 12,
       "objective_gate:observe_before_scaling": 12,
-      "off_topic_visual": 9,
-      "queue_score_reject": 7,
-      "duplicate_script": 4,
-      "duplicate_angle": 4,
-      "script_hook_mismatch": 3,
+      "off_topic_visual": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:script quality gate blocked the narration": 3,
       "objective_gate:bootstrap_observe_before_scaling": 3,
-      "opening_retention_gap_risk": 2,
-      "opening promise is not concrete enough": 2,
+      "queue_score_reject": 2,
+      "copy_subject_mismatch": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "inventory_reserve_fallback": 2,
+      "script does not expose enough concrete visual detail": 1,
+      "rights_guard_person_manual_review": 1,
+      "script_hook_mismatch": 1,
+      "script_word_loop": 1,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
       "non_animal_body_language": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
+      "script_subject_mismatch": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "8c6f10f7d2568582",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f79810387d15ac63",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "814c68b208ece655",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8b535e178c4f9a0f",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8b566ceabf9d8c82",
+      "title": "Lions hunt better when the pride coordinates",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "87d57e90a053c39f",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1f34fcf762dce0ec",
+      "title": "Cows can remember who belongs in the herd",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "19543e8c299a59c0",
+      "title": "Trees record wet years inside their rings",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3155629e1994b7f0",
+      "title": "Whales send songs across huge ocean distances",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a288d018c578b236",
+      "title": "Goats use wide pupils to watch danger",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "051e82fc89a9fa2d",
+      "title": "Leopards detect changes with their eyes",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "1eb28bbb28a24ba9",
+      "title": "Birds don’t fly where you think at sunset",
+      "reasons": [
+        "off_topic_visual",
+        "non_animal_body_language"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "50dfc0c584b8fe7a",
+      "title": "Whales slap the surface to warn the pod",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "1f348db0eb1fbb19",
+      "title": "Ocean animals make the gill rhythm matter first",
+      "reasons": [
+        "copy_subject_mismatch",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8f0bd71c7b6aa983",
+      "title": "Dogs read the world through scent maps",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "51da1a98435c4278",
+      "title": "Owls see the forest better than you",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6e341c42ff89419a",
+      "title": "Snakes don't hug when they hang",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "937dd65a928617c4",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "24a0617456caf977",
       "title": "Coral reefs are built by tiny living builders",
@@ -146,800 +306,9 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "b26a4cab37dbd006",
-      "title": "Dogs read the world through scent maps",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f2a6c9ccae4ffa27",
-      "title": "Goats use wide pupils to watch danger",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9ee098ecdf0b7d81",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9adefdf9d8da965e",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8ad4a5e6eda6f863",
-      "title": "Plants turn light into stored sugar",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "a24997171f6937ec",
-      "title": "Mountain valleys aren’t just pretty views",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "4806e70e43d77762",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "d41bcae0cac67563",
-      "title": "Lions use dark ear marks to guide cubs",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f356324a02663576",
-      "title": "Lions hunt better when the pride coordinates",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "95de2c9c23b17480",
-      "title": "squirrels use trees to hide more than you think",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "906e26387d091610",
-      "title": "Tree roots hijack rivers faster than you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b5cec8233e71e775",
-      "title": "Snow mountains hide a slow explosion beneath",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "206a31e9c26c56e7",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "ecdb52c78cc6d0ff",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "50bca577d0bcaf8a",
-      "title": "Alpine snow hides a rock time bomb",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ead8cdd09f1e9ae9",
-      "title": "Dogs read the world through scent maps",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "52885a0c4ca2d1e0",
-      "title": "Rock layers show their timeline inside caves",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f3a7fb8578a19602",
-      "title": "Trees record wet years inside their rings",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
-    {
-      "id": "1f348db0eb1fbb19",
-      "title": "Ocean animals make the gill rhythm matter first",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.655,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.54,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.54.",
-          "recommendation_strength": "observe",
-          "sample_size": 33
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.54,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [],
-          "scale_ready": true,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "cue_terms": [
-            "gill",
-            "rhythm"
-          ],
-          "frame_hook_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.54,
-            "data_quality": "observed",
-            "data_quality_score": 0.675,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-          "reasons": [],
-          "score": 55,
-          "signals": {
-            "comment_potential": 23,
-            "educational_potential": 53,
-            "emotional_potential": 28,
-            "novelty": 62,
-            "replay_potential": 55,
-            "viral_potential": 47,
-            "visual_potential": 92
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.54,
-            "data_quality": "observed",
-            "data_quality_score": 0.675,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-          "reasons": [],
-          "score": 79,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 82
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.512,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.35,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-            "recommendation_strength": "observe",
-            "sample_size": 13
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.103789+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "ocean",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "cue_terms": [
-            "gill",
-            "rhythm"
-          ],
-          "frame_hook_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "ocean",
-        "viewer_promise": "See the ocean detail that changes the whole scene."
-      },
-      "packaging": {
-        "community_prompt": "Which ocean clue should Wild Brief compare next in Nature Signals?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why does this coral changes after the gill rhythm?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 96,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.18,
-            "format:fresh_variant": 37.16,
-            "format:winner_inspired": 43.67,
-            "hook:pattern_reuse": 43.67,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "gill",
-              "rhythm"
-            ],
-            "cue_terms": [
-              "gill",
-              "rhythm"
-            ],
-            "frame_hook_bridge": [
-              "gill",
-              "rhythm"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "coral"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Ocean shows why the coral matters.",
-          "Ocean animals make the gill rhythm matter first",
-          "Ocean shows why the reef city matters.",
-          "Ocean shows why the reef city matters.",
-          "Ocean shows why the reef city matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "gill rhythm",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the gill rhythm at the start makes sense.",
-          "loop_score": 0.791,
-          "opening_line": "Ocean animals make the gill rhythm matter first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "gill rhythm",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.791,
-        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "cue_terms": [
-            "gill",
-            "rhythm"
-          ],
-          "frame_hook_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "pinned_comment": "Watch the coral again. Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.92,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 24,
-          "first_2s_narration": "Ocean animals make the gill rhythm matter first Watch the gill rhythm",
-          "first_frame_text": "GILL RHYTHM",
-          "first_frame_text_words": 2,
-          "hook": "Ocean animals make the gill rhythm matter first.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.791,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "gill",
-              "rhythm"
-            ],
-            "cue_terms": [
-              "gill",
-              "rhythm"
-            ],
-            "frame_hook_bridge": [
-              "gill",
-              "rhythm"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "coral"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the coral, so viewers rewatch the ocean clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.54,
-            "data_quality": "observed",
-            "data_quality_score": 0.675,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
-          "reasons": [],
-          "score": 79,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 82
-          },
-          "verdict": "ready"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Ocean animals make the gill rhythm matter first Watch the gill rhythm",
-          "first_frame_text": "GILL RHYTHM",
-          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible coral behind Ocean in a fast nature science story.",
-            "series": "Nature Signals",
-            "subject": "ocean",
-            "terms": [
-              "ocean",
-              "coral",
-              "body superpower"
-            ],
-            "title_variant": "Ocean coral explained fast",
-            "visible_cue": "coral"
-          },
-          "series": "Nature Signals",
-          "subject": "ocean",
-          "visible_cue": "coral"
-        },
-        "risks": [],
-        "score": 98,
-        "search_intent": {
-          "description_line": "This Short explains the visible coral behind Ocean in a fast nature science story.",
-          "series": "Nature Signals",
-          "subject": "ocean",
-          "terms": [
-            "ocean",
-            "coral",
-            "body superpower"
-          ],
-          "title_variant": "Ocean coral explained fast",
-          "visible_cue": "coral"
-        },
-        "selected_variant": {
-          "hook": "Coral reefs are built by tiny living builders",
-          "score": 79,
-          "thumbnail_text": "REEF CITY",
-          "title": "Coral reefs are cities built by tiny animals"
-        },
-        "series": "Nature Signals #4",
-        "series_identity": {
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
-          "episode": 4,
-          "label": "Nature Signals #4",
-          "series": "Nature Signals"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.512,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.35,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-            "recommendation_strength": "observe",
-            "sample_size": 13
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "REEF CITY",
-          "WATCH REEF CITY",
-          "CORAL REEFS CHANGE",
-          "REEF CITY MATTERS",
-          "REEF CITY FIRST",
-          "REEF CITY REVEAL",
-          "REEF CITY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Coral reefs are cities built by tiny animals",
-          "Ocean animals make the gill rhythm matter first",
-          "Coral reefs use reef city before they change",
-          "This reef city gives coral reefs away",
-          "Why coral reefs change after one reef city",
-          "Coral reefs reveal the answer with reef city",
-          "The reef city that changes the moment",
-          "Coral reefs make one reef city matter",
-          "Coral reefs show the hidden answer in seconds",
-          "Coral reefs: watch this reef city"
-        ],
-        "top_variants": [
-          {
-            "hook": "Coral reefs are built by tiny living builders",
-            "score": 79,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Ocean animals make the gill rhythm matter first",
-            "score": 79,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Coral reefs are built by tiny living builders",
-            "score": 73,
-            "thumbnail_text": "CORAL REEFS CHANGE",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Ocean animals make the gill rhythm matter first",
-            "score": 73,
-            "thumbnail_text": "CORAL REEFS CHANGE",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CORAL REEFS CHANGE",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Coral reefs are built by tiny living builders",
-            "score": 72,
-            "thumbnail_text": "WATCH REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Ocean animals make the gill rhythm matter first",
-            "score": 72,
-            "thumbnail_text": "WATCH REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "WATCH REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Coral reefs are built by tiny living builders",
-            "score": 72,
-            "thumbnail_text": "REEF CITY MATTERS",
-            "title": "Coral reefs are cities built by tiny animals"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
     {
       "id": "7ea6de9283de7ea9",
       "title": "Ants reveal the answer with scent road",
@@ -1115,7 +484,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.520308+00:00",
+        "checked_at": "2026-06-29T21:54:05.128746+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1764,7 +1133,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.937849+00:00",
+        "checked_at": "2026-06-29T21:54:07.359689+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2252,8 +1621,8 @@
       }
     },
     {
-      "id": "a288d018c578b236",
-      "title": "Goats see wide with rectangular pupils",
+      "id": "d5431c3229ceadcc",
+      "title": "Cows sort familiar clues with face memory",
       "category": "farm",
       "publish_score": {
         "approved": true,
@@ -2275,10 +1644,10 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 86,
+        "hook_score": 100,
         "objective_gate": {
           "confidence_score": 0.523,
-          "mechanism_cluster": "",
+          "mechanism_cluster": "face_recognition",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
@@ -2290,33 +1659,30 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes",
-            "pupil",
-            "wide"
+            "face",
+            "memor"
           ],
           "cue_terms": [
-            "eyes",
-            "pupil",
-            "vision",
-            "wide"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "wide"
+            "face",
+            "memor"
           ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
+            "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "goats"
+          "subject": "cows"
         },
         "opportunity": {
           "confidence": {
@@ -2332,18 +1698,18 @@
           },
           "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
           "reasons": [
-            "weak_replay_reason",
+            "weak_visual_surface",
             "low_opportunity_score"
           ],
-          "score": 48,
+          "score": 46,
           "signals": {
-            "comment_potential": 38,
-            "educational_potential": 51,
-            "emotional_potential": 36,
+            "comment_potential": 54,
+            "educational_potential": 57,
+            "emotional_potential": 27,
             "novelty": 47,
-            "replay_potential": 44,
-            "viral_potential": 40,
-            "visual_potential": 67
+            "replay_potential": 66,
+            "viral_potential": 37,
+            "visual_potential": 37
           },
           "verdict": "discard"
         },
@@ -2354,7 +1720,7 @@
         "reserve_override": {
           "original_approved": false,
           "original_opportunity_reasons": [
-            "weak_replay_reason",
+            "weak_visual_surface",
             "low_opportunity_score"
           ],
           "original_state": "rewrite",
@@ -2374,13 +1740,13 @@
           },
           "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
           "reasons": [],
-          "score": 74,
+          "score": 70,
           "signals": {
             "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
@@ -2417,7 +1783,7 @@
           "state": "strong",
           "subscriber_probability": 0.136
         },
-        "title_score": 90,
+        "title_score": 100,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.738,
@@ -2438,8 +1804,8 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.308390+00:00",
-        "mechanism_cluster": "",
+        "checked_at": "2026-06-29T21:54:05.123701+00:00",
+        "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "publish_ready_supply_reserve_fallback"
         ],
@@ -2449,38 +1815,35 @@
       },
       "queue_score": 78.0,
       "youtube_brain": {
-        "animal": "goats",
+        "animal": "cows",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes",
-            "pupil",
-            "wide"
+            "face",
+            "memor"
           ],
           "cue_terms": [
-            "eyes",
-            "pupil",
-            "vision",
-            "wide"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "wide"
+            "face",
+            "memor"
           ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
+            "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "goats"
+          "subject": "cows"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -2503,14 +1866,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "goats",
-        "viewer_promise": "See why goats body superpower matters."
+        "subject": "cows",
+        "viewer_promise": "See why cows body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which goats clue should Wild Brief compare next in Body Clues?",
+        "community_prompt": "Which cows clue should Wild Brief compare next in Body Clues?",
         "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
         "curiosity_gap": {
-          "hook": "Why do these goats change after the wide pupils?",
+          "hook": "Why do these cows change after the face memory?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -2555,33 +1918,30 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "eyes",
-              "pupil",
-              "wide"
+              "face",
+              "memor"
             ],
             "cue_terms": [
-              "eyes",
-              "pupil",
-              "vision",
-              "wide"
+              "face",
+              "memor"
             ],
             "frame_hook_bridge": [
-              "wide"
+              "face",
+              "memor"
             ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
               "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
+              "action_promise_early",
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "goats"
+            "subject": "cows"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -2594,113 +1954,107 @@
           "word_count": 2
         },
         "hook_options": [
-          "Goats see wide with rectangular pupils",
-          "Goats show why the wide pupils matters.",
-          "Goats show why the wide pupils matters.",
-          "Goats show why the wide pupils matters.",
-          "Goats give away the answer through wide pupils"
+          "Cows can remember who belongs in the herd",
+          "Cows can sort familiar clues with face memory",
+          "Cows show why the face memory matters.",
+          "Cows show why the face memory matters.",
+          "Cows show why the face memory matters."
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "wide vision",
-          "ending_line": "Which farm detail should we decode next?",
-          "final_line": "Now the wide vision at the start makes sense.",
-          "loop_score": 0.769,
-          "opening_line": "Goats see wide with rectangular pupils.",
+          "callback_keyword": "cows",
+          "ending_line": "Which cows memory clue should come next?",
+          "final_line": "Which cows memory clue should come next?",
+          "loop_score": 0.993,
+          "opening_line": "Cows can sort familiar clues with face memory.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "wide vision",
+            "carry_keyword": "cows",
             "subtle_audio_tail": true
           },
-          "rewrite_applied": true,
+          "rewrite_applied": false,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.769,
+        "loop_score": 0.993,
         "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes",
-            "pupil",
-            "wide"
+            "face",
+            "memor"
           ],
           "cue_terms": [
-            "eyes",
-            "pupil",
-            "vision",
-            "wide"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "wide"
+            "face",
+            "memor"
           ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
+            "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "goats"
+          "subject": "cows"
         },
-        "pinned_comment": "Watch the pupils again. Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the face memory again. Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.61,
+          "caption_chars_per_second": 15.29,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Goats see wide with rectangular pupils Watch the eyes from the side",
-          "first_frame_text": "WIDE VISION",
+          "duration_hint_s": 17,
+          "first_2s_narration": "Cows can sort familiar clues with face memory Watch the face memory",
+          "first_frame_text": "FACE MEMORY",
           "first_frame_text_words": 2,
-          "hook": "Goats see wide with rectangular pupils.",
+          "hook": "Cows can sort familiar clues with face memory.",
           "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.769,
+          "hook_words": 8,
+          "loop_score": 0.993,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "eyes",
-              "pupil",
-              "wide"
+              "face",
+              "memor"
             ],
             "cue_terms": [
-              "eyes",
-              "pupil",
-              "vision",
-              "wide"
+              "face",
+              "memor"
             ],
             "frame_hook_bridge": [
-              "wide"
+              "face",
+              "memor"
             ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
               "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
+              "action_promise_early",
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "goats"
+            "subject": "cows"
           },
-          "opening_retention_score": 96.0,
+          "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
           "payoff_score": 75,
           "payoff_time_s": 0,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the pupils, so viewers rewatch the goats clip.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the cows clip.",
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.55,
@@ -2715,59 +2069,59 @@
           },
           "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
           "reasons": [],
-          "score": 74,
+          "score": 70,
           "signals": {
             "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Goats see wide with rectangular pupils Watch the eyes from the side",
-          "first_frame_text": "WIDE VISION",
+          "first_2s_narration": "Cows can sort familiar clues with face memory Watch the face memory",
+          "first_frame_text": "FACE MEMORY",
           "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 96.0,
+          "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains Goats behavior through the visible pupils.",
+            "description_line": "This Short explains Cows behavior through the visible face memory.",
             "series": "Body Clues",
-            "subject": "goats",
+            "subject": "cows",
             "terms": [
-              "goats",
-              "pupils",
+              "cows",
+              "face memory",
               "farm",
               "body superpower"
             ],
-            "title_variant": "Goats behavior: pupils explained",
-            "visible_cue": "pupils"
+            "title_variant": "Cows behavior: face memory explained",
+            "visible_cue": "face memory"
           },
           "series": "Body Clues",
-          "subject": "goats",
-          "visible_cue": "pupils"
+          "subject": "cows",
+          "visible_cue": "face memory"
         },
         "risks": [],
-        "score": 96,
+        "score": 95,
         "search_intent": {
-          "description_line": "This Short explains Goats behavior through the visible pupils.",
+          "description_line": "This Short explains Cows behavior through the visible face memory.",
           "series": "Body Clues",
-          "subject": "goats",
+          "subject": "cows",
           "terms": [
-            "goats",
-            "pupils",
+            "cows",
+            "face memory",
             "farm",
             "body superpower"
           ],
-          "title_variant": "Goats behavior: pupils explained",
-          "visible_cue": "pupils"
+          "title_variant": "Cows behavior: face memory explained",
+          "visible_cue": "face memory"
         },
         "selected_variant": {
-          "hook": "Start with the wide pupils; it changes the scene",
-          "score": 76,
-          "thumbnail_text": "WIDE VISION",
-          "title": "Goats use wide pupils to watch danger"
+          "hook": "Cows can remember who belongs in the herd",
+          "score": 75,
+          "thumbnail_text": "HERD MEMORY",
+          "title": "Cows remember faces across the herd"
         },
         "series": "Body Clues",
         "series_identity": {
@@ -2822,88 +2176,89 @@
           "score": 0
         },
         "thumbnail_options": [
-          "WIDE VISION",
-          "WIDE PUPILS",
-          "WATCH WIDE PUPILS",
-          "GOATS CHANGE",
-          "WIDE PUPILS MATTERS",
-          "WIDE PUPILS FIRST",
-          "WIDE PUPILS REVEAL",
-          "WIDE PUPILS CLUE",
+          "HERD MEMORY",
+          "FACE MEMORY",
+          "WATCH HERD MEMORY",
+          "COWS CONNECT",
+          "HERD MEMORY MATTERS",
+          "HERD MEMORY FIRST",
+          "HERD MEMORY REVEAL",
+          "HERD MEMORY CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Goats use wide pupils to watch danger",
-          "Goats see wide with rectangular pupils",
-          "Goats use wide pupils before they change",
-          "Why goats change after one wide pupils",
-          "Goats reveal the answer with wide pupils",
-          "The wide pupils that changes the moment",
-          "Goats make one wide pupils matter",
-          "Goats show the hidden answer in seconds",
-          "Goats: watch this wide pupils"
+          "Cows remember faces across the herd",
+          "Cows sort familiar clues with face memory",
+          "Cows connect through herd memory",
+          "Cows use herd memory before they connect",
+          "This herd memory gives cows away",
+          "Why cows connect after one herd memory",
+          "Cows reveal the answer with herd memory",
+          "The herd memory that changes the moment",
+          "Cows make one herd memory matter",
+          "Cows show the hidden answer in seconds"
         ],
         "top_variants": [
           {
-            "hook": "Start with the wide pupils; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "WIDE VISION",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Goats see wide with rectangular pupils",
+            "hook": "Cows can remember who belongs in the herd",
             "score": 75,
-            "thumbnail_text": "WIDE VISION",
-            "title": "Goats use wide pupils to watch danger"
+            "thumbnail_text": "HERD MEMORY",
+            "title": "Cows remember faces across the herd"
           },
           {
-            "hook": "Watch the wide pupils; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "WIDE VISION",
-            "title": "Goats use wide pupils to watch danger"
+            "hook": "Cows can sort familiar clues with face memory",
+            "score": 73,
+            "thumbnail_text": "HERD MEMORY",
+            "title": "Cows remember faces across the herd"
           },
           {
-            "hook": "Start with the wide pupils; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "WIDE PUPILS",
-            "title": "Goats use wide pupils to watch danger"
+            "hook": "Watch the herd memory; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "HERD MEMORY",
+            "title": "Cows remember faces across the herd"
           },
           {
-            "hook": "Start with the wide pupils; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "WATCH WIDE PUPILS",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Goats see wide with rectangular pupils",
-            "score": 69,
-            "thumbnail_text": "GOATS CHANGE",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Watch the wide pupils; it explains the behavior",
-            "score": 69,
-            "thumbnail_text": "GOATS CHANGE",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Start with the wide pupils; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "GOATS CHANGE",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Start with the wide pupils; it changes the scene",
-            "score": 69,
-            "thumbnail_text": "WIDE PUPILS MATTERS",
-            "title": "Goats use wide pupils to watch danger"
-          },
-          {
-            "hook": "Goats see wide with rectangular pupils",
+            "hook": "Cows can remember who belongs in the herd",
             "score": 68,
-            "thumbnail_text": "WIDE PUPILS",
-            "title": "Goats use wide pupils to watch danger"
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Cows remember faces across the herd"
+          },
+          {
+            "hook": "Cows can remember who belongs in the herd",
+            "score": 68,
+            "thumbnail_text": "WATCH HERD MEMORY",
+            "title": "Cows remember faces across the herd"
+          },
+          {
+            "hook": "Cows can remember who belongs in the herd",
+            "score": 68,
+            "thumbnail_text": "COWS CONNECT",
+            "title": "Cows remember faces across the herd"
+          },
+          {
+            "hook": "Cows can remember who belongs in the herd",
+            "score": 68,
+            "thumbnail_text": "HERD MEMORY MATTERS",
+            "title": "Cows remember faces across the herd"
+          },
+          {
+            "hook": "Cows can remember who belongs in the herd",
+            "score": 67,
+            "thumbnail_text": "HERD MEMORY",
+            "title": "Cows sort familiar clues with face memory"
+          },
+          {
+            "hook": "Cows can sort familiar clues with face memory",
+            "score": 66,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Cows remember faces across the herd"
+          },
+          {
+            "hook": "Watch the herd memory; it explains the behavior",
+            "score": 66,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Cows remember faces across the herd"
           }
         ]
       },
@@ -3110,7 +2465,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.520972+00:00",
+        "checked_at": "2026-06-29T21:54:05.129903+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3767,7 +3122,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.984536+00:00",
+        "checked_at": "2026-06-29T21:54:05.470636+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4412,7 +3767,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:29.398102+00:00",
+        "checked_at": "2026-06-29T21:54:07.728651+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -4732,10 +4087,10 @@
         },
         "series": "Hidden Network #9",
         "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 9,
+          "continuity_prompt": "Next in Hidden Network #9: compare this with another force of nature.",
+          "episode": 1,
           "label": "Hidden Network #9",
-          "series": "Hidden Network"
+          "series": "Hidden Network #9"
         },
         "state": "magnetic",
         "strengths": [
@@ -4865,6 +4220,662 @@
             "score": 71,
             "thumbnail_text": "COOL CANOPY MATTERS",
             "title": "Forests make cooler air under the canopy"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "b4922913a26527d2",
+      "title": "Magnets use field lines before they change",
+      "category": "physics",
+      "publish_score": {
+        "approved": true,
+        "category": "physics",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "line",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "magnets"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 60,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 58,
+            "emotional_potential": 53,
+            "novelty": 45,
+            "replay_potential": 60,
+            "viral_potential": 64,
+            "visual_potential": 75
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "physics_demo",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-29T21:54:08.052327+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 72.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "magnets",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "line",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "magnets"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "physics_demo",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "magnets",
+        "viewer_promise": "See why this magnet physics demo matters."
+      },
+      "packaging": {
+        "community_prompt": "Which magnets clue should Wild Brief compare next in Physics Brief?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "Why do these magnets change after the field lines?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "physics demo",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 96,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.18,
+            "format:fresh_variant": 37.16,
+            "format:winner_inspired": 43.67,
+            "hook:pattern_reuse": 43.67,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "filing",
+              "line",
+              "map"
+            ],
+            "cue_terms": [
+              "field",
+              "filing",
+              "line",
+              "map"
+            ],
+            "frame_hook_bridge": [
+              "line"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "magnets"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Magnets can show a hidden force map",
+          "Magnets show why the field lines matters.",
+          "Magnets show why the field lines matters.",
+          "Magnets show why the field lines matters.",
+          "Magnets give away the answer through field lines"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "force",
+          "ending_line": "Which force next?",
+          "final_line": "Which force next?",
+          "loop_score": 0.769,
+          "opening_line": "Magnets can show a hidden force map.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "force",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": false,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.769,
+        "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "line",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "magnets"
+        },
+        "pinned_comment": "Watch the field lines again. Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.44,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 16,
+          "first_2s_narration": "Magnets can show hidden force map Watch the filings line up because",
+          "first_frame_text": "FIELD LINES",
+          "first_frame_text_words": 2,
+          "hook": "Magnets can show a hidden force map.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.769,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "filing",
+              "line",
+              "map"
+            ],
+            "cue_terms": [
+              "field",
+              "filing",
+              "line",
+              "map"
+            ],
+            "frame_hook_bridge": [
+              "line"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "magnets"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the field lines, so viewers rewatch the magnets clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Magnets can show a hidden force map Watch the filings line up",
+          "first_frame_text": "FIELD LINES",
+          "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
+            "series": "Physics Brief",
+            "subject": "magnets",
+            "terms": [
+              "magnets",
+              "field lines",
+              "physics",
+              "physics demo"
+            ],
+            "title_variant": "Magnets field lines explained fast",
+            "visible_cue": "field lines"
+          },
+          "series": "Physics Brief",
+          "subject": "magnets",
+          "visible_cue": "field lines"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
+          "series": "Physics Brief",
+          "subject": "magnets",
+          "terms": [
+            "magnets",
+            "field lines",
+            "physics",
+            "physics demo"
+          ],
+          "title_variant": "Magnets field lines explained fast",
+          "visible_cue": "field lines"
+        },
+        "selected_variant": {
+          "hook": "Start with the field lines; it changes the scene",
+          "score": 80,
+          "thumbnail_text": "FIELD LINES",
+          "title": "Magnets make invisible fields visible"
+        },
+        "series": "Physics Brief",
+        "series_identity": {
+          "continuity_prompt": "Next in Physics Brief: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Physics Brief",
+          "series": "Physics Brief"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FIELD LINES",
+          "WATCH FIELD LINES",
+          "MAGNETS CHANGE",
+          "FIELD LINES MATTERS",
+          "FIELD LINES FIRST",
+          "FIELD LINES REVEAL",
+          "FIELD LINES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Magnets make invisible fields visible",
+          "Magnets use field lines before they change",
+          "Why magnets change after one field lines",
+          "Magnets reveal the answer with field lines",
+          "The field lines that changes the moment",
+          "Magnets make one field lines matter",
+          "Magnets show the hidden answer in seconds",
+          "Magnets: watch this field lines",
+          "Watch magnets after the field lines"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Magnets can show a hidden force map",
+            "score": 77,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "MAGNETS CHANGE",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "MAGNETS CHANGE",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FIELD LINES FIRST",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "WATCH FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "title": "Magnets make invisible fields visible"
           }
         ]
       },
@@ -5055,7 +5066,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.021736+00:00",
+        "checked_at": "2026-06-29T21:54:05.502400+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5702,7 +5713,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.518417+00:00",
+        "checked_at": "2026-06-29T21:54:05.124941+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -6366,7 +6377,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.722388+00:00",
+        "checked_at": "2026-06-29T21:54:05.465531+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7010,7 +7021,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.023985+00:00",
+        "checked_at": "2026-06-29T21:54:05.505111+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7648,7 +7659,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.025532+00:00",
+        "checked_at": "2026-06-29T21:54:05.507084+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8290,7 +8301,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.027536+00:00",
+        "checked_at": "2026-06-29T21:54:05.508974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8946,7 +8957,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.029339+00:00",
+        "checked_at": "2026-06-29T21:54:05.511529+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9610,7 +9621,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.030563+00:00",
+        "checked_at": "2026-06-29T21:54:05.513333+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10266,7 +10277,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.305747+00:00",
+        "checked_at": "2026-06-29T21:54:06.666542+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10918,7 +10929,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.935284+00:00",
+        "checked_at": "2026-06-29T21:54:07.347903+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11571,7 +11582,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:28.939159+00:00",
+        "checked_at": "2026-06-29T21:54:07.361837+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12229,7 +12240,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.983552+00:00",
+        "checked_at": "2026-06-29T21:54:05.469089+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12885,7 +12896,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:27.519091+00:00",
+        "checked_at": "2026-06-29T21:54:05.126051+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
